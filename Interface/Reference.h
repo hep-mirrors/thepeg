@@ -1,25 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_Reference_H
 #define ThePEG_Reference_H
-//
-// This is the declaration of the <!id>Reference<!!id> and
-// <!id>ReferenceBase<!!id> classes.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>Reference<!!id> defines an interface to a class derived
-// from the <!class>InterfacedBase<!!class>, through which pointers to
-// other <!class>InterfacedBase<!!class> objects may be manipulated.
-// <!id>Reference<!!id> is templated on the type of the class and the
-// class of the objects pointed to, and is derived from the
-// <!class>InterfaceBase<!!class> class via <!id>ReferenceBase<!!id>
-// and <!id>RefInterfaceBase<!!id>.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:InterfacedBase.html">InterfacedBase.h</a>,
-// <a href="http:InterfaceBase.html">InterfaceBase.h</a>.
-// 
+// This is the declaration of the Reference and ReferenceBase classes.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "InterfaceBase.h"
@@ -28,71 +10,197 @@
 
 namespace ThePEG {
 
+/**
+ * The Reference class and its base class ReferenceBase defines an
+ * interface to a class derived from the InterfacedBase, through which
+ * pointers to other InterfacedBase objects may be manipulated.
+ * Reference is templated on the type of the class and the class of
+ * the objects pointed to, and is derived from the InterfaceBase class
+ * via ReferenceBase and RefInterfaceBase.
+ *
+ * For each InterfacedBase class exactly one static Reference object
+ * should created for each member variable which should be
+ * interfaced. This object will automatically register itself with the
+ * BaseRepository class.
+ *
+ * @see InterfacedBase,
+ * @see InterfaceBase.
+ * 
+ */
 class ReferenceBase: public RefInterfaceBase {
 
 public:
 
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newClassName the name of the corresponding class.
+   *
+   * @param newTypeInfo the type_info object of the corresponding
+   * class.
+   *
+   * @param newRefClassName the name of the class pointed to.
+   *
+   * @param newRefTypeInfo the type_info object of the class pointed
+   * to.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param norebind if set to true, this interface is not responsible
+   * for the rebinding of corresponding objects.
+   *
+   * @param nullable if set to true this corresponding references may
+   * be null.
+   *
+   * @param defnull if set to true and a corresponding reference is
+   * null it may be given a a default value in the initialization of
+   * an EventGenerator.
+   */
   ReferenceBase(string newName, string newDescription,
 		string newClassName,
 		const type_info & newTypeInfo, 
 		string newRefClassName,
 		const type_info & newRefTypeInfo, bool depSafe,
 		bool readonly, bool norebind, bool nullable, bool defnull);
-  // Standard constructor.
 
+  /**
+   * Destructor.
+   */
   inline virtual ~ReferenceBase();
-  // Default dtor.
 
+  /**
+   * The general interface method overriding the one in
+   * InterfaceBase. For this class, \a action can be any of "set" and
+   * "get" and \a argument should correspond to the name of an
+   * InterfacedBase object in the BaseRepository.
+   */
   virtual string exec(InterfacedBase & ib, string action,
 		      string arguments) const throw(InterfaceException);
-  // The general interface method overriding the one in
-  // InterfaceBase. For this class, 'action' can be any of "set" and
-  // "get" and 'argument' should correspond to the name of an
-  // InterfacedBase object in the BaseRepository.
 
+  /**
+   * Return a code for the type of this reference.
+   */
   virtual string type() const;
-  // Return a code for the type of this reference.
 
+  /**
+   * Set the pointer of \a ib to \a ip.
+   */
   virtual void set(InterfacedBase & ib, IBPtr ip, bool chk = true)
     const throw(InterfaceException) = 0;
-  // Set the pointer of ib to ip.
 
+  /**
+   * Return the pointer of \a ib.
+   */
   virtual IBPtr get(const InterfacedBase & ib)
     const throw(InterfaceException) = 0;
-  // Return the pointer of ib.
 
+  /**
+   * Check if set(ib, ip) will be successfull but do not do
+   * anything.
+   */
   virtual bool check(const InterfacedBase & ib, cIBPtr ip) const
     throw(InterfaceException) = 0;
-  // Check if set(ib, ip) will be successfull but do not do
-  // anything.
 
+  /**
+   * In the object \a ib, replace the pointer in this interface with one
+   * of the translated ones provided by trans. If the pointer is null,
+   * and defaultIfNull() is true, replace it with the first allowed
+   * object found in \a defs.
+   */
   virtual void rebind(InterfacedBase & ib, const TranslationMap & trans,
 		      const IVector & defs) const;
-  // In the object ib, replace the pointer in this interface with one
-  // of the translated ones provided by trans. If the pointer is null,
-  // and defaultIfNull() is truem, replace it with the first alowed
-  // object found in defs.
 
+  /**
+   * Return the pointer to another object in \i ib (in a vector).
+   */
   virtual IVector getReferences(const InterfacedBase & ib) const;
-  // Return pointers to other objects in ib.
 
 };
 
 
+/**
+ * The Reference and its base class ReferenceBase defines an interface
+ * to a class derived from the InterfacedBase, through which pointers
+ * to other InterfacedBase objects may be manipulated.  Reference is
+ * templated on the type of the class and the class of the objects
+ * pointed to, and is derived from the InterfaceBase class via
+ * ReferenceBase and RefInterfaceBase.
+ *
+ * For each InterfacedBase class exactly one static Reference object
+ * should created for each member variable which should be
+ * interfaced. This object will automatically register itself with the
+ * BaseRepository class.
+ *
+ * @see InterfacedBase,
+ * @see InterfaceBase.
+ * 
+ */
 template <class T, class R>
 class Reference: public ReferenceBase {
 
 public:
 
+  /** A pointer to the class of objects referred to. */
   typedef typename Ptr<R>::pointer RefPtr;
+  /** A const pointer to the class of objects referred to. */
   typedef typename Ptr<R>::const_pointer cRefPtr;
+  /** A pointer to a menberfunction to be used for the 'set' action. */
   typedef void (T::*SetFn)(RefPtr);
+  /** A pointer to a menberfunction to be used for the 'check' action. */
   typedef bool (T::*CheckFn)(cRefPtr) const;
+  /** A pointer to a menberfunction to be used for the 'get' action. */
   typedef RefPtr (T::*GetFn)() const;
+  /** Declaration of a direct pointer to the member variable. */
   typedef RefPtr T::* Member;
 
 public:
 
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to a Member which is a TypeVector. May
+   * be null, in which case the pointers to member functions must be
+   * specified.
+   *
+   * @param newSize the size of the container or -1 if varying.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param rebind if set to true, this interface is responsible
+   * for the rebinding of corresponding objects.
+   *
+   * @param nullable if set to true this corresponding references may
+   * be null.
+   *
+   * @param newSetFn optional pointer to member function for the 'set'
+   * action.
+   *
+   * @param newGetFn optional pointer to member function for the
+   * 'get' action.
+   *
+   * @param newCheckFn optional pointer to member function for the
+   * 'check' action.
+   */
   Reference(string newName, string newDescription,
 	    Member newMember, bool depSafe = false,
 	    bool readonly = false, bool rebind = true, bool nullable = true,
@@ -105,6 +213,46 @@ public:
       theMember(newMember), theSetFn(newSetFn), theGetFn(newGetFn),
       theCheckFn(newCheckFn) {}
 
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to a Member which is a TypeVector. May
+   * be null, in which case the pointers to member functions must be
+   * specified.
+   *
+   * @param newSize the size of the container or -1 if varying.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param rebind if set to true, this interface is responsible
+   * for the rebinding of corresponding objects.
+   *
+   * @param nullable if set to true this corresponding references may
+   * be null.
+   *
+   * @param defnull if set to true and a corresponding reference is
+   * null it may be given a a default value in the initialization of
+   * an EventGenerator.
+   *
+   * @param newSetFn optional pointer to member function for the 'set'
+   * action.
+   *
+   * @param newGetFn optional pointer to member function for the
+   * 'get' action.
+   *
+   * @param newCheckFn optional pointer to member function for the
+   * 'check' action.
+   */
   Reference(string newName, string newDescription,
 	    Member newMember, bool depSafe, bool readonly, bool rebind,
 	    bool nullable, bool defnull, SetFn newSetFn = 0, GetFn newGetFn = 0,
@@ -115,42 +263,63 @@ public:
 		    depSafe, readonly, !rebind, nullable, defnull),
       theMember(newMember), theSetFn(newSetFn), theGetFn(newGetFn),
       theCheckFn(newCheckFn) {}
-  // Standard constructors.
 
+
+  /**
+   * Set the pointer of \a ib to \a ip.
+   */
   virtual void set(InterfacedBase & ib, IBPtr ip, bool chk = true) const
     throw(InterfaceException);
-  // Set the pointer of ib to ip.
 
-  virtual IBPtr get(const InterfacedBase & ib) const throw(InterfaceException);
-  // Return the pointer of ib.
+  /**
+   * Return the pointer of \a ib.
+   */
+  virtual IBPtr get(const InterfacedBase & ib) const
+    throw(InterfaceException);
 
+  /**
+   * Check if set(ib, ip) will be successfull but do not do
+   * anything.
+   */
   virtual bool check(const InterfacedBase & ib, cIBPtr newRef) const
     throw(InterfaceException);
-  // Check if set(ib, ip) will be successfull but do not do
-  // anything.
 
+  /**
+   * Give a pointer to a member function to be used by 'set()'.
+   */
   inline void setSetFunction(SetFn);
-  // Give a pointer to a member function to be used by 'set()'.
 
+  /**
+   * Give a pointer to a member function to be used by 'get()'.
+   */
   inline void setGetFunction(GetFn);
-  // Give a pointer to a member function to be used by 'get()'.
 
+  /**
+   * Give a pointer to a member function to be used by 'check()'.
+   */
   inline void setCheckFunction(CheckFn);
-  // Give a pointer to a member function to be used by 'check()'.
 
 private:
 
+  /**
+   * The pointer to the member variable.
+   */
   Member theMember;
-  // The pointer to the member variable.
 
+  /**
+   * A pointer to a member function to be used by 'set()'.
+   */
   SetFn theSetFn;
-  // A pointer to a member function to be used by 'set()'.
 
+  /**
+   * Give a pointer to a member function to be used by 'get()'.
+   */
   GetFn theGetFn;
-  // Give a pointer to a member function to be used by 'get()'.
 
+  /**
+   * Give a pointer to a member function to be used by 'check()'.
+   */
   CheckFn theCheckFn;
-  // Give a pointer to a member function to be used by 'check()'.
 
 
 };

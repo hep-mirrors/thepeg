@@ -10,18 +10,27 @@
 
 namespace ThePEG {
 
+/** Exception class used by Parameter if variable is set outside the
+ *  specified limits. */
 struct ParExSetLimit: public InterfaceException {
+  /** Standard constructor. */
   template <typename T>
   ParExSetLimit(const InterfaceBase & i, const InterfacedBase & o, T v);
 };
 
+/** Exception class used by Parameter if an unkown error
+ *  occurs. */
 struct ParExSetUnknown: public InterfaceException {
+  /** Standard constructor. */
   template <typename T>
   ParExSetUnknown(const InterfaceBase & i,
 		  const InterfacedBase & o, T val);
 };
 
+/** Exception class used by Parameter if an unkown error
+ *  occurs. */
 struct ParExGetUnknown: public InterfaceException {
+  /** Standard constructor. */
   ParExGetUnknown(const InterfaceBase & i,
 		  const InterfacedBase & o, const char *);
 };

@@ -1,20 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ClassDocumentation_H
 #define ThePEG_ClassDocumentation_H
-//
-// This is the declaration of the <!id>ClassDocumentation<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>ClassDocumentation<!!id> class is used to communicate
-// documetation about an <!class>Interfaced<!!class> class to the
-// <!class>Repository<!!class>.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Interfaced.html">Interfaced.h</a>,
-// <a href="http:Repository.html">Repository.h</a>.
-// 
+// This is the declaration of the ClassDocumentation class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ClassDocumentation.fh"
@@ -22,78 +9,186 @@
 
 namespace ThePEG {
 
+/**
+ * The ClassDocumentationBase class is used to communicate
+ * documetation about an Interfaced class to the Repository.
+ * Similarly to classes inheriting from InterfaceBase, only one static
+ * object of the templated ClassDocumentation, which inherits from
+ * ClassDocumentationBase, should be created for each Interfaced
+ * class. This object will then automatically register itself with the
+ * static Repository.
+ *
+ * The ClassDocumentationBase contains three strings with information
+ * which are all specified in the constructor:
+ *
+ * The <i>documentation</i> contains a brief description of the
+ * corresponding class which can be displayed by the Repository (or
+ * user interfaces derived from it).
+ *
+ * The <i>model description</i> contains a very brief description of
+ * the model of the process implemented in the step handler, given in
+ * the form of a LaTeX \\item. This is written to a file after a run
+ * by an EventGenerator.
+ *
+ * The <i>model references</i> contains possible LaTeX \\bibitems
+ * corresponding to \\cite commands in the <i>model
+ * description</i>. This is also written to a file after a run by an
+ * EventGenerator.
+ *
+ * @see Interfaced,
+ * @see Repository.
+ * 
+ */
 class ClassDocumentationBase  {
-
 
 protected:
 
+  /**
+   * The standard constructor can only be used from subclasses.
+   * @param newDocumentation the <i>documentation</i> for the
+   * corresponding class.
+   * @param newModelDescription the <i>model description</i> for the
+   * corresponding class.
+   * @param newModelReferences the <i>model references</i> of the
+   * corresponding class..
+   * @param newTypeInfo the type_info object of the corresponding
+   * class.
+   */
   ClassDocumentationBase(string newDocumentation,
 			 string newModelDescription,
 			 string newModelReferences,
 			 const type_info & newTypeInfo);
-  // The constructor can only be used from subclasses..
 
 public:
 
+  /**
+   * The destructor.
+   */
   inline virtual ~ClassDocumentationBase();
-  // The dtor.
 
 public:
 
+  /**
+   * Return the brief <i>documentation</i> of the corresponding class.
+   */
   inline string documentation() const;
-  // Return the documentation of the corresponding class.
 
+  /**
+   * Return the <i>model description</i> of the corresponding class.
+   */
   inline string modelDescription() const;
+
+  /**
+   * Return the <i>model references</i> of the corresponding class.
+   */
   inline string modelReferences() const;
-  // The string returned from modelDescription() should contain a very
-  // brief description of the model of the process implemented in the
-  // step handler, given in the form of a LaTeX \item. If any LaTeX
-  // \cite reference are given, a corresponding \bibitem should be
-  // returned by modelReference(). E.g. modelDescription() could
-  // return "The XXX model \\cite{XXX} was used for the YYY pocess",
-  // and modelReferences() should then return something like
-  // "\\bibitem{XXX} J.~Doe, \\textit{Journal} \\textbf{volume} (year)
-  // page."  Note the double-slash to get a single slash, and that
-  // modelReferences() must begin with a "\\bibitem".
 
 private:
 
+  /**
+   * The brief <i>documentation</i> of the corresponding class.
+   */
   string theDocumentation;
-  // The documentation of the corresponding class.
 
+  /**
+   * The <i>model description</i> of the corresponding class.
+   */
   string theModelDescription;
+
+  /**
+   * The <i>model references</i> of the corresponding class.
+   */
   string theModelReferences;
-  // A (LaTeX) sentence describing the implemented model (if any). If
-  // any \\cite references are given, the corresponding citation
-  // should be listed in theModelReferences.
 
 private:
 
+  /**
+   * Private and unimplemented default constructor.
+   */
   ClassDocumentationBase();
+
+  /**
+   * Private and unimplemented copy constructor.
+   */
   ClassDocumentationBase(const ClassDocumentationBase &);
+
+  /**
+   * Private and unimplemented assignment operator.
+   */
   ClassDocumentationBase & operator=(const ClassDocumentationBase &);
-  // Private and unimplemented.
 
 };
 
 
+/**
+ * The <code>ClassDocumentation</code> class is used to communicate
+ * documetation about an Interfaced class to the Repository.
+ * Similarly to classes inheriting from InterfaceBase, only one static
+ * object of the templated ClassDocumentation, which inherits from
+ * ClassDocumentationBase, should be created for each Interfaced
+ * class. This object will then automatically register itself with
+ * the static Repository.
+ *
+ * The ClassDocumentation should in the constructor specify three
+ * strings with information:
+ *
+ * The <i>documentation</i> contains a brief description of the
+ * corresponding class which can be displayed by the Repository (or
+ * user interfaces derived from it).
+ *
+ * The <i>model description</i> contains a very brief description of
+ * the model of the process implemented in the step handler, given in
+ * the form of a LaTeX \\item. This is written to a file after a run
+ * by an EventGenerator.
+ *
+ * The <i>model references</i> contains possible LaTeX \\bibitems
+ * corresponding to \\cite commands in the <i>model
+ * description</i>. This is also written to a file after a run by an
+ * EventGenerator.
+ *
+ * @see Interfaced,
+ * @see Repository.
+ * 
+ */
 template <typename T>
 class ClassDocumentation: public ClassDocumentationBase {
 
 public:
 
+  /**
+   * The standard constructor. All other constructors are private.
+   * @param newDocumentation the <i>documentation</i> for the
+   * corresponding class.
+   * @param newModelDescription the <i>model description</i> for the
+   * corresponding class.
+   * @param newModelReferences the <i>model references</i> of the
+   * corresponding class..
+   */
   inline ClassDocumentation(string newDocumentation,
 			 string newModelDescription = "",
 			 string newModelReferences = "");
+
+  /**
+   * Destructor.
+   */
   inline virtual ~ClassDocumentation();
-  // Standard ctors and dtor.
 
 private:
 
+  /**
+   * Private and unimplemented default constructor.
+   */
   ClassDocumentation();
+
+  /**
+   * Private and unimplemented copy constructor.
+   */
   ClassDocumentation(const ClassDocumentation &);
+
+  /**
+   * Private and unimplemented assignment operator.
+   */
   ClassDocumentation & operator=(const ClassDocumentation &);
-  // Private and unimplemented.
 
 };
 

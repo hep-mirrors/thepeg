@@ -38,6 +38,10 @@ inline void Interfaced::doinit() throw (InitException) {
   InterfacedBase::doinit();
 }
 
+inline void Interfaced::doinitrun() {
+  InterfacedBase::doinitrun();
+}
+
 inline void Interfaced::dofinish() {
   InterfacedBase::dofinish();
 }

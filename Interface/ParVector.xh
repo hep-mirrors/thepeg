@@ -10,30 +10,45 @@
 
 namespace ThePEG {
 
+/** Exception class used by ParVector if a value is set outside the
+ *  given limits. */
 struct ParVExLimit: public InterfaceException {
-template <typename T>
+  /** Standard constructor. */
+  template <typename T>
   ParVExLimit(const InterfaceBase & i, const InterfacedBase & o, T v);
 };
 
+/** Exception class used by ParVector if an unknown error was encountered. */
 struct ParVExUnknown: public InterfaceException {
-template <typename T>
+  /** Standard constructor. */
+  template <typename T>
   ParVExUnknown(const InterfaceBase & i, const InterfacedBase & o,
 		T v, int j, const char * s);
 };
 
+/** Exception class used by ParVector if an index is outside the given
+ *  limits. */
 struct ParVExIndex: public InterfaceException {
+  /** Standard constructor. */
   ParVExIndex(const InterfaceBase & i, const InterfacedBase & o, int index);
 };
 
+/** Exception class used by ParVector if the size of a fixed-size
+ *  container is changed. */
 struct ParVExFixed: public InterfaceException {
+  /** Standard constructor. */
   ParVExFixed(const InterfaceBase & i, const InterfacedBase & o);
 };
 
+/** Exception class used by ParVector if an unknown error was encountered. */
 struct ParVExDelUnknown: public InterfaceException {
+  /** Standard constructor. */
   ParVExDelUnknown(const InterfaceBase & i, const InterfacedBase & o, int j);
 };
 
+/** Exception class used by ParVector if an unknown error was encountered. */
 struct ParVExGetUnknown: public InterfaceException {
+  /** Standard constructor. */
   ParVExGetUnknown(const InterfaceBase & i,
 		   const InterfacedBase & o, const char * s);
 };

@@ -22,7 +22,7 @@ string SwitchBase::exec(InterfacedBase & i, string action,
     else
       ret << " (" << (oit->second).name() << ")";
   } else if ( action == "def" ) {
-    long opt = get(i);
+    long opt = def(i);
     ret << opt;
     OptionMap::const_iterator oit = theOptions.find(opt);
     if ( oit ==  theOptions.end() )
@@ -34,6 +34,16 @@ string SwitchBase::exec(InterfacedBase & i, string action,
   } else if ( action == "set" ) {
     long val;
     arg >> val;
+    try {
+      set(i, val);
+      return ret.str();
+    }
+    catch ( ... ) {}
+    istringstream arg2(arguments.c_str());
+    string sval;
+    arg2 >> sval;
+    StringMap::const_iterator optit = theOptionNames.find(sval);
+    if ( optit != theOptionNames.end() ) val = optit->second.value();
     set(i, val);
   } else
     throw InterExUnknown(*this, i);

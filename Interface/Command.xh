@@ -11,6 +11,8 @@
 
 namespace ThePEG {
 
+/** Exception class used by the Command class if something unexpected
+ *  happens. */
 struct CmdExUnknown: public InterfaceException {
   CmdExUnknown(const InterfaceBase & i, const InterfacedBase & o, string);
 };

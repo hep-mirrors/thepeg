@@ -1,144 +1,224 @@
 // -*- C++ -*-
 #ifndef ThePEG_Interfaced_H
 #define ThePEG_Interfaced_H
-//
-// This is the declaration of the <!id>Interfaced<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>Interfaced<!!id> class is derived from the
-// <!class>InterfacedBase<!!class> class adding a couple of things
-// particular to ThePEG, in an attempt to keep the
-// <!class>InterfacedBase<!!class> class as generic as possible.
-//
-// The main addition is that the <!id>Interfaced<!!id> class has a
-// pointer to an <!class>EventGenerator<!!class> object. During the
-// run-phase this point to the EventGenerator controlling the run in
-// which the <!id>Interfaced<!!id> object is used. Through this
-// EventGenerator there is quick access to eg. the set of
-// <!class>ParticleData<!!class> objects used, and the default
-// <!class>RandomGenerator<!!class> for the run. Note that no
-// <!class>EventGenerator<!!class> object is available to the
-// <!id>Interfaced<!!id> object during the setup phase.
-//
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:InterfacedBase.html">InterfacedBase.h</a>,
-// <a href="http:EventGenerator.html">EventGenerator.h</a>,
-// <a href="http:ParticleData.html">ParticleData.h</a>,
-// <a href="http:RandomGenerator.html">RandomGenerator.h</a>,
-// <a href="http:.html">.h</a>.
-// 
+// This is the declaration of the Interfaced class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "InterfacedBase.h"
 
 namespace ThePEG {
 
+/**
+ * The Interfaced class is derived from the InterfacedBase class
+ * adding a couple of things particular to ThePEG, in an attempt to
+ * keep the InterfacedBase class as generic as possible.
+ *
+ * The main addition is that the Interfaced class has a pointer to an
+ * EventGenerator object. During the run-phase this points to the
+ * EventGenerator controlling the run in which the Interfaced object
+ * is used. Through this EventGenerator there is quick access to
+ * eg. the set of ParticleData objects used, and the default
+ * RandomGenerator for the run. Note that no EventGenerator object is
+ * available to the Interfaced object during the setup
+ * phase.
+ *
+ * @see InterfacedBase,
+ * @see EventGenerator,
+ * @see ParticleData,
+ * @see RandomGenerator,
+ */
 class Interfaced: public InterfacedBase {
 
   friend class Repository;
 
 public:
 
+  /**
+   * Empty virtual destructor
+   */
   inline virtual ~Interfaced();
-  // Empty virtual destructor
 
+  /**
+   * Functions which are to be used during the actual event
+   * generation, after the setup is complete.
+   */
 public:
-  // Functions which are to be used during the actual event
-  // generation, after the setup is complete.
 
+
+  /** @name Functions used during the actual event generation, after
+      the setup is complete. */
+  //@{
+  /**
+   * Create a new Particle instance given a id number.
+   */
   PPtr getParticle(long) const;
-  // Create a new particle instance given a id number.
 
+  /**
+   * Return a pointer to the ParticleData object corresponding to the
+   * given id number.
+   */
   PDPtr getParticleData(long) const;
-  // Return a pointer to the particle data object corresponding to the
-  // given id number.
 
+  /**
+   * Returns true if this object has actally been used.
+   */
   inline bool used() const;
-  // Returns true if this object has actally been used.
 
+  /**
+   * Should be called to indicate that this object has actually been
+   * used.
+   */
   inline void useMe() const;
-  // Should be called to indicate that this object has actually been
-  // used.
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /**
+   * Register an Interfaced object with the Repository.
+   */
   static void registerRepository(IBPtr);
+
+  /**
+   * Register an Interfaced object with the Repository, giving it a
+   * name.
+   */
   static void registerRepository(IBPtr, string newName);
-  // Avoid other classes including the Repository class just to use
-  // the Register function.
 
+  /**
+   * Protected default constructor.
+   */
   inline Interfaced();
+
+  /**
+   * Protected constructor taking a name as argument.
+   */
   inline Interfaced(string newName);
+
+  /**
+   * Protected copy-constructor.
+   */
   inline Interfaced(const Interfaced &);
-  // Protected constructors.
 
+  /**
+   * Return a pointer to the EventGenerator controlling the run.
+   * During the setup phase this returns a null pointer.
+   */
   inline tEGPtr generator() const;
-  // Return a pointer to the EventGenerator controlling the run.
-  // During the setup phase this returns a null pointer.
 
+  /** @name Standard Interfaced virtual functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase. This function
+   * is called everytime the object is changed through an interface
+   * during the setup phase. Also if the setup is changed for an
+   * object on which this is dependent. Note that the generator() is
+   * not available when this method is called.
+   * @throws UpdateException if the setup is such that the object
+   * would not work properly.
+   */
   inline virtual void doupdate() throw(UpdateException) = 0;
-  // This function is called everytime the object setup is
-  // changed. Also if the setup is changed for an object on which this
-  // is dependent. It should throw an UpdateException if the setup is
-  // such that the object would not work properly. Note that the
-  // 'generator()' is not available when this method is called.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk. Nothing should have changed since the
+   * last update() call.
+   * @throws InitException if object could not be initialized properly.
+   */
   inline virtual void doinit() throw (InitException) = 0;
-  // This is called before the start of an event generation
-  // run. Nothing should have changed since the last 'update' call.
-  // If the setup is not sane, an InitException should be thrown.
 
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
   inline virtual void dofinish() = 0;
-  // This is called after the event generation run is done. It can
-  // e.g. be used to write out statistics on the output file.
+  //@}
 
 private:
 
+  /**
+   * Used internally by 'useMe'
+   */
   void setUsed() const;
-  // Used internally by 'useMe'
 
+  /**
+   * A pointer to the EventGenerator controlling the run.
+   */
   tEGPtr theGenerator;
-  // A pointer to the EventGenerator controlling the run.
 
+  /**
+   * Flag to tell whether this object has been used or not.
+   */
   mutable bool theUseFlag;
-  // Flag to tell whether this object has been used or not.
 
 private:
 
+  /**
+   * Standard Initialization object.
+   */
   static AbstractClassDescription<Interfaced> initInterfaced;
-  // Standard Initialization object.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   Interfaced & operator=(const Interfaced &);
-  //  Private and non-existent assignment operator.
 
 public:
 
+  /**
+   * This method may be implemented by derived classes to facilitate
+   * debugging.
+   */
   virtual void debug() const;
-  // This method may be implemented by derived classes to facilitate
-  // debugging.
 
 };
 
+/**
+ * This template specialization informs ThePEG about the
+ * base class of Interfaced.
+ */
 template <>
 struct BaseClassTrait<Interfaced,1> {
+  /** Typedef of the base class of Interfaced. */
   typedef InterfacedBase NthBase;
 };
 
+/**
+ * This template specialization informs ThePEG about the name of the
+ * Interfaced class.
+ */
 template <>
 struct ClassTraits<Interfaced>: public ClassTraitsBase<Interfaced> {
-  static string className() { return "/ThePEG/Interfaced"; }
+  /** Return the class name. */
+  static string className() { return "ThePEG::Interfaced"; }
 };
 
 }

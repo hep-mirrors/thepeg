@@ -11,19 +11,28 @@
 
 namespace ThePEG {
 
+/** Exception base class used if something goes wrong in the setup phase. */
 struct SetupException: public InterfaceException {
+  /** Constructor. */
   SetupException() {};
 };
 
+/** Exception base class used if something goes wrong in the setup phase. */
 struct UpdateException: public InterfaceException {
+  /** Constructor. */
   UpdateException() {};
 };
 
+/** Exception base class used if something goes wrong with rebinding
+    pointers in the setup phase. */
 struct RebindException: public InterfaceException {
+  /** Constructor. */
   RebindException() {};
 };
 
+/** Exception base class used if something goes wrong in the setup phase. */
 struct InitException: public InterfaceException {
+  /** Constructor. */
   InitException() {};
 };
 

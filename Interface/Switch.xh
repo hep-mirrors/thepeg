@@ -1,24 +1,34 @@
+// -*- C++ -*-
+#ifndef ThePEG_Switch_XH
+#define ThePEG_Switch_XH
 //
 // This is the declarations of the exception classes used by the
 // Switch class.
 //
 
-#ifndef ThePEG_Switch_XH
-#define ThePEG_Switch_XH
 
 #include "InterfaceBase.xh"
 
 namespace ThePEG {
 
+/** Exception class used by Switch if variable is set to a value which
+ *  is not a listed option. */
 struct SwExSetOpt: public InterfaceException {
+  /** Standard constructor. */
   SwExSetOpt(const InterfaceBase & i, const InterfacedBase & o, long v);
 };
 
+/** Exception class used by Switch if an unkown error
+ *  occurs. */
 struct SwExSetUnknown: public InterfaceException {
+  /** Standard constructor. */
   SwExSetUnknown(const InterfaceBase & i, const InterfacedBase & o, long v);
 };
 
+/** Exception class used by Switch if an unkown error
+ *  occurs. */
 struct SwExGetUnknown: public InterfaceException {
+  /** Standard constructor. */
   SwExGetUnknown(const InterfaceBase & i, const InterfacedBase & o,
 		 const char * s);
 };
