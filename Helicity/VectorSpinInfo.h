@@ -10,10 +10,15 @@
 //  particles.  It inherits from the SpinInof class and implements the
 //  storage of the basis vectors.
 //
+//  These basis states should be set by either matrixelements or decayers
+//  which are capable of generating spin correlation information.
+//
+//  The basis states in the rest frame of the particles can then be accessed by
+//  decayers to produce the correct correlation
+//
 // CLASSDOC SUBSECTION See also:
 //
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
+// <a href="SpinInfo.html">SpinInfo.h</a>.
 //
 // Author: Peter Richardson
 //

@@ -12,8 +12,7 @@
 //
 // CLASSDOC SUBSECTION See also:
 //
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
+// <a href="SpinInfo.html">SpinInfo.h</a>.
 //
 // Author: Peter Richardson
 //

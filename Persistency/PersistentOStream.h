@@ -37,6 +37,7 @@
 // 
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/Config/Complex.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "PersistentOStream.fh"
@@ -90,6 +91,7 @@ public:
   inline PersistentOStream & operator<<(float);
   inline PersistentOStream & operator<<(bool);
   inline PersistentOStream & operator<<(string);
+  inline PersistentOStream & operator<<(Complex);
   // operators for output of built-in types to the stream.
 
   template <typename Container>

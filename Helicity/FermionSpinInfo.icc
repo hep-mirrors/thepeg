@@ -13,16 +13,16 @@ namespace Helicity {
 
 inline FermionSpinInfo::FermionSpinInfo()
 {
-  _productionstates.resize(2);
-  _decaystates.resize(2);
+  _productionstates.resize(2,LorentzSpinor(2,0));
+  _decaystates.resize(2,LorentzSpinor(2,0));
   setSpin(2);
   _decaycalc=false;
 }
 
 inline FermionSpinInfo::FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
-  _productionstates.resize(2);
-  _decaystates.resize(2);
+  _productionstates.resize(2,LorentzSpinor(2,0));
+  _decaystates.resize(2,LorentzSpinor(2,0));
   setSpin(2);
   setProductionMomentum(in);
   _decaycalc=false;

@@ -20,7 +20,8 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                LorentzTensor.icc FermionSpinInfo.fh RhoDMatrix.icc \
                SpinInfo.fh SpinInfo.icc FermionSpinInfo.fh \
                FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
-               ScalarSpinInfo.fh ScalarSpinInfo.icc
+               ScalarSpinInfo.fh ScalarSpinInfo.icc \
+               HelicityDefinitions.h
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 
@@ -95,6 +96,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   RhoDMatrix.h \
   ../../ThePEG/Config/Complex.h \
   RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/Utilities/Rebinder.h \
@@ -197,12 +199,17 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
   LorentzSpinor.fh \
   LorentzSpinorBar.fh \
   LorentzSpinor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   LorentzSpinorBar.h \
-  LorentzSpinorBar.icc \
-  HelicityDefinitions.h
+  LorentzSpinorBar.icc
   LorentzSpinorBar.o: \
   LorentzSpinorBar.cc \
   LorentzSpinorBar.h \
@@ -239,12 +246,17 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
   LorentzSpinor.fh \
   LorentzSpinorBar.fh \
   LorentzSpinorBar.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   LorentzSpinor.h \
-  LorentzSpinor.icc \
-  HelicityDefinitions.h
+  LorentzSpinor.icc
   LorentzTensor.o: \
   LorentzTensor.cc \
   LorentzTensor.h \
@@ -297,7 +309,8 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/CLHEPWrap/ThreeVector.h \
   LorentzPolarizationVector.icc \
-  LorentzTensor.icc
+  LorentzTensor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h
   RhoDMatrix.o: \
   RhoDMatrix.cc \
   RhoDMatrix.h \
@@ -341,7 +354,12 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.icc \
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/Config/Complex.h \
-  RhoDMatrix.icc
+  RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc
   SpinInfo.o: \
   SpinInfo.cc \
   SpinInfo.h \
@@ -412,6 +430,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Helicity/HelicityVertex.fh \
@@ -489,6 +508,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Helicity/HelicityVertex.fh \
@@ -573,6 +593,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Helicity/HelicityVertex.fh \
@@ -655,6 +676,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Helicity/HelicityVertex.fh \

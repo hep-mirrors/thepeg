@@ -300,6 +300,7 @@ libThePEGRepo.so: $(LIBOBJECTS)
   RandomGenerator.icc \
   ../../ThePEG/CLHEPWrap/RandomEngine.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -373,6 +374,7 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Interfaced.icc \
   Strategy.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -726,6 +728,7 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/CLHEPWrap/JamesRandom.h \
   ../../ThePEG/CLHEPWrap/JamesRandom.fh \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -803,6 +806,7 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.tcc \
   FullEventGenerator.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -977,6 +981,7 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.tcc \
   PartialEventGenerator.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1201,6 +1206,7 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/BaseRepository.icc \
   ../../ThePEG/Repository/BaseRepository.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

@@ -177,6 +177,12 @@ PersistentOStream::operator<<(bool t) {
   return *this;
 }
 
+inline PersistentOStream &
+PersistentOStream::operator<<(Complex z) {
+  *this << z.real() << z.imag();
+  return *this;
+}
+
 template <typename T>
 inline PersistentOStream &
 PersistentOStream::operator<<(const RCPtr<T> & ptr) {

@@ -354,6 +354,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -394,7 +395,6 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/Decayer.h \
   ../../ThePEG/PDT/Decayer.fh \
   ../../ThePEG/MatrixElement/Amplitude.h \
-  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/PDT/Decayer.icc \
   ../../ThePEG/PDT/DecayMode.icc \
@@ -511,6 +511,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   RemnantHandler.xh \
   RemnantHandler.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -619,6 +620,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   BeamParticleData.xh \
   BeamParticleData.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -736,6 +738,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Particle.tcc \
   PartonBin.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1154,6 +1157,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/PDFBase.icc \
   LeptonLeptonPDF.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1314,6 +1318,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/RemnantHandler.icc \
   LeptonLeptonRemnant.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1430,6 +1435,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/PDT/EnumParticles.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1700,6 +1706,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/VSelector.tcc \
   BaryonRemnants.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1848,6 +1855,7 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/PartonBin.icc \
   PartonBinInstance.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

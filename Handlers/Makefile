@@ -620,6 +620,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/Hint.h \
   ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -671,7 +672,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/MatrixElement/DiagramBase.xh \
   ../../ThePEG/MatrixElement/DiagramBase.icc \
   ../../ThePEG/MatrixElement/Amplitude.h \
-  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/ReweightBase.h \
@@ -741,6 +741,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/Hint.h \
   ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -792,6 +793,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   Hint.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
@@ -1186,6 +1188,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/RefVector.icc \
   ../../ThePEG/Interface/RefVector.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1991,6 +1994,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -2406,6 +2410,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   LuminosityFunction.icc \
   FixedCMSLuminosity.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -2747,6 +2752,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Command.icc \
   ../../ThePEG/Interface/Command.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -3024,6 +3030,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/Handlers/EventHandler.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -3194,6 +3201,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.icc \
   ../../ThePEG/Repository/EventGenerator.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -3374,6 +3382,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/PartialCollisionHandler.icc \
   ../../ThePEG/Utilities/EnumIO.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -3441,6 +3450,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerBase.icc \
   PtGenerator.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -3508,6 +3518,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerBase.icc \
   ZGenerator.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -3644,6 +3655,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.tcc \
   ../../ThePEG/Utilities/Triplet.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

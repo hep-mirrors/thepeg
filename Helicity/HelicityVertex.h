@@ -8,17 +8,18 @@
 //
 //  The HelicityVertex class is designed to store the helicity amplitude
 //  expression for the matrix element for use by the spin correlation
-//  algorithm. It implements the storage of the pointer to the incoming
+//  algorithm. It implements the storage of the pointers to the incoming
 //  and outgoing particles at the vertex and virtual methods for calculating
 //  the rho and D matrices. The concrete implementations of the vertices
 //  for specific processes, eg production or decay, inherit from this and
 //  implement the storage of the matrix element together with the set and
-//  get methods
+//  get methods.
+//
+//  These methods are then called by the SpinInfo class to perform the calculations.
 //
 // CLASSDOC SUBSECTION See also:
 //
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
+// <a href="SpinInfo.html">SpinInfo.h</a>.
 //
 // Author: Peter Reichardson
 //

@@ -163,6 +163,14 @@ inline PersistentIStream & PersistentIStream::operator>>(bool & t) {
   return *this;
 }
 
+inline PersistentIStream & PersistentIStream::operator>>(Complex & z) {
+  double re = 0.0;
+  double im = 0.0;
+  *this >> re >> im;
+  z = Complex(re, im);
+  return *this;
+}
+
 inline void PersistentIStream::getSep() {
   if ( !pedantic() ) skipField();
   else if ( get() != tSep ) setBadState();

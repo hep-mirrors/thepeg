@@ -6,6 +6,11 @@
 //
 // CLASSDOC SUBSECTION Description:
 //
+//  The <!id>LorentzPolarizationVector<!!id> class is designed to store a polarization
+//  vector. It is based on the LorentzVector class of CLHEP and provides many of the
+//  same methods, the major difference is the data members are complex and the
+//  assoiciated methods have been change to accomodate this.
+//
 // CLASSDOC SUBSECTION See also:
 //
 // <a href="http:.html">.h</a>,

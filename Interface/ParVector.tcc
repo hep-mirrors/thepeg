@@ -31,7 +31,7 @@ set(InterfacedBase & i, string newValue, int place) const
   if ( unit() > Type() ) {
     double t;
     is >> t;
-    tset(i, t*unit(), place);
+    tset(i, Type(t*unit()), place);
   } else {
     Type t;
     is >> t;
@@ -47,7 +47,7 @@ insert(InterfacedBase & i, string newValue, int place) const
   if ( unit() > Type() ) {
     double t;
     is >> t;
-    tinsert(i, t*unit(), place);
+    tinsert(i, Type(t*unit()), place);
   } else {
     Type t;
     is >> t;

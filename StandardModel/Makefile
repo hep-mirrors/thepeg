@@ -90,6 +90,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   AlphaSBase.icc \
   StandardModelBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -250,6 +251,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   StandardModelBase.fh \
   CKMBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -316,6 +318,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   StandardModelBase.fh \
   AlphaSBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -385,6 +388,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   O1AlphaS.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -551,6 +555,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   StandardCKM.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

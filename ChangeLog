@@ -1,3 +1,15 @@
+2004-03-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Persistency/PersistentOStream.* Persistency/PersistentIStream.*: 
+	Added members functions for i/o of Complex.
+
+	* Interface/ParVector.* (Module): Fixed bug where min, max and def
+	members were implemented as doubles. They are now properly
+	templated.
+
+	* Helicity (Module): Changed the implementation of Direc
+	representation in Lorentz spinors. Also fixed documentation.
+
 2004-03-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Helicity (Module): Changed all 'cerr' error messges to

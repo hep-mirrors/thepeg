@@ -328,6 +328,7 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   DiagramBase.xh \
   DiagramBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -440,6 +441,7 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/EventRecord/SubProcess.icc \
   ../../ThePEG/EventRecord/SubProcess.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -475,7 +477,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Utilities/VSelector.tcc \
   ../../ThePEG/MatrixElement/MEBase.h \
   ../../ThePEG/MatrixElement/Amplitude.h \
-  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/PDF/PDF.fh \

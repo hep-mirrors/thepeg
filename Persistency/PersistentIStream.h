@@ -34,6 +34,7 @@
 // 
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/Config/Complex.h"
 #include "InputDescription.h"
 #include "PersistentIStream.fh"
 #include "ThePEG/Utilities/Exception.h"
@@ -85,6 +86,7 @@ public:
   inline PersistentIStream & operator>>(double &);
   inline PersistentIStream & operator>>(float &);
   inline PersistentIStream & operator>>(bool &);
+  inline PersistentIStream & operator>>(Complex &);
   // operators for extracting built-in types from the stream.
 
   template <typename Container>

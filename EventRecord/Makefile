@@ -151,6 +151,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/ParticleTraits.h \
   ../../ThePEG/Config/algorithm.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -276,6 +277,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Config/algorithm.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -397,6 +399,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -517,6 +520,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -639,6 +643,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Config/algorithm.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -654,7 +659,6 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerBase.h \
   ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/MatrixElement/Amplitude.h \
-  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/PDT/Decayer.icc \
   ../../ThePEG/PDT/DecayMode.icc
@@ -833,6 +837,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Config/algorithm.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -936,6 +941,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
@@ -1096,6 +1102,7 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/DecayMode.fh \
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

@@ -331,7 +331,7 @@ private:
   Member theMember;
   // The pointer to the member variable.
 
-  double theDef, theMin, theMax;
+  Type theDef, theMin, theMax;
   // Default, minimum and maximum values to be used if no
   // corresponding member function pointers are given.
 

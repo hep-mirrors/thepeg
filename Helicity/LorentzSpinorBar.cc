@@ -8,7 +8,6 @@
 
 #include "LorentzSpinorBar.h"
 #include "LorentzSpinor.h"
-#include "HelicityDefinitions.h"
 
 using namespace ThePEG;
 using namespace Helicity;
@@ -17,7 +16,7 @@ using namespace Helicity;
 LorentzSpinor LorentzSpinorBar::bar()
 {
   complex<double> output[4];
-  switch(ThePEG::Helicity::HelicityDefinitions::getDirac())
+  switch(_idirac)
     {
       // Haber lower energy
     case 1:
@@ -34,7 +33,7 @@ LorentzSpinor LorentzSpinorBar::bar()
       output[3] = conj(_spin[1]);
       break;
     }
-  return LorentzSpinor(output[0],output[1],output[2],output[3]);
+  return LorentzSpinor(_idirac,_itype,output[0],output[1],output[2],output[3]);
 }
 
 

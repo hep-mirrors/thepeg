@@ -8,12 +8,35 @@
 //
 //   This is the base class for the spin information for the Herwig++ spin
 //   correlation algorithm. It inherits from ThePEG SpinBase class and in turn
-//   the implementations for different spin states inherit from this
+//   the implementations for different spin states inherit from this.
+//
+//   The class contains pointers to the vertex where the particle is produced
+//   and where it decays, together with methods to set/get these.
+//
+//   There are two flags decayed which store information on the state of the particle.
+//
+//   The decayed() members provides access to the _decay data member which is
+//   true if the spin density matrix required to perform the decay of a timelike
+//   particle has been calculated (this would be a decay matrix for a spacelike
+//   particle.) This is set by the decay() method which calls a method from the
+//   production vertex to calculate this matrix. The decay() method should be
+//   called by a decayer which uses spin correlation method before it uses the
+//   spin density matrix to calculate the matrix element for the decay.
+//
+//   The developed() member provides access to the _developed data member which is
+//   true if the decay matrix required to perform the decays of the siblings of a 
+//   particle has been calculated (this would a spin density matrix for a spacelike
+//   particle.) This is set by the developed() method which calls a method from
+//   the decay vertex to calculate the matrix. The developed() method is called
+//   by a DecayHandler which is capable of performing spin correlations after all 
+//   the unstable particles produced by a decaying particle are decayed.
+//
+//   Methods are also provided to access the spin density and decay matrices for a 
+//   particle.
 //
 // CLASSDOC SUBSECTION See also:
 //
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
+// <a href="HelicityVertex.html">HelicityVertex.h</a>.
 //
 // Author: Peter Richardson
 //
@@ -93,7 +116,7 @@ public:
   // return the momentum of the particle when in was produced
 
   inline bool timelike();
-  // ???
+  // whether the particle is timelike or spacelike  
 
 public:
 
@@ -145,7 +168,7 @@ private:
   // storage of the rho matrix
 
   mutable RhoDMatrix _Dmatrix;
-  // storage of the decat matrix
+  // storage of the decay matrix
 
   int _ispin;
   // spin of the particle
@@ -155,7 +178,7 @@ private:
 
 };
 
-ThePEG_DECLARE_CLASS_POINTERS(SpinInfo,HwSpinPtr);
+ThePEG_DECLARE_CLASS_POINTERS(SpinInfo,SpinInfoPtr);
 
 }
 }

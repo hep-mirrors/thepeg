@@ -158,6 +158,7 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/BaseRepository.icc \
   ../../ThePEG/Repository/BaseRepository.tcc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

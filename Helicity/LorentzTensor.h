@@ -6,6 +6,12 @@
 //
 // CLASSDOC SUBSECTION Description:
 //
+//  The LorentzTensor class is designed to implement the storage of a complex
+//  tensor to be used to representation the wavefunction of a spin-2 particle.
+//
+//  At the moment it only implements the storage of the tensor components but
+//  it is envisaged that it will be extended to include boost methods etc.
+//
 // CLASSDOC SUBSECTION See also:
 //
 // <a href="http:.html">.h</a>,

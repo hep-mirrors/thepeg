@@ -51,6 +51,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
@@ -100,6 +101,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Config/Complex.h \
   InputDescription.h \
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Utilities/Named.h \

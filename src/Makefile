@@ -140,6 +140,7 @@ distclean:
   ../../ThePEG/Repository/EventGenerator.icc \
   ../../ThePEG/Repository/EventGenerator.tcc \
   ../../ThePEG/Persistency/PersistentIStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
   ../../ThePEG/Persistency/PersistentIStream.icc \
@@ -194,14 +195,15 @@ distclean:
   ../../ThePEG/Handlers/HandlerBase.h \
   ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/MatrixElement/Amplitude.h \
-  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/PDT/Decayer.icc \
   ../../ThePEG/PDT/PYDECYDummy.icc \
   ../../ThePEG/Utilities/Timer.h \
   ../../ThePEG/Utilities/Timer.icc \
   ../../ThePEG/Utilities/DynamicLoader.h \
-  ../../ThePEG/Utilities/DynamicLoader.icc
+  ../../ThePEG/Utilities/DynamicLoader.icc \
+  ../../ThePEG/Repository/Main.h \
+  ../../ThePEG/Repository/Main.icc
   runPartial.o: \
   runPartial.cc \
   ../../ThePEG/Repository/EventGenerator.h \
@@ -269,6 +271,7 @@ distclean:
   ../../ThePEG/Repository/EventGenerator.icc \
   ../../ThePEG/Repository/EventGenerator.tcc \
   ../../ThePEG/Persistency/PersistentIStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
   ../../ThePEG/Persistency/PersistentIStream.icc \

@@ -8,8 +8,7 @@
 //
 //  This class is designed to implement the storage of the rho and D
 //  matrices which are required for the spin correlation algorithm.
-//  The matrix stores the spin as 2s+1 and whether or ont the particle
-//  is massless
+//  The matrix stores the spin as 2s+1.
 //
 // CLASSDOC SUBSECTION See also:
 //

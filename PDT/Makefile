@@ -1188,6 +1188,7 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ConstituentParticleData.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
