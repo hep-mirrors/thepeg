@@ -8,12 +8,10 @@
 namespace ThePEG {
 
 /**
- * The <code>HadronizationHandler</code> is the base class of all
- * handlers implementing models for hadronization of coloured
- * particles. It is derived from the more general
- * StepHandler class, and does not introduce more
- * functioanality as it stands.
- *
+ * The HadronizationHandler is the base class of all handlers
+ * implementing models for hadronization of coloured particles. It is
+ * derived from the more general StepHandler class, but does not
+ * introduce more functioanality as it stands.
  *
  * @see StepHandler
  * @see CollisionHandler
@@ -24,18 +22,23 @@ class HadronizationHandler: public StepHandler {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
   /**
-   * Standard ctors and dtor
+   * Default constructor.
    */
   inline HadronizationHandler();
+
   /**
-   * Standard ctors and dtor
+   * Copy-constructor.
    */
   inline HadronizationHandler(const HadronizationHandler &);
+
   /**
-   * Standard ctors and dtor
+   * Destructor.
    */
   virtual ~HadronizationHandler();
+  //@}
 
 public:
 
@@ -46,32 +49,49 @@ public:
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
   /**
-   * Standard Interfaced virtual functions.
+   * Check sanity of the object during the setup phase.
    */
   inline virtual void doupdate() throw(UpdateException);
+
   /**
-   * Standard Interfaced virtual functions.
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
    */
   inline virtual void doinit() throw(InitException);
+
   /**
-   * Standard Interfaced virtual functions.
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
    */
   inline virtual void dofinish();
 
   /**
-   * Change all pointers to Interfaced objects to corresponding clones.
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
    */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
 
   /**
-   * Return pointers to all Interfaced objects refered to by this.
+   * Return a vector of all pointers to Interfaced objects used in this object.
+   * @return a vector of pointers.
    */
   inline virtual IVector getReferences();
+  //@}
 
 private:
 
+  /**
+   * Describe an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<HadronizationHandler>
     initHadronizationHandler;
 
@@ -82,14 +102,24 @@ private:
 
 };
 
+/**
+ * This template specialization informs ThePEG about the
+ * base class of HadronizationHandler.
+ */
 template <>
 struct BaseClassTrait<HadronizationHandler,1> {
+  /** Typedef of the base class of HadronizationHandler. */
   typedef StepHandler NthBase;
 };
 
+/**
+ * This template specialization informs ThePEG about the name of the
+ * HadronizationHandler class.
+ */
 template <>
 struct ClassTraits<HadronizationHandler>:
     public ClassTraitsBase<HadronizationHandler> {
+  /** Return the class name. */
   static string className() { return "/ThePEG/HadronizationHandler"; }
 };
 

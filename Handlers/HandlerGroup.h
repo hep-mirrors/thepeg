@@ -1,47 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_HandlerGroup_H
 #define ThePEG_HandlerGroup_H
-//
-// This is the declaration of the <!id>HandlerGroup<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>HandlerGroup<!!id> is a templated utility class to manage a
-// group of <!class>StepHandler<!!class>s. All <!id>HandlerGroup<!!id>
-// classes are derived from the <!id>HandlerGroupBase<!!id> class. As
-// an example the specialization
-// <!id>HandlerGroup&lt;CascadeHandler&gt;<!!id> keeps a
-// <!class>CascadeHandler<!!class> object and associated pre- and
-// post- <!class>StepHandler<!!class>s, defining shich steps should be
-// performed before the perturbative cascade, which object should be
-// used for the cascade and which steps should be performed after.
-//
-// The <!id>HandlerGroup<!!id> keesp both a default main handler and
-// the corresponding default pre- and post- handlers as well as the
-// main handler and pre/post hadlers chosen for the current event. The
-// current handlers are accompanied by
-// <!class>Hint<!!class>s. Handlers which are copied from the default
-// ones are accompanied by the default <!class>Hint<!!class>, while
-// handlers supplied from the outside may be accompanied by any kind
-// of hint. The main handler can be supplied with several hints, the
-// pre- and post- handlers may only have one hint each.
-//
-// The <!id>HandlerGroup<!!id> class is used in the
-// PartialCollisionHandler and SubProcessHandler to manage the
-// post-sub-process handler, the cascade, multiple interaction,
-// hadronization and decay handler groups.
-// 
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:PartialCollisionHandler.html">PartialCollisionHandler.h</a>
-// <a href="http:SubProcessHandler.html">SubProcessHandler.h</a>
-// <a href="http:StepHandler.html">StepHandler.h</a>
-// <a href="http:CascadeHandler.html">CascadeHandler.h</a>
-// <a href="http:MultipleInteractionHandler.html">MultipleInteractionHandler.h</a>
-// <a href="http:HadronizationHandler.html">HadronizationHandler.h</a>
-// <a href="http:DecayHandler.html">DecayHandler.h</a>
-// 
+// This is the declaration of the HandlerGroup class.
 
 #include "ThePEG/Config/ThePEG.h"
 // #include "HandlerGroup.fh"
@@ -49,192 +9,439 @@
 
 namespace ThePEG {
 
+/**
+ * HandlerGroupBase is the base class for the templated HandlerGroup
+ * utility class to manage a group of <code>StepHandler</code>s.
+ *
+ * The derived StepHandler has a main StepHandler (CascadeHandler,
+ * MultipleInteractionHandler, HadronizationHandler or DecayHandler)
+ * while this bease class has a list of pre-hadlers and a list of
+ * post-handlers.
+ *
+ * The <code>HandlerGroup</code> class is used in the
+ * PartialCollisionHandler and SubProcessHandler to manage the
+ * post-sub-process handler, the cascade, multiple interaction,
+ * hadronization and decay handler groups. When an event is generated,
+ * after the main sub-process is performed, all handler groups are
+ * processed in turn. In each group the pre-hadnlers are run first,
+ * followed by the main handler (which may be run several times is
+ * more than one Hint has been specified) and finally the
+ * post-handlers are run.
+ *
+ * When a group is initialised before each run, an auxilliary
+ * HandlerGroupBase object may be specified to override the default
+ * handlers in this group.
+ *
+ * @see HandlerGroup
+ */
 class HandlerGroupBase {
 
 public:
 
+  /** Associate a StepHandler with a Hint object. */
   typedef pair<StepHdlPtr, HintPtr> StepWithHint;
+
+  /** A vector of StepHandler objects. */
   typedef vector<StepHdlPtr> StepVector;
+
+  /** A vector of StepHandler objects associated with Hint objects. */
   typedef vector<StepWithHint> StepHintVector;
+
+  /** A vector of Hint objects. */
   typedef deque<HintPtr> HintVector;
 
 public:
 
+  /**
+   * Default constructor.
+   */
   HandlerGroupBase();
+
+  /**
+   * Destructor.
+   */
   virtual ~HandlerGroupBase();
-  // Standard ctor and dtor
 
+  /**
+   * Returns true if current selections in this group is empty.
+   */
   inline bool empty() const;
-  // returns true if current selections in this group is empty.
 
+  /**
+   * Initialize, taking the default StepHandlers as the current ones,
+   * possibly overridden by the default ones in the auxilliary group
+   * supplied in the argument.
+   */
   inline void init(const HandlerGroupBase &);
-  // Initialize, taking the default StepHandlers as the current ones,
-  // possibly overridden by the default ones in the auxilliary group
-  // supplied in the argument.
 
+  /**
+   * Return the next step;
+   */
   StepWithHint next();
-  // Return the next step;
 
-  void addPreHandler(tStepHdlPtr s, tHintPtr h,
-		     const HandlerGroupBase &);
-  // Add a step handler to the current list of pre- handlers.
+  /**
+   * Add a step handler, \a sh to the current list of
+   * pre-handlers. Optionally a \a hint may be specified. If the main
+   * handler has already been executed, the object is reinitialized
+   * using \a ext to override defaults.
+   */
+  void addPreHandler(tStepHdlPtr sh, tHintPtr hint,
+		     const HandlerGroupBase & ext);
 
-  void addPostHandler(tStepHdlPtr s, tHintPtr h,
+  /**
+   * Add a step handler, \a sh, to the current list of
+   * post-handlers. Optionally a \a hint may be specified. If the main
+   * handler has already been executed, the object is reinitialized
+   * using \a ext to override defaults.
+   */
+  void addPostHandler(tStepHdlPtr sh, tHintPtr hint,
 		      const HandlerGroupBase &);
-  // Add a step handler to the current list of post- handlers.
 
-  void addHint(tHintPtr h, const HandlerGroupBase &);
-  // Add a hint to the currently selected main handler.
+  /**
+   * Add a \a hint to the currently selected main handler. If the main
+   * handler has already been executed, the object is reinitialized
+   * using \a ext to override defaults.
+   */
+  void addHint(tHintPtr hint, const HandlerGroupBase & ext);
 
+  /**
+   * Return a reference to the list of default pre-handlers.
+   */
   inline StepVector & preHandlers();
+
+  /**
+   * Return a reference to the list of default pre-handlers.
+   */
   inline const StepVector & preHandlers() const;
-  // Return a reference to the list of default pre- handlers.
 
+  /**
+   * Return a pointer to the default main handler.
+   */
   virtual tStepHdlPtr defaultHandler() const = 0;
-  // Return a pointer to the default main handler.
 
+  /**
+   * Return a reference to the list of default post-handlers.
+   */
   inline StepVector & postHandlers();
+
+  /**
+   * Return a reference to the list of default post-handlers.
+   */
   inline const StepVector & postHandlers() const;
-  // Return a reference to the list of default post- handlers.
 
+  /**
+   * Return a pointer to the current main handler.
+   */
   virtual tStepHdlPtr handler() const = 0;
-  // Return a pointer to the current main handler.
 
+  /**
+   * Unset the current main handler.
+   */
   virtual void setHandler() = 0;
-  // Unset the current main handler.
 
-  virtual bool setHandler(tStepHdlPtr, const HandlerGroupBase &) = 0;
-  // Set the current main handler, but also refill the current pre-
-  // and post- handlers with the defaults.
+  /**
+   * Set the current main handler, but also refill the current pre-
+   * and post- handlers with the defaults from \a ext.
+   */
+  virtual bool setHandler(tStepHdlPtr, const HandlerGroupBase & ext) = 0;
 
+  /**
+   * Set the current main handler. If the null pointer use the default
+   * main handler.
+   */
   virtual void refillDefaultHandler(tStepHdlPtr) = 0;
-  // Set the current main handler. If the null pointer use the default
-  // main handler.
 
+  /**
+   * Fill main, pre- and post- handlers with the default ones. The
+   * default handlers in the argument takes precedence to this.
+   */
   void refillDefaults(const HandlerGroupBase &);
-  // Fill main, pre- and post- handlers with the default ones. If the
-  // default handlers in the argument takes precedence to this.
 
+  /**
+   * Clear all current handlers, but don't touch the default ones.
+   */
   virtual void clear();
-  // Clear all current handlers, but don't touch the default ones.
 
+  /**
+   * Return the base class name of the main handler type.
+   */
   virtual string handlerClass() const = 0;
-  // Return the base class name of the main handler type.
 
+  /**
+   * Utility function used for the interface.
+   */
   void interfaceSetPrehandler(StepHdlPtr p, int i);
-  void interfaceInsertPrehandler(StepHdlPtr p, int i);
-  void interfaceErasePrehandler(int i);
-  vector<StepHdlPtr> interfaceGetPrehandlers() const;
-  void interfaceSetPosthandler(StepHdlPtr p, int i);
-  void interfaceInsertPosthandler(StepHdlPtr p, int i);
-  void interfaceErasePosthandler(int i);
-  vector<StepHdlPtr> interfaceGetPosthandlers() const;
-  // Utility functions used for the interface.
 
+  /**
+   * Utility function used for the interface.
+   */
+  void interfaceInsertPrehandler(StepHdlPtr p, int i);
+
+  /**
+   * Utility function used for the interface.
+   */
+  void interfaceErasePrehandler(int i);
+
+  /**
+   * Utility function used for the interface.
+   */
+  vector<StepHdlPtr> interfaceGetPrehandlers() const;
+
+  /**
+   * Utility function used for the interface.
+   */
+  void interfaceSetPosthandler(StepHdlPtr p, int i);
+
+  /**
+   * Utility function used for the interface.
+   */
+  void interfaceInsertPosthandler(StepHdlPtr p, int i);
+
+  /**
+   * Utility function used for the interface.
+   */
+  void interfaceErasePosthandler(int i);
+
+  /**
+   * Utility function used for the interface.
+   */
+  vector<StepHdlPtr> interfaceGetPosthandlers() const;
+
+  /**
+   * Write to persistent streams.
+   */
   virtual void write(PersistentOStream &) const;
+
+  /**
+   * Read from persistent streams.
+   */
   virtual void read(PersistentIStream &);
-  // Read and write from/to persistent streams.
 
 protected:
 
+  /**
+   * The copy constructor is only used via subclasses.
+   */
   HandlerGroupBase(const HandlerGroupBase &);
 
+  /**
+   * True if the current handlers are empty.
+   */
   bool isEmpty;
 
 private:
 
+  /**
+   * Add handlers from the def vector to the current, supplying them
+   * with default hints.
+   */
   void checkInsert(StepHintVector & current, const StepVector & def);
-  // Add handlers from the def vector to the current, supplying them
-  // with default hints.
 
 protected:
 
+  /**
+   * The default pre-handlers with hints.
+   */
   StepVector theDefaultPreHandlers;
+
+  /**
+   * The default post-handlers with hints.
+   */
   StepVector theDefaultPostHandlers;
+
+  /**
+   * The current pre-handlers with hints.
+   */
   StepHintVector thePreHandlers;
+
+  /**
+   * The current hints for the main handler.
+   */
   HintVector theHints;
+
+  /**
+   * The current post-handlers with hints.
+   */
   StepHintVector thePostHandlers;
-  // The default and current handlers with hints.
 
 private:
 
+  /**
+   * Assignment is private.
+   */
   HandlerGroupBase & operator=(const HandlerGroupBase &);
-  // Assignment is private.
   
 };
 
+/**
+ * HandlerGroup is a templated utility class to manage a
+ * group of <code>StepHandler</code>s. All HandlerGroup
+ * classes are derived from the <code>HandlerGroupBase</code> class. As
+ * an example the specialization
+ * <code>HandlerGroup<CascadeHandler></code> keeps a
+ * CascadeHandler object and associated pre- and
+ * post- StepHandlers, defining shich steps should be
+ * performed before the perturbative cascade, which object should be
+ * used for the cascade and which steps should be performed after.
+ *
+ * The <code>HandlerGroup</code> keesp both a default main handler and
+ * the corresponding default pre- and post- handlers as well as the
+ * main handler and pre/post hadlers chosen for the current event. The
+ * current handlers are accompanied by Hints. Handlers which are
+ * copied from the default ones are accompanied by the default Hint,
+ * while handlers supplied from the outside may be accompanied by any
+ * kind of hint. The main handler can be supplied with several hints,
+ * the pre- and post- handlers may only have one hint each.
+ *
+ * The <code>HandlerGroup</code> class is used in the
+ * PartialCollisionHandler and SubProcessHandler to manage the
+ * post-sub-process handler, the cascade, multiple interaction,
+ * hadronization and decay handler groups.
+ * 
+ * @see PartialCollisionHandler
+ * @see SubProcessHandler
+ * @see StepHandler
+ * @see CascadeHandler
+ * @see MultipleInteractionHandler
+ * @see HadronizationHandler
+ * @see DecayHandler
+ * 
+ */
 template <typename HDLR>
 class HandlerGroup: public HandlerGroupBase {
 
 public:
 
+  /** A pointer to the template argument class. */
   typedef typename Ptr<HDLR>::pointer HdlPtr;
+
+  /** A transient pointer to the template argument class. */
   typedef typename Ptr<HDLR>::transient_pointer tHdlPtr;
 
 public:
 
+  /**
+   * Default constructor.
+   */
   HandlerGroup();
+
+  /**
+   * Copy-constructor.
+   */
   HandlerGroup(const HandlerGroup<HDLR> &);
+
+  /**
+   * Destructor.
+   */
   ~HandlerGroup();
-  // Standard ctors and dtor.
 
-  virtual bool setHandler(tStepHdlPtr, const HandlerGroupBase &);
-  // Set the current main handler, but also refill the current pre-
-  // and post- handlers with the defaults.
+  /**
+   * Set the current main handler. Also refill the current pre- and
+   * post- handlers with the defaults from \a ext.
+   */
+  virtual bool setHandler(tStepHdlPtr, const HandlerGroupBase & ext);
 
+  /**
+   * Unset the current main handler.
+   */
   inline virtual void setHandler();
-  // Unset the current main handler.
 
+  /**
+   * Return a pointer to the current main handler.
+   */
   inline virtual tStepHdlPtr handler() const;
-  // Return a pointer to the current main handler.
 
+  /**
+   * Return a pointer to the default main handler.
+   */
   inline virtual tStepHdlPtr defaultHandler() const;
-  // Return a pointer to the default main handler.
 
+  /**
+   * Set the current main handler. If the null pointer use the default
+   * main handler.
+   */
   virtual void refillDefaultHandler(tStepHdlPtr);
-  // Set the current main handler. If the null pointer use the default
-  // main handler.
 
+  /**
+   * Clear all current handlers, but don't touch the default ones.
+   */
   virtual void clear();
-  // Clear all current handlers, but don't touch the default ones.
 
+  /**
+   * Return the base class name of the main handler type.
+   */
   virtual string handlerClass() const;
-  // Return the base class name of the main handler type.
 
+  /**
+   * Utility function used for the interface.
+   */
   void interfaceSetHandler(HdlPtr);
+
+  /**
+   * Utility function used for the interface.
+   */
   HdlPtr interfaceGetHandler() const;
-  // Utility functions used for the interface.
 
+  /**
+   * Write to persistent streams.
+   */
   inline virtual void write(PersistentOStream &) const;
+
+  /**
+   * Read from persistent streams.
+   */
   inline virtual void read(PersistentIStream &);
-  // Read and write from/to persistent streams.
 
 private:
 
 
+  /**
+   * The default main handler.
+   */
   HdlPtr theDefaultHandler;
+
+  /**
+   * The current main handler.
+   */
   HdlPtr theHandler;
-  // The default and current main handler.
 
 private:
 
+  /**
+   * Assignment is private.
+   */
   HandlerGroup<HDLR> & operator=(const HandlerGroup<HDLR> &);
-  // Assignment is private.
   
 };
 
+/** Namespace to encapsulate enums related to <code>HandlerGroup</code>s. */
 namespace Group {
-enum Handler { subproc, cascade, multi, hadron, decay };
-enum Level { before, main, after };
-// Enumerations for indexing of different HandlerGroup.
+
+/**
+ * Enumeration for the type of <code>HandlerGroup</code>s.
+ */
+enum Handler {
+  subproc, /**< The sub-process group. */
+  cascade, /**< The CascadeHandler group. */
+  multi,   /**< The MultipleInteractionHandler group. */
+  hadron,  /**< The HadronizationHandler group. */
+  decay    /**< The DecayHandler group. */
+};
+
+/** Enumeration for the type of step handler */
+enum Level {
+  before, /**< A pre-handler. */
+  main,   /**< The mainhandler. */
+  after   /**< A post-handler. */
+};
 }
 
-// CLASSDOC OFF
-
+/** Output a HandlerGroup to a PersistentOStream. */
 template <typename HDLR>
 inline PersistentOStream & operator<<(PersistentOStream &,
 				      const HandlerGroup<HDLR> &);
 
+/** Input a HandlerGroup from a PersistentIStream. */
 template <typename HDLR>
 inline PersistentIStream & operator>>(PersistentIStream &,
 				      HandlerGroup<HDLR> &);
@@ -304,7 +511,6 @@ static Reference<ThisClass,HandlerClass> interface ## HandlerClass             \
  &ThisClass::interfaceGet ## HandlerClass);                                    \
 ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Post, after)
 
-// CLASSDOC ON
 
 #include "HandlerGroup.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
@@ -312,3 +518,6 @@ ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Post, after)
 #endif
 
 #endif /* ThePEG_HandlerGroup_H */
+/**
+ * Enumerations for indexing of different HandlerGroup.
+ */

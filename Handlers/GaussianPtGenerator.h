@@ -180,8 +180,9 @@ struct BaseClassTrait<GaussianPtGenerator,1> {
 };
 
 /**
- * This template specialization informs ThePEG about the
- * name of this class and the shared object where it is defined.
+ * This template specialization informs ThePEG about the name of the
+ * GaussianPtGenerator class and the shared object where it is
+ * defined.
  */
 template <>
 struct ClassTraits<GaussianPtGenerator>

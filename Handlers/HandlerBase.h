@@ -1,30 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_HandlerBase_H
 #define ThePEG_HandlerBase_H
-//
-// This is the declaration of the <!id>HandlerBase<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>HandlerBase<!!id> is an abstract base class derived from the
-// <!class>Interfaced<!!class> class adding some functionality such as
-// easy acces to the <!class>RandomGenerator<!!class> and the
-// <!class>StandardModel<!!class> object of the controlling
-// <!class>EventGenerator<!!class> object. This is in fact two
-// classes. <!id>HandlerBase<!!id> inherits from the templated
-// <!id>HandlerBaseT<!!id> class which includes the inlined accessor
-// functions. This is a trick so that classes inheriting from
-// <!id>HandlerBase<!!id> need not depend on the
-// <!class>EventGenerator<!!class> if the inlined accessor funtions
-// are not actually used.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Interfaced.html">Interfaced.h</a>
-// <a href="http:RandomGenerator.html">RandomGenerator.h</a>
-// <a href="http:StandardModel.html">StandardModel.h</a>
-// <a href="http:EventGenerator.html">EventGenerator.h</a>
-// 
+// This is the declaration of the HandlerBase class.
 
 #include "ThePEG/Interface/Interfaced.h"
 #include <stdexcept>
@@ -32,6 +9,23 @@
 namespace ThePEG {
 
 template <int I = 0>
+/**
+ * HandlerBaseT is a dummy abstract templated class used as base class
+ * to HandlerBase. HandlerBaseT inherits from the Interfaced class
+ * adding some functionality such as easy acces to the RandomGenerator
+ * and the StandardModel object of the controlling EventGenerator
+ * object. The HandlerBaseT should only be used by the HandlerBase as
+ * a base class. The fact that it is templated allows classes which in
+ * turn inherits from HandlerBase to not explicitly depend on
+ * EventGenerator class if the inlined accessor funtions are not
+ * actually used.
+ *
+ * @see Interfaced
+ * @see RandomGenerator
+ * @see StandardModel
+ * @see EventGenerator
+ * 
+ */
 class HandlerBaseT: public Interfaced {
 
 
@@ -41,94 +35,214 @@ public:
 
 private:
 
+  /** @name Standard constructors and destructors are private and can
+   * only be used from the HandlerBase class. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline HandlerBaseT();
+
+  /**
+   * Copy-constructor.
+   */
   inline HandlerBaseT(const HandlerBaseT &);
+
+  /**
+   * Destructor.
+   */
   virtual ~HandlerBaseT();
-  // Standard ctors and dtor are private and can only be accessed
-  // through the HandlerBase class.
+  //@}
 
 public:
 
+  /**
+   * Return a simple flat random number in the range ]0,1[.
+   */
   inline double rnd() const;
+
+  /**
+   * Return a simple flat random number in the range ]0,\a xu[.
+   */
   inline double rnd(double xu) const;
+
+  /**
+   * Return a simple flat random number in the range ]\a xl,\a xu[.
+   */
   inline double rnd(double xl, double xu) const;
-  // Return a simple flat random number in the range ]0,1[, ]0,xu[ and
-  // ]xl,xu[ respectively.
 
+  /**
+   * Return true with 50% probability..
+   */
   inline bool rndbool() const;
-  // Return 50/50.
 
+  /**
+   * Return a true with probability \a p.
+   */
   inline bool rndbool(double p) const;
-  // Return a true with probability p.
 
+  /**
+   * Return a true with probability \a p1/(\a p1+\a p2).
+   */
   inline bool rndbool(double p1, double p2) const;
-  // Return a true with probability p1/(p1+p2).
 
+  /**
+   * Return -1, 0, or 1 with relative probabilities \a p1, \a p2, \a p3.
+   */
   inline int rndsign(double p1, double p2, double p3) const;
-  // Return -1, 0, or 1 with relative probabilities p1, p2, p3.
 
+  /**
+   * Return an integer i with probability pi/(\a p0+\a p1).
+   */
   inline int rnd2(double p0, double p1) const;
+
+  /**
+   * Return 
+   */
   inline int rnd3(double p0, double p1, double p2) const;
+
+  /**
+   * Return an integer i with probability pi/(\a p0+\a p1+\a p2+\a p3).
+   */
   inline int rnd4(double p0, double p1, double p2, double p3) const;
-  // Return a i with probability p_i/sum(p_i).
 
+  /**
+   * Return a simple flat random integrer number in the range [0,\a xu[.
+   */
   inline long irnd(long xu = 2) const;
-  inline long irnd(long xl, long xu) const;
-  // Return a simple flat random integrer number in the range [0,xu[ and
-  // [xl,xu[ respectively.
 
+  /**
+   * Return a simple flat random integrer number in the range [\a xl,\a xu[.
+   */
+  inline long irnd(long xl, long xu) const;
+
+  /**
+   * Return a reference to the object containing the standard model
+   * parameters for this run.
+   */
   inline const StandardModelBase & SM() const;
+
+  /**
+   * Return a pointer to the object containing the standard model
+   * parameters for this run.
+   */
   inline tSMPtr standardModel() const;
-  // Return a reference/pointer to the object containing the standard
-  // model parameters for this run.
 
 };
 
+/**
+ * HandlerBase is an abstract base class derived from the Interfaced
+ * class via the HandlerBaseT class adding some functionality such as
+ * easy acces to the RandomGenerator and the StandardModel object of
+ * the controlling EventGenerator object.
+ *
+ * @see Interfaced
+ * @see RandomGenerator
+ * @see StandardModel
+ * @see EventGenerator
+ * 
+ */
 class HandlerBase: public HandlerBaseT<0> {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline HandlerBase();
+
+  /**
+   * Copy-constructor.
+   */
   inline HandlerBase(const HandlerBase &);
+
+  /**
+   * Destructor.
+   */
   virtual ~HandlerBase();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Describe an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<HandlerBase> initHandlerBase;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   HandlerBase & operator=(const HandlerBase &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/**
+ * This template specialization informs ThePEG about the
+ * base class of HandlerBase.
+ */
 template <>
 struct BaseClassTrait<HandlerBase,1> {
+  /** Typedef of the base class of HandlerBase. Note that HandlerBaseT
+   *  is not treated as a base class in this respect. */
   typedef Interfaced NthBase;
 };
-// We ignore the fact that HandlerBaseT<0> is the actual base class.
 
+/**
+ * This template specialization informs ThePEG about the name of the
+ * HandlerBase class.
+ */
 template <>
 struct ClassTraits<HandlerBase>: public ClassTraitsBase<HandlerBase> {
+  /** Return the class name. */
   static string className() { return "/ThePEG/HandlerBase"; }
 };
 
