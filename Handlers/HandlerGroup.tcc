@@ -5,6 +5,7 @@
 //
 
 #include "ThePEG/Utilities/ClassTraits.h"
+#include "ThePEG/Handlers/Hint.h"
 
 namespace ThePEG {
 

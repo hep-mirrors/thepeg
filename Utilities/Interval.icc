@@ -115,14 +115,14 @@ inline void Interval<T,CMP>::lower(T dn) {
 template <typename T, typename CMP>
 template <typename Iterator>
 inline bool Interval<T,CMP>::check(Iterator first, Iterator last) {
-  while ( first != last ) if ( (*first++)(x) ) return true;
+  while ( first != last ) if ( includes(*first++) ) return true;
   return false;
 }
 
 template <typename T, typename CMP>
 template <typename Iterator>
 inline bool Interval<T,CMP>::checkAll(Iterator first, Iterator last) {
-  while ( first != last ) if ( !(*first++)(x) ) return false;
+  while ( first != last ) if ( !includes(*first++) ) return false;
   return true;
 }
 

@@ -118,7 +118,10 @@ inline RCPtr<T> & RCPtr<T>::assignConst(const UPtr & u) {
 
 template <typename T>
 inline void RCPtr<T>::swap(RCPtr & p) {
-  ThePEG::swap(thePointer, p.thePointer);
+  const pointer tmp = thePointer;
+  thePointer = p.thePointer;
+  p.thePointer = tmp;
+  //  std::swap(thePointer, p.thePointer);
 }  
 
 template <typename T>
@@ -258,7 +261,10 @@ assignDynamic(const UPtr & u) {
 
 template <typename T>
 inline void ConstRCPtr<T>::swap(ConstRCPtr & p) {
-  ThePEG::swap(thePointer, p.thePointer);
+  const const_pointer tmp = thePointer;
+  thePointer = p.thePointer;
+  p.thePointer = tmp;
+  //  std::swap(thePointer, p.thePointer);
 }  
 
 template <typename T>

@@ -4,11 +4,11 @@
 // functions of the RefVector class.
 //
 
+#include "InterfacedBase.h"
 #include "RefVector.h"
 #include "RefVector.xh"
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Rebinder.h"
-#include "InterfacedBase.h"
 #include "ThePEG/Repository/BaseRepository.h"
 
 using namespace ThePEG;

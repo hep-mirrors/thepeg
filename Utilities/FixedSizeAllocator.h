@@ -106,7 +106,7 @@ public:
   size_type max_size() const throw() { return fallback.max_size(); }
 
   void construct(pointer p, const T & val) { fallback.construct(p, val); }
-  void destroy(pointer p) { fallback.destroy(val); }
+  void destroy(pointer p) { fallback.destroy(p); }
 
 public:
 

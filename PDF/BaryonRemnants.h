@@ -29,7 +29,7 @@ class BaryonRemnants: public RemnantHandler {
 
 public:
 
-  typedef Ptr<PtGenerator>::pointer PtGPtr;;
+  typedef Ptr<PtGenerator>::pointer PtGPtr;
   typedef Ptr<ZGenerator>::pointer ZGPtr;
   typedef Ptr<FlavourGenerator>::pointer FlGPtr;
 

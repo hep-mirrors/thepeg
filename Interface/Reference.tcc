@@ -24,7 +24,7 @@ void Reference<T,R>::set(InterfacedBase & i, IBPtr newRef, bool chk) const
     if ( theMember ) t->*theMember = r;
     else throw InterExSetup(*this, i);
   }
-  if ( !dependencySafe() && oldRef != get(i) ) i.touch();  
+  if ( !InterfaceBase::dependencySafe() && oldRef != get(i) ) i.touch();  
 }
 
 template <class T, class R>

@@ -4,9 +4,9 @@
 // functions of the ParVectorBase class.
 //
 
+#include "InterfacedBase.h"
 #include "ParVector.h"
 #include "ParVector.xh"
-#include "InterfacedBase.h"
 
 namespace ThePEG {
 

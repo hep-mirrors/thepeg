@@ -120,4 +120,4 @@ ClassDescription<SubProcess> SubProcess::initSubProcess;
 
 void SubProcess::Init() {}
 
-ThePEG_IMPLEMENT_SET(SubProPtr,SubProcessSet);
+ThePEG_IMPLEMENT_SET(SubProPtr,SubProcessSet)

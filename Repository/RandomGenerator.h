@@ -78,8 +78,9 @@ public:
   // internal random engine has been reinitialized for some reason.
 
   template <typename OutputIterator>
-  inline double rnd(OutputIterator, size_type n);
-  // Return n random numbers between 0 and 1.
+  inline void rnd(OutputIterator, size_type n);
+  // Generate n random numbers between 0 and 1 and put them in the
+  // output iterator.
 
 protected:
 

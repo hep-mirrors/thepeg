@@ -4,8 +4,8 @@
 // functions of the ReferenceBase class.
 //
 
-#include "Reference.h"
 #include "InterfacedBase.h"
+#include "Reference.h"
 #include "Reference.xh"
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Rebinder.h"

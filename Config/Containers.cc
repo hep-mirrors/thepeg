@@ -16,16 +16,16 @@
 
 using namespace ThePEG;
 
-ThePEG_IMPLEMENT_SET(PDPTr,ParticleDataSet);
-ThePEG_IMPLEMENT_SET(PMPtr,MatcherSet);
-ThePEG_IMPLEMENT_SET(DMPtr,DecayModeSet);
-ThePEG_IMPLEMENT_SET(tDMPtr,DecaySet);
-ThePEG_IMPLEMENT_SET(IBPtr,ObjectSet);
-ThePEG_IMPLEMENT_SET(IBPtr,DependencySet);
-ThePEG_IMPLEMENT_MAP(long,PDPtr,ParticleMap);
-ThePEG_IMPLEMENT_MAP(string,IBPtr,ObjectMap);
-ThePEG_IMPLEMENT_MAP(IBPtr,DependencySet,DependencyMap);
-ThePEG_IMPLEMENT_MAP(string,const InterfaceBase *,InterfaceMap);
-ThePEG_IMPLEMENT_MAP(string,EGPtr,GeneratorMap);
-ThePEG_IMPLEMENT_SET(string,StringSet);
+ThePEG_IMPLEMENT_SET(PDPTr,ParticleDataSet)
+ThePEG_IMPLEMENT_SET(PMPtr,MatcherSet)
+ThePEG_IMPLEMENT_SET(DMPtr,DecayModeSet)
+ThePEG_IMPLEMENT_SET(tDMPtr,DecaySet)
+ThePEG_IMPLEMENT_SET(IBPtr,ObjectSet)
+ThePEG_IMPLEMENT_SET(IBPtr,DependencySet)
+ThePEG_IMPLEMENT_MAP(long,PDPtr,ParticleMap)
+ThePEG_IMPLEMENT_MAP(string,IBPtr,ObjectMap)
+ThePEG_IMPLEMENT_MAP(IBPtr,DependencySet,DependencyMap)
+ThePEG_IMPLEMENT_MAP(string,const InterfaceBase *,InterfaceMap)
+ThePEG_IMPLEMENT_MAP(string,EGPtr,GeneratorMap)
+ThePEG_IMPLEMENT_SET(string,StringSet)
 // typedef set<const InterfaceBase *> InterfaceSet;

@@ -174,7 +174,7 @@ splitDiDiQuark(ColourSinglet & cs, tStepPtr newStep) const {
   newStep->addDecayProduct(diq, qq2.first);
   newStep->addDecayProduct(diq, qq2.second);
 
-  if ( rndbool() ) qq1.first.swap(qq1.second);
+  if ( rndbool() ) swap(qq1.first, qq1.second);
 
   return ret = cs.splitDiDiQuark(qq1, qq2);
 

@@ -4,8 +4,8 @@
 // functions of the SwitchBase class.
 //
 
-#include "Switch.h"
 #include "InterfacedBase.h"
+#include "Switch.h"
 
 namespace ThePEG {
 

@@ -8,11 +8,11 @@
 
 namespace ThePEG {
 
-template <class T, int IBase, class B>
+template <typename T, int IBase, typename B>
 void ClassDescriptionHelper<T, IBase, B>::
 addBases(vector<const ClassDescriptionBase *> & c) {
-  const type_info & tid = typeid(B);
-  const ClassDescriptionBase * b = DescriptionList::find(tid);
+  //  const type_info & tid = typeid(B);
+  const ClassDescriptionBase * b = DescriptionList::find(typeid(B));
   if ( !b ) return;
   c.push_back(b);
   ClassDescriptionHelper<T,IBase+1>::addBases(c);

@@ -4,8 +4,8 @@
 // functions of the CommandBase class.
 //
 
-#include "Command.h"
 #include "InterfacedBase.h"
+#include "Command.h"
 
 using namespace ThePEG;
 

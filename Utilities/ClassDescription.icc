@@ -81,7 +81,7 @@ input(tBPtr b, PersistentIStream & is, int oldVersion) const {
 
 template <class T>
 inline BPtr AbstractClassDescription<T>::create() const {
-  throw std::logic_error("Tried to instantiate virtual class " + name());
+  throw std::logic_error("Tried to instantiate virtual class " + Named::name());
   return BPtr();
 }
 
@@ -115,7 +115,7 @@ input(tBPtr, PersistentIStream &, int) const {
 template <class T>
 inline BPtr
 AbstractNoPIOClassDescription<T>::create() const {
-  throw std::logic_error("Tried to instantiate virtual class " + name());
+  throw std::logic_error("Tried to instantiate virtual class " + Named::name());
   return BPtr();
 }
 

@@ -3,15 +3,15 @@
 namespace ThePEG {
 
 template <typename T>
-inline string TypeInfo::name(const T & t) {
-  const ClassDescriptionBase * cd = DescriptionList::find(typeid(t));
+inline string TypeInfo::name(const T &) {
+  const ClassDescriptionBase * cd = DescriptionList::find(typeid(T));
   if ( cd ) return cd->name();
   return "**** CLASS NOT REGISTERED ****";
 }
 
 template <typename T>
 inline int TypeInfo::version(const T &) {
-  const ClassDescriptionBase * cd = DescriptionList::find(typeid(t));
+  const ClassDescriptionBase * cd = DescriptionList::find(typeid(T));
   if ( cd ) return cd->version();
   return -1;
 }

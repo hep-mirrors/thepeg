@@ -658,7 +658,7 @@ DecModRebind::DecModRebind(string tag, string obj) {
   severity(abortnow);
 }
 
-ThePEG_IMPLEMENT_MULTISET(tPDPtr,ParticleMSet);
-ThePEG_IMPLEMENT_MULTISET(tPMPtr,MatcherMSet);
-ThePEG_IMPLEMENT_MULTISET(tDMPtr,ModeMSet);
+ThePEG_IMPLEMENT_MULTISET(tPDPtr,ParticleMSet)
+ThePEG_IMPLEMENT_MULTISET(tPMPtr,MatcherMSet)
+ThePEG_IMPLEMENT_MULTISET(tDMPtr,ModeMSet)
 

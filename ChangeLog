@@ -1,3 +1,60 @@
+2004-04-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* ThePEG: The following changes were made to allow compilation
+	with gcc 3.4.0.
+
+	* Utilities/TypeInfo.icc: in version and name method, use typeid
+	of type rather than variabe.
+
+	* Utilities/Interval.icc: Fixed obvious bugs in check and
+	checkAll.
+
+	* Utilities/FixedSizeAllocator.h: Fixed obvious bug in destroy
+	which for unknown reasons was not detected before.
+
+	* Utilities/ClassDescription.tcc: Workaround of bug in gcc 3.4.0
+	when taking typeid of template parameter.
+
+	* Utilities/ClassDescription.icc: Added scope resolutions to calls
+	to name().
+
+	* Repository/Repository.cc: Removed 'template' prefix in calls to
+	templated static member functions.
+
+	* Repository/RandomGenerator.icc, Repository/RandomGenerator.h:
+	changed return type for rnd(OutputIterator, size_type n) to void.
+
+	* Pointer/RCPtr.icc: Made implementations of swap explicit instead
+	of using std::swap (problems with gcc 3.4.0).
+
+	* Interface/Switch.tcc, Interface/Reference.tcc,
+	Interface/RefVector.tcc, Interface/Parameter.tcc,
+	Interface/ParVector.tcc: Added scope resolution to calls to
+	readOnly, limited, and dependencySafe functions.
+
+	* Interface/InterfacedBase.h: Made clear and reset functions
+	public.
+
+	* Interface/Switch.cc, Interface/Reference.cc,
+	Interface/RefVector.cc, Interface/Parameter.cc,
+	Interface/ParVector.cc, Interface/Command.cc: Moved include of
+	InterfacedBase.h
+
+	* Handlers/HandlerGroup.tcc: Added #include of Hint.h
+
+	* Handlers/ClusterCollapser.cc: Changes call to swap for PPtr.
+
+	* EventRecord/Particle.h: Made inner class ParticleRep public as a
+	quick fix to allow access.
+
+	* EventRecord/Step.tcc: Added missing Step:: in definition of the
+	addIfFinal function.
+
+	*PDT/DecayMode.cc , PDF/BaryonRemnants.h,
+	EventRecord/SubProcess.cc, EventRecord/Step.cc,
+	EventRecord/Particle.cc, EventRecord/Event.cc,
+	Config/Containers.cc: Removed unnecessary semi-colons.
+
 2004-04-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: ThePEG-class-files now also create a suitable .fh

@@ -96,7 +96,7 @@ tParticleSet Step::getCurrent(Iterator first, Iterator last) const {
 }
 
 template <typename Inserter, typename PPointer>
-void addIfFinal(Inserter o, PPointer p) {
+void Step::addIfFinal(Inserter o, PPointer p) {
   if ( member(theParticles, p) ) *o++ = p;
   else if ( p->next() ) addIfFinal(o, p->next());
   else

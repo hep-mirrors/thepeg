@@ -117,7 +117,7 @@ tDMPtr Repository::findDecayMode(string name) {
 }
 
 void Repository::saveRun(string EGname, string name, string filename) {
-  EGPtr eg = BaseRepository::template GetObject<EGPtr>(EGname);
+  EGPtr eg = BaseRepository::GetObject<EGPtr>(EGname);
   EGPtr run = makeRun(eg, name);
   PersistentOStream os(filename);
   if ( ThePEG_DEBUG_ITEM(3) )
@@ -479,7 +479,7 @@ string Repository::exec(string command, ostream & os) {
       string runname = StringUtils::car(command);
       string generator = StringUtils::cdr(StringUtils::car(command));
       DirectoryAppend(generator);
-      EGPtr eg = BaseRepository::template GetObject<EGPtr>(generator);
+      EGPtr eg = BaseRepository::GetObject<EGPtr>(generator);
       makeRun(eg, runname);
       return "";
     }
@@ -490,7 +490,7 @@ string Repository::exec(string command, ostream & os) {
       GeneratorMap::iterator ieg = generators().find(runname);
       EGPtr eg;
       if ( ieg == generators().end() ) {
-	eg = BaseRepository::template GetObject<EGPtr>(generator);
+	eg = BaseRepository::GetObject<EGPtr>(generator);
 	eg = makeRun(eg, runname);
       } else
 	eg = ieg->second;

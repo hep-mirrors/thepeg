@@ -110,10 +110,10 @@ def(const InterfacedBase & i, int place) const throw(InterfaceException) {
 template <typename T, typename Type>
 void ParVector<T,Type>::tset(InterfacedBase & i, Type newValue, int place) const
   throw(InterfaceException) {
-  if ( readOnly() ) throw InterExReadOnly(*this, i);
+  if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
-  if ( limited() && ( newValue < tminimum(*t, place) ||
+  if ( ParVectorBase::limited() && ( newValue < tminimum(*t, place) ||
        newValue > tmaximum(*t, place) ) )
     throw ParVExLimit(*this, i, newValue);
   TypeVector oldVector = tget(i);
@@ -127,18 +127,18 @@ void ParVector<T,Type>::tset(InterfacedBase & i, Type newValue, int place) const
       throw ParVExIndex(*this, i, place);
     (t->*theMember)[place] = newValue;
   }
-  if ( !dependencySafe() && oldVector != tget(i) ) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldVector != tget(i) ) i.touch();
 }
 
 template <typename T, typename Type>
 void ParVector<T,Type>::
 tinsert(InterfacedBase & i, Type newValue, int place) const
   throw(InterfaceException) {
-  if ( readOnly() ) throw InterExReadOnly(*this, i);
-  if ( size() > 0 ) throw ParVExFixed(*this, i);
+  if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
+  if ( ParVectorBase::size() > 0 ) throw ParVExFixed(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
-  if ( limited() && ( newValue < tminimum(*t, place) ||
+  if ( ParVectorBase::limited() && ( newValue < tminimum(*t, place) ||
        newValue > tmaximum(*t, place) ) )
     throw ParVExLimit(*this, i, newValue);
   TypeVector oldVector = tget(i);
@@ -152,14 +152,14 @@ tinsert(InterfacedBase & i, Type newValue, int place) const
       throw ParVExIndex(*this, i, place);
     (t->*theMember).insert((t->*theMember).begin()+place, newValue);
   }
-  if ( !dependencySafe() && oldVector != tget(i) ) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldVector != tget(i) ) i.touch();
 }
 
 template <typename T, typename Type>
 void ParVector<T,Type>::
 erase(InterfacedBase & i, int place) const throw(InterfaceException) {
-  if ( readOnly() ) throw InterExReadOnly(*this, i);
-  if ( size() > 0 ) throw ParVExFixed(*this, i);
+  if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
+  if ( ParVectorBase::size() > 0 ) throw ParVExFixed(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   TypeVector oldVector = tget(i);
@@ -173,7 +173,7 @@ erase(InterfacedBase & i, int place) const throw(InterfaceException) {
       throw ParVExIndex(*this, i, place);
     (t->*theMember).erase((t->*theMember).begin()+place);
   }
-  if ( !dependencySafe() && oldVector != tget(i) ) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldVector != tget(i) ) i.touch();
 }
 
 template <typename T, typename Type>

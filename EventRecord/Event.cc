@@ -152,7 +152,7 @@ void Event::rebind(const EventTranslationMap & trans) {
 	pit != allParticles.end(); ++pit )
     newParticles.insert(trans.translate(*pit));
   allParticles.swap(newParticles);
-};
+}
   
 ostream & ThePEG::operator<<(ostream & os, const Event & e) {
   os << "***************************************"

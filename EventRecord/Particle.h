@@ -375,6 +375,8 @@ private:
   // The rest of the information in this particle is only instantiated
   // if needed.
 
+public:
+
   struct ParticleRep {
 
     inline void * operator new(size_t);

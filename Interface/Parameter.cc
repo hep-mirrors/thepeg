@@ -4,9 +4,9 @@
 // functions of the ParameterBase class.
 //
 
+#include "InterfacedBase.h"
 #include "Parameter.h"
 #include "Parameter.xh"
-#include "InterfacedBase.h"
 
 namespace ThePEG {
 

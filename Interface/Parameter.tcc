@@ -63,10 +63,11 @@ def(const InterfacedBase & i) const throw(InterfaceException) {
 template <typename T, typename Type>
 void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
   throw(InterfaceException) {
-  if ( readOnly() ) throw InterExReadOnly(*this, i);
+  if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
-  if ( limited() && ( newValue < tminimum(i) || newValue > tmaximum(i) ) )
+  if ( ParameterBase::limited() &&
+       ( newValue < tminimum(i) || newValue > tmaximum(i) ) )
     throw ParExSetLimit(*this, i, newValue);
   Type oldValue = tget(i);
   if ( theSetFn ) {
@@ -77,7 +78,7 @@ void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
     if ( theMember ) t->*theMember = newValue;
     else throw InterExSetup(*this, i);
   }
-  if ( !dependencySafe() && oldValue != tget(i)) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldValue != tget(i)) i.touch();
 }
 
 template <typename T, typename Type>

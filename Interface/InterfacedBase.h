@@ -137,6 +137,12 @@ public:
   // object has changed in a way that a sanity check with 'update' is
   // needed
 
+  inline void reset();
+  // Set the state of this object to uninitialized.
+
+  inline void clear();
+  // reset() and unTouch().
+
   inline virtual IVector getReferences();
   // Returns a vector of pointers to objects which are refered to in
   // this object.
@@ -177,12 +183,6 @@ protected:
   inline InterfacedBase(string newName);
   inline InterfacedBase(const InterfacedBase &);
   // Protected constructors.
-
-  inline void reset();
-  // Set the state of this object to uninitialized.
-
-  inline void clear();
-  // reset() and unTouch().
 
 private:
 

@@ -21,7 +21,7 @@ void Switch<T,Int>::set(InterfacedBase & i, long newValue) const
     if ( theMember ) t->*theMember = Int(newValue);
     else throw InterExSetup(*this, i);
   }
-  if ( !dependencySafe() && oldValue != get(i) ) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldValue != get(i) ) i.touch();
 }
 
 

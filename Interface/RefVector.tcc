@@ -52,7 +52,7 @@ set(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
       throw RefVExIndex(*this, i, place);
     (t->*theMember)[place] = r;
   }
-  if ( !dependencySafe() && oldVector != get(i) ) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldVector != get(i) ) i.touch();
 }
 
 template <class T, class R>
@@ -77,7 +77,7 @@ insert(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
       throw RefVExIndex(*this, i, place);
     (t->*theMember).insert((t->*theMember).begin()+place, r);
   }
-  if ( !dependencySafe() && oldVector != get(i) ) i.touch();
+  if ( !InterfaceBase::dependencySafe() && oldVector != get(i) ) i.touch();
 }
 
 template <class T, class R>
@@ -98,7 +98,7 @@ void RefVector<T,R>::erase(InterfacedBase & i, int place) const
       throw RefVExIndex(*this, i, place);
     (t->*theMember).erase((t->*theMember).begin()+place);
   }
-  if (  !dependencySafe() && oldVector != get(i) ) i.touch();
+  if (  !InterfaceBase::dependencySafe() && oldVector != get(i) ) i.touch();
 }
 
 template <class T, class R>
