@@ -2,6 +2,7 @@
 *.tgz
 DB
 Test
+autom4te.cache
 c++stubs.el
 config.cache
 config.log
