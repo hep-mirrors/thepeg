@@ -62,6 +62,18 @@ fi
 AC_DEFINE_UNQUOTED(ThePEG_GZWRITE_FILE, "$GZWRITE_FILE")
 AC_ARG_VAR(GZWRITE_FILE,The command which taking the name of a gzipped file as argument reads stdin zips it and writes it to the file. Default is "gzip -c".)
 
+if test -z "$BZ2READ_FILE"; then
+   BZ2READ_FILE="bunzip2 -c"
+fi
+AC_ARG_VAR(BZ2READ_FILE,The command which taking the name of a bzipped file as argument unzips it and prints it to stdout. Default is "bunzip2 -c".)
+AC_DEFINE_UNQUOTED(ThePEG_BZ2READ_FILE, "$BZ2READ_FILE")
+
+if test -z "$BZ2WRITE_FILE"; then
+   BZ2WRITE_FILE="gzip -c"
+fi
+AC_ARG_VAR(BZ2WRITE_FILE,The command which taking the name of a bzipped file as argument reads stdin zips it and writes it to the file. Default is "bzip2 -c".)
+AC_DEFINE_UNQUOTED(ThePEG_BZ2WRITE_FILE, "$BZ2WRITE_FILE")
+
 BUILDDIR=`pwd`
 
 AC_SUBST(AR)
@@ -79,6 +91,8 @@ AC_SUBST(prefix)
 AC_SUBST(BUILDDIR)
 AC_SUBST(GZREAD_FILE)
 AC_SUBST(GZWRITE_FILE)
+AC_SUBST(BZ2READ_FILE)
+AC_SUBST(BZ2WRITE_FILE)
 echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <cmath>

@@ -1,5 +1,8 @@
 2004-09-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* configure.in, Config/config.h.in, Utilities/CFileLineReader.cc:
+	Added facilities to handle .bz2 files as well as .gz files.
+
 	* Utilities/CFileLineReader.*: Bug fixes.
 
 2004-09-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>

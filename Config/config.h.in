@@ -32,4 +32,13 @@
    file. */
 #undef ThePEG_GZWRITE_FILE
 
+/* Define this to be the command which taking the name of a bzipped
+   file as argument, unzips it and prints it to stdout. */
+#undef ThePEG_BZ2READ_FILE
+
+/* Define this to be the command which taking the name of a bzipped
+   file as argument, reads stdin, zips it and writes it to the
+   file. */
+#undef ThePEG_BZ2WRITE_FILE
+
 #endif /* ThePEG_config_H */
