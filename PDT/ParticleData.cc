@@ -28,7 +28,15 @@
 namespace ThePEG {
 
 ParticleData::ParticleData()
-  : theId(0) {}
+  : theId(0), thePDGName(""), theMass(-1.0*GeV), theWidth(-1.0*GeV),
+    theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
+    theCharge(PDT::ChargeUnknown),
+    theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
+    variableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
+    theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
+    theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
+    theDefColour(PDT::ColourUnknown) {}
+
 
 ParticleData::ParticleData(const ParticleData & pd)
   : Interfaced(pd), theId(pd.theId), thePDGName(pd.thePDGName),
