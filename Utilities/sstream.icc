@@ -1,0 +1,18 @@
+// -*- C++ -*-
+
+namespace ThePEG {
+
+inline ostringstream::ostringstream() {}
+
+inline ostringstream::ostringstream(const string & s) {
+  *this << s;
+}
+
+inline string ostringstream::str() {
+  return string(ostrstream::str(), pcount());
+}
+
+inline istringstream::istringstream(const string & s)
+  : istrstream(s.c_str(), s.size()) {}
+
+}

@@ -1,0 +1,25 @@
+// -*- C++ -*-
+#ifndef ThePEG_Direction_XH
+#define ThePEG_Direction_XH
+//
+// This is the declarations of the exception classes used by the
+// Direction class.
+//
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+
+struct MultipleDirectionException: public Exception {
+  MultipleDirectionException(int);
+};
+
+struct UndefinedDirectionException: public Exception {
+  UndefinedDirectionException(int);
+};
+
+}
+
+#endif /* ThePEG_Direction_XH */
+

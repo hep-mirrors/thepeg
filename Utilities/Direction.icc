@@ -1,0 +1,70 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Direction class.
+//
+
+namespace ThePEG {
+
+template <int I>
+inline Direction<I>::Direction(Dir newDirection)
+  throw(MultipleDirectionException, UndefinedDirectionException) {
+  if ( theDirection != Undefined ) throw MultipleDirectionException(I);
+  if ( newDirection == Positive ) theDirection = Positive;
+  else if ( newDirection == Negative ) theDirection = Negative;
+  else throw UndefinedDirectionException(I);
+}
+
+template <int I>
+inline Direction<I>::Direction(double rnd) throw(MultipleDirectionException) {
+  if ( theDirection != Undefined ) throw MultipleDirectionException(I);
+  theDirection = rnd > 0? Positive: Negative;
+}
+
+template <int I>
+inline Direction<I>::Direction(bool p) throw(MultipleDirectionException) {
+  if ( theDirection != Undefined ) throw MultipleDirectionException(I);
+  theDirection = p? Positive: Negative;
+}
+
+template <int I>
+inline Direction<I>::~Direction() {
+  theDirection = Undefined;
+}
+
+template <int I>
+inline void Direction<I>::set(Dir newDirection)
+  throw(UndefinedDirectionException) {
+  if ( newDirection == Positive ) theDirection = Positive;
+  else if ( newDirection == Negative ) theDirection = Negative;
+  else throw UndefinedDirectionException(I);
+}
+
+template <int I>
+inline void Direction<I>::reverse() throw(UndefinedDirectionException) {
+  theDirection =  pos()? Negative: Positive;
+}
+
+template <int I>
+inline bool Direction<I>::pos() throw(UndefinedDirectionException) {
+  return dir() == Positive;
+}
+
+template <int I>
+inline bool Direction<I>::neg() throw(UndefinedDirectionException) {
+  return dir() == Negative;
+}
+
+template <int I>
+inline typename Direction<I>::Dir Direction<I>::dir()
+  throw(UndefinedDirectionException) {
+  if ( theDirection == Undefined ) throw UndefinedDirectionException(I);
+  return theDirection;
+}
+
+template <int I>
+typename Direction<I>::Dir
+Direction<I>::theDirection = Direction<I>::Undefined;
+
+}
+

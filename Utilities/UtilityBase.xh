@@ -1,0 +1,17 @@
+// -*- C++ -*-
+#ifndef ThePEG_UtilityBase_XH
+#define ThePEG_UtilityBase_XH
+
+#include "UtilityBase.fh"
+
+namespace ThePEG {
+
+
+
+
+
+
+}
+
+#endif /* ThePEG_UtilityBase_XH */
+

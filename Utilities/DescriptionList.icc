@@ -1,0 +1,23 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the DescriptionList class.
+//
+
+namespace ThePEG {
+
+inline const ClassDescriptionBase *
+DescriptionList::find(const type_info & ti) {
+  DescriptionMap::const_iterator it =  descriptionMap().find(&ti);
+  if ( it == descriptionMap().end() ) return 0;
+  return (*it).second;
+}
+
+inline const ClassDescriptionBase *
+DescriptionList::find(const string & name) {
+  StringMap::const_iterator it =  stringMap().find(name);
+  if ( it == stringMap().end() ) return 0;
+  return it->second;
+}
+
+}

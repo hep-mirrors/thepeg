@@ -1,0 +1,12 @@
+*.tar.gz
+*.tgz
+DB
+Test
+c++stubs.el
+config.cache
+config.log
+config.status
+doxygen.conf
+makeout*
+teststat.cc
+torbjorn

@@ -1,0 +1,83 @@
+// -*- C++ -*-
+
+#include "SimplePhaseSpace.h"
+
+#ifdef ThePEG_TEMPLATES_IN_CC_FILE
+#include "SimplePhaseSpace.tcc"
+#endif
+
+using namespace ThePEG;
+
+Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
+  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+  if ( m1 >= 0.0*GeV && m2 >= 0.0*GeV ) {
+    Energy2 aa = s - sqr(m1+m2);
+    if ( aa < 0.0 ) throw ImpossibleKinematics();
+    return 0.5*sqrt(aa*(s-sqr(m1-m2))/s);
+  }
+  Energy2 m12 = m1 < 0.0*GeV? -sqr(m1): sqr(m1);
+  Energy2 m22 = m2 < 0.0*GeV? -sqr(m2): sqr(m2);
+  Energy4 aa = sqr(m12) + sqr(m22 - s) -2.0*m12*(m22 + s);
+  if ( aa < 0.0*GeV2*GeV2 ) throw ImpossibleKinematics();
+  return 0.5*sqrt(aa/s);
+}
+
+vector<LorentzMomentum> SimplePhaseSpace::
+CMSn(Energy m0, const vector<Energy> & m)
+  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+  using Constants::pi;
+
+  // Setup constants.
+  int Np = m.size();
+  vector<LorentzMomentum> ret(Np);
+  Energy summ = std::accumulate(m.begin(), m.end(), Energy());
+  if ( summ >= m0 ) throw ImpossibleKinematics();
+
+  while ( true ) {
+
+    Timer<51> timer("SimplePhaseSpace::CMSn");
+    
+
+    // First get an ordered list of random numbers.
+    vector<double> rndv(Np);
+    rndv[0] = 1.0;
+    rndv.back() = 0.0;
+    for ( int i = 1; i < Np - 1; ++i ) rndv[i] = UseRandom::rnd();
+    std::sort(rndv.begin() + 1, rndv.end() - 1, std::greater<double>());
+
+    // Now setup masses of subsystems.
+    vector<Energy> sm(Np);
+    Energy tmass = m0 - summ;
+    Energy tmp = summ;
+    for ( int i = 0; i < Np; ++i ) {
+      sm[i] = rndv[i]*tmass + tmp;
+      tmp -= m[i];
+    }
+
+    // Now the magnitude of all the momenta can be calculated. This
+    // gives the weight.
+    double weight = 1.0;
+    vector<Energy> p(Np);
+    p[Np - 1] = getMagnitude(sqr(sm[Np - 2]), m[Np -2], sm[Np - 1]);
+    for ( int i = Np - 2; i >= 0; --i )
+      weight *= (p[i] = getMagnitude(sqr(sm[i]), m[i], sm[i + 1]))/sm[i];
+    if ( weight > UseRandom::rnd() ) continue;
+
+    // Now we just have to generate the angles.
+    ret[Np - 1] = LorentzMomentum(0.0*GeV, 0.0*GeV, 0.0*GeV, m[Np - 1]);
+    for ( int i = Np - 2; i >= 0; --i ) {
+      Momentum3 p3 = polar3Vector(p[i], 2.0*UseRandom::rnd() - 1.0,
+				  2.0*pi*UseRandom::rnd());
+      ret[i] = LorentzMomentum(-p3, sqrt(sqr(p[i]) + sqr(m[i])));
+      Vector3 bv = p3*(1.0/sqrt(sqr(p[i]) + sqr(sm[i + 1])));
+      if ( bv.mag2() >= 1.0 ) {
+	continue;
+      }
+      LorentzRotation r(bv);
+      for ( int j = i + 1; j < Np; ++j ) ret[j]*=r;
+    }
+    return ret;
+  }
+  return vector<LorentzMomentum>();
+}
+

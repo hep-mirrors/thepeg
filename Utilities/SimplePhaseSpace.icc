@@ -1,0 +1,20 @@
+// -*- C++ -*-
+
+namespace ThePEG {
+
+template <typename PPairType>
+inline void SimplePhaseSpace::CMS(const PPairType & p, Energy2 s)
+  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+  CMS(*p.first, *p.second, s);
+}
+
+inline Momentum3 SimplePhaseSpace::
+polar3Vector(Energy p, double costheta, double phi) {
+  return Momentum3(p*sqrt(1.0 - sqr(costheta))*sin(phi),
+		   p*sqrt(1.0 - sqr(costheta))*cos(phi),
+		   p*costheta);
+}
+		   
+
+}
+

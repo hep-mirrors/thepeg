@@ -1,0 +1,91 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FixedSizeAllocator class.
+//
+
+namespace ThePEG {
+
+template <size_t Size, size_t ChunkSize>
+inline void * FixedSizeAllocator<Size,ChunkSize>::allocate() {
+#ifdef ThePEG_USE_STD_ALLOCATORS
+  return ::operator new(Size);
+#else
+  if ( freestack.empty() ) return newallocate();
+  void * ret = freestack.back();
+  freestack.pop_back();
+  if ( ThePEG_DEBUG_ITEM(5) )
+    cerr << "FixedSizeAllocator<" << Size << "," << ChunkSize
+	 << ">:: reclaim " << ret << endl;
+  return ret;
+#endif
+}
+
+template <size_t Size, size_t ChunkSize>
+inline void FixedSizeAllocator<Size,ChunkSize>::deallocate(void * p) {
+#ifdef ThePEG_USE_STD_ALLOCATORS
+  ::operator delete(p);
+#else
+  if ( ThePEG_DEBUG_ITEM(5) )
+    cerr << "FixedSizeAllocator<" << Size << "," << ChunkSize
+	 << ">:: release " << p << endl;
+  freestack.push_back(p);
+#endif
+}
+
+template <size_t Size, size_t ChunkSize>
+inline void FixedSizeAllocator<Size,ChunkSize>::grow() {
+  chunkstack.s.push_back(new char[Size*ChunkSize]);
+  last = Size*ChunkSize;
+  if ( ThePEG_DEBUG_ITEM(4) )
+    cerr << "FixedSizeAllocator<" << Size << "," << ChunkSize
+	 << ">:: chunk  " << chunkstack.s.size()
+	 << "(" << (void*)(chunkstack.s.back())
+	 << " - " << (void*)(chunkstack.s.back() + last)
+	 << ")" << endl;
+}
+
+template <size_t Size, size_t ChunkSize>
+inline void * FixedSizeAllocator<Size,ChunkSize>::newallocate() {
+  if ( !last ) grow();
+  last -= Size;
+  if ( ThePEG_DEBUG_ITEM(5) )
+    cerr << "FixedSizeAllocator<" << Size << "," << ChunkSize
+	 << ">:: allocate " << (void*)(chunkstack.s.back() + last) << endl;
+  return chunkstack.s.back() + last;
+}
+
+template <size_t Size, size_t ChunkSize>
+FixedSizeAllocator<Size,ChunkSize>::ChunkStack::~ChunkStack() {
+  while ( !s.empty() ) { delete [] s.back(); s.pop_back(); }
+}
+
+
+template <size_t Size, size_t ChunkSize>
+typename FixedSizeAllocator<Size,ChunkSize>::ChunkStack
+FixedSizeAllocator<Size,ChunkSize>::chunkstack;
+
+template <size_t Size, size_t ChunkSize>
+typename FixedSizeAllocator<Size,ChunkSize>::FreeStack
+FixedSizeAllocator<Size,ChunkSize>::freestack;
+
+template <size_t Size, size_t ChunkSize>
+size_t FixedSizeAllocator<Size,ChunkSize>::last = 0;
+
+template <typename T, size_t ChunkSize>
+inline T * FixedAllocator<T,ChunkSize>::allocate() {
+  return static_cast<T*>(BaseType::allocate());
+}
+
+template <typename T>
+inline T* Allocator<T>::allocate(size_type n, const void * vp) {
+  return n == 1? FixedAllocator<T>::allocate() : fallback.allocate(n, vp);
+}
+
+template <typename T>
+inline void Allocator<T>::deallocate(pointer p, size_type n) {
+  if ( n == 1 ) FixedAllocator<T>::deallocate(p);
+  else fallback.deallocate(p, n);
+}
+
+}

@@ -1,0 +1,43 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Named class.
+//
+
+namespace ThePEG {
+
+inline Named::Named()
+  : theName() {}
+
+inline Named::Named(const Named & named)
+  : theName(named.theName) {}
+
+inline Named::Named(const string & newName)
+  : theName(newName) {}
+
+inline Named::~Named() {}
+
+inline const string &
+Named::name() const {
+  return theName;
+}
+
+inline const string &
+Named::name(const string & newName) {
+  return ( theName = newName );
+}
+
+inline const Named & Named::operator = (const Named & newName) {
+  theName = newName.name();
+  return *this;
+}
+
+inline bool Named::operator == (const Named & other) const {
+  return theName == other.name();
+}
+
+inline bool Named::operator < (const Named & other) const {
+  return theName < other.name();
+}
+
+}

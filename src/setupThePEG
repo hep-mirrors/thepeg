@@ -1,0 +1,4 @@
+#!/bin/sh
+export ThePEG_INSTALL_PATH=../../ThePEG/lib
+export LD_LIBRARY_PATH=${ThePEG_INSTALL_PATH}:${LD_LIBRARY_PATH}
+exec ../../ThePEG/src/setupThePEG.exe $*

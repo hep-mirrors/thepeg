@@ -1,0 +1,19 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the LoopGuard class.
+//
+
+namespace ThePEG {
+
+template <typename ExceptionT, typename MessageT>
+inline LoopGuard<ExceptionT,MessageT>::
+LoopGuard(const MessageT & mess, long maxc)
+  : count(0), maxCount(maxc), message(mess) {}
+
+template <typename ExceptionT, typename MessageT>
+inline void LoopGuard<ExceptionT,MessageT>::operator()() throw (ExceptionT) {
+  if ( ++count > maxCount ) throw ExceptionT(message);
+}
+
+}

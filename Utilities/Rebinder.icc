@@ -1,0 +1,53 @@
+// -*- C++ -*-
+
+namespace ThePEG {
+
+template <class T>
+inline Rebinder<T>::Rebinder() {}
+
+template <class T>
+inline typename Rebinder<T>::TPtr & Rebinder<T>::operator[](tcTPtr t) {
+  return theMap[t];
+}
+
+template <class T>
+template <class R>
+inline R Rebinder<T>::translate(const R & r) const {
+  const_iterator it = theMap.find(r);
+  return it == theMap.end()? R(): dynamic_ptr_cast<R>(it->second);
+}
+
+template <class T>
+template <typename OutputIterator, typename InputIterator>
+inline void Rebinder<T>::translate(OutputIterator r,
+		      InputIterator first, InputIterator last) const {
+  while ( first != last ) *r++ = translate(*first);
+}
+
+template <class T>
+template <class R>
+inline R Rebinder<T>::alwaysTranslate(const R & r) const
+  throw(std::runtime_error) {
+  R ret;
+  if ( !r ) return ret;
+  const_iterator it = theMap.find(r);
+  ret = (it == theMap.end()? R(): dynamic_ptr_cast<R>(it->second));
+  if ( !ret ) throw std::runtime_error("Rebinder exception");
+  return ret;
+}
+
+template <class T>
+template <typename OutputIterator, typename InputIterator>
+inline void Rebinder<T>::
+alwaysTranslate(OutputIterator r, InputIterator first, InputIterator last)
+  const throw(std::runtime_error) {
+  while ( first != last ) *r++ = alwaysTranslate(*first++);
+}
+
+template <class T>
+inline const typename Rebinder<T>::MapType &
+Rebinder<T>::Rebinder<T>::map() const {
+  return theMap;
+}
+
+}

@@ -1,0 +1,107 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Timer class.
+//
+
+namespace ThePEG {
+
+inline TimeCounter::TimeCounter(string newName)
+  : Named(newName), theNCalls(0), startClock(0), totTime(0), loop(0) {}
+
+inline TimeCounter::TimeCounter(const TimeCounter & tc)
+: Named(tc), theNCalls(tc.theNCalls), startClock(tc.startClock),
+  totTime(tc.totTime), loop(tc.loop) {}
+
+inline TimeCounter::~TimeCounter() {}
+
+inline TimeCounter & TimeCounter::operator=(const TimeCounter & tc) {
+  Named::operator=(tc);
+  theNCalls = tc.theNCalls;
+  startClock = tc.startClock;
+  totTime = tc.totTime;
+  loop = tc.loop;
+  return *this;
+}
+
+inline void TimeCounter::enter() {
+  ++theNCalls;
+  start();
+}
+
+inline void TimeCounter::start() {
+  if ( !loop++ ) startClock = std::clock();
+}
+
+inline void TimeCounter::stop() {
+  if ( !--loop ) totTime += std::clock() - startClock;
+}
+
+inline unsigned int TimeCounter::nCalls() const {
+  return theNCalls;
+}
+
+inline double TimeCounter::timeTot() const {
+  return double(totTime)/double(CLOCKS_PER_SEC);
+}
+
+inline double TimeCounter::timePer() const {
+  return timeTot()/double(nCalls());
+}
+
+inline MainTimer::MainTimer(string file)
+  : filename(file) {
+  if ( ThePEG_DEBUG_LEVEL ) {
+    isRunning = true;
+    theCounter->enter();
+  }
+}
+
+inline MainTimer::~MainTimer() {
+  if ( ThePEG_DEBUG_LEVEL && running() ) {
+    theCounter->stop();
+    isRunning = false;
+    statistics(filename);
+  }
+}
+
+inline bool MainTimer::running() {
+  return isRunning;
+}
+
+template <unsigned int I>
+inline Timer<I>::Timer(string name)
+  : started(false) {
+  if ( ThePEG_DEBUG_LEVEL && MainTimer::running() ) {
+    if ( !theCounter ) theCounter = MainTimer::getCounter(I, name);
+    theCounter->enter();
+    started = true;
+  }
+}
+
+template <unsigned int I>
+inline Timer<I>::~Timer() {
+  if ( ThePEG_DEBUG_LEVEL && started ) theCounter->stop();
+}
+
+template <unsigned int I>
+inline void Timer<I>::start() {
+  if ( ThePEG_DEBUG_LEVEL && !started ) {
+    theCounter->start();
+    started = true;
+  }
+}
+
+template <unsigned int I>
+inline void Timer<I>::stop() {
+  if ( ThePEG_DEBUG_LEVEL && started ) {
+    theCounter->stop();
+    started = false;
+  }
+}
+
+template <unsigned int I>
+TimeCounter * Timer<I>::theCounter = 0;
+
+}
+

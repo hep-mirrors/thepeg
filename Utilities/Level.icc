@@ -1,0 +1,14 @@
+// -*- C++ -*-
+
+namespace ThePEG {
+
+template <typename T>
+inline Level<T>::Level(T & newLevel)
+  : theLevel(++newLevel) {}
+
+template <typename T>
+inline Level<T>::~Level() {
+  --theLevel;
+}
+
+}

@@ -1,0 +1,42 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the HoldFlag class.
+//
+
+namespace ThePEG {
+
+template <class T>
+inline HoldFlag<T>::HoldFlag(T & newFlag, const T & holdFlag)
+  : theFlag(newFlag), oldFlag(holdFlag) {
+  std::swap(theFlag, oldFlag);
+}
+
+template <class T>
+inline HoldFlag<T>::
+HoldFlag(T & newFlag, const T & holdFlag, const T & finalFlag)
+  : theFlag(newFlag), oldFlag(holdFlag) {
+  std::swap(theFlag, oldFlag);
+  oldFlag = finalFlag;
+}
+
+template <class T>
+inline HoldFlag<T>::~HoldFlag() {
+  std::swap(theFlag, oldFlag);
+}
+
+inline HoldFlag<bool>::HoldFlag(bool & newFlag, bool holdFlag)
+  : theFlag(newFlag), oldFlag(newFlag) {
+  theFlag = holdFlag;
+}
+
+inline HoldFlag<bool>::HoldFlag(bool & newFlag, bool holdFlag, bool finalFlag)
+  : theFlag(newFlag), oldFlag(finalFlag) {
+  theFlag = holdFlag;
+}
+
+inline HoldFlag<bool>::~HoldFlag() {
+  theFlag = oldFlag;
+}
+
+}

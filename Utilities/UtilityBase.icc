@@ -1,0 +1,40 @@
+// -*- C++ -*-
+
+namespace ThePEG {
+
+template <typename Cont>
+inline LorentzMomentum UtilityBase::sumMomentum(const Cont & c) {
+  return LorentzMomentum(sumMomentum(c.begin(), c.end()));
+}
+
+template <typename Iterator>
+inline LorentzMomentum UtilityBase::sumMomentum(Iterator first, Iterator last) {
+  LorentzMomentum sum;
+  typedef typename std::iterator_traits<Iterator>::value_type PType;
+  typedef ParticleTraits<PType> Traits;
+
+  while ( first != last ) sum += Traits::momentum(*first++);
+  return sum;
+}
+
+template <typename Iterator>
+inline void UtilityBase::transform(Iterator first, Iterator last,
+				   const LorentzRotation & boost) {
+  typedef typename std::iterator_traits<Iterator>::value_type PType;
+  typedef ParticleTraits<PType> Traits;
+
+  while ( first != last ) Traits::transform(*first++, boost);
+}
+
+template <typename Iterator>
+inline LorentzRotation UtilityBase::boostToCM(Iterator first, Iterator last) {
+  return boostToCM(first, last, last, last);
+}
+
+template <typename Iterator>
+inline LorentzRotation UtilityBase::
+boostToCM(Iterator first, Iterator last, Iterator zAxis) {
+  return boostToCM(first, last, zAxis, last);
+}
+
+}

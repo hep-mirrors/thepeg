@@ -1,0 +1,84 @@
+// -*- C++ -*-
+
+namespace ThePEG {
+
+template <typename T, typename WeightType>
+WeightType Selector<T,WeightType>::erase(const T & t) {
+  Selector<T,WeightType> newSelector;
+  WeightType oldsum = 0.0;
+  for ( iterator it = theMap.begin();
+	it != theMap.end(); ++it ) {
+    WeightType r = it->first - oldsum;
+    oldsum = it->first;
+    if ( it->second != t ) newSelector.insert(r, it->second);
+  }
+  theMap.swap(newSelector.theMap);
+  return theSum = newSelector.theSum;
+}
+
+template <typename T, typename WeightType>
+const T & Selector<T,WeightType>::
+select(double rnd, double * remainder) const throw(range_error) {
+  if ( rnd <= 0 )
+    throw range_error("Random number out of range in Selector::select.");
+  const_iterator it = theMap.upper_bound(rnd*theSum);
+  if ( it == theMap.end() )
+    throw range_error("Empty Selector, or random number out of range "
+		      "in Selector::select");
+  if ( remainder ) {
+    if ( it == theMap.begin() )
+      *remainder = rnd*theSum/(it->first);
+    else {
+      const_iterator prit = it;
+      --prit;
+      *remainder = (rnd*theSum - prit->first)/(it->first - prit->first);
+    }
+  }
+  return it->second;
+}
+
+template <typename T, typename WeightType>
+T & Selector<T,WeightType>::
+select(double rnd, double * remainder) throw(range_error) {
+  if ( rnd <= 0 )
+    throw range_error("Random number out of range in Selector::select.");
+  iterator it = theMap.upper_bound(rnd*theSum);
+  if ( it == theMap.end() )
+    throw range_error("Empty Selector, or random number out of range "
+		      "in Selector::select");
+  if ( remainder ) {
+    if ( it == theMap.begin() )
+      *remainder = rnd*theSum/(it->first);
+    else {
+      const_iterator prit = it;
+      --prit;
+      *remainder = (rnd*theSum - prit->first)/(it->first - prit->first);
+    }
+  }
+  return it->second;
+}
+
+template <typename T, typename WeightType>
+template <typename OStream>
+void Selector<T,WeightType>::output(OStream & os) const {
+  os << theSum << size();
+  for ( const_iterator it = theMap.begin(); it != theMap.end(); ++it )
+    os << it->first << it->second;
+}
+
+template <typename T, typename WeightType>
+template <typename IStream>
+void Selector<T,WeightType>::input(IStream & is) {
+  typedef typename MapType::value_type value_type;
+  clear();
+  T t;
+  WeightType weightsum;
+  long n;
+  is >> theSum >> n;
+  while ( n-- ) {
+    is >> weightsum >> t;
+    theMap.insert(theMap.end(), value_type(weightsum, t));
+  }
+}
+
+}

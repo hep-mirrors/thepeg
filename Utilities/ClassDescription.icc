@@ -1,0 +1,132 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of the
+// ClassDescriptionBase, ClassDescriptionTBase, ClassDescription,
+// AbstractClassDescription, NoPIOClassDescription and
+// AbstractNoPIOClassDescription, classes.
+//
+
+namespace ThePEG {
+
+inline ClassDescriptionBase::
+ClassDescriptionBase(string newName, const type_info & newInfo,
+		     int newVersion, string newLibrary)
+  : Named(newName), theVersion(newVersion), theLibrary(newLibrary),
+    theInfo(newInfo), done(false) {
+}
+
+inline ClassDescriptionBase::~ClassDescriptionBase() {}
+
+inline const type_info & ClassDescriptionBase::info() const {
+  return theInfo;
+}
+
+inline int ClassDescriptionBase::version() const {
+  return theVersion;
+}
+
+inline string ClassDescriptionBase::library() const {
+  return theLibrary;
+}
+
+inline bool ClassDescriptionBase::check() const {
+  return done;
+}
+
+inline const ClassDescriptionBase::DescriptionVector &
+ClassDescriptionBase::descriptions() const {
+  return theBaseClasses;
+}
+
+void ClassDescriptionBase::baseClasses(DescriptionVector::iterator first,
+				       DescriptionVector::iterator last) {
+  theBaseClasses = DescriptionVector(first, last);
+  done = true;
+}
+
+template <class T>
+inline ClassDescriptionTBase<T>::ClassDescriptionTBase()
+  : ClassDescriptionBase(Traits::className(), typeid(T), Traits::version(),
+			 Traits::library()) {
+  DescriptionList::Register(*this);
+  T::Init();
+}
+
+template <class T>
+inline ClassDescriptionTBase<T>::~ClassDescriptionTBase() {}
+
+template <class T>
+inline void ClassDescriptionTBase<T>::setup() {
+  DescriptionVector bases;
+  ClassDescriptionHelper<T,1>::addBases(bases);
+  baseClasses(bases.begin(), bases.end());
+}
+
+template <class T>
+inline BPtr ClassDescription<T>::create() const {
+  return Traits::create();
+}
+
+template <class T>
+inline void ClassDescription<T>::
+output(tcBPtr b, PersistentOStream & os) const {
+  Traits::output(Traits::cast(b), os);
+}
+
+template <class T>
+inline void ClassDescription<T>::
+input(tBPtr b, PersistentIStream & is, int oldVersion) const {
+  Traits::input(Traits::cast(b), is, oldVersion);
+}
+
+template <class T>
+inline BPtr AbstractClassDescription<T>::create() const {
+  throw std::logic_error("Tried to instantiate virtual class " + name());
+  return BPtr();
+}
+
+template <class T>
+inline void AbstractClassDescription<T>::
+output(tcBPtr b, PersistentOStream & os) const {
+  Traits::output(Traits::cast(b), os);
+}
+
+template <class T>
+inline void AbstractClassDescription<T>::
+input(tBPtr b, PersistentIStream & is, int oldVersion) const {
+  Traits::input(Traits::cast(b), is, oldVersion);
+}
+
+template <class T>
+inline BPtr NoPIOClassDescription<T>::create() const {
+  return Traits::create();
+}
+
+template <class T>
+inline void NoPIOClassDescription<T>::
+output(tcBPtr, PersistentOStream &) const {
+}
+
+template <class T>
+inline void NoPIOClassDescription<T>::
+input(tBPtr, PersistentIStream &, int) const {
+}
+
+template <class T>
+inline BPtr
+AbstractNoPIOClassDescription<T>::create() const {
+  throw std::logic_error("Tried to instantiate virtual class " + name());
+  return BPtr();
+}
+
+template <class T>
+inline void AbstractNoPIOClassDescription<T>::
+output(tcBPtr, PersistentOStream &) const {
+}
+
+template <class T>
+inline void AbstractNoPIOClassDescription<T>::
+input(tBPtr, PersistentIStream &, int) const {
+}
+
+}

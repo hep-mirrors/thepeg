@@ -1,0 +1,19 @@
+// -*- C++ -*-
+#ifndef ThePEG_SimplePhaseSpace_XH
+#define ThePEG_SimplePhaseSpace_XH
+
+// #include "SimplePhaseSpace.fh"
+
+namespace ThePEG {
+
+struct ImpossibleKinematics: public std::runtime_error {
+  ImpossibleKinematics()
+    : runtime_error("Impossible kinematics in SimplePhaseSpace.") {
+    breakThePEG();
+  }
+};
+
+}
+
+#endif /* ThePEG_SimplePhaseSpace_XH */
+

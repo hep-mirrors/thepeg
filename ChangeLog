@@ -1,0 +1,6 @@
+2003-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* First check-in of ThePEG. This is just what was previously
+	Pythia7 but stripped from any pythia-specific classes.  Pythia7
+	still exists but contains only pythia-specific classes which
+	depend on ThePEG.
