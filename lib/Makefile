@@ -22,7 +22,7 @@ lib: libThePEG.so libCLHEP.so
 libCLHEP.so:
 	./fixCLHEP $(CLHEPPATH) $(CLHEPLIB)
 
-LIBFILES = libThePEG.so libCLHEP.so
+LIBFILES = libThePEG.so
 
 libThePEG.so: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
@@ -30,4 +30,5 @@ libThePEG.so: $(OBJECTS)
 install-local:
 	mkdir -p $(INSTALLLIB); cp g++dep ThePEG.el $(INSTALLLIB)
 	ln -sfn $(INSTALLLIB) $(PREFIX)/lib/ThePEG/current
+	SRCDIR=`pwd`; cd $(INSTALLLIB); $$SRCDIR/fixCLHEP $(CLHEPPATH) $(CLHEPLIB)
 
