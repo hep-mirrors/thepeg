@@ -5,6 +5,8 @@
 #ifndef ThePEG_FermionSpinInfo_FH
 #define ThePEG_FermionSpinInfo_FH
 
+#include "ThePEG/Config/Pointers.h"
+
 namespace ThePEG {
 namespace Helicity {
 

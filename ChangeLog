@@ -1,3 +1,13 @@
+2004-09-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Doc/refman.conf: Updated to suit doxygen version 1.3.8.
+
+	* Helicity/*.fh: Added include of Pointer.h to help doxygen
+	documentation.
+
+	* Helicity/HelicityDefinitions.h: Added documentation of Helicity
+	namespace.
+
 2004-09-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Math.*: Added sign transfer function.

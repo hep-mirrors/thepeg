@@ -5,6 +5,8 @@
 #ifndef ThePEG_HelicityVertex_FH
 #define ThePEG_HelicityVertex_FH
 
+#include "ThePEG/Config/Pointers.h"
+
 namespace ThePEG {
 namespace Helicity {
 

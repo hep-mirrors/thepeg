@@ -5,6 +5,8 @@
 #ifndef ThePEG_TensorSpinInfo_FH
 #define ThePEG_TensorSpinInfo_FH
 
+#include "ThePEG/Config/Pointers.h"
+
 namespace ThePEG {
 namespace Helicity {
 

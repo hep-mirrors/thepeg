@@ -17,6 +17,11 @@
  */
 
 namespace ThePEG {
+
+/**
+ * The Helicity namespace contains classes for spin representation
+ * classes in ThePEG.
+ */
 namespace Helicity {
 
 /**
