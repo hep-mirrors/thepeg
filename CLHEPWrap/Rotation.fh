@@ -12,13 +12,14 @@
 
 namespace CLHEP {
 
-  typedef HepRotation Rotation;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef HepRotation Rotation;
 
 }
 
 namespace ThePEG {
 
-  using CLHEP::Rotation;
+using CLHEP::Rotation;
 
 }
 

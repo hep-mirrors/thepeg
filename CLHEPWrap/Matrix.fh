@@ -13,9 +13,12 @@
 
 namespace CLHEP {
 
-  typedef HepMatrix Matrix;
-  typedef HepSymMatrix SymMatrix;
-  typedef HepVector Vector;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef HepMatrix Matrix;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef HepSymMatrix SymMatrix;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef HepVector Vector;
 
 }
 

@@ -12,6 +12,7 @@
 
 namespace CLHEP {
 
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
 typedef HepLorentzVector LorentzVector;
 
 }

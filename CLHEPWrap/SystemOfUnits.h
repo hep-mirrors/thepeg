@@ -2,7 +2,8 @@
 #ifndef ThePEG_SystemOfUnits_H
 #define ThePEG_SystemOfUnits_H
 
-// Wrapper around the SystemOfUnits.h header file in CLHEP.
+/** @file SystemOfUnits.h is a wrapper around the
+ *  SystemOfUnits.h header file from CLHEP. */
 
 #include "CLHEP.h"
 #include "CLHEP/Units/SystemOfUnits.h"

@@ -12,13 +12,14 @@
 
 namespace CLHEP {
 
-  typedef HepRandomEngine RandomEngine;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef HepRandomEngine RandomEngine;
 
 }
 
 namespace ThePEG {
 
-  using CLHEP::RandomEngine;
+using CLHEP::RandomEngine;
 
 }
 

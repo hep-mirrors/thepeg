@@ -2,7 +2,8 @@
 #ifndef ThePEG_PhysicalConstants_H
 #define ThePEG_PhysicalConstants_H
 
-// Wrapper around the PhysicalConstants.h header file from CLHEP.
+/** @file PhysicalConstants.h is a wrapper around the
+ *  PhysicalConstants.h header file from CLHEP. */
 
 #include "CLHEP.h"
 #include "CLHEP/Units/PhysicalConstants.h"

@@ -12,13 +12,15 @@
 
 namespace CLHEP {
 
-  typedef RandExponential ThePEGRandExponential;
+/** Typedef in the CLHEP namespace to avoid clashes. */
+typedef RandExponential ThePEGRandExponential;
 
 }
 
 namespace ThePEG {
 
-  typedef CLHEP::ThePEGRandExponential RandExponential;
+/** Typedef in the ThePEG namespace to avoid clashes. */
+typedef CLHEP::ThePEGRandExponential RandExponential;
 
 }
 

@@ -2,9 +2,10 @@ f// -*- C++ -*-
 #ifndef ThePEG_Rotation_H
 #define ThePEG_Rotation_H
 
-// Wrapper around the header file of the <!id>HepRotation<!!id> class
-// in CLHEP. The class is aliased as <!id>CLHEP::Rotation<!!id> and
-// made available in the <!id>ThePEG<!!id> namespace.
+/** @file Rotation.h is a wrapper around the header file of the
+ *  <code>HepRotation</code> class in CLHEP. The class is
+ *  aliased as CLHEP::Rotation and made available in the ThePEG
+ *  namespace. */
 
 #include "Rotation.fh"
 

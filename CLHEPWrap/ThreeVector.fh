@@ -12,13 +12,14 @@
 
 namespace CLHEP {
 
-  typedef Hep3Vector Vector3;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef Hep3Vector Vector3;
 
 }
 
 namespace ThePEG {
 
-  using CLHEP::Vector3;
+using CLHEP::Vector3;
 
 }
 

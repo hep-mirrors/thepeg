@@ -1,22 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_GenEventConverter_H
 #define ThePEG_GenEventConverter_H
-//
-// This is the declaration of the <!id>GenEventConverter<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>GenEventConverter<!!id> defines only one public static
-// function which converts a
-// <!id>ThePEG::<!!id><!class>Event<!!class> object to a
-// <!id>HepMC::GenEvent<!!id>. All mother-daughter relationships and
-// colour information is preserved.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Event.html">Event.h</a>,
-// <a href="http:Particle.html">Particle.h</a>.
-// 
+// This is the declaration of the GenEventConverter class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "CLHEP/HepMC/GenEvent.h"
@@ -26,85 +11,143 @@
 
 namespace ThePEG {
 
+/** Alias for the HepMC namespace. */
 namespace CLHEPMC = HepMC;
 
+/**
+ * The GenEventConverter defines only one public static function which
+ * converts a ThePEG::Event object to a
+ * <code>HepMC::GenEvent</code>. All mother-daughter relationships and
+ * colour information is preserved.
+ *
+ * @see Event,
+ * @see Particle.
+ *
+ * @author Leif Lönnblad
+ */
 class GenEventConverter  {
 
 public:
 
+  /** Exception class for GenEventConverter. */
   struct GenEventConverterException: public Exception {
+    /** Default constructor */
     GenEventConverterException() {
       theMessage << "In GenEventConverter: ";
     }
   };
 
+  /**
+   * Help class to represent a temporary vertex which can be
+   * converted to a GenVertex.
+   */
   struct Vertex {
-    // Help class to represent a temporary vertex which can be
-    // converted to a Genvertex.
+    /** Particles going in and out of the vertex. */
     tcParticleSet in, out;
   };
 
+  /** Forward typedefs from CLHEPMC. */
   typedef CLHEPMC::GenParticle GenParticle;
+  /** Forward typedefs from CLHEPMC. */
   typedef CLHEPMC::GenEvent GenEvent;
+  /** Forward typedefs from CLHEPMC. */
   typedef CLHEPMC::GenVertex GenVertex;
+  /** Map ThePEG particles to HepMC particles. */
   typedef map<tcPPtr,GenParticle*> ParticleMap;
+  /** Map ThePEG colour lines to HepMC colour indices. */
   typedef map<tcColinePtr,long> FlowMap;
+  /** Map ThePEG particles to vertices. */
   typedef map<tcPPtr,Vertex*> VertexMap;
+  /** Map vertices to GenVertex */
   typedef map<const Vertex *, GenVertex*> GenVertexMap;
 
 public:
 
+  /**
+   * Convert a ThePEG::Event to a HepMC::GenEvent. The caller is
+   * responsible for deleting the constructed GenEvent object.
+   */
   static GenEvent * convert(const Event & ev);
-  // Convert a ThePEG::Event to a HepMC::GenEvent. The caller is
-  // responsible for deleting the GenEvent object.
 
 private:
 
-private:
-
+  /**
+   * The only proper constructor is private. The class is only
+   * instantiated within the convert method.
+   */
   GenEventConverter(const Event & ev);
-  // The only proper constructor is private. The class is only
-  // instantiated within the convert method.
 
+  /**
+   * Default constructor is unimplemented and private and should never be used.
+   */
   GenEventConverter();
+
+  /**
+   * Copy constructor is unimplemented and private and should never be used.
+   */
   GenEventConverter(const GenEventConverter &);
+
+  /**
+   * Assignment is unimplemented and private and should never be used.
+   */
   GenEventConverter & operator=(const GenEventConverter &);
-  // These are unimplemented and private and should never be used.
 
 private:
 
+  /**
+   * Create a GenParticle from a ThePEG Particle.
+   */
   GenParticle * createParticle(tcPPtr p) const;
-  // Create a GenParticle from a ThePEG Particle.
 
+  /**
+   * Join the decay vertex of the parent with the decay vertex of the
+   * child.
+   */
   void join(tcPPtr parent, tcPPtr child);
-  // Join the decay vertex of the parent with the decay vertex of the
-  // child.
 
+  /**
+   * Create a GenVertex from a temporary Vertex.
+   */
   GenVertex * createVertex(Vertex * v);
-  // Create a GenVertex from a temporary Vertex.
 
 private:
 
+  /**
+   * The constructed GenEvent.
+   */
   GenEvent * geneve;
-  // The constructed GenEvent.
 
+  /**
+   * The translation table between the ThePEG particles and the
+   * GenParticles.
+   */
   ParticleMap pmap;
-  // The translation table between the ThePEG particles and the
-  // GenParticles.
 
+  /**
+   * The translation table between ThePEG ColourLine objects and HepMC
+   * Flow indices.
+   */
   FlowMap flowmap;
-  // Thetranslation table between ThePEG ColourLine objects and HepMC
-  // Flow indices.
 
+  /**
+   * All temporary vertices created.
+   */
   vector<Vertex> vertices;
-  // All temporary vertices created.
 
+  /**
+   * The mapping of particles to their production vertices.
+   */
   VertexMap prov;
-  VertexMap decv;
-  // The mapping of particles to their production and decy vertices.
 
+  /**
+   * The mapping of particles to their decy vertices.
+   */
+  VertexMap decv;
+
+  /**
+   * The mapping between temporary vertices and the created GenVertex Objects.
+   */
   GenVertexMap vmap;
-  // The mapping between our vertices and the created GenVertex Objects.
 
 };
 

@@ -12,13 +12,15 @@
 
 namespace CLHEP {
 
-  typedef RandBreitWigner ThePEGRandBreitWigner;
+/** Typedef in the CLHEP namespace to avoid clashes. */
+typedef RandBreitWigner ThePEGRandBreitWigner;
 
 }
 
 namespace ThePEG {
 
-  typedef CLHEP::ThePEGRandBreitWigner RandBreitWigner;
+/** Typedef in the ThePEG namespace to avoid clashes. */
+typedef CLHEP::ThePEGRandBreitWigner RandBreitWigner;
 
 }
 

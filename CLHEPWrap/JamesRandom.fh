@@ -12,7 +12,8 @@
 
 namespace CLHEP {
 
-  typedef HepJamesRandom JamesRandom;
+/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
+typedef HepJamesRandom JamesRandom;
 
 }
 
