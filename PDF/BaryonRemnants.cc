@@ -69,7 +69,7 @@ generate(PartonBin & pb, const double * r,
 
   BaryonRemnantsInfo * ip;
   if ( !(ip = dynamic_cast<BaryonRemnantsInfo*>(pb.remnantInfo())) ) {
-    // If this is the first time for this parton bin, generate som
+    // If this is the first time for this parton bin, generate some
     // information to save.
     ip = new BaryonRemnantsInfo;
     pb.remnantInfo(ip);

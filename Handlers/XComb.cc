@@ -35,7 +35,7 @@ XComb::XComb()
     theLastS(Energy2()), theLastSHat(Energy2()), theLastY(0.0),
     theLastP1P2(make_pair(1.0, 1.0)), theLastL1L2(make_pair(1.0, 1.0)),
     theLastX1X2(make_pair(1.0, 1.0)), theLastE1E2(make_pair(0.0, 0.0)),
-    theMaxEnergy(0.0*GeV), isMirror(false), theNDim(0),
+    theLastScale(0.0*GeV2), theMaxEnergy(0.0*GeV), isMirror(false), theNDim(0),
     partonDims(make_pair(0, 0)), theLastDiagramIndex(0) {}
 
 XComb::
@@ -50,7 +50,8 @@ XComb(Energy newMaxEnergy, const cPDPair & inc,
     theSumWeight(0.0), theLastS(Energy2()), theLastSHat(Energy2()),
     theLastY(0.0), theLastP1P2(make_pair(1.0, 1.0)),
     theLastL1L2(make_pair(1.0, 1.0)), theLastX1X2(make_pair(1.0, 1.0)),
-    theLastE1E2(make_pair(0.0, 0.0)), theMaxEnergy(newMaxEnergy), theME(newME),
+    theLastE1E2(make_pair(0.0, 0.0)), theLastScale(0.0*GeV2),
+    theMaxEnergy(newMaxEnergy), theME(newME),
     theDiagrams(newDiagrams), isMirror(mir), theLastDiagramIndex(0) {
   thePartons = cPDPair(partonBins().first->parton(),
 		       partonBins().second->parton());
@@ -85,6 +86,7 @@ XComb::XComb(const XComb & x)
     thePartonExtractor(x.thePartonExtractor),
     theCuts(x.theCuts), theParticles(x.theParticles),
     thePartons(x.thePartons), thePartonBins(x.thePartonBins),
+    thePartonBinInstances(x.thePartonBinInstances),
     theNAttempted(x.theNAttempted), theNAccepted(x.theNAccepted),
     theSumWeight(x.theSumWeight), theLastParticles(x.theLastParticles),
     theLastPartons(x.theLastPartons), theLastS(x.theLastS),

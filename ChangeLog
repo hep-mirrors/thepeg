@@ -1,3 +1,8 @@
+2003-07-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/XComb.cc: Fixed floating underflow problem due to
+	uninitialized field in constructor.
+
 2003-06-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/XComb.*: Prepared to use the new PartonBinInstance
