@@ -232,9 +232,7 @@ bool Step::addDecayProduct(tcPPtr par, tPPtr child, bool fixColour) {
   } else {
     if ( parent != collision()->incoming().first &&
 	 parent != collision()->incoming().second &&
-	 ( parent->children().empty() ||
-	   !member(theParticles, parent->children()[0]) ) )
-      return false;
+	 parent->children().empty() ) return false;
   }
   parent->rep().theChildren.push_back(child);
   child->rep().theParents.push_back(parent);

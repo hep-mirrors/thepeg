@@ -572,7 +572,8 @@ struct BaseClassTrait<" namespacequalifyer "THECLASS,1> {
 // The following template specialization informs ThePEG about the
 // name of this class and the shared object where it is defined.
 template <>
-struct ClassTraits<" namespacequalifyer "THECLASS>: public ClassTraitsBase<" namespacequalifyer "THECLASS> {
+struct ClassTraits<" namespacequalifyer "THECLASS>
+  : public ClassTraitsBase<" namespacequalifyer "THECLASS> {
   static string className() { return \"/" namespace "/THECLASS\"; }
   // Return the class name.
   static string library() { return \"THECLASS.so\"; }
@@ -781,7 +782,6 @@ s#include file for the base class: ")
   (p7sourcefile namespace class persist concrete "")
   (p7iheaderfile namespace class base interfaced concrete)
   (p7headerfile namespace class base baseheader interfaced persist concrete ""))
-
 (defun P7-class-files (class)
   "Create the .h, .icc and .cc files with skeletons suitable for a class
 CLASS. THe user will be prompted for the base class and the main include file.
@@ -827,11 +827,67 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	((string-equal base "MEBase") (setq interfaced t))
 	((string-equal base "PDFBase") (setq interfaced t))
 	(t (setq interfaced (y-or-n-p "Will this class be interfaced "))))
+
+  (setq declarations (cond ((string-equal base "MEBase")
+			    (p7-ME-declare class base))
+			   (t "")))
+  (setq implementations (cond ((string-equal base "MEBase")
+			       (p7-ME-implement class base))
+			      (t "")))
+
   (setq persist (y-or-n-p "Will this class be persistent "))
   (setq concrete (y-or-n-p "Will this class be concrete "))
-  (p7sourcefile namespace class persist concrete "")
+  (p7sourcefile namespace class persist concrete implementations)
   (p7iheaderfile namespace class base interfaced concrete)
-  (p7headerfile namespace class base baseheader interfaced persist concrete ""))
+  (p7headerfile namespace class base baseheader interfaced
+		persist concrete declarations))
+(defun P7-ME-class-files (class)
+  "Create the .h, .icc and .cc files with skeletons suitable for a class
+CLASS inheriting from the MEBase class. The user will be prompted for the
+base class and the main include file. The class may or may not be
+PERSISTENT and/or CONCRETE."
+  (interactive "sClass Name: ")
+  (setq base (read-from-minibuffer "Base class name: " "MEBase"))
+  (setq namespace (p7-get-namespace class))
+  (setq class (p7-get-class class))
+  (setq baseheader "ThePEG/MatrixElement/MEBase.h")
+  (setq baseheader (read-from-minibuffer "#include file for the base class: "
+					 baseheader))
+  (setq interfaced t)
+  (setq persist (y-or-n-p "Will this class be persistent "))
+  (setq concrete (y-or-n-p "Will this class be concrete "))
+
+  (setq declare (p7-ME-declare class base))
+
+  (setq implement (p7-ME-implement class base))
+
+  (p7sourcefile namespace class persist concrete implement)
+  (p7iheaderfile namespace class base interfaced concrete)
+  (p7headerfile namespace class base baseheader
+		interfaced persist concrete declare))
+
+(defun p7-ME-class-files ()
+  (interactive)
+  (P7-specific-class-files "MEBase" "ThePEG/MatrixElement/MEBase.h" 'p7-ME-declare 'p7-ME-implement))
+
+(defun P7-specific-class-files (base baseheader declfn implfn)
+  (setq class (read-from-minibuffer "Class name: "))
+  (setq base (read-from-minibuffer "Base class name: " "MEBase"))
+  (setq namespace (p7-get-namespace class))
+  (setq class (p7-get-class class))
+  (setq baseheader (read-from-minibuffer "#include file for the base class: "
+					 baseheader))
+  (setq interfaced t)
+  (setq persist (y-or-n-p "Will this class be persistent "))
+  (setq concrete (y-or-n-p "Will this class be concrete "))
+  (setq declare (funcall declfn class base))
+
+  (setq implement (funcall implfn class base))
+
+  (p7sourcefile namespace class persist concrete implement)
+  (p7iheaderfile namespace class base interfaced concrete)
+  (p7headerfile namespace class base baseheader
+		interfaced persist concrete declare))
 
 (defun P7StepHandler-files (class base baseheader)
   "Create the .h, .icc and .cc files with skeletons suitable for a
@@ -875,10 +931,9 @@ handle(PartialCollisionHandler & ch, const tcPVector & tagged,
 
 (defun p7-get-namespace (class)
   "Return the namespace part in an \"namepace::class\" string"
-  (interactive  "sClass Name: ")
-  (message (cond ((cdr (split-string class "::"))
+  (cond ((cdr (split-string class "::"))
 		   (car (split-string class "::")))
-		 (t "ThePEG"))))
+		 (t "ThePEG")))
 
 (defun p7-get-class (class)
   "Return the namespace part in an \"namepace::class\" string"
@@ -1023,3 +1078,164 @@ handle(PartialCollisionHandler & ch, const tcPVector & tagged,
 			   (concat "&" class "::def" name))))))
   (insert-string ");")
   (p7-switch-option (concat "interface" name)))
+
+(defun p7-ME-declare (class base)
+  (concat "
+public:
+
+  virtual unsigned int orderInAlphaS() const;
+  virtual unsigned int orderInAlphaEW() const;
+  // Return the order in respective couplings in which this matrix
+  // element is given.
+
+  virtual double me2() const;
+  // Return the matrix element for the kinematical configuation
+  // previously provided by the last call to setKinematics(), suitably
+  // scaled by sHat() to give a dimension-less number.
+
+  virtual Energy2 scale() const;
+  // Return the scale associated with the last set phase space point.
+
+  virtual void setKinematics();
+  // Set the typed and momenta of the incoming and outgoing partons to
+  // be used in subsequent calls to me() and colourGeometries()
+  // according to the associated XComb object. If the fun ction is
+  // overridden in a sub class the new function must call the base
+  // class one first.
+
+  virtual int nDim() const;
+  // The number of internal degreed of freedom used in the matrix
+  // element. This default version returns 0;
+
+  virtual bool generateKinematics(const double * r);
+  // Generate internal degrees of freedom given 'nDim()' uniform
+  // random numbers in the interval ]0,1[. To help the phase space
+  // generator, the 'dSigHatDR' should be a smooth function of these
+  // numbers, although this is not strictly necessary. THe return
+  // value should be true of the generation succeeded.
+
+  virtual CrossSection dSigHatDR() const;
+  // Return the matrix element squared differential in the variables
+  // given by the last call to 'generateKinematics()'.
+
+  virtual void getDiagrams() const;
+  // Add all possible diagrams with the add() function.
+
+  inline virtual Selector<DiagramIndex> diagrams(const DiagramVector &) const;
+  // With the information previously supplied with the
+  // setKinematics(...) method, a derived class may optionally
+  // override this method to weight the given diagrams with their
+  // (although certainly not physical) relative probabilities.
+
+  virtual Selector<const ColourLines *>
+  colourGeometries(tcDiagPtr diag) const;
+  // Return a Selector with possible colour geometries for the selected
+  // diagram weighted by their relative probabilities.
+
+"))
+
+(defun p7-ME-implement (class base)
+(concat "
+
+#include \"ThePEG/PDT/EnumParticles.h\"
+#include \"ThePEG/MatrixElement/Tree2toNDiagram.h\"
+
+void " class "::getDiagrams() const {
+  // Here is an example on how to specify diagrams.
+
+  tcPDPtr g = getParticleData(ParticleID::g);
+  for ( int i = 1; i <= 5; ++i ) {
+    tcPDPtr q = getParticleData(i);
+    tcPDPtr qb = q->CC();
+
+    // For each flavour we add:
+    add(new_ptr((Tree2toNDiagram(3), q, qb, qb, 1, g, 2, g, -1)));
+    // t-channel q + qbar -> g + g
+    add(new_ptr((Tree2toNDiagram(3), q, qb, qb, 2, g, 1, g, -2)));
+    // u-channel q + qbar -> g + g
+    add(new_ptr((Tree2toNDiagram(2), q, qb, 1, g , 3, g, 3, g, -3)));
+    // s-channel q + qbar -> g + g
+  }
+}
+
+Energy2 " class "::scale() const {
+  return sHat();
+}
+
+int " class "::nDim() const {
+  return 1;
+}
+
+void " class "::setKinematics() {
+  " base "::setKinematics(); // Always call the base class method first.
+}
+
+bool " class "::generateKinematics(const double * r) {
+  // Here you can use nDim() random numbers in the vector provided
+  // to generate the internal kinematics. Note that sHat() has
+  // already been given from the outside.
+
+  // Save the jacobian dPS/dr for later use.
+  jacobian(1.0);
+
+  return false; // Return false if matrix element was zero.
+}
+
+double " class "::me2() const {
+  return 0.0;
+}
+
+CrossSection " class "::dSigHatDR() const {
+  return me2()*jacobian()/sHat(); // Here we can add other prefactors coming
+                                  // from the phase space integration.
+}
+
+unsigned int " class "::orderInAlphaS() const {
+  return 0;
+}
+
+unsigned int " class "::orderInAlphaEW() const {
+  return 0;
+}
+
+Selector<MEBase::DiagramIndex>
+" class "::diagrams(const DiagramVector & diags) const {
+  // This example corresponds to the diagrams specified in the example
+  // in the getDiagrams() function.
+
+  Selector<DiagramIndex> sel;
+  for ( DiagramIndex i = 0; i < diags.size(); ++i ) 
+    if ( diags[i]->id() == -1 ) sel.insert(1.0, i);
+    else if ( diags[i]->id() == -2 )  sel.insert(1.0, i);
+    else if ( diags[i]->id() == -3 )  sel.insert(1.0, i);
+  // You probably do not want equal weights here...
+  return sel;
+
+  // If there is only one possible diagram you can override the
+  // MEBase::diagram function instead.
+
+}
+
+Selector<const ColourLines *>
+" class "::colourGeometries(tcDiagPtr diag) const {
+  // This example corresponds to the diagrams specified in the example
+  // in the getDiagrams() function.
+
+  static ColourLines ctST(\"1 4, -4 -2 5, -5 -3\");
+  static ColourLines ctSU(\"1 5, -5 -2 4, -4 -3\");
+
+  Selector<const ColourLines *> sel;
+  if ( diag->id() == -1 || diag->id() == -3 )
+    sel.insert(1.0, &ctST);
+  else
+    sel.insert(1.0, &ctSU);
+  return sel;
+
+  // If there is only one possible colour geometry you can override the
+  // MEBase::selectColourGeometry function instead.
+
+}
+
+"))
+
+
