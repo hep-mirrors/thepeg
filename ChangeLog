@@ -1,3 +1,14 @@
+2004-05-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/BreitWignerMass.cc: Now uses the new asymmetric width cuts.
+
+	* PDT/ParticleData.o: Changed the internal representation of the
+	width cut to one upper and one lower cut. Added corresponding
+	access functions and Parameter interfaces. Also changed the
+	massMax and massMin functions accordingly. The old set and get
+	functions for the width cut now sets both the upper and lower cut
+	and returns the maximum of the two.
+
 2004-05-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.cc: Added doinitrun implementation to

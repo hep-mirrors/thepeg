@@ -31,7 +31,8 @@ ParticleData::ParticleData()
 
 ParticleData::ParticleData(const ParticleData & pd)
   : Interfaced(pd), theId(pd.theId), thePDGName(pd.thePDGName),
-    theMass(pd.theMass), theWidth(pd.theWidth), theWidthCut(pd.theWidthCut),
+    theMass(pd.theMass), theWidth(pd.theWidth),
+    theWidthUpCut(pd.theWidthUpCut), theWidthLoCut(pd.theWidthLoCut),
     theCTau(pd.theCTau), theCharge(pd.theCharge), theSpin(pd.theSpin),
     theColor(pd.theColor), theMassGenerator(pd.theMassGenerator),
     isStable(pd.isStable), theDecaySelector(pd.theDecaySelector),
@@ -45,7 +46,8 @@ ParticleData::ParticleData(const ParticleData & pd)
 ParticleData::
 ParticleData(long newId, string newPDGName)
   : theId(newId), thePDGName(newPDGName), theMass(-1.0*GeV), theWidth(-1.0*GeV),
-    theWidthCut(-1.0*GeV), theCTau(-1.0*mm), theCharge(PDT::ChargeUnknown),
+    theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
+    theCharge(PDT::ChargeUnknown),
     theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
     variableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
     theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
@@ -73,7 +75,8 @@ void ParticleData::readSetup(istream & is) throw(SetupException) {
      >> ienum(theDefColour) >> ienum(theDefSpin) >> ienum(isStable);
   theMass = theDefMass;
   theWidth = theDefWidth;
-  theWidthCut = theDefCut;
+  theWidthUpCut = theDefCut;
+  theWidthLoCut = theDefCut;
   theCTau = theDefCTau;
   theCharge = theDefCharge;
   theColor = theDefColour;
@@ -124,10 +127,16 @@ Energy ParticleData::width(Energy wi) {
   return theWidth;
 }
 
-Energy ParticleData::widthCut(Energy wci) {
-  theWidthCut = wci;
-  if ( synchronized() && CC() ) CC()->theWidthCut = theWidthCut;
-  return theWidthCut;
+Energy ParticleData::widthUpCut(Energy wci) {
+  theWidthUpCut = wci;
+  if ( synchronized() && CC() ) CC()->theWidthUpCut = theWidthUpCut;
+  return theWidthUpCut;
+}
+
+Energy ParticleData::widthLoCut(Energy wci) {
+  theWidthLoCut = wci;
+  if ( synchronized() && CC() ) CC()->theWidthLoCut = theWidthLoCut;
+  return theWidthLoCut;
 }
 
 Length ParticleData::cTau(Length ti) {
@@ -199,7 +208,8 @@ void ParticleData::synchronize() {
   isStable = CC()->isStable;
   theMass = CC()->theMass;
   theWidth = CC()->theWidth;
-  theWidthCut = CC()->theWidthCut;
+  theWidthUpCut = CC()->theWidthUpCut;
+  theWidthLoCut = CC()->theWidthLoCut;
   theCTau = CC()->theCTau;
   theCharge = PDT::Charge(-CC()->theCharge);
   theSpin = CC()->theSpin;
@@ -391,7 +401,23 @@ Energy ParticleData::defCut() const {
 }
 
 Energy ParticleData::maxCut() const {
-  return 10.0*max(theWidthCut,theDefCut);
+  return 10.0*max(max(theWidthUpCut, theWidthLoCut), theDefCut);
+}
+
+void ParticleData::setUpCut(Energy ci) {
+  widthUpCut(ci);
+}
+
+Energy ParticleData::getUpCut() const {
+  return widthUpCut();
+}
+
+void ParticleData::setLoCut(Energy ci) {
+  widthLoCut(ci);
+}
+
+Energy ParticleData::getLoCut() const {
+  return widthLoCut();
 }
 
 void ParticleData::setCTau(Length ti) {
@@ -517,20 +543,10 @@ struct ModeOrdering {
 void ParticleData::persistentOutput(PersistentOStream & os) const {
   multiset<tcDMPtr,ModeOrdering,Allocator<tcDMPtr> >
     modes(theDecayModes.begin(), theDecayModes.end());
-//    os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
-//       << ounit(theWidthCut, GeV) << ounit(theCTau, mm)
-//       << long(theCharge) << long(theSpin) << long(theColor) << theMassGenerator
-//       << isStable << modes << theDecaySelector << theWidthGenerator
-//       << variableRatio << theAntiPartner << syncAnti << ounit(theDefMass, GeV)
-//       << ounit(theDefWidth, GeV) << ounit(theDefCut, GeV)
-//       << ounit(theDefCTau, mm) << long(theDefColour) << long(theDefCharge)
-//       << long(theDefSpin);
-  // for some reason I had to divide this << statements into two in order
-  // for the gcc compiler to optimize it correctly...
-
   os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
-     << ounit(theWidthCut, GeV) << ounit(theCTau, mm) << oenum(theCharge)
-     << oenum(theSpin) << oenum(theColor);
+     << ounit(theWidthUpCut, GeV) << ounit(theWidthLoCut, GeV)
+     << ounit(theCTau, mm) << oenum(theCharge) << oenum(theSpin)
+     << oenum(theColor);
   os << theMassGenerator << isStable << modes << theDecaySelector
      << theWidthGenerator << variableRatio << theAntiPartner << syncAnti
      << ounit(theDefMass, GeV) << ounit(theDefWidth, GeV)
@@ -540,9 +556,9 @@ void ParticleData::persistentOutput(PersistentOStream & os) const {
 
 void ParticleData::persistentInput(PersistentIStream & is, int) {
   is >> theId >> thePDGName >> iunit(theMass, GeV) >> iunit(theWidth, GeV)
-     >> iunit(theWidthCut, GeV) >> iunit(theCTau, mm)
-     >> ienum(theCharge) >> ienum(theSpin) >> ienum(theColor)
-     >> theMassGenerator >> isStable
+     >> iunit(theWidthUpCut, GeV) >> iunit(theWidthLoCut, GeV)
+     >> iunit(theCTau, mm) >> ienum(theCharge) >> ienum(theSpin)
+     >> ienum(theColor) >> theMassGenerator >> isStable
      >> theDecayModes >> theDecaySelector >> theWidthGenerator >> variableRatio
      >> theAntiPartner >> syncAnti >> iunit(theDefMass, GeV)
      >> iunit(theDefWidth, GeV) >> iunit(theDefCut, GeV)
@@ -586,10 +602,27 @@ void ParticleData::Init() {
      &ParticleData::theDefWidth, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
      false, true, true);
 
+  static Parameter<ParticleData,Energy> interfaceWidthUpCut
+    ("WidthUpCut",
+     "The upper hard cutoff in GeV in generated mass, which is the maximum "
+     "allowed upwards deviation from the nominal mass.",
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     &ParticleData::setUpCut, &ParticleData::getUpCut,
+     0, &ParticleData::maxCut, &ParticleData::defCut);
+  
+  static Parameter<ParticleData,Energy> interfaceWidthLoCut
+    ("WidthLoCut",
+     "The lower hard cutoff in GeV in generated mass, which is the maximum "
+     "allowed downwards deviation from the nominal mass.",
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     &ParticleData::setLoCut, &ParticleData::getLoCut,
+     0, &ParticleData::maxCut, &ParticleData::defCut);
+  
   static Parameter<ParticleData,Energy> interfaceWidthCut
     ("WidthCut",
      "The hard cutoff in GeV in generated mass, which is the maximum "
-     "allowed deviation from the nominal mass.",
+     "allowed deviation from the nominal mass. Sets both the upper and lower "
+     "cut. (The displayed value is the maximium of the upper and lower cut.)",
      0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
      &ParticleData::setCut, &ParticleData::getCut,
      0, &ParticleData::maxCut, &ParticleData::defCut);
@@ -597,7 +630,8 @@ void ParticleData::Init() {
   static Parameter<ParticleData,Energy> interfaceDefWidthCut
     ("DefaultWidthCut",
      "The default hard cutoff in GeV in generated mass, which is the maximum "
-     "allowed deviation from the nominal mass.",
+     "allowed deviation from the nominal mass. For the actual cutoff, the "
+     "upper and lower cut can be set separately.",
      &ParticleData::theDefCut, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
      false, true, true);
   

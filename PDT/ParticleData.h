@@ -102,9 +102,17 @@ public:
   // Set/get the width. If no width is specified, it is calculated
   // from the lifetime.
 
-  Energy widthCut(Energy);
+  inline Energy widthCut(Energy);
   inline Energy widthCut() const;
-  // Set/get the width cut.
+  // Set/get the width cut. Both upper and lower cut is set.
+
+  Energy widthUpCut(Energy);
+  inline Energy widthUpCut() const;
+  // Set/get the upper width cut.
+
+  Energy widthLoCut(Energy);
+  inline Energy widthLoCut() const;
+  // Set/get the lower width cut.
 
   Length cTau(Length);
   inline Length cTau() const;
@@ -214,7 +222,8 @@ private:
 
   Energy theMass;
   Energy theWidth;
-  Energy theWidthCut;
+  Energy theWidthUpCut;
+  Energy theWidthLoCut;
   Length theCTau;
   // Mass, width, width cut and lifetime.
 
@@ -264,6 +273,10 @@ private:
   Energy getCut() const;
   Energy defCut() const;
   Energy maxCut() const;
+  void setUpCut(Energy);
+  Energy getUpCut() const;
+  void setLoCut(Energy);
+  Energy getLoCut() const;
   Length theDefCTau;
   void setCTau(Length);
   Length getCTau() const;

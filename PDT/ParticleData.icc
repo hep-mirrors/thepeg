@@ -28,11 +28,11 @@ inline Energy ParticleData::mass() const {
 }
 
 inline Energy ParticleData::massMax() const {
-  return mass() + widthCut();
+  return mass() + widthUpCut();
 }
 
 inline Energy ParticleData::massMin() const {
-  return max(mass() - widthCut(), 0.0*GeV);
+  return max(mass() - widthLoCut(), 0.0*GeV);
 }
 
 inline Energy ParticleData::constituentMass() const {
@@ -45,8 +45,21 @@ inline Energy ParticleData::width() const {
       ( theCTau == 0.0? FLT_MAX: 0.0 ) );
 }
 
+inline Energy ParticleData::widthCut(Energy wci) {
+  widthUpCut(wci);
+  return widthLoCut(wci);
+}
+
 inline Energy ParticleData::widthCut() const {
-  return theWidthCut;
+  return max(widthUpCut(), widthLoCut());
+}
+
+inline Energy ParticleData::widthUpCut() const {
+  return theWidthUpCut;
+}
+
+inline Energy ParticleData::widthLoCut() const {
+  return theWidthLoCut;
 }
 
 inline Length ParticleData::cTau() const {
