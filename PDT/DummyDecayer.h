@@ -1,19 +1,7 @@
 // -*- C++ -*-
 #ifndef THEPEG_DummyDecayer_H
 #define THEPEG_DummyDecayer_H
-//
-// This is the declaration of the <!id>DummyDecayer<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// This is a dummy decayer class to be used for symbolic decay
-// channels. If it for some reason is called to perform a decay, it
-// will throw a std::logic_error.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Decayer.html">.h</a>.
-// 
+// This is the declaration of the DummyDecayer class.
 
 #include "ThePEG/PDT/Decayer.h"
 // #include "DummyDecayer.fh"
@@ -21,87 +9,184 @@
 
 namespace ThePEG {
 
+/**
+ * DummyDecayer inherits from Decayer and is a dummy decayer class to
+ * be used for symbolic decay channels. If it for some reason is
+ * called to perform a decay, it will throw a std::logic_error.
+ *
+ * @see Decayer.
+ * 
+ */
 class DummyDecayer: public Decayer {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline DummyDecayer();
+
+  /**
+   * Copy-constructor.
+   */
   inline DummyDecayer(const DummyDecayer &);
+
+  /**
+   * Destructor.
+   */
   virtual ~DummyDecayer();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Virtual functions required by the Decayer class.
+   */
+  //@{
+  /**
+   * Check if this decayer can perfom the decay specified by the
+   * given decay mode.
+   * @param dm the DecayMode describing the decay.
+   * @return true always.
+   */
   virtual bool accept(const DecayMode &) const;
-  // return true if this decayer can perfom the decay specified by the
-  // given decay mode.
 
+  /**
+   * Perform a decay for a given DecayMode and a given Particle
+   * instance. Will throw std::logic_error if called.
+   * @param dm the DecayMode describing the decay.
+   * @param p the Particle instance to be decayed.
+   * @return a ParticleVector containing the decay products.
+   */
   virtual ParticleVector decay(const DecayMode &, const Particle &) const;
-  // for a given decay mode and a given particle instance, perform the
-  // decay and return the decay products.
 
+  /**
+   * Will always return zero, since no decay can ever be performed
+   * with this decayer.
+   */
   virtual double brat(const DecayMode &,
 		      const ParticleData &, double) const;
+  /**
+   * Will always return zero, since no decay can ever be performed
+   * with this decayer.
+   */
   virtual double brat(const DecayMode &, const Particle &, double) const;
-  // Will always return zero, since no decay can ever be performed
-  // with this decayer.
+  //@}
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+
+protected:
+
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 
 protected:
 
-  inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+protected:
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
+  inline virtual void doupdate() throw(UpdateException);
+
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given
+   * pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this
+   * object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<DummyDecayer> initDummyDecayer;
-  // Describe a concrete class without persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   DummyDecayer & operator=(const DummyDecayer &);
-  // Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of DummyDecayer.
+/** This template specialization informs ThePEG about the base classes
+ *  of DummyDecayer. */
 template <>
 struct BaseClassTrait<DummyDecayer,1> {
+  /** Typedef of the first base class of DummyDecayer. */
   typedef Decayer NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/** This template specialization informs ThePEG about the name of the
+ *  DummyDecayer class. */
 template <>
 struct ClassTraits<DummyDecayer>
   : public ClassTraitsBase<DummyDecayer> {
+  /** Return a platform-independent class name */
   static string className() { return "/ThePEG/DummyDecayer"; }
-  // Return the class name.
+
 };
 
 }

@@ -113,6 +113,8 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerGroup.h \
   ../../ThePEG/Handlers/HandlerGroup.icc \
   ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Handlers/StepHandler.h \
   ../../ThePEG/Handlers/StepHandler.icc \
   ../../ThePEG/EventRecord/Event.h \
@@ -617,6 +619,8 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerGroup.h \
   ../../ThePEG/Handlers/HandlerGroup.icc \
   ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Handlers/StepHandler.h \
   ../../ThePEG/Handlers/StepHandler.icc \
   ../../ThePEG/EventRecord/Event.h \
@@ -822,6 +826,8 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerGroup.h \
   ../../ThePEG/Handlers/HandlerGroup.icc \
   ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Handlers/StepHandler.h \
   ../../ThePEG/Handlers/StepHandler.icc \
   ../../ThePEG/EventRecord/Event.h \
@@ -995,6 +1001,8 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerGroup.h \
   ../../ThePEG/Handlers/HandlerGroup.icc \
   ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Handlers/StepHandler.h \
   ../../ThePEG/Handlers/StepHandler.icc \
   ../../ThePEG/EventRecord/Event.h \

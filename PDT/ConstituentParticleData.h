@@ -1,20 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ConstituentParticleData_H
 #define ThePEG_ConstituentParticleData_H
-//
-// This is the declaration of the <!id>ConstituentParticleData<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>ConstituentParticleData<!!id> inherits from the
-// <!class>ParticleData<!!class> class and is used for quarks,
-// diquarks and gluons to store information about their constituent
-// mass..
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:ParticleData.html">ParticleData.h</a>.
-// 
+// This is the declaration of the ConstituentParticleData class.
 
 #include "ThePEG/PDT/ParticleData.h"
 
@@ -23,91 +10,195 @@
 
 namespace ThePEG {
 
+/**
+ * ConstituentParticleData inherits from the ParticleData class and is
+ * used for quarks, diquarks and gluons to store information about
+ * their constituent mass.
+ *
+ * @see ParticleData. 
+ */
 class ConstituentParticleData: public virtual ParticleData {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline ConstituentParticleData();
+
+  /**
+   * Copy-constructor.
+   */
   inline ConstituentParticleData(const ConstituentParticleData &);
+
+  /**
+   * Destructor.
+   */
   virtual ~ConstituentParticleData();
-  // Standard ctors and dtor
+  //@}
 
+  /** @name The Create methods are special interfaces for ParticleData
+      classes. */
+  //@{
+  /**
+   * Create a Particle which is its own anti-particle.
+   */
   static PDPtr Create(long newId, string newPDGName);
-  // Create a Particle which is its own anti-particle.
 
+  /**
+   * Create a particle - anti particle pair.
+   */
   static PDPair Create(long newId, string newPDGName, string newAntiPDGName);
-  // Create a particle - anti particle pair.
+  //@}
 
 public:
 
+  /**
+   * Return the constituent mass of this parton.
+   */
   inline virtual Energy constituentMass() const;
-  // Return the constituent mass of this parton.
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /**
+   * Protected constructor only to be used by subclasses or by the
+   * Create method.
+   */
   ConstituentParticleData(long newId, string newPDGName);
-  // Protected constructor only to be used by subclasses or by the
-  // Create method.
 
+  /**
+   * Read setup info from a standard stream.
+   */
   virtual void readSetup(istream & is) throw(SetupException);
-  // Read setup info from a standard stream.
 
+  /**
+   * ParticleData clone method
+   */
   virtual PDPtr pdclone() const;
-  // ParticleData clone method
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given
+   * pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this
+   * object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Utility function for the interface.
+   */
   void setConstituentMass(Energy m);
+
+  /**
+   * Utility function for the interface.
+   */
   Energy defConstituentMass() const;
+
+  /**
+   * Utility function for the interface.
+   */
   Energy maxConstituentMass() const;
-  // Utility functions for the interface.
 
 private:
 
+  /**
+   * The constituent mass of this parton.
+   */
   Energy theConstituentMass;
-  // The constituent mass of this parton.
 
+  /**
+   * The default constituent mass of this parton.
+   */
   Energy theDefaultConstituentMass;
-  // The default constituent mass of this parton.
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<ConstituentParticleData> initConstituentParticleData;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   ConstituentParticleData & operator=(const ConstituentParticleData &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the
+ *  base classes of ConstituentParticleData. */
 template <>
 struct BaseClassTrait<ConstituentParticleData,1> {
+  /** Typedef of the first base class of ConstituentParticleData. */
   typedef ParticleData NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  ConstituentParticleData class. */
 template <>
-struct ClassTraits<ConstituentParticleData>: public ClassTraitsBase<ConstituentParticleData> {
-  static string className() { return "/ThePEG/ConstituentParticleData"; }
+struct ClassTraits<ConstituentParticleData>:
+    public ClassTraitsBase<ConstituentParticleData> {
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::ConstituentParticleData"; }
 };
 
 }

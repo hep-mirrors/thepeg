@@ -140,6 +140,8 @@ include ../Config/Makefile.common
   ../../ThePEG/Handlers/HandlerGroup.h \
   ../../ThePEG/Handlers/HandlerGroup.icc \
   ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
   ../../ThePEG/Handlers/StepHandler.h \
   ../../ThePEG/Handlers/StepHandler.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \

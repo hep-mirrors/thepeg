@@ -10,18 +10,26 @@
 
 namespace ThePEG {
 
+/** Exception class used if a DecayMode is found to be inconsistent
+    during the setup phase. */
 class DecModNoAccept: public UpdateException {
 public:
+  /** Standard constructor. */
   DecModNoAccept(string, string);
 };
 
+/** Exception class used if a DecayMode is found to be inconsistent
+    during the setup phase. */
 class DecModSetupNoAccept: public SetupException {
 public:
+  /** Standard constructor. */
   DecModSetupNoAccept(string, string);
 };
 
+/** Exception class used by DecayMode if rebinding fails. */
 class DecModRebind: public RebindException {
 public:
+  /** Standard constructor. */
   DecModRebind(string, string);
 };
 

@@ -42,6 +42,9 @@ public:
   virtual ~BeamParticleData();
   //@}
 
+  /** @name The Create methods are special interfaces for ParticleData
+      classes. */
+  //@{
   /**
    * Create a Particle which is its own anti-particle.
    */
@@ -53,6 +56,7 @@ public:
    * density of the anti particle iven if synchronized() is true.
    */
   static PDPair Create(long newId, string newPDGName, string newAntiPDGName);
+  //@}
 
 public:
 

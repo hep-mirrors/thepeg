@@ -10,10 +10,6 @@
 namespace ThePEG {
 
 class Decayer;
-typedef Ptr<Decayer>::pointer DecayerPtr;
-typedef Ptr<Decayer>::const_pointer cDecayerPtr;
-typedef Ptr<Decayer>::transient_pointer tDecayerPtr;
-typedef Ptr<Decayer>::transient_const_pointer tcDecayerPtr;
 
 }
 

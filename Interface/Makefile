@@ -304,7 +304,7 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Persistency/PersistentIStream.tcc
   ParVector.o: \
   ParVector.cc \
-  ParVector.h \
+  InterfacedBase.h \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/config.h \
   ../../ThePEG/Pointer/Ptr.h \
@@ -336,6 +336,17 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  InterfacedBase.xh \
   InterfaceBase.h \
   InterfaceBase.fh \
   InterfaceBase.xh \
@@ -343,27 +354,16 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
-  ../../ThePEG/Utilities/Named.h \
-  ../../ThePEG/Utilities/Named.icc \
-  ../../ThePEG/Utilities/ClassTraits.h \
   InterfaceBase.icc \
+  InterfacedBase.icc \
+  ParVector.h \
   ParVector.fh \
   ParVector.icc \
   ParVector.tcc \
-  ParVector.xh \
-  InterfacedBase.h \
-  ../../ThePEG/Utilities/ClassDescription.h \
-  ../../ThePEG/Utilities/DescriptionList.h \
-  ../../ThePEG/Utilities/DescriptionList.icc \
-  ../../ThePEG/Utilities/ClassDescription.icc \
-  ../../ThePEG/Utilities/ClassDescription.tcc \
-  ../../ThePEG/Utilities/HoldFlag.h \
-  ../../ThePEG/Utilities/HoldFlag.icc \
-  InterfacedBase.xh \
-  InterfacedBase.icc
+  ParVector.xh
   Parameter.o: \
   Parameter.cc \
-  Parameter.h \
+  InterfacedBase.h \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/config.h \
   ../../ThePEG/Pointer/Ptr.h \
@@ -395,6 +395,17 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  InterfacedBase.xh \
   InterfaceBase.h \
   InterfaceBase.fh \
   InterfaceBase.xh \
@@ -402,27 +413,16 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
-  ../../ThePEG/Utilities/Named.h \
-  ../../ThePEG/Utilities/Named.icc \
-  ../../ThePEG/Utilities/ClassTraits.h \
   InterfaceBase.icc \
+  InterfacedBase.icc \
+  Parameter.h \
   Parameter.xh \
   Parameter.fh \
   Parameter.icc \
-  Parameter.tcc \
-  InterfacedBase.h \
-  ../../ThePEG/Utilities/ClassDescription.h \
-  ../../ThePEG/Utilities/DescriptionList.h \
-  ../../ThePEG/Utilities/DescriptionList.icc \
-  ../../ThePEG/Utilities/ClassDescription.icc \
-  ../../ThePEG/Utilities/ClassDescription.tcc \
-  ../../ThePEG/Utilities/HoldFlag.h \
-  ../../ThePEG/Utilities/HoldFlag.icc \
-  InterfacedBase.xh \
-  InterfacedBase.icc
+  Parameter.tcc
   RefVector.o: \
   RefVector.cc \
-  RefVector.h \
+  InterfacedBase.h \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/config.h \
   ../../ThePEG/Pointer/Ptr.h \
@@ -454,6 +454,17 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  InterfacedBase.xh \
   InterfaceBase.h \
   InterfaceBase.fh \
   InterfaceBase.xh \
@@ -461,26 +472,15 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
-  ../../ThePEG/Utilities/Named.h \
-  ../../ThePEG/Utilities/Named.icc \
-  ../../ThePEG/Utilities/ClassTraits.h \
   InterfaceBase.icc \
+  InterfacedBase.icc \
+  RefVector.h \
   RefVector.xh \
   RefVector.fh \
   RefVector.icc \
   RefVector.tcc \
-  ../../ThePEG/Utilities/HoldFlag.h \
-  ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
-  InterfacedBase.h \
-  ../../ThePEG/Utilities/ClassDescription.h \
-  ../../ThePEG/Utilities/DescriptionList.h \
-  ../../ThePEG/Utilities/DescriptionList.icc \
-  ../../ThePEG/Utilities/ClassDescription.icc \
-  ../../ThePEG/Utilities/ClassDescription.tcc \
-  InterfacedBase.xh \
-  InterfacedBase.icc \
   ../../ThePEG/Repository/BaseRepository.h \
   ../../ThePEG/Repository/BaseRepository.xh \
   ../../ThePEG/Interface/InterfaceBase.xh \
@@ -490,7 +490,7 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/BaseRepository.tcc
   Reference.o: \
   Reference.cc \
-  Reference.h \
+  InterfacedBase.h \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/config.h \
   ../../ThePEG/Pointer/Ptr.h \
@@ -522,23 +522,10 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
-  InterfaceBase.h \
-  InterfaceBase.fh \
-  InterfaceBase.xh \
-  ../../ThePEG/Utilities/Exception.h \
-  ../../ThePEG/Utilities/Exception.fh \
-  ../../ThePEG/Utilities/sstream.h \
-  ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
-  ../../ThePEG/Utilities/ClassTraits.h \
-  InterfaceBase.icc \
-  Reference.xh \
-  Reference.fh \
-  Reference.icc \
-  Reference.tcc \
-  InterfacedBase.h \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
   ../../ThePEG/Utilities/ClassDescription.icc \
@@ -546,7 +533,20 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.h \
   ../../ThePEG/Utilities/HoldFlag.icc \
   InterfacedBase.xh \
+  InterfaceBase.h \
+  InterfaceBase.fh \
+  InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  InterfaceBase.icc \
   InterfacedBase.icc \
+  Reference.h \
+  Reference.xh \
+  Reference.fh \
+  Reference.icc \
+  Reference.tcc \
   ../../ThePEG/Utilities/Rebinder.h \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/Repository/BaseRepository.h \
@@ -558,7 +558,7 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/BaseRepository.tcc
   Switch.o: \
   Switch.cc \
-  Switch.h \
+  InterfacedBase.h \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/config.h \
   ../../ThePEG/Pointer/Ptr.h \
@@ -590,23 +590,10 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
-  Switch.fh \
-  Switch.xh \
-  InterfaceBase.xh \
-  InterfaceBase.fh \
-  ../../ThePEG/Utilities/Exception.h \
-  ../../ThePEG/Utilities/Exception.fh \
-  ../../ThePEG/Utilities/sstream.h \
-  ../../ThePEG/Utilities/Exception.icc \
-  InterfaceBase.h \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
-  ../../ThePEG/Utilities/ClassTraits.h \
-  InterfaceBase.icc \
-  Switch.icc \
-  Switch.tcc \
-  InterfacedBase.h \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
   ../../ThePEG/Utilities/ClassDescription.icc \
@@ -614,10 +601,23 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.h \
   ../../ThePEG/Utilities/HoldFlag.icc \
   InterfacedBase.xh \
-  InterfacedBase.icc
+  InterfaceBase.h \
+  InterfaceBase.fh \
+  InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  InterfaceBase.icc \
+  InterfacedBase.icc \
+  Switch.h \
+  Switch.fh \
+  Switch.xh \
+  Switch.icc \
+  Switch.tcc
   Command.o: \
   Command.cc \
-  Command.h \
+  InterfacedBase.h \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/config.h \
   ../../ThePEG/Pointer/Ptr.h \
@@ -649,6 +649,17 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  InterfacedBase.xh \
   InterfaceBase.h \
   InterfaceBase.fh \
   InterfaceBase.xh \
@@ -656,24 +667,13 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
-  ../../ThePEG/Utilities/Named.h \
-  ../../ThePEG/Utilities/Named.icc \
-  ../../ThePEG/Utilities/ClassTraits.h \
   InterfaceBase.icc \
+  InterfacedBase.icc \
+  Command.h \
   Command.fh \
   Command.xh \
   Command.icc \
-  Command.tcc \
-  InterfacedBase.h \
-  ../../ThePEG/Utilities/ClassDescription.h \
-  ../../ThePEG/Utilities/DescriptionList.h \
-  ../../ThePEG/Utilities/DescriptionList.icc \
-  ../../ThePEG/Utilities/ClassDescription.icc \
-  ../../ThePEG/Utilities/ClassDescription.tcc \
-  ../../ThePEG/Utilities/HoldFlag.h \
-  ../../ThePEG/Utilities/HoldFlag.icc \
-  InterfacedBase.xh \
-  InterfacedBase.icc
+  Command.tcc
   ClassDocumentation.o: \
   ClassDocumentation.cc \
   ClassDocumentation.h \

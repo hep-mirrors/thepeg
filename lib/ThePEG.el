@@ -343,14 +343,28 @@ SPECIALFN may be used to include special function definitions"
 					 specialfn))
 	   (beginning-of-buffer))))
 
-(defun thepeg-header (namespace class base baseheader persistent
-				concrete interfaced specialfn)
-  "Return a skeleton suitable for the header file of a class CLASS
-derived from a base class BASE which may be found in the include file
-BASEHEADER. The class may or may not be PERSISTENT, INTERFACED and/or CONCRETE.
-SPECIALFN may be used to include special function definitions"
+(defun ThePEG-persistent-decl ()
+  "Insert declarations of the standard ThePEG persistent I/O functions."
+  (interactive)
+  (insert-string "
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
-  (setq piostring (cond (persistent "
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+"))
+
+(defconst thepeg-persistent-decl "
   /** @name Functions used by the persistent I/O system. */
   //@{
   /**
@@ -367,8 +381,8 @@ SPECIALFN may be used to include special function definitions"
   void persistentInput(PersistentIStream & is, int version);
   //@}
 ")
-			(t "")))
-  (setq cloning (cond ((and concrete interfaced) "
+
+(defconst thepeg-clone-decl "
 protected:
 
   /** @name Clone Methods. */
@@ -386,8 +400,8 @@ protected:
   inline virtual IBPtr fullclone() const;
   //@}
 ")
-		      (t "")))
-  (setq interface (cond (interfaced "
+
+(defconst thepeg-interfaced-decl "
 protected:
 
   /** @name Standard Interfaced functions. */
@@ -436,6 +450,34 @@ protected:
   inline virtual IVector getReferences();
   //@}
 ")
+
+(defun ThePEG-persistent-decl ()
+  "Insert declarations of the standard ThePEG persistent I/O functions."
+  (interactive)
+  (insert-string thepeg-persistent-decl))
+
+(defun ThePEG-clone-decl ()
+  "Insert declarations of the standard ThePEG clone functions."
+  (interactive)
+  (insert-string thepeg-clone-decl))
+
+(defun ThePEG-interfaced-decl ()
+  "Insert declarations of the standard ThePEG interfaced functions."
+  (interactive)
+  (insert-string thepeg-interfaced-decl))
+
+(defun thepeg-header (namespace class base baseheader persistent
+				concrete interfaced specialfn)
+  "Return a skeleton suitable for the header file of a class CLASS
+derived from a base class BASE which may be found in the include file
+BASEHEADER. The class may or may not be PERSISTENT, INTERFACED and/or CONCRETE.
+SPECIALFN may be used to include special function definitions"
+
+  (setq piostring (cond (persistent thepeg-persistent-decl)
+			(t "")))
+  (setq cloning (cond ((and concrete interfaced) thepeg-clone-decl)
+		      (t "")))
+  (setq interface (cond (interfaced thepeg-interfaced-decl)
 			(t "")))
   (setq include (cond ((string-equal baseheader "") "ThePEG/Config/ThePEG.h")
 		      (t baseheader)))
