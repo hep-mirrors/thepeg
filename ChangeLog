@@ -1,3 +1,12 @@
+2003-07-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/RemnantHandler.*, PDF/PartonExtractor.*, PDF/PartonBin.*,
+	PDF/PDF.*, PDF/NoRemnants.*, PDF/LeptonLeptonRemnant.*,
+	PDF/BaryonRemnants.*, Handlers/XComb.*,
+	Handlers/LastXCombInfo.icc, Handlers/CollisionHandler.cc: Removed
+	all traces of old strategy involving the PartonBinInfo and
+	RemnantInfo classes.
+
 2003-07-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/DynamicLoader.cc: Added the current working directory

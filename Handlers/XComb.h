@@ -162,11 +162,9 @@ public:
   // Get/set the last chosen scale of the hard scattering.
 
   void prepare(const PPair &);
-  void prepareNEW(const PPair &);
   // prepare this XComb for producing a sub-process.
 
   void construct(tSubProPtr);
-  void constructNEW(tSubProPtr);
   // Construct a sub-process object from the information available.
 
   inline bool empty() const;
@@ -192,7 +190,6 @@ public:
   // process.
 
   CrossSection dSigDR(const pair<double,double> ll, int nr, const double * r);
-  CrossSection dSigDRNEW(const pair<double,double> ll, int nr, const double * r);
   // Generate a phase space point and return the corresponding cross
   // section.
 
@@ -225,7 +222,6 @@ protected:
   // Set the last selected diagram.
 
   void setPartonBinInfo();
-  void setPartonBinInfoNEW();
   // Set the local parton bin info objects for this XComb.
 
 public:
@@ -262,10 +258,6 @@ private:
 
   PBIPair thePartonBinInstances;
   // Additional information about the incoming partons.
-
-  pair<PartonBinInfo*, PartonBinInfo*> thePartonBinInfo;
-  // Associated info corresponding to thePartonBins which is
-  // particular to the sub-process in this XComb;
 
   long theNAttempted;
   long theNAccepted;

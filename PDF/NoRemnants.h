@@ -40,19 +40,6 @@ public:
   // specified partons. The NoRemnants will return false if any
   // partons are given.
 
-  virtual PVector getRemnants(const PartonBin &,
-			      Energy2 sMax, TransverseMomentum & kt,
-			      const PVector & prev = PVector()) const;
-  // For a given parton extracted from a particle return the remnants,
-  // in their cm system, assumong the particle is comin in along the
-  // positive z-axis. Also return the generated intrisic transverse
-  // momentum of the extracted parton. If the prev vector of particles
-  // is not empty it meens that we are dealing with multiple
-  // interactions and prev contains the previously extracted partons.
-
-  virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
-				    Energy2 scale,
-				    const LorentzMomentum & p) const;
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & p) const;

@@ -72,35 +72,6 @@ generate(PartonBinInstance & pb, const double * r,
   return parent - rem->momentum();
 }
 
-Lorentz5Momentum LeptonLeptonRemnant::
-generate(PartonBin & pb, const double * r,
-	 Energy2 scale, const LorentzMomentum & parent) const {
-  if ( pb.particle() != pb.parton() )
-    throw RemnantHandlerException
-      (pb.particle()->name(), pb.parton()->name(), name(),
-       "The remnant handler can only extract leptons from "
-       "leptons of the same type.");
-  if ( pb.lastPartialEps() < minX ) {
-    pb.lastRemnants(PVector());
-    return parent;
-  }
-  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
-  TransverseMomentum qt;
-  Energy2 qt2 = 0.0*GeV2;
-  if ( scale >= 0.0*GeV2 ) {
-    qt2 = pb.lastPartialEps()*(pb.lastPartialX()*parent.m2() + scale);
-    double phi = rnd(2.0*Constants::pi);
-    qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
-  }
-  Energy pl = p.plus()*pb.lastPartialEps();
-  PPtr rem = 
-    photon->produceParticle(lightCone(pl, qt2/pl, qt), 0.0*GeV);
-  rem->rotateY(parent.theta());
-  rem->rotateZ(parent.phi());
-  pb.lastRemnants(PVector(1, rem));
-  return parent - rem->momentum();
-}
-
 void LeptonLeptonRemnant::persistentOutput(PersistentOStream & os) const {
   os << photon;
 }

@@ -46,9 +46,6 @@ public:
   // that the actual virtuality of the extracted parton will be
   // obtained from another source.
 
-  virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
-				    Energy2 scale,
-				    const LorentzMomentum & parent) const = 0;
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & parent) const = 0;
@@ -62,18 +59,10 @@ public:
   // generate with weight one, the resulting weight should be stored
   // with the remnantWeight() method of the parton bin.
 
-  virtual void createRemnants(PartonBin & pb) const;
-  // If the actual remnants were not fully generated in the previous
-  // call to generate(), do that now and store them in the parton bin.
-
   virtual void createRemnants(PartonBinInstance & pb) const;
   // If the actual remnants were not fully generated in the previous
   // call to generate(), do that now and store them in the parton bin.
 
-  virtual bool recreateRemnants(PartonBin & pb, tPPtr oldp, tPPtr newp,
-				double newl, Energy2 scale,
-				const LorentzMomentum & p,
-				const PVector & prev = PVector()) const;
   virtual bool recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp,
 				double newl, Energy2 scale,
 				const LorentzMomentum & p,

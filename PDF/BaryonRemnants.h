@@ -46,9 +46,6 @@ public:
   // Return true if this remnant handler can handle extracting all
   // specified partons.
 
-  virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
-				    Energy2 scale,
-				    const LorentzMomentum & p) const;
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & p) const;
@@ -65,7 +62,6 @@ public:
   // weight should be stored with the remnantWeight() method of the
   // parton bin.
 
-  virtual void createRemnants(PartonBin & pb) const;
   virtual void createRemnants(PartonBinInstance & pb) const;
   // If the actual remnants were not fully generated in the previous
   // call to generate(), do that now and store them in the parton bin.
@@ -150,15 +146,6 @@ private:
   BaryonRemnants & operator=(const BaryonRemnants &);
   //  Private and non-existent assignment operator.
 
-};
-
-struct BaryonRemnantsInfo: public RemnantInfo {
-  int iq;
-  int sign;
-  vector<int> flav;
-  vector<int> vflav;
-  VSelector< pair<int,int> > flavsel;
-  bool mayval;
 };
 
 struct BaryonRemInfo: public RemInfoBase {

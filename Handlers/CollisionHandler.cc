@@ -119,11 +119,9 @@ tCollPtr CollisionHandler::performCollision() {
   SubProPtr sub =
     new_ptr(SubProcess(lastPartons(), currentCollision(), lastME()));
   Timer<36> timer2("CollisionHandler::performCollision():2");
-  //  lastXCombPtr()->construct(sub);
-  lastXCombPtr()->constructNEW(sub);
+  lastXCombPtr()->construct(sub);
   Timer<37> timer3("CollisionHandler::performCollision():3");
   currentStep()->addSubProcess(sub);
-  //  lastExtractor()->construct(lastXCombPtr()->partonBins(), currentStep());
   lastExtractor()->construct(lastXCombPtr()->partonBinInstances(),
 			     currentStep());
   lastCuts().cut(*currentCollision(), currentEventBoost());
@@ -212,11 +210,10 @@ dSigDR(const pair<double,double> ll, Energy2 maxS,
   }
     
   xSecs().resize(xv.size());
-  for ( int i = 0, N = xv.size(); i < N; ++i ) xv[i]->prepareNEW(inc);
+  for ( int i = 0, N = xv.size(); i < N; ++i ) xv[i]->prepare(inc);
   CrossSection sum = 0.0*nanobarn;
   for ( int i = 0, N = xv.size(); i < N; ++i )
-    xSecs()[i] = ( sum += xv[i]->dSigDRNEW(ll, nr, r) );
-    //    xSecs()[i] = ( sum += xv[i]->dSigDR(ll, nr, r) );
+    xSecs()[i] = ( sum += xv[i]->dSigDR(ll, nr, r) );
   return sum;
 }
 

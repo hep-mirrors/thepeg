@@ -14,7 +14,7 @@
 // <a href="http:.html">.h</a>.
 // 
 
-#include "ThePEG/PDF/PartonBin.h"
+#include "ThePEG/PDF/PartonBinInstance.h"
 // #include "PDF.fh"
 // #include "PDF.xh"
 
@@ -26,7 +26,7 @@ public:
 
   inline PDF();
   inline PDF(const PDF &);
-  inline PDF(tcPBPtr);
+  inline PDF(tcPBIPtr);
   inline ~PDF();
   // Standard ctors and dtor.
 

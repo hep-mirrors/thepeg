@@ -37,9 +37,6 @@ public:
   // Return true if this remnant handler can handle extracting all
   // specified partons.
 
-  virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
-				    Energy2 scale,
-				    const LorentzMomentum & p) const;
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & p) const;

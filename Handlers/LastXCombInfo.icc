@@ -143,7 +143,7 @@ inline tMEPtr LastXCombInfo<I>::lastME() const {
 
 template <int I>
 inline PDF LastXCombInfo<I>::pdf(tcPPtr parton) const {
-  return PDF(lastExtractor()->partonBin(parton));
+  return PDF(lastExtractor()->partonBinInstance(parton));
 }
 
 template <int I>

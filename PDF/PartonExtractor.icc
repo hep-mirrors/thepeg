@@ -32,15 +32,6 @@ PartonExtractor::partonBinInstances() const {
   return thePartonBinInstances;
 }
 
-inline PartonExtractor::PartonBinMap & PartonExtractor::lastPartonBins() {
-  return theLastPartonBins;
-}
-
-inline const PartonExtractor::PartonBinMap & PartonExtractor::
-lastPartonBins() const {
-  return theLastPartonBins;
-}
-
 inline int PartonExtractor::maxTries() const {
   return theMaxTries;
 }
