@@ -15,6 +15,9 @@ all: check
 check: setup lib
 	@cd src ;  $(MAKE) check ; cd ..
 
+init: setup lib
+	@cd src ;  $(MAKE) init ; cd ..
+
 lib: setup
 	@for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) lib; cd .. ; done
 
@@ -32,7 +35,7 @@ depend: setup
 install: check
 	@for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) install ; cd .. ; done
 
-doc: check
+doc: init
 	@cd Doc ; $(MAKE) doc ; cd ..
 
 setup: Config/Makefile.common Config/config.h

@@ -170,15 +170,15 @@ struct BaseClassTrait<FixedCMSLuminosity,1>: public ClassTraitsType {
 
 /**
  * This template specialization informs ThePEG about the name of the
- * DecayHandler class and the shared object where it is defined.
+ * FixedCMSLuminosity class and the shared object where it is defined.
  */
 template <>
 struct ClassTraits<FixedCMSLuminosity>:
     public ClassTraitsBase<FixedCMSLuminosity> {
   /** Return the class name. */
   static string className() { return "ThePEG::FixedCMSLuminosity"; }
-  /** Return the name of the shared library be loaded to get
-   *  access to this class and every other class it uses
+  /** Return the name of the shared library be loaded to get access to
+   *  the FixedCMSLuminosity class and every other class it uses
    *  (except the base class). */
   static string library() { return "FixedCMSLuminosity.so"; }
 };

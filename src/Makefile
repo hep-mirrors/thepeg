@@ -34,6 +34,8 @@ test: SimpleLEP.out
 
 check: SimpleLEP.out
 
+init: ../lib/ThePEGDefaults.rpo
+
 $(PROGS): ../lib/libThePEG.so ../lib/libThePEGPDF.so ../lib/libThePEGME.so ../lib/libThePEGRepo.so ../lib/libThePEGHandlers.so ../lib/libThePEGEvent.so ../lib/libThePEGPDT.so ../lib/libThePEGSM.so ../lib/libThePEGInter.so ../lib/libThePEGHelicity.so 
 
 SimpleLEP.out: SimpleLEP.run runThePEG.exe

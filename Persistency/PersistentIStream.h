@@ -248,7 +248,8 @@ public:
 
 private:
 
-  /** \ingroup Persistency Thrown if a class is missing */
+  /** \ingroup Persistency
+      Thrown if a class is missing */
   struct MissingClass {};
 
   /** \ingroup Persistency Thrown if an object which should have been
