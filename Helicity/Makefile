@@ -1,10 +1,12 @@
 SOURCES = HelicityVertex.cc LorentzPolarizationVector.cc LorentzSpinor.cc \
           LorentzSpinorBar.cc LorentzTensor.cc RhoDMatrix.cc SpinInfo.cc \
-          FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc TensorSpinInfo.cc
+          FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc TensorSpinInfo.cc \
+          LorentzRSSpinor.cc LorentzRSSpinorBar.cc RSFermionSpinInfo.cc
 
 LIBOBJECTS = HelicityVertex.o LorentzPolarizationVector.o LorentzSpinor.o \
              LorentzSpinorBar.o LorentzTensor.o RhoDMatrix.o SpinInfo.o \
-             FermionSpinInfo.o VectorSpinInfo.o ScalarSpinInfo.o TensorSpinInfo.o
+             FermionSpinInfo.o VectorSpinInfo.o ScalarSpinInfo.o TensorSpinInfo.o \
+             LorentzRSSpinor.o LorentzRSSpinorBar.o RSFermionSpinInfo.o
 
 OBJECTS = libThePEGHelicity.so
 
@@ -12,7 +14,8 @@ LIBFILES = $(OBJECTS)
 
 DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
            LorentzSpinorBar.h LorentzTensor.h RhoDMatrix.h SpinInfo.h \
-           FermionSpinInfo.h VectorSpinInfo.h ScalarSpinInfo.h TensorSpinInfo.h
+           FermionSpinInfo.h VectorSpinInfo.h ScalarSpinInfo.h TensorSpinInfo.h \
+           LorentzRSSpinor.h LorentzRSSpinorBar.h RSFermionSpinInfo.h	
 
 INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                LorentzPolarizationVector.icc LorentzSpinor.fh \
@@ -22,7 +25,8 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
                ScalarSpinInfo.fh ScalarSpinInfo.icc \
                TensorSpinInfo.fh TensorSpinInfo.icc \
-               HelicityDefinitions.h
+               HelicityDefinitions.h LorentzRSSpinor.icc LorentzRSSpinorBar.icc \
+               LorentzRSSpinor.fh LorentzRSSpinorBar.fh RSFermionSpinInfo.icc
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 
@@ -47,11 +51,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -65,14 +72,23 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -81,37 +97,52 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
   ../../ThePEG/Utilities/ClassDescription.icc \
   ../../ThePEG/Utilities/ClassDescription.tcc \
   RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
   RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Rebinder.icc \
   ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/EventRecord/SpinBase.icc \
   HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
   HelicityVertex.icc \
   ../../ThePEG/Helicity/SpinInfo.h \
+  ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Helicity/HelicityVertex.h \
   ../../ThePEG/Helicity/SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Helicity/SpinInfo.icc
   LorentzPolarizationVector.o: \
   LorentzPolarizationVector.cc \
@@ -129,15 +160,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
@@ -145,12 +180,15 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/Utilities/Direction.h \
@@ -160,9 +198,15 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   LorentzPolarizationVector.icc
   LorentzSpinor.o: \
   LorentzSpinor.cc \
@@ -180,27 +224,33 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
   HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
@@ -227,27 +277,33 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
   HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
@@ -275,15 +331,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
@@ -291,12 +351,15 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/Utilities/Direction.h \
@@ -306,12 +369,20 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   LorentzPolarizationVector.icc \
   LorentzTensor.icc \
-  ../../ThePEG/Helicity/HelicityDefinitions.h
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Utilities/Exception.h
   RhoDMatrix.o: \
   RhoDMatrix.cc \
   RhoDMatrix.h \
@@ -323,11 +394,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -341,14 +415,18 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -357,6 +435,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Complex.h \
   RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
@@ -375,11 +454,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -393,14 +475,23 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -409,14 +500,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -428,15 +524,24 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Helicity/HelicityVertex.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Rebinder.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/Helicity/HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Helicity/HelicityVertex.icc \
   SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
   SpinInfo.icc
   FermionSpinInfo.o: \
   FermionSpinInfo.cc \
@@ -453,11 +558,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -471,14 +579,23 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -487,14 +604,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -506,18 +628,29 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Helicity/HelicityVertex.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Rebinder.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/Helicity/HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Helicity/HelicityVertex.icc \
   SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
   SpinInfo.icc \
   ../../ThePEG/Helicity/LorentzSpinor.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Helicity/LorentzSpinor.fh \
   ../../ThePEG/Helicity/LorentzSpinorBar.fh \
   ../../ThePEG/Helicity/LorentzSpinor.icc \
@@ -538,11 +671,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -556,14 +692,23 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -572,14 +717,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -591,21 +741,35 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Helicity/HelicityVertex.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Rebinder.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/Helicity/HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Helicity/HelicityVertex.icc \
   SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
   SpinInfo.icc \
   ../../ThePEG/Helicity/LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/Helicity/LorentzPolarizationVector.icc \
   VectorSpinInfo.fh \
-  VectorSpinInfo.icc
+  VectorSpinInfo.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h
   ScalarSpinInfo.o: \
   ScalarSpinInfo.cc \
   ScalarSpinInfo.h \
@@ -621,11 +785,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -639,14 +806,23 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -655,14 +831,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -674,15 +855,24 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Helicity/HelicityVertex.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Rebinder.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/Helicity/HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Helicity/HelicityVertex.icc \
   SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
   SpinInfo.icc \
   ScalarSpinInfo.fh \
   ScalarSpinInfo.icc
@@ -701,11 +891,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -719,14 +912,23 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -735,14 +937,19 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -754,22 +961,318 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/Helicity/HelicityVertex.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Rebinder.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/Helicity/HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Helicity/HelicityVertex.icc \
   SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
   SpinInfo.icc \
   ../../ThePEG/Helicity/LorentzTensor.h \
   ../../ThePEG/Helicity/LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/Helicity/LorentzPolarizationVector.icc \
   ../../ThePEG/Helicity/LorentzTensor.icc \
   TensorSpinInfo.fh \
   TensorSpinInfo.icc
+  LorentzRSSpinor.o: \
+  LorentzRSSpinor.cc \
+  LorentzRSSpinor.h \
+  ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  LorentzRSSpinor.fh \
+  LorentzRSSpinorBar.fh \
+  LorentzSpinor.h \
+  LorentzSpinor.fh \
+  LorentzSpinorBar.fh \
+  LorentzSpinor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  LorentzPolarizationVector.icc \
+  LorentzRSSpinor.icc \
+  LorentzRSSpinorBar.h \
+  LorentzSpinorBar.h \
+  LorentzSpinorBar.icc \
+  LorentzRSSpinorBar.icc
+  LorentzRSSpinorBar.o: \
+  LorentzRSSpinorBar.cc \
+  LorentzRSSpinorBar.h \
+  ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  HelicityDefinitions.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  LorentzRSSpinor.fh \
+  LorentzRSSpinorBar.fh \
+  LorentzSpinorBar.h \
+  LorentzSpinor.fh \
+  LorentzSpinorBar.fh \
+  LorentzSpinorBar.icc \
+  LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  LorentzPolarizationVector.icc \
+  LorentzRSSpinorBar.icc \
+  LorentzRSSpinor.h \
+  LorentzSpinor.h \
+  LorentzSpinor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  LorentzRSSpinor.icc
+  RSFermionSpinInfo.o: \
+  RSFermionSpinInfo.cc \
+  RSFermionSpinInfo.h \
+  SpinInfo.h \
+  ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/EventRecord/EventInfoBase.icc \
+  ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/Interface/ClassDocumentation.h \
+  ../../ThePEG/Interface/ClassDocumentation.fh \
+  ../../ThePEG/Interface/ClassDocumentation.icc \
+  ../../ThePEG/Helicity/HelicityVertex.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Helicity/RhoDMatrix.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Helicity/RhoDMatrix.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/Utilities/Rebinder.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Rebinder.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/Helicity/HelicityVertex.fh \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Helicity/HelicityVertex.icc \
+  SpinInfo.fh \
+  ../../ThePEG/Config/Pointers.h \
+  SpinInfo.icc \
+  ../../ThePEG/Helicity/LorentzRSSpinor.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  ../../ThePEG/Helicity/LorentzRSSpinor.fh \
+  ../../ThePEG/Helicity/LorentzRSSpinorBar.fh \
+  ../../ThePEG/Helicity/LorentzSpinor.h \
+  ../../ThePEG/Helicity/LorentzSpinor.fh \
+  ../../ThePEG/Helicity/LorentzSpinorBar.fh \
+  ../../ThePEG/Helicity/LorentzSpinor.icc \
+  ../../ThePEG/Helicity/LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/Helicity/LorentzPolarizationVector.icc \
+  ../../ThePEG/Helicity/LorentzRSSpinor.icc \
+  RSFermionSpinInfo.fh \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  RSFermionSpinInfo.icc
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY
