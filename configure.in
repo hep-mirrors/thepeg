@@ -34,27 +34,27 @@ AC_SUBST(prefix)
 AC_SUBST(BUILDDIR)
 AC_CHECK_FUNC(expm1, AC_DEFINE(ThePEG_HAS_EXPM1))
 AC_CHECK_FUNC(log1p, AC_DEFINE(ThePEG_HAS_LOG1P))
-echo $ac_n "checking for dlopen ""...           $ac_c" 1>&6
+echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <dlfcn.h>
 , dlopen("", 1);
 , AC_DEFINE(ThePEG_HAS_DLOPEN)
-echo "$ac_t""yes" 1>&6
-, echo "$ac_t""no" 1>&6)
-echo $ac_n "checking for <sstream> ""...        $ac_c" 1>&6
+echo "${ECHO_T}yes" 1>&6
+, echo "${ECHO_T}no" 1>&6)
+echo $ECHO_N "checking for <sstream>... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <sstream>
 , std::ostringstream os;
 , AC_DEFINE(ThePEG_HAS_SSTREAM)
-echo "$ac_t""yes" 1>&6
-, echo "$ac_t""no" 1>&6)
-echo $ac_n "checking for <fpu_control> ""...    $ac_c" 1>&6
+echo "${ECHO_T}yes" 1>&6
+, echo "${ECHO_T}no" 1>&6)
+echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <fpu_control.h>
 , fpu_control_t cw; _FPU_GETCW(cw); cw &= ~(_FPU_MASK_IM|_FPU_MASK_DM|_FPU_MASK_ZM|_FPU_MASK_OM); _FPU_SETCW(cw);
 , AC_DEFINE(ThePEG_HAS_FPU_CONTROL)
-echo "$ac_t""yes" 1>&6
-, echo "$ac_t""no" 1>&6)
+echo "${ECHO_T}yes" 1>&6
+, echo "${ECHO_T}no" 1>&6)
 
 AC_CONFIG_HEADER(Config/config.h)
 

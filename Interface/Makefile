@@ -13,14 +13,14 @@ DOCFILES = Command.h InterfaceBase.h Interfaced.h InterfacedBase.h ParVector.h \
 
 LIBFILES = $(OBJECTS)
 
-INCLUDETFILES = $(DOCFILES) Command.fh Command.icc Command.tcc \
+INCLUDEFILES = $(DOCFILES) Command.fh Command.icc Command.tcc \
             Command.xh InterfaceBase.fh InterfaceBase.icc InterfaceBase.xh \
             Interfaced.icc InterfacedBase.icc InterfacedBase.xh ParVector.fh \
             ParVector.icc ParVector.tcc ParVector.xh Parameter.fh \
             Parameter.icc Parameter.tcc Parameter.xh RefVector.fh \
             RefVector.icc RefVector.tcc RefVector.xh Reference.fh \
             Reference.icc Reference.tcc Reference.xh Switch.fh Switch.icc \
-            Switch.tcc Switch.xh ClassDocumentation.fh
+            Switch.tcc Switch.xh ClassDocumentation.icc ClassDocumentation.fh
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 

@@ -116,7 +116,7 @@ doc:
 	SRCDIR=`pwd`; DIR=`basename $$SRCDIR`; for file in $(DOCFILES); do cd ..; ../ThePEG/Doc/h2html -i $$DIR/$$file -o Doc/$${file}tml; cd $$DIR; done
 
 dist:
-	SRCDIR=`pwd`; DIR=`basename $$SRCDIR` ; mkdir -p ../$(TAG)/ThePEG/$$DIR ; cp $(DISTFILES) ../$(TAG)/ThePEG/$$DIR
+	SRCDIR=`pwd`; DIR=`basename $$SRCDIR` ; mkdir -p ../$(TAGDIR)/$$DIR ; cp $(DISTFILES) ../$(TAGDIR)/$$DIR
 
 install: install-local
 	if [ ! -z "$(INCLUDEFILES)" ]; then mkdir -p $(INSTALLINCLUDE)/$(INCLUDEDIR); cp $(INCLUDEFILES) $(INSTALLINCLUDE)/$(INCLUDEDIR); fi

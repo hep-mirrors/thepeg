@@ -14,15 +14,15 @@ DEBUGOBJECTS =
 DOCFILES = BeamParticleData.h GRVBase.h LeptonLeptonPDF.h \
            LeptonLeptonRemnant.h NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
            PartonBin.h PartonExtractor.h RemnantHandler.h GRV94L.h GRV94M.h \
-           BaryonRemnants.h
+           BaryonRemnants.h PDF.h
 
 INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
-               BeamParticleData.xh GRV94L.icc GRV94L.icc GRVBase.icc \
+               BeamParticleData.xh GRV94L.icc GRV94M.icc GRVBase.icc \
                LeptonLeptonPDF.icc LeptonLeptonRemnant.icc NoPDF.icc \
                NoRemnants.icc PDFBase.icc  PDFBase.xh PDFCuts.icc \
                PartonBin.icc PartonExtractor.fh PartonExtractor.icc \
                PartonExtractor.xh RemnantHandler.icc RemnantHandler.xh \
-               BaryonRemnants.icc 
+               BaryonRemnants.icc PDF.fh PDF.icc
 
 LIBFILES = $(OBJECTS)
 

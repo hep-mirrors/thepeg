@@ -4,7 +4,7 @@ OBJECTS =
 
 DEBUGOBJECTS = 
 
-DOCFILES = ACDCGenConfig.h ACDCGen.h ACDCGenCell.h ACDCGenTraits.h
+DOCFILES = ACDCGenConfig.h ACDCGen.h ACDCGenCell.h ACDCTraits.h
 
 INCLUDEFILES = $(DOCFILES) ACDCGen.icc ACDCGenCell.icc
 

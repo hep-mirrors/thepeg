@@ -6,8 +6,9 @@ PROGS = runThePEG.exe setupThePEG.exe runPartial
 
 THEPEGLIBS = -lThePEGRepo -lThePEGHandlers -lThePEGPDF -lThePEGME -lThePEGEvent -lThePEGPDT -lThePEGSM -lThePEGInter -lThePEG -lCLHEP
 
-DISTFILES = Makefile SimpleLEP.in SimpleLHC.in setupThePEG.cc \
-            runPartial.cc runThePEG.cc ../lib/ThePEGDefaults.rpo
+DISTFILES = Makefile SimpleLEP.in setupThePEG.cc setupThePEG \
+            setupThePEG.install runPartial.cc runThePEG.cc runThePEG \
+            runThePEG.install ThePEGDefaults.in ThePEGParticles.in
 
 .PHONY: Lib save
 

@@ -1,6 +1,6 @@
 LIBRARIES = libThePEG.so
 
-DISTFILES = Makefile
+DISTFILES = Makefile fixCLHEP
 
 include ../Config/Makefile.common
 

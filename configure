@@ -1980,7 +1980,7 @@ _ACEOF
 
 fi
 
-echo $ac_n "checking for dlopen ""...           $ac_c" 1>&6
+echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -2017,15 +2017,15 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 #define ThePEG_HAS_DLOPEN 1
 _ACEOF
 
-echo "$ac_t""yes" 1>&6
+echo "${ECHO_T}yes" 1>&6
 
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
-echo "$ac_t""no" 1>&6
+echo "${ECHO_T}no" 1>&6
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
-echo $ac_n "checking for <sstream> ""...        $ac_c" 1>&6
+echo $ECHO_N "checking for <sstream>... $ECHO_C" 1>&6
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -2062,15 +2062,15 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 #define ThePEG_HAS_SSTREAM 1
 _ACEOF
 
-echo "$ac_t""yes" 1>&6
+echo "${ECHO_T}yes" 1>&6
 
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
-echo "$ac_t""no" 1>&6
+echo "${ECHO_T}no" 1>&6
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
-echo $ac_n "checking for <fpu_control> ""...    $ac_c" 1>&6
+echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -2107,12 +2107,12 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 #define ThePEG_HAS_FPU_CONTROL 1
 _ACEOF
 
-echo "$ac_t""yes" 1>&6
+echo "${ECHO_T}yes" 1>&6
 
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
-echo "$ac_t""no" 1>&6
+echo "${ECHO_T}no" 1>&6
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
 

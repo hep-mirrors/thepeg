@@ -1,5 +1,5 @@
 SUBDIRS = CLHEPWrap Config Utilities Repository Interface PDT EventRecord \
-          Persistency StandardModel Handlers PDF MatrixElement Pointer
+          Persistency StandardModel Handlers PDF MatrixElement Pointer ACDC
 
 DISTFILES = README Makefile configure configure.in
 
@@ -9,31 +9,13 @@ TAG = ThePEG-$(VERSION)
 
 .PHONY: lib all depend clean nodebug setup
 
-all: test
-
-progs: setup lib
-	cd src ;  $(MAKE) -$(MAKEFLAGS) progs ; cd ..
-
-current: setup lib
-	cd src ;  $(MAKE) -$(MAKEFLAGS) current ; cd ..
-
-test: setup lib
-	cd src ;  $(MAKE) -$(MAKEFLAGS) test  CXXDEBUGFLAG=-g CXXOPTFLAG="-O"; cd ..
+all: check
 
 check: setup lib
 	cd src ;  $(MAKE) -$(MAKEFLAGS) check ; cd ..
 
 lib: setup
 	for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib; cd .. ; done
-
-optdebug: setup
-	for dir in $(SUBDIRS); do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib CXXDEBUGFLAG=-g CXXOPTFLAG=-O; cd .. ; done
-
-fulldebug: setup
-	for dir in $(SUBDIRS); do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib CXXDEBUGFLAG=-g CXXOPTFLAG=""; cd .. ; done
-
-nodebug: setup
-	for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib ; cd .. ; done
 
 clean: setup
 	for dir in $(SUBDIRS) lib src; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) clean ; cd .. ; done
@@ -69,8 +51,8 @@ dist: doc
 	rm -rf $(TAG)
 	mkdir -p $(TAG)/ThePEG
 	cp $(DISTFILES) $(TAG)/ThePEG
-	for dir in $(SUBDIRS) src Doc lib Templates Planning/ProofOfConcept ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) TAG=$(TAG) VERSION=$(VERSION) dist ; cd .. ; done
-	tar czf $(TAG).tar.gz $(TAG)
+	for dir in $(SUBDIRS) src Doc lib Templates ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
+	tar czf $(TAG).tgz $(TAG)
 	rm -rf $(TAG)
 
 snapshot: doc
