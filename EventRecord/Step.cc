@@ -253,6 +253,29 @@ bool Step::addDecayProduct(tcPPtr par, tPPtr child, bool fixColour) {
   return true;
 }
 
+void Step::addDecayNoCheck(tPPtr parent, tPPtr child) {
+  ParticleSet::iterator pit = theParticles.find(parent);
+  if ( pit != theParticles.end() ) {
+    theParticles.erase(pit);
+    if ( parent->birthStep() == this ) theIntermediates.insert(parent);
+  }
+  child->rep().theBirthStep = this;
+  addParticle(child);
+}
+
+void Step::addDecayProduct(tPPtr child) {
+  for ( int i = 0, N = child->parents().size(); i < N; ++i ) {
+    ParticleSet::iterator pit = theParticles.find(child->parents()[i]);
+    if ( pit != theParticles.end() ) {
+      theParticles.erase(pit);
+      if ( child->parents()[i]->birthStep() == this )
+	theIntermediates.insert(child->parents()[i]);
+    }
+  }
+  child->rep().theBirthStep = this;
+  addParticle(child);
+}
+
 void Step::fixColourFlow() {
   tParticleVector news;
   for ( ParticleSet::iterator pi = theParticles.begin();

@@ -1,3 +1,9 @@
+2003-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/Step.*: Added addDecayNoCheck(tPPtr parent, tPPtr
+	child) and, addDecayProduct(tPPtr child) to add decay products
+	which are already linked with their parents.
+
 2003-07-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/RemnantHandler.*, PDF/PartonExtractor.*, PDF/PartonBin.*,

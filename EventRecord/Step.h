@@ -140,6 +140,19 @@ public:
   // flow to the first added child, while the anti colour will flow to
   // the last added child.
 
+  void addDecayNoCheck(tPPtr parent, tPPtr child);
+  // Add a particle to this Step. It is assumed to be already setup as
+  // a child to a parent particle. The parent is removed from the list
+  // of final state particles in this step. No consistency checks are
+  // performed.
+  // DEPRECIATED: Use addDecayProduct(tPPtr child) instead
+
+  void addDecayProduct(tPPtr child);
+  // Add a particle to this Step. It is assumed to be already setup as
+  // a child to parent particles. The parents are removed from the
+  // list of final state particles in this step. No consistency checks
+  // are performed.
+
   bool removeDecayProduct(tcPPtr parent, tPPtr child);
   template <typename CIterator>
   inline bool removeDecayProduct(tcPPtr parent,
