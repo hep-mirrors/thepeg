@@ -1,22 +1,26 @@
-*** This is a proof-of-concept of ThePEG ***
+*** This is ThePEG version 1 ***
 
-To compile and run a test program follow these steps:
+To compile and install ThePEG follow these steps:
 
 1: run the configure script. To override the defaults: set the
    following environment variables
 
-	CXX: (default g++) your favourite C++ compiler (if it is g++
-             version 2.95.2 and if you are running on Linux you should
-             be OK also egcs-1.1.2 may work. For other platforms, you
-             are on your own!)
+	CXX: (default g++) your favourite C++ compiler. Must be
+	     standard compliant. g++ version 3.2 or later will do
+	     nicely.
 
 	CLHEPPATH: (default /usr/local) The path to the CLHEP
-	     installation (version 1.4 or higher). The header files
-             will be seached for in $(CLHEPPATH)/include/CLHEP and the
-             library file in $(CLHEPPATH)/lib
+	     installation (version 1.8 or higher). The header files
+	     will be seached for in $(CLHEPPATH)/include/CLHEP and the
+	     library file in $(CLHEPPATH)/lib
 
 	CLHEPLIB: (default CLHEP) The name of the CLHEP library. It
-	     will be linked with -l$(CLHEPLIB)
+	     will be linked with -l$(CLHEPLIB). Note that if the CLHEP
+	     is a static library it will be converted to a dynamicaly
+	     linked one and installed in the lib directory of ThePEG.
+
+   To overwrite the default install prefix (/usr/local) use the
+   --prefix=/custom/install/path argument to configure.
 
 2: In the main ThePEG directory, do 'make check'.
         this will compile the main ThePEG library and two programs in
@@ -27,14 +31,15 @@ To compile and run a test program follow these steps:
 	to run the event generator. Some output will be written in
 	SimpleLEP.out, SimpleLEP.log and SimpleLEP.tex.
 
-3: To run the partial event generator example do in src
-		make runPartial
-		./runPartial SimpleLEP.run
-
-
-More information can be found in the brief manual given as a
-compressed postscript file in Doc/Proof.ps.gz and as a html document
-in Doc/Proof/Proof.html.
+3: Install ThePEG with 'make install'. This will put all the shared
+   libraries in the lib/ThePEG/<version> directory under the install
+   path. There will also be placed the default repository file
+   'ThePEGDefaults.rpo' and the two executables 'setupThePEG.exe' and
+   'runThePEG.exe'. The two executables are run indirectly from the
+   scripts 'setupThePEG' and 'runThePEG' which are installed in the
+   bin directory under the install path. In addition All header files
+   will be installed in the 'include/ThePEG' directory under the
+   install path.
 
 Note that this version is not of production quality and results
 produced with it should not be used for serious scientific
