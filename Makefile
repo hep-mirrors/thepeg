@@ -46,9 +46,6 @@ Config/Makefile.common: Config/Makefile.common.in configure
 Config/config.h: Config/config.h.in configure
 	./configure
 
-Doc/h2html: Doc/h2html.in configure
-	./configure
-
 configure: configure.in
 	autoconf
 
@@ -58,7 +55,7 @@ dist: doc
 	cp ../Makefile $(TAG)
 	cp ../configure $(TAG)
 	cp $(DISTFILES) $(TAG)/ThePEG
-	for dir in $(SUBDIRS) src Doc lib ; do cd $$dir ; $(MAKE) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
+	for dir in $(SUBDIRS) src Doc lib ; do cd $$dir ; $(MAKE) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) Dist ; cd .. ; done
 	tar czf $(TAG).tgz $(TAG)
 	rm -rf $(TAG)
 
