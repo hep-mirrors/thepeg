@@ -13,8 +13,9 @@
 //  u or v type.
 //
 //  At the moment only two choices of the Dirac matrix representation
-//  are supported.  The first _idirac=1 is a low energy representation
-//  in which
+//  are supported.  These are specified using the DiracRep
+//  enumeration. The first HaberDRep is a low energy representation in
+//  which
 //
 //  gamma_{i=1,2,3} = (    0      sigma_i ) gamma_0 = ( 1  0 ) gamma_5 = ( 0 1 )
 //                    ( -sigma_i     0    )           ( 0 -1 )           ( 1 0 )
@@ -23,7 +24,7 @@
 //  and is most appropriate for low-energy calculations. However for
 //  high-energy calculations the choice made by the HELAS
 //  collaboration is more efficient for numerical calculations. This
-//  choice is supported as _idirac = 2 and is recommend for most
+//  choice is supported as HELASDRep and is recommend for most
 //  calculations. In this representation
 //
 //  gamma_{i=1,2,3} = (    0      sigma_i ) gamma_0 = ( 0 1 ) gamma_5 = ( -1 0 )
@@ -42,19 +43,18 @@
 //  The <!id>HelicityDefinitions<!!id> class contains a default choice
 //  for the representation which should be used if possible.
 //
-//   The type of the spinor is also stored as _itype = 0   unknown
-//                                                   = 1   u-type 
-//                                                   = 2   v-type
+//  The type of the spinor is also stored using the SpinorType
+//  enumeration.  There are three types supported u_spinortype,
+//  v_spinortype, unknown_spinortype.  This information is intended
+//  mainly for use in the case of Majorana particles where matrix
+//  elements can be calculated with either u or v type spinors and
+//  knowledge of which was used will be needed in order to give the
+//  correct correlations. The unknown_spinortypee is intended for
+//  cases where either the spinor for an off-shell line in a matrix
+//  element calculation or the information is genuinely unknown.
 //
-//  This information is intended mainly for use in the case of
-//  Majorana particles where matrix elements can be calculated with
-//  either u or v type spinors and knowledge of which was used will be
-//  needed in order to give the correct correlations. The unknown type
-//  is intended for cases where either the spinor for an off-shell
-//  line in a matrix element calculation or the information is
-//  genuinely unknown.
-//
-//  The LorentzSpinorBar class is also provided to store the barred spinor.
+//  The LorentzSpinorBar class is also provided to store the barred
+//  spinor.
 //
 // CLASSDOC SUBSECTION See also:
 //
@@ -76,16 +76,16 @@ class LorentzSpinor {
 
 public:
 
-  // default zero constructor
-  LorentzSpinor();
+  // default zero constructor, optionally specifying the type and
+  // choice of dirac matrix
+  LorentzSpinor(SpinorType=unknown_spinortype, DiracRep=defaultDRep);
+  LorentzSpinor(DiracRep);
 
-  // specific the type and choice of dirac matrix
-  LorentzSpinor(int type);
-  LorentzSpinor(int dirac, int type);
-
-  // constructor with complex numbers
-  LorentzSpinor(int type, Complex,Complex,Complex,Complex);
-  LorentzSpinor(int dirac, int type, Complex,Complex,Complex,Complex);
+  // constructor with complex numbers, optionally specifying the type
+  // and choice of dirac matrix
+  LorentzSpinor(Complex,Complex,Complex,Complex,
+		SpinorType=unknown_spinortype, DiracRep=defaultDRep);
+  LorentzSpinor(Complex,Complex,Complex,Complex,DiracRep);
 
   // subscript operator to return spinor components
   inline Complex operator[](int) const;
@@ -118,21 +118,24 @@ public:
   inline LorentzSpinor  boost(const Hep3Vector &) const;
 
   // change the dirac matrix representation
-  inline void changeRep(int);
+  inline void changeRep(DiracRep);
 
   // return the spinor in a different representation
-  inline LorentzSpinor transformRep(int);
+  inline LorentzSpinor transformRep(DiracRep);
 
   // return the representation of the spinor
-  inline int Rep();
+  inline DiracRep Rep();
+
+  // return the type of the spinor
+  inline SpinorType Type();
 
 private:
 
   Complex _spin[4];
   // storage of the components
-  int _idirac;
+  DiracRep _dirac;
   // definition of the Dirac matrices used
-  int _itype;
+  SpinorType _type;
   // type of spinor
 
 };

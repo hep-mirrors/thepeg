@@ -1,5 +1,10 @@
 2004-03-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Helicity/HelicityDefinitions.h: Changed integers for detrmining
+	dirac representation and spinor type to enums.  Also made
+	corresponding changes in LorentzSpinor and LorenzSpinorBar
+	classes.
+
 	* Persistency/PersistentOStream.* Persistency/PersistentIStream.*: 
 	Added members functions for i/o of Complex.
 

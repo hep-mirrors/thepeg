@@ -17,16 +17,16 @@ using namespace Helicity;
 LorentzSpinorBar LorentzSpinor::bar()
 {
   complex<double> output[4];
-  switch(_idirac)
+  switch(_dirac)
     {
       // Haber lower energy
-    case 1:
+    case HaberDRep:
       output[0] = conj(_spin[0]);
       output[1] = conj(_spin[1]);
       output[2] =-conj(_spin[2]);
       output[3] =-conj(_spin[3]);
       break;
-    case 2:
+    case HELASDRep:
       // HELAS
       output[0] = conj(_spin[2]);
       output[1] = conj(_spin[3]);
@@ -34,7 +34,7 @@ LorentzSpinorBar LorentzSpinor::bar()
       output[3] = conj(_spin[1]);
       break;
     }
-  return LorentzSpinorBar(_idirac,_itype,output[0],output[1],output[2],output[3]);
+  return LorentzSpinorBar(output[0],output[1],output[2],output[3],_type,_dirac);
 }
 
 

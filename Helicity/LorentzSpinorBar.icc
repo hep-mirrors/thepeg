@@ -6,48 +6,44 @@
 // Author: Peter Richardson
 //
 
-#include "ThePEG/Helicity/HelicityDefinitions.h"
-
 namespace ThePEG {
 namespace Helicity {
 
 // inlined function of the LorentzSpinorBar class
 // default zero constructor
-inline LorentzSpinorBar::LorentzSpinorBar() {
-  _idirac=HelicityDefinitions::getDirac();
-  _itype=0;
-  for(int ix=0;ix<4;++ix){_spin[ix]=0.;}
-}
-inline LorentzSpinorBar::LorentzSpinorBar(int type) {
-  _idirac=HelicityDefinitions::getDirac();
-  _itype=type;
+inline LorentzSpinorBar::LorentzSpinorBar(DiracRep dirac) {
+  _dirac=dirac;
+  _type=unknown_spinortype;
   for(int ix=0;ix<4;++ix){
     _spin[ix]=0.;
   }
 }
-inline LorentzSpinorBar::LorentzSpinorBar(int dirac, int type) {
-  _idirac=dirac;
-  _itype=type;
+
+inline LorentzSpinorBar::LorentzSpinorBar(SpinorType type, DiracRep dirac) {
+  _dirac=dirac;
+  _type=type;
   for(int ix=0;ix<4;++ix){
     _spin[ix]=0.;
   }
 }
 
 // constructor with complex numbers
+
 inline LorentzSpinorBar::
-LorentzSpinorBar(int type,Complex a,Complex b, Complex c,Complex d) {
-  _idirac=HelicityDefinitions::getDirac();
-  _itype=type;
+LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d,DiracRep dirac) {
+  _dirac=dirac;
+  _type=unknown_spinortype;
   _spin[0]=a;
   _spin[1]=b;
   _spin[2]=c;
   _spin[3]=d;
 }
-// constructor with complex numbers
+
 inline LorentzSpinorBar::
-LorentzSpinorBar(int dirac, int type,Complex a,Complex b, Complex c,Complex d) {
-  _idirac=dirac;
-  _itype=type;
+LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d,SpinorType type,
+		 DiracRep dirac) {
+  _dirac=dirac;
+  _type=type;
   _spin[0]=a;
   _spin[1]=b;
   _spin[2]=c;
@@ -101,8 +97,8 @@ inline void LorentzSpinorBar::setS4(Complex in){_spin[3]=in;}
 // the assignment operator
 inline LorentzSpinorBar & LorentzSpinorBar::
 operator = (const LorentzSpinorBar & in) {
-  _idirac=in._idirac;
-  _itype=in._itype;
+  _dirac=in._dirac;
+  _type=in._type;
   _spin[0]=in.s1();
   _spin[1]=in.s2();
   _spin[2]=in.s3();
@@ -121,24 +117,24 @@ boost(double bx,double by,double bz) const
   Complex out[4],ii(0.,1.);
   Complex nxminy=bx-ii*by;
   Complex nxpiny=bx+ii*by;
-  switch(_idirac)
+  switch(_dirac)
     {
       // Haber lower energy
-    case 1:
+    case HaberDRep:
       out[0] = coshchi*_spin[0]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
       out[1] = coshchi*_spin[1]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
       out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[0]+nxpiny*_spin[1]);
       out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[1]+nxminy*_spin[0]);
       break;
       // HELAS
-    case 2:
+    case HELASDRep:
       out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxpiny*_spin[1]);
       out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxminy*_spin[0]);
       out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
       out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
       break;
     }
-  return LorentzSpinorBar(_idirac,_itype,out[0],out[1],out[2],out[3]);
+  return LorentzSpinorBar(out[0],out[1],out[2],out[3],_type,_dirac);
 }
 
 inline LorentzSpinorBar LorentzSpinorBar::
@@ -151,70 +147,42 @@ boost(const Hep3Vector & boostv) const
   Complex out[4],ii(0.,1.);
   Complex nxminy=bx-ii*by;
   Complex nxpiny=bx+ii*by;
-  switch(_idirac)
+  switch(_dirac)
     {
       // Haber lower energy
-    case 1:
+    case HaberDRep:
       out[0] = coshchi*_spin[0]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
       out[1] = coshchi*_spin[1]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
       out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[0]+nxpiny*_spin[1]);
       out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[1]+nxminy*_spin[0]);
       break;
       // HELAS
-    case 2:
+    case HELASDRep:
       out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxpiny*_spin[1]);
       out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxminy*_spin[0]);
       out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
       out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
       break;
     }
-  return LorentzSpinorBar(_idirac,_itype,out[0],out[1],out[2],out[3]);
+  return LorentzSpinorBar(out[0],out[1],out[2],out[3],_type,_dirac);
 }
 
 // change the dirac matrix representation
-inline void LorentzSpinorBar::changeRep(int newdirac)
+inline void LorentzSpinorBar::changeRep(DiracRep newdirac)
 {
-  // do nothing if all ready in the correct representation
-  if(newdirac==_idirac){return;}
-  double fact=1./sqrt(2.);
-  // transform from HELAS representation to Haber one
-  Complex output[4];
-  if(newdirac==2 && _idirac==1)
-    {
-      output[0] = fact*( _spin[0]-_spin[2]);
-      output[1] = fact*( _spin[1]-_spin[3]);
-      output[2] = fact*( _spin[0]+_spin[2]);
-      output[3] = fact*( _spin[1]+_spin[3]);
-    }
-  // transform from Haber representation to HELAS one
-  else if(newdirac==1 && _idirac==2)
-    {
-      output[0] = fact*( _spin[0]+_spin[2]);
-      output[1] = fact*( _spin[1]+_spin[3]);
-      output[2] = fact*(-_spin[0]+_spin[2]);
-      output[3] = fact*(-_spin[1]+_spin[3]);
-    }
-  // invalid choice
-  else
-    {
-      cerr << "invalid transformation for LorentzSpinor" << endl;
-      return;
-    }
-  // reset the spinor
-  _idirac=newdirac;
-  for(unsigned int ix=0;ix<4;++ix){_spin[ix]=output[ix];}
+  if(newdirac!=_dirac) *this = transformRep(newdirac);
 }
 
 
 // return the spinor in a different representation
-inline LorentzSpinorBar LorentzSpinorBar::transformRep(int newdirac)
+inline LorentzSpinorBar LorentzSpinorBar::transformRep(DiracRep newdirac)
 {
   // do nothing if all ready in the correct representation
-  if(newdirac==_idirac){return *this;}
+  if(newdirac==_dirac){return *this;}
   double fact=1./sqrt(2.);
   // transform from HELAS representation to Haber one
   Complex output[4];
-  if(newdirac==2 && _idirac==1)
+  if(newdirac==HELASDRep && _dirac==HaberDRep)
     {
       output[0] = fact*( _spin[0]-_spin[2]);
       output[1] = fact*( _spin[1]-_spin[3]);
@@ -222,24 +190,21 @@ inline LorentzSpinorBar LorentzSpinorBar::transformRep(int newdirac)
       output[3] = fact*( _spin[1]+_spin[3]);
     }
   // transform from Haber representation to HELAS one
-  else if(newdirac==1 && _idirac==2)
+  else if(newdirac==HaberDRep && _dirac==HELASDRep)
     {
       output[0] = fact*( _spin[0]+_spin[2]);
       output[1] = fact*( _spin[1]+_spin[3]);
       output[2] = fact*(-_spin[0]+_spin[2]);
       output[3] = fact*(-_spin[1]+_spin[3]);
     }
-  // invalid choice
-  else
-    {
-      cerr << "invalid transformation for LorentzSpinor" << endl;
-      return *this;
-    }
   // return the answer
-  return LorentzSpinorBar(newdirac,_itype,output[0],output[1],output[2],output[3]);
+  return LorentzSpinorBar(output[0],output[1],output[2],output[3],_type,newdirac);
 }
 
 // return the representation of the spinor
-inline int LorentzSpinorBar::Rep(){return _idirac;}
+inline DiracRep LorentzSpinorBar::Rep(){return _dirac;}
+
+// return thetype of the spinor
+inline SpinorType LorentzSpinorBar::Type(){return _type;}
 }
 }

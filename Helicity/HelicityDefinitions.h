@@ -34,23 +34,26 @@
 namespace ThePEG {
 namespace Helicity {
 
+// define the enumeration for the dirac representation
+enum DiracRep { HELASDRep, HaberDRep, defaultDRep=HELASDRep };
+
+// define the enumeration for the type
+enum SpinorType { u_spinortype, v_spinortype, unknown_spinortype };
+
+
 class HelicityDefinitions {
 
 public:
 
-  inline static int getDirac(){return _idirac;}
-
-  inline static bool validDirac(int i ){return i>=_idiracmin && i <=_idiracmax;}
+  inline static DiracRep getDirac(){return _dirac;}
 
 private:
 
   HelicityDefinitions();
   // static class can't be created
 
-  static const int _idirac=2;
+  static const DiracRep _dirac=HELASDRep;
   // default choice of the dirac matrix representation
-  static const int _idiracmin=1,_idiracmax=2;
-  // valid choices of the representation
 
 };
 

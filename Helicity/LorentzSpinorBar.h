@@ -31,16 +31,16 @@ class LorentzSpinorBar {
 
 public:
 
-  // default zero constructor
-  LorentzSpinorBar();
+  // default zero constructor, optionally specifying the type and
+  // choice of dirac matrix
+  LorentzSpinorBar(SpinorType=unknown_spinortype, DiracRep=defaultDRep);
+  LorentzSpinorBar(DiracRep);
 
-  // constructor with types
-  LorentzSpinorBar(int type);
-  LorentzSpinorBar(int dirac, int type);
-
-  // constructor with complex numbers
-  LorentzSpinorBar(int type,Complex,Complex, Complex,Complex);
-  LorentzSpinorBar(int dirac, int type,Complex,Complex, Complex,Complex);
+  // constructor with complex numbers, optionally specifying the type
+  // and choice of dirac matrix
+  LorentzSpinorBar(Complex,Complex,Complex,Complex,
+		   SpinorType=unknown_spinortype, DiracRep=defaultDRep);
+  LorentzSpinorBar(Complex,Complex,Complex,Complex,DiracRep);
 
   // subscript operator to return spinor components
   inline Complex operator[](int) const;
@@ -73,21 +73,24 @@ public:
   inline LorentzSpinorBar boost(const Hep3Vector &) const;
 
   // change the dirac matrix representation
-  inline void changeRep(int);
+  inline void changeRep(DiracRep);
 
   // return the spinor in a different representation
-  inline LorentzSpinorBar transformRep(int);
+  inline LorentzSpinorBar transformRep(DiracRep);
 
   // return the representation of the spinor
-  inline int Rep();
+  inline DiracRep Rep();
+
+  // return the type of the spinor
+  inline SpinorType Type();
 
 private:
 
   Complex _spin[4];
   // storage of the components
-  int _idirac;
+  DiracRep _dirac;
   // definition of the Dirac matrices used
-  int _itype;
+  SpinorType _type;
   // type of spinor
 
 
