@@ -14,10 +14,10 @@ namespace ThePEG {
  * loader functions of the underlying operating system. Currently it
  * only works on Linux.
  *
- * @see ClassTraits,
- * @see ClassDescription,
- * @see DescriptionList,
- * @see PersistentIStream.
+ * @see ClassTraits
+ * @see ClassDescription
+ * @see DescriptionList
+ * @see PersistentIStream
  */
 class DynamicLoader {
 

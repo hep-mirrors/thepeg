@@ -14,8 +14,7 @@ namespace ThePEG {
  * and spin to be used by the ParticleData class. In addition, some
  * static utility functions are provided.
  *
- * @see ParticleData.
- * 
+ * @see ParticleData
  */
 class PDT {
 

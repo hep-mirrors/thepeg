@@ -27,8 +27,8 @@ namespace ThePEG {
  * interfaced. This object will automatically register itself with the
  * BaseRepository class.
  *
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 class ParameterBase: public InterfaceBase {
@@ -159,8 +159,8 @@ private:
  * interfaced. This object will automatically register itself with the
  * BaseRepository class.
  *
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 template <typename Type>
@@ -339,8 +339,8 @@ private:
  * interfaced. This object will automatically register itself with the
  * BaseRepository class.
  *
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 template <typename T, typename Type>

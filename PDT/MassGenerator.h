@@ -14,8 +14,9 @@ namespace ThePEG {
  * MassGenerator is an abstract base class used by the ParticleData
  * class to generate a mass for a Particle instance.
  *
- * @see ParticleData.
- * 
+ * @see \ref MassGeneratorInterfaces "The interfaces"
+ * defined for MassGenerator.
+ * @see ParticleData
  */
 class MassGenerator: public Interfaced {
 

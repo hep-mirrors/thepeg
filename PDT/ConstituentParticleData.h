@@ -15,7 +15,8 @@ namespace ThePEG {
  * used for quarks, diquarks and gluons to store information about
  * their constituent mass.
  *
- * @see ParticleData. 
+ * @see \ref ConstituentParticleDataInterfaces "The interfaces"
+ * defined for ConstituentParticleData.
  */
 class ConstituentParticleData: public virtual ParticleData {
 

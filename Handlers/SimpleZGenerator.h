@@ -12,6 +12,9 @@ namespace ThePEG {
  * ZGenerator. It implements a naive unphysical model to generate the
  * momentum fraction (Z) taken by hadrons produced in a hadronization
  * scenario. It should only be used for testing purposes.
+ *
+ * @see \ref SimpleZGeneratorInterfaces "The interfaces"
+ * defined for SimpleZGenerator.
  */
 class SimpleZGenerator: public ZGenerator {
 

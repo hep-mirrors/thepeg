@@ -17,9 +17,10 @@ namespace ThePEG {
  * models for giving the partial decay width of a ParticleData given
  * the specified DecayModes.
  *
- * @see ParticleData,
- * @see DecayMode.
- * 
+ * @see \ref WidthGeneratorInterfaces "The interfaces"
+ * defined for WidthGenerator.
+ * @see ParticleData
+ * @see DecayMode
  */
 class WidthGenerator: public Interfaced {
 

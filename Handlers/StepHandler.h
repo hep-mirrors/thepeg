@@ -24,6 +24,8 @@ namespace ThePEG {
  * action, the resulting particles should be added to a new Step which
  * should be aquired with the newStep() function.
  *
+ * @see \ref StepHandlerInterfaces "The interfaces"
+ * defined for StepHandler.
  * @see PartialCollisionHandler
  * @see Hint
  * @see Step

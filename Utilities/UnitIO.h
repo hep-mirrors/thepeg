@@ -19,8 +19,8 @@ namespace ThePEG {
  * numbers may be written like this, as well as LorentzVector and
  * Vector3.
  *
- * @see PersistentOStream,
- * @see PersistentIStream.
+ * @see PersistentOStream
+ * @see PersistentIStream
  * 
  */
 template <typename T, typename UT>
@@ -47,8 +47,8 @@ struct OUnit {
  * unitful numbers may be read like this, as well as LorentzVector and
  * Vector3.
  *
- * @see PersistentOStream,
- * @see PersistentIStream.
+ * @see PersistentOStream
+ * @see PersistentIStream
  * 
  */
 template <typename T, typename UT>

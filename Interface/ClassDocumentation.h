@@ -35,8 +35,8 @@ namespace ThePEG {
  * description</i>. This is also written to a file after a run by an
  * EventGenerator.
  *
- * @see Interfaced,
- * @see Repository.
+ * @see Interfaced
+ * @see Repository
  * 
  */
 class ClassDocumentationBase  {
@@ -146,8 +146,8 @@ private:
  * description</i>. This is also written to a file after a run by an
  * EventGenerator.
  *
- * @see Interfaced,
- * @see Repository.
+ * @see Interfaced
+ * @see Repository
  * 
  */
 template <typename T>

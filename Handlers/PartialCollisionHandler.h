@@ -33,6 +33,8 @@ namespace ThePEG {
  * the last selected XComb in case the PartialCollisionHandler is used
  * a a sub-class of the CollisionHandler class.
  *
+ * @see \ref PartialCollisionHandlerInterfaces "The interfaces"
+ * defined for PartialCollisionHandler.
  * @see Collision
  * @see CollisionHandler
  * @see PartialEventHandler

@@ -16,9 +16,9 @@ namespace ThePEG {
  * sub-classes must implement the value(Energy2, const
  * StandardModelBase &) function.
  *
- *
- * @see StandardModelBase.
- * 
+ * @see \ref AlphaEMBaseInterfaces "The interfaces"
+ * defined for AlphaEMBase.
+ * @see StandardModelBase
  */
 class AlphaEMBase: public Interfaced {
 

@@ -21,7 +21,7 @@ namespace ThePEG {
  * with the <code>HepMC::GenEvent</code> event record in CLHEP. In the
  * future more functions may be added if they can be agreed upon.
  *
- * @see Particle,
+ * @see Particle
  */
 class SpinBase: public EventInfoBase {
 

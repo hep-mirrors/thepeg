@@ -17,8 +17,9 @@ namespace ThePEG {
  * element the class inherits from ME2to2QCD, mainly to inherit the
  * parameter for the number of active quark flavours.
  *
- * @see ME2to2QCD.
- * 
+ * @see \ref MEee2gZ2qqInterfaces "The interfaces"
+ * defined for MEee2gZ2qq.
+ * @see ME2to2QCD
  */
 class MEee2gZ2qq: public ME2to2QCD {
 

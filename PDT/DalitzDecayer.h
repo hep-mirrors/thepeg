@@ -13,6 +13,8 @@ namespace ThePEG {
  * The DalitzDecayer inherits from the Decayer class and performs
  * Dalitz decays into \f$\gamma e^+ e^-\f$.
  *
+ * @see \ref DalitzDecayerInterfaces "The interfaces"
+ * defined for DalitzDecayer.
  */
 class DalitzDecayer: public Decayer {
 

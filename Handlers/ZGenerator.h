@@ -19,9 +19,10 @@ namespace ThePEG {
  * things provides forward access to the random number generator of
  * the EventGenerator class.
  * 
- * @see HandlerBase,
+ * @see \ref ZGeneratorInterfaces "The interfaces"
+ * defined for ZGenerator.
+ * @see HandlerBase
  * @see EventGenerator
- * 
  */
 class ZGenerator: public HandlerBase {
 

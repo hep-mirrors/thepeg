@@ -18,7 +18,7 @@ namespace ThePEG {
  * from a <code>Vector3</code>, <code>LorentzVector</code> and
  * <code>Lorentz5Momentum</code>.
  *
- * @see Lorentz5Vector,
+ * @see Lorentz5Vector
  */
 template <typename FloatType>
 class Transverse: public pair<FloatType,FloatType> {

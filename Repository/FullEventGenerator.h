@@ -16,11 +16,13 @@ namespace ThePEG {
  * perform analysis on the generated Events, and an EventManipulator
  * to externally manipulate the generated events.
  *
- * @see EventGenerator,
- * @see EventHandler,
- * @see AnalysisHandler,
- * @see Event,
- * @see EventManipulator.
+ * @see \ref FullEventGeneratorInterfaces "The interfaces"
+ * defined for FullEventGenerator.
+ * @see EventGenerator
+ * @see EventHandler
+ * @see AnalysisHandler
+ * @see Event
+ * @see EventManipulator
  */
 class FullEventGenerator: public EventGenerator {
 

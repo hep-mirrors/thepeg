@@ -13,9 +13,7 @@ namespace ThePEG {
  * Two2NCuts inherits from the KinematicalCuts class and introduces
  * cuts on general \f$2\rightarrow N\f$ subprocesses.
  *
- *
- * @see KinematicalCuts.
- * 
+ * @see KinematicalCuts
  */
 class Two2NCuts: public KinematicalCuts {
 

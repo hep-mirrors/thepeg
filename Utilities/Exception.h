@@ -32,8 +32,8 @@ namespace ThePEG {
  * exception e.g.<br> <code>Exception() << "Something went wrong." <<
  * Exception::eventerror</code>.
  *
- * @see Repository,
- * @see EventGenrator.
+ * @see Repository
+ * @see EventGenrator
  */
 class Exception: public exception {
 

@@ -21,8 +21,8 @@ namespace ThePEG {
  * would then have to be extracted by dynamically casting to the
  * sub-class.
  *
- * @see Particle,
- * @see ColourLine.
+ * @see Particle
+ * @see ColourLine
  */
 class ColourBase: public EventInfoBase {
 

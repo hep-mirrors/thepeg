@@ -12,6 +12,9 @@ namespace ThePEG {
 /**
  * GRVBase inherits from PDFBase and is used as a base class for all
  * GRV parton densities.
+ *
+ * @see \ref GRVBaseInterfaces "The interfaces"
+ * defined for GRVBase.
  */
 class GRVBase: public PDFBase {
 

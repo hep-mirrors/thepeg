@@ -78,7 +78,8 @@ void O1AlphaS::Init() {
 
  static Parameter<O1AlphaS,Energy> interfaceLambdaQCD
     ("LambdaQCD",
-     "The \\f$\\Lambda_{QCD}\\f$ in GeV for <code>LambdaFlav</code> active "
+     "The \\f$\\Lambda_{QCD}\\f$ in GeV for "
+     "<interface>LambdaFlav</interface> active "
      "flavours. The value for other numbers of active flavours is derived by "
      "assuming that \\f$\\alpha_S\\f$ is continuous.",
      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 10.0*GeV,

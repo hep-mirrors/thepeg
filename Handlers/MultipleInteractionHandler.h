@@ -13,6 +13,8 @@ namespace ThePEG {
  * derived from the more general StepHandler class,
  * and does not introduce more functioanality as it stands.
  *
+ * @see \ref MultipleInteractionHandlerInterfaces "The interfaces"
+ * defined for MultipleInteractionHandler.
  * @see StepHandler
  * @see CollisionHandler
  * @see SubProcessHandler

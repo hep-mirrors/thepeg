@@ -14,8 +14,8 @@ namespace ThePEG {
  * of leptons within leptons, ie. the energy loss of leptons due to
  * radiation of soft photons.
  *
- * @see PDFBase.
- * 
+ * @see \ref LeptonLeptonPDFInterfaces "The interfaces"
+ * defined for LeptonLeptonPDF.
  */
 class LeptonLeptonPDF: public PDFBase {
 

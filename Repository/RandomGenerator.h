@@ -25,8 +25,9 @@ namespace ThePEG {
  * classes using the engine returned from the randomGenerator()
  * method.
  *
- *
- * @see UseRandom.
+ * @see \ref RandomGeneratorInterfaces "The interfaces"
+ * defined for RandomGenerator.
+ * @see UseRandom
  */
 class RandomGenerator: public Interfaced {
 

@@ -20,9 +20,8 @@ namespace ThePEG {
  * be specified in terms of hadrons or in terms of quarks which will
  * be collapsed into a single hadron.
  *
- * @see QuarkToHadronsDecayer,
- * @see ParticleData.
- * 
+ * @see \ref WeakToHadronsDecayerInterfaces "The interfaces"
+ * defined for WeakToHadronsDecayer.
  */
 class WeakToHadronsDecayer: public QuarksToHadronsDecayer {
 

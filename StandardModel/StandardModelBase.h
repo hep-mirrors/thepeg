@@ -21,12 +21,12 @@ namespace ThePEG {
  * parameters. Beyond the standard model parameters should be
  * implemented as sub-classes.
  *
- *
- * @see EventGenerator,
- * @see AlphaEMBase,
- * @see AlphaSBase,
- * @see CKMBase.
- * 
+ * @see \ref StandardModelBaseInterfaces "The interfaces"
+ * defined for StandardModelBase.
+ * @see EventGenerator
+ * @see AlphaEMBase
+ * @see AlphaSBase
+ * @see CKMBase
  */
 class StandardModelBase: public Interfaced {
 

@@ -26,7 +26,8 @@ void KinematicalCuts::Init() {
   static Parameter<KinematicalCuts,Energy> interfaceMHatMin
     ("SubProcess/MHatMin",
      "The minimum value allowed for \\f$\\hat{m}=\\sqrt{\\hat{s}}\\f$ in GeV "
-     "in the hard subprocess. If the upper limit in <code>MHatMax</code> "
+     "in the hard subprocess. If the upper limit in "
+     "<interface>SubProcess/MHatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theMHatMin, GeV,
@@ -35,7 +36,8 @@ void KinematicalCuts::Init() {
   static Parameter<KinematicalCuts,Energy> interfaceMHatMax
     ("SubProcess/MHatMax",
      "The minimum value allowed for \\f$\\hat{m}=\\sqrt{\\hat{s}}\\f$ in GeV "
-     "in the hard subprocess If the lower limit in <code>MHatMin</code> "
+     "in the hard subprocess If the lower limit in "
+     "<interface>KinematicalCuts::SubProcess/MHatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theMHatMax, GeV,
@@ -44,7 +46,8 @@ void KinematicalCuts::Init() {
   static Parameter<KinematicalCuts,Energy> interfacePTHatMin
     ("SubProcess/PTHatMin",
      "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV "
-     "in the hard subprocess. If the upper limit in <code>PTHatMax</code> "
+     "in the hard subprocess. If the upper limit in "
+     "<interface>SubProcess/PTHatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler",
      &KinematicalCuts::thePTHatMin, GeV,
@@ -53,7 +56,8 @@ void KinematicalCuts::Init() {
   static Parameter<KinematicalCuts,Energy> interfacePTHatMax
     ("SubProcess/PTHatMax",
      "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV "
-     "in the hard subprocess If the lower limit in <code>PTHatMin</code> "
+     "in the hard subprocess If the lower limit in "
+     "<interface>SubProcess/PTHatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::thePTHatMax, GeV,
@@ -64,10 +68,11 @@ void KinematicalCuts::Init() {
      "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV for "
      "processes which are singular in the limit "
      "\\f$\\hat{p_\\perp}\\rightarrow 0\\f$. This "
-     "cut is in addition to <code>PTHatMin</code>. Hard "
+     "cut is in addition to <interface>SubProcess/PTHatMin</interface>. Hard "
      "\\f$2\\rightarrow 2\\f$ processes which do not proceed via intermediate "
      "resonances are considered singular if either or both final-state "
-     "products have a mass less than <code>SingularMassMax</code>. This limit "
+     "products have a mass less than "
+     "<interface>SubProcess/SingularMassMax</interface>. This limit "
      "is not checked automatically, but is assumed to be checked by the "
      "relevant ThePEG::MEBase objects.",
      &KinematicalCuts::thePTHatSingularMin, GeV,
@@ -92,7 +97,8 @@ void KinematicalCuts::Init() {
     ("Collision/YStarMin",
      "The minimum value of the scattering subsystem rapidity \\f$y^*\\f$ "
      "in the c.m. frame of the event, where \\f$y^* = (1/2)  \\ln(x_1/x_2)\\f$."
-     " Must be less than <code>YStarMax</code>. This limit is automatically "
+     " Must be less than <interface>SubProcess/YStarMax</interface>. "
+     "This limit is automatically "
      "checked by the event handler.",
      &KinematicalCuts::theYStarMin,
      -10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
@@ -102,7 +108,8 @@ void KinematicalCuts::Init() {
     ("Collision/YStarMiax",
      "The maximum value of the scattering subsystem rapidity \\f$y^*\\f$ "
      "in the c.m. frame of the event, where \\f$y^* = (1/2)  \\ln(x_1/x_2)\\f$."
-     " Must be larger than <code>YStarMin</code>. This limit is automatically "
+     " Must be larger than <interface>Collision/YStarMin</interface>. "
+     "This limit is automatically "
      "checked by the event handler.",
      &KinematicalCuts::theYStarMax,
      10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
@@ -114,7 +121,8 @@ void KinematicalCuts::Init() {
      "rapidity in a "
      "\\f$2 \\rightarrow 2\\f$ or a \\f$2 \\rightarrow 1 \\rightarrow 2\\f$ "
      "process, defined in the c.m. frame of the event. Must be less than "
-     "<code>MaxYMax</code>. This limit is automatically checked by the "
+     "<interface>Collision/MaxYMax</interface>. "
+     "This limit is automatically checked by the "
      "event handler in the case of \\f$2 \\rightarrow 2\\f$ processes. In the "
      "case of \\f$2 \\rightarrow 1\\f$ processes it is the responsibility of "
      "the Decay handler performing the resonance decay to check the limit.",
@@ -128,7 +136,8 @@ void KinematicalCuts::Init() {
      "The maximum value of the rapidity for the product with largest "
      "rapidity in a \\f$2 \\rightarrow 2\\f$ or a "
      "\\f$2 \\rightarrow 1 \\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MaxYMin</code>. This "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MaxYMin</interface>. This "
      "limit is automatically checked by the event handler in the case of "
      "\\f$2 \\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -143,7 +152,8 @@ void KinematicalCuts::Init() {
      "The minimum value of the rapidity for the product with smallest "
      "rapidity in a \\f$2 \\rightarrow 2\\f$ or a "
      "\\f$2 \\rightarrow 1 \\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MinYMax</code>. This "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MinYMax</interface>. This "
      "limit is automatically checked by the event handler in the case of "
      "\\f$2 \\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -158,7 +168,8 @@ void KinematicalCuts::Init() {
      "The maximum value of the rapidity for the product with smallest "
      "rapidity in a \\f$2\\rightarrow 2\\f$ or a "
      "\\f$2\\rightarrow 1\\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MinYMin</code>. This limit "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MinYMin</interface>. This limit "
      "is automatically checked by the event handler in the case of "
      "\\f$2\\rightarrow 2\\f$ processes. In the case of "
      "\\f$2\\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -173,7 +184,8 @@ void KinematicalCuts::Init() {
      "The minimum value of the pseudo rapidity for the product with largest "
      "pseudo rapidity in a \\f$2\\rightarrow 2\\f$ or a "
      "\\f$2\\rightarrow 1\\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MaxEtaMax</code>. This "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MaxEtaMax</interface>. This "
      "limit is automatically checked by the event handler in the case of "
      "\\f$2\\rightarrow 2\\f$ processes. In the case of "
      "\\f$2\\rightarrow 1\\f$ processes it is the responsibility of the"
@@ -188,7 +200,8 @@ void KinematicalCuts::Init() {
      "The maximum value of the pseudo rapidity for the product with largest "
      "pseudo rapidity in a \\f$2\\rightarrow 2\\f$ or a "
      "\\f$2\\rightarrow 1\\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MaxEtaMin</code>. This "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MaxEtaMin</interface>. This "
      "limit is automatically checked by the event handler in the case of "
      "\\f$2\\rightarrow 2\\f$ processes. In the case of "
      "\\f$2\\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -203,7 +216,8 @@ void KinematicalCuts::Init() {
      "The minimum value of the pseudo rapidity for the product with smallest "
      "pseudo rapidity in a \\f$2\\rightarrow 2\\f$ or a "
      "\\f$2\\rightarrow 1\\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MinEtaMax</code>. This "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MinEtaMax</interface>. This "
      "limit is automatically checked by the event handler in the case of "
      "\\f$2\\rightarrow 2\\f$ processes. In the case of "
      "\\f$2\\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -218,7 +232,8 @@ void KinematicalCuts::Init() {
      "The maximum value of the pseudo rapidity for the product with smallest "
      "pseudo rapidity in a \\f$2\\rightarrow 2\\f$ or a "
      "\\f$2\\rightarrow 1\\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MinEtaMin</code>. This "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MinEtaMin</interface>. This "
      "limit is automatically checked by the event handler in the case of "
      "\\f$2 \\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of "
@@ -234,7 +249,8 @@ void KinematicalCuts::Init() {
      "largest \\f$\\cos{\\theta^*}\\f$ in a "
      "\\f$2 \\rightarrow 2\\f$ or a \\f$2 \\rightarrow 1 "
      "\\rightarrow 2\\f$ process, defined in the c.m. frame of the event. "
-     "Must be less than <code>MaxCosThetaMax</code>. This limit is "
+     "Must be less than <interface>Collision/MaxCosThetaMax</interface>. "
+     "This limit is "
      "automatically checked by the event handler in the case of "
      "\\f$2 \\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -248,7 +264,8 @@ void KinematicalCuts::Init() {
      "The maximum value of \\f$\\cos{\\theta^*}\\f$ for the product with "
      "largest \\f$\\cos{\\theta^*}\\f$ in a \\f$2 \\rightarrow 2\\f$ or a "
      "\\f$2 \\rightarrow 1 \\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MaxCosThetaMin</code>. "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MaxCosThetaMin</interface>. "
      "This limit is automatically checked by the event handler in the case of "
      "\\f$2 \\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -262,7 +279,8 @@ void KinematicalCuts::Init() {
      "The minimum value of \\f$\\cos{\\theta^*}\\f$ for the product with "
      "smallest \\f$\\cos{\\theta^*}\\f$ in a \\f$2 \\rightarrow 2\\f$ or a "
      "\\f$2 \\rightarrow 1 \\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MinCosThetaMax</code>. "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MinCosThetaMax</interface>. "
      "This limit is automatically checked by the event handler in the case of "
      "\\f$2\\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -276,7 +294,8 @@ void KinematicalCuts::Init() {
      "The maximum value of \\f$\\cos{\\theta^*}\\f$ for the product with "
      "smallest \\f$\\cos{\\theta^*}\\f$ in a \\f$2 \\rightarrow 2\\f$ or a "
      "\\f$2 \\rightarrow 1 \\rightarrow 2\\f$ process, defined in the c.m. "
-     "frame of the event. Must be less than <code>MinCosThetaMin</code>. "
+     "frame of the event. Must be less than "
+     "<interface>Collision/MinCosThetaMin</interface>. "
      "This limit is automatically checked by the event handler in the case of "
      "\\f$2 \\rightarrow 2\\f$ processes. In the case of "
      "\\f$2 \\rightarrow 1\\f$ processes it is the responsibility of the "
@@ -361,7 +380,7 @@ void KinematicalCuts::Init() {
     ("SubProcess/THatMin",
      "The minimum allowed value of \\f$|\\hat{t}|=-\\hat{t}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "upper limit in <code>THatMax</code> "
+     "upper limit in <interface>SubProcess/THatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theTHatMin, GeV2,
@@ -371,7 +390,7 @@ void KinematicalCuts::Init() {
     ("SubProcess/THatMax",
      "The maximum allowed value of \\f$|\\hat{t}|=-\\hat{t}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "lower limit in <code>THatMin</code> "
+     "lower limit in <interface>SubProcess/THatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theTHatMax, GeV2,
@@ -381,7 +400,7 @@ void KinematicalCuts::Init() {
     ("SubProcess/UHatMin",
      "The minimum allowed value of \\f$|\\hat{u}|=-\\hat{u}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "upper limit in <code>UHatMax</code> "
+     "upper limit in <interface>SubProcess/UHatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theUHatMin, GeV2,
@@ -391,7 +410,7 @@ void KinematicalCuts::Init() {
     ("SubProcess/UHatMax",
      "The maximum allowed value of \\f$|\\hat{u}|=-\\hat{u}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "lower limit in <code>UHatMin</code> "
+     "lower limit in <interface>SubProcess/UHatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theUHatMax, GeV2,
@@ -401,7 +420,7 @@ void KinematicalCuts::Init() {
     ("SubProcess/ScaleMin",
      "The minimum allowed value of the user-defined scale in GeV<sup>2</sup> "
      "in a hard scattering. If the upper limit in "
-     "<code>SubProcess/ScaleMax</code> is less than this, the upper limit "
+     "<interface>SubProcess/ScaleMax</interface> is less than this, the upper limit "
      "is inactive. This limit is automatically checked by the event handler.",
      &KinematicalCuts::theScaleMin, GeV2,
      0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -410,7 +429,7 @@ void KinematicalCuts::Init() {
     ("SubProcess/ScaleMax",
      "The maximum allowed value of user defined scale in GeV<sup>2</sup> "
      "in a hard scattering. If the lower limit in "
-     "<code>SubProcess/ScaleMin</code> is larger than this, the upper limit "
+     "<interface>SubProcess/ScaleMin</interface> is larger than this, the upper limit "
      "is inactive. This limit is automatically checked by the event handler.",
      &KinematicalCuts::theScaleMax, GeV2,
      -1.0*GeV, -1.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -419,7 +438,8 @@ void KinematicalCuts::Init() {
     ("DIS/Lepton1EnergyMin",
      "In Deep inelastic scattering of leptons, this gives the minimum energy "
      "in GeV allowed for the scattered (first) lepton. If the upper limit "
-     "given in <code>Lepton1EnergyMax</code> is smaller than this, the upper "
+     "given in <interface>DIS/Lepton1EnergyMax</interface> "
+     "is smaller than this, the upper "
      "limit is inactive. This limit is automatically checked by the event "
      "handler.",
      &KinematicalCuts::theDISLepton1EnergyMin, GeV,
@@ -429,7 +449,8 @@ void KinematicalCuts::Init() {
     ("DIS/Lepton2EnergyMin",
      "In Deep inelastic scattering of leptons, this gives the minimum energy "
      "in GeV allowed for the scattered (second) lepton. If the upper limit "
-     "given in <code>Lepton2EnergyMax</code> is smaller than this, the upper "
+     "given in <interface>DIS/Lepton2EnergyMax</interface> "
+     "is smaller than this, the upper "
      "limit is inactive. This limit is automatically checked by the event "
      "handler.",
      &KinematicalCuts::theDISLepton2EnergyMin, GeV,
@@ -439,7 +460,8 @@ void KinematicalCuts::Init() {
     ("DIS/Lepton1EnergyMax",
      "In Deep inelastic scattering of leptons, this gives the maximum energy "
      "in GeV allowed for the scattered (first) lepton. If the lower limit "
-     "given in <code>Lepton1EnergyMin</code> is larger than this, the upper "
+     "given in <interface>DIS/Lepton1EnergyMin</interface> "
+     "is larger than this, the upper "
      "limit is inactive. This limit is automatically checked by the event "
      "handler.",
      &KinematicalCuts::theDISLepton1EnergyMax, GeV,
@@ -449,7 +471,8 @@ void KinematicalCuts::Init() {
     ("DIS/Lepton2EnergyMax",
      "In Deep inelastic scattering of leptons, this gives the maximum energy "
      "in GeV allowed for the scattered (second) lepton. If the lower limit "
-     "given in <code>Lepton2EnergyMin</code> is larger than this, the upper "
+     "given in <interface>DIS/Lepton2EnergyMin</interface> "
+     "is larger than this, the upper "
      "limit is inactive. This limit is automatically checked by the event "
      "handler.",
      &KinematicalCuts::theDISLepton2EnergyMax, GeV,
@@ -481,7 +504,7 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the maximum angle "
      "allowed for the scattered (first) lepton. This limit is "
      "automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on.",
+     "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISLepton1AngleMax,
      Constants::pi, 0.0, Constants::pi, false, false, true,
      0, 0, &KinematicalCuts::DISLepton1AngleMin, 0);
@@ -491,7 +514,7 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the minimum angle "
      "allowed for the scattered (first) lepton. This limit is "
      "automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on.",
+     "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISLepton2AngleMin,
      0.0, 0.0, Constants::pi, false, false, true,
      0, 0, 0, &KinematicalCuts::DISLepton2AngleMax);
@@ -501,7 +524,7 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the maximum angle "
      "allowed for the scattered (first) lepton. This limit is "
      "automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on.",
+     "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISLepton2AngleMax,
      Constants::pi, 0.0, Constants::pi, false, false, true,
      0, 0, &KinematicalCuts::DISLepton2AngleMin, 0);
@@ -511,9 +534,10 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the minimum "
      "virtuality, \\f$Q_1^2\\f$ in GeV<sup>2</sup>, allowed for the boson "
      "emitted from the (first) lepton. If the upper limit given in "
-     "<code>Q21Max</code> is smaller than this, the upper limit is inactive. "
+     "<interface>DIS/Q21Max</interface> "
+     "is smaller than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on. Note that for some processes "
+     "<interface>DIS/UseDISCuts</interface> is on. Note that for some processes "
      "\\f$Q_1^2=|\\hat{t}|\\f$.",
      &KinematicalCuts::theDISQ21Min, GeV2,
      0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -523,9 +547,10 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the maximum "
      "virtuality, \\f$Q_1^2\\f$ in GeV<sup>2</sup>, allowed for the boson "
      "emitted from the (first) lepton. If the lower limit given in "
-     "<code>Q21Min</code> is larger than this, the upper limit is inactive. "
+     "<interface>DIS/Q21Min</interface> "
+     "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on. Note that for some processes "
+     "<interface>DIS/UseDISCuts</interface> is on. Note that for some processes "
      "\\f$Q_1^2=|\\hat{t}|\\f$.",
      &KinematicalCuts::theDISQ21Max, GeV2,
      -1.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -535,9 +560,10 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the minimum "
      "virtuality, \\f$Q_2^2\\f$ in GeV<sup>2</sup>, allowed for the boson "
      "emitted from the (second) lepton. If the upper limit given in "
-     "<code>Q22Max</code> is smaller than this, the upper limit is inactive. "
+     "<interface>DIS/Q22Max</interface> "
+     "is smaller than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on. Note that for some processes "
+     "<interface>DIS/UseDISCuts</interface> is on. Note that for some processes "
      "\\f$Q_2^2=|\\hat{t}|\\f$.",
      &KinematicalCuts::theDISQ22Min, GeV2,
      0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -547,9 +573,10 @@ void KinematicalCuts::Init() {
      "In Deep inelastic scattering of leptons, this gives the maximum "
      "virtuality, \\f$Q_2^2\\f$ in GeV<sup>2</sup>, allowed for the boson "
      "emitted from the (second) lepton. If the lower limit given in "
-     "<code>Q22Min</code> is larger than this, the upper limit is inactive. "
+     "<interface>DIS/Q22Min</interface> "
+     "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on. Note that for some processes "
+     "<interface>DIS/UseDISCuts</interface> is on. Note that for some processes "
      "\\f$Q_2^2=|\\hat{t}|\\f$.",
      &KinematicalCuts::theDISQ22Max, GeV2,
      -1.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -558,10 +585,11 @@ void KinematicalCuts::Init() {
     ("DIS/W2Min",
      "In Deep inelastic scattering of leptons, this gives the minimum "
      "invariant mass squared of the hadronic system, \\f$W^2\\f$ in "
-     "Gev<sup>2</sup>. If the upper limit given in <code>W2Max</code> is "
+     "Gev<sup>2</sup>. If the upper limit given in "
+     "<interface>DIS/W2Max</interface> is "
      "smaller than this, the upper limit is inactive. This limit is "
      "automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on.",
+     "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISW2Min, GeV2,
      0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
 
@@ -569,10 +597,11 @@ void KinematicalCuts::Init() {
     ("DIS/W2Max",
      "In Deep inelastic scattering of leptons, this gives the maximum "
      "invariant mass squared of the hadronic system, \\f$W^2\\f$ in "
-     "GeV<sup>2</sup>. If the lower limit given in <code>W2Min</code> is "
+     "GeV<sup>2</sup>. If the lower limit given in "
+     "<interface>DIS/W2Min</interface> is "
      "larger than this, the upper limit is inactive. This limit is "
      "automatically checked by the event handler if "
-     "<code>DIS/UseDISCuts</code> is on.",
+     "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISW2Max, GeV2,
      -1.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
 

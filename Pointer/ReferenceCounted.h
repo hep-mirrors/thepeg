@@ -16,8 +16,8 @@ namespace Pointer {
  * ConstRCPtr pointers which are currently pointing to an
  * object.
  *
- * @see RCPtr.
- * @see ConstRCPtr.
+ * @see RCPtr
+ * @see ConstRCPtr
  */
 class ReferenceCounted {
 

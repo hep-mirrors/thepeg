@@ -30,7 +30,7 @@ template <int I>
  * static methods of a <code>Direction</code> class when no object has
  * been instatiated will result in an exception being thrown.
  *
- * @see Lorentz5Momentum.
+ * @see Lorentz5Momentum
  */
 class Direction {
 

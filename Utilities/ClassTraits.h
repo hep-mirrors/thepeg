@@ -38,8 +38,8 @@ struct ClassTraitsType: public TraitsType {};
  * dynamically cast a pointer to a public base class to a pointer to
  * the class.
  *
- * @see PersistentOStream,
- * @see PersistentIStream.
+ * @see PersistentOStream
+ * @see PersistentIStream
  */
 template <typename T>
 struct ClassTraitsBase: public ClassTraitsType {

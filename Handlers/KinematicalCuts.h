@@ -28,6 +28,8 @@ namespace ThePEG {
  * KinematicalCuts class, in which case the virtual newcut() methods
  * may be overridden and will be called from the cut() methods.
  *
+ * @see \ref KinematicalCutsInterfaces "The interfaces"
+ * defined for KinematicalCuts.
  * @see CollisionHandler
  * @see SubProcessHandler
  * @see MEBase

@@ -23,7 +23,7 @@ namespace ThePEG {
  * the event generator will be run once for each possible combination
  * arguments to object interfaces.
  *
- * @see FullEventGenerator.
+ * @see FullEventGenerator
  * 
  */
 class MultiEventGenerator: public FullEventGenerator {

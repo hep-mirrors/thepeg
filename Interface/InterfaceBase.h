@@ -23,13 +23,29 @@ namespace ThePEG {
  * InterfaceBase is derived from the Named to manage the name of the
  * interface.
  *
+ * From the Repository it is possible to generate a file with doxygen
+ * comments which can be included in the documentation describing the
+ * InterfaceBase objects defined for a class. For each class,
+ * <code>ClassName</code>, there will be produced a file called
+ * <code>ClassNameInterfaces.html</code> which can be referred to with
+ * a standard html <code>href</code> anchor. Also a specific
+ * interface, <code>InterfaceName</code> can be referred to with
+ * <code>ClassNameInterfaces.html#InterfaceName</code>. The file can
+ * also be referred to with the doxygen <code>\\ref</code>
+ * command. Inside the description of an interface, other interfaces
+ * in the same class can be tagged with
+ * \<interface\>InterfaceName\</interface\> or, if the interface
+ * belongs to another class,
+ * \<interface\>ClassName::InterfaceName\</interface\>. By running the
+ * script in <code>ThePEG/Doc/fixinterfaces.pl</code> these tags will
+ * be converted to proper <code>href</code> anchors.
  *
- * @see InterfacedBase,
- * @see Command,
- * @see Parameter,
- * @see Reference,
- * @see BaseRepository.
- * @see Named.
+ * @see InterfacedBase
+ * @see Command
+ * @see Parameter
+ * @see Reference
+ * @see BaseRepository
+ * @see Named
  * 
  */
 class InterfaceBase: public Named {

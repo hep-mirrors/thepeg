@@ -30,9 +30,9 @@ namespace ThePEG {
  * which are special to ThePEG where the objects are Interfaced (a
  * sub-class of InterfacedBase).
  *
- * @see Repository,
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see Repository
+ * @see InterfacedBase
+ * @see InterfaceBase
  * @see Interfaced
  * 
  */

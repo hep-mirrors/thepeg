@@ -19,11 +19,9 @@ namespace ThePEG {
  * present in the current program and a list of base class
  * <code>InputDescription</code>s.
  *
- *
- * @see PersistentIStream,
- * @see Named,
- * @see ClassDescription.
- * 
+ * @see PersistentIStream
+ * @see Named
+ * @see ClassDescription
  */
 class InputDescription: public Named {
 

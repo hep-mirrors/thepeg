@@ -15,7 +15,6 @@ namespace ThePEG {
  * class and cannot actually perform any decays.
  *
  * @see Decayer
- * 
  */
 class PYDECYDummy: public Decayer {
 

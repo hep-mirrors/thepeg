@@ -11,6 +11,9 @@ namespace ThePEG {
  * GaussianPtGenerator inherits from the abstract PtGenerator
  * class. It will generate a transverse momentum distributed according
  * to a gaussian.
+ *
+ * @see \ref GaussianPtGeneratorInterfaces "The interfaces"
+ * defined for GaussianPtGenerator.
  */
 class GaussianPtGenerator: public PtGenerator {
 

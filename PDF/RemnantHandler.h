@@ -17,8 +17,10 @@ namespace ThePEG {
  * used to generate remnants when partons are extracted from
  * particles.
  *
- * @see PartonExtractor.
- * @see PDFBase.
+ * @see \ref RemnantHandlerInterfaces "The interfaces"
+ * defined for RemnantHandler.
+ * @see PartonExtractor
+ * @see PDFBase
  */
 class RemnantHandler: public HandlerBase {
 

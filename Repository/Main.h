@@ -26,7 +26,7 @@ namespace ThePEG {
  * function. All other command-line arguments will be available from
  * the arguments() function.
  *
- * @see EventGenerator. 
+ * @see EventGenerator
  */
 class Main: public Base {
 

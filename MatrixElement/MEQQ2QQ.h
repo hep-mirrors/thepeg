@@ -13,8 +13,9 @@ namespace ThePEG {
  * MEQQ2QQ inherits from ME2to2QCD and implements the standard
  * \f$q_iq_i\rightarrow q_iq_i\f$ matrix element.
  *
- * @see ME2to2QCD.
- * 
+ * @see \ref MEQQ2QQInterfaces "The interfaces"
+ * defined for MEQQ2QQ.
+ * @see ME2to2QCD
  */
 class MEQQ2QQ: public ME2to2QCD {
 

@@ -31,12 +31,12 @@ namespace ThePEG {
  * addition, if a ParticleData with a given PDG id number was not yet
  * added to the list of default particles, this one will be.
  *
- * @see BaseRepository,
- * @see InterfacedBase,
- * @see ParticleData,
- * @see ParticleMatcher,
- * @see DecayMode,
- * @see EventGenerator.
+ * @see BaseRepository
+ * @see InterfacedBase
+ * @see ParticleData
+ * @see ParticleMatcher
+ * @see DecayMode
+ * @see EventGenerator
  * 
  */
 class Repository: public BaseRepository {

@@ -13,7 +13,7 @@ namespace ThePEG {
  * The ReweightMinPT class reweights matrix elements with the minimum
  * of the transverse momenta of the outgoing partons to some power.
  *
- * @see ReweightBase.
+ * @see ReweightBase
  * 
  */
 class ReweightMinPT: public ReweightBase {

@@ -186,7 +186,7 @@ private:
  * the end of the run. To avoid confusion, only one Timer object of
  * each template integer argument should be created.
  *
- * @see Debug.
+ * @see Debug
  * 
  */
 template <unsigned int I>

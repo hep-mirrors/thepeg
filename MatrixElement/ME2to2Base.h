@@ -20,7 +20,9 @@ namespace ThePEG {
  * point, such as tHat(), uHat() and the masses of the external
  * partons.
  *
- * @see MEBase. 
+ * @see \ref ME2to2BaseInterfaces "The interfaces"
+ * defined for ME2to2Base.
+ * @see MEBase
  */
 class ME2to2Base: public MEBase {
 

@@ -15,7 +15,9 @@ namespace ThePEG {
  * implement the Cabibbo-Kobayashi-Mascawa mixing matrix. Concrete
  * sub-classes must implement the getMatrix(unsigned int) function.
  *
- * @see StandardModelBase.
+ * @see \ref CKMBaseInterfaces "The interfaces"
+ * defined for CKMBase.
+ * @see StandardModelBase
  */
 class CKMBase: public Interfaced {
 

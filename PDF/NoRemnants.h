@@ -15,8 +15,8 @@ namespace ThePEG {
  * NoPDF object and will never give any remnants.
  *
  *
- * @see RemnantHandler,
- * @see NoPDF.
+ * @see RemnantHandler
+ * @see NoPDF
  * 
  */
 class NoRemnants: public RemnantHandler {

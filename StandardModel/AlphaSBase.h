@@ -17,9 +17,9 @@ namespace ThePEG {
  * \f$\Lambda_{QCD}\f$ for a given number of active flavours or for a
  * given scale.
  *
- *
- * @see StandardModelBase.
- * 
+ * @see \ref AlphaSBaseInterfaces "The interfaces"
+ * defined for AlphaSBase.
+ * @see StandardModelBase
  */
 class AlphaSBase: public Interfaced {
 

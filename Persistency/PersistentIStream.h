@@ -35,8 +35,8 @@ namespace ThePEG {
  * structures, the virtual base classes will be written out several
  * times for the same object.
  *
- * @see PersistentOStream,
- * @see ClassTraits.
+ * @see PersistentOStream
+ * @see ClassTraits
  */
 class PersistentIStream {
 

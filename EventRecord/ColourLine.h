@@ -26,8 +26,8 @@ namespace ThePEG {
  * is also the way junction strings and sinks and sources are
  * implemented.
  *
- * @see Particle,
- * @see ColourBase.
+ * @see Particle
+ * @see ColourBase
  */
 class ColourLine: public EventRecordBase {
 

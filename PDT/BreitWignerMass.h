@@ -15,8 +15,8 @@ namespace ThePEG {
  * with.
  *
  *
- * @see MassGenerator,
- * @see ParticleData.
+ * @see MassGenerator
+ * @see ParticleData
  * 
  */
 class BreitWignerMass: public MassGenerator {

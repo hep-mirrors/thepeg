@@ -16,8 +16,8 @@ template <typename T>
  * to persistent streams. An enum can hence be written like this:<BR>
  * <code>os >> oenum(x);</code><BR>
  *
- * @see PersistentOStream,
- * @see PersistentIStream.
+ * @see PersistentOStream
+ * @see PersistentIStream
  * 
  */
 struct OEnum {
@@ -38,8 +38,8 @@ struct OEnum {
  * from persistent streams. An enum can hence be read like this:<BR>
  * <code>is >> ienum(x);</code>
  *
- * @see PersistentOStream,
- * @see PersistentIStream.
+ * @see PersistentOStream
+ * @see PersistentIStream
  * 
  */
 template <typename T>

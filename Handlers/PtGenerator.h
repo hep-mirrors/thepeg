@@ -16,9 +16,10 @@ namespace ThePEG {
  * HandlerBase which among other things provides forward access to the
  * random number object held by the EventGenerator object.
  *
- * @see HandlerBase,
- * @see EventGenerator.
- *
+ * @see \ref PtGeneratorInterfaces "The interfaces"
+ * defined for PtGenerator.
+ * @see HandlerBase
+ * @see EventGenerator
  */
 class PtGenerator: public HandlerBase {
 

@@ -38,8 +38,8 @@ namespace ThePEG {
  * BaseRepository class.
  *
  *
- * @see InterfacedBase,
- * @see InterfaceBase,
+ * @see InterfacedBase
+ * @see InterfaceBase
  * @see BaseRepository
  * 
  */
@@ -131,8 +131,8 @@ public:
  * BaseRepository class.
  *
  *
- * @see InterfacedBase,
- * @see InterfaceBase,
+ * @see InterfacedBase
+ * @see InterfaceBase
  * @see BaseRepository
  * 
  */

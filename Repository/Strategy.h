@@ -24,10 +24,12 @@ namespace ThePEG {
  * Sub-classes may implement other behaviors by overriding the
  * doinit() function.
  *
- * @see EventGenerator,
- * @see ParticleData,
- * @see Repository,
- * @see Reference.
+ * @see \ref StrategyInterfaces "The interfaces"
+ * defined for Strategy.
+ * @see EventGenerator
+ * @see ParticleData
+ * @see Repository
+ * @see Reference
  * 
  */
 class Strategy: public Interfaced {

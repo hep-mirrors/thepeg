@@ -24,7 +24,8 @@ namespace ThePEG {
  * give easy access to the information of the generated primary
  * sub-process in the selected XComb.
  *
- *
+ * @see \ref LuminosityFunctionInterfaces "The interfaces"
+ * defined for LuminosityFunction.
  * @see LuminosityFunction
  * @see XComb
  * 

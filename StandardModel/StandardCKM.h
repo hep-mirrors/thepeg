@@ -14,7 +14,8 @@ namespace ThePEG {
  * parameterization of the CKM matrix in terms of three angles and a
  * phase.
  *
- * @see CKMBase.
+ * @see \ref StandardCKMInterfaces "The interfaces"
+ * defined for StandardCKM.
  */
 class StandardCKM: public CKMBase {
 

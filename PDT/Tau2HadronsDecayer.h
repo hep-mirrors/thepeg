@@ -14,6 +14,8 @@ namespace ThePEG {
  * the decays of tau to neutrino + hadrons according to phase space,
  * with an extra weight \f$x_\nu(3-x_\nu)\f$.
  *
+ * @see \ref Tau2HadronsDecayerInterfaces "The interfaces"
+ * defined for Tau2HadronsDecayer.
  */
 class Tau2HadronsDecayer: public FlatDecayer {
 

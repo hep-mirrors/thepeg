@@ -13,9 +13,8 @@ namespace ThePEG {
  * O1AlphaS inherits from AlphaSBase and implements the leading order
  * running QCD coupling.
  *
- *
- * @see AlphaSBase.
- * 
+ * @see \ref O1AlphaSInterfaces "The interfaces"
+ * defined for O1AlphaS.
  */
 class O1AlphaS: public AlphaSBase {
 

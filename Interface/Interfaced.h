@@ -22,10 +22,10 @@ namespace ThePEG {
  * available to the Interfaced object during the setup
  * phase.
  *
- * @see InterfacedBase,
- * @see EventGenerator,
- * @see ParticleData,
- * @see RandomGenerator,
+ * @see InterfacedBase
+ * @see EventGenerator
+ * @see ParticleData
+ * @see RandomGenerator
  */
 class Interfaced: public InterfacedBase {
 

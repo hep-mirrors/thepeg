@@ -24,10 +24,11 @@ namespace ThePEG {
  * There is only one virtual function which must be overridden in
  * derived classes: weight().
  *
- * @see MEBase,
- * @see EventHandler,
- * @see SubProcessHandler.
- * 
+ * @see \ref ReweightBaseInterfaces "The interfaces"
+ * defined for ReweightBase.
+ * @see MEBase
+ * @see EventHandler
+ * @see SubProcessHandler
  */
 class ReweightBase: public HandlerBase, public LastXCombInfo<> {
 

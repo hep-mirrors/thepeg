@@ -571,8 +571,12 @@ string BaseRepository::exec(string command, ostream & os) {
 	string briefname = classname.substr(spacename.length());
 	os << "/** \\page " << briefname << "Interfaces "
 	   << "Interfaces defined for the " << classname << " class.\n\n"
-	   << "\\par Brief class description:\n"
-	   << it->second->documentation() << "\n\n";
+	   << "\\par Brief class description:\n";
+	string doc = it->second->documentation();
+	if ( doc.substr(0,25) == "There is no documentation" )
+	  os << "See " << classname << "\n\n";
+	else
+	  os << doc << "<br>See also " << classname << "\n\n";
 	TypeInterfaceMap::const_iterator isit = interfaces().find(it->first);
 	if ( isit == interfaces().end() || isit->second.empty() ) {
 	  os << "There are no interfaces declared for this class.\n\n";

@@ -24,8 +24,8 @@ namespace ThePEG {
  * LesHouchesEventHandler objects and not in the standard EventHandler
  * objects.
  *
- * @see Event,
- * @see LesHouchesEventHandler.
+ * @see Event
+ * @see LesHouchesEventHandler
  */
 class LesHouchesReader: public HandlerBase {
 

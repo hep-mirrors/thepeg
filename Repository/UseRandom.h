@@ -21,8 +21,8 @@ namespace ThePEG {
  * the be used by the static UseRandom functions until the UseRandom
  * object is destructed.
  *
- * @see RandomGenerator,
- * @see EventGenerator.
+ * @see RandomGenerator
+ * @see EventGenerator
  * 
  */
 class UseRandom {

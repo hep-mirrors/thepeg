@@ -13,9 +13,8 @@ namespace ThePEG {
  * GRV94M iherits from PDFBase via the GRVBase class and implements
  * the GRV94M parton densities for (anti) protons ad neutrons.
  *
- * @see PDFBase,
- * @see GRVBase.
- * 
+ * @see \ref GRV94MInterfaces "The interfaces"
+ * defined for GRV94M.
  */
 class GRV94M: public GRVBase {
 

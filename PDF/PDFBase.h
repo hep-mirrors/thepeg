@@ -21,11 +21,12 @@ namespace ThePEG {
  * RemnantHandler object which should be capable of generating
  * remnants for all partons which may be extracted by the PDF.
  *
- * @see BeamParticleData,
- * @see PartonExtractor,
- * @see RemnantHandler,
- * @see PDFCuts.
- * 
+ * @see \ref PDFBaseInterfaces "The interfaces"
+ * defined for PDFBase.
+ * @see BeamParticleData
+ * @see PartonExtractor
+ * @see RemnantHandler
+ * @see PDFCuts
  */
 class PDFBase: public HandlerBase {
 

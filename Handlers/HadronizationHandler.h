@@ -13,6 +13,8 @@ namespace ThePEG {
  * derived from the more general StepHandler class, but does not
  * introduce more functioanality as it stands.
  *
+ * @see \ref HadronizationHandlerInterfaces "The interfaces"
+ * defined for HadronizationHandler.
  * @see StepHandler
  * @see CollisionHandler
  * @see SubProcessHandler

@@ -20,10 +20,10 @@ namespace ThePEG {
  * one) of a given phase space point relative to the flat
  * distribution.
  *
- *
- * @see Decayer,
- * @see Particle.
- * 
+ * @see \ref FlatDecayerInterfaces "The interfaces"
+ * defined for FlatDecayer.
+ * @see Decayer
+ * @see Particle
  */
 class FlatDecayer: public Decayer {
 

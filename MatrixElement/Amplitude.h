@@ -23,6 +23,9 @@ namespace ThePEG {
  * vertex.  Notice that the amplitude for splitting
  * 1\f$\rightarrow\f$N processes is instead represented in other
  * classes (derived from the SplitFun class).
+ *
+ * @see \ref AmplitudeInterfaces "The interfaces"
+ * defined for Amplitude.
  */
 class Amplitude: public HandlerBase {
 

@@ -18,7 +18,7 @@ namespace Pointer {
  * all objects pointed to and which keeps count of the pointers
  * pointing to an object.
  *
- * @see ReferenceCounted.
+ * @see ReferenceCounted
  */
 class RCPtrBase {
 
@@ -43,7 +43,7 @@ protected:
  * the RCPtr::create() methods will continue living until no RCPtr or
  * ConstRCPtr are pointing to it, at which point it will be deleted.
  *
- * @see ReferenceCounted.
+ * @see ReferenceCounted
  */
 template <typename T>
 class RCPtr: public RCPtrBase {
@@ -244,7 +244,7 @@ private:
  * until no RCPtr or ConstRCPtr are pointing to it, at which point it
  * will be deleted.
  *
- * @see ReferenceCounted.
+ * @see ReferenceCounted
  */
 template <typename T>
 class ConstRCPtr : public RCPtrBase {
@@ -406,8 +406,8 @@ private:
  * TransientRCPtr is a simple wrapper around a bare pointer which can
  * be assigned to and from an RCPtr and ConstRCPtr without problem.
  *
- * @see RCPtr.
- * @see ConstRCPtr.
+ * @see RCPtr
+ * @see ConstRCPtr
  */
 template <typename T>
 class TransientRCPtr {
@@ -560,8 +560,8 @@ private:
  * which can be assigned to and from an RCPtr and ConstRCPtr without
  * problem.
  *
- * @see RCPtr.
- * @see ConstRCPtr.
+ * @see RCPtr
+ * @see ConstRCPtr
  */
 template <typename T>
 class TransientConstRCPtr {

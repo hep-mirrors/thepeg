@@ -14,7 +14,8 @@ namespace ThePEG {
  * particles colliding with precicely defined and opposite momenta. It
  * is derived from the LuminosityFunction base class.
  *
- * @see LuminosityFunction 
+ * @see \ref FixedCMSLuminosityInterfaces "The interfaces"
+ * defined for FixedCMSLuminosity.
  */
 class FixedCMSLuminosity: public LuminosityFunction {
 

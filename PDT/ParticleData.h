@@ -22,8 +22,8 @@ namespace ThePEG {
  * properties of a particle type. It is also able to produce instances
  * of this Particle type and, among other things, to decay them.
  *
- * @see InterfacedBase.
- * 
+ * @see \ref ParticleDataInterfaces "The interfaces"
+ * defined for ParticleData.
  */
 class ParticleData: public Interfaced {
 

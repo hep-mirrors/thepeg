@@ -16,7 +16,7 @@ namespace ThePEG {
  * handle to be read from, which is opened and closed by the open()
  * and close() functions.
  *
- * @see LesHouchesReader. 
+ * @see LesHouchesReader
  */
 class LesHouchesFileReader: public LesHouchesReader {
 

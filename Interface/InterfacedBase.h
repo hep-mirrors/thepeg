@@ -33,8 +33,8 @@ namespace ThePEG {
  * BaseRepository will not do anything that will change the state of
  * this object.
  *
- * @see BaseRepository,
- * @see InterfaceBase,
+ * @see BaseRepository
+ * @see InterfaceBase
  */
 class InterfacedBase: public PersistentBase, public Named {
 

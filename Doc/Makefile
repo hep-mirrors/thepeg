@@ -8,4 +8,5 @@ doc: refman
 distclean: clean
 
 %: %.conf
+	./fixinterfaces.pl AllInterfaces.h
 	doxygen $<

@@ -20,8 +20,8 @@ namespace ThePEG {
  * define Interfaced objects of the MatcherBase type to be used in the
  * Repository. Suitable typedefs are declared for the latter.
  *
- * @see Matcher,
- * @see MatcherBase.
+ * @see Matcher
+ * @see MatcherBase
  */
 
 /**

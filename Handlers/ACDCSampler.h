@@ -18,10 +18,9 @@ namespace ThePEG {
  * the Auto Compensating Divide-and-Conquer phase space generator,
  * ACDCGen.
  *
- *
- * @see SampleBase,
- * @see ACDCGen.
- * 
+ * @see \ref ACDCSamplerInterfaces "The interfaces"
+ * defined for ACDCSampler.
+ * @see ACDCGen
  */
 class ACDCSampler: public SamplerBase {
 

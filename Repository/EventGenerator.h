@@ -42,14 +42,16 @@ namespace ThePEG {
  * doPartialEvent() is a pure virtual function called by
  * partialEvent() and needs to be implemented the sub-classes.
  *
- * @see Interfaced,
- * @see RandomGenerator,
- * @see StandardModelBase,
- * @see Strategy,
- * @see ParticleData,
- * @see Event,
- * @see Step,
- * @see FullEventGenerator.
+ * @see \ref EventGeneratorInterfaces "The interfaces"
+ * defined for EventGenerator.
+ * @see Interfaced
+ * @see RandomGenerator
+ * @see StandardModelBase
+ * @see Strategy
+ * @see ParticleData
+ * @see Event
+ * @see Step
+ * @see FullEventGenerator
  * 
  */
 class EventGenerator: public Interfaced {

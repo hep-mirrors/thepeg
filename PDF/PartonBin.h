@@ -26,7 +26,7 @@ namespace ThePEG {
  * After the extraction of a parton, the kinematical variables of that
  * extraction is stored in a orresponding PartonBinInfo object.
  *
- * @see PartonExtractor.
+ * @see PartonExtractor
  * 
  */
 class PartonBin: public Base {

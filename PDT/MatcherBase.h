@@ -15,8 +15,8 @@ namespace ThePEG {
  * implementations will typically use the templated Matcher class for
  * easy building of a full sub-class.
  *
- * @see ParticleData,
- * @see Matcher.
+ * @see ParticleData
+ * @see Matcher
  * 
  */
 class MatcherBase: public Interfaced {

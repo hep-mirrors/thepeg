@@ -18,8 +18,8 @@ namespace ThePEG {
  * model for generation of remnants when a parton is extracted from a
  * baryon.
  *
- * @see RemnantHandler.
- * 
+ * @see \ref BaryonRemnantsInterfaces "The interfaces"
+ * defined for BaryonRemnants.
  */
 class BaryonRemnants: public RemnantHandler {
 

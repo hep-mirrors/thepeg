@@ -15,9 +15,10 @@ namespace ThePEG {
  * Decayer is an abstract base class to specify objects modelling the
  * decay of a particle.
  *
- * @see ParticleData,
- * @see DecayMode.
- * 
+ * @see \ref DecayerInterfaces "The interfaces"
+ * defined for Decayer.
+ * @see ParticleData
+ * @see DecayMode
  */
 class Decayer: public HandlerBase {
 

@@ -16,7 +16,7 @@ namespace ThePEG {
  * corresponding Level object is destroyed, the associated integer
  * variable is decremented again.
  *
- * @see HoldFlag.
+ * @see HoldFlag
  */
 template <typename T = int>
 class Level {

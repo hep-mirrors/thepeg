@@ -25,12 +25,13 @@ namespace ThePEG {
  * from the LastXCombInfo class to have easy acces to information
  * about the currently chosen hard sub-process.
  *
- *
- * @see SubProcessHandler,
- * @see MEBase,
- * @see CollisionHandler,
- * @see XComb,
- * @see HandlerBase.
+ * @see \ref PartonExtractorInterfaces "The interfaces"
+ * defined for PartonExtractor.
+ * @see SubProcessHandler
+ * @see MEBase
+ * @see CollisionHandler
+ * @see XComb
+ * @see HandlerBase
  * 
  */
 class PartonExtractor: public HandlerBase, public LastXCombInfo<> {

@@ -111,7 +111,8 @@ void MECuts::Init() {
   static Parameter<MECuts,Energy> interfaceMHatMin
     ("SubProcess/MHatMin",
      "The minimum value allowed for \\f$\\hat{m}=\\sqrt{\\hat{s}}\\f$ in GeV "
-     "in the hard subprocess. If the upper limit in <code>MHatMax</code> "
+     "in the hard subprocess. If the upper limit in "
+     "<interface>SubProcess/MHatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theMHatMin, GeV,
@@ -120,7 +121,8 @@ void MECuts::Init() {
   static Parameter<MECuts,Energy> interfaceMHatMax
     ("SubProcess/MHatMax",
      "The minimum value allowed for \\f$\\hat{m}=\\sqrt{\\hat{s}}\\f$ in GeV "
-     "in the hard subprocess If the lower limit in <code>MHatMin</code> "
+     "in the hard subprocess If the lower limit in "
+     "<interface>SubProcess/MHatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theMHatMax, GeV,
@@ -129,7 +131,8 @@ void MECuts::Init() {
   static Parameter<MECuts,Energy> interfacePTHatMin
     ("SubProcess/PTHatMin",
      "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV "
-     "in the hard subprocess. If the upper limit in <code>PTHatMax</code> "
+     "in the hard subprocess. If the upper limit in "
+     "<interface>SubProcess/PTHatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler",
      &MECuts::thePTHatMin, GeV,
@@ -138,7 +141,8 @@ void MECuts::Init() {
   static Parameter<MECuts,Energy> interfacePTHatMax
     ("SubProcess/PTHatMax",
      "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV "
-     "in the hard subprocess If the lower limit in <code>PTHatMin</code> "
+     "in the hard subprocess If the lower limit in "
+     "<interface>SubProcess/PTHatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::thePTHatMax, GeV,
@@ -197,7 +201,7 @@ void MECuts::Init() {
     ("SubProcess/THatMin",
      "The minimum allowed value of \\f$|\\hat{t}|=-\\hat{t}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "upper limit in <code>THatMax</code> "
+     "upper limit in <interface>SubProcess/THatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theTHatMin, GeV2,
@@ -207,7 +211,7 @@ void MECuts::Init() {
     ("SubProcess/THatMax",
      "The maximum allowed value of \\f$|\\hat{t}|=-\\hat{t}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "lower limit in <code>THatMin</code> "
+     "lower limit in <interface>SubProcess/THatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theTHatMax, GeV2,
@@ -217,7 +221,7 @@ void MECuts::Init() {
     ("SubProcess/UHatMin",
      "The minimum allowed value of \\f$|\\hat{u}|=-\\hat{u}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "upper limit in <code>UHatMax</code> "
+     "upper limit in <interface>SubProcess/UHatMax</interface> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theUHatMin, GeV2,
@@ -227,7 +231,7 @@ void MECuts::Init() {
     ("SubProcess/UHatMax",
      "The maximum allowed value of \\f$|\\hat{u}|=-\\hat{u}\\f$ in "
      "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
-     "lower limit in <code>UHatMin</code> "
+     "lower limit in <interface>SubProcess/UHatMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theUHatMax, GeV2,
@@ -237,7 +241,8 @@ void MECuts::Init() {
     ("SubProcess/ScaleMin",
      "The minimum allowed value of the user-defined scale in GeV<sup>2</sup> "
      "in a hard scattering. If the upper limit in "
-     "<code>SubProcess/ScaleMax</code> is less than this, the upper limit is "
+     "<interface>SubProcess/ScaleMax</interface> "
+     "is less than this, the upper limit is "
      "inactive. This limit is automatically checked by the event handler.",
      &MECuts::theScaleMin, GeV2,
      0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
@@ -245,7 +250,8 @@ void MECuts::Init() {
   static Parameter<MECuts,Energy2> interfaceScaleMax
     ("SubProcess/ScaleMax",
      "The maximum allowed value of user defined scale in GeV<sup>2</sup> in a "
-     "hard scattering. If the lower limit in <code>SubProcess/ScaleMin</code> "
+     "hard scattering. If the lower limit in "
+     "<interface>SubProcess/ScaleMin</interface> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theScaleMax, GeV2,

@@ -14,8 +14,8 @@ namespace ThePEG {
  * be used for symbolic decay channels. If it for some reason is
  * called to perform a decay, it will throw a std::logic_error.
  *
- * @see Decayer.
- * 
+ * @see \ref DummyDecayerInterfaces "The interfaces"
+ * defined for DummyDecayer.
  */
 class DummyDecayer: public Decayer {
 

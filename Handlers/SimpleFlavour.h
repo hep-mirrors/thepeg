@@ -15,7 +15,8 @@ namespace ThePEG {
  * flavours. It implements a simplified version of the model of the
  * old fortran version of Pythia.
  *
- * @see FlavourGenerator. 
+ * @see \ref SimpleFlavourInterfaces "The interfaces"
+ * defined for SimpleFlavour.
  */
 class SimpleFlavour: public FlavourGenerator {
 

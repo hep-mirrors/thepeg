@@ -26,9 +26,9 @@ namespace ThePEG {
  * should be interfaced. This object will automatically register
  * itself with the BaseRepository class.
  *
- * @see Parameter,
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see Parameter
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 class ParVectorBase: public InterfaceBase {
@@ -211,9 +211,9 @@ private:
  * should be interfaced. This object will automatically register
  * itself with the BaseRepository class.
  *
- * @see Parameter,
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see Parameter
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 template <typename Type>
@@ -423,9 +423,9 @@ private:
  * should be interfaced. This object will automatically register
  * itself with the BaseRepository class.
  *
- * @see Parameter,
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see Parameter
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 template <typename T, typename Type>

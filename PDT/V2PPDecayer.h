@@ -17,9 +17,10 @@ namespace ThePEG {
  * reweighted with \f$\cos^2\f$ (\f$\sin^2\f$ for photon) of the angle
  * between one of the decay products and its grand parent.
  *
- * @see FlatDecayer,
- * @see ParticleData.
- * 
+ * @see \ref V2PPDecayerInterfaces "The interfaces"
+ * defined for V2PPDecayer.
+ * @see FlatDecayer
+ * @see ParticleData
  */
 class V2PPDecayer: public FlatDecayer {
 

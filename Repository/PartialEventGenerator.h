@@ -17,8 +17,10 @@ namespace ThePEG {
  * EventGenerator::partialEvent() function should be used with a
  * previously partially event is specified..
  *
- * @see EventGenerator,
- * @see PartialCollisionHandler.
+ * @see \ref PartialEventGeneratorInterfaces "The interfaces"
+ * defined for PartialEventGenerator.
+ * @see EventGenerator
+ * @see PartialCollisionHandler
  * 
  */
 class PartialEventGenerator: public EventGenerator {

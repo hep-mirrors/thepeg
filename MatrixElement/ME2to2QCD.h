@@ -16,8 +16,9 @@ namespace ThePEG {
  * maximum number of flavours, treatment of interference terms and
  * possibility to enhance certain terms.
  *
- * @see ME2to2Base.
- * 
+ * @see \ref ME2to2QCDInterfaces "The interfaces"
+ * defined for ME2to2QCD.
+ * @see ME2to2Base
  */
 class ME2to2QCD: public ME2to2Base {
 

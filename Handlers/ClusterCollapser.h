@@ -22,6 +22,8 @@ namespace ThePEG {
  * the clustering is compensated by shifting the momenta of nearby
  * particles.
  * 
+ * @see \ref ClusterCollapserInterfaces "The interfaces"
+ * defined for ClusterCollapser.
  */
 class ClusterCollapser: public StepHandler {
 

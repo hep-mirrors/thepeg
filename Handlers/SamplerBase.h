@@ -20,7 +20,9 @@ namespace ThePEG {
  * The virtual methods to be implemented by concrete sub-classes are
  * initialize(), generate() and rejectLast().
  *
- * @see EventHandler,
+ * @see \ref SamplerBaseInterfaces "The interfaces"
+ * defined for SamplerBase.
+ * @see EventHandler
  */
 class SamplerBase: public Interfaced {
 

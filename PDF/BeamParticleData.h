@@ -16,9 +16,10 @@ namespace ThePEG {
  * for particles which have information about their sub-structure
  * implemented as a pointer to a PDFBase object.
  *
- * @see ParticleData,
- * @see PDFBase.
- * 
+ * @see \ref BeamParticleDataInterfaces "The interfaces"
+ * defined for BeamParticleData.
+ * @see ParticleData
+ * @see PDFBase
  */
 class BeamParticleData: public virtual ParticleData {
 

@@ -12,7 +12,7 @@ namespace ThePEG {
  * The AndMatcher class represents the boolean <i>and</i> operation between
  * its two template argument classes of base type MatcherBase.
  *
- * @see MatcherBase.
+ * @see MatcherBase
  */
 template <class T1, class T2>
 struct AndMatcher: public MatcherType {
@@ -37,7 +37,7 @@ struct AndMatcher: public MatcherType {
  * The OrMatcher class represents the boolean <i>or</i> operation
  * between its two template argument classes of base type MatcherBase.
  *
- * @see MatcherBase.
+ * @see MatcherBase
  */
 template <class T1, class T2>
 struct OrMatcher: public MatcherType {
@@ -62,7 +62,7 @@ struct OrMatcher: public MatcherType {
  * The NotMatcher class represents the boolean <i>not</i> operation
  * for its template argument class of base type MatcherBase.
  *
- * @see MatcherBase.
+ * @see MatcherBase
  */
 template <class T>
 struct NotMatcher: public MatcherType {

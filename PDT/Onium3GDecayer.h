@@ -17,10 +17,10 @@ namespace ThePEG {
  * restart the generation from the hadronization (or optionally the
  * parton cascade) stage.
  *
- * \ref Onium3GDecayerInterfaces "Here are the interfaces declared for the Onium3GDecayer class"
- *
- * @see FlatDecayer,
- * @see ParticleData.
+ * @see \ref Onium3GDecayerInterfaces "The interfaces"
+ * defined for Onium3GDecayer.
+ * @see FlatDecayer
+ * @see ParticleData
  */
 class Onium3GDecayer: public FlatDecayer {
 

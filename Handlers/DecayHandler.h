@@ -16,6 +16,8 @@ namespace ThePEG {
  * method. This base class simply decays all unstable particle in the
  * current step.
  *
+ * @see \ref DecayHandlerInterfaces "The interfaces"
+ * defined for DecayHandler.
  * @see StepHandler
  * @see CollisionHandler
  * @see SubProcessHandler

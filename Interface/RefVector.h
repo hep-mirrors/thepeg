@@ -24,8 +24,8 @@ namespace ThePEG {
  * should be interfaced. This object will automatically register
  * itself with the BaseRepository class.
  * 
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 class RefVectorBase: public RefInterfaceBase {
@@ -194,8 +194,8 @@ private:
  * should be interfaced. This object will automatically register
  * itself with the BaseRepository class.
  * 
- * @see InterfacedBase,
- * @see InterfaceBase.
+ * @see InterfacedBase
+ * @see InterfaceBase
  * 
  */
 template <class T, class R>

@@ -20,8 +20,8 @@ namespace ThePEG {
  * associated partons, with associated information about the string
  * pieces connected via sinks or sources.
  *
- * @see ColourLine,
- * @see Particle.
+ * @see ColourLine
+ * @see Particle
  * 
  */
 class ColourSinglet {

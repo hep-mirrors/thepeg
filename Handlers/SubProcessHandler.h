@@ -28,6 +28,8 @@ namespace ThePEG {
  * produced collision. This object takes precedence over the one in
  * the CollisionHandler in each event the SubProcessHandler is chosen.
  *
+ * @see \ref SubProcessHandlerInterfaces "The interfaces"
+ * defined for SubProcessHandler.
  * @see MEBase
  * @see PartonExtractor
  * @see CollisionHandler

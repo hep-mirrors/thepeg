@@ -15,9 +15,8 @@ namespace ThePEG {
  * which may be coloured. The coloured particles must come in pairs
  * and will be colour connected pair-wise.
  *
- * @see FlatDecayer,
- * @see Particle.
- * 
+ * @see \ref ColourPairDecayerInterfaces "The interfaces"
+ * defined for ColourPairDecayer.
  */
 class ColourPairDecayer: public FlatDecayer {
 

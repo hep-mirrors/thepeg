@@ -143,64 +143,57 @@ void StandardModelBase::Init() {
   static Parameter<StandardModelBase,double> interfaceVnu
     ("EW/v_nu",
      "The vector coupling between a neutrino and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theVnu, 1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVe
     ("EW/v_e",
      "The vector coupling between a charged lepton and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theVe, -0.072, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVu
     ("EW/v_u",
      "The vector coupling between an up-type quark and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theVu, 0.3813, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVd
     ("EW/v_d",
      "The vector coupling between a down-type quark and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theVd, -0.6907, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAnu
     ("EW/a_nu",
      "The axial coupling between a neutrino and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theAnu, 1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAe
     ("EW/a_e",
      "The axial coupling between a charged lepton and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theAe, -1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAu
     ("EW/a_u",
      "The axial coupling between an up-type quark and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theAu, 1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAd
     ("EW/a_d",
      "The axial coupling between a down-type quark and a Z^0. "
-     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
-     "EW/RecalculateEW</code></a>",
+     "See also command interface <interface>EW/RecalculateEW</interface>",
      &StandardModelBase::theAd, -1.0, 0.0, 0.0, false, false, false);
   static Switch<StandardModelBase> interfaceRecalculateEW
     ("EW/RecalculateEW",
      "Recalculate all parameters which depend directly on "
      "\\f$\\sin^2\\theta_W\\f$ "
      "in the initialization disregarding the values previously set. "
-     "This affects only <a href=\"#EW/v_nu\"><code>EW/v_nu</code></a>, "
-     "<a href=\"#EW/v_e\"><code>EW/v_e</code></a>, "
-     "<a href=\"#EW/v_u\"><code>EW/v_u</code></a>, "
-     "<a href=\"#EW/v_d\"><code>EW/v_d</code></a>, "
-     "<a href=\"#EW/a_nu\"><code>EW/a_nu</code></a>, "
-     "<a href=\"#EW/a_e\"><code>EW/a_e</code></a>, "
-     "<a href=\"#EW/a_u\"><code>EW/a_u</code></a> and "
-     "<a href=\"#EW/a_d\"><code>EW/a_d</code></a>.",
+     "This affects only "
+     "<interface>EW/v_nu</interface>, "
+     "<interface>EW/v_e</interface>, "
+     "<interface>EW/v_u</interface>, "
+     "<interface>EW/v_d</interface>, "
+     "<interface>EW/a_nu</interface>, "
+     "<interface>EW/a_e</interface>, "
+     "<interface>EW/a_u</interface> and "
+     "<interface>EW/a_d</interface>.",
      &StandardModelBase::recalculateEW, 1, false, false);
   static SwitchOption interfaceRecalculateEWOn
     (interfaceRecalculateEW, "On", "On", 1);

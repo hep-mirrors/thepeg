@@ -65,7 +65,8 @@ void ME2to2QCD::Init() {
   static Parameter<ME2to2QCD,double> interfaceKfacA
     ("K-factor-A",
      "A K-factor for artificially boosting the colour annihilation terms "
-     "in this cross-section. If less than one, the <code>K-factor</code> will "
+     "in this cross-section. If less than one, the "
+     "<interface>K-factor</interface> will "
      "be used instead.",
      &ME2to2QCD::theKfacA, 1.0, -1.0, Constants::MaxFloat, true, false, true);
 

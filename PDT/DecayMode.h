@@ -71,9 +71,10 @@ ThePEG_DECLARE_MULTISET(tDMPtr,ModeMSet);
  * mode afterwards will report if there are other modes which are
  * matched by its matchers through the overlap() function.
  *
- * @see ParticleData,
- * @see MatcherBase.
- * 
+ * @see \ref DecayModeInterfaces "The interfaces"
+ * defined for DecayMode.
+ * @see ParticleData
+ * @see MatcherBase
  */
 class DecayMode: public Interfaced {
 

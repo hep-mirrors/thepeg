@@ -15,6 +15,9 @@ namespace ThePEG {
 /**
  * StandardRandom inherits from the RandomGenerator class and is an
  * interface to the CLHEP::JamesRandom engine class.
+ *
+ * @see \ref StandardRandomInterfaces "The interfaces"
+ * defined for StandardRandom.
  */
 class StandardRandom: public RandomGenerator {
 

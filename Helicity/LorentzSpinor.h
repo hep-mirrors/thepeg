@@ -94,7 +94,7 @@ namespace Helicity{
  *  The LorentzSpinorBar class is also provided to store the barred
  *  spinor.
  *
- * @see LorentzSpinorBar.
+ * @see LorentzSpinorBar
  *
  * @author Peter Richardson
  *

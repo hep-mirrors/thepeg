@@ -13,7 +13,7 @@ namespace ThePEG {
  * MatcherBase giving a class with a static T::Check() method as
  * template argument.
  *
- * @see MatcherBase.
+ * @see MatcherBase
  * 
  */
 template <class T>

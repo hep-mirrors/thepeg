@@ -204,7 +204,7 @@ THECLASS::~THECLASS() {}
 void THECLASS::Init() {
 
   static ClassDocumentation<THECLASS> documentation
-    (\"There is no documentation for the \\\\classname{THECLASS} class\");
+    (\"There is no documentation for the THECLASS class\");
 
 }
 
@@ -479,6 +479,11 @@ SPECIALFN may be used to include special function definitions"
 		      (t "")))
   (setq interface (cond (interfaced thepeg-interfaced-decl)
 			(t "")))
+  (setq doxygen-see-interfaces (cond (interfaced (concat "
+ *
+ * @see \\ref " class "Interfaces \"The interfaces\"
+ * defined for " class "."))
+			(t "")))
   (setq include (cond ((string-equal baseheader "") "ThePEG/Config/ThePEG.h")
 		      (t baseheader)))
   (setq special (cond ((string-equal specialfn "") "")
@@ -537,7 +542,7 @@ using namespace ThePEG;
 namespace " namespace " {
 " using "
 /**
- * Here is the documentation of the THECLASS class.
+ * Here is the documentation of the THECLASS class." doxygen-see-interfaces "
  */
 class THECLASS" basedeclare " {
 
@@ -1045,6 +1050,18 @@ ParticleVector " class "::decay(const DecayMode & dm,
 }
 
 "))
+
+(defun ThePEG-see-interfaces ()
+  "Create a doxygen comment referring to the interfaces of a class."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (insert-string (concat " * @see \\ref " class "Interfaces \"The interfaces\"
+ * defined for " class ".
+")))
+  
 
 (defun ThePEG-parameter ()
   "Create a Parameter variable suitable for inclusion in an Init() function."

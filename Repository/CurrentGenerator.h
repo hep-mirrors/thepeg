@@ -21,7 +21,7 @@ namespace ThePEG {
  * object will the be used by the static CurrentGenerator
  * functions until the CurrentGenerator object is destructed.
  *
- * @see EventGenerator.
+ * @see EventGenerator
  * 
  */
 class CurrentGenerator {

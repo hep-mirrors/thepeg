@@ -24,6 +24,8 @@ namespace ThePEG {
  * the procedure is repeated until the EventHandler has no more steps
  * to do.
  *
+ * @see \ref EventManipulatorInterfaces "The interfaces"
+ * defined for EventManipulator.
  * @see FullEventGenerator
  * @see AnalysisHandler
  * @see EventHandler

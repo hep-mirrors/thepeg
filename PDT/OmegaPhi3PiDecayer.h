@@ -16,9 +16,10 @@ namespace ThePEG {
  * will in fact decay anything into \f$\pi^+\pi^-\pi^0\f$ assuming the
  * same matrix element.
  *
- * @see FlatDecayer,
- * @see ParticleData.
- * 
+ * @see \ref OmegaPhi3PiDecayerInterfaces "The interfaces"
+ * defined for OmegaPhi3PiDecayer.
+ * @see FlatDecayer
+ * @see ParticleData
  */
 class OmegaPhi3PiDecayer: public FlatDecayer {
 

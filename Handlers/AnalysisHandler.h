@@ -23,6 +23,8 @@ namespace ThePEG {
  * and analysis results should be performed in the
  * <code>dofinish()</code> function.
  *
+ * @see \ref AnalysisHandlerInterfaces "The interfaces"
+ * defined for AnalysisHandler.
  * @see FullEventGenerator
  * @see Event
  */

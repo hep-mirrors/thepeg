@@ -49,7 +49,8 @@ namespace ThePEG {
  * class (via the PartialCollisionHandler base class) to have easy
  * interface to the information in the last selected XComb.
  *
- *
+ * @see \ref CollisionHandlerInterfaces "The interfaces"
+ * defined for CollisionHandler.
  * @see PartialCollisionHandler
  * @see SubProcessHandler
  * @see PartonExtractor

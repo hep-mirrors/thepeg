@@ -27,7 +27,9 @@ namespace ThePEG {
  * getBaryon(tcPDPtr, tcPDPtr, tcPDPtr) and getBaryon(long, long,
  * long)
  *
- * @see HandlerBase.
+ * @see \ref FlavourGeneratorInterfaces "The interfaces"
+ * defined for FlavourGenerator.
+ * @see HandlerBase
  */
 class FlavourGenerator: public HandlerBase {
    

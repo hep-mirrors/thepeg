@@ -22,8 +22,9 @@ ThePEG_DECLARE_CLASS_POINTERS(FlavourGenerator, FlavGenPtr);
  * \f$m\f$ is the mass of the decaying particle, \f$\sum m\f$ the sum
  * of the quark masses and \f$c_i\f$ real parameters.
  *
- * @see Decayer,
- * @see ParticleData.
+ * @see \ref QuarksToHadronsDecayerInterfaces "The interfaces"
+ * defined for QuarksToHadronsDecayer.
+ * @see ParticleData
  * 
  */
 class QuarksToHadronsDecayer: public Decayer {

@@ -14,8 +14,9 @@ namespace ThePEG {
  * the generation of a single collinear photon remnant when a lepton
  * is extracted from a lepton.
  *
- * @see RemnantHandler.
- * @see LeptonLeptonPDF. 
+ * @see \ref LeptonLeptonRemnantInterfaces "The interfaces"
+ * defined for LeptonLeptonRemnant.
+ * @see LeptonLeptonPDF
  */
 class LeptonLeptonRemnant: public RemnantHandler {
 

@@ -50,8 +50,10 @@ namespace ThePEG {
  * There are other virtula functions which may be overridden as listed
  * below.
  *
- * @see DiagramBase,
- * @see ColourLines.
+ * @see \ref MEBaseInterfaces "The interfaces"
+ * defined for MEBase.
+ * @see DiagramBase
+ * @see ColourLines
  * 
  */
 class MEBase: public HandlerBase, public LastXCombInfo<> {

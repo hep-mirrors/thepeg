@@ -19,6 +19,8 @@ namespace ThePEG {
  * do some standard initialization before calling the main cascade()
  * function.
  *
+ * @see \ref CascadeHandlerInterfaces "The interfaces"
+ * defined for CascadeHandler.
  * @see StepHandler
  * @see CollisionHandler
  * @see SubProcessHandler

@@ -1,3 +1,17 @@
+2004-09-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* lib/ThePEG.el: Changed documentation in header file generation.
+
+	* *** GLOBAL ***: Added doxygen reference to interfaces in
+	documentation. Also changed some descriptions of interfaces to get
+	proper references between interfaces.
+
+	* Doc/Makefile: Added call to fixinterfaces.pl script to fix
+	references between interfaces in AllInterfaces.h
+
+	* Doc/fixinterfaces.pl: Added script to fix references between
+	interfaces in AllInterfaces.h
+
 2004-09-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Doc/refman.conf: Updated to suit doxygen version 1.3.8.

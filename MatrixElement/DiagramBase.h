@@ -25,9 +25,9 @@ namespace ThePEG {
  * partons and connect them together in a SubProcess object, also
  * performing the colour connections using a given ColourLines object.
  *
- * @see MEBase,
- * @see SubProcess,
- * @see ColourLines.
+ * @see MEBase
+ * @see SubProcess
+ * @see ColourLines
  * 
  */
 class DiagramBase: public Base {

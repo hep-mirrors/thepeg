@@ -41,8 +41,8 @@ namespace ThePEG {
  * four-propagator vertices are not allowed, but must be represented
  * by two three-propagator ones.
  *
- * @see DiagramBase,
- * @see ColourLines.
+ * @see DiagramBase
+ * @see ColourLines
  * 
  */
 class Tree2toNDiagram: public DiagramBase {

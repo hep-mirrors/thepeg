@@ -53,10 +53,10 @@ namespace ThePEG {
  * not have any members which need to be read and written
  * persistently.
  *
- * @see ClassTraits,
- * @see PersistentIStream,
- * @see PersistentOStream,
- * @see DescriptionList. 
+ * @see ClassTraits
+ * @see PersistentIStream
+ * @see PersistentOStream
+ * @see DescriptionList
  */
 class ClassDescriptionBase: public Named {
 

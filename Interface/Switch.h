@@ -21,9 +21,9 @@ namespace ThePEG {
  * static SwitchOption object should be created for each valid integer
  * option.
  *
- * @see InterfacedBase,
- * @see InterfacedBase,
- * @see Named.
+ * @see InterfacedBase
+ * @see InterfacedBase
+ * @see Named
  * 
  */
 class SwitchOption: public Named {
@@ -111,9 +111,9 @@ private:
  * static SwitchOption object should be created for each valid integer
  * option.
  *
- * @see InterfacedBase,
- * @see InterfacedBase,
- * @see Named.
+ * @see InterfacedBase
+ * @see InterfacedBase
+ * @see Named
  * 
  */
 class SwitchBase: public InterfaceBase {
@@ -253,9 +253,9 @@ private:
  * static SwitchOption object should be created for each valid integer
  * option.
  *
- * @see InterfacedBase,
- * @see InterfacedBase,
- * @see Named.
+ * @see InterfacedBase
+ * @see InterfacedBase
+ * @see Named
  * 
  */
 template <typename T, typename Int>

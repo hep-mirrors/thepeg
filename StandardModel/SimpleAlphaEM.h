@@ -14,9 +14,8 @@ namespace ThePEG {
  * running of the electromagnetic coupling as parameterized by
  * H.~Buckhardt et al.
  *
- *
- * @see AlphaEMBase.
- * 
+ * @see \ref SimpleAlphaEMInterfaces "The interfaces"
+ * defined for SimpleAlphaEM.
  */
 class SimpleAlphaEM: public AlphaEMBase {
 

@@ -20,8 +20,8 @@ namespace CLHEPMC = HepMC;
  * <code>HepMC::GenEvent</code>. All mother-daughter relationships and
  * colour information is preserved.
  *
- * @see Event,
- * @see Particle.
+ * @see Event
+ * @see Particle
  *
  * @author Leif Lönnblad
  */
