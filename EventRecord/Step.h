@@ -273,16 +273,18 @@ public:
   void fixColourFlow();
 
   /**
-   * Return the (\a anti-)colour neighbour of the given particle if
-   * one exists in the final state of this Step.
+   * Return the (\a anti-)colour neighbour of the given \a particle if
+   * one exists in the final state of this Step. Will return null if
+   * the given \a particle is not in the final state of this Step.
    */
-  tPPtr colourNeighbour(tcPPtr, bool anti = false) const;
+  tPPtr colourNeighbour(tcPPtr particle, bool anti = false) const;
 
   /**
-   * Return the anti-colour neighbour of the given particle if one
-   * exists in the final state of this Step.
+   * Return the anti-colour neighbour of the given \a particle if one
+   * exists in the final state of this Step. Will return null if the
+   * given \a particle is not in the final state of this Step.
    */
-  tPPtr antiColourNeighbour(tcPPtr) const;
+  tPPtr antiColourNeighbour(tcPPtr particle) const;
 
   /**
    * Add a range of particles to this Step. If this step belongs
