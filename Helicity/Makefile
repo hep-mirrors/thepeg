@@ -26,7 +26,8 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                ScalarSpinInfo.fh ScalarSpinInfo.icc \
                TensorSpinInfo.fh TensorSpinInfo.icc \
                HelicityDefinitions.h LorentzRSSpinor.icc LorentzRSSpinorBar.icc \
-               LorentzRSSpinor.fh LorentzRSSpinorBar.fh RSFermionSpinInfo.icc
+               LorentzRSSpinor.fh LorentzRSSpinorBar.fh RSFermionSpinInfo.fh \
+               RSFermionSpinInfo.icc
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 
