@@ -1,3 +1,15 @@
+2003-07-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/SimplePhaseSpace.cc: CMSn now throws
+	ImpossibleKinematics if an infinite boost is requested.
+
+	* Utilities/UtilityBase.*: Added new setMomentum function which
+	doesn't boost to cms but just rotates to z-axis boosts along it
+	and rotates to correct angle.
+
+	* PDT/FlatDecayer.cc: Fixed precision problems for large boosts of
+	decay products.
+
 2003-07-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Makefile.install: This file is copied to the lib dir in

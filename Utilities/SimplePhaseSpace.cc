@@ -70,13 +70,11 @@ CMSn(Energy m0, const vector<Energy> & m)
       Momentum3 p3 = polar3Vector(p[i], 2.0*UseRandom::rnd() - 1.0,
 				  2.0*pi*UseRandom::rnd());
       ret[i] = LorentzMomentum(-p3, sqrt(sqr(p[i]) + sqr(m[i])));
-      Vector3 bv = p3*(1.0/sqrt(sqr(p[i]) + sqr(sm[i + 1])));
-      if ( bv.mag2() >= 1.0 ) {
-	continue;
-      }
       if ( i == Np -2 ) {
 	ret[Np - 1] = LorentzMomentum(p3, sqrt(sqr(m[Np - 1]) + p3.mag2()));
       } else {
+	Vector3 bv = p3*(1.0/sqrt(sqr(p[i]) + sqr(sm[i + 1])));
+	if ( bv.mag2() >= 1.0 ) throw ImpossibleKinematics();
 	LorentzRotation r(bv);
 	for ( int j = i + 1; j < Np; ++j ) ret[j]*=r;
       }

@@ -166,6 +166,30 @@ void UtilityBase::setMomentum(Iter first, Iter last, const Momentum3 & q) {
 
 template <typename Iter>
 void UtilityBase::
+setMomentum(Iter first, Iter last, const Momentum3 & q, double eps) {
+  if ( first == last ) return;
+  typedef typename std::iterator_traits<Iter>::value_type PType;
+  typedef ParticleTraits<PType> Traits;
+  Iter second = first;
+  if ( ++second == last ) return setMomentum(Traits::ref(*first), q);
+  LorentzRotation r;
+  LorentzMomentum sum = sumMomentum(first, last);
+  r.rotateZ(-sum.phi());
+  r.rotateY(-sum.theta());
+  Energy2 ppo = sqr(sum.rho() + sum.e());
+  Energy2 ppn = sqr(q.mag() + sqrt(q.mag2() + sum.m2()));
+  r.boost(0.0, 0.0, (ppn - ppo)/(ppn + ppo));
+  r.rotateY(q.theta());
+  r.rotateZ(q.phi());
+  transform(first, last, r);
+  sum = sumMomentum(first, last);
+  if ( abs(sum.x() - q.x()) > eps*sum.e() ||
+       abs(sum.y() - q.y()) > eps*sum.e() ||
+       abs(sum.z() - q.z()) > eps*sum.e() ) setMomentum(first, last, q, eps);
+}
+
+template <typename Iter>
+void UtilityBase::
 setMomentumFromCMS(Iter first, Iter last, Energy2 m2, const Momentum3 & q) {
   if ( first == last ) return;
   typedef typename std::iterator_traits<Iter>::value_type PType;

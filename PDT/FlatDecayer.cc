@@ -12,6 +12,7 @@
 #include "ThePEG/CLHEPWrap/LorentzRotation.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/Timer.h"
+#include "ThePEG/Utilities/UtilityBase.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "FlatDecayer.tcc"
@@ -64,11 +65,10 @@ ParticleVector FlatDecayer::decay(const DecayMode & dm,
     return children;
   }
 
-  LorentzRotation boost(parent.momentum().boostVector());
-  for ( ParticleVector::size_type i = 0; i < children.size(); ++i ) {
-    children[i]->transform(boost);
+  Utilities::setMomentum(children.begin(), children.end(),
+			 (Momentum3 &)(parent.momentum()), 1.0e-12);
+  for ( ParticleVector::size_type i = 0; i < children.size(); ++i )
     children[i]->scale(parent.momentum().mass2());
-  }
 
   return children;
 }

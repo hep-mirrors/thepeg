@@ -1193,7 +1193,10 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Timer.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
-  ../../ThePEG/Interface/ClassDocumentation.icc
+  ../../ThePEG/Interface/ClassDocumentation.icc \
+  ../../ThePEG/Utilities/UtilityBase.h \
+  ../../ThePEG/Utilities/UtilityBase.icc \
+  ../../ThePEG/Utilities/UtilityBase.tcc
   BreitWignerMass.o: \
   BreitWignerMass.cc \
   BreitWignerMass.h \

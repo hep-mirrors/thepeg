@@ -83,6 +83,15 @@ struct UtilityBase {
   // rotate them so that they end up with total momentum q.
 
   template <typename Iter>
+  static void setMomentum(Iter first, Iter last,
+			  const Momentum3 & q, double eps);
+  // Rotate the range of particles so their sum is along z-axis then
+  // boost them along the z-axis and rotate them so that they end up
+  // with total momentum q. If a single boost does not succeed to
+  // obtain the required precision within eps times the total energy,
+  // the boost is redone.
+
+  template <typename Iter>
   static void setMomentumFromCMS(Iter first, Iter last,
 				 Energy2 m2, const Momentum3 & q);
   // Boost the range of particles along the z-axis and rotate them so
