@@ -36,7 +36,7 @@ mkdir /Defaults/MatrixElements
 mkdir /Defaults/Partons
 mkdir /Defaults/Handlers
 mkdir /Defaults/Generators
-mkdir /Defaults/Handlers/Hadronization/String
+mkdir /Defaults/Handlers/Hadronization
 
 create ThePEG::StandardRandom /Defaults/Random
 create ThePEG::StandardModelBase /Defaults/StandardModel
@@ -60,6 +60,8 @@ create ThePEG::MEqq2qq MEqq2qq
 
 cd /Defaults/Handlers/Hadronization
 create ThePEG::ClusterCollapser SimpleCollapser
+create ThePEG::SimpleFlavour SimpleFlavour SimpleFlavour.so
+set SimpleCollapser:FlavourGenerator SimpleFlavour
 
 cd /Defaults/Partons
 create ThePEG::NoRemnants NoRemnants
@@ -76,6 +78,7 @@ create ThePEG::GRV94M GRV94M GRV94M.so
 create ThePEG::BaryonRemnants BaryonRemnants BaryonRemnants.so
 set GRV94L:RemnantHandler BaryonRemnants
 set GRV94M:RemnantHandler BaryonRemnants
+set BaryonRemnants:FlavourGenerator /Defaults/Handlers/Hadronization/SimpleFlavour
 
 set /Defaults/Particles/g:DefaultSpin 3
 set /Defaults/Particles/g:Spin 3

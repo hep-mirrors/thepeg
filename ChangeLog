@@ -1,5 +1,8 @@
 2003-07-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/ThePEGDefaults.in: Added a SimpleFlavour object which is
+	used by the BaryonRemnants and ClusterCollapser objects.
+
 	* PDT/StandardMatchers.h: Added Check functions taking PDG code
 	arguments for the MesonMatcher and BaryonMatcher classes.
 
