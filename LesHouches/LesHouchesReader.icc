@@ -127,11 +127,11 @@ inline bool LesHouchesReader::randomize() const {
 }
 
 inline size_t LesHouchesReader::eventSize(int N) {
-  return (N + 1)*sizeof(int) +  // IDPRUP, ISTUP
-    (7*N + 4)*sizeof(double) +  // XWGTUP, SCALUP, AQEDUP, AQCDUP, PUP,
-                                // VTIMUP, SPINUP
-    N*sizeof(long) +            // IDUP
-    2*N*sizeof(pair<int,int>);  // MOTHUP, ICOLUP
+  return (N + 1)*sizeof(int) +       // IDPRUP, ISTUP
+    (7*N + 4)*sizeof(double) +       // XWGTUP, SCALUP, AQEDUP, AQCDUP, PUP,
+                                     // VTIMUP, SPINUP
+    N*sizeof(long) +                 // IDUP
+    (2*N + 1)*sizeof(pair<int,int>); // MOTHUP, ICOLUP. XPDWUP
 }
 
 inline FILE * LesHouchesReader::cacheFile() const {
@@ -183,6 +183,18 @@ inline void LesHouchesReader::accept() {
 inline const LesHouchesReader::CountMap &
 LesHouchesReader::acceptMap() const {
   return theAcceptMap;
+}
+
+inline tPExtrPtr LesHouchesReader::partonExtractor() const {
+  return thePartonExtractor;
+}
+
+inline const PartonPairVec & LesHouchesReader::partonBins() const {
+  return thePartonBins;
+}
+
+inline const KinematicalCuts & LesHouchesReader::cuts() const {
+  return *theCuts;
 }
 
 }

@@ -101,8 +101,14 @@ public:
   /**
    * Calls readEvent() or uncacheEvent() to read information into the
    * LesHouches common block variables.
+   *
+   * @return the weight asociated with this event. If negative weights
+   * are allowed it should be between -1 and 1, otherwise between 0
+   * and 1. If outside these limits the previously estimated maximum
+   * is violated. Note that the estimated maximum then should be
+   * updated from the outside.
    */
-  virtual void getEvent();
+  virtual double getEvent();
 
   /**
    * Converts the information in the Les Houches common block
@@ -210,6 +216,22 @@ public:
    * Number of accepted events per process number.
    */
   inline const CountMap & acceptMap() const;
+
+  /**
+   * The PartonExtractor object used to construct remnants.
+   */
+  inline tPExtrPtr partonExtractor() const;
+
+  /**
+   * The pairs of PartonBin objects describing the partons which can
+   * be extracted by the PartonExtractor object.
+   */
+  inline const PartonPairVec & partonBins() const;
+
+  /**
+   * The KinematicalCuts object to be used for this reader.
+   */
+  inline const KinematicalCuts & cuts() const;
 
   //@}
 
@@ -352,6 +374,7 @@ protected:
    * The maximum weight to be expected.
    */
   inline void maxWeight(double);
+
   /**
    * Set true if negative weights may be produced.
    */
@@ -440,6 +463,22 @@ protected:
   PDFPtr thePDFB;
 
   /**
+   * The PartonExtractor object used to construct remnants.
+   */
+  PExtrPtr thePartonExtractor;
+
+  /**
+   * The pairs of PartonBin objects describing the partons which can
+   * be extracted by the PartonExtractor object.
+   */
+  PartonPairVec thePartonBins;
+
+  /**
+   * The KinematicalCuts object to be used for this reader.
+   */
+  KinCutPtr theCuts;
+
+  /**
    * Master switch indicating how the ME generator envisages the
    * events weights should be interpreted according to the Les Houches
    * accord.
@@ -487,6 +526,12 @@ protected:
    * The weight for this event.
    */
   double XWGTUP;
+
+  /**
+   * The PDF weights for the two incoming partons. Nota that this
+   * variable is not present in the current LesHouches accord.
+   */
+  pair<double,double> XPDWUP;
 
   /**
    * The scale in GeV used in the calculation of the PDF's in this

@@ -19,13 +19,15 @@
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/PDF/PDFBase.h"
+#include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/RandomGenerator.h"
+#include "ThePEG/Handlers/KinematicalCuts.h"
 
 using namespace ThePEG;
 
 LesHouchesReader::LesHouchesReader()
-: IDWTUP(0), NRUP(0), NUP(0), IDPRUP(0), XWGTUP(0.0),
+  : IDWTUP(0), NRUP(0), NUP(0), IDPRUP(0), XWGTUP(0.0), XPDWUP(0.0, 0.0),
   SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0), theXSec(0.0*picobarn),
   theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1),
   isWeighted(false), hasNegativeWeights(false), theCacheFileName(""),
@@ -34,10 +36,11 @@ LesHouchesReader::LesHouchesReader()
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
     PDFGUP(x.PDFGUP), PDFSUP(x.PDFSUP), thePDFA(x.thePDFA), thePDFB(x.thePDFB),
-    IDWTUP(x.IDWTUP),
+    thePartonExtractor(x.thePartonExtractor), thePartonBins(x.thePartonBins),
+    theCuts(x.theCuts), IDWTUP(x.IDWTUP),
     NRUP(x.NRUP), XSECUP(x.XSECUP), XERRUP(x.XERRUP),
     XMAXUP(x.XMAXUP), LPRUP(x.LPRUP), NUP(x.NUP),
-    IDPRUP(x.IDPRUP), XWGTUP(x.XWGTUP), SCALUP(x.SCALUP),
+    IDPRUP(x.IDPRUP), XWGTUP(x.XWGTUP), XPDWUP(x.XPDWUP), SCALUP(x.SCALUP),
     AQEDUP(x.AQEDUP), AQCDUP(x.AQCDUP), IDUP(x.IDUP),
     ISTUP(x.ISTUP), MOTHUP(x.MOTHUP), ICOLUP(x.ICOLUP),
     PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP), theXSec(x.theXSec),
@@ -53,10 +56,20 @@ LesHouchesReader::~LesHouchesReader() {}
 
 void LesHouchesReader::doinit() throw(InitException) {
   HandlerBase::doinit();
-  scan();
+  open();
   if ( !IDBMUP.first || !IDBMUP.second ) throw LesHouchesInitError()
     << "No information about incoming particles were found in "
     << "LesHouchesReader '" << name() << "'." << Exception::warning;
+  if ( EBMUP.first <= 0.0 || EBMUP.second <= 0.0 ) throw LesHouchesInitError()
+    << "No information about the energy of incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
+
+  Energy emax = 2.0*sqrt(EBMUP.first*EBMUP.second)*GeV;
+  tcPDPair inc(getParticleData(IDBMUP.first), getParticleData(IDBMUP.second));
+  thePartonBins = partonExtractor()->getPartons(emax, inc, cuts());
+
+  close();
+  scan();
 }
 
 void LesHouchesReader::scan() {
@@ -176,7 +189,7 @@ void LesHouchesReader::convertEvent(Event & event) {
   ++theAttemptMap[IDPRUP];
 }
 
-void LesHouchesReader::getEvent() {
+double LesHouchesReader::getEvent() {
   if ( cacheFile() != NULL ) {
     if ( !uncacheEvent() ) {
       generator()->logWarning(
@@ -206,6 +219,7 @@ void LesHouchesReader::getEvent() {
   }
   ++theNAttempted;
   ++theAttemptMap[IDPRUP];
+  return XWGTUP/maxWeight();
 }
 
 void LesHouchesReader::createParticles() {
@@ -328,6 +342,7 @@ void LesHouchesReader::cacheEvent() const {
   char * pos = &buff[0];
   pos = mwrite(pos, IDPRUP);
   pos = mwrite(pos, XWGTUP);
+  pos = mwrite(pos, XPDWUP);
   pos = mwrite(pos, SCALUP);
   pos = mwrite(pos, AQEDUP);
   pos = mwrite(pos, AQCDUP);
@@ -350,6 +365,7 @@ bool LesHouchesReader::uncacheEvent() {
   const char * pos = &buff[0];
   pos = mread(pos, IDPRUP);
   pos = mread(pos, XWGTUP);
+  pos = mread(pos, XPDWUP);
   pos = mread(pos, SCALUP);
   pos = mread(pos, AQEDUP);
   pos = mread(pos, AQCDUP);
@@ -366,9 +382,9 @@ bool LesHouchesReader::uncacheEvent() {
 
 void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
   os << IDBMUP << EBMUP << PDFGUP << PDFSUP << thePDFA << thePDFB
-     << IDWTUP << NRUP
+     << thePartonExtractor << thePartonBins << theCuts << IDWTUP << NRUP
      << XSECUP << XERRUP << XMAXUP << LPRUP << NUP << IDPRUP
-     << XWGTUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
+     << XWGTUP << XPDWUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
      << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
      << ounit(theXSec, picobarn) << ounit(theMaxXSec, picobarn)
      << theMaxWeight << theNEvents << theMaxScan << isWeighted
@@ -379,9 +395,9 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
   closeCacheFile();
   is >> IDBMUP >> EBMUP >> PDFGUP >> PDFSUP >> thePDFA >> thePDFB
-     >> IDWTUP >> NRUP
+     >> thePartonExtractor >> thePartonBins >> theCuts >> IDWTUP >> NRUP
      >> XSECUP >> XERRUP >> XMAXUP >> LPRUP >> NUP >> IDPRUP
-     >> XWGTUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
+     >> XWGTUP >> XPDWUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
      >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
      >> iunit(theXSec, picobarn) >> iunit(theMaxXSec, picobarn)
      >> theMaxWeight >> theNEvents >> theMaxScan >> isWeighted
@@ -493,6 +509,18 @@ void LesHouchesReader::Init() {
      "The events from this Reader should not be randomized.",
      false);
 
+
+  static Reference<LesHouchesReader,PartonExtractor> interfacePartonExtractor
+    ("PartonExtractor",
+     "The PartonExtractor object used to construct remnants.",
+     &LesHouchesReader::thePartonExtractor, true, false, true, false, true);
+
+
+  static Reference<LesHouchesReader,KinematicalCuts> interfaceCuts
+    ("Cuts",
+     "The KinematicalCuts object to be used for this reader. Note that these "
+     "must not be looser cuts than those used in the actual generation.",
+     &LesHouchesReader::theCuts, true, false, true, false, true);
 
 }
 

@@ -7,6 +7,8 @@
 #include "MadGraphReader.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/EnumParticles.h"
+#include "ThePEG/PDT/ParticleData.h"
+#include "ThePEG/PDF/PDFBase.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MadGraphReader.tcc"
@@ -181,6 +183,44 @@ bool MadGraphReader::readEvent() {
 
   // Set info not obtained from MadGraph.
   VTIMUP = vector<double>(NUP, -1.0);
+
+  // Deduce positions of incoming beams and corresponding partons.
+  pair<int,int> beampos(-1, -1);
+  for ( int i = 0; i < NUP; ++i ) {
+    if ( ISTUP[i] != -9 ) continue;
+    if ( beampos.first < 0 ) beampos.first = i;
+    else if ( beampos.second < 0 ) beampos.second = i;
+  }
+  pair<int,int> partpos(-1, -1);
+  for ( int i = NUP - 1; i >= 0; --i ) {
+    if ( ISTUP[i] != -1 ) continue;
+    if ( MOTHUP[i].first > 0 && MOTHUP[i].first == beampos.first )
+      partpos.first = i;
+    else if ( MOTHUP[i].first > 0 && MOTHUP[i].first == beampos.second )
+      partpos.second = i;
+    else if ( partpos.second < 0 ) partpos.second = i;
+    else if ( partpos.first < 0 ) partpos.first = i;
+  }
+
+  // Now determine the corresponding PDF weights.
+  if ( partpos.first < 0 || partpos.second < 0 )
+    throw LesHouchesInconsistencyError()
+      << "No incoming partons were found in event number " << ieve
+      << " in MadGraphReader '" << name() << "'." << Exception::runerror;
+  tcPDPtr particle =
+    getParticleData(beampos.first > 0? IDUP[beampos.first]: IDBMUP.first);
+  tcPDPtr parton = getParticleData(IDUP[partpos.first]);
+  double totp = beampos.first > 0? PUP[beampos.first][3] + PUP[beampos.first][2]:
+    2.0*EBMUP.first;
+  double x = (PUP[partpos.first][3] + PUP[beampos.first][2])/totp;
+  XPDWUP.first = thePDFA->xfx(particle, parton, sqr(SCALUP*GeV), x);
+  particle =
+    getParticleData(beampos.second > 0? IDUP[beampos.second]: IDBMUP.second);
+  parton = getParticleData(IDUP[partpos.second]);
+  totp = beampos.second > 0? PUP[beampos.second][3] + PUP[beampos.second][2]:
+    2.0*EBMUP.second;
+  x = (PUP[partpos.second][3] + PUP[beampos.second][2])/totp;
+  XPDWUP.second = thePDFB->xfx(particle, parton, sqr(SCALUP*GeV), x);
 
   cfile.readline();
 
