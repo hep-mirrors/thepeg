@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+using std::complex;
 typedef std::complex<double> Complex;
 
 }
