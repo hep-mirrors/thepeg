@@ -13,6 +13,10 @@ DISTFILES = $(SOURCES) $(INCLUDEFILES) Makefile.common.in Makefile config.h.in
 
 INCLUDEDIR = Config
 
+install-local:
+	sed -e s:@:$(INSTALLLIB):g Makefile.install > $(INSTALLLIB)/Makefile
+	cp Makefile.common $(INSTALLLIB)/Makefile.common
+
 include ../Config/Makefile.common
 
 # DO NOT DELETE THIS LINE -- g++dep uses it.

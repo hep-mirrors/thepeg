@@ -1,3 +1,16 @@
+2003-07-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Config/Makefile.install: This file is copied to the lib dir in
+	the installation and can be used to compile a users own .so
+	modules.
+
+	* lib/Makefile: The .o files included in libThePEG.so are now
+	explicitly listed. The .so files in the listed sub-directories are
+	explicitly soft-linked to the lib directory.
+
+	* Config/Makefile.common.in: .o and .so files are no longer
+	automatically soft-linked to the lib directory.
+
 2003-07-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Templates/ThePEG.el: This elisp file will replace the old

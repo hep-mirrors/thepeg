@@ -55,39 +55,26 @@ all: depend check lib
 .cc.o:
 ifdef SHOWCOMMAND	
 	$(CXX) -c $(CXXFLAGS) $(CXXEXT) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $<
-	ln -f -s `pwd`/$@ $(LIBDIR)
 else
 	@echo "compiling $(INCLUDEDIR)/$< ..."
 	@$(CXX) -c $(CXXFLAGS) $(CXXEXT) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $<
-	@ln -f -s `pwd`/$@ $(LIBDIR)
 endif
 
 %.so: %.o
 ifdef SHOWCOMMAND	
-	rm -f $(LIBDIR)/$<
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $< -o $@
-	ln -f -s `pwd`/$@ $(LIBDIR)
 else
 	@echo "linking shared library $@ ..."
-	@rm -f $(LIBDIR)/$<
 	@$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $< -o $@
-	@ln -f -s `pwd`/$@ $(LIBDIR)
 endif
 
 lib%.so:
 ifdef SHOWCOMMAND	
-	cd $(LIBDIR); rm -f $^
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
-	ln -f -s `pwd`/$@ $(LIBDIR)
 else
 	@echo "linking shared library $@ ..."
-	@cd $(LIBDIR); rm -f $^
 	@$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
-	@ln -f -s `pwd`/$@ $(LIBDIR)
 endif
-
-.cc.s:
-	$(CXX) -S $(CXXFLAGS) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $(CXXEXT) $<
 
 depend:
 	$(SRCDIR)/Templates/g++dep $(INCLUDES) $(SOURCES) $(CHECKSOURCES)
