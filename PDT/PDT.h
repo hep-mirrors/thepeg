@@ -68,6 +68,16 @@ public:
 
   static inline Color antiColor(Color c);
   static inline Colour antiColour(Color c);
+  // Return the anti-colour of the specified colour.
+
+  static vector<long> flavourContent(long id);
+  static vector<long> flavourContent(tcPDPtr);
+  static vector<long> flavourContent(tcPPtr);
+  static vector<long> flavourContent(const ParticleData &);
+  static vector<long> flavourContent(const Particle &);
+  // Return the flavour content of the given particle. The flavours
+  // will be given in decreasing mass with flavour before
+  // anti-flavour.
 
 };
 

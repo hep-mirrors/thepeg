@@ -83,8 +83,9 @@ typedef Matcher<NegativeMatcher> MatchNegative;
 
 struct BaryonMatcher {
   typedef BaryonMatcher CC;
-  static bool Check(const ParticleData & pd) {
-    return (pd.id()/10)%10 && (pd.id()/100)%10 && (pd.id()/1000)%10;
+  static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  static bool Check(long id) {
+    return (id/10)%10 && (id/100)%10 && (id/1000)%10;
   }
   static string className() { return "Baryon"; }
 };
@@ -94,8 +95,9 @@ typedef Matcher<BaryonMatcher> MatchBaryon;
 
 struct MesonMatcher {
   typedef MesonMatcher CC;
-  static bool Check(const ParticleData & pd) {
-    return (pd.id()/10)%10 && (pd.id()/100)%10 && (pd.id()/1000)%10 == 0;
+  static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  static bool Check(long id) {
+    return (id/10)%10 && (id/100)%10 && (id/1000)%10 == 0;
   }
   static string className() { return "Meson"; }
 };

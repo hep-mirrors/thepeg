@@ -34,29 +34,37 @@ public:
 
 public:
 
-  virtual PDPtr generateHadron(tcPDPtr quark, cPDPtr & antiQuark, 
-			       long curtainQid = 0 ) = 0;
-  // Given a quark, choose a quark-antiquark pair. Return a meson
-  // formed by the original quark and the anti-quark.
+  virtual tcPDPair generateHadron(tcPDPtr quark) const = 0;
+  // Given a quark(antiquark, diquark or antidiquark), choose a
+  // quark-antiquark (or antidiquark-diquark) pair. Return (first) a
+  // hadron formed by the original quark and the anti-quark together
+  // with (second) the generated quark.
 
-  virtual PDPtr getHadron(tcPDPtr quark, tcPDPtr antiQuark) = 0;
+  virtual tcPDPtr getHadron(tcPDPtr q1, tcPDPtr q2) const;
+  virtual tcPDPtr getHadron(long iq1, long iq2) const;
+  // Return a hadron with the flavour content given by the
+  // (anti)(di)quarks in the argument. The arguments can be given
+  // either as particle data pointers or PDG codes. The default
+  // versions will call eachother, so one of them must be implemented
+  // by a subclass to avoid an infinite loop. If no corresponding
+  // hadron was formed it should return the null pointer.
 
-  virtual PDPtr getBaryon(tcPDPtr quark1, tcPDPtr quark2, tcPDPtr quark3) = 0;
+  virtual tcPDPtr getBaryon(tcPDPtr q1, tcPDPtr q2, tcPDPtr q3) const;
+  virtual tcPDPtr getBaryon(long q1, long q2, long q3) const;
+  // Return a baryon with the flavour content given by the
+  // (anti)quarks in the argument.  The arguments can be given either
+  // as particle data pointers or PDG codes. The default versions will
+  // call eachother, so one of them must be implemented by a subclass
+  // to avoid an infinite loop. If no corresponding hadron was formed
+  // it should return the null pointer.
 
-  virtual vector<tcPDPtr> getHadrons(tcPDPtr quark, tcPDPtr antiQuark) = 0;
+  virtual long selectQuark() const = 0;
+  // Generate a random quark flavour.
 
-  virtual vector<tcPDPtr> getBaryons(tcPDPtr q1, tcPDPtr q2, tcPDPtr q3) = 0;
+  virtual long selectFlavour() const = 0;
+  // Generate a random (di)quark flavour.
 
-  virtual void splitHadron(tcPDPtr hadron, cPDPtr & quark,
-			   cPDPtr & rest) const;
-  // For a given hadron if quark is null, set 'quark' to a random
-  // valens quark. Then set 'rest' to a corresponding anti-quark in
-  // case of a meson and a di-quark in case of a baryon.
-
-  //virtual void doupdate() throw(UpdateException);
-  //virtual void doinit() throw(InitException);
-  //virtual void dofinish();
-  // Standard Interfaced virtual functions.
+public:
 
   void persistentOutput(PersistentOStream &) const;
   void persistentInput(PersistentIStream &, int);

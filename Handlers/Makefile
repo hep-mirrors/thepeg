@@ -82,10 +82,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -293,10 +293,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -522,10 +522,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
@@ -696,10 +696,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -768,10 +768,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -889,10 +889,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1087,10 +1087,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1214,10 +1214,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1375,10 +1375,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1436,10 +1436,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1594,10 +1594,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1650,10 +1650,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1773,10 +1773,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1834,10 +1834,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -1891,10 +1891,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2019,10 +2019,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2137,10 +2137,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2174,7 +2174,28 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/InterfacedBase.icc \
   ../../ThePEG/Interface/Interfaced.icc \
   ../../ThePEG/Handlers/HandlerBase.icc \
-  FlavourGenerator.icc
+  FlavourGenerator.icc \
+  ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/PDT/PDT.icc \
+  ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/Utilities/Selector.h \
+  ../../ThePEG/Utilities/Selector.icc \
+  ../../ThePEG/Utilities/Selector.tcc \
+  ../../ThePEG/PDT/WidthGenerator.fh \
+  ../../ThePEG/PDT/MassGenerator.fh \
+  ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/PDT/ParticleData.icc
   LuminosityFunction.o: \
   LuminosityFunction.cc \
   LuminosityFunction.h \
@@ -2198,10 +2219,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2339,10 +2360,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2422,10 +2443,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2629,10 +2650,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2753,10 +2774,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -2885,10 +2906,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -3032,10 +3053,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -3201,10 +3222,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -3380,10 +3401,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
@@ -3447,10 +3468,10 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \

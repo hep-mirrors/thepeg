@@ -45,10 +45,10 @@ include ../Config/Makefile.common
   Units.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
-  ../../ThePEG/CLHEPWrap/CLHEP.h \
   ../../ThePEG/Utilities/UnitIO.h \
   Constants.h \
   std.h \

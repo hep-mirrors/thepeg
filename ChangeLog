@@ -1,3 +1,20 @@
+2003-07-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/StandardMatchers.h: Added Check functions taking PDG code
+	arguments for the MesonMatcher and BaryonMatcher classes.
+
+	* PDT/PDT.*: Added functions to get the flavour content out of
+	hadrons.
+
+	* Handlers/SimpleFlavour.*: Added class to implement simple
+	versions of the pure virtual functions of the FlavourGenerator
+	class. The model implemented ti s simplified version of the Pythia
+	fortran version. (NOT TESTED)
+
+	* Handlers/FlavourGenerator.*: Changed the standard pure virtual
+	functions for the FlavourGenerator class to get rid of things that
+	were too much related to the Lund string fragmentation stuff.
+
 2003-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/OmegaPhi3PiDecayer.h: Changed the class name in the class
