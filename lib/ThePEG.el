@@ -60,6 +60,7 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
   (setq concrete (y-or-n-p "Will this class be concrete "))
   (thepeg-sourcefile namespace class persist concrete implementations)
   (thepeg-iheaderfile namespace class base interfaced concrete)
+  (thepeg-fheaderfile namespace class)
   (thepeg-headerfile namespace class base baseheader interfaced
 		persist concrete declarations))
 
@@ -102,6 +103,7 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 
   (thepeg-sourcefile namespace class persist concrete implement)
   (thepeg-iheaderfile namespace class base interfaced concrete)
+  (thepeg-fheaderfile namespace class)
   (thepeg-headerfile namespace class base baseheader
 		interfaced persist concrete declare))
 
@@ -274,6 +276,38 @@ inline THECLASS::THECLASS(const THECLASS & x)
 }
 "))))
 
+(defun thepeg-fheaderfile (namespace class)
+  "Create a ifh-header file suitable for the forward declarations
+of a class CLASS."
+  (find-file (concat class ".fh"))
+  (c++-mode)
+  (cond ((> (buffer-size) 0))
+	(t (insert-string (thepeg-fheader namespace class))
+	   (beginning-of-buffer))))
+
+
+(defun thepeg-fheader (namespace class)
+  "Return a skeleton suitable for the fh-header file for the forward
+declarations of a class CLASS."
+
+  (thepeg-replace "THECLASS" class
+		  (concat "// -*- C++ -*-
+//
+// This is the forward declaration of the THECLASS class.
+//
+#ifndef ThePEG_THECLASS_FH
+#define ThePEG_THECLASS_FH
+
+namespace " namespace " {
+
+class THECLASS;
+ThePEG_DECLARE_CLASS_POINTERS(THECLASS,THECLASSPtr);
+
+}
+
+#endif
+")))
+
 (defun thepeg-headerfile (namespace class base baseheader interfaced
 				    persistent concrete specialfn)
   "Create a header file for a class CLASS
@@ -376,8 +410,7 @@ using namespace ThePEG;
 // 
 
 #include \"" include "\"
-// #include \"THECLASS.fh\"
-// #include \"THECLASS.xh\"
+#include \"THECLASS.fh\"
 
 namespace " namespace " {
 " using "
