@@ -33,6 +33,15 @@ Collision::Collision(const Collision & c)
     allParticles(c.allParticles), theEvent(c.theEvent),
     theHandler(c.theHandler), theVertex(c.theVertex) {}
 
+Collision::~Collision() {
+  for ( int i = 0, N = theSteps.size(); i < N; ++i )
+    if ( theSteps[i]->collision() == this )
+      theSteps[i]->theCollision = tCollPtr();
+  for ( int i = 0, N = theSubProcesses.size(); i < N; ++i )
+    if ( theSubProcesses[i]->collision() == this )
+      theSubProcesses[i]->theCollision = tCollPtr();
+}
+
 CollPtr Collision::clone() const {
   return ptr_new<CollPtr>(*this);
 }

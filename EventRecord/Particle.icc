@@ -32,6 +32,8 @@ inline Particle::Particle(tcEventPDPtr newData)
 
 inline Particle::~Particle() {
   if ( theRep ) delete theRep;
+  theRep = 0;
+  theData = cEventPDPtr();
 }
 
 inline bool Particle::hasRep() const {

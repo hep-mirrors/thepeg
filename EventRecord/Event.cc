@@ -33,6 +33,12 @@ Event::Event(const Event & e)
     allParticles(e.allParticles), theHandler(e.theHandler),
     theNumber(e.theNumber), theWeight(e.theWeight) {}
 
+Event::~Event() {
+  for ( int i = 0, N = theCollisions.size(); i < N; ++i )
+    if ( theCollisions[i]->event() == this )
+      theCollisions[i]->theEvent = tEventPtr();
+}
+
 void Event::setInfo(tcEventBasePtr newHandler, string newName,
 		    long newNumber, double weight) {
   theHandler = newHandler;

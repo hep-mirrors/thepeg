@@ -16,8 +16,6 @@ inline void Step::operator delete(void * p, size_t) {
   FixedAllocator<Step>::deallocate(p);
 }
 
-inline Step::~Step() {}
-
 inline tcEventBasePtr Step::handler() const {
   return theHandler;
 }

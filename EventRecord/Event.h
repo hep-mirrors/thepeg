@@ -78,7 +78,7 @@ public:
   /**
    * The destructor.
    */
-  inline ~Event();
+  ~Event();
 
   /**
    * Returns a full clone of this Event. All collisions,

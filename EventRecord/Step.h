@@ -67,7 +67,7 @@ public:
   /**
    * The destructor.
    */
-  inline ~Step();
+  ~Step();
 
   /**
    * Return a pointer to the step handler which performed the

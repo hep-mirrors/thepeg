@@ -73,7 +73,7 @@ public:
   /**
    * The destructor
    */
-  inline ~Collision();
+  ~Collision();
 
 public:
 

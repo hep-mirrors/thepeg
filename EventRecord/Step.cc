@@ -27,6 +27,13 @@ Step::Step(const Step & s)
     allParticles(s.allParticles), theCollision(s.theCollision),
     theHandler(s.theHandler) {}
 
+Step::~Step() {
+  for ( ParticleSet::iterator it = allParticles.begin();
+	it != allParticles.end(); ++it )
+    if ( (**it).hasRep() && (**it).birthStep() == this )
+      (**it).rep().theBirthStep = tStepPtr();
+}
+
 StepPtr Step::clone() const {
   return ptr_new<StepPtr>(*this);
 }

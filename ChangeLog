@@ -1,3 +1,19 @@
+2004-07-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/Particle.icc: Reset pointer to particle
+	representation and particle data for the case a dangling pointer
+	to the destroyed object should be used accidentally.
+
+	* EventRecord/Step.*: Changed destructor to reset transient
+	pointers in Particlespointing to the destroyed object.
+
+	* EventRecord/Collision.*: Changed destructor to reset transient
+	pointers in Steps and SubProcesses pointing to the destroyed
+	object.
+
+	* EventRecord/Event.*: Changed destructor to reset transient
+	pointers in Collisions pointing to the destroyed object.
+
 2004-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/PartialCollisionHandler.cc: In performStep, if the
