@@ -62,7 +62,7 @@ dist: doc
 	tar czf $(TAG).tgz $(TAG)
 	rm -rf $(TAG)
 
-snapshot: doc
+snapshot:
 	$(MAKE) thesnapshot SNAPTAG=ThePEG-`/bin/date '+%y%m%d'`
 
 thesnapshot:
@@ -73,7 +73,6 @@ thesnapshot:
 	mv ThePEG/Makefile $(SNAPTAG)
 	mv ThePEG/configure $(SNAPTAG)
 	rm -rf ThePEG
-	cp Doc/*.html $(SNAPTAG)/ThePEG/Doc
 	tar czf $(SNAPTAG).tgz $(SNAPTAG)
 	rm -rf $(SNAPTAG)
 
