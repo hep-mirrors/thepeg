@@ -88,7 +88,7 @@ bool ME2to2Base::generateKinematics(const double * r) {
   meMomenta()[3].rescaleEnergy();
   theLastTHat = (meMomenta()[0] - meMomenta()[2]).m2();
   theLastUHat = (meMomenta()[1] - meMomenta()[2]).m2();
-  jacobian((sHat()/pq)*Constants::pi*jacobian());
+  jacobian((pq/sHat())*Constants::pi*jacobian());
   return true;
 }
 
@@ -111,7 +111,7 @@ double ME2to2Base::getCosTheta(double ctmin, double ctmax, const double * r) {
 }  
 
 CrossSection ME2to2Base::dSigHatDR() const {
-  return me2()*jacobian()/(64.0*sqr(Constants::pi)*sHat());
+  return me2()*jacobian()/(16.0*sqr(Constants::pi)*sHat());
 }
 
 void ME2to2Base::persistentOutput(PersistentOStream & os) const {
