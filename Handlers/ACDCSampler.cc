@@ -74,7 +74,9 @@ void ACDCSampler::dofinish() {
       << "The run was ended while the ACDCSampler '" << name()
       << "' was still trying to compensate for weights larger than 1. "
       << "The cross section estimates may therefore be statistically "
-      << "inaccurate." << endl;
+      << "inaccurate. This may be avoided if you increase the value of the "
+      << "Ntry parameter determining how many points are presampled before "
+      << "the run." << endl;
     
     SamplerBase::dofinish();
 }
