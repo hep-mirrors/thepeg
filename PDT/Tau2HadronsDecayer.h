@@ -1,34 +1,33 @@
 // -*- C++ -*-
-#ifndef THEPEG_OmegaPhi3PiDecayer_H
-#define THEPEG_OmegaPhi3PiDecayer_H
+#ifndef THEPEG_Tau2HadronsDecayer_H
+#define THEPEG_Tau2HadronsDecayer_H
 //
-// This is the declaration of the <!id>OmegaPhi3PiDecayer<!!id> class.
+// This is the declaration of the <!id>Tau2HadronsDecayer<!!id> class.
 //
 // CLASSDOC SUBSECTION Description:
 //
-// This class performs the decay of a phi or an omega into pi+ pi-
-// p0. It will in fact decay anything into pi+ pi- p0 assuming the
-// same matrix element.
+// This class will perform the decays of tau to neutrimo + hadrons
+// according to phase space, with an extra weight xnu(3-nxu).
 //
 // CLASSDOC SUBSECTION See also:
 //
-// <a href="http:FlatDecayer.html">.h</a>,
-// <a href="http:ParticleData.html">.h</a>.
+// <a href="http:.html">.h</a>,
+// <a href="http:.html">.h</a>.
 // 
 
 #include "ThePEG/PDT/FlatDecayer.h"
-// #include "OmegaPhi3PiDecayer.fh"
-// #include "OmegaPhi3PiDecayer.xh"
+// #include "Tau2HadronsDecayer.fh"
+// #include "Tau2HadronsDecayer.xh"
 
 namespace ThePEG {
 
-class OmegaPhi3PiDecayer: public FlatDecayer {
+class Tau2HadronsDecayer: public FlatDecayer {
 
 public:
 
-  inline OmegaPhi3PiDecayer();
-  inline OmegaPhi3PiDecayer(const OmegaPhi3PiDecayer &);
-  virtual ~OmegaPhi3PiDecayer();
+  inline Tau2HadronsDecayer();
+  inline Tau2HadronsDecayer(const Tau2HadronsDecayer &);
+  virtual ~Tau2HadronsDecayer();
   // Standard ctors and dtor.
 
 public:
@@ -39,13 +38,14 @@ public:
 
   virtual double reweight(const DecayMode &, const Particle & parent,
 				 const ParticleVector & children) const;
-  // For a given decay mode, decaying particle and decayproducts
-  // distributed according to a flat distribution in phase space,
-  // return a weight (less or equal to unity) modifying the flat
-  // distribution to the desired one. Note that the chosen phase space
-  // point may be rejected, but the chosen decay channel will
-  // not. This means that the weight returned by this function does
-  // not influence the branching ratios.
+  // To be overridden by subclasses. For a given decay mode, decaying
+  // particle and decayproducts distributed according to a flat
+  // distribution in phase space, return a weight (less or equal to
+  // unity) modifying the flat distribution to the desired one. Note
+  // that the chosen phase space point may be rejected, but the chosen
+  // decay channel will not. This means that the weight returned by
+  // this function does not influence the branching ratios. For the
+  // FlatDecayer class this function simply returns 1.
 
 public:
 
@@ -79,16 +79,10 @@ protected:
 
 private:
 
-  double margin;
-  // Used to multiply the bare weight to get something below unity. In
-  // the Fortran pythia version it was set to 150 for unknown reasons.
-
-private:
-
-  static ClassDescription<OmegaPhi3PiDecayer> initOmegaPhi3PiDecayer;
+  static ClassDescription<Tau2HadronsDecayer> initTau2HadronsDecayer;
   // Describe a concrete class with persistent data.
 
-  OmegaPhi3PiDecayer & operator=(const OmegaPhi3PiDecayer &);
+  Tau2HadronsDecayer & operator=(const Tau2HadronsDecayer &);
   // Private and non-existent assignment operator.
 
 };
@@ -100,20 +94,20 @@ private:
 namespace ThePEG {
 
 // The following template specialization informs ThePEG about the
-// base class of OmegaPhi3PiDecayer.
+// base class of Tau2HadronsDecayer.
 template <>
-struct BaseClassTrait<OmegaPhi3PiDecayer,1> {
+struct BaseClassTrait<Tau2HadronsDecayer,1> {
   typedef FlatDecayer NthBase;
 };
 
 // The following template specialization informs ThePEG about the
 // name of this class and the shared object where it is defined.
 template <>
-struct ClassTraits<OmegaPhi3PiDecayer>
-  : public ClassTraitsBase<OmegaPhi3PiDecayer> {
-  static string className() { return "/ThePEG/OmegaPhi3PiDecayer"; }
+struct ClassTraits<Tau2HadronsDecayer>
+  : public ClassTraitsBase<Tau2HadronsDecayer> {
+  static string className() { return "/ThePEG/Tau2HadronsDecayer"; }
   // Return the class name.
-  static string library() { return "OmegaPhi3PiDecayer.so"; }
+  static string library() { return "Tau2HadronsDecayer.so"; }
   // Return the name of the shared library to be loaded to get
   // access to this class and every other class it uses
   // (except the base class).
@@ -121,9 +115,9 @@ struct ClassTraits<OmegaPhi3PiDecayer>
 
 }
 
-#include "OmegaPhi3PiDecayer.icc"
+#include "Tau2HadronsDecayer.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "OmegaPhi3PiDecayer.tcc"
+// #include "Tau2HadronsDecayer.tcc"
 #endif
 
-#endif /* THEPEG_OmegaPhi3PiDecayer_H */
+#endif /* THEPEG_Tau2HadronsDecayer_H */

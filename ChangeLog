@@ -1,3 +1,15 @@
+2003-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/ThePEGParticles.*, src/ThePEGDefaults.in,
+	PDT/Tau2HadronsDecayer.*: Added class to decay tau to neutrino
+	plus hadrons.
+
+	* PDT/OmegaPhi3PiDecayer.cc: 
+
+	* src/ThePEGParticles.in, src/ThePEGDefaults.in,
+	PDT/DalitzDecayer.*: Added class to perform Dalitz decays into e+
+	e- gamma.
+
 2003-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/StandardMatchers.h: Added matcher classes for

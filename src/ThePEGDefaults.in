@@ -7,8 +7,8 @@ mkdir /Defaults/Decayers
 create /ThePEG/FlatDecayer /Defaults/Decayers/Flat
 create /ThePEG/OmegaPhi3PiDecayer /Defaults/Decayers/OmegaPhi3Pi OmegaPhi3PiDecayer.so
 create /ThePEG/V2PPDecayer /Defaults/Decayers/V2PP V2PPDecayer.so
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY2
-setup /Dummy/Decayers/PYDECY2 2
+create /ThePEG/DalitzDecayer /Defaults/Decayers/Dalitz DalitzDecayer.so
+create /ThePEG/Tau2HadronsDecayer /Defaults/Decayers/Tau2Hadrons Tau2HadronsDecayer.so
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY4
 setup /Dummy/Decayers/PYDECY4 4
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY11
@@ -19,8 +19,6 @@ create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY13
 setup /Dummy/Decayers/PYDECY13 13
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY32
 setup /Dummy/Decayers/PYDECY32 32
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY41
-setup /Dummy/Decayers/PYDECY41 41
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY42
 setup /Dummy/Decayers/PYDECY42 42
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY48

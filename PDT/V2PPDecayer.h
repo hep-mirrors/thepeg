@@ -44,7 +44,7 @@ public:
   // for a given decay mode and a given particle instance, perform the
   // decay and return the decay products.
 
-  inline virtual double reweight(const DecayMode &, const Particle & parent,
+  virtual double reweight(const DecayMode &, const Particle & parent,
 				 const ParticleVector & children) const;
   // For a given decay mode, decaying particle and decayproducts
   // distributed according to a flat distribution in phase space,

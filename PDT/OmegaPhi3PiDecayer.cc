@@ -34,8 +34,8 @@ bool OmegaPhi3PiDecayer::accept(const DecayMode & dm) const {
   for ( ParticleMSet::const_iterator pit = dm.products().begin();
 	pit != dm.products().end(); ++pit ) {
     if ( (**pit).id() == ParticleID::piplus ) foundp = true;
-    if ( (**pit).id() == ParticleID::piminus ) foundm = true;
-    if ( (**pit).id() == ParticleID::pi0 ) found0 = true;
+    else if ( (**pit).id() == ParticleID::piminus ) foundm = true;
+    else if ( (**pit).id() == ParticleID::pi0 ) found0 = true;
   }
   return foundp && foundm && found0;
 }
@@ -49,9 +49,9 @@ double OmegaPhi3PiDecayer::reweight(const DecayMode &, const Particle & parent,
   for ( int i = 0, N = children.size(); i < N; ++i ) {
     if ( children[i]->id() == ParticleID::piplus )
       pp = children[i]->momentum();
-    if ( children[i]->id() == ParticleID::piminus )
+    else if ( children[i]->id() == ParticleID::piminus )
       pm = children[i]->momentum();
-    if ( children[i]->id() == ParticleID::pi0 )
+    else if ( children[i]->id() == ParticleID::pi0 )
       p0 = children[i]->momentum();
   }
 
