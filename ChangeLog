@@ -1,5 +1,8 @@
 2004-03-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Helicity (Module): Added Peters helicity classes and started to
+	integrate them into ThePEG.
+
 	* MatrixElement/MEBase.cc (Module): Added new virtual function
 	constructVertes for constructing the spin information for the
 	interaction. The default version does nothing.
