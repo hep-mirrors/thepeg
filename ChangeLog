@@ -1,5 +1,11 @@
 2003-07-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Templates/ThePEG.el: This elisp file will replace the old
+	skeleton.el. The main difference is the renaming of the p7-*
+	functions to thepeg-*. Also started to write specialized functions
+	to create standard handler classes with templates for the virtual
+	functions.
+
 	* EventRecord/Step.cc: In addDecayProduct() remove test to see if
 	children are still in the final state.
 
