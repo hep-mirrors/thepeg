@@ -33,11 +33,11 @@ pair<Energy,Energy> GaussianPtGenerator::generate() const {
 
 
 void GaussianPtGenerator::persistentOutput(PersistentOStream & os) const {
-  os << theSigma << theUpperCut;
+  os << ounit(theSigma, GeV) << ounit(theUpperCut, GeV);
 }
 
 void GaussianPtGenerator::persistentInput(PersistentIStream & is, int) {
-  is >> theSigma >> theUpperCut;
+  is >> iunit(theSigma, GeV) >> iunit(theUpperCut, GeV);
 }
 
 ClassDescription<GaussianPtGenerator> GaussianPtGenerator::initGaussianPtGenerator;

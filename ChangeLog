@@ -1,5 +1,7 @@
 2004-05-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/GaussianPtGenerator.cc: Fixed units in I/O.
+
 	* src/ThePEGDefaults.in: Set GaussianPtGenerator and
 	SimpleZGenerator in the BaryonRemnants object.
 
