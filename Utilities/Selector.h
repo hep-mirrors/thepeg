@@ -11,8 +11,6 @@
 namespace ThePEG {
 
 /**
- * .
- *
  * Selector is a templated class for storing objects associated with
  * probabilities in a way such that, given a flat random number
  * between 0 and 1, an object can be selected according to its
@@ -34,6 +32,8 @@ namespace ThePEG {
  * <code>bar.insert(0.5,&f2)</code>  // to each of f1 and f2<BR>
  * <code>foo * f = bar.select(random())</code>  // randomly returns
  * a pointer to f1 or f2<BR>
+ *
+ * @see VSelector
  */
 template <typename T, typename WeightType = double>
 class Selector {
@@ -109,7 +109,7 @@ public:
   void replace(const T & oldObject, const T & newObject);
 
   /**
-   * Selct an object randomly. Given a random number flatly
+   * Select an object randomly. Given a random number flatly
    * distributed in the interval ]0,1[ Select an object according to
    * the individual probabilities specified when they were
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a

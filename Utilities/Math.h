@@ -50,7 +50,7 @@ inline double pGenerate(int p, double xl, double xu, double rnd);
 /** Generate an x between xl and xl + dx distributed as \f$x^{e-1}\f$
  *  with highest possible precision for\f$dx\rightarrow 0\f$ and/or *
  *  \f$e\rightarrow 0\f$.
- * @param R a flat random number in the interval ]0,1[. */
+ * @param rnd a flat random number in the interval ]0,1[. */
 inline double pXGenerate(double e, double xl, double xu, double rnd);
 
 /** Returns (x - y)/(|x| + |y|). */

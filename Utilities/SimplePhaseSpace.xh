@@ -6,7 +6,9 @@
 
 namespace ThePEG {
 
+/** Exception class used by SimplePhaseSpace. */
 struct ImpossibleKinematics: public std::runtime_error {
+  /** Constructor. */
   ImpossibleKinematics()
     : runtime_error("Impossible kinematics in SimplePhaseSpace.") {
     breakThePEG();

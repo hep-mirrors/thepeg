@@ -37,11 +37,11 @@ class Direction {
 public:
 
   /** The enum defining the directions. */
-  enum Dir { Neg = -1, /** Reversed direction. */
-	     Negative = -1, /** Reversed direction. */
-	     Undefined = 0, /** No direction has been defined. */
-	     Pos = 1, /** Standard (positive) direction. */
-	     Positive = 1 /** Standard (positive) direction. */
+  enum Dir { /** Reversed direction. */ Neg = -1,
+	     /** Reversed direction. */ Negative = -1,
+	     /** No direction has been defined. */ Undefined = 0,
+	     /** Standard (positive) direction. */ Pos = 1,
+	     /** Standard (positive) direction. */ Positive = 1
   };
 
 public:
