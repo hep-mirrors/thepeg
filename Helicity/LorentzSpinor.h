@@ -41,26 +41,26 @@ public:
   // Set components by index.
   inline Complex & operator () (int);
   inline Complex & operator [] (int);
-	
+
   // Get components
   inline Complex s1() const;
   inline Complex s2() const;
   inline Complex s3() const;
   inline Complex s4() const;
-	
+
   // Set components
   inline void setS1(Complex);
   inline void setS2(Complex);
   inline void setS3(Complex);
   inline void setS4(Complex);
-	
+
   // return the barred spinor
-  LorentzSpinorBar bar();	
-	
+  LorentzSpinorBar bar();
+
   // the equals operator
   inline LorentzSpinor & operator = (const LorentzSpinor &);
-	
-  // boost 
+
+  // boost
   inline LorentzSpinor  boost(double,double,double) const;
   inline LorentzSpinor  boost(const Hep3Vector &) const;
 
@@ -69,6 +69,7 @@ private:
   Complex _spin[4];
 
 };
+
 }
 }
 

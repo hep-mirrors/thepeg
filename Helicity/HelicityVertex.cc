@@ -3,6 +3,8 @@
 // This is the implementation of the non-inlined, non-templated member
 // functions of the HelicityVertex class.
 //
+// Author: Peter Richardson
+//
 
 #include "HelicityVertex.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
@@ -14,15 +16,15 @@
 
 using namespace ThePEG;
 using namespace Helicity;
-    
+
 HelicityVertex::~HelicityVertex() {}
-    
+
 AbstractNoPIOClassDescription<HelicityVertex>
 HelicityVertex::initHelicityVertex;
 // Definition of the static class description member.
-    
+
 void HelicityVertex::Init() {
-      
+
   static ClassDocumentation<HelicityVertex> documentation
     ("There is no documentation for the \\classname{HelicityVertex} class");
 }

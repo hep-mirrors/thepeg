@@ -1,12 +1,32 @@
-// inlined function of the LorentzSpinor class
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the LorentzSpinor class.
+//
+// Author: Peter Richardson
+//
+
+namespace ThePEG {
+namespace Helicity {
+
 // default zero constructor
-inline LorentzSpinor::LorentzSpinor(){for(int ix=0;ix<4;++ix){_spin[ix]=0.;}}
+inline LorentzSpinor::LorentzSpinor() {
+  for(int ix=0;ix<4;++ix) {
+    _spin[ix]=0.0;
+  }
+}
+
 // constructor with complex numbers
-inline LorentzSpinor::LorentzSpinor(complex<double> a,complex<double> b,
-			     complex<double> c,complex<double> d)
-{_spin[0]=a;_spin[1]=b;_spin[2]=c;_spin[3]=d;}
+inline LorentzSpinor::
+LorentzSpinor(Complex a, Complex b, Complex c, Complex d) {
+  _spin[0]=a;
+  _spin[1]=b;
+  _spin[2]=c;
+  _spin[3]=d;
+}
+
 // subscript operator to return spinor components
-inline complex<double> LorentzSpinor::operator[](int i) const
+inline Complex LorentzSpinor::operator[](int i) const
 {
   if(i>=0&&i<=3)
     {return _spin[i];}
@@ -16,7 +36,8 @@ inline complex<double> LorentzSpinor::operator[](int i) const
       return 0.;
     }
 }
-inline complex<double> LorentzSpinor::operator()(int i) const
+
+inline Complex LorentzSpinor::operator()(int i) const
 {
   if(i>=0&&i<=3)
     {return _spin[i];}
@@ -28,37 +49,53 @@ inline complex<double> LorentzSpinor::operator()(int i) const
 }
 
 // set components by index
-inline complex<double> & LorentzSpinor::operator () (int i){
-  static complex<double> dummy;
+inline Complex & LorentzSpinor::operator () (int i){
+  static Complex dummy;
   if(i>=0 &&i<=3)
     {return _spin[i];}
   else
-    {cerr << "Invalid index " << i << " called for LorentzPolarizationVector" << endl;
-    return dummy;}
-}
-inline complex<double> & LorentzSpinor::operator [] (int i){
-  static complex<double> dummy;
-  if(i>=0 &&i<=3)
-    {return _spin[i];}
-  else
-    {cerr << "Invalid index " << i << " called for LorentzPolarizationVector" << endl;
+    {cerr << "Invalid index " << i
+	  << " called for LorentzPolarizationVector" << endl;
     return dummy;}
 }
 
+inline Complex & LorentzSpinor::operator [] (int i){
+  static Complex dummy;
+  if(i>=0 &&i<=3)
+    {return _spin[i];}
+  else
+    {cerr << "Invalid index " << i
+	  << " called for LorentzPolarizationVector" << endl;
+    return dummy;}
+}
 
 // Get components
-inline complex<double> LorentzSpinor::s1() const {return _spin[0];}
-inline complex<double> LorentzSpinor::s2() const {return _spin[1];}
-inline complex<double> LorentzSpinor::s3() const {return _spin[2];}
-inline complex<double> LorentzSpinor::s4() const {return _spin[3];}
+inline Complex LorentzSpinor::s1() const {return _spin[0];}
+
+inline Complex LorentzSpinor::s2() const {return _spin[1];}
+
+inline Complex LorentzSpinor::s3() const {return _spin[2];}
+
+inline Complex LorentzSpinor::s4() const {return _spin[3];}
+
 // Set components
-inline void LorentzSpinor::setS1(complex<double> in){_spin[0]=in;}
-inline void LorentzSpinor::setS2(complex<double> in){_spin[1]=in;}
-inline void LorentzSpinor::setS3(complex<double> in){_spin[2]=in;}
-inline void LorentzSpinor::setS4(complex<double> in){_spin[3]=in;}
+inline void LorentzSpinor::setS1(Complex in){_spin[0]=in;}
+
+inline void LorentzSpinor::setS2(Complex in){_spin[1]=in;}
+
+inline void LorentzSpinor::setS3(Complex in){_spin[2]=in;}
+
+inline void LorentzSpinor::setS4(Complex in){_spin[3]=in;}
+
 // the equals operator
-inline LorentzSpinor & LorentzSpinor::operator = (const LorentzSpinor & in)
-{_spin[0]=in.s1();_spin[1]=in.s2();_spin[2]=in.s3();_spin[3]=in.s4();return *this;}
+inline LorentzSpinor & LorentzSpinor::operator = (const LorentzSpinor & in) {
+  _spin[0]=in.s1();
+  _spin[1]=in.s2();
+  _spin[2]=in.s3();
+  _spin[3]=in.s4();
+  return *this;
+}
+
 inline LorentzSpinor LorentzSpinor::boost(double bx,double by,double bz) const
 {
   // work out beta and chi
@@ -66,24 +103,9 @@ inline LorentzSpinor LorentzSpinor::boost(double bx,double by,double bz) const
   double chi = atanh(beta);
   double sinhchi = sinh(0.5*chi)/beta, coshchi = cosh(0.5*chi);
   // calculate the new spinor
-  complex<double> out[4],ii(0.,1.);
-  complex<double> nxminy=bx-ii*by;
-  complex<double> nxpiny=bx+ii*by;
-  out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxminy*_spin[1]);
-  out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxpiny*_spin[0]);
-  out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxminy*_spin[3]);
-  out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
-  return LorentzSpinor(out[0],out[1],out[2],out[3]);
-}
-inline LorentzSpinor LorentzSpinor::boost(const Hep3Vector & boostv) const
-{
-  double beta = boostv.mag();
-  double bx=boostv.x(),by=boostv.y(),bz=boostv.z();
-  double chi = atanh(beta);
-  double sinhchi = sinh(0.5*chi)/beta, coshchi = cosh(0.5*chi);
-  complex<double> out[4],ii(0.,1.);
-  complex<double> nxminy=bx-ii*by;
-  complex<double> nxpiny=bx+ii*by;
+  Complex out[4],ii(0.,1.);
+  Complex nxminy=bx-ii*by;
+  Complex nxpiny=bx+ii*by;
   out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxminy*_spin[1]);
   out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxpiny*_spin[0]);
   out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxminy*_spin[3]);
@@ -91,3 +113,21 @@ inline LorentzSpinor LorentzSpinor::boost(const Hep3Vector & boostv) const
   return LorentzSpinor(out[0],out[1],out[2],out[3]);
 }
 
+inline LorentzSpinor LorentzSpinor::boost(const Hep3Vector & boostv) const
+{
+  double beta = boostv.mag();
+  double bx=boostv.x(),by=boostv.y(),bz=boostv.z();
+  double chi = atanh(beta);
+  double sinhchi = sinh(0.5*chi)/beta, coshchi = cosh(0.5*chi);
+  Complex out[4],ii(0.,1.);
+  Complex nxminy=bx-ii*by;
+  Complex nxpiny=bx+ii*by;
+  out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxminy*_spin[1]);
+  out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxpiny*_spin[0]);
+  out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxminy*_spin[3]);
+  out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
+  return LorentzSpinor(out[0],out[1],out[2],out[3]);
+}
+
+}
+}

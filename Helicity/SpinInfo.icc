@@ -3,23 +3,26 @@
 // This is the implementation of the inlined member functions of
 // the SpinInfo class.
 //
+// Author: Peter Richardson
+//
+
 namespace ThePEG {
 namespace Helicity {
 
 inline SpinInfo::SpinInfo()
   : _prodloc(-1), _decayloc(-1), _decayed(false), _developed(false) {}
-    
+
 inline SpinInfo::SpinInfo(const Lorentz5Momentum & in, bool intim)
   :  _timelike(intim),_decayed(false), _developed(false),
      _productionmomentum(in) {}
 
 inline SpinInfo::SpinInfo(const SpinInfo & x)
-  : SpinBase(x), _production(x._production), _decay(x._decay), 
+  : SpinBase(x), _production(x._production), _decay(x._decay),
     _timelike(x._timelike),
     _prodloc(x._prodloc), _decayloc(x._decayloc),
     _decayed(x._decayed), _developed(x._developed),_rhomatrix(x._rhomatrix),
     _Dmatrix(x._Dmatrix),_ispin(x._ispin),
-    _productionmomentum(x._productionmomentum) 
+    _productionmomentum(x._productionmomentum)
 {
   x._production=VertexPtr();
   x._decay=VertexPtr();
@@ -33,7 +36,7 @@ inline SpinInfo::SpinInfo(const SpinInfo & x)
     }
 }
 
-inline EIPtr SpinInfo::clone() const 
+inline EIPtr SpinInfo::clone() const
 {
   tcSpinPtr temp=this;
   return const_ptr_cast<SpinPtr>(temp);
@@ -46,7 +49,7 @@ inline void SpinInfo::rebind(const EventTranslationMap & trans) {
 }
 
 // set and get methods for the vertex
-inline void SpinInfo::setProductionVertex(VertexPtr in) const 
+inline void SpinInfo::setProductionVertex(VertexPtr in) const
 {
   _production=in;
   // add to the list of outgoing if timelike
@@ -71,7 +74,7 @@ inline void SpinInfo::setDecayVertex(VertexPtr in) const
 }
 
 // get the vertex at which the particle decayed or branched
-inline tcVertexPtr SpinInfo::getDecayVertex() const {return _decay;} 
+inline tcVertexPtr SpinInfo::getDecayVertex() const {return _decay;}
 // set and get methods for the stage variables
 
 inline bool SpinInfo::decayed() const {return _decayed;}
@@ -138,7 +141,7 @@ inline void SpinInfo::update() const
   // number of instances fo this object
   int nref=referenceCount();
   if(nref<2||nref>3){return;}
-  // work out the number of references there should be 
+  // work out the number of references there should be
   int nmin=0;
   // check the production pointers
   if(_production)

@@ -3,6 +3,8 @@
 // This is the implementation of the inlined member functions of
 // the FermionSpinInfo class.
 //
+// Author: Peter Richardson
+//
 
 namespace ThePEG {
 namespace Helicity {
@@ -29,8 +31,8 @@ inline FermionSpinInfo::FermionSpinInfo(const FermionSpinInfo & x)
   : SpinInfo(x), _productionstates(x._productionstates),
     _decaystates(x._decaystates), _decaycalc(x._decaycalc)
 {}
-    
-inline EIPtr FermionSpinInfo::clone() const 
+
+inline EIPtr FermionSpinInfo::clone() const
 {
   tcSpinPtr temp=this;
   return const_ptr_cast<SpinPtr>(temp);
@@ -59,7 +61,7 @@ inline void FermionSpinInfo::setDecayState(int ihel,LorentzSpinor in) const
   } else {
     cerr << "Tried to set invalid fermion basis state" << endl;
   }
-}  
+}
 
 // get the basis state for the production
 inline LorentzSpinor FermionSpinInfo::getProductionBasisState(int ihel) const

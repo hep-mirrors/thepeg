@@ -1,5 +1,6 @@
 SUBDIRS = CLHEPWrap Config Utilities Repository Interface PDT EventRecord \
-          Persistency StandardModel Handlers PDF MatrixElement Pointer ACDC
+          Persistency StandardModel Handlers PDF MatrixElement Pointer ACDC \
+          Helicity
 
 DISTFILES = README Makefile configure configure.in
 

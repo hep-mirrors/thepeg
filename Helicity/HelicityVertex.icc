@@ -3,12 +3,14 @@
 // This is the implementation of the inlined member functions of
 // the HelicityVertex class.
 //
+// Author: Peter Richardson
+//
 
 namespace ThePEG {
 namespace Helicity {
-    
+
 inline HelicityVertex::HelicityVertex() {}
-    
+
 inline HelicityVertex::HelicityVertex(const HelicityVertex & x)
   : EventInfoBase(x), _incoming(x._incoming), _outgoing(x._outgoing) {}
 
@@ -48,7 +50,7 @@ inline void HelicityVertex::resetIncoming(tcSpinPtr in,int loc)
 inline void HelicityVertex::resetOutgoing(tcSpinPtr in,int loc)
 {
   if(loc<int(_outgoing.size())&&loc>=0) {
-    _outgoing[loc]=in; 
+    _outgoing[loc]=in;
   } else {
     cerr << "reset invalid outgoing particle in HelicityVertex "
 	 << loc << endl;

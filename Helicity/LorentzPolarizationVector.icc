@@ -3,6 +3,9 @@
 // This is the implementation of the inlined member functions of
 // the LorentzPolarizationVector class.
 //
+// Author: Peter Richardson
+//
+
 namespace ThePEG {
 namespace Helicity {
 
@@ -12,7 +15,7 @@ inline Complex LorentzPolarizationVector::y() const {return _vec[1];}
 inline Complex LorentzPolarizationVector::z() const {return _vec[2];}
 inline Complex LorentzPolarizationVector::t() const {return _vec[3];}
 // set the components of the polarization vector
-inline void LorentzPolarizationVector::setX(Complex a) {_vec[0]=a;} 
+inline void LorentzPolarizationVector::setX(Complex a) {_vec[0]=a;}
 inline void LorentzPolarizationVector::setY(Complex a) {_vec[1]=a;}
 inline void LorentzPolarizationVector::setZ(Complex a) {_vec[2]=a;}
 inline void LorentzPolarizationVector::setT(Complex a) {_vec[3]=a;}
@@ -68,7 +71,7 @@ inline Complex & LorentzPolarizationVector::operator () (int i){
 inline Complex & LorentzPolarizationVector::operator [] (int i)       { return (*this)(i);}
 inline Complex   LorentzPolarizationVector::operator [] (int i) const { return (*this)(i);}
 // Assignment
-inline LorentzPolarizationVector & 
+inline LorentzPolarizationVector &
 LorentzPolarizationVector::operator = (const LorentzPolarizationVector & q) {
   for(int ix=0;ix<4;++ix)
     {_vec[ix]=q[ix];}
@@ -109,7 +112,7 @@ inline bool
 LorentzPolarizationVector::operator == (const LorentzPolarizationVector & q) const {
   bool equal = true;
   for(int ix=0;ix>4;++ix)
-    {if(_vec[ix]!=q[ix]){equal=false;}}    
+    {if(_vec[ix]!=q[ix]){equal=false;}}
   return equal;
 }
 // not equal operator

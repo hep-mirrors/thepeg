@@ -19,7 +19,7 @@
 //
 // <a href="http:.html">.h</a>,
 // <a href="http:.html">.h</a>.
-// 
+//
 // Author: Peter Reichardson
 //
 
@@ -39,18 +39,18 @@ namespace Helicity {
 class HelicityVertex: public EventInfoBase {
 
 public:
-      
+
   typedef vector<tcSpinPtr> SpinVector;
 
 public:
-      
+
   inline HelicityVertex();
   inline HelicityVertex(const HelicityVertex &);
   virtual ~HelicityVertex();
   // Standard ctors and dtor.
-      
+
 public:
-      
+
   static void Init();
   // Standard Init function used to initialize the interfaces.
 
@@ -63,7 +63,7 @@ public:
 public:
 
   // access methods for the incoming and outgoing particles
-  
+
   inline SpinVector incoming() const;
   // access to the incoming particles
 
@@ -72,7 +72,7 @@ public:
 
   inline void addIncoming(tcSpinPtr,int&);
   // add an incoming particle
- 
+
   inline void addOutgoing(tcSpinPtr,int&);
   // add an outgoing particle
 
@@ -94,22 +94,22 @@ public:
 
   virtual RhoDMatrix getDMatrix(int);
   // method to get the D matrix for an incoming particle
-  
+
 private:
-      
+
   static AbstractNoPIOClassDescription<HelicityVertex> initHelicityVertex;
   // Describe an abstract base class without persistent data.
-  
+
   HelicityVertex & operator=(const HelicityVertex &);
   // Private and non-existent assignment operator.
-  
+
 private:
-  
+
   SpinVector _incoming;
   // pointers to the incoming particles at the vertex
   SpinVector _outgoing;
   // pointers to the outgoing particles at the vertex
-  
+
 };
 
 }

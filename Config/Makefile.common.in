@@ -49,7 +49,7 @@ LINKFLAGS = -rdynamic
 
 RPATH = $(LIBDIR)
 
-THEPEGLIBS = -lThePEGRepo -lThePEGHandlers -lThePEGPDF -lThePEGME -lThePEGEvent -lThePEGPDT -lThePEGSM -lThePEGInter -lThePEG -lCLHEP
+THEPEGLIBS = -lThePEGRepo -lThePEGHandlers -lThePEGPDF -lThePEGME -lThePEGEvent -lThePEGPDT -lThePEGSM -lThePEGInter -lThePEGHelicity -lThePEG -lCLHEP
 
 
 all: depend check lib

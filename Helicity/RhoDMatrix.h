@@ -15,63 +15,68 @@
 //
 // <a href="http:.html">.h</a>,
 // <a href="http:.html">.h</a>.
-// 
+//
+// Author: Peter Richardson
+//
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-#include <complex>
+#include "ThePEG/Config/Complex.h"
 // #include "RhoDMatrix.fh"
 // #include "RhoDMatrix.xh"
 
 namespace ThePEG {
-  namespace Helicity {
-    using std::complex;
-    
-    class RhoDMatrix {
-      
-    public:
-      
-      inline RhoDMatrix();
-      inline RhoDMatrix(int);
-      inline RhoDMatrix(const RhoDMatrix &);
-      virtual ~RhoDMatrix();
-      // Standard ctors and dtor.
-            
-    public:
+namespace Helicity {
 
-      inline complex<double> operator () (int,int) const;
-      // operator to return an element of the matrix
+class RhoDMatrix {
 
-      inline complex<double> & operator () (int,int);
-      // operator to set an element of the matrix
+public:
 
-      inline void setSpin(int);
-      // set 2s+1 for the particle
-      inline int getSpin();
-      // get 2s+1 for the particle
-      inline void average();
-      // set the matrix to 1/(2s+1) on diagonals and zero elsewhere
-      inline void zero();
-      // zero the matrix      
+  inline RhoDMatrix();
+  inline RhoDMatrix(int);
+  inline RhoDMatrix(const RhoDMatrix &);
+  virtual ~RhoDMatrix();
+  // Standard ctors and dtor.
 
-      inline RhoDMatrix & operator=(const RhoDMatrix &);
-      // assignment operator.
+public:
 
-      inline void normalize();
-      // renormalise the matrix so it has unit trace
+  inline Complex operator () (int,int) const;
+  // operator to return an element of the matrix
 
-      inline void output();
-      // output the spin density matrix
+  inline Complex & operator () (int,int);
+  // operator to set an element of the matrix
 
-    private:
+  inline void setSpin(int);
+  // set 2s+1 for the particle
 
-      int _ispin;
-      // 2s+1 for the particle
-      complex<double> _matrix[5][5];
-      // storage for the matrix allowing up to spin 2 particles
-      
-    };
-  }
+  inline int getSpin();
+  // get 2s+1 for the particle
+
+  inline void average();
+  // set the matrix to 1/(2s+1) on diagonals and zero elsewhere
+
+  inline void zero();
+  // zero the matrix
+
+  inline RhoDMatrix & operator=(const RhoDMatrix &);
+  // assignment operator.
+
+  inline void normalize();
+  // renormalise the matrix so it has unit trace
+
+  inline void output();
+  // output the spin density matrix
+
+private:
+
+  int _ispin;
+  // 2s+1 for the particle
+  Complex _matrix[5][5];
+  // storage for the matrix allowing up to spin 2 particles
+
+};
+
+}
 }
 
 

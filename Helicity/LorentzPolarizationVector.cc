@@ -3,6 +3,8 @@
 // This is the implementation of the non-inlined, non-templated member
 // functions of the LorentzPolarizationVector class.
 //
+// Author: Peter Richardson
+//
 
 #include "LorentzPolarizationVector.h"
 using namespace ThePEG;
@@ -61,7 +63,7 @@ boost(double bx, double by, double bz){
   Complex bdotp = bx*x()+by*y()+bz*z();
   double gmmone = b2 >0 ? (gamma-1.)/b2 : 0.0;
   _vec[0] = _vec[0]+gamma*bx*_vec[3]+gmmone*bdotp*bx;
-  _vec[1] = _vec[1]+gamma*by*_vec[3]+gmmone*bdotp*by; 
+  _vec[1] = _vec[1]+gamma*by*_vec[3]+gmmone*bdotp*by;
   _vec[2] = _vec[2]+gamma*bz*_vec[3]+gmmone*bdotp*bz;
   _vec[3] = gamma*(_vec[3]+bdotp);
   return *this;
@@ -74,27 +76,27 @@ LorentzPolarizationVector & LorentzPolarizationVector::rotateX(double phi) {
   Complex ty=y();
   _vec[1] = _vec[1]*cphi-_vec[2]*sphi;
   _vec[2] = _vec[2]*cphi+ty    *sphi;
-  return *this; 
+  return *this;
 }
 
 // rotation about Y axis
-LorentzPolarizationVector & LorentzPolarizationVector::rotateY(double phi) { 
+LorentzPolarizationVector & LorentzPolarizationVector::rotateY(double phi) {
   double sphi=sin(phi);
   double cphi=cos(phi);
   Complex tz=z();
   _vec[2] = _vec[2]*cphi-_vec[0]*sphi;
   _vec[0] = _vec[0]*cphi+tz    *sphi;
-  return *this; 
+  return *this;
 }
 
 // rotation about Z axis
-LorentzPolarizationVector & LorentzPolarizationVector::rotateZ(double phi) { 
+LorentzPolarizationVector & LorentzPolarizationVector::rotateZ(double phi) {
   double sphi=sin(phi);
   double cphi=cos(phi);
-  Complex tx=x(); 
+  Complex tx=x();
   _vec[0] = _vec[0]*cphi-_vec[1]*sphi;
   _vec[1] = _vec[1]*cphi+tx    *sphi;
-  return *this; 
+  return *this;
 }
 
 // rotate the axis
@@ -129,7 +131,7 @@ operator /= (Complex c)
 {
   if(c.real()==0. && c.imag()==0.)
     {
-      cout << "Attempt to divid LorentzPolarizationVector by zero" << endl; 
+      cout << "Attempt to divid LorentzPolarizationVector by zero" << endl;
     }
   else
     {
