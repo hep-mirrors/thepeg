@@ -69,6 +69,18 @@ public:
 
 };
 
+template <typename OStream, typename T, typename UT>
+void ounitstream(OStream & os, const Transverse<T> & p, UT & u) {
+  os << ounit(p.x(), u) << ounit(p.y(), u);
+}
+
+template <typename IStream, typename T, typename UT>
+void iunitstream(IStream & is, Transverse<T> & p, UT & u) {
+  T x, y;
+  is >> iunit(x, u) >> iunit(y, u);
+  p = Transverse<T>(x, y);
+}
+
 }
 
 #include "Transverse.icc"

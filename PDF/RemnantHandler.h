@@ -13,6 +13,7 @@
 
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/PDF/PartonBin.h"
+#include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/CLHEPWrap/Transverse.h"
 // #include "RemnantHandler.fh"
 #include "RemnantHandler.xh"
@@ -30,7 +31,8 @@ public:
 
 public:
 
-  virtual bool canHandle(tcPDPtr particle, const cPDVector & partons) const = 0;
+  virtual bool canHandle(tcPDPtr particle,
+			 const cPDVector & partons) const = 0;
   // Return true if this remnant handler can handle extracting all
   // specified partons from the given particle.
 
@@ -47,6 +49,9 @@ public:
   virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & parent) const = 0;
+  virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
+				    Energy2 scale,
+				    const LorentzMomentum & parent) const = 0;
   // Generate the momentum of the extracted parton with the parent
   // momentum given by the last argument. If the scale is negative, it
   // means that the doScale in the previous call to nDim() was true,
@@ -61,7 +66,15 @@ public:
   // If the actual remnants were not fully generated in the previous
   // call to generate(), do that now and store them in the parton bin.
 
+  virtual void createRemnants(PartonBinInstance & pb) const;
+  // If the actual remnants were not fully generated in the previous
+  // call to generate(), do that now and store them in the parton bin.
+
   virtual bool recreateRemnants(PartonBin & pb, tPPtr oldp, tPPtr newp,
+				double newl, Energy2 scale,
+				const LorentzMomentum & p,
+				const PVector & prev = PVector()) const;
+  virtual bool recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp,
 				double newl, Energy2 scale,
 				const LorentzMomentum & p,
 				const PVector & prev = PVector()) const;

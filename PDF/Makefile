@@ -1,10 +1,10 @@
 SOURCES = PartonExtractor.cc PDFBase.cc RemnantHandler.cc BeamParticleData.cc \
           PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc LeptonLeptonPDF.cc \
           LeptonLeptonRemnant.cc GRVBase.cc GRV94L.cc GRV94M.cc \
-          BaryonRemnants.cc
+          BaryonRemnants.cc PartonBinInstance.cc
 
 LIBOBJECTS = PartonExtractor.o PDFBase.o  RemnantHandler.o BeamParticleData.o \
-             PartonBin.o NoPDF.o NoRemnants.o PDFCuts.o
+             PartonBin.o PartonBinInstance.o NoPDF.o NoRemnants.o PDFCuts.o
 
 OBJECTS = libThePEGPDF.so LeptonLeptonPDF.so LeptonLeptonRemnant.so \
           GRVBase.so GRV94L.so GRV94M.so BaryonRemnants.so
@@ -14,7 +14,7 @@ DEBUGOBJECTS =
 DOCFILES = BeamParticleData.h GRVBase.h LeptonLeptonPDF.h \
            LeptonLeptonRemnant.h NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
            PartonBin.h PartonExtractor.h RemnantHandler.h GRV94L.h GRV94M.h \
-           BaryonRemnants.h PDF.h
+           BaryonRemnants.h PDF.h PartonBinInstance.h
 
 INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
                BeamParticleData.xh GRV94L.icc GRV94M.icc GRVBase.icc \
@@ -22,7 +22,7 @@ INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
                NoRemnants.icc PDFBase.icc  PDFBase.xh PDFCuts.icc \
                PartonBin.icc PartonExtractor.fh PartonExtractor.icc \
                PartonExtractor.xh RemnantHandler.icc RemnantHandler.xh \
-               BaryonRemnants.icc PDF.fh PDF.icc
+               BaryonRemnants.icc PDF.fh PDF.icc PartonBinInstance.icc
 
 LIBFILES = $(OBJECTS)
 
@@ -145,6 +145,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   PartonExtractor.xh \
   PartonExtractor.icc \
   ../../ThePEG/Handlers/XComb.h \
@@ -347,6 +349,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
@@ -502,6 +506,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   RemnantHandler.xh \
   RemnantHandler.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
@@ -741,6 +747,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/NoPDF.icc \
   ../../ThePEG/PDF/RemnantHandler.h \
   ../../ThePEG/PDF/PartonBin.h \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc \
   ../../ThePEG/Utilities/UtilityBase.h \
@@ -856,6 +864,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc
   NoRemnants.o: \
@@ -964,6 +974,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc \
   NoRemnants.icc
@@ -1296,6 +1308,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc \
   LeptonLeptonRemnant.icc \
@@ -1666,6 +1680,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/RemnantHandler.xh \
   ../../ThePEG/PDF/RemnantHandler.icc \
   ../../ThePEG/Handlers/PtGenerator.h \
@@ -1720,5 +1736,119 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.xh \
   ../../ThePEG/Repository/EventGenerator.icc \
   ../../ThePEG/Repository/EventGenerator.tcc
+  PartonBinInstance.o: \
+  PartonBinInstance.cc \
+  PartonBinInstance.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/PDF/PartonBin.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/PDF/PDFBase.h \
+  ../../ThePEG/Handlers/HandlerBase.h \
+  ../../ThePEG/Interface/Interfaced.h \
+  ../../ThePEG/Interface/InterfacedBase.h \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  ../../ThePEG/Interface/InterfacedBase.xh \
+  ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Interface/InterfaceBase.icc \
+  ../../ThePEG/Interface/InterfacedBase.icc \
+  ../../ThePEG/Interface/Interfaced.icc \
+  ../../ThePEG/Handlers/HandlerBase.icc \
+  ../../ThePEG/PDF/PDFCuts.h \
+  ../../ThePEG/Utilities/Interval.h \
+  ../../ThePEG/Utilities/Interval.icc \
+  ../../ThePEG/Utilities/Interval.tcc \
+  ../../ThePEG/PDF/PDFCuts.icc \
+  ../../ThePEG/PDF/PDFBase.xh \
+  ../../ThePEG/PDF/PDFBase.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/EventRecord/Particle.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  ../../ThePEG/EventRecord/ColourBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.icc \
+  ../../ThePEG/EventRecord/ColourLine.h \
+  ../../ThePEG/EventRecord/ColourSinglet.h \
+  ../../ThePEG/EventRecord/ColourSinglet.icc \
+  ../../ThePEG/EventRecord/ColourLine.icc \
+  ../../ThePEG/EventRecord/ColourBase.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/EventRecord/Particle.icc \
+  ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/PDT/PDT.icc \
+  ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
+  ../../ThePEG/Utilities/Selector.h \
+  ../../ThePEG/Utilities/Selector.icc \
+  ../../ThePEG/Utilities/Selector.tcc \
+  ../../ThePEG/PDT/WidthGenerator.fh \
+  ../../ThePEG/PDT/MassGenerator.fh \
+  ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/PDT/ParticleData.icc \
+  ../../ThePEG/EventRecord/Particle.tcc \
+  ../../ThePEG/PDF/PartonBin.icc \
+  PartonBinInstance.icc \
+  ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Persistency/PersistentOStream.xh \
+  ../../ThePEG/Persistency/PersistentOStream.icc \
+  ../../ThePEG/Persistency/PersistentIStream.h \
+  ../../ThePEG/Persistency/InputDescription.h \
+  ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.icc \
+  ../../ThePEG/Persistency/PersistentIStream.tcc
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

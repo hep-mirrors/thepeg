@@ -49,6 +49,9 @@ public:
   virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & p) const;
+  virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
+				    Energy2 scale,
+				    const LorentzMomentum & p) const;
   // Generate the momentum of the extracted parton in the particle cms
   // (but with x still the positive light-cone fraction) as given by
   // the last argument. If the particle is space-like the positive and
@@ -63,6 +66,7 @@ public:
   // parton bin.
 
   virtual void createRemnants(PartonBin & pb) const;
+  virtual void createRemnants(PartonBinInstance & pb) const;
   // If the actual remnants were not fully generated in the previous
   // call to generate(), do that now and store them in the parton bin.
 
@@ -157,6 +161,15 @@ struct BaryonRemnantsInfo: public RemnantInfo {
   bool mayval;
 };
 
+struct BaryonRemInfo: public RemInfoBase {
+  int iq;
+  int sign;
+  vector<int> flav;
+  vector<int> vflav;
+  VSelector< pair<int,int> > flavsel;
+  bool mayval;
+};
+
 template <>
 struct BaseClassTrait<BaryonRemnants,1> {
   typedef RemnantHandler NthBase;
@@ -165,7 +178,7 @@ struct BaseClassTrait<BaryonRemnants,1> {
 template <>
 struct ClassTraits<BaryonRemnants>: public ClassTraitsBase<BaryonRemnants> {
   static string className() { return "/ThePEG/BaryonRemnants"; }
-  static string library() { return "libThePEGString.so BaryonRemnants.so"; }
+  static string library() { return "BaryonRemnants.so"; }
 };
 
 }

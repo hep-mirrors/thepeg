@@ -31,6 +31,7 @@
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
 #include "ThePEG/PDF/PartonBin.h"
+#include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/PDT/ParticleData.h"
 // #include "PartonExtractor.fh"
@@ -46,6 +47,7 @@ class PartonExtractor: public HandlerBase, public LastXCombInfo<> {
 public:
 
   typedef map<cPPtr,PBPtr, less<cPPtr>, Allocator<PBPtr> > PartonBinMap;
+  typedef map<cPPtr,PBIPtr> PartonBinInstanceMap;
 
 public:
 
@@ -82,8 +84,15 @@ public:
   inline const PartonBinMap & lastPartonBins() const;
   // Return info about the current selection.
 
+  inline const PartonBinInstanceMap & partonBinInstances() const;
+  // Return the current parton bin instances.
+
   tPBPtr partonBin(tcPPtr) const;
   // Return the corresponding parton bin for a given extracted parton.
+
+  tPBIPtr partonBinInstance(tcPPtr) const;
+  // Return the corresponding parton bin instance for a given
+  // extracted parton.
 
   inline int maxTries() const;
   // The maximum number of attempts allowed when trying to generate
@@ -96,7 +105,15 @@ public:
   virtual void prepare(const PBPair & pbins);
   // Prepare the given parton bins for generating a new event.
 
+  virtual void prepare(const PBIPair & pbins);
+  // Prepare the given parton bin instances for generating a new
+  // event.
+
   virtual bool generateL(const PBPair & pbins,
+			 const double * r1, const double * r2);
+  // Generate log(1/x) for all parton extractions.
+
+  virtual bool generateL(const PBIPair & pbins,
 			 const double * r1, const double * r2);
   // Generate log(1/x) for all parton extractions.
 
@@ -105,19 +122,32 @@ public:
   // Generate the rest of the degrees of freedom to calculate sHat and
   // the product of all densitiy functions.
 
+  virtual Energy2 generateSHat(Energy2 s, const PBIPair & pbins,
+			       const double * r1, const double * r2);
+  // Generate the rest of the degrees of freedom to calculate sHat and
+  // the product of all densitiy functions.
+
   virtual double fullFn(const PBPair & pbins, Energy2 scale);
   // Return the product of all density functions.
 
+  virtual double fullFn(const PBIPair & pbins, Energy2 scale);
+  // Return the product of all density functions.
+
   virtual void construct(const PBPair & pbins, tStepPtr step);
+  virtual void construct(const PBIPair & pbins, tStepPtr step);
+  // Construct remnants and add them to the step.
 
 protected:
 
   virtual void generateL(PartonBin & pb, const double * r);
+  virtual void generateL(PartonBinInstance & pb, const double * r);
   // Used by generateL() for each of the final parton
   // bins. Direction<0> is set to positive(negative) for the
   // first(second) final bin.
 
   virtual bool generate(PartonBin & pb, const double * r,
+			const Lorentz5Momentum & first);
+  virtual bool generate(PartonBinInstance & pb, const double * r,
 			const Lorentz5Momentum & first);
   // Used by generateSHat() for each of the final parton
   // bins. Direction<0> is set to positive(negative) for the
@@ -126,9 +156,11 @@ protected:
   // momentum. Returns false if no remnants could be generated.
 
   virtual double fullFn(const PartonBin & pb);
+  virtual double fullFn(const PartonBinInstance & pb);
   // Used by the public fullFn() for each of the final parton bins.
 
   virtual void construct(PartonBin & pb, tStepPtr step);
+  virtual void construct(PartonBinInstance & pb, tStepPtr step);
   // Used by the public construct() for each of the final parton bins.
 
 public:
@@ -159,6 +191,9 @@ protected:
 
   inline PartonBinMap & lastPartonBins();
   // The PartonBin's used mapped to the respective partons.
+
+  inline PartonBinInstanceMap & partonBinInstances();
+  // The PartonBinInstance's used mapped to the respective partons.
 
   template <typename Iterator>
   inline void findConnect(tColinePtr line, tPPtr parton, bool anti,
@@ -192,6 +227,9 @@ private:
 
   PartonBinMap theLastPartonBins;
   // The PartonBin's used mapped to the respective partons.
+
+  PartonBinInstanceMap thePartonBinInstances;
+  // The PartonBinInstance's used mapped to the respective partons.
 
   vector<PDFPtr> theSpecialDensities;
   // A list of special PDFBase objects to be used.

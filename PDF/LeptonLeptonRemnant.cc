@@ -42,6 +42,31 @@ canHandle(tcPDPtr particle, const cPDVector & partons) const {
 }
 
 Lorentz5Momentum LeptonLeptonRemnant::
+generate(PartonBinInstance & pb, const double * r,
+	 Energy2 scale, const LorentzMomentum & parent) const {
+  if ( pb.particleData() != pb.partonData() )
+    throw RemnantHandlerException
+      (pb.particleData()->name(), pb.partonData()->name(), name(),
+       "The remnant handler can only extract leptons from "
+       "leptons of the same type.");
+  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+  TransverseMomentum qt;
+  Energy2 qt2 = 0.0*GeV2;
+  if ( scale >= 0.0*GeV2 ) {
+    qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
+    double phi = rnd(2.0*Constants::pi);
+    qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
+  }
+  Energy pl = p.plus()*pb.eps();
+  PPtr rem = 
+    photon->produceParticle(lightCone(pl, qt2/pl, qt));
+  rem->rotateY(parent.theta());
+  rem->rotateZ(parent.phi());
+  pb.remnants(PVector(1, rem));
+  return parent - rem->momentum();
+}
+
+Lorentz5Momentum LeptonLeptonRemnant::
 generate(PartonBin & pb, const double * r,
 	 Energy2 scale, const LorentzMomentum & parent) const {
   if ( pb.particle() != pb.parton() )

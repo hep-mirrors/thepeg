@@ -660,7 +660,9 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/DynamicLoader.h \
   ../../ThePEG/Utilities/DynamicLoader.icc \
   ../../ThePEG/Utilities/StringUtils.h \
-  ../../ThePEG/Utilities/StringUtils.icc
+  ../../ThePEG/Utilities/StringUtils.icc \
+  ../../ThePEG/Utilities/SystemUtils.h \
+  ../../ThePEG/Utilities/SystemUtils.icc
   StandardRandom.o: \
   StandardRandom.cc \
   StandardRandom.h \

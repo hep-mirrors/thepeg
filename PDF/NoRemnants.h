@@ -53,6 +53,9 @@ public:
   virtual Lorentz5Momentum generate(PartonBin & pb, const double * r,
 				    Energy2 scale,
 				    const LorentzMomentum & p) const;
+  virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
+				    Energy2 scale,
+				    const LorentzMomentum & p) const;
   // Generate the momentum of the extracted parton in the particle cms
   // (but with x still the positive light-cone fraction) as given by
   // the last argument. If the particle is space-like the positive and

@@ -45,6 +45,7 @@
 #include "SubProcessHandler.fh"
 #include "ThePEG/PDF/PartonExtractor.fh"
 #include "ThePEG/PDF/PartonBin.h"
+#include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/Utilities/VSelector.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/Math.h"
@@ -97,6 +98,7 @@ public:
   // The incoming parton types.
 
   inline const PBPair & partonBins() const;
+  inline const PBIPair & partonBinInstances() const;
   // Additional information about the incoming partons.
 
   inline tPExtrPtr pExtractor() const;
@@ -160,9 +162,11 @@ public:
   // Get/set the last chosen scale of the hard scattering.
 
   void prepare(const PPair &);
+  void prepareNEW(const PPair &);
   // prepare this XComb for producing a sub-process.
 
   void construct(tSubProPtr);
+  void constructNEW(tSubProPtr);
   // Construct a sub-process object from the information available.
 
   inline bool empty() const;
@@ -188,6 +192,7 @@ public:
   // process.
 
   CrossSection dSigDR(const pair<double,double> ll, int nr, const double * r);
+  CrossSection dSigDRNEW(const pair<double,double> ll, int nr, const double * r);
   // Generate a phase space point and return the corresponding cross
   // section.
 
@@ -220,6 +225,7 @@ protected:
   // Set the last selected diagram.
 
   void setPartonBinInfo();
+  void setPartonBinInfoNEW();
   // Set the local parton bin info objects for this XComb.
 
 public:
@@ -252,6 +258,9 @@ private:
   // The incoming parton types.
 
   PBPair thePartonBins;
+  // Additional information about the incoming partons.
+
+  PBIPair thePartonBinInstances;
   // Additional information about the incoming partons.
 
   pair<PartonBinInfo*, PartonBinInfo*> thePartonBinInfo;

@@ -468,6 +468,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/PDF/PDFBase.xh \
   ../../ThePEG/PDF/PDFBase.icc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/Utilities/VSelector.h \
   ../../ThePEG/Utilities/VSelector.icc \
   ../../ThePEG/Utilities/VSelector.tcc \
@@ -633,6 +635,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/PDF/PDFBase.xh \
   ../../ThePEG/PDF/PDFBase.icc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/Utilities/VSelector.h \
   ../../ThePEG/Utilities/VSelector.icc \
   ../../ThePEG/Utilities/VSelector.tcc \
@@ -764,6 +768,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/PDF/PDFBase.xh \
   ../../ThePEG/PDF/PDFBase.icc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/Utilities/VSelector.h \
   ../../ThePEG/Utilities/VSelector.icc \
   ../../ThePEG/Utilities/VSelector.tcc \
@@ -950,6 +956,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/PDF/PDFBase.xh \
   ../../ThePEG/PDF/PDFBase.icc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/Utilities/VSelector.h \
   ../../ThePEG/Utilities/VSelector.icc \
   ../../ThePEG/Utilities/VSelector.tcc \
@@ -2284,6 +2292,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/PDF/PDFBase.xh \
   ../../ThePEG/PDF/PDFBase.icc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.h \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/Utilities/VSelector.h \
   ../../ThePEG/Utilities/VSelector.icc \
   ../../ThePEG/Utilities/VSelector.tcc \

@@ -33,6 +33,7 @@ PartonExtractor::PartonExtractor()
 
 PartonExtractor::PartonExtractor(const PartonExtractor & x)
   : HandlerBase(x), LastXCombInfo<>(x), theLastPartonBins(x.theLastPartonBins),
+    thePartonBinInstances(x.thePartonBinInstances),
     theSpecialDensities(x.theSpecialDensities), theNoPDF(x.theNoPDF),
     theMaxTries(x.theMaxTries), flatSHatY(x.flatSHatY) {}
 
@@ -105,6 +106,11 @@ tPBPtr PartonExtractor::partonBin(tcPPtr p) const {
   return it == lastPartonBins().end()? PBPtr(): it->second;
 }
 
+tPBIPtr PartonExtractor::partonBinInstance(tcPPtr p) const {
+  PartonBinInstanceMap::const_iterator it = partonBinInstances().find(p);
+  return it == partonBinInstances().end()? PBIPtr(): it->second;
+}
+
 void PartonExtractor::
 colourConnect(tPPtr particle, tPPtr parton, const tPVector & remnants) const {
 
@@ -151,6 +157,12 @@ void PartonExtractor::prepare(const PBPair & pbins) {
   pbins.second->prepare();
 }
 
+void PartonExtractor::prepare(const PBIPair & pbins) {
+  partonBinInstances().clear();
+  pbins.first->prepare();
+  pbins.second->prepare();
+}
+
 bool PartonExtractor::
 generateL(const PBPair & pbins, const double * r1, const double * r2) {
   Direction<0> dir(true);
@@ -192,6 +204,43 @@ generateL(const PBPair & pbins, const double * r1, const double * r2) {
   
 }
 
+bool PartonExtractor::
+generateL(const PBIPair & pbins, const double * r1, const double * r2) {
+  Direction<0> dir(true);
+  generateL(*pbins.first, r1);
+  dir.reverse();
+  generateL(*pbins.second, r2);
+  if ( !flatSHatY ) return true;
+
+  Energy2 shmax = lastCuts().sHatMax();
+  shmax = min(shmax, lastCuts().x1Max()*lastCuts().x2Max()*lastS());
+  Energy2 shmin = lastCuts().sHatMin();
+  shmin = max(shmin, lastCuts().tHatMin());
+  shmin = max(shmin, lastCuts().uHatMin());
+  shmin = max(shmin, sqr(2.0*lastCuts().pTHatMin()));
+  shmin = max(shmin, lastCuts().x1Min()*lastCuts().x2Min()*lastS());
+  Energy2 sh = shmin*pow(shmax/shmin, *r1);
+  double ymax = lastCuts().yStarMax();
+  double ymin = lastCuts().yStarMin();
+  ymax = min(ymax, 0.5*log(lastCuts().x1Max()/lastCuts().x2Min()));
+  ymin = max(ymin, 0.5*log(lastCuts().x1Min()/lastCuts().x2Max()));
+  double km = log(shmax/shmin);
+  ymax = min(ymax, log(lastCuts().x1Max()*sqrt(lastS()/sh)));
+  ymin = max(ymin, -log(lastCuts().x2Max()*sqrt(lastS()/sh)));
+
+  double y = ymin + (*r2)*(ymax - ymin);
+  double l1 = 0.5*log(lastS()/sh) - y;
+  double l2 = 0.5*log(lastS()/sh) + y;
+
+  pbins.first->li(l1 - pbins.first->l() + pbins.first->li());
+  pbins.first->l(l1);
+  pbins.first->jacobian(km*(ymax - ymin));
+  pbins.second->li(l2 - pbins.second->l() + pbins.second->li());
+  pbins.second->l(l2);
+  pbins.second->jacobian(1.0);
+  return ( pbins.first->li() >= 0.0 && pbins.second->li() >= 0.0 );
+}
+
 Energy2 PartonExtractor::
 generateSHat(Energy2 s, const PBPair & pbins,
 	     const double * r1, const double * r2) {
@@ -209,6 +258,25 @@ generateSHat(Energy2 s, const PBPair & pbins,
   
   return (pbins.first->lastParton()->momentum() +
 	  pbins.second->lastParton()->momentum()).m2();
+}
+
+Energy2 PartonExtractor::
+generateSHat(Energy2 s, const PBIPair & pbins,
+	     const double * r1, const double * r2) {
+
+  Direction<0> dir(true);
+  pbins.first->scale(-lastScale());
+  if ( !generate(*pbins.first, r1,
+		 pbins.first->getFirst()->parton()->momentum()) )
+    return -1.0*GeV2;
+  dir.reverse();
+  pbins.second->scale(-lastScale());
+  if ( !generate(*pbins.second, r2,
+		 pbins.second->getFirst()->parton()->momentum()) )
+    return -1.0*GeV2;
+  
+  return (pbins.first->parton()->momentum() +
+	  pbins.second->parton()->momentum()).m2();
 }
 
 void PartonExtractor::
@@ -231,6 +299,26 @@ generateL(PartonBin & pb, const double * r) {
   pb.lastL(pb.incoming()->lastL() + pb.lastPartialL());
 }
 
+void PartonExtractor::
+generateL(PartonBinInstance & pb, const double * r) {
+  if ( !pb.incoming() ) return;
+
+  pb.parton(pb.partonData()->produceParticle(Lorentz5Momentum()));
+  generateL(*pb.incoming(), r + pb.bin()->pdfDim() + pb.bin()->remDim());
+  pb.particle(pb.incoming()->parton());
+  if ( pb.li() >= 0 ) return;
+  double jac = 1.0;
+  if ( pb.bin()->pdfDim() )
+    pb.li(pb.pdf()->flattenL(pb.particleData(), pb.partonData(),
+				       pb.bin()->cuts(), *r++, jac));
+  pb.scale(-1.0*GeV2);
+  if ( pb.bin()->pdfDim() > 1 )
+    pb.scale(pb.pdf()->flattenScale(pb.particleData(), pb.partonData(),
+				    pb.bin()->cuts(), pb.li(), *r++, jac));
+  pb.jacobian(jac);
+  pb.l(pb.incoming()->l() + pb.li());
+}
+
 bool PartonExtractor::
 generate(PartonBin & pb, const double * r, const Lorentz5Momentum & first) {
   if ( !pb.incoming() ) return true;
@@ -245,9 +333,31 @@ generate(PartonBin & pb, const double * r, const Lorentz5Momentum & first) {
   return true;
 }
 
+bool PartonExtractor::
+generate(PartonBinInstance & pb, const double * r,
+	 const Lorentz5Momentum & first) {
+  if ( !pb.incoming() ) return true;
+  if ( !generate(*pb.incoming(),
+		 r + pb.bin()->pdfDim() + pb.bin()->remDim(), first) )
+    return false;;
+  pb.remnantWeight(1.0);
+  pb.parton()->setMomentum
+    (pb.remnantHandler()->generate(pb, r, pb.scale(),
+				   pb.particle()->momentum()));
+  if ( pb.remnantWeight() <= 0.0 ) return false;
+  partonBinInstances()[pb.parton()] = &pb;
+  return true;
+}
+
 double PartonExtractor::fullFn(const PBPair & pbins, Energy2 scale) {
   pbins.first->lastScale(scale);
   pbins.second->lastScale(scale);
+  return fullFn(*pbins.first)*fullFn(*pbins.second);
+}
+
+double PartonExtractor::fullFn(const PBIPair & pbins, Energy2 scale) {
+  pbins.first->scale(scale);
+  pbins.second->scale(scale);
   return fullFn(*pbins.first)*fullFn(*pbins.second);
 }
 
@@ -258,8 +368,23 @@ double PartonExtractor::fullFn(const PartonBin & pb) {
 		  pb.lastPartialL(), pb.incoming()->lastScale());
 }
 
+double PartonExtractor::fullFn(const PartonBinInstance & pb) {
+  if ( !pb.incoming() ) return 1.0;
+  return fullFn(*pb.incoming()) * pb.jacobian() * pb.remnantWeight() *
+    pb.pdf()->xfl(pb.particleData(), pb.partonData(), pb.scale(),
+		  pb.li(), pb.incoming()->scale());
+}
+
 void PartonExtractor::
 construct(const PBPair & pbins, tStepPtr step) {
+  Direction<0> dir(true);
+  construct(*pbins.first, step);
+  dir.reverse();
+  construct(*pbins.second, step);
+}
+
+void PartonExtractor::
+construct(const PBIPair & pbins, tStepPtr step) {
   Direction<0> dir(true);
   construct(*pbins.first, step);
   dir.reverse();
@@ -277,6 +402,19 @@ construct(PartonBin & pb, tStepPtr step) {
 			      rem.begin(), rem.end(), false) );
   colourConnect(pb.lastParticle(), pb.lastParton(), rem);
   if ( pb.incoming()->incoming() ) step->addIntermediate(pb.lastParticle());
+  construct(*pb.incoming(), step);
+}
+
+void PartonExtractor::
+construct(PartonBinInstance & pb, tStepPtr step) {
+  if ( !pb.incoming() ) return;
+  Energy2 m2 = pb.particle()->momentum().m2();
+  LorentzMomentum p = lightCone(sqrt(abs(m2)), m2/sqrt(abs(m2)));
+  pb.remnantHandler()->createRemnants(pb);
+  tPVector rem(pb.remnants().begin(), pb.remnants().end());
+  if ( !step->addDecayProduct(pb.particle(), rem.begin(), rem.end(), false) );
+  colourConnect(pb.particle(), pb.parton(), rem);
+  if ( pb.incoming()->incoming() ) step->addIntermediate(pb.particle());
   construct(*pb.incoming(), step);
 }
 

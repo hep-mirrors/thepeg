@@ -30,6 +30,10 @@ inline const PBPair & XComb::partonBins() const {
   return thePartonBins;
 }
 
+inline const PBIPair & XComb::partonBinInstances() const {
+  return thePartonBinInstances;
+}
+
 inline tPExtrPtr XComb::pExtractor() const {
   return thePartonExtractor;
 }

@@ -27,6 +27,8 @@ test: test.o
   ACDCTraits.h \
   ACDCGenCell.h \
   ACDCGenCell.icc \
-  ACDCGen.icc
+  ACDCGen.icc \
+  DRand48Traits.h \
+  fpudebug.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY
