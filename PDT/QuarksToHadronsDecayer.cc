@@ -25,10 +25,19 @@ using namespace ThePEG;
 QuarksToHadronsDecayer::~QuarksToHadronsDecayer() {}
 
 bool QuarksToHadronsDecayer::accept(const DecayMode & dm) const {
-  if ( dm.orderedProducts().size() < 2 || !dm.cascadeProducts().empty() ||
-       !dm.productMatchers().empty() || dm.wildProductMatcher() ) return false;
   int col = 0;
   int acol = 0;
+  if ( !dm.productMatchers().empty() ) {
+    for ( MatcherMSet::const_iterator it = dm.productMatchers().begin();
+	  it != dm.productMatchers().end(); ++it ) {
+      if ( typeid(**it) == typeid(MatchLightQuark) ) ++col;
+      else if ( typeid(**it) == typeid(MatchLightAntiQuark) ) ++acol;
+      else return false;
+    }
+    if ( col != 1 || col != acol ) return false;
+  }
+  if ( dm.orderedProducts().size() + col + acol < 2 ||
+       !dm.cascadeProducts().empty() || dm.wildProductMatcher() ) return false;
   for ( int i = 0, N = dm.orderedProducts().size(); i < N; ++i ) {
     if ( DiquarkMatcher::Check(*dm.orderedProducts()[i]) ) {
       if ( i + 1 != N ) return false;
@@ -48,9 +57,14 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
 				      const Particle & parent) const {
   PVector children;
   tcPDVector quarks;
-  PDVector prods = dm.orderedProducts();
+  if ( !dm.productMatchers().empty() ) {
+    tcPDPtr pd = getParticleData(flavourGenerator()->selectQuark());
+    quarks.push_back(pd);
+    quarks.push_back(pd->CC());
+  }
   Energy summq = 0.0*GeV;
   Energy summp = 0.0*GeV;
+  PDVector prods = dm.orderedProducts();
   for ( int i = 0, N = prods.size(); i < N; ++i )
     if ( QuarkMatcher::Check(*prods[i]) || DiquarkMatcher::Check(*prods[i])) {
       quarks.push_back(prods[i]);

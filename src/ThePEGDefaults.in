@@ -13,15 +13,9 @@ create ThePEG::Onium3GDecayer /Defaults/Decayers/Onium3G Onium3GDecayer.so
 create ThePEG::QuarksToHadronsDecayer /Defaults/Decayers/QsToHadrons QuarksToHadronsDecayer.so
 cp /Defaults/Decayers/QsToHadrons /Defaults/Decayers/QsTo3PlusHadrons
 set /Defaults/Decayers/QsTo3PlusHadrons:MinN 3
+cp /Defaults/Decayers/QsToHadrons /Defaults/Decayers/OniumToHadrons
+create ThePEG::ColourPairDecayer /Defaults/Decayers/ColourPairs ColourPairDecayer.so
 create ThePEG::DummyDecayer /Defaults/Decayers/Dummy DummyDecayer.so
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY11
-setup /Dummy/Decayers/PYDECY11 11
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY12
-setup /Dummy/Decayers/PYDECY12 12
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY13
-setup /Dummy/Decayers/PYDECY13 13
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY32
-setup /Dummy/Decayers/PYDECY32 32
 create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY42
 setup /Dummy/Decayers/PYDECY42 42
 create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY48
@@ -66,6 +60,7 @@ create ThePEG::SimpleFlavour SimpleFlavour SimpleFlavour.so
 set SimpleCollapser:FlavourGenerator SimpleFlavour
 set /Defaults/Decayers/QsTo3PlusHadrons:FlavourGenerator SimpleFlavour
 set /Defaults/Decayers/QsToHadrons:FlavourGenerator SimpleFlavour
+set /Defaults/Decayers/OniumToHadrons:FlavourGenerator SimpleFlavour
 
 cd /Defaults/Partons
 create ThePEG::NoRemnants NoRemnants

@@ -101,7 +101,7 @@ void Onium3GDecayer::Init() {
   static SwitchOption interfaceShowerYes
     (interfaceShower,
      "Yes",
-     "The gluons should be showered before hadronization.",
+     "The produced gluons should be showered before hadronization.",
      true);
   static SwitchOption interfaceShowerNo
     (interfaceShower,

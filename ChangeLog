@@ -1,3 +1,22 @@
+2003-08-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
+	QuarksToHadronsDecayer also instead of dummies PYDECY11 and
+	PYDECY12.
+
+2003-08-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/ColourPairDecayer.*: Added class inheriting from FlatDecayer
+	which can handle colour connected pairs of decay products which
+	are to undergo subsequent hadronization and optional
+	showereing. NOT TESTED.
+
+	* PDT/QuarksToHadronsDecayer.cc: Class now can handle matcher
+	specifications of light quark pairs.
+
+	* PDT/FlatDecayer.*: Added virtual getChildren() functions for
+	sub-classes which need to do special things with the children.
+
 2003-08-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
