@@ -1,5 +1,8 @@
 2003-06-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Utilities/ObjectIndexer.*: Added templated class for dynamical
+	association between (reference counted) objects and indices.
+
 	* Handlers/StepHandler.*, Handlers/PartialCollisionHandler.cc: In
 	preparation for changing the signature of the handle() method i
 	StepHandler classes, StepHandler now has a method to return the
