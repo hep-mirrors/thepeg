@@ -3,6 +3,7 @@
 
 #include <fpu_control.h>
 
+/** Helper function to enable trapping of floating point exceptions. */
 void fpudebug() {
     fpu_control_t cw;
   _FPU_GETCW(cw);
