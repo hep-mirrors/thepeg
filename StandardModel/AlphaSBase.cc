@@ -7,6 +7,7 @@
 #include "AlphaSBase.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "AlphaSBase.tcc"
@@ -32,5 +33,10 @@ void AlphaSBase::persistentInput(PersistentIStream & is, int) {
 
 AbstractClassDescription<AlphaSBase> AlphaSBase::initAlphaSBase;
 
-void AlphaSBase::Init() {}
+void AlphaSBase::Init() {
+
+  static ClassDocumentation<AlphaSBase> documentation
+    ("There is no documentation for the ThePEG::AlphaSBase class");
+
+}
 

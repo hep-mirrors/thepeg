@@ -157,7 +157,7 @@ AbstractClassDescription<LesHouchesReader> LesHouchesReader::initLesHouchesReade
 void LesHouchesReader::Init() {
 
   static ClassDocumentation<LesHouchesReader> documentation
-    ("\\classname{LesHouchesReader} is an abstract base class to be used "
+    ("ThePEG::LesHouchesReader is an abstract base class to be used "
      "for objects which reads event files or streams from matrix element "
      "generators.");
 

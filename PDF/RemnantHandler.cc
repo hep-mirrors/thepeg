@@ -9,6 +9,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantHandler.tcc"
@@ -53,7 +54,12 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
 
 AbstractClassDescription<RemnantHandler> RemnantHandler::initRemnantHandler;
 
-void RemnantHandler::Init() {}
+void RemnantHandler::Init() {
+
+  static ClassDocumentation<RemnantHandler> documentation
+    ("There is no documentation for the ThePEG::RemnantHandler class");
+
+}
 
 RemnantHandlerException::
 RemnantHandlerException(string p0, string p, string r, string mess) {

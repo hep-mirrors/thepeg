@@ -11,6 +11,7 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LeptonLeptonPDF.tcc"
@@ -82,5 +83,10 @@ flattenL(tcPDPtr particle, tcPDPtr parton,
 
 NoPIOClassDescription<LeptonLeptonPDF> LeptonLeptonPDF::initLeptonLeptonPDF;
 
-void LeptonLeptonPDF::Init() {}
+void LeptonLeptonPDF::Init() {
+
+  static ClassDocumentation<LeptonLeptonPDF> documentation
+    ("There is no documentation for the ThePEG::LeptonLeptonPDF class");
+
+}
 

@@ -52,6 +52,10 @@ string ReferenceBase::type() const {
   return string("R<") + refClassName() + ">";
 }
 
+string ReferenceBase::doxygenType() const {
+  return "Reference to objects of class " + refClassName();
+}
+
 void ReferenceBase::
 rebind(InterfacedBase & i,  const TranslationMap & trans,
        const IVector & defs) const {

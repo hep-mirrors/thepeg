@@ -66,8 +66,8 @@ NoPIOClassDescription<FlatDecayer> FlatDecayer::initFlatDecayer;
 void FlatDecayer::Init() {
 
   static ClassDocumentation<FlatDecayer> documentation
-    ("The \\classname{FlatDecayer} class describes the decay of a "
-     "\\classname{Particle} into a set of specified children according "
+    ("The ThePEG::FlatDecayer class describes the decay of a "
+     "ThePEG::Particle into a set of specified children according "
      "to a flat distribution in phase space.");
 
 }

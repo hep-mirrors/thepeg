@@ -7,6 +7,7 @@
 #include "CKMBase.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "CKMBase.tcc"
@@ -18,5 +19,10 @@ CKMBase::~CKMBase() {}
 
 AbstractNoPIOClassDescription<CKMBase> CKMBase::initCKMBase;
 
-void CKMBase::Init() {}
+void CKMBase::Init() {
+
+  static ClassDocumentation<CKMBase> documentation
+    ("There is no documentation for the ThePEG::CKMBase class");
+
+}
 

@@ -10,6 +10,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -97,6 +98,9 @@ ClassDescription<StandardModelBase> StandardModelBase::initStandardModelBase;
 
 void StandardModelBase::Init() {
 
+  static ClassDocumentation<StandardModelBase> documentation
+    ("There is no documentation for the ThePEG::StandardModelBase class");
+
   static Parameter<StandardModelBase,unsigned int> interfaceFamilies
     ("NumberOfFamilies",
      "The number of families assumed in the Standard model.",
@@ -127,56 +131,76 @@ void StandardModelBase::Init() {
   static Parameter<StandardModelBase,double> interfaceEe
     ("EW/e_e",
      "The coupling between a charged lepton and a photon.",
-     &StandardModelBase::theEe, 0.0, 0.0, 0.0, false, false, false);
+     &StandardModelBase::theEe, -1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceEu
     ("EW/e_u",
      "The coupling between an up-type quark and a photon.",
-     &StandardModelBase::theEu, 0.0, 0.0, 0.0, false, false, false);
+     &StandardModelBase::theEu, 2.0/3.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceEd
     ("EW/e_d",
      "The coupling between a down-type quark and a photon.",
-     &StandardModelBase::theEd, 0.0, 0.0, 0.0, false, false, false);
+     &StandardModelBase::theEd, -1.0/3.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVnu
     ("EW/v_nu",
-     "The vector coupling between a neutrino and a Z^0.",
-     &StandardModelBase::theVnu, 0.0, 0.0, 0.0, false, false, false);
+     "The vector coupling between a neutrino and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theVnu, 1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVe
     ("EW/v_e",
-     "The vector coupling between a charged lepton and a Z^0.",
-     &StandardModelBase::theVe, 0.0, 0.0, 0.0, false, false, false);
+     "The vector coupling between a charged lepton and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theVe, -0.072, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVu
     ("EW/v_u",
-     "The vector coupling between an up-type quark and a Z^0.",
-     &StandardModelBase::theVu, 0.0, 0.0, 0.0, false, false, false);
+     "The vector coupling between an up-type quark and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theVu, 0.3813, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVd
     ("EW/v_d",
-     "The vector coupling between a down-type quark and a Z^0.",
-     &StandardModelBase::theVd, 0.0, 0.0, 0.0, false, false, false);
+     "The vector coupling between a down-type quark and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theVd, -0.6907, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAnu
     ("EW/a_nu",
-     "The axial coupling between a neutrino and a Z^0.",
-     &StandardModelBase::theAnu, 0.0, 0.0, 0.0, false, false, false);
+     "The axial coupling between a neutrino and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theAnu, 1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAe
     ("EW/a_e",
-     "The axial coupling between a charged lepton and a Z^0.",
-     &StandardModelBase::theAe, 0.0, 0.0, 0.0, false, false, false);
+     "The axial coupling between a charged lepton and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theAe, -1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAu
     ("EW/a_u",
-     "The axial coupling between an up-type quark and a Z^0.",
-     &StandardModelBase::theAu, 0.0, 0.0, 0.0, false, false, false);
+     "The axial coupling between an up-type quark and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theAu, 1.0, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAd
     ("EW/a_d",
-     "The axial coupling between a down-type quark and a Z^0.",
-     &StandardModelBase::theAd, 0.0, 0.0, 0.0, false, false, false);
+     "The axial coupling between a down-type quark and a Z^0. "
+     "See also command interface <a href=\"#EW/RecalculateEW\"><code>"
+     "EW/RecalculateEW</code></a>",
+     &StandardModelBase::theAd, -1.0, 0.0, 0.0, false, false, false);
   static Switch<StandardModelBase> interfaceRecalculateEW
     ("EW/RecalculateEW",
-     "Recalculate all parameters which depend directly on $\\sin^2\\theta_W$ "
+     "Recalculate all parameters which depend directly on "
+     "\\f$\\sin^2\\theta_W\\f$ "
      "in the initialization disregarding the values previously set. "
-     "This affects only \\parameter{EW/v_nu}, "
-     "\\parameter{EW/v_e}, \\parameter{EW/v_u}, "
-     "\\parameter{EW/v_d}, \\parameter{EW/a_nu}, "
-     "\\parameter{EW/a_e}, \\parameter{EW/a_u} and "
-     "\\parameter{EW/a_d}.",
+     "This affects only <a href=\"#EW/v_nu\"><code>EW/v_nu</code></a>, "
+     "<a href=\"#EW/v_e\"><code>EW/v_e</code></a>, "
+     "<a href=\"#EW/v_u\"><code>EW/v_u</code></a>, "
+     "<a href=\"#EW/v_d\"><code>EW/v_d</code></a>, "
+     "<a href=\"#EW/a_nu\"><code>EW/a_nu</code></a>, "
+     "<a href=\"#EW/a_e\"><code>EW/a_e</code></a>, "
+     "<a href=\"#EW/a_u\"><code>EW/a_u</code></a> and "
+     "<a href=\"#EW/a_d\"><code>EW/a_d</code></a>.",
      &StandardModelBase::recalculateEW, 1, false, false);
   static SwitchOption interfaceRecalculateEWOn
     (interfaceRecalculateEW, "On", "On", 1);

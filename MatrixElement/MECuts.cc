@@ -12,6 +12,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 // #include "ThePEG/Utilities/Timer.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -104,10 +105,13 @@ ClassDescription<MECuts> MECuts::initMECuts;
 
 void MECuts::Init() {
 
+  static ClassDocumentation<MECuts> documentation
+    ("There is no documentation for the ThePEG::MECuts class");
+
   static Parameter<MECuts,Energy> interfaceMHatMin
     ("SubProcess/MHatMin",
-     "The minimum value allowed for $\\hat{m}=\\sqrt{\\hat{s}}$ in GeV "
-     "in the hard subprocess. If the upper limit in \\parameter{MHatMax} "
+     "The minimum value allowed for \\f$\\hat{m}=\\sqrt{\\hat{s}}\\f$ in GeV "
+     "in the hard subprocess. If the upper limit in <code>MHatMax</code> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theMHatMin, GeV,
@@ -115,8 +119,8 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy> interfaceMHatMax
     ("SubProcess/MHatMax",
-     "The minimum value allowed for $\\hat{m}=\\sqrt{\\hat{s}}$ in GeV "
-     "in the hard subprocess If the lower limit in \\parameter{MHatMin} "
+     "The minimum value allowed for \\f$\\hat{m}=\\sqrt{\\hat{s}}\\f$ in GeV "
+     "in the hard subprocess If the lower limit in <code>MHatMin</code> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theMHatMax, GeV,
@@ -124,8 +128,8 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy> interfacePTHatMin
     ("SubProcess/PTHatMin",
-     "The minimum value allowed for $\\hat{p_\\perp}$ in GeV "
-     "in the hard subprocess. If the upper limit in \\parameter{PTHatMax} "
+     "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV "
+     "in the hard subprocess. If the upper limit in <code>PTHatMax</code> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler",
      &MECuts::thePTHatMin, GeV,
@@ -133,8 +137,8 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy> interfacePTHatMax
     ("SubProcess/PTHatMax",
-     "The minimum value allowed for $\\hat{p_\\perp}$ in GeV "
-     "in the hard subprocess If the lower limit in \\parameter{PTHatMin} "
+     "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV "
+     "in the hard subprocess If the lower limit in <code>PTHatMin</code> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::thePTHatMax, GeV,
@@ -142,14 +146,15 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy> interfacePTHatSingularMin
     ("SubProcess/PTHatSingularMin",
-     "The minimum value allowed for $\\hat{p_\\perp}$ in GeV for processes "
-     "which are singular in the limit $\\hat{p_\\perp}\\rightarrow 0$. This "
-     "cut is in addition to \\parameter{PTHatMin}. Hard $2\rightarrow 2$ "
+     "The minimum value allowed for \\f$\\hat{p_\\perp}\\f$ in GeV for "
+     "processes which are singular in the limit "
+     "\\f$\\hat{p_\\perp}\\rightarrow 0\\f$. This "
+     "cut is in addition to PTHatMin. Hard \\f$2\\rightarrow 2\\f$ "
      "processes which do not proceed via intermediate resonances are "
      "considered singular if either or both final-state products have a mass "
-     "less than \\parameter{SingularMassMax}. This limit is not checked "
+     "less than SingularMassMax. This limit is not checked "
      "automatically, but is assumed to be checked by the relevant "
-     "\\class{PartonXSecFn} objects.",
+     "ThePEG::PartonXSecFn objects.",
      &MECuts::thePTHatSingularMin, GeV,
      1.0*GeV, 0.0*GeV, Constants::MaxEnergy,
      false, false, true);
@@ -157,22 +162,22 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy> interfaceSingularMassMax
     ("SubProcess/SingularMassMax",
-     "Hard $2\rightarrow 2$ processes which do not proceed via intermediate "
-     "resonances are considered singular if either or both final-state "
-     "products have a mass less than this limit (int GeV). For singular "
-     "processes the aditional $\\hat{p_\\perp}$ cut in "
-     "\\Parameter{PTHatSingularMin} should be applied. This limit is not "
+     "Hard \\f$2\\rightarrow 2\\f$ processes which do not proceed via "
+     "intermediate resonances are considered singular if either or both "
+     "final-state products have a mass less than this limit (int GeV). "
+     "For singular processes the aditional \\f$\\hat{p_\\perp}\\f$ cut in "
+     "PTHatSingularMin should be applied. This limit is not "
      "checked automatically, but is assumed to be checked by the relevant "
-     "\\class{PartonXSecFn} objects.",
+     "ThePEG::PartonXSecFn objects.",
      &MECuts::theSingularMassMax, GeV,
      1.0*GeV, 0.0*GeV, Constants::MaxEnergy,
      false, false, true);
 
   static Parameter<MECuts,double> interfaceCTHMin
     ("SubProcess/CosThetaHatMin",
-     "The minimum allowed value of $\\cos{\\hat{\\theta}}$, where "
-     "$\\hat{\\theta}$ is the scattering angle in the restframe of a hard "
-     "$2\rightarrow 2$ scattering. "
+     "The minimum allowed value of \\f$\\cos{\\hat{\\theta}}\\f$, where "
+     "\\f$\\hat{\\theta}\\f$ is the scattering angle in the restframe of a "
+     "hard \\f$2\\rightarrow 2\\f$ scattering. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theCTHMin,
      -1.0, -1.0, 1.0, false, false, true,
@@ -180,9 +185,9 @@ void MECuts::Init() {
 
   static Parameter<MECuts,double> interfaceCTHMax
     ("SubProcess/CosThetaHatMax",
-     "The maximum allowed value of $\\cos{\\hat{\\theta}}$, where "
-     "$\\hat{\\theta}$ is the scattering angle in the restframe of a hard "
-     "$2\rightarrow 2$ scattering. "
+     "The maximum allowed value of \\f$\\cos{\\hat{\\theta}}\\f$, where "
+     "\\f$\\hat{\\theta}\\f$ is the scattering angle in the restframe of a "
+     "hard \\f$2\\rightarrow 2\\f$ scattering. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theCTHMax,
      1.0, -1.0, 1.0, false, false, true,
@@ -190,8 +195,9 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy2> interfaceTHatMin
     ("SubProcess/THatMin",
-     "The minimum allowed value of $|\\hat{t}|=-\\hat{t}$ in GeV$^2$ in a hard "
-     "$2\rightarrow 2$ scattering. If the upper limit in \\parameter{THatMax} "
+     "The minimum allowed value of \\f$|\\hat{t}|=-\\hat{t}\\f$ in "
+     "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
+     "upper limit in <code>THatMax</code> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theTHatMin, GeV2,
@@ -199,8 +205,9 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy2> interfaceTHatMax
     ("SubProcess/THatMax",
-     "The maximum allowed value of $|\\hat{t}|=-\\hat{t}$ in GeV$^2$ in a hard "
-     "$2\rightarrow 2$ scattering. If the lower limit in \\parameter{THatMin} "
+     "The maximum allowed value of \\f$|\\hat{t}|=-\\hat{t}\\f$ in "
+     "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
+     "lower limit in <code>THatMin</code> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theTHatMax, GeV2,
@@ -208,8 +215,9 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy2> interfaceUHatMin
     ("SubProcess/UHatMin",
-     "The minimum allowed value of $|\\hat{u}|=-\\hat{u}$ in GeV$^2$ in a hard "
-     "$2\rightarrow 2$ scattering. If the upper limit in \\parameter{UHatMax} "
+     "The minimum allowed value of \\f$|\\hat{u}|=-\\hat{u}\\f$ in "
+     "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
+     "upper limit in <code>UHatMax</code> "
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theUHatMin, GeV2,
@@ -217,8 +225,9 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy2> interfaceUHatMax
     ("SubProcess/UHatMax",
-     "The maximum allowed value of $|\\hat{u}|=-\\hat{u}$ in GeV$^2$ in a hard "
-     "$2\rightarrow 2$ scattering. If the lower limit in \\parameter{UHatMin} "
+     "The maximum allowed value of \\f$|\\hat{u}|=-\\hat{u}\\f$ in "
+     "GeV<sup>2</sup> in a hard \\f$2\\rightarrow 2\\f$ scattering. If the "
+     "lower limit in <code>UHatMin</code> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theUHatMax, GeV2,
@@ -226,17 +235,17 @@ void MECuts::Init() {
 
   static Parameter<MECuts,Energy2> interfaceScaleMin
     ("SubProcess/ScaleMin",
-     "The minimum allowed value of the user-defined scale in GeV$^2$ in a hard "
-     "scattering. If the upper limit in \\parameter{SubProcess/ScaleMax} "
-     "is less than this, the upper limit is inactive. "
-     "This limit is automatically checked by the event handler.",
+     "The minimum allowed value of the user-defined scale in GeV<sup>2</sup> "
+     "in a hard scattering. If the upper limit in "
+     "<code>SubProcess/ScaleMax</code> is less than this, the upper limit is "
+     "inactive. This limit is automatically checked by the event handler.",
      &MECuts::theScaleMin, GeV2,
      0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
 
   static Parameter<MECuts,Energy2> interfaceScaleMax
     ("SubProcess/ScaleMax",
-     "The maximum allowed value of user defined scale in GeV$^2$ in a hard "
-     "scattering. If the lower limit in \\parameter{SubProcess/ScaleMin} "
+     "The maximum allowed value of user defined scale in GeV<sup>2</sup> in a "
+     "hard scattering. If the lower limit in <code>SubProcess/ScaleMin</code> "
      "is larger than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theScaleMax, GeV2,

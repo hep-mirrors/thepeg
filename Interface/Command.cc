@@ -18,6 +18,10 @@ string CommandBase::type() const {
   return "Cm";
 }
 
+string CommandBase::doxygenType() const {
+  return "Command";
+}
+
 CmdExUnknown::CmdExUnknown(const InterfaceBase & i,
 			   const InterfacedBase & o, string c) {
   theMessage << "Could execute the command \"" << i.name()

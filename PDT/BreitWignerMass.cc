@@ -8,6 +8,7 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/CLHEPWrap/RandBreitWigner.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "BreitWignerMass.tcc"
@@ -29,5 +30,10 @@ Energy BreitWignerMass::mass(const ParticleData & pd) const {
 
 NoPIOClassDescription<BreitWignerMass> BreitWignerMass::initBreitWignerMass;
 
-void BreitWignerMass::Init() {}
+void BreitWignerMass::Init() {
+
+  static ClassDocumentation<BreitWignerMass> documentation
+    ("There is no documentation for the ThePEG::BreitWignerMass class");
+
+}
 

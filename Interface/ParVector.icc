@@ -60,6 +60,14 @@ inline void ParVectorTBase<Type>::unit(Type u) {
   theUnit = u;
 }
 
+template <typename Type>
+inline void ParVectorTBase<Type>::putUnit(ostream & os, Type val) const {
+  if ( unit() > Type() )
+    os << val/unit();
+  else
+    os << val;
+}
+
 // template <typename T, typename Type>
 // inline ParVector<T,Type>::
 // ParVector(string newName, string newDescription,

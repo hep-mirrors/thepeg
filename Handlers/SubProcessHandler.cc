@@ -16,6 +16,7 @@
 #include "ThePEG/Handlers/KinematicalCuts.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/MatrixElement/ReweightBase.h"
@@ -88,6 +89,9 @@ ClassDescription<SubProcessHandler> SubProcessHandler::initSubProcessHandler;
 
 void SubProcessHandler::Init() {
 
+  static ClassDocumentation<SubProcessHandler> documentation
+    ("There is no documentation for the ThePEG::SubProcessHandler class");
+
   static Reference<SubProcessHandler,PartonExtractor> interfacePartonExtractor
     ("PartonExtractor",
      "The PartonExtractor object to describe the way partons are extracted "
@@ -96,7 +100,7 @@ void SubProcessHandler::Init() {
 
   static RefVector<SubProcessHandler,MEBase> interfaceMEs
     ("MatrixElements",
-     "A list of MEBase objects describing the $2\\rightarrow n$ hard "
+     "A list of MEBase objects describing the \\f$2\\rightarrow n\\f$ hard "
      "matrix elements.",
      &SubProcessHandler::theMEs, 0, false, false, true, false);
 
@@ -108,13 +112,13 @@ void SubProcessHandler::Init() {
 
   static RefVector<SubProcessHandler,ReweightBase> interfaceReweights
     ("Reweights",
-     "A list of \\class{ReweightBase} objects to modify all matrix elements "
+     "A list of ThePEG::ReweightBase objects to modify all matrix elements "
      "in this SubProcessHandler.",
      &SubProcessHandler::reweights, 0, false, false, true, false);
 
   static RefVector<SubProcessHandler,ReweightBase> interfacePreweights
     ("Preweights",
-     "A list of \\class{ReweightBase} objects to bias the phase space for all "
+     "A list of ThePEG::ReweightBase objects to bias the phase space for all "
      "matrix elements without in this SubProcessHandler influencing the "
      "actual cross section.",
      &SubProcessHandler::preweights, 0, false, false, true, false);

@@ -9,6 +9,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/Timer.h"
 
 using namespace ThePEG;
@@ -109,6 +110,10 @@ void RandomGenerator::persistentInput(PersistentIStream & is, int) {
 ClassDescription<RandomGenerator> RandomGenerator::initRandomGenerator;
 
 void RandomGenerator::Init() {
+
+  static ClassDocumentation<RandomGenerator> documentation
+    ("There is no documentation for the ThePEG::RandomGenerator class");
+
   static Parameter<RandomGenerator,size_type> interfaceSize
     ("CacheSize",
      "The Random numbers are generated in chunks of this size.",

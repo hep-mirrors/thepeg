@@ -49,7 +49,7 @@ ClassDescription<ReweightMinPT> ReweightMinPT::initReweightMinPT;
 void ReweightMinPT::Init() {
 
   static ClassDocumentation<ReweightMinPT> documentation
-    ("There is no documentation for the \\classname{ReweightMinPT} class");
+    ("There is no documentation for the ThePEG::ReweightMinPT class");
 
   static Parameter<ReweightMinPT,double> interfacePower
     ("Power",

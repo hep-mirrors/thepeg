@@ -53,4 +53,17 @@ long Switch<T,Int>::def(const InterfacedBase & i) const
   return theDef;
 }
 
+template <typename T, typename Int>
+void Switch<T,Int>::doxygenDescription(ostream & os) const {
+  SwitchBase::doxygenDescription(os);
+  os << "<b>Registered options:</b>\n<dl>\n";
+  for ( OptionMap::const_iterator it = options().begin();
+	it != options().end(); ++it )
+    os << "<dt>" << it->first << "(<code>" << it->second.name() << "</code>)</dt>"
+       << "<dd>" << it->second.description() << "\n";
+  os << "</dl>\n<b>Default value:</b> " << theDef;
+  if ( theDefFn ) os << " (May be changed by member function.)";
+  os << "\n\n";
+}
+
 }

@@ -9,6 +9,7 @@
 #include "ZGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "ZGenerator.tcc"
@@ -26,5 +27,10 @@ ZGenerator::~ZGenerator() {}
 
 AbstractClassDescription<ZGenerator> ZGenerator::initZGenerator;
 
-void ZGenerator::Init(){}
+void ZGenerator::Init(){
+
+  static ClassDocumentation<ZGenerator> documentation
+    ("There is no documentation for the ThePEG::ZGenerator class");
+
+}
 

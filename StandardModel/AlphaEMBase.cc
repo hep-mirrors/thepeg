@@ -5,6 +5,7 @@
 //
 
 #include "AlphaEMBase.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "AlphaEMBase.tcc"
@@ -16,5 +17,10 @@ AlphaEMBase::~AlphaEMBase() {}
 
 AbstractNoPIOClassDescription<AlphaEMBase> AlphaEMBase::initAlphaEMBase;
 
-void AlphaEMBase::Init() {}
+void AlphaEMBase::Init() {
+
+  static ClassDocumentation<AlphaEMBase> documentation
+    ("There is no documentation for the ThePEG::AlphaEMBase class");
+
+}
 

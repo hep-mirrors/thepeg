@@ -301,6 +301,12 @@ public:
    */
   inline void unit(Type u);
 
+  /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  virtual string doxygenType() const;
+
 protected:
 
   /**
@@ -530,6 +536,12 @@ public:
    * Give a pointer to a member function to be used by 'tmaximum()'.
    */
   inline void setMaxFunction(GetFn);
+
+  /**
+   * Print a description to be included in the Doxygen documentation
+   * to the given \a stream.
+   */
+  virtual void doxygenDescription(ostream & stream) const;
 
 private:
 

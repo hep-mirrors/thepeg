@@ -19,6 +19,7 @@
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 
@@ -349,6 +350,9 @@ ClassDescription<PartonExtractor> PartonExtractor::initPartonExtractor;
 
 void PartonExtractor::Init() {
 
+  static ClassDocumentation<PartonExtractor> documentation
+    ("There is no documentation for the ThePEG::PartonExtractor class");
+
   static RefVector<PartonExtractor,PDFBase> interfaceSpecialDensities
     ("SpecialDensities",
      "A list of parton density objects to be used for incoming particles "
@@ -380,7 +384,7 @@ void PartonExtractor::Init() {
 
   static SwitchOption interfaceFlatSHatY1
     (interfaceFlatSHatY,
-     "On", "Generate flat rapidity and $\\log(\\hat{s})$", true);
+     "On", "Generate flat rapidity and \\f$\\log(\\hat{s})\\f$", true);
 
 }
 

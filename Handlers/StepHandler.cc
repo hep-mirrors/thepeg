@@ -6,6 +6,7 @@
 
 #include "StepHandler.h"
 #include "ThePEG/Handlers/PartialCollisionHandler.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "StepHandler.tcc"
@@ -28,5 +29,10 @@ void StepHandler::createNewStep() {
 
 AbstractNoPIOClassDescription<StepHandler> StepHandler::initStepHandler;
 
-void StepHandler::Init() {}
+void StepHandler::Init() {
+
+  static ClassDocumentation<StepHandler> documentation
+    ("There is no documentation for the ThePEG::StepHandler class");
+
+}
 

@@ -12,6 +12,7 @@
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/Utilities/Timer.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "GRVBase.tcc"
@@ -177,5 +178,10 @@ void GRVBase::rebind(const TranslationMap & trans) throw(RebindException) {
 
 AbstractNoPIOClassDescription<GRVBase> GRVBase::initGRVBase;
 
-void GRVBase::Init() {}
+void GRVBase::Init() {
+
+  static ClassDocumentation<GRVBase> documentation
+    ("There is no documentation for the ThePEG::GRVBase class");
+
+}
 

@@ -10,6 +10,7 @@
 #include "ThePEG/Handlers/PartialCollisionHandler.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "PartialEventGenerator.tcc"
@@ -65,9 +66,12 @@ PartialEventGenerator::initPartialEventGenerator;
 
 void PartialEventGenerator::Init() {
 
+  static ClassDocumentation<PartialEventGenerator> documentation
+    ("There is no documentation for the ThePEG::PartialEventGenerator class");
+
   static Reference<PartialEventGenerator,PartialCollisionHandler> interfaceHdl
     ("PartialCollisionHandler",
-     "The \\class{PartialCollisionHandler} object to be used to generate "
+     "The ThePEG::PartialCollisionHandler object to be used to generate "
      "the individual events in this run.",
      &PartialEventGenerator::theHandler, false, false, true, false);
 

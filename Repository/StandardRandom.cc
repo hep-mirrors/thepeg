@@ -5,6 +5,7 @@
 //
 
 #include "StandardRandom.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "StandardRandom.tcc"
@@ -45,5 +46,10 @@ void StandardRandom::persistentInput(PersistentIStream & is, int) {
 
 ClassDescription<StandardRandom> StandardRandom::initStandardRandom;
 
-void StandardRandom::Init() {}
+void StandardRandom::Init() {
+
+  static ClassDocumentation<StandardRandom> documentation
+    ("There is no documentation for the ThePEG::StandardRandom class");
+
+}
 

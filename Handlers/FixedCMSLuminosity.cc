@@ -32,10 +32,10 @@ FixedCMSLuminosity::initFixedCMSLuminosity;
  void FixedCMSLuminosity::Init() {
 
   static ClassDocumentation<FixedCMSLuminosity> documentation
-    ("The \\classname{FixedCMSLuminosity} class describes an experiment "
+    ("The ThePEG::FixedCMSLuminosity class describes an experiment "
      "with incoming particles colliding with precicely defined and "
      "opposite momenta. It is derived from the "
-     "\\classname{LuminosityFunction} base class.");
+     "ThePEG::LuminosityFunction base class.");
 
   static Parameter<FixedCMSLuminosity,Energy> interfaceEnergy
     ("Energy",

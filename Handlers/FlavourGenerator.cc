@@ -5,6 +5,7 @@
 //
 
 #include "FlavourGenerator.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -83,5 +84,10 @@ tcPDPtr FlavourGenerator::alwaysGetHadron(long iq1, long iq2) const {
 AbstractNoPIOClassDescription<FlavourGenerator>
  FlavourGenerator::initFlavourGenerator;
 
-void FlavourGenerator::Init() {}
+void FlavourGenerator::Init() {
+
+  static ClassDocumentation<FlavourGenerator> documentation
+    ("There is no documentation for the ThePEG::FlavourGenerator class");
+
+}
 

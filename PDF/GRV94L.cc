@@ -5,6 +5,7 @@
 //
 
 #include "GRV94L.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "GRV94L.tcc"
@@ -112,5 +113,10 @@ double GRV94L::gl() const {
 
 NoPIOClassDescription<GRV94L> GRV94L::initGRV94L;
 
-void GRV94L::Init() {}
+void GRV94L::Init() {
+
+  static ClassDocumentation<GRV94L> documentation
+    ("There is no documentation for the ThePEG::GRV94L class");
+
+}
 

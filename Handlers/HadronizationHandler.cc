@@ -5,6 +5,7 @@
 //
 
 #include "HadronizationHandler.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "HadronizationHandler.tcc"
@@ -17,5 +18,10 @@ HadronizationHandler::~HadronizationHandler() {}
 AbstractNoPIOClassDescription<HadronizationHandler>
 HadronizationHandler::initHadronizationHandler;
 
-void HadronizationHandler::Init() {}
+void HadronizationHandler::Init() {
+
+  static ClassDocumentation<HadronizationHandler> documentation
+    ("There is no documentation for the ThePEG::HadronizationHandler class");
+
+}
 

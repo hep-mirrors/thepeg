@@ -77,7 +77,7 @@ AbstractClassDescription<ReweightBase> ReweightBase::initReweightBase;
 void ReweightBase::Init() {
 
   static ClassDocumentation<ReweightBase> documentation
-    ("There is no documentation for the \\classname{ReweightBase} class");
+    ("There is no documentation for the ThePEG::ReweightBase class");
 
 }
 

@@ -56,6 +56,10 @@ string SwitchBase::type() const {
   return "Sw";
 }
 
+string SwitchBase::doxygenType() const {
+  return "Switch";
+}
+
 SwExSetOpt::SwExSetOpt(const InterfaceBase & i,
 		       const InterfacedBase & o, long v) {
   theMessage << "Could not set the switch \"" << i.name()

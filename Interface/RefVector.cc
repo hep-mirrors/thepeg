@@ -63,6 +63,14 @@ string RefVectorBase::type() const {
   return string("V<") + refClassName() + ">";
 }
 
+string RefVectorBase::doxygenType() const {
+  ostringstream os;
+  if ( size() <= 0 ) os << "Varying size ";
+  else os << "Fixed size (" << size() << ") ";
+  os << "vector of references to objects of class " << refClassName();
+  return os.str();
+}
+
 void RefVectorBase::
 rebind(InterfacedBase & i, const TranslationMap & trans,
        const IVector & defs) const {

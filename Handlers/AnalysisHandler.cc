@@ -61,12 +61,12 @@ AnalysisHandler::initAnalysisHandler;
 void AnalysisHandler::Init() {
 
   static ClassDocumentation<AnalysisHandler> documentation
-    ("The \\classname{AnalysisHandler} class is the base class of all "
+    ("The ThePEG::AnalysisHandler class is the base class of all "
      "analysis handlers.");
 
   static RefVector<AnalysisHandler,AnalysisHandler> interfaceSlaves
     ("Slaves",
-     "\\class{AnalysisHandler} objects to be called for the same extracted "
+     "ThePEG::AnalysisHandler objects to be called for the same extracted "
      "particles as this one.",
      &AnalysisHandler::theSlaves, 0, true, false, true, false);
 

@@ -139,17 +139,17 @@ Switch<ME2to2Base,int> & ME2to2Base::interfaceScaleChoice() {
 void ME2to2Base::Init() {
 
   static ClassDocumentation<ME2to2Base> documentation
-    ("The \\classname{ME2to2Base} class may be used as a base class "
-     "for all 2->2 matrix elements.");
+    ("The ThePEG::ME2to2Base class may be used as a base class "
+     "for all \\f$2\\rightarrow 2\\f$ matrix elements.");
 
   static SwitchOption interfaceScaleChoice0
     (interfaceScaleChoice(),
-     "that.uhat/shat", "$\\hat{t}\\hat{u}/\\hat{s}$", 0);
+     "that.uhat/shat", "\\f$\\hat{t}\\hat{u}/\\hat{s}\\f$", 0);
 
   static SwitchOption interfaceScaleChoice1
     (interfaceScaleChoice(),
      "that.uhat/(that+uhat)",
-     "$-\\hat{t}\\hat{u}/(\\hat{t}+\\hat{u})$", 1);
+     "\\f$-\\hat{t}\\hat{u}/(\\hat{t}+\\hat{u})\\f$", 1);
 
 }
 

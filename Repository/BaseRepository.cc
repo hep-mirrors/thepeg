@@ -558,6 +558,52 @@ string BaseRepository::exec(string command, ostream & os) {
       for ( ObjectSet::iterator i = toclone.begin(); i != toclone.end(); ++i )
 	Register((**i).clone(), newName + (**i).name());
     }
+    if ( verb == "doxygendump" ) {
+      string spacename = StringUtils::car(command);
+      command = StringUtils::cdr(command);
+      string filename = StringUtils::car(command);
+      ofstream os(filename.c_str());
+      for ( TypeDocumentationMap::const_iterator it = documentations().begin();
+	    it != documentations().end(); ++it ) {
+	const ClassDescriptionBase & db = *(it->first);
+	string classname = db.name();
+	if ( classname.substr(0, spacename.length()) != spacename ) continue;
+	string briefname = classname.substr(spacename.length());
+	os << "/** \\page " << briefname << "Interfaces "
+	   << "Interfaces defined for the " << classname << " class.\n\n"
+	   << "\\par Brief class description:\n"
+	   << it->second->documentation() << "\n\n";
+	TypeInterfaceMap::const_iterator isit = interfaces().find(it->first);
+	if ( isit == interfaces().end() || isit->second.empty() ) {
+	  os << "There are no interfaces declared for this class.\n\n";
+	} else {
+	  const InterfaceSet & ints = isit->second;
+	  for ( InterfaceSet::const_iterator iit = ints.begin();
+		iit != ints.end(); ++iit )
+	    (**iit).doxygenDescription(os);
+	}
+	string baserefs = "";
+	int nbases = 0;
+	for ( int ib = 0, N = db.descriptions().size(); ib < N; ++ib ) {
+	  if ( documentations().find(db.descriptions()[ib]) ==
+	       documentations().end() ) continue;
+	  const ClassDescriptionBase & bdb = *db.descriptions()[ib];
+	  if ( nbases ) baserefs += " and ";
+	  string briefname = bdb.name().substr(bdb.name().rfind("::") + 2);
+	  baserefs += "\\ref " + briefname +
+	    "Interfaces \"" + bdb.name() + "\"";
+	  ++nbases;
+	}
+	if ( nbases == 1 )
+	  os << "<hr>There may be interfaces inherited from the "
+	     << baserefs << " class.";
+	else if ( nbases > 1 ) 
+	  os << "<hr>There may be interfaces inherited from the "
+	     << "following classes: " << baserefs << ".";
+	os << "\n\n*/\n\n";
+      }
+      return "";
+    }
     if ( verb == "mset" || verb == "msetdef" || verb == "minsert" ||
 	 verb == "mdo" || verb == "mget" || verb == "mdef" || verb == "mmin" ||
 	 verb == "mmax" || verb == "merase" || verb == "msend"  ) {

@@ -9,6 +9,7 @@
 #include "ThePEG/CLHEPWrap/LorentzRotation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LuminosityFunction.tcc"
@@ -58,5 +59,10 @@ void LuminosityFunction::persistentInput(PersistentIStream & is, int) {
 AbstractClassDescription<LuminosityFunction> LuminosityFunction::
 initLuminosityFunction;
 
-void LuminosityFunction::Init() {}
+void LuminosityFunction::Init() {
+
+  static ClassDocumentation<LuminosityFunction> documentation
+    ("There is no documentation for the ThePEG::LuminosityFunction class");
+
+}
 

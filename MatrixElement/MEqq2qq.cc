@@ -61,7 +61,7 @@ NoPIOClassDescription<MEqq2qq> MEqq2qq::initMEqq2qq;
 void MEqq2qq::Init() {
 
   static ClassDocumentation<MEqq2qq> documentation
-    ("The \\classname{MEqq2qq} class describes the standard QCD "
-     "$q + \\bar{q} \\rightarrow q + \\bar{q}$ matrix element.");
+    ("The ThePEG::MEqq2qq class describes the standard QCD "
+     "\\f$q\\bar{q} \\rightarrow q\\bar{q}\\f$ matrix element.");
 }
 

@@ -14,6 +14,7 @@
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/VSelector.h"
@@ -209,15 +210,18 @@ BaryonRemnants::initBaryonRemnants;
 
 void BaryonRemnants::Init() {
 
+  static ClassDocumentation<BaryonRemnants> documentation
+    ("There is no documentation for the ThePEG::BaryonRemnants class");
+
   static Reference<BaryonRemnants,PtGenerator> interfacePtGeneratorQ
     ("PtGeneratorQ",
-     "The object responsible generating the primordial $p_\\perp$ "
+     "The object responsible generating the primordial \\f$p_\\perp\\f$ "
      "of the struc quark.",
      &BaryonRemnants::thePtGeneratorQ, false, false, true, false, true);
 
   static Reference<BaryonRemnants,PtGenerator> interfacePtGeneratorR
     ("PtGeneratorR",
-     "The object responsible generating the primordial $p_\\perp$ "
+     "The object responsible generating the primordial \\f$p_\\perp\\f$ "
      "among the remnants. Of no object is specified, the PtGeneratorQ is "
      "used instead.",
      &BaryonRemnants::thePtGeneratorR, false, false, true, true, false);

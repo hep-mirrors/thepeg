@@ -1,3 +1,17 @@
+2004-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Interface/Switch.*, Interface/Reference.*,
+	Interface/RefVector.*, Interface/Parameter.*,
+	Interface/ParVector.*, Interface/Command.*,
+	Interface/InterfaceBase.*: Added virtual functions to write out
+	doxygen formatted entries describing interfaces.
+
+	* Repository/BaseRepository.cc: Added command-line function to
+	write out doxygen documentation of all interfaces.
+
+	* *** GLOBAL ***: Modified all descriptions in declarations of
+	interfaces to conform to doxygen format.
+
 2004-08-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Fixed various doxygen comment issues.

@@ -14,6 +14,7 @@
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "PDFBase.tcc"
@@ -97,6 +98,9 @@ void PDFBase::persistentInput(PersistentIStream & is, int) {
 AbstractClassDescription<PDFBase> PDFBase::initPDFBase;
 
 void PDFBase::Init() {
+
+  static ClassDocumentation<PDFBase> documentation
+    ("There is no documentation for the ThePEG::PDFBase class");
 
   static Reference<PDFBase,RemnantHandler> interfaceRemnantHandler
     ("RemnantHandler",

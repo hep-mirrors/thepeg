@@ -46,7 +46,8 @@ NoPIOClassDescription<SimpleAlphaEM> SimpleAlphaEM::initSimpleAlphaEM;
 
 void SimpleAlphaEM::Init() {
   static ClassDocumentation<SimpleAlphaEM> interfaceDocumentation
-    ("This class implements a running alpha_{EM} according to Buckhardt et al.",
+    ("This class implements a running \\f$\\alpha_{\\mbox{EM}}\\f$ according "
+     "to Buckhardt et al.",
      "In the running of $\\alpha_{EM}$, the parametrization of "
      "H.~Buckhardt et al. was used. See \\cite{KLEISSCERN9808v3pp129}.",
      "\\bibitem{KLEISSCERN9808v3pp129} R.~Kleiss et al, "

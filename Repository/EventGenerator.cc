@@ -14,6 +14,7 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/MatcherBase.h"
 #include "ThePEG/PDT/DecayMode.h"
@@ -466,15 +467,18 @@ AbstractClassDescription<EventGenerator> EventGenerator::initEventGenerator;
 
 void EventGenerator::Init() {
   
+  static ClassDocumentation<EventGenerator> documentation
+    ("There is no documentation for the ThePEG::EventGenerator class");
+
   static Reference<EventGenerator,StandardModelBase> interfaceStandardModel
     ("StandardModelParameters",
-     "The \\class{StandardModelBase} object to be used to access standard "
+     "The ThePEG::StandardModelBase object to be used to access standard "
      "model parameters in this run.",
      &EventGenerator::theStandardModel, false, false, true, false);
 
   static RefVector<EventGenerator,ParticleData> interfaceLocalParticles
     ("LocalParticles",
-     "Special versions of \\class{ParticleData} objects to be used "
+     "Special versions of ThePEG::ParticleData objects to be used "
      "in this run. Note that to delete an object, its number in the list "
      "should be given, rather than its id number.",
      0, 0, false, false, true, false,
@@ -483,8 +487,8 @@ void EventGenerator::Init() {
 
   static RefVector<EventGenerator,Interfaced> interfaceDefaultObjects
     ("DefaultObjects",
-     "A vector of pointers to default objects. In a \\class{Reference} or "
-     "\\class{RefVector} interface with the defaultIfNull() flag set, if a "
+     "A vector of pointers to default objects. In a ThePEG::Reference or "
+     "ThePEG::RefVector interface with the defaultIfNull() flag set, if a "
      "null pointer is encountered this vector is gone through until an "
      "acceptable object is found in which case the null pointer is replaced "
      "by a pointer to this object.",
@@ -492,13 +496,13 @@ void EventGenerator::Init() {
 
   static Reference<EventGenerator,Strategy> interfaceStrategy
     ("Strategy",
-     "An \\class{Strategy} with additional \\class{ParticleData} objects to "
+     "An ThePEG::Strategy with additional ThePEG::ParticleData objects to "
      "be used in this run.",
      &EventGenerator::theStrategy, false, false, true, true);
 
   static Reference<EventGenerator,RandomGenerator> interfaceRandomGenerator
     ("RandomNumberGenerator",
-     "An \\class{RandomGenerator} object which should typically interaface to "
+     "An ThePEG::RandomGenerator object which should typically interaface to "
      "a CLHEP Random object. This will be the default random number generator "
      "for the run, but individual objects may use their own random generator "
      "if they wish.",

@@ -173,8 +173,8 @@ MultiEventGenerator::initMultiEventGenerator;
 void MultiEventGenerator::Init() {
 
   static ClassDocumentation<MultiEventGenerator> documentation
-    ("The \\classname{MultiEventGenerator} class is derived from the "
-     "\\classname{FullEventGenerator} and is capable of making "
+    ("The ThePEG::MultiEventGenerator class is derived from the "
+     "ThePEG::FullEventGenerator and is capable of making "
      "several runs with a pre-defined set of parameter and switch values.");
 
   static Command<MultiEventGenerator> interfaceAddInterface

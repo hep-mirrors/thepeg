@@ -270,6 +270,12 @@ public:
   virtual string type() const;
 
   /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  virtual string doxygenType() const;
+
+  /**
    * Set the \a i'th element of a container of member variables of \a
    * ib to val. Uses a stringstream to read the \a val into a Type
    * object and then calls tset(InterfacedBase &, Type, int).
@@ -383,6 +389,13 @@ public:
    * the Type object is written/read directly.
    */
   inline void unit(Type u);
+
+protected:
+
+  /**
+   * Write a numer to a stream with the unit specified with unit().
+   */
+  inline void putUnit(ostream &, Type val) const;
 
 private:
 
@@ -713,6 +726,12 @@ public:
    * Give a pointer to a member function to be used by 'get()'.
    */
   inline void setStringGetFunction(StringGetFn);
+
+  /**
+   * Print a description to be included in the Doxygen documentation
+   * to the given \a stream.
+   */
+  virtual void doxygenDescription(ostream & stream) const;
 
 private:
 

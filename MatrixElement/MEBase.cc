@@ -163,17 +163,17 @@ void MEBase::rebind(const TranslationMap & trans)
 void MEBase::Init() {
 
   static ClassDocumentation<MEBase> documentation
-    ("The \\classname{MEBase} class is the base class for all matrix elements "
+    ("The ThePEG::MEBase class is the base class for all matrix elements "
      "to be used for generating sub processes in ThePEG");
 
   static RefVector<MEBase,ReweightBase> interfaceReweights
     ("Reweights",
-     "A list of \\class{ReweightBase} objects to modify this matrix elements.",
+     "A list of ThePEG::ReweightBase objects to modify this matrix elements.",
      &MEBase::reweights, 0, false, false, true, false);
 
   static RefVector<MEBase,ReweightBase> interfacePreweights
     ("Preweights",
-     "A list of \\class{ReweightBase} objects to bias the phase space for this "
+     "A list of ThePEG::ReweightBase objects to bias the phase space for this "
      "matrix elements without influencing the actual cross section.",
      &MEBase::preweights, 0, false, false, true, false);
 

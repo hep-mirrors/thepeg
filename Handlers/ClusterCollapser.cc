@@ -494,7 +494,7 @@ ClassDescription<ClusterCollapser> ClusterCollapser::initClusterCollapser;
 void ClusterCollapser::Init() {
 
   static ClassDocumentation<ClusterCollapser> documentation
-    ("The \\classname{ClusterCollapser} class can either be used as a "
+    ("The ThePEG::ClusterCollapser class can either be used as a "
      "preprocessor of a string fragmentation handler, or as a separate"
      "step handler to collapse small colour singlet systems of partons "
      "into one or two particles.");

@@ -8,6 +8,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "BeamParticleData.tcc"
@@ -56,6 +57,9 @@ void BeamParticleData::setPDF(PDFPtr pdf) {
 }
 
 void BeamParticleData::Init() {
+
+  static ClassDocumentation<BeamParticleData> documentation
+    ("There is no documentation for the ThePEG::BeamParticleData class");
 
   static Reference<BeamParticleData,PDFBase> interfacePDF
     ("PDF",

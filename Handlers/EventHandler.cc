@@ -9,6 +9,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
@@ -282,9 +283,12 @@ ClassDescription<EventHandler> EventHandler::initEventHandler;
 
 void EventHandler::Init() {
 
+  static ClassDocumentation<EventHandler> documentation
+    ("There is no documentation for the ThePEG::EventHandler class");
+
   static Reference<EventHandler,LuminosityFunction> interfaceLumifn
     ("LuminosityFunction",
-     "An object derived from the \\classname{LuminosityFunction} class, "
+     "An object derived from the ThePEG::LuminosityFunction class, "
      "which describes the beams in the collider under study.",
      &EventHandler::theLumiFn, false, false, true, false,
      &EventHandler::lumiFn);

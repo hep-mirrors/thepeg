@@ -14,6 +14,7 @@
 #include "ThePEG/EventRecord/Step.h"
 #include "ThePEG/EventRecord/Collision.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/Timer.h"
@@ -86,6 +87,10 @@ void DecayHandler::persistentInput(PersistentIStream & is, int) {
 ClassDescription<DecayHandler> DecayHandler::initDecayHandler;
 
 void DecayHandler::Init() {
+
+  static ClassDocumentation<DecayHandler> documentation
+    ("There is no documentation for the ThePEG::DecayHandler class");
+
   static Parameter<DecayHandler,long> interfaceMaxLoop
     ("MaxLoop",
      "The maximum number of attempts per event when selecting a sub-process.",

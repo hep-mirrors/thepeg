@@ -8,6 +8,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 
@@ -49,6 +50,9 @@ double Decayer::brat(const DecayMode &, const Particle &, double b) const {
 AbstractNoPIOClassDescription<Decayer> Decayer::initDecayer;
 
 void Decayer::Init() {
+
+  static ClassDocumentation<Decayer> documentation
+    ("There is no documentation for the ThePEG::Decayer class");
 
   static Reference<Decayer,Amplitude> interfaceAmplitude
     ("Amplitude",

@@ -46,7 +46,7 @@ ClassDescription<GaussianPtGenerator> GaussianPtGenerator::initGaussianPtGenerat
 void GaussianPtGenerator::Init() {
 
   static ClassDocumentation<GaussianPtGenerator> documentation
-    ("The \\classname{GaussianPtGenerator} class generates a gaussian "
+    ("The ThePEG::GaussianPtGenerator class generates a gaussian "
      "transverse momentum.");
 
   static Parameter<GaussianPtGenerator,Energy> interfaceSigma

@@ -9,6 +9,7 @@
 #include "PtGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -26,7 +27,12 @@ PtGenerator::~PtGenerator() {}
 
 AbstractClassDescription<PtGenerator> PtGenerator::initPtGenerator;
 
-void PtGenerator::Init() {}
+void PtGenerator::Init() {
+
+  static ClassDocumentation<PtGenerator> documentation
+    ("There is no documentation for the ThePEG::PtGenerator class");
+
+}
 
 
 

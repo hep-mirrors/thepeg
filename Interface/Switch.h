@@ -207,6 +207,12 @@ public:
    */
   inline const OptionMap & options() const;
 
+  /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  virtual string doxygenType() const;
+
 protected:
 
   /**
@@ -275,9 +281,6 @@ public:
 
 public:
 
-  /**
-   * Standard ctor.
-   */
   /**
    * Standard constructor.
    *
@@ -352,6 +355,12 @@ public:
    * Give a pointer to a member function to be used by 'def()'.
    */
   inline void setDefaultFunction(GetFn);
+
+  /**
+   * Print a description to be included in the Doxygen documentation
+   * to the given \a stream.
+   */
+  virtual void doxygenDescription(ostream & stream) const;
 
 private:
 

@@ -18,6 +18,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Timer.h"
@@ -195,6 +196,10 @@ void PartialCollisionHandler::persistentInput(PersistentIStream & is, int) {
 ThePEG_IMPLEMENT_CLASS_DESCRIPTION(PartialCollisionHandler);
 
 void PartialCollisionHandler::Init() {
+
+  static ClassDocumentation<PartialCollisionHandler> documentation
+    ("There is no documentation for the ThePEG::PartialCollisionHandler class");
+
   ThePEG_DECLARE_PREPOST_OBJECTS(PartialCollisionHandler, SubProcessHandler,
 				  Post, after);
   ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(PartialCollisionHandler,

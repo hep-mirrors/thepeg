@@ -16,6 +16,21 @@ string ParVectorTBase<Type>::type() const {
 }
 
 template <typename Type>
+string ParVectorTBase<Type>::doxygenType() const {
+  ostringstream os;
+  if ( size() <= 0 ) os << "Varying size ";
+  else os << "Fixed size (" << size() << ") ";
+  os << "vector of ";
+  string lim = "";
+  if ( !limited() ) lim = " unlimited";
+  if ( std::numeric_limits<Type>::is_integer ) os << lim << "integer ";
+  else if ( typeid(Type) == typeid(string) ) os << "string ";
+  else os << lim;
+  os << "parameters";
+  return os.str();
+}
+
+template <typename Type>
 void ParVectorTBase<Type>::setDef(InterfacedBase & i, int place) const
   throw(InterfaceException) {
   if ( place >= 0 ) tset(i, tdef(i, place), place);
@@ -233,6 +248,23 @@ Type ParVector<T,Type>::tmaximum(const InterfacedBase & i, int place) const
   try { return (t->*theMaxFn)(place); }
   catch (InterfaceException) { throw; }
   catch ( ... ) { throw ParVExGetUnknown(*this, i, "maximum"); }
+}
+
+template <typename T, typename Type>
+void ParVector<T,Type>::doxygenDescription(ostream & os) const {
+  ParVectorTBase<Type>::doxygenDescription(os);
+  os << "<b>Default value:</b> ";
+  putUnit(os, theDef);
+  if ( theDefFn ) os << " (May be changed by member function.)";
+  if ( ParVectorBase::limited() ) {
+    os << "<br>\n<b>Minimum value:</b> ";
+    putUnit(os, theMin);
+    if ( theMinFn ) os << " (May be changed by member function.)";
+    os << "<br>\n<b>Maximum value:</b> ";
+    putUnit(os, theMax);
+    if ( theMaxFn ) os << " (May be changed by member function.)";
+  }
+  os << "<br>\n";
 }
 
 template <typename T>

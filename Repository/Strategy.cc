@@ -9,6 +9,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Strategy.tcc"
@@ -61,9 +62,12 @@ vector<PDPtr> Strategy::getLocalParticles() const {
 
 void Strategy::Init() {
   
+  static ClassDocumentation<Strategy> documentation
+    ("There is no documentation for the ThePEG::Strategy class");
+
   static RefVector<Strategy,ParticleData> interfaceLocalParticles
     ("LocalParticles",
-     "Special versions of \\class{ParticleData} objects to be used. Note "
+     "Special versions of ThePEG::ParticleData objects to be used. Note "
      "that to delete an object, its number in the list "
      "should be given, rather than its id number.",
      0, 0, false, false, true, false,
@@ -72,12 +76,12 @@ void Strategy::Init() {
 
   static RefVector<Strategy,Interfaced> interfaceDefaultObjects
     ("DefaultObjects",
-     "A vector of pointers to default objects. In a \\class{Reference} or "
-     "\\class{RefVector} interface with the defaultIfNull() flag set, if a "
+     "A vector of pointers to default objects. In a ThePEG::Reference or "
+     "ThePEG::RefVector interface with the defaultIfNull() flag set, if a "
      "null pointer is encountered this vector is gone through until an "
      "acceptable object is found in which case the null pointer is replaced "
      "by a pointer to this object. Note that the default objects given in the "
-     "\\class{EventGenerator} are gone through first and are given precedence.",
+     "ThePEG::EventGenerator are gone through first and are given precedence.",
      &Strategy::theDefaultObjects, 0, true, false, true, false, false);
 
 }

@@ -21,6 +21,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/EventRecord/Event.h"
@@ -278,6 +279,10 @@ ClassDescription<CollisionHandler> CollisionHandler::initCollisionHandler;
 
 void CollisionHandler::Init() {
 
+  static ClassDocumentation<CollisionHandler> documentation
+    ("There is no documentation for the ThePEG::CollisionHandler class");
+
+
   static Reference<CollisionHandler,ParticleData> interfaceIncomingA
     ("BeamA",
      "The type of particles in first beam",
@@ -301,9 +306,9 @@ void CollisionHandler::Init() {
 
   static Switch<CollisionHandler,int> interfaceBinStrategy
     ("BinStrategy",
-     "The strategy to be used when sampling different \\classname{XComb} "
-     "objects. An \\classname{XComb} object represent a pair of incoming "
-     "parton types s as defined by a \\classname{PartonExtractor} and a "
+     "The strategy to be used when sampling different ThePEG::XComb "
+     "objects. An ThePEG::XComb objet represents a pair of incoming "
+     "parton types as defined by a THePEG::PartonExtractor and a "
      "matrix element.",
      &CollisionHandler::theBinStrategy, 2, false, false);
 

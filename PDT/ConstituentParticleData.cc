@@ -8,6 +8,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "ConstituentParticleData.tcc"
@@ -73,6 +74,9 @@ ClassDescription<ConstituentParticleData>
 ConstituentParticleData::initConstituentParticleData;
 
 void ConstituentParticleData::Init() {
+
+  static ClassDocumentation<ConstituentParticleData> documentation
+    ("There is no documentation for the ThePEG::ConstituentParticleData class");
 
   static Parameter<ConstituentParticleData,Energy> interfaceMass
     ("ConstituentMass",

@@ -99,6 +99,12 @@ public:
   virtual string type() const;
 
   /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  virtual string doxygenType() const;
+
+  /**
    * Set the \a i'th element of a container of pointers of \a ib
    * to \a ip.
    */

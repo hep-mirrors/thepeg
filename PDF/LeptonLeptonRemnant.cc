@@ -15,6 +15,7 @@
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LeptonLeptonRemnant.tcc"
@@ -84,6 +85,9 @@ ClassDescription<LeptonLeptonRemnant>
 LeptonLeptonRemnant::initLeptonLeptonRemnant;
 
 void LeptonLeptonRemnant::Init() {
+
+  static ClassDocumentation<LeptonLeptonRemnant> documentation
+    ("There is no documentation for the ThePEG::LeptonLeptonRemnant class");
 
   static Parameter<LeptonLeptonRemnant,double> interfaceMinX
     ("MinX",

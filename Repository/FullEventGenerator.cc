@@ -13,6 +13,7 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
 #include "ThePEG/Handlers/EventManipulator.h"
@@ -154,24 +155,27 @@ ClassDescription<FullEventGenerator> FullEventGenerator::initFullEventGenerator;
 
 void FullEventGenerator::Init() {
 
+  static ClassDocumentation<FullEventGenerator> documentation
+    ("There is no documentation for the ThePEG::FullEventGenerator class");
+
   static Reference<FullEventGenerator,EventHandler> interfaceEventHandler
     ("EventHandler",
-     "The \\class{EventHandler} object to be used to generate the individual "
+     "The ThePEG::EventHandler object to be used to generate the individual "
      "events in this run.",
      &FullEventGenerator::theEventHandler, false, false, true, false);
 
   static RefVector<FullEventGenerator,AnalysisHandler> interfaceAnalysisHandlers
     ("AnalysisHandlers",
-     "\\class{AnalysisHandler} objects to be used to analyze the produced "
+     "ThePEG::AnalysisHandler objects to be used to analyze the produced "
      "events in this run.",
      &FullEventGenerator::theAnalysisHandlers, 0, true, false, true, false);
 
   static Reference<FullEventGenerator,EventManipulator> interfaceEventManip
     ("EventManipulator",
-     "An \\class{EventManipulator} called each time the generation of an "
-     "event is stopped. The \\class{EventManipulator} object is able to "
+     "An ThePEG::EventManipulator called each time the generation of an "
+     "event is stopped. The ThePEG::EventManipulator object is able to "
      "manipulate the generated event, as opposed to an "
-     "\\class{AnalysisHandler} which may only look at the event.",
+     "ThePEG::AnalysisHandler which may only look at the event.",
      &FullEventGenerator::theEventManipulator, true, false, true, true);
 
   static Parameter<FullEventGenerator,int> interfacePrintEvent

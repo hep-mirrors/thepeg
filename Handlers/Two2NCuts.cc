@@ -8,6 +8,7 @@
 #include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/Interface/ParVector.h"
 #include "ThePEG/Interface/Command.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -441,16 +442,21 @@ void Two2NCuts::persistentInput(PersistentIStream & is, int) {
 ClassDescription<Two2NCuts> Two2NCuts::initTwo2NCuts;
 
 void Two2NCuts::Init() {
+
+  static ClassDocumentation<Two2NCuts> documentation
+    ("There is no documentation for the ThePEG::Two2NCuts class");
+
   static ParVector<Two2NCuts,Energy> interfaceMassMins
     ("SubProcess/ResonanceMassMin",
      "These limits are in addition to otherwse specified limits. For any "
-     "$2\rightarrow n$ process this vector gives the minimum allowed mass in "
-     "GeV of any produced (resonance) particle $i$. The index should be given "
-     "according to $(n(n-1))/2+i$. If any of these limits are larger than "
-     "the corresponding upper limit in "
-     "\\parameter{SubProcess/ResonanceMassMax}, the upper limit is inactive. "
+     "\\f$2\\rightarrow n\\f$ process this vector gives the minimum allowed "
+     "mass in GeV of any produced (resonance) particle \\f$i\\f$. The index "
+     "should be given according to \\f$(n(n-1))/2+i\\f$. If any of these "
+     "limits are larger than the corresponding upper limit in "
+     "<code>SubProcess/ResonanceMassMax</code>, the upper limit is inactive. "
      "These limits are checked automatically by the event handler. This limit "
-     "can also be set through \\command(SetResonanceMassMin}.",
+     "can also be set through command interface "
+     "<code>SetResonanceMassMin</code>.",
      0, GeV, 0, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
      &Two2NCuts::setMassMins, &Two2NCuts::insMassMins,
      &Two2NCuts::delMassMins, &Two2NCuts::getMassMins, 0, 0, 0);
@@ -458,13 +464,14 @@ void Two2NCuts::Init() {
   static ParVector<Two2NCuts,Energy> interfaceMassMaxs
     ("SubProcess/ResonanceMassMax",
      "These limits are in addition to otherwse specified limits. For any "
-     "$2\rightarrow n$ process this vector gives the maximum allowed mass in "
-     "GeV of any produced (resonance) particle $i$. The index should be given "
-     "according to $(n(n-1))/2+i$. If any of these limits are smaller than "
-     "the corresponding lower limit in \\parameter{ResonanceMassMax}, the "
-     "upper limit is inactive. These limits are checked automatically "
-     "by the event handler. This limit can also be set through "
-     "\\command(SetResonanceMassMax}.",
+     "\\f$2\\rightarrow n\\f$ process this vector gives the maximum allowed "
+     "mass in GeV of any produced (resonance) particle \\f$i\\f$. The index "
+     "should be given according to \\f$(n(n-1))/2+i\\f$. If any of these "
+     "limits are smaller than the corresponding lower limit in "
+     "<code>ResonanceMassMax</code>, the upper limit is inactive. These "
+     "limits are checked automatically by the event handler. This limit "
+     "can also be set through command interface "
+     "<code>SetResonanceMassMax</code>.",
      0, GeV, 0, -1.0*GeV, -1.0*GeV, Constants::MaxEnergy, false, false, true,
      &Two2NCuts::setMassMaxs, &Two2NCuts::insMassMaxs,
      &Two2NCuts::delMassMaxs, &Two2NCuts::getMassMaxs, 0, 0, 0);
@@ -472,13 +479,13 @@ void Two2NCuts::Init() {
   static ParVector<Two2NCuts,Energy> interfacePTMins
     ("SubProcess/PTMin",
      "These limits are in addition to otherwse specified limits. For any "
-     "$2\rightarrow n$ process this vector gives the minimum allowed "
-     "$p_\\perp$ in GeV of any produced particle $i$. The index should be "
-     "given according to $(n(n-1))/2+i$. If any of these limits are larger "
-     "than the corresponding upper limit in \\parameter{ResonanceMassMax}, the "
-     "upper limit is inactive. These limits are checked automatically "
-     "by the event handler. This limit can also be set through "
-     "\\command(SetPTMassMin}.",
+     "\\f$2\\rightarrow n\\f$ process this vector gives the minimum allowed "
+     "\\f$p_\\perp\\f$ in GeV of any produced particle \\f$i\\f$. The index "
+     "should be given according to \\f$(n(n-1))/2+i\\f$. If any of these "
+     "limits are larger than the corresponding upper limit in "
+     "<code>ResonanceMassMax</code>, the upper limit is inactive. These "
+     "limits are checked automatically by the event handler. This limit can "
+     "also be set through the comand interface <code>SetPTMassMin</code>.",
      0, GeV, 0, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
      &Two2NCuts::setPTMins, &Two2NCuts::insPTMins,
      &Two2NCuts::delPTMins, &Two2NCuts::getPTMins, 0, 0, 0);
@@ -486,13 +493,13 @@ void Two2NCuts::Init() {
   static ParVector<Two2NCuts,Energy> interfacePTMaxs
     ("SubProcess/PTMax",
      "These limits are in addition to otherwse specified limits. For any "
-     "$2\rightarrow n$ process this vector gives the maximum allowed "
-     "$p_\\perp$ in GeV of any produced particle $i$. The index should be "
-     "given according to $(n(n-1))/2+i$. If any of these limits are smaller "
-     "than the corresponding lower limit in \\parameter{ResonanceMassMax}, the "
-     "upper limit is inactive. These limits are checked automatically "
-     "by the event handler. This limit can also be set through "
-     "\\command(SetPTMax}.",
+     "\\f$2\\rightarrow n\\f$ process this vector gives the maximum allowed "
+     "\\f$p_\\perp\\f$ in GeV of any produced particle \\f$i\\f$. The index "
+     "should be given according to \\f$(n(n-1))/2+i\\f$. If any of these "
+     "limits are smaller than the corresponding lower limit in "
+     "<code>ResonanceMassMax</code>, the upper limit is inactive. These "
+     "limits are checked automatically by the event handler. This limit can "
+     "also be set through the command interface <code>SetPTMax</code>.",
      0, GeV, 0, -1.0*GeV, -1.0*GeV, Constants::MaxEnergy, false, false, true,
      &Two2NCuts::setPTMaxs, &Two2NCuts::insPTMaxs,
      &Two2NCuts::delPTMaxs, &Two2NCuts::getPTMaxs, 0, 0, 0);
@@ -500,13 +507,14 @@ void Two2NCuts::Init() {
   static ParVector<Two2NCuts,Energy> interfaceDiMassMins
     ("SubProcess/DiMassMin",
      "These limits are in addition to otherwse specified limits. For any "
-     "$2\rightarrow n$ process this vector gives the minimum allowed "
-     "invariant mass in GeV of any two produced particle $i,j$. The index "
-     "should be given according to $(n(n-1)(n-2)/6+(i-1)(i-2)/2+j$. with $i>j$ "
-     "If any of these limits are larger than the corresponding upper limit in "
-     "\\parameter{DiMassMax}, the upper limit is inactive. These limits "
+     "\\f$2\\rightarrow n\\f$ process this vector gives the minimum allowed "
+     "invariant mass in GeV of any two produced particle \\f$i,j\\f$. The "
+     "index should be given according to "
+     "\\f$(n(n-1)(n-2)/6+(i-1)(i-2)/2+j\\f$. with \\f$i>j\\f$ If any of these "
+     "limits are larger than the corresponding upper limit in "
+     "<code>DiMassMax</code>, the upper limit is inactive. These limits "
      "are checked automatically by the event handler. This limit can also "
-     "be set through \\command(SetDiMassMin}.",
+     "be set through the command interface <code>SetDiMassMin</code>.",
      0, GeV, 0, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
      &Two2NCuts::setDiMassMins, &Two2NCuts::insDiMassMins,
      &Two2NCuts::delDiMassMins, &Two2NCuts::getDiMassMins, 0, 0, 0);
@@ -514,58 +522,64 @@ void Two2NCuts::Init() {
   static ParVector<Two2NCuts,Energy> interfaceDiMassMaxs
     ("SubProcess/DiMassMax",
      "These limits are in addition to otherwse specified limits. For any "
-     "$2\rightarrow n$ process this vector gives the maximum allowed "
-     "invariant mass in GeV of any two produced particle $i,j$. The index "
-     "should be given according to $(n(n-1)(n-2)/6+(i-1)(i-2)/2+j$. with $i>j$ "
-     "If any of these limits are smaller than "
-     "the corresponding lower limit in \\parameter{DiMassMax}, the "
-     "upper limit is inactive. These limits are checked automatically "
-     "by the event handler. This limit can also "
-     "be set through \\command(SetDiMassMin}.",
+     "\\f$2\\rightarrow n\\f$ process this vector gives the maximum allowed "
+     "invariant mass in GeV of any two produced particle \\f$i,j\\f$. The "
+     "index should be given according to "
+     "\\f$(n(n-1)(n-2)/6+(i-1)(i-2)/2+j\\f$. with \\f$i>j\\f$ "
+     "If any of these limits are smaller than the corresponding lower limit "
+     "in <code>DiMassMax</code>, the upper limit is inactive. These limits "
+     "are checked automatically by the event handler. This limit can also "
+     "be set through the command interface <code>SetDiMassMin</code>.",
      0, GeV, 0, -1.0*GeV, -1.0*GeV, Constants::MaxEnergy, false, false, true,
      &Two2NCuts::setDiMassMaxs, &Two2NCuts::insDiMassMaxs,
      &Two2NCuts::delDiMassMaxs, &Two2NCuts::getDiMassMaxs, 0, 0, 0);
 
   static Command<Two2NCuts> interfaceSetMassMins
     ("SubProcess/SetResonanceMassMin",
-     "Set a value for \\parameter{ResonanceMassMin}. The argument should be "
-     "on the form '$n$ $i$ mass' for the minimum mass of particle i in a "
-     "$2\rightarrow n$ process, with $n \\leq i > 0$.",
+     "Set a value for <code>ResonanceMassMin</code>. The argument should be "
+     "on the form '\\f$n\\f$ \\f$i\\f$ mass' for the minimum mass of particle "
+     "\\f$i\\f$ in a \\f$2\\rightarrow n\\f$ process, with "
+     "\\f$n \\leq i > 0\\f$.",
      &Two2NCuts::ssetMassMins);
 
   static Command<Two2NCuts> interfaceSetMassMaxs
     ("SubProcess/SetResonanceMassMax",
-     "Set a value for \\parameter{ResonanceMassMax}. The argument should be "
-     "on the form '$n$ $i$ mass' for the maximum mass of particle i in a "
-     "$2\rightarrow n$ process, with $n \\leq i > 0$.",
+     "Set a value for <code>ResonanceMassMax</code>. The argument should be "
+     "on the form '\\f$n\\f$ \\f$i\\f$ mass' for the maximum mass of particle "
+     "\\f$i\\f$ in a \\f$2\\rightarrow n\\f$ process, with "
+     "\\f$n \\leq i > 0\\f$.",
      &Two2NCuts::ssetMassMins);
 
   static Command<Two2NCuts> interfaceSetPTMins
     ("SubProcess/SetPTMin",
-     "Set a value for \\parameter{PTMin}. The argument should be "
-     "on the form '$n$ $i$ $p_\\perp$' for the minimum $p_\\perp$ of particle "
-     "i in a $2\rightarrow n$ process, with $n \\leq i > 0$.",
+     "Set a value for <code>PTMin</code>. The argument should be "
+     "on the form '\\f$n\\f$ \\f$i\\f$ \\f$p_\\perp\\f$' for the minimum "
+     "\\f$p_\\perp\\f$ of particle \\f$i\\f$ in a \\f$2\\rightarrow n\\f$ "
+     "process, with \\f$n \\leq i > 0\\f$.",
      &Two2NCuts::ssetPTMins);
 
   static Command<Two2NCuts> interfaceSetPTMaxs
     ("SubProcess/SetPTMax",
-     "Set a value for \\parameter{ResonanceMassMax}. The argument should be "
-     "on the form '$n$ $i$ $p_\\perp$' for the maximum $p_\\perp$ of particle "
-     "i in a $2\rightarrow n$ process, with $n \\leq i > 0$.",
+     "Set a value for <code>ResonanceMassMax</code>. The argument should be "
+     "on the form '\\f$n\\f$ \\f$i\\f$ \\f$p_\\perp\\f$' for the maximum "
+     "\\f$p_\\perp\\f$ of particle \\f$i\\f$ in a \\f$2\\rightarrow n\\f$ "
+     "process, with \\f$n \\leq i > 0\\f$.",
      &Two2NCuts::ssetPTMins);
 
   static Command<Two2NCuts> interfaceSetDiMassMins
     ("SubProcess/SetDiMassMin",
-     "Set a value for \\parameter{DiMassMin}. The argument should be "
-     "on the form '$n$ $i$ $j$ mass' for the minimum mass of particles i and j "
-     "in a $2\rightarrow n$ process, with $n \\leq i > j > 0$.",
+     "Set a value for <code>DiMassMin</code>. The argument should be "
+     "on the form '\\f$n\\f$ \\f$i\\f$ \\f$j\\f$ mass' for the minimum mass "
+     "of particles \\f$i\\f$ and \\f$j\\f$ in a \\f$2\\rightarrow n\\f$ "
+     "process, with \\f$n \\leq i > j > 0\\f$.",
      &Two2NCuts::ssetMassMins);
 
   static Command<Two2NCuts> interfaceSetDiMassMaxs
     ("SubProcess/SetDiMassMax",
-     "Set a value for \\parameter{DiMassMax}. The argument should be "
-     "on the form '$n$ $i$ $j$ mass' for the maximum mass of particles i and j "
-     "in a $2\rightarrow n$ process, with $n \\leq i > j > 0$.",
+     "Set a value for <code>DiMassMax</code>. The argument should be "
+     "on the form '\\f$n\\f$ \\f$i\\f$ \\f$j\\f$ mass' for the maximum mass "
+     "of particles \\f$i\\f$ and \\f$j\\f$ in a \\f$2\\rightarrow n\\f$ "
+     "process, with \\f$n \\leq i > j > 0\\f$.",
      &Two2NCuts::ssetMassMins);
 
 }
@@ -574,7 +588,7 @@ KinCutCmdFail1::KinCutCmdFail1(const Two2NCuts & i, string a, string s) {
   theMessage << "Could not execute the command '" << s << "' for the object '"
 	     << i.name() << "' with argument '" << a << "' because the syntax "
 	     << "is wrong. Expected 'n i pt' for the pt of particle i in "
-	     << "a 2->n process, with $n \\leq i > 0$.";
+	     << "a 2->n process, with n >= i > 0.";
   severity(warning);
 }
   
@@ -582,7 +596,7 @@ KinCutCmdFail2::KinCutCmdFail2(const Two2NCuts & i, string a, string s) {
   theMessage << "Could not execute the command '" << s << "' for the object '"
 	     << i.name() << "' with argument '" << a << "' because the syntax "
 	     << "is wrong. Expected 'n i mass' for the mass of particle i in "
-	     << "a 2->n process, with $n \\leq i > 0$.";
+	     << "a 2->n process, with n >= i > 0.";
   severity(warning);
 }
   
@@ -590,7 +604,7 @@ KinCutCmdFail3::KinCutCmdFail3(const Two2NCuts & i, string a, string s) {
   theMessage << "Could not execute the command '" << s << "' for the object '"
 	     << i.name() << "' with argument '" << a << "' because the syntax "
 	     << "is wrong. Expected 'n i j mass' for the mass of particles "
-	     << "i and j in a 2->n process, with $n \\leq i > j > 0$.";
+	     << "i and j in a 2->n process, with n >= i > j > 0.";
   severity(warning);
 }
 

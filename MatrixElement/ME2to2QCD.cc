@@ -49,7 +49,7 @@ AbstractClassDescription<ME2to2QCD> ME2to2QCD::initME2to2QCD;
 void ME2to2QCD::Init() {
 
   static ClassDocumentation<ME2to2QCD> documentation
-    ("There is no documentation for the \\classname{ME2to2QCD} class");
+    ("There is no documentation for the ThePEG::ME2to2QCD class");
 
   static Parameter<ME2to2QCD,int> interfaceMaxFlavour
     ( "MaxFlavour",
@@ -65,7 +65,7 @@ void ME2to2QCD::Init() {
   static Parameter<ME2to2QCD,double> interfaceKfacA
     ("K-factor-A",
      "A K-factor for artificially boosting the colour annihilation terms "
-     "in this cross-section. If less than one, the \\parameter{K-factor} will "
+     "in this cross-section. If less than one, the <code>K-factor</code> will "
      "be used instead.",
      &ME2to2QCD::theKfacA, 1.0, -1.0, Constants::MaxFloat, true, false, true);
 

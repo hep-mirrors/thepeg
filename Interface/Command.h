@@ -83,6 +83,12 @@ public:
     throw(InterfaceException);
 
   /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  virtual string doxygenType() const;
+
+  /**
    * Return a code for the type of this interface.
    */
   virtual string type() const;

@@ -7,7 +7,6 @@
 //
 
 #include "VectorSpinInfo.h"
-#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "VectorSpinInfo.tcc"
@@ -21,10 +20,6 @@ VectorSpinInfo::~VectorSpinInfo() {}
 NoPIOClassDescription<VectorSpinInfo> VectorSpinInfo::initVectorSpinInfo;
 // Definition of the static class description member.
 
-void VectorSpinInfo::Init() {
-
-  static ClassDocumentation<VectorSpinInfo> documentation
-    ("There is no documentation for the \\classname{VectorSpinInfo} class");
-}
+void VectorSpinInfo::Init() {}
 
 

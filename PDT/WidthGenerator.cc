@@ -14,6 +14,7 @@
 #include "ThePEG/CLHEPWrap/PhysicalConstants.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 using namespace ThePEG;
 
@@ -35,5 +36,10 @@ Energy WidthGenerator::width(const Particle & p) const {
 AbstractNoPIOClassDescription<WidthGenerator>
 WidthGenerator::initWidthGenerator;
 
-void WidthGenerator::Init() {}
+void WidthGenerator::Init() {
+
+  static ClassDocumentation<WidthGenerator> documentation
+    ("There is no documentation for the ThePEG::WidthGenerator class");
+
+}
 

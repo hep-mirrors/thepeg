@@ -14,6 +14,15 @@ string ParameterTBase<Type>::type() const {
 }
 
 template <typename Type>
+string ParameterTBase<Type>::doxygenType() const {
+  string lim = "";
+  if ( !limited() ) lim = "Unlimited ";
+  if ( std::numeric_limits<Type>::is_integer ) return lim + "Integer parameter";
+  if ( typeid(Type) == typeid(string) ) return "Character string parameter";
+  return lim + "Parameter";
+}
+
+template <typename Type>
 void ParameterTBase<Type>::
 set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
   istringstream is(newValue);
@@ -131,6 +140,23 @@ Type Parameter<T,Type>::tdef(const InterfacedBase & i) const
     catch ( ... ) { throw ParExGetUnknown(*this, i, "default"); }
   }
   return theDef;
+}
+
+template <typename T, typename Type>
+void Parameter<T,Type>::doxygenDescription(ostream & os) const {
+  ParameterTBase<Type>::doxygenDescription(os);
+  os << "<b>Default value:</b> ";
+  putUnit(os, theDef);
+  if ( theDefFn ) os << " (May be changed by member function.)";
+  if ( ParameterBase::limited() ) {
+    os << "<br>\n<b>Minimum value:</b> ";
+    putUnit(os, theMin);
+    if ( theMinFn ) os << " (May be changed by member function.)";
+    os << "<br>\n<b>Maximum value:</b> ";
+    putUnit(os, theMax);
+    if ( theMaxFn ) os << " (May be changed by member function.)";
+  }
+  os << "<br>\n";
 }
 
 template <typename T>

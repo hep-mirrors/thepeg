@@ -82,8 +82,8 @@ NoPIOClassDescription<MEGG2GG> MEGG2GG::initMEGG2GG;
 void MEGG2GG::Init() {
 
   static ClassDocumentation<MEGG2GG> documentation
-    ("The \\classname{MEGG2GG} class describes the standard QCD "
-     "g + g -> g + g matrix element.");
+    ("The ThePEG::MEGG2GG class describes the standard QCD "
+     "\\f$gg \\rightarrow gg\\f$ matrix element.");
 
 }
 

@@ -13,6 +13,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/EnumIO.h"
 
 using namespace ThePEG;
@@ -614,12 +615,16 @@ void DecayMode::setDecayer(DecayerPtr dp) {
 }
 
 void DecayMode::Init() {
+
+  static ClassDocumentation<DecayMode> documentation
+    ("There is no documentation for the ThePEG::DecayMode class");
+
   static Parameter<DecayMode,double> interfaceBrat
     ("BranchingRatio",
      "The branching fraction for this decay mode. Note that if the sum of "
      "branching ratios for one particle is always renormalized to 1. Also, "
      "the decaying particle may change this branching ratio if it has a "
-     "\\class{WidthGenerator} object assigned to it. ",
+     "ThePEG::WidthGenerator object assigned to it. ",
      &DecayMode::theBrat, 0.0, 0.0, 1.0, false, false, true);
   static Switch<DecayMode> interfaceOn
     ("OnOff",
@@ -632,28 +637,26 @@ void DecayMode::Init() {
 
   static Reference<DecayMode,Decayer> interfaceDecayer
     ("Decayer",
-     "The \\class{Decayer} object responsible for performing this decay.",
+     "The ThePEG::Decayer object responsible for performing this decay.",
      &DecayMode::theDecayer, false, false, true, true,
      &DecayMode::setDecayer);
 
 }
 
 DecModNoAccept::DecModNoAccept(string tag, string dec) {
-  theMessage << "The \\class{Decayer} '" << dec << "' is not capable to "
-	     << "perform the decay in the \\class(DecayMode} '" << tag
-	     << "'.";
+  theMessage << "The Decayer '" << dec << "' is not capable to "
+	     << "perform the decay in the DecayMode '" << tag << "'.";
   severity(warning);
 }
 
 DecModSetupNoAccept::DecModSetupNoAccept(string tag, string dec) {
-  theMessage << "The \\class{Decayer} '" << dec << "' is not capable to "
-	     << "perform the decay in the \\class(DecayMode} '" << tag
-	     << "'.";
+  theMessage << "The Decayer '" << dec << "' is not capable to "
+	     << "perform the decay in the DecayMode '" << tag << "'.";
   severity(warning);
 }
 
 DecModRebind::DecModRebind(string tag, string obj) {
-  theMessage << "'Rebind' of \\class{DecayMode} '" << tag << "' failed because "
+  theMessage << "'Rebind' of DecayMode '" << tag << "' failed because "
 	     << "the object '" << obj << "' refered to lacked a translation.";
   severity(abortnow);
 }

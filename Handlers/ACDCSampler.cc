@@ -110,9 +110,9 @@ ClassDescription<ACDCSampler> ACDCSampler::initACDCSampler;
 void ACDCSampler::Init() {
 
   static ClassDocumentation<ACDCSampler> documentation
-    ("This class inherits from \\classnam{SampleBase} and implements "
+    ("This class inherits from ThePEG::SampleBase and implements "
      "the Auto Compensating Divide-and-Conquer phase space generator, "
-     "\\classname{ACDCGen}.");
+     "ACDCGenerator::ACDCGen.");
 
   static Parameter<ACDCSampler,double> interfaceMargin
     ("Margin",

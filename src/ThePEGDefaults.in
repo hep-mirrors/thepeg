@@ -133,3 +133,4 @@ set EECuts:SubProcess/MHatMin 22.36068
 set SimpleLEPGenerator:EventHandler:Cuts EECuts
 
 cd /
+doxygendump ThePEG:: ../Doc/AllInterfaces.h

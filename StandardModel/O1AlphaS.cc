@@ -10,6 +10,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "O1AlphaS.tcc"
@@ -72,17 +73,20 @@ ClassDescription<O1AlphaS> O1AlphaS::initO1AlphaS;
 
 void O1AlphaS::Init() {
 
-  static Parameter<O1AlphaS,Energy> interfaceLambdaQCD
+   static ClassDocumentation<O1AlphaS> documentation
+    ("There is no documentation for the ThePEG::O1AlphaS class");
+
+ static Parameter<O1AlphaS,Energy> interfaceLambdaQCD
     ("LambdaQCD",
-     "The $\\Lambda_{QCD}$ in GeV for \\parameter{LambdaFlav} active flavours."
-     "The value for other numbers of active flavours is derived by assuming "
-     "that $\\alpha_S$ is continuous.",
+     "The \\f$\\Lambda_{QCD}\\f$ in GeV for <code>LambdaFlav</code> active "
+     "flavours. The value for other numbers of active flavours is derived by "
+     "assuming that \\f$\\alpha_S\\f$ is continuous.",
      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 10.0*GeV,
      false, false, true);
 
   static Parameter<O1AlphaS,unsigned int> interfaceMaxFlav
     ("MaxFlav",
-     "The maximum number of flavours used to calculate $\\alpha_S$.",
+     "The maximum number of flavours used to calculate \\f$\\alpha_S\\f$.",
      &O1AlphaS::theMaxFlav, 6, 3, 8,
      false, false, true);
 

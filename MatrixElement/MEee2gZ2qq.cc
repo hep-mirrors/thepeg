@@ -168,8 +168,8 @@ ClassDescription<MEee2gZ2qq> MEee2gZ2qq::initMEee2gZ2qq;
 void MEee2gZ2qq::Init() {
 
   static ClassDocumentation<MEee2gZ2qq> documentation
-    ("The \\classname{MEee2gZ2qq} class implements the full"
-     "$e^+ + e^- \\rightarrow \\gamma/Z^0 \\rightarroe q + \\bar{q}$ "
+    ("The ThePEG::MEee2gZ2qq class implements the full"
+     "\\f$e^+e^- \\rightarrow \\gamma/Z^0 \\rightarrow q\\bar{q}\\f$ "
      "matrix element including the interference terms.");
 
 }

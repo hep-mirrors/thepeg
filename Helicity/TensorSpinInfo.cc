@@ -7,7 +7,6 @@
 //
 
 #include "TensorSpinInfo.h"
-#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "TensorSpinInfo.tcc"
@@ -21,10 +20,5 @@ TensorSpinInfo::~TensorSpinInfo() {}
 NoPIOClassDescription<TensorSpinInfo> TensorSpinInfo::initTensorSpinInfo;
 // Definition of the static class description member.
 
-void TensorSpinInfo::Init() {
-
-  static ClassDocumentation<TensorSpinInfo> documentation
-    ("There is no documentation for the \\classname{TensorSpinInfo} class");
-
-}
+void TensorSpinInfo::Init() {}
 

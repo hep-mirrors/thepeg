@@ -5,6 +5,7 @@
 //
 
 #include "EventManipulator.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "EventManipulator.tcc"
@@ -17,5 +18,10 @@ EventManipulator::~EventManipulator() {}
 AbstractNoPIOClassDescription<EventManipulator>
 EventManipulator::initEventManipulator;
 
-void EventManipulator::Init() {}
+void EventManipulator::Init() {
+
+  static ClassDocumentation<EventManipulator> documentation
+    ("There is no documentation for the ThePEG::EventManipulator class");
+
+}
 

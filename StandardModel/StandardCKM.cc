@@ -9,6 +9,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "StandardCKM.tcc"
@@ -67,6 +68,9 @@ void StandardCKM::persistentInput(PersistentIStream & is, int) {
 ClassDescription<StandardCKM> StandardCKM::initStandardCKM;
 
 void StandardCKM::Init() {
+
+  static ClassDocumentation<StandardCKM> documentation
+    ("There is no documentation for the ThePEG::StandardCKM class");
 
   static Parameter<StandardCKM,double> interfaceTheta12
     ("theta_12",

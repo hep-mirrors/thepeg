@@ -9,6 +9,7 @@
 #include "ThePEG/Handlers/Hint.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/PDF/PartonExtractor.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "CascadeHandler.tcc"
@@ -41,5 +42,10 @@ handle(PartialCollisionHandler & ch, const tPVector & tagged,
 AbstractNoPIOClassDescription<CascadeHandler>
 CascadeHandler::initCascadeHandler;
 
-void CascadeHandler::Init() {}
+void CascadeHandler::Init() {
+
+  static ClassDocumentation<CascadeHandler> documentation
+    ("There is no documentation for the ThePEG::CascadeHandler class");
+
+}
 

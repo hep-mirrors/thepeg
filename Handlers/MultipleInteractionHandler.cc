@@ -5,6 +5,7 @@
 //
 
 #include "MultipleInteractionHandler.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MultipleInteractionHandler.tcc"
@@ -17,5 +18,11 @@ MultipleInteractionHandler::~MultipleInteractionHandler() {}
 AbstractNoPIOClassDescription<MultipleInteractionHandler>
 MultipleInteractionHandler::initMultipleInteractionHandler;
 
-void MultipleInteractionHandler::Init() {}
+void MultipleInteractionHandler::Init() {
+
+  static ClassDocumentation<MultipleInteractionHandler> documentation
+    ("There is no documentation for the "
+     "ThePEG::MultipleInteractionHandler class");
+
+}
 

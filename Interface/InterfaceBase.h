@@ -105,6 +105,18 @@ public:
   virtual string fullDescription(const InterfacedBase & ib) const;
 
   /**
+   * Print a description to be included in the Doxygen documentation
+   * to the given \a stream.
+   */
+  virtual void doxygenDescription(ostream & stream) const;
+
+  /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  virtual string doxygenType() const = 0;
+
+  /**
    * Return the class name for the class this interface is defined
    * for.
    */

@@ -5,6 +5,7 @@
 //
 
 #include "MassGenerator.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MassGenerator.tcc"
@@ -16,5 +17,10 @@ MassGenerator::~MassGenerator() {}
 
 AbstractNoPIOClassDescription<MassGenerator> MassGenerator::initMassGenerator;
 
-void MassGenerator::Init() {}
+void MassGenerator::Init() {
+
+  static ClassDocumentation<MassGenerator> documentation
+    ("There is no documentation for the ThePEG::MassGenerator class");
+
+}
 

@@ -11,6 +11,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MatcherBase.tcc"
@@ -188,5 +189,10 @@ void MatcherBase::rebind(const TranslationMap & trans) throw(RebindException) {
 
 AbstractClassDescription<MatcherBase> MatcherBase::initMatcherBase;
 
-void MatcherBase::Init() {}
+void MatcherBase::Init() {
+
+  static ClassDocumentation<MatcherBase> documentation
+    ("There is no documentation for the ThePEG::MatcherBase class");
+
+}
 

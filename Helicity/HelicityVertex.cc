@@ -7,7 +7,6 @@
 //
 
 #include "HelicityVertex.h"
-#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Helicity/SpinInfo.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -23,11 +22,7 @@ AbstractNoPIOClassDescription<HelicityVertex>
 HelicityVertex::initHelicityVertex;
 // Definition of the static class description member.
 
-void HelicityVertex::Init() {
-
-  static ClassDocumentation<HelicityVertex> documentation
-    ("There is no documentation for the \\classname{HelicityVertex} class");
-}
+void HelicityVertex::Init() {}
 
 // methods to calculate the rho and D matrices
 // method to get the rho matrix for a given outgoing particle

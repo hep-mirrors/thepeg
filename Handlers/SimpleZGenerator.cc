@@ -44,7 +44,7 @@ ClassDescription<SimpleZGenerator> SimpleZGenerator::initSimpleZGenerator;
 void SimpleZGenerator::Init() {
 
   static ClassDocumentation<SimpleZGenerator> documentation
-    ("There is no documentation for the \\classname{SimpleZGenerator} class");
+    ("There is no documentation for the ThePEG::SimpleZGenerator class");
 
 }
 

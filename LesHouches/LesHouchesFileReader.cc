@@ -59,7 +59,7 @@ LesHouchesFileReader::initLesHouchesFileReader;
 void LesHouchesFileReader::Init() {
 
   static ClassDocumentation<LesHouchesFileReader> documentation
-    ("\\classname{LesHouchesFileReader} is an abstract base class to be "
+    ("ThePEG::LesHouchesFileReader is an abstract base class to be "
       "used for objects which reads event files from matrix element "
      "generators.");
 

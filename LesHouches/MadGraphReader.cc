@@ -126,7 +126,7 @@ ClassDescription<MadGraphReader> MadGraphReader::initMadGraphReader;
 void MadGraphReader::Init() {
 
   static ClassDocumentation<MadGraphReader> documentation
-    ("There is no documentation for the \\classname{MadGraphReader} class");
+    ("There is no documentation for the ThePEG::MadGraphReader class");
 
 }
 

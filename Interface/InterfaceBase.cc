@@ -26,6 +26,16 @@ string InterfaceBase::fullDescription(const InterfacedBase & ib) const {
     ( readOnly()? "\n-*-readonly-*-\n": "\n-*-mutable-*-\n" );
 }
 
+void InterfaceBase::doxygenDescription(ostream & os) const {
+  os << "\n<hr><b>Name: <a name=\"" << name() << "\"><code>"
+     << name() << "</code></a></b><br>\n"
+     << "<b>Type:</b> " << doxygenType();
+  if ( readOnly() ) os << " (read-only)";
+  os << " <br>\n"
+     << "\\par Description:\n"
+     << description() << "<br>\n";
+}
+
 IVector InterfaceBase::getReferences(const InterfacedBase &) const {
   return IVector();
 }
