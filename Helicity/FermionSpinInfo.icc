@@ -17,7 +17,8 @@ inline FermionSpinInfo::FermionSpinInfo()
   _decaycalc=false;
 }
 
-inline FermionSpinInfo::FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
+inline FermionSpinInfo::
+FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
   _productionstates.resize(2,LorentzSpinor());
   _decaystates.resize(2,LorentzSpinor());

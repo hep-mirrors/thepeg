@@ -1,27 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_FermionSpinInfo_H
 #define ThePEG_FermionSpinInfo_H
-//
-// This is the declaration of the <!id>FermionSpinInfo<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//  The FermionSpinInfo class inherits from the SpinInfo class and
-//  implements the storage of the basis vectors for a spin-1/2 particle.
-//  The basis states are the u spinors for a particle and the v-spinors
-//  for an antiparticle. The barred spinors can be obtained from these.
-//
-//  These basis states should be set by either matrixelements or decayers
-//  which are capable of generating spin correlation information.
-//
-//  The basis states in the rest frame of the particles can then be accessed by
-//  decayers to produce the correct correlations.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="SpinInfo.html">SpinInfo.h</a>.
-//
-// Author: Peter Richardson
+// This is the declaration of the FermionSpinInfo class.
 
 #include "SpinInfo.h"
 #include "ThePEG/Helicity/LorentzSpinor.h"
@@ -31,56 +11,129 @@
 namespace ThePEG {
 namespace Helicity {
 
+/**
+ *  The FermionSpinInfo class inherits from the SpinInfo class and
+ *  implements the storage of the basis vectors for a spin-1/2
+ *  particle.  The basis states are the u-spinors for a particle and
+ *  the v-spinors for an antiparticle. The barred spinors can be
+ *  obtained from these.
+ *
+ *  These basis states should be set by either matrixelements or
+ *  decayers which are capable of generating spin correlation
+ *  information.
+ *
+ *  The basis states in the rest frame of the particles can then be
+ *  accessed by decayers to produce the correct correlations.
+ *
+ *
+ * @author Peter Richardson
+ */
 class FermionSpinInfo: public SpinInfo {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline FermionSpinInfo();
-  inline FermionSpinInfo(const Lorentz5Momentum &,bool);
+
+  /**
+   * Standard Constructor.
+   * @param p the production momentum.
+   * @param time true if the particle is time-like.
+   */
+  inline FermionSpinInfo(const Lorentz5Momentum & p, bool time);
+
+  /**
+   * Copy-constructor.
+   */
   inline FermionSpinInfo(const FermionSpinInfo &);
+
+  /**
+   * Destructor.
+   */
   virtual ~FermionSpinInfo();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
-  // set and get methods for the basis states
+  /** @name Set and get methods for the basis state. */
+  //@{
+  /**
+   * Set the basis state, this is production state.
+   * @param hel the helicity.
+   * @param in the LorentzSpinor for the given helicity.
+   */
+  inline void setBasisState(int hel, LorentzSpinor in) const;
 
-  inline void setBasisState(int,LorentzSpinor) const;
-  // set the basis state, this is production state
+  /**
+   * Get the basis state for the production for the given helicity, \a
+   * hel.
+   */
+  inline LorentzSpinor getProductionBasisState(int hel) const;
 
-  inline LorentzSpinor getProductionBasisState(int) const;
-  // get the basis state for the production
+  /**
+   * Set the basis state for the decay.
+   * @param hel the helicity.
+   * @param in the LorentzSpinor for the given helicity.
+   */
+  inline void setDecayState(int hel, LorentzSpinor in) const;
 
-  inline LorentzSpinor getDecayBasisState(int) const;
-  // get the basis state for the decay
-
-  inline void setDecayState(int,LorentzSpinor) const;
-  // set the basis state for the decay.
+  /**
+   * Set the basis state for the decay for the given helicity, \a hel.
+   */
+  inline LorentzSpinor getDecayBasisState(int hel) const;
+  //@}
 
 public:
 
+  /**
+   * Standard Init function.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
+  /**
+   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
+   * with a whole Event and this has pointers to other event record
+   * objects, these should be rebound to their clones in this
+   * function.
+   */
   virtual void rebind(const EventTranslationMap & trans);
 
+  /**
+   * Standard clone method.
+   */
   inline virtual EIPtr clone() const;
-  // Standard clone method.
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<FermionSpinInfo> initFermionSpinInfo;
-  // Describe a concrete class without persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   FermionSpinInfo & operator=(const FermionSpinInfo &);
-  // Private and non-existent assignment operator.
 
 private:
 
+  /**
+   * basis states in the frame in which the particle was produced
+   */
   mutable vector<LorentzSpinor> _productionstates;
-  // basis states in the frame in which the particle was produced
+
+  /**
+   * basis states in the frame in which the particle decays
+   */
   mutable vector<LorentzSpinor> _decaystates;
-  // basis states in the frame in which the particle decays
+
+  /**
+   * True if the decay state has been set.
+   */
   mutable bool _decaycalc;
 
 };
@@ -88,28 +141,37 @@ private:
 }
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of FermionSpinInfo.
-  template <>
-  struct BaseClassTrait<ThePEG::Helicity::FermionSpinInfo,1> {
-    typedef ThePEG::Helicity::SpinInfo NthBase;
-  };
+/**
+ * This template specialization informs ThePEG about the base class of
+ * FermionSpinInfo.
+ */
+template <>
+struct BaseClassTrait<ThePEG::Helicity::FermionSpinInfo,1> {
+  /** Typedef of the base class of FermionSpinInfo. */
+  typedef ThePEG::Helicity::SpinInfo NthBase;
+};
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * FermionSpinInfo class and the shared object where it is defined.
+ */
 template <>
 struct ClassTraits<ThePEG::Helicity::FermionSpinInfo>
   : public ClassTraitsBase<ThePEG::Helicity::FermionSpinInfo> {
+  /**
+   * Return the class name.
+   */
   static string className() { return "ThePEG::Helicity::FermionSpinInfo"; }
-  // Return the class name.
+  /**
+   * Return the name of the shared library to be loaded to get access
+   * to the FermionSpinInfo class and every other class it uses
+   * (except the base class).
+   */
   static string library() { return "libThePEGHelicity.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
+
 };
 
 }
