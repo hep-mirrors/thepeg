@@ -9,8 +9,12 @@
 
 namespace ThePEG {
 
+/** Exception class used by ColourLines in case of inconsistent colour
+ *  flows. */
 struct ColourGeometryException: public Exception {
-  ColourGeometryException(const tPVector &, const vector<int> & = vector<int>());
+  /** Standard constructor. */
+  ColourGeometryException(const tPVector &,
+			  const vector<int> & = vector<int>());
 };
 
 }

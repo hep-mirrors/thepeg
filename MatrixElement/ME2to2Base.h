@@ -1,24 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ME2to2Base_H
 #define ThePEG_ME2to2Base_H
-//
-// This is the declaration of the <!id>ME2to2Base<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>ME2to2Base<!!id> class can be used for any matrix element
-// class implementing <i>2->2</i> processes. It extends the
-// <!class>MEBase<!!class> base class by implementing the virtual
-// <!id>scale()<!!id> method to return the assumed scale of a given
-// process according to several options. It also caches some useful
-// characteristics of the chosen phase space point, such as
-// <!id>tHat()<!!id>, <!id>uHat()<!!id> and the masses of the external
-// partons.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:MEBase.html">MEBase.h</a>.
-// 
+// This is the declaration of the ME2to2Base class.
 
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/MatrixElement/Tree2toNDiagram.h"
@@ -28,131 +11,242 @@
 
 namespace ThePEG {
 
+/**
+ * ME2to2Base can be used as a base class for any matrix element class
+ * implementing 2\f$\rightarrow\f$2 processes. It extends the MEBase
+ * base class by implementing the virtual scale() method to return the
+ * assumed scale of a given process according to several options. It
+ * also caches some useful characteristics of the chosen phase space
+ * point, such as tHat(), uHat() and the masses of the external
+ * partons.
+ *
+ * @see MEBase. 
+ */
 class ME2to2Base: public MEBase {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline ME2to2Base();
+
+  /**
+   * Copy-constructor.
+   */
   inline ME2to2Base(const ME2to2Base &);
+
+  /**
+   * Destructor.
+   */
   virtual ~ME2to2Base();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Virtual functions required by the MEBase class. */
+  //@{
+  /**
+   * The number of internal degreed of freedom used in the matrix
+   * element.
+   */
   virtual int nDim() const;
-  // The number of internal degreed of freedom used in the matrix
-  // element.
 
+  /**
+   * Generate internal degrees of freedom given 'nDim()' uniform
+   * random numbers in the interval ]0,1[. To help the phase space
+   * generator, the 'dSigHatDR()' should be a smooth function of these
+   * numbers, although this is not strictly necessary. Return
+   * false if the chosen points failed the kinematical cuts.
+   */
   virtual bool generateKinematics(const double * r);
-  // Generate internal degrees of freedom given 'nDim()' uniform
-  // random numbers in the interval ]0,1[. To help the phase space
-  // generator, the 'dSigHatDR()' should be a smooth function of these
-  // numbers, although this is not strictly necessary. Return
-  // false if the chosen points failed the kinematical cuts.
 
-  virtual double getCosTheta(double cthmin, double cthmax, const double * r);
-  // Used internally by generateKinematics, after calculating the
-  // limits on cos(theta).
-
+  /**
+   * Return the matrix element for the kinematical configuation
+   * previously provided by the last call to setKinematics(). Uses
+   * me().
+   */
   virtual CrossSection dSigHatDR() const;
-  // Return the matrix element for the kinematical configuation
-  // previously provided by the last call to setKinematics(). Uses
-  // me().
 
+  /**
+   * Return the scale associated with the last set phase space point.
+   */
   virtual Energy2 scale() const;
-  // Return the scale associated with the last set phase space point.
 
-  inline int scaleChoice() const;
-  // Give the option corresponding to the way the scale of an
-  // interaction is calculated.
-
+  /**
+   * Set the typed and momenta of the incoming and outgoing partons to
+   * be used in subsequent calls to me() and colourGeometries()
+   * according to the associated XComb object.
+   */
   virtual void setKinematics();
-  // Set the typed and momenta of the incoming and outgoing partons to
-  // be used in subsequent calls to me() and colourGeometries()
-  // according to the associated XComb object.
+  //@}
+
+  /**
+   * Used internally by generateKinematics, after calculating the
+   * limits on cos(theta).
+   */
+  virtual double getCosTheta(double cthmin, double cthmax, const double * r);
+
+  /**
+   * Give the option corresponding to the way the scale of an
+   * interaction is calculated.
+   */
+  inline int scaleChoice() const;
 
 public:
 
+  /** @name Access cached values in of the last set phase space point. */
+  //@{
+  /**
+   * Return the \f$\hat{t}\f$ of the last set phase space point.
+   */
   inline Energy2 tHat() const;
-  // Return the t-hat of the last set phase space point.
 
+  /**
+   * Return the \f$\hat{u}\f$ of the last set phase space point.
+   */
   inline Energy2 uHat() const;
-  // Return the u-hat of the last set phase space point.
 
+  /**
+   * Peturn the azimuth angle of the last set phase space point.
+   */
   inline double phi() const;
-  // Peturn the azimuth angle of the last set phase space point.
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 protected:
 
+  /**
+   * Access to the acutal Switch object used to determine the choice
+   * of scale.
+   */
   static Switch<ME2to2Base,int> & interfaceScaleChoice();
 
 private:
 
+  /**
+   * The option indicating how to calculate the scale of an interaction.
+   */
   int theScaleChoice;
-  // The option indication how to calculate the scale of an interaction.
 
+  /**
+   * The \f$\hat{t}\f$ of the last set phase space point.
+   */
   Energy2 theLastTHat;
-  // The t-hat of the last set phase space point.
 
+  /**
+   * The \f$\hat{u}\f$ of the last set phase space point.
+   */
   Energy2 theLastUHat;
-  // The u-hat of the last set phase space point.
 
+  /**
+   * The azimuth angle of the last set phase space point.
+   */
   double theLastPhi;
-  // The azimuth angle of the last set phase space point.
 
 
 private:
 
+  /**
+   * Describe an abstract base class with persistent data.
+   */
   static AbstractClassDescription<ME2to2Base> initME2to2Base;
-  // Describe an abstract base class with persistent data.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   ME2to2Base & operator=(const ME2to2Base &);
-  //  Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of ME2to2Base.
+/**
+ * This template specialization informs ThePEG about the
+ * base class of ME2to2Base.
+ */
 template <>
 struct BaseClassTrait<ME2to2Base,1> {
+  /** Typedef of the base class of ME2to2Base. */
   typedef MEBase NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * ME2to2Base class.
+ */
 template <>
 struct ClassTraits<ME2to2Base>: public ClassTraitsBase<ME2to2Base> {
-  static string className() { return "/ThePEG/ME2to2Base"; }
-  // Return the class name.
+  /** Return the class name. */
+  static string className() { return "ThePEG::ME2to2Base"; }
 };
 
 }

@@ -1,30 +1,7 @@
 // -*- C++ -*-
 #ifndef THEPEG_LesHouchesReader_H
 #define THEPEG_LesHouchesReader_H
-//
-// This is the declaration of the <!id>LesHouchesReader<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>LesHouchesReader<!!id> is an abstract base class to be used
-// for objects which reads event files or streams from matrix element
-// generators. Derived classes must at least implement the
-// <!id>open<!!id> and <!id>readEvent<!!id> methods to read in
-// information about the whole run and next event respectively and the
-// close function to close the file or stream read. The derived class
-// can fill the protected variables which corresponds very closely to
-// the Les Houches protocol common block, this base class will then be
-// responsible for transforming this data to the ThePEG
-// <!class>Event<!!class> record in the <!id>getEvent<!!id>
-// method. <!id>LesHouchesReader<!!id>s can only be used inside
-// <!class>LesHouchesEventHandler<!!class> objects and not in the
-// standard <!class>EventHandler<!!class> objects.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Event.html">Event.h</a>,
-// <a href="http:LesHouchesEventHandler.html">LesHouchesEventHandler.h</a>.
-// 
+// This is the declaration of the LesHouchesReader class.
 
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/Utilities/ObjectIndexer.h"
@@ -33,254 +10,443 @@
 
 namespace ThePEG {
 
+/**
+ * LesHouchesReader is an abstract base class to be used for objects
+ * which reads event files or streams from matrix element
+ * generators. Derived classes must at least implement the open() and
+ * readEvent() methods to read in information about the whole run and
+ * next event respectively and the close function to close the file or
+ * stream read. The derived class can fill the protected variables
+ * which corresponds very closely to the Les Houches protocol common
+ * block, this base class will then be responsible for transforming
+ * this data to the ThePEG Event record in the getEvent()
+ * method. <code>LesHouchesReader</code>s can only be used inside
+ * LesHouchesEventHandler objects and not in the standard EventHandler
+ * objects.
+ *
+ * @see Event,
+ * @see LesHouchesEventHandler.
+ */
 class LesHouchesReader: public HandlerBase {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   LesHouchesReader();
+
+  /**
+   * Copy-constructor.
+   */
   LesHouchesReader(const LesHouchesReader &);
+
+  /**
+   * Destructor.
+   */
   virtual ~LesHouchesReader();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Main virtual fuctions to be overridden in sub-classes. */
+  //@{
+  /**
+   * Open a file or stream with events and read in the run information
+   * into the corresponding protected variables.
+   */
   virtual void open() = 0;
-  // Open a file or stream with events and read in the run information
-  // into the corresponding protected variables.
 
+  /**
+   * Read the next event form the file or stream into the
+   * corresponding protected variables. Return false if there is no
+   * more events.
+   */
   virtual bool readEvent() = 0;
-  // Read the next event form the file or stream into the
-  // corresponding protected variables. Return false if there is no
-  // more events.
 
+  /**
+   * Close the file or stream from which events have been read.
+   */
   virtual void close() = 0;
-  // Close the file or stream from which events have been read.
 
+  /**
+   * Scan the file or stream to obtain information about cross section
+   * weights and particles etc.
+   */
   virtual void scan();
-  // Scan the file or stream to obtain information about cross section
-  // weights and particles etc.
 
+  /**
+   * Calls readEvent() and translates the information into information
+   * suitable for creating an Event object.
+   */
   virtual void convertEvent();
-  // Calls readEvent and translates the information into information
-  // suitable for creating an Event object.
+  //@}
 
+  /** @name Access information about the current event. */
+  //@{
+  /**
+   * Return the instances of the beam particles for the current event.
+   */
   inline const PPair & beams() const;
-  // Return the instances of the beam particles for the current event.
 
+  /**
+   * Return the instances of the incoming particles to the sub process
+   * for the current event.
+   */
   inline const PPair & incoming() const;
-  // Return the instances of the incoming particles to the sub process
-  // for the current event.
 
+  /**
+   * Return the instances of the outgoing particles from the sub process
+   * for the current event.
+   */
   inline const PVector & outgoing() const;
-  // Return the instances of the outgoing particles from the sub process
-  // for the current event.
 
+  /**
+   * Return the instances of the intermediate particles in the sub
+   * process for the current event.
+   */
   inline const PVector & intermediates() const;
-  // Return the instances of the intermediate particles in the sub
-  // process for the current event.
+  //@}
 
 protected:
 
+  /** @name Auxilliary virtual methods which may be verridden by sub-classes. */
+  //@{
+  /**
+   * Create instances of all particles in the event and store them
+   * in particleIndex.
+   */
   virtual void createParticles();
-  // Create instances of all particles in the event and store them
-  // in particleIndex.
 
+  /**
+   * Create instances of the incoming beams in the event and store
+   * them in particleIndex. If no beam particles are included in the
+   * event they are created from the run info.
+   */
   virtual void createBeams();
-  // Create instances of the incoming beams in the event and store
-  // them in particleIndex. If no beam particles are included in the
-  // event they are created from the run info.
 
+  /**
+   * Go through the mother indices and connect up the Particles.
+   */
   virtual void connectMothers();
-  // Go through the mother indices and connect up the Particles.
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 protected:
 
+  /**
+   * PDG id's of beam particles. (first/second is in +/-z direction).
+   */
   pair<long,long> IDBMUP;
-  // PDG id's of beam particles. (first/second is in +/-z direction).
 
+  /**
+   * Energy of beam particles given in GeV.
+   */
   pair<double,double> EBMUP;
-  // Energy of beam particles given in GeV.
 
+  /**
+   * The author group for the PDF used for the beams according to the
+   * PDFLib specification.
+   */
   pair<int,int> PDFGUP;
-  // The author group for the PDF used for the beams according to the
-  // PDFLib specification.
 
+  /**
+   * The id number the PDF used for the beams according to the
+   * PDFLib specification.
+   */
   pair<int,int> PDFSUP;
-  // The id number the PDF used for the beams according to the
-  // PDFLib specification.
 
+  /**
+   * Master switch indicating how the ME generator envisages the
+   * events weights should be interpreted according to the Les Houches
+   * accord.
+   */
   int IDWTUP;
-  // Master switch indicating how the ME generator envisages the
-  // events weights should be interpreted according to the Les Houches
-  // accord.
 
+  /**
+   * The number of different subprocesses in this file (should
+   * typically be just one)
+   */
   int NRUP;
-  // The number of different subprocesses in this file (should
-  // typically be just one)
 
+  /**
+   * The cross sections for the different subprocesses in pb.
+   */
   vector<double> XSECUP;
-  // The cross sections for the different subprocesses in pb.
 
+  /**
+   * The statistical error in the cross sections for the different
+   * subprocesses in pb.
+   */
   vector<double> XERRUP;
-  // The statistical error in the cross sections for the different
-  // subprocesses in pb.
 
+  /**
+   * The maximum event weights (in XWGTUP) for different subprocesses.
+   */
   vector<double> XMAXUP;
-  // The maximum event weights (in XWGTUP) for different subprocesses.
 
+  /**
+   * The subprocess code for the different subprocesses.
+   */
   vector<int> LPRUP;
-  // The subprocess code for the different subprocesses.
 
+  /**
+   * The number of particle entries in the current event.
+   */
   int NUP;
-  // The number of particle entries in the current event.
 
+  /**
+   * The subprocess code for this event (as given in LPRUP).
+   */
   int IDPRUP;
-  // The subprocess code for this event (as given in LPRUP).
 
+  /**
+   * The weight for this event.
+   */
   double XWGTUP;
-  // The weight for this event.
 
+  /**
+   * The scale in GeV used in the calculation of the PDF's in this
+   * event.
+   */
   double SCALUP;
-  // The scale in GeV used in the calculation of the PDF's in this
-  // event.
 
+  /**
+   * The value of the QED coupling used in this event.
+   */
   double AQEDUP;
-  // The value of the QED coupling used in this event.
 
+  /**
+   * The value of the QCD coupling used in this event.
+   */
   double AQCDUP;
-  // The value of the QCD coupling used in this event.
 
+  /**
+   * The PDG id's for the particle entries in this event.
+   */
   vector<long> IDUP;
-  // The PDG id's for the particle entries in this event.
 
+  /**
+   * The status codes for the particle entries in this event.
+   */
   vector<int> ISTUP;
-  // The status codes for the particle entries in this event.
 
+  /**
+   * Indices for the first and last mother for the particle entries in
+   * this event.
+   */
   vector< pair<int,int> > MOTHUP;
-  // Indices for the first and last mother for the particle entries in
-  // this event.
 
+  /**
+   * The colour-line indices (first(second) is (anti)colour) for the
+   * particle entries in this event.
+   */
   vector< pair<int,int> > ICOLUP;
-  // The colour-line indices (first(second) is (anti)colour) for the
-  // particle entries in this event.
 
+  /**
+   * Lab frame momentum (Px, Py, Pz, E and M in GeV) for the particle
+   * entries in this event.
+   */
   vector< vector<double> > PUP;
-  // Lab frame momentum (Px, Py, Pz, E and M in GeV) for the particle
-  // entries in this event.
 
+  /**
+   * Invariant lifetime (c*tau, distance from production to decay im
+   * mm) for the particle entries in this event.
+   */
   vector<double> VTIMUP;
-  // Invariant lifetime (c*tau, distance from production to decay im
-  // mm) for the particle entries in this event.
 
+  /**
+   * Spin info for the particle entries in this event given as the
+   * cosine of the angle between the spin vector of a particle and the
+   * 3-momentum of the decaying particle, specified in the lab frame.
+   */
   vector<double> SPINUP;
-  // Spin info for the particle entries in this event given as the
-  // cosine of the angle between the spin vector of a particle and the
-  // 3-momentum of the decaying particle, specified in the lab frame.
 
+  /**
+   * The total cross section for the sub processes in this file.
+   */
   CrossSection theXSec;
-  // The total cross section for the sub processes in this file.
 
+  /**
+   * The overestimated cross section for the sub processes in this
+   * file.
+   */
   CrossSection theMaxXSec;
-  // The overestimated cross section for the sub processes in this
-  // file.
 
+  /**
+   * The maimum weight found in this file.
+   */
   double theMaxWeight;
-  // The maimum weight found in this file.
 
+  /**
+   * Association between ColourLines and colour indices in the current
+   * translation.
+   */
   ObjectIndexer<long,ColourLine> colourIndex;
-  // Association between ColourLines and colour indices in the current
-  // translation.
 
+  /**
+   * Association between Particles and indices in the current
+   * translation.
+   */
   ObjectIndexer<long,Particle> particleIndex;
-  // Association between Particles and indices in the current
-  // translation.
 
+  /**
+   * The instances of the beam particles for the current event.
+   */
   PPair theBeams;
-  // The instances of the beam particles for the current event.
 
+  /**
+   * The instances of the incoming particles to the sub process for
+   * the current event.
+   */
   PPair theIncoming;
-  // The instances of the incoming particles to the sub process for
-  // the current event.
 
+  /**
+   * The instances of the outgoing particles from the sub process for
+   * the current event.
+   */
   PVector theOutgoing;
-  // The instances of the outgoing particles from the sub process for
-  // the current event.
 
+  /**
+   * The instances of the intermediate particles in the sub process for
+   * the current event.
+   */
   PVector theIntermediates;
-  // The instances of the intermediate particles in the sub process for
-  // the current event.
 
 private:
 
+  /**
+   * Describe an abstract base class with persistent data.
+   */
   static AbstractClassDescription<LesHouchesReader> initLesHouchesReader;
-  // Describe an abstract base class with persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   LesHouchesReader & operator=(const LesHouchesReader &);
-  // Private and non-existent assignment operator.
 
 public:
 
+  /** Exception class used by LesHouchesReader in case inconsistencies
+   *  are encountered. */
 class LesHouchesInconsistencyError: public Exception {};
 
 };
 
 }
 
-// CLASSDOC OFF
 
 #include "ThePEG/Utilities/ClassTraits.h"
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of LesHouchesReader.
+/**
+ * This template specialization informs ThePEG about the
+ * base class of LesHouchesReader.
+ */
 template <>
 struct BaseClassTrait<LesHouchesReader,1> {
+  /** Typedef of the base class of LesHouchesReader. */
   typedef HandlerBase NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * LesHouchesReader class and the shared object where it is
+ * defined.
+ */
 template <>
 struct ClassTraits<LesHouchesReader>
   : public ClassTraitsBase<LesHouchesReader> {
+  /**
+   * Return the class name.
+   */
   static string className() { return "ThePEG::LesHouchesReader"; }
-  // Return the class name.
+  /**
+   * Return the name of the shared library to be loaded to get access
+   * to the LesHouchesReader class and every other class it uses
+   * (except the base class).
+   */
   static string library() { return "libThePEGLesHouches.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
+
 };
 
 }
 
+// #include "LesHouchesReader.tcc"
 #include "LesHouchesReader.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LesHouchesReader.tcc"
 #endif
 
 #endif /* THEPEG_LesHouchesReader_H */
