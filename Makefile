@@ -81,6 +81,7 @@ thesnapshot:
 	mkdir $(SNAPTAG)
 	cvs export -D today ThePEG
 	mv ThePEG/ThePEG $(SNAPTAG)
+	rm -rf ThePEG
 	cp Doc/*.html $(SNAPTAG)/ThePEG/Doc
 	tar czf $(SNAPTAG).tgz $(SNAPTAG)
 	rm -rf $(SNAPTAG)
