@@ -6,6 +6,8 @@
 // Author: Peter Richardson
 //
 
+#include "ThePEG/Helicity/HelicityDefinitions.h"
+
 namespace ThePEG {
 namespace Helicity {
 
@@ -79,30 +81,19 @@ inline void LorentzTensor::setTT(Complex a) {_tensor[3][3]=a;}
 // Set position and time
 inline Complex LorentzTensor::operator () (int i,int j) const
 {
-  if( i>=0 && i<=3 && j>=0 && j<=3)
-    {;}
-  else
-    {
-      std::cerr << "Invalid component of LorentzTensor "
-		<< i << " " << j << endl;
-      return 0.;
-    }
-  return _tensor[i][j];
+  if( i>=0 && i<=3 && j>=0 && j<=3) return _tensor[i][j];
+  throw HelicityLogicalError()
+    << "Invalid component (" << i << "," << j
+    << ") requested for LorentzTensor." << Exception::abortnow;
 }
 
 // Get components by index.
 inline Complex & LorentzTensor::operator () (int i,int j)
 {
-  static Complex dummy;
-  if( i>=0 && i<=3 && j>=0 && j<=3)
-    {;}
-  else
-    {
-      std::cerr << "Invalid component of LorentzTensor "
-		<< i << " " << j << endl;
-      return dummy;
-    }
-  return _tensor[i][j];
+  if( i>=0 && i<=3 && j>=0 && j<=3) return _tensor[i][j];
+  throw HelicityLogicalError()
+    << "Invalid component (" << i << "," << j
+    << ") requested for LorentzTensor." << Exception::abortnow;
 }
 
 // Set components by index.

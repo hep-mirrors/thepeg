@@ -6,6 +6,8 @@
 // Author: Peter Richardson
 //
 
+#include "ThePEG/Helicity/HelicityDefinitions.h"
+
 namespace ThePEG {
 namespace Helicity {
 
@@ -29,45 +31,33 @@ LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d) {
 // subscript operator to return spinor components
 inline Complex LorentzSpinorBar::operator[](int i) const
 {
-  if(i>=0&&i<=3)
-    {return _spin[i];}
-  else
-    {
-      cerr << "Invalid component of Spinor Requested Component:"<<i<<endl;
-      return 0.;
-    }
+  if ( i >= 0 && i <= 3 ) return _spin[i];
+  else throw HelicityLogicalError()
+    << "Invalid component of LorentzSpinorBar requested. Component:" << i
+    << Exception::abortnow;
 }
 
 inline Complex LorentzSpinorBar::operator()(int i) const
 {
-  if(i>=0&&i<=3)
-    {return _spin[i];}
-  else
-    {
-      cerr << "Invalid component of Spinor Requested Component:"<<i<<endl;
-      return 0.;
-    }
+  if ( i >= 0 && i <= 3 ) return _spin[i];
+  else throw HelicityLogicalError()
+    << "Invalid component of LorentzSpinorBar Requested. Component:" << i
+    << Exception::abortnow;
 }
 
 // set components by index
 inline Complex & LorentzSpinorBar::operator () (int i){
-  static Complex dummy;
-  if(i>=0 &&i<=3)
-    {return _spin[i];}
-  else
-    {cerr << "Invalid index " << i
-	  << " called for LorentzPolarizationVector" << endl;
-    return dummy;}
+  if ( i>= 0 && i <= 3 ) return _spin[i];
+  throw HelicityLogicalError()
+    << "Invalid index " << i << " called for LorentzSpinorBar."
+    << Exception::abortnow;
 }
 
 inline Complex & LorentzSpinorBar::operator [] (int i){
-  static Complex dummy;
-  if(i>=0 &&i<=3)
-    {return _spin[i];}
-  else
-    {cerr << "Invalid index " << i
-	  << " called for LorentzPolarizationVector" << endl;
-    return dummy;}
+  if ( i >= 0 && i <=3 ) return _spin[i];
+  throw HelicityLogicalError()
+    << "Invalid index " << i << " called for LorentzSpinorBar."
+    << Exception::abortnow;
 }
 
 // Get components

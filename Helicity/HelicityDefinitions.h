@@ -15,6 +15,7 @@
 //
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/Utilities/Exception.h"
 // #include "HelicityDefinitions.fh"
 // #include "HelicityDefinitions.xh"
 
@@ -30,6 +31,10 @@ public:
   }
 
 };
+
+class HelicityLogicalError: public Exception {};
+
+class HelicityConsistencyError: public Exception {};
 
 }
 }

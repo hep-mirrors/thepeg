@@ -6,6 +6,8 @@
 // Author: Peter Richardson
 //
 
+#include "ThePEG/Helicity/HelicityDefinitions.h"
+
 namespace ThePEG {
 namespace Helicity {
 
@@ -46,11 +48,11 @@ inline void FermionSpinInfo::rebind(const EventTranslationMap & trans) {
 // set the basis state, this is production state
 inline void FermionSpinInfo::setBasisState(int ihel,LorentzSpinor in) const
 {
-  if(ihel==-1||ihel==1) {
-    _productionstates[(ihel+1)/2]=in;
-  } else {
-    cerr << "Tried to set invalid fermion basis state" << endl;
-  }
+  if(ihel==-1||ihel==1) _productionstates[(ihel+1)/2]=in;
+  else throw HelicityLogicalError()
+      << "Tried to set invalid fermion basis state in FermionSpinInfo class."
+      << Exception::abortnow;
+
 }
 
 inline void FermionSpinInfo::setDecayState(int ihel,LorentzSpinor in) const
@@ -58,30 +60,28 @@ inline void FermionSpinInfo::setDecayState(int ihel,LorentzSpinor in) const
   if(ihel==-1||ihel==1){
     _decaycalc=true;
     _decaystates[(ihel+1)/2]=in;
-  } else {
-    cerr << "Tried to set invalid fermion basis state" << endl;
-  }
+  } else throw HelicityLogicalError()
+    << "Tried to set invalid fermion basis state in FermionSpinInfo class."
+    << Exception::abortnow;
 }
 
 // get the basis state for the production
 inline LorentzSpinor FermionSpinInfo::getProductionBasisState(int ihel) const
 {
-  static LorentzSpinor dummy;
-  if(ihel!=-1&&ihel!=1) {
-    cerr << "Tried to get invalid fermion basis state" << endl;return dummy;
-  }
+  if ( ihel != -1 && ihel != 1 ) throw HelicityLogicalError()
+    << "Tried to get invalid fermion basis state in FermionSpinInfo class."
+    << Exception::abortnow;
   return _productionstates[(ihel+1)/2];
 }
 
 // get the bassis state for the decay
 inline LorentzSpinor FermionSpinInfo::getDecayBasisState(int ihel) const
 {
-  static LorentzSpinor dummy;
   // check this is a valid helicity
-  if(ihel!=-1&&ihel!=1) {
-    cerr << "Tried to get invalid fermion basis state" << endl;
-    return dummy;
-  }
+  if ( ihel != -1 && ihel != 1 )
+    throw HelicityLogicalError()
+      << "Tried to get invalid fermion basis state in FermionSpinInfo class."
+      << Exception::abortnow;
   // calculate the decay basis states if needed
   if(!_decaycalc)
     {

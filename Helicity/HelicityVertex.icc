@@ -6,6 +6,8 @@
 // Author: Peter Richardson
 //
 
+#include "ThePEG/Helicity/HelicityDefinitions.h"
+
 namespace ThePEG {
 namespace Helicity {
 
@@ -39,22 +41,18 @@ inline void HelicityVertex::addOutgoing(tcSpinPtr in,int & loc)
 
 inline void HelicityVertex::resetIncoming(tcSpinPtr in,int loc)
 {
-  if ( loc<int(_incoming.size())&&loc>=0 ) {
-    _incoming[loc]=in;
-  } else {
-    cerr << "reset invalid incoming particle in HelictityVertex "
-	 << loc << endl;
-  }
+  if ( loc < int(_incoming.size()) && loc >= 0 ) _incoming[loc]=in;
+  else throw HelicityLogicalError()
+    << "reset invalid incoming particle in HelictityVertex " << loc
+    << Exception::abortnow;
 }
 
 inline void HelicityVertex::resetOutgoing(tcSpinPtr in,int loc)
 {
-  if(loc<int(_outgoing.size())&&loc>=0) {
-    _outgoing[loc]=in;
-  } else {
-    cerr << "reset invalid outgoing particle in HelicityVertex "
-	 << loc << endl;
-  }
+  if ( loc < int(_outgoing.size()) && loc >= 0 ) _outgoing[loc]=in;
+  else throw HelicityLogicalError()
+    << "reset invalid outgoing particle in HelicityVertex " << loc
+    << Exception::abortnow;
 }
 
 inline void HelicityVertex::output() const
