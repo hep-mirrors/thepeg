@@ -27,7 +27,7 @@ using std::ostringstream;
 namespace ThePEG {
 
 /** Simple wrapper around the ostrsteam class. Will only be included
- *  if the <sstream> is absent. */
+ *  if the sstream header is absent. */
 class ostringstream: public ostrstream {
 
 public:
@@ -55,7 +55,7 @@ private:
 };
 
 /** Simple wrapper around the istrsteam class. Will only be included
- *  if the <sstream> is absent. */
+ *  if the sstream header is absent. */
 class istringstream: public istrstream {
 
 public:

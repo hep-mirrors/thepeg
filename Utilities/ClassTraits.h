@@ -122,7 +122,7 @@ struct ClassTraits: public ClassTraitsBase<T> {};
 template <typename Derived, int BaseN> struct BaseClassTrait {
   /**
    * The type of the <code>BaseN</code>'th base class (int means there
-   * are no further base classes.
+   * are no further base classes).
    */
   typedef int NthBase;
 };

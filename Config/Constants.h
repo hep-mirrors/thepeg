@@ -12,7 +12,7 @@
 namespace ThePEG {
 
 /**
- * The constants namespace containing some useful physical constants
+ * The Constants namespace containing some useful physical constants
  * with suitable units.
  */
 namespace Constants {
