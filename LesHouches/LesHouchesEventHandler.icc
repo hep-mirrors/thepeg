@@ -54,10 +54,6 @@ inline void LesHouchesEventHandler::dofinish() {
   PartialCollisionHandler::dofinish();
 }
 
-inline void LesHouchesEventHandler::doinitrun() {
-  PartialCollisionHandler::doinitrun();
-}
-
 inline void LesHouchesEventHandler::rebind(const TranslationMap & trans)
   throw(RebindException) {
   // dummy = trans.translate(dummy);

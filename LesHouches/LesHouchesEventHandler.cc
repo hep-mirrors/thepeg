@@ -23,6 +23,12 @@ using namespace ThePEG;
 LesHouchesEventHandler::~LesHouchesEventHandler() {}
 
 void LesHouchesEventHandler::doinit() throw(InitException) {
+  for ( int i = 0, N = readers().size(); i < N; ++i )
+    readers()[i]->init();
+}
+
+void LesHouchesEventHandler::initialize() {
+
   typedef map<int,tLesHouchesReaderPtr> ProcessMap;
   PartialCollisionHandler::doinit();
   if ( readers().empty() )
@@ -33,6 +39,7 @@ void LesHouchesEventHandler::doinit() throw(InitException) {
   // Go through all the readers and collect information about cross
   // sections and processes.
   CrossSection sum = 0.0*picobarn;
+  CrossSection maxxsec = 0.0*picobarn;
   ProcessMap processes;
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
@@ -43,6 +50,7 @@ void LesHouchesEventHandler::doinit() throw(InitException) {
 	<< "' contains negatively weighted events, "
 	<< "which is not allowed for the LesHouchesEventHandler '"
 	<< name() << "'." << Exception::warning;
+    maxxsec += reader.maxXSec();
     for ( int ip = 0; ip < reader.NRUP; ++ip ) {
       sum += reader.XSECUP[ip]*picobarn;
       if ( reader.LPRUP[ip] ) {
@@ -63,9 +71,12 @@ void LesHouchesEventHandler::doinit() throw(InitException) {
       << "The sum of the cross sections of the readers in the "
       << "LesHouchesEventHandler '" << name()
       << "' was zero." << Exception::warning;
+
+
 }
 
-void LesHouchesEventHandler::initialize() {
+void LesHouchesEventHandler::doinitrun() {
+  PartialCollisionHandler::doinitrun();
   NAttempted(0);
   accepted().clear();
   selector().clear();

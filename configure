@@ -1986,7 +1986,7 @@ _ACEOF
 
 
 if test -z "$GZWRITE_FILE"; then
-   GZWRITE_FILE="gzip -c"
+   GZWRITE_FILE="gzip -c > "
 fi
 cat >>confdefs.h <<_ACEOF
 #define ThePEG_GZWRITE_FILE "$GZWRITE_FILE"
@@ -2004,7 +2004,7 @@ _ACEOF
 
 
 if test -z "$BZ2WRITE_FILE"; then
-   BZ2WRITE_FILE="gzip -c"
+   BZ2WRITE_FILE="bzip2 -c > "
 fi
 
 cat >>confdefs.h <<_ACEOF

@@ -202,7 +202,7 @@ protected:
    * Initialize this object. Called in the run phase just before
    * a run begins.
    */
-  inline virtual void doinitrun();
+  virtual void doinitrun();
 
   /**
    * Finalize this object. Called in the run phase just after a

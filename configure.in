@@ -57,7 +57,7 @@ AC_ARG_VAR(GZREAD_FILE,The command which taking the name of a gzipped file as ar
 AC_DEFINE_UNQUOTED(ThePEG_GZREAD_FILE, "$GZREAD_FILE")
 
 if test -z "$GZWRITE_FILE"; then
-   GZWRITE_FILE="gzip -c"
+   GZWRITE_FILE="gzip -c > "
 fi
 AC_DEFINE_UNQUOTED(ThePEG_GZWRITE_FILE, "$GZWRITE_FILE")
 AC_ARG_VAR(GZWRITE_FILE,The command which taking the name of a gzipped file as argument reads stdin zips it and writes it to the file. Default is "gzip -c".)
@@ -69,7 +69,7 @@ AC_ARG_VAR(BZ2READ_FILE,The command which taking the name of a bzipped file as a
 AC_DEFINE_UNQUOTED(ThePEG_BZ2READ_FILE, "$BZ2READ_FILE")
 
 if test -z "$BZ2WRITE_FILE"; then
-   BZ2WRITE_FILE="gzip -c"
+   BZ2WRITE_FILE="bzip2 -c > "
 fi
 AC_ARG_VAR(BZ2WRITE_FILE,The command which taking the name of a bzipped file as argument reads stdin zips it and writes it to the file. Default is "bzip2 -c".)
 AC_DEFINE_UNQUOTED(ThePEG_BZ2WRITE_FILE, "$BZ2WRITE_FILE")

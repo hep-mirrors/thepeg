@@ -134,7 +134,7 @@ public:
   inline double maxWeight() const;
 
   /**
-   * The number of events found in this file. If less than zero the
+   * The number of events found in this reader. If less than zero the
    * number of events are unlimited.
    */
   inline long NEvents() const;
