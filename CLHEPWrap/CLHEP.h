@@ -8,4 +8,6 @@
 #define CLHEP_SQR_DEFINED
 #define CLHEP_ABS_DEFINED
 
+namespace CLHEP {}
+
 #endif /* ThePEG_CLHEP_H */

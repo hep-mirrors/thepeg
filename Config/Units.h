@@ -28,6 +28,8 @@
 
 namespace ThePEG {
 namespace Units {
+
+using namespace CLHEP;
   
 typedef double Mass;
 typedef double Energy;

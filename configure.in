@@ -11,7 +11,7 @@ if test -z "$ARFLAGS"; then
 fi
 AC_PROG_RANLIB
 if test -z "$CLHEPPATH"; then
-  CLHEPPATH="/usr/local"
+  CLHEPPATH="$prefix"
 fi
 
 if test -z "$CLHEPLIB"; then

@@ -150,6 +150,7 @@ template <>
 struct ACDCFncTraits<ThePEG::tEHPtr> {
   typedef ThePEG::tEHPtr tEHPtr;
   static inline double value(const tEHPtr & eh, const DVector & x) {
+    using namespace ThePEG::Units;
     try {
       return eh->dSigDR(x)*ThePEG::sqr(hbarc)/nanobarn;
     }

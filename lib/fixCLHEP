@@ -1,8 +1,8 @@
 #!/bin/csh -f
 set wd = `pwd`
 cd $1/lib
-if ( -e lib${2}.a ) then
-  ld -shared --whole-archive lib${2}.a -o $wd/libCLHEP.so
-else
+if ( -e lib${2}.so ) then
   cp lib${2}.so $wd/libCLHEP.so
+else
+  ld -shared --whole-archive lib${2}.a -o $wd/libCLHEP.so
 endif
