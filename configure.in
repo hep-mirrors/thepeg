@@ -2,15 +2,35 @@ dnl Process this file with autoconf to produce a configure script.
 dnl
 AC_INIT(Makefile)
 
-AC_PROGRAMS_CHECK(CXX, g++ cl KCC CC cxx xlC aCC)
+if test -z "$CXXFLAGS"; then
+   CXXFLAGS="-Wall -ansi -pedantic"
+fi
+if test -z "$CXXOPTFLAG"; then
+   CXXOPTFLAG="-O"
+fi
+if test -z "$CXXDEBUGFLAG"; then
+   CXXDEBUGFLAG="-g"
+fi
+if test -z "$CXXDLFLAGS"; then
+   CXXDLFLAGS="-shared"
+fi
+if test -z "$CXXEXT"; then
+   CXXEXT="-fpic"
+fi
 
-AC_LANG_CPLUSPLUS
+AC_PROG_CXX(g++ cl KCC CC cxx xlC aCC)
+
+AC_LANG(C++)
 AC_PROGRAMS_CHECK(AR, ar)
 if test -z "$ARFLAGS"; then
   ARFLAGS="rv "
 fi
 AC_PROG_RANLIB
 
+AC_ARG_VAR(CXXEXT,The compiler option for generating position indicated code if needed for dynamic linking. Default is '-fpic')
+AC_ARG_VAR(CXXDLFLAGS,The compiler link option for creating a shared object file for dynamic linking. Default is '-shared')
+AC_ARG_VAR(CXXOPTFLAG,The compiler option for generating optimized code. Set her rather than in CXXFLAGS. Default is '-O')
+AC_ARG_VAR(CXXDEBUGFLAG,The compiler option for generating debugging information. Set her rather than in CXXFLAGS. Default is '-g')
 if test -z "$CLHEPPATH"; then
   if test "x$prefix" == "xNONE"; then
     CLHEPPATH=$ac_default_prefix
@@ -18,27 +38,47 @@ if test -z "$CLHEPPATH"; then
     CLHEPPATH=$prefix
   fi
 fi
+AC_ARG_VAR(CLHEPPATH,The path where CLHEP is installed. Default is $prefix.)
 
 if test -z "$CLHEPLIB"; then
   CLHEPLIB="CLHEP"
 fi
+AC_ARG_VAR(CLHEPLIB,The name of the CLHEP library. The full path is assumed to be $CLHEPPATH/lib/lib${CLHEPLIB}.a or $CLHEPPATH/lib/lib${CLHEPLIB}.so. Default is 'CLHEP')
 
 if test -z "$CLHEPINCLUDE"; then
   CLHEPINCLUDE=-I$CLHEPPATH/include
 fi
+AC_ARG_VAR(CLHEPINCLUDE,The include directive needed to find the CLHEP include files. Default is -I$CLHEPPATH/include.)
 
 BUILDDIR=`pwd`
 
 AC_SUBST(AR)
 AC_SUBST(ARFLAGS)
+AC_SUBST(CXXFLAGS)
+AC_SUBST(CXXOPTFLAG)
+AC_SUBST(CXXDEBUGFLAG)
+AC_SUBST(CXXDLFLAGS)
+AC_SUBST(CXXEXT)
 AC_SUBST(RANLIB)
 AC_SUBST(CLHEPPATH)
 AC_SUBST(CLHEPLIB)
 AC_SUBST(CLHEPINCLUDE)
 AC_SUBST(prefix)
 AC_SUBST(BUILDDIR)
-AC_CHECK_FUNC(expm1, AC_DEFINE(ThePEG_HAS_EXPM1))
-AC_CHECK_FUNC(log1p, AC_DEFINE(ThePEG_HAS_LOG1P))
+echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
+AC_TRY_COMPILE(
+#include <cmath>
+, expm1(1.0);
+, AC_DEFINE(ThePEG_HAS_EXPM1)
+echo "${ECHO_T}yes" 1>&6
+, echo "${ECHO_T}no" 1>&6)
+echo $ECHO_N "checking for log1p... $ECHO_C" 1>&6
+AC_TRY_COMPILE(
+#include <cmath>
+, log1p(1.0);
+, AC_DEFINE(ThePEG_HAS_LOG1P)
+echo "${ECHO_T}yes" 1>&6
+, echo "${ECHO_T}no" 1>&6)
 echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <dlfcn.h>

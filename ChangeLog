@@ -1,3 +1,14 @@
+2003-11-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* lib/ThePEG.el: Made sure ClassTraits.h is included before class
+	traits templates are specialized.
+
+	* configure.in, Config/Makefile.common.in: Made configure steer
+	all compiler flags and included info for --help option. Also
+	changed the check for log1p and expm1 which caused problems under
+	cygwin. Need to also fix a atanh check but no solution to that for
+	cygwin yet.
+
 2003-11-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/Makefile, lib/fixCLHEP: If CLHEP is already in a dynamic

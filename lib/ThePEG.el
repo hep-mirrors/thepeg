@@ -407,6 +407,8 @@ private:
 
 // CLASSDOC OFF
 
+#include \"ThePEG/Utilities/ClassTraits.h\"
+
 namespace ThePEG {
 
 // The following template specialization informs ThePEG about the
