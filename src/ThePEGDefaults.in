@@ -9,6 +9,7 @@ create /ThePEG/OmegaPhi3PiDecayer /Defaults/Decayers/OmegaPhi3Pi OmegaPhi3PiDeca
 create /ThePEG/V2PPDecayer /Defaults/Decayers/V2PP V2PPDecayer.so
 create /ThePEG/DalitzDecayer /Defaults/Decayers/Dalitz DalitzDecayer.so
 create /ThePEG/Tau2HadronsDecayer /Defaults/Decayers/Tau2Hadrons Tau2HadronsDecayer.so
+create /ThePEG/DummyDecayer /Defaults/Decayers/Dummy DummyDecayer.so
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY4
 setup /Dummy/Decayers/PYDECY4 4
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY11
@@ -27,8 +28,6 @@ create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY51
 setup /Dummy/Decayers/PYDECY51 51
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY53
 setup /Dummy/Decayers/PYDECY53 53
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY102
-setup /Dummy/Decayers/PYDECY102 102
 create /ThePEG/Matcher<Lepton> /Defaults/Matchers/MatchLepton
 create /ThePEG/Matcher<LightQuark> /Defaults/Matchers/MatchLightQuark
 create /ThePEG/Matcher<LightAntiQuark> /Defaults/Matchers/MatchLightAntiQuark

@@ -72,10 +72,12 @@ public:
   inline const ParticleMSet & products() const;
   // The set of identified decay products.
 
+  inline const PDVector & orderedProducts() const;
+  // The set of identified decay products in the order they were specified.
+
   PVector produceProducts() const;
   // Produce particles corresponding to the identified decay
-  // products. They will be orderd so that particles which are linked
-  // come first and are consecutive.
+  // products. They will be orderd in the order they were sspecified.
 
   inline const ModeMSet & cascadeProducts() const;
   // The set of identified resonant products with specified decay
@@ -257,6 +259,9 @@ private:
 
   ParticleMSet theProducts;
   // The set of specified decay particles.
+
+  PDVector theOrderedProducts;
+  // The set of specified decay particles in the order they was specified.
 
   ModeMSet theCascadeProducts;
   // The set of matching decay channels corresponding to a specified

@@ -1,11 +1,11 @@
 SOURCES = ParticleData.cc DecayMode.cc MatcherBase.cc Matcher.cc Decayer.cc \
-          MassGenerator.cc WidthGenerator.cc PYDECYDummy.cc \
+          MassGenerator.cc WidthGenerator.cc PYDECYDummy.cc DummyDecayer.cc \
           ConstituentParticleData.cc FlatDecayer.cc BreitWignerMass.cc \
           OmegaPhi3PiDecayer.cc V2PPDecayer.cc DalitzDecayer.cc\
           Tau2HadronsDecayer.cc
 
 LIBOBJECTS = ParticleData.o DecayMode.o MatcherBase.o Matcher.o Decayer.o \
-             MassGenerator.o WidthGenerator.o PYDECYDummy.o \
+             MassGenerator.o WidthGenerator.o PYDECYDummy.o DummyDecayer.o \
              ConstituentParticleData.o FlatDecayer.o
 
 DEBUGOBJECTS = ParticleData.o 
@@ -15,7 +15,7 @@ OBJECTS = libThePEGPDT.so BreitWignerMass.so OmegaPhi3PiDecayer.so \
 
 DOCFILES = CombinedMatcher.h DecayMode.h WidthGenerator.h Decayer.h \
            EnumParticles.h MassGenerator.h Matcher.h MatcherBase.h PDT.h \
-           ParticleData.h StandardMatchers.h PYDECYDummy.h \
+           ParticleData.h StandardMatchers.h PYDECYDummy.h DummyDecayer.h \
            ConstituentParticleData.h FlatDecayer.h BreitWignerMass.h \
            OmegaPhi3PiDecayer.h V2PPDecayer.h DalitzDecayer.h \
            Tau2HadronsDecayer.h
@@ -24,10 +24,10 @@ INCLUDEFILES = $(DOCFILES) DecayMode.fh DecayMode.icc \
                DecayMode.xh WidthGenerator.fh WidthGenerator.icc Decayer.fh \
                Decayer.icc MassGenerator.fh MassGenerator.icc Matcher.icc \
                Matcher.tcc MatcherBase.icc PDT.icc PYDECYDummy.icc \
-               ParticleData.icc ParticleData.tcc ParticleData.xh \
-               ConstituentParticleData.icc FlatDecayer.icc BreitWignerMass.icc \
-               OmegaPhi3PiDecayer.icc V2PPDecayer.icc DalitzDecayer.icc \
-               Tau2HadronsDecayer.icc
+               DummyDecayer.icc ParticleData.icc ParticleData.tcc \
+               ParticleData.xh ConstituentParticleData.icc FlatDecayer.icc \
+               BreitWignerMass.icc OmegaPhi3PiDecayer.icc V2PPDecayer.icc \
+               DalitzDecayer.icc Tau2HadronsDecayer.icc
 
 LIBFILES = $(OBJECTS)
 

@@ -28,6 +28,10 @@ inline const ParticleMSet & DecayMode::products() const {
   return theProducts;
 }
 
+inline const PDVector & DecayMode::orderedProducts() const {
+  return theOrderedProducts;
+}
+
 inline ParticleMSet & DecayMode::products() {
   return theProducts;
 }

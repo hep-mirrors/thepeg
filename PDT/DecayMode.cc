@@ -26,6 +26,7 @@ DecayMode::DecayMode(tPDPtr newParticle, double newBrat, bool newOn)
 DecayMode::DecayMode(const DecayMode & dm)
   : Interfaced(dm), theTag(dm.theTag), theBrat(dm.theBrat), isOn(dm.isOn),
     theParent(dm.theParent), theProducts(dm.theProducts),
+    theOrderedProducts(dm.theOrderedProducts),
     theCascadeProducts(dm.theCascadeProducts), theMatchers(dm.theMatchers),
     theWildMatcher(dm.theWildMatcher), theExcluded(dm.theExcluded),
     theOverlap(dm.theOverlap), theDecayer(dm.theDecayer),
@@ -84,6 +85,10 @@ void DecayMode::rebind(const TranslationMap & trans) throw(RebindException) {
     trans.alwaysTranslate(inserter(newProducts),
 			  products().begin(), products().end());
     products().swap(newProducts);
+    PDVector newOrdered;
+    trans.alwaysTranslate(inserter(newOrdered),
+			  orderedProducts().begin(), orderedProducts().end());
+    theOrderedProducts.swap(newOrdered);
     ModeMSet newCasc;
     trans.alwaysTranslate(inserter(newCasc),
 			  cascadeProducts().begin(), cascadeProducts().end());
@@ -343,20 +348,8 @@ struct MatcherOrdering {
 
 PVector DecayMode::produceProducts() const {
   PVector ret;
-  typedef multiset<tcPDPtr,ParticleOrdering> OrderedParticles;
-  OrderedParticles prod(products().begin(), products().end());
-  LinkVector dlinks = links();
-  for ( int i = 0, N = dlinks.size(); i < N; ++i ) {
-    ret.push_back(dlinks[i].first->produceParticle());
-    prod.erase(prod.find(dlinks[i].first));
-    ret.push_back(dlinks[i].second->produceParticle());
-    prod.erase(prod.find(dlinks[i].second));
-  }
-  while ( !prod.empty() ) {
-    OrderedParticles::iterator pit = prod.begin();
-    ret.push_back((**pit).produceParticle());
-    prod.erase(pit);
-  }
+  for ( int i = 0, N = orderedProducts().size(); i < N; ++i )
+    ret.push_back(orderedProducts()[i]->produceParticle());
   return ret;
 }
 
@@ -431,7 +424,11 @@ void DecayMode::switchOff() {
 
 void DecayMode::addProduct(tPDPtr pd) {
   products().insert(pd);
-  if ( CC() ) CC()->products().insert(pd->CC()? pd->CC(): pd);
+  theOrderedProducts.push_back(pd);
+  if ( CC() ) {
+    CC()->products().insert(pd->CC()? pd->CC(): pd);
+    CC()->theOrderedProducts.push_back(pd->CC()? pd->CC(): pd);
+  }
   resetTag();
 }
 
@@ -589,15 +586,16 @@ void DecayMode::persistentOutput(PersistentOStream & os) const {
   multiset<tcPDPtr,ParticleOrdering>  ex(excluded().begin(), excluded().end());
   multiset<tcDMPtr,ModeOrdering> ovlap(overlap().begin(), overlap().end());
 
-  os << theTag << theBrat << isOn << theParent << prod << casc << match
-     << theWildMatcher << ex << ovlap << theDecayer << theAntiPartner
-     << theLinks;
+  os << theTag << theBrat << isOn << theParent << prod << theOrderedProducts
+     << casc << match << theWildMatcher << ex << ovlap << theDecayer
+     << theAntiPartner << theLinks;
 }
 
 void DecayMode::persistentInput(PersistentIStream & is, int) {
   is >> theTag >> theBrat >> isOn >> theParent >> theProducts
-     >> theCascadeProducts >> theMatchers >> theWildMatcher >> theExcluded
-     >> theOverlap >> theDecayer >> theAntiPartner >> theLinks;
+     >> theOrderedProducts >> theCascadeProducts >> theMatchers
+     >> theWildMatcher >> theExcluded >> theOverlap >> theDecayer
+     >> theAntiPartner >> theLinks;
 }
 
 ClassDescription<DecayMode> DecayMode::initDecayMode;

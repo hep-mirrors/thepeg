@@ -1,5 +1,13 @@
 2003-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* PDT/DecayMode.*: Added new member variable to remember the order
+	in which the decay products were specified. The produceProducts()
+	now created particles according to this order.
+
+	* src/ThePEGParticles.*, src/ThePEGDefaults.in,
+	PDT/DummyDecayer.*: Added DummyDecayer class for symbolic decay
+	channels. It replaces the PYDECYDummy decayer with mode 102.
+
 	* src/ThePEGParticles.*, src/ThePEGDefaults.in,
 	PDT/Tau2HadronsDecayer.*: Added class to decay tau to neutrino
 	plus hadrons.
