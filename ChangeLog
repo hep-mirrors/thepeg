@@ -10,3 +10,17 @@
 	Pythia7 but stripped from any pythia-specific classes.  Pythia7
 	still exists but contains only pythia-specific classes which
 	depend on ThePEG.
+
+	Most significant change is that the 'Misc' directory has been
+	removed and all classes therin has been moved to the 'Utilities'
+	directory. 
+
+	Another change is that 'make check' now only checks the SimpleLEP
+	generator since the SimpleLHC generator was indirectly dependent
+	on the FlavourGenerator in the pythia string fragmentation classes
+	(used in the remnant handling).
+
+	When compiling, the full compiler and link commands are now by
+	default replaced by messages such as 'comiling xxx.cc ...' To see
+	the full commands use the make-variable SHOWCOMMAND eg. 'make -k
+	check SHOWCOMMAND=1'
