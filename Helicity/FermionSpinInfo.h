@@ -25,7 +25,6 @@ namespace Helicity {
  *  The basis states in the rest frame of the particles can then be
  *  accessed by decayers to produce the correct correlations.
  *
- *
  * @author Peter Richardson
  */
 class FermionSpinInfo: public SpinInfo {
@@ -82,7 +81,7 @@ public:
   inline void setDecayState(int hel, LorentzSpinor in) const;
 
   /**
-   * Set the basis state for the decay for the given helicity, \a hel.
+   * Get the basis state for the decay for the given helicity, \a hel.
    */
   inline LorentzSpinor getDecayBasisState(int hel) const;
   //@}
@@ -140,7 +139,6 @@ private:
 
 }
 }
-
 
 namespace ThePEG {
 

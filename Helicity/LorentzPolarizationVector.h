@@ -1,23 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_LorentzPolarizationVector_H
 #define ThePEG_LorentzPolarizationVector_H
-//
-// This is the declaration of the <!id>LorentzPolarizationVector<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//  The <!id>LorentzPolarizationVector<!!id> class is designed to store a polarization
-//  vector. It is based on the LorentzVector class of CLHEP and provides many of the
-//  same methods, the major difference is the data members are complex and the
-//  assoiciated methods have been change to accomodate this.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
-//
-// Author: Peter Richardson
-//
+// This is the declaration of the LorentzPolarizationVector class.
 
 #include "ThePEG/Config/Complex.h"
 #include "ThePEG/CLHEPWrap/LorentzVector.h"
@@ -27,147 +11,336 @@
 namespace ThePEG {
 namespace Helicity {
 
+/**
+ *  The LorentzPolarizationVector class is designed to store a
+ *  polarization vector. It is based on the LorentzVector class of
+ *  CLHEP and provides many of the same methods, the major difference
+ *  is the data members are complex and the assoiciated methods have
+ *  been change to accomodate this.
+ *
+ * @see CLHEP::LorentzVector
+ *
+ * @author Peter Richardson
+ *
+ */
 class LorentzPolarizationVector {
 
 public:
+
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Constructor giving the components \a x, \a y, \a z, \a t.
+   */
   inline LorentzPolarizationVector(Complex x, Complex y,
 				   Complex z, Complex t);
-  // Constructor giving the components x, y, z, t.
 
-  inline LorentzPolarizationVector(Complex x, Complex y,
-				   Complex z);
-  // Constructor giving the components x, y, z with t-component set to 0.0.
+  /**
+   * Constructor giving the components \a x, \a y, \a z, with the
+   * t-component set to 0.
+   */
+  inline LorentzPolarizationVector(Complex x, Complex y, Complex z);
 
+  /**
+   * Constructor giving the \a t component with x, y, z set to 0.
+   */
   inline LorentzPolarizationVector(Complex t);
-  // Constructor giving the t-component with x,y,z set to 0.0.
 
+  /**
+   * Default Constructor zero everything
+   */
   inline LorentzPolarizationVector();
-  // Default Constructor zero everything
 
+  /**
+   * Setup from a LorentzVector.
+   */
   inline LorentzPolarizationVector(const LorentzVector &);
-  // setup from a LorentzVector
 
+  /**
+   * Copy constructor
+   */
   inline LorentzPolarizationVector(const LorentzPolarizationVector &);
-  // copy constructor
 
+  /**
+   * The destructor
+   */
   inline ~LorentzPolarizationVector();
-  // The destructor
+  //@}
 
+  /** @name Access individual components. */
+  //@{
+  /**
+   * Get x component.
+   */
   inline Complex x() const;
+
+  /**
+   * Get y component.
+   */
   inline Complex y() const;
+
+  /**
+   * Get z component.
+   */
   inline Complex z() const;
+
+  /**
+   * Get time component.
+   */
   inline Complex t() const;
-  // Get position and time.
 
+
+  /**
+   * Set x component.
+   */
   inline void setX(Complex);
+
+  /**
+   * Set y component.
+   */
   inline void setY(Complex);
+
+  /**
+   * Set z component.
+   */
   inline void setZ(Complex);
+
+  /**
+   * Set time component.
+   */
   inline void setT(Complex);
-  // Set position and time.
 
+  /**
+   * Get components by index.
+   */
   inline Complex operator () (int) const;
+
+  /**
+   * Get components by index.
+   */
   inline Complex operator [] (int) const;
-  // Get components by index.
 
+  /**
+   * Set components by index.
+   */
   inline Complex & operator () (int);
+
+  /**
+   * Set components by index.
+   */
   inline Complex & operator [] (int);
-  // Set components by index.
+  //@}
 
+  /** @name Assignment and arithmetic operators. */
+  //@{
+  /**
+   * Assignment.
+   */
   inline LorentzPolarizationVector &
-  operator = (const LorentzPolarizationVector &);
-  // Assignment.
+  operator=(const LorentzPolarizationVector &);
 
+  /**
+   * Addition.
+   */
   inline LorentzPolarizationVector
-  operator +  (const LorentzPolarizationVector &) const;
-  inline LorentzPolarizationVector &
-  operator += (const LorentzPolarizationVector &);
-  // Additions.
+  operator+(const LorentzPolarizationVector &) const;
 
+  /**
+   * Add and assign.
+   */
+  inline LorentzPolarizationVector &
+  operator+=(const LorentzPolarizationVector &);
+
+  /**
+   * Subtraction.
+   */
   inline LorentzPolarizationVector
-  operator -  (const LorentzPolarizationVector &) const;
+  operator-(const LorentzPolarizationVector &) const;
+
+  /**
+   * Subtract and assign.
+   */
   inline LorentzPolarizationVector &
-  operator -= (const LorentzPolarizationVector &);
-  // Subtractions.
+  operator-=(const LorentzPolarizationVector &);
 
-  inline LorentzPolarizationVector operator - () const;
-  // Unary minus.
+  /**
+   * Unary minus.
+   */
+  inline LorentzPolarizationVector operator-() const;
 
-  inline LorentzPolarizationVector & operator *= (Complex);
-  // Scaling with complex numbers.
+  /**
+   * Scaling with complex numbers.
+   */
+  inline LorentzPolarizationVector & operator*=(Complex);
 
-  LorentzPolarizationVector & operator /= (Complex);
-  // Dividing LorentzVector by a complex number
+  /**
+   * Dividing by a complex number
+   */
+  LorentzPolarizationVector & operator/=(Complex);
 
-  inline bool operator == (const LorentzPolarizationVector &) const;
-  inline bool operator != (const LorentzPolarizationVector &) const;
-  // Comparisons.
-
+  /**
+   * Scalar product with LorentzVector.
+   */
   inline Complex dot(const LorentzVector &) const;
-  inline Complex operator * (const LorentzVector &) const;
-  // Scalar product with momentum.
 
+  /**
+   * Scalar product with LorentzVector.
+   * Same as dot(const LorentzVector &).
+   */
+  inline Complex operator*(const LorentzVector &) const;
+
+  /**
+   * Scalar product with other polarization.
+   */
   inline Complex dot(const LorentzPolarizationVector &) const;
-  inline Complex operator * (const LorentzPolarizationVector &) const;
-  // Scalar product with other polarization.
+
+  /**
+   * Scalar product with other polarization.
+   * Same as dot(const LorentzPolarizationVector &).
+   */
+  inline Complex operator*(const LorentzPolarizationVector &) const;
+  //@}
+
+  /** @name Comparison operators. */
+  //@{
+  /**
+   * Check for equality.
+   */
+  inline bool operator == (const LorentzPolarizationVector &) const;
+
+  /**
+   * Check for non-equality.
+   */
+  inline bool operator != (const LorentzPolarizationVector &) const;
+  //@}
 
 
+
+  /** @name Boosts and rotations. */
+  //@{
+  /**
+   * Boost along x direction
+   */
   LorentzPolarizationVector & boostX( double beta );
-  // boost along x direction
+
+  /**
+   * Boost along y direction
+   */
   LorentzPolarizationVector & boostY( double beta );
-  // boost along y direction
+
+  /**
+   * Boost along z direction
+   */
   LorentzPolarizationVector & boostZ( double beta );
-  // boost along z direction
 
-  LorentzPolarizationVector & boost(double, double, double);
+
+  /**
+   * Standard Lorentz boost specifying the components of the beta vector.
+   */
+  LorentzPolarizationVector & boost(double bx, double by, double bz);
+
+  /**
+   * Standard Lorentz boost specifying the beta vector.
+   */
   inline LorentzPolarizationVector & boost(const Hep3Vector &);
-  // Lorentz boost.
 
+  /**
+   * Normalizes the Hep3Vector \a axis to define a direction, and uses
+   * \a beta to define the magnitude of the boost.
+   */
   inline LorentzPolarizationVector &
-  boost ( const Hep3Vector & axis,  double beta );
-  // Normalizes the Hep3Vector to define a direction, and uses beta to
-  // define the magnitude of the boost.
+  boost(const Hep3Vector & axis,  double beta);
 
+  /**
+   * Rotate the spatial component around the x-axis.
+   */
   LorentzPolarizationVector & rotateX(double);
-  // Rotate the spatial component around the x-axis.
 
+  /**
+   * Rotate the spatial component around the y-axis.
+   */
   LorentzPolarizationVector & rotateY(double);
-  // Rotate the spatial component around the y-axis.
 
+  /**
+   * Rotate the spatial component around the z-axis.
+   */
   LorentzPolarizationVector & rotateZ(double);
-  // Rotate the spatial component around the z-axis.
 
-  LorentzPolarizationVector &  rotateUz(const Hep3Vector &);
-  // Rotates the reference frame from Uz to newUz (unit vector).
+  /**
+   * Rotates the reference frame from Uz to \a newUz (unit vector).
+   */
+  LorentzPolarizationVector &  rotateUz(const Hep3Vector & newUz);
 
-  LorentzPolarizationVector & rotate(double, const Hep3Vector &);
-  // Rotate the spatial component around specified axis.
+  /**
+   * Rotate the spatial component around specified \a axis.
+   */
+  LorentzPolarizationVector & rotate(double, const Hep3Vector & axis);
 
-  LorentzPolarizationVector conjugate();
+  /**
+   * Return the conjugate LorentzPolarizationVector.
+   */
+  inline LorentzPolarizationVector conjugate();
+  //@}
+
 private:
+
   Complex _vec[4];
+
 };
 
 
-inline LorentzPolarizationVector operator /
-(const LorentzPolarizationVector &, Complex a);
-inline LorentzPolarizationVector operator *
-(Complex a,const LorentzPolarizationVector &);
-// multiplication by  scalar
-inline LorentzPolarizationVector operator *
-(Complex a,const Lorentz5Momentum &);
-// Dividing LorentzVector by a complex number
+/**
+ * Divide a LorentzPolarizationVector with a complex number.
+ */
+inline LorentzPolarizationVector
+operator/(const LorentzPolarizationVector &, Complex a);
 
-// some more functions functions
-inline LorentzPolarizationVector boostXOf
-( const LorentzPolarizationVector & vec, double beta );
-inline LorentzPolarizationVector boostYOf
-( const LorentzPolarizationVector & vec, double beta );
-inline LorentzPolarizationVector boostZOf
-( const LorentzPolarizationVector & vec, double beta );
-inline LorentzPolarizationVector  boostOf
-( const LorentzPolarizationVector & vec, const Hep3Vector & betaVector );
-inline LorentzPolarizationVector  boostOf
-( const LorentzPolarizationVector & vec, const Hep3Vector & axis,  double beta );
+/**
+ * Multiply a LorentzPolarizationVector with a complex number.
+ */
+inline LorentzPolarizationVector
+operator*(Complex a,const LorentzPolarizationVector &);
+
+/**
+ * Multiply a Lorentz5Momentum with a complex number.
+ */
+inline LorentzPolarizationVector
+operator*(Complex a,const Lorentz5Momentum &);
+
+/**
+ * Return the LorentzPolarizationVector \a vec boosted by \a beta in
+ * the x-direction.
+ */
+inline LorentzPolarizationVector
+boostXOf(const LorentzPolarizationVector & vec, double beta);
+
+/**
+ * Return the LorentzPolarizationVector \a vec boosted by \a beta in
+ * the y-direction.
+ */
+inline LorentzPolarizationVector
+boostYOf(const LorentzPolarizationVector & vec, double beta);
+
+/**
+ * Return the LorentzPolarizationVector \a vec boosted by \a beta in
+ * the z-direction.
+ */
+inline LorentzPolarizationVector
+boostZOf(const LorentzPolarizationVector & vec, double beta);
+
+/**
+ * Return the LorentzPolarizationVector \a vec boosted by \a beta.
+ */
+inline LorentzPolarizationVector
+boostOf(const LorentzPolarizationVector & vec, const Hep3Vector & betaVector);
+
+/**
+ * Return the LorentzPolarizationVector \a vec boosted by \a beta in
+ * the direction of \a axis.
+ */
+inline LorentzPolarizationVector
+boostOf(const LorentzPolarizationVector & vec,
+	const Hep3Vector & axis,  double beta);
 
 }
 }

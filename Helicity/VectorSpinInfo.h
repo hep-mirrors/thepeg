@@ -1,27 +1,7 @@
 // -*- C++ -*-
 #ifndef THEPEG_VectorSpinInfo_H
 #define THEPEG_VectorSpinInfo_H
-//
-// This is the declaration of the <!id>VectorSpinInfo<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//  This is the implementation of the spin information for vector
-//  particles.  It inherits from the SpinInof class and implements the
-//  storage of the basis vectors.
-//
-//  These basis states should be set by either matrixelements or decayers
-//  which are capable of generating spin correlation information.
-//
-//  The basis states in the rest frame of the particles can then be accessed by
-//  decayers to produce the correct correlation
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="SpinInfo.html">SpinInfo.h</a>.
-//
-// Author: Peter Richardson
-//
+// This is the declaration of the VectorSpinInfo class.
 
 #include "SpinInfo.h"
 #include "ThePEG/Helicity/LorentzPolarizationVector.h"
@@ -31,58 +11,126 @@
 namespace ThePEG {
 namespace Helicity {
 
+/**
+ *  The VectorSpinInfo class is the implementation of the spin
+ *  information for vector particles.  It inherits from the SpinInfo
+ *  class and implements the storage of the basis vectors.
+ *
+ *  These basis states should be set by either matrixelements or
+ *  decayers which are capable of generating spin correlation
+ *  information.
+ *
+ *  The basis states in the rest frame of the particles can then be
+ *  accessed by decayers to produce the correct correlation.
+ *
+ * @author Peter Richardson
+ *
+ */
 class VectorSpinInfo: public SpinInfo {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline VectorSpinInfo();
+
+  /**
+   * Copy-constructor.
+   */
   inline VectorSpinInfo(const VectorSpinInfo &);
-  inline VectorSpinInfo(const Lorentz5Momentum &,bool);
+
+  /**
+   * Standard Constructor.
+   * @param p the production momentum.
+   * @param time true if the particle is time-like.
+   */
+  inline VectorSpinInfo(const Lorentz5Momentum & p, bool time);
+
+  /**
+   * Destructor.
+   */
   virtual ~VectorSpinInfo();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
-  // set and get methods for the basis states
+  /** @name Set and get methods for the basis state. */
+  //@{
+  /**
+   * Set the basis state, this is production state.
+   * @param hel the helicity.
+   * @param in the LorentzPolarizationVector for the given helicity.
+   */
+  inline void setBasisState(int hel, LorentzPolarizationVector in) const;
 
-  inline void setBasisState(int,LorentzPolarizationVector) const;
-  // set the basis state, this is production state
+  /**
+   * Set the basis state for the decay.
+   * @param hel the helicity.
+   * @param in the LorentzPolarizationVector for the given helicity.
+   */
+  inline void setDecayState(int hel, LorentzPolarizationVector in) const;
 
-  inline void setDecayState(int,LorentzPolarizationVector) const;
-  // set the decay basis state
+  /**
+   * Get the basis state for the production for the given helicity, \a
+   * hel.
+   */
+  inline LorentzPolarizationVector getProductionBasisState(int hel) const;
 
-  inline LorentzPolarizationVector getProductionBasisState(int) const;
-  // get the basis state for the production
-
-  inline LorentzPolarizationVector getDecayBasisState(int) const;
-  // get the basis state for the decay
+  /**
+   * Get the basis state for the decay for the given helicity, \a hel.
+   */
+  inline LorentzPolarizationVector getDecayBasisState(int hel) const;
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
+  /**
+   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
+   * with a whole Event and this has pointers to other event record
+   * objects, these should be rebound to their clones in this
+   * function.
+   */
   virtual void rebind(const EventTranslationMap & trans);
 
+  /**
+   * Standard clone method.
+   */
   inline virtual EIPtr clone() const;
-  // Standard clone method.
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<VectorSpinInfo> initVectorSpinInfo;
-  // Describe a concrete class without persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   VectorSpinInfo & operator=(const VectorSpinInfo &);
-  // Private and non-existent assignment operator.
 
 private:
 
+  /**
+   * Basis states in the frame in which the particle was produced.
+   */
   mutable vector<LorentzPolarizationVector> _productionstates;
-  // basis states in the frame in which the particle was produced
 
+  /**
+   * Basis states in the frame in which the particle decays.
+   */
   mutable vector<LorentzPolarizationVector> _decaystates;
-  // basis states in the frame in which the particle decays
 
+  /**
+   * True if the decay state has been set.
+   */
   mutable bool _decaycalc;
 
 };
@@ -90,28 +138,37 @@ private:
 }
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of VectorSpinInfo.
+/**
+ * This template specialization informs ThePEG about the base class of
+ * VectorSpinInfo.
+ */
 template <>
 struct BaseClassTrait<ThePEG::Helicity::VectorSpinInfo,1> {
+  /** Typedef of the base class of VectorSpinInfo. */
   typedef ThePEG::Helicity::SpinInfo NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * VectorSpinInfo class and the shared object where it is defined.
+ */
 template <>
 struct ClassTraits<ThePEG::Helicity::VectorSpinInfo>
   : public ClassTraitsBase<ThePEG::Helicity::VectorSpinInfo> {
+  /**
+   * Return the class name.
+   */
   static string className() { return "ThePEG::Helicity::VectorSpinInfo"; }
-  // Return the class name.
+  /**
+   * Return the name of the shared library to be loaded to get access
+   * to the VectorSpinInfo class and every other class it uses
+   * (except the base class).
+   */
   static string library() { return "libThePEGHelicity.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
+
 };
 
 }

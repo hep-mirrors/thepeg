@@ -1,22 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_LorentzSpinorBar_H
 #define ThePEG_LorentzSpinorBar_H
-//
-// This is the declaration of the <!id>LorentzSpinorBar<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//  The <!id>LorentzSpinorBar<!!id> class implements the storage of a
-//  barred Lorentz Spinor. The design is based on that of the
-//  <!id>LorentzSpinor<!!id> class and the details of the implemented
-//  are discussed in more detail in the header file for that class.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="LorentzSpinor.html">LorentzSpinor.h</a>>.
-//
-// Author: Peter Richardson
-//
+// This is the declaration of the LorentzSpinorBar class.
 
 #include "ThePEG/Config/Complex.h"
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
@@ -27,72 +12,176 @@
 namespace ThePEG {
 namespace Helicity {
 
+/**
+ *  The LorentzSpinorBar class implements the storage of a barred
+ *  LorentzSpinor. The design is based on that of the LorentzSpinor
+ *  class where the details of the implemented are discussed in more
+ *  detail.
+ *
+ * @see LorentzSpinor
+ *
+ * @author Peter Richardson
+ */
 class LorentzSpinorBar {
 
 public:
 
-  // default zero constructor, optionally specifying the type and
-  // choice of dirac matrix
-  LorentzSpinorBar(SpinorType=unknown_spinortype, DiracRep=defaultDRep);
-  LorentzSpinorBar(DiracRep);
+  /** @name Standard constructors. */
+  //@{
+  /**
+   * Default zero constructor, optionally specifying \a t, the type
+   * and \a rep, the choice of dirac matrix.
+   */
+  inline LorentzSpinorBar(SpinorType t = unknown_spinortype,
+			  DiracRep r = defaultDRep);
 
-  // constructor with complex numbers, optionally specifying the type
-  // and choice of dirac matrix
-  LorentzSpinorBar(Complex,Complex,Complex,Complex,
-		   SpinorType=unknown_spinortype, DiracRep=defaultDRep);
+  /**
+   * Default zero constructor, optionally specifying the choice of
+   * dirac matrix.
+   */
+  inline LorentzSpinorBar(DiracRep);
+
+  /**
+   * Constructor with complex numbers specifying the components,
+   * optionally specifying \a t, the type and \a r, the choice of
+   * dirac matrix.
+   */
+  inline LorentzSpinorBar(Complex,Complex,Complex,Complex,
+			  SpinorType t = unknown_spinortype,
+			  DiracRep r = defaultDRep);
+
+  /**
+   * Constructor with complex numbers specifying the components,
+   * optionally specifying the choice of dirac matrix
+   */
   LorentzSpinorBar(Complex,Complex,Complex,Complex,DiracRep);
+  //@}
 
-  // subscript operator to return spinor components
+  /** @name Access the components. */
+  //@{
+  /**
+   * Subscript operator to return spinor components
+   */
   inline Complex operator[](int) const;
+
+  /**
+   * Subscript operator to return spinor components
+   */
   inline Complex operator()(int) const;
 
-  // Set components by index.
-  inline Complex & operator () (int);
-  inline Complex & operator [] (int);
+  /**
+   * Set components by index.
+   */
+  inline Complex & operator()(int);
 
-  // Get components
+  /**
+   * Set components by index.
+   */
+  inline Complex & operator[](int);
+
+  /**
+   * Get first component.
+   */
   inline Complex s1() const;
+
+  /**
+   * Get second component.
+   */
   inline Complex s2() const;
+
+  /**
+   * Get third component.
+   */
   inline Complex s3() const;
+
+  /**
+   * Get fourth component.
+   */
   inline Complex s4() const;
 
-  // Set components
+  /**
+   * Set first component.
+   */
   inline void setS1(Complex);
+
+  /**
+   * Set second component.
+   */
   inline void setS2(Complex);
+
+  /**
+   * Set third component.
+   */
   inline void setS3(Complex);
+
+  /**
+   * Set fourth component.
+   */
   inline void setS4(Complex);
+  //@}
 
-  // return the unbarred spinor
-  LorentzSpinor bar();
-
-  // Assignment.
+  /**
+   * The assignment operator.
+   */
   inline LorentzSpinorBar & operator = (const LorentzSpinorBar &);
 
-  // boost
-  inline LorentzSpinorBar boost(double,double,double) const;
-  inline LorentzSpinorBar boost(const Hep3Vector &) const;
+  /** @name Transformations. */
+  //@{
+  /**
+   * Return the barred spinor
+   */
+  LorentzSpinor bar();
 
-  // change the dirac matrix representation
+  /**
+   * Standard Lorentz boost specifying the components of the beta vector.
+   */
+  inline LorentzSpinorBar boost(double,double,double) const;
+
+  /**
+   * Standard Lorentz boost specifying the beta vector.
+   */
+  inline LorentzSpinorBar boost(const Hep3Vector &) const;
+  //@}
+
+  /** @name Functions related to type and representation. */
+  //@{
+  /**
+   * Change the dirac matrix representation.
+   */
   inline void changeRep(DiracRep);
 
-  // return the spinor in a different representation
+  /**
+   * Return the spinor in a different representation.
+   */
   inline LorentzSpinorBar transformRep(DiracRep);
 
-  // return the representation of the spinor
+  /**
+   * Return the representation of the spinor.
+   */
   inline DiracRep Rep();
 
-  // return the type of the spinor
+  /**
+   * Return the type of the spinor.
+   */
   inline SpinorType Type();
+  //@}
 
 private:
 
+  /**
+   * Storage of the components.
+   */
   Complex _spin[4];
-  // storage of the components
-  DiracRep _dirac;
-  // definition of the Dirac matrices used
-  SpinorType _type;
-  // type of spinor
 
+  /**
+   * Definition of the Dirac matrices used.
+   */
+  DiracRep _dirac;
+
+  /**
+   * Type of spinor
+   */
+  SpinorType _type;
 
 };
 

@@ -1,68 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_LorentzSpinor_H
 #define ThePEG_LorentzSpinor_H
-//
-// This is the declaration of the <!id>LorentzSpinor<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//  The <!id>LorentzSpinor<!!id> class is designed to store a
-//  spinor. In addition to storing the components of the spinor
-//  information is stored on the representation of the Dirac matrices
-//  used in calculating the spinor and the type of spinor, for example
-//  u or v type.
-//
-//  At the moment only two choices of the Dirac matrix representation
-//  are supported.  These are specified using the DiracRep
-//  enumeration. The first HaberDRep is a low energy representation in
-//  which
-//
-//  gamma_{i=1,2,3} = (    0      sigma_i ) gamma_0 = ( 1  0 ) gamma_5 = ( 0 1 )
-//                    ( -sigma_i     0    )           ( 0 -1 )           ( 1 0 )
-//
-//  this choice is perhaps more familiar from undergraduate courses
-//  and is most appropriate for low-energy calculations. However for
-//  high-energy calculations the choice made by the HELAS
-//  collaboration is more efficient for numerical calculations. This
-//  choice is supported as HELASDRep and is recommend for most
-//  calculations. In this representation
-//
-//  gamma_{i=1,2,3} = (    0      sigma_i ) gamma_0 = ( 0 1 ) gamma_5 = ( -1 0 )
-//                    ( -sigma_i     0    )           ( 1 0 )           (  0 1 )
-//
-//  These two representations are related by the transformation
-//
-//  psi_2 = S psi_1   where    S = 1/sqrt(2) (  1 -1 )
-//                                           (  1  1 )
-//
-//  and this transformation is used in the transformRep(int) member to
-//  return the spinor in whichever of the supported representations is
-//  required or the changeRep(int) member to change the representation
-//  of this spinor.
-//
-//  The <!id>HelicityDefinitions<!!id> class contains a default choice
-//  for the representation which should be used if possible.
-//
-//  The type of the spinor is also stored using the SpinorType
-//  enumeration.  There are three types supported u_spinortype,
-//  v_spinortype, unknown_spinortype.  This information is intended
-//  mainly for use in the case of Majorana particles where matrix
-//  elements can be calculated with either u or v type spinors and
-//  knowledge of which was used will be needed in order to give the
-//  correct correlations. The unknown_spinortypee is intended for
-//  cases where either the spinor for an off-shell line in a matrix
-//  element calculation or the information is genuinely unknown.
-//
-//  The LorentzSpinorBar class is also provided to store the barred
-//  spinor.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="HelicityDefinitions.html">HelicityDefinitions.h</a>.
-// <a href="LorentzSpinorBar.html">LorentzSpinorBar.h</a>.
-//
-// Author: Peter Richardson
-//
+// This is the declaration of the LorentzSpinor class.
 #include "ThePEG/Config/Complex.h"
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "HelicityDefinitions.h"
@@ -72,71 +11,254 @@
 namespace ThePEG{
 namespace Helicity{
 
+/**
+ *  The LorentzSpinor class is designed to store a spinor. In addition
+ *  to storing the components of the spinor, information is stored on
+ *  the representation of the Dirac matrices used in calculating the
+ *  spinor and the type of spinor, for example u or v type.
+ *
+ *  At the moment only two choices of the Dirac matrix representation
+ *  are supported.  These are specified using the DiracRep
+ *  enumeration. The first HaberDRep is a low energy representation in
+ *  which
+ *
+ *  \f[
+ * \gamma_{i=1,2,3}=\left(\begin{array}{cc}
+ *                          0 & \sigma_i \\
+ *                          -\sigma_i & 0
+ *                        \end{array}\right)
+ *          \quad
+ * \gamma_0=\left(\begin{array}{cc}
+ *                  1 & 0 \\
+ *                  0 & -1
+ *                \end{array}\right)
+ *          \quad
+ * \gamma_5=\left(\begin{array}{cc}
+ *                  0 & 1 \\
+ *                  1 & 0
+ *                \end{array}\right)
+ * \f]
+ *
+ *  this choice is perhaps more familiar from undergraduate courses
+ *  and is most appropriate for low-energy calculations. However for
+ *  high-energy calculations the choice made by the HELAS
+ *  collaboration is more efficient for numerical calculations. This
+ *  choice is supported as HELASDRep and is recommend for most
+ *  calculations. In this representation
+ *
+ *  \f[
+ * \gamma_{i=1,2,3}=\left(\begin{array}{cc}
+ *                          0 & \sigma_i \\
+ *                          -\sigma_i & 0
+ *                        \end{array}\right)
+ *          \quad
+ * \gamma_0=\left(\begin{array}{cc}
+ *                  0 & 1 \\
+ *                  1 & 0
+ *                \end{array}\right)
+ *          \quad
+ * \gamma_5=\left(\begin{array}{cc}
+ *                  -1 & 0 \\
+ *                  0 & 1
+ *                \end{array}\right)
+ * \f]
+ *
+ *  These two representations are related by the transformation
+ *
+ * \f[
+ * \psi_{\mbox{HELAS}} = S \psi_{\mbox{Haber}}\quad\mbox{where}\quad
+ * S=\frac{1}{\sqrt{2}}\left(\begin{array}{cc}
+ *                             1 & -1 \\
+ *                             1 & 1
+ *                     \end{array}\right)
+ * \f]
+ *
+ *  and this transformation is used in the transformRep(int) member to
+ *  return the spinor in whichever of the supported representations is
+ *  required or the changeRep(int) member to change the representation
+ *  of this spinor.
+ *
+ *  The file HelicityDefinitions.h contains a default choice for the
+ *  representation which should be used if possible.
+ *
+ *  The type of the spinor is also stored using the SpinorType
+ *  enumeration.  There are three types supported u_spinortype,
+ *  v_spinortype, unknown_spinortype.  This information is intended
+ *  mainly for use in the case of Majorana particles where matrix
+ *  elements can be calculated with either u or v type spinors and
+ *  knowledge of which was used will be needed in order to give the
+ *  correct correlations. The unknown_spinortypee is intended for
+ *  cases where either the spinor for an off-shell line in a matrix
+ *  element calculation or the information is genuinely unknown.
+ *
+ *  The LorentzSpinorBar class is also provided to store the barred
+ *  spinor.
+ *
+ * @see LorentzSpinorBar.
+ *
+ * @author Peter Richardson
+ *
+ */
 class LorentzSpinor {
 
 public:
 
-  // default zero constructor, optionally specifying the type and
-  // choice of dirac matrix
-  LorentzSpinor(SpinorType=unknown_spinortype, DiracRep=defaultDRep);
-  LorentzSpinor(DiracRep);
+  /** @name Standard constructors. */
+  //@{
+  /**
+   * Default zero constructor, optionally specifying \a t, the type
+   * and \a r, the choice of dirac matrix.
+   */
+  inline LorentzSpinor(SpinorType t = unknown_spinortype,
+		       DiracRep r = defaultDRep);
 
-  // constructor with complex numbers, optionally specifying the type
-  // and choice of dirac matrix
-  LorentzSpinor(Complex,Complex,Complex,Complex,
-		SpinorType=unknown_spinortype, DiracRep=defaultDRep);
-  LorentzSpinor(Complex,Complex,Complex,Complex,DiracRep);
+  /**
+   * Default zero constructor, optionally specifying the choice of
+   * dirac matrix.
+   */
+  inline LorentzSpinor(DiracRep);
 
-  // subscript operator to return spinor components
+  /**
+   * Constructor with complex numbers specifying the components,
+   * optionally specifying \a t, the type and \a r, the choice of
+   * dirac matrix.
+   */
+  inline LorentzSpinor(Complex,Complex,Complex,Complex,
+		       SpinorType t = unknown_spinortype,
+		       DiracRep r = defaultDRep);
+
+  /**
+   * Constructor with complex numbers specifying the components,
+   * optionally specifying the choice of dirac matrix
+   */
+  inline LorentzSpinor(Complex,Complex,Complex,Complex,DiracRep);
+  //@}
+
+  /** @name Access the components. */
+  //@{
+  /**
+   * Subscript operator to return spinor components
+   */
   inline Complex operator[](int) const;
+
+  /**
+   * Subscript operator to return spinor components
+   */
   inline Complex operator()(int) const;
 
-  // Set components by index.
-  inline Complex & operator () (int);
-  inline Complex & operator [] (int);
+  /**
+   * Set components by index.
+   */
+  inline Complex & operator()(int);
 
-  // Get components
+  /**
+   * Set components by index.
+   */
+  inline Complex & operator[](int);
+
+  /**
+   * Get first component.
+   */
   inline Complex s1() const;
+
+  /**
+   * Get second component.
+   */
   inline Complex s2() const;
+
+  /**
+   * Get third component.
+   */
   inline Complex s3() const;
+
+  /**
+   * Get fourth component.
+   */
   inline Complex s4() const;
 
-  // Set components
+  /**
+   * Set first component.
+   */
   inline void setS1(Complex);
+
+  /**
+   * Set second component.
+   */
   inline void setS2(Complex);
+
+  /**
+   * Set third component.
+   */
   inline void setS3(Complex);
+
+  /**
+   * Set fourth component.
+   */
   inline void setS4(Complex);
+  //@}
 
-  // return the barred spinor
-  LorentzSpinorBar bar();
-
-  // the equals operator
+  /**
+   * The assignment operator.
+   */
   inline LorentzSpinor & operator = (const LorentzSpinor &);
 
-  // boost
-  inline LorentzSpinor  boost(double,double,double) const;
-  inline LorentzSpinor  boost(const Hep3Vector &) const;
+  /** @name Transformations. */
+  //@{
+  /**
+   * Return the barred spinor
+   */
+  LorentzSpinorBar bar();
 
-  // change the dirac matrix representation
+  /**
+   * Standard Lorentz boost specifying the components of the beta vector.
+   */
+  inline LorentzSpinor  boost(double,double,double) const;
+
+  /**
+   * Standard Lorentz boost specifying the beta vector.
+   */
+  inline LorentzSpinor  boost(const Hep3Vector &) const;
+  //@}
+
+  /** @name Functions related to type and representation. */
+  //@{
+  /**
+   * Change the dirac matrix representation.
+   */
   inline void changeRep(DiracRep);
 
-  // return the spinor in a different representation
+  /**
+   * Return the spinor in a different representation.
+   */
   inline LorentzSpinor transformRep(DiracRep);
 
-  // return the representation of the spinor
+  /**
+   * Return the representation of the spinor.
+   */
   inline DiracRep Rep();
 
-  // return the type of the spinor
+  /**
+   * Return the type of the spinor.
+   */
   inline SpinorType Type();
+  //@}
 
 private:
 
+  /**
+   * Storage of the components.
+   */
   Complex _spin[4];
-  // storage of the components
+
+  /**
+   * Definition of the Dirac matrices used.
+   */
   DiracRep _dirac;
-  // definition of the Dirac matrices used
+
+  /**
+   * Type of spinor
+   */
   SpinorType _type;
-  // type of spinor
 
 };
 

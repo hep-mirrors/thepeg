@@ -1,5 +1,9 @@
 2004-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/PartialCollisionHandler.cc: In performStep, if the
+	StepHandler throws an exception, call popStep() to set the correct
+	current step rather than calling Collision::popStep() directly.
+
 	* Helicity (directory): Modified to use new documentation format.
 
 2004-07-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>

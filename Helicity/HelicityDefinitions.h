@@ -1,48 +1,46 @@
 // -*- C++ -*-
 #ifndef THEPEG_HelicityDefinitions_H
 #define THEPEG_HelicityDefinitions_H
-//
-// This is the declaration of the <!id>HelicityDefinitions<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//  The <!id>HelicityDefinitions<!!id> header file contains information
-//  on which representation of the Dirac matrix is being used.
-//  All the code can in principle cope with either of
-//  the defintions described in the <!id>LorentzSpinor<!!id> class
-//  however the valid choices and the default to be used are defined
-//  here.
-//
-//  The normal choice for the default is the use of the HELAS
-//  representation, however if you are using external packages which
-//  use another definition then it may be worth changing the default
-//  choice here.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="LorentzSpinor.html">LorentzSpinor.h</a>,
-// <a href="LorentzSpinorBar.html">LorentzSpinorBar.h</a>.
-//
-// Author: Peter Richardson
-//
+// This is the declaration of the HelicityDefinitions class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/Exception.h"
-// #include "HelicityDefinitions.fh"
-// #include "HelicityDefinitions.xh"
+
+/** \file HelicityDefinitions.h
+ *
+ * This file contains enumerations used by LorentzSpinor and
+ * LorentzSpinorBar classes.
+ *
+ * @see LorentzSpinor
+ *
+ * @author Peter Richardson
+ */
 
 namespace ThePEG {
 namespace Helicity {
 
-// define the enumeration for the dirac representation
-enum DiracRep { HELASDRep, HaberDRep, defaultDRep=HELASDRep };
+/**
+ * Enumeration to choose between spinor representations.
+ */
+enum DiracRep {
+  HELASDRep, /**< The representation used in HELAS. */
+  HaberDRep, /**< The representation used by Haber. */
+  defaultDRep = HELASDRep /**< THe default choice is HELAS. */
+};
 
-// define the enumeration for the type
-enum SpinorType { u_spinortype, v_spinortype, unknown_spinortype };
+/**
+ * Enumeration to specify spinor type.
+ */
+enum SpinorType {
+  u_spinortype, /**< u spinor. */
+  v_spinortype, /**< v spinor. */
+  unknown_spinortype /**< Undefined spinor type. */
+};
 
-
+/** Exception class used by Helicity classes to signal a logical error. */
 class HelicityLogicalError: public Exception {};
 
+/** Exception class used by Helicity classes to signal a inconsistencies. */
 class HelicityConsistencyError: public Exception {};
 
 }

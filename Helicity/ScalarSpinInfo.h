@@ -1,21 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ScalarSpinInfo_H
 #define ThePEG_ScalarSpinInfo_H
-//
-// This is the declaration of the <!id>ScalarSpinInfo<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The ScalarSpinInfo class is designed to be the implementation of
-// the spin information for a scalar particle. Obviously it is pretty
-// trival in this case.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="SpinInfo.html">SpinInfo.h</a>.
-//
-// Author: Peter Richardson
-//
+// This is the declaration of the ScalarSpinInfo class.
 
 #include "SpinInfo.h"
 #include "ScalarSpinInfo.fh"
@@ -24,62 +10,111 @@
 namespace ThePEG {
 namespace Helicity {
 
+/**
+ * The ScalarSpinInfo class is designed to be the implementation of
+ * the spin information for a scalar particle. Obviously it is pretty
+ * trival in this case.
+ *
+ * @author Peter Richardson
+ *
+ */
 class ScalarSpinInfo: public SpinInfo {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline ScalarSpinInfo();
-  inline ScalarSpinInfo(const Lorentz5Momentum &,bool);
+
+  /**
+   * Standard Constructor.
+   * @param p the production momentum.
+   * @param time true if the particle is time-like.
+   */
+  inline ScalarSpinInfo(const Lorentz5Momentum & p, bool time);
+
+  /**
+   * Copy-constructor.
+   */
   inline ScalarSpinInfo(const ScalarSpinInfo &);
+
+  /**
+   * Destructor.
+   */
   virtual ~ScalarSpinInfo();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /**
+   * Standard Init function.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
+  /**
+   * Standard clone methods.
+   */
   inline virtual EIPtr clone() const;
-  // Standard clone methods.
 
+  /**
+   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
+   * with a whole Event and this has pointers to other event record
+   * objects, these should be rebound to their clones in this
+   * function.
+   */
   inline virtual void rebind(const EventTranslationMap & trans);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<ScalarSpinInfo> initScalarSpinInfo;
-  // Describe a concrete class without persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   ScalarSpinInfo & operator=(const ScalarSpinInfo &);
-  // Private and non-existent assignment operator.
 
 };
 
 }
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of ScalarSpinInfo.
+/**
+ * This template specialization informs ThePEG about the base class of
+ * ScalarSpinInfo.
+ */
 template <>
 struct BaseClassTrait<ThePEG::Helicity::ScalarSpinInfo,1> {
+  /** Typedef of the base class of ScalarSpinInfo. */
   typedef ThePEG::Helicity::SpinInfo NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * ScalarSpinInfo class and the shared object where it is defined.
+ */
 template <>
 struct ClassTraits<ThePEG::Helicity::ScalarSpinInfo>
   : public ClassTraitsBase<ThePEG::Helicity::ScalarSpinInfo> {
+  /**
+   * Return the class name.
+   */
   static string className() { return "ThePEG::Helicity::ScalarSpinInfo"; }
-  // Return the class name.
+  /**
+   * Return the name of the shared library to be loaded to get access
+   * to the ScalarSpinInfo class and every other class it uses
+   * (except the base class).
+   */
   static string library() { return "libThePEGHelicity.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
+
 };
 
 }

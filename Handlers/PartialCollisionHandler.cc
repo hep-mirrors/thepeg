@@ -136,7 +136,7 @@ performStep(tStepHdlPtr handler, tHintPtr hint) {
   }
   catch (...) {
     generator()->currentStepHandler(tStepHdlPtr());
-    if ( oldStep != currentStep() ) currentCollision()->popStep();
+    if ( oldStep != currentStep() ) popStep();
     throw;
   }
 
