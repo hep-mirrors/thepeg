@@ -1,0 +1,42 @@
+*** This is a proof-of-concept of ThePEG ***
+
+To compile and run a test program follow these steps:
+
+1: run the configure script. To override the defaults: set the
+   following environment variables
+
+	CXX: (default g++) your favourite C++ compiler (if it is g++
+             version 2.95.2 and if you are running on Linux you should
+             be OK also egcs-1.1.2 may work. For other platforms, you
+             are on your own!)
+
+	CLHEPPATH: (default /usr/local) The path to the CLHEP
+	     installation (version 1.4 or higher). The header files
+             will be seached for in $(CLHEPPATH)/include/CLHEP and the
+             library file in $(CLHEPPATH)/lib
+
+	CLHEPLIB: (default CLHEP) The name of the CLHEP library. It
+	     will be linked with -l$(CLHEPLIB)
+
+2: In the main ThePEG directory, do 'make check'.
+        this will compile the main ThePEG library and two programs in
+        the src directory. These will then be run as follows
+                ./setupThePEG SimpleLEP.in
+        to setup an event generator which is dumped in SimpleLEP.run
+	        ./runThePEG SimpleLEP.run
+	to run the event generator. Some output will be written in
+	SimpleLEP.out, SimpleLEP.log and SimpleLEP.tex.
+
+3: To run the partial event generator example do in src
+		make runPartial
+		./runPartial SimpleLEP.run
+
+
+More information can be found in the brief manual given as a
+compressed postscript file in Doc/Proof.ps.gz and as a html document
+in Doc/Proof/Proof.html.
+
+Note that this version is not of production quality and results
+produced with it should not be used for serious scientific
+studies. This release is mainly intended to make public the basic
+structure of the program.
