@@ -73,10 +73,19 @@ public:
   // The minimum and maximum values of the invariant mass (squared) of
   // the hard sub-process.
 
+  inline bool mHat(Energy mhat) const;
+  // Returns true if mHatMin() <= mhat < mHatMax().
+
+  inline bool sHat(Energy2 shat) const;
+  // Returns true if sHatMin() <= shat < sHatMax().
+
   inline Energy pTHatMin() const;
   inline Energy pTHatMax() const;
   // The minimum and maximum values of the transverse momentum of the
   // outgoing particles in the hard sub-process.
+
+  inline bool pTHat(Energy pt) const;
+  // Returns true if pTHatMin() <= pt < pTHatMax().
 
   inline Energy pTHatSingularMin() const;
   inline Energy singularMassMax() const;
@@ -89,68 +98,110 @@ public:
   // The minimum and maximum value of the rapidity of the hard
   // scattering sub-system.
 
+  inline bool yStar(double y) const;
+  // Returns true if yStarMin() <= y <= yStarMax().
+
   inline double maxYMin() const;
   inline double maxYMax() const;
   // The minimum and maximum value of the maximum rapidity of the
   // outgoing particles in the hard scattering.
+
+  inline bool maxY(double y) const;
+  // Returns true if maxYMin() <= y <= maxYMax().
 
   inline double minYMin() const;
   inline double minYMax() const;
   // The minimum and maximum value of the minimum rapidity of the
   // outgoing particles in the hard scattering.
 
+  inline bool minY(double y) const;
+  // Returns true if minYMin() <= y <= minYMax().
+
   inline double maxEtaMin() const;
   inline double maxEtaMax() const;
   // The minimum and maximum value of the maximum pseudo rapidity of
   // the outgoing particles in the hard scattering.
+
+  inline bool maxEta(double eta) const;
+  // Returns true if maxEtaMin() <= eta <= maxEtaMax().
 
   inline double minEtaMin() const;
   inline double minEtaMax() const;
   // The minimum and maximum value of the minimum pseudo rapidity of
   // the outgoing particles in the hard scattering.
 
+  inline bool minEta(double eta) const;
+  // Returns true if minEtaMin() <= eta <= minEtaMax().
+
   inline double maxCTMin() const;
   inline double maxCTMax() const;
   // The minimum and maximum value of the maximum cos(theta) of
   // the outgoing particles in the hard scattering.
+
+  inline bool maxCT(double ct) const;
+  // Returns true if maxCTMin() <= ct <= maxCTMax().
 
   inline double minCTMin() const;
   inline double minCTMax() const;
   // The minimum and maximum value of the minimum cos(theta) of
   // the outgoing particles in the hard scattering.
 
+  inline bool minCT(double ct) const;
+  // Returns true if minCTMin() <= ct <= minCTMax().
+
   inline double x1Min() const;
   inline double x1Max() const;
   // The minimum and maximum value of the Bjorken-x of the particle
   // comin into the hard scattering along the positive z-axis.
+
+  inline bool x1(double x) const;
+  // Returns true if x1Min() < x <= x1Max().
 
   inline double x2Min() const;
   inline double x2Max() const;
   // The minimum and maximum value of the Bjorken-x of the particle
   // comin into the hard scattering along the negative z-axis.
 
+  inline bool x2(double x) const;
+  // Returns true if x2Min() < x <= x2Max().
+
   inline double xFMin() const;
   inline double xFMax() const;
   // The minimum and maximum value of the Feynman-x of the hard
   // scattering.
+
+  inline bool xF(double x) const;
+  // Returns true if xFMin() <= x <= xFMax().
 
   inline double cTHMin() const;
   inline double cTHMax() const;
   // The minimum and maximum value of cosine of the scattering angle
   // in the restframe of a hard 2->2 scattering.
 
+  inline bool cTH(double cth) const;
+  // Returns true if cTHMin() <= cth <= cTHMax().
+
   inline Energy2 tHatMin() const;
   inline Energy2 tHatMax() const;
   // The minimum and maximum value of |that| of a hard 2->2 scattering.
+
+  inline bool tHat(Energy2 that) const;
+  // Returns true if tHatMin() <= th < tHatMax().
 
   inline Energy2 uHatMin() const;
   inline Energy2 uHatMax() const;
   // The minimum and maximum value of |uhat| of a hard 2->2 scattering.
 
+  inline bool uHat(Energy2 uhat) const;
+  // Returns true if uHatMin() <= uh < uHatMax().
+
   inline Energy2 scaleMin() const;
   inline Energy2 scaleMax() const;
   // The minimum and maximum value of the scale in a hard scattering
   // as defined by the Handlers which performed the hard scattering.
+
+  inline bool scale(Energy2 sc) const;
+  // Returns true if scaleMin() <= sc < scaleMax().
 
   inline Energy DISLepton1EnergyMin() const;
   inline Energy DISLepton1EnergyMax() const;
@@ -189,23 +240,6 @@ public:
   // squared of the outgoing particles when removing the scattered
   // lepton(s).
 
-  inline bool mHat(Energy mhat) const;
-  inline bool sHat(Energy2 shat) const;
-  inline bool pTHat(Energy pt) const;
-  inline bool yStar(double y) const;
-  inline bool maxY(double y) const;
-  inline bool minY(double y) const;
-  inline bool maxEta(double eta) const;
-  inline bool minEta(double eta) const;
-  inline bool maxCT(double ct) const;
-  inline bool minCT(double ct) const;
-  inline bool x1(double x) const;
-  inline bool x2(double x) const;
-  inline bool xF(double x) const;
-  inline bool cTH(double cth) const;
-  inline bool tHat(Energy2 that) const;
-  inline bool uHat(Energy2 uhat) const;
-  inline bool scale(Energy2 sc) const;
   // These functions return true if the given variable passes the
   // cuts.
 

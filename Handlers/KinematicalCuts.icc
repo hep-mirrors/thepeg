@@ -210,43 +210,43 @@ inline Energy2 KinematicalCuts::DISW2Max() const {
 }
 
 inline bool KinematicalCuts::mHat(Energy mhat) const {
-  return mHatMin() < mhat && mhat <= mHatMax();
+  return mHatMin() <= mhat && mhat < mHatMax();
 }
 
 inline bool KinematicalCuts::sHat(Energy2 shat) const {
-  return sHatMin() < shat && shat <= sHatMax();
+  return sHatMin() <= shat && shat < sHatMax();
 }
 
 inline bool KinematicalCuts::pTHat(Energy pt) const {
-  return pTHatMin() < pt && pt <= pTHatMax();
+  return pTHatMin() <= pt && pt < pTHatMax();
 }
 
 inline bool KinematicalCuts::yStar(double y) const {
-  return yStarMin() < y && y <= yStarMax();
+  return yStarMin() <= y && y <= yStarMax();
 }
 
 inline bool KinematicalCuts::maxY(double y) const {
-  return maxYMin() < y && y <= maxYMax();
+  return maxYMin() <= y && y <= maxYMax();
 }
 
 inline bool KinematicalCuts::minY(double y) const {
-  return minYMin() < y && y <= minYMax();
+  return minYMin() <= y && y <= minYMax();
 }
 
 inline bool KinematicalCuts::maxEta(double eta) const {
-  return maxEtaMin() < eta && eta <= maxEtaMax();
+  return maxEtaMin() <= eta && eta <= maxEtaMax();
 }
 
 inline bool KinematicalCuts::minEta(double eta) const {
-  return minEtaMin() < eta && eta <= minEtaMax();
+  return minEtaMin() <= eta && eta <= minEtaMax();
 }
 
 inline bool KinematicalCuts::maxCT(double ct) const {
-  return maxCTMin() < ct && ct <= maxCTMax();
+  return maxCTMin() <= ct && ct <= maxCTMax();
 }
 
 inline bool KinematicalCuts::minCT(double ct) const {
-  return minCTMin() < ct && ct <= minCTMax();
+  return minCTMin() <= ct && ct <= minCTMax();
 }
 
 inline bool KinematicalCuts::x1(double x) const {
@@ -258,23 +258,23 @@ inline bool KinematicalCuts::x2(double x) const {
 }
 
 inline bool KinematicalCuts::xF(double x) const {
-  return xFMin() < x && x <= xFMax();
+  return xFMin() <= x && x <= xFMax();
 }
 
 inline bool KinematicalCuts::cTH(double cth) const {
-  return cTHMin() < cth && cth <= cTHMax();
+  return cTHMin() <= cth && cth <= cTHMax();
 }
 
 inline bool KinematicalCuts::tHat(Energy2 th) const {
-  return tHatMin() < th && th <= tHatMax();
+  return tHatMin() <= th && th < tHatMax();
 }
 
 inline bool KinematicalCuts::uHat(Energy2 uh) const {
-  return uHatMin() < uh && uh <= uHatMax();
+  return uHatMin() <= uh && uh < uHatMax();
 }
 
 inline bool KinematicalCuts::scale(Energy2 sc) const {
-  return scaleMin() < sc && sc <= scaleMax();
+  return scaleMin() <= sc && sc < scaleMax();
 }
 
 inline void KinematicalCuts::doinit() throw(InitException) {

@@ -85,20 +85,18 @@ void KinematicalCuts::cut(const SubProcess & sp) const
   if ( !sp.incoming().first || !sp.incoming().second ) throw KinCutSetup();
 
   // General cuts:
-  if ( sp.shat() < sHatMin() || sp.shat() >= sHatMax() ) throw Veto();
+  if ( !sHat(sp.shat()) ) throw Veto();
 
   // Now check 2->2 proceses:
   if ( N != 2 ) return;
 
-  if ( -sp.that() < tHatMin() || -sp.that() >= tHatMax() ) throw Veto();
+  if ( !tHat(-sp.that()) ) throw Veto();
 
-  if ( -sp.uhat() < uHatMin() || -sp.uhat() >= uHatMax() ) throw Veto();
+  if ( !uHat(-sp.uhat()) ) throw Veto();
 
-  double cth = out[0]->momentum().cosTheta();
-  if ( cth < cTHMin() || cth >= cTHMax() ) throw Veto();
+  if ( !cTH(out[0]->momentum().cosTheta()) ) throw Veto();
 
-  Energy pt = out[0]->momentum().perp();
-  if ( pt < pTHatMin() || pt >= pTHatMax() ) throw Veto();
+  if ( !pTHat(out[0]->momentum().perp()) ) throw Veto();
 
 }
 
@@ -127,15 +125,13 @@ cut(const Collision & c, const LorentzRotation & r) const
   if ( p1.plus() <= 0.0*GeV ) throw KinCutSetup();
   if ( p2.minus() <= 0.0*GeV ) throw KinCutSetup();
 
-  double x1 = q1.plus()/p1.plus();
-  if ( x1 <= x1Min() || x1 > x1Max() ) throw Veto();
+  if ( !x1(q1.plus()/p1.plus()) ) throw Veto();
 
-  double x2 = q2.minus()/p2.minus();
-  if ( x2 <= x2Min() || x2 > x2Max() ) throw Veto();
+  if ( !x2(q2.minus()/p2.minus()) ) throw Veto();
 
-  if ( x1 - x2 < xFMin() || x1 - x2 > xFMax() ) throw Veto();
+  if ( !xF(q1.plus()/p1.plus() - q2.minus()/p2.minus()) ) throw Veto();
 
-  if ( x1/x2 < exp(2.0*yStarMin()) || x1/x2 >= exp(2.0*yStarMax()) )
+  if ( !yStar(0.5*log((q1.plus()/p1.plus())/(q2.minus()/p2.minus()))) )
     throw Veto();
 
   ParticleVector::const_iterator it = sp.outgoing().begin();
@@ -169,10 +165,8 @@ cut(const Collision & c, const LorentzRotation & r) const
        exp(2.0*minEtaMin())*(etamin.rho()-etamin.z()) ||
        (etamin.rho()+etamin.z()) >
        exp(2.0*minEtaMax())*(etamin.rho()-etamin.z()) ) throw Veto();
-  if ( ctmax.cosTheta() < maxCTMin() ||
-       ctmax.cosTheta() > maxCTMax() ) throw Veto();
-  if ( ctmin.cosTheta() < minCTMin() ||
-       ctmin.cosTheta() > minCTMax() ) throw Veto();
+  if ( !maxCT(ctmax.cosTheta()) ) throw Veto();
+  if ( !minCT(ctmin.cosTheta()) ) throw Veto();
 
   if ( !useLeptoCuts ) return;
 
