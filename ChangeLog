@@ -1,5 +1,19 @@
 2003-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* lib/ThePEG.el: Changed the naming of classes from
+	"/{namespace}/{class}" to "{namespace}::{class}".
+
+	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Changed the
+	naming of classes from "/{namespace}/{class}" to
+	"{namespace}::{class}".
+
+	* Utilities/DescriptionList.cc: The naming of classes in the class
+	description has until now been on the form "/{namespace}/{class}"
+	In the future it should instead be on the more natural form
+	"{namespace}::{class}". Before the new naming scheme is enforced
+	class descriptions with the old form will also be registered in
+	the new form.
+
 	* Repository/BaseRepository.*: Added remove(ObjectList) to safely
 	remove a set of objects from the repository if no other objects
 	are referring to them. The function is used by the "rm"

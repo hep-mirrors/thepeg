@@ -4,33 +4,33 @@ mkdir /Defaults
 mkdir /Defaults/Matchers
 mkdir /Defaults/Particles
 mkdir /Defaults/Decayers
-create /ThePEG/FlatDecayer /Defaults/Decayers/Flat
-create /ThePEG/OmegaPhi3PiDecayer /Defaults/Decayers/OmegaPhi3Pi OmegaPhi3PiDecayer.so
-create /ThePEG/V2PPDecayer /Defaults/Decayers/V2PP V2PPDecayer.so
-create /ThePEG/DalitzDecayer /Defaults/Decayers/Dalitz DalitzDecayer.so
-create /ThePEG/Tau2HadronsDecayer /Defaults/Decayers/Tau2Hadrons Tau2HadronsDecayer.so
-create /ThePEG/DummyDecayer /Defaults/Decayers/Dummy DummyDecayer.so
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY4
+create ThePEG::FlatDecayer /Defaults/Decayers/Flat
+create ThePEG::OmegaPhi3PiDecayer /Defaults/Decayers/OmegaPhi3Pi OmegaPhi3PiDecayer.so
+create ThePEG::V2PPDecayer /Defaults/Decayers/V2PP V2PPDecayer.so
+create ThePEG::DalitzDecayer /Defaults/Decayers/Dalitz DalitzDecayer.so
+create ThePEG::Tau2HadronsDecayer /Defaults/Decayers/Tau2Hadrons Tau2HadronsDecayer.so
+create ThePEG::DummyDecayer /Defaults/Decayers/Dummy DummyDecayer.so
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY4
 setup /Dummy/Decayers/PYDECY4 4
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY11
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY11
 setup /Dummy/Decayers/PYDECY11 11
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY12
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY12
 setup /Dummy/Decayers/PYDECY12 12
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY13
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY13
 setup /Dummy/Decayers/PYDECY13 13
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY32
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY32
 setup /Dummy/Decayers/PYDECY32 32
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY42
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY42
 setup /Dummy/Decayers/PYDECY42 42
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY48
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY48
 setup /Dummy/Decayers/PYDECY48 48
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY51
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY51
 setup /Dummy/Decayers/PYDECY51 51
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY53
+create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY53
 setup /Dummy/Decayers/PYDECY53 53
-create /ThePEG/Matcher<Lepton> /Defaults/Matchers/MatchLepton
-create /ThePEG/Matcher<LightQuark> /Defaults/Matchers/MatchLightQuark
-create /ThePEG/Matcher<LightAntiQuark> /Defaults/Matchers/MatchLightAntiQuark
+create ThePEG::Matcher<Lepton> /Defaults/Matchers/MatchLepton
+create ThePEG::Matcher<LightQuark> /Defaults/Matchers/MatchLightQuark
+create ThePEG::Matcher<LightAntiQuark> /Defaults/Matchers/MatchLightAntiQuark
 read ThePEGParticles.in
 mkdir /Defaults/MatrixElements
 mkdir /Defaults/Partons
@@ -38,42 +38,42 @@ mkdir /Defaults/Handlers
 mkdir /Defaults/Generators
 mkdir /Defaults/Handlers/Hadronization/String
 
-create /ThePEG/StandardRandom /Defaults/Random
-create /ThePEG/StandardModelBase /Defaults/StandardModel
-create /ThePEG/O1AlphaS /Defaults/AlphaS O1AlphaS.so
+create ThePEG::StandardRandom /Defaults/Random
+create ThePEG::StandardModelBase /Defaults/StandardModel
+create ThePEG::O1AlphaS /Defaults/AlphaS O1AlphaS.so
 set /Defaults/StandardModel:QCD/RunningAlphaS /Defaults/AlphaS
-create /ThePEG/SimpleAlphaEM /Defaults/AlphaEM SimpleAlphaEM.so
+create ThePEG::SimpleAlphaEM /Defaults/AlphaEM SimpleAlphaEM.so
 set /Defaults/StandardModel:EW/RunningAlphaEM /Defaults/AlphaEM
-create /ThePEG/StandardCKM /Defaults/CKM StandardCKM.so
+create ThePEG::StandardCKM /Defaults/CKM StandardCKM.so
 set /Defaults/StandardModel:EW/CKM /Defaults/CKM
 
 cd /Defaults/MatrixElements
-create /ThePEG/MEee2gZ2qq MEee2gZ2qq MEee2gZ2qq.so
-create /ThePEG/MEGG2GG MEGG2GG libThePEGMEQCD.so
-create /ThePEG/MEQG2QG MEQG2QG
-create /ThePEG/MEQQ2GG MEQQ2GG
-create /ThePEG/MEQQ2QQ MEQQ2QQ
-create /ThePEG/MEQq2Qq MEQq2Qq
-create /ThePEG/MEGG2QQ MEGG2QQ
-create /ThePEG/MEQQ2qq MEQQ2qq
-create /ThePEG/MEqq2qq MEqq2qq
+create ThePEG::MEee2gZ2qq MEee2gZ2qq MEee2gZ2qq.so
+create ThePEG::MEGG2GG MEGG2GG libThePEGMEQCD.so
+create ThePEG::MEQG2QG MEQG2QG
+create ThePEG::MEQQ2GG MEQQ2GG
+create ThePEG::MEQQ2QQ MEQQ2QQ
+create ThePEG::MEQq2Qq MEQq2Qq
+create ThePEG::MEGG2QQ MEGG2QQ
+create ThePEG::MEQQ2qq MEQQ2qq
+create ThePEG::MEqq2qq MEqq2qq
 
 cd /Defaults/Handlers/Hadronization
-create /ThePEG/ClusterCollapser SimpleCollapser
+create ThePEG::ClusterCollapser SimpleCollapser
 
 cd /Defaults/Partons
-create /ThePEG/NoRemnants NoRemnants
-create /ThePEG/NoPDF NoPDF
+create ThePEG::NoRemnants NoRemnants
+create ThePEG::NoPDF NoPDF
 set NoPDF:RemnantHandler NoRemnants
-create /ThePEG/LeptonLeptonRemnant SimpleLeptonRemnants LeptonLeptonRemnant.so
-create /ThePEG/LeptonLeptonPDF SimpleLeptonPDF LeptonLeptonPDF.so
+create ThePEG::LeptonLeptonRemnant SimpleLeptonRemnants LeptonLeptonRemnant.so
+create ThePEG::LeptonLeptonPDF SimpleLeptonPDF LeptonLeptonPDF.so
 set SimpleLeptonPDF:RemnantHandler SimpleLeptonRemnants
 set /Defaults/Particles/e-:PDF SimpleLeptonPDF
 set /Defaults/Particles/e+:PDF SimpleLeptonPDF
 library GRVBase.so
-create /ThePEG/GRV94L GRV94L GRV94L.so
-create /ThePEG/GRV94M GRV94M GRV94M.so
-create /ThePEG/BaryonRemnants BaryonRemnants BaryonRemnants.so
+create ThePEG::GRV94L GRV94L GRV94L.so
+create ThePEG::GRV94M GRV94M GRV94M.so
+create ThePEG::BaryonRemnants BaryonRemnants BaryonRemnants.so
 set GRV94L:RemnantHandler BaryonRemnants
 set GRV94M:RemnantHandler BaryonRemnants
 
@@ -91,23 +91,23 @@ set /Defaults/Particles/h0:DefaultSpin 1
 set /Defaults/Particles/h0:Spin 1
 
 cd /Defaults/Handlers
-create /ThePEG/PartonExtractor StandardExtractor
+create ThePEG::PartonExtractor StandardExtractor
 set StandardExtractor:NoPDF /Defaults/Partons/NoPDF
 set StandardExtractor:FlatSHatY 1
-create /ThePEG/PartonExtractor EEExtractor
+create ThePEG::PartonExtractor EEExtractor
 set EEExtractor:NoPDF /Defaults/Partons/NoPDF
 
-create /ThePEG/DecayHandler StandardDecayHandler
+create ThePEG::DecayHandler StandardDecayHandler
 
-create /ThePEG/ACDCSampler ACDCSampler ACDCSampler.so
+create ThePEG::ACDCSampler ACDCSampler ACDCSampler.so
 
-create /ThePEG/EventHandler SimpleLEPHandler
-create /ThePEG/FixedCMSLuminosity FixedLEPLuminosity FixedCMSLuminosity.so
+create ThePEG::EventHandler SimpleLEPHandler
+create ThePEG::FixedCMSLuminosity FixedLEPLuminosity FixedCMSLuminosity.so
 set FixedLEPLuminosity:Energy 91.2
 set SimpleLEPHandler:LuminosityFunction FixedLEPLuminosity
 set SimpleLEPHandler:DecayHandler /Defaults/Handlers/StandardDecayHandler
 
-create /ThePEG/SubProcessHandler SimpleEE2QQ
+create ThePEG::SubProcessHandler SimpleEE2QQ
 insert SimpleEE2QQ:MatrixElements[0] /Defaults/MatrixElements/MEee2gZ2qq
 set SimpleEE2QQ:PartonExtractor EEExtractor
 insert SimpleLEPHandler:SubProcessHandlers[0] SimpleEE2QQ
@@ -116,11 +116,11 @@ set SimpleLEPHandler:BeamB /Defaults/Particles/e+
 set SimpleLEPHandler:Sampler ACDCSampler
 
 cd /Defaults/Generators
-create /ThePEG/FullEventGenerator SimpleLEPGenerator
+create ThePEG::FullEventGenerator SimpleLEPGenerator
 set SimpleLEPGenerator:RandomNumberGenerator /Defaults/Random
 set SimpleLEPGenerator:StandardModelParameters /Defaults/StandardModel
 set SimpleLEPGenerator:EventHandler /Defaults/Handlers/SimpleLEPHandler
-create /ThePEG/KinematicalCuts EECuts
+create ThePEG::KinematicalCuts EECuts
 set EECuts:LeptonMatcher /Defaults/Matchers/MatchLepton
 set EECuts:SubProcess/MHatMin 22.36068
 set SimpleLEPGenerator:EventHandler:Cuts EECuts

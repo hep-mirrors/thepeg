@@ -421,7 +421,7 @@ struct BaseClassTrait<" namespacequalifyer "THECLASS,1> {
 template <>
 struct ClassTraits<" namespacequalifyer "THECLASS>
   : public ClassTraitsBase<" namespacequalifyer "THECLASS> {
-  static string className() { return \"/" namespace "/THECLASS\"; }
+  static string className() { return \"" namespace "::THECLASS\"; }
   // Return the class name.
   static string library() { return \"THECLASS.so\"; }
   // Return the name of the shared library to be loaded to get
