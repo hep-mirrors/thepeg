@@ -1,7 +1,7 @@
 #ifndef ThePEG_sstream_H
 #define ThePEG_sstream_H
 
-/** \file This file ensures that the platform has a istringstream and
+/** \file sstream.h ensures that the platform has a istringstream and
  *  an ostringstream class. If the header <sstream> does not exist,
  *  istringstream and ostringstream will be simple wrappers around
  *  istrtream and ostrstream respectively. */
