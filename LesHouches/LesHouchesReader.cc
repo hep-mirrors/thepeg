@@ -194,7 +194,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << XSECUP << XERRUP << XMAXUP << LPRUP << NUP << IDPRUP
      << XWGTUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
      << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
-     << theXSec << theMaxXSec << theMaxWeight << theNEvents << theMaxScan;
+     << ounit(theXSec, picobarn) << ounit(theMaxXSec, picobarn)
+     << theMaxWeight << theNEvents << theMaxScan;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -203,7 +204,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> XSECUP >> XERRUP >> XMAXUP >> LPRUP >> NUP >> IDPRUP
      >> XWGTUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
      >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
-     >> theXSec >> theMaxXSec >> theMaxWeight >> theNEvents >> theMaxScan;
+     >> iunit(theXSec, picobarn) >> iunit(theMaxXSec, picobarn)
+     >> theMaxWeight >> theNEvents >> theMaxScan;
 }
 
 AbstractClassDescription<LesHouchesReader>

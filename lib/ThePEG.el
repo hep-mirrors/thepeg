@@ -1311,3 +1311,68 @@ ParticleVector " class "::decay(const DecayMode & dm,
     (beginning-of-line)
     (insert-string "  //@}
 ")))
+
+(defun ThePEG-variable-cutnpaste ()
+  "Create code fragments for a variable declaration together with
+   corresponding set and get functions, I/O functions and constructors."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq type (read-from-minibuffer "Type: " "double"))
+  (setq name (read-from-minibuffer "Name (of access function): "))
+  (setq theName (concat (cond ((string-equal type "bool") "use")
+			      (t "the")) (upcase-initials name)))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq unit (read-from-minibuffer "Unit: "))
+  (setq outname (cond ((string-equal unit "") theName)
+		      (t (concat "ounit(" theName ", " unit ")"))))
+  (setq inname (cond ((string-equal unit "") theName)
+		     (t (concat "iunit(" theName ", " unit ")"))))
+  (setq def (cond ((string-equal unit "") "0")
+		  (t (concat "0*" unit))))
+  (setq buf (get-buffer "*ThePEG-scratch*"))
+  (setq win (cond (buf (get-buffer-window buf 'visible))
+		  (t nil)))
+  (cond (win (select-window win))
+	(t (switch-to-buffer "*ThePEG-scratch*")))
+  (c++-mode)
+  (beginning-of-buffer)
+  (insert-string (concat "
+
+  /**
+   * " desc "
+   */
+  " type " " theName ";
+
+  inline " type " " name "() const;
+
+  inline void " name "(" type ");
+
+inline " type " " class "::" name "() const {
+  return " theName ";
+}
+
+inline void " class "::" name "(" type " x) {
+  " theName " = x;
+}
+
+" class "::" class "()
+  : Base(), " theName "(" def ") {}
+
+" class "::" class "(const " class " & x)
+  : Base(x), " theName "(x." theName ") {}
+
+void " class "::persistentOutput(PersistentOStream & os) const {
+  os << " outname ";
+}
+
+void " class "::persistentInput(PersistentIStream & is, int) {
+  is >> " inname ";
+}
+
+"
+))
+(beginning-of-buffer))
+
