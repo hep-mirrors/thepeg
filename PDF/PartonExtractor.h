@@ -169,7 +169,8 @@ protected:
   virtual void construct(PartonBinInstance & pb, tStepPtr step);
   // Used by the public construct() for each of the final parton bins.
 
-  PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step);
+  PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp);
+  void addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step);
   // Used by the public newRemnants() for each f the parton bins.
 
 public:

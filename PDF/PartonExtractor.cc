@@ -422,12 +422,15 @@ construct(PartonBinInstance & pb, tStepPtr step) {
 PBIPair PartonExtractor::newRemnants(tPPair oldp, tPPair newp, tStepPtr step) {
   PBIPair pb;
   Direction<0> dir(true);
-  pb.first = newRemnants(partonBinInstance(oldp.first), newp.first, step);
+  pb.first = newRemnants(partonBinInstance(oldp.first), newp.first);
   dir.reverse();
-  pb.second = newRemnants(partonBinInstance(oldp.second), newp.second, step);
+  pb.second = newRemnants(partonBinInstance(oldp.second), newp.second);
+  addNewRemnants(partonBinInstance(oldp.first), pb.first, step);
+  addNewRemnants(partonBinInstance(oldp.second), pb.second, step);
+  return pb;
 }
 
-PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step) {
+PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp) {
   if ( ! oldpb || !oldpb->incoming() ) return oldpb;
   const PartonBin::tPBVector & sisters = oldpb->incoming()->bin()->outgoing();
   for ( int i = 0, N = sisters.size(); i < N; ++i )
@@ -438,27 +441,34 @@ PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step) {
       newpb->li(log(oldpb->particle()->momentum().dirPlus()/
 		    newp->momentum().dirPlus()));
       newpb->l(oldpb->l() - oldpb->li() + newpb->li());
-      Energy2 sc = -1.0*GeV2;
+      Energy2 sc = -newp->scale();
       if ( oldpb->incoming()->incoming() )
 	sc = -newpb->particle()->momentum().m2();
+      newpb->remnantWeight(1.0);
       if ( !newpb->remnantHandler()->
 	   recreateRemnants(*newpb, oldpb->parton(), newp, newpb->li(),
 			    sc, newpb->particle()->momentum()) ) throw Veto();
-      tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
-      step->removeDecayProduct(newpb->particle(), oldpb->remnants().begin(),
-				oldpb->remnants().end());
-      step->removeDecayProduct(newpb->particle(), oldpb->parton());
-      if ( !step->addDecayProduct(newpb->particle(),
-				  rem.begin(), rem.end(), false) )
-	throw Veto();
-      if ( !step->addDecayProduct(newpb->particle(), newpb->parton()) )
-				    throw Veto();
-      colourConnect(newpb->particle(), newpb->parton(), rem);
-      partonBinInstances()[newp] = newpb;
+      if ( newpb->remnantWeight() <= 0.0 ) throw Veto();
       return newpb;
     }
   throw Veto();
   return PBIPtr();
+}
+
+void PartonExtractor::
+addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step) {
+  if ( oldpb == newpb ) return;
+  tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
+  step->removeDecayProduct(newpb->particle(), oldpb->remnants().begin(),
+			   oldpb->remnants().end());
+  step->removeDecayProduct(newpb->particle(), oldpb->parton());
+  if ( !step->addDecayProduct(newpb->particle(),
+			      rem.begin(), rem.end(), false) )
+    throw Veto();
+  if ( !step->addDecayProduct(newpb->particle(), newpb->parton()) )
+    throw Veto();
+  colourConnect(newpb->particle(), newpb->parton(), rem);
+  partonBinInstances()[newpb->parton()] = newpb;
 }
 
 void PartonExtractor::persistentOutput(PersistentOStream & os) const {

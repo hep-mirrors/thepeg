@@ -1,3 +1,11 @@
+2003-07-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.cc: Messed around with the newRemnants
+	methods.
+
+	* Utilities/ObjectIndexer.icc: Fixed memory leak in
+	operator()(Int).
+
 2003-07-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StepHandler.h: Added method and member for getting the

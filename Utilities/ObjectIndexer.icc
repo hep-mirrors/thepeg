@@ -24,7 +24,7 @@ inline typename ObjectIndexer<IntT,ObjT>::tTPtr
 ObjectIndexer<IntT,ObjT>::operator()(IntT i) {
   typename IndexObjectMap::iterator it = indexObject.find(i);
   if ( it == indexObject.end() ) {
-    tTPtr o = new_ptr<ObjT>();
+    TPtr o = new_ptr<ObjT>();
     objectIndex[o] = i;
     indexObject[i] = o;
     return o;
