@@ -1,0 +1,177 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SpinInfo class.
+//
+namespace ThePEG {
+namespace Helicity {
+
+inline SpinInfo::SpinInfo()
+  : _prodloc(-1), _decayloc(-1), _decayed(false), _developed(false) {}
+    
+inline SpinInfo::SpinInfo(const Lorentz5Momentum & in, bool intim)
+  :  _timelike(intim),_decayed(false), _developed(false),
+     _productionmomentum(in) {}
+
+inline SpinInfo::SpinInfo(const SpinInfo & x)
+  : SpinBase(x), _production(x._production), _decay(x._decay), 
+    _timelike(x._timelike),
+    _prodloc(x._prodloc), _decayloc(x._decayloc),
+    _decayed(x._decayed), _developed(x._developed),_rhomatrix(x._rhomatrix),
+    _Dmatrix(x._Dmatrix),_ispin(x._ispin),
+    _productionmomentum(x._productionmomentum) 
+{
+  x._production=VertexPtr();
+  x._decay=VertexPtr();
+  // set the vertex so it now points to the copy
+  // for timelike
+  if(_production)
+    {
+      if(_timelike){_production->resetOutgoing(this,_prodloc);}
+      // for spacelike
+      else{_production->resetIncoming(this,_prodloc);}
+    }
+}
+
+inline EIPtr SpinInfo::clone() const 
+{
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
+}
+
+inline void SpinInfo::rebind(const EventTranslationMap & trans) {
+  if(_production){_production=trans.translate(_production);}
+  if(_decay){_decay=trans.translate(_decay);}
+  SpinBase::rebind(trans);
+}
+
+// set and get methods for the vertex
+inline void SpinInfo::setProductionVertex(VertexPtr in) const 
+{
+  _production=in;
+  // add to the list of outgoing if timelike
+  int temp;
+  if(_timelike){in->addOutgoing(this,temp);}
+  // or incoming if spacelike
+  else{in->addIncoming(this,temp);}
+  _prodloc=temp;
+}
+
+// set the vertex at which the particle was produced
+inline tcVertexPtr SpinInfo::getProductionVertex() const{return _production;}
+
+// get the vertex at which the particle was produced
+inline void SpinInfo::setDecayVertex(VertexPtr in) const
+{
+  _decay=in;
+  int temp;
+  in->addIncoming(this,temp);
+  _decayloc=temp;
+  if(temp!=0){cout << "something dodgy here can only decay once" << endl;}
+}
+
+// get the vertex at which the particle decayed or branched
+inline tcVertexPtr SpinInfo::getDecayVertex() const {return _decay;} 
+// set and get methods for the stage variables
+
+inline bool SpinInfo::decayed() const {return _decayed;}
+// get decay for particle
+
+inline bool SpinInfo::developed() const {return _developed;}
+// get developed for the particle
+
+inline void SpinInfo::decay() const
+{
+  // if the particle has already been decayed do nothing
+  if(_decayed){return;}
+  // otherwise we need to obtain the correct rho matrix
+  _decayed=true;
+  _rhomatrix = _production->getRhoMatrix(_prodloc);
+}
+
+inline void SpinInfo::develop() const
+{
+  // if the particle has already been developed do nothing
+  if(_developed){return;}
+  // otherwise we need to obtain the correct D matrix
+  _developed=true;
+  _Dmatrix= _decay->getDMatrix(_decayloc);
+}
+
+// set the decayed variable for the particle
+inline void SpinInfo::setDeveloped(bool in) const {_developed=in;}
+
+// get the developed variable for the particle
+// access to the rho matrix
+inline RhoDMatrix SpinInfo::rhoMatrix() const {return _rhomatrix;}
+inline RhoDMatrix & SpinInfo::rhoMatrix() {return _rhomatrix;}
+
+// access to the D matrix
+inline RhoDMatrix SpinInfo::DMatrix() const {return _Dmatrix;}
+inline RhoDMatrix & SpinInfo::DMatrix() {return _Dmatrix;}
+
+// return 2s+1 for the particle
+inline int SpinInfo::Spin() const {return _ispin;}
+
+// set the spin of the particle
+inline void SpinInfo::setSpin(int in)
+{
+  _ispin=in;
+  _rhomatrix.setSpin(_ispin);_rhomatrix.average();
+  _Dmatrix.setSpin(_ispin);_Dmatrix.average();
+}
+
+inline const Lorentz5Momentum & SpinInfo::productionMomentum() const
+{return _productionmomentum;}
+
+inline void SpinInfo::setProductionMomentum(const Lorentz5Momentum & in)
+{_productionmomentum=in;}
+
+inline void SpinInfo::setTimelike(bool in){_timelike=in;}
+
+inline bool SpinInfo::timelike(){return _timelike;}
+
+inline void SpinInfo::decayed(bool in) const{_decayed=in;}
+
+inline void SpinInfo::update() const
+{
+  // number of instances fo this object
+  int nref=referenceCount();
+  if(nref<2||nref>3){return;}
+  // work out the number of references there should be 
+  int nmin=0;
+  // check the production pointers
+  if(_production)
+    {
+      if(_timelike){if(_production->outgoing()[_prodloc]==this){++nmin;}}
+      else{if(_production->incoming()[_prodloc]==this){++nmin;}}
+    }
+  // check the decay pointers
+  if(_decay)
+    {if(_decay->incoming()[_decayloc]==this){++nmin;}}
+  // delete the pointers
+  SpinPtr temp;
+  if(nmin+1==nref)
+    {
+      // delete the production pointers
+      if(_production)
+	{
+	  if(_timelike)
+	    {if(_production->outgoing()[_prodloc]==this)
+	      {_production->resetOutgoing(SpinPtr(),_prodloc);}}
+	  else
+	    {if(_production->incoming()[_prodloc]==this)
+	      {_production->resetIncoming(SpinPtr(),_prodloc);}}
+	}
+      // delete the decay pointers
+      if(_decay)
+	{
+	  if(_decay->incoming()[_decayloc]==this)
+	    {_decay->resetIncoming(SpinPtr(),_decayloc);}
+	}
+    }
+}
+
+}
+}
+

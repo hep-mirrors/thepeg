@@ -1,3 +1,15 @@
+2004-03-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/MEBase.cc (Module): Added new virtual function
+	constructVertes for constructing the spin information for the
+	interaction. The default version does nothing.
+
+	* Handlers/XComb.cc (Module): Added call to
+	MEBase::constructVertex in the construct method.
+
+	* EventRecord/Particle.cc (Module): Fixed bug in the cloning of
+	the spin information in the ParticleRep copy-tor.
+
 2004-03-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Complex.h (Module): Added using std::complex int the

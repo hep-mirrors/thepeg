@@ -1,0 +1,16 @@
+// -*- C++ -*-
+//
+// This is the forward declaration of the SpinInfo class.
+//
+#ifndef ThePEG_SpinInfo_FH
+#define ThePEG_SpinInfo_FH
+
+namespace ThePEG {
+namespace Helicity {
+
+ThePEG_DECLARE_CLASS_POINTERS(SpinInfo,SpinfoPtr);
+
+}
+}
+
+#endif

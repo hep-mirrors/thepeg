@@ -245,6 +245,8 @@ void XComb::construct(tSubProPtr sub) {
   lastPartons().second->scale(lastScale());
   for ( int i = 0, N = sub->outgoing().size(); i < N; ++i )
     sub->outgoing()[i]->scale(lastScale());
+  // construct the spin information for the interaction
+  matrixElement()->constructVertex(sub);
 }
 
 void XComb::Init() {}

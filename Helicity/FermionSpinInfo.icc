@@ -1,0 +1,97 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FermionSpinInfo class.
+//
+
+namespace ThePEG {
+namespace Helicity {
+
+inline FermionSpinInfo::FermionSpinInfo()
+{
+  _productionstates.resize(2);
+  _decaystates.resize(2);
+  setSpin(2);
+  _decaycalc=false;
+}
+
+inline FermionSpinInfo::FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
+{
+  _productionstates.resize(2);
+  _decaystates.resize(2);
+  setSpin(2);
+  setProductionMomentum(in);
+  _decaycalc=false;
+  setTimelike(intime);
+}
+
+inline FermionSpinInfo::FermionSpinInfo(const FermionSpinInfo & x)
+  : SpinInfo(x), _productionstates(x._productionstates),
+    _decaystates(x._decaystates), _decaycalc(x._decaycalc)
+{}
+    
+inline EIPtr FermionSpinInfo::clone() const 
+{
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
+}
+
+inline void FermionSpinInfo::rebind(const EventTranslationMap & trans) {
+  SpinInfo::rebind(trans);
+}
+
+// set and get methods for the basis states
+// set the basis state, this is production state
+inline void FermionSpinInfo::setBasisState(int ihel,LorentzSpinor in) const
+{
+  if(ihel==-1||ihel==1) {
+    _productionstates[(ihel+1)/2]=in;
+  } else {
+    cerr << "Tried to set invalid fermion basis state" << endl;
+  }
+}
+
+inline void FermionSpinInfo::setDecayState(int ihel,LorentzSpinor in) const
+{
+  if(ihel==-1||ihel==1){
+    _decaycalc=true;
+    _decaystates[(ihel+1)/2]=in;
+  } else {
+    cerr << "Tried to set invalid fermion basis state" << endl;
+  }
+}  
+
+// get the basis state for the production
+inline LorentzSpinor FermionSpinInfo::getProductionBasisState(int ihel) const
+{
+  static LorentzSpinor dummy;
+  if(ihel!=-1&&ihel!=1) {
+    cerr << "Tried to get invalid fermion basis state" << endl;return dummy;
+  }
+  return _productionstates[(ihel+1)/2];
+}
+
+// get the bassis state for the decay
+inline LorentzSpinor FermionSpinInfo::getDecayBasisState(int ihel) const
+{
+  static LorentzSpinor dummy;
+  // check this is a valid helicity
+  if(ihel!=-1&&ihel!=1) {
+    cerr << "Tried to get invalid fermion basis state" << endl;
+    return dummy;
+  }
+  // calculate the decay basis states if needed
+  if(!_decaycalc)
+    {
+      // now use this to evaluate the basis states in the decay frame
+      Hep3Vector boostv=- productionMomentum().boostVector();
+      _decaystates[0] =_productionstates[0].boost(boostv);
+      _decaystates[1] =_productionstates[1].boost(boostv);
+      _decaycalc=true;
+    }
+  // return the basis function
+  return _decaystates[(ihel+1)/2];
+}
+
+}
+}

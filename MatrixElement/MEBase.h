@@ -105,6 +105,9 @@ public:
   // overridden in a sub class the new function must call the base
   // class one first.
 
+  virtual void constructVertex(tSubProPtr sub);
+  // construct the spin information for the interaction
+
   virtual int nDim() const;
   // The number of internal degreed of freedom used in the matrix
   // element. This default version returns 0;

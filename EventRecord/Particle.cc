@@ -34,7 +34,7 @@ Particle::ParticleRep::ParticleRep(const ParticleRep & p)
     theNumber(p.theNumber), theExtraInfo(p.theExtraInfo.size()) {
   if ( p.theColourInfo )
     theColourInfo = dynamic_ptr_cast<CBPtr>(p.theColourInfo->clone());
-  if ( theSpinInfo )
+  if ( p.theSpinInfo )
     theSpinInfo = dynamic_ptr_cast<SpinPtr>(p.theSpinInfo->clone());
   for ( int i = 0, N = p.theExtraInfo.size(); i < N; ++i )
     theExtraInfo[i] = p.theExtraInfo[i]->clone();

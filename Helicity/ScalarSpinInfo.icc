@@ -1,0 +1,28 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ScalarSpinInfo class.
+//
+
+namespace ThePEG {
+  namespace Helicity {
+    using namespace ThePEG;
+    inline ScalarSpinInfo::ScalarSpinInfo() {setSpin(1);}
+
+    inline ScalarSpinInfo::ScalarSpinInfo(const Lorentz5Momentum & in,bool intime) 
+    {setSpin(1);setProductionMomentum(in);setTimelike(intime);}
+
+    inline ScalarSpinInfo::ScalarSpinInfo(const ScalarSpinInfo & x)
+      : SpinInfo(x) {}
+
+    inline EIPtr ScalarSpinInfo::clone() const
+    {
+      tcSpinPtr temp=this;
+      return const_ptr_cast<SpinPtr>(temp);
+    } 
+
+    inline void ScalarSpinInfo::rebind(const EventTranslationMap & trans) {
+      SpinInfo::rebind(trans);
+    }
+  }
+}
