@@ -6,10 +6,11 @@
 
 namespace ThePEG {
 
-inline MadGraphReader::MadGraphReader() {}
+inline MadGraphReader::MadGraphReader()
+  : neve(0), ieve(0) {}
 
 inline MadGraphReader::MadGraphReader(const MadGraphReader & x)
-  : LesHouchesFileReader(x) {}
+  : LesHouchesFileReader(x), neve(x.neve), ieve(0) {}
 
 inline IBPtr MadGraphReader::clone() const {
   return new_ptr(*this);

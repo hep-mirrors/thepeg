@@ -143,6 +143,18 @@ protected:
   inline virtual IVector getReferences();
   //@}
 
+protected:
+
+  /**
+   * The number of events in this file.
+   */
+  long neve;
+
+  /**
+   * The current event number.
+   */
+  long ieve;
+
 private:
 
   /**

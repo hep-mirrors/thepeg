@@ -22,7 +22,6 @@ using std::fgets;
 void MadGraphReader::open() {
   LesHouchesFileReader::open();
 
-  char cline[1024];
   double xsec = -1.0;
   double maxw = -1.0;
   long neve = 0;
@@ -32,54 +31,44 @@ void MadGraphReader::open() {
   int lpp2 = 0;
   string pdftag;
   // First scan banner to extract some information
-  while ( fgetc(file()) == '#' ) {
-    if ( fgets(cline, 1024, file()) == NULL )
-      throw LesHouchesFileError()
-	<< "An error occurred while '" << name() << "' was reading the file '"
-	<< filename() << "'." << Exception::runerror;
-    string line(cline);
-    line = line.substr(0, line.find('\n'));
-    istringstream is(line);
-    if ( line.find("Number of events") != string::npos ) {
-      neve = atol(line.substr(line.find(':')+1, string::npos).c_str());
-    } else if ( line.find("Integrated weight") != string::npos ) {
-      xsec = atof(line.substr(line.find(':')+1, string::npos).c_str());
-    } else if ( line.find("Max wgt") != string::npos ) {
-      maxw = atof(line.substr(line.find(':')+1, string::npos).c_str());
-    } else if ( line.find("ebeam(1)") != string::npos ) {
-      ebeam1 = atof(line.c_str());
-    } else if ( line.find("ebeam(2)") != string::npos ) {
-      ebeam2 = atof(line.c_str());
-    } else if ( line.find("lpp(1)") != string::npos ) {
-      lpp1 = atoi(line.c_str());
-    } else if ( line.find("lpp(2)") != string::npos ) {
-      lpp2 = atoi(line.c_str());
-    } else if ( line.find("PDF set") != string::npos ) {
-      pdftag = line.substr(2, 7);
+  while ( cfile.readline() ) {
+    if ( !cfile || cfile.getc() != '#' ) break;
+    if ( cfile.find("Number of events") ) {
+      cfile.skip(':');
+      cfile >> neve;
+    } else if ( cfile.find("Integrated weight") ) {
+      cfile.skip(':');
+      cfile >> xsec;
+    } else if ( cfile.find("Max wgt") ) {
+      cfile.skip(':');
+      cfile >> maxw;
+    } else if ( cfile.find("ebeam(1)") ) {
+      cfile >> ebeam1;
+    } else if ( cfile.find("ebeam(2)") ) {
+      cfile >> ebeam2;
+    } else if ( cfile.find("lpp(1)") ) {
+      cfile >> lpp1;
+    } else if ( cfile.find("lpp(2)") ) {
+      cfile >> lpp2;
+    } else if ( cfile.find("PDF set") ) {
+      cfile.skip('\'');
+      cfile >> pdftag;
+      pdftag = pdftag.substr(0, 7);
     }
   }
 
   // Convert the extracted information to LesHouches format.
-  if ( lpp1 == 1 ) IDBMUP.first = ParticleID::pplus;
-  else if ( lpp1 == -1 ) IDBMUP.first = ParticleID::pbarminus;
-  if ( lpp2 == 1 ) IDBMUP.second = ParticleID::pplus;
-  else if ( lpp2 == -1 ) IDBMUP.second = ParticleID::pbarminus;
-  if ( !lpp1 || !lpp2 ) {
-    // Madgraph doesn't specify beams if they are not protons. If they
-    // are electrons we have tolook at the first event to check.
-    fgets(cline, 1024, file());
-    istringstream is(fgets(cline, 1024, file()));
-    int idum1 = 0, idum2 = 0;
-    is >> idum1 >> idum2;
-    if ( !lpp1 ) IDBMUP.first = idum1;
-    if ( !lpp2 ) IDBMUP.second = idum2;
-    // Reopen the file to return to the correct position.
-    close();
-    open();
-    while ( fgetc(file()) == '#' ) fgets(cline, 1024, file());
+  if ( !IDBMUP.first ) {
+    if ( lpp1 == 1 ) IDBMUP.first = ParticleID::pplus;
+    else if ( lpp1 == -1 ) IDBMUP.first = ParticleID::pbarminus;
   }
-  EBMUP.first = ebeam1;
-  EBMUP.second = ebeam2;
+  if ( !IDBMUP.second ) {
+    if ( lpp2 == 1 ) IDBMUP.second = ParticleID::pplus;
+    else if ( lpp2 == -1 ) IDBMUP.second = ParticleID::pbarminus;
+  }
+
+  if ( EBMUP.first <= 0.0*GeV ) EBMUP.first = ebeam1;
+  if ( EBMUP.second <= 0.0*GeV ) EBMUP.second = ebeam2;
 
   // Translation into PDFLib codes is not perfect.
   if ( pdftag.substr(0, 3) == "mrs" ) PDFGUP.first = PDFGUP.second = 3;
@@ -101,11 +90,87 @@ void MadGraphReader::open() {
   else if ( pdftag == "cteq5l1" ) PDFSUP.first = PDFSUP.second = 46;
   else if ( pdftag.substr(0, 5) == "cteq5" ) PDFSUP.first = PDFSUP.second = 48;
   else PDFSUP.first = PDFSUP.second = 0;
+
+  if ( !cfile )
+    throw LesHouchesFileError()
+      << "An error occurred while '" << name() << "' was reading the file '"
+      << filename() << "'." << Exception::runerror;
 }
 
 
 bool MadGraphReader::readEvent() {
-  return false;
+  if ( !cfile ) return false;
+
+  NUP = 0;
+  ieve = 0;
+  long evno = 0;
+  XWGTUP = 0.0;
+  double scale = 0.0;
+  double aEM = 0.0;
+  double aS = 0.0;
+  bool oldformat = false;
+
+  cfile >> NUP >> evno >> XWGTUP >> scale >> aEM >> aS;
+  if ( !cfile ) {
+    IDPRUP = evno;
+    ++ieve;
+    oldformat = true;
+  } else {
+    IDPRUP = 0;
+    ieve = evno;
+    SCALUP = scale;
+    AQEDUP = aEM;
+    AQCDUP = aS;
+  }
+
+  IDUP.resize(NUP);
+  if ( !cfile.readline() ) return false;
+  for ( int i = 0; i < NUP; ++i ) cfile >> IDUP[i];
+
+  MOTHUP.resize(NUP);
+  if ( !cfile.readline() ) return false;
+  for ( int i = 0; i < NUP; ++i ) cfile >> MOTHUP[i].first;
+  if ( !cfile.readline() ) return false;
+  for ( int i = 0; i < NUP; ++i ) cfile >> MOTHUP[i].second;
+
+  ICOLUP.resize(NUP);
+  if ( !cfile.readline() ) return false;
+  for ( int i = 0; i < NUP; ++i ) cfile >> ICOLUP[i].first;
+  if ( !cfile.readline() ) return false;
+  for ( int i = 0; i < NUP; ++i ) cfile >> ICOLUP[i].second;
+
+  if ( oldformat ) {
+    ISTUP.assign(NUP, 1);
+    ISTUP[0] = ISTUP[1] = -1;
+    SPINUP.assign(NUP, 9);
+  } else {
+    ISTUP.resize(NUP);
+    if ( !cfile.readline() ) return false;
+    for ( int i = 0; i < NUP; ++i ) cfile >> ISTUP[i];
+    SPINUP.resize(NUP, 9);
+    if ( !cfile.readline() ) return false;
+    for ( int i = 0; i < NUP; ++i ) cfile >> SPINUP[i];
+  }
+
+  PUP.resize(NUP, vector<double>(5));
+  for ( int i = 0; i < NUP; ++i ) {
+    if ( !cfile.readline() ) return false;
+    int dummy = 0;
+    cfile  >> dummy >> PUP[i][3] >> PUP[i][0] >> PUP[i][1] >> PUP[i][2];
+    PUP[i][4] = sqrt(max(sqr(PUP[i][3]) - sqr(PUP[i][0]) -
+			 sqr(PUP[i][1]) - sqr(PUP[i][2]), 0.0));
+  }
+
+  if ( !cfile ) return false;
+
+  // Set info not obtained from MadGraph.
+  VTIMUP = vector<double>(NUP, -1.0);
+
+  cfile.readline();
+
+  // Return true even if last read failed.
+  return true;
+
 }
 
 void MadGraphReader::scan() {}
@@ -113,11 +178,12 @@ void MadGraphReader::scan() {}
 MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
-  // *** ATTENTION *** os << ; // Add all member variable which should be written persistently here.
+  os << neve;
 }
 
 void MadGraphReader::persistentInput(PersistentIStream & is, int) {
-  // *** ATTENTION *** is >> ; // Add all member variable which should be read persistently here.
+  is >> neve;
+  ieve = 0;
 }
 
 ClassDescription<MadGraphReader> MadGraphReader::initMadGraphReader;

@@ -5,6 +5,7 @@
 
 #include "ThePEG/LesHouches/LesHouchesReader.h"
 #include "LesHouchesFileReader.fh"
+#include "ThePEG/Utilities/CFileLineReader.h"
 #include <stdio.h>
 
 namespace ThePEG {
@@ -33,7 +34,8 @@ public:
   inline LesHouchesFileReader();
 
   /**
-   * Copy-constructor.
+   * Copy-constructor. Note that a file which is opened in the object
+   * copied from will have to be reopened in this.
    */
   inline LesHouchesFileReader(const LesHouchesFileReader &);
 
@@ -140,6 +142,13 @@ protected:
   inline virtual IVector getReferences();
   //@}
 
+protected:
+
+  /**
+   * The wrapper around the C FILE stream from which to read
+   */
+  CFileLineReader cfile;
+
 private:
 
   /**
@@ -151,17 +160,6 @@ private:
    * The name of the file from where to read events.
    */
   string theFileName;
-
-  /**
-   * If true the file is always assumed to be gzipped. Otherwise the
-   * file will be assumed to be gzipped if the name ends with '.gz'
-   */
-  bool isGZipped;
-
-  /**
-   * Internal flag to decide how to close the file.
-   */
-  bool isPipe;
 
 private:
 

@@ -20,16 +20,9 @@ using namespace ThePEG;
 LesHouchesFileReader::~LesHouchesFileReader() {}
 
 void LesHouchesFileReader::open() {
-  if ( theFile != NULL ) close();
-  if ( isGZipped || theFileName.substr(theFileName.length()-3,3) == ".gz" ) {
-    string cmd = string(ThePEG_GZREAD_FILE) + " " + theFileName;
-    theFile = popen(cmd.c_str(), "r");
-    isPipe = true;
-  } else {
-    theFile = std::fopen(theFileName.c_str(), "r");
-    isPipe = false;
-  }
-  if ( theFile == NULL )
+  cfile.open(filename());
+  theFile = cfile.cfile();
+  if ( ( theFile = cfile.cfile() ) == NULL )
     throw LesHouchesFileError()
       << "The LesHouchesFileReader '" << name() << "' could not open the "
       << "event file called '" << theFileName << "'."
@@ -37,19 +30,16 @@ void LesHouchesFileReader::open() {
 }
 
 void LesHouchesFileReader::close() {
-  if ( theFile == NULL ) return;
-  if ( isPipe ) pclose(theFile);
-  else fclose(theFile);
+  cfile.close();
   theFile = NULL;
 }
 
 void LesHouchesFileReader::persistentOutput(PersistentOStream & os) const {
-  os << theFileName << isGZipped;
+  os << theFileName;
 }
 
 void LesHouchesFileReader::persistentInput(PersistentIStream & is, int) {
-  is >> theFileName >> isGZipped;
-  isPipe = false;
+  is >> theFileName;
 }
 
 AbstractClassDescription<LesHouchesFileReader>
@@ -65,7 +55,12 @@ void LesHouchesFileReader::Init() {
 
   static Parameter<LesHouchesFileReader,string> interfaceFileName
     ("FileName",
-     "The name of a file containing events to be read into ThePEG",
+     "The name of a file containing events conforming to the Les Houches "
+     "protocol to be read into ThePEG. A file name ending in "
+     "<code>.gz</code> will be read from a pipe which uses "
+     "<code>zcat</code>. If a file name ends in <code>|</code> the "
+     "preceeding string is interpreted as a command, the output of which "
+     "will be read through a pipe.",
      &LesHouchesFileReader::theFileName, "", "", "", false, false, false);
 
 }

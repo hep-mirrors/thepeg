@@ -70,7 +70,7 @@ public:
   /**
    * Initialize with a c-file \a f opened from the outside.
    */
-  inline void setFILE(FILE * f);
+  inline void open(FILE * f);
 
   /**
    * Initialize with a \a filename. If \a filename ends with
@@ -79,7 +79,7 @@ public:
    * sign, the preceding string is interpreted as a command defining a
    * pipe from which to read.
    */
-  void setFile(string filename);
+  void open(string filename);
 
   /**
    * If the file was opened from within this object, close it.
@@ -111,6 +111,18 @@ public:
    * Return true if a previous read failed.
    */
   inline bool operator!();
+
+  /**
+   * Scan forward up and until the first occurrence of the given
+   * character.
+   * @return true if the given character was found.
+   */
+  inline bool skip(char c);
+
+  /**
+   * Check if a given string is present in the current line buffer.
+   */
+  inline bool find(string str) const;
 
   /** @name Operators to read from the line buffer. */
   //@{

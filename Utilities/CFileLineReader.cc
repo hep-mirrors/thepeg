@@ -17,7 +17,7 @@ CFileLineReader::~CFileLineReader() {
   close();
 }
 
-void CFileLineReader::setFile(string filename) {
+void CFileLineReader::open(string filename) {
   close();
   pos = buff;
   if ( filename[filename.length()-1] == '|' ) {
