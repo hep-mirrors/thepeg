@@ -30,4 +30,8 @@ inline void Strategy::dofinish() {
   Interfaced::dofinish();
 }
 
+inline IBPtr Strategy::fullclone() const {
+  return clone();
+}
+
 }

@@ -92,17 +92,19 @@ public:
   inline int rndsign(double p1, double p2, double p3) const;
 
   /**
-   * Return an integer i with probability pi/(\a p0+\a p1).
+   * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a p1).
    */
   inline int rnd2(double p0, double p1) const;
 
   /**
-   * Return 
+   * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a
+   * p1+\a p2).
    */
   inline int rnd3(double p0, double p1, double p2) const;
 
   /**
-   * Return an integer i with probability pi/(\a p0+\a p1+\a p2+\a p3).
+   * Return an integer/ \f$i\f$ with probability p\f$i\f$(\a p0+\a
+   * p1+\a p2+\a p3).
    */
   inline int rnd4(double p0, double p1, double p2, double p3) const;
 

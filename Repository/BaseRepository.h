@@ -1,41 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_BaseRepository_H
 #define ThePEG_BaseRepository_H
-//
-// This is the declaration of the <!id>BaseRepository<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>BaseRepository<!!id> is a purely static class which keeps a
-// set of <!class>InterfacedBase<!!class> objects indexed by their
-// name. The name is divided up in a tree-like structure inspired by
-// the Unix file system.
-//
-// The <!class>InterfacedBase<!!class> objects may be manipulated
-// using <!class>InterfaceBase<!!class> objects. This may be done
-// directly or via a simple command interface using the
-// <!id>exec()<!!id> method.
-//
-// Commands given to <!id><!id>exec()<!!id> can be of the following
-// forms:<BR> the empty string and string beginning with #<!!id> are
-// ignored.<BR> <!id>cd dir<!!id> sets the current directory to
-// <!id>dir<!!id> (if it exists).<BR> <!id>pushd dir<!!id> sets the
-// current directory to <!id>dir<!!id> (if it exists) but saves the
-// previous directory on a stack.<BR> <!id>popd<!!id> leaves the
-// current directory and sets the next one on the stack as
-// current.<BR> <!id>dirs<!!id> returns the current stack of
-// directories.<BR> <!id>ls<!!id> returns the names of the objects
-// (and sub-directories) in the current directory.<BR> <!id>ls
-// dir<!!id> returns the names of the objects (and sub-directories) in
-// the given directory.<BR>
-//
-// <!id>set object:interface value<!!id>.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:InterfacedBase.html">InterfacedBase.h</a>,
-// <a href="http:InterfaceBase.html">InterfaceBase.h</a>.
-// 
+// This is the declaration of the BaseRepository class.
 
 #include "ThePEG/Config/ThePEG.h"
 // #include "BaseRepository.fh"
@@ -47,204 +13,487 @@
 
 namespace ThePEG {
 
+/**
+ * BaseRepository is a purely static class which keeps a set of
+ * InterfacedBase objects indexed by their name. The objects and their
+ * names are divided up in a tree-like structure inspired by the Unix
+ * file system.
+ *
+ * The InterfacedBase objects may be manipulated using InterfaceBase
+ * objects. This may be done directly or via a simple command
+ * interface using the exec() method.
+ *
+ * RepositoryBase is closely related to the Repository sub-class. The
+ * division may seem unnecessary, but the idea is that BaseRepository
+ * is a general repository for administrating and manipulating a set
+ * of InterfacedBase objects, while the Repository adds on utilites
+ * which are special to ThePEG where the objects are Interfaced (a
+ * sub-class of InterfacedBase).
+ *
+ * @see Repository,
+ * @see InterfacedBase,
+ * @see InterfaceBase.
+ * @see Interfaced
+ * 
+ */
 class BaseRepository {
 
 public:
 
+  /** A set of strings. */
   typedef StringSet DirectorySet;
+
+  /** A vector of character strings. */
   typedef vector<string> StringVector;
+
+  /** A set of pointers to InterfaceBase objects. */
   typedef set<const InterfaceBase *> InterfaceSet;
+
+  /** A map of sets of IterfaceBase objects indexed by pointers to
+      ClassDescriptionBase objects. */
   typedef map<const ClassDescriptionBase *, InterfaceSet> TypeInterfaceMap;
+
+  /** A map of ClassDocumentationBase objects indexed by pointers to
+      ClassDescriptionBase objects. */
   typedef map<const ClassDescriptionBase *, const ClassDocumentationBase *>
     TypeDocumentationMap;
  
 public:
 
+  /**
+   * Interpret the command in \a cmd and return possible
+   * messages. This is the main function for the command-line
+   * interface. The syntax is described elsewhere. The ostream
+   * argument is currently unused.
+   */
+  static string exec(string cmd, ostream &);
+
+  /** @name Functions for adding and deleting objects and interfaces. */
+  //@{
+  /**
+   * Register an interface. This is called automatically in the
+   * InterfaceBase constructor and should never be called explicitly.
+   */
   static void Register(const InterfaceBase &, const type_info &);
-  // Register an interface. (this is done automatically in the
-  // InterfaceBase constructor.
 
+  /**
+   * Register a class documentation. This is called automatically in
+   * the ClassDocumentationBase constructor and should never be called
+   * explicitly.
+   */
   static void Register(const ClassDocumentationBase &, const type_info &);
-  // Register a class documentation. (this is done automatically in the
-  // ClassDocumentationBase constructor.
 
+  /**
+   * Register a new object using the its current name. If the object
+   * is already in the repository, nothing happens. If another object
+   * already exists with the same name, the new object will have
+   * <code>#</code>'s appended to its name to make it unique.
+   */
   static void Register(IBPtr);
-  static void Register(IBPtr, string newName);
-  // Register a new object using the its current name or giving it a
-  // new one. If the object is already in the repository, nothing
-  // happens. If another object already exists with the same name, the
-  // new object will have '#'s appended to its name to make it unique.
 
+  /**
+   * Register a new object giving it a new \a name. If the object is
+   * already in the repository, nothing happens. If another object
+   * already exists with the same name, the new object will have
+   * <code>#</code>'s appended to its name to make it unique.
+   */
+  static void Register(IBPtr, string name);
+
+  /**
+   * Remove the given object from the repository. If the object was
+   * not present nothing will happen.
+   */
+  static void remove(tIBPtr);
+
+  /**
+   * Remove objects. Remove the objects in \a rmset if there are no
+   * other objects in the repository referring to them, otherwise
+   * return an error message and the names of the objects refering to
+   * them separated by new-line characters.
+   */
+  static string remove(const ObjectSet & rmset);
+
+  /**
+   * Rename a given \a object. Syntacticly the same as
+   * <code>remove(object); Register(object, newName);<code>.
+   */
+  static void rename(tIBPtr object, string newName);
+  //@}
+
+  /** @name Access the directory stack. */
+  //@{
+  /**
+   * Create a new directory with the given name. If the given name
+   * starts with a <code>/<code> the name is assumed to be an absolute
+   * path, otherwise it is assumed to be a path relative to the
+   * current directory.
+   */
   static void CreateDirectory(string);
-  static void CheckObjectDirectory(string);
-  static void CheckDirectory(string);
-  static void DirectoryAppend(string &);
-  static void ChangeDirectory(string name);
-  static void PushDirectory(string name);
-  static void PopDirectory();
-  // Do things with the directiory stack.
 
+  /**
+   * Check if directory exixts. Check if the name given as argument
+   * corresponds to an existing directory. If the argument string does
+   * not end in a <code>/<code> it is assumed to be the name of an
+   * object in a directory, and only the directory part of the name is
+   * checked. If the given name starts with a <code>/<code> the name
+   * is assumed to be an absolute path, otherwise it is assumed to be
+   * a path relative to the current directory.
+   *
+   * @throws RepositoryNoDirectory if the correspinding directory is
+   * non-existent.
+   */
+  static void CheckObjectDirectory(string);
+
+  /**
+   * Check if directory exixts. Check if the name given as argument
+   * corresponds to an existing directory. If the given name starts
+   * with a <code>/<code> the name is assumed to be an absolute path,
+   * otherwise it is assumed to be a path relative to the current
+   * directory.
+   *
+   * @throws RepositoryNoDirectory if the correspinding directory is
+   * non-existent.
+   */
+  static void CheckDirectory(string);
+
+  /**
+   * Return the absolute path.  If the given name starts with a
+   * <code>/<code> the name is assumed to be an absolute path already,
+   * otherwise it is assumed to be a path relative to the current
+   * directory, and the absolute path is constructed.
+   */
+  static void DirectoryAppend(string &);
+
+  /**
+   * Set the current directory to \a name. \a name can be aither a
+   * relative or absolute path. The new directory replaces the
+   * previous current directory on the directory stack.
+   *
+   * @throws RepositoryNoDirectory if the directory is non-existent.
+   */
+  static void ChangeDirectory(string name);
+
+  /**
+   * Set the current directory to \a name. \a name can be aither a
+   * relative or absolute path. The new directory is pushed onto the
+   * directory stack.
+   *
+   * @throws RepositoryNoDirectory if the directory is non-existent.
+   */
+  static void PushDirectory(string name);
+
+  /**
+   * Pop the directory stack. Leave the current directory and set the
+   * directory which is on top of the popped directory stack.
+   */
+  static void PopDirectory();
+  //@}
+
+  /** @name Access objects in the repository. */
+  //@{
+  /**
+   * Return a reference counted pointer to the given object. This
+   * currently not needed when ThePEG is used with the
+   * ThePEG::Pointer::RCPtr class of pointers.
+   */
   template <typename T>
   static typename Ptr<T>::pointer GetPtr(const T &);
-  // Return a reference counted pointer to the given
-  // object. (Currently not needed).
 
+  /**
+   * Return a pointer of the specified type to an object with the
+   * given name. If such an object does not exist, GetPtr will return
+   * a null pointer.
+   */
   template <typename PtrType>
   static PtrType GetPtr(string);
+
+  /**
+   * Return a pointer of the specified type to an object with the
+   * given name. If such an object does not exist an exception will be
+   * thrown.
+   * @throws RepositoryNotFound if the object was not found.
+   * @throws RepositoryClassMisMatch if the object exists but is of
+   * the wrong class.
+   */
   template <typename PtrType>
   static PtrType GetObject(string);
-  // Return a pointer of the specified type to an object with the
-  // given name. If such an object does not exist, GetPtr will return
-  // a null pointer, while GetObject with throw an exception.
 
+  /**
+   * Return a pointer to an object with the given name or null if no
+   * such object exists.
+   */
   static IBPtr GetPointer(string);
-  // Return a pointer to an object with the given name ot null if no
-  // such object exists.
 
+  /**
+   * Return all objects in the directory \a name. Optionally only return
+   * objects of class \a className or of a sub-class thereof.
+   */
   static IVector SearchDirectory(string name, string className = "");
-  // Return all objects in the given directory. Optionally only return
-  // objects of a certain class.
 
+  /**
+   * Find an object. If the \a name does not begin with '/', the
+   * current directory is prepended. If the string is on the form
+   * <code>object:interface</code> (or
+   * <code>object:interface[i]</code>) and <code>interface</code>
+   * corresponds to an Reference (or RefVector) interface, the
+   * corresponding referenced object is returned. (also
+   * <code>object:interface:interface</code> is allowed etc.)
+   */
+  static IBPtr TraceObject(string name);
+
+  /**
+   * Get an object. Decompose a string of the form
+   * <code>object:interface</code> or
+   * <code>object:vector-interface[pos]</code>. Retrun a pointer to
+   * the corresponding <code>object</code>.
+   */
+  static IBPtr getObjectFromNoun(string noun);
+  //@}
+
+  /** @name Access references between object in the repository. */
+  //@{
+  /**
+   * Get referring objects. Return all object which refers to the
+   * given object through a Reference of RefVector interface.
+   */
   static IVector GetObjectsReferingTo(IBPtr);
-  // Return all object which refers to the given object.
 
+  /**
+   * Get direct references. Return all objects the given object refers
+   * to directly through a Reference of RefVector interface.
+   */
   static IVector DirectReferences(IBPtr);
-  // Return all objects the given object refers to directly.
 
+  /**
+   * Get all references. If \a obj contains references to other objects,
+   * either through a Reference or RefVector interface or through the
+   * virtual getReferences member function, add these to refs. Do the
+   * same to the references recursively.
+   */
   static void addReferences(tIBPtr obj, ObjectSet & refs);
-  // If obj contains references to other objects, either through a
-  // Reference or RefVector interface or through the virtual
-  // getReferences member function, add these to refs. Do the same to
-  // the references recursively.
+  //@}
 
+  /** @name Access the interfaces of the objects in the repository. */
+  //@{
+  /**
+   * Get interfaces. Return the interfaces defined for the
+   * InterfacedBase class with the given type_info, \a ti, mapped to
+   * their name. If several interfaces with the same name exists only
+   * the one which correspond to the most derived class will be given,
+   * except if \a all is true in which case all interfaces are given
+   * (prefixed by '+'s to become unique).
+   */
   static InterfaceMap getInterfaces(const type_info & ti, bool all = true);
-  // Return the interfaces defined for the InterfacedBase class with
-  // the given type_into, mapped to their name. If several interfaces
-  // with the same name exists only the one which correspond to the
-  // most derived class will be given, except if all is true in which
-  // case all interfaces are given (prefixed by '+'s to become
-  // unique).
 
-  static const InterfaceBase * FindInterface(IBPtr, string);
-  // Return an interface with the given name to the given object.
+  /**
+   * Return an interface with the given \a name to the given \a object.
+   */
+  static const InterfaceBase * FindInterface(IBPtr object, string name);
 
+  /**
+   * Get an interface name. Decompose a string of the form
+   * <code>object:interface</code> or
+   * <code>object:vector-interface[pos]</code>. Return the interface
+   * name (without the <code>[pos]</code>).
+   */
+  static string getInterfaceFromNoun(string noun);
+
+  /**
+   * Get interface index. Decompose a string of the form
+   * <code>object:interface</code> or
+   * <code>object:vector-interface[pos]</code>. Return the
+   * <code>pos</code> part or empty string if not present.
+   */
+  static string getPosArgFromNoun(string noun);
+  //@}
+
+  /** @name Manipulate objects in the repository. */
+  //@{
+  /**
+   * Call the InterfacedBase::update() function of all objects.
+   */
   static void update();
-  // Call the update mathod of all abjects.
 
+  /**
+   * Clear the InterfacedBase::touched() flag in all objects in the
+   * given container.
+   */
   template<typename Cont>
   inline static void clearAll(const Cont &);
-  // Clear the touched flag in all objects in the given container.
 
+  /**
+   * Set the status of all objects in the given container to
+   * InterfacedBase::uninitialized.
+   */
   template<typename Cont>
   inline static void resetAll(const Cont &);
-  // Set the stat of all objects in the given container to
-  // 'uninitialized'.
 
-  static void remove(tIBPtr);
-  // Remove the given object from the repository.
-
-  static string remove(const ObjectSet & rmset);
-  // Remove the given objects if there are no other objects in the
-  // repository referring to them, otherwise return the names of the
-  // objects refering to them.
-
-  static void rename(tIBPtr, string newName);
-  // Rename a given object.
-
-  static const ClassDocumentationBase * getDocumentation(tcIBPtr ip);
-  // Return the class documentation of a given object
-
-  static string getModelDescription(tcIBPtr ip);
-  static string getModelReferences(tcIBPtr ip);
-  // Get the description and references for the model implemented in
-  // the class of the given object.
-
-  static IBPtr TraceObject(string);
-  // Find an object. If the name does not begin with '/', the current
-  // directory is prepended. If the string is on the form
-  // 'object:interface' (or 'object:interface[i]') and 'interface'
-  // corresponds to an Reference (or RefVector) interface, the
-  // corresponding referenced object is returned. (also
-  // 'object:interface:interface' is allowed etc.)
-
+  /**
+   * Setup an object. Execute the InterfacedBase::readSetup() method
+   * of \a ip with the stream \a is as argument.
+   */
   static void readSetup(tIBPtr ip, istream & is);
-  // Execute the readSetup method of ip with is as argument.
 
-  static IBPtr getObjectFromNoun(string noun);
-  static string getInterfaceFromNoun(string noun);
-  static string getPosArgFromNoun(string noun);
-  // Decompose a string of the form 'object:interface' or
-  // 'object:vector-interface[pos]'.
-
-  static string exec(string cmd, ostream &);
-  // Interpret the command in 'cmd'.
-
+  /**
+   * Lock the given object. Locked objects cannot be
+   * changed through an interface.
+   */
   inline static void lock(tIBPtr);
+
+  /**
+   * Unlock the given object. Locked objects cannot be changed through
+   * an interface.
+   */
   inline static void unlock(tIBPtr);
-  // Lock or unlock the given objects. Locked objects cannot be
-  // changed through an interface.
+  //@}
 
+  /** @name Access the documentation of objects. */
+  //@{
+  /**
+   * Return the class documentation of a given object
+   */
+  static const ClassDocumentationBase * getDocumentation(tcIBPtr ip);
+
+  /**
+   * Get the description for the model implemented in the class of the
+   * given object.
+   */
+  static string getModelDescription(tcIBPtr ip);
+
+  /**
+   * Get the references for the model implemented in the class of the
+   * given object.
+   */
+  static string getModelReferences(tcIBPtr ip);
+  //@}
+
+  /** @name Manipulate the output streams of the repository. */
+  //@{
+  /**
+   * Set the standard output stream
+   */
   inline static void cout(ostream &);
+
+  /**
+   * Get the standard output stream
+   */
   inline static ostream & cout();
-  // Set/get the standard output stream
 
+  /**
+   * Set the standard error stream
+   */
   inline static void cerr(ostream &);
-  inline static ostream & cerr();
-  // Set/get the standard error stream
 
+  /**
+   * Get the standard error stream
+   */
+  inline static ostream & cerr();
+
+  /**
+   * Set the standard log stream
+   */
   inline static void clog(ostream &);
+
+  /**
+   * Get the standard log stream
+   */
   inline static ostream & clog();
-  // Set/get the standard log stream
+  //@}
 
 protected:
 
+  /** @name Access standard InterfacedBase functions. */
+  //@{
+  /**
+   * Return a clone of the given object. Calls the
+   * InterfacedBase::clone() function of \a t and casts the resulting
+   * pointer to the correct type.
+   */
   template <typename T>
-  static typename Ptr<T>::pointer clone(const T &);
-  template <typename T>
-  static typename Ptr<T>::pointer fullclone(const T &);
-  // Return a clone of the given object.
+  static typename Ptr<T>::pointer clone(const T & t);
 
+  /**
+   * Return a clone of the given object. Calls the
+   * InterfacedBase::fullclone() function of \a t and casts the
+   * resulting pointer to the correct type.
+   */
+  template <typename T>
+  static typename Ptr<T>::pointer fullclone(const T & t);
+
+  /**
+   * Rebind references. For all objects directly referenced by \a obj,
+   * replace them with the translation found in \a trans. If \a obj has a
+   * Reference or a member of a RefVector interface which is null, and
+   * the corresponding interface has the RefInterfaceBase::defaultIfNull() flag set,
+   * translate the null pointer to the first acceptable object in
+   * defaults.
+   */
   static void rebind(InterfacedBase & obj, const TranslationMap & trans,
 		     const IVector & defaults);
-  // For all objects directly referenced by obj, replace them with the
-  // translation found in trans. If obj has a Reference or a member of
-  // a RefVector interface which is null, and the corresponding
-  // interface has the defaultIfNull flag set, translate the null
-  // pointer to the first acceptable object in defaults.
+  //@}
   
 
+  /**
+   * Add interfaces to the given map for the class with the given
+   * class description. Recursively do the same with the base classes.
+   */
   static void addInterfaces(const ClassDescriptionBase &,
 			    InterfaceMap &, bool all = true);
-  // Add interfaces to the given map for the class with the given
-  // class description. Recursively do the same with the base classes.
 
+  /** @name Functions containing the static instances of objects used
+      by the repository. */
+  //@{
+  /**
+   * All InterfacedBase objects mapped to their name.
+   */
   static ObjectMap & objects();
-  // All InterfacedBase objects mapped to their name.
 
+  /**
+   * All InterfacedBase objects.
+   */
   static ObjectSet & allObjects();
-  // All InterfacedBase objects.
 
+  /**
+   * Sets of InterfaceBase objects mapped to the class description of
+   * the class for which they are defined.
+   */
   static TypeInterfaceMap & interfaces();
-  // Sets of Interfacebase object mapped to the corresponding class
-  // description.
 
+  /**
+   * Sets of ClassDocumentationBase objects mapped to the class
+   * description of the class for which they are defined.
+   */
   static TypeDocumentationMap & documentations();
-  // Sets of Interfacebase object mapped to the corresponding class
-  // description.
 
+  /**
+   * All defined directories.
+   */
   static DirectorySet & directories();
-  // All defined directories.
 
+  /**
+   * The current directory stack.
+   */
   static StringVector & directoryStack();
-  // The current directory stack.
 
+  /**
+   * Flag to say if we are in the middle of an update procedure.
+   */
   static bool & updating();
-  // Flag to say if we are in the middle of an update procedure.
 
+  /**
+   * The current current standard output stream.
+   */
   static ostream *& coutp();
+
+  /**
+   * The current current standard error stream.
+   */
   static ostream *& cerrp();
+  /**
+   * The current current standard log stream.
+   */
   static ostream *& clogp();
-  // The current current standard output, error, and log streams.
+  //@}
 
 };
 
