@@ -10,19 +10,30 @@
 
 namespace ThePEG {
 
+/** Exception class used it initialization for some reason failed. */
 struct EventInitException: public InitException {
+  /** Standard constructor. */
   EventInitException(const EventHandler &);
 };
 
+/** Exception class used if a specified LuminosityFunction cannot
+ *  handle the specified beams. */
 struct EventLumiFnErr: public UpdateException {
+  /** Standard constructor. */
   EventLumiFnErr(const EventHandler &, const LuminosityFunction &);
 };
 
+/** Exception class used if no phase space point was found with
+ *  non-zero cross section. */
 struct EventInitNoXSec: public InitException {
+  /** Standard constructor. */
   EventInitNoXSec(const EventHandler &);
 };
 
+/** Exception class used if too many attempts to generate an event
+ *  failed. */
 struct EventLoopException: public Exception {
+  /** Standard constructor. */
   EventLoopException(const EventHandler &);
 };
 

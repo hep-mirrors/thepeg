@@ -1,3 +1,7 @@
+2004-07-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers (directory): Modified to use new documentation format.
+
 2004-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/CascadeHandler.icc: Fixed bug in standard setup

@@ -326,23 +326,24 @@ private:
 
 namespace ThePEG {
 
-template <>
 /**
  * The following template specialization informs ThePEG about the
  * base class of ClusterCollapser.
  */
+template <>
 struct BaseClassTrait<ClusterCollapser,1> {
   /** Typedef of the first base class of ClusterCollapser. */
   typedef StepHandler NthBase;
 };
 
-template <>
 /**
  * The following template specialization informs ThePEG about the name
  * of the ClusterCollapser class and the shared object where it is
  * defined.
  */
-struct ClassTraits<ClusterCollapser>: public ClassTraitsBase<ClusterCollapser> {
+template <>
+struct ClassTraits<ClusterCollapser>:
+    public ClassTraitsBase<ClusterCollapser> {
   /**
    * Return the class name.
    */

@@ -10,11 +10,19 @@
 
 namespace ThePEG {
 
+
+/**
+ * Exception class used if paron extraction fails.
+ */
 struct CollHdlExtractorError: public UpdateException {
+  /** The standard constructor */
   CollHdlExtractorError(const CollisionHandler &, const SubProcessHandler &,
 			const PartonExtractor &, const cPDPair &);
 };
 
+/**
+ * Exception class used for less serious problems in the initialization.
+ */
 struct CollHdlInitWarning: public Exception {};
 
 }

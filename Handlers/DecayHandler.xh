@@ -10,19 +10,27 @@
 
 namespace ThePEG {
 
+/** Exception class used if an unstable particle has no decay modes. */
 struct DecHdlNoDecayMode: public Exception {
+  /** Standard constructor. */
   DecHdlNoDecayMode(const Interfaced &);
 };
 
+/** Exception class used if a decay mode has no Decayer. */
 struct DecHdlNoDecayer: public Exception {
+  /** Standard constructor. */
   DecHdlNoDecayer(const Interfaced &, const Interfaced &);
 };
 
+/** Exception class used if a decay fails. */
 struct DecHdlDecayFailed: public Exception {
+  /** Standard constructor. */
   DecHdlDecayFailed(const Interfaced &, long n);
 };
 
+/** Exception class used if the addition of children to a Step fails. */
 struct DecHdlChildFail: public Exception {
+  /** Standard constructor. */
   DecHdlChildFail(const Interfaced &, const Interfaced &);
 };
 
