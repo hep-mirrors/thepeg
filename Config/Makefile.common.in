@@ -58,7 +58,7 @@ all: depend check lib
 ifdef SHOWCOMMAND	
 	$(CXX) -c $(CXXFLAGS) $(CXXEXT) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $<
 else
-	@echo "compiling $(INCLUDEDIR)/$< ..."
+	@SRCDIR=`pwd`; DIR=`basename $$SRCDIR`; echo "compiling $$DIR/$< ..."
 	@$(CXX) -c $(CXXFLAGS) $(CXXEXT) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $<
 endif
 

@@ -63,10 +63,19 @@ void StandardModelBase::doinit() throw(InitException) {
   Interfaced::doinit();
 }
 
+double StandardModelBase::CKM(unsigned int uFamily,
+				     unsigned int dFamily) const {
+  if ( theCKM2Matrix.empty() ) theCKM2Matrix = theCKM->getMatrix(families());
+  if ( uFamily >= theCKM2Matrix.size() ) return 0.0;
+  const vector<double> & row = theCKM2Matrix[uFamily];
+  if ( dFamily >= row.size() ) return 0.0;
+  return row[dFamily];
+}
+
 double StandardModelBase::CKM(const ParticleData & uType,
 			      const ParticleData & dType) const {
-  int uFamily = abs(uType.id())/2;
-  int dFamily = abs(dType.id())/2+1;
+  int uFamily = abs(uType.id() - 1)/2;
+  int dFamily = abs(dType.id())/2;
   return CKM(uFamily, dFamily);
 }
 

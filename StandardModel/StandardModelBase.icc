@@ -74,14 +74,6 @@ inline double StandardModelBase::ad() const {
   return theAd;
 }
 
-inline double StandardModelBase::CKM(unsigned int uFamily,
-				     unsigned int dFamily) const {
-  if ( uFamily >= theCKM2Matrix.size() ) return 0.0;
-  const vector<double> & row = theCKM2Matrix[uFamily];
-  if ( dFamily >= row.size() ) return 0.0;
-  return row[dFamily];
-}
-
 inline unsigned int StandardModelBase::Nc() const {
   return theNc;
 }

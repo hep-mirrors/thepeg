@@ -85,8 +85,8 @@ public:
   inline double ad() const;
   // The vector and axial couplings between fundamental fermions and Z^0.
 
-  inline double CKM(unsigned int uFamily, unsigned int dFamily) const;
-  inline double CKM(const ParticleData & uType,
+  double CKM(unsigned int uFamily, unsigned int dFamily) const;
+  double CKM(const ParticleData & uType,
 		    const ParticleData & dType) const;
   // Return the square of the elements of the Cabibbo-Kobayashi-Maskawa
   // Matrix.
@@ -167,7 +167,7 @@ private:
   // A pointer to an object representing the Cabibbo-Kobayashi-Maskawa
   // matrix.
 
-  vector< vector<double> > theCKM2Matrix;
+  mutable vector< vector<double> > theCKM2Matrix;
   // The matrix of squared CKM elements set from theCKM at initialization.
 
   unsigned int theNc;
