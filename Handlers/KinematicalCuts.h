@@ -1,37 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_KinematicalCuts_H
 #define ThePEG_KinematicalCuts_H
-//
-// This is the declaration of the <!id>KinematicalCuts<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>KinematicalCuts<!!id> class is used to make cuts on
-// generated events. A <!id>KinematicalCuts<!!id> object is selected
-// for each generated collision. The <!class>CollisionHandler<!!class>
-// has a default <!id>KinematicalCuts<!!id> object, which may be
-// overridden by the selected <!class>SubProcessHandler<!!class>
-// object, which in turn may be overridden by the selected
-// <!class>PartonXSecFn<!!class> object.
-//
-// The <!id>KinematicalCuts<!!id> is used in two different
-// ways. Individual handlers may use the specific member functions
-// which specify cuts on individual variables. In addition the
-// <!id>cut<!!id> member functions are always called by the
-// <!class>CollisionHandler<!!class> to automatically check that all
-// cuts are passed. It is possible to derive new classes from the
-// <!id>KinematicalCuts<!!id> class, in which case the virtual
-// <!id>newcut<!!id> methods may be overridden and will be called from
-// the <!id>cut<!!id> methods.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:CollisionHandler.html">CollisionHandler.h</a>
-// <a href="http:SubProcessHandler.html">SubProcessHandler.h</a>
-// <a href="http:PartonXSecFn.html">PartonXSecFn.h</a>
-// <a href="http:Collision.html">Collision.h</a>
-// <a href="http:SubProcess.html">.h</a>
-// 
+// This is the declaration of the KinematicalCuts class.
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "ThePEG/CLHEPWrap/LorentzRotation.fh"
@@ -42,404 +12,928 @@
 
 namespace ThePEG {
 
+/**
+ * The KinematicalCuts class is used to make cuts on generated
+ * events. A KinematicalCuts object is selected for each generated
+ * collision. The CollisionHandler has a default KinematicalCuts
+ * object, which may be overridden by the selected SubProcessHandler
+ * object, which in turn may be overridden by the selected MEBase
+ * object.
+ *
+ * The KinematicalCuts is used in two different ways. Individual
+ * handlers may use the specific member functions which specify cuts
+ * on individual variables. In addition the cut() member functions are
+ * always called by the CollisionHandler to automatically check that
+ * all cuts are passed. It is possible to derive new classes from the
+ * KinematicalCuts class, in which case the virtual newcut() methods
+ * may be overridden and will be called from the cut() methods.
+ *
+ * @see CollisionHandler
+ * @see SubProcessHandler
+ * @see MEBase
+ * @see Collision
+ * @see SubProcess
+ * 
+ */
 class KinematicalCuts: public Interfaced {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   KinematicalCuts();
+
+  /**
+   * Copy-constructor.
+   */
   KinematicalCuts(const KinematicalCuts &);
+
+  /**
+   * Destructor.
+   */
   virtual ~KinematicalCuts();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
+  /** @name Functions called by the CollisionHandler to check if
+   *  generated SubProcess or Event passes all cuts. */
+  //@{
+  /**
+   * This method is called by the CollisionHandler with the primary
+   * SubProcess provided in its cm frame.
+   * @throws Veto if the SubProcess did not pass all cuts.
+   */
   void cut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));
-  // This method is called by the CollisionHandler with the primary
-  // SubProcess provided in its cm frame.
 
+  /**
+   * This method is called by the CollisionHandler with the primary
+   * collision after its first step provided in int cm frame. The
+   * LorentzRotation provided should give the transformation to the
+   * laboratory frame.
+   * @throws Veto if the Collision did not pass all cuts.
+   */
   void cut(const Collision &, const LorentzRotation &) const
     ThePEG_THROW_SPEC((Veto));
-  // This method is called by the CollisionHandler with the primary
-  // collision after its first step provided in int cm frame. The
-  // LorentzRotation provided should give the transformation to the
-  // laboratory frame.
+  //@}
 
 public:
 
+  /** @name Access to cuts on specific variables related to a SubProcess. */
+  //@{
+  /**
+   * The minimum values of the invariant mass of the hard sub-process.
+   */
   inline Energy mHatMin() const;
+
+  /**
+   * The maximum values of the invariant mass of the hard sub-process.
+   */
   inline Energy mHatMax() const;
+
+  /**
+   * The minimum values of the squared invariant mass of the hard
+   * sub-process.
+   */
   inline Energy sHatMin() const;
+  /**
+   * Themaximum values of the squared invariant mass of the hard
+   * sub-process.
+   */
   inline Energy sHatMax() const;
-  // The minimum and maximum values of the invariant mass (squared) of
-  // the hard sub-process.
 
+  /**
+   * Returns true if mHatMin() <= \a mhat < mHatMax().
+   */
   inline bool mHat(Energy mhat) const;
-  // Returns true if mHatMin() <= mhat < mHatMax().
 
+  /**
+   * Returns true if sHatMin() <= \a shat < sHatMax().
+   */
   inline bool sHat(Energy2 shat) const;
-  // Returns true if sHatMin() <= shat < sHatMax().
 
+  /**
+   * The minimum values of the transverse momentum of the outgoing
+   * particles in the hard sub-process.
+   */
   inline Energy pTHatMin() const;
+
+  /**
+   * The maximum values of the transverse momentum of the outgoing
+   * particles in the hard sub-process.
+   */
   inline Energy pTHatMax() const;
-  // The minimum and maximum values of the transverse momentum of the
-  // outgoing particles in the hard sub-process.
 
+  /**
+   * Returns true if pTHatMin() <= \a pt < pTHatMax().
+   */
   inline bool pTHat(Energy pt) const;
-  // Returns true if pTHatMin() <= pt < pTHatMax().
 
+  /**
+   * Additional cut on the transverse momenta of the hard sub-process
+   * for s-channel hard sub-processes for outgoing particles of mass
+   * less than singularMassMax().
+   */
   inline Energy pTHatSingularMin() const;
+
+  /**
+   * The maxium mass for outgoing particles used in
+   * pTHatSingularMin().
+   */
   inline Energy singularMassMax() const;
-  // Additional cut on the transverse momenta of the hard sub-process
-  // for s-channel hard sub-processes for outgoing particles of mass
-  // less than singularMassMax().
+  //@}
 
+  /** @name Access to cuts on specific variables related to a Collision. */
+  //@{
+  /**
+   * The minimum value of the rapidity of the hard scattering
+   * sub-system.
+   */
   inline double yStarMin() const;
+
+  /**
+   * The maximum value of the rapidity of the hard scattering
+   * sub-system.
+   */
   inline double yStarMax() const;
-  // The minimum and maximum value of the rapidity of the hard
-  // scattering sub-system.
 
+  /**
+   * Returns true if yStarMin() <= \a y <= yStarMax().
+   */
   inline bool yStar(double y) const;
-  // Returns true if yStarMin() <= y <= yStarMax().
 
+  /**
+   * The minimum value of the maximum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double maxYMin() const;
+
+  /**
+   * The maximum value of the maximum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double maxYMax() const;
-  // The minimum and maximum value of the maximum rapidity of the
-  // outgoing particles in the hard scattering.
 
+  /**
+   * Returns true if maxYMin() <= \a y <= maxYMax().
+   */
   inline bool maxY(double y) const;
-  // Returns true if maxYMin() <= y <= maxYMax().
 
+  /**
+   * The minimum value of the minimum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double minYMin() const;
+
+  /**
+   * The maximum value of the minimum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double minYMax() const;
-  // The minimum and maximum value of the minimum rapidity of the
-  // outgoing particles in the hard scattering.
 
+  /**
+   * Returns true if minYMin() <= \a y <= minYMax().
+   */
   inline bool minY(double y) const;
-  // Returns true if minYMin() <= y <= minYMax().
 
+  /**
+   * The minimum value of the maximum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double maxEtaMin() const;
+
+  /**
+   * The maximum value of the maximum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double maxEtaMax() const;
-  // The minimum and maximum value of the maximum pseudo rapidity of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * Returns true if maxEtaMin() <= \a eta <= maxEtaMax().
+   */
   inline bool maxEta(double eta) const;
-  // Returns true if maxEtaMin() <= eta <= maxEtaMax().
 
+  /**
+   * The minimum value of the minimum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double minEtaMin() const;
+
+  /**
+   * The maximum value of the minimum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   inline double minEtaMax() const;
-  // The minimum and maximum value of the minimum pseudo rapidity of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * Returns true if minEtaMin() <= \a eta <= minEtaMax().
+   */
   inline bool minEta(double eta) const;
-  // Returns true if minEtaMin() <= eta <= minEtaMax().
 
+  /**
+   * The minimumvalue of the maximum cos(theta) of the outgoing
+   * particles in the hard scattering.
+   */
   inline double maxCTMin() const;
+
+  /**
+   * The maximum value of the maximum cos(theta) of the outgoing
+   * particles in the hard scattering.
+   */
   inline double maxCTMax() const;
-  // The minimum and maximum value of the maximum cos(theta) of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * Returns true if maxCTMin() <= \a ct <= maxCTMax().
+   */
   inline bool maxCT(double ct) const;
-  // Returns true if maxCTMin() <= ct <= maxCTMax().
 
+  /**
+   * The minimum value of the minimum cos(theta) of the outgoing
+   * particles in the hard scattering.
+   */
   inline double minCTMin() const;
+
+  /**
+   * The maximum value of the minimum cos(theta) of the outgoing
+   * particles in the hard scattering.
+   */
   inline double minCTMax() const;
-  // The minimum and maximum value of the minimum cos(theta) of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * Returns true if minCTMin() <= \a ct <= minCTMax().
+   */
   inline bool minCT(double ct) const;
-  // Returns true if minCTMin() <= ct <= minCTMax().
 
+  /**
+   * The minimum value of the Bjorken-x of the particle comin into the
+   * hard scattering along the positive z-axis.
+   */
   inline double x1Min() const;
+
+  /**
+   * The maximum value of the Bjorken-x of the particle comin into the
+   * hard scattering along the positive z-axis.
+   */
   inline double x1Max() const;
-  // The minimum and maximum value of the Bjorken-x of the particle
-  // comin into the hard scattering along the positive z-axis.
 
+  /**
+   * Returns true if x1Min() < \a x <= x1Max().
+   */
   inline bool x1(double x) const;
-  // Returns true if x1Min() < x <= x1Max().
 
+  /**
+   * The minimum value of the Bjorken-x of the particle comin into the
+   * hard scattering along the negative z-axis.
+   */
   inline double x2Min() const;
+
+  /**
+   * The maximum value of the Bjorken-x of the particle comin into the
+   * hard scattering along the negative z-axis.
+   */
   inline double x2Max() const;
-  // The minimum and maximum value of the Bjorken-x of the particle
-  // comin into the hard scattering along the negative z-axis.
 
+  /**
+   * Returns true if x2Min() < \a x <= x2Max().
+   */
   inline bool x2(double x) const;
-  // Returns true if x2Min() < x <= x2Max().
 
+  /**
+   * The minimum value of the Feynman-x of the hard scattering.
+   */
   inline double xFMin() const;
+
+  /**
+   * The maximum value of the Feynman-x of the hard scattering.
+   */
   inline double xFMax() const;
-  // The minimum and maximum value of the Feynman-x of the hard
-  // scattering.
 
+  /**
+   * Returns true if xFMin() <= \a x <= xFMax().
+   */
   inline bool xF(double x) const;
-  // Returns true if xFMin() <= x <= xFMax().
 
+  /**
+   * The minimum value of cosine of the scattering angle in the
+   * restframe of a hard \f$2\rightarrow 2\f$ scattering.
+   */
   inline double cTHMin() const;
+
+  /**
+   * The maximum value of cosine of the scattering angle in the
+   * restframe of a hard \f$2\rightarrow 2\f$ scattering.
+   */
   inline double cTHMax() const;
-  // The minimum and maximum value of cosine of the scattering angle
-  // in the restframe of a hard 2->2 scattering.
 
+  /**
+   * Returns true if cTHMin() <= \a cth <= cTHMax().
+   */
   inline bool cTH(double cth) const;
-  // Returns true if cTHMin() <= cth <= cTHMax().
 
+  /**
+   * The minimum value of \f$|\hat{t}|\f$ of a hard \f$2\rightarrow
+   * 2\f$ scattering.
+   */
   inline Energy2 tHatMin() const;
+
+  /**
+   * The maximum value of \f$|\hat{t}|\f$ of a hard \f$2\rightarrow
+   * 2\f$ scattering.
+   */
   inline Energy2 tHatMax() const;
-  // The minimum and maximum value of |that| of a hard 2->2 scattering.
 
+  /**
+   * Returns true if tHatMin() <= \a th < tHatMax().
+   */
   inline bool tHat(Energy2 that) const;
-  // Returns true if tHatMin() <= th < tHatMax().
 
+  /**
+   * The minimum value of \f$|\hat{u}|\f$ of a hard \f$2\rightarrow
+   * 2\f$ scattering.
+   */
   inline Energy2 uHatMin() const;
+
+  /**
+   * The maximum value of \f$|\hat{u}|\f$ of a hard \f$2\rightarrow
+   * 2\f$ scattering.
+   */
   inline Energy2 uHatMax() const;
-  // The minimum and maximum value of |uhat| of a hard 2->2 scattering.
 
+  /**
+   * Returns true if uHatMin() <= \a uh < uHatMax().
+   */
   inline bool uHat(Energy2 uhat) const;
-  // Returns true if uHatMin() <= uh < uHatMax().
 
+  /**
+   * The minimum value of the scale in a hard scattering as defined by
+   * the Handlers which performed the hard scattering.
+   */
   inline Energy2 scaleMin() const;
+
+  /**
+   * The maximum value of the scale in a hard scattering as defined by
+   * the Handlers which performed the hard scattering.
+   */
   inline Energy2 scaleMax() const;
-  // The minimum and maximum value of the scale in a hard scattering
-  // as defined by the Handlers which performed the hard scattering.
 
+  /**
+   * Returns true if scaleMin() <= \a sc < scaleMax().
+   */
   inline bool scale(Energy2 sc) const;
-  // Returns true if scaleMin() <= sc < scaleMax().
+  //@}
 
+  /** @name Access to cuts on specific variables related to a
+   *  lepto-production <code>Collision</code>. */
+  //@{
+  /**
+   * For lepton-particle scattering, the minimum energy of the
+   * scattered lepton.
+   */
   inline Energy DISLepton1EnergyMin() const;
+
+  /**
+   * For lepton-particle scattering, the maximum energy of the
+   * scattered lepton.
+   */
   inline Energy DISLepton1EnergyMax() const;
-  // For lepton-particle scattering, the minimum and maximum
-  // energy of the scattered lepton.
 
+  /**
+   * For lepton-particle scattering, the minimum scattering angle of
+   * the lepton.
+   */
   inline double DISLepton1AngleMin() const;
+
+  /**
+   * For lepton-particle scattering, the maximum scattering angle of
+   * the lepton.
+   */
   inline double DISLepton1AngleMax() const;
-  // For lepton-particle scattering, the minimum and maximum
-  // scattering angle of the lepton.
 
+  /**
+   * Minimum \f$Q^2\f$. For lepton-particle scattering, the minimum
+   * \f$Q^2\f$ as calculated from the scattered lepton.
+   */
   inline Energy2 DISQ21Min() const;
+  /**
+   * Maximum \f$Q^2\f$. For lepton-particle scattering, the maximum
+   * \f$Q^2\f$ as calculated from the scattered lepton.
+   */
   inline Energy2 DISQ21Max() const;
-  // For lepton-particle scattering, the minimum and maximum
-  // Q^2 as calculated from the scattered lepton.
 
+  /**
+   * For particle-lepton scattering, the minimum
+   * energy of the scattered lepton.
+   */
   inline Energy DISLepton2EnergyMin() const;
+
+  /**
+   * For particle-lepton scattering, the maximum
+   * energy of the scattered lepton.
+   */
   inline Energy DISLepton2EnergyMax() const;
-  // For particle-lepton scattering, the minimum and maximum
-  // energy of the scattered lepton.
 
+  /**
+   * For particle-lepton scattering, the minimum scattering angle of
+   * the lepton.
+   */
   inline double DISLepton2AngleMin() const;
+
+  /**
+   * For particle-lepton scattering, the maximum scattering angle of
+   * the lepton.
+   */
   inline double DISLepton2AngleMax() const;
-  // For particle-lepton scattering, the minimum and maximum
-  // scattering angle of the lepton.
 
+  /**
+   * Minimum \f$Q^2\f$. For particle-lepton scattering, the minimum
+   * \f$Q^2\f$ as calculated from the scattered lepton.
+   */
   inline Energy2 DISQ22Min() const;
+
+  /**
+   * Maximum \f$Q^2\f$. For particle-lepton scattering, the maximum
+   * \f$Q^2\f$ as calculated from the scattered lepton.
+   */
   inline Energy2 DISQ22Max() const;
-  // For particle-lepton scattering, the minimum and maximum
-  // Q^2 as calculated from the scattered lepton.
 
+  /**
+   * Minimum \f$W^2\f$. For lepton-particle, particle-lepton and
+   * lepton-lepton scattering, the minimum value of the invariant mass
+   * squared of the outgoing particles when removing the scattered
+   * lepton(s).
+   */
   inline Energy2 DISW2Min() const;
-  inline Energy2 DISW2Max() const;
-  // For lepton-particle, particle-lepton and lepton-lepton
-  // scattering, the minimum and maximum value of the invariant mass
-  // squared of the outgoing particles when removing the scattered
-  // lepton(s).
 
-  // These functions return true if the given variable passes the
-  // cuts.
+  /**
+   * Maximum \f$W^2\f$. For lepton-particle, particle-lepton and
+   * lepton-lepton scattering, the maximum value of the invariant mass
+   * squared of the outgoing particles when removing the scattered
+   * lepton(s).
+   */
+  inline Energy2 DISW2Max() const;
+
+  /**
+   * These functions return true if the given variable passes the
+   * cuts.
+   */
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /** @name Cut functions to be overridden by sub-classes. */
+  //@{
+  /**
+   * This method is called by the cut(const SubProcess &) method with
+   * the primary SubProcess provided in its cm frame. This bas-class
+   * method does nothing.
+   */
   virtual void newcut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));
-  // This method is called by the corresponding cut method with the
-  // primary SubProcess provided in its cm frame. This bas-class
-  // method does nothing.
 
+  /**
+   * This method is called by the cut(const Collision &, const
+   * LorentzRotation &) method with the primary collision after its
+   * first step provided in int cm frame. The LorentzRotation provided
+   * should give the transformation to the laboratory frame. This
+   * bas-class method does nothing.
+   */
   virtual void newcut(const Collision &, const LorentzRotation &) const
     ThePEG_THROW_SPEC((Veto));
-  // This method is called by the corresponding cut method with the
-  // primary collision after its first step provided in int cm
-  // frame. The LorentzRotation provided should give the
-  // transformation to the laboratory frame. This bas-class method
-  // does nothing.
+  //@}
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   virtual void doupdate() throw(UpdateException);
+
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
   inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
   inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
-  virtual IBPtr clone() const;
-  virtual IBPtr fullclone() const;
-  // Standard clone method.
+  //@}
+
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr fullclone() const;
+  //@}
 
 private:
 
+  /**
+   * Return true if \a p is a lepton.
+   */
   bool isLepton(const Particle & p) const;
-  // Return true if p is a lepton.
 
+  /**
+   * Utility function for the interface.
+   */
   double maxYMinMax() const;
+
+  /**
+   * Utility function for the interface.
+   */
   double minYMaxMin() const;
+
+  /**
+   * Utility function for the interface.
+   */
   double maxEtaMinMax() const;
+
+  /**
+   * Utility function for the interface.
+   */
   double minEtaMaxMin() const;
+
+  /**
+   * Utility function for the interface.
+   */
   double maxCTMinMax() const;
+
+  /**
+   * Utility function for the interface.
+   */
   double minCTMaxMin() const;
-  // Utility functions for the interface.
 
 private:
 
+  /**
+   * The minimum value of the invariant mass of the hard sub-process.
+   */
   Energy theMHatMin;
+
+  /**
+   * The maximum value of the invariant mass of the hard sub-process.
+   */
   Energy theMHatMax;
-  // The minimum and maximum values of the invariant mass of
-  // the hard sub-process.
 
+  /**
+   * The minimum value of the transverse momentum of the outgoing
+   * particles in the hard sub-process.
+   */
   Energy thePTHatMin;
+  /**
+   * The maximum value of the transverse momentum of the outgoing
+   * particles in the hard sub-process.
+   */
   Energy thePTHatMax;
-  // The minimum and maximum values of the transverse momentum of the
-  // outgoing particles in the hard sub-process.
 
+  /**
+   * Additional cut on the transverse momenta of the hard sub-process
+   * for s-channel hard sub-processes for outgoing particles of mass
+   * less than theSingularMassMax.
+   */
   Energy thePTHatSingularMin;
+
+  /**
+   * The maximum particle mass for the additional thePTHatSingularMin
+   * cut.
+   */
   Energy theSingularMassMax;
-  // Additional cut on the transverse momenta of the hard sub-process
-  // for s-channel hard sub-processes for outgoing particles of mass
-  // less than theSingularMassMax.
 
+  /**
+   * The minimum value of the rapidity of the hard scattering
+   * sub-system.
+   */
   double theYStarMin;
+
+  /**
+   * The maximum value of the rapidity of the hard scattering
+   * sub-system.
+   */
   double theYStarMax;
-  // The minimum and maximum value of the rapidity of the hard
-  // scattering sub-system.
 
+  /**
+   * The minimum value of the maximum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMaxYMin;
+
+  /**
+   * The maximum value of the maximum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMaxYMax;
-  // The minimum and maximum value of the maximum rapidity of the
-  // outgoing particles in the hard scattering.
 
+  /**
+   * The minimum value of the minimum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMinYMin;
+
+  /**
+   * The maximum value of the minimum rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMinYMax;
-  // The minimum and maximum value of the minimum rapidity of the
-  // outgoing particles in the hard scattering.
 
+  /**
+   * The minimum value of the maximum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMaxEtaMin;
+
+  /**
+   * The maximum value of the maximum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMaxEtaMax;
-  // The minimum and maximum value of the maximum pseudo rapidity of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * The minimum value of the minimum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMinEtaMin;
+
+  /**
+   * The maximum value of the minimum pseudo rapidity of the outgoing
+   * particles in the hard scattering.
+   */
   double theMinEtaMax;
-  // The minimum and maximum value of the minimum pseudo rapidity of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * The minimum value of the maximum cos(theta) of
+   * the outgoing particles in the hard scattering.
+   */
   double theMaxCTMin;
+
+  /**
+   * The maximum value of the maximum cos(theta) of
+   * the outgoing particles in the hard scattering.
+   */
   double theMaxCTMax;
-  // The minimum and maximum value of the maximum cos(theta) of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * The minimum value of the minimum cos(theta) of the outgoing
+   * particles in the hard scattering.
+   */
   double theMinCTMin;
+
+  /**
+   * The maximum value of the minimum cos(theta) of the outgoing
+   * particles in the hard scattering.
+   */
   double theMinCTMax;
-  // The minimum and maximum value of the minimum cos(theta) of
-  // the outgoing particles in the hard scattering.
 
+  /**
+   * The minimum value of the Bjorken-x of the particle comin into the
+   * hard scattering along the positive z-axis.
+   */
   double theX1Min;
+
+  /**
+   * The maximum value of the Bjorken-x of the particle comin into the
+   * hard scattering along the positive z-axis.
+   */
   double theX1Max;
-  // The minimum and maximum value of the Bjorken-x of the particle
-  // comin into the hard scattering along the positive z-axis.
 
+  /**
+   * The minimum value of the Bjorken-x of the particle
+   * comin into the hard scattering along the negative z-axis.
+   */
   double theX2Min;
+
+  /**
+   * The maximum value of the Bjorken-x of the particle
+   * comin into the hard scattering along the negative z-axis.
+   */
   double theX2Max;
-  // The minimum and maximum value of the Bjorken-x of the particle
-  // comin into the hard scattering along the negative z-axis.
 
+  /**
+   * The minimum value of the Feynman-x of the hard scattering.
+   */
   double theXFMin;
+
+  /**
+   * The maximum value of the Feynman-x of the hard scattering.
+   */
   double theXFMax;
-  // The minimum and maximum value of the Feynman-x of the hard
-  // scattering.
 
+  /**
+   * The minimum value of cosine of the scattering angle in the
+   * restframe of a hard \f$2\rightarrow 2\f$ scattering.
+   */
   double theCTHMin;
+
+  /**
+   * The maximum value of cosine of the scattering angle in the
+   * restframe of a hard \f$2\rightarrow 2\f$ scattering.
+   */
   double theCTHMax;
-  // The minimum and maximum value of cosine of the scattering angle
-  // in the restframe of a hard 2->2 scattering.
 
+  /**
+   * The minimum value of \f$\hat{t}\f$ of a hard \f$2\rightarrow 2\f$
+   * scattering.
+   */
   Energy2 theTHatMin;
+
+  /**
+   * The maximum value of \f$\hat{t}\f$ of a hard \f$2\rightarrow 2\f$
+   * scattering.
+   */
   Energy2 theTHatMax;
-  // The minimum and maximum value of that of a hard 2->2 scattering.
 
+  /**
+   * The minimum value of \f$|\hat{u}|\f$ of a hard \f$2\rightarrow 2\f$
+   * scattering.
+   */
   Energy2 theUHatMin;
+
+  /**
+   * The maximum value of \f$|\hat{u}|\f$ of a hard \f$2\rightarrow 2\f$
+   * scattering.
+   */
   Energy2 theUHatMax;
-  // The minimum and maximum value of uhat of a hard 2->2 scattering.
 
+  /**
+   * The minimum value of the scale in a hard scattering as defined by
+   * the Handlers which performed the hard scattering.
+   */
   Energy2 theScaleMin;
+
+  /**
+   * The maximum value of the scale in a hard scattering as defined by
+   * the Handlers which performed the hard scattering.
+   */
   Energy2 theScaleMax;
-  // The minimum and maximum value of the scale in a hard scattering
-  // as defined by the Handlers which performed the hard scattering.
 
+  /**
+   * Internal flag to indicate if we should use cuts on scattered
+   * leptons.
+   */
   bool useLeptoCuts;
-  // Internal flag to indicate if we should use cuts on scattered leptons.
 
+  /**
+   * For lepton-particle scattering, the minimum energy of the
+   * scattered lepton.
+   */
   Energy theDISLepton1EnergyMin;
+
+  /**
+   * For lepton-particle scattering, the maximum energy of the
+   * scattered lepton.
+   */
   Energy theDISLepton1EnergyMax;
-  // For lepton-particle scattering, the minimum and maximum
-  // energy of the scattered lepton.
 
+  /**
+   * For lepton-particle scattering, the minimum scattering angle of
+   * the lepton.
+   */
   double theDISLepton1AngleMin;
+
+  /**
+   * For lepton-particle scattering, the maximum scattering angle of
+   * the lepton.
+   */
   double theDISLepton1AngleMax;
-  // For lepton-particle scattering, the minimum and maximum
-  // scattering angle of the lepton.
 
+  /**
+   * For lepton-particle scattering, the minimum \f$Q^2\f$ as calculated
+   * from the scattered lepton.
+   */
   Energy2 theDISQ21Min;
+
+  /**
+   * For lepton-particle scattering, the maximum \f$Q^2\f$ as calculated
+   * from the scattered lepton.
+   */
   Energy2 theDISQ21Max;
-  // For lepton-particle scattering, the minimum and maximum
-  // Q^2 as calculated from the scattered lepton.
 
+  /**
+   * For particle-lepton scattering, the minimum energy of the
+   * scattered lepton.
+   */
   Energy theDISLepton2EnergyMin;
+
+  /**
+   * For particle-lepton scattering, the maximum energy of the
+   * scattered lepton.
+   */
   Energy theDISLepton2EnergyMax;
-  // For particle-lepton scattering, the minimum and maximum
-  // energy of the scattered lepton.
 
+  /**
+   * For particle-lepton scattering, the minimum scattering angle of
+   * the lepton.
+   */
   double theDISLepton2AngleMin;
+
+  /**
+   * For particle-lepton scattering, the maximum scattering angle of
+   * the lepton.
+   */
   double theDISLepton2AngleMax;
-  // For particle-lepton scattering, the minimum and maximum
-  // scattering angle of the lepton.
 
+  /**
+   * For particle-lepton scattering, the minimum \f$Q^2\f$ as
+   * calculated from the scattered lepton.
+   */
   Energy2 theDISQ22Min;
+
+  /**
+   * For particle-lepton scattering, the maximum \f$Q^2\f$ as
+   * calculated from the scattered lepton.
+   */
   Energy2 theDISQ22Max;
-  // For particle-lepton scattering, the minimum and maximum
-  // Q^2 as calculated from the scattered lepton.
 
+  /**
+   * For lepton-particle, particle-lepton and lepton-lepton
+   * scattering, the minimumvalue of the invariant mass squared of the
+   * outgoing particles when removing the scattered lepton(s).
+   */
   Energy2 theDISW2Min;
-  Energy2 theDISW2Max;
-  // For lepton-particle, particle-lepton and lepton-lepton
-  // scattering, the minimum and maximum value of the invariant mass
-  // squared of the outgoing particles when removing the scattered
-  // lepton(s).
 
+  /**
+   * For lepton-particle, particle-lepton and lepton-lepton
+   * scattering, the maximum value of the invariant mass squared of
+   * the outgoing particles when removing the scattered lepton(s).
+   */
+  Energy2 theDISW2Max;
+
+  /**
+   * A matcher object used to identify leptons.
+   */
   Ptr<MatchLepton>::pointer theLeptonMatcher;
-  // A matcher object used to identify leptons.
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<KinematicalCuts> initKinematicalCuts;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   KinematicalCuts & operator=(const KinematicalCuts &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/**
+ * This template specialization informs ThePEG about the
+ * base class of KinematicalCuts.
+ */
 template <>
 struct BaseClassTrait<KinematicalCuts,1> {
+  /** Typedef of the base class of KinematicalCuts. */
   typedef Interfaced NthBase;
 };
 
+/**
+ * This template specialization informs ThePEG about the name of the
+ * KinematicalCuts class.
+ */
 template <>
 struct ClassTraits<KinematicalCuts>:
     public ClassTraitsBase<KinematicalCuts> {
-  static string className() {
-    return "/ThePEG/KinematicalCuts";
-  }
+  /** Return the class name. */
+  static string className() { return "ThePEG::KinematicalCuts"; }
 };
 
 }

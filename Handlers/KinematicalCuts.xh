@@ -10,11 +10,17 @@
 
 namespace ThePEG {
 
+/** Exception class used by KinematicalCuts to signal setup
+ *  problems. */
 struct KinCutSetup: public Exception {
+  /** Default constructor. */
   KinCutSetup();
 };
 
+/** Exception class used by KinematicalCuts to signal that some
+ *  interval is zero. */
 struct KinCutZeroInterval: public UpdateException {
+  /** Standard constructor. */
   KinCutZeroInterval(const KinematicalCuts &, string);
 };
 

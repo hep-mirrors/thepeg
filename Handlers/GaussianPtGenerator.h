@@ -50,7 +50,6 @@ public:
 
 public:
 
-
   /** @name Functions used by the persistent I/O system. */
   //@{
   /**
@@ -129,7 +128,8 @@ protected:
     throw(RebindException);
 
   /**
-   * Return a vector of all pointers to Interfaced objects used in this object.
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
    * @return a vector of pointers.
    */
   inline virtual IVector getReferences();
@@ -169,11 +169,11 @@ private:
 
 namespace ThePEG {
 
-template <>
 /**
  * This template specialization informs ThePEG about the
  * base class of GaussianPtGenerator.
  */
+template <>
 struct BaseClassTrait<GaussianPtGenerator,1> {
   /** Typedef of the base class of GaussianPtGenerator. */
   typedef PtGenerator NthBase;
