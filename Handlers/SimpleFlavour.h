@@ -1,19 +1,7 @@
 // -*- C++ -*-
 #ifndef THEPEG_SimpleFlavour_H
 #define THEPEG_SimpleFlavour_H
-//
-// This is the declaration of the <!id>SimpleFlavour<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// This is a simple class to generate hadrons given the quark
-// flavours. It implements a simplified version of the model of the
-// old fortran version of Pythia.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:FlavourGenerator.html">FlavourGenerator.h</a>.
-// 
+// This is the declaration of the SimpleFlavour class.
 
 #include "ThePEG/Handlers/FlavourGenerator.h"
 #include "ThePEG/Utilities/VSelector.h"
@@ -22,264 +10,460 @@
 
 namespace ThePEG {
 
+/**
+ * SimpleFlavour is a simple class to generate hadrons given the quark
+ * flavours. It implements a simplified version of the model of the
+ * old fortran version of Pythia.
+ *
+ * @see FlavourGenerator. 
+ */
 class SimpleFlavour: public FlavourGenerator {
 
 public:
 
+  /** A map of <code>Selector</code>s. */
   typedef map<long, VSelector< pair<long,long> > > ProbabilityMap;
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline SimpleFlavour();
+
+  /**
+   * Copy-constructor.
+   */
   inline SimpleFlavour(const SimpleFlavour &);
+
+  /**
+   * Destructor.
+   */
   virtual ~SimpleFlavour();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Virtual functions mandated by the FlavourGenerator base class. */
+  //@{
+  /**
+   * Generate a hadron from a quark. Given a quark(antiquark, diquark
+   * or antidiquark), choose a quark-antiquark (or
+   * antidiquark-diquark) pair. Return (first) a hadron formed by the
+   * original quark and the antiquark together with (second) the
+   * generated quark. Returns null pointers if the generation failed.
+   * @param quark a quark, antiquark, diquark or antidiquark.
+   * @return a pair of ParticleData pointers. The \a first is the
+   * hadron produced and the \a second is the anti-partner of the
+   * (anti-)(di-)quark generated to form the hadron.
+   */
   virtual tcPDPair generateHadron(tcPDPtr quark) const;
-  virtual tcPDPair generateOldHadron(tcPDPtr quark) const;
-  // Given a quark(antiquark, diquark or antidiquark), choose a
-  // quark-antiquark (or antidiquark-diquark) pair. Return (first) a
-  // hadron formed by the original quark and the anti-quark together
-  // with (second) the generated quark.
 
+  /**
+   * Get hadron from flavours. Return a hadron with the flavour
+   * content given by the (anti-)(di-)quarks in the argument. The
+   * arguments are given as PDG codes.
+   * @param q1 the PDG code of the first flavour.
+   * @param q2 the PDG code of the second flavour.
+   * @return the corresponding hadron type or null if none could be
+   * generated.
+   */
   virtual tcPDPtr getHadron(long iq1, long iq2) const;
-  // Return a hadron with the flavour content given by the
-  // (anti)(di)quarks codes in the argument. If no corresponding
-  // hadron was formed it should return the null pointer.
 
+  /**
+   * Return a baryon with the flavour content given by the
+   * (anti)quarks in the argument.  The arguments are given as
+   * particle data pointers.
+   * @param q1 the PDG code of the first flavour.
+   * @param q2 the PDG code of the second flavour.
+   * @param q3 the PDG code of the third flavour.
+   * @return the corresponding baryon type or null if none could be
+   * generated.
+   */
   virtual tcPDPtr getBaryon(long q1, long q2, long q3) const;
-  // Return a baryon with the flavour content given by the
-  // (anti)quarks codes in the argument. If no corresponding hadron
-  // was formed it should return the null pointer.
 
+  /**
+   * Generate a random quark flavour.
+   */
   virtual long selectQuark() const;
-  // Generate a random quark flavour.
 
+  /**
+   * Generate a random (di)quark flavour.
+   */
   virtual long selectFlavour() const;
-  // Generate a random (di)quark flavour.
+  //@}
 
 public:
 
+  /** @name Access the parameters controlling the generation. */
+  //@{
+  /**
+   * Return the suppression factor of strange quarks w.r.t. u and d.
+   */
   inline double sSup() const;
-  // Return the suppression factor of strange quarks w.r.t. u and d.
 
+  /**
+   * Return the suppression factor for di-quarks w.r.t. quarks
+   */
   inline double diSup() const;
-  // Return the suppression factor for di-quarks w.r.t. quarks
 
+  /**
+   * Return the suppression of spin-1 di-quarks w.r.t. spin-0 ones;
+   */
   inline double di1Sup() const;
-  // Return the suppression of spin-1 di-quarks w.r.t. spin-0 ones;
 
+  /**
+   * Return the suppression of strange di-quarks w.r.t. u and d ones
+   * in addition to the standard strangness suppression of quarks.
+   */
   inline double diSSup() const;
-  // Return the suppression of strange di-quarks w.r.t. u and d ones
-  // in addition to the standard strangness suppression of quarks.
 
+  /**
+   * Return the extra suppression of eta's
+   */
   inline double etaSup() const;
-  // Return the extra suppression of eta's
 
+  /**
+   * Return the extra suppression of ets-prime's
+   */
   inline double etaPSup() const;
-  // Return the extra suppression of ets-prime's
 
+  /**
+   * Return the extra suppression for baryons of the spin 3/2
+   * decuplet.
+   */
   inline double baryon10Sup() const;
-  // Return the extra suppression for baryons of the spin 3/2
-  // decuplet.
 
+  /**
+   * Return the probability that light (u/d) mesons has spin 1;
+   */
   inline double pSpin1() const;
-  // Return the probability that light (u/d) mesons has spin 1;
 
+  /**
+   * Return the probability that strange mesons has spin 1;
+   */
   inline double pSpinS1() const;
-  // Return the probability that strange mesons has spin 1;
 
+  /**
+   * Return the probability that charmed and heavier mesons has spin
+   * 1;
+   */
   inline double pSpinC1() const;
-  // Return the probability that charmed and heavier mesons has spin
-  // 1;
+  //@}
 
 protected:
 
+  /**
+   * Calculate the probabilities for generateHadron for the given
+   * flavour.
+   */
   virtual void setProbabilities(long iq) const;
-  // Calculate the probabilities for generateHadron for the given
-  // flavour.
 
+  /**
+   * Return the probability that the given quark flavours end up in a
+   * vector meson rather than in a pseudo scalar meson.
+   */
   virtual double vectorMesonProbability(long iq1, long iq2) const;
-  // Return the probability that the given quark flavours end up in a
-  // vector meson rather than in a pseudo scalar meson.
 
+  /**
+   * Return the probability that the given quark and diquark flavours
+   * end up in a spin 3/2 decuplet baryon rather than in a spin 1/2
+   * octet baryon.
+   */
   virtual double baryonDecupletProbability(long iq1, long iq2) const;
-  // Return the probability that the given quark and diquark flavours
-  // end up in a spin 3/2 decuplet baryon rather than in a spin 1/2
-  // octet baryon.
 
+  /**
+   * Return a pseudo scalar meson formed by the two quark flavours.
+   */
   virtual tcPDPtr pseudoScalarMeson(long iq, long iqbar) const;
-  // Return a pseudo scalar meson formed by the two quark flavours.
 
+  /**
+   * Return a vector meson formed by the two quark flavours.
+   */
   virtual tcPDPtr vectorMeson(long iq, long iqbar) const;
-  // Return a vector meson formed by the two quark flavours.
 
+  /**
+   * Return a spin 1/2 octet baryon formed by the given quark and
+   * diquark flavours.
+   */
   virtual tcPDPtr baryonOctet(long iq, long idq) const;
-  // Return a spin 1/2 octet baryon formed by the given quark and
-  // diquark flavours.
 
+  /**
+   * Return a spin 3/2 decuplet baryon formed by the given quark and
+   * diquark flavours.
+   */
   virtual tcPDPtr baryonDecuplet(long iq, long idq) const;
-  // Return a spin 3/2 decuplet baryon formed by the given quark and
-  // diquark flavours.
 
+  /**
+   * Return the PDG code of a pseudo scalar meson formed by the two
+   * quark flavours for \a iqh >= \a iql > 0.
+   */
   virtual long pseudoScalarId(long iqh, long iql) const;
-  // Return the PDG code of a pseudo scalar meson formed by the two
-  // quark flavours for iqh >= iql > 0.
 
+  /**
+   * Return the PDG code of a vector meson formed by the two quark
+   * flavours for \a iqh >= \a iql > 0.
+   */
   virtual long vectorId(long iqh, long iql) const;
-  // Return the PDG code of a vector meson formed by the two quark
-  // flavours for iqh >= iql > 0.
 
+  /**
+   * Return the PDG code for a spin 1/2 octet baryon formed by the
+   * given quark flavours (\a iqa >= \a iqb >= \a iqc > 0). iq is one
+   * of the flavours and the other two are assumed to be in a diquark
+   * (in a spin-1 state if \a dqs1).
+   */
   virtual long baryonOctetId(long iqa, long iqb, long iqc,
 			     long iq, bool dqs1) const;
-  // Return the PDG code for a spin 1/2 octet baryon formed by the
-  // given quark flavours (iqa >= iqb >= iqc > 0). iq is one of the
-  // flavours and the other two are assumed to be in a diquark (in a
-  // spin-1 state if dqs1).
 
+  /**
+   * Return the PDG code for a spin 3/2 decuplet baryon formed by the
+   * given quark flavours (\a iqa >= \a iqb >= \a iqc > 0).
+   */
   virtual long baryonDecupletId(long iqa, long iqb, long iqc) const;
-  // Return the PDG code for a spin 3/2 decuplet baryon formed by the
-  // given quark flavours (iqa >= iqb >= iqc > 0).
 
-  virtual vector< pair<long,double> > pseudoScalarIds(long iqh, long iql) const;
-  // Return the PDG code of pseudo scalar mesons formed by the two
-  // quark flavours (for iqh >= iql > 0), together with
-  // suitable weights.
+  /**
+   * Return the PDG code of pseudo scalar mesons formed by the two
+   * quark flavours (for \a iqh >= \a iql > 0), together with suitable
+   * weights.
+   */
+  virtual vector< pair<long,double> >
+  pseudoScalarIds(long iqh, long iql) const;
 
+  /**
+   * Return the PDG codes of vector mesons formed by the two quark
+   * flavours (for \a iqh >= \a iql > 0), together with
+   * suitable weights.
+   */
   virtual vector< pair<long,double> > vectorIds(long iqh, long iql) const;
-  // Return the PDG codes of vector mesons formed by the two quark
-  // flavours (for iqh >= iql > 0), together with
-  // suitable weights.
 
+  /**
+   * Return the PDG codes for spin 1/2 octet baryons formed by the
+   * given quark flavours (\a iqa >= \a iqb >= \a iqc > 0) together
+   * with suitable weights. iq is one of the flavours and the other
+   * two are assumed to be in a diquark (in a spin-1 state if \a dqs1).
+   */
   virtual vector< pair<long,double> >
   baryonOctetIds(long iqa, long iqb, long iqc,
 		 long iq, bool dqs1) const;
-  // Return the PDG codes for spin 1/2 octet baryons formed by the
-  // given quark flavours (iqa >= iqb >= iqc > 0) together with
-  // suitable weights. iq is one of the flavours and the other two are
-  // assumed to be in a diquark (in a spin-1 state if dqs1).
 
+  /**
+   * Return the PDG codes for spin 3/2 decuplet baryons formed by
+   * the given quark flavours (\a iqa >= \a iqb >= \a iqc > 0) together with
+   * suitable weights.
+   */
   virtual vector< pair<long,double> >
   baryonDecupletIds(long iqa, long iqb, long iqc) const;
-  // Return the PDG codes for spin 3/2 decuplet baryons formed by
-  // the given quark flavours (iqa >= iqb >= iqc > 0) together with
-  // suitable weights.
 
+  /**
+   * Clear all cashed weights.
+   */
   void clear();
-  // Clear all cashed weights.
 
+  /**
+   * Return the SU(6) weight for the given quark and di-quark flavours
+   * to end up with in a baryon with the given spin (2S+1).
+   */
   static double weightSU6QDiQSpin(long iq, long idq, int spin);
-  // Return the SU(6) weight for the given quark and di-quark flavours
-  // to end up with in a baryon with the given spin (2S+1).
-
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Suppression factor of strange quarks w.r.t. u and d.
+   */
   double theSSup;
-  // Suppression factor of strange quarks w.r.t. u and d.
 
+  /**
+   * Suppression factor for di-quarks w.r.t. quarks.
+   */
   double theDiSup;
-  // Suppression factor for di-quarks w.r.t. quarks.
 
+  /**
+   * Suppression of spin-1 di-quarks w.r.t. spin-0 ones.
+   */
   double theDi1Sup;
-  // Suppression of spin-1 di-quarks w.r.t. spin-0 ones.
 
+  /**
+   * Suppression of strange di-quarks w.r.t. u and d ones in addition
+   * to the standard strangness suppression of quarks.
+   */
   double theDiSSup;
-  // Suppression of strange di-quarks w.r.t. u and d ones in addition
-  // to the standard strangness suppression of quarks.
 
+  /**
+   * Extra suppression of eta's.
+   */
   double theEtaSup;
-  // Extra suppression of eta's.
 
+  /**
+   * Extra suppression of ets-prime's.
+   */
   double theEtaPSup;
-  // Extra suppression of ets-prime's.
 
+  /**
+   * Extra suppression for baryons of the spin 3/2 decuplet.
+   */
   double theBaryon10Sup;
-  // Extra suppression for baryons of the spin 3/2 decuplet.
 
+  /**
+   * Probability that light (u/d) mesons has spin 1.
+   */
   double thePSpin1;
-  // Probability that light (u/d) mesons has spin 1.
 
+  /**
+   * Probability that strange mesons has spin 1.
+   */
   double thePSpinS1;
-  // Probability that strange mesons has spin 1.
 
+  /**
+   * Probability that charmed and heavier mesons has spin 1.
+   */
   double thePSpinC1;
-  // Probability that charmed and heavier mesons has spin 1.
 
+  /**
+   * A selector used to weight the creation of (di)quark-anti(di)quark
+   * pairs.
+   */
   mutable VSelector<long> theFlavourSelector;
-  // A selector used to weight the creation of (di)quark-anti(di)quark
-  // pairs.
 
+  /**
+   * A map of selectors to cash probabilities for generateHadron.
+   */
   mutable ProbabilityMap theProbabilities;
-  // A map of selectors to cash probabilities for generateHadron.
 
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<SimpleFlavour> initSimpleFlavour;
-  // Describe a concrete class with persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   SimpleFlavour & operator=(const SimpleFlavour &);
-  // Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of SimpleFlavour.
 template <>
+/**
+ * This template specialization informs ThePEG about the base class of
+ * SimpleFlavour.
+ */
 struct BaseClassTrait<SimpleFlavour,1> {
+  /** Typedef of the base class of SimpleFlavour. */
   typedef FlavourGenerator NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
 template <>
+/**
+ * This template specialization informs ThePEG about the name of the
+ * SimpleFlavour class and the shared object where it is defined.
+ */
 struct ClassTraits<SimpleFlavour>
   : public ClassTraitsBase<SimpleFlavour> {
+  /** Return the class name.  */
   static string className() { return "ThePEG::SimpleFlavour"; }
-  // Return the class name.
+  /**
+   * Return the name of the shared library to be loaded to get access
+   * to the SimpleFlavour class and every other class it uses (except
+   * the base class).
+   */
   static string library() { return "SimpleFlavour.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
+
 };
 
 }

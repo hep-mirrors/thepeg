@@ -12,15 +12,21 @@ namespace ThePEG {
 
 class Two2NCuts;
 
+/** Exception class used by Two2NCuts if something goes wrong in the setup. */
 struct KinCutCmdFail1: public InterfaceException {
+  /** Standard constructor. */
   KinCutCmdFail1(const Two2NCuts &, string, string);
 };
 
+/** Exception class used by Two2NCuts if something goes wrong in the setup. */
 struct KinCutCmdFail2: public InterfaceException {
+  /** Standard constructor. */
   KinCutCmdFail2(const Two2NCuts &, string, string);
 };
 
+/** Exception class used by Two2NCuts if something goes wrong in the setup. */
 struct KinCutCmdFail3: public InterfaceException {
+  /** Standard constructor. */
   KinCutCmdFail3(const Two2NCuts &, string, string);
 };
 

@@ -51,6 +51,7 @@ long SimpleFlavour::selectFlavour() const {
   return theFlavourSelector[rnd()];
 }
 
+/*
 tcPDPair SimpleFlavour::generateOldHadron(tcPDPtr q) const {
   tcPDPair ret;
   bool isdiq = DiquarkMatcher::Check(*q);
@@ -74,6 +75,7 @@ tcPDPair SimpleFlavour::generateOldHadron(tcPDPtr q) const {
   }
   return tcPDPair();
 }
+*/
 
 tcPDPair SimpleFlavour::generateHadron(tcPDPtr q) const {
   tcPDPair ret;

@@ -105,8 +105,8 @@ public:
   tcPDPtr alwaysGetHadron(tcPDPtr q1, tcPDPtr q2) const;
 
   /**
-   * Same as getHadron(long, long) but thows an exception if no hadron could be
-   * produced.
+   * Same as getHadron(long, long) but thows an exception if no hadron
+   * could be produced.
    */
   tcPDPtr alwaysGetHadron(long iq1, long iq2) const;
 

@@ -510,7 +510,7 @@ protected:
   //@{
   /**
    * This method is called by the cut(const SubProcess &) method with
-   * the primary SubProcess provided in its cm frame. This bas-class
+   * the primary SubProcess provided in its cm frame. This base-class
    * method does nothing.
    */
   virtual void newcut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));
@@ -520,7 +520,7 @@ protected:
    * LorentzRotation &) method with the primary collision after its
    * first step provided in int cm frame. The LorentzRotation provided
    * should give the transformation to the laboratory frame. This
-   * bas-class method does nothing.
+   * base-class method does nothing.
    */
   virtual void newcut(const Collision &, const LorentzRotation &) const
     ThePEG_THROW_SPEC((Veto));

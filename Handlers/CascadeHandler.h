@@ -57,7 +57,8 @@ public:
     * be considered by the StepHandler.
     * @param hint a Hint object with possible information from previously
     * performed steps.
-    * @throws Veto if the StepHandler requires the current step to be discarded.
+    * @throws Veto if the StepHandler requires the current step to be
+    * discarded.
     * @throws Stop if the generation of the current Event should be stopped
     * after this call.
     * @throws Exception if something goes wrong.
@@ -216,7 +217,7 @@ struct BaseClassTrait<CascadeHandler,1> {
 template <>
 struct ClassTraits<CascadeHandler>: public ClassTraitsBase<CascadeHandler> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/CascadeHandler"; }
+  static string className() { return "ThePEG::CascadeHandler"; }
 };
 
 }
