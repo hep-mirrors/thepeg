@@ -17,7 +17,8 @@ inline SimpleFlavour::SimpleFlavour(const SimpleFlavour & x)
     theEtaSup(x.theEtaSup), theEtaPSup(x.theEtaSup),
     theBaryon10Sup(x.theBaryon10Sup), thePSpin1(x.thePSpin1),
     thePSpinS1(x.thePSpinS1), thePSpinC1(x.thePSpinC1),
-    theFlavourSelector(x.theFlavourSelector) {}
+    theFlavourSelector(x.theFlavourSelector),
+    theProbabilities(x.theProbabilities) {}
 
 inline IBPtr SimpleFlavour::clone() const {
   return new_ptr(*this);

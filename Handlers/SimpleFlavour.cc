@@ -27,6 +27,7 @@ SimpleFlavour::~SimpleFlavour() {}
 
 void SimpleFlavour::clear() {
   theFlavourSelector.clear();
+  theProbabilities.clear();
 }
 
 long SimpleFlavour::selectQuark() const {
@@ -50,7 +51,7 @@ long SimpleFlavour::selectFlavour() const {
   return theFlavourSelector[rnd()];
 }
 
-tcPDPair SimpleFlavour::generateHadron(tcPDPtr q) const {
+tcPDPair SimpleFlavour::generateOldHadron(tcPDPtr q) const {
   tcPDPair ret;
   bool isdiq = DiquarkMatcher::Check(*q);
   while ( true ) {
@@ -72,6 +73,126 @@ tcPDPair SimpleFlavour::generateHadron(tcPDPtr q) const {
       return ret;
   }
   return tcPDPair();
+}
+
+tcPDPair SimpleFlavour::generateHadron(tcPDPtr q) const {
+  tcPDPair ret;
+  ProbabilityMap::const_iterator it = theProbabilities.find(abs(q->id()));
+  if ( it == theProbabilities.end() ) {
+    setProbabilities(abs(q->id()));
+    it = theProbabilities.find(abs(q->id()));
+    if ( it == theProbabilities.end() ) return ret;
+  }
+  pair<long,long> ids = it->second[rnd()];
+  int sign = ( it->first == q->id()? 1: -1 );
+  ret.first = getParticleData(sign*ids.first);
+  ret.second = getParticleData(sign*ids.second);
+  return ret;
+}
+
+void SimpleFlavour::setProbabilities(long iq) const {
+  VSelector< pair<long,long> > & sel = theProbabilities[iq];
+  sel.clear();
+  vector< pair<long,double> >  wts;
+  if ( DiquarkMatcher::Check(iq) ) {
+    vector<long> flv = PDT::flavourContent(iq);
+    // This is a di-quark, so we can only generate a q-qbar
+    for ( long iqb = 1; iqb <= 3; ++iqb ) {
+      double w = 1.0;
+
+       // Suppress s-quarks
+      if ( iqb == 3 ) w = sSup();
+
+      // Get the normalized probability for octet and decuplet
+      double ow = weightSU6QDiQSpin(iqb, iq, 2);
+      double dw = weightSU6QDiQSpin(iqb, iq, 4)*baryon10Sup();
+      w /= (ow + dw);
+
+      long iq1 = max(flv[0], iqb);
+      long iq3 = min(flv[1], iqb);
+      long iq2 = flv[0] + flv[1] + iqb - iq1 - iq3;
+
+      // Get possible Octets.
+      wts = baryonOctetIds(iq1, iq2, iq3, iqb, (iq%10) == 3);
+      for ( int i = 0, N = wts.size(); i < N; ++i )
+	sel.insert(w*ow*wts[i].second, make_pair(wts[i].first, -iqb));
+
+      // Get possible Octets.
+      wts = baryonDecupletIds(iq1, iq2, iq3);
+      for ( int i = 0, N = wts.size(); i < N; ++i )
+	sel.insert(w*dw*wts[i].second, make_pair(wts[i].first, -iqb));
+    }
+  } else {
+    // This is a quark so we can generate both q-qbar and diq-diqbar pairs.
+    // We start with q-qbar pairs
+    for ( long iqb = 1; iqb <= 3; ++iqb ) {
+      int sign = ( iq >= iqb? 1: -1);
+      double w = 1.0;
+
+      // s-quark suppression.
+      if ( iqb == 3 ) w = sSup();
+
+      long iqh = max(iq, iqb);
+      long iql = min(iq, iqb);
+
+      // Get relative vector meson probability.
+      double vw = vectorMesonProbability(iqh, iql);
+
+      // Get possible vector mesons.
+      wts = vectorIds(iqh, iql);
+      for ( int i = 0, N = wts.size(); i < N; ++i )
+	sel.insert(w*vw*wts[i].second,
+		   make_pair(sign*wts[i].first, sign*iqb));
+
+      // Get pseudo scala vector mesons.
+      wts = pseudoScalarIds(iqh, iql);
+      for ( int i = 0, N = wts.size(); i < N; ++i )
+	sel.insert(w*(1.0 - vw)*wts[i].second,
+		   make_pair(sign*wts[i].first, sign*iqb));
+    }
+
+    // No we go through the possible di-quarks.
+    for ( long ifla = 1; ifla <= 3; ++ifla )
+      for ( long iflb = 1; iflb <= ifla; ++iflb ) {
+	// We have a general di-quark suppression.
+	double w = diSup();
+
+	// Suppress strange di-quarks.
+	if ( ifla == 3 ) w *= diSSup()*sSup();
+
+	long iqa = max(ifla, iq);
+	long iqc = min(iflb, iq);
+	long iqb = ifla + iflb + iq - iqa - iqc;
+
+	// Get weight for spin-0 di-quark to octet baryons.
+	double ow = weightSU6QDiQSpin(iq, ifla*1000 + iflb*100 + 1, 2);
+
+	// Get possible octet baryons for spin-0 di-quark.
+	wts = baryonOctetIds(iqa, iqb, iqc, iq, false);
+	for ( int i = 0, N = wts.size(); i < N; ++i )
+	  sel.insert(w*ow*wts[i].second, make_pair(wts[i].first, -iqb));
+
+	// Spin-1 diquarks have three states.
+	w *= 3.0;
+
+	// Get weight for spin-1 di-quark to octet baryons.
+	ow = weightSU6QDiQSpin(iq, ifla*1000 + iflb*100 + 3, 2);
+
+	// Get possible octet baryons for spin-1 di-quark.
+	wts = baryonOctetIds(iqa, iqb, iqc, iq, true);
+	for ( int i = 0, N = wts.size(); i < N; ++i )
+	  sel.insert(w*ow*wts[i].second, make_pair(wts[i].first, -iqb));
+
+	// Get weight for spin-1 di-quark to decuplet baryons.
+	double dw = weightSU6QDiQSpin(iq, ifla*1000 + iflb*100 + 3, 4)*
+	  baryon10Sup();
+
+	// Get possible decuplet baryons for spin-1 di-quark.
+	wts = baryonDecupletIds(iqa, iqb, iqc);
+	for ( int i = 0, N = wts.size(); i < N; ++i )
+	  sel.insert(w*dw*wts[i].second, make_pair(wts[i].first, -iqb));
+      }
+  }
 }
 
 double SimpleFlavour::vectorMesonProbability(long iq1, long iq2) const {
@@ -178,6 +299,24 @@ long SimpleFlavour::pseudoScalarId(long iqh, long iql) const {
     return iqh*100 + iql*10 + 1;
 }
 
+vector< pair<long,double> > SimpleFlavour::
+pseudoScalarIds(long iqh, long iql) const {
+  vector< pair<long,double> > ret;
+  if ( iql == iqh && iql <= 3 ) {
+    if ( iql <= 2 ) {
+      ret.push_back(make_pair(ParticleID::pi0, 0.5));
+      ret.push_back(make_pair(ParticleID::eta, 0.25*etaSup()));
+      ret.push_back(make_pair(ParticleID::etaprime, 0.25*etaPSup()));
+    } else {
+      ret.push_back(make_pair(ParticleID::eta, 0.5*etaSup()));
+      ret.push_back(make_pair(ParticleID::etaprime, 0.5*etaPSup()));
+    }
+  } else {
+    ret.push_back(make_pair(iqh*100 + iql*10 + 1, 1.0));
+  }
+  return ret;
+}
+
 tcPDPtr SimpleFlavour::vectorMeson(long iq, long iqbar) const {
   return getParticleData((min(iq, iqbar) < max(iq, iqbar)? -1: 1)*
 			 vectorId(max(abs(iq), abs(iqbar)),
@@ -189,6 +328,17 @@ long SimpleFlavour::vectorId(long iqh, long iql) const {
     return rndbool()? ParticleID::rho0: ParticleID::omega;
   else
     return iqh*100 + iql*10 + 3;
+}
+
+vector< pair<long,double> > SimpleFlavour::vectorIds(long iqh, long iql) const {
+  vector< pair<long,double> > ret;
+  if ( iql == iqh && iql <= 2 ) {
+    ret.push_back(make_pair(ParticleID::rho0, 0.5));
+    ret.push_back(make_pair(ParticleID::omega, 0.5));
+  } else {
+    ret.push_back(make_pair(iqh*100 + iql*10 + 3, 1.0));
+  }
+  return ret;
 }
 
 tcPDPtr SimpleFlavour::baryonOctet(long iq, long idq) const {
@@ -210,6 +360,19 @@ baryonOctetId(long iqa, long iqb, long iqc, long iq, bool dqs1) const {
   return 1000*iqa + 100*iqb + 10*iqc + 2;
 }
 
+vector< pair<long,double> > SimpleFlavour::
+baryonOctetIds(long iqa, long iqb, long iqc, long iq, bool dqs1) const {
+  vector< pair<long,double> > ret;
+  double lambda = 0.0;
+  if ( iqa > iqb && iqb > iqc )
+    if ( dqs1 && iqa == iq ) lambda = 0.25;
+    else if ( !dqs1 && iqa != iq ) lambda = 0.75;
+  ret.push_back(make_pair(1000*iqa + 100*iqb + 10*iqc + 2, 1.0 - lambda));
+  if ( lambda > 0.0 )
+    ret.push_back(make_pair(1000*iqa + 100*iqc + 10*iqb + 2, lambda));
+  return ret;
+}
+
 tcPDPtr SimpleFlavour::baryonDecuplet(long iq, long idq) const {
   long aiq = abs(iq);
   vector<long> flv = PDT::flavourContent(idq);
@@ -223,6 +386,14 @@ long SimpleFlavour::
 baryonDecupletId(long iqa, long iqb, long iqc) const {
   return 1000*iqa + 100*iqb + 10*iqc + 4;
 }
+
+vector< pair<long,double> > SimpleFlavour::
+baryonDecupletIds(long iqa, long iqb, long iqc) const {
+  vector< pair<long,double> >  ret;
+  ret.push_back(make_pair(1000*iqa + 100*iqb + 10*iqc + 4, 1.0));
+  return ret;
+}
+
 
 void SimpleFlavour::persistentOutput(PersistentOStream & os) const {
   os << theSSup << theDiSup << theDi1Sup << theDiSSup << theEtaSup

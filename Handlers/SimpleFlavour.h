@@ -26,6 +26,10 @@ class SimpleFlavour: public FlavourGenerator {
 
 public:
 
+  typedef map<long, VSelector< pair<long,long> > > ProbabilityMap;
+
+public:
+
   inline SimpleFlavour();
   inline SimpleFlavour(const SimpleFlavour &);
   virtual ~SimpleFlavour();
@@ -34,6 +38,7 @@ public:
 public:
 
   virtual tcPDPair generateHadron(tcPDPtr quark) const;
+  virtual tcPDPair generateOldHadron(tcPDPtr quark) const;
   // Given a quark(antiquark, diquark or antidiquark), choose a
   // quark-antiquark (or antidiquark-diquark) pair. Return (first) a
   // hadron formed by the original quark and the anti-quark together
@@ -92,6 +97,10 @@ public:
 
 protected:
 
+  virtual void setProbabilities(long iq) const;
+  // Calculate the probabilities for generateHadron for the given
+  // flavour.
+
   virtual double vectorMesonProbability(long iq1, long iq2) const;
   // Return the probability that the given quark flavours end up in a
   // vector meson rather than in a pseudo scalar meson.
@@ -133,6 +142,30 @@ protected:
   virtual long baryonDecupletId(long iqa, long iqb, long iqc) const;
   // Return the PDG code for a spin 3/2 decuplet baryon formed by the
   // given quark flavours (iqa >= iqb >= iqc > 0).
+
+  virtual vector< pair<long,double> > pseudoScalarIds(long iqh, long iql) const;
+  // Return the PDG code of pseudo scalar mesons formed by the two
+  // quark flavours (for iqh >= iql > 0), together with
+  // suitable weights.
+
+  virtual vector< pair<long,double> > vectorIds(long iqh, long iql) const;
+  // Return the PDG codes of vector mesons formed by the two quark
+  // flavours (for iqh >= iql > 0), together with
+  // suitable weights.
+
+  virtual vector< pair<long,double> >
+  baryonOctetIds(long iqa, long iqb, long iqc,
+		 long iq, bool dqs1) const;
+  // Return the PDG codes for spin 1/2 octet baryons formed by the
+  // given quark flavours (iqa >= iqb >= iqc > 0) together with
+  // suitable weights. iq is one of the flavours and the other two are
+  // assumed to be in a diquark (in a spin-1 state if dqs1).
+
+  virtual vector< pair<long,double> >
+  baryonDecupletIds(long iqa, long iqb, long iqc) const;
+  // Return the PDG codes for spin 3/2 decuplet baryons formed by
+  // the given quark flavours (iqa >= iqb >= iqc > 0) together with
+  // suitable weights.
 
   void clear();
   // Clear all cashed weights.
@@ -206,8 +239,11 @@ private:
   // Probability that charmed and heavier mesons has spin 1.
 
   mutable VSelector<long> theFlavourSelector;
-  // A selector used to weight thecreation of (di)quark-anti(di)quark
+  // A selector used to weight the creation of (di)quark-anti(di)quark
   // pairs.
+
+  mutable ProbabilityMap theProbabilities;
+  // A map of selectors to cash probabilities for generateHadron.
 
 
 private:
