@@ -1,0 +1,97 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the TensorSpinInfo class.
+//
+// Author: Peter Richardson
+//
+
+namespace ThePEG {
+namespace Helicity {
+
+inline TensorSpinInfo::TensorSpinInfo() 
+{
+  _productionstates.resize(5);
+  _decaystates.resize(5);
+  setSpin(5);
+  _decaycalc = false;
+}
+
+inline TensorSpinInfo::TensorSpinInfo(const TensorSpinInfo & x)
+  : SpinInfo(x), _productionstates(x._productionstates),
+    _decaystates(x._decaystates), _decaycalc(x._decaycalc) {}
+
+inline TensorSpinInfo::TensorSpinInfo(const Lorentz5Momentum & in,bool intime)
+{
+  _productionstates.resize(5);
+  _decaystates.resize(5);
+  setSpin(5);
+  setProductionMomentum(in);
+  _decaycalc=false;
+  setTimelike(intime);
+}
+
+inline EIPtr TensorSpinInfo::clone() const
+{
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
+}
+
+inline void TensorSpinInfo::rebind(const EventTranslationMap & trans) {
+  SpinInfo::rebind(trans);
+}
+
+// set and get methods for the basis states
+// set the basis state, this is production state
+inline void TensorSpinInfo::setBasisState(int ihel, LorentzTensor in) const
+{
+  if (ihel>=-2&&ihel<=2) _productionstates[ihel+2]=in;
+  else throw HelicityLogicalError()
+    << "Tried to set invalid tensor basis state in TensorSpinInfo."
+    << Exception::abortnow;
+}
+
+inline void TensorSpinInfo::setDecayState(int ihel, LorentzTensor in) const
+{
+  if(ihel>=-2&&ihel<=2) {
+    _decaycalc=true;
+    _decaystates[ihel+2]=in;
+  } else throw HelicityLogicalError()
+    << "Tried to set invalid tensor basis state in TensorSpinInfo."
+    << Exception::abortnow;
+}
+
+// get the basis state for the production
+inline LorentzTensor TensorSpinInfo::getProductionBasisState(int ihel) const
+{
+  if (ihel<-2||ihel>2) throw HelicityLogicalError()
+    << "Tried to get invalid tensor basis state in TensorSpinInfo."
+    << Exception::abortnow;
+  return _productionstates[ihel+2];
+}
+
+
+// get the bassis state for the decay
+inline LorentzTensor TensorSpinInfo::getDecayBasisState(int ihel) const
+{
+  // check this is a valid helicity
+  if (ihel<-2||ihel>2) throw HelicityLogicalError()
+    << "Tried to get invalid tensor basis state in TensorSpinInfo."
+    << Exception::abortnow;
+  // calculate the decay basis states if needed
+  if(!_decaycalc)
+    {
+      // now use this to evaluate the basis states in the decay frame
+      Hep3Vector boostv=- productionMomentum().boostVector();
+      for(unsigned int ix=0;ix<_productionstates.size();++ix)
+      	{_decaystates[ix] =_productionstates[ix].boost(boostv).conjugate();}
+      _decaycalc=true;
+    }
+  // return the basis function
+  return _decaystates[ihel+2];
+}
+
+
+}
+}
+
