@@ -11,7 +11,7 @@ DEBUGOBJECTS = SimplePhaseSpace.o DynamicLoader.o
 DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            HoldFlag.h Interval.h Math.h Rebinder.h Selector.h \
            SimplePhaseSpace.h Triplet.h sstream.h Direction.h UtilityBase.h \
-           TypeInfo.h Integrator.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
+           TypeInfo.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
            FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h
 
@@ -21,7 +21,7 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                Rebinder.icc Selector.icc Selector.tcc SimplePhaseSpace.icc \
                SimplePhaseSpace.tcc SimplePhaseSpace.xh sstream.icc \
                Direction.icc Direction.xh UtilityBase.icc UtilityBase.tcc \
-               TypeInfo.icc Integrator.icc  Integrator.tcc DynamicLoader.icc \
+               TypeInfo.icc DynamicLoader.icc \
                Timer.icc Debug.icc StringUtils.icc SystemUtils.icc \
                Exception.icc Exception.fh Named.icc FixedSizeAllocator.icc \
                VSelector.icc VSelector.tcc LoopGuard.icc ObjectIndexer.icc
