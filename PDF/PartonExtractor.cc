@@ -449,8 +449,12 @@ PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step) {
       tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
       step->removeDecayProduct(newpb->particle(), oldpb->remnants().begin(),
 				oldpb->remnants().end());
+      step->removeDecayProduct(newpb->particle(), oldpb->parton());
       if ( !step->addDecayProduct(newpb->particle(),
-				  rem.begin(), rem.end(), false) ) throw Veto();
+				  rem.begin(), rem.end(), false) )
+	throw Veto();
+      if ( !step->addDecayProduct(newpb->particle(), newpb->parton()) )
+				    throw Veto();
       colourConnect(newpb->particle(), newpb->parton(), rem);
       partonBinInstances()[newp] = newpb;
       return newpb;
