@@ -29,7 +29,7 @@ DecayMode::DecayMode(const DecayMode & dm)
     theCascadeProducts(dm.theCascadeProducts), theMatchers(dm.theMatchers),
     theWildMatcher(dm.theWildMatcher), theExcluded(dm.theExcluded),
     theOverlap(dm.theOverlap), theDecayer(dm.theDecayer),
-    theAntiPartner(dm.theAntiPartner) {}
+    theAntiPartner(dm.theAntiPartner), theLinks(dm.theLinks) {}
 
 DMPtr DecayMode::Create(tPDPtr newParent, double newBrat, bool newOn) {
   DMPtr dm = new_ptr(DecayMode(newParent, newBrat, newOn));
@@ -67,7 +67,7 @@ IBPtr DecayMode::fullclone() const {
   adm->theAntiPartner = dm;
   return dm;
 }
-  
+
 void DecayMode::doupdate() throw(UpdateException) {
   Interfaced::doupdate();
   bool redo = touched();
@@ -98,6 +98,11 @@ void DecayMode::rebind(const TranslationMap & trans) throw(RebindException) {
 			  excluded().begin(), excluded().end());
     excluded().swap(newExclude);
     theAntiPartner = trans.alwaysTranslate(CC());
+
+    for ( int i = 0, N = theLinks.size(); i < N; ++i ) {
+      theLinks[i].first = trans.alwaysTranslate(theLinks[i].first);
+      theLinks[i].second = trans.alwaysTranslate(theLinks[i].second);
+    }
   }
   catch (IBPtr ip) {
     throw DecModRebind(name(), ip->name());
@@ -157,12 +162,28 @@ struct IdCmp {
 };
 
 bool DecayMode::includes(const DecayMode & d) const {
-  // Fast check for ordinary decay modes
-  if ( cascadeProducts().empty() && productMatchers().empty() &&
-       excluded().empty() &&  !wildProductMatcher() &&
-       d.cascadeProducts().empty() &&  d.productMatchers().empty() &&
-       d.excluded().empty() &&  !d.wildProductMatcher() )
-    return compareId(products(), d.products());
+  // Fast check for ordinary decay modes.
+  if (  cascadeProducts().empty() && productMatchers().empty() &&
+	excluded().empty() &&  !wildProductMatcher() &&
+	d.cascadeProducts().empty() &&  d.productMatchers().empty() &&
+	d.excluded().empty() &&  !d.wildProductMatcher() ) {
+    if ( links().size() != d.links().size() ) return false;
+    if ( !compareId(products(), d.products()) ) return false;
+    LinkVector dlinks = d.links();
+    for ( int i = 0, N = links().size(); i < N; ++i ) {
+      for ( int j = 0, M = dlinks.size(); j < M; ++j ) {
+	if ( ( links()[i].first->id() == dlinks[j].first->id() &&
+	       links()[i].second->id() == dlinks[j].second->id() ) ||
+	     ( links()[i].first->id() == dlinks[j].second->id() &&
+	       links()[i].second->id() == dlinks[j].first->id() ) ) {
+	  dlinks.erase(dlinks.begin() + j);
+	  break;
+	}
+      }
+      return false;
+    }
+    return dlinks.empty();
+  }
 
   // First check that none of the excluded products in this are
   // present in the other.
@@ -320,16 +341,54 @@ struct MatcherOrdering {
   }
 };
 
+PVector DecayMode::produceProducts() const {
+  PVector ret;
+  typedef multiset<tcPDPtr,ParticleOrdering> OrderedParticles;
+  OrderedParticles prod(products().begin(), products().end());
+  LinkVector dlinks = links();
+  for ( int i = 0, N = dlinks.size(); i < N; ++i ) {
+    ret.push_back(dlinks[i].first->produceParticle());
+    prod.erase(prod.find(dlinks[i].first));
+    ret.push_back(dlinks[i].second->produceParticle());
+    prod.erase(prod.find(dlinks[i].second));
+  }
+  while ( !prod.empty() ) {
+    OrderedParticles::iterator pit = prod.begin();
+    ret.push_back((**pit).produceParticle());
+    prod.erase(pit);
+  }
+  return ret;
+}
+
 string DecayMode::makeTag() const {
   string ret;
   typedef multiset<tcPDPtr,ParticleOrdering> OrderedParticles;
   typedef multiset<tcPMPtr,MatcherOrdering> OrderedMatchers;
   typedef multiset<tcDMPtr,ModeOrdering> OrderedModes;
+  LinkVector dlinks = links();
 
   ret = theParent->PDGName() + "->";
   OrderedParticles prod(products().begin(), products().end());
-  for ( OrderedParticles::iterator pit = prod.begin();
-	pit != prod.end(); ++pit )  ret += (**pit).PDGName() + ",";
+  while ( !prod.empty() ) {
+    OrderedParticles::iterator pit = prod.begin();
+    for ( int i = 0, N = dlinks.size(); i < N; ++i ) {
+      if ( *pit == dlinks[i].second ) swap(dlinks[i].first, dlinks[i].second);
+      if ( *pit == dlinks[i].first ) {
+	ret +=  (**pit).PDGName() + "=";
+	prod.erase(pit);
+	pit = prod.end();	
+	OrderedParticles::iterator pitl = prod.find(dlinks[i].second);
+	ret +=  (**pitl).PDGName() + ",";
+	prod.erase(pitl);
+	dlinks.erase(dlinks.begin() + i);
+	break;
+      }
+    }
+    if ( pit != prod.end() ) {
+      ret += (**pit).PDGName() + ",";
+      prod.erase(pit);
+    }
+  }
   OrderedModes casc(cascadeProducts().begin(), cascadeProducts().end());
   for ( OrderedModes::iterator dmit = casc.begin();dmit != casc.end(); ++dmit )
     ret += "[" + (**dmit).tag() + "],";
@@ -373,6 +432,13 @@ void DecayMode::switchOff() {
 void DecayMode::addProduct(tPDPtr pd) {
   products().insert(pd);
   if ( CC() ) CC()->products().insert(pd->CC()? pd->CC(): pd);
+  resetTag();
+}
+
+void DecayMode::addLink(tPDPtr a, tPDPtr b) {
+  theLinks.push_back(make_pair(a, b));
+  if ( CC() ) CC()->theLinks.push_back(make_pair(a->CC()? a->CC(): a,
+						 b->CC()? b->CC(): b));
   resetTag();
 }
 
@@ -444,6 +510,8 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
   }
   bool error = false;
   tag = tag.substr(next+2);
+  tPDPtr lastprod;
+  bool dolink = false;
   do {
     switch ( tag[0] ) {
     case '[':
@@ -453,8 +521,10 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
 	if ( cdm ) rdm->addCascadeProduct(cdm);
 	else error = true;
       } break;
-    case ']':
+    case '=':
+      dolink = true;
     case ',':
+    case ']':
       tag = tag.substr(1);
       break;
     case '?':
@@ -483,11 +553,16 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
       } break;
     default:
       {
-	next = min(tag.find(','), tag.find(';'));
+	next = min(tag.find('='), min(tag.find(','), tag.find(';')));
 	tPDPtr pdp = Repository::findParticle(tag.substr(0,next));
 	if ( pdp ) rdm->addProduct(pdp);
 	else error = true;
 	tag = tag.substr(next);
+	if ( dolink && lastprod ) {
+	  rdm->addLink(lastprod, pdp);
+	  dolink = false;
+	}
+	lastprod = pdp;
       } break;
     }
   } while ( tag[0] != ';' && tag.size() );
@@ -515,13 +590,14 @@ void DecayMode::persistentOutput(PersistentOStream & os) const {
   multiset<tcDMPtr,ModeOrdering> ovlap(overlap().begin(), overlap().end());
 
   os << theTag << theBrat << isOn << theParent << prod << casc << match
-     << theWildMatcher << ex << ovlap << theDecayer << theAntiPartner;
+     << theWildMatcher << ex << ovlap << theDecayer << theAntiPartner
+     << theLinks;
 }
 
 void DecayMode::persistentInput(PersistentIStream & is, int) {
   is >> theTag >> theBrat >> isOn >> theParent >> theProducts
      >> theCascadeProducts >> theMatchers >> theWildMatcher >> theExcluded
-     >> theOverlap >> theDecayer >> theAntiPartner;
+     >> theOverlap >> theDecayer >> theAntiPartner >> theLinks;
 }
 
 ClassDescription<DecayMode> DecayMode::initDecayMode;

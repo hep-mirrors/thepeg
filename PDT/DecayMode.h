@@ -45,6 +45,7 @@ public:
 public:
 
   typedef vector<tcDMPtr> ModeVector;
+  typedef vector<tPDPair> LinkVector;
 
 public:
 
@@ -70,6 +71,11 @@ public:
 
   inline const ParticleMSet & products() const;
   // The set of identified decay products.
+
+  PVector produceProducts() const;
+  // Produce particles corresponding to the identified decay
+  // products. They will be orderd so that particles which are linked
+  // come first and are consecutive.
 
   inline const ModeMSet & cascadeProducts() const;
   // The set of identified resonant products with specified decay
@@ -106,6 +112,10 @@ public:
   inline bool operator == (const DecayMode &) const;
   // Check if another decay mode has the same final state as this
   // one.
+
+  inline const LinkVector & links() const;
+  // Return a vector of pairs of decay products which are linked
+  // together (e.g. colourless q-qbar pairs).
 
   inline const ModeVector & overlap() const;
   // Return the list of overlapping decay modes.
@@ -148,6 +158,10 @@ protected:
 
   void addProduct(tPDPtr);
   // Add identified decay products.
+
+  void addLink(tPDPtr a, tPDPtr b);
+  // Add a pair of decay products which are linked together
+  // (e.g. colourless q-qbar pairs).
 
   void addCascadeProduct(tDMPtr);
   // Add identified resonant product with specified decay mode.
@@ -266,6 +280,11 @@ private:
   // The decayer object responsible for performing the decay.
 
   tDMPtr theAntiPartner;
+  // The corresponding decay mode of the anti particle.
+
+  LinkVector theLinks;
+  // The vector of pairs of decay products which are linked together
+  // (e.g. colourless q-qbar pairs).
 
 private:
 

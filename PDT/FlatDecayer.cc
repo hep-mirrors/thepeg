@@ -42,10 +42,7 @@ struct MassOrdering {
 ParticleVector FlatDecayer::decay(const DecayMode & dm,
 				  const Particle & parent) const {
   Timer<48> timer("FlatDecayer::decay");
-  ParticleVector children;
-  for ( ParticleMSet::iterator i = dm.products().begin();
-	i != dm.products().end(); ++i )
-    children.push_back((**i).produceParticle());
+  ParticleVector children = dm.produceProducts();
   try {
     do {
       if ( children.size() == 1 ) {

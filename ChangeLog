@@ -1,3 +1,22 @@
+2003-07-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/FlatDecayer.cc: Now uses DecayMode::produceProducts().
+
+	* src/ThePEGParticles.in, PDT/DecayMode.*: The naming of decay
+	modes were before such that only the number and types of the decay
+	products were important, this meant that it was not possible to
+	have both eg. B0 -> c-cbar d-sbar and B0 -> c-sbar d-cbar decay
+	modes since they have the same name and same representation.  Now
+	the concept of links have been introduced to indicate that decay
+	products can be linked together in pairs making two decay modes
+	with the same decay products but different linking different. This
+	is indicated in the name by an equal sign instead of a comma:
+	B0->c=cbar,sbar=d; and B0->c=sbar,cbar=d;
+
+	Also added a produceProducts() function to produce particles from
+	the specified decay products, so that linked particles come first
+	and consecutively in the returned vector.
+
 2003-07-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/Makefile: Added Matrix.h and Matrix.fh to the dist

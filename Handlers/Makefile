@@ -1256,6 +1256,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/PDF.fh \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/PDF/PDF.h \
+  ../../ThePEG/PDF/PartonBinInstance.h \
   ../../ThePEG/PDF/PartonBin.h \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
@@ -1303,6 +1304,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDF/PartonBin.icc \
+  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/PDF/PDF.icc \
   CascadeHandler.icc \
   ../../ThePEG/Handlers/PartialCollisionHandler.h \
@@ -1333,8 +1335,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/XComb.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/PDF/PartonExtractor.fh \
-  ../../ThePEG/PDF/PartonBinInstance.h \
-  ../../ThePEG/PDF/PartonBinInstance.icc \
   ../../ThePEG/Utilities/VSelector.h \
   ../../ThePEG/Utilities/VSelector.icc \
   ../../ThePEG/Utilities/VSelector.tcc \

@@ -72,6 +72,10 @@ inline bool DecayMode::operator == (const DecayMode & d) const {
   return ( tag() == d.tag() );
 }
 
+inline const DecayMode::LinkVector & DecayMode::links() const {
+  return theLinks;
+}
+
 inline tDecayerPtr DecayMode::decayer() const {
   return theDecayer;
 }
