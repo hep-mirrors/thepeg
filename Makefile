@@ -3,7 +3,7 @@ SUBDIRS = CLHEPWrap Config Utilities Repository Interface PDT EventRecord \
 
 DISTFILES = README Makefile configure configure.in
 
-VERSION = test
+VERSION = 1.0a
 
 TAG = ThePEG-$(VERSION)
 
@@ -27,7 +27,7 @@ distclean: setup clean
 depend: setup
 	@for dir in $(SUBDIRS) src ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) depend ; cd .. ; done
 
-install: lib
+install: check
 	@for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) -$(MAKEFLAGS) install ; cd .. ; done
 
 doc: setup
@@ -51,8 +51,9 @@ dist: doc
 	rm -rf $(TAG)
 	mkdir -p $(TAG)/ThePEG
 	cp ../Makefile $(TAG)
+	cp ../configure $(TAG)
 	cp $(DISTFILES) $(TAG)/ThePEG
-	for dir in $(SUBDIRS) src Doc lib Templates ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
+	for dir in $(SUBDIRS) src Doc lib ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
 	tar czf $(TAG).tgz $(TAG)
 	rm -rf $(TAG)
 
@@ -65,6 +66,7 @@ thesnapshot:
 	cvs export -D today ThePEG
 	mv ThePEG/ThePEG $(SNAPTAG)
 	mv ThePEG/Makefile $(SNAPTAG)
+	mv ThePEG/configure $(SNAPTAG)
 	rm -rf ThePEG
 	cp Doc/*.html $(SNAPTAG)/ThePEG/Doc
 	tar czf $(SNAPTAG).tgz $(SNAPTAG)

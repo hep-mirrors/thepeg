@@ -23,6 +23,10 @@ IBPtr AnalysisHandler::clone() const {
   return new_ptr(*this);
 }
 
+IBPtr AnalysisHandler::fullclone() const {
+  return new_ptr(*this);
+}
+
 void AnalysisHandler::analyze(tEventPtr event, long ieve, int loop, int state) {
   if ( loop > 0 || state != 0 || !event ) return;
   transform(event);

@@ -81,6 +81,7 @@ public:
 protected:
 
   virtual IBPtr clone() const;
+  virtual IBPtr fullclone() const;
   // Return a simple clone of this object. Should be implemented as
   // <!id>return new_ptr(*this);<!!id> by a derived class.
 

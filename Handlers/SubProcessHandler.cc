@@ -52,6 +52,10 @@ IBPtr SubProcessHandler::clone() const {
   return new_ptr(*this);
 }
 
+IBPtr SubProcessHandler::fullclone() const {
+  return new_ptr(*this);
+}
+
 const HandlerGroupBase &
 SubProcessHandler::handlerGroup(Group::Handler group) const {
   return *(theGroups[group]);

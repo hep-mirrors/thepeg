@@ -57,6 +57,10 @@ IBPtr EventHandler::clone() const {
   return new_ptr(*this);
 }
 
+IBPtr EventHandler::fullclone() const {
+  return new_ptr(*this);
+}
+
 struct Stat {
 
   Stat() : attempted(0), accepted(0), sumw(0.0), maxXSec(CrossSection()),

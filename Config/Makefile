@@ -9,13 +9,15 @@ DOCFILES = ThePEG.h Constants.h Containers.h Pointers.h Units.h algorithm.h \
 
 INCLUDEFILES = $(DOCFILES) config.h
 
-DISTFILES = $(SOURCES) $(INCLUDEFILES) Makefile.common.in Makefile config.h.in
+DISTFILES = $(SOURCES) $(DOCFILES) Makefile.common.in Makefile \
+            Makefile.install config.h.in
 
 INCLUDEDIR = Config
 
 install-local:
+	mkdir -p $(INSTALLLIB)
 	sed -e s:@:$(INSTALLLIB):g Makefile.install > $(INSTALLLIB)/Makefile
-	cp Makefile.common $(INSTALLLIB)/Makefile.common
+	sed -e s:../../ThePEG/lib:$(INSTALLLIB):g -e s:-I../../:-I$(INCLUDEINSTALL):g Makefile.common > $(INSTALLLIB)/Makefile.common
 
 include ../Config/Makefile.common
 

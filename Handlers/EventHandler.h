@@ -104,7 +104,8 @@ public:
 protected:
 
   virtual IBPtr clone() const;
-  // Standard clone method.
+  virtual IBPtr fullclone() const;
+  // Standard clone methods.
 
   inline LuminosityFunction & lumiFn();
   // Access to the luminosity function.

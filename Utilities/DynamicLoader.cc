@@ -51,11 +51,14 @@ bool DynamicLoader::load(string name) {
   bool success = false;
   if ( name[0] == '/' ) success = loadcmd(name);
   else {
-    for ( unsigned i = 0; i < paths.size(); ++i )
-      if ( loadcmd(paths[i] + name) ) {
+    for ( unsigned i = 0; i < paths.size(); ++i ) {
+      string path = paths[i];
+      if ( path[path.size() - 1] != '/' ) path += '/';
+      if ( loadcmd(path + name) ) {
 	success = true;
 	break;
       }
+    }
   }
   if ( success || loadcmd(name) ) return true;
   loaded.erase(name);
@@ -73,5 +76,6 @@ vector<string> DynamicLoader::defaultPaths() {
   if ( instpath.empty() ) instpath = "../lib";
   if ( vpaths.empty() ) vpaths.push_back(instpath);
   else replace(vpaths, string("+"), instpath);
+  vpaths.push_back(".");
   return vpaths;
 }

@@ -1,4 +1,37 @@
+2003-07-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/DynamicLoader.cc: Added the current working directory
+	as a standard search path. Also added '/' between paths and
+	libraries if needed.
+
+	* src/Makefile: Corrected link flags for setup and run programs.
+
+	* Templates/Makefile, lib/Makefile: Moved ThePEG.el and g++dep to
+	the lib directory.
+
+	* Repository/EventGenerator.cc: Changed Pythia7 to ThePEG in
+	generateReferences().
+
+	* Handlers/StepHandler.cc: The createNewStep() function now
+	automatically calles useMe()
+
+	* Handlers/SubProcessHandler.*, Handlers/KinematicalCuts.*,
+	Handlers/EventHandler.*, Handlers/CollisionHandler.*,
+	Handlers/AnalysisHandler.*: Added fullclone() method to avoid
+	slicing when making copies in the Repository.
+
+	* Config/Makefile, Config/Makefile.common.in: Fixed correct
+	include path for installed makefiles.
+
+	* Makefile:  install now depends on the check target to ensure the
+	setup and run programs are compiled.
+
+	* ../configure: Added top-level configure script which simply runs
+	configure in the sub-directories.
+
 2003-07-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Config/Makefile: Removed config.h from DISTFILES.
 
 	* Utilities/SimplePhaseSpace.cc: CMSn now throws
 	ImpossibleKinematics if an infinite boost is requested.

@@ -241,6 +241,7 @@ protected:
   // Standard Interfaced virtual functions.
 
   virtual IBPtr clone() const;
+  virtual IBPtr fullclone() const;
   // Standard clone method.
 
 private:

@@ -74,6 +74,10 @@ IBPtr CollisionHandler::clone() const {
   return new_ptr(*this);
 }
 
+IBPtr CollisionHandler::fullclone() const {
+  return new_ptr(*this);
+}
+
 void CollisionHandler::
 addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tKinCutPtr cuts,
       tMEPtr me, const PBPair & pBins) {

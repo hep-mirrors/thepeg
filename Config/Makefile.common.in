@@ -1,7 +1,5 @@
 
-SRCDIR = ..
-
-LIBDIR = $(SRCDIR)/lib
+LIBDIR = ../../ThePEG/lib
 
 CXX = @CXX@
 
@@ -30,6 +28,8 @@ CLHEPLIB = @CLHEPLIB@
 CLHEPINCLUDE = @CLHEPINCLUDE@
 
 PREFIX = @prefix@
+
+INCLUDEINSTALL = $(PREFIX)/include
 
 INSTALLINCLUDE = $(PREFIX)/include/ThePEG
 
@@ -77,7 +77,7 @@ else
 endif
 
 depend:
-	$(SRCDIR)/Templates/g++dep $(INCLUDES) $(SOURCES) $(CHECKSOURCES)
+	$(LIBDIR)/g++dep $(INCLUDES) $(SOURCES) $(CHECKSOURCES)
 
 lib: $(OBJECTS)
 

@@ -54,16 +54,16 @@ SimpleLHC.run: SimpleLHC.in ../lib/ThePEGDefaults.rpo setupThePEG.exe
 	./setupThePEG -init
 
 setupThePEG.exe: setupThePEG.o 
-	$(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(SRCDIR)/lib $(THEPEGLIBS) $(LIBS)
+	$(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(LIBDIR) $(THEPEGLIBS) $(LIBS)
 
 runThePEG.exe: runThePEG.o 
-	$(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(SRCDIR)/lib $(THEPEGLIBS) $(LIBS)
+	$(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(LIBDIR) $(THEPEGLIBS) $(LIBS)
 
 runPartial: runPartial.o 
-	export LD_RUN_PATH=$(RPATH); $(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(SRCDIR)/lib $(THEPEGLIBS) $(LIBS)
+	export LD_RUN_PATH=$(RPATH); $(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(LIBDIR) $(THEPEGLIBS) $(LIBS)
 
 testrun: testrun.o 
-	export LD_RUN_PATH=$(RPATH); $(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(SRCDIR)/lib $(THEPEGLIBS) $(LIBS)
+	export LD_RUN_PATH=$(RPATH); $(CXX) $(CXXEXT) $(LINKFLAGS) -o $@ $< -L$(LIBDIR) $(THEPEGLIBS) $(LIBS)
 
 save:
 	mkdir -p save

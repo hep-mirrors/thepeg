@@ -159,6 +159,7 @@ protected:
   // Set information about the current sub-process.
 
   virtual IBPtr clone() const;
+  virtual IBPtr fullclone() const;
   // Standard clone methods
 
 protected:

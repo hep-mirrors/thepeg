@@ -1,3 +1,4 @@
-DISTFILES = skeleton.el g++dep
+DISTFILES =
 
 include ../Config/Makefile.common
+

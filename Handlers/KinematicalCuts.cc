@@ -264,6 +264,10 @@ IBPtr KinematicalCuts::clone() const {
   return new_ptr(*this);
 }
 
+IBPtr KinematicalCuts::fullclone() const {
+  return new_ptr(*this);
+}
+
 void KinematicalCuts::doupdate() throw(UpdateException) {
   Interfaced::doupdate();
   if ( yStarMax() <= yStarMin() )

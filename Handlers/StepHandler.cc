@@ -22,6 +22,7 @@ void StepHandler::collisionHandler(tPartCollHdlPtr ch) {
 }
 
 void StepHandler::createNewStep() {
+  useMe();
   theNewStep = collisionHandler()->newStep();
 }
 

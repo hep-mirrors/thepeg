@@ -88,6 +88,7 @@ public:
 protected:
 
   virtual IBPtr clone() const;
+  virtual IBPtr fullclone() const;
   // Standard clone method.
 
   inline virtual void doupdate() throw(UpdateException);

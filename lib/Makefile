@@ -12,7 +12,7 @@ OBJECTS = ../Utilities/ClassDescription.o ../Config/Containers.o \
           ../Utilities/StringUtils.o ../Utilities/SystemUtils.o \
           ../Utilities/Timer.o
 
-DISTFILES = Makefile fixCLHEP
+DISTFILES = Makefile fixCLHEP g++dep ThePEG.el
 
 include ../Config/Makefile.common
 
@@ -26,4 +26,7 @@ LIBFILES = libThePEG.so libCLHEP.so
 
 libThePEG.so: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
+
+install-local:
+	cp g++dep ThePEG.el $(INSTALLLIB)
 

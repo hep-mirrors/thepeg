@@ -1334,7 +1334,12 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.tcc \
   ../../ThePEG/PDT/EnumParticles.h \
   ../../ThePEG/Utilities/Timer.h \
-  ../../ThePEG/Utilities/Timer.icc
+  ../../ThePEG/Utilities/Timer.icc \
+  ../../ThePEG/Interface/Parameter.h \
+  ../../ThePEG/Interface/Parameter.xh \
+  ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Interface/Parameter.icc \
+  ../../ThePEG/Interface/Parameter.tcc
   GRVBase.o: \
   GRVBase.cc \
   GRVBase.h \

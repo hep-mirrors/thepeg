@@ -268,12 +268,14 @@ void EventGenerator::generateReferences() {
 	    << "\\usepackage{graphics}" << endl
 	    << "\\begin{document}" << endl
 	    << "\\appendix" << endl
-	    << "\\section[xxx]{P\\scalebox{0.8}{YTHIA}7\\cite{ThePEG} Run "
+	    << "\\section[xxx]{T\\scalebox{0.8}{HE}PEG\\cite{ThePEG} Run "
 	    << "Information}" << endl << "Run name: \\textbf{" << runName()
 	    << "}:\\\\\n";
   if ( !stratdesc.empty() )
     reffile() << "This run was generated using " << stratdesc <<
       " and the following models:\n";
+  else
+    reffile() << "The following models were used:\n";
 
   reffile() << "\\begin{itemize}" << endl;
 
