@@ -1,19 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_PartonBin_H
 #define ThePEG_PartonBin_H
-//
-// This is the declaration of the <!id>PartonBin<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>PartonBin<!!id> class is used py the
-// <!class>PartonExtractor<!!class> class to store information about
-// the extraction of a prton from a particle.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:PartonExtractor.html">PartonExtractor.h</a>.
-// 
+// This is the declaration of the PartonBin class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/ClassDescription.h"
@@ -27,6 +15,20 @@
 
 namespace ThePEG {
 
+/**
+ * The PartonBin class is used py the PartonExtractor class to store
+ * information about the extraction of a parton from a
+ * particle. Several PartonBin objects can be used to specify a whole
+ * chain of partons extracted from particles extracted from other
+ * particles. A PartonBin without an incoming() PartonBin represents
+ * the incoming particle itself and is used to stop recursion.
+ *
+ * After the extraction of a parton, the kinematical variables of that
+ * extraction is stored in a orresponding PartonBinInfo object.
+ *
+ * @see PartonExtractor.
+ * 
+ */
 class PartonBin: public Base {
 
 public:
@@ -35,126 +37,235 @@ typedef vector<PBPtr> PBVector;
 
 public:
 
+  /** @name Standard constructors, assignment and destructors. */
+  //@{
+  /**
+   * Standard constructor.
+
+   * @param p the incoming particle type. Possibly null if this bin
+   * represents the incoming particle itself.
+   * @param prev the PartonBin of the incoming particle. Possibly null
+   * if this bin represents the incoming particle itself.
+   * @param pi the parton to be extracted.
+   * @param pdf the density function to be used. Possibly null if this
+   * bin represents the incoming particle itself.
+   * @param newCuts the kinematical cuts on the extraction.
+   */
   PartonBin(tcPDPtr p, tPBPtr prev, tcPDPtr pi, tcPDFPtr pdf,
 	    const PDFCuts & newCuts);
-  // Standard ctors and dtor.
 
+  /**
+   * Default constructor.
+   */
   PartonBin();
+
+  /**
+   * Copy-constructor.
+   */
   PartonBin(const PartonBin &);
+
+  /**
+   * Destructor.
+   */
   virtual ~PartonBin();
-  // Default ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Access the information in this ParticleBin. */
+  //@{
+  /**
+   * The incoming particle type.
+   */
   inline tcPDPtr particle() const;
-  // The incoming particle type.
 
+  /**
+   * In the case the incoming particle in turn is extracted from
+   * another particle, return the PartonBin for that extraction.
+   */
   inline tPBPtr incoming() const;
-  // In the case the incoming particle in turn is extracted from
-  // another particle, return the PartonBin for that extraction.
 
+  /**
+   * The parton bins corresponding to the extracted parton if it in
+   * turn can be extracted from.
+   */
   inline const PBVector & outgoing() const;
-  // The parton bins corresponding to the extracted parton if it can
-  // be extracted from.
 
+  /**
+   * Add a parton bin corresponding to the extracted parton if it in
+   * turn can be extracted from.
+   */
   inline void addOutgoing(tPBPtr);
-  // Add a parton bin corresponding to the extracted parton if it can
-  // be extracted from.
 
+  /**
+   * The extracted parton type.
+   */
   inline tcPDPtr parton() const;
-  // The extracted parton type.
 
+  /**
+   * The PDFBase object describing the momentum distribution of the
+   * parton within the particle in this PartonBin.
+   */
   inline tcPDFPtr pdf() const;
-  // The PDFBase object describing the momentum distribution of the
-  // parton within the particle in this PartonBin.
 
+  /**
+   * The remnant handler associated with the pdf().
+   */
   inline tcRemHPtr remnantHandler() const;
-  // The remnant handler associated with the pdf().
 
+  /**
+   * Detemine the number of degrees of freedom needed to generate the
+   * phase space of this and parent partons. If doscale is true this
+   * bin is expected to generate the scale in addition to the momentum
+   * fraction.
+   */
   int nDim(bool doscale);
-  // Detemine the number of degrees of freedom needed to generate the
-  // phase space of this and parent partons. If doscale is true this
-  // bin is expected to generate the scale in addition to l.
 
+  /**
+   * Return the number of degrees of freedom used by the parton
+   * density and remnant handler.
+   */
   inline int pdfDim() const;
+
+  /**
+   * Return the number of degrees of freedom used by the parton
+   * density and remnant handler.
+   */
   inline int remDim() const;
-  // Return the number of degrees of freedom used by the parton
-  // density and remnant handler.
+  //@}
 
+  /** @name Functions used in the generation. */
+  //@{
+  /**
+   * Reset last generated l and Q2 values of this and parent bins.
+   */
   void prepare();
-  // Reset last generated l and Q2 values of this and parent bins.
 
+  /**
+   * Generate l and Q2 of this and parent bins.
+   */
   void generate(const double * r);
-  // Generate l and Q2 of this and parent bins.
 
+  /**
+   * Return the cuts specified for this bin.
+   */
   inline const PDFCuts & cuts() const;
-  // Return the cuts specified for this bin.
 
-  double fullFn(Energy2 newScale = -GeV2);
-  // Return the parton density for this and parent particles. If the
-  // argument is positive, this scale should be used.
+  /**
+   * Return the parton density for this and parent particles. If the
+   * argument is positive, this scale should be used.
+   */
+  double fullFn(Energy2 newScale = -1.0*GeV2);
 
+  /**
+   * Return the parton bin corresponding to the first incoming particle.
+   */
   tPBPtr getFirst();
-  // Return the parton bin corresponding to the first incoming particle.
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 private:
 
+  /**
+   * The incoming particle type.
+   */
   cPDPtr theParticle;
-  // The incoming particle type.
 
+  /**
+   * In the case the incoming particle in turn is extracted from
+   * another particle, return the PartonBin for that extraction.
+   */
   tPBPtr theIncomingBin;
-  // In the case the incoming particle in turn is extracted from
-  // another particle, return the PartonBin for that extraction.
 
+  /**
+   * The parton bins corresponding to the extracted parton if it
+   * itself can be extracted from.
+   */
   PBVector theOutgoing;
-  // The parton bins corresponding to the extracted parton if it can
-  // be extracted from.
 
+  /**
+   * The extracted parton type.
+   */
   cPDPtr theParton;
-  // The extracted parton type.
 
+  /**
+   * The PDFBase object describing the momentum distribution of the
+   * parton within the particle in this PartonBin.
+   */
   cPDFPtr thePDF;
-  // The PDFBase object describing the momentum distribution of the
-  // parton within the particle in this PartonBin.
 
+  /**
+   * The remnant handler associated with the pdf().
+   */
   cRemHPtr theRemnantHandler;
-  // The remnant handler associated with the pdf().
 
+  /**
+   * The number of degrees of freedom needed to generate the phase
+   * space for this parton for the parton density.
+   */
   int thePDFDim;
-  int theRemDim;
-  // The number of degrees of freedom needed to generate the phase
-  // space for this parton for the parton density and remnant handler
-  // respectively.
 
+  /**
+   * The number of degrees of freedom needed to generate the phase
+   * space for this parton for the remnant handler.
+   */
+  int theRemDim;
+
+  /**
+   * The cuts specified for this bin.
+   */
   PDFCuts theCuts;
-  // The cuts specified for this bin.
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<PartonBin> initPartonBin;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   PartonBin & operator=(const PartonBin &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the base classes
+ *  of PartonBin. */
 template <>
 struct BaseClassTrait<PartonBin,1> {
+  /** Typedef of the first base class of PartonBin. */
   typedef Base NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  PartonBin class. */
 template <>
 struct ClassTraits<PartonBin>: public ClassTraitsBase<PartonBin> {
-  static string className() { return "/ThePEG/PartonBin"; }
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::PartonBin"; }
 };
 
 }

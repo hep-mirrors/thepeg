@@ -49,7 +49,9 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	((string-equal base "Decayer") (setq interfaced t))
 	(t (setq interfaced (y-or-n-p "Will this class be interfaced "))))
 
-  (setq declarations (cond ((string-equal base "MEBase")
+  (setq declarations (cond ((string-equal base "PDFBase")
+			    (thepeg-PDF-declare class base))
+			   ((string-equal base "MEBase")
 			    (thepeg-ME-declare class base))
 			   ((string-equal base "StepHandler")
 			    (thepeg-StepHandler-declare class base))
@@ -58,7 +60,9 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 			   ((string-equal base "Decayer")
 			    (thepeg-Decayer-declare class base))
 			   (t "")))
-  (setq implementations (cond ((string-equal base "MEBase")
+  (setq implementations (cond ((string-equal base "PDFBase")
+			       (thepeg-PDF-implement class base))
+			      ((string-equal base "MEBase")
 			       (thepeg-ME-implement class base))
 			      ((string-equal base "StepHandler")
 			       (thepeg-StepHandler-implement class base))
@@ -80,6 +84,11 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
   (interactive)
   (thepeg-specific-class-files "MEBase" "ThePEG/MatrixElement/MEBase.h"
 			       'thepeg-ME-declare 'thepeg-ME-implement))
+
+(defun ThePEG-PDF-class-files ()
+  (interactive)
+  (thepeg-specific-class-files "PDFBase" "ThePEG/PDF/PDFBase.h"
+			       'thepeg-PDF-declare 'thepeg-PDF-implement))
 
 (defun ThePEG-StepHandler-class-files ()
   (interactive)
@@ -457,8 +466,7 @@ public:
    * The static object used to initialize the description of this class.
    * Indicates that this is an abstract class without persistent data.
    */
-  static AbstractNoPIOClassDescription<THECLASS> initTHECLASS;
-  // Describe an abstract base class without persistent data.")))))
+  static AbstractNoPIOClassDescription<THECLASS> initTHECLASS;")))))
   
   (setq using (cond ((string-match namespace "ThePEG") "")
 		    (t "
@@ -575,6 +583,45 @@ struct ClassTraits<" namespacequalifyer "THECLASS>
 (defun thepeg-replace (regexp newtext string)
   (dired-string-replace-match regexp string newtext t t))
 
+(defun thepeg-PDF-implement (class base)
+(concat "
+
+#include \"ThePEG/PDT/ParticleData.h\"
+#include \"ThePEG/PDT/EnumParticles.h\"
+
+bool " class "::canHandleParticle(tcPDPtr particle) const {
+  // We assume that all protons and neutrons can be handled
+  return ( abs(particle->id()) == abs(long(ParticleID::pplus)) ||
+	   abs(particle->id()) == abs(long(ParticleID::n0)) );
+}
+
+cPDVector " class "::partons(tcPDPtr particle) const {
+  // We assume that all standard partons can be extracted.
+  cPDVector ret;
+  if ( canHandleParticle(particle) ) {
+    ret.push_back(getParticleData(ParticleID::g));
+    for ( int i = 1; i <= 5; ++i ) {
+      ret.push_back(getParticleData(i));
+      ret.push_back(getParticleData(-i));
+    }
+  }
+  return ret;
+}
+
+double " class "::xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+                      double l, Energy2 particleScale) const {
+  // Here we should return the actual density.
+  return 0.0;
+}
+
+double " class "::xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		     double l, Energy2 particleScale) const {
+  // Here we should return the actual valence density.
+  return 0.0;
+}
+
+"))
+
 (defun thepeg-ME-implement (class base)
 (concat "
 
@@ -676,6 +723,47 @@ Selector<const ColourLines *>
   // MEBase::selectColourGeometry function instead.
 
 }
+
+"))
+
+(defun thepeg-PDF-declare (class base)
+  (concat "
+public:
+
+  /** @name Virtual functions to be overridden by sub-classes. */
+  //@{
+  /**
+   * Return true if this PDF can handle the extraction of partons from
+   * the given \\a particle.
+   */
+  virtual bool canHandleParticle(tcPDPtr particle) const;
+
+  /**
+   * Return the partons which this PDF may extract from the given
+   * \\a particle.
+   */
+  virtual cPDVector partons(tcPDPtr particle) const;
+
+  /**
+   * The density. Return the pdf for the given \\a parton inside the
+   * given \\a particle for the virtuality \\a partonScale and
+   * logarithmic momentum fraction \\a l \\f$(l=\\log(1/x)\\$f. The \\a
+   * particle is assumed to have a virtuality \\a particleScale.
+   */
+  virtual double xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		     double l, Energy2 particleScale = 0.0*GeV2) const;
+
+  /**
+   * The valence density. Return the pdf for the given cvalence \\a
+   * parton inside the given \\a particle for the virtuality \\a
+   * partonScale and logarithmic momentum fraction \\a l
+   * \\f$(l=\\log(1/x)\\$f. The \\a particle is assumed to have a
+   * virtuality \\a particleScale. If not overidden by a sub class this
+   * will return zero.
+   */
+  virtual double xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		     double l, Energy2 particleScale = 0.0*GeV2) const;
+  //@}
 
 "))
 

@@ -11,7 +11,10 @@
 
 namespace ThePEG {
 
+/** Exception class used by PartonExtractor if the colour connections
+    to the remnants fails. */
 struct RemColException: public Exception {
+  /** Standard constructor. */
   RemColException(const PartonExtractor &);
 };
 

@@ -11,17 +11,24 @@
 
 
 namespace ThePEG {
-
+/** Exception class used by RemnantHandler if unable to handle a
+    specified particle. */
 struct RemnantHandlerCantHandle: public InterfaceException {
+  /** Standard constructor. */
   RemnantHandlerCantHandle(string, string);
 };
 
 
+/** Exception class used by PDFBase if unable to handle a
+    specified particle. */
 struct PDFWrongParticle: public InterfaceException {
+  /** Standard constructor. */
   PDFWrongParticle(string p, string pdf, string mess);
 };
 
+/** Exception class used by PDFBase if values were outside limits. */
 struct PDFRange: public InterfaceException {
+  /** Standard constructor. */
   PDFRange(string pdf, string var, double val, double lim);
 };
 
