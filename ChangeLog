@@ -1,3 +1,9 @@
+2004-10-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* lib/fixCLHEP: Fixed the script to use g++ instead of ld to
+	create a shared library from the static CLHEP library. This should
+	probably be a configure option in the future.
+
 2004-10-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.*: Added stripws() function to strip a

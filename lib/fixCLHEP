@@ -12,5 +12,5 @@ if ( -e lib${2}.so ) then
     ln -sf $1/lib/$LIB.* $wd >& /dev/null
   endif
 else
-  ld -shared --whole-archive lib${2}.a -o $wd/libCLHEP.so
+  g++ -shared -Wl,--whole-archive lib${2}.a -o $wd/libCLHEP.so
 endif
