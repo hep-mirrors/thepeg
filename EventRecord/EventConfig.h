@@ -85,9 +85,6 @@ typedef set<StepPtr, less<StepPtr>, Allocator<StepPtr> > StepSet;
 /** A set of pointers to SubProcess. */
 typedef set<SubProPtr, less<SubProPtr>, Allocator<SubProPtr> > SubProcessSet;
 
-/** A Dummy base class used to represent Spin. */
-struct Spin { /** Not the spin. */int s; };
-
 /** A helper class to facilitate persistent input and output. */
 struct EventConfig {
 

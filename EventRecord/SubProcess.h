@@ -1,23 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_SubProcess_H
 #define ThePEG_SubProcess_H
-//
-// This is the declaration of the <!id>SubProcess<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// A <!id>SubProcess<!!id> object represents a hard <i>2-&gt;n</i>
-// sub-process in a collision. It carries information about the
-// incoming and outgoing particles, as well as possible intermediate
-// ones. It also has a pointer to the <!class>PartonXSecFn<!!class>
-// object which generated the sub-process.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Event.html">Event.h</a>
-// <a href="http:Particle.html">Particle.h</a>
-// <a href="http:PartonXSecFn.html">PartonXSecFn.h</a>
-// 
+// This is the declaration of the SubProcess class.
 
 
 #include <vector>
@@ -26,146 +10,249 @@
 
 namespace ThePEG {
 
+/**
+ * A SubProcess object represents a hard \f$2\rightarrow n\f$
+ * sub-process in a collision. It carries information about the
+ * incoming and outgoing particles, as well as possible intermediate
+ * ones. It also has a pointer to the MEBase object which generated
+ * the sub-process.
+ *
+ * @see Event
+ * @see Particle
+ */
 class SubProcess: public EventRecordBase {
 
 public:
 
+  /** Most of the Event classes are friends with each other. */
   friend class Step;
+  /** Most of the Event classes are friends with each other. */
   friend class Collision;
-  //  friend SubProPtr;
  
 public:
 
+  /**
+   * Collision uses the FixedSizeAllocator for (de)allocation.
+   */
   inline void * operator new(size_t);
+
+  /**
+   * Collision uses the FixedSizeAllocator for (de)allocation.
+   */
   inline void operator delete(void *, size_t);
 
 public:
 
+  /**
+   * Standard constructor.
+   * @param newIncoming the two incoming partons.
+   * @param newCollision the Collision to which this SubProcess belongs.
+   * @param newHandler the MEBase object which generated this SubProcess.
+   */
   SubProcess(const PPair & newIncoming,
 	     tCollPtr newCollision = tCollPtr(),
 	     tcEventBasePtr newHandler = tcEventBasePtr());
-  // Standard constructor (default constructor is private).
 
+  /**
+   * Copy constructor.
+   */
   SubProcess(const SubProcess &);
-  // Copy constructor.
 
+  /**
+   * Destructor.
+   */
   inline ~SubProcess();
-  // Destructor.
 
+  /**
+   * A pointer to the MEBase object which generated this SubProcess.
+   */
   inline tcEventBasePtr handler() const;
-  // A pointer to the PartonXSecFn object which generatoed this
-  // sub-process.
 
+  /**
+   * A pointer to the collision to which this sub-process belongs.
+   */
   inline tCollPtr collision() const;
-  // A pointer to the collision to which this sub-process belongs.
 
+  /**
+   * The pair of incoming partons.
+   */
   inline const PPair & incoming() const;
-  // The pair of colliding particles.
 
+  /**
+   * A reference to the vector of intermediate partons.
+   */
   inline const ParticleVector & intermediates() const;
-  // A reference to the vector of intermediate particles.
 
+  /**
+   * A reference to the vector of outgoing particles.
+   */
   inline const ParticleVector & outgoing() const;
-  // A reference to the vector of outgoing particles.
 
+  /**
+   * Set the vector of outgoing particles.
+   */
   template <class InputIterator>
   void setOutgoing(InputIterator, InputIterator);
-  // Set the vector of outgoing particles.
 
+  /**
+   * Add a particle to the list of outgoing ones. If \a fixrelations
+   * is true the mother daughter pointers will be set to/from the
+   * incoming partons.
+   */
   void addOutgoing(tPPtr p, bool fixrelations = true);
-  // Add a particle to the list of outgoing ones.
 
+  /**
+   * Set the vector of intermediate particles.
+   */
   template <class InputIterator>
   void setIntermediates(InputIterator, InputIterator);
-  // Set the vector of intermediate particles.
 
+  /**
+   * Add a particle to the list of intermediate ones. If \a fixrelations
+   * is true the mother daughter pointers will be set to/from the
+   * incoming partons.
+   */
   void addIntermediate(tPPtr p, bool fixrelations = true);
-  // Add a particle to the list of intermediate ones.
 
+  /**
+   * Remove a particle entry from this sub-process.
+   */
   void removeEntry(tPPtr p);
-  // Remove a particle entry from this sub-process.
 
+  /**
+   * Return a clone of this sub process.
+   */
   SubProPtr clone() const;
-  // Return a clone of this sub process.
 
 protected:
 
+  /**
+   * Rebind to cloned objects. When a SubProcess is cloned, a shallow
+   * copy is done first, then all <code>Particle</code>s etc, are
+   * cloned, and finally this method is used to see to that the
+   * pointers in the cloned SubProcess points to the cloned
+   * <code>Particle</code>s etc.
+   */
   void rebind(const EventTranslationMap & trans);
-  // When a sub-process is cloned, a shallow copy is done first, then
-  // all particles are cloned, and finally this method is used to
-  // see to that the pointers in the cloned SubProcess points to the
-  // cloned particles.
 
 
 public:
 
+  /**
+   * Perform a LorentzTransformation of all particles in the sub
+   * process.
+   */
   void transform(const LorentzRotation &);
-  // Perform a LorentzTransformation of all particles in the sub
-  // process.
 
+  /**
+   * Return the value of the Mandelstam variable \f$\hat{s}\f$ in this
+   * SubProcess. It is calculated using the incoming particles.
+   */
   inline Energy2 shat() const;
+
+  /**
+   * Return the value of the Mandelstam variable \f$\hat{t}\f$ in this
+   * SubProcess. It is calculated using the first incoming and first outgoing
+   * particle.
+   */
   inline Energy2 that() const;
+
+  /**
+   * Return the value of the Mandelstam variable \f$\hat{u}\f$ in this
+   * SubProcess. It is calculated using the first incoming and last outgoing
+   * particle.
+   */
   inline Energy2 uhat() const;
-  // Return the value of the Mandelstam variables in this
-  // sub-process. shat is calculated using the incoming particles,
-  // that is calculated using the first incoming and first outgoing
-  // particle and uhat is calculated using the second incoming and the
-  // first outgoing particle.
 
 public:
 
+  /**
+   * Standard function for writing to a persistent stream.
+   */
   void persistentOutput(PersistentOStream &) const;
+
+  /**
+   * Standard function for reading from a persistent stream.
+   */
   void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
 
+  /**
+   * Standard Init function. @see Base::Init().
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 private:
 
+  /**
+   * A pointer to the MEBase object which generated this sub-process.
+   */
   tcEventBasePtr theHandler;
-  // A pointer to the PartonXSecFn object which generated this sub-process.
 
+  /**
+   * A pointer to the collision to which this sub-process belongs.
+   */
   tCollPtr theCollision;
-  // A pointer to the collision to which this sub-process belongs.
 
+  /**
+   * The pair of incoming particles.
+   */
   PPair theIncoming;
-  // The pair of incoming particles.
 
+  /**
+   * The vector of intermediate particles,
+   */
   ParticleVector theIntermediates;
-  // The vector of intermediate particles,
 
+  /**
+   * The vector of outgoing particles.
+   */
   ParticleVector theOutgoing;
-  // The vector of outgoing particles.
 
 private:
 
+  /**
+   * Describe concrete class with persistent data.
+   */
   static ClassDescription<SubProcess> initSubProcess;
-  // Describe concrete class with persistent data.
 
+  /**
+   * Private default constructor must only be used by the
+   * PersistentIStream class via the ClassTraits<SubProcess> class .
+   */
   inline SubProcess();
-  friend class ClassTraits<SubProcess>;
-  // Private default constructor must only be used by the
-  // PersistentIStream class via the ClassTraits<SubProcess> class .
 
+  /**
+   * The ClassTraits<SubProcess> class must be a friend to be able to
+   * use the private default constructor.
+   */
+  friend class ClassTraits<SubProcess>;
+
+  /**
+   * Assignment is forbidden.
+   */
   inline SubProcess & operator=(const SubProcess &);
-  // Assignment is forbidden.
 
 };
 
+/** Output a SubProcess to an ostream. */
 ostream & operator<<(ostream &, const SubProcess &);
-// Write a SubProcess object to a stream.
 
-// CLASSDOC OFF
 
+/** This template specialization informs ThePEG about the
+ *  base class of Collision. */
 template <>
 struct BaseClassTrait<SubProcess,1> {
+  /** Typedef of the first base class of SubProcess. */
   typedef EventRecordBase NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of
+ *  the SubProcess class and how to create it. */
 template <>
 struct ClassTraits<SubProcess>: public ClassTraitsBase<SubProcess> {
+  /** Return a platform-independent class name */
   static string className() { return "/ThePEG/SubProcess"; }
+  /** Create a SubProcess object. */
   static TPtr create() { return TPtr::Create(SubProcess()); }
 };
 

@@ -58,7 +58,7 @@ public:
    * this Collision belongs, and a pointer to the CollisionHandler
    * which produced this collision.
    * @param newIncoming a pair of incoming particles.
-   * @param newEvent the event to which this Collision belongs.
+   * @param newEvent the Event to which this Collision belongs.
    * @param newHandler the handler object in charge of the generation
    * of this Collision.
    */
@@ -100,7 +100,7 @@ public:
   /** @name Functions for accessing particles etc. */
   //@{
   /**
-   * Extract particles from this collision which satisfies the
+   * Extract particles from this Collision which satisfies the
    * requirements given by an object of the SelectorBase class.
    * @param r an output iterator specifying where the extracted
    * (pointers to) particles will be appended.
