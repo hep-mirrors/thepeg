@@ -1,21 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_BeamParticleData_H
 #define ThePEG_BeamParticleData_H
-//
-// This is the declaration of the <!id>BeamParticleData<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>BeamParticleData<!!id> inherits from the
-// <!class>ParticleData<!!class> class and is used for particles which
-// have information about their sub-structure implemented as a pointer
-// to a <!class>PDFBase<!!class> object.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:ParticleData.html">ParticleData.h</a>,
-// <a href="http:PDFBase.html">PDFBase.h</a>.
-// 
+// This is the declaration of the BeamParticleData class.
 
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDF/PDFBase.h"
@@ -25,86 +11,176 @@
 
 namespace ThePEG {
 
+/**
+ * BeamParticleData inherits from the ParticleData class and is used
+ * for particles which have information about their sub-structure
+ * implemented as a pointer to a PDFBase object.
+ *
+ * @see ParticleData,
+ * @see PDFBase.
+ * 
+ */
 class BeamParticleData: public virtual ParticleData {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline BeamParticleData();
+
+  /**
+   * Copy-constructor.
+   */
   inline BeamParticleData(const BeamParticleData &);
+
+  /**
+   * Destructor.
+   */
   virtual ~BeamParticleData();
-  // Standard ctors and dtor
+  //@}
 
+  /**
+   * Create a Particle which is its own anti-particle.
+   */
   static PDPtr Create(long newId, string newPDGName);
-  // Create a Particle which is its own anti-particle.
 
+  /**
+   * Create a particle - anti particle pair. Note that setting the
+   * parton density object on this particle does not change the parton
+   * density of the anti particle iven if synchronized() is true.
+   */
   static PDPair Create(long newId, string newPDGName, string newAntiPDGName);
-  // Create a particle - anti particle pair. Note that setting the
-  // parton density object on this particle does not change the parton
-  // density of the anti particle iven if synchronized() is true.
 
 public:
 
+  /**
+   * Return a pointer to the parton density object describing the
+   * sub-structure of this particle type.
+   */
   inline tcPDFPtr pdf() const;
-  // Return a pointer to the parton density object describing the
-  // sub-structure of this particle type.
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /**
+   * Protected constructor only to be used by subclasses or by the
+   * Create method.
+   */
   BeamParticleData(long newId, string newPDGName);
-  // Protected constructor only to be used by subclasses or by the
-  // Create method.
 
+  /**
+   * ParticleData clone method
+   */
   virtual PDPtr pdclone() const;
-  // ParticleData clone method
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given
+   * pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this
+   * object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Set the parton density object.
+   */
   void setPDF(PDFPtr);
-  // Set the parton density object.
 
 private:
 
+  /**
+   * The pointer to the parton density object.
+   */
   PDFPtr thePDF;
-  // The pointer to the parton density object.
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<BeamParticleData> initBeamParticleData;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   BeamParticleData & operator=(const BeamParticleData &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the
+ *  base classes of BeamParticleData. */
 template <>
 struct BaseClassTrait<BeamParticleData,1> {
+  /** Typedef of the first base class of BeamParticleData. */
   typedef ParticleData NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  BeamParticleData class. */
 template <>
-struct ClassTraits<BeamParticleData>: public ClassTraitsBase<BeamParticleData> {
-  static string className() { return "/ThePEG/BeamParticleData"; }
+struct ClassTraits<BeamParticleData>:
+    public ClassTraitsBase<BeamParticleData> {
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::BeamParticleData"; }
 };
 
 }

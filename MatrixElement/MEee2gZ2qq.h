@@ -198,8 +198,8 @@ struct BaseClassTrait<MEee2gZ2qq,1> {
   typedef ME2to2QCD NthBase;
 };
 
-/** This template specialization informs ThePEG about the name of
- *  the MEee2gZ2qq class and the shared object where it is defined. */
+/** This template specialization informs ThePEG about the name of the
+ *  MEee2gZ2qq class and the shared object where it is defined. */
 template <>
 struct ClassTraits<MEee2gZ2qq>: public ClassTraitsBase<MEee2gZ2qq> {
   /** Return a platform-independent class name */

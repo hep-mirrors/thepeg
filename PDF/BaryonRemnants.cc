@@ -71,7 +71,7 @@ generate(PartonBinInstance & pb, const double * r,
 
   BRemIPtr ip;
   if ( !(ip = dynamic_ptr_cast<BRemIPtr>(pb.remnantInfo())) ) {
-    // If this is the first time for this parton bin, generate som
+    // If this is the first time for this parton bin, generate some
     // information to save.
     ip = new_ptr(BaryonRemInfo());
     pb.remnantInfo(ip);

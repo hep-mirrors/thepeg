@@ -1,19 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_GRV94L_H
 #define ThePEG_GRV94L_H
-//
-// This is the declaration of the <!id>GRV94L<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>GRV94L<!!id> iherits from PDFBase via the GRVBase class and
-// implements the GRV94L parton densities for (anti) protons.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:PDFBase.html">PDFBase.h</a>,
-// <a href="http:GRVBase.html">GRVBase.h</a>.
-// 
+// This is the declaration of the GRV94L class.
 
 #include "ThePEG/PDF/GRVBase.h"
 // #include "GRV94L.fh"
@@ -21,78 +9,197 @@
 
 namespace ThePEG {
 
+/**
+ * GRV94L inherits from PDFBase via the GRVBase class and implements
+ * the GRV94L parton densities for (anti) protons and neutrons.
+ *
+ * @see PDFBase,
+ * @see GRVBase.
+ * 
+ */
 class GRV94L: public GRVBase {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline GRV94L();
-  inline GRV94L(const GRV94L &);
-  virtual ~GRV94L();
-  // Standard ctors and dtor
 
+  /**
+   * Copy-constructor.
+   */
+  inline GRV94L(const GRV94L &);
+
+  /**
+   * Destructor.
+   */
+  virtual ~GRV94L();
+  //@}
+
+  /**
+   * Return the cutoff scale.
+   */
   inline Energy2 mu2() const;
+
+  /**
+   * Return the square of \f$\Lambda_{QCD}\f$ used.
+   */
   inline Energy2 lam2() const;
-  // Return the cutoff scale and the square of Lambda_QCD used.
 
 protected:
 
+  /**
+   * Setup the \a l\f$=\log{1/x}\f$ and \a scale \f$Q^2\f$ to be used
+   * in the following call to uv(), dv)=, etc.
+   */
   virtual void setup(double l, Energy2 scale) const;
-  // Setup the log(1/x) and scale Q2 to be used in the following call
-  // to uv, dv, ...
 
+  /**
+   * Return the value of the u valens density for the values previously given
+   * by setup().
+   */
   virtual double uv() const;
+
+  /**
+   * Return the value of the d valens density for the values previously given
+   * by setup().
+   */
   virtual double dv() const;
+
+  /**
+   * Return the value of the difference between the u and d sea
+   * densities for the values previously given by setup().
+   */
   virtual double del() const;
+
+  /**
+   * Return the value of the average u and d sea densities for the
+   * values previously given by setup().
+   */
   virtual double udb() const;
+
+  /**
+   * Return the value of the s density for the values previously given by
+   * setup().
+   */
   virtual double sb() const;
+
+  /**
+   * Return the value of the c density for the values previously given by
+   * setup().
+   */
   virtual double cb() const;
+
+  /**
+   * Return the value of the b density for the values previously given by
+   * setup().
+   */
   virtual double bb() const;
+
+  /**
+   * Return the value of the gluon densities for the values previously
+   * given by setup().
+   */
   virtual double gl() const;
-  // Return the value of the u-valens, d-valens, difference between
-  // the u and d sea, the average u and d sea, s, c and b sea and
-  // gluon densities respectively for the values previously given by
-  // setup().
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods
+  //@}
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given
+   * pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this
+   * object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<GRV94L> initGRV94L;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   GRV94L & operator=(const GRV94L &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the
+ *  base classes of GRV94L. */
 template <>
 struct BaseClassTrait<GRV94L,1> {
+  /** Typedef of the first base class of GRV94L. */
   typedef GRVBase NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  GRV94L class and the shared object where it is defined. */
 template <>
 struct ClassTraits<GRV94L>: public ClassTraitsBase<GRV94L> {
-  static string className() { return "/ThePEG/GRV94L"; }
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::GRV94L"; }
+  /** Return the name of the shared library be loaded to get access to
+   *  the GRV94L class and every other class it uses (except
+   *  the base class). */
   static string library() { return "GRV94L.so"; }
 };
 
