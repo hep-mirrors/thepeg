@@ -12,6 +12,7 @@ namespace ThePEG {
 namespace Helicity {
 
 // constructors
+// default zero constructor
 inline LorentzTensor::LorentzTensor() {
   for(int ix=0;ix<4;++ix) {
     for(int iy=0;iy<4;++iy) {
@@ -20,7 +21,7 @@ inline LorentzTensor::LorentzTensor() {
   }
 }
 
-// default zero constructor
+// constructor in terms of two polarization vectors
 inline LorentzTensor::
 LorentzTensor(LorentzPolarizationVector p, LorentzPolarizationVector q) {
   for(int ix=0;ix<4;++ix) {
@@ -30,7 +31,15 @@ LorentzTensor(LorentzPolarizationVector p, LorentzPolarizationVector q) {
   }
 }
 
-// constructor in terms of two polarization vectors
+// constructor in terms of two momenta
+inline LorentzTensor::LorentzTensor(LorentzVector p, LorentzVector q) {
+  for(int ix=0;ix<4;++ix) {
+    for(int iy=0;iy<4;++iy) {
+      _tensor[ix][iy]=p[ix]*q[iy];
+    }
+  }
+}
+
 // constructor specifying all components
 inline LorentzTensor::
 LorentzTensor(Complex xx, Complex xy, Complex xz, Complex xt,
@@ -42,6 +51,9 @@ LorentzTensor(Complex xx, Complex xy, Complex xz, Complex xt,
   _tensor[2][0]=zx;_tensor[2][1]=zy;_tensor[2][2]=zz;_tensor[2][3]=zt;
   _tensor[3][0]=tx;_tensor[3][1]=ty;_tensor[3][2]=tz;_tensor[3][3]=tt;
 }
+
+inline LorentzTensor::~LorentzTensor() {}
+// The destructor
 
 inline Complex LorentzTensor::xx() const {return _tensor[0][0];}
 inline Complex LorentzTensor::yx() const {return _tensor[1][0];}
@@ -103,6 +115,89 @@ inline LorentzTensor & LorentzTensor::operator = (const LorentzTensor & q) {
     for(int iy=0;iy<4;++iy) _tensor[ix][iy]=q(ix,iy);
   }
   return *this;
+}
+
+// boost
+inline LorentzTensor LorentzTensor::boost(const Hep3Vector & b) const {
+  return boost(b.x(), b.y(), b.z());
+}
+
+inline LorentzTensor LorentzTensor::conjugate()
+{
+  return LorentzTensor(conj(xx()), conj(xy()), conj(xz()), conj(xt()),
+		       conj(yx()), conj(yy()), conj(yz()), conj(yt()),
+		       conj(zx()), conj(zy()), conj(zz()), conj(zt()),
+		       conj(tx()), conj(ty()), conj(tz()), conj(tt()));
+}
+
+// product with another tensor
+inline Complex LorentzTensor::operator * (const LorentzTensor & in) const
+{
+  Complex output=0.,temp;
+  for(unsigned int ix=0;ix<4;++ix)
+    {
+      temp = _tensor[ix][3]*in._tensor[ix][3];
+      for(unsigned int iy=0;iy<3;++iy)
+	{
+	  temp+=_tensor[ix][iy]*in._tensor[ix][iy];
+	}
+      if(ix<3){output-=temp;}
+      else{output+=temp;}
+    }
+  return output;
+}
+
+// scaling with a complex number
+inline LorentzTensor LorentzTensor::operator *= (Complex a)
+{
+  for(int ix=0;ix<4;++ix){for(int iy=0;iy<4;++iy){_tensor[ix][iy]*=a;}}
+  return *this;
+}
+
+// multiplication by a complex number
+inline LorentzTensor operator * (Complex a, const LorentzTensor & t)
+{
+  return LorentzTensor(a*t.xx(), a*t.xy(), a*t.xz(), a*t.xt(),
+		       a*t.yx(), a*t.yy(), a*t.yz(), a*t.yt(),
+		       a*t.zx(), a*t.zy(), a*t.zz(), a*t.zt(),
+		       a*t.tx(), a*t.ty(), a*t.tz(), a*t.tt());
+}
+inline LorentzTensor LorentzTensor::operator + (const LorentzTensor & in) const
+{
+  return LorentzTensor(xx()+in.xx(),xy()+in.xy(),xz()+in.xz(),xt()+in.xt(),
+		       yx()+in.yx(),yy()+in.yy(),yz()+in.yz(),yt()+in.yt(),
+		       zx()+in.zx(),zy()+in.zy(),zz()+in.zz(),zt()+in.zt(),
+		       tx()+in.tx(),ty()+in.ty(),tz()+in.tz(),tt()+in.tt());
+}
+inline LorentzTensor LorentzTensor::operator - (const LorentzTensor & in) const
+{
+  return LorentzTensor(xx()-in.xx(),xy()-in.xy(),xz()-in.xz(),xt()-in.xt(),
+		       yx()-in.yx(),yy()-in.yy(),yz()-in.yz(),yt()-in.yt(),
+		       zx()-in.zx(),zy()-in.zy(),zz()-in.zz(),zt()-in.zt(),
+		       tx()-in.tx(),ty()-in.ty(),tz()-in.tz(),tt()-in.tt());
+}
+
+inline LorentzPolarizationVector operator * 
+(const LorentzPolarizationVector & invec, const LorentzTensor & inten)
+{
+  LorentzPolarizationVector outvec;
+  for(unsigned int ix=0;ix<4;++ix)
+    {
+      outvec[ix]=invec[3]*inten(3,ix)-invec[0]*inten(0,ix)
+	-invec[1]*inten(1,ix)-invec[2]*inten(2,ix);
+    }
+  return outvec;
+}
+inline LorentzPolarizationVector operator * 
+(const LorentzTensor & inten, const LorentzPolarizationVector & invec)
+{
+  LorentzPolarizationVector outvec;
+  for(unsigned int ix=0;ix<4;++ix)
+    {
+      outvec[ix]=invec[3]*inten(ix,3)-invec[0]*inten(ix,0)
+	-invec[1]*inten(ix,1)-invec[2]*inten(ix,2);
+    }
+  return outvec;
 }
 
 }

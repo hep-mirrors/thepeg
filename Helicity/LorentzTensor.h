@@ -44,6 +44,12 @@ class LorentzTensor{
   inline LorentzTensor(LorentzPolarizationVector, LorentzPolarizationVector);
   // constructor in terms of two polarization vectors
 
+  inline LorentzTensor(LorentzVector p, LorentzVector q);
+  // constructor in terms of two lorentz5vectors
+
+  inline ~LorentzTensor();
+  // The destructor
+
   inline Complex xx() const;
   inline Complex yx() const;
   inline Complex zx() const;
@@ -89,11 +95,38 @@ class LorentzTensor{
   inline LorentzTensor & operator = (const LorentzTensor &);
   // Assignment.
 
+  // boost
+  LorentzTensor boost(double,double,double) const;
+  inline LorentzTensor boost(const Hep3Vector &) const;
+
+  // complex conjugate
+  inline LorentzTensor conjugate();
+
+  inline Complex operator * (const LorentzTensor &) const;
+  // Scalar product with other tensor
+
+  inline LorentzTensor operator *= (Complex);
+  // scaling with a complex number
+
+  // addition 
+  inline LorentzTensor operator +  (const LorentzTensor &) const;
+  // subtraction
+  inline LorentzTensor operator -  (const LorentzTensor &) const;
+
 private:
 
   Complex _tensor[4][4];
 
 };
+
+// multiplication by  scalar
+inline LorentzTensor operator * (Complex a,const LorentzTensor &);
+  
+inline LorentzPolarizationVector operator * 
+(const LorentzPolarizationVector &, const LorentzTensor &);
+
+inline LorentzPolarizationVector operator *
+(const LorentzTensor &,const LorentzPolarizationVector &);
 
 }
 }
