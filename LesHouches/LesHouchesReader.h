@@ -35,6 +35,21 @@ class LesHouchesReader: public HandlerBase {
    */
   friend class LesHouchesEventHandler;
 
+  /**
+   * Alias for standard C file streams.
+   */
+  typedef FILE * CFile;
+
+  /**
+   * Alias for a pair of C file streams.
+   */
+  typedef pair<CFile, CFile> CFilePair;
+
+  /**
+   * Map for counting the numer of events per process number.
+   */
+  typedef map<int, long> CountMap;
+
 public:
 
   /** @name Standard constructors and destructors. */
@@ -84,10 +99,16 @@ public:
   virtual void scan();
 
   /**
-   * Calls readEvent() and translates the information into information
-   * suitable for creating an Event object.
+   * Calls readEvent() or uncacheEvent() to read information into the
+   * LesHouches common block variables.
    */
-  virtual void convertEvent();
+  virtual void getEvent();
+
+  /**
+   * Converts the information in the Les Houches common block
+   * variables and inserts it in the provided \a event object.
+   */
+  virtual void convertEvent(Event & event);
   //@}
 
   /** @name Access information about the current event. */
@@ -98,7 +119,7 @@ public:
    * file. \a npart is the number of particles. If \a npart is 0, the
    * number is taken from NUP.
    */
-  inline size_t eventSize(int npart = 0) const;
+  inline static size_t eventSize(int N);
 
   /**
    * Return the instances of the beam particles for the current event.
@@ -164,6 +185,32 @@ public:
    * True if negative weights may be produced.
    */
   inline bool negativeWeights() const;
+
+  /**
+   * The total number of events requested so far.
+   */
+  inline long nAttempted() const;
+
+  /**
+   * Number of requested events per process number.
+   */
+  inline const CountMap & attemptMap() const;
+
+  /**
+   * The number of events accepted so far.
+   */
+  inline long nAccepted() const;
+
+  /**
+   * Accept the current event.
+   */
+  inline void accept();
+
+  /**
+   * Number of accepted events per process number.
+   */
+  inline const CountMap & acceptMap() const;
+
   //@}
 
 protected:
@@ -186,7 +233,7 @@ protected:
   /**
    * File stream for the cache.
    */
-  inline FILE * cacheFile() const;
+  inline CFile cacheFile() const;
 
   /**
    * Open the cache file for reading.
@@ -229,7 +276,6 @@ protected:
    */
   template <typename T>
   static const char * mread(const char * pos, T & t, size_t n = 1);
-
 
   //@}
 
@@ -324,7 +370,7 @@ protected:
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  inline virtual void doinit() throw(InitException);
+  virtual void doinit() throw(InitException);
 
   /**
    * Initialize this object. Called in the run phase just before
@@ -551,6 +597,26 @@ protected:
   bool doRandomize;
 
   /**
+   * The total number of events requested so far.
+   */
+  long theNAttempted;
+
+  /**
+   * Number of requested events per process number.
+   */
+  CountMap theAttemptMap;
+
+  /**
+   * The number of events accepted so far.
+   */
+  long theNAccepted;
+
+  /**
+   * Number of accepted events per process number.
+   */
+  CountMap theAcceptMap;
+
+  /**
    * Association between ColourLines and colour indices in the current
    * translation.
    */
@@ -588,7 +654,7 @@ protected:
   /**
    * File stream for the cache.
    */
-  FILE * theCacheFile;
+  CFile theCacheFile;
 
 private:
 
@@ -625,7 +691,19 @@ public:
 
   /** Exception class used by LesHouchesReader in case inconsistencies
    *  are encountered. */
-class LesHouchesInconsistencyError: public Exception {};
+  class LesHouchesInconsistencyError: public Exception {};
+  
+  /** Exception class used by LesHouchesReader in case more events
+      than available are requested. */
+  class LesHouchesReopenWarning: public Exception {};
+
+  /** Exception class used by LesHouchesReader in case reopening an
+      event file fails. */
+  class LesHouchesReopenError: public Exception {};
+
+  /** Exception class used by LesHouchesReader in case there is
+      information missing in the initialization phase. */
+  class LesHouchesInitError: public InitException {};
 
 };
 

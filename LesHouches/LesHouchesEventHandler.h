@@ -44,20 +44,15 @@ public:
   typedef vector<LesHouchesReaderPtr> ReaderVector;
 
   /**
-   * A vector of vector of integers used to collect statistics.
-   */
-  typedef vector< vector<long> > AcceptVector;
-
-  /**
    * A selector of readers.
    */
-  typedef VSelector<CrossSection,int> ReaderSelector;
+  typedef VSelector<int,CrossSection> ReaderSelector;
 
   /**
    * Enumerate the weighting options.
    */
   enum WeightOpt {
-    unitweight = -1,    /**< All events have unit weight. */
+    unitweight = 1,    /**< All events have unit weight. */
     unitnegweight = -1, /**< All events have wight +/- 1. */
     varweight = 2,      /**< Varying positive weights. */
     varnegweight = -2   /**< Varying positive or negative weights. */
@@ -127,11 +122,6 @@ public:
    * The number of attempted events so far.
    */
   inline long NAttempted() const;
-
-  /**
-   * The number of accepted events per reader and sub-process.
-   */
-  inline const AcceptVector & accepted() const;
 
   /**
    * The selector to choose readers according to their overestimated
@@ -257,11 +247,6 @@ protected:
   inline void newAttempt();
 
   /**
-   * The number of accepted events per reader and sub-process.
-   */
-  inline AcceptVector & accepted();
-
-  /**
    * The selector to choose readers according to their overestimated
    * cross section.
    */
@@ -280,11 +265,6 @@ private:
   long theNAttempted;
 
   /**
-   * The number of accepted events per reader and sub-process.
-   */
-  AcceptVector theAccepted;
-
-  /**
    * The selector to choose readers according to their overestimated
    * cross section.
    */
@@ -298,6 +278,7 @@ private:
 public:
 
   class LesHouchesInitError: public InitException {};
+  class LesHouchesLumiWarning: public InitException {};
 
 private:
 

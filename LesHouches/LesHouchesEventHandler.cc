@@ -10,6 +10,8 @@
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Repository/Repository.h"
+#include "ThePEG/Handlers/LuminosityFunction.h"
+#include "ThePEG/Utilities/LoopGuard.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesEventHandler.tcc"
@@ -23,14 +25,21 @@ using namespace ThePEG;
 LesHouchesEventHandler::~LesHouchesEventHandler() {}
 
 void LesHouchesEventHandler::doinit() throw(InitException) {
+  PartialCollisionHandler::doinit();
   for ( int i = 0, N = readers().size(); i < N; ++i )
     readers()[i]->init();
 }
 
 void LesHouchesEventHandler::initialize() {
 
+  if ( lumiFnPtr() ) Repository::clog()
+    << "The LuminosityFunction '" << lumiFnPtr()->name()
+    << "' assigned to the LesHouchesEventHandler '" << name()
+    << "' will not be active in this run. Instead the incoming "
+    << "particles will be determined by the used LesHouchesReader objects."
+    << Exception::warning;
+
   typedef map<int,tLesHouchesReaderPtr> ProcessMap;
-  PartialCollisionHandler::doinit();
   if ( readers().empty() )
     throw LesHouchesInitError()
       << "No readers were defined for the LesHouchesEventHandler '"
@@ -41,9 +50,26 @@ void LesHouchesEventHandler::initialize() {
   CrossSection sum = 0.0*picobarn;
   CrossSection maxxsec = 0.0*picobarn;
   ProcessMap processes;
+  PDPair incoming;
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
-    reader.scan();
+
+    // Check that the incoming particles are consistent between the
+    // readers.
+    if ( !incoming.first )
+      incoming.first = getParticleData(reader.IDBMUP.first);
+    if ( !incoming.second )
+      incoming.second = getParticleData(reader.IDBMUP.second);
+    if ( incoming.first->id() != reader.IDBMUP.first ||
+	 incoming.second->id() != reader.IDBMUP.second )
+      Repository::clog()
+	<< "The different LesHouchesReader objects in the "
+	<< "LesHouchesEventHandler '" << name() << "' have different "
+	<< "types of colliding particles." << Exception::warning;
+
+    // Check that the weighting of the events in the different readers
+    // is consistent with the ones requested for this event
+    // handler. Also collect the sum of the maximum weights.
     if ( reader.negativeWeights() && weightOption() > 0 )
       throw LesHouchesInitError()
 	<< "The reader '" << reader.name()
@@ -51,6 +77,9 @@ void LesHouchesEventHandler::initialize() {
 	<< "which is not allowed for the LesHouchesEventHandler '"
 	<< name() << "'." << Exception::warning;
     maxxsec += reader.maxXSec();
+
+    // Check that we do not have the same process numbers in different
+    // readers.
     for ( int ip = 0; ip < reader.NRUP; ++ip ) {
       sum += reader.XSECUP[ip]*picobarn;
       if ( reader.LPRUP[ip] ) {
@@ -66,29 +95,53 @@ void LesHouchesEventHandler::initialize() {
       }
     }
   }
+
+  // Check that we have any cross section at all.
   if ( sum <= 0.0*picobarn )
     throw LesHouchesInitError()
       << "The sum of the cross sections of the readers in the "
       << "LesHouchesEventHandler '" << name()
       << "' was zero." << Exception::warning;
 
-
 }
 
 void LesHouchesEventHandler::doinitrun() {
   PartialCollisionHandler::doinitrun();
   NAttempted(0);
-  accepted().clear();
   selector().clear();
+
+  for ( int i = 0, N = readers().size(); i < N; ++i ) {
+    readers()[i]->initrun();
+    if ( weightOption() == unitweight || weightOption() == unitnegweight )
+      selector().insert(readers()[i]->maxXSec(), i);
+    else
+      selector().insert(readers()[i]->xSec(), i);
+  }
+}
+
+EventPtr LesHouchesEventHandler::generateEvent() {
+
+  LoopGuard<EventLoopException,LesHouchesEventHandler>
+    loopGuard(*this, maxLoop());
+
+  while ( true ) {
+    loopGuard();
+
+    LesHouchesReader & reader = *readers()[selector()[rnd()]];
+
+    reader.getEvent();
+
+  }
+
 }
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
-  os << theReaders << theNAttempted << theAccepted << theSelector
+  os << theReaders << theNAttempted << theSelector
      << theWeightOption;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theReaders >> theNAttempted >> theAccepted >> theSelector
+  is >> theReaders >> theNAttempted >> theSelector
      >> theWeightOption;
 }
 

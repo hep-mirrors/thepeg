@@ -87,6 +87,12 @@ public:
   inline double operator()();
 
   /**
+   * Return a (possibly cached) flat integer random number in the
+   * interval \f$[0,N[\f$.
+   */
+  inline long operator()(long N);
+
+  /**
    * Return a true with probability \a p. Uses rnd(). Also uses
    * push_back(double).
    */

@@ -15,6 +15,10 @@ inline double RandomGenerator::operator()() {
   return rnd();
 }
 
+inline long RandomGenerator::operator()(long N) {
+  return long(rnd()*double(N));
+}
+
 template <typename OutputIterator>
 inline void RandomGenerator::rnd(OutputIterator o, size_type n) {
   while ( n-- ) *o++ = rnd();

@@ -14,6 +14,14 @@ inline LuminosityFunction & EventHandler::lumiFn() {
   return *theLumiFn;
 }
 
+inline tcLumiFnPtr EventHandler::lumiFnPtr() const {
+  return theLumiFn;
+}
+
+inline tLumiFnPtr EventHandler::lumiFnPtr() {
+  return theLumiFn;
+}
+
 inline long EventHandler::maxLoop() const {
   return theMaxLoop;
 }

@@ -1,3 +1,13 @@
+2004-12-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/RandomGenerator.*: Added operator()(long) to conform
+	to the random number generator requirements of the standard
+	library (mainly used in the random_shuffle function in
+	<algorithm>).
+
+	* Handlers/EventHandler.*: Added const and non-const access to the
+	pointer to the Luminosity function.
+
 2004-12-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.cc: Fixed bug in checking if a file is

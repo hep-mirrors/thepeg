@@ -117,6 +117,11 @@ public:
   inline const LuminosityFunction & lumiFn() const;
 
   /**
+   * Access the luminosity function.
+   */
+  inline tcLumiFnPtr lumiFnPtr() const;
+
+  /**
    * The number of phase space dimensions used by the luminosity
    * function.
    */
@@ -200,6 +205,11 @@ protected:
    * Access to the luminosity function.
    */
   inline LuminosityFunction & lumiFn();
+
+  /**
+   * Access to the luminosity function.
+   */
+  inline tLumiFnPtr lumiFnPtr();
 
   /**
    * Reject a (partially) generated event.

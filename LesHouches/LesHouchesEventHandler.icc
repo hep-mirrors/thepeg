@@ -12,7 +12,7 @@ inline LesHouchesEventHandler::LesHouchesEventHandler()
 inline LesHouchesEventHandler::
 LesHouchesEventHandler(const LesHouchesEventHandler & x)
   : EventHandler(x), theReaders(x.theReaders), theNAttempted(x.theNAttempted),
-    theAccepted(x.theAccepted), theSelector(x.theSelector),
+    theSelector(x.theSelector),
     theWeightOption(x.theWeightOption) {}
 
 inline IBPtr LesHouchesEventHandler::clone() const {
@@ -76,16 +76,6 @@ inline void LesHouchesEventHandler::NAttempted(long x) {
 
 inline void LesHouchesEventHandler::newAttempt() {
   ++theNAttempted;
-}
-
-inline const LesHouchesEventHandler::AcceptVector &
-LesHouchesEventHandler::accepted() const {
-  return theAccepted;
-}
-
-inline LesHouchesEventHandler::AcceptVector &
-LesHouchesEventHandler::accepted() {
-  return theAccepted;
 }
 
 inline const LesHouchesEventHandler::ReaderSelector &

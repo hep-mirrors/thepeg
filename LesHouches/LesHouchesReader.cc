@@ -19,6 +19,8 @@
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/PDF/PDFBase.h"
+#include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Repository/RandomGenerator.h"
 
 using namespace ThePEG;
 
@@ -27,7 +29,7 @@ LesHouchesReader::LesHouchesReader()
   SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0), theXSec(0.0*picobarn),
   theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1),
   isWeighted(false), hasNegativeWeights(false), theCacheFileName(""),
-  doRandomize(false), theCacheFile(NULL) {}
+  doRandomize(false), theNAttempted(0), theNAccepted(0), theCacheFile(NULL) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
@@ -43,9 +45,19 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     theNEvents(x.theNEvents), theMaxScan(x.theMaxScan),
     isWeighted(x.isWeighted), hasNegativeWeights(x.hasNegativeWeights),
     theCacheFileName(x.theCacheFileName), doRandomize(x.doRandomize),
+    theNAttempted(x.theNAttempted), theAttemptMap(x.theAttemptMap),
+    theNAccepted(x.theNAccepted), theAcceptMap(x.theAcceptMap),
     theCacheFile(NULL) {}
 
 LesHouchesReader::~LesHouchesReader() {}
+
+void LesHouchesReader::doinit() throw(InitException) {
+  HandlerBase::doinit();
+  scan();
+  if ( !IDBMUP.first || !IDBMUP.second ) throw LesHouchesInitError()
+    << "No information about incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
+}
 
 void LesHouchesReader::scan() {
   NRUP = 0;
@@ -59,15 +71,38 @@ void LesHouchesReader::scan() {
   
   open();
 
+  // Shall we write the events to a cache file for fast reading? If so
+  // we write to a temporary file if the caches events should be
+  // randomized.
+  if ( cacheFileName().length() ) {
+    if ( ThePEG_DEBUG_LEVEL )
+      generator()->log() << "Writing cache file for LesHouchesReader '"
+			  << name() << "' ..." << flush;
+    if ( randomize() )
+      theCacheFile = tmpfile();
+    else
+      openWriteCacheFile();
+  }
+
+  // Use posi to remember the positions of the cached events on the
+  // temporary stream (if present).
+  vector<long> posi;
+
   // If the open() has not already gotten information about subprocesses
   // and cross sections we have to scan through the events.
-  if ( !NRUP ) {
+  if ( !NRUP || cacheFile() != NULL ) {
     vector<long> LPRN;
     double xlast = 0.0;
     long neve = 0;
     weighted(false);
     negativeWeights(false);
     for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
+      if ( cacheFile() != NULL ) {
+	// We are caching events. Remember where they were written in
+	// case we want to randomize
+	if ( randomize() ) posi.push_back(std::ftell(cacheFile()));
+	cacheEvent();
+      }
       ++neve;
       vector<int>::iterator idit = find(LPRUP.begin(), LPRUP.end(), IDPRUP);
       if ( idit == LPRUP.end() ) {
@@ -103,17 +138,74 @@ void LesHouchesReader::scan() {
   if ( xSec() <= 0.0*picobarn ) xSec(xsec);
   if ( weighted() && maxXSec() <= 0.0*picobarn && NEvents() > 0 )
     maxXSec(NEvents()*maxWeight());
+
+  if ( cacheFile() != NULL ) {
+    if ( randomize() ) {
+      // If we should randomize the cached events, randomize the
+      // positions where the events are stored in the temporary file
+      // and read them into the cache file in the new order.
+      random_shuffle(posi.begin(), posi.end(), generator()->random());
+      CFile tmp = cacheFile();
+      openWriteCacheFile();
+      static vector<char> buff;
+      for ( int i = 0, N = posi.size(); i < N; ++i ) {
+	fseek(tmp, posi[i], SEEK_SET);
+	fread(&NUP, sizeof(NUP), 1, tmp);
+	buff.resize(eventSize(NUP));
+	fread(&buff[0], buff.size(), 1, tmp);
+	fwrite(&NUP, sizeof(NUP), 1, cacheFile());
+	fwrite(&buff[0], buff.size(), 1, cacheFile());
+      }
+      fclose(tmp);
+    }
+    closeCacheFile();
+    if ( ThePEG_DEBUG_LEVEL ) generator()->log() << "done." << endl;
+  }
+
   return;
 }
 
-void LesHouchesReader::convertEvent() {
+void LesHouchesReader::convertEvent(Event & event) {
   particleIndex.clear();
   colourIndex.clear();
   colourIndex(0, tColinePtr());
-  readEvent();
   createParticles();
   createBeams();
   connectMothers();
+  ++theNAttempted;
+  ++theAttemptMap[IDPRUP];
+}
+
+void LesHouchesReader::getEvent() {
+  if ( cacheFile() != NULL ) {
+    if ( !uncacheEvent() ) {
+      generator()->logWarning(
+	LesHouchesReopenWarning()
+	<< "Reopening LesHouchesReader '" << name()
+	<< "' after using " << nAccepted() << " events out of "
+	<< (NEvents() > 0? NEvents(): nAttempted()) << Exception::warning);
+      closeCacheFile();
+      openReadCacheFile();
+      if ( !uncacheEvent() ) throw LesHouchesReopenError()
+	<< "Could not reopen LesHouchesReader '" << name()
+	<< "'." << Exception::runerror;
+    }
+  } else {
+    if ( !readEvent() ) {
+      generator()->logWarning(
+	LesHouchesReopenWarning()
+	<< "Reopening LesHouchesReader '" << name()
+	<< "' after using " << nAccepted() << " events out of "
+	<< (NEvents() > 0? NEvents(): nAttempted()) << Exception::warning);
+      close();
+      open();
+      if ( !readEvent() ) throw LesHouchesReopenError()
+	<< "Could not reopen LesHouchesReader '" << name()
+	<< "'." << Exception::runerror;
+    }
+  }
+  ++theNAttempted;
+  ++theAttemptMap[IDPRUP];
 }
 
 void LesHouchesReader::createParticles() {
@@ -232,7 +324,7 @@ void LesHouchesReader::closeCacheFile() {
 void LesHouchesReader::cacheEvent() const {
   static vector<char> buff;
   fwrite(&NUP, sizeof(NUP), 1, cacheFile());
-  buff.resize(eventSize());
+  buff.resize(eventSize(NUP));
   char * pos = &buff[0];
   pos = mwrite(pos, IDPRUP);
   pos = mwrite(pos, XWGTUP);
@@ -252,9 +344,9 @@ void LesHouchesReader::cacheEvent() const {
 
 bool LesHouchesReader::uncacheEvent() {
   static vector<char> buff;
-  fread(&NUP, sizeof(NUP), 1, cacheFile());
-  buff.resize(eventSize());
-  fread(&buff[0], buff.size(), 1, cacheFile());
+  if ( fread(&NUP, sizeof(NUP), 1, cacheFile()) != 1 ) return false;
+  buff.resize(eventSize(NUP));
+  if ( fread(&buff[0], buff.size(), 1, cacheFile()) != 1 ) return false;
   const char * pos = &buff[0];
   pos = mread(pos, IDPRUP);
   pos = mread(pos, XWGTUP);
@@ -280,7 +372,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
      << ounit(theXSec, picobarn) << ounit(theMaxXSec, picobarn)
      << theMaxWeight << theNEvents << theMaxScan << isWeighted
-     << hasNegativeWeights << theCacheFileName << doRandomize;
+     << hasNegativeWeights << theCacheFileName << doRandomize
+     << theNAttempted << theAttemptMap << theNAccepted << theAcceptMap;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -292,7 +385,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
      >> iunit(theXSec, picobarn) >> iunit(theMaxXSec, picobarn)
      >> theMaxWeight >> theNEvents >> theMaxScan >> isWeighted
-     >> hasNegativeWeights >> theCacheFileName >> doRandomize;
+     >> hasNegativeWeights >> theCacheFileName >> doRandomize
+     >> theNAttempted >> theAttemptMap >> theNAccepted >> theAcceptMap;
 }
 
 AbstractClassDescription<LesHouchesReader>

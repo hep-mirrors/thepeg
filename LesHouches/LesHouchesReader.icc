@@ -24,10 +24,6 @@ inline void LesHouchesReader::doupdate() throw(UpdateException) {
   // Touch if anything has changed.
 }
 
-inline void LesHouchesReader::doinit() throw(InitException) {
-  HandlerBase::doinit();
-}
-
 inline void LesHouchesReader::dofinish() {
   close();
   HandlerBase::dofinish();
@@ -35,7 +31,11 @@ inline void LesHouchesReader::dofinish() {
 
 inline void LesHouchesReader::doinitrun() {
   HandlerBase::doinitrun();
+  theNAttempted = theNAccepted = 0;
+  theAttemptMap.clear();
+  theAcceptMap.clear();
   open();
+  if ( cacheFileName().length() ) openReadCacheFile();
 }
 
 inline void LesHouchesReader::rebind(const TranslationMap & trans)
@@ -126,13 +126,12 @@ inline bool LesHouchesReader::randomize() const {
   return doRandomize;
 }
 
-inline size_t LesHouchesReader::eventSize(int npart) const {
-  if ( npart <= 0 ) npart = NUP;
-  return (npart + 1)*sizeof(int) +  // IDPRUP, ISTUP
-    (7*npart + 4)*sizeof(double) +  // XWGTUP, SCALUP, AQEDUP, AQCDUP, PUP,
-                                    // VTIMUP, SPINUP
-    npart*sizeof(long) +            // IDUP
-    2*npart*sizeof(pair<int,int>);  // MOTHUP, ICOLUP
+inline size_t LesHouchesReader::eventSize(int N) {
+  return (N + 1)*sizeof(int) +  // IDPRUP, ISTUP
+    (7*N + 4)*sizeof(double) +  // XWGTUP, SCALUP, AQEDUP, AQCDUP, PUP,
+                                // VTIMUP, SPINUP
+    N*sizeof(long) +            // IDUP
+    2*N*sizeof(pair<int,int>);  // MOTHUP, ICOLUP
 }
 
 inline FILE * LesHouchesReader::cacheFile() const {
@@ -163,6 +162,27 @@ const char * LesHouchesReader::mread(const char * pos, T & t, size_t n) {
   return pos + n*sizeof(T);
 }
 
+inline long LesHouchesReader::nAttempted() const {
+  return theNAttempted;
+}
 
+inline long LesHouchesReader::nAccepted() const {
+  return theNAccepted;
+}
+
+inline const LesHouchesReader::CountMap &
+LesHouchesReader::attemptMap() const {
+  return theAttemptMap;
+}
+
+inline void LesHouchesReader::accept() {
+  ++theNAccepted;
+  ++theAcceptMap[IDPRUP];
+}
+
+inline const LesHouchesReader::CountMap &
+LesHouchesReader::acceptMap() const {
+  return theAcceptMap;
+}
 
 }
