@@ -14,6 +14,10 @@ inline ColourLine::ColourLine(const ColourLine & x)
     theSourceNeighbours(x.theSourceNeighbours),
     theSinkNeighbours(x.theSinkNeighbours) {}
 
+inline tColinePtr ColourLine::createAnti(tPPtr p) {
+  return create(p, true);
+}
+
 inline const tPVector & ColourLine::coloured() const {
   return theColoured;
 }

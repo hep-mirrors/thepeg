@@ -135,26 +135,41 @@ template <typename Derived, int BaseN> struct BaseClassTrait {
 #endif
 
 #define ThePEG_DECLARE_BASE_CLASS_TRAITS_1(Class,Base)                     \
+/** This template specialization informs ThePEG about the                  \
+ *  base classes of Class. */                                              \
 template <>                                                                \
 struct BaseClassTrait<Class,1> {                                           \
+  /** Typedef of the first base class of Class. */                         \
   typedef Base NthBase;                                                    \
 };                                                                         \
 
 #define ThePEG_DECLARE_BASE_CLASS_TRAITS_2(Class,Base1,Base2)              \
+/** This template specialization informs ThePEG about the                  \
+ *  base classes of Class. */                                              \
 template <>                                                                \
 struct BaseClassTrait<Class,1> {                                           \
+  /** Typedef of the first base class of Class. */                         \
   typedef Base1 NthBase;                                                   \
 };                                                                         \
+/** This template specialization informs ThePEG about the                  \
+ *  base classes of Class. */                                              \
 template <>                                                                \
 struct BaseClassTrait<Class,2> {                                           \
+  /** Typedef of the second base class of Class. */                        \
   typedef Base2 NthBase;                                                   \
 };                                                                         \
 
 #define ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,Name,Lib)         \
+/** This template specialization informs ThePEG about the name of          \
+ *  the Class class and the shared object where it is defined. */          \
 template <>                                                                \
 struct ClassTraits<Class>:                                                 \
     public ClassTraitsBase<Class> {                                        \
+  /** Return a platform-independent class name */                          \
   static string className() { return Name; }                               \
+  /** Return the name of the shared library be loaded to get               \
+   *  access to this class and every other class it uses                   \
+   *  (except the base class). */                                          \
   static string library() { return Lib; }                                  \
 }                                                                          \
 

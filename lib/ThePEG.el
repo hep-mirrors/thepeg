@@ -540,23 +540,23 @@ private:
 namespace ThePEG {
 
 /** This template specialization informs ThePEG about the
- * base class of THECLASS. */
+ *  base classes of THECLASS. */
 template <>
 struct BaseClassTrait<" namespacequalifyer "THECLASS,1> {
+  /** Typedef of the first base class of THECLASS. */
   typedef THEBASE NthBase;
 };
 
-/** This template specialization informs ThePEG about the
- * name of this class and the shared object where it is defined. */
+/** This template specialization informs ThePEG about the name of
+ *  the THECLASS class and the shared object where it is defined. */
 template <>
 struct ClassTraits<" namespacequalifyer "THECLASS>
   : public ClassTraitsBase<" namespacequalifyer "THECLASS> {
-
   /** Return a platform-independent class name */
   static string className() { return \"" namespace "::THECLASS\"; }
   /** Return the name of the shared library be loaded to get
-   * access to this class and every other class it uses
-   * (except the base class). */
+   *  access to this class and every other class it uses
+   *  (except the base class). */
   static string library() { return \"THECLASS.so\"; }
 };
 
