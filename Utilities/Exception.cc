@@ -27,6 +27,18 @@ extern "C" {
       cerr << *CurrentGenerator::current().currentEvent();
   }
 
+  long debugEventNumber() {
+    using namespace ThePEG;
+    if ( !CurrentGenerator::isVoid() )
+      return CurrentGenerator::current().currentEventNumber();
+    return 0;
+  }
+
+  void debugDump() {
+    using namespace ThePEG;
+    if ( !CurrentGenerator::isVoid() ) CurrentGenerator::current().dump();
+  }
+
 }
 
 namespace ThePEG {
