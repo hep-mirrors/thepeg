@@ -7,6 +7,7 @@
 #include "GaussianPtGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/CLHEPWrap/Transverse.h"
 #include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -20,7 +21,7 @@ using namespace ThePEG;
 
 GaussianPtGenerator::~GaussianPtGenerator() {}
 
-pair<Energy,Energy> GaussianPtGenerator::generate() const {
+TransverseMomentum GaussianPtGenerator::generate() const {
   pair<Energy,Energy> ret;
   Energy pt = 0.0*GeV;
   while ( ( pt = theSigma*sqrt(-log(rnd())) ) > theUpperCut ) {}

@@ -50,7 +50,7 @@ public:
    * Generate (\f$k_x, k_y\f$) components of the transverse
    * momentum.
    */
-  virtual pair<Energy,Energy> generate() const =0;
+  virtual TransverseMomentum generate() const =0;
   //@}
 
 public:

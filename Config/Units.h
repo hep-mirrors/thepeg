@@ -68,11 +68,14 @@ typedef double Diff2XSec;
 /** CrossSection/Energy2/Energy2/Energy2 */
 typedef double Diff3XSec;
 
-/** 1/Energy2 */
+/** 1/Energy. */
+typedef double InvEnergy;
+
+/** 1/Energy<sup>2</sup>. */
 typedef double InvEnergy2;
 
-/** 1/Energy */
-typedef double InvEnergy;
+/** 1/Energy<sup>4</sup>. */
+typedef double InvEnergy4;
 
 /** Scale is the same as a squared energy. */
 typedef Energy2 Scale;

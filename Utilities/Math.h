@@ -74,6 +74,12 @@ inline T absmin(const T & x, const T & y);
 template <typename T>
 inline T absmax(const T & x, const T & y);
 
+/** Transfer the sign of the second argument to the first.
+ * @return \f$|x|\f$ if \f$y>0\f$ otherwise return \f$-|x|\f$.
+ */
+template <typename T, typename U>
+inline T sign(T x, U y);
+
 /** Templated helper class for calculating integer powers. */
 template <int N, bool Inv>
 struct Power: public MathType {

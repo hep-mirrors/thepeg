@@ -75,6 +75,11 @@ inline T absmax(const T & x, const T & y) {
   return abs(x) > abs(y)? x: y;
 }
 
+template <typename T, typename U>
+inline T sign(T x, U y) {
+  return y > 0? abs(x): -abs(x);
+}
+
 template <int N>
 struct Power<N,false> {
   inline static double pow(double x) {

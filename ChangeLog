@@ -1,3 +1,12 @@
+2004-09-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/Math.*: Added sign transfer function.
+
+	* Config/Units.h: Add inverse energy to the fourth power as unit.
+
+	* Handlers/GaussianPtGenerator.*, Handlers/PtGenerator.h:
+	Changed pair of energy for TransverseMomentum.
+	
 2004-09-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile, Makefile: Introduce init target to just initialize

@@ -45,7 +45,7 @@ public:
    * \f$k_\perp^2=k_x^2+k_y^2\f$ and \f$\sigma=\f$ theSigma. The
    * distribution is cutoff at \f$k_\perp=\f$ theUpperCut.
    */
-  virtual pair<Energy,Energy> generate() const;
+  virtual TransverseMomentum generate() const;
   //@}
 
 public:

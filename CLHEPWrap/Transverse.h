@@ -10,7 +10,6 @@
 
 namespace ThePEG {
 
-template <typename FloatType>
 /**
  * Transverse represents the transverse components of a
  * LorentzVector. It inherits from
@@ -21,6 +20,7 @@ template <typename FloatType>
  *
  * @see Lorentz5Vector,
  */
+template <typename FloatType>
 class Transverse: public pair<FloatType,FloatType> {
 
 public:
