@@ -48,23 +48,50 @@ public:
   // Open a file or stream with events and read in the run information
   // into the corresponding protected variables.
 
-  virtual void readEvent() = 0;
+  virtual bool readEvent() = 0;
   // Read the next event form the file or stream into the
-  // corresponding protected variables.
+  // corresponding protected variables. Return false if there is no
+  // more events.
 
   virtual void close() = 0;
   // Close the file or stream from which events have been read.
 
-  virtual EventPtr getEvent();
-  // Takes the calls readEvent and translates the information into an
-  // Event object which is returned.
+  virtual void scan();
+  // Scan the file or stream to obtain information about cross section
+  // weights and particles etc.
+
+  virtual void convertEvent();
+  // Calls readEvent and translates the information into information
+  // suitable for creating an Event object.
+
+  inline const PPair & beams() const;
+  // Return the instances of the beam particles for the current event.
+
+  inline const PPair & incoming() const;
+  // Return the instances of the incoming particles to the sub process
+  // for the current event.
+
+  inline const PVector & outgoing() const;
+  // Return the instances of the outgoing particles from the sub process
+  // for the current event.
+
+  inline const PVector & intermediates() const;
+  // Return the instances of the intermediate particles in the sub
+  // process for the current event.
 
 protected:
 
-  void createParticles();
-  // Creates instances of all particles in the event and stores them
-  // in particleIndex. If no beam particles are included in the event
-  // they are also created.
+  virtual void createParticles();
+  // Create instances of all particles in the event and store them
+  // in particleIndex.
+
+  virtual void createBeams();
+  // Create instances of the incoming beams in the event and store
+  // them in particleIndex. If no beam particles are included in the
+  // event they are created from the run info.
+
+  virtual void connectMothers();
+  // Go through the mother indices and connect up the Particles.
 
 public:
 
@@ -174,7 +201,15 @@ protected:
   // cosine of the angle between the spin vector of a particle and the
   // 3-momentum of the decaying particle, specified in the lab frame.
 
-private:
+  CrossSection theXSec;
+  // The total cross section for the sub processes in this file.
+
+  CrossSection theMaxXSec;
+  // The overestimated cross section for the sub processes in this
+  // file.
+
+  double theMaxWeight;
+  // The maimum weight found in this file.
 
   ObjectIndexer<long,ColourLine> colourIndex;
   // Association between ColourLines and colour indices in the current
@@ -183,6 +218,21 @@ private:
   ObjectIndexer<long,Particle> particleIndex;
   // Association between Particles and indices in the current
   // translation.
+
+  PPair theBeams;
+  // The instances of the beam particles for the current event.
+
+  PPair theIncoming;
+  // The instances of the incoming particles to the sub process for
+  // the current event.
+
+  PVector theOutgoing;
+  // The instances of the outgoing particles from the sub process for
+  // the current event.
+
+  PVector theIntermediates;
+  // The instances of the intermediate particles in the sub process for
+  // the current event.
 
 private:
 

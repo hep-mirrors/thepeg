@@ -14,6 +14,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/EventRecord/Event.h"
+#include "ThePEG/EventRecord/Particle.h"
 
 using namespace ThePEG;
 
@@ -33,22 +34,26 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
 
 LesHouchesReader::~LesHouchesReader() {}
 
-EventPtr LesHouchesReader::getEvent() {
+void LesHouchesReader::scan() {
+  open();
+  close();
+}
 
+void LesHouchesReader::convertEvent() {
   particleIndex.clear();
   colourIndex.clear();
   colourIndex(0, tColinePtr());
   readEvent();
-
-  return EventPtr();
+  createParticles();
+  createBeams();
+  connectMothers();
 }
 
 void LesHouchesReader::createParticles() {
-  PPair beams;
-  PPair incoming;
-  PVector outgoing;
-  PVector spaceintermediate;
-  PVector timeintermediate;
+  theBeams = PPair();
+  theIncoming = PPair();
+  theOutgoing = PVector();
+  theIntermediates = PVector();
   for ( int i = 0, N = IDUP.size(); i < N; ++i ) {
     if ( !IDUP[i] ) continue;
     Lorentz5Momentum mom(PUP[i][1]*GeV, PUP[i][2]*GeV, PUP[i][3]*GeV,
@@ -58,37 +63,77 @@ void LesHouchesReader::createParticles() {
     if ( c ) c->addColoured(p);
     c = colourIndex(ICOLUP[i].second);
     if ( c ) c->addAntiColoured(p);
-    particleIndex(i, p);
+    particleIndex(i + 1, p);
     switch ( ISTUP[i] ) {
     case -9:
-      if ( !beams.first ) beams.first = p;
-      else if ( !beams.second ) beams.second = p;
+      if ( !theBeams.first ) theBeams.first = p;
+      else if ( !theBeams.second ) theBeams.second = p;
       else throw LesHouchesInconsistencyError()
 	<< "To many incoming beam particles in the LesHouchesReader '"
 	<< name() << "'." << Exception::runerror;
       break;
-    case -2:
-      spaceintermediate.push_back(p);
-      break;
     case -1:
-      if ( !incoming.first ) incoming.first = p;
-      else if ( !incoming.second ) incoming.second = p;
+      if ( !theIncoming.first ) theIncoming.first = p;
+      else if ( !theIncoming.second ) theIncoming.second = p;
       else throw LesHouchesInconsistencyError()
 	<< "To many incoming particles to hard subprocess in the "
 	<< "LesHouchesReader '"	<< name() << "'." << Exception::runerror;
       break;
     case 1:
-      outgoing.push_back(p);
+      theOutgoing.push_back(p);
       break;
+    case -2:
     case 2:
     case 3:
-      timeintermediate.push_back(p);
+      theIntermediates.push_back(p);
       break;
     default:
       throw LesHouchesInconsistencyError()
 	<< "Unknown status code (" << ISTUP[i] << ") in the LesHouchesReader '"
 	<< name() << "'." << Exception::runerror;
     }
+  }
+}
+
+void LesHouchesReader::createBeams() {
+
+  if ( !theBeams.first ) {
+    theBeams.first = getParticleData(IDBMUP.first)->produceParticle();
+    double m = theBeams.first->mass()/GeV;
+    theBeams.first->set5Momentum
+      (Lorentz5Momentum(0.0*GeV, 0.0*GeV, sqrt(sqr(EBMUP.first) - sqr(m))*GeV,
+			EBMUP.first*GeV, m*GeV));
+    IDUP.push_back(IDBMUP.first);
+    ISTUP.push_back(-9);
+    MOTHUP.push_back(make_pair(0, 0));
+    ICOLUP.push_back(make_pair(0, 0));
+    VTIMUP.push_back(0.0);
+    SPINUP.push_back(0.0);
+    MOTHUP[particleIndex(theIncoming.first)].first = IDUP.size();
+  }
+  if ( !theBeams.second ) {
+    theBeams.second = getParticleData(IDBMUP.second)->produceParticle();
+    double m = theBeams.second->mass()/GeV;
+    theBeams.second->set5Momentum
+      (Lorentz5Momentum(0.0*GeV, 0.0*GeV, -sqrt(sqr(EBMUP.second) - sqr(m))*GeV,
+			EBMUP.second*GeV, m*GeV));
+    IDUP.push_back(IDBMUP.second);
+    ISTUP.push_back(-9);
+    MOTHUP.push_back(make_pair(0, 0));
+    ICOLUP.push_back(make_pair(0, 0));
+    VTIMUP.push_back(0.0);
+    SPINUP.push_back(0.0);
+    MOTHUP[particleIndex(theIncoming.second)].first = IDUP.size();
+  }
+}
+
+void LesHouchesReader::connectMothers() {
+  const ObjectIndexer<long,Particle> & pi = particleIndex;
+  for ( int i = 0, N = IDUP.size(); i < N; ++i ) {
+    if ( pi(MOTHUP[i].first) )
+      pi(MOTHUP[i].first)->addChild(pi(i + 1));
+    if ( pi(MOTHUP[i].second) )
+      pi(MOTHUP[i].second)->addChild(pi(i + 1));
   }
 }
 

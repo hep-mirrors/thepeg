@@ -25,14 +25,17 @@ inline void LesHouchesReader::doupdate() throw(UpdateException) {
 }
 
 inline void LesHouchesReader::doinit() throw(InitException) {
+  scan();
   HandlerBase::doinit();
 }
 
 inline void LesHouchesReader::dofinish() {
+  close();
   HandlerBase::dofinish();
 }
 
 inline void LesHouchesReader::doinitrun() {
+  open();
   HandlerBase::doinitrun();
 }
 
@@ -46,6 +49,22 @@ inline IVector LesHouchesReader::getReferences() {
   IVector ret = HandlerBase::getReferences();
   // ret.push_back(dummy);
   return ret;
+}
+
+inline const PPair & LesHouchesReader::beams() const {
+  return theBeams;
+}
+
+inline const PPair & LesHouchesReader::incoming() const {
+  return theIncoming;
+}
+
+inline const PVector & LesHouchesReader::outgoing() const {
+  return theOutgoing;
+}
+
+inline const PVector & LesHouchesReader::intermediates() const {
+  return theIntermediates;
 }
 
 }
