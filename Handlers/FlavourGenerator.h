@@ -38,7 +38,12 @@ public:
   // Given a quark(antiquark, diquark or antidiquark), choose a
   // quark-antiquark (or antidiquark-diquark) pair. Return (first) a
   // hadron formed by the original quark and the anti-quark together
-  // with (second) the generated quark.
+  // with (second) the generated quark. Returns null pointers if the
+  // generation failed.
+
+  tcPDPair alwaysGenerateHadron(tcPDPtr quark) const;
+  // Same as generateHadron(), but throws an exception if no hadron
+  // could be produced.
 
   virtual tcPDPtr getHadron(tcPDPtr q1, tcPDPtr q2) const;
   virtual tcPDPtr getHadron(long iq1, long iq2) const;
@@ -49,6 +54,11 @@ public:
   // by a subclass to avoid an infinite loop. If no corresponding
   // hadron was formed it should return the null pointer.
 
+  tcPDPtr alwaysGetHadron(tcPDPtr q1, tcPDPtr q2) const;
+  tcPDPtr alwaysGetHadron(long iq1, long iq2) const;
+  // Same as getHadron() but thows an exception if no hadron could be
+  // produced.
+
   virtual tcPDPtr getBaryon(tcPDPtr q1, tcPDPtr q2, tcPDPtr q3) const;
   virtual tcPDPtr getBaryon(long q1, long q2, long q3) const;
   // Return a baryon with the flavour content given by the
@@ -57,6 +67,11 @@ public:
   // call eachother, so one of them must be implemented by a subclass
   // to avoid an infinite loop. If no corresponding hadron was formed
   // it should return the null pointer.
+
+  tcPDPtr alwaysGetBaryon(tcPDPtr q1, tcPDPtr q2, tcPDPtr q3) const;
+  tcPDPtr alwaysGetBaryon(long q1, long q2, long q3) const;
+  // Same as getBaryon(), but thros an exception if no baryon could be
+  // produced.
 
   virtual long selectQuark() const = 0;
   // Generate a random quark flavour.
@@ -82,6 +97,8 @@ private:
   //  Private and non-existent assignment operator.
 
 };
+
+class FlavourGeneratorException: public Exception {};
 
 template <>
 struct BaseClassTrait<FlavourGenerator,1> {

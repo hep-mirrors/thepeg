@@ -48,6 +48,14 @@ public:
   // for a given decay mode and a given particle instance, perform the
   // decay and return the decay products.
 
+  virtual int getN(Energy m0, Energy summq, int Nq) const;
+  // Get the number of hadrons to be produced, given the mass of the
+  // decaying particle and the number and summed masses of the quarks.
+
+  virtual PVector getHadrons(int Nh, tcPDVector quarks) const;
+  // Produce the specified number of hadrons from the specified
+  // quarks. The last quark is considered to be a spectator quark.
+
 public:
 
   inline int fixedN() const;

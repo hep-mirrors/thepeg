@@ -28,16 +28,16 @@ bool QuarksToHadronsDecayer::accept(const DecayMode & dm) const {
 }
 
 PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
-				  const Particle & parent) const {
+				      const Particle & parent) const {
   PVector children;
-  PVector quarks;
-  PDVector prods = dm.orderedProducts();
-  Energy summ = 0.0*GeV;
+  tcPDVector quarks;
+  tcPDVector prods = dm.orderedProducts();
+  Energy summq = 0.0*GeV;
   Energy summp = 0.0*GeV;
   for ( int i = 0, N = prods.size(); i < N; ++i )
     if ( QuarkMatcher::Check(*prods[i]) ) {
-      quarks.push_back(prods[i]->produceParticle());
-      summ += quarks.back()->mass();
+      quarks.push_back(prods[i]);
+      summq += quarks.back()->mass();
     } else {
       children.push_back(prods[i]->produceParticle());
       summp += children.back()->mass();
@@ -48,24 +48,64 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
 
   do {
 
-    int Nh = fixedN();
+    hadrons = getHadrons(getN(parent.mass(), summq, quarks.size()), quarks);
 
-    if ( Nh <= 2 ) {
-      double c = c1()*log((parent.mass() - summ)/c2()) + c3();
-      do {
-	using namespace Constants;
-	Nh = int(0.5 + double(quarks.size())/4.0 + c +
-		 sqrt(-2.0*c*log(max(1.0e-10, rnd())))*sin(2.0*pi*rnd()));
-      } while ( Nh < minN() );
-    }
+    for ( int i = 0, N = hadrons.size(); i < N; ++i )
+      summh += hadrons[i]->mass();
 
   } while ( summp + summh >= parent.mass() );
 
   children.insert(children.end(), hadrons.begin(), hadrons.end());
 
+  distribute(children);
+
   return children;
+
 }
 
+int QuarksToHadronsDecayer::getN(Energy m0, Energy summq, int Nq) const {
+  int Nh = fixedN();
+  if ( Nh >= 2 ) return Nh;
+
+  double c = c1()*log((m0 - summq)/c2()) + c3();
+  while ( true ) {
+    using namespace Constants;
+    Nh = int(0.5 + double(Nq)/4.0 + c +
+	     sqrt(-2.0*c*log(max(1.0e-10, rnd())))*sin(2.0*pi*rnd()));
+    if ( Nh >= minN() ) return Nh;
+  }
+  return 0;
+}
+
+PVector QuarksToHadronsDecayer::
+getHadrons(int Nh, tcPDVector quarks) const {
+  PVector hadrons;
+  Nh -= quarks.size()/2;
+  while ( Nh-- > 0 ) {
+    int i = irnd(quarks.size() - 1);
+    tcPDPair hq = flavourGenerator()->alwaysGenerateHadron(quarks[i]);
+    hadrons.push_back(hq.first->produceParticle());
+    quarks[i] = hq.second;
+  }
+  hadrons.push_back(flavourGenerator()->
+		    alwaysGetHadron(quarks[0], quarks[1])->produceParticle());
+  if ( quarks.size() <= 2 ) return hadrons;
+  hadrons.push_back(flavourGenerator()->
+		    alwaysGetHadron(quarks[2], quarks[3])->produceParticle());
+  return hadrons;
+}
+
+void distribute(const Particle & parent, const PVector & children) const {
+  do {
+    try {
+      SimplePhaseSpace::CMSn(children, parent.mass());
+    }
+    catch ( ImpossibleKinematics ) {
+      children.clear();
+      return;
+    }
+  } while ( reweight(parent, children) > rnd() );
+}
 
 void QuarksToHadronsDecayer::persistentOutput(PersistentOStream & os) const {
   os << theFixedN << theMinN << theC1 << theC2 << theC3 << theFlavourGenerator;
