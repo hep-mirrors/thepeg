@@ -24,7 +24,8 @@ using namespace ThePEG;
 LesHouchesReader::LesHouchesReader()
 : IDWTUP(0), NRUP(0), NUP(0), IDPRUP(0), XWGTUP(0.0),
   SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0), theXSec(0.0*picobarn),
-  theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1) {}
+  theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1),
+  isWeighted(false), hasNegativeWeights(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
@@ -37,7 +38,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     ISTUP(x.ISTUP), MOTHUP(x.MOTHUP), ICOLUP(x.ICOLUP),
     PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP), theXSec(x.theXSec),
     theMaxXSec(x.theMaxXSec), theMaxWeight(x.theMaxWeight),
-    theNEvents(x.theNEvents), theMaxScan(x.theMaxScan) {}
+    theNEvents(x.theNEvents), theMaxScan(x.theMaxScan),
+    isWeighted(x.isWeighted), hasNegativeWeights(x.hasNegativeWeights) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -47,47 +49,57 @@ void LesHouchesReader::scan() {
   XERRUP.clear();
   XMAXUP.clear();
   LPRUP.clear();
+  xSec(0.0*picobarn);
+  maxXSec(0.0*picobarn);
+  maxWeight(0.0);
+  
   open();
 
-  // If the open() has already gotten information about subprocesses
-  // and cross sections we do not have to scan through the events.
-  if ( NRUP ) {
-    theMaxXSec = 0.0*picobarn;
-    for ( int ip = 0; ip < NRUP; ++ip ) {
-      theXSec += XSECUP[ip]*picobarn;
-      if ( theMaxXSec < XMAXUP[ip] ) theMaxXSec = XMAXUP[ip];
+  // If the open() has not already gotten information about subprocesses
+  // and cross sections we have to scan through the events.
+  if ( !NRUP ) {
+    vector<long> LPRN;
+    double xlast = 0.0;
+    long neve = 0;
+    weighted(false);
+    negativeWeights(false);
+    for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
+      ++neve;
+      vector<int>::iterator idit = find(LPRUP.begin(), LPRUP.end(), IDPRUP);
+      if ( idit == LPRUP.end() ) {
+	LPRUP.push_back(IDPRUP);
+	LPRN.push_back(1);
+	XSECUP.push_back(XWGTUP);
+	XERRUP.push_back(sqr(XWGTUP));
+	XMAXUP.push_back(abs(XWGTUP));
+      } else {
+	int id = idit - LPRUP.begin();
+	++LPRN[id];
+	XSECUP[id] += XWGTUP;
+	XERRUP[id] += sqr(XWGTUP);
+	XMAXUP[id] = max(XMAXUP[id], abs(XWGTUP));
+      }
+      if ( i == 0 ) xlast = abs(XWGTUP);
+      if ( !weighted() && xlast != abs(XWGTUP) ) weighted(true);
+      if ( !negativeWeights() && XWGTUP < 0.0 ) negativeWeights(true);
     }
-    return;
+    if ( maxScan() < 0 || neve > NEvents() ) NEvents(neve);
+    for ( int id = 0, N = LPRUP.size(); id < N; ++id ) {
+      if ( !weighted() ) XERRUP[id] = XSECUP[id]/sqrt(double(LPRN[id]));
+      else XERRUP[id] = sqrt(max(0.0, XSECUP[id] - sqr(XERRUP[id])/LPRN[id]));
+    }
   }
 
-  vector<long> LPRN;
-  vector<double> xlast;
-  vector<bool> uniweight;
-  for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
-    vector<int>::iterator idit = find(LPRUP.begin(), LPRUP.end(), IDPRUP);
-    if ( idit == LPRUP.end() ) {
-      LPRUP.push_back(IDPRUP);
-      LPRN.push_back(1);
-      XSECUP.push_back(XWGTUP);
-      XERRUP.push_back(sqr(XWGTUP));
-      XMAXUP.push_back(abs(XWGTUP));
-      xlast.push_back(XWGTUP);
-      uniweight.push_back(true);
-    } else {
-      int id = idit - LPRUP.begin();
-      ++LPRN[id];
-      XSECUP[id] += XWGTUP;
-      XERRUP[id] += sqr(XWGTUP);
-      XMAXUP[id] = max(XMAXUP[id], abs(XWGTUP));
-      if ( uniweight[id] ) {
-	if ( XWGTUP != xlast[id] ) uniweight[id] = false;
-	xlast[id] = XWGTUP;
-      }
-    }
+  CrossSection xsec = 0.0*picobarn;
+  maxWeight(0.0);
+  for ( int ip = 0; ip < NRUP; ++ip ) {
+    xsec += XSECUP[ip]*picobarn;
+    if ( maxWeight() < XMAXUP[ip] ) maxWeight(XMAXUP[ip]);
   }
-  for ( int id = 0, N = LPRUP.size(); id < N; ++id )
-    if ( uniweight[id] ) XERRUP[id] = XSECUP[id]/sqrt(double(LPRN[id]));
-    else XERRUP[id] = sqrt(max(0.0, XSECUP[id] - sqr(XERRUP[id])/LPRN[id]));
+  if ( xSec() <= 0.0*picobarn ) xSec(xsec);
+  if ( weighted() && maxXSec() <= 0.0*picobarn && NEvents() > 0 )
+    maxXSec(NEvents()*maxWeight());
+  return;
 }
 
 void LesHouchesReader::convertEvent() {
@@ -195,7 +207,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << XWGTUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
      << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
      << ounit(theXSec, picobarn) << ounit(theMaxXSec, picobarn)
-     << theMaxWeight << theNEvents << theMaxScan;
+     << theMaxWeight << theNEvents << theMaxScan << isWeighted
+     << hasNegativeWeights;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -205,7 +218,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> XWGTUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
      >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
      >> iunit(theXSec, picobarn) >> iunit(theMaxXSec, picobarn)
-     >> theMaxWeight >> theNEvents >> theMaxScan;
+     >> theMaxWeight >> theNEvents >> theMaxScan >> isWeighted
+     >> hasNegativeWeights;
 }
 
 AbstractClassDescription<LesHouchesReader>

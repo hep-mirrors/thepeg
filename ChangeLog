@@ -1,3 +1,10 @@
+2004-09-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* lib/ThePEG.el: Added ThePEG-variable-cutnpaste function to
+	produce templates for including a variable definition and
+	corresponding set/get functions, constructor initialization adn
+	I/O.
+
 2004-09-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added ThePEG-refvector and ThePEG-parvector

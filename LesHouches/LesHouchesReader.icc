@@ -54,10 +54,6 @@ inline CrossSection LesHouchesReader::xSec() const {
   return theXSec;
 }
 
-inline CrossSection LesHouchesReader::maxXSec() const {
-  return theMaxXSec;
-}
-
 inline double LesHouchesReader::maxWeight() const {
   return theMaxWeight;
 }
@@ -84,6 +80,42 @@ inline const PVector & LesHouchesReader::outgoing() const {
 
 inline const PVector & LesHouchesReader::intermediates() const {
   return theIntermediates;
+}
+
+inline bool LesHouchesReader::weighted() const {
+  return isWeighted;
+}
+
+inline void LesHouchesReader::weighted(bool x) {
+  isWeighted = x;
+}
+
+inline CrossSection LesHouchesReader::maxXSec() const {
+  return theMaxXSec;
+}
+
+inline void LesHouchesReader::maxXSec(CrossSection x) {
+  theMaxXSec = x;
+}
+
+inline void LesHouchesReader::xSec(CrossSection x) {
+  theXSec = x;
+}
+
+inline void LesHouchesReader::NEvents(long x) {
+  theNEvents = x;
+}
+
+inline void LesHouchesReader::maxWeight(double x) {
+  theMaxWeight = x;
+}
+
+inline bool LesHouchesReader::negativeWeights() const {
+  return hasNegativeWeights;
+}
+
+inline void LesHouchesReader::negativeWeights(bool x) {
+  hasNegativeWeights = x;
 }
 
 }

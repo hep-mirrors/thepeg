@@ -118,23 +118,24 @@ public:
   /** @name Other inlined access functions. */
   //@{
   /**
-   * The total cross section for the sub processes in this file.
+   * The total cross section for the sub processes in this reader.
    */
   inline CrossSection xSec() const;
 
   /**
    * The overestimated cross section for the sub processes in this
-   * file.
+   * reader.
    */
   inline CrossSection maxXSec() const;
 
   /**
-   * The maximum weight found in this file.
+   * The maximum weight to be expected.
    */
   inline double maxWeight() const;
 
   /**
-   * The number of events found in this file.
+   * The number of events found in this file. If less than zero the
+   * number of events are unlimited.
    */
   inline long NEvents() const;
 
@@ -144,9 +145,17 @@ public:
    * scanned.
    */
   inline long maxScan() const;
+
+  /**
+   * Return true if this reader produces weighted events.
+   */
+  inline bool weighted() const;
+
+  /**
+   * True if negative weights may be produced.
+   */
+  inline bool negativeWeights() const;
   //@}
-
-
 
 protected:
 
@@ -196,7 +205,38 @@ public:
 
 protected:
 
+  /** @name Set functions for some variables not in the Les Houches accord. */
+  //@{
+  /**
+   * The cross section for the sub processes in this reader.
+   */
+  inline void xSec(CrossSection);
 
+  /**
+   * Set true if this reader produces weighted events.
+   */
+  inline void weighted(bool);
+
+  /**
+   * The overestimated cross section for the sub processes in this reader.
+   */
+  inline void maxXSec(CrossSection);
+
+  /**
+   * The number of events in this reader. If less than zero the number
+   * of events is unlimited.
+   */
+  inline void NEvents(long);
+
+  /**
+   * The maximum weight to be expected.
+   */
+  inline void maxWeight(double);
+  /**
+   * Set true if negative weights may be produced.
+   */
+  inline void negativeWeights(bool);
+  //@}
 
   /** @name Standard Interfaced functions. */
   //@{
@@ -386,23 +426,24 @@ protected:
   vector<double> SPINUP;
 
   /**
-   * The total cross section for the sub processes in this file.
+   * The total cross section for the sub processes in this reader.
    */
   CrossSection theXSec;
 
   /**
    * The overestimated cross section for the sub processes in this
-   * file.
+   * reader.
    */
   CrossSection theMaxXSec;
 
   /**
-   * The maximum weight found in this file.
+   * The maximum weight found in this reader.
    */
   double theMaxWeight;
 
   /**
-   * The number of events found in this file.
+   * The number of events in this reader. If less than zero the number
+   * of events is unlimited.
    */
   long theNEvents;
 
@@ -412,6 +453,16 @@ protected:
    * scanned.
    */
   long theMaxScan;
+
+  /**
+   * True if this reader produces weighted events.
+   */
+  bool isWeighted;
+
+  /**
+   * True if negative weights may be produced.
+   */
+  bool hasNegativeWeights;
 
   /**
    * Association between ColourLines and colour indices in the current

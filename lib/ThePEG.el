@@ -1324,6 +1324,7 @@ ParticleVector " class "::decay(const DecayMode & dm,
   (setq name (read-from-minibuffer "Name (of access function): "))
   (setq theName (concat (cond ((string-equal type "bool") "use")
 			      (t "the")) (upcase-initials name)))
+  (setq theName (read-from-minibuffer "Name (of variable): " theName))
   (setq desc (read-from-minibuffer "Description: "))
   (setq unit (read-from-minibuffer "Unit: "))
   (setq outname (cond ((string-equal unit "") theName)

@@ -8,6 +8,7 @@
 #include "LesHouchesReader.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Repository/Repository.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -36,6 +37,12 @@ void LesHouchesEventHandler::doinit() throw(InitException) {
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
     reader.scan();
+    if ( reader.negativeWeights() && weightOption() > 0 )
+      throw LesHouchesInitError()
+	<< "The reader '" << reader.name()
+	<< "' contains negatively weighted events, "
+	<< "which is not allowed for the LesHouchesEventHandler '"
+	<< name() << "'." << Exception::warning;
     for ( int ip = 0; ip < reader.NRUP; ++ip ) {
       sum += reader.XSECUP[ip]*picobarn;
       if ( reader.LPRUP[ip] ) {
@@ -59,14 +66,19 @@ void LesHouchesEventHandler::doinit() throw(InitException) {
 }
 
 void LesHouchesEventHandler::initialize() {
+  NAttempted(0);
+  accepted().clear();
+  selector().clear();
 }
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
-  os << theReaders;
+  os << theReaders << theNAttempted << theAccepted << theSelector
+     << theWeightOption;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theReaders;
+  is >> theReaders >> theNAttempted >> theAccepted >> theSelector
+     >> theWeightOption;
 }
 
 ClassDescription<LesHouchesEventHandler>
@@ -85,6 +97,32 @@ void LesHouchesEventHandler::Init() {
      "Objects capable of reading events from an event file or an "
      "external matrix element generator.",
      &LesHouchesEventHandler::theReaders, -1, false, false, true, false, false);
+
+
+  static Switch<LesHouchesEventHandler,WeightOpt> interfaceWeightOption
+    ("WeightOption",
+     "The different ways to weight events in the Les Houches event handler. Whether weighted or not and whether or not negative weights are allowed.",
+     &LesHouchesEventHandler::theWeightOption, unitweight, true, false);
+  static SwitchOption interfaceWeightOptionUnitWeight
+    (interfaceWeightOption,
+     "UnitWeight",
+     "All events have unit weight.",
+     unitweight);
+  static SwitchOption interfaceWeightOptionNegUnitWeight
+    (interfaceWeightOption,
+     "NegUnitWeight",
+     "All events have weight +1 or maybe -1.",
+     unitnegweight);
+  static SwitchOption interfaceWeightOptionVarWeight
+    (interfaceWeightOption,
+     "VarWeight",
+     "Events may have varying but positive weights.",
+     varweight);
+  static SwitchOption interfaceWeightOptionVarNegWeight
+    (interfaceWeightOption,
+     "VarNegWeight",
+     "Events may have varying weights, both positive and negative.",
+     varnegweight);
 
 }
 

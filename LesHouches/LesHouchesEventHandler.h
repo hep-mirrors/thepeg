@@ -8,6 +8,7 @@
 #include "ThePEG/Handlers/EventHandler.h"
 #include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
+#include "ThePEG/Utilities/VSelector.h"
 
 namespace ThePEG {
 
@@ -41,6 +42,26 @@ public:
    * A vector of LesHouchesReader objects.
    */
   typedef vector<LesHouchesReaderPtr> ReaderVector;
+
+  /**
+   * A vector of vector of integers used to collect statistics.
+   */
+  typedef vector< vector<long> > AcceptVector;
+
+  /**
+   * A selector of readers.
+   */
+  typedef VSelector<CrossSection,int> ReaderSelector;
+
+  /**
+   * Enumerate the weighting options.
+   */
+  enum WeightOpt {
+    unitweight = -1,    /**< All events have unit weight. */
+    unitnegweight = -1, /**< All events have wight +/- 1. */
+    varweight = 2,      /**< Varying positive weights. */
+    varnegweight = -2   /**< Varying positive or negative weights. */
+  };
 
 public:
 
@@ -92,12 +113,33 @@ public:
   virtual EventPtr continueEvent();
   //@}
 
-public:
+  /**
+   * The way weights are to be treated.
+   */
+  inline WeightOpt weightOption() const;
 
   /**
    * Access the list of readers.
    */
   inline const ReaderVector & readers() const;
+
+  /**
+   * The number of attempted events so far.
+   */
+  inline long NAttempted() const;
+
+  /**
+   * The number of accepted events per reader and sub-process.
+   */
+  inline const AcceptVector & accepted() const;
+
+  /**
+   * The selector to choose readers according to their overestimated
+   * cross section.
+   */
+  inline const ReaderSelector & selector() const;
+
+public:
 
   /** @name Functions used by the persistent I/O system. */
   //@{
@@ -204,12 +246,54 @@ protected:
    */
   inline ReaderVector & readers();
 
+  /**
+   * The number of attempted events so far.
+   */
+  inline void NAttempted(long);
+
+  /**
+   * The number of attempted events so far.
+   */
+  inline void newAttempt();
+
+  /**
+   * The number of accepted events per reader and sub-process.
+   */
+  inline AcceptVector & accepted();
+
+  /**
+   * The selector to choose readers according to their overestimated
+   * cross section.
+   */
+  inline ReaderSelector & selector();
+
 private:
 
   /**
    * The list of readers.
    */
   ReaderVector theReaders;
+
+  /**
+   * The number of attempted events so far.
+   */
+  long theNAttempted;
+
+  /**
+   * The number of accepted events per reader and sub-process.
+   */
+  AcceptVector theAccepted;
+
+  /**
+   * The selector to choose readers according to their overestimated
+   * cross section.
+   */
+  ReaderSelector theSelector;
+
+  /**
+   * The way weights are to be treated.
+   */
+  WeightOpt theWeightOption;
 
 public:
 

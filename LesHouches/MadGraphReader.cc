@@ -57,7 +57,20 @@ void MadGraphReader::open() {
     }
   }
 
+  // Return here if no comment block was found.
+  if ( neve <= 0 ) return;
+
   // Convert the extracted information to LesHouches format.
+  NRUP = 1;
+  LPRUP.push_back(0);
+  XSECUP.push_back(xsec);
+  XERRUP.push_back(0.0);
+  XMAXUP.push_back(maxw);
+  weighted(true);
+  NEvents(neve);
+  maxXSec(NEvents()*xSec());
+  negativeWeights(false);
+
   if ( !IDBMUP.first ) {
     if ( lpp1 == 1 ) IDBMUP.first = ParticleID::pplus;
     else if ( lpp1 == -1 ) IDBMUP.first = ParticleID::pbarminus;
