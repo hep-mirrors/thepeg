@@ -43,6 +43,9 @@ public:
   virtual void close();
   // Close the file from which events have been read.
 
+  inline string filename() const;
+  // Return the name of the file from where to read events.
+
 public:
 
   void persistentOutput(PersistentOStream &) const;

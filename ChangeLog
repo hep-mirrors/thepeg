@@ -1,6 +1,8 @@
 2004-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* LesHouches/LesHouchesFileReader.cc: New class.
+	* LesHouches/MadGraphReader.*:  New class.
+
+	* LesHouches/LesHouchesFileReader.*: New class.
 
 	* Config/config.h.in, configure.in: Added macros for opening
 	compressed files with popen. (popen turns out not to be in the C++

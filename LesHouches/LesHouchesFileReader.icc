@@ -14,6 +14,10 @@ LesHouchesFileReader(const LesHouchesFileReader & x)
   : LesHouchesReader(x), theFile(NULL), theFileName(x.theFileName),
     isGZipped(x.isGZipped), isPipe(false) {}
 
+inline string LesHouchesFileReader::filename() const {
+  return theFileName;
+}
+
 inline void LesHouchesFileReader::doupdate() throw(UpdateException) {
   LesHouchesReader::doupdate();
   // First update base class.

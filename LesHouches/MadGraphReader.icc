@@ -1,0 +1,64 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MadGraphReader class.
+//
+
+namespace ThePEG {
+
+inline MadGraphReader::MadGraphReader() {}
+
+inline MadGraphReader::MadGraphReader(const MadGraphReader & x)
+  : LesHouchesFileReader(x) {}
+
+inline IBPtr MadGraphReader::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr MadGraphReader::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void MadGraphReader::doupdate() throw(UpdateException) {
+  LesHouchesFileReader::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void MadGraphReader::doinit() throw(InitException) {
+  LesHouchesFileReader::doinit();
+}
+
+inline void MadGraphReader::dofinish() {
+  LesHouchesFileReader::dofinish();
+}
+
+inline void MadGraphReader::doinitrun() {
+  LesHouchesFileReader::doinitrun();
+}
+
+inline void MadGraphReader::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  LesHouchesFileReader::rebind(trans);
+}
+
+inline IVector MadGraphReader::getReferences() {
+  IVector ret = LesHouchesFileReader::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}
