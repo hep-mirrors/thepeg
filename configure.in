@@ -6,7 +6,7 @@ if test -z "$CXXFLAGS"; then
    CXXFLAGS="-Wall -ansi -pedantic"
 fi
 if test -z "$CXXOPTFLAG"; then
-   CXXOPTFLAG="-O"
+   CXXOPTFLAG="-O2"
 fi
 if test -z "$CXXDEBUGFLAG"; then
    CXXDEBUGFLAG="-g"

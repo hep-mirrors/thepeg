@@ -1,5 +1,8 @@
 2004-04-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* configure.in: Changed default optimization flag to -O2
+	(otherwise things get slow with gcc 3.4.0).
+
 	* ThePEG: The following changes were made to allow compilation
 	with gcc 3.4.0.
 
