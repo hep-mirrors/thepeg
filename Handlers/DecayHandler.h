@@ -174,7 +174,7 @@ private:
 };
 
 /**
- * The following template specialization informs ThePEG about the
+ * This template specialization informs ThePEG about the
  * base class of DecayHandler.
  */
 template <>
@@ -184,15 +184,12 @@ struct BaseClassTrait<DecayHandler,1> {
 };
 
 /**
- * The following template specialization informs ThePEG about the name
- * of the DecayHandler class and the shared object where it is
- * defined.
+ * This template specialization informs ThePEG about the name of the
+ * DecayHandler class.
  */
 template <>
 struct ClassTraits<DecayHandler>: public ClassTraitsBase<DecayHandler> {
-  /**
-   * Return the class name.
-   */
+  /** Return the class name. */
   static string className() { return "/ThePEG/DecayHandler"; }
 };
 

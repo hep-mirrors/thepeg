@@ -1,111 +1,198 @@
 // -*- C++ -*-
 #ifndef THEPEG_GaussianPtGenerator_H
 #define THEPEG_GaussianPtGenerator_H
-//
-// This is the declaration of the <!id>GaussianPtGenerator<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
-// 
+// This is the declaration of the GaussianPtGenerator class.
 
 #include "ThePEG/Handlers/PtGenerator.h"
 
 namespace ThePEG {
 
+/**
+ * GaussianPtGenerator inherits from the abstract PtGenerator
+ * class. It will generate a transverse momentum distributed according
+ * to a gaussian.
+ */
 class GaussianPtGenerator: public PtGenerator {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline GaussianPtGenerator();
+
+  /**
+   * Copy-constructor.
+   */
   inline GaussianPtGenerator(const GaussianPtGenerator &);
+
+  /**
+   * Destructor.
+   */
   virtual ~GaussianPtGenerator();
-  // Standard ctors and dtor.
+  //@}
 
 public:
+
+  /** @name Virtual functions required by the PtGenerator class. */
+  //@{
+  /**
+   * Generate (\f$k_x, k_y\f$) components of the transverse
+   * momentum. They will be distributed as
+   * \f$\exp(-k_\perp^2/\sigma^2)k_\perp dk_\perp\f$ with
+   * \f$k_\perp^2=k_x^2+k_y^2\f$ and \f$\sigma=\f$ theSigma. The
+   * distribution is cutoff at \f$k_\perp=\f$ theUpperCut.
+   */
   virtual pair<Energy,Energy> generate() const;
-  // Return (px, py) components of the transverse momentum.
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
 
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
+
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * The width of the Gaussian distribution. The average squared
+   * transverse momentum is theSigma squared.
+   */
   Energy theSigma;
-  // The width of the Gaussian distribution. The average squared
-  // transverse momentum is theSigma squared.
 
+  /**
+   * Upper cutoff for the transverse momentum distribution.
+   */
   Energy theUpperCut;
-  // Upper cutoff for the transverse momentum distribution.
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<GaussianPtGenerator> initGaussianPtGenerator;
-  // Describe a concrete class with persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   GaussianPtGenerator & operator=(const GaussianPtGenerator &);
-  // Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 #include "ThePEG/Utilities/ClassTraits.h"
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of GaussianPtGenerator.
 template <>
+/**
+ * This template specialization informs ThePEG about the
+ * base class of GaussianPtGenerator.
+ */
 struct BaseClassTrait<GaussianPtGenerator,1> {
+  /** Typedef of the base class of GaussianPtGenerator. */
   typedef PtGenerator NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the
+ * name of this class and the shared object where it is defined.
+ */
 template <>
 struct ClassTraits<GaussianPtGenerator>
   : public ClassTraitsBase<GaussianPtGenerator> {
+  /** Return the class name. */
   static string className() { return "ThePEG::GaussianPtGenerator"; }
-  // Return the class name.
+  /** Return the name of the shared library to be loaded to get
+   * access to this class and every other class it uses
+   * (except the base class). */
   static string library() { return "GaussianPtGenerator.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
+
 };
 
 }

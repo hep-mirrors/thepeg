@@ -1,65 +1,84 @@
 // -*- C++ -*-
 #ifndef ThePEG_HadronizationHandler_H
 #define ThePEG_HadronizationHandler_H
-//
-// This is the declaration of the <!id>HadronizationHandler<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>HadronizationHandler<!!id> is the base class of all
-// handlers implementing models for hadronization of coloured
-// particles. It is derived from the more general
-// <!class>StepHandler<!!class> class, and does not introduce more
-// functioanality as it stands.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:StepHandler.html">StepHandler.h</a>
-// <a href="http:CollisionHandler.html">CollisionHandler.h</a>
-// <a href="http:SubProcessHandler.html">SubProcessHandler.h</a>
-// 
+// This is the declaration of the HadronizationHandler class.
 
 #include "StepHandler.h"
-// #include "HadronizationHandler.fh"
-// #include "HadronizationHandler.xh"
 
 namespace ThePEG {
 
+/**
+ * The <code>HadronizationHandler</code> is the base class of all
+ * handlers implementing models for hadronization of coloured
+ * particles. It is derived from the more general
+ * StepHandler class, and does not introduce more
+ * functioanality as it stands.
+ *
+ *
+ * @see StepHandler
+ * @see CollisionHandler
+ * @see SubProcessHandler
+ * 
+ */
 class HadronizationHandler: public StepHandler {
 
 public:
 
+  /**
+   * Standard ctors and dtor
+   */
   inline HadronizationHandler();
+  /**
+   * Standard ctors and dtor
+   */
   inline HadronizationHandler(const HadronizationHandler &);
+  /**
+   * Standard ctors and dtor
+   */
   virtual ~HadronizationHandler();
-  // Standard ctors and dtor
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /**
+   * Standard Interfaced virtual functions.
+   */
   inline virtual void doupdate() throw(UpdateException);
+  /**
+   * Standard Interfaced virtual functions.
+   */
   inline virtual void doinit() throw(InitException);
+  /**
+   * Standard Interfaced virtual functions.
+   */
   inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Change all pointers to Interfaced objects to corresponding clones.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return pointers to all Interfaced objects refered to by this.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
 
 private:
 
   static AbstractNoPIOClassDescription<HadronizationHandler>
     initHadronizationHandler;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   HadronizationHandler & operator=(const HadronizationHandler &);
-  //  Private and non-existent assignment operator.
 
 };
 
