@@ -91,6 +91,7 @@ public:
 
   virtual void doupdate() throw(UpdateException);
   inline virtual void doinit() throw(InitException);
+  virtual void doinitrun();
   virtual void dofinish();
   // Standard Interfaced virtual functions.
 

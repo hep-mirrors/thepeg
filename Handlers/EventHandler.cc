@@ -192,6 +192,13 @@ void EventHandler::initialize() {
   sampler()->initialize();
 }
 
+void EventHandler::doinitrun() {
+  CollisionHandler::doinitrun();
+  sampler()->initrun();
+  for ( int i = 0, N = xCombs().size(); i < N; ++i )
+    xCombs()[i]->reset();
+}
+
 double EventHandler::dSigDR(const vector<double> & r) {
   double jac = 1.0;
   pair<double,double> ll = lumiFn().generateLL(&r[0], jac);

@@ -82,8 +82,14 @@ public:
   XComb(tMEPtr me, const tPVector & parts, DiagramIndex i);
   // Constructor used by MEBase to create a temporary object to store info.
 
+  bool checkInit();
+  // Try to determine if this subprocess is at all possible.
+
   void clean();
   // Reset all saved data about last generated phasespace point;
+
+  inline void reset();
+  // Reset statistics.
 
   inline const CollisionHandler & collisionHandler() const;
   // Return a reference to the corresponding collision handler

@@ -15,6 +15,8 @@ struct CollHdlExtractorError: public UpdateException {
 			const PartonExtractor &, const cPDPair &);
 };
 
+struct CollHdlInitWarning: public Exception {};
+
 }
 
 #endif /* ThePEG_CollisionHandler_XH */

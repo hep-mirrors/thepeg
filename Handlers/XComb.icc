@@ -66,6 +66,11 @@ inline void XComb::unAccept() {
   --theNAccepted;
 }
 
+inline void XComb::reset() {
+  theNAttempted = theNAccepted = 0;
+  theSumWeight = 0.0;
+}
+
 inline const PPair & XComb::lastParticles() const {
   return theLastParticles;
 }

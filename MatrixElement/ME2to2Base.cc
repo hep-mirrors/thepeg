@@ -47,8 +47,14 @@ void ME2to2Base::setKinematics() {
 bool ME2to2Base::generateKinematics(const double * r) {
   double ctmin = lastCuts().cTHMin();
   double ctmax = lastCuts().cTHMax();
-  Energy q = SimplePhaseSpace::
-    getMagnitude(sHat(), meMomenta()[2].mass(), meMomenta()[3].mass());
+
+  Energy q = 0.0*GeV;
+  try {
+    q = SimplePhaseSpace::
+      getMagnitude(sHat(), meMomenta()[2].mass(), meMomenta()[3].mass());
+  } catch ( ImpossibleKinematics ) {
+    return false;
+  }
 					    
   Energy2 e1e3 = 2.0*meMomenta()[0].e()*sqrt(q*q + meMomenta()[2].mass2());
   Energy2 pq = 2.0*meMomenta()[0].z()*q;

@@ -54,7 +54,11 @@ inline bool ACDCGen<Rnd,FncPtr>::addFunction(DimType dim, FncPtrType fnc) {
   PointMap pmap;
   long itry = 0;
   while ( pmap.size() < nTry() ) {
-    if ( ++itry > maxTry() ) return false;
+    if ( ++itry > maxTry() ) {
+      thePrimaryCells.push_back(new ACDCGenCell(0.0));
+      theSumMaxInts.push_back(theSumMaxInts.back() + cells().back()->doMaxInt());
+      return false;
+    }
     rnd(dim, x);
     double val = FncTraits::value(fnc, x);
     if ( val > 0.0 ) {

@@ -98,10 +98,17 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tKinCutPtr cuts,
 
   bool mirror = false;
   if ( ( mirror = tdiag.empty() ) ) tdiag = tmdiag;
-  for ( DiagramMap::iterator dit = tdiag.begin(); dit != tdiag.end(); ++dit )
-    xCombs().push_back(new_ptr(XComb(maxEnergy, incoming(), this, sub,
-				     extractor, pBins, cuts, me, dit->second,
-				     mirror)));
+  for ( DiagramMap::iterator dit = tdiag.begin(); dit != tdiag.end(); ++dit ) {
+    XCombPtr xcomb = new_ptr(XComb(maxEnergy, incoming(), this, sub, extractor,
+				   pBins, cuts, me, dit->second, mirror));
+    if ( xcomb->checkInit() ) xCombs().push_back(xcomb);
+    else generator()->logWarning(
+      CollHdlInitWarning() << "The matrix element '"
+      << xcomb->matrixElement()->name() << "' cannot generate the diagram '"
+      << dit->first << "' when used together with the parton extractor '"
+      << xcomb->pExtractor()->name()
+      << "'. The corresponding diagram is switched off." << Exception::warning);
+  }
 }
 
 void CollisionHandler::initGroups() {

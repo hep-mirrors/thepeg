@@ -133,6 +133,14 @@ void XComb::setPartonBinInfo() {
   partonBinInstances().second->getFirst()->parton(lastParticles().second);
 }
 
+bool XComb::checkInit() {
+  Energy summin = 0.0*GeV;
+  for ( int i = 2, N = mePartonData().size(); i < N; ++i ) {
+    summin += mePartonData()[i]->massMin();
+  }
+  return ( summin < min(maxEnergy(), cuts()->mHatMax()) );
+}
+
 CrossSection XComb::
 dSigDR(const pair<double,double> ll, int nr, const double * r) {
   Timer<7> timera("XComb::dSigDR()");
