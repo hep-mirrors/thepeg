@@ -772,7 +772,7 @@ public:
   (concat "
 public:
 
-  /** @name Virtual functions required by the MEBase class. */
+  /** @name Virtual functions required by the StepHandler class. */
   //@{
   /**
     * The main function called by the PartialCollisionHandler class to
@@ -1050,3 +1050,22 @@ ParticleVector " class "::decay(const DecayMode & dm,
 			   (concat "&" class "::def" name))))))
   (insert-string ");")
   (thepeg-switch-option (concat "interface" name)))
+
+(defun ThePEG-comment-group ()
+  "Group a number of functions (or anything within the currently
+   marked region) together to a common Doxygen section."
+  (interactive)
+  (setq desc (read-from-minibuffer "Description: "))
+  (save-excursion
+    (goto-char (region-beginning))
+    (beginning-of-line)
+    (cond ((string-equal desc ""))
+	  (t (insert-string (concat "  /** @name " desc " */
+"))))
+    (insert-string "  //@{
+"))
+  (save-excursion
+    (goto-char (region-end))
+    (beginning-of-line)
+    (insert-string "  //@}
+")))
