@@ -1,16 +1,19 @@
-SOURCES = LesHouchesReader.cc LesHouchesFileReader.cc MadGraphReader.cc
+SOURCES = LesHouchesReader.cc LesHouchesFileReader.cc MadGraphReader.cc \
+          LesHouchesEventHandler.cc
 
-LIBOBJECTS = LesHouchesReader.o LesHouchesFileReader.o
+LIBOBJECTS = LesHouchesReader.o LesHouchesFileReader.o LesHouchesEventHandler.o
 
 OBJECTS = libThePEGLesHouches.so MadGraphReader.so
 
 LIBFILES = $(OBJECTS)
 
-DOCFILES = LesHouchesReader.h LesHouchesFileReader.h MadGraphReader.h
+DOCFILES = LesHouchesReader.h LesHouchesFileReader.h MadGraphReader.h \
+           LesHouchesEventHandler.h
 
 INCLUDEFILES = $(DOCFILES) LesHouchesReader.fh LesHouchesReader.icc \
                LesHouchesFileReader.fh LesHouchesFileReader.icc \
-               MadGraphReader.icc
+               MadGraphReader.icc LesHouchesEventHandler.fh \
+               LesHouchesEventHandler.icc
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 
@@ -232,6 +235,9 @@ libThePEGLesHouches.so: $(LIBOBJECTS)
   ../../ThePEG/LesHouches/LesHouchesReader.fh \
   ../../ThePEG/LesHouches/LesHouchesReader.icc \
   LesHouchesFileReader.fh \
+  ../../ThePEG/Utilities/CFileLineReader.h \
+  ../../ThePEG/Utilities/CFileLineReader.fh \
+  ../../ThePEG/Utilities/CFileLineReader.icc \
   LesHouchesFileReader.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
@@ -315,6 +321,9 @@ libThePEGLesHouches.so: $(LIBOBJECTS)
   ../../ThePEG/LesHouches/LesHouchesReader.fh \
   ../../ThePEG/LesHouches/LesHouchesReader.icc \
   ../../ThePEG/LesHouches/LesHouchesFileReader.fh \
+  ../../ThePEG/Utilities/CFileLineReader.h \
+  ../../ThePEG/Utilities/CFileLineReader.fh \
+  ../../ThePEG/Utilities/CFileLineReader.icc \
   ../../ThePEG/LesHouches/LesHouchesFileReader.icc \
   MadGraphReader.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -323,6 +332,192 @@ libThePEGLesHouches.so: $(LIBOBJECTS)
   ../../ThePEG/PDT/EnumParticles.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Persistency/PersistentOStream.xh \
+  ../../ThePEG/Persistency/PersistentOStream.icc \
+  ../../ThePEG/Persistency/PersistentIStream.h \
+  ../../ThePEG/Persistency/InputDescription.h \
+  ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.icc \
+  ../../ThePEG/Persistency/PersistentIStream.tcc
+  LesHouchesEventHandler.o: \
+  LesHouchesEventHandler.cc \
+  LesHouchesEventHandler.h \
+  ../../ThePEG/Handlers/EventHandler.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Handlers/CollisionHandler.h \
+  ../../ThePEG/Handlers/PartialCollisionHandler.h \
+  ../../ThePEG/Handlers/HandlerBase.h \
+  ../../ThePEG/Interface/Interfaced.h \
+  ../../ThePEG/Interface/InterfacedBase.h \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  ../../ThePEG/Interface/InterfacedBase.xh \
+  ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Interface/InterfaceBase.icc \
+  ../../ThePEG/Interface/InterfacedBase.icc \
+  ../../ThePEG/Interface/Interfaced.icc \
+  ../../ThePEG/Handlers/HandlerBase.icc \
+  ../../ThePEG/Handlers/HandlerGroup.h \
+  ../../ThePEG/Handlers/HandlerGroup.icc \
+  ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
+  ../../ThePEG/Handlers/StepHandler.h \
+  ../../ThePEG/Handlers/StepHandler.icc \
+  ../../ThePEG/EventRecord/Event.h \
+  ../../ThePEG/EventRecord/Particle.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  ../../ThePEG/EventRecord/ColourBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.icc \
+  ../../ThePEG/EventRecord/ColourLine.h \
+  ../../ThePEG/EventRecord/ColourSinglet.h \
+  ../../ThePEG/EventRecord/ColourSinglet.icc \
+  ../../ThePEG/EventRecord/ColourLine.icc \
+  ../../ThePEG/EventRecord/ColourBase.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/EventRecord/Particle.icc \
+  ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/PDT/PDT.icc \
+  ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
+  ../../ThePEG/Utilities/Selector.h \
+  ../../ThePEG/Utilities/Selector.icc \
+  ../../ThePEG/Utilities/Selector.tcc \
+  ../../ThePEG/PDT/WidthGenerator.fh \
+  ../../ThePEG/PDT/MassGenerator.fh \
+  ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/PDT/ParticleData.icc \
+  ../../ThePEG/EventRecord/Particle.tcc \
+  ../../ThePEG/EventRecord/StandardSelectors.h \
+  ../../ThePEG/EventRecord/SelectorBase.h \
+  ../../ThePEG/EventRecord/SelectorBase.icc \
+  ../../ThePEG/EventRecord/ParticleTraits.h \
+  ../../ThePEG/EventRecord/Event.icc \
+  ../../ThePEG/EventRecord/Collision.h \
+  ../../ThePEG/EventRecord/Collision.icc \
+  ../../ThePEG/EventRecord/Step.h \
+  ../../ThePEG/EventRecord/Step.icc \
+  ../../ThePEG/EventRecord/SubProcess.h \
+  ../../ThePEG/EventRecord/SubProcess.icc \
+  ../../ThePEG/EventRecord/SubProcess.tcc \
+  ../../ThePEG/EventRecord/Step.tcc \
+  ../../ThePEG/EventRecord/Collision.tcc \
+  ../../ThePEG/EventRecord/Event.tcc \
+  ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/PDF/PDF.fh \
+  ../../ThePEG/Handlers/LastXCombInfo.icc \
+  ../../ThePEG/Handlers/PartialCollisionHandler.xh \
+  ../../ThePEG/Handlers/PartialCollisionHandler.icc \
+  ../../ThePEG/Handlers/CollisionHandler.xh \
+  ../../ThePEG/Utilities/Interval.h \
+  ../../ThePEG/Utilities/Interval.icc \
+  ../../ThePEG/Utilities/Interval.tcc \
+  ../../ThePEG/Handlers/CollisionHandler.icc \
+  ../../ThePEG/Handlers/EventHandler.xh \
+  ../../ThePEG/Repository/Strategy.fh \
+  ../../ThePEG/Handlers/SamplerBase.fh \
+  ../../ThePEG/Handlers/EventHandler.icc \
+  LesHouchesEventHandler.fh \
+  LesHouchesReader.fh \
+  LesHouchesEventHandler.icc \
+  LesHouchesReader.h \
+  ../../ThePEG/Utilities/ObjectIndexer.h \
+  ../../ThePEG/Utilities/ObjectIndexer.icc \
+  LesHouchesReader.icc \
+  ../../ThePEG/Interface/ClassDocumentation.h \
+  ../../ThePEG/Interface/ClassDocumentation.fh \
+  ../../ThePEG/Interface/ClassDocumentation.icc \
+  ../../ThePEG/Interface/RefVector.h \
+  ../../ThePEG/Interface/RefVector.xh \
+  ../../ThePEG/Interface/RefVector.fh \
+  ../../ThePEG/Interface/RefVector.icc \
+  ../../ThePEG/Interface/RefVector.tcc \
+  ../../ThePEG/Repository/Repository.h \
+  ../../ThePEG/Repository/BaseRepository.h \
+  ../../ThePEG/Repository/BaseRepository.xh \
+  ../../ThePEG/Repository/BaseRepository.icc \
+  ../../ThePEG/Repository/BaseRepository.tcc \
+  ../../ThePEG/Repository/EventGenerator.h \
+  ../../ThePEG/Repository/EventGenerator.fh \
+  ../../ThePEG/Repository/RandomGenerator.h \
+  ../../ThePEG/CLHEPWrap/RandomEngine.fh \
+  ../../ThePEG/Repository/RandomGenerator.icc \
+  ../../ThePEG/Repository/UseRandom.h \
+  ../../ThePEG/Repository/UseRandom.icc \
+  ../../ThePEG/Repository/CurrentGenerator.fh \
+  ../../ThePEG/Repository/EventGenerator.xh \
+  ../../ThePEG/Repository/EventGenerator.icc \
+  ../../ThePEG/Repository/EventGenerator.tcc \
+  ../../ThePEG/PDT/MatcherBase.h \
+  ../../ThePEG/PDT/MatcherBase.icc \
+  ../../ThePEG/PDT/DecayMode.h \
+  ../../ThePEG/PDT/Decayer.h \
+  ../../ThePEG/PDT/Decayer.fh \
+  ../../ThePEG/MatrixElement/Amplitude.h \
+  ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/MatrixElement/Amplitude.icc \
+  ../../ThePEG/PDT/Decayer.icc \
+  ../../ThePEG/PDT/DecayMode.icc \
+  ../../ThePEG/Repository/Repository.icc \
+  ../../ThePEG/Repository/Repository.tcc \
+  ../../ThePEG/Persistency/PersistentOStream.h \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \

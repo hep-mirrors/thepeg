@@ -1063,7 +1063,6 @@ ParticleVector " class "::decay(const DecayMode & dm,
  * defined for " class ".
 ")))
   
-
 (defun ThePEG-parameter ()
   "Create a Parameter variable suitable for inclusion in an Init() function."
   (interactive)
@@ -1114,6 +1113,57 @@ ParticleVector " class "::decay(const DecayMode & dm,
   (insert-string ");
 "))
 
+(defun ThePEG-parvector ()
+  "Create a ParVector variable suitable for inclusion in an Init() function."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq type (read-from-minibuffer "Type: " "double"))
+  (setq name (read-from-minibuffer "Name: "))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq memb (read-from-minibuffer "Member variable: "
+				   (concat "&" class "::the" name)))
+  (setq hasu (y-or-n-p "Does the parameters in this vector have a unit? "))
+  (cond (hasu (setq unit (read-from-minibuffer "Unit: " "GeV"))
+	      (setq stru (concat "*" unit)))
+	(t    (setq stru "")))
+  (setq size (read-from-minibuffer "Size of vector (varying if < 0): " "-1"))
+  (setq defa (read-from-minibuffer "Default value: " (concat "1.0" stru)))
+  (setq limi (y-or-n-p "Are the parameters limited? "))
+  (cond (limi (setq mini (read-from-minibuffer "Minimum value: "
+					       (concat "0.0" stru)))
+	      (setq maxi (read-from-minibuffer "Maximum value: "
+					       (concat "10.0" stru))))
+	(t    (setq mini (concat "0" stru))
+	      (setq maxi (concat "0" stru))))
+  (setq safe (y-or-n-p "Is this parameter vector dependency safe? "))
+  (setq ronl (y-or-n-p "Are the parameters read-only? "))
+  (insert-string (concat "
+  static ParVector<" class "," type "> interface" name "
+    (\"" name "\",
+     \"" desc "\",
+     " memb ", " (cond (hasu (concat unit ", "))(t "")) defa ", " size ", "
+     mini ", " maxi ",
+     " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
+     (cond (limi "true")(t "false"))))
+  (cond ((y-or-n-p "Are there any set/get functions? ")
+	 (insert-string (concat ",
+     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     ",
+     "
+     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     ", "
+     (read-from-minibuffer "Default-function: " (concat "&" class "::def" name))
+     ",
+     "
+     (read-from-minibuffer "Min-function: " (concat "&" class "::min" name))
+     ", "
+     (read-from-minibuffer "Max-function: " (concat "&" class "::max" name))))))
+  (insert-string ");
+"))
+
 (defun ThePEG-reference ()
   "Create a Reference variable suitable for inclusion in an Init() function."
   (interactive)
@@ -1137,6 +1187,48 @@ ParticleVector " class "::decay(const DecayMode & dm,
     (\"" name "\",
      \"" desc "\",
      " memb ", "
+     (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
+     (cond (rebi "true")(t "false")) ", " (cond (null "true")(t "false")) ", "
+     (cond (defn "true")(t "false"))))
+  (cond ((y-or-n-p "Are there any set/get functions? ")
+	 (insert-string (concat ",
+     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     ",
+     "
+     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     ", "
+     (read-from-minibuffer "Check-function: "
+			   (concat "&" class "::check" name))))))
+  (insert-string ");
+"))
+
+(defun ThePEG-refvector ()
+  "Create a RefVector variable suitable for inclusion in an Init() function."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq type (read-from-minibuffer "Type: " "Interfaced"))
+  (setq name (read-from-minibuffer "Name: "))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq memb (read-from-minibuffer "Member variable: "
+				   (concat "&" class "::the" name)))
+  (setq size (read-from-minibuffer "Size of vector (varying if < 0): " "-1"))
+  (setq safe (y-or-n-p "Is this reference vector dependency safe? "))
+  (setq ronl (y-or-n-p "Is this reference vector read-only? "))
+  (setq rebi (y-or-n-p
+	      "Should the reference in the vector be automatically rebound? "))
+  (setq null (y-or-n-p "Can the references in the vector be null? "))
+  (setq defn
+	(y-or-n-p
+	 "Should the reference in the vector be given a default if null? "))
+
+  (insert-string (concat "
+  static RefVector<" class "," type "> interface" name "
+    (\"" name "\",
+     \"" desc "\",
+     " memb ", " size ", "
      (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
      (cond (rebi "true")(t "false")) ", " (cond (null "true")(t "false")) ", "
      (cond (defn "true")(t "false"))))

@@ -24,7 +24,7 @@ void MadGraphReader::open() {
 
   double xsec = -1.0;
   double maxw = -1.0;
-  long neve = 0;
+  ieve = neve = 0;
   double ebeam1 = -1.0;
   double ebeam2 = -1.0;
   int lpp1 = 0;
@@ -97,6 +97,9 @@ void MadGraphReader::open() {
       << filename() << "'." << Exception::runerror;
 }
 
+void MadGraphReader::scan() {
+  LesHouchesFileReader::scan();
+}
 
 bool MadGraphReader::readEvent() {
   if ( !cfile ) return false;
@@ -172,8 +175,6 @@ bool MadGraphReader::readEvent() {
   return true;
 
 }
-
-void MadGraphReader::scan() {}
 
 MadGraphReader::~MadGraphReader() {}
 

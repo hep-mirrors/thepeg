@@ -25,7 +25,6 @@ inline void LesHouchesReader::doupdate() throw(UpdateException) {
 }
 
 inline void LesHouchesReader::doinit() throw(InitException) {
-  scan();
   HandlerBase::doinit();
 }
 
@@ -35,8 +34,8 @@ inline void LesHouchesReader::dofinish() {
 }
 
 inline void LesHouchesReader::doinitrun() {
-  open();
   HandlerBase::doinitrun();
+  open();
 }
 
 inline void LesHouchesReader::rebind(const TranslationMap & trans)
@@ -49,6 +48,26 @@ inline IVector LesHouchesReader::getReferences() {
   IVector ret = HandlerBase::getReferences();
   // ret.push_back(dummy);
   return ret;
+}
+
+inline CrossSection LesHouchesReader::xSec() const {
+  return theXSec;
+}
+
+inline CrossSection LesHouchesReader::maxXSec() const {
+  return theMaxXSec;
+}
+
+inline double LesHouchesReader::maxWeight() const {
+  return theMaxWeight;
+}
+
+inline long LesHouchesReader::NEvents() const {
+  return theNEvents;
+}
+
+inline long LesHouchesReader::maxScan() const {
+  return theMaxScan;
 }
 
 inline const PPair & LesHouchesReader::beams() const {

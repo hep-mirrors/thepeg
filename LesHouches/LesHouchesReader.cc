@@ -23,7 +23,8 @@ using namespace ThePEG;
 
 LesHouchesReader::LesHouchesReader()
 : IDWTUP(0), NRUP(0), NUP(0), IDPRUP(0), XWGTUP(0.0),
-  SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0) {}
+  SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0), theXSec(0.0*picobarn),
+  theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
@@ -34,13 +35,59 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     IDPRUP(x.IDPRUP), XWGTUP(x.XWGTUP), SCALUP(x.SCALUP),
     AQEDUP(x.AQEDUP), AQCDUP(x.AQCDUP), IDUP(x.IDUP),
     ISTUP(x.ISTUP), MOTHUP(x.MOTHUP), ICOLUP(x.ICOLUP),
-    PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP) {}
+    PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP), theXSec(x.theXSec),
+    theMaxXSec(x.theMaxXSec), theMaxWeight(x.theMaxWeight),
+    theNEvents(x.theNEvents), theMaxScan(x.theMaxScan) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
 void LesHouchesReader::scan() {
+  NRUP = 0;
+  XSECUP.clear();
+  XERRUP.clear();
+  XMAXUP.clear();
+  LPRUP.clear();
   open();
-  close();
+
+  // If the open() has already gotten information about subprocesses
+  // and cross sections we do not have to scan through the events.
+  if ( NRUP ) {
+    theMaxXSec = 0.0*picobarn;
+    for ( int ip = 0; ip < NRUP; ++ip ) {
+      theXSec += XSECUP[ip]*picobarn;
+      if ( theMaxXSec < XMAXUP[ip] ) theMaxXSec = XMAXUP[ip];
+    }
+    return;
+  }
+
+  vector<long> LPRN;
+  vector<double> xlast;
+  vector<bool> uniweight;
+  for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
+    vector<int>::iterator idit = find(LPRUP.begin(), LPRUP.end(), IDPRUP);
+    if ( idit == LPRUP.end() ) {
+      LPRUP.push_back(IDPRUP);
+      LPRN.push_back(1);
+      XSECUP.push_back(XWGTUP);
+      XERRUP.push_back(sqr(XWGTUP));
+      XMAXUP.push_back(abs(XWGTUP));
+      xlast.push_back(XWGTUP);
+      uniweight.push_back(true);
+    } else {
+      int id = idit - LPRUP.begin();
+      ++LPRN[id];
+      XSECUP[id] += XWGTUP;
+      XERRUP[id] += sqr(XWGTUP);
+      XMAXUP[id] = max(XMAXUP[id], abs(XWGTUP));
+      if ( uniweight[id] ) {
+	if ( XWGTUP != xlast[id] ) uniweight[id] = false;
+	xlast[id] = XWGTUP;
+      }
+    }
+  }
+  for ( int id = 0, N = LPRUP.size(); id < N; ++id )
+    if ( uniweight[id] ) XERRUP[id] = XSECUP[id]/sqrt(double(LPRN[id]));
+    else XERRUP[id] = sqrt(max(0.0, XSECUP[id] - sqr(XERRUP[id])/LPRN[id]));
 }
 
 void LesHouchesReader::convertEvent() {
@@ -146,7 +193,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << IDWTUP << NRUP
      << XSECUP << XERRUP << XMAXUP << LPRUP << NUP << IDPRUP
      << XWGTUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
-     << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP;
+     << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
+     << theXSec << theMaxXSec << theMaxWeight << theNEvents << theMaxScan;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -154,10 +202,12 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> IDWTUP >> NRUP
      >> XSECUP >> XERRUP >> XMAXUP >> LPRUP >> NUP >> IDPRUP
      >> XWGTUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
-     >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP;
+     >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
+     >> theXSec >> theMaxXSec >> theMaxWeight >> theNEvents >> theMaxScan;
 }
 
-AbstractClassDescription<LesHouchesReader> LesHouchesReader::initLesHouchesReader;
+AbstractClassDescription<LesHouchesReader>
+LesHouchesReader::initLesHouchesReader;
 // Definition of the static class description member.
 
 void LesHouchesReader::setBeamA(long id) { IDBMUP.first = id; }
@@ -227,6 +277,15 @@ void LesHouchesReader::Init() {
      "If null the corresponding information is to be deduced from the "
      "event stream/file.",
      &LesHouchesReader::thePDFB, true, false, true, true, false);
+
+
+  static Parameter<LesHouchesReader,long> interfaceMaxScan
+    ("MaxScan",
+     "The maximum number of events to scan to obtain information about "
+     "processes and cross section in the intialization.",
+     &LesHouchesReader::theMaxScan, -1, 0, 0,
+     true, false, false);
+
 
 }
 

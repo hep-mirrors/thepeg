@@ -29,6 +29,11 @@ namespace ThePEG {
  */
 class LesHouchesReader: public HandlerBase {
 
+  /**
+   * LesHouchesEventHandler should have access to our private parts.
+   */
+  friend class LesHouchesEventHandler;
+
 public:
 
   /** @name Standard constructors and destructors. */
@@ -110,6 +115,39 @@ public:
   inline const PVector & intermediates() const;
   //@}
 
+  /** @name Other inlined access functions. */
+  //@{
+  /**
+   * The total cross section for the sub processes in this file.
+   */
+  inline CrossSection xSec() const;
+
+  /**
+   * The overestimated cross section for the sub processes in this
+   * file.
+   */
+  inline CrossSection maxXSec() const;
+
+  /**
+   * The maximum weight found in this file.
+   */
+  inline double maxWeight() const;
+
+  /**
+   * The number of events found in this file.
+   */
+  inline long NEvents() const;
+
+  /**
+   * The maximum number of events to scan to collect information about
+   * processes and cross sections. If less than 0, all events will be
+   * scanned.
+   */
+  inline long maxScan() const;
+  //@}
+
+
+
 protected:
 
   /** @name Auxilliary virtual methods which may be verridden by sub-classes. */
@@ -157,6 +195,8 @@ public:
   static void Init();
 
 protected:
+
+
 
   /** @name Standard Interfaced functions. */
   //@{
@@ -357,9 +397,21 @@ protected:
   CrossSection theMaxXSec;
 
   /**
-   * The maimum weight found in this file.
+   * The maximum weight found in this file.
    */
   double theMaxWeight;
+
+  /**
+   * The number of events found in this file.
+   */
+  long theNEvents;
+
+  /**
+   * The maximum number of events to scan to collect information about
+   * processes and cross sections. If less than 0, all events will be
+   * scanned.
+   */
+  long theMaxScan;
 
   /**
    * Association between ColourLines and colour indices in the current
