@@ -107,7 +107,16 @@ public:
   // If the given particle is present in this step, insert a copy and
   // remove the original (or make it intermediate if it was initially
   // added to this step). Returns the new particle if the copy
-  // succeeded. If the copy fails, nothing is changed.
+  // succeeded. If the copy fails, nothing is changed. For a
+  // successful call copyParticle(p)->previous() == p is true.
+
+  tPPtr insertCopy(tcPPtr p);
+  // If the given particle is present in the current Collision, insert
+  // copy of that particle 'before' the particle. If the particle does
+  // not belong to the current collision or if the copy failed,
+  // nothing is changed and the null pointer is returned. If
+  // successful insertCopy(p)->next() == p is true. The parents of the
+  // original particle will become the parents of the copy.
 
   bool addDecayProduct(tcPPtr parent, tPPtr child, bool fixColour = true);
   template <typename CIterator>

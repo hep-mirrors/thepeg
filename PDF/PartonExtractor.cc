@@ -419,14 +419,12 @@ construct(PartonBinInstance & pb, tStepPtr step) {
   construct(*pb.incoming(), step);
 }
 
-void PartonExtractor::newRemnants(tPPair oldp, tPPair newp, tStepPtr step) {
+PBIPair PartonExtractor::newRemnants(tPPair oldp, tPPair newp, tStepPtr step) {
+  PBIPair pb;
   Direction<0> dir(true);
-  Lorentz5Momentum p1 = newp.first->momentum();
-  newRemnants(partonBinInstance(oldp.first), newp.first, step);
+  pb.first = newRemnants(partonBinInstance(oldp.first), newp.first, step);
   dir.reverse();
-  Lorentz5Momentum p2 = newp.second->momentum();
-  newRemnants(partonBinInstance(oldp.second), newp.second, step);
-  p1 = p2;
+  pb.second = newRemnants(partonBinInstance(oldp.second), newp.second, step);
 }
 
 PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step) {

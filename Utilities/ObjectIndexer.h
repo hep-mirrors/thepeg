@@ -32,8 +32,10 @@ public:
   // a new index will be created.
 
   inline tTPtr operator()(IntT i);
+  inline tTPtr operator()(IntT i) const;
   // Return the object for the given index. If the index is not known,
-  // a new object will be (default) created.
+  // a new object will be (default) created in the non-const version,
+  // while a null pointer will be returned for the const one..
 
   inline void operator()(IntT i, tTPtr o);
   // Associate the given object with the given index. Possible other

@@ -523,7 +523,8 @@ libThePEGEvent.so: $(LIBOBJECTS)
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
   ../../ThePEG/Persistency/PersistentIStream.icc \
-  ../../ThePEG/Persistency/PersistentIStream.tcc
+  ../../ThePEG/Persistency/PersistentIStream.tcc \
+  ../../ThePEG/Config/algorithm.h
   Particle.o: \
   Particle.cc \
   Particle.h \

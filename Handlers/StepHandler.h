@@ -53,13 +53,17 @@ public:
   // The main virtual method to be overridden by subclasse.
 
   inline tPartCollHdlPtr collisionHandler() const;
-  inline void collisionHandler(tPartCollHdlPtr);
+  void collisionHandler(tPartCollHdlPtr);
   // Get/set a pointer to the (partial) collision handler which made
   // the last call to handle().
 
   inline tStepPtr newStep();
   // Return a pointer to a new step. If one has alredy been created in
   // the last call to handle(), that step will be returned.
+
+  inline tStepPtr currentStep();
+  // If a new step has been created, return it, otherwise return the
+  // current step from the collisionHandler().
 
 public:
 
@@ -90,11 +94,15 @@ protected:
 private:
 
   tPartCollHdlPtr theCollisionHandler;
-  // A pointer to the (partial) collision handler which made the last
+  // A pointer to the (partial) collision handler which made the current
   // call to handle().
 
   tStepPtr theNewStep;
   // A pointer to a new step if created in the last call to handle().
+
+  tStepPtr theCurrentStep;
+  // A pointer to the current step. is equal to theNewStep if one was
+  // created in the current call to handle().
 
 private:
 

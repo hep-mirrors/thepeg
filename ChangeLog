@@ -1,3 +1,15 @@
+2003-07-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StepHandler.h: Added method and member for getting the
+	current step from the collision handler.
+
+	* PDF/PartonExtractor.*: Changed return type on newRemnants method.
+
+	* Utilities/ObjectIndexer.*: Added const method for getting object
+	from index without possibility to create corresponding object.
+
+	* EventRecord/Step.*: Added insertCopy method.
+
 2003-07-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonBin.*: Added information about outgoing bins in

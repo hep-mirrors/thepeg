@@ -15,6 +15,12 @@ using namespace ThePEG;
 
 StepHandler::~StepHandler() {}
 
+void StepHandler::collisionHandler(tPartCollHdlPtr ch) {
+  theCollisionHandler = ch;
+  theNewStep = tStepPtr();
+  theCurrentStep = ch->currentStep();
+}
+
 void StepHandler::createNewStep() {
   theNewStep = collisionHandler()->newStep();
 }

@@ -15,15 +15,14 @@ inline tPartCollHdlPtr StepHandler::collisionHandler() const {
   return theCollisionHandler;
 }
 
-inline void StepHandler::collisionHandler(tPartCollHdlPtr ch) {
-  theCollisionHandler = ch;
-  theNewStep = tStepPtr();
-}
-
-
 inline tStepPtr StepHandler::newStep() {
   if ( !theNewStep ) createNewStep();
   return theNewStep;
+}
+
+inline tStepPtr StepHandler::currentStep() {
+  if ( theNewStep ) return theNewStep;
+  return theCurrentStep;
 }
 
 inline void StepHandler::doupdate() throw(UpdateException) {

@@ -33,6 +33,13 @@ ObjectIndexer<IntT,ObjT>::operator()(IntT i) {
 }
 
 template <typename IntT, typename ObjT>
+inline typename ObjectIndexer<IntT,ObjT>::tTPtr
+ObjectIndexer<IntT,ObjT>::operator()(IntT i) const {
+  typename IndexObjectMap::const_iterator it = indexObject.find(i);
+  return it == indexObject.end()? tTPtr(): it->second;
+}
+
+template <typename IntT, typename ObjT>
 inline void ObjectIndexer<IntT,ObjT>::operator()(IntT i, tTPtr o) {
   typename IndexObjectMap::iterator iit = indexObject.find(i);
   if ( iit != indexObject.end() ) objectIndex.erase(iit->second);

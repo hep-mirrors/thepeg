@@ -164,10 +164,40 @@ tPPtr Step::copyParticle(tcPPtr pin) {
   return cp;
 }
 
+tPPtr Step::insertCopy(tcPPtr pin) {
+  PPtr cp;
+  tPPtr p = const_ptr_cast<tPPtr>(pin);
+  if ( !collision() ) return cp;
+  if ( collision()->all().find(p) == collision()->all().end() ) return cp;
+  cp = p->clone();
+  cp->rep().theNext = p;
+  cp->rep().theChildren.clear();
+  if ( p->previous() ) {
+    p->previous()->rep().theNext = cp;
+    cp->rep().thePrevious = p->previous();
+  } else {
+    for ( int i = 0, N = p->parents().size(); i < N; ++i ) {
+      tPPtr parent = p->parents()[i];
+      for ( int j = 0, M = parent->children().size(); j < M; ++j )
+	if ( parent->children()[j] == p ) parent->rep().theChildren[j] = cp;
+    }
+  }
+  p->rep().theParents.clear();
+  p->rep().thePrevious = cp;
+  if ( p->hasColour() ) cp->colourFlow(p);
+  if ( p->hasAntiColour() ) cp->antiColourFlow(p);
+  cp->rep().theBirthStep = this;
+  theIntermediates.insert(cp);
+  return cp;
+}
+
+
 bool Step::removeDecayProduct(tcPPtr par, tPPtr child) {
   if ( !collision() ) return false;
-  if ( !par->hasRep() ) return false;
   tPPtr parent = const_ptr_cast<tPPtr>(par->final());
+  if ( collision()->all().find(parent) == collision()->all().end() )
+    return false;
+  if ( !par->hasRep() ) return false;
   PVector::iterator it = ThePEG::find(parent->rep().theChildren, child);
   if ( it == parent->rep().theChildren.end() ) return false;
   parent->rep().theChildren.erase(it);

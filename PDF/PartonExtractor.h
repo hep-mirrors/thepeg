@@ -81,10 +81,11 @@ public:
   // parton. This default version does not accept that the incoming
   // particle is coloured.
 
-  void newRemnants(tPPair oldp, tPPair newp, tStepPtr step);
+  PBIPair newRemnants(tPPair oldp, tPPair newp, tStepPtr step);
   // If remnants has already been created for the given parton, remove
   // them from the given step and generate new remnants corresponding
-  // to the parton newp and add them to the step.
+  // to the parton newp and add them to the step. The new parton bins
+  // are returned.
 
   inline const PartonBinMap & lastPartonBins() const;
   // Return info about the current selection.
