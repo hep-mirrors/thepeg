@@ -5,6 +5,8 @@
 #ifndef ThePEG_LesHouchesReader_FH
 #define ThePEG_LesHouchesReader_FH
 
+#include "ThePEG/Config/ThePEG.h"
+
 namespace ThePEG {
 
 class LesHouchesReader;

@@ -115,7 +115,7 @@ public:
 
   /**
    * Rename a given \a object. Syntacticly the same as
-   * <code>remove(object); Register(object, newName);<code>.
+   * <code>remove(object); Register(object, newName);</code>.
    */
   static void rename(tIBPtr object, string newName);
   //@}
@@ -124,7 +124,7 @@ public:
   //@{
   /**
    * Create a new directory with the given name. If the given name
-   * starts with a <code>/<code> the name is assumed to be an absolute
+   * starts with a <code>/</code> the name is assumed to be an absolute
    * path, otherwise it is assumed to be a path relative to the
    * current directory.
    */
@@ -133,9 +133,9 @@ public:
   /**
    * Check if directory exixts. Check if the name given as argument
    * corresponds to an existing directory. If the argument string does
-   * not end in a <code>/<code> it is assumed to be the name of an
+   * not end in a <code>/</code> it is assumed to be the name of an
    * object in a directory, and only the directory part of the name is
-   * checked. If the given name starts with a <code>/<code> the name
+   * checked. If the given name starts with a <code>/</code> the name
    * is assumed to be an absolute path, otherwise it is assumed to be
    * a path relative to the current directory.
    *
@@ -147,7 +147,7 @@ public:
   /**
    * Check if directory exixts. Check if the name given as argument
    * corresponds to an existing directory. If the given name starts
-   * with a <code>/<code> the name is assumed to be an absolute path,
+   * with a <code>/</code> the name is assumed to be an absolute path,
    * otherwise it is assumed to be a path relative to the current
    * directory.
    *
@@ -158,7 +158,7 @@ public:
 
   /**
    * Return the absolute path.  If the given name starts with a
-   * <code>/<code> the name is assumed to be an absolute path already,
+   * <code>/</code> the name is assumed to be an absolute path already,
    * otherwise it is assumed to be a path relative to the current
    * directory, and the absolute path is constructed.
    */

@@ -108,7 +108,7 @@ public:
   /**
    * Return a vector of particle vectors with colour-connected
    * partons, where each particle vector is in a colour singlet state.
-   * @obsolete Use the corresponding functions in ColourLine instead.
+   * @deprecated Use the corresponding functions in ColourLine instead.
    */
   template <typename PIterator>
   inline static vector<tPVector> getSinglets(PIterator first, PIterator last);
@@ -138,7 +138,7 @@ public:
    * Returns the colliding particles in the collision to which this
    * step belongs. (If this step does not belong to a collision, this
    * method will probably cause a segmentation fault - This should be
-   * fixed. @obsolete Maybe this method is not needed at all.)
+   * fixed. @deprecated Maybe this method is not needed at all.)
    */
   inline const PPair & incoming() const;
 
@@ -213,7 +213,7 @@ public:
    * Add a particle to this Step. It is assumed to be already setup as
    * a child to a parent particle. The parent is removed from the list
    * of final state particles in this step. No consistency checks are
-   * performed. @obsolete Use addDecayProduct(tPPtr child) instead
+   * performed. @deprecated Use addDecayProduct(tPPtr child) instead.
    */
   void addDecayNoCheck(tPPtr parent, tPPtr child);
 
@@ -267,7 +267,7 @@ public:
    * step and which have not already had their colour neighbours set.
    * If a neighbor is found which has not been added in this step, it
    * is first cloned in order not to compromise the colour flow of
-   * previous steps. @obsolete This method should not be needed with
+   * previous steps. @deprecated This method should not be needed with
    * the current ColourLine representation of colour.
    */
   void fixColourFlow();
@@ -387,8 +387,8 @@ public:
 protected:
 
   /**
-   * Used internally by the public getSinglets(...);
-   * @obsolete Use the corresponding functions in ColourLine instead.
+   * Used internally by the public getSinglets(...); @deprecated Use
+   * the corresponding functions in ColourLine instead.
    */
   static vector<tPVector> getSinglets(tParticleSet &);
 

@@ -381,28 +381,32 @@ struct ClassDescriptionHelper<T, IBase, int> {
 
 }
 
-#define ThePEG_DECLARE_CLASS_DESCRIPTION(Class)                   \
+#define ThePEG_DECLARE_CLASS_DESCRIPTION(Class)                    \
+/** Describe a concrete class with persistent data. */             \
 static ClassDescription<Class> init ## Class                       \
 
-#define ThePEG_DECLARE_ABSTRACT_CLASS_DESCRIPTION(Class)          \
+#define ThePEG_DECLARE_ABSTRACT_CLASS_DESCRIPTION(Class)           \
+/** Describe an abstract class with persistent data. */            \
 static AbstractClassDescription<Class> init ## Class               \
 
-#define ThePEG_DECLARE_NOPIO_CLASS_DESCRIPTION(Class)             \
+#define ThePEG_DECLARE_NOPIO_CLASS_DESCRIPTION(Class)              \
+/** Describe a concrete class without persistent data. */          \
 static NoPIOClassDescription<Class> init ## Class                  \
 
-#define ThePEG_DECLARE_ABSTRACT_NOPIO_CLASS_DESCRIPTION(Class)    \
+#define ThePEG_DECLARE_ABSTRACT_NOPIO_CLASS_DESCRIPTION(Class)     \
+/** Describe an abstract class without persistent data. */         \
 static AbstractNoPIOClassDescription<Class> init ## Class          \
 
-#define ThePEG_IMPLEMENT_CLASS_DESCRIPTION(Class)                 \
+#define ThePEG_IMPLEMENT_CLASS_DESCRIPTION(Class)                  \
 ClassDescription<Class> Class::init ## Class                       \
 
-#define ThePEG_IMPLEMENT_ABSTRACT_CLASS_DESCRIPTION(Class)        \
+#define ThePEG_IMPLEMENT_ABSTRACT_CLASS_DESCRIPTION(Class)         \
 AbstractClassDescription<Class> Class::init ## Class               \
 
-#define ThePEG_IMPLEMENT_NOPIO_CLASS_DESCRIPTION(Class)           \
+#define ThePEG_IMPLEMENT_NOPIO_CLASS_DESCRIPTION(Class)            \
 NoPIOClassDescription<Class> Class::init ## Class                  \
 
-#define ThePEG_IMPLEMENT_ABSTRACT_NOPIO_CLASS_DESCRIPTION(Class)  \
+#define ThePEG_IMPLEMENT_ABSTRACT_NOPIO_CLASS_DESCRIPTION(Class)   \
 AbstractNoPIOClassDescription<Class> Class::init ## Class          \
 
 #include "ClassDescription.icc"

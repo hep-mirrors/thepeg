@@ -69,12 +69,12 @@ public:
   /** @name Access the individual limits. */
   //@{
   /**
-   * The minimum value of \f$\log(1/x)\f.
+   * The minimum value of \f$\log(1/x)\f$.
    */
   inline double lMin() const;
 
   /**
-   * The maximum value of \f$\log(1/x)\f.
+   * The maximum value of \f$\log(1/x)\f$.
    */
   inline double lMax() const;
   /**

@@ -46,7 +46,7 @@ ThePEG_DECLARE_MULTISET(tDMPtr,ModeMSet);
  * <li> a star followed by the name of a particle matcher object in
  * the Repository if representing any number of several different
  * alternative decay products (note that only one of these
- * <i<wild-card</i> matchers may be specified, if several are given
+ * <i>wild-card</i> matchers may be specified, if several are given
  * only the last one will be taken into account),
  *
  * <li> a whole decay mode string enclosed in square brackets if

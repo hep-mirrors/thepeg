@@ -73,7 +73,7 @@ public:
    * @param dv the diagrams to be weighted.
    * @return a Selector relating the given diagrams to their weights.
    */
-  virtual Selector<DiagramIndex> diagrams(const DiagramVector &) const;
+  virtual Selector<DiagramIndex> diagrams(const DiagramVector & dv) const;
   //@}
 
 protected:

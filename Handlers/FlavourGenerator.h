@@ -91,8 +91,8 @@ public:
    * content given by the (anti-)(di-)quarks in the argument. The
    * arguments are given as PDG codes. The default
    * versions will call the getHadron(tcPDPtr, tcPDPtr).
-   * @param q1 the PDG code of the first flavour.
-   * @param q2 the PDG code of the second flavour.
+   * @param iq1 the PDG code of the first flavour.
+   * @param iq2 the PDG code of the second flavour.
    * @return the corresponding hadron type or null if none could be
    * generated.
    */

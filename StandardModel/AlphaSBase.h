@@ -12,7 +12,7 @@ namespace ThePEG {
 
 /**
  * AlphaSBase is an abstract base class used by the StandardModelBase
- * to implement the QCD coupling, \f$\alpha_S\$f. The AlphaSBase also
+ * to implement the QCD coupling, \f$\alpha_S\f$. The AlphaSBase also
  * encodes the number of active flavours at a given scale and the
  * \f$\Lambda_{QCD}\f$ for a given number of active flavours or for a
  * given scale.
@@ -48,7 +48,7 @@ public:
   /** @name Virtual functions to be overridden by sub-classes. */
   //@{
   /**
-   * The \f$\alpha_S\$f. Return the QCD coupling for a given \a scale
+   * The \f$\alpha_S\f$. Return the QCD coupling for a given \a scale
    * using the given standard model object \a sm.
    */
   virtual double value(Energy2 scale, const StandardModelBase & sm) const = 0;

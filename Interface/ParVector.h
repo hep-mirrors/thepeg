@@ -301,7 +301,7 @@ public:
     const throw(InterfaceException) = 0;
 
   /**
-   * Return the values of a container of member variables of \i ib in
+   * Return the values of a container of member variables of \a ib in
    * a vector of strings. Calls the The tget(const InterfacedBase &)
    * and returns a vector of strings converted with ostringstreams.
    */
@@ -309,15 +309,15 @@ public:
     throw(InterfaceException);
 
   /**
-   * Return the values of a container of member variables of \ib in a
+   * Return the values of a container of member variables of \a ib in a
    * vector of Type.
    */
   virtual TypeVector tget(const InterfacedBase & ib) const
     throw(InterfaceException) = 0;
 
   /**
-   * Return the minimum value allowed for the \ i'th element of a
-   * container of member variables of \i ib. Calls tminimum(const
+   * Return the minimum value allowed for the \a i'th element of a
+   * container of member variables of \a ib. Calls tminimum(const
    * InterfacedBase &, int) and converts the returned value with an
    * ostringstream.
    * 
@@ -516,6 +516,9 @@ public:
    * @param newDefFn optional pointer to member function for the
    * 'default' action.
    *
+   * @param newGetFn optional pointer to member function for the
+   * 'get' action.
+   *
    * @param newMinFn optional pointer to member function for the
    * 'minimum' action.
    *
@@ -559,6 +562,9 @@ public:
    * @param newSize the size of the container or -1 if varying.
    *
    * @param newDef the default value of the corresponding parameters.
+   *
+   * @param newGetFn optional pointer to member function for the
+   * 'get' action.
    *
    * @param newMin the minimum value of the corresponding parameters.
    *
@@ -633,7 +639,7 @@ public:
     const throw(InterfaceException);
 
   /**
-   * Return the values of a container of member variables of \i ib in
+   * Return the values of a container of member variables of \a ib in
    * a vector of strings. Calls the The tget(const InterfacedBase &)
    * and returns a vector of strings converted with ostringstreams.
    */
@@ -641,7 +647,7 @@ public:
     throw(InterfaceException);
 
   /**
-   * Return the values of a container of member variables of \ib in a
+   * Return the values of a container of member variables of \a ib in a
    * vector of Type.
    */
   virtual TypeVector tget(const InterfacedBase & ib) const

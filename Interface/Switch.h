@@ -40,6 +40,8 @@ public:
    * @param newName the name of the option, may only contain
    * letters [a-zA-z0-9_].
    *
+   * @param newDescription a brief description of the option.
+   *
    * @param newValue the integer value corresponding to this option.
    */
   inline SwitchOption(SwitchBase & theSwitch, string newName,

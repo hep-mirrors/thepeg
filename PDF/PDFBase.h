@@ -75,7 +75,7 @@ public:
   /**
    * The density. Return the pdf for the given \a parton inside the
    * given \a particle for the virtuality \a partonScale and
-   * logarithmic momentum fraction \a l \f$(l=\log(1/x)\$f. The \a
+   * logarithmic momentum fraction \a l \f$(l=\log(1/x)\f$. The \a
    * particle is assumed to have a virtuality \a particleScale.
    */
   virtual double xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
@@ -95,7 +95,7 @@ public:
    * The valence density. Return the pdf for the given cvalence \a
    * parton inside the given \a particle for the virtuality \a
    * partonScale and logarithmic momentum fraction \a l
-   * \f$(l=\log(1/x)\$f. The \a particle is assumed to have a
+   * \f$(l=\log(1/x)\f$. The \a particle is assumed to have a
    * virtuality \a particleScale. If not overidden by a sub class this
    * will return zero.
    */
@@ -132,9 +132,9 @@ public:
    * an appropriate scale \f$Q^2\f$ for a \a z uniformly distributed
    * in ]0,1[. Also the jacobobian of the \f$Q^2\rightarrow z\f$
    * variable transformation must multiply the \a jacobian
-   * argument. The default version will simply use the function $Q^2 =
-   * Q^2_{\min}(Q^2_{\max=/Q^2_{\min})^z\f$ or, if \f$Q^2_{\min}\f$ is
-   * zero, \f$Q^2 = z Q^2_{\max}\f$ (where the limits are set by \a
+   * argument. The default version will simply use the function \f$Q^2
+   * = Q^2_{\min}(Q^2_{\max}/Q^2_{\min})^z\f$ or, if \f$Q^2_{\min}\f$
+   * is zero, \f$Q^2 = z Q^2_{\max}\f$ (where the limits are set by \a
    * cut).
    */
   virtual Energy2 flattenScale(tcPDPtr particle, tcPDPtr parton,

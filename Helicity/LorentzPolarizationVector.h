@@ -284,6 +284,9 @@ public:
 
 private:
 
+  /**
+   * The components.
+   */
   Complex _vec[4];
 
 };

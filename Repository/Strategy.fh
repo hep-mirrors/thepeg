@@ -11,7 +11,9 @@ namespace ThePEG {
 
 class Strategy;
 
+/** Declare a pointer to a Strategy object. */
 typedef Ptr<Strategy>::pointer StrategyPtr;
+/** Declare a pointer to a const Strategy object. */
 typedef Ptr<Strategy>::const_pointer cStrategyPtr;
 
 }

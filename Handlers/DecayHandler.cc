@@ -46,8 +46,7 @@ handle(PartialCollisionHandler & ch, const tPVector & tagged,
 }
 
 void DecayHandler::
-performDecay(tPPtr parent, Step & s) const
-  ThePEG_THROW_SPEC((Veto, Exception)) {
+performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
   Timer<47> timer("DecayHandler::performDecay");
   long ntry = 0;
   while ( 1 ) {

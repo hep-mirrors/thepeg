@@ -146,7 +146,7 @@ public:
    *
    * @param next the number of the firts event to be
    * generated. Default is 1.
-   * @param the maximum number of events to be generated. If negative
+   * @param maxevent the maximum number of events to be generated. If negative
    * the N() is used instead. Default is -1.
    */
   void go(long next = 1, long maxevent = -1);

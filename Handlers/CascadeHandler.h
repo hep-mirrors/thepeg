@@ -119,8 +119,6 @@ public:
    */
   static void Init();
 
-  //@}
-
 protected:
 
   /** @name Standard Interfaced functions. */

@@ -58,7 +58,7 @@ public:
    * negative values, because they are used as vector indeces), for
    * example, for a massive particle of spin S, 0 <= helicity <= 2*S.
    * The returned value should be dimensionless suitable scaled by the
-   * total invariant mass squared (\f$\har{s}\f$), which is always
+   * total invariant mass squared (\f$\hat{s}\f$), which is always
    * computable from the specified \a momenta of the particles in the
    * vertex.
    */

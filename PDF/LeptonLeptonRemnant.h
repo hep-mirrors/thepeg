@@ -51,7 +51,7 @@ public:
 
   /**
    * Generate momenta. Generates the momenta of the extracted parton
-   * in the particle cms (but with the parton \f$\f$ still the
+   * in the particle cms (but with the parton \f$x\f$ still the
    * positive light-cone fraction) as given by the last argument, \a
    * p. If the particle is space-like the positive and negative
    * light-cone momenta are \f$\sqrt{-m^2}\f$ and \f$-sqrt{-m^2}\f$

@@ -51,7 +51,7 @@ public:
    * @param dm the DecayMode describing the decay.
    * @return true if this decayer can handle the given mode, otherwise false.
    */
-  virtual bool accept(const DecayMode &) const = 0;
+  virtual bool accept(const DecayMode & dm) const = 0;
 
   /**
    * Perform a decay for a given DecayMode and a given Particle instance.
@@ -59,7 +59,8 @@ public:
    * @param p the Particle instance to be decayed.
    * @return a ParticleVector containing the decay products.
    */
-  virtual ParticleVector decay(const DecayMode &, const Particle &) const = 0;
+  virtual ParticleVector decay(const DecayMode & dm,
+			       const Particle & p) const = 0;
 
   /**
    * Calculate branching ratio. If this model has any oppinions on the

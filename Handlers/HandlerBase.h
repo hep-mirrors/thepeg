@@ -31,6 +31,7 @@ class HandlerBaseT: public Interfaced {
 
 public:
 
+  /** HandlerBase is a friend. */
   friend class HandlerBase;
 
 private:

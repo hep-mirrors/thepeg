@@ -359,6 +359,7 @@ protected:
     template <typename ref> void operator()(const ref & i) {
       UpdateChecker::check(i.second, isTouched);
     }
+    /** Reference to the bool variable to be set. */
     bool & isTouched;
   };
 

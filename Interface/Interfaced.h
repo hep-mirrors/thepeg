@@ -29,6 +29,7 @@ namespace ThePEG {
  */
 class Interfaced: public InterfacedBase {
 
+  /** Repository is a friend. */
   friend class Repository;
 
 public:

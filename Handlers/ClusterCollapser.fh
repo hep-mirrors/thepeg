@@ -5,6 +5,8 @@
 // This is the forward declaration of the ClusterCollapser class.
 //
 
+#include "ThePEG/Config/ThePEG.h"
+
 namespace ThePEG {
 
 class ClusterCollapser;

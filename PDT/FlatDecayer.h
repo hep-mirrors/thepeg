@@ -58,7 +58,7 @@ public:
    * @param dm the DecayMode describing the decay.
    * @return true if this decayer can handle the given mode, otherwise false.
    */
-  virtual bool accept(const DecayMode &) const;
+  virtual bool accept(const DecayMode & dm) const;
 
   /**
    * Perform a decay for a given DecayMode and a given Particle instance.
@@ -66,7 +66,7 @@ public:
    * @param p the Particle instance to be decayed.
    * @return a ParticleVector containing the decay products.
    */
-  virtual ParticleVector decay(const DecayMode &, const Particle &) const;
+  virtual ParticleVector decay(const DecayMode & dm, const Particle & p) const;
 
   /**
    * Give a weight to a phase space point. To be overridden by

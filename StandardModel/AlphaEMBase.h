@@ -45,7 +45,7 @@ public:
 public:
 
   /**
-   * The \$f\alpha_{\EM}\f$. Return the value of the coupling at a
+   * The \f$\alpha_{EM}\f$. Return the value of the coupling at a
    * given \a scale using the given standard model object, \a sm. This
    * is the only virtual function to be implemented by base classes.
    */

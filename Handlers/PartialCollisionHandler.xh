@@ -13,6 +13,7 @@ namespace ThePEG {
 /** Exception class used by PartialCollisionHandler when a StepHandler
  *  of the wrong class was added. */
 struct CollHdlStepException: public Exception {
+  /** Standard constructor. */
   CollHdlStepException(const PartialCollisionHandler &, const StepHandler &,
 		       string);
 };

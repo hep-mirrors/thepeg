@@ -62,10 +62,10 @@ typedef Ptr<ParticleDataClass>::transient_pointer tEventPDPtr;
 /** Alias for a transient pointer to const ParticleDataClass. */
 typedef Ptr<ParticleDataClass>::transient_const_pointer tcEventPDPtr;
 
-/** A vector of pointers to Particle. */
-typedef vector<PPtr> ParticleVector;
 /** A vector of transient pointers to Particle. */
 typedef vector<tPPtr> tParticleVector;
+/** A vector of pointers to Particle. */
+typedef vector<PPtr> ParticleVector;
 /** A set of pointers to Particle. */
 typedef set<PPtr, less<PPtr>, Allocator<PPtr> > ParticleSet;
 /** A set of transient pointers to Particle. */

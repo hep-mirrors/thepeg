@@ -44,7 +44,7 @@ public:
   /** @name Virtual functions mandated by the sub-class. */
   //@{
   /**
-   * The \f$\alpha_S\$f. Return the QCD coupling for a given \a scale
+   * The \f$\alpha_S\f$. Return the QCD coupling for a given \a scale
    * using the given standard model object \a sm.
    */
   virtual double value(Energy2 scale, const StandardModelBase &) const;

@@ -121,7 +121,7 @@ public:
 		      const IVector & defs) const;
 
   /**
-   * Return the pointer to another object in \i ib (in a vector).
+   * Return the pointer to another object in \a ib (in a vector).
    */
   virtual IVector getReferences(const InterfacedBase & ib) const;
 
@@ -177,8 +177,6 @@ public:
    * be null, in which case the pointers to member functions must be
    * specified.
    *
-   * @param newSize the size of the container or -1 if varying.
-   *
    * @param depSafe set to true if calls to this interface for one
    * object does not influence other objects.
    *
@@ -224,8 +222,6 @@ public:
    * @param newMember a pointer to a Member which is a TypeVector. May
    * be null, in which case the pointers to member functions must be
    * specified.
-   *
-   * @param newSize the size of the container or -1 if varying.
    *
    * @param depSafe set to true if calls to this interface for one
    * object does not influence other objects.

@@ -64,8 +64,7 @@ public:
    * @param parent the particle to be decayed.
    * @param s the Step where decay products are inserted.
    */
-  void performDecay(tPPtr parent, Step & s) const
-    ThePEG_THROW_SPEC((Veto, Exception));
+  void performDecay(tPPtr parent, Step & s) const throw(Veto, Exception);
 
 public:
 

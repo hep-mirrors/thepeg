@@ -52,7 +52,7 @@ public:
    * @param dm the DecayMode describing the decay.
    * @return true if this decayer can handle the given mode, otherwise false.
    */
-  virtual bool accept(const DecayMode &) const;
+  virtual bool accept(const DecayMode & dm) const;
 
   /**
    * Produce children. Used by the FlatDecayer::decay() to produce

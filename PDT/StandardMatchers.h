@@ -1,198 +1,331 @@
 // -*- C++ -*-
-//
 #ifndef ThePEG_StandardMatchers_H
 #define ThePEG_StandardMatchers_H
-//
-// This is the declaration of the <!id>AnyMatcher<!!id>,
-// <!id>ChargedMatcher<!!id>, <!id>NegativeMatcher<!!id>,
-// <!id>PositiveMatcher<!!id>, <!id>NeutralMatcher<!!id>,
-// <!id>BaryonMatcher<!!id>, <!id>MesonMatcher<!!id>,
-// <!id>DiquarkMatcher<!!id>, <!id>LeptonMatcher<!!id>,
-// <!id>LightAntiQuarkMatcher<!!id>, <!id>LightQuarkMatcher<!!id> and
-// <!id>StandardQCDPartonMatcher<!!id> classes.
-//
-// Also defined are typedefs of <!class>Matcher<!!class> classes
-// instantiated with these classes as objects turning them into
-// <!class>MatcherBase<!!class> objects.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Matcher.html">Matcher.h</a>,
-// <a href="http:MatcherBase.html">MatcherBase.h</a>.
-// 
+// This is the declaration of the AnyMatcher,
 
-//
 
 #include "Matcher.h"
 #include "ThePEG/PDT/EnumParticles.h"
 
 namespace ThePEG {
 
+/** \file StandardMatchers.h
+ *
+ * This file declare a set of standard matcher classes. The
+ * ChargedMatcher, NegativeMatcher, PositiveMatcher, NeutralMatcher,
+ * BaryonMatcher, MesonMatcher, DiquarkMatcher, LeptonMatcher,
+ * LightAntiQuarkMatcher, LightQuarkMatcher and
+ * StandardQCDPartonMatcher classes can be used by themselves (with
+ * their static functions) or together with the Matcher class to
+ * define Interfaced objects of the MatcherBase type to be used in the
+ * Repository. Suitable typedefs are declared for the latter.
+ *
+ * @see Matcher,
+ * @see MatcherBase.
+ */
+
+
+
+/**
+ * A Matcher class which matches any particle.
+ */
 struct AnyMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef AnyMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) {
     return bool(pd.id());
   }
+  /** A simplified but unique class name. */
   static string className() { return "Any"; }
 };
+/** Gives a MatcherBase class based on AnyMatcher. */
 typedef Matcher<AnyMatcher> MatchAny;
-// Matches any particle.
 
 
+/**
+ * A Matcher class which matches any charged particle.
+ */
 struct ChargedMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef ChargedMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) {
     return PDT::charged(pd.iCharge());
   }
+  /** A simplified but unique class name. */
   static string className() { return "Charged"; }
 };
+/** Gives a MatcherBase class based on ChargedMatcher. */
 typedef Matcher<ChargedMatcher> MatchCharged;
-// Matches any charged particle.
 
 struct NegativeMatcher;
+
+/**
+ * A Matcher class which matches any positively charged particle.
+ */
 struct PositiveMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef NegativeMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) {
     return PDT::positive(pd.iCharge());
   }
+  /** A simplified but unique class name. */
   static string className() { return "Positive"; }
 };
+/** Gives a MatcherBase class based on PositiveMatcher. */
 typedef Matcher<PositiveMatcher> MatchPositive;
-// Matches any positively charged particle.
 
 
+/**
+ * A Matcher class which matches any uncharged particle.
+ */
 struct NeutralMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef NeutralMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) {
     return pd.iCharge() == PDT::Charge0;
   }
+  /** A simplified but unique class name. */
   static string className() { return "Neutral"; }
 };
+/** Gives a MatcherBase class based on NeutralMatcher. */
 typedef Matcher<NeutralMatcher> MatchNeutral;
-// Matches any neutral particle.
 
+/**
+ * A Matcher class which matches any negatively charged particle.
+ */
 struct NegativeMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef PositiveMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) {
     return PDT::negative(pd.iCharge());
   }
+  /** A simplified but unique class name. */
   static string className() { return "Negative"; }
 };
+/** Gives a MatcherBase class based on NegativeMatcher. */
 typedef Matcher<NegativeMatcher> MatchNegative;
-// Matches any negatively charged particle.
 
+/**
+ * A Matcher class which matches any baryon.
+ */
 struct BaryonMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef BaryonMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return (id/10)%10 && (id/100)%10 && (id/1000)%10;
   }
+  /** A simplified but unique class name. */
   static string className() { return "Baryon"; }
 };
+/** Gives a MatcherBase class based on BaryonMatcher. */
 typedef Matcher<BaryonMatcher> MatchBaryon;
-// Matches any baryon.
 
 
+/**
+ * A Matcher class which matches any meson.
+ */
 struct MesonMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef MesonMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return (id/10)%10 && (id/100)%10 && (id/1000)%10 == 0;
   }
+  /** A simplified but unique class name. */
   static string className() { return "Meson"; }
 };
+/** Gives a MatcherBase class based on MesonMatcher. */
 typedef Matcher<MesonMatcher> MatchMeson;
-// Matches any meson.
 
 
+/**
+ * A Matcher class which matches any (anti-)diquark.
+ */
 struct DiquarkMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef DiquarkMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return id/10 && (id/10)%10 == 0 && (id/100)%10 && (id/1000)%10;
   }
+  /** A simplified but unique class name. */
   static string className() { return "Diquark"; }
 };
+/** Gives a MatcherBase class based on DiquarkMatcher. */
 typedef Matcher<DiquarkMatcher> MatchDiquark;
-// Matches any meson.
 
+/**
+ * A Matcher class which matches any (anti-)quark.
+ */
 struct QuarkMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef QuarkMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return id && abs(id) < 10;
   }
+  /** A simplified but unique class name. */
   static string className() { return "Quark"; }
 };
+/** Gives a MatcherBase class based on QuarkMatcher. */
 typedef Matcher<QuarkMatcher> MatchQuark;
-// Matches any meson.
 
+/**
+ * A Matcher class which matches any lepton.
+ */
 struct LeptonMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef LeptonMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return abs(id) > 10 && abs(id) <= 20;
   }
+  /** A simplified but unique class name. */
   static string className() { return "Lepton"; }
 };
+/** Gives a MatcherBase class based on LeptonMatcher. */
 typedef Matcher<LeptonMatcher> MatchLepton;
-// Matches any lepton.
 
 struct LightAntiQuarkMatcher;
+
+/**
+ * A Matcher class which matches any light quark (d,u or s).
+ */
 struct LightQuarkMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef LightAntiQuarkMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return id > 0 && id < 4 ;
   }
+  /** A simplified but unique class name. */
   static string className() { return "LightQuark"; }
 };
+/** Gives a MatcherBase class based on LightQuarkMatcher. */
 typedef Matcher<LightQuarkMatcher> MatchLightQuark;
-// Matches any light quark.
 
 
+/**
+ * A Matcher class which matches any light anti-quark
+ * (\f$\bar{\mbox{d}}\f$,\f$\bar{\mbox{u}}\f$ or
+ * \f$\bar{\mbox{s}}\f$).
+ */
 struct LightAntiQuarkMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
   typedef LightQuarkMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return id < 0 && id > -4 ;
   }
+  /** A simplified but unique class name. */
   static string className() { return "LightAntiQuark"; }
 };
+/** Gives a MatcherBase class based on LightAntiQuarkMatcher. */
 typedef Matcher<LightAntiQuarkMatcher> MatchLightAntiQuark;
-// Matches any light antiquark.
 
+/**
+ * A Matcher class which matches any standard QCD parton, ie. gluons
+ * and quarks up to bottom.
+ */
 struct StandardQCDPartonMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
+  typedef StandardQCDPartonMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return id && ( abs(id) <= 5 || id == ParticleID::g );
   }
+  /** A simplified but unique class name. */
   static string className() { return "StandardQCDParton"; }
 };
 
+/** Gives a MatcherBase class based on StandardQCDPartonMatcher. */
 typedef Matcher<StandardQCDPartonMatcher> MatchStandardQCDParton;
 
+/**
+ * A Matcher class which matches any pseudo scalar meson.
+ */
 struct PseudoScalarMesonMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
+  typedef PseudoScalarMesonMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return ( (abs(id)/1000)%1 == 0 && abs(id) > 100 && abs(id)%10 == 1 ) ||
       ( id == ParticleID::K_L0 || id == ParticleID::K_S0 );
   }
+  /** A simplified but unique class name. */
   static string className() { return "PseudoScalarMeson"; }
 };
 
+/** Gives a MatcherBase class based on PseudoScalarMesonMatcher. */
 typedef Matcher<PseudoScalarMesonMatcher> MatchPseudoScalarMeson;
 
-typedef Matcher<StandardQCDPartonMatcher> MatchStandardQCDParton;
 
+/**
+ * A Matcher class which matches any vector meson.
+ */
 struct VectorMesonMatcher {
+  /** Typedef the class matching the complex conjugate particles. */
+  typedef VectorMesonMatcher CC;
+  /** The main static function to check if a given particle type \a pd
+      matches. */
   static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  /** The main static function to check if a given particle with type
+      \a id matches. */
   static bool Check(long id) {
     return (abs(id)/1000)%1 == 0 && abs(id) > 100 && abs(id)%10 == 3;
   }
+  /** A simplified but unique class name. */
   static string className() { return "VectorMeson"; }
 };
 
+/** Gives a MatcherBase class based on VectorMesonMatcher. */
 typedef Matcher<VectorMesonMatcher> MatchVectorMeson;
 
 }

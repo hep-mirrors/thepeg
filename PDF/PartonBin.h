@@ -33,6 +33,7 @@ class PartonBin: public Base {
 
 public:
 
+  /** A vector of pointers to PartonBin objects. */
 typedef vector<PBPtr> PBVector;
 
 public:

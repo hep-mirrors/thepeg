@@ -13,7 +13,7 @@ namespace ThePEG {
  * NoPDF inherits from PDFBase and represents particles without
  * sub-structure. The only parton which can be extracted is the
  * incoming particle itself with a momentum distribution which is a
- * delta-function at \f$x=1\f$ \f$(l=0)\f$.
+ * delta-function at \f$x=1\f$ (\f$l=0\f$).
  *
  * @see PDFBase
  * @see NoRemnants

@@ -19,11 +19,23 @@ class Tau2HadronsDecayer: public FlatDecayer {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline Tau2HadronsDecayer();
 
+  /**
+   * Copy-constructor.
+   */
   inline Tau2HadronsDecayer(const Tau2HadronsDecayer &);
 
+  /**
+   * Destructor.
+   */
   virtual ~Tau2HadronsDecayer();
+  //@}
 
 public:
 
@@ -36,7 +48,7 @@ public:
    * @param dm the DecayMode describing the decay.
    * @return true if this decayer can handle the given mode, otherwise false.
    */
-  virtual bool accept(const DecayMode &) const;
+  virtual bool accept(const DecayMode & dm) const;
 
   /**
    * Give a weight to a phase space point. To be overridden by

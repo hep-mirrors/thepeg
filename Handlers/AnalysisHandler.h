@@ -77,7 +77,7 @@ public:
    * @param event a pointer to the Event to be transformed.
    * @return the LorentzRotation used in the transformation.
    */
-  virtual LorentzRotation transform(tEventPtr) const;
+  virtual LorentzRotation transform(tEventPtr event) const;
 
   /**
    * Analyze the given vector of particles. The default version calls
@@ -102,14 +102,14 @@ public:
    * Function used to write out object persistently.
    * @param os the persistent output stream written to.
    */
-  void persistentOutput(PersistentOStream &) const;
+  void persistentOutput(PersistentOStream & os) const;
 
   /**
    * Function used to read in object persistently.
    * @param is the persistent input stream read from.
    * @param version the version number of the object when written.
    */
-  void persistentInput(PersistentIStream &, int);
+  void persistentInput(PersistentIStream & is, int version);
 
   //@}
 

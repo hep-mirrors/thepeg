@@ -58,8 +58,11 @@ class MEBase: public HandlerBase, public LastXCombInfo<> {
 
 public:
 
+  /** A vector of pointers to DiagramBase objects. */
   typedef vector<DiagPtr> DiagramVector;
+  /** The size_type used in the DiagramVector. */
   typedef DiagramVector::size_type DiagramIndex;
+  /** A vector of pointers to ReweightBase objects. */
   typedef vector<ReweightPtr> ReweightVector;
 
 public:

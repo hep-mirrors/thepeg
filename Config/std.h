@@ -101,14 +101,17 @@ inline ostream& right(ostream& os) {
 
 /** Macro for declaring a set. */
 #define ThePEG_DECLARE_SET(VALTYPE,NAME)                               \
+  /** A set of VALTYPE. */                                             \
   typedef set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > NAME
 
 /** Macro for declaring a multiset. */
 #define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                          \
+  /** A multiset of VALTYPE. */                                        \
   typedef multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > NAME
 
 /** Macro for declaring a map. */
 #define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                       \
+  /** A map of VALTYPE indexed by KEYTYPE. */                          \
   typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>, Allocator<VALTYPE> > NAME
 
 /** Macro for implementing a set. */

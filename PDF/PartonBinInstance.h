@@ -11,6 +11,7 @@
 namespace ThePEG {
 
 ThePEG_DECLARE_CLASS_POINTERS(PartonBinInstance,PBIPtr);
+/** A pair of pointers to PartonBinInstance objects. */
 typedef pair<PBIPtr,PBIPtr> PBIPair;
 
 ThePEG_DECLARE_CLASS_POINTERS(RemInfoBase,RemIPtr);

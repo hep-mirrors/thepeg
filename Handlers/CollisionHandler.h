@@ -123,7 +123,7 @@ public:
    * @param maxS the maximum squared CMS energy of the incoming particles.
    * @param ibin the preselected bin of XComb objects to choose
    * sub-process from
-   * @param nr the number of random numbers availiable in \r.
+   * @param nr the number of random numbers availiable in \a r.
    * @param r an array of random numbers to be used to generate a
    * phase-space point.
    */

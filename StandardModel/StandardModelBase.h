@@ -30,11 +30,17 @@ namespace ThePEG {
  */
 class StandardModelBase: public Interfaced {
 
+  /** Declare a pointer to an AlphaEMBase object. */
   typedef Ptr<AlphaEMBase>::pointer AEMPtr;
+  /** Declare a pointer to an AlphaSBase object. */
   typedef Ptr<AlphaSBase>::pointer ASPtr;
+  /** Declare a pointer to n CKMBase object. */
   typedef Ptr<CKMBase>::pointer CKMPtr;
+  /** Declare a transient pointer to an AlphaEMBase object. */
   typedef Ptr<AlphaEMBase>::transient_pointer tAEMPtr;
+  /** Declare a transient pointer to an AlphaSBase object. */
   typedef Ptr<AlphaSBase>::transient_pointer tASPtr;
+  /** Declare a transient pointer to a CKMBase object. */
   typedef Ptr<CKMBase>::transient_pointer tCKMPtr;
 
 public:

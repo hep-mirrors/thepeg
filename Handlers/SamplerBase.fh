@@ -5,6 +5,7 @@
 // This is the forward declaration of the SamplerBase class.
 //
 
+#include "ThePEG/Config/ThePEG.h"
 
 namespace ThePEG {
 

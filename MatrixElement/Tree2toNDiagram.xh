@@ -10,7 +10,9 @@
 
 namespace ThePEG {
 
+/** Exception class used by Tree2toNDiagram to signal inconsistencies. */
 struct Tree2toNDiagramError: public Exception {
+  /** Default constructor. */
   Tree2toNDiagramError();
 };
 

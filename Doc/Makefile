@@ -6,3 +6,5 @@ include ../Config/Makefile.common
 distclean: clean
 	rm -f *.html h2html
 
+refman:
+	doxygen refman.conf

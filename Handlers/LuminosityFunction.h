@@ -31,6 +31,7 @@ namespace ThePEG {
  */
 class LuminosityFunction: public HandlerBase, public LastXCombInfo<> {
 
+  /** EventHandler is a friend. */
   friend class EventHandler;
 
 public:
