@@ -6,6 +6,7 @@
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/Utilities/ObjectIndexer.h"
 #include "ThePEG/Utilities/Exception.h"
+#include "ThePEG/PDF/PartonBinInstance.h"
 #include "LesHouchesReader.fh"
 #include <cstdio>
 
@@ -126,6 +127,12 @@ public:
    * number is taken from NUP.
    */
   inline static size_t eventSize(int N);
+
+  /**
+   * The pair of PartonBinInstance objects describing the current
+   * incoming partons in the event.
+   */
+  inline const PBIPair & partonBinInstances() const;
 
   /**
    * Return the instances of the beam particles for the current event.
@@ -304,10 +311,31 @@ protected:
   /** @name Auxilliary virtual methods which may be verridden by sub-classes. */
   //@{
   /**
+   * Check the existence of a pair of PartonBin objects corresponding
+   * to the current event.
+   *
+   * @return false if no pair of suitable PartonBin objects was found.
+   */
+  virtual bool checkPartonBin();
+
+  /**
+   * Given a pair of PartonBin objects, \a pbp, construct the
+   * corresponding PartonBinInstance objects making them available
+   * with partonBinInstances().
+   */
+  void setPartonBinInstances(const PBPair & pbp);
+
+  /**
    * Create instances of all particles in the event and store them
    * in particleIndex.
    */
   virtual void createParticles();
+
+  /**
+   * Using the already created particles create a pair of
+   * PartonBinInstance objects corresponding to the incoming partons.
+   */
+  virtual void createPartonBinInstances();
 
   /**
    * Create instances of the incoming beams in the event and store
@@ -660,6 +688,12 @@ protected:
    * Number of accepted events per process number.
    */
   CountMap theAcceptMap;
+
+  /**
+   * The pair of PartonBinInstance objects describing the current
+   * incoming partons in the event.
+   */
+  PBIPair thePartonBinInstances;
 
   /**
    * Association between ColourLines and colour indices in the current

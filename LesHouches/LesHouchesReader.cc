@@ -20,6 +20,8 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/PDF/PartonExtractor.h"
+#include "ThePEG/PDF/PartonBin.h"
+#include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/RandomGenerator.h"
 #include "ThePEG/Handlers/KinematicalCuts.h"
@@ -50,6 +52,7 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     theCacheFileName(x.theCacheFileName), doRandomize(x.doRandomize),
     theNAttempted(x.theNAttempted), theAttemptMap(x.theAttemptMap),
     theNAccepted(x.theNAccepted), theAcceptMap(x.theAcceptMap),
+    thePartonBinInstances(x.thePartonBinInstances),
     theCacheFile(NULL) {}
 
 LesHouchesReader::~LesHouchesReader() {}
@@ -110,6 +113,10 @@ void LesHouchesReader::scan() {
     weighted(false);
     negativeWeights(false);
     for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
+      if ( !checkPartonBin() ) throw LesHouchesInitError()
+	<< "Found event in LesHouchesReader '" << name()
+	<< "' which cannot be handeled by the assigned PartonExtractor '"
+	<< partonExtractor()->name() << "'." << Exception::runerror;
       if ( cacheFile() != NULL ) {
 	// We are caching events. Remember where they were written in
 	// case we want to randomize
@@ -222,6 +229,131 @@ double LesHouchesReader::getEvent() {
   return XWGTUP/maxWeight();
 }
 
+bool LesHouchesReader::checkPartonBin() {
+
+  // First find the positions of the incoming partons.
+  pair< vector<int>, vector<int> > inc;
+  for ( int i = 0; i < NUP; ++i ) {
+    if ( ISTUP[i] == -9 ) {
+      if ( inc.first.empty() ) inc.first.push_back(i);
+      else if ( inc.second.empty() ) inc.second.push_back(i);
+    }
+    else if ( ISTUP[i] == -1 ) {
+      if ( inc.first.size() && MOTHUP[i].first == inc.first.back() + 1 )
+	inc.first.push_back(i);
+      else if ( inc.second.size() && MOTHUP[i].first == inc.second.back() + 1 )
+	inc.second.push_back(i);
+      else if ( inc.first.empty() ) {
+	inc.first.push_back(-1);
+	inc.first.push_back(i);
+      }
+      else if ( inc.second.empty() ) {
+	inc.second.push_back(-1);
+	inc.second.push_back(i);
+      }
+      else if ( inc.first.size() <= inc.second.size() )
+	inc.first.push_back(i);
+      else
+	inc.second.push_back(i);
+    }
+  }
+
+  // Now store the corresponding id numbers
+  pair< vector<long>, vector<long> > ids;
+  ids.first.push_back(inc.first[0] < 0? IDBMUP.first: IDUP[inc.first[0]]);
+  for ( int i = 1, N = inc.first.size(); i < N; ++i )
+    ids.first.push_back(IDUP[inc.first[i]]);
+  ids.second.push_back(inc.second[0] < 0? IDBMUP.second: IDUP[inc.second[0]]);
+  for ( int i = 1, N = inc.second.size(); i < N; ++i )
+    ids.second.push_back(IDUP[inc.second[i]]);
+
+  // Find the correct pair of parton bins.
+  PBPair pbp;
+  for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
+    tcPBPtr curr = partonBins()[i].first;
+    int icurr = inc.first.size() - 1;
+    while ( curr && icurr >= 0 ) {
+      if ( curr->parton()->id () != ids.first[icurr] ) break;
+      curr = curr->incoming();
+      --icurr;
+    }
+    if ( curr || icurr >= 0 ) continue;
+
+    curr = partonBins()[i].second;
+    icurr = inc.second.size() - 1;
+    while ( curr && icurr >= 0 ) {
+      if ( curr->parton()->id () != ids.second[icurr] ) break;
+      curr = curr->incoming();
+      --icurr;
+    }
+    if ( curr || icurr >= 0 ) continue;
+
+    pbp = partonBins()[i];
+  }
+
+  // If we are only checking we return here.
+  return ( pbp.first && pbp.second );
+
+}
+
+void LesHouchesReader::setPartonBinInstances(const PBPair & pbp) {
+  thePartonBinInstances = PBIPair(new_ptr(PartonBinInstance(pbp.first)),
+				  new_ptr(PartonBinInstance(pbp.second)));
+}
+
+void LesHouchesReader::createPartonBinInstances() {
+  PBPair sel;
+  for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
+    tcPBPtr bin = partonBins()[i].first;
+    tPPtr p = incoming().first;
+    while ( bin && p ) {
+      if ( p->dataPtr() != bin->parton() ) continue;
+      bin = bin->incoming();
+      p = p->parents().size()? p->parents()[0]: tPPtr();
+    }
+    if ( bin || p ) continue;
+    bin = partonBins()[i].second;
+    p = incoming().second;
+    while ( bin && p ) {
+      if ( p->dataPtr() != bin->parton() ) continue;
+      bin = bin->incoming();
+      p = p->parents().size()? p->parents()[0]: tPPtr();
+    }
+    if ( bin || p ) continue;
+    sel = partonBins()[i];
+    break;
+  }
+  if ( !sel.first || !sel.second ) throw LesHouchesInconsistencyError()
+    << "Could not find appropriate PartonBin objects for event produced by "
+    << "LesHouchesReader '" << name() << "'." << Exception::runerror;
+
+  setPartonBinInstances(sel);
+
+  // Now set the x and Q2 values
+  tPBIPtr curr = partonBinInstances().first;
+  tPPtr parton = incoming().first;
+  Energy2 scale = sqr(SCALUP*GeV);
+  while ( curr && curr->incoming() && parton && parton->parents().size() ) {
+    tPPtr parent = parton->parents()[0];
+    double x = parton->momentum().plus()/parent->momentum().plus();
+    curr->reset(-log(x), scale);
+    curr = curr->incoming();
+    scale = abs(parent->momentum().m2());
+  }
+  curr = partonBinInstances().second;
+  parton = incoming().second;
+  scale = sqr(SCALUP*GeV);
+  while ( curr && curr->incoming() && parton && parton->parents().size() ) {
+    tPPtr parent = parton->parents()[0];
+    double x = parton->momentum().minus()/parent->momentum().minus();
+    curr->reset(-log(x), scale);
+    curr = curr->incoming();
+    scale = abs(parent->momentum().m2());
+  }
+
+}
+		     
+
 void LesHouchesReader::createParticles() {
   theBeams = PPair();
   theIncoming = PPair();
@@ -248,6 +380,10 @@ void LesHouchesReader::createParticles() {
     case -1:
       if ( !theIncoming.first ) theIncoming.first = p;
       else if ( !theIncoming.second ) theIncoming.second = p;
+      else if ( particleIndex(theIncoming.first) == MOTHUP[i].first )
+	theIncoming.first = p;
+      else if ( particleIndex(theIncoming.second) == MOTHUP[i].first )
+	theIncoming.second = p;
       else throw LesHouchesInconsistencyError()
 	<< "To many incoming particles to hard subprocess in the "
 	<< "LesHouchesReader '"	<< name() << "'." << Exception::runerror;

@@ -197,4 +197,8 @@ inline const KinematicalCuts & LesHouchesReader::cuts() const {
   return *theCuts;
 }
 
+inline const PBIPair & LesHouchesReader::partonBinInstances() const {
+  return thePartonBinInstances;
+}
+
 }
