@@ -11,10 +11,7 @@ namespace ThePEG {
 
 class WidthGenerator;
 
-typedef Ptr<WidthGenerator>::pointer WidthGeneratorPtr;
-typedef Ptr<WidthGenerator>::const_pointer cWidthGeneratorPtr;
-typedef Ptr<WidthGenerator>::transient_pointer tWidthGeneratorPtr;
-typedef Ptr<WidthGenerator>::transient_const_pointer tcWidthGeneratorPtr;
+ThePEG_DECLARE_POINTERS(WidthGenerator,WidthGeneratorPtr);
 
 }
 

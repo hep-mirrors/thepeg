@@ -11,10 +11,7 @@ namespace ThePEG {
 
 class MassGenerator;
 
-typedef Ptr<MassGenerator>::pointer MassGenPtr;
-typedef Ptr<MassGenerator>::const_pointer cMassGenPtr;
-typedef Ptr<MassGenerator>::transient_pointer tMassGenPtr;
-typedef Ptr<MassGenerator>::transient_const_pointer tcMassGenPtr;
+ThePEG_DECLARE_POINTERS(MassGenerator,MassGenPtr);
 
 }
 

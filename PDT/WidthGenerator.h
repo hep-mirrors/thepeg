@@ -1,21 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_WidthGenerator_H
 #define ThePEG_WidthGenerator_H
-//
-// This is the declaration of the <!id>WidthGenerator<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>WidthGenerator<!!id> is an abstract base class to be used to
-// encapsulate models for giving the partial decay width of a
-// <!class>ParticleData<!!class> given the specified
-// <!class>DecayMode<!!class>s.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:ParticleData.html">ParticleData.h</a>,
-// <a href="http:DecayMode.html">DecayMode.h</a>.
-// 
+// This is the declaration of the WidthGenerator class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include "WidthGenerator.fh"
@@ -26,62 +12,117 @@
 
 namespace ThePEG {
 
+/**
+ * WidthGenerator is an abstract base class to be used to encapsulate
+ * models for giving the partial decay width of a ParticleData given
+ * the specified DecayModes.
+ *
+ * @see ParticleData,
+ * @see DecayMode.
+ * 
+ */
 class WidthGenerator: public Interfaced {
 
 public:
 
+  /** A selector of <code>DecayModes</code>s weighted by their
+   *  branching ratios. */
   typedef Selector<tDMPtr> DecayMap;
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline WidthGenerator();
+
+  /**
+   * Copy-constructor.
+   */
   inline WidthGenerator(const WidthGenerator &);
+
+  /**
+   * Destructor.
+   */
   virtual ~WidthGenerator();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
+  /** @name Virtual functions to be overridden by sub-classes. */
+  //@{
+  /**
+   * Return true if this object can be used for the given particle
+   * type with the given decay map.
+   */
   virtual bool accept(const ParticleData &) const = 0;
-  // Return true if this rater can be used for the given particle with
-  // the given decay map.
 
+  /**
+   * Given a Particle, calculate a width.
+   */
   Energy width(const Particle &) const;
+
+  /**
+   * Given a particle type and a mass of an instance of that particle
+   * type, calculate a width.
+   */
   virtual Energy width(const ParticleData &, Energy m) const = 0;
-  // Given a particle type and a mass of an instance of that particle
-  // type, calculate a width.
 
+  /**
+   * Given a particle type and a mass and a width of an instance of
+   * that particle type, generate a life time.
+   */
   virtual Length lifeTime(const ParticleData &, Energy m, Energy w) const;
-  // Given a particle type and a mass and a width of an instance of
-  // that particle type, generate a life time.
 
+  /**
+   * Return decay map for the given particle type.
+   */
   virtual DecayMap rate(const ParticleData &) const = 0;
-  // Initialize the given decay map for the given particle type.
 
+  /**
+   * Return a decay map for a given Particle instance.
+   */
   virtual DecayMap rate(const Particle &);
-  // Return a decay map for a given particleinstance.
+  //@}
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 private:
 
+  /**
+   * The static object used to initialize the description of this class.
+   * Indicates that this is an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<WidthGenerator> initWidthGenerator;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   WidthGenerator & operator=(const WidthGenerator &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the base classes
+ *  of WidthGenerator. */
 template <>
 struct BaseClassTrait<WidthGenerator,1> {
+  /** Typedef of the first base class of WidthGenerator. */
   typedef Interfaced NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  WidthGenerator class. */
 template <>
 struct ClassTraits<WidthGenerator>: public ClassTraitsBase<WidthGenerator> {
-  static string className() { return "/ThePEG/WidthGenerator"; }
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::WidthGenerator"; }
 };
 
 }

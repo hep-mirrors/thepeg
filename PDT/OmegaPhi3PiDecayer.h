@@ -1,20 +1,7 @@
 // -*- C++ -*-
 #ifndef THEPEG_OmegaPhi3PiDecayer_H
 #define THEPEG_OmegaPhi3PiDecayer_H
-//
-// This is the declaration of the <!id>OmegaPhi3PiDecayer<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// This class performs the decay of a phi or an omega into pi+ pi-
-// p0. It will in fact decay anything into pi+ pi- p0 assuming the
-// same matrix element.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:FlatDecayer.html">FlatDecayer.h</a>,
-// <a href="http:ParticleData.html">ParticleData.h</a>.
-// 
+// This is the declaration of the OmegaPhi3PiDecayer class.
 
 #include "ThePEG/PDT/FlatDecayer.h"
 // #include "OmegaPhi3PiDecayer.fh"
@@ -22,101 +9,209 @@
 
 namespace ThePEG {
 
+/**
+ * The OmegaPhi3PiDecayer class inherits from performs FlatDecayer and
+ * will reweight the flat phase space suitable to describe the decay
+ * of a \f$\phi\f$ or an \f$\omega\f$ into \f$\pi^+\pi^-\pi^0\f$. It
+ * will in fact decay anything into \f$\pi^+\pi^-\pi^0\f$ assuming the
+ * same matrix element.
+ *
+ * @see FlatDecayer,
+ * @see ParticleData.
+ * 
+ */
 class OmegaPhi3PiDecayer: public FlatDecayer {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline OmegaPhi3PiDecayer();
+
+  /**
+   * Copy-constructor.
+   */
   inline OmegaPhi3PiDecayer(const OmegaPhi3PiDecayer &);
+
+  /**
+   * Destructor.
+   */
   virtual ~OmegaPhi3PiDecayer();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
-  virtual bool accept(const DecayMode &) const;
-  // return true if this decayer can perfom the decay specified by the
-  // given decay mode.
+  /** @name Virtual functions required by the Decayer class.
+   */
+  //@{
+  /**
+   * Check if this decayer can perfom the decay specified by the
+   * given decay mode.
+   * @param dm the DecayMode describing the decay.
+   * @return true if this decayer can handle the given mode, otherwise false.
+   */
+  virtual bool accept(const DecayMode & dm) const;
 
-  virtual double reweight(const DecayMode &, const Particle & parent,
-				 const ParticleVector & children) const;
-  // For a given decay mode, decaying particle and decayproducts
-  // distributed according to a flat distribution in phase space,
-  // return a weight (less or equal to unity) modifying the flat
-  // distribution to the desired one. Note that the chosen phase space
-  // point may be rejected, but the chosen decay channel will
-  // not. This means that the weight returned by this function does
-  // not influence the branching ratios.
+  /**
+   * Give a weight to a phase space point. To be overridden by
+   * subclasses. For a given decay mode, \a dm, decaying \a parent
+   * particle and decayproducts, \a children, distributed according to
+   * a flat distribution in phase space, return a weight (less or
+   * equal to unity) modifying the flat distribution to the desired
+   * one. Note that the chosen phase space point may be rejected, but
+   * the chosen decay channel will not. This means that the weight
+   * returned by this function does not influence the branching
+   * ratios.
+   */
+  virtual double reweight(const DecayMode & dm, const Particle & parent,
+			  const ParticleVector & children) const;
+  //@}
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
 
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
+
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+
+protected:
+
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 
 protected:
 
-  inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+protected:
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
+  inline virtual void doupdate() throw(UpdateException);
+
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given
+   * pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this
+   * object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Used to multiply the bare weight to get something below unity. In
+   * the Fortran pythia version it was set to 150 for unknown reasons.
+   */
   double margin;
-  // Used to multiply the bare weight to get something below unity. In
-  // the Fortran pythia version it was set to 150 for unknown reasons.
 
 private:
 
+  /**
+   * Describe a concrete class with persistent data.
+   */
   static ClassDescription<OmegaPhi3PiDecayer> initOmegaPhi3PiDecayer;
-  // Describe a concrete class with persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   OmegaPhi3PiDecayer & operator=(const OmegaPhi3PiDecayer &);
-  // Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of OmegaPhi3PiDecayer.
+/** This template specialization informs ThePEG about the base classes
+ *  of OmegaPhi3PiDecayer. */
 template <>
 struct BaseClassTrait<OmegaPhi3PiDecayer,1> {
+  /** Typedef of the first base class of OmegaPhi3PiDecayer. */
   typedef FlatDecayer NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/** This template specialization informs ThePEG about the name of the
+ *  OmegaPhi3PiDecayer class and the shared object where it is
+ *  defined. */
 template <>
 struct ClassTraits<OmegaPhi3PiDecayer>
   : public ClassTraitsBase<OmegaPhi3PiDecayer> {
+  /** Return a platform-independent class name */
   static string className() { return "ThePEG::OmegaPhi3PiDecayer"; }
-  // Return the class name.
+  /** Return the name of the shared library be loaded to get access to
+   *  the OmegaPhi3PiDecayer class and every other class it uses
+   *  (except the base class). */
   static string library() { return "OmegaPhi3PiDecayer.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
 };
 
 }

@@ -1,27 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_FlatDecayer_H
 #define ThePEG_FlatDecayer_H
-//
-// This is the declaration of the <!id>FlatDecayer<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>FlatDecayer<!!id> class inrerits from the abstract
-// <!class>Decayer<!!class> and implements the decay of a given
-// <!class>Particle<!!class> to a given set of children according to a
-// flat phase space distribution.
-//
-// It is possible to implement a more complicated decay distribution
-// by inheriting from the <!id>FlatDecayer<!!id> class and only
-// override the virtual function <!id>reweight<!!id> to return a
-// weight of a given phase space point relative to the flat
-// distribution.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Decayer.html">Decayer.h</a>,
-// <a href="http:Particle.html">Particle.h</a>.
-// 
+// This is the declaration of the FlatDecayer class.
 
 #include "ThePEG/PDT/Decayer.h"
 // #include "FlatDecayer.fh"
@@ -29,93 +9,185 @@
 
 namespace ThePEG {
 
+/**
+ * The FlatDecayer class inrerits from the abstract Decayer class and
+ * implements the decay of a given Particle to a given set of children
+ * according to a flat phase space distribution.
+ *
+ * It is possible to implement a more complicated decay distribution
+ * by inheriting from the FlatDecayer class and only override the
+ * virtual function reweight() to return a weight (between zero and
+ * one) of a given phase space point relative to the flat
+ * distribution.
+ *
+ *
+ * @see Decayer,
+ * @see Particle.
+ * 
+ */
 class FlatDecayer: public Decayer {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline FlatDecayer();
+
+  /**
+   * Copy-constructor.
+   */
   inline FlatDecayer(const FlatDecayer &);
+
+  /**
+   * Destructor.
+   */
   virtual ~FlatDecayer();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Virtual functions required by the Decayer class.
+   */
+  //@{
+  /**
+   * Check if this decayer can perfom the decay specified by the
+   * given decay mode.
+   * @param dm the DecayMode describing the decay.
+   * @return true if this decayer can handle the given mode, otherwise false.
+   */
   virtual bool accept(const DecayMode &) const;
-  // return true if this decayer can perfom the decay specified by the
-  // given decay mode. Will return <!id>true<!!id> if all decay
-  // products are completely specified and there are more than one of
-  // them.
 
+  /**
+   * Perform a decay for a given DecayMode and a given Particle instance.
+   * @param dm the DecayMode describing the decay.
+   * @param p the Particle instance to be decayed.
+   * @return a ParticleVector containing the decay products.
+   */
   virtual ParticleVector decay(const DecayMode &, const Particle &) const;
-  // For a given decay mode and a given particle instance, perform the
-  // decay and return the decay products.
 
-  inline virtual double reweight(const DecayMode &, const Particle & parent,
+  /**
+   * Give a weight to a phase space point. To be overridden by
+   * subclasses. For a given decay mode, \a dm, decaying \a parent
+   * particle and decayproducts, \a children, distributed according to
+   * a flat distribution in phase space, return a weight (less or
+   * equal to unity) modifying the flat distribution to the desired
+   * one. Note that the chosen phase space point may be rejected, but
+   * the chosen decay channel will not. This means that the weight
+   * returned by this function does not influence the branching
+   * ratios. For the FlatDecayer class this function simply returns 1.
+   */
+  inline virtual double reweight(const DecayMode &dm, const Particle & parent,
 				 const ParticleVector & children) const;
-  // To be overridden by subclasses. For a given decay mode, decaying
-  // particle and decayproducts distributed according to a flat
-  // distribution in phase space, return a weight (less or equal to
-  // unity) modifying the flat distribution to the desired one. Note
-  // that the chosen phase space point may be rejected, but the chosen
-  // decay channel will not. This means that the weight returned by
-  // this function does not influence the branching ratios. For the
-  // FlatDecayer class this function simply returns 1.
+  //@}
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given
+   * pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this
+   * object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<FlatDecayer> initFlatDecayer;
-  // Describe a concrete class without persistent data.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   FlatDecayer & operator=(const FlatDecayer &);
-  //  Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of FlatDecayer.
+/** This template specialization informs ThePEG about the base classes
+ *  of FlatDecayer. */
 template <>
 struct BaseClassTrait<FlatDecayer,1> {
+  /** Typedef of the first base class of FlatDecayer. */
   typedef Decayer NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/** This template specialization informs ThePEG about the name of the
+ *  FlatDecayer class. */
 template <>
 struct ClassTraits<FlatDecayer>: public ClassTraitsBase<FlatDecayer> {
-  static string className() { return "/ThePEG/FlatDecayer"; }
-  // Return the class name.
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::FlatDecayer"; }
 };
 
 }

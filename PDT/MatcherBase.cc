@@ -182,6 +182,10 @@ void MatcherBase::persistentInput(PersistentIStream & is, int) {
      >> theAntiPartner;
 }
 
+void MatcherBase::rebind(const TranslationMap & trans) throw(RebindException) {
+  Interfaced::rebind(trans);
+}
+
 AbstractClassDescription<MatcherBase> MatcherBase::initMatcherBase;
 
 void MatcherBase::Init() {}

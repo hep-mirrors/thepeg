@@ -32,23 +32,23 @@ inline const MatcherSet & MatcherBase::matchers() const {
   return matchingMatchers;
 }
 
-inline double MatcherBase::mass() const {
+inline Energy MatcherBase::mass() const {
   return commonMass;
 }
 
-inline double MatcherBase::minMass() const {
+inline Energy MatcherBase::minMass() const {
   return theMinMass;
 }
 
-inline double MatcherBase::maxMass() const {
+inline Energy MatcherBase::maxMass() const {
   return theMaxMass;
 }
 
-inline double MatcherBase::width() const {
+inline Energy MatcherBase::width() const {
   return commonWidth;
 }
 
-inline double MatcherBase::cTau() const {
+inline Length MatcherBase::cTau() const {
   return commonCTau;
 }
 
