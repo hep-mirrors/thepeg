@@ -1,3 +1,19 @@
+2003-08-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
+	QuarksToHadronsDecayer instead of dummy PYDECY13.
+
+	* PDT/QuarksToHadronsDecayer.cc: Fixed vaious bugs. Seems to work
+	now, but physics not tested.
+
+	* Handlers/SimpleFlavour.cc: Fixed bug in generateHadron() when
+	argument was anti-quark and and in setProbabilities() for diquark
+	production. Fixed anti-particle bug in vectorMeson() and
+	pseudoScalarMeson(). THe class seems to work now but physics not
+	tested.
+
+	* Handlers/FlavourGenerator.cc: Just changed error messages.
+
 2003-08-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/FlavourGenerator.*: Added 'always' wrapper functions

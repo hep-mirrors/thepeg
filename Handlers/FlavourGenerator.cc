@@ -39,7 +39,7 @@ tcPDPtr FlavourGenerator::
 alwaysGetBaryon(tcPDPtr q1, tcPDPtr q2, tcPDPtr q3) const {
   tcPDPtr ret = getBaryon(q1, q2, q3);
   if ( !ret ) throw FlavourGeneratorException()
-    << "Flavour generator '" << name() << "' was not able to generate a "
+    << "Flavour generator '" << name() << "' was not able to get a "
     << "baryon from the flavours " << q1->PDGName() << "," << q2->PDGName()
     << " and " << q3->PDGName() << "." << Exception::runerror;
   return ret;
@@ -48,7 +48,7 @@ alwaysGetBaryon(tcPDPtr q1, tcPDPtr q2, tcPDPtr q3) const {
 tcPDPtr FlavourGenerator::alwaysGetBaryon(long iq1, long iq2, long iq3) const {
   tcPDPtr ret = getBaryon(iq1, iq2, iq3);
   if ( !ret ) throw FlavourGeneratorException()
-    << "Flavour generator '" << name() << "' was not able to generate a "
+    << "Flavour generator '" << name() << "' was not able to get a "
     << "baryon from the flavours " << iq1 << "," << iq2 << " and " << iq3
     << "." << Exception::runerror;
   return ret;
@@ -65,7 +65,7 @@ tcPDPtr FlavourGenerator::getHadron(long iq1, long iq2) const {
 tcPDPtr FlavourGenerator::alwaysGetHadron(tcPDPtr q1, tcPDPtr q2) const {
   tcPDPtr ret = getHadron(q1, q2);
   if ( !ret ) throw FlavourGeneratorException()
-    << "Flavour generator '" << name() << "' was not able to generate a "
+    << "Flavour generator '" << name() << "' was not able to get a "
     << "hadron from the flavours " << q1->PDGName() << " and "
     << q2->PDGName() << "." << Exception::runerror;
   return ret;
@@ -74,7 +74,7 @@ tcPDPtr FlavourGenerator::alwaysGetHadron(tcPDPtr q1, tcPDPtr q2) const {
 tcPDPtr FlavourGenerator::alwaysGetHadron(long iq1, long iq2) const {
   tcPDPtr ret = getHadron(iq1, iq2);
   if ( !ret ) throw FlavourGeneratorException()
-    << "Flavour generator '" << name() << "' was not able to generate a "
+    << "Flavour generator '" << name() << "' was not able to get a "
     << "hadron from the flavours " << iq1 << " and " << iq2 << "."
     << Exception::runerror;
   return ret;

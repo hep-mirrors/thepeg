@@ -25,7 +25,23 @@ using namespace ThePEG;
 QuarksToHadronsDecayer::~QuarksToHadronsDecayer() {}
 
 bool QuarksToHadronsDecayer::accept(const DecayMode & dm) const {
-  return false;
+  if ( dm.orderedProducts().size() < 2 || !dm.cascadeProducts().empty() ||
+       !dm.productMatchers().empty() || dm.wildProductMatcher() ) return false;
+  int col = 0;
+  int acol = 0;
+  for ( int i = 0, N = dm.orderedProducts().size(); i < N; ++i ) {
+    if ( DiquarkMatcher::Check(*dm.orderedProducts()[i]) ) {
+      if ( i + 1 != N ) return false;
+      if ( dm.orderedProducts()[i]->id() < 0 ) ++col;
+      else ++acol;
+    }
+    if ( QuarkMatcher::Check(*dm.orderedProducts()[i]) ) {
+      if ( dm.orderedProducts()[i]->id() > 0 ) ++col;
+      else ++acol;
+    }
+  }
+  if ( acol != col || col < 1 || col > 2 ) return false;
+  return true;
 }
 
 PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
@@ -36,7 +52,7 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
   Energy summq = 0.0*GeV;
   Energy summp = 0.0*GeV;
   for ( int i = 0, N = prods.size(); i < N; ++i )
-    if ( QuarkMatcher::Check(*prods[i]) ) {
+    if ( QuarkMatcher::Check(*prods[i]) || DiquarkMatcher::Check(*prods[i])) {
       quarks.push_back(prods[i]);
       summq += quarks.back()->mass();
     } else {
@@ -51,10 +67,11 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
 
     hadrons = getHadrons(getN(parent.mass(), summq, quarks.size()), quarks);
 
+    summh = 0.0*GeV;
     for ( int i = 0, N = hadrons.size(); i < N; ++i )
       summh += hadrons[i]->mass();
 
-  } while ( summp + summh >= parent.mass() );
+  } while ( hadrons.empty() || summp + summh >= parent.mass() );
 
   children.insert(children.end(), hadrons.begin(), hadrons.end());
 
@@ -88,11 +105,15 @@ getHadrons(int Nh, tcPDVector quarks) const {
     hadrons.push_back(hq.first->produceParticle());
     quarks[i] = hq.second;
   }
-  hadrons.push_back(flavourGenerator()->
-		    alwaysGetHadron(quarks[0], quarks[1])->produceParticle());
+  if ( DiquarkMatcher::Check(*quarks[0]) && DiquarkMatcher::Check(*quarks[1]) )
+    return PVector();
+  tcPDPtr h = flavourGenerator()->alwaysGetHadron(quarks[0], quarks[1]);
+  hadrons.push_back(h->produceParticle());
   if ( quarks.size() <= 2 ) return hadrons;
-  hadrons.push_back(flavourGenerator()->
-		    alwaysGetHadron(quarks[2], quarks[3])->produceParticle());
+  if ( DiquarkMatcher::Check(*quarks[2]) && DiquarkMatcher::Check(*quarks[3]) )
+    return PVector();
+  h = flavourGenerator()->alwaysGetHadron(quarks[2], quarks[3]);
+  hadrons.push_back(h->produceParticle());
   return hadrons;
 }
 
@@ -106,7 +127,7 @@ distribute(const Particle & parent, PVector & children) const {
       children.clear();
       return;
     }
-  } while ( reweight(parent, children) > rnd() );
+  } while ( reweight(parent, children) < rnd() );
 }
 
 double QuarksToHadronsDecayer::

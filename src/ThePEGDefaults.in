@@ -10,6 +10,9 @@ create ThePEG::V2PPDecayer /Defaults/Decayers/V2PP V2PPDecayer.so
 create ThePEG::DalitzDecayer /Defaults/Decayers/Dalitz DalitzDecayer.so
 create ThePEG::Tau2HadronsDecayer /Defaults/Decayers/Tau2Hadrons Tau2HadronsDecayer.so
 create ThePEG::Onium3GDecayer /Defaults/Decayers/Onium3G Onium3GDecayer.so
+create ThePEG::QuarksToHadronsDecayer /Defaults/Decayers/QsToHadrons QuarksToHadronsDecayer.so
+cp /Defaults/Decayers/QsToHadrons /Defaults/Decayers/QsTo3PlusHadrons
+set /Defaults/Decayers/QsTo3PlusHadrons:MinN 3
 create ThePEG::DummyDecayer /Defaults/Decayers/Dummy DummyDecayer.so
 create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY11
 setup /Dummy/Decayers/PYDECY11 11
@@ -61,6 +64,8 @@ cd /Defaults/Handlers/Hadronization
 create ThePEG::ClusterCollapser SimpleCollapser
 create ThePEG::SimpleFlavour SimpleFlavour SimpleFlavour.so
 set SimpleCollapser:FlavourGenerator SimpleFlavour
+set /Defaults/Decayers/QsTo3PlusHadrons:FlavourGenerator SimpleFlavour
+set /Defaults/Decayers/QsToHadrons:FlavourGenerator SimpleFlavour
 
 cd /Defaults/Partons
 create ThePEG::NoRemnants NoRemnants
