@@ -1,10 +1,10 @@
 SOURCES = HelicityVertex.cc LorentzPolarizationVector.cc LorentzSpinor.cc \
           LorentzSpinorBar.cc LorentzTensor.cc RhoDMatrix.cc SpinInfo.cc \
-          FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc
+          FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc TensorSpinInfo.cc
 
 LIBOBJECTS = HelicityVertex.o LorentzPolarizationVector.o LorentzSpinor.o \
              LorentzSpinorBar.o LorentzTensor.o RhoDMatrix.o SpinInfo.o \
-             FermionSpinInfo.o VectorSpinInfo.o ScalarSpinInfo.o
+             FermionSpinInfo.o VectorSpinInfo.o ScalarSpinInfo.o TensorSpinInfo.o
 
 OBJECTS = libThePEGHelicity.so
 
@@ -12,7 +12,7 @@ LIBFILES = $(OBJECTS)
 
 DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
            LorentzSpinorBar.h LorentzTensor.h RhoDMatrix.h SpinInfo.h \
-           FermionSpinInfo.h VectorSpinInfo.h ScalarSpinInfo.h
+           FermionSpinInfo.h VectorSpinInfo.h ScalarSpinInfo.h TensorSpinInfo.h
 
 INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                LorentzPolarizationVector.icc LorentzSpinor.fh \
@@ -21,6 +21,7 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                SpinInfo.fh SpinInfo.icc FermionSpinInfo.fh \
                FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
                ScalarSpinInfo.fh ScalarSpinInfo.icc \
+               TensorSpinInfo.fh TensorSpinInfo.icc \
                HelicityDefinitions.h
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
