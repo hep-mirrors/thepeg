@@ -35,6 +35,20 @@ PartonBinInstance::PartonBinInstance(tcPBPtr pb, tPBIPtr pbi)
     theIncoming = new_ptr(PartonBinInstance(bin()->incoming()));
 }
 
+PartonBinInstance::PartonBinInstance(tPPtr part, tcPBPtr pb, Energy2 scale)
+  : theBin(pb), theJacobian(1.0), theParton(part), theXi(-1.0), theEps(-1.0),
+    theLi(-1.0), theX(-1.0), theL(-1.0), theScale(scale),
+    theRemnantWeight(1.0) {
+  if ( !pb->incoming() || part->parents().empty() ) return;
+  particle(parton()->parents()[0]);
+  Energy2 P2 = max(-particle()->momentum().m2(), 0.0*GeV2);
+  theXi = parton()->momentum().dirPlus()/particle()->momentum().dirPlus();
+  theLi = -log(xi());
+  theIncoming = new_ptr(PartonBinInstance(particle(), pb->incoming(), P2));
+  theX = xi()*incoming()->x();
+  theL = li() + incoming()->li();
+}
+
 PartonBinInstance::~PartonBinInstance() {}
 
 tPBIPtr PartonBinInstance::getFirst() {

@@ -46,6 +46,26 @@ public:
    * should be used if the incoming bin is already known and exists.
    */
   PartonBinInstance(tcPBPtr, tPBIPtr = tPBIPtr());
+
+  /**
+   * Constructor using an already prepared extracted parton. This will
+   * also initialize the x, and scale values. To calculate the
+   * momentum fractions, a Direction<0> object must have been properly
+   * initialized.
+   *
+   * @param parton the extracted parton which must have its first
+   * parent set to define the particle extracted from.
+   *
+   * @param pb the PartonBin object corresponding to the extracted \a
+   * parton. If the particle extracted from in turn has been
+   * extracted, the incoming() member of the PartonBin must point to
+   * the corresponding PartonBin.
+   *
+   * @param scale the resolution scale at which the \a parton was
+   * extracted.
+   */
+  PartonBinInstance(tPPtr parton, tcPBPtr pb, Energy2 scale = 0.0*GeV2);
+
   //@}
 
 public:

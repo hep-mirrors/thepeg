@@ -113,9 +113,10 @@ public:
 
   /**
    * Converts the information in the Les Houches common block
-   * variables and inserts it in the provided \a event object.
+   * variables into a Collision object and inserts it in the provided
+   * \a event object.
    */
-  virtual void convertEvent(Event & event);
+  virtual void fillEvent(tEventPtr event);
   //@}
 
   /** @name Access information about the current event. */
@@ -317,13 +318,6 @@ protected:
    * @return false if no pair of suitable PartonBin objects was found.
    */
   virtual bool checkPartonBin();
-
-  /**
-   * Given a pair of PartonBin objects, \a pbp, construct the
-   * corresponding PartonBinInstance objects making them available
-   * with partonBinInstances().
-   */
-  void setPartonBinInstances(const PBPair & pbp);
 
   /**
    * Create instances of all particles in the event and store them

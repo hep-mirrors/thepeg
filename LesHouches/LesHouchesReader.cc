@@ -185,13 +185,24 @@ void LesHouchesReader::scan() {
   return;
 }
 
-void LesHouchesReader::convertEvent(Event & event) {
+void LesHouchesReader::fillEvent(tEventPtr event) {
   particleIndex.clear();
   colourIndex.clear();
   colourIndex(0, tColinePtr());
   createParticles();
   createBeams();
   connectMothers();
+  CollPtr coll = new_ptr(Collision(beams(), event, this));
+  //  event->addCollision(coll);
+  StepPtr step = new_ptr(Step(coll));
+  //  coll->addStep(step);
+  SubProPtr sub = new_ptr(SubProcess(incoming(), coll, this));
+  sub->setOutgoing(outgoing().begin(), outgoing().end());
+  sub->setIntermediates(intermediates().begin(), intermediates().end());
+  createPartonBinInstances();
+
+
+  step->addSubProcess(sub);
   ++theNAttempted;
   ++theAttemptMap[IDPRUP];
 }
@@ -296,11 +307,6 @@ bool LesHouchesReader::checkPartonBin() {
 
 }
 
-void LesHouchesReader::setPartonBinInstances(const PBPair & pbp) {
-  thePartonBinInstances = PBIPair(new_ptr(PartonBinInstance(pbp.first)),
-				  new_ptr(PartonBinInstance(pbp.second)));
-}
-
 void LesHouchesReader::createPartonBinInstances() {
   PBPair sel;
   for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
@@ -327,29 +333,12 @@ void LesHouchesReader::createPartonBinInstances() {
     << "Could not find appropriate PartonBin objects for event produced by "
     << "LesHouchesReader '" << name() << "'." << Exception::runerror;
 
-  setPartonBinInstances(sel);
-
-  // Now set the x and Q2 values
-  tPBIPtr curr = partonBinInstances().first;
-  tPPtr parton = incoming().first;
-  Energy2 scale = sqr(SCALUP*GeV);
-  while ( curr && curr->incoming() && parton && parton->parents().size() ) {
-    tPPtr parent = parton->parents()[0];
-    double x = parton->momentum().plus()/parent->momentum().plus();
-    curr->reset(-log(x), scale);
-    curr = curr->incoming();
-    scale = abs(parent->momentum().m2());
-  }
-  curr = partonBinInstances().second;
-  parton = incoming().second;
-  scale = sqr(SCALUP*GeV);
-  while ( curr && curr->incoming() && parton && parton->parents().size() ) {
-    tPPtr parent = parton->parents()[0];
-    double x = parton->momentum().minus()/parent->momentum().minus();
-    curr->reset(-log(x), scale);
-    curr = curr->incoming();
-    scale = abs(parent->momentum().m2());
-  }
+  Direction<0> dir(true);
+  thePartonBinInstances.first =
+    new_ptr(PartonBinInstance(incoming().first, sel.first, sqr(SCALUP*GeV)));
+  dir.reverse();
+  thePartonBinInstances.second =
+    new_ptr(PartonBinInstance(incoming().second, sel.second, sqr(SCALUP*GeV)));
 
 }
 		     
