@@ -21,8 +21,8 @@ void MEQQ2GG::getDiagrams() const {
   for ( int i = 1; i <= maxFlavour(); ++i ) {
     tcPDPtr q = getParticleData(i);
     tcPDPtr qb = q->CC();
-    add(new_ptr((Tree2toNDiagram(3), q, qb, qb, 1, g, 2, g, -1)));
-    add(new_ptr((Tree2toNDiagram(3), q, qb, qb, 2, g, 1, g, -2)));
+    add(new_ptr((Tree2toNDiagram(3), q, q, qb, 1, g, 2, g, -1)));
+    add(new_ptr((Tree2toNDiagram(3), q, q, qb, 2, g, 1, g, -2)));
   }
 }
 
@@ -33,8 +33,8 @@ double MEQQ2GG::me2() const {
 Selector<const ColourLines *>
 MEQQ2GG::colourGeometries(tcDiagPtr diag) const {
 
-  static ColourLines ctST("1 4, -4 -2 5, -5 -3");
-  static ColourLines ctSU("1 5, -5 -2 4, -4 -3");
+  static ColourLines ctST("1 4, -4 2 5, -5 -3");
+  static ColourLines ctSU("1 5, -5 2 4, -4 -3");
 
   Selector<const ColourLines *> sel;
   if ( diag->id() == -1 )

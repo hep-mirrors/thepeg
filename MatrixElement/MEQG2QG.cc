@@ -24,7 +24,7 @@ void MEQG2QG::getDiagrams() const {
     tcPDPtr q = getParticleData(i);
     tcPDPtr qb = q->CC();
     add(new_ptr((Tree2toNDiagram(3), q, g, g, 1, q, 2, g, -1)));
-    add(new_ptr((Tree2toNDiagram(3), q, qb, g, 2, q, 1, g, -2)));
+    add(new_ptr((Tree2toNDiagram(3), q, q, g, 2, q, 1, g, -2)));
     add(new_ptr((Tree2toNDiagram(2), q, g, 1, q, 3, q, 3, g, -3)));
   }
 }
@@ -41,8 +41,8 @@ MEQG2QG::colourGeometries(tcDiagPtr diag) const {
   static ColourLines ctTS("-4 -2 5, -5 -3, 3 2 -1");
   static ColourLines ctUT("1 -2 5, -5 -3, 3 4");
   static ColourLines ctTU("-4 -3, 3 5, -5 2 -1");
-  static ColourLines cuTU("1 5, -5 -2 -3, 3 4");
-  static ColourLines cuUT("-4 -3, 3 2 5, -1 -5");
+  static ColourLines cuTU("1 5, -5 2 -3, 3 4");
+  static ColourLines cuUT("-4 -3, 3 -2 5, -1 -5");
   static ColourLines csST("1 -2, 2 3 5, -5 4");
   static ColourLines csTS("-4 5, -5 -3 -2, 2 -1");
 

@@ -3,7 +3,7 @@ SUBDIRS = CLHEPWrap Config Utilities Repository Interface PDT EventRecord \
 
 DISTFILES = README Makefile configure configure.in
 
-VERSION = 1.0a
+VERSION = 1.0ab
 
 TAG = ThePEG-$(VERSION)
 
