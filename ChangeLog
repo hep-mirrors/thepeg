@@ -1,5 +1,7 @@
 2003-08-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Config/Makefile.common.in: Moved macro for THEPEGLIBS from src/Makefile to Config/Makefile.common
+
 	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
 	QuarksToHadronsDecayer also instead of dummies PYDECY11 and
 	PYDECY12. Also using ColourPairDecayer instead of dummy PYDECY32.

@@ -4,8 +4,6 @@ OBJECTS = runThePEG.o runPartial.o setupThePEG.o
 
 PROGS = runThePEG.exe setupThePEG.exe runPartial
 
-THEPEGLIBS = -lThePEGRepo -lThePEGHandlers -lThePEGPDF -lThePEGME -lThePEGEvent -lThePEGPDT -lThePEGSM -lThePEGInter -lThePEG -lCLHEP
-
 DISTFILES = Makefile SimpleLEP.in setupThePEG.cc setupThePEG \
             setupThePEG.install runPartial.cc runThePEG.cc runThePEG \
             runThePEG.install ThePEGDefaults.in ThePEGParticles.in

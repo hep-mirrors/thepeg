@@ -47,7 +47,9 @@ LIBS = -lm $(DLLIB)
 
 LINKFLAGS = -rdynamic
 
-RPATH = ../lib
+RPATH = $(LIBDIR)
+
+THEPEGLIBS = -lThePEGRepo -lThePEGHandlers -lThePEGPDF -lThePEGME -lThePEGEvent -lThePEGPDT -lThePEGSM -lThePEGInter -lThePEG -lCLHEP
 
 
 all: depend check lib
