@@ -1,0 +1,358 @@
+
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the LorentzRSSpinorBar class.
+//
+// Author: Peter Richardson
+//
+
+namespace ThePEG {
+namespace Helicity {
+
+// inlined function of the LorentzRSSpinorBar class
+// default zero constructor
+inline LorentzRSSpinorBar::LorentzRSSpinorBar(DiracRep dirac) {
+  _dirac=dirac;
+  _type=unknown_spinortype;
+  unsigned int ix,iy;
+  for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_spin[ix][iy]=0.;}}
+}
+
+inline LorentzRSSpinorBar::LorentzRSSpinorBar(SpinorType type, DiracRep dirac) {
+  _dirac=dirac;
+  _type=type;
+  unsigned int ix,iy;
+  for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_spin[ix][iy]=0.;}}
+}
+
+// constructor with complex numbers
+inline LorentzRSSpinorBar::
+LorentzRSSpinorBar(Complex a1,Complex b1, Complex c1,Complex d1,
+		   Complex a2,Complex b2, Complex c2,Complex d2,
+		   Complex a3,Complex b3, Complex c3,Complex d3,
+		   Complex a4,Complex b4, Complex c4,Complex d4,DiracRep dirac) {
+  _dirac=dirac;
+  _type=unknown_spinortype;
+  _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
+  _spin[0][1]=b1;_spin[1][1]=b2;_spin[2][1]=b3;_spin[3][1]=b4;
+  _spin[0][2]=c1;_spin[1][2]=c2;_spin[2][2]=c3;_spin[3][2]=c4;
+  _spin[0][3]=d1;_spin[1][3]=d2;_spin[2][3]=d3;_spin[3][3]=d4;
+}
+
+inline LorentzRSSpinorBar::
+LorentzRSSpinorBar(Complex a1,Complex b1, Complex c1,Complex d1,
+		   Complex a2,Complex b2, Complex c2,Complex d2,
+		   Complex a3,Complex b3, Complex c3,Complex d3,
+		   Complex a4,Complex b4, Complex c4,Complex d4,SpinorType type,
+		   DiracRep dirac) {
+  _dirac=dirac;
+  _type=type;
+  _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
+  _spin[0][1]=b1;_spin[1][1]=b2;_spin[2][1]=b3;_spin[3][1]=b4;
+  _spin[0][2]=c1;_spin[1][2]=c2;_spin[2][2]=c3;_spin[3][2]=c4;
+  _spin[0][3]=d1;_spin[1][3]=d2;_spin[2][3]=d3;_spin[3][3]=d4;
+}
+
+  inline Complex LorentzRSSpinorBar::operator()(int i,int j) const
+{
+  if ( i >= 0 && i <= 3 && j>=0 && j<=3) return _spin[i][j];
+  else throw HelicityLogicalError()
+    << "Invalid component of LorentzRSSpinorBar Requested. Component:" << i << " " << j
+    << Exception::abortnow;
+}
+
+// set components by index
+  inline Complex & LorentzRSSpinorBar::operator () (int i,int j){
+  if ( i>= 0 && i <= 3 && j>=0 && j<=3) return _spin[i][j];
+  throw HelicityLogicalError()
+    << "Invalid index " << i << " " << j << " called for LorentzRSSpinorBar."
+    << Exception::abortnow;
+}
+
+// Get components
+inline Complex LorentzRSSpinorBar::xs1() const {return _spin[0][0];}
+inline Complex LorentzRSSpinorBar::xs2() const {return _spin[0][1];}
+inline Complex LorentzRSSpinorBar::xs3() const {return _spin[0][2];}
+inline Complex LorentzRSSpinorBar::xs4() const {return _spin[0][3];}
+inline Complex LorentzRSSpinorBar::ys1() const {return _spin[1][0];}
+inline Complex LorentzRSSpinorBar::ys2() const {return _spin[1][1];}
+inline Complex LorentzRSSpinorBar::ys3() const {return _spin[1][2];}
+inline Complex LorentzRSSpinorBar::ys4() const {return _spin[1][3];}
+inline Complex LorentzRSSpinorBar::zs1() const {return _spin[2][0];}
+inline Complex LorentzRSSpinorBar::zs2() const {return _spin[2][1];}
+inline Complex LorentzRSSpinorBar::zs3() const {return _spin[2][2];}
+inline Complex LorentzRSSpinorBar::zs4() const {return _spin[2][3];}
+inline Complex LorentzRSSpinorBar::ts1() const {return _spin[3][0];}
+inline Complex LorentzRSSpinorBar::ts2() const {return _spin[3][1];}
+inline Complex LorentzRSSpinorBar::ts3() const {return _spin[3][2];}
+inline Complex LorentzRSSpinorBar::ts4() const {return _spin[3][3];}
+
+// Set components
+inline void LorentzRSSpinorBar::setXS1(Complex in){_spin[0][0]=in;}
+inline void LorentzRSSpinorBar::setXS2(Complex in){_spin[0][1]=in;}
+inline void LorentzRSSpinorBar::setXS3(Complex in){_spin[0][2]=in;}
+inline void LorentzRSSpinorBar::setXS4(Complex in){_spin[0][3]=in;}
+inline void LorentzRSSpinorBar::setYS1(Complex in){_spin[1][0]=in;}
+inline void LorentzRSSpinorBar::setYS2(Complex in){_spin[1][1]=in;}
+inline void LorentzRSSpinorBar::setYS3(Complex in){_spin[1][2]=in;}
+inline void LorentzRSSpinorBar::setYS4(Complex in){_spin[1][3]=in;}
+inline void LorentzRSSpinorBar::setZS1(Complex in){_spin[2][0]=in;}
+inline void LorentzRSSpinorBar::setZS2(Complex in){_spin[2][1]=in;}
+inline void LorentzRSSpinorBar::setZS3(Complex in){_spin[2][2]=in;}
+inline void LorentzRSSpinorBar::setZS4(Complex in){_spin[2][3]=in;}
+inline void LorentzRSSpinorBar::setTS1(Complex in){_spin[3][0]=in;}
+inline void LorentzRSSpinorBar::setTS2(Complex in){_spin[3][1]=in;}
+inline void LorentzRSSpinorBar::setTS3(Complex in){_spin[3][2]=in;}
+inline void LorentzRSSpinorBar::setTS4(Complex in){_spin[3][3]=in;}
+
+// the assignment operator
+inline LorentzRSSpinorBar & LorentzRSSpinorBar::
+operator = (const LorentzRSSpinorBar & in) {
+  _dirac=in._dirac;
+  _type=in._type;
+  unsigned int ix,iy;
+  for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_spin[ix][iy]=in._spin[ix][iy];}}
+  return *this;
+}
+
+inline LorentzRSSpinorBar LorentzRSSpinorBar::
+boost(double bx,double by,double bz) const
+{
+  // work out beta and chi
+  double b2(bx*bx+by*by+bz*bz),beta(sqrt(b2)),chi(atanh(beta));
+  double sinhchi(sinh(0.5*chi)/beta),coshchi(cosh(0.5*chi));
+  // calculate the new spinor
+  Complex out[4][4],ii(0.,1.),boosts[4][4];
+  Complex nxminy(bx-ii*by),nxpiny(bx+ii*by);
+  double gamma(1.0/sqrt(1.0-b2)),gmmone(b2 >0 ? (gamma-1.)/b2 : 0.0);
+  double bvec[3]={bx,by,bz},boostv[4][4];
+  unsigned int ix,iy,ixa,iya;
+  // spin matrix
+  switch(_dirac)
+    {
+      // Haber lower energy
+    case HaberDRep:
+      boosts[0][0] = coshchi;
+      boosts[0][1] = 0.;
+      boosts[0][2] =-sinhchi*bz;
+      boosts[0][3] =-sinhchi*nxminy;
+      boosts[1][0] = 0.;
+      boosts[1][1] = coshchi;
+      boosts[1][2] =-sinhchi*nxpiny;
+      boosts[1][3] = sinhchi*bz;
+      boosts[2][0] =-sinhchi*bz;
+      boosts[2][1] =-sinhchi*nxminy;
+      boosts[2][2] = coshchi;
+      boosts[2][3] = 0.;
+      boosts[3][0] =-sinhchi*nxpiny;
+      boosts[3][1] = sinhchi*bz;
+      boosts[3][2] = 0.;
+      boosts[3][3] = coshchi;
+      break;
+      // HELAS
+    case HELASDRep:
+      boosts[0][0] = coshchi+sinhchi*bz;
+      boosts[0][1] = sinhchi*nxminy;
+      boosts[0][2] = 0.;
+      boosts[0][3] = 0.;
+      boosts[1][0] = sinhchi*nxpiny;
+      boosts[1][1] = coshchi-sinhchi*bz;
+      boosts[1][2] = 0.;
+      boosts[1][3] = 0.;
+      boosts[2][0] = 0.;
+      boosts[2][1] = 0.;
+      boosts[2][2] = coshchi-sinhchi*bz;
+      boosts[2][3] =-sinhchi*nxminy;
+      boosts[3][0] = 0.;
+      boosts[3][1] = 0.;
+      boosts[3][2] =-sinhchi*nxpiny;
+      boosts[3][3] = coshchi+sinhchi*bz;
+      break;
+    }
+  // vector matrix
+  for(ix=0;ix<3;++ix)
+    {
+      for(iy=0;iy<3;++iy){boostv[ix][iy]=bvec[ix]*bvec[iy]*gmmone;}
+      boostv[ix][ix]+=1;
+      boostv[ix][3]=gamma*bvec[ix];
+      boostv[3][ix]=boostv[ix][3];
+    }
+  boostv[3][3]=gamma;
+  // apply the boost
+  for(ix=0;ix<4;++ix)
+    {
+      for(iy=0;iy<4;++iy)
+	{
+	  out[ix][iy]=0.;
+	  for(ixa=0;ixa<4;++ixa)
+	    {
+	      for(iya=0;iya<4;++iya)
+		{out[ix][iy]+=boostv[ix][ixa]*boosts[iya][iy]*_spin[ixa][iya];}
+	    }
+	}
+    }
+  return LorentzRSSpinorBar(out[0][0],out[0][1],out[0][2],out[0][3],
+			    out[1][0],out[1][1],out[1][2],out[1][3],
+			    out[2][0],out[2][1],out[2][2],out[2][3],
+			    out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
+}
+
+// return the representation of the spinor
+inline DiracRep LorentzRSSpinorBar::Rep(){return _dirac;}
+
+// return thetype of the spinor
+inline SpinorType LorentzRSSpinorBar::Type(){return _type;}
+
+
+inline LorentzRSSpinorBar LorentzRSSpinorBar::
+boost(const Hep3Vector & boostvec) const
+{
+  double beta = boostvec.mag(),b2(beta*beta);
+  double bx(boostvec.x()),by(boostvec.y()),bz(boostvec.z());
+  double chi(atanh(beta)),sinhchi(sinh(0.5*chi)/beta),coshchi(cosh(0.5*chi));
+  Complex out[4][4],ii(0.,1.);
+  Complex nxminy(bx-ii*by),nxpiny(bx+ii*by),boosts[4][4];
+  double gamma(1.0/sqrt(1.0-b2)),gmmone(b2 >0 ? (gamma-1.)/b2 : 0.0),boostv[4][4];
+  unsigned int ix,iy,ixa,iya;
+  // spin matrix
+  switch(_dirac)
+    {
+      // Haber lower energy
+    case HaberDRep:
+      boosts[0][0] = coshchi;
+      boosts[0][1] = 0.;
+      boosts[0][2] =-sinhchi*bz;
+      boosts[0][3] =-sinhchi*nxminy;
+      boosts[1][0] = 0.;
+      boosts[1][1] = coshchi;
+      boosts[1][2] =-sinhchi*nxpiny;
+      boosts[1][3] = sinhchi*bz;
+      boosts[2][0] =-sinhchi*bz;
+      boosts[2][1] =-sinhchi*nxminy;
+      boosts[2][2] = coshchi;
+      boosts[2][3] = 0.;
+      boosts[3][0] =-sinhchi*nxpiny;
+      boosts[3][1] = sinhchi*bz;
+      boosts[3][2] = 0.;
+      boosts[3][3] = coshchi;
+      break;
+      // HELAS
+    case HELASDRep:
+      boosts[0][0] = coshchi+sinhchi*bz;
+      boosts[0][1] = sinhchi*nxminy;
+      boosts[0][2] = 0.;
+      boosts[0][3] = 0.;
+      boosts[1][0] = sinhchi*nxpiny;
+      boosts[1][1] = coshchi-sinhchi*bz;
+      boosts[1][2] = 0.;
+      boosts[1][3] = 0.;
+      boosts[2][0] = 0.;
+      boosts[2][1] = 0.;
+      boosts[2][2] = coshchi-sinhchi*bz;
+      boosts[2][3] =-sinhchi*nxminy;
+      boosts[3][0] = 0.;
+      boosts[3][1] = 0.;
+      boosts[3][2] =-sinhchi*nxpiny;
+      boosts[3][3] = coshchi+sinhchi*bz;
+      break;
+    }
+  // vector matrix
+  for(ix=0;ix<3;++ix)
+    {
+      for(iy=0;iy<3;++iy){boostv[ix][iy]=boostvec[ix]*boostvec[iy]*gmmone;}
+      boostv[ix][ix]+=1;
+      boostv[ix][3]=gamma*boostvec[ix];
+      boostv[3][ix]=boostv[ix][3];
+    }
+  // apply the boost
+  for(ix=0;ix<4;++ix)
+    {
+      for(iy=0;iy<4;++iy)
+	{
+	  out[ix][iy]=0.;
+	  for(ixa=0;ixa<4;++ixa)
+	    {
+	      for(iya=0;iya<4;++iya)
+		{out[ix][iy]+=boostv[ix][ixa]*boosts[iya][iy]*_spin[ixa][iya];}
+	    }
+	}
+    }
+  return LorentzRSSpinorBar(out[0][0],out[0][1],out[0][2],out[0][3],
+			    out[1][0],out[1][1],out[1][2],out[1][3],
+			    out[2][0],out[2][1],out[2][2],out[2][3],
+			    out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
+}
+
+// change the dirac matrix representation
+inline void LorentzRSSpinorBar::changeRep(DiracRep newdirac)
+{if(newdirac!=_dirac) *this = transformRep(newdirac);}
+
+
+// return the spinor in a different representation
+inline LorentzRSSpinorBar LorentzRSSpinorBar::transformRep(DiracRep newdirac)
+{
+  // do nothing if all ready in the correct representation
+  if(newdirac==_dirac){return *this;}
+  double fact=1./sqrt(2.);
+  // transform from HELAS representation to Haber one
+  Complex out[4][4];
+  unsigned int ix;
+  if(newdirac==HELASDRep && _dirac==HaberDRep)
+    {
+      for(ix=0;ix<4;++ix)
+	{
+	  out[ix][0] = fact*( _spin[ix][0]-_spin[ix][2]);
+	  out[ix][1] = fact*( _spin[ix][1]-_spin[ix][3]);
+	  out[ix][2] = fact*( _spin[ix][0]+_spin[ix][2]);
+	  out[ix][3] = fact*( _spin[ix][1]+_spin[ix][3]);
+	}
+    }
+  // transform from Haber representation to HELAS one
+  else if(newdirac==HaberDRep && _dirac==HELASDRep)
+    {
+      for(ix=0;ix<4;++ix)
+	{
+	  out[ix][0] = fact*( _spin[ix][0]+_spin[ix][2]);
+	  out[ix][1] = fact*( _spin[ix][1]+_spin[ix][3]);
+	  out[ix][2] = fact*(-_spin[ix][0]+_spin[ix][2]);
+	  out[ix][3] = fact*(-_spin[ix][1]+_spin[ix][3]);
+	}
+    }
+  return LorentzRSSpinorBar(out[0][0],out[0][1],out[0][2],out[0][3],
+			    out[1][0],out[1][1],out[1][2],out[1][3],
+			    out[2][0],out[2][1],out[2][2],out[2][3],
+			    out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
+}
+
+// dot product with a 4-vector or polarization vector
+inline LorentzSpinorBar LorentzRSSpinorBar::dot(const LorentzPolarizationVector & vec) const
+{
+  LorentzSpinorBar output(_type,_dirac);
+  Complex temp;
+  unsigned int ix,iy;
+  for(ix=0;ix<4;++ix)
+    {
+      temp=_spin[3][ix]*vec[3];
+      for(iy=0;iy<3;++iy){temp-=_spin[iy][ix]*vec[iy];}
+      output[ix]=temp;
+    }
+  return output;
+}
+  
+inline LorentzSpinorBar LorentzRSSpinorBar::dot(const LorentzVector & vec) const
+{
+  LorentzSpinorBar output(_type,_dirac);
+  Complex temp;
+  unsigned int ix,iy;
+  for(ix=0;ix<4;++ix)
+    {
+      temp=_spin[3][ix]*vec[3];
+      for(iy=0;iy<3;++iy){temp-=_spin[iy][ix]*vec[iy];}
+      output[ix]=temp;
+    }
+  return output;
+}
+}
+}
+
