@@ -1085,8 +1085,8 @@ ParticleVector " class "::decay(const DecayMode & dm,
 					       (concat "0.0" stru)))
 	      (setq maxi (read-from-minibuffer "Maximum value: "
 					       (concat "10.0" stru))))
-	(t    (setq mini (concat "-1.0e12" stru))
-	      (setq maxi (concat "1.0e12" stru))))
+	(t    (setq mini (concat "0" stru))
+	      (setq maxi (concat "0" stru))))
   (setq safe (y-or-n-p "Is this parameter dependency safe? "))
   (setq ronl (y-or-n-p "Is this parameter read-only? "))
   (insert-string (concat "

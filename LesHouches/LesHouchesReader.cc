@@ -6,6 +6,8 @@
 
 #include "LesHouchesReader.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Reference.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesReader.tcc"
@@ -15,6 +17,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/PDF/PDFBase.h"
 
 using namespace ThePEG;
 
@@ -24,7 +27,8 @@ LesHouchesReader::LesHouchesReader()
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
-    PDFGUP(x.PDFGUP), PDFSUP(x.PDFSUP), IDWTUP(x.IDWTUP),
+    PDFGUP(x.PDFGUP), PDFSUP(x.PDFSUP), thePDFA(x.thePDFA), thePDFB(x.thePDFB),
+    IDWTUP(x.IDWTUP),
     NRUP(x.NRUP), XSECUP(x.XSECUP), XERRUP(x.XERRUP),
     XMAXUP(x.XMAXUP), LPRUP(x.LPRUP), NUP(x.NUP),
     IDPRUP(x.IDPRUP), XWGTUP(x.XWGTUP), SCALUP(x.SCALUP),
@@ -138,14 +142,16 @@ void LesHouchesReader::connectMothers() {
 }
 
 void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
-  os << IDBMUP << EBMUP << PDFGUP << PDFSUP << IDWTUP << NRUP
+  os << IDBMUP << EBMUP << PDFGUP << PDFSUP << thePDFA << thePDFB
+     << IDWTUP << NRUP
      << XSECUP << XERRUP << XMAXUP << LPRUP << NUP << IDPRUP
      << XWGTUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
      << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
-  is >> IDBMUP >> EBMUP >> PDFGUP >> PDFSUP >> IDWTUP >> NRUP
+  is >> IDBMUP >> EBMUP >> PDFGUP >> PDFSUP >> thePDFA >> thePDFB
+     >> IDWTUP >> NRUP
      >> XSECUP >> XERRUP >> XMAXUP >> LPRUP >> NUP >> IDPRUP
      >> XWGTUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
      >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP;
@@ -154,12 +160,73 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
 AbstractClassDescription<LesHouchesReader> LesHouchesReader::initLesHouchesReader;
 // Definition of the static class description member.
 
+void LesHouchesReader::setBeamA(long id) { IDBMUP.first = id; }
+long LesHouchesReader::getBeamA() const { return IDBMUP.first; }
+void LesHouchesReader::setBeamB(long id) { IDBMUP.second = id; }
+long LesHouchesReader::getBeamB() const { return IDBMUP.second; }
+void LesHouchesReader::setEBeamA(Energy e) { EBMUP.first = e; }
+Energy LesHouchesReader::getEBeamA() const { return EBMUP.first; }
+void LesHouchesReader::setEBeamB(Energy e) { EBMUP.second = e; }
+Energy LesHouchesReader::getEBeamB() const { return EBMUP.second; }
+
 void LesHouchesReader::Init() {
 
   static ClassDocumentation<LesHouchesReader> documentation
     ("ThePEG::LesHouchesReader is an abstract base class to be used "
      "for objects which reads event files or streams from matrix element "
      "generators.");
+
+  static Parameter<LesHouchesReader,long> interfaceBeamA
+    ("BeamA",
+     "The PDG id of the incoming particle along the positive z-axis. "
+     "If zero the corresponding information is to be deduced from the "
+     "event stream/file.",
+     0, 0, 0, 0,
+     true, false, false,
+     &LesHouchesReader::setBeamA,
+     &LesHouchesReader::getBeamA, 0, 0, 0);
+
+  static Parameter<LesHouchesReader,long> interfaceBeamB
+    ("BeamB",
+     "The PDG id of the incoming particle along the negative z-axis. "
+     "If zero the corresponding information is to be deduced from the "
+     "event stream/file.",
+     0, 0, 0, 0,
+     true, false, false,
+     &LesHouchesReader::setBeamB,
+     &LesHouchesReader::getBeamB, 0, 0, 0);
+
+  static Parameter<LesHouchesReader,Energy> interfaceEBeamA
+    ("EBeamA",
+     "The energy of the incoming particle along the positive z-axis. "
+     "If zero the corresponding information is to be deduced from the "
+     "event stream/file.",
+     0, GeV, 0.0*GeV, 0.0*GeV, 1000000000.0*GeV,
+     true, false, true,
+     &LesHouchesReader::setEBeamA, &LesHouchesReader::getEBeamA, 0, 0, 0);
+
+  static Parameter<LesHouchesReader,Energy> interfaceEBeamB
+    ("EBeamB",
+     "The energy of the incoming particle along the negative z-axis. "
+     "If zero the corresponding information is to be deduced from the "
+     "event stream/file.",
+     0, GeV, 0.0*GeV, 0.0*GeV, 1000000000.0*GeV,
+     true, false, true,
+     &LesHouchesReader::setEBeamB, &LesHouchesReader::getEBeamB, 0, 0, 0);
+
+  static Reference<LesHouchesReader,PDFBase> interfacePDFA
+    ("PDFA",
+     "The PDF used for incoming particle along the positive z-axis. "
+     "If null the corresponding information is to be deduced from the "
+     "event stream/file.",
+     &LesHouchesReader::thePDFA, true, false, true, true, false);
+
+  static Reference<LesHouchesReader,PDFBase> interfacePDFB
+    ("PDFB",
+     "The PDF used for incoming particle along the negative z-axis. "
+     "If null the corresponding information is to be deduced from the "
+     "event stream/file.",
+     &LesHouchesReader::thePDFB, true, false, true, true, false);
 
 }
 

@@ -228,6 +228,18 @@ protected:
   pair<int,int> PDFSUP;
 
   /**
+   * The PDFBase object used for the first beam particle. Specified in
+   * the interface or derived from PDFGUP and PDFSUP.
+   */
+  PDFPtr thePDFA;
+
+  /**
+   * The PDFBase object used for the second beam particle. Specified in
+   * the interface or derived from PDFGUP and PDFSUP.
+   */
+  PDFPtr thePDFB;
+
+  /**
    * Master switch indicating how the ME generator envisages the
    * events weights should be interpreted according to the Les Houches
    * accord.
@@ -383,6 +395,25 @@ protected:
    * the current event.
    */
   PVector theIntermediates;
+
+private:
+
+  /** Access function for the interface. */
+  void setBeamA(long id);
+  /** Access function for the interface. */
+  long getBeamA() const;
+  /** Access function for the interface. */
+  void setBeamB(long id);
+  /** Access function for the interface. */
+  long getBeamB() const;
+  /** Access function for the interface. */
+  void setEBeamA(Energy e);
+  /** Access function for the interface. */
+  Energy getEBeamA() const;
+  /** Access function for the interface. */
+  void setEBeamB(Energy e);
+  /** Access function for the interface. */
+  Energy getEBeamB() const;
 
 private:
 
