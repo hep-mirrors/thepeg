@@ -111,7 +111,12 @@ public:
   // The list of decay products.
 
   inline void addChild(tPPtr);
-  // Add a child (the childs parent pointer will be set accordingly)..
+  // Add a child (the childs parent pointer will be set accordingly).
+
+  inline void abandonChild(tPPtr);
+  // Remove the given child from the list of children of this particle
+  // (the corresponding parent pointer of the child will also be
+  // removed).
 
   inline const tParticleVector & parents() const;
   // The list of parent particles.

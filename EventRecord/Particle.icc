@@ -75,6 +75,11 @@ inline void Particle::addChild(tPPtr c) {
   (c->rep()).theParents.push_back(this);
 }
 
+inline void Particle::abandonChild(tPPtr child) {
+  removeChild(child);
+  child->removeParent(this);
+}
+
 const tParticleVector & Particle::parents() const {
   return rep().theParents;
 }
