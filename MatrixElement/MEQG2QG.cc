@@ -20,7 +20,6 @@ MEQG2QG::~MEQG2QG() {}
 void MEQG2QG::getDiagrams() const {
   tcPDPtr g = getParticleData(ParticleID::g);
   for ( int i = -maxFlavour(); i <= maxFlavour(); ++i ) {
-  //  for ( int i = 1; i <= 1; ++i ) {
     if ( i == 0 ) continue;
     tcPDPtr q = getParticleData(i);
     tcPDPtr qb = q->CC();

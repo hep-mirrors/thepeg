@@ -666,3 +666,140 @@ void " class "::analyze(const tPVector & particles) {
 
 void " class "::analyze(tPPtr) {}
 "))
+
+(defun ThePEG-parameter ()
+  "Create a Parameter variable suitable for inclusion in an Init() function."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq type (read-from-minibuffer "Type: " "double"))
+  (setq name (read-from-minibuffer "Name: "))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq memb (read-from-minibuffer "Member variable: "
+				   (concat "&" class "::the" name)))
+  (setq hasu (y-or-n-p "Does this parameter have a unit? "))
+  (cond (hasu (setq unit (read-from-minibuffer "Unit: " "GeV"))
+	      (setq stru (concat "*" unit)))
+	(t    (setq stru "")))
+  (setq defa (read-from-minibuffer "Default value: " (concat "1.0" stru)))
+  (setq limi (y-or-n-p "Is this parameter limited? "))
+  (cond (limi (setq mini (read-from-minibuffer "Minimum value: "
+					       (concat "0.0" stru)))
+	      (setq maxi (read-from-minibuffer "Maximum value: "
+					       (concat "10.0" stru))))
+	(t    (setq mini (concat "-1.0e12" stru))
+	      (setq maxi (concat "1.0e12" stru))))
+  (setq safe (y-or-n-p "Is this parameter dependency safe? "))
+  (setq ronl (y-or-n-p "Is this parameter read-only? "))
+  (insert-string (concat "
+  static Parameter<" class "," type "> interface" name "
+    (\"" name "\",
+     \"" desc "\",
+     " memb ", " (cond (hasu (concat unit ", "))(t "")) defa ", "
+     mini ", " maxi ",
+     " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
+     (cond (limi "true")(t "false"))))
+  (cond ((y-or-n-p "Are there any set/get functions? ")
+	 (insert-string (concat ",
+     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     ",
+     "
+     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     ", "
+     (read-from-minibuffer "Default-function: " (concat "&" class "::def" name))
+     ",
+     "
+     (read-from-minibuffer "Min-function: " (concat "&" class "::min" name))
+     ", "
+     (read-from-minibuffer "Max-function: " (concat "&" class "::max" name))))))
+  (insert-string ");
+"))
+
+(defun ThePEG-reference ()
+  "Create a Reference variable suitable for inclusion in an Init() function."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq type (read-from-minibuffer "Type: " "Interfaced"))
+  (setq name (read-from-minibuffer "Name: "))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq memb (read-from-minibuffer "Member variable: "
+				   (concat "&" class "::the" name)))
+  (setq safe (y-or-n-p "Is this reference dependency safe? "))
+  (setq ronl (y-or-n-p "Is this reference read-only? "))
+  (setq rebi (y-or-n-p "Should this reference be automatically rebound? "))
+  (setq null (y-or-n-p "Can this reference be null? "))
+  (setq defn (y-or-n-p "Should this reference be given a default if null? "))
+
+  (insert-string (concat "
+  static Reference<" class "," type "> interface" name "
+    (\"" name "\",
+     \"" desc "\",
+     " memb ", "
+     (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
+     (cond (rebi "true")(t "false")) ", " (cond (null "true")(t "false")) ", "
+     (cond (defn "true")(t "false"))))
+  (cond ((y-or-n-p "Are there any set/get functions? ")
+	 (insert-string (concat ",
+     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     ",
+     "
+     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     ", "
+     (read-from-minibuffer "Check-function: "
+			   (concat "&" class "::check" name))))))
+  (insert-string ");
+"))
+
+(defun thepeg-switch-option (switchname)
+  "Create a SwitchOption variable suitable for inclusion in an Init() function."
+  (cond ((y-or-n-p "Do you want to add an option? ")
+	 (setq name (read-from-minibuffer "Name: "))
+	 (setq desc (read-from-minibuffer "Description: "))
+	 (setq valu (read-from-minibuffer "Value: "))
+	 (insert-string (concat "
+  static SwitchOption " switchname name "
+    (" switchname ",
+     \"" name "\",
+     \"" desc "\",
+     " valu ");"))
+	 (thepeg-switch-option switchname))
+	(t (insert-string "
+"))))
+
+(defun ThePEG-switch ()
+  "Create a Switch variable suitable for inclusion in an Init() function."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq type (read-from-minibuffer "Integer type: " "int"))
+  (setq name (read-from-minibuffer "Name: "))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq memb (read-from-minibuffer "Member variable: "
+				   (concat "&" class "::the" name)))
+  (setq defa (read-from-minibuffer "Default value: " "0"))
+  (setq safe (y-or-n-p "Is this reference dependency safe? "))
+  (setq ronl (y-or-n-p "Is this reference read-only? "))
+  (insert-string (concat "
+  static Switch<" class "," type "> interface" name "
+    (\"" name "\",
+     \"" desc "\",
+     " memb ", " defa ", "
+     (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false"))))
+  (cond ((y-or-n-p "Are there any set/get functions? ")
+	 (insert-string (concat ",
+     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     ",
+     "
+     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     ", "
+     (read-from-minibuffer "Default-function: "
+			   (concat "&" class "::def" name))))))
+  (insert-string ");")
+  (thepeg-switch-option (concat "interface" name)))
