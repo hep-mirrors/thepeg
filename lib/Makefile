@@ -1,7 +1,7 @@
 LIBRARIES = libThePEG.so
 
 SODIRS = EventRecord Handlers Interface MatrixElement PDF PDT Repository \
-         StandardModel
+         StandardModel Helicity
 
 OBJECTS = ../Utilities/ClassDescription.o ../Config/Containers.o \
           ../Utilities/Debug.o ../Utilities/DescriptionList.o \

@@ -34,7 +34,7 @@ test: SimpleLEP.out
 
 check: SimpleLEP.out
 
-$(PROGS): ../lib/libThePEG.so ../lib/libThePEGPDF.so ../lib/libThePEGME.so ../lib/libThePEGRepo.so ../lib/libThePEGHandlers.so ../lib/libThePEGEvent.so ../lib/libThePEGPDT.so ../lib/libThePEGSM.so ../lib/libThePEGInter.so
+$(PROGS): ../lib/libThePEG.so ../lib/libThePEGPDF.so ../lib/libThePEGME.so ../lib/libThePEGRepo.so ../lib/libThePEGHandlers.so ../lib/libThePEGEvent.so ../lib/libThePEGPDT.so ../lib/libThePEGSM.so ../lib/libThePEGInter.so ../lib/libThePEGHelicity.so 
 
 SimpleLEP.out: SimpleLEP.run runThePEG.exe
 	time ./runThePEG -d 0 SimpleLEP.run
