@@ -41,22 +41,6 @@ enum DiracRep { HELASDRep, HaberDRep, defaultDRep=HELASDRep };
 enum SpinorType { u_spinortype, v_spinortype, unknown_spinortype };
 
 
-class HelicityDefinitions {
-
-public:
-
-  inline static DiracRep getDirac(){return _dirac;}
-
-private:
-
-  HelicityDefinitions();
-  // static class can't be created
-
-  static const DiracRep _dirac=HELASDRep;
-  // default choice of the dirac matrix representation
-
-};
-
 class HelicityLogicalError: public Exception {};
 
 class HelicityConsistencyError: public Exception {};

@@ -254,9 +254,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   LorentzSpinor.fh \
   LorentzSpinorBar.fh \
   LorentzSpinorBar.icc \
-  ../../ThePEG/Helicity/HelicityDefinitions.h \
   LorentzSpinor.h \
-  LorentzSpinor.icc
+  LorentzSpinor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h
   LorentzTensor.o: \
   LorentzTensor.cc \
   LorentzTensor.h \
