@@ -1,3 +1,26 @@
+2003-08-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/runThePEG.cc: If -x argument specifies a dynamic library, it
+	is assumed to contain a class inheriting from Main and which has a
+	static Init() function which runs the event generator instead of
+	simply calling the event generators go() function.
+
+2003-08-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Main.*: Added base class for classes implementing a
+	main steering routine for running an EventGenerator, in case the
+	standard 'go()' function in the EventGenerator is not enough.
+
+	* Handlers/EventHandler.cc: Avoid floating exception in
+	atatistics() if no events were generated. Write nice message
+	instead.
+
+	* Handlers/ACDCSampler.cc: Avoid floating exception in finish() if
+	no events were generated. Write nice message instead.
+
+	* ACDC/ACDCGen.icc: Avoid floating exception in efficiency() if no
+	events were generated.
+
 2003-08-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/DecayHandler.cc: Use the StepHandler::newStep()

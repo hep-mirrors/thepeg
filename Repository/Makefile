@@ -1,11 +1,11 @@
 SOURCES = EventGenerator.cc RandomGenerator.cc Strategy.cc BaseRepository.cc \
           Repository.cc StandardRandom.cc FullEventGenerator.cc \
           PartialEventGenerator.cc ThePEGStrategy.cc MultiEventGenerator.cc \
-          UseRandom.cc CurrentGenerator.cc
+          UseRandom.cc CurrentGenerator.cc Main.cc
 
 LIBOBJECTS = EventGenerator.o RandomGenerator.o Strategy.o BaseRepository.o \
              Repository.o StandardRandom.o FullEventGenerator.o \
-             PartialEventGenerator.o UseRandom.o CurrentGenerator.o
+             PartialEventGenerator.o UseRandom.o CurrentGenerator.o Main.o
 
 OBJECTS = libThePEGRepo.so ThePEGStrategy.so MultiEventGenerator.so
 
@@ -14,7 +14,7 @@ DEBUGOBJECTS = EventGenerator.o Repository.o BaseRepository.o
 DOCFILES = BaseRepository.h EventGenerator.h FullEventGenerator.h \
            PartialEventGenerator.h RandomGenerator.h \
            Repository.h StandardRandom.h Strategy.h ThePEGStrategy.h \
-           MultiEventGenerator.h UseRandom.h CurrentGenerator.h
+           MultiEventGenerator.h UseRandom.h CurrentGenerator.h Main.h
 
 INCLUDEFILES = $(DOCFILES) BaseRepository.icc BaseRepository.tcc \
                BaseRepository.xh EventGenerator.fh EventGenerator.icc \
@@ -22,7 +22,8 @@ INCLUDEFILES = $(DOCFILES) BaseRepository.icc BaseRepository.tcc \
                PartialEventGenerator.icc RandomGenerator.icc Repository.icc \
                Repository.tcc StandardRandom.icc Strategy.fh Strategy.icc \
                ThePEGStrategy.icc MultiEventGenerator.icc RandomGenerator.fh \
-               UseRandom.icc CurrentGenerator.icc CurrentGenerator.fh
+               UseRandom.icc CurrentGenerator.icc CurrentGenerator.fh \
+               Main.icc
 
 LIBFILES = $(OBJECTS)
 
@@ -1397,5 +1398,73 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.tcc \
   CurrentGenerator.fh \
   CurrentGenerator.icc
+  Main.o: \
+  Main.cc \
+  Main.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/Repository/EventGenerator.h \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Repository/EventGenerator.fh \
+  ../../ThePEG/Repository/RandomGenerator.h \
+  ../../ThePEG/Interface/Interfaced.h \
+  ../../ThePEG/Interface/InterfacedBase.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  ../../ThePEG/Interface/InterfacedBase.xh \
+  ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Interface/InterfaceBase.icc \
+  ../../ThePEG/Interface/InterfacedBase.icc \
+  ../../ThePEG/Interface/Interfaced.icc \
+  ../../ThePEG/CLHEPWrap/RandomEngine.fh \
+  ../../ThePEG/Repository/RandomGenerator.icc \
+  ../../ThePEG/Repository/UseRandom.h \
+  ../../ThePEG/Repository/UseRandom.icc \
+  ../../ThePEG/Repository/CurrentGenerator.fh \
+  ../../ThePEG/Repository/EventGenerator.xh \
+  ../../ThePEG/Repository/EventGenerator.icc \
+  ../../ThePEG/Repository/EventGenerator.tcc \
+  Main.icc
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

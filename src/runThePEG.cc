@@ -6,6 +6,7 @@
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
+#include "ThePEG/Repository/Main.h"
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
@@ -13,10 +14,12 @@ int main(int argc, char * argv[]) {
   string run;
   long N = -1;
   long seed = 0;
+  string mainclass;
 
   for ( int iarg = 1; iarg < argc; ++iarg ) {
     string arg = argv[iarg];
     if ( arg == "-r" ) run = argv[++iarg];
+    else if ( arg == "-x" ) mainclass = argv[++iarg];
     else if ( arg == "-l" ) DynamicLoader::appendPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-l" )
       DynamicLoader::appendPath(arg.substr(2));
@@ -55,10 +58,20 @@ int main(int argc, char * argv[]) {
 
     breakThePEG();
 
-    if ( eg ) {
+    if ( !mainclass.empty() ) {
+      if ( eg ) eg->initialize();
+      Main::eventGenerator(eg);
+      vector<string> args;
+      for ( int iarg = 1; iarg < argc; ++iarg ) args.push_back(argv[iarg]);
+      Main::arguments(args);
+      Main::N(N);
+      if ( !DynamicLoader::load(mainclass) )
+	std::cout << "Main class file '" << mainclass << "' not found." << endl;
+      else if ( eg ) eg->finish();
+    } else if ( eg ) {
       if ( seed > 0 ) eg->random().setSeed(seed);
       eg->go(1, N);
-    } else std::cout<<"eg = nil"<<endl;
+    } else std::cout << "eg = nil" << endl;
 
   }
   catch ( std::exception & e ) {
