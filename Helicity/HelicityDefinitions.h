@@ -6,9 +6,9 @@
 //
 // CLASSDOC SUBSECTION Description:
 //
-//  The <!id>HelicityDefinitions<!!id> class is a static class which
-//  contains information on which representation of the Dirac matrix
-//  is being used. All the code can in principle cope with either of
+//  The <!id>HelicityDefinitions<!!id> header file contains information
+//  on which representation of the Dirac matrix is being used.
+//  All the code can in principle cope with either of
 //  the defintions described in the <!id>LorentzSpinor<!!id> class
 //  however the valid choices and the default to be used are defined
 //  here.
