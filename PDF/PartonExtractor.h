@@ -154,6 +154,12 @@ public:
    * extracted parton.
    */
   tPBIPtr partonBinInstance(tcPPtr) const;
+
+  /**
+   * Set the XComb object describing the current hard sub-process.
+   */
+  void select(tXCombPtr newXComb);
+
   //@}
 
   /**
@@ -316,13 +322,6 @@ protected:
    */
   inline virtual IVector getReferences();
   //@}
-
-private:
-
-  /**
-   * Set the XComb object describing the current hard sub-process.
-   */
-  void select(tXCombPtr newXComb);
 
 private:
 

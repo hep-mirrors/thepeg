@@ -142,6 +142,14 @@ double MEBase::preWeight() const {
 
 void MEBase::generateSubCollision(SubProcess &) {}
 
+const DVector & MEBase::meInfo() const {
+  return lastXCombPtr()->meInfo();
+}
+
+void MEBase::meInfo(const DVector & info) const {
+  lastXCombPtr()->meInfo(info);
+}
+
 void MEBase::persistentOutput(PersistentOStream & os) const {
   os << theDiagrams << ounit(theLastSHat, GeV) << reweights << preweights
      << lastPreweight << theAmplitude << theLastXComb << theLastJacobian;

@@ -107,7 +107,7 @@ public:
   /**
    * Return a reference to the currently used sub-process handler
    */
-  inline const SubProcessHandler & lastSubHandler() const;
+  inline tcSubHdlPtr lastSubHandler() const;
 
   /**
    * A pointer to the currently used parton extractor.
@@ -115,7 +115,9 @@ public:
   inline tPExtrPtr lastExtractor() const;
 
   /**
-   * A pointer to the currently used matrix element.
+   * A pointer to the currently used matrix element. The returned
+   * pointer mau be null if a non-standard sub-process generation has
+   * been performed.
    */
   inline tMEPtr lastME() const;
 
@@ -250,19 +252,6 @@ public:
    */
   inline const cPDVector & mePartonData() const;
 
-  /**
-   * Get information saved by the matrix element in the calculation of
-   * the cross section to be used later when selecting diagrams and
-   * colour flow.
-   */
-  inline const DVector & meInfo() const;
-
-  /**
-   * Set information saved by the matrix element in the calculation of
-   * the cross section to be used later when selecting diagrams and
-   * colour flow.
-   */
-  inline void meInfo(const DVector & info) const;
   //@}
 
 };

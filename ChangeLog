@@ -1,3 +1,12 @@
+2005-01-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StandardXComb.*, PDF/PartonExtractor.h,
+	MatrixElement/MEBase.cc, Handlers/LastXCombInfo.h,
+	Handlers/CollisionHandler.cc, Handlers/XComb.*: Changed slightly
+	the interface for XComb, preparing for makeing it a base class
+	with StandardXComb as a sub class implementing the standard
+	ThePEG-specific sub process generation parts of XComb.
+
 2004-12-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/RandomGenerator.*: Added operator()(long) to conform

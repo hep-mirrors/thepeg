@@ -10,8 +10,8 @@ inline const CollisionHandler & XComb::collisionHandler() const {
   return *theCollisionHandler;
 }
 
-inline const SubProcessHandler & XComb::subProcessHandler() const {
-  return *theSubProcessHandler;
+inline tcSubHdlPtr XComb::subProcessHandler() const {
+  return theSubProcessHandler;
 }
 
 inline tMEPtr XComb::matrixElement() const {
@@ -52,6 +52,10 @@ inline double XComb::sumWeight() const {
 
 inline long XComb::nAttempted() const {
   return theNAttempted;
+}
+
+inline void XComb::attempt() {
+  ++theNAttempted;
 }
 
 inline void XComb::accept() {
@@ -175,6 +179,10 @@ inline const cPDVector & XComb::mePartonData() const {
   return theMEPartonData;
 }
 
+inline cPDVector & XComb::mePartonData() {
+  return theMEPartonData;
+}
+
 inline void XComb::lastDiagramIndex(XComb::DiagramIndex i) {
   theLastDiagramIndex = i;
 }
@@ -193,6 +201,44 @@ inline const DVector & XComb::meInfo() const {
 
 inline void XComb::meInfo(const DVector & info) {
   theMEInfo = info;
+}
+
+inline void XComb::lastS(Energy2 s) {
+  theLastS = s;
+}
+
+inline void XComb::lastSHat(Energy2 sh) {
+  theLastSHat = sh;
+}
+
+inline void XComb::lastP1P2(pair<double,double> pp) {
+  theLastP1P2 = pp;
+}
+
+inline void XComb::lastL1L2(pair<double,double> ll) {
+  theLastL1L2 = ll;
+  theLastX1X2 = make_pair(exp(-ll.first), exp(-ll.second));
+  theLastE1E2 = make_pair(Math::exp1m(-ll.first), Math::exp1m(-ll.second));
+}
+
+inline void XComb::lastX1X2(pair<double,double> xx) {
+  theLastX1X2 = xx;
+  theLastL1L2 = make_pair(-log(xx.first), -log(xx.second));
+  theLastE1E2 = make_pair(1.0 - xx.first, 1.0 - xx.second);
+}
+
+inline void XComb::lastE1E2(pair<double,double> ee) {
+  theLastE1E2= ee;
+  theLastL1L2 = make_pair(-Math::log1m(ee.first), -Math::log1m(ee.second));
+  theLastX1X2 = make_pair(1.0 - ee.first, 1.0 - ee.second);
+}
+
+inline void XComb::lastPartons(PPair pp) {
+  theLastPartons = pp;
+}
+
+inline void XComb::lastY(double y) {
+  theLastY = y;
 }
 
 }

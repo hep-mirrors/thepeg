@@ -1,0 +1,41 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the StandardXComb class.
+//
+
+namespace ThePEG {
+
+inline const StandardXComb::DiagramVector & StandardXComb::diagrams() const {
+  return theDiagrams;
+}
+
+inline bool StandardXComb::mirror() const {
+  return isMirror;
+}
+
+inline int StandardXComb::nDim() const {
+  return theNDim;
+}
+
+inline void StandardXComb::lastDiagramIndex(StandardXComb::DiagramIndex i) {
+  theLastDiagramIndex = i;
+}
+
+inline StandardXComb::DiagramIndex StandardXComb::lastDiagramIndex() const {
+  return theLastDiagramIndex;
+}
+
+inline tcDiagPtr StandardXComb::lastDiagram() const {
+  return diagrams()[lastDiagramIndex()];
+}
+
+inline const DVector & StandardXComb::meInfo() const {
+  return theMEInfo;
+}
+
+inline void StandardXComb::meInfo(const DVector & info) {
+  theMEInfo = info;
+}
+
+}

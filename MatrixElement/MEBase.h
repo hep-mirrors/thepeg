@@ -265,6 +265,18 @@ public:
    * generateKinematics() and dSigHatDR().
    */
   virtual void setXComb(tXCombPtr);
+
+  /**
+   * Retrieve information obtained in the calculation of the cross
+   * section to be used later when selecting diagrams and colour flow.
+   */
+  const DVector & meInfo() const;
+
+  /**
+   * Save information obtained in the calculation of the cross
+   * section to be used later when selecting diagrams and colour flow.
+   */
+  void meInfo(const DVector & info) const;
   //@}
 
 public:

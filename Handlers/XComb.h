@@ -20,9 +20,8 @@ namespace ThePEG {
 /**
  * The XComb class stores all information about the generation of a
  * hard sub-proces for a given pair of incoming particles, a pair of
- * extracted partons, intervals in total particle-particle energy
- * squared and total parton-parton energy squared, a ParonExtractor
- * and a MEBase.
+ * extracted partons, total parton-parton energy squared, a
+ * ParonExtractor and a MEBase object.
  *
  * The main function is dSigDR() which returns the differential cross
  * section w.r.t. a given vector of random numbers in the interval
@@ -62,6 +61,14 @@ public:
 	bool mir);
 
   /**
+   * Standard constructor used by sub classes.
+   */
+  XComb(Energy newMaxEnergy, const cPDPair & inc,
+	tCollHdlPtr newCollisionHandler, tSubHdlPtr newSubProcessHandler,
+	tPExtrPtr newExtractor,	const PBPair & newPartonBins,
+	tKinCutPtr newCuts, tMEPtr newME);
+
+  /**
    * Copy-constructor.
    */
   XComb(const XComb &);
@@ -90,9 +97,10 @@ public:
   inline const CollisionHandler & collisionHandler() const;
 
   /**
-   * Return a reference to the corresponding sub-process handler
+   * Return a pointer to the corresponding sub-process handler. May be
+   * null if the standard process generation in ThePEG was not used.
    */
-  inline const SubProcessHandler & subProcessHandler() const;
+  inline tcSubHdlPtr subProcessHandler() const;
 
   /**
    * A pointer to the parton extractor.
@@ -144,17 +152,24 @@ public:
   /** @name Functions used for collecting statistics. */
   //@{
   /**
-   * The number of accepted and attempted generations so far.
+   * The number of attempted generations so far.
    */
   inline long nAccepted() const;
+
   /**
-   * The number of accepted and attempted generations so far.
+   * The number of accepted generations so far.
    */
   inline long nAttempted() const;
+
   /**
-   * The number of accepted and attempted generations so far.
+   * The sum of accumulated weights.
    */
   inline double sumWeight() const;
+
+  /**
+   * Increase the number of attempted generations.
+   */
+  inline void attempt();
 
   /**
    * Accept the last generated phase-space point.
@@ -195,6 +210,11 @@ public:
   inline const PPair & lastPartons() const;
 
   /**
+   * Set the pair of incoming parton instances.
+   */
+  inline void lastPartons(PPair);
+
+  /**
    * Additional information about the incoming partons.
    */
   inline const PBIPair & partonBinInstances() const;
@@ -205,9 +225,21 @@ public:
   inline Energy2 lastS() const;
 
   /**
+   * Set the last generated total energy squared of the incoming
+   * particles.
+   */
+  inline void lastS(Energy2);
+
+  /**
    * The last generated total energy squared of the incoming prtons.
    */
   inline Energy2 lastSHat() const;
+
+  /**
+   * Set the last generated total energy squared of the incoming
+   * prtons.
+   */
+  inline void lastSHat(Energy2);
 
   /**
    * lastSHat()/lastS().
@@ -218,6 +250,11 @@ public:
    * The last generated rapidity of the hard scattering sub-system.
    */
   inline double lastY() const;
+
+  /**
+   * Set the last generated rapidity of the hard scattering sub-system.
+   */
+  inline void lastY(double);
 
   /**
    * Log of one over the momentum fraction of the first incoming
@@ -232,8 +269,14 @@ public:
   inline double lastP2() const;
 
   /**
-   * Log of one over the first incoming parton momentum fraction w.r.t. the
-   * first incoming particle.
+   * Set log of one over the momentum fraction of the incoming
+   * particles w.r.t. the maximum allowed energy.
+   */
+  inline void lastP1P2(pair<double,double>);
+
+  /**
+   * Log of one over the first incoming parton momentum fraction
+   * w.r.t. the first incoming particle.
    */
   inline double lastL1() const;
 
@@ -242,6 +285,12 @@ public:
    * w.r.t. the second incoming particle.
    */
   inline double lastL2() const;
+
+  /**
+   * Set log of one over the incoming parton momentum fractions
+   * w.r.t. the incoming particles.
+   */
+  inline void lastL1L2(pair<double,double>);
 
   /**
    * The first incoming parton momentum fraction w.r.t. the
@@ -256,6 +305,12 @@ public:
   inline double lastX2() const;
 
   /**
+   * Set the incoming parton momentum fractions w.r.t. the incoming
+   * particles.
+   */
+  inline void lastX1X2(pair<double,double>);
+
+  /**
    * Return 1-lastX1() to highest possible precision for
    * x\f$\rightarrow\f$1.
    */
@@ -266,6 +321,12 @@ public:
    * x\f$\rightarrow\f$1.
    */
   inline double lastE2() const;
+
+  /**
+   * Set one minus the incoming parton momentum fractions w.r.t. the
+   * incoming particles.
+   */
+  inline void lastE1E2(pair<double,double>);
 
   /**
    * Get the last chosen scale of the hard scattering.
@@ -376,6 +437,13 @@ protected:
   inline vector<Lorentz5Momentum> & meMomenta();
 
   /**
+   * Return the parton types to be used by the matrix element object,
+   * in the order specified by the TreeDiagram objects given by the
+   * matrix element.
+   */
+  inline cPDVector & mePartonData();
+
+  /**
    * Return the partons to be used by the matrix element object, in
    * the order specified by the TreeDiagram objects given by the
    * matrix element.
@@ -433,7 +501,7 @@ private:
   PExtrPtr thePartonExtractor;
 
   /**
-   * A pointer to the parton extractor.
+   * A pointer to the kinematical cuts used.
    */
   KinCutPtr theCuts;
 

@@ -37,7 +37,7 @@ lastCollisionHandler() const {
 }
 
 template <int I>
-inline const SubProcessHandler & LastXCombInfo<I>::lastSubHandler() const {
+inline tcSubHdlPtr LastXCombInfo<I>::lastSubHandler() const {
   return lastXComb().subProcessHandler();
 }
 
@@ -159,16 +159,6 @@ inline const tPVector & LastXCombInfo<I>::mePartons() const {
 template <int I>
 inline const cPDVector & LastXCombInfo<I>::mePartonData() const {
   return lastXComb().mePartonData();
-}
-
-template <int I>
-inline const DVector & LastXCombInfo<I>::meInfo() const {
-  return lastXComb().meInfo();
-}
-
-template <int I>
-inline void LastXCombInfo<I>::meInfo(const DVector & info) const {
-  lastXCombPtr()->meInfo(info);
 }
 
 }

@@ -66,6 +66,30 @@ XComb(Energy newMaxEnergy, const cPDPair & inc,
   theParticleBins.second = thePartonBins.second->getFirst();
 }
 
+XComb::
+XComb(Energy newMaxEnergy, const cPDPair & inc,
+      tCollHdlPtr newCollisionHandler, tSubHdlPtr newSubProcessHandler,
+      tPExtrPtr newExtractor, const PBPair & newPartonBins, tKinCutPtr newCuts,
+      tMEPtr newME)
+  : theCollisionHandler(newCollisionHandler),
+    theSubProcessHandler(newSubProcessHandler),
+    thePartonExtractor(newExtractor), theCuts(newCuts), theParticles(inc),
+    thePartonBins(newPartonBins), theNAttempted(0), theNAccepted(0),
+    theSumWeight(0.0), theLastS(Energy2()), theLastSHat(Energy2()),
+    theLastY(0.0), theLastP1P2(make_pair(1.0, 1.0)),
+    theLastL1L2(make_pair(1.0, 1.0)), theLastX1X2(make_pair(1.0, 1.0)),
+    theLastE1E2(make_pair(0.0, 0.0)), theLastScale(0.0*GeV2),
+    theMaxEnergy(newMaxEnergy), theME(newME) {
+  thePartons = cPDPair(partonBins().first->parton(),
+		       partonBins().second->parton());
+  thePartonBinInstances.first =
+    new_ptr(PartonBinInstance(partonBins().first));
+  thePartonBinInstances.second =
+    new_ptr(PartonBinInstance(partonBins().second));
+  theParticleBins.first = thePartonBins.first->getFirst();
+  theParticleBins.second = thePartonBins.second->getFirst();
+}
+
 XComb::XComb(tMEPtr me, const tPVector & parts, DiagramIndex indx)
   : theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
     theLastS(Energy2()), theLastSHat(Energy2()), theLastY(0.0),

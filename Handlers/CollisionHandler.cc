@@ -113,7 +113,7 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tKinCutPtr cuts,
 }
 
 void CollisionHandler::initGroups() {
-  optGroups = lastSubHandler().groups();
+  optGroups = lastSubHandler()->groups();
   PartialCollisionHandler::initGroups();
 }
 
