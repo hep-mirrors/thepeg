@@ -22,4 +22,5 @@ NoPIOClassDescription<VectorSpinInfo> VectorSpinInfo::initVectorSpinInfo;
 
 void VectorSpinInfo::Init() {}
 
-
+void VectorSpinInfo::transform(const LorentzMomentum &, LorentzRotation r)
+ {for(unsigned int ix=0;ix<3;++ix){_currentstates[ix].transform(r);}}

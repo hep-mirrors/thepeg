@@ -72,6 +72,7 @@ public:
    * @param in the LorentzPolarizationVector for the given helicity.
    */
   inline void setDecayState(int hel, LorentzPolarizationVector in) const;
+  //@}
 
   /**
    * Get the basis state for the production for the given helicity, \a
@@ -83,6 +84,11 @@ public:
    * Get the basis state for the decay for the given helicity, \a hel.
    */
   inline LorentzPolarizationVector getDecayBasisState(int hel) const;
+
+  /**
+   * Perform a lorentz rotation of the spin information assuming the
+   */
+  virtual void transform(const LorentzMomentum &,LorentzRotation );
 
 public:
 
@@ -127,6 +133,11 @@ private:
    * Basis states in the frame in which the particle decays.
    */
   mutable vector<LorentzPolarizationVector> _decaystates;
+
+  /**
+   * Basis staes in the current frame of the particle
+   */
+  mutable vector<LorentzPolarizationVector> _currentstates;
 
   /**
    * True if the decay state has been set.

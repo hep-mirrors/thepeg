@@ -13,20 +13,23 @@ namespace Helicity {
 
 inline VectorSpinInfo::VectorSpinInfo()
 {
-  _productionstates.resize(3);
-  _decaystates.resize(3);
+  _productionstates.resize(3,LorentzPolarizationVector());
+  _currentstates.resize(3,LorentzPolarizationVector());
+  _decaystates.resize(3,LorentzPolarizationVector());
   setSpin(3);
   _decaycalc = false;
 }
 
 inline VectorSpinInfo::VectorSpinInfo(const VectorSpinInfo & x)
   : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _decaycalc(x._decaycalc) {}
+    _decaystates(x._decaystates), _currentstates(x._currentstates),
+    _decaycalc(x._decaycalc) {}
 
 inline VectorSpinInfo::VectorSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
-  _productionstates.resize(3);
-  _decaystates.resize(3);
+  _productionstates.resize(3,LorentzPolarizationVector());
+  _currentstates.resize(3,LorentzPolarizationVector());
+  _decaystates.resize(3,LorentzPolarizationVector());
   setSpin(3);
   setProductionMomentum(in);
   _decaycalc=false;
@@ -47,8 +50,12 @@ inline void VectorSpinInfo::rebind(const EventTranslationMap & trans) {
 // set the basis state, this is production state
 inline void VectorSpinInfo::
 setBasisState(int ihel, LorentzPolarizationVector in) const
-{
-  if ( ihel == -1 || ihel == 1 || ihel == 0 ) _productionstates[ihel+1]=in;
+{  
+  if ( ihel == -1 || ihel == 1 || ihel == 0 )
+    {
+      _productionstates[ihel+1]=in;
+      _currentstates[ihel+1]=in;
+    }
   else throw HelicityLogicalError()
     << "Tried to set invalid vector basis state in VectorSpinInfo."
     << Exception::abortnow;
@@ -86,11 +93,8 @@ getDecayBasisState(int ihel) const
   // calculate the decay basis states if needed
   if(!_decaycalc)
     {
-      // now use this to evaluate the basis states in the decay frame
-      Hep3Vector boostv=- productionMomentum().boostVector();
-      _decaystates[0] =_productionstates[0].boost(boostv).conjugate();
-      _decaystates[1] =_productionstates[1].boost(boostv).conjugate();
-      _decaystates[2] =_productionstates[2].boost(boostv).conjugate();
+      for(unsigned int ix=0;ix<3;++ix)
+	{_decaystates[ix]=_currentstates[ix].conjugate();}
       _decaycalc=true;
     }
   // return the basis function
