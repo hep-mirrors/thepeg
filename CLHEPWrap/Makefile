@@ -5,13 +5,13 @@ OBJECTS = GenEventConverter.o
 DOCFILES = JamesRandom.h Lorentz5Vector.h LorentzRotation.h LorentzVector.h \
            PhysicalConstants.h RandomEngine.h Rotation.h SystemOfUnits.h \
            ThreeVector.h Transverse.h CLHEP.h GenEventConverter.h \
-           RandExponential.h RandBreitWigner.h
+           RandExponential.h RandBreitWigner.h Matrix.h
 
 INCLUDEFILES = $(DOCFILES) JamesRandom.fh Lorentz5Vector.fh \
                Lorentz5Vector.icc LorentzRotation.fh LorentzVector.fh \
                RandomEngine.fh Rotation.fh ThreeVector.fh Transverse.icc \
                Transverse.fh GenEventConverter.icc RandExponential.fh \
-               RandBreitWigner.fh
+               RandBreitWigner.fh Matrix.fh
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 

@@ -1,5 +1,8 @@
 2003-07-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* CLHEPWrap/Makefile: Added Matrix.h and Matrix.fh to the dist
+	files.
+
 	* lib/fixCLHEP: Make sure the fixed .so version of the CLHEP
 	library is called libCLHEP.so irrespective of what the original
 	CLHEP library was called.
