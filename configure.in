@@ -50,6 +50,18 @@ if test -z "$CLHEPINCLUDE"; then
 fi
 AC_ARG_VAR(CLHEPINCLUDE,The include directive needed to find the CLHEP include files. Default is -I$CLHEPPATH/include.)
 
+if test -z "$GZREAD_FILE"; then
+   GZREAD_FILE="gunzip -c"
+fi
+AC_ARG_VAR(GZREAD_FILE,The command which taking the name of a gzipped file as argument unzips it and prints it to stdout. Default is "gunzip -c".)
+AC_DEFINE_UNQUOTED(ThePEG_GZREAD_FILE, "$GZREAD_FILE")
+
+if test -z "$GZWRITE_FILE"; then
+   GZWRITE_FILE="gzip -c"
+fi
+AC_DEFINE_UNQUOTED(ThePEG_GZWRITE_FILE, "$GZWRITE_FILE")
+AC_ARG_VAR(GZWRITE_FILE,The command which taking the name of a gzipped file as argument reads stdin zips it and writes it to the file. Default is "gzip -c".)
+
 BUILDDIR=`pwd`
 
 AC_SUBST(AR)
@@ -65,6 +77,8 @@ AC_SUBST(CLHEPLIB)
 AC_SUBST(CLHEPINCLUDE)
 AC_SUBST(prefix)
 AC_SUBST(BUILDDIR)
+AC_SUBST(GZREAD_FILE)
+AC_SUBST(GZWRITE_FILE)
 echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <cmath>

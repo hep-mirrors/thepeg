@@ -271,7 +271,7 @@ PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
 ac_unique_file="Makefile"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT AR RANLIB ac_ct_RANLIB CXXEXT CXXDLFLAGS CXXOPTFLAG CXXDEBUGFLAG CLHEPPATH CLHEPLIB CLHEPINCLUDE ARFLAGS BUILDDIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT AR RANLIB ac_ct_RANLIB CXXEXT CXXDLFLAGS CXXOPTFLAG CXXDEBUGFLAG CLHEPPATH CLHEPLIB CLHEPINCLUDE GZREAD_FILE GZWRITE_FILE ARFLAGS BUILDDIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -756,6 +756,14 @@ ac_env_CLHEPINCLUDE_set=${CLHEPINCLUDE+set}
 ac_env_CLHEPINCLUDE_value=$CLHEPINCLUDE
 ac_cv_env_CLHEPINCLUDE_set=${CLHEPINCLUDE+set}
 ac_cv_env_CLHEPINCLUDE_value=$CLHEPINCLUDE
+ac_env_GZREAD_FILE_set=${GZREAD_FILE+set}
+ac_env_GZREAD_FILE_value=$GZREAD_FILE
+ac_cv_env_GZREAD_FILE_set=${GZREAD_FILE+set}
+ac_cv_env_GZREAD_FILE_value=$GZREAD_FILE
+ac_env_GZWRITE_FILE_set=${GZWRITE_FILE+set}
+ac_env_GZWRITE_FILE_value=$GZWRITE_FILE
+ac_cv_env_GZWRITE_FILE_set=${GZWRITE_FILE+set}
+ac_cv_env_GZWRITE_FILE_value=$GZWRITE_FILE
 
 #
 # Report the --help message.
@@ -846,6 +854,12 @@ Some influential environment variables:
   CLHEPINCLUDE
               The include directive needed to find the CLHEP include files.
               Default is -I$CLHEPPATH/include.
+  GZREAD_FILE The command which taking the name of a gzipped file as argument
+              unzips it and prints it to stdout. Default is "gunzip -c".
+  GZWRITE_FILE
+              The command which taking the name of a gzipped file as argument
+              reads stdin zips it and writes it to the file. Default is "gzip
+              -c".
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -1258,7 +1272,7 @@ if test -z "$CXXFLAGS"; then
    CXXFLAGS="-Wall -ansi -pedantic"
 fi
 if test -z "$CXXOPTFLAG"; then
-   CXXOPTFLAG="-O"
+   CXXOPTFLAG="-O2"
 fi
 if test -z "$CXXDEBUGFLAG"; then
    CXXDEBUGFLAG="-g"
@@ -1947,7 +1961,27 @@ if test -z "$CLHEPINCLUDE"; then
 fi
 
 
+if test -z "$GZREAD_FILE"; then
+   GZREAD_FILE="gunzip -c"
+fi
+
+cat >>confdefs.h <<_ACEOF
+#define ThePEG_GZREAD_FILE "$GZREAD_FILE"
+_ACEOF
+
+
+if test -z "$GZWRITE_FILE"; then
+   GZWRITE_FILE="gzip -c"
+fi
+cat >>confdefs.h <<_ACEOF
+#define ThePEG_GZWRITE_FILE "$GZWRITE_FILE"
+_ACEOF
+
+
+
 BUILDDIR=`pwd`
+
+
 
 
 
@@ -2815,6 +2849,8 @@ s,@CXXDEBUGFLAG@,$CXXDEBUGFLAG,;t t
 s,@CLHEPPATH@,$CLHEPPATH,;t t
 s,@CLHEPLIB@,$CLHEPLIB,;t t
 s,@CLHEPINCLUDE@,$CLHEPINCLUDE,;t t
+s,@GZREAD_FILE@,$GZREAD_FILE,;t t
+s,@GZWRITE_FILE@,$GZWRITE_FILE,;t t
 s,@ARFLAGS@,$ARFLAGS,;t t
 s,@BUILDDIR@,$BUILDDIR,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t

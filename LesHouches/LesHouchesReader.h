@@ -246,7 +246,6 @@ public:
 
 class LesHouchesInconsistencyError: public Exception {};
 
-
 };
 
 }
@@ -271,7 +270,7 @@ struct ClassTraits<LesHouchesReader>
   : public ClassTraitsBase<LesHouchesReader> {
   static string className() { return "ThePEG::LesHouchesReader"; }
   // Return the class name.
-  static string library() { return "LesHouchesReader.so"; }
+  static string library() { return "libThePEGLesHouches.so"; }
   // Return the name of the shared library to be loaded to get
   // access to this class and every other class it uses
   // (except the base class).

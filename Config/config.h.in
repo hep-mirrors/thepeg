@@ -23,4 +23,13 @@
    available for manipulating floating point exception handling */
 #undef ThePEG_HAS_FPU_CONTROL
 
+/* Define this to be the command which taking the name of a gzipped
+   file as argument, unzips it and prints it to stdout. */
+#undef ThePEG_GZREAD_FILE
+
+/* Define this to be the command which taking the name of a gzipped
+   file as argument, reads stdin, zips it and writes it to the
+   file. */
+#undef ThePEG_GZWRITE_FILE
+
 #endif /* ThePEG_config_H */

@@ -34,7 +34,7 @@ install: check
 doc: setup
 	@for dir in $(SUBDIRS) ; do cd $$dir ; $(MAKE) doc ; cd .. ; done
 
-setup: Config/Makefile.common
+setup: Config/Makefile.common Config/config.h
 
 Config/Makefile.common: Config/Makefile.common.in configure
 	./configure

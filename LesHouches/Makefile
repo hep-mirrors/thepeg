@@ -1,6 +1,6 @@
-SOURCES = LesHouchesReader.cc
+SOURCES = LesHouchesReader.cc LesHouchesFileReader.cc
 
-LIBOBJECTS = LesHouchesReader.o
+LIBOBJECTS = LesHouchesReader.o LesHouchesFileReader.o
 
 OBJECTS = libThePEGLesHouches.so
 
@@ -8,7 +8,8 @@ LIBFILES = $(OBJECTS)
 
 DOCFILES = LesHouchesReader.h
 
-INCLUDEFILES = $(DOCFILES) LesHouchesReader.fh LesHouchesReader.icc
+INCLUDEFILES = $(DOCFILES) LesHouchesReader.fh LesHouchesReader.icc \
+               LesHouchesFileReader.fh LesHouchesFileReader.icc
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 
