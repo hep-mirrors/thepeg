@@ -32,8 +32,8 @@ void MadGraphReader::open() {
   int lpp2 = 0;
   string pdftag;
   // First scan banner to extract some information
-  while ( fgetc(theFile) == '#' ) {
-    if ( fgets(cline, 1024, theFile) == NULL )
+  while ( fgetc(file()) == '#' ) {
+    if ( fgets(cline, 1024, file()) == NULL )
       throw LesHouchesFileError()
 	<< "An error occurred while '" << name() << "' was reading the file '"
 	<< filename() << "'." << Exception::runerror;
@@ -67,8 +67,8 @@ void MadGraphReader::open() {
   if ( !lpp1 || !lpp2 ) {
     // Madgraph doesn't specify beams if they are not protons. If they
     // are electrons we have tolook at the first event to check.
-    fgets(cline, 1024, theFile);
-    istringstream is(fgets(cline, 1024, theFile));
+    fgets(cline, 1024, file());
+    istringstream is(fgets(cline, 1024, file()));
     int idum1 = 0, idum2 = 0;
     is >> idum1 >> idum2;
     if ( !lpp1 ) IDBMUP.first = idum1;
@@ -76,7 +76,7 @@ void MadGraphReader::open() {
     // Reopen the file to return to the correct position.
     close();
     open();
-    while ( fgetc(theFile) == '#' ) fgets(cline, 1024, theFile);
+    while ( fgetc(file()) == '#' ) fgets(cline, 1024, file());
   }
   EBMUP.first = ebeam1;
   EBMUP.second = ebeam2;

@@ -18,6 +18,10 @@ inline string LesHouchesFileReader::filename() const {
   return theFileName;
 }
 
+inline FILE * LesHouchesFileReader::file() {
+  return theFile;
+}
+
 inline void LesHouchesFileReader::doupdate() throw(UpdateException) {
   LesHouchesReader::doupdate();
   // First update base class.

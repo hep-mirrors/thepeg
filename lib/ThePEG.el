@@ -319,6 +319,8 @@ declarations of a class CLASS."
 #ifndef ThePEG_THECLASS_FH
 #define ThePEG_THECLASS_FH
 
+#include \"ThePEG/Config/Pointers.h\"
+
 namespace " namespace " {
 
 class THECLASS;

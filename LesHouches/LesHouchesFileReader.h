@@ -14,7 +14,10 @@ namespace ThePEG {
  * objects which reads event files from matrix element generators. It
  * inherits from LesHouchesReader and extends it by defining a file
  * handle to be read from, which is opened and closed by the open()
- * and close() functions.
+ * and close() functions. Note that the file handle is a standard C
+ * filehandle and not a C++ stream. This is because there is no
+ * standard way in C++ to connect a pipe to a stream for reading
+ * eg. gzipped files.
  *
  * @see LesHouchesReader
  */
@@ -61,6 +64,11 @@ public:
    * Return the name of the file from where to read events.
    */
   inline string filename() const;
+
+  /**
+   * The file handle to read from.
+   */
+  inline FILE * file();
 
 public:
 
@@ -132,14 +140,12 @@ protected:
   inline virtual IVector getReferences();
   //@}
 
-protected:
+private:
 
   /**
    * The file handle from which derived classes should read.
    */
   FILE * theFile;
-
-private:
 
   /**
    * The name of the file from where to read events.
@@ -147,7 +153,7 @@ private:
   string theFileName;
 
   /**
-   * If true the file is alsways assumed to be gzipped. Otherwise the
+   * If true the file is always assumed to be gzipped. Otherwise the
    * file will be assumed to be gzipped if the name ends with '.gz'
    */
   bool isGZipped;
