@@ -1,3 +1,21 @@
+2003-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/BaseRepository.*: Added remove(ObjectList) to safely
+	remove a set of objects from the repository if no other objects
+	are referring to them. The function is used by the "rm"
+	command. In addition a new command "rrmdir" was added to remove a
+	complete directory with all its objects and sub-directories. (The
+	"rmdir" only removes empty directories.)
+
+	* Repository/Repository.*: The "cp" command now treats particles
+	separately (copyParticle()). If a particle has an anti-partner
+	this is also copied to the same directory. In addition the decay
+	modes of both particle and anti-particle will be copied.
+
+	* PDT/DecayMode.cc: in constructDecayMode() it is now the default
+	to specify the full name of the decaying particle (rather than
+	just the PDGName).
+
 2003-07-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/*.fh, CLHEPWrap/*.h: Reordered include paths to

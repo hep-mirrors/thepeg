@@ -101,7 +101,12 @@ public:
   // Read commands from a stream.
 
   static string exec(string, ostream & os);
-  // Execut a command.
+  // Execute a command.
+
+  static string copyParticle(tPDPtr, string);
+  // Special function for copying particles. Also corresponding
+  // anti-particle is copied to the same directory. In addition, their
+  // decay modes are copied.
 
 private:
 

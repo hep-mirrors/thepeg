@@ -143,6 +143,11 @@ public:
   static void remove(tIBPtr);
   // Remove the given object from the repository.
 
+  static string remove(const ObjectSet & rmset);
+  // Remove the given objects if there are no other objects in the
+  // repository referring to them, otherwise return the names of the
+  // objects refering to them.
+
   static void rename(tIBPtr, string newName);
   // Rename a given object.
 

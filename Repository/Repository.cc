@@ -385,11 +385,51 @@ void Repository::read(istream & is, ostream & os, string prompt) {
   if ( prompt.size() ) os << endl;
 }
 
+string Repository::copyParticle(tPDPtr p, string newname) {
+  DirectoryAppend(newname);
+  
+  string newdir = newname.substr(0, newname.rfind('/')+1);
+  newname =newname.substr(newname.rfind('/')+1);
+  if ( newname.empty() ) newname = p->name();
+  if ( GetPointer(newdir + newname) )
+    "Error: Cannot create particle " + newdir + newname +
+      ". Object already exists.";
+  if ( p->CC() && GetPointer(newdir + p->CC()->name()) )
+    "Error: Cannot create anti-particle " + newdir + newname +
+      ". Object already exists.";
+  PDPtr pd = p->pdclone();
+  Register(pd, newdir + newname);
+  pd->theDecaySelector.clear();
+  pd->theDecayModes.clear();
+  if ( p->CC() ) {
+    PDPtr apd = p->CC()->pdclone();
+    Register(apd, newdir + apd->name());
+    apd->theDecaySelector.clear();
+    apd->theDecayModes.clear();
+    pd->theAntiPartner = apd;
+    apd->theAntiPartner = pd;
+    pd->syncAnti = p->syncAnti;
+    apd->syncAnti = p->CC()->syncAnti;
+  }
+  HoldFlag<> dosync(pd->syncAnti, true);
+  for ( DecaySet::const_iterator it = p->theDecayModes.begin();
+	it != p->theDecayModes.end(); ++it )
+    pd->addDecayMode(*it);
+  return "";
+}
+
 string Repository::exec(string command, ostream & os) {
   string cpcmd = command;
   try {
     string verb = StringUtils::car(command);
     command = StringUtils::cdr(command);
+    if ( verb == "cp" ) {
+      string name = StringUtils::car(command);
+      DirectoryAppend(name);
+      tPDPtr p = dynamic_ptr_cast<tPDPtr>(GetPointer(name));
+      if ( p ) return copyParticle(p, StringUtils::cdr(command));
+      return BaseRepository::exec(cpcmd, os);
+    }
     if ( verb == "decaymode" ) {
       string tag = StringUtils::car(command);
       DMPtr dm = DecayMode::constructDecayMode(tag);

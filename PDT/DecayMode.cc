@@ -495,7 +495,8 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
   string::size_type next = tag.find("->");
   if ( next == string::npos ) return rdm;
   if ( tag.find(';') == string::npos ) return rdm;
-  tPDPtr pd = Repository::findParticle(tag.substr(0,next));
+  tPDPtr pd = Repository::GetPtr<tPDPtr>(tag.substr(0,next));
+  if ( !pd ) pd = Repository::findParticle(tag.substr(0,next));
   if ( !pd ) return rdm;
   rdm = ptr_new<DMPtr>();
   rdm->parent(pd);
