@@ -1,4 +1,4 @@
-*** This is ThePEG version 1 ***
+Toolkit for High Energy Physics Event Generation - ThePEG
 
 To compile and install ThePEG follow these steps:
 
@@ -45,3 +45,21 @@ Note that this version is not of production quality and results
 produced with it should not be used for serious scientific
 studies. This release is mainly intended to make public the basic
 structure of the program.
+
+There is currently no up-to-date manual avaliable. However, the
+general structure is described in "PYTHIA version 7-0.0 - a
+proof-of-concept version" Comput. Phys. Commun. 134 (2001) 365. (see
+also http://www.thep.lu.se/Pythia7/Doc/Proof/). This describes the
+Pythia7 program before it was broken up into the basic event generator
+platform - ThePEG - and the Pythia-specific parts in Pythia7
+
+Briefly, the running of ThePEG is divided into two steps:
+
+1: The program 'setupThePEG' is used to set up an event generator and
+   saving it to a file. Here you collect together the components
+   needed for a specific event generation run, and parameters and
+   switches of the components can be set to prefered values. See the
+   file SimpleLEP.in in the src subdirectory for an example.
+
+2: The program 'runThePEG' is used to run the generator saved to a
+   file. 
