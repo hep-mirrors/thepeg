@@ -96,6 +96,8 @@ void PartonExtractor::
 select(tXCombPtr newXComb) {
   lastPartonBins().clear();
   theLastXComb = newXComb;
+  lastPartonBins()[lastPartons().first] = newXComb->partonBins().first;
+  lastPartonBins()[lastPartons().second] = newXComb->partonBins().second;
 }
 
 tPBPtr PartonExtractor::partonBin(tcPPtr p) const {

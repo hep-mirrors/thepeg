@@ -1,3 +1,9 @@
+2003-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.cc: Fixed association beteen partons and
+	parton bins for generated sub-processes (used to find PDFs for
+	partons).
+
 2003-06-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/ObjectIndexer.*: Added templated class for dynamical
