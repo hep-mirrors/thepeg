@@ -19,10 +19,11 @@ public:
    * The different debug levels.
    */
   enum Levels {
-    /** No debugging. */                                    noDebug = 0,
-    /** Lowest debug level. Some events are printed out. */ printSomeEvents = 1,
-    /** Higher debug level. All events are printed out. */  printEveryEvent = 5,
-    /** Highest possible debug level */                     full = 9 };
+    noDebug = 0, /**< No debugging. */
+    printSomeEvents = 1, /**< Lowest debug level. Some events are printed out. */
+    printEveryEvent = 5, /**< Higher debug level. All events are printed out. */
+    full = 9 /**< Highest possible debug level */
+  };
 
   /**
    * The current level.

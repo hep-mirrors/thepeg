@@ -33,7 +33,7 @@ namespace ThePEG {
  * Exception::eventerror</code>.
  *
  * @see Repository,
- * @see EventGenrator. 
+ * @see EventGenrator.
  */
 class Exception: public exception {
 
@@ -43,22 +43,22 @@ public:
    * The levels of severity.
    */
   enum Severity {
-    /** Unknown severity */ unknown,
-    /** Not severe. But the user should be
-     *  informed. */                          info,      
-    /** Possibly severe. The user should be
-     *  warned. */		              warning,
-    /** Severe error. The event being
-     *  generated should be discarded. */     eventerror,
-    /** Severe error. The run should be
-     *  terminated */		              runerror,  
-    /** Severe error. The run should be
-     *  terminated, possibly dumping core. */ maybeabort,
-    /** Severe error. The run is aborted
-     *  immediately, before the exception is
-     *  thrown. */		              abortnow   
+    unknown,    /**< Unknown severity */
+    info,       /**< Not severe (but the user should be
+		 *  informed). */
+    warning,    /**< Possibly severe, (the user should be
+		 *  warned). */
+    eventerror, /**< Possibly severe, (the event being
+		 *  generated should be discarded). */
+    runerror,   /**< Severe error, (the run should be
+		 *  terminated). */
+    maybeabort, /**< Severe error, (the run should be
+		 *  terminated, possibly dumping core). */
+    abortnow    /**< Severe error, (the run is aborted
+		 *  immediately, before the exception is
+		 *  thrown). */
   };
-  
+
 public:
 
   /**
