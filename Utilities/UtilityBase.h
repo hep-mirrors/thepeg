@@ -89,6 +89,16 @@ struct UtilityBase {
   // that, if they were previously in their rest frame, they end up
   // with total momentum q.
 
+  template <typename PType>
+  inline static LorentzRotation
+  transformToMomentum(const PType & p, const Momentum3 & q);
+  template <typename PType>
+  inline static LorentzRotation
+  transformToMomentum(const PType & p, const LorentzMomentum & q);
+  // Return the transformation needed to rotate p to the z-axis and
+  // boost it to its CMS, then boost it along the z-axis and rotate it
+  // so that it ends up with momentum q.
+
   template <typename LV>
   static LorentzRotation transformFromCMS(const LV & p);
   // Create a rotation corresponding to transforming sum to its

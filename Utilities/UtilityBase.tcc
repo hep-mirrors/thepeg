@@ -105,7 +105,7 @@ transformToCMS(const LV & p) {
   LorentzRotation r;
   r.rotateZ(-p.phi());
   r.rotateY(-p.theta());
-  r.boost(0.0, 0.0, p.rho()/p.e());
+  r.boost(0.0, 0.0, -p.rho()/p.e());
   return r;
 }
 

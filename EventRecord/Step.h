@@ -110,6 +110,12 @@ public:
   // succeeded. If the copy fails, nothing is changed. For a
   // successful call copyParticle(p)->previous() == p is true.
 
+  bool setCopy(tcPPtr pold, tPPtr pnew);
+  // Declare that pold and pnew are two instances of the same
+  // particle. If pnew is not present in the step it will be
+  // afterwars. Afterwards pold == pnew->previous() && pnew ==
+  // pold->next() is true. Returns false if something went wrong.
+
   tPPtr insertCopy(tcPPtr p);
   // If the given particle is present in the current Collision, insert
   // copy of that particle 'before' the particle. If the particle does

@@ -1,3 +1,18 @@
+2003-07-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/UtilityBase.tcc: Fixed bug in transformToCMS(): boos
+	was backward.
+
+	* Utilities/UtilityBase.*: Added transformToMomentum() method.
+
+	* Utilities/SimplePhaseSpace.cc: Fixed potential problem in
+	getMagnitude() where impossible kinematics didn't generate an
+	exception due to rounding errors.
+
+	* EventRecord/Step.*: Added setCopy method.
+
+	* CLHEPWrap/Transverse.icc: Fixed bug in phi() calculation.
+
 2003-07-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc: Messed around with the newRemnants

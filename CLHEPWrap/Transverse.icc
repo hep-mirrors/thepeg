@@ -125,7 +125,7 @@ inline FloatType Transverse<FloatType>::pt() const {
 
 template <typename FloatType>
 inline double Transverse<FloatType>::phi() const {
-  return atan2(x()/FloatType(1.0), y()/FloatType(1.0));
+  return atan2(y()/FloatType(1.0), x()/FloatType(1.0));
 }
 
 }

@@ -17,9 +17,10 @@ Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
   }
   Energy2 m12 = m1 < 0.0*GeV? -sqr(m1): sqr(m1);
   Energy2 m22 = m2 < 0.0*GeV? -sqr(m2): sqr(m2);
-  Energy4 aa = sqr(m12) + sqr(m22 - s) -2.0*m12*(m22 + s);
-  if ( aa < 0.0*GeV2*GeV2 ) throw ImpossibleKinematics();
-  return 0.5*sqrt(aa/s);
+  Energy2 r2 = 0.25*(sqr(m12) + sqr(m22 - s) -2.0*m12*(m22 + s))/s;
+  if ( r2 < 0.0*GeV2 || r2 + m12 < 0.0*GeV2 || r2 + m22 < 0.0*GeV2 )
+    throw ImpossibleKinematics();
+  return sqrt(r2);
 }
 
 vector<LorentzMomentum> SimplePhaseSpace::

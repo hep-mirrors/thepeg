@@ -37,4 +37,18 @@ boostToCM(Iterator first, Iterator last, Iterator zAxis) {
   return boostToCM(first, last, zAxis, last);
 }
 
+template <typename PType>
+inline LorentzRotation
+UtilityBase::transformToMomentum(const PType & p, const Momentum3 & q) {
+  typedef ParticleTraits<PType> Traits;
+  LorentzMomentum q4(q, sqrt(q.mag2() + Traits::momentum(p).m2()));
+  return transformToMomentum(p, q4);
+}
+
+template <typename PType>
+inline LorentzRotation
+UtilityBase::transformToMomentum(const PType & p, const LorentzMomentum & q) {
+  return transformFromCMS(q)*transformToCMS(p);
+}
+
 }

@@ -164,6 +164,18 @@ tPPtr Step::copyParticle(tcPPtr pin) {
   return cp;
 }
 
+bool Step::setCopy(tcPPtr poldin, tPPtr pnew) {
+  if ( poldin->id() != pnew->id() ) return false;
+  tPPtr pold = const_ptr_cast<tPPtr>(poldin);
+  pold->rep().theNext = pnew;
+  pnew->rep().thePrevious = pold;
+  theParticles.erase(pold);
+  if ( pold->birthStep() == this ) theIntermediates.insert(pold);
+  pnew->rep().theBirthStep = this;
+  addParticle(pnew);
+  return true;
+}
+
 tPPtr Step::insertCopy(tcPPtr pin) {
   PPtr cp;
   tPPtr p = const_ptr_cast<tPPtr>(pin);
