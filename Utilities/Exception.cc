@@ -39,6 +39,11 @@ extern "C" {
     if ( !CurrentGenerator::isVoid() ) CurrentGenerator::current().dump();
   }
 
+  void debugParticle(const ThePEG::Particle * p) {
+    using namespace ThePEG;
+    cerr << *p;
+  }
+
 }
 
 namespace ThePEG {

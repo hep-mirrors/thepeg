@@ -323,16 +323,19 @@ collapse(tStepPtr newStep, const ColourSinglet & cs,
     // momentum and bost back
     LorentzMomentum pcomp =
       Utilities::sumMomentum(comp.begin(), comp.end() - 1);
-    double boost = -pcomp.z()/pcomp.e();
+    //    double boost = -pcomp.z()/pcomp.e();
     Energy2 s = (pcomp + h->momentum()).m2();
     Energy pnew = SimplePhaseSpace::getMagnitude(s, mh, pcomp.m());
     //    boost -= pnew/sqrt(sqr(pnew) + pcomp.m2());
     h->set5Momentum(Lorentz5Momentum(0.0*GeV, 0.0*GeV,
 				     pnew, sqrt(sqr(pnew) + sqr(mh)), mh));
-    h->transform(R);
-    R = R*LorentzRotation(0.0, 0.0, -pnew/sqrt(sqr(pnew) + pcomp.m2())) *
-      LorentzRotation(0.0, 0.0, boost);
-    Utilities::transform(comp.begin(), comp.end() - 1, R);
+    Utilities::setMomentum(comp.begin(), comp.end() -1,
+			   Momentum3(0.0*GeV, 0.0*GeV, -pnew));
+    //    h->transform(R);
+    //    R = R*LorentzRotation(0.0, 0.0, -pnew/sqrt(sqr(pnew) + pcomp.m2())) *
+    //      LorentzRotation(0.0, 0.0, boost);
+    //    Utilities::transform(comp.begin(), comp.end() - 1, R);
+    Utilities::transform(comp.begin(), comp.end(), R);
   }
 
   // Add the new particle to the step.

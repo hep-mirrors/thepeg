@@ -5,8 +5,6 @@ mkdir /Defaults/Matchers
 mkdir /Defaults/Particles
 mkdir /Defaults/Decayers
 create /ThePEG/FlatDecayer /Defaults/Decayers/Flat
-create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY0
-setup /Dummy/Decayers/PYDECY0 0
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY1
 setup /Dummy/Decayers/PYDECY1 1
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY2
@@ -112,6 +110,7 @@ create /ThePEG/EventHandler SimpleLEPHandler
 create /ThePEG/FixedCMSLuminosity FixedLEPLuminosity FixedCMSLuminosity.so
 set FixedLEPLuminosity:Energy 91.2
 set SimpleLEPHandler:LuminosityFunction FixedLEPLuminosity
+set SimpleLEPHandler:DecayHandler /Defaults/Handlers/StandardDecayHandler
 
 create /ThePEG/SubProcessHandler SimpleEE2QQ
 insert SimpleEE2QQ:MatrixElements[0] /Defaults/MatrixElements/MEee2gZ2qq

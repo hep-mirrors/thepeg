@@ -1,3 +1,11 @@
+2003-07-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/Exception.cc: Added debug function to print out
+	particle.
+
+	* Handlers/ClusterCollapser.cc: Fixed bug for the case where mass
+	of compensating particle is 0.
+
 2003-07-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UtilityBase.tcc: Fixed bug in transformToCMS(): boos
