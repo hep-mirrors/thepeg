@@ -1,38 +1,7 @@
 // -*- C++ -*-
-//
 #ifndef ThePEG_Selector_H
 #define ThePEG_Selector_H
-//
-// This is the definition of the <B><TT>ThePEG::Selector</TT></B> class.
-//
-// <B><TT>Selector</TT></B> is a templated class for storing objects
-// associated with probabilities in a way such that, given a random
-// number between 0 and 1, an object can be selected according to its
-// relative probability. Internally, the objects of class
-// <B><TT>T</TT></B> are stored in an
-// <B><TT>std::map&lt;double,T&gt;</TT></B> where the key is the
-// probability of the corresponding object plus the accumulated sum of
-// probabilities of all objects before the current one in the
-// map. This allows for fast retreival of an object according to its
-// probability. Where fast means that the time increases as a
-// logarithm of the number of objects in the selector.
-//
-// CLASSDOC SUBSECTION Usage:
-//
-// <B><TT>double random();</TT></B> // A random generator returning a
-// number between 0 and 1.<BR>
-// <B><TT>class foo;</TT></B> // A class which can be used in std::map.<BR>
-// <B><TT>Selector&lt;foo*&gt; bar;</TT></B> // A selector.<BR>
-// <B><TT>foo f1, f2;</TT></B> <BR>
-// <B><TT>bar.insert(0.5,&f1)</TT></B> // assign probability 0.5<BR>
-// <B><TT>bar.insert(0.5,&f2)</TT></B> // to each of f1 and f2<BR>
-// <B><TT>foo * f = bar.select(random())</TT></B> // randomly returns
-// a pointer to f1 or f2<BR>
-//
-// CLASSDOC SUBSECTION Author:
-//
-// Leif L&ouml;nnblad
-//
+// This is the declaration of the Selector class.
 
 #include "ThePEG/Config/ThePEG.h"
 #include <stdexcept>
@@ -41,111 +10,250 @@
 
 namespace ThePEG {
 
+/**
+ * .
+ *
+ * Selector is a templated class for storing objects associated with
+ * probabilities in a way such that, given a flat random number
+ * between 0 and 1, an object can be selected according to its
+ * relative probability. Internally, the objects of class
+ * <code>T</code> are stored in a map where the key is the
+ * probability of the corresponding object plus the accumulated sum of
+ * probabilities of all objects before the current one in the
+ * map. This allows for fast retreival of an object according to its
+ * probability. Where fast means that the time increases as a
+ * logarithm of the number of objects in the selector.
+ *
+ * Here is an example on how to use the class:<br>
+ * <code>double random();</code> // A random generator returning a
+ * number between 0 and 1.<br>
+ * <code>class foo;</code>  // Any class.<BR>
+ * <code>Selector<foo*> bar;</code>  // A selector.<BR>
+ * <code>foo f1, f2;</code> <BR>
+ * <code>bar.insert(0.5,&f1)</code>  // assign probability 0.5<BR>
+ * <code>bar.insert(0.5,&f2)</code>  // to each of f1 and f2<BR>
+ * <code>foo * f = bar.select(random())</code>  // randomly returns
+ * a pointer to f1 or f2<BR>
+ */
 template <typename T, typename WeightType = double>
 class Selector {
 
 public:
 
+  /** Map doubles to objects. */
   typedef map<WeightType, T, less<WeightType>, Allocator<T> > MapType;
+
+  /** Iterator corresponding to the underlying map. */
   typedef typename MapType::const_iterator const_iterator;
+
+  /** Iterator corresponding to the underlying map. */
   typedef typename MapType::iterator iterator;
+
+  /** Size type of the underlying map. */
   typedef typename MapType::size_type size_type;
 
 public:
 
+  /**
+   * Default constructor.
+   */
   inline Selector();
+
+  /**
+   * Copy constructor.
+   */
   inline Selector(const Selector &);
-  // Trivial constructors.
 
+  /**
+   * Destructor.
+   */
   inline ~Selector();
-  // Trivial destructor.
 
+  /**
+   * Assignment.
+   */
   inline const Selector & operator = (const Selector &);
-  // Trivial assignment.
 
+  /**
+   * Swap the underlying representation with the argument.
+   */
   inline void swap(Selector &);
-  // Trivial swap.
 
+  /**
+   * Insert an object given a probability for this object. If the
+   * probability is zero or negative, the object will not be inserted
+   * and the probability itself is returned. Otherwise the sum of
+   * probabilities so far is returned.
+   */
   inline WeightType insert(WeightType, const T &);
-  // Insert an object given a probability for this object. If the
-  // probability is zero or negative, the object will not be inserted
-  // and the probability itself is returned. Otherwise the sum of
-  // probabilities is returned.
 
+  /**
+   * Reweight an object previously inserted giving it a new
+   * weight. Semantically <code>reweight(w,o);</code> is equivalent to
+   * <code>erase(o); insert(w,o);</code>
+   */
   inline WeightType reweight(WeightType, const T &);
-  // Reweight an object previously inserted giving it a new
-  // weight. Semantically reweight(w,o); is equivalent to erase(o);
-  // insert(w,o);
 
+  /**
+   * Erase an object, previously inserted. If the object had not been
+   * inserted, nothing will happen. If several copies of the object
+   * has been inserted, all will be removed removed. In all cases the
+   * sum of the remaining probabilities is returned.
+   */
   WeightType erase(const T &);
-  // Erase an object, previously inserted. If the object had not been
-  // inserted, nothing will happen. If several copies of the object
-  // has been inserted, all will be removed removed. In all cases the
-  // sum of probabilities is returned.
 
+  /**
+   * Replace all occurencies of oldObject with newObject without
+   * changing the probability for the entry.
+   */
   void replace(const T & oldObject, const T & newObject);
-  // Replace all occurencies of oldObject with newObject without
-  // changing the probability for the entry.
 
+  /**
+   * Selct an object randomly. Given a random number flatly
+   * distributed in the interval ]0,1[ Select an object according to
+   * the individual probabilities specified when they were
+   * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
+   * range_error will be thrown.
+   * @param rnd a flat random number in the interval ]0,1[
+   * @param remainder if non-zero the double pointed to will be set to
+   * a uniform random number in the interval ]0,1[ calculated from the
+   * fraction of rnd which was in the range of the selected object.
+   */
   T & select(double rnd, double * remainder = 0) throw(range_error);
-  inline T & operator[](double rnd) throw(range_error);
-  const T & select(double rnd, double * remainder = 0) const throw(range_error);
-  inline const T & operator[](double rnd) const throw(range_error);
-  // Given a random number flatly distributed in ]0,1[ Select an
-  // object according to the individual probabilities specified when
-  // they were inserted. If rnd <= 0 or if rnd >= 1 or the Selector is
-  // empty, a range_error will be thrown. There is one const and one
-  // non-const version. operator[](rnd) is just an alias for
-  // select(rnd).
 
+  /**
+   * Selct an object randomly. Given a random number flatly
+   * distributed in the interval ]0,1[ Select an object according to
+   * the individual probabilities specified when they were
+   * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
+   * range_error will be thrown.
+   */
+  inline T & operator[](double rnd) throw(range_error);
+
+  /**
+   * Selct an object randomly. Given a random number flatly
+   * distributed in the interval ]0,1[ Select an object according to
+   * the individual probabilities specified when they were
+   * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
+   * range_error will be thrown.
+   * @param rnd a flat random number in the interval ]0,1[
+   * @param remainder if non-zero the double pointed to will be set to
+   * a uniform random number in the interval ]0,1[ calculated from the
+   * fraction of rnd which was in the range of the selected object.
+   */
+  const T & select(double rnd, double * remainder = 0) const throw(range_error);
+
+  /**
+   * Selct an object randomly. Given a random number flatly
+   * distributed in the interval ]0,1[ select an object according to
+   * the individual probabilities specified when they were
+   * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
+   * range_error will be thrown.
+   */
+  inline const T & operator[](double rnd) const throw(range_error);
+
+  /**
+   * Selct an object randomly. Given a random number generator which
+   * generates flat random numbers in the interval ]0,1[ with the
+   * <code>operator()()</code> function, select an object according to
+   * the individual probabilities specified when they were
+   * inserted. If the generated number is outside the allowed range or
+   * the Selector is empty, a range_error will be thrown. The
+   * generator should have a push_back function which will be used
+   * push back a uniform random number in the interval ]0,1[
+   * calculated from the fraction of rnd which was in the range of the
+   * selected object.
+   */
   template <typename RNDGEN>
   inline T & select(RNDGEN & rnd) throw(range_error);
+
+  /**
+   * Selct an object randomly. Given a random number generator which
+   * generates flat random numbers in the interval ]0,1[ with the
+   * <code>operator()()</code> function, select an object according to
+   * the individual probabilities specified when they were
+   * inserted. If the generated number is outside the allowed range or
+   * the Selector is empty, a range_error will be thrown. The
+   * generator should have a push_back function which will be used
+   * push back a uniform random number in the interval ]0,1[
+   * calculated from the fraction of rnd which was in the range of the
+   * selected object.
+   */
   template <typename RNDGEN>
   inline const T & select(RNDGEN & rnd) const throw(range_error);
-  // Same as above but give the actual random generator which should
-  // be able to push_back unused values.
 
+  /**
+   * Return the sum of probabilities of the objects inserted. Note
+   * that probabilities specified when objects are inserted are
+   * rescaled with this number to give unit probability for
+   * 'select()'.
+   */
   inline WeightType sum() const;
-  // Return the sum of probabilities of the objects inserted. Note
-  // that probabilities specified when objects are inserted are
-  // rescaled with this number to give unit probability for
-  // 'select()'.
 
+  /**
+   * Access to the <code>begin()</code> iterator of the underlying
+   * map. Dereferenced, it will give a std::pair<WeightType, T>, where
+   * 'first' is the sum of all probabilities up to this one, and
+   * 'second' is the object inserted.
+   */
   inline const_iterator begin() const;
+
+  /**
+   * Access to the <code>end()</code> iterator in the underlying
+   * map.
+   */
   inline const_iterator end() const;
-  // Access to the first and last iterator in the underlying
-  // map. Dereferenced, they give a std::pair<WeightType, T>, where
-  // 'first' is the sum of all probabilities up to this one, and
-  // 'second' is the object inserted.
 
+  /**
+   * Returns true if the Selector is empty.
+   */
   inline bool empty() const;
-  // Returns true if the Selector is empty.
 
+  /**
+   * Returns the number of objects in the selector.
+   */
   inline size_type size() const;
-  // Returns the number of objects in the selector.
 
+  /**
+   * Erases all objects.
+   */
   inline void clear();
-  // Erases all objects.
 
+  /**
+   * Output to a stream.
+   */
   template <typename OStream>
   void output(OStream &) const;
 
+  /**
+   * Input from a stream.
+   */
   template <typename IStream>
   void input(IStream &);
 
 private:
 
+  /**
+   * The underlying map relating sums of probabilities to inserted objects.
+   */
   MapType theMap;
-  // The underlying map relating sums of probabilities to inserted objects.
 
+  /**
+   * The sum of all probabilities assicialted with inserted objects.
+   */
   WeightType theSum;
-  // The sum of all probabilities assicialted with inserted objects.
 
 };
 
+/**
+ * Output a Selector to a stream.
+ */
 template <typename OStream, typename T, typename WeightType>
 inline OStream & operator<<(OStream &, const Selector<T,WeightType> &);
 
+/**
+ * Input a Selector from a stream.
+ */
 template <typename IStream, typename T, typename WeightType>
 inline IStream & operator>>(IStream &, Selector<T,WeightType> &);
 

@@ -6,13 +6,13 @@
 
 namespace ThePEG {
 
-template <class T>
+template <typename T>
 inline HoldFlag<T>::HoldFlag(T & newFlag, const T & holdFlag)
   : theFlag(newFlag), oldFlag(holdFlag) {
   std::swap(theFlag, oldFlag);
 }
 
-template <class T>
+template <typename T>
 inline HoldFlag<T>::
 HoldFlag(T & newFlag, const T & holdFlag, const T & finalFlag)
   : theFlag(newFlag), oldFlag(holdFlag) {
@@ -20,7 +20,7 @@ HoldFlag(T & newFlag, const T & holdFlag, const T & finalFlag)
   oldFlag = finalFlag;
 }
 
-template <class T>
+template <typename T>
 inline HoldFlag<T>::~HoldFlag() {
   std::swap(theFlag, oldFlag);
 }

@@ -18,7 +18,7 @@ addBases(vector<const ClassDescriptionBase *> & c) {
   ClassDescriptionHelper<T,IBase+1>::addBases(c);
 }
 
-template <class T, int IBase>
+template <typename T, int IBase>
 void ClassDescriptionHelper<T, IBase, int>::
 addBases(vector<const ClassDescriptionBase *> & c) {}
 

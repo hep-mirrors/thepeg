@@ -220,7 +220,7 @@ public:
  * A concreate implementation of ClassDescriptionBase describing an
  * abstract class with persistent data.
  */
-template <class T>
+template <typename T>
 class AbstractClassDescription: public ClassDescriptionTBase<T> {
 
 public:
@@ -260,7 +260,7 @@ public:
  * A concreate implementation of ClassDescriptionBase describing a
  * concrete class with persistent data.
  */
-template <class T>
+template <typename T>
 class ClassDescription: public ClassDescriptionTBase<T> {
 
 public:
@@ -299,7 +299,7 @@ public:
  * A concreate implementation of ClassDescriptionBase describing a
  * concrete class without persistent data.
  */
-template <class T>
+template <typename T>
 class NoPIOClassDescription: public ClassDescriptionTBase<T> {
 
 public:
@@ -330,7 +330,7 @@ public:
  * A concreate implementation of ClassDescriptionBase describing an
  * abstract class without persistent data.
  */
-template <class T>
+template <typename T>
 class AbstractNoPIOClassDescription: public ClassDescriptionTBase<T> {
 
 public:
@@ -362,8 +362,8 @@ public:
  * A helper class for tracing the base classes of a class to be
  * described
  */
-template <class T, int IBase,
-          class B = typename BaseClassTrait<T,IBase>::NthBase>
+template <typename T, int IBase,
+          typename B = typename BaseClassTrait<T,IBase>::NthBase>
 struct ClassDescriptionHelper {
   /** Add base classes */
   static void addBases(vector<const ClassDescriptionBase *> & c);
@@ -373,7 +373,7 @@ struct ClassDescriptionHelper {
  * A helper class for tracing the base classes of a class to be
  * described
  */
-template <class T, int IBase>
+template <typename T, int IBase>
 struct ClassDescriptionHelper<T, IBase, int> {
   /** Add base classes */
   static void addBases(vector<const ClassDescriptionBase *> & c);

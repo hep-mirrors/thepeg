@@ -4,7 +4,7 @@
 
 namespace ThePEG {
 
-template <class T>
+template <typename T>
 class Rebinder;
 
 }

@@ -13,7 +13,7 @@ namespace ThePEG {
 
 class ClassDescriptionBase;
 
-template <class T>
+template <typename T>
 class ClassDescription;
 
 }

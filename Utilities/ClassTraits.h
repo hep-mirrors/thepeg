@@ -32,9 +32,8 @@ namespace ThePEG {
  *
  * @see PersistentOStream,
  * @see PersistentIStream.
- * 
  */
-template <class T>
+template <typename T>
 struct ClassTraitsBase {
 
   ThePEG_DECLARE_TEMPLATE_POINTERS(T,TPtr);
@@ -106,7 +105,7 @@ struct ClassTraitsBase {
  * templated class may be specialized for any class if the default
  * implementation is not sufficient.
  */
-template <class T>
+template <typename T>
 struct ClassTraits: public ClassTraitsBase<T> {};
 
 /**
@@ -120,10 +119,10 @@ struct ClassTraits: public ClassTraitsBase<T> {};
  * class and so on. The typedef defaults to <code>int</code> which means
  * no base class.
  */
-template <class Derived, int BaseN> struct BaseClassTrait {
+template <typename Derived, int BaseN> struct BaseClassTrait {
   /**
-   * The type of the <code>BaseN>'th base class (int means there are
-   * no further base classes.
+   * The type of the <code>BaseN</code>'th base class (int means there
+   * are no further base classes.
    */
   typedef int NthBase;
 };

@@ -9,95 +9,157 @@
 
 namespace ThePEG {
 
+/** The Math namespace includes the declaration of some useful
+ *  mathematical functions. */
 namespace Math {
 
+/** The gamma function */
 double gamma(double);
+
+/** The log of the gamma function */
 double lngamma(double);
-// The (log of the) gamma function.
 
+/** Return \f$1-e^x\f$, with highest possible precision for
+ *  \f$x\rightarrow 0\f$. */
 inline double exp1m(double x);
-// 1-exp(x), with highest possible precision for x->0.
 
+/** Return \f$1\log(1-x)\f$, with highest possible precision for
+ *  \f$x\rightarrow 0\f$. */
 inline double log1m(double);
-// log(1-x), with highest possible precision for x->0.
 
+/** Return x rased to the integer power p, using recursion. */
 inline double powi(double x, int p);
-// Return x rased to the integer power p, using recursion.
 
+/** Return the integral of \f$x^p dx\f$ between xl and xu. */
 inline double pIntegrate(double p, double xl, double xu);
+
+/** Return the integral of \f$x^p dx\f$ between xl and xu. */
 inline double pIntegrate(int p, double xl, double xu);
-// Return the integral of x^p dx between xl and xu.
 
+/** Return the integral of \f$x^{e-1} dx\f$ between xl and xl+dx with
+ *  highest possible precision for \f$dx\rightarrow 0\f$ and/or
+ *  \f$e\rightarrow 0\f$. */
 inline double pXIntegrate(double e, double xl, double dx);
-// Return the integral of x^(e-1) dx between xl and xl+dx with highest
-// possible precision for dx->0 and/or e->0.
 
+/** Generate an x between xl and xu distributed as \f$x^p\f$. */
 inline double pGenerate(double p, double xl, double xu, double rnd);
+
+/** Generate an x between xl and xu distributed as \f$x^p\f$. */
 inline double pGenerate(int p, double xl, double xu, double rnd);
-// Generate an x between xl and xu distributed as x^p.
 
+/** Generate an x between xl and xl + dx distributed as \f$x^{e-1}\f$
+ *  with highest possible precision for\f$dx\rightarrow 0\f$ and/or *
+ *  \f$e\rightarrow 0\f$.
+ * @param R a flat random number in the interval ]0,1[. */
 inline double pXGenerate(double e, double xl, double xu, double rnd);
-// Generate an x between xl and xl + dx distributed as x^(e-1) with
-// highest possible precision for dx->0 and/or e->0.
 
+/** Returns (x - y)/(|x| + |y|). */
 template <typename FloatType>
 inline double relativeError(FloatType x, FloatType y);
-// Returns (x - y)/(|x| + |y|)
 
+/** Return x if |x|<|y|, else return y. */
 template <typename T>
 inline T absmin(const T & x, const T & y);
-// Return x if |x|<|y|, else return y
 
+/** Return x if |x|>|y|, else return y. */
 template <typename T>
 inline T absmax(const T & x, const T & y);
-// Return x if |x|>|y|, else return y
 
+/** Templated helper class for calculating integer powers. */
 template <int N, bool Inv>
 struct Power {
+  /** The actual function. */
   inline static double pow(double x);
 };
 
+/** Templated function to calculate integer powers known at
+ *  compile-time. */
 template <int N>
 inline double Pow(double x) { return Power<N, N < 0>::pow(x); }
 
+/** This namespace introduces some useful function classes with known
+ *  primitive and inverse primitive functions. Useful to sample
+ *  corresponding distributions.*/
 namespace Functions {
 
+/** Class corresponding to functions of the form \f$x^N\f$ with integer N. */
 template <int N>
 struct PowX {
-  // Distribution function on the form x^N
+
+  /** The primitive function. */
   inline static double primitive(double x);
+
+  /** Integrate function in a given interval. */
   inline static double integrate(double x0, double x1);
+
+  /** Sample a distribution in a given interval given a flat random
+   *  number R in the interval ]0,1[. */
   inline static double generate(double x0, double x1, double R);
+
 };
 
+/** Class corresponding to functions of the form \f$(1-x)^N\f$
+ *  with integer N. */
 template <int N>
 struct Pow1mX {
-  // Distribution function on the form (1-x)^N
+
+  /** The primitive function. */
   inline static double primitive(double x);
+
+  /** Integrate function in a given interval. */
   inline static double integrate(double x0, double x1);
+
+  /** Sample a distribution in a given interval given a flat random
+   *  number R in the interval ]0,1[. */
   inline static double generate(double x0, double x1, double R);
+
 };
 
+/** Class corresponding to functions of the form \f$1/(x(1-x))\f$ */
 struct InvX1mX {
-  // Distribution function on the form 1/(x(1-x))
+
+  /** The primitive function. */
   inline static double primitive(double x);
+
+  /** Integrate function in a given interval. */
   inline static double integrate(double x0, double x1);
+
+  /** Sample a distribution in a given interval given a flat random
+   *  number R in the interval ]0,1[. */
   inline static double generate(double x0, double x1, double R);
+
 };
 
+/** Class corresponding to functions of the form \f$e^x\f$ */
 struct ExpX {
-  // Distribution function on the form exp(x)
+
+  /** The primitive function. */
   inline static double primitive(double x);
+
+  /** Integrate function in a given interval. */
   inline static double integrate(double x0, double x1);
+
+  /** Sample a distribution in a given interval given a flat random
+   *  number R in the interval ]0,1[. */
   inline static double generate(double x0, double x1, double R);
+
 };  
 
+/** Class corresponding to functions of the form \f$x^{N/D}\f$
+ *  with integer N and D. */
 template <int N, int D>
 struct FracPowX {
-  // Distribution function on the form x^(N/D)
+
+  /** The primitive function. */
   inline static double primitive(double x);
+
+  /** Integrate function in a given interval. */
   inline static double integrate(double x0, double x1);
+
+  /** Sample a distribution in a given interval given a flat random
+   *  number R in the interval ]0,1[. */
   inline static double generate(double x0, double x1, double R);
+
 };
 
 }

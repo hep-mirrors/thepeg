@@ -1,32 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_Exception_H
 #define ThePEG_Exception_H
-//
-// This is the declaration of the <!id>Exception<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>Exception<!!id> is the base class for all exceptions to be
-// used in ThePEG. It is derived from <!id>std::exception<!!id> and
-// adds information about the severity of the exception to indicate to
-// the <!class>Repository<!!class> and <!class>EventGenrator<!!class>
-// how to act on it.
-//
-// To throw an exception one should inherit from <!id>Exception<!!id>
-// and add information in the constructor of the base
-// class. Alternatively one can use the <!id>operator&lt;&lt;<!!id>
-// operator on a default constructed <!id>Exception<!!id> to add
-// information as for a standard <!id>ostream<!!id> object, in which
-// cas one should always end with adding an enum of the type
-// <!id>Exception::Severity<!!id> to indicate the severity of the
-// exception e.g. <!id>Exception() << "Something went wrong." <<
-// Exception::eventerror<!!id>.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:Repository.html">Repository.h</a>,
-// <a href="http:EventGenrator.html">EventGenrator.h</a>.
-// 
+// This is the declaration of the Exception class.
 
 #include <exception>
 #include "ThePEG/Config/ThePEG.h"
@@ -41,69 +16,156 @@ extern "C" {
 
 namespace ThePEG {
 
+/**
+ * <code>Exception</code> is the base class for all exceptions to be
+ * used in ThePEG. It is derived from <code>std::exception</code> and
+ * adds information about the severity of the exception to indicate to
+ * the Repository and EventGenrator how to act on it.
+ *
+ * To throw an exception one should inherit from
+ * <code>Exception</code> and add information in the constructor of
+ * the base class. Alternatively one can use the <code>operator<<
+ * </code> operator on a default constructed <code>Exception</code> to
+ * add information as for a standard <code>ostream</code> object, in
+ * which case one should always end with adding an enum of the type
+ * <code>Exception::Severity</code> to indicate the severity of the
+ * exception e.g.<br> <code>Exception() << "Something went wrong." <<
+ * Exception::eventerror</code>.
+ *
+ * @see Repository,
+ * @see EventGenrator. 
+ */
 class Exception: public exception {
 
 public:
 
-  enum Severity {unknown,  info, warning, eventerror, runerror, maybeabort,
-		 abortnow };
-  // The levels of severity.
+  /**
+   * The levels of severity.
+   */
+  enum Severity {unknown,    /** Unknown severity */
+		 info,       /** Not severe. But the user should be
+			      *  informed. */
+		 warning,    /** Possibly severe. The user should be
+			      *  warned. */
+		 eventerror, /** Severe error. The event being
+			      *  generated should be discarded. */
+		 runerror,   /** Severe error. The run should be
+			      *  terminated */
+		 maybeabort, /** Severe error. The run should be
+			      *  terminated, possibly dumping core. */
+		 abortnow    /** Severe error. The run is aborted
+			      *  immediately, before the exception is
+			      *  thrown. */
+  };
   
 public:
 
-  Exception(const string &, Severity);
-  // Standard constructor.
+  /**
+   * Standard constructor.
+   * @param str an error message.
+   * @param sev the severity.
+   */
+  Exception(const string & str, Severity sev);
 
+  /**
+   * Default constructor.
+   */
   inline Exception();
+
+  /**
+   * The copy constructor.
+   */
   inline Exception(const Exception &);
+
+  /**
+   * The destructor
+   */
   virtual ~Exception() throw();
-  // Default ctors and dtor.
 
 public:
 
+  /**
+   * Assignment.
+   */
   inline const Exception & operator=(const Exception &);
+
+  /**
+   * Comparison
+   */
   inline bool operator==(const Exception &) const;
+
+  /**
+   * Compare severity. If equal compare error message
+   * lexicographically.
+   */
   inline bool operator<(const Exception &) const;
-  // Assignment and comparisons.
 
 public:
 
+  /**
+   * Return the error message.
+   */
   inline virtual const char* what () const throw();
+
+  /**
+   * Return the error message.
+   */
   inline string message() const;
+
+  /**
+   * Write the error message to a stream.
+   */
   void writeMessage(ostream & os = *errstream) const;
-  // Return the error message or write it to a stream.
 
+  /**
+   * Return the severity.
+   */
   inline Severity severity() const;
-  // Return the severity.
 
+  /**
+   * Indicate that this exception has been taken care of.
+   */
   inline void handle() const;
-  // Indicate that this exception has been taken care of.
 
+  /**
+   * Add info to the exception message.
+   */
   template <typename T>
   inline Exception & operator<<(const T & t);
-  // Add info to the exception message.
 
+  /**
+   * Set the severity for the exception.
+   */
   inline Exception & operator<<(Severity sev);
-  // Set the severity for the exception.
 
 protected:
 
+  /**
+   * set the severity.
+   */
   void severity(Severity);
-  // set the severity.
 
+  /**
+   * Stream to write the error message to.
+   */
   mutable ostringstream theMessage;
-  // Stream to write the error message to.
 
 private:
 
+  /**
+   * True if this exception has been taken care of.
+   */
   mutable bool handled;
-  // True if this exception has been taken care of.
 
+  /**
+   * The severity.
+   */
   Severity theSeverity;
-  // The severity.
 
+  /**
+   * The default stream to write the error message if unhandled.
+   */
   static ostream * errstream;
-  // The default stream to write the error message if unhandled.
 
 };
 
