@@ -1,4 +1,9 @@
 #!/usr/bin/perl
+#
+# Reformat ThePEG headerfiles using the old classdoc documentation to
+# instead use the new Doxygen format. Note that the header files need
+# to be gone through by hand afterwards to fix details.
+#
 
 $savedcomment = "";
 $saveddecl = "";
