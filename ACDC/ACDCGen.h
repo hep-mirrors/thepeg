@@ -72,11 +72,13 @@ public:
   inline ACDCGen();
 
   /**
-   * Add a function of a given dimension according to which points
-   * will be generated. Note that each function added like this will
-   * have its own tree of cells.
+   * Add a function of a given dimension, \a dim, according to which
+   * points will be generated. Note that each function, \a f, added
+   * like this will have its own tree of cells. The \a maxrat argument
+   * determines the lowest ratio of values allowed between the cell
+   * with lowest and highest value. If negative it is given by 1/nTry().
    */
-  inline bool addFunction(DimType dim, FncPtrType f);
+  inline bool addFunction(DimType dim, FncPtrType f, double maxrat = -1.0);
 
   /**
    * Remove all added functions and reset the generator;
@@ -241,6 +243,12 @@ public:
    * statistically correct.
    */
   inline bool compensating();
+
+  /**
+   * Return an estimate of how many points need to be sampled before
+   * the generator finishes compensating.
+   */
+  inline long compleft() const;
 
   /**
    * Return a vector with information about all cells.

@@ -8,7 +8,7 @@ namespace ThePEG {
 
 inline ACDCSampler::ACDCSampler()
 : theEps(100*Constants::epsilon), theMargin(1.1),
-  theNTry(100) {}
+  theNTry(1000) {}
 
 inline ACDCSampler::ACDCSampler(const ACDCSampler & x)
   : SamplerBase(x), theEps(x.theEps), theMargin(x.theMargin),

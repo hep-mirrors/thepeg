@@ -1,7 +1,14 @@
 2005-03-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* Handlers/ACDCSampler.cc: Added a hint in the warning issued if a
-	run ends while ACDC is in compensating mode.
+	* ACDC/ACDCGen.*: Changed the procedure for presampling. The
+	initial basic level is set to the minimum sampling, but is never
+	allowed to be less than a fraction (by default 1/nTry()) of the
+	maximum sampling.
+
+	* Handlers/ACDCSampler.*: Added a hint in the warning issued if a
+	run ends while ACDC is in compensating mode, also made it a proper
+	warning. Increased the default number of pre-samplings from 100 to
+	1000.
 
 2005-03-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

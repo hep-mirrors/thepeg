@@ -202,6 +202,10 @@ private:
    */
   int theNTry;
 
+protected:
+
+  struct ACDCStillCompensating: public Exception {};
+
 private:
 
   /**

@@ -70,13 +70,17 @@ void ACDCSampler::dofinish() {
       << "Depth of bins: " << setw(10) << theSampler.depth() << endl
       << "efficiency:    " << setw(10) << theSampler.efficiency() << endl;
   if ( theSampler.compensating() )
-    generator()->log()
+    generator()->logWarning(
+      ACDCStillCompensating()
       << "The run was ended while the ACDCSampler '" << name()
       << "' was still trying to compensate for weights larger than 1. "
       << "The cross section estimates may therefore be statistically "
-      << "inaccurate. This may be avoided if you increase the value of the "
+      << "inaccurate. At least " << theSampler.compleft() << " additional "
+      << "samplings are needed to get out of compensation mode. "
+      << "This may be avoided if you increase the value of the "
       << "Ntry parameter determining how many points are presampled before "
-      << "the run." << endl;
+      << "the run." << Exception::warning);
+  
     
     SamplerBase::dofinish();
 }
@@ -133,7 +137,7 @@ void ACDCSampler::Init() {
   static Parameter<ACDCSampler,int> interfaceNTry
     ("Ntry",
      "The number of phase space points tried in the initialization.",
-     &ACDCSampler::theNTry, 100, 2, 1000000, true, false, true);
+     &ACDCSampler::theNTry, 1000, 2, 1000000, true, false, true);
 
 }
 

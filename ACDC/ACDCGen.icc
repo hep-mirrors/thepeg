@@ -43,7 +43,9 @@ inline void ACDCGen<Rnd,FncPtr>::clear() {
 }
 
 template <typename Rnd, typename FncPtr>
-inline bool ACDCGen<Rnd,FncPtr>::addFunction(DimType dim, FncPtrType fnc) {
+inline bool ACDCGen<Rnd,FncPtr>::
+addFunction(DimType dim, FncPtrType fnc, double maxrat) {
+  if ( maxrat < 0.0 ) maxrat = 1.0/nTry();
   typedef map<double,DVector> PointMap;
   theLast = theFunctions.size();
   theFunctions.push_back(fnc);
@@ -69,7 +71,11 @@ inline bool ACDCGen<Rnd,FncPtr>::addFunction(DimType dim, FncPtrType fnc) {
 
   // Create the root cell and set its overestimated function value to
   // the smallest non-zero value found
-  thePrimaryCells.push_back(new ACDCGenCell(pmap.begin()->first));
+  double minf = pmap.begin()->first;
+  double maxf = (--pmap.end())->first;
+  minf = max(minf, maxrat*maxf);
+  //  thePrimaryCells.push_back(new ACDCGenCell(pmap.begin()->first));
+  thePrimaryCells.push_back(new ACDCGenCell(minf));
   theLastF = pmap.begin()->first;
   pmap.erase(pmap.begin());
   theSumMaxInts.push_back(theSumMaxInts.back() + cells().back()->doMaxInt());
@@ -189,6 +195,16 @@ inline bool ACDCGen<Rnd,FncPtr>::compensating() {
   // Leave all levels which has reached there 'expiry date'.
 
   return !levels.empty();
+}
+
+template <typename Rnd, typename FncPtr>
+inline long ACDCGen<Rnd,FncPtr>::compleft() const {
+  if ( levels.empty() ) return 0;
+  long left = 1;
+  for ( int i = 0, Ni = levels.size(); i < Ni; ++i )
+    left = max(left, levels[i].lastN - N());
+
+  return left;
 }
 
 template <typename Rnd, typename FncPtr>
