@@ -71,6 +71,12 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 			       'thepeg-StepHandler-declare
 			       'thepeg-StepHandler-implement))
 
+(defun ThePEG-AnalysisHandler-class-files ()
+  (interactive)
+  (thepeg-specific-class-files "AnalysisHandler" "ThePEG/Handlers/AnalysisHandler.h"
+			       'thepeg-AnalysisHandler-declare
+			       'thepeg-AnalysisHandler-implement))
+
 (defun thepeg-specific-class-files (base baseheader declfn implfn)
   (setq class (read-from-minibuffer "Class name: "))
   (setq base (read-from-minibuffer "Base class name: " base))
@@ -588,16 +594,11 @@ public:
 
 (defun thepeg-StepHandler-declare (class base)
   (concat "
-void " class "::
-handle(PartialCollisionHandler & ch, const tcPVector & tagged,
-       const Hint & hint) throw(Veto, Stop, Exception) {
-  // Implement the Handle method here.
-  // Note that if the method actually does anything to the current event
-  // the changes should be inserted in a new step which should be obtained
-  // by 'ch.newStep()'.
-  // Note also that the general advice is to only consider the particles in
-  // the 'tagged' vector.
-}
+public:
+
+  virtual void handle(PartialCollisionHandler & ch, const tcPVector & tagged,
+		      const Hint & hint) throw(Veto, Stop, Exception);
+  // The main virtual method to be overridden by subclasses.
 "))
 
 (defun thepeg-StepHandler-implement (class base)
@@ -614,3 +615,54 @@ handle(PartialCollisionHandler & ch, const tcPVector & tagged,
 }
 "))
 
+(defun thepeg-AnalysisHandler-declare (class base)
+  (concat "
+public:
+
+  virtual void analyze(tEventPtr event, long ieve, int loop, int state);
+  // Analyse a given 'event'. 'ieve' is the event number, 'loop' is
+  // the number of times this event has been presented. If loop is
+  // negative, the event is now fully generated.  'state' is a number
+  // different from zero if the event has been manipulated in some way
+  // since it was last presented. Note that a fully generated event
+  // may be presented several times, if it has been manipulated in
+  // between. The default version of this function will call transform
+  // to make a lorentz transformation of the whole event, then extract
+  // all final state particles and call analyze(tPVector) of this
+  // analysis object and those of all associated analysis objects. The
+  // default version will not, however, do anything on events which
+  // have not been fully generated, or have been manipulated in any
+  // way.
+
+  virtual LorentzRotation transform(tEventPtr) const;
+  // transform the event to the desired Lorentz frame and return the
+  // used LorentzRotation. The default version does nothing and
+  // returns the identity rotation.
+
+  virtual void analyze(const tPVector & particles);
+  // Analyze the given vector of particles. The default version calls
+  // analyze(tPPtr) for each of the particles.
+
+  virtual void analyze(tPPtr particle);
+  // Analyze the given particle. The default version does nothing
+
+"))
+
+(defun thepeg-AnalysisHandler-implement (class base)
+  (concat "void " class "::analyze(tEventPtr event, long ieve, int loop, int state) {
+  " base "::analyze(event, ieve, loop, state);
+  // Rotate to CMS, extract final state particles and call analyze(particles).
+}
+
+LorentzRotation " class "::transform(tEventPtr event) const {
+  return LorentzRotation();
+  // Return the Rotation to the frame in which you want to perform the analysis.
+}
+
+void " class "::analyze(const tPVector & particles) {
+  " base "::analyze(particles);
+  // Calls analyze() for each particle.
+}
+
+void " class "::analyze(tPPtr) {}
+"))

@@ -50,6 +50,7 @@ configure: configure.in
 dist: doc
 	rm -rf $(TAG)
 	mkdir -p $(TAG)/ThePEG
+	cp ../Makefile $(TAG)
 	cp $(DISTFILES) $(TAG)/ThePEG
 	for dir in $(SUBDIRS) src Doc lib Templates ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
 	tar czf $(TAG).tgz $(TAG)
@@ -63,6 +64,7 @@ thesnapshot:
 	mkdir $(SNAPTAG)
 	cvs export -D today ThePEG
 	mv ThePEG/ThePEG $(SNAPTAG)
+	mv ThePEG/Makefile $(SNAPTAG)
 	rm -rf ThePEG
 	cp Doc/*.html $(SNAPTAG)/ThePEG/Doc
 	tar czf $(SNAPTAG).tgz $(SNAPTAG)
