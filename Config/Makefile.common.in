@@ -57,10 +57,9 @@ ifdef SHOWCOMMAND
 	$(CXX) -c $(CXXFLAGS) $(CXXEXT) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $<
 	ln -f -s `pwd`/$@ $(LIBDIR)
 else
-	@echo -n "compiling $(INCLUDEDIR)/$< ..."
+	@echo "compiling $(INCLUDEDIR)/$< ..."
 	@$(CXX) -c $(CXXFLAGS) $(CXXEXT) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(DEFS) $(INCLUDES) $<
 	@ln -f -s `pwd`/$@ $(LIBDIR)
-	@echo ". done"
 endif
 
 %.so: %.o
@@ -69,11 +68,10 @@ ifdef SHOWCOMMAND
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $< -o $@
 	ln -f -s `pwd`/$@ $(LIBDIR)
 else
-	@echo -n "linking shared library $@ ..."
+	@echo "linking shared library $@ ..."
 	@rm -f $(LIBDIR)/$<
 	@$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $< -o $@
 	@ln -f -s `pwd`/$@ $(LIBDIR)
-	@echo ". done"
 endif
 
 lib%.so:
@@ -82,11 +80,10 @@ ifdef SHOWCOMMAND
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
 	ln -f -s `pwd`/$@ $(LIBDIR)
 else
-	@echo -n "linking shared library $@ ..."
+	@echo "linking shared library $@ ..."
 	@cd $(LIBDIR); rm -f $^
 	@$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
 	@ln -f -s `pwd`/$@ $(LIBDIR)
-	@echo ". done"
 endif
 
 .cc.s:

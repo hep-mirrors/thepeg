@@ -11,6 +11,21 @@ inline StepHandler::StepHandler() {}
 inline StepHandler::StepHandler(const StepHandler & x)
   : HandlerBase(x) {}
 
+inline tPartCollHdlPtr StepHandler::collisionHandler() const {
+  return theCollisionHandler;
+}
+
+inline void StepHandler::collisionHandler(tPartCollHdlPtr ch) {
+  theCollisionHandler = ch;
+  theNewStep = tStepPtr();
+}
+
+
+inline tStepPtr StepHandler::newStep() {
+  if ( !theNewStep ) createNewStep();
+  return theNewStep;
+}
+
 inline void StepHandler::doupdate() throw(UpdateException) {
   HandlerBase::doupdate();
   // First update base class.

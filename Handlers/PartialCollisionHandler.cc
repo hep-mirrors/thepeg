@@ -126,6 +126,7 @@ performStep(tStepHdlPtr handler, tHintPtr hint) {
   if ( hint->stop() ) throw Stop();
   tStepPtr oldStep = currentStep();
   currentStepHandler(handler);
+  handler->collisionHandler(this);
   try {
     handler->handle(*this, hint->tagged(*oldStep), *hint);
   }

@@ -5,6 +5,7 @@
 //
 
 #include "StepHandler.h"
+#include "ThePEG/Handlers/PartialCollisionHandler.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "StepHandler.tcc"
@@ -13,6 +14,10 @@
 using namespace ThePEG;
 
 StepHandler::~StepHandler() {}
+
+void StepHandler::createNewStep() {
+  theNewStep = collisionHandler()->newStep();
+}
 
 AbstractNoPIOClassDescription<StepHandler> StepHandler::initStepHandler;
 

@@ -49,13 +49,9 @@ ParticleVector FlatDecayer::decay(const DecayMode & dm,
     do {
       if ( children.size() == 1 ) {
 	children[0]->setMomentum(parent.momentum());
+	children[0]->scale(parent.momentum().mass2());
 	return children;
       }
-//       else if ( children.size() == 2 ) {
-// 	Timer<49> timer2("FlatDecayer::decay::CMS2");
-// 	SimplePhaseSpace::CMS(children[0], children[1], sqr(parent.mass()),
-// 			      UseRandom::current());
-//       }
       else {
 	Timer<50> timern("FlatDecayer::decay::CMSn");
 	//	std::sort(children.begin(), children.end(), MassOrdering());
@@ -69,10 +65,12 @@ ParticleVector FlatDecayer::decay(const DecayMode & dm,
   }
 
   LorentzRotation boost(parent.momentum().boostVector());
-  for ( ParticleVector::size_type i = 0; i < children.size(); ++i )
+  for ( ParticleVector::size_type i = 0; i < children.size(); ++i ) {
     children[i]->transform(boost);
+    children[i]->scale(parent.momentum().mass2());
+  }
 
-  return children; 
+  return children;
 }
 
 NoPIOClassDescription<FlatDecayer> FlatDecayer::initFlatDecayer;

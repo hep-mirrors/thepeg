@@ -237,6 +237,10 @@ void XComb::construct(tSubProPtr sub) {
   sub->transform(r.inverse());
   lastPartons().first->set5Momentum(p1);
   lastPartons().second->set5Momentum(p2);
+  lastPartons().first->scale(lastScale());
+  lastPartons().second->scale(lastScale());
+  for ( int i = 0, N = sub->outgoing().size(); i < N; ++i )
+    sub->outgoing()[i]->scale(lastScale());
 }
 
 void XComb::Init() {}

@@ -64,6 +64,7 @@ performDecay(tPPtr parent, Step & s) const
 	for ( int i = 0, N = children.size(); i < N; ++i )
 	  if ( !s.addDecayProduct(parent, children[i]) )
 	    throw DecHdlChildFail(parent->data(), children[i]->data());
+	parent->scale(0.0*GeV2);
 	for ( int i = 0, N = children.size(); i < N; ++i )
 	  if ( !children[i]->data().stable() ) performDecay(children[i], s);
 	return;

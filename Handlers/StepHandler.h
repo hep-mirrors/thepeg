@@ -52,6 +52,15 @@ public:
     ThePEG_THROW_SPEC((Veto, Stop, Exception)) = 0;
   // The main virtual method to be overridden by subclasse.
 
+  inline tPartCollHdlPtr collisionHandler() const;
+  inline void collisionHandler(tPartCollHdlPtr);
+  // Get/set a pointer to the (partial) collision handler which made
+  // the last call to handle().
+
+  inline tStepPtr newStep();
+  // Return a pointer to a new step. If one has alredy been created in
+  // the last call to handle(), that step will be returned.
+
 public:
 
   void persistentOutput(PersistentOStream &) const;
@@ -62,6 +71,9 @@ public:
   // Standard Init function used to initialize the interface.
 
 protected:
+
+  void createNewStep();
+  // Use the collision handler to create a new step.
 
   inline virtual void doupdate() throw(UpdateException);
   inline virtual void doinit() throw(InitException);
@@ -74,6 +86,15 @@ protected:
 
   inline virtual IVector getReferences();
   // Return pointers to all Interfaced objects refered to by this.
+
+private:
+
+  tPartCollHdlPtr theCollisionHandler;
+  // A pointer to the (partial) collision handler which made the last
+  // call to handle().
+
+  tStepPtr theNewStep;
+  // A pointer to a new step if created in the last call to handle().
 
 private:
 

@@ -1,3 +1,23 @@
+2003-06-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StepHandler.*, Handlers/PartialCollisionHandler.cc: In
+	preparation for changing the signature of the handle() method i
+	StepHandler classes, StepHandler now has a method to return the
+	collision handler which made the call to handle(), The
+	corresponding member variable is set be the
+	PartialCollisionHandler before handle() is called. Also the
+	StepHandler class now has its own method to create a new step if
+	needed.
+
+	* PDT/FlatDecayer.cc: The scale of all decay products in a decay
+	is set to the squared mass of the decaying particle.
+
+	* Handlers/XComb.cc: The scale of all incoming and outgoing
+	partons in a sub-process is set to the hard scale.
+
+	* Handlers/DecayHandler.cc: The scale of a particle which has
+	decayed is set to zero.
+
 2003-06-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc: Added code so that the load() command
