@@ -111,7 +111,7 @@ struct BaseClassTrait<OmegaPhi3PiDecayer,1> {
 template <>
 struct ClassTraits<OmegaPhi3PiDecayer>
   : public ClassTraitsBase<OmegaPhi3PiDecayer> {
-  static string className() { return "/ThePEG/OmegaPhi3PiDecayer"; }
+  static string className() { return "ThePEG::OmegaPhi3PiDecayer"; }
   // Return the class name.
   static string library() { return "OmegaPhi3PiDecayer.so"; }
   // Return the name of the shared library to be loaded to get

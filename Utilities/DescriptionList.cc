@@ -33,12 +33,22 @@ DescriptionList::StringMap & DescriptionList::stringMap() {
 void DescriptionList::insert(ClassDescriptionBase & pb) {
   descriptionMap()[&(pb.info())] = &pb;
   stringMap()[pb.name()] = &pb;
+  // The following is for backward compatibility and will eventually
+  // be removed.
   string name = pb.name();
-  if ( name.find('/') == string::npos ) return;
-  if ( name[0] == '/' ) name = name.substr(1);
-  while ( name.find('/') != string::npos )
-    name.replace(name.find('/'), 1, "::");
-  stringMap()[name] = &pb;
+  if ( name.find('/') == string::npos ) {
+    if ( name.substr(0, 2) == "::" ) name = name.substr(2);
+    if ( name.find("::") == string::npos ) return;
+    while ( name.find("::") != string::npos )
+      name.replace(name.find("::"), 2, "/");
+    name = "/" + name;
+    stringMap()[name] = &pb;
+  } else {
+    if ( name[0] == '/' ) name = name.substr(1);
+    while ( name.find('/') != string::npos )
+      name.replace(name.find('/'), 1, "::");
+    stringMap()[name] = &pb;
+  }
 }
 
 void DescriptionList::printHierarchies(ostream & os) {
