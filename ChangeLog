@@ -1,3 +1,10 @@
+2003-11-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Makefile: Fixed dependencies for setup target.
+
+	* configure.in: Fixed strange behavior when --prefix is not
+	explicitly used.
+
 2003-10-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/fixCLHEP: Since CLHEP-2.0 comes with shared libraries, we

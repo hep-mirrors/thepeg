@@ -10,8 +10,13 @@ if test -z "$ARFLAGS"; then
   ARFLAGS="rv "
 fi
 AC_PROG_RANLIB
+
 if test -z "$CLHEPPATH"; then
-  CLHEPPATH="$prefix"
+  if test "x$prefix" == "xNONE"; then
+    CLHEPPATH=$ac_default_prefix
+  else
+    CLHEPPATH=$prefix
+  fi
 fi
 
 if test -z "$CLHEPLIB"; then

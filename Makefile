@@ -33,7 +33,7 @@ install: check
 doc: setup
 	@for dir in $(SUBDIRS) ; do cd $$dir ; $(MAKE) doc ; cd .. ; done
 
-setup: Config/Makefile.common Doc/h2html Config/config.h
+setup: Config/Makefile.common
 
 Config/Makefile.common: Config/Makefile.common.in configure
 	./configure
