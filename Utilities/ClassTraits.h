@@ -177,19 +177,19 @@ struct ClassTraits<Class>:                                                 \
 
 #define ThePEG_DECLARE_CLASS_TRAITS(Class,Base)                           \
 ThePEG_DECLARE_BASE_CLASS_TRAITS_1(Class,Base)                            \
-ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"/ThePEG/" #Class,"")    \
+ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"ThePEG::" #Class,"")    \
 
 #define ThePEG_DECLARE_DYNAMIC_CLASS_TRAITS(Class,Base,Lib)               \
 ThePEG_DECLARE_BASE_CLASS_TRAITS_1(Class,Base)                            \
-ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"/ThePEG/" #Class,Lib)   \
+ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"ThePEG::" #Class,Lib)   \
 
 #define ThePEG_DECLARE_CLASS_TRAITS_2(Class,Base1,Base2)                  \
 ThePEG_DECLARE_BASE_CLASS_TRAITS_2(Class,Base1,Base2)                     \
-ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"/ThePEG/" #Class,"")    \
+ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"ThePEG/::" #Class,"")    \
 
 #define ThePEG_DECLARE_DYNAMIC_CLASS_TRAITS_2(Class,Base1,Base2,Lib)      \
 ThePEG_DECLARE_BASE_CLASS_TRAITS_2(Class,Base1,Base2)                     \
-ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"/ThePEG/" #Class,Lib)   \
+ThePEG_DECLARE_NAMED_DYNAMIC_CLASS_TRAITS_(Class,"ThePEG::" #Class,Lib)   \
 
 #define ThePEG_DECLARE_NAMED_CLASS_TRAITS(Class,Base,Name)                \
 ThePEG_DECLARE_BASE_CLASS_TRAITS_1(Class,Base)                            \

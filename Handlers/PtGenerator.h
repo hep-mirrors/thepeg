@@ -1,22 +1,7 @@
 // -*- C++ -*-
-//$Id$
-// -----------------------------------------------------
 #ifndef ThePEG_PtGenerator_H
 #define ThePEG_PtGenerator_H
-//
-// This is the declaration of the <!id>PtGenerator<!!id> class.
-//
-// CLASSDOC SUBSECTION Description: The <!id>PtGenerator<!!id> is the
-// base for all classes implementing alternative models for transverse
-// momentum.  It inherits from the <!class>HandlerBase<!!class> which
-// among other things provides forward access to the flat random
-// number function held by the <!class>EventGenerator<!!class> object.
-//
-// CLASSDOC SUBSECTION See also:
-// 
-// <a href="http:HandlerBase.html">HandlerBase.h</a>,
-// <a href="http:EventGenerator.html">EventGenerator.h</a>.
-//
+// This is the declaration of the PtGenerator class.
 
 #include "ThePEG/Config/ThePEG.h"
 // #include "PtGenerator.fh"
@@ -25,39 +10,89 @@
 
 namespace ThePEG {
 
+/**
+ * PtGenerator is the base for all classes implementing alternative
+ * models for transverse momentum generation.  It inherits from the
+ * HandlerBase which among other things provides forward access to the
+ * random number object held by the EventGenerator object.
+ *
+ * @see HandlerBase,
+ * @see EventGenerator.
+ *
+ */
 class PtGenerator: public HandlerBase {
 
 public:
+
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline PtGenerator();
+
+  /**
+   * Copy-constructor.
+   */
   inline PtGenerator(const PtGenerator &);
+
+  /**
+   * Destructor.
+   */
   virtual ~PtGenerator();
-  // Standard ctors and dtor
+  //@}
 
 public:
+
+  /** @name Virtual functions to be implemented by sub-classes. */
+  //@{
+  /**
+   * Generate (\f$k_x, k_y\f$) components of the transverse
+   * momentum.
+   */
   virtual pair<Energy,Energy> generate() const =0;
-  // Return (px, py) components of the transverse momentum.
+  //@}
 
 public:
+
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 private:
+
+  /**
+   * Describe an abstract class without persistent data.
+   */
   static AbstractClassDescription<PtGenerator> initPtGenerator;
 
-  //PtGenerator & operator=(const PtGenerator &);
-  // Private and non-existent assignment operator.
+  /**
+   * Private and non-existent assignment operator.
+   */
+   PtGenerator & operator=(const PtGenerator &);
 
 };
 
 
+/**
+ * This template specialization informs ThePEG about the
+ * base class of PtGenerator.
+ */
 template <>
 struct BaseClassTrait<PtGenerator,1> {
+  /** Typedef of the base class of PtGenerator. */
   typedef HandlerBase NthBase;
 };
 
+/**
+ * This template specialization informs ThePEG about the name of the
+ * PtGenerator class.
+ */
 template <>
 struct ClassTraits<PtGenerator>: public ClassTraitsBase<PtGenerator> {
-  static string className() { return "/ThePEG/PtGenerator"; }
+  /** Return the class name. */
+  static string className() { return "ThePEG::PtGenerator"; }
 };
 
 

@@ -449,15 +449,21 @@ inline PersistentIStream & operator>>(PersistentIStream &,
 }
 
 #define ThePEG_DECLARE_PREPOST_GROUP(HandlerClass,prepost)                    \
-void interfaceSet##prepost##HandlerClass(StepHdlPtr, int);                   \
-void interfaceInsert##prepost##HandlerClass(StepHdlPtr, int);               \
-void interfaceErase##prepost##HandlerClass(int);                             \
+/** Utility function for the interface. */                                    \
+void interfaceSet##prepost##HandlerClass(StepHdlPtr, int);                    \
+/** Utility function for the interface. */                                    \
+void interfaceInsert##prepost##HandlerClass(StepHdlPtr, int);                 \
+/** Utility function for the interface. */                                    \
+void interfaceErase##prepost##HandlerClass(int);                              \
+/** Utility function for the interface. */                                    \
 vector<StepHdlPtr> interfaceGet##prepost##HandlerClass() const
 
 #define ThePEG_DECLARE_GROUPINTERFACE(HandlerClass,ptr)                       \
 ThePEG_DECLARE_PREPOST_GROUP(HandlerClass,Pre);                               \
-void interfaceSet##HandlerClass(ptr);                                    \
-ptr interfaceGet##HandlerClass() const;                                      \
+/** Utility function for the interface. */                                    \
+void interfaceSet##HandlerClass(ptr);                                         \
+/** Utility function for the interface. */                                    \
+ptr interfaceGet##HandlerClass() const;                                       \
 ThePEG_DECLARE_PREPOST_GROUP(HandlerClass,Post)
 
 #define ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,pp)      \

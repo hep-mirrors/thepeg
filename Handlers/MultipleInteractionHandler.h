@@ -1,76 +1,125 @@
 // -*- C++ -*-
 #ifndef ThePEG_MultipleInteractionHandler_H
 #define ThePEG_MultipleInteractionHandler_H
-//
-// This is the declaration of the <!id>MultipleInteractionHandler<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>MultipleInteractionHandler<!!id> is the base class of all
-// handlers implementing models for multiple interactions. It is
-// derived from the more general <!class>StepHandler<!!class> class,
-// and does not introduce more functioanality as it stands.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:StepHandler.html">StepHandler.h</a>
-// <a href="http:CollisionHandler.html">CollisionHandler.h</a>
-// <a href="http:SubProcessHandler.html">SubProcessHandler.h</a>
-// 
-
+// This is the declaration of the MultipleInteractionHandler class.
 
 #include "StepHandler.h"
-// #include "MultipleInteractionHandler.fh"
-// #include "MultipleInteractionHandler.xh"
 
 namespace ThePEG {
 
+/**
+ * The MultipleInteractionHandler is the base class of all
+ * handlers implementing models for multiple interactions. It is
+ * derived from the more general StepHandler class,
+ * and does not introduce more functioanality as it stands.
+ *
+ * @see StepHandler
+ * @see CollisionHandler
+ * @see SubProcessHandler
+ */
 class MultipleInteractionHandler: public StepHandler {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline MultipleInteractionHandler();
+
+  /**
+   * Copy-constructor.
+   */
   inline MultipleInteractionHandler(const MultipleInteractionHandler &);
+
+  /**
+   * Destructor.
+   */
   virtual ~MultipleInteractionHandler();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Describe an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<MultipleInteractionHandler>
     initMultipleInteractionHandler;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   MultipleInteractionHandler & operator=(const MultipleInteractionHandler &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/**
+ * This template specialization informs ThePEG about the
+ * base class of MultipleInteractionHandler.
+ */
 template <>
 struct BaseClassTrait<MultipleInteractionHandler,1> {
+  /** Typedef of the base class of MultipleInteractionHandler. */
   typedef StepHandler NthBase;
 };
 
+/**
+ * This template specialization informs ThePEG about the name of the
+ * MultipleInteractionHandler class.
+ */
 template <>
 struct ClassTraits<MultipleInteractionHandler>:
     public ClassTraitsBase<MultipleInteractionHandler> {
+  /** Return the class name. */
   static string className() { return "/ThePEG/MultipleInteractionHandler"; }
 };
 
