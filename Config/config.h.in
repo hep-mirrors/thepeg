@@ -1,0 +1,26 @@
+// -*- C++ -*-
+#ifndef ThePEG_config_H
+#define ThePEG_config_H
+//
+// These are the platform specific #define's used by ThePEG
+//
+
+/* Define this if dynimic loading is done with dlopen() */
+#undef ThePEG_HAS_DLOPEN
+
+/* Define this if the <sstream> header is available */
+#undef ThePEG_HAS_SSTREAM
+
+/* Define this if XPG4-UNIX standard function expm1 is available on
+   this platform */
+#undef ThePEG_HAS_EXPM1
+
+/* Define this if XPG4-UNIX standard function log1p is available on
+   this platform */
+#undef ThePEG_HAS_LOG1P
+
+/* Define this if the old Linux-style fpu_control.h header is
+   available for manipulating floating point exception handling */
+#undef ThePEG_HAS_FPU_CONTROL
+
+#endif /* ThePEG_config_H */

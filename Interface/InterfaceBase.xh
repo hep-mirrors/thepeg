@@ -1,0 +1,40 @@
+// -*- C++ -*-
+#ifndef ThePEG_InterfaceBase_XH
+#define ThePEG_InterfaceBase_XH
+//
+// This is the declarations of the exception classes used by the
+// InterfaceBase class.
+//
+
+#include "InterfaceBase.fh"
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct InterfaceException: public Exception {
+  InterfaceException() {};
+};
+
+struct InterExClass: public InterfaceException {
+  InterExClass(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct InterExSetup: public InterfaceException {
+  InterExSetup(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct InterExUnknown: public InterfaceException {
+  InterExUnknown(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct InterExReadOnly: public InterfaceException {
+  InterExReadOnly(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct InterExNoNull: public InterfaceException {
+  InterExNoNull(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+}
+
+#endif /* ThePEG_InterfaceBase_XH */

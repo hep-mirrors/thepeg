@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_RandomEngine_FH
+#define ThePEG_RandomEngine_FH
+
+// This is the forward declaration of the <!id>HepRandomEngine<!!id>
+// class from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
+// <!id>RandomEngine<!!id> and making it available in the
+// <!id>ThePEG<!!id> namespace.
+
+class HepRandomEngine;
+
+namespace CLHEP {
+
+  typedef HepRandomEngine RandomEngine;
+
+}
+
+namespace ThePEG {
+
+  using CLHEP::RandomEngine;
+
+}
+
+#endif /* ThePEG_RandomEngine_FH */

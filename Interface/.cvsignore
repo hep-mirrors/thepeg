@@ -1,0 +1,8 @@
+*.rpo
+a.out
+dummy.cc
+test.cc
+testclass.cc
+testclass.h
+testmember.cc
+testx.cc

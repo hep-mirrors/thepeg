@@ -1,0 +1,20 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Decayer class.
+//
+
+namespace ThePEG {
+
+inline Decayer::Decayer() {}
+
+inline Decayer::Decayer(const Decayer & x)
+  : HandlerBase(x),
+    theAmplitude(x.theAmplitude) {}
+
+inline Ptr<Amplitude>::pointer Decayer::amplitude() const {
+  return theAmplitude;
+}
+
+}
+

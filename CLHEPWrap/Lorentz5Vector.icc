@@ -1,0 +1,156 @@
+// These are the definitions of the inlined member functions in the
+// Lorentz5Vector class.
+
+namespace ThePEG {
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector() : mm(FloatType()) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector(FloatType m)
+  : LorentzVector(FloatType(), FloatType(), FloatType(), m), mm(m) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector(FloatType x, FloatType y, FloatType z, FloatType t)
+  : LorentzVector(x, y, z, t) {
+  rescaleMass();
+}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector(FloatType x, FloatType y, FloatType z,
+	       FloatType t, FloatType m)
+  : LorentzVector(x, y, z, t), mm(m) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::Lorentz5Vector(const Vector3 & p, FloatType e)
+  : HepLorentzVector(p, e) {
+  rescaleMass();
+}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::Lorentz5Vector(FloatType m, const Vector3 & p)
+  : LorentzVector(p, sqrt(p.mag2() + m*m)), mm(m) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector(const Vector3 & p, FloatType t, FloatType m)
+  : LorentzVector(p, t), mm(m) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::Lorentz5Vector(const LorentzVector & p)
+  : LorentzVector(p) {
+  rescaleMass();
+}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector(const LorentzVector & p, FloatType m)
+  : LorentzVector(p), mm(m) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::
+Lorentz5Vector(const Lorentz5Vector<FloatType> & p)
+  : LorentzVector(p), mm(p.mm) {}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>::~Lorentz5Vector() {}
+
+template <typename FloatType>
+inline void Lorentz5Vector<FloatType>::rescaleEnergy() {
+  LorentzVector::setT(sqrt(vect().mag2() + mass2()));
+}
+
+template <typename FloatType>
+inline void Lorentz5Vector<FloatType>::rescaleRho() {
+  LorentzVector::setRho(sqrt(t()*t() - mass2()));
+}
+
+template <typename FloatType>
+inline void Lorentz5Vector<FloatType>::rescaleMass() {
+  mm = mag();
+}
+
+template <typename FloatType>
+inline void Lorentz5Vector<FloatType>::setTau(FloatType a) {
+  mm = a;
+}
+
+template <typename FloatType>
+inline void Lorentz5Vector<FloatType>::setMass(FloatType a) {
+  setTau(a);
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::operator()(int i) const {
+  return i == 5? mm: LorentzVector::operator()(i);
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::operator[](int i) const {
+  return operator()(i);
+}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType> &
+Lorentz5Vector<FloatType>::operator=(const LorentzVector & q) {
+  LorentzVector::operator=(q);
+  return *this;
+}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType> &
+Lorentz5Vector<FloatType>::operator=(const Lorentz5Vector<FloatType> & q) {
+  LorentzVector::operator=(q);
+  mm = q.mm;
+  return *this;
+}
+
+template <typename FloatType>
+inline typename Lorentz5Vector<FloatType>::FloatType2
+Lorentz5Vector<FloatType>::mass2() const {
+  return mm > 0? mm*mm: -mm*mm;
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::mass() const {
+  return mm;
+}
+
+template <typename FloatType>
+inline typename Lorentz5Vector<FloatType>::FloatType2
+Lorentz5Vector<FloatType>::tau2() const { return mass2(); }
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::tau() const { return mass(); }
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::massError() const {
+  return sqrt(abs(Math::relativeError(mass2(), mag2())));
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::energyError() const {
+  return sqrt(abs(Math::relativeError(t()*t(), mass2() + vect().mag2())));
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::rhoError() const {
+  return sqrt(abs(Math::relativeError(vect().mag2(), t()*t() - mass2())));
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::dirPlus() const {
+  return Direction<0>::pos()? plus(): minus();
+}
+
+template <typename FloatType>
+inline FloatType Lorentz5Vector<FloatType>::dirMinus() const {
+  return Direction<0>::neg()? plus(): minus();
+}
+
+}
+

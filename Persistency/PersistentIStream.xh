@@ -1,0 +1,16 @@
+// -*- C++ -*-
+#ifndef ThePEG_PersistentIStream_XH
+#define ThePEG_PersistentIStream_XH
+//
+// This is the declarations of the exception classes used by the
+// PersistentIStream class.
+//
+
+#include "PersistentIStream.fh"
+
+namespace ThePEG {
+
+}
+
+#endif /* ThePEG_PersistentIStream_XH */
+

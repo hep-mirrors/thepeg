@@ -1,0 +1,23 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SpinBase class.
+//
+
+namespace ThePEG {
+
+inline SpinBase::SpinBase() {}
+
+inline SpinBase::SpinBase(const SpinBase & x)
+  : EventInfoBase(x) {}
+
+inline EIPtr SpinBase::clone() const {
+  return new_ptr(*this);
+}
+
+inline void SpinBase::rebind(const EventTranslationMap & trans) {
+  EventInfoBase::rebind(trans);
+}
+
+}
+

@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_Rotation_FH
+#define ThePEG_Rotation_FH
+
+// This is the forward declaration of the <!id>HepRotation<!!id> class
+// from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
+// <!id>Rotation<!!id> and making it available in the
+// <!id>ThePEG<!!id> namespace.
+
+class HepRotation;
+
+namespace CLHEP {
+
+  typedef HepRotation Rotation;
+
+}
+
+namespace ThePEG {
+
+  using CLHEP::Rotation;
+
+}
+
+#endif /* ThePEG_Rotation_FH */

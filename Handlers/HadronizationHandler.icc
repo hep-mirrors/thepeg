@@ -1,0 +1,39 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the HadronizationHandler class.
+//
+
+namespace ThePEG {
+
+inline HadronizationHandler::HadronizationHandler() {}
+
+inline HadronizationHandler::
+HadronizationHandler(const HadronizationHandler & x)
+  : StepHandler(x) {}
+
+inline void HadronizationHandler::doupdate() throw(UpdateException) {
+  StepHandler::doupdate();
+}
+
+inline void HadronizationHandler::doinit() throw(InitException) {
+  StepHandler::doinit();
+}
+
+inline void HadronizationHandler::dofinish() {
+  StepHandler::dofinish();
+}
+
+inline void HadronizationHandler::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  StepHandler::rebind(trans);
+}
+
+inline IVector HadronizationHandler::getReferences() {
+  IVector ret = StepHandler::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

@@ -1,0 +1,19 @@
+// -*- C++ -*-
+#ifndef ThePEG_DiagramBase_XH
+#define ThePEG_DiagramBase_XH//
+// This is the declarations of the exception classes used by the
+// DiagramBase class.
+//
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct DiagramBaseSetupException: public Exception {
+  DiagramBaseSetupException(const DiagramBase &);
+};
+
+}
+
+#endif /* ThePEG_DiagramBase_XH */
+

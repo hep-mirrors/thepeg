@@ -1,0 +1,40 @@
+// -*- C++ -*-
+#ifndef ThePEG_BaseRepository_XH
+#define ThePEG_BaseRepository_XH
+//
+// This is the declarations of the exception classes used by the
+// BaseRepository class.
+//
+
+#include "ThePEG/Interface/InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct BadClassClone: public InterfaceException {
+  BadClassClone(const InterfacedBase &);
+};
+
+struct BadClone: public InterfaceException {
+  BadClone(const InterfacedBase &);
+};
+
+struct RepoNameException: public InterfaceException {
+  RepoNameException(string);
+};
+
+struct RepositoryNoDirectory: public InterfaceException {
+  RepositoryNoDirectory(string);
+};
+
+struct RepositoryNotFound: public InterfaceException {
+  RepositoryNotFound(string name);
+};
+
+struct RepositoryClassMisMatch: public InterfaceException {
+  RepositoryClassMisMatch(const InterfacedBase & o, string name);
+};
+
+}
+
+#endif /* ThePEG_BaseRepository_XH */
+

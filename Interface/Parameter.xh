@@ -1,0 +1,32 @@
+// -*- C++ -*-
+#ifndef ThePEG_Parameter_XH
+#define ThePEG_Parameter_XH
+//
+// This is the declarations of the exception classes used by the
+// Parameter class.
+//
+
+#include "InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct ParExSetLimit: public InterfaceException {
+  template <typename T>
+  ParExSetLimit(const InterfaceBase & i, const InterfacedBase & o, T v);
+};
+
+struct ParExSetUnknown: public InterfaceException {
+  template <typename T>
+  ParExSetUnknown(const InterfaceBase & i,
+		  const InterfacedBase & o, T val);
+};
+
+struct ParExGetUnknown: public InterfaceException {
+  ParExGetUnknown(const InterfaceBase & i,
+		  const InterfacedBase & o, const char *);
+};
+
+}
+
+#endif /* ThePEG_Parameter_XH */
+

@@ -1,0 +1,46 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Interfaced class.
+//
+
+namespace ThePEG {
+
+inline Interfaced::Interfaced()
+  : theUseFlag(false) {}
+
+inline Interfaced::Interfaced(const Interfaced & i)
+  : InterfacedBase(i), theGenerator(i.theGenerator), theUseFlag(false) {}
+
+inline Interfaced::Interfaced(string newName)
+  : InterfacedBase(newName), theUseFlag(false) {}
+
+inline Interfaced::~Interfaced() {}
+
+inline tEGPtr Interfaced::generator() const {
+  return theGenerator;
+}
+
+inline bool Interfaced::used() const {
+  return theUseFlag;
+}
+
+inline void Interfaced::useMe() const {
+  if ( used() ) return;
+  setUsed();
+}
+
+inline void Interfaced::doupdate() throw(UpdateException) {
+  InterfacedBase::doupdate();
+}
+
+inline void Interfaced::doinit() throw (InitException) {
+  InterfacedBase::doinit();
+}
+
+inline void Interfaced::dofinish() {
+  InterfacedBase::dofinish();
+}
+
+}
+

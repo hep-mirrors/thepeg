@@ -1,0 +1,56 @@
+// -*- C++ -*-
+//
+// This is the implementation of the non-inlined templated member
+// functions of the Switch class.
+//
+
+namespace ThePEG {
+
+template <typename T, typename Int>
+void Switch<T,Int>::set(InterfacedBase & i, long newValue) const
+  throw(InterfaceException) {
+  T * t = dynamic_cast<T *>(&i);
+  if ( !t ) throw InterExClass(*this, i);
+  if ( !check(newValue) ) throw SwExSetOpt(*this, i, newValue);
+  long oldValue = get(i);
+  if ( theSetFn ) {
+    try { (t->*theSetFn)(Int(newValue)); }
+    catch (InterfaceException) { throw; }
+    catch ( ... ) { throw SwExSetUnknown(*this, i, newValue); }
+  } else {
+    if ( theMember ) t->*theMember = Int(newValue);
+    else throw InterExSetup(*this, i);
+  }
+  if ( !dependencySafe() && oldValue != get(i) ) i.touch();
+}
+
+
+template <typename T, typename Int>
+long Switch<T,Int>::get(const InterfacedBase & i) const
+  throw(InterfaceException) {
+  const T * t = dynamic_cast<const T *>(&i);
+  if ( readOnly() ) throw InterExReadOnly(*this, i);
+  if ( !t ) throw InterExClass(*this, i);
+  if ( theGetFn ) {
+    try { return (t->*theGetFn)(); }
+    catch (InterfaceException) { throw; }
+    catch ( ... ) { throw SwExGetUnknown(*this, i, "current"); }
+  }
+  if ( theMember ) return t->*theMember;
+  throw InterExSetup(*this, i);
+}
+
+template <typename T, typename Int>
+long Switch<T,Int>::def(const InterfacedBase & i) const
+  throw(InterfaceException) {
+  if ( theDefFn ) {
+    const T * t = dynamic_cast<const T *>(&i);
+    if ( !t ) throw InterExClass(*this, i);
+    try { return (t->*theDefFn)(); }
+    catch (InterfaceException) { throw; }
+    catch ( ... ) { throw SwExGetUnknown(*this, i, "default"); }
+  }
+  return theDef;
+}
+
+}

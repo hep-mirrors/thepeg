@@ -1,0 +1,55 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Two2NCuts class.
+//
+
+namespace ThePEG {
+
+inline Two2NCuts::Two2NCuts() {}
+
+inline Two2NCuts::Two2NCuts(const Two2NCuts & x)
+  : KinematicalCuts(x), theMassMins(x.theMassMins), theMassMaxs(x.theMassMaxs),
+    thePTMins(x.thePTMins), thePTMaxs(x.thePTMaxs),
+    theDiMassMins(x.theDiMassMins), theDiMassMaxs(x.theDiMassMaxs) {}
+
+inline IBPtr Two2NCuts::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr Two2NCuts::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline int Two2NCuts::index2(const pair<int,int> & p) const {
+  return (p.first*(p.first-1))/2+p.second;
+}
+
+inline int Two2NCuts::index3(const Triplet<int,int,int> & t) const {
+  return (t.first*(t.first-1)*(t.first-2))/6 +
+    ((t.second-1)*(t.second-2))/2 + t.third;
+}
+
+inline void Two2NCuts::doupdate() throw(UpdateException) {
+  KinematicalCuts::doupdate();
+}
+
+inline void Two2NCuts::doinit() throw(InitException) {
+  KinematicalCuts::doinit();
+}
+
+inline void Two2NCuts::dofinish() {
+  KinematicalCuts::dofinish();
+}
+
+inline void Two2NCuts::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  KinematicalCuts::rebind(trans);
+}
+
+inline IVector Two2NCuts::getReferences() {
+  return KinematicalCuts::getReferences();
+}
+
+}
+

@@ -1,0 +1,81 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MECuts class.
+//
+
+namespace ThePEG {
+
+inline Energy MECuts::mHatMin() const {
+  return theMHatMin;
+}
+
+inline Energy MECuts::mHatMax() const {
+  return theMHatMax > mHatMin()? theMHatMax: Constants::MaxEnergy;
+}
+
+inline Energy MECuts::sHatMin() const {
+  return sqr(mHatMin());
+}
+
+inline Energy MECuts::sHatMax() const {
+  return sqr(mHatMax());
+}
+
+inline Energy MECuts::pTHatMin() const {
+  return thePTHatMin;
+}
+
+inline Energy MECuts::pTHatMax() const {
+  return thePTHatMax > pTHatMin()? thePTHatMax: Constants::MaxEnergy;
+}
+
+inline Energy MECuts::pTHatSingularMin() const {
+  return thePTHatSingularMin;
+}
+
+inline Energy MECuts::singularMassMax() const {
+  return theSingularMassMax;
+}
+
+inline double MECuts::cTHMin() const {
+  return theCTHMin;
+}
+
+inline double MECuts::cTHMax() const {
+  return theCTHMax;
+}
+
+inline Energy2 MECuts::tHatMin() const {
+  return theTHatMin;
+}
+
+inline Energy2 MECuts::tHatMax() const {
+  return theTHatMax > tHatMin()? theTHatMax: Constants::MaxEnergy2;
+}
+
+inline Energy2 MECuts::scaleMin() const {
+  return theScaleMin;
+}
+
+inline Energy2 MECuts::scaleMax() const {
+  return theScaleMax > scaleMin()? theScaleMax: Constants::MaxEnergy2;
+}
+
+inline Energy2 MECuts::uHatMin() const {
+  return theUHatMin;
+}
+
+inline Energy2 MECuts::uHatMax() const {
+  return theUHatMax > uHatMin()? theUHatMax: Constants::MaxEnergy2;
+}
+
+inline void MECuts::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void MECuts::dofinish() {
+  Interfaced::dofinish();
+}
+
+}

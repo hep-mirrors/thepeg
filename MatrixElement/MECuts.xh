@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_MECuts_XH
+#define ThePEG_MECuts_XH
+//
+// This is the declarations of the exception classes used by the
+// MECuts class.
+//
+
+#include "ThePEG/Interface/Command.xh"
+
+namespace ThePEG {
+
+struct MECutSetup: public Exception {
+  MECutSetup();
+};
+
+struct MECutZeroInterval: public UpdateException {
+  MECutZeroInterval(const MECuts &, string);
+};
+
+}
+
+#endif /* ThePEG_MECuts_XH */
+

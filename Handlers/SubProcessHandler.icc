@@ -1,0 +1,38 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SubProcessHandler class.
+//
+
+namespace ThePEG {
+
+inline tKinCutPtr SubProcessHandler::cuts() const {
+  return theCuts;
+}
+
+inline tPExtrPtr SubProcessHandler::pExtractor() const {
+  return thePartonExtractor;
+}
+
+inline const MEVector & SubProcessHandler::MEs() const {
+  return theMEs;
+}
+
+inline MEVector & SubProcessHandler::MEs() {
+  return theMEs;
+}
+
+inline const SubProcessHandler::GroupVector &
+SubProcessHandler::groups() const {
+  return theGroups;
+}
+
+inline void SubProcessHandler::doupdate() throw(UpdateException) {
+  HandlerBase::doupdate();
+}
+
+inline void SubProcessHandler::dofinish() {
+  HandlerBase::dofinish();
+}
+
+}

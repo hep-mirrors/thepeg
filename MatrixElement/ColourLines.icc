@@ -1,0 +1,14 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ColourLines class.
+//
+
+namespace ThePEG {
+
+inline ColourLines::ColourLines() {}
+
+inline ColourLines::ColourLines(const ColourLines & x)
+  : theLines(x.theLines) {}
+
+}

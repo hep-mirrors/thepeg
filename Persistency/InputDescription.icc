@@ -1,0 +1,42 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the InputDescription class.
+//
+
+namespace ThePEG {
+
+inline InputDescription::
+InputDescription(string newName, int newVersion)
+  : Named(newName), theDescription(0), theVersion(newVersion) {}
+
+
+inline void InputDescription::setDescription(const ClassDescriptionBase * cd) {
+  theDescription = cd;
+}
+
+inline void InputDescription::addBaseClass(const InputDescription * newBase) {
+  theBaseClasses.push_back(newBase);
+}
+
+inline const InputDescription::DescriptionVector &
+InputDescription::descriptions() const {
+  return theBaseClasses;
+}
+
+inline InputDescription::BPtr InputDescription::create() const {
+  if ( theDescription ) return theDescription->create();
+  DescriptionVector::const_iterator dit = theBaseClasses.begin();
+  while ( dit != theBaseClasses.end() ) {
+    BPtr obj = (*dit++)->create();
+    if ( obj ) return obj;
+  }
+  return BPtr();
+}
+
+inline void InputDescription::
+input(tBPtr b, PersistentIStream & is) const {
+  if ( theDescription ) theDescription->input(b, is, theVersion);
+}
+
+}

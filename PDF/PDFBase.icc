@@ -1,0 +1,34 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the PDFBase class.
+//
+
+namespace ThePEG {
+
+inline tcRemHPtr PDFBase::remnantHandler() const {
+  return theRemnantHandler;
+}
+
+inline void PDFBase::doupdate() throw(UpdateException) {
+  HandlerBase::doupdate();
+}
+
+inline void PDFBase::dofinish() {
+  HandlerBase::dofinish();
+}
+
+inline void PDFBase::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  HandlerBase::rebind(trans);
+}
+
+inline IVector PDFBase::getReferences() {
+  IVector ret = HandlerBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}
+

@@ -1,0 +1,73 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SamplerBase class.
+//
+
+namespace ThePEG {
+
+inline SamplerBase::SamplerBase() {}
+
+inline SamplerBase::SamplerBase(const SamplerBase & x)
+  : Interfaced(x), theEventHandler(x.theEventHandler),
+    theLastPoint(x.theLastPoint) {}
+
+inline void SamplerBase::setEventHandler(tEHPtr eh) {
+  theEventHandler = eh;
+}
+
+inline const vector<double> & SamplerBase::lastPoint() const {
+  return theLastPoint;
+}
+
+inline vector<double> & SamplerBase::lastPoint() {
+  return theLastPoint;
+}
+
+inline tEHPtr SamplerBase::eventHandler() const {
+  return theEventHandler;
+}
+
+inline void SamplerBase::doupdate() throw(UpdateException) {
+  Interfaced::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void SamplerBase::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void SamplerBase::dofinish() {
+  Interfaced::dofinish();
+}
+
+inline void SamplerBase::doinitrun() {
+  Interfaced::doinitrun();
+}
+
+inline void SamplerBase::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  Interfaced::rebind(trans);
+}
+
+inline IVector SamplerBase::getReferences() {
+  IVector ret = Interfaced::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

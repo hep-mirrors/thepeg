@@ -1,0 +1,31 @@
+// -*- C++ -*-
+#ifndef ThePEG_PDFBase_XH
+#define ThePEG_PDFBase_XH
+//
+// This is the declarations of the exception classes used by the
+// PDFBase class.
+//
+
+// #include "PDFBase.fh"
+#include "ThePEG/Interface/InterfaceBase.xh"
+
+
+namespace ThePEG {
+
+struct RemnantHandlerCantHandle: public InterfaceException {
+  RemnantHandlerCantHandle(string, string);
+};
+
+
+struct PDFWrongParticle: public InterfaceException {
+  PDFWrongParticle(string p, string pdf, string mess);
+};
+
+struct PDFRange: public InterfaceException {
+  PDFRange(string pdf, string var, double val, double lim);
+};
+
+}
+
+#endif /* ThePEG_PDFBase_XH */
+

@@ -1,0 +1,20 @@
+// -*- C++ -*-
+#ifndef ThePEG_EventGenerator_XH
+#define ThePEG_EventGenerator_XH
+//
+// This is the declarations of the exception classes used by the
+// EventGenerator class.
+//
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct EGNoPath: public Exception {
+  EGNoPath(string);
+};
+
+}
+
+#endif /* ThePEG_EventGenerator_XH */
+

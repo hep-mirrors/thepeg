@@ -1,0 +1,15 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FlavourGenerator class.
+//
+
+namespace ThePEG {
+
+inline FlavourGenerator::FlavourGenerator() {}
+
+inline FlavourGenerator::FlavourGenerator(const FlavourGenerator & x)
+  : HandlerBase(x) {}
+
+}
+

@@ -1,0 +1,75 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ClusterCollapser class.
+//
+
+namespace ThePEG {
+
+inline ClusterCollapser::ClusterCollapser()
+: theEnergyCut(1.0*GeV), theNTry2(2), errorlevel(Exception::eventerror),
+  pStrange(1.0/3.0) {}
+
+inline ClusterCollapser::ClusterCollapser(const ClusterCollapser & x)
+  : StepHandler(x), theEnergyCut(x.theEnergyCut), theNTry2(x.theNTry2),
+    flavGen(x.flavGen), errorlevel(x.errorlevel), pStrange(x.pStrange) {}
+
+inline IBPtr ClusterCollapser::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr ClusterCollapser::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline Energy ClusterCollapser::cut() const {
+  return theEnergyCut;
+}
+
+inline int ClusterCollapser::nTry2() const {
+  return theNTry2;
+}
+
+inline void ClusterCollapser::doupdate() throw(UpdateException) {
+  StepHandler::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void ClusterCollapser::doinit() throw(InitException) {
+  StepHandler::doinit();
+}
+
+inline void ClusterCollapser::dofinish() {
+  StepHandler::dofinish();
+}
+
+inline void ClusterCollapser::doinitrun() {
+  StepHandler::doinitrun();
+}
+
+inline void ClusterCollapser::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  StepHandler::rebind(trans);
+}
+
+inline IVector ClusterCollapser::getReferences() {
+  IVector ret = StepHandler::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

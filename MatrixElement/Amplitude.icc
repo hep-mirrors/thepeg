@@ -1,0 +1,41 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Amplitude class.
+//
+
+namespace ThePEG {
+
+inline void Amplitude::doupdate() throw(UpdateException) {
+  HandlerBase::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void Amplitude::doinit() throw(InitException) {
+  HandlerBase::doinit();
+}
+
+inline void Amplitude::dofinish() {
+  HandlerBase::dofinish();
+}
+
+inline IVector Amplitude::getReferences() {
+  IVector ret = HandlerBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

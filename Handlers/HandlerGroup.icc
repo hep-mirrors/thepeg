@@ -1,0 +1,76 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the HandlerGroup class.
+//
+
+namespace ThePEG {
+
+inline bool HandlerGroupBase::empty() const {
+  return isEmpty;
+}
+
+inline void HandlerGroupBase::init(const HandlerGroupBase & ext) {
+  clear();
+  refillDefaults(ext);
+}
+
+inline HandlerGroupBase::StepVector & HandlerGroupBase::preHandlers() {
+  return theDefaultPreHandlers;
+}
+inline const HandlerGroupBase::StepVector &
+HandlerGroupBase::preHandlers() const {
+  return theDefaultPreHandlers;
+}
+
+inline HandlerGroupBase::StepVector & HandlerGroupBase::postHandlers() {
+  return theDefaultPostHandlers;
+}
+
+inline const HandlerGroupBase::StepVector &
+HandlerGroupBase::postHandlers() const {
+  return theDefaultPostHandlers;
+}
+
+template <typename HDLR>
+inline tStepHdlPtr HandlerGroup<HDLR>::defaultHandler() const {
+  return dynamic_ptr_cast<tStepHdlPtr>(theDefaultHandler);
+}
+
+template <typename HDLR>
+inline void HandlerGroup<HDLR>::write(PersistentOStream & os) const {
+  os << theDefaultHandler << theHandler;
+  HandlerGroupBase::write(os);
+}
+
+template <typename HDLR>
+inline void HandlerGroup<HDLR>::read(PersistentIStream & is) {
+  is >> theDefaultHandler >> theHandler;
+  HandlerGroupBase::read(is);
+}
+
+template <typename HDLR>
+inline void HandlerGroup<HDLR>::setHandler() {
+  theHandler = HdlPtr();
+}
+
+template <typename HDLR>
+inline tStepHdlPtr HandlerGroup<HDLR>::handler() const {
+  return dynamic_ptr_cast<tStepHdlPtr>(theHandler);
+}
+
+template <typename HDLR>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const HandlerGroup<HDLR> & hg) {
+  hg.write(os);
+  return os;
+}
+
+template <typename HDLR>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      HandlerGroup<HDLR> & hg) {
+  hg.read(is);
+  return is;
+}
+
+}

@@ -1,0 +1,60 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FixedCMSLuminosity class.
+//
+
+namespace ThePEG {
+
+inline FixedCMSLuminosity::FixedCMSLuminosity()
+  : theEnergy(91.2*GeV) {}
+
+inline FixedCMSLuminosity::FixedCMSLuminosity(const FixedCMSLuminosity & x)
+  : LuminosityFunction(x), theEnergy(x.theEnergy) {}
+
+inline Energy FixedCMSLuminosity::maximumCMEnergy() const {
+  return energy();
+}
+
+inline Energy FixedCMSLuminosity::energy() const {
+  return theEnergy;
+}
+
+inline bool FixedCMSLuminosity::canHandle(const cPDPair &) const {
+  return true;
+}
+
+inline IBPtr FixedCMSLuminosity::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr FixedCMSLuminosity::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void FixedCMSLuminosity::doupdate() throw(UpdateException) {
+  LuminosityFunction::doupdate();
+}
+
+inline void FixedCMSLuminosity::doinit() throw(InitException) {
+  LuminosityFunction::doinit();
+}
+
+inline void FixedCMSLuminosity::dofinish() {
+  LuminosityFunction::dofinish();
+}
+
+inline void FixedCMSLuminosity::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  LuminosityFunction::rebind(trans);
+}
+
+inline IVector FixedCMSLuminosity::getReferences() {
+  IVector ret = LuminosityFunction::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}
+

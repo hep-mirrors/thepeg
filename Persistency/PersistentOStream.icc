@@ -1,0 +1,280 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the PersistentOStream class.
+//
+
+#include <iomanip>
+
+namespace ThePEG {
+
+inline ostream & PersistentOStream::os() {
+  return *theOStream;
+}
+
+inline const ostream & PersistentOStream::os() const {
+  return *theOStream;
+}
+
+inline void PersistentOStream::put(char c) {
+  os().put(c);
+}
+
+inline void PersistentOStream::setBadState() {
+  breakThePEG();
+  badState = true;
+}
+
+inline bool PersistentOStream::good() const {
+  return !badState && os();
+}
+
+inline void PersistentOStream::checkState() {
+  if ( ! os() ) badState = true;
+}
+
+inline PersistentOStream::operator bool() const {
+  return good();
+}
+
+inline bool PersistentOStream::operator!() const {
+  return !good();
+}
+
+inline PersistentOStream &
+operator<<(PersistentOStream & os, PersistentOManip func) {
+  return (*func)(os);
+}
+
+inline PersistentOStream & PersistentOStream::flush() {
+  ObjectMap::iterator it = writtenObjects.begin();
+  while ( it != writtenObjects.end() ) {
+    ObjectMap::iterator it2 = it++;
+    if ( (*it2).second > lastSavedObject.top() ) writtenObjects.erase(it2);
+  }
+  os().flush();
+  return *this;
+}
+
+inline PersistentOStream & PersistentOStream::push() {
+  lastSavedObject.push(writtenObjects.size() - 1);
+  return *this;
+}
+
+inline PersistentOStream & PersistentOStream::pop() {
+  lastSavedObject.pop();
+  return *this;
+}
+
+inline void PersistentOStream::beginObject() {
+  put(tBegin);
+}
+
+inline void PersistentOStream::endObject() {
+  put(tEnd);
+}
+
+inline void PersistentOStream::endBase() {
+  put(tNext);
+}
+
+inline bool PersistentOStream::isToken(char c) const {
+  return c == tBegin || c == tEnd || c == tNext || c == tSep || c == tNull;
+}
+
+inline void PersistentOStream::escape(char c) {
+  if ( isToken(c) ) {
+    put(tNull);
+    put( c == tSep? tNoSep: c );
+  } else
+    put(c);
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(char c) {
+  escape(c);
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(signed char c) {
+  return (*this) << (char)c;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(unsigned char c) {
+  return (*this) << (char)c;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(string s) {
+  for ( string::const_iterator i = s.begin(); i < s.end(); ++i ) escape(*i);
+  put(tSep);
+  return *this;
+}  
+
+inline PersistentOStream &
+PersistentOStream::operator<<(int i) {
+  os() << i;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(unsigned int i) {
+  os() << i;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(long i) {
+  os() << i;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(unsigned long i) {
+  os() << i;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(short i) {
+  os() << i;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(unsigned short i) {
+  os() << i;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(float f) {
+  os() << setprecision(8) << f;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(double d) {
+  os() << setprecision(16) << d;
+  put(tSep);
+  return *this;
+}
+
+inline PersistentOStream &
+PersistentOStream::operator<<(bool t) {
+  put(t? tYes: tNo);
+  put(tSep);
+  return *this;
+}
+
+template <typename T>
+inline PersistentOStream &
+PersistentOStream::operator<<(const RCPtr<T> & ptr) {
+  return outputPointer(ptr);
+}
+
+template <typename T>
+inline PersistentOStream &
+PersistentOStream::operator<<(const ConstRCPtr<T> & ptr) {
+  return outputPointer(ptr);
+}
+
+template <typename T>
+inline PersistentOStream &
+PersistentOStream::operator<<(const TransientRCPtr<T> & ptr) {
+  return outputPointer(ptr);
+}
+
+template <typename T>
+inline PersistentOStream &
+PersistentOStream::operator<<(const TransientConstRCPtr<T> & ptr) {
+  return outputPointer(ptr);
+}
+
+template <typename Container>
+inline void PersistentOStream::putContainer(const Container & c) {
+  *this << c.size();
+  for ( typename Container::const_iterator it = c.begin();
+	it != c.end() && good() ; ++it )
+    *this << *it;
+}
+
+inline PersistentOStream & flush(PersistentOStream & os) {
+  return os.flush();
+}
+
+inline PersistentOStream & push(PersistentOStream & os) {
+  return os.push();
+}
+
+inline PersistentOStream & pop(PersistentOStream & os) {
+  return os.pop();
+}
+
+template <typename T1, typename T2>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const pair<T1,T2> & p) {
+  return os << p.first << p.second;
+}
+
+template <typename Key, typename T, typename Cmp, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const map<Key,T,Cmp,A> & m) {
+  os.putContainer(m);
+  return os;
+}
+
+template <typename Key, typename T, typename Cmp, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const multimap<Key,T,Cmp,A> & m) {
+  os.putContainer(m);
+  return os;
+}
+
+template <typename Key, typename Cmp, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const set<Key,Cmp,A> & s) {
+  os.putContainer(s);
+  return os;
+}
+
+template <typename Key, typename Cmp, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const multiset<Key,Cmp,A> & s) {
+  os.putContainer(s);
+  return os;
+}
+
+template <typename T, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const list<T,A> & l) {
+  os.putContainer(l);
+  return os;
+}
+
+template <typename T, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const vector<T,A> & v) {
+  os.putContainer(v);
+  return os;
+}
+
+template <typename T, typename A>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const deque<T,A> & d) {
+  os.putContainer(d);
+  return os;
+}
+
+}
+

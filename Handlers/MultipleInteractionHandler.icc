@@ -1,0 +1,40 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MultipleInteractionHandler class.
+//
+
+namespace ThePEG {
+
+inline MultipleInteractionHandler::MultipleInteractionHandler() {}
+
+inline MultipleInteractionHandler::
+MultipleInteractionHandler(const MultipleInteractionHandler & x)
+  : StepHandler(x) {}
+
+inline void MultipleInteractionHandler::doupdate() throw(UpdateException) {
+  StepHandler::doupdate();
+  // First update base class.
+}
+
+inline void MultipleInteractionHandler::doinit() throw(InitException) {
+  StepHandler::doinit();
+}
+
+inline void MultipleInteractionHandler::dofinish() {
+  StepHandler::dofinish();
+}
+
+inline void MultipleInteractionHandler::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  StepHandler::rebind(trans);
+}
+
+inline IVector MultipleInteractionHandler::getReferences() {
+  IVector ret = StepHandler::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

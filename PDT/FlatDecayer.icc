@@ -1,0 +1,69 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FlatDecayer class.
+//
+
+namespace ThePEG {
+
+inline FlatDecayer::FlatDecayer() {}
+
+inline FlatDecayer::FlatDecayer(const FlatDecayer & x)
+  : Decayer(x) {}
+
+inline double FlatDecayer::reweight(const DecayMode &, const Particle & parent,
+				    const ParticleVector & children) const {
+  return 1.0;
+}
+
+inline IBPtr FlatDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr FlatDecayer::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void FlatDecayer::doupdate() throw(UpdateException) {
+  Decayer::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void FlatDecayer::doinit() throw(InitException) {
+  Decayer::doinit();
+}
+
+inline void FlatDecayer::dofinish() {
+  Decayer::dofinish();
+}
+
+inline void FlatDecayer::doinitrun() {
+  Decayer::doinitrun();
+}
+
+inline void FlatDecayer::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  Decayer::rebind(trans);
+}
+
+inline IVector FlatDecayer::getReferences() {
+  IVector ret = Decayer::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

@@ -1,0 +1,287 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the PersistentIStream class.
+//
+
+namespace ThePEG {
+
+inline PersistentIStream::PersistentIStream(istream & is)
+: theIStream(&is), isPedantic(true), allocStream(false), badState(false) {
+  init();
+}
+
+
+inline PersistentIStream::~PersistentIStream() {
+  if ( allocStream ) delete theIStream;
+}
+
+inline istream & PersistentIStream::is() {
+  return *theIStream;
+}
+
+inline const istream & PersistentIStream::is() const {
+  return *theIStream;
+}
+
+inline bool PersistentIStream::beginObject() {
+  return is().peek() == tBegin;
+}
+
+inline void PersistentIStream::setBadState() {
+  breakThePEG();
+  badState = true;
+}
+
+inline PersistentIStream & PersistentIStream::setPedantic() {
+  isPedantic = true;
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::setTolerant() {
+  isPedantic = false;
+  return *this;
+}
+
+inline bool PersistentIStream::good() const {
+  return !badState && is();
+}
+
+inline PersistentIStream::operator bool() const {
+  return good();
+}
+
+inline bool PersistentIStream::operator!() const {
+  return !good();
+}
+
+inline PersistentIStream &
+operator>>(PersistentIStream & is, PersistentIManip func) {
+  return (*func)(is);
+}
+
+inline PersistentIStream & pedantic(PersistentIStream & is) {
+  return is.setPedantic();
+}
+
+inline PersistentIStream & tolerant(PersistentIStream & is) {
+  return is.setTolerant();
+}
+
+inline char PersistentIStream::get() {
+  return is().get();
+}
+
+inline char PersistentIStream::escaped() {
+  char c = get();
+  return c == tNoSep? tSep: c;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(string & s) {
+  s.erase();
+  char c = 0;
+  while ( good() && (c = get()) != tSep ) {
+    if ( c == tNull ) s += escaped();
+    else s += c;
+  }
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(char & c) {
+  if ( (c = get()) == tNull ) c = escaped();
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(unsigned char & c) {
+  char cc;
+  *this >> cc;
+  c = (unsigned char) cc;
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(signed char & c) {
+  char cc;
+  *this >> cc;
+  c = (signed char) cc;
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(int & i) {
+  is() >> i;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(unsigned int & i) {
+  is() >> i;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(long & i) {
+  is() >> i;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(unsigned long & i) {
+  is() >> i;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(short & i) {
+  is() >> i;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(unsigned short & i) {
+  is() >> i;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(float & f) {
+  is() >> f;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(double & d) {
+  is() >> d;
+  getSep();
+  return *this;
+}
+
+inline PersistentIStream & PersistentIStream::operator>>(bool & t) {
+  char c = get();
+  t = ( c == tYes );
+  if ( !t && c != tNo ) setBadState();
+  getSep();
+  return *this;
+}
+
+inline void PersistentIStream::getSep() {
+  if ( !pedantic() ) skipField();
+  else if ( get() != tSep ) setBadState();
+}
+
+inline void PersistentIStream::skipField() {
+  is().ignore(INT_MAX, tSep);
+  if ( !is() ) setBadState();
+}
+
+inline bool PersistentIStream::pedantic() const {
+  return isPedantic;
+}
+
+template <class T>
+inline PersistentIStream & PersistentIStream::
+operator>>(RCPtr<T> & ptr) {
+  BPtr b = getObject();
+  ptr = dynamic_ptr_cast< RCPtr<T> >(b);
+  if ( b && !ptr ) setBadState();
+  return *this;
+}
+
+template <class T>
+inline PersistentIStream & PersistentIStream::
+operator>>(ConstRCPtr<T> & ptr) {
+  BPtr b = getObject();
+  ptr = dynamic_ptr_cast< ConstRCPtr<T> >(b);
+  if ( b && !ptr ) setBadState();
+  return *this;
+}
+
+template <class T>
+inline PersistentIStream & PersistentIStream::
+operator>>(TransientRCPtr<T> & ptr) {
+  BPtr b = getObject();
+  ptr = dynamic_ptr_cast< TransientRCPtr<T> >(b);
+  if ( b && !ptr ) setBadState();
+  return *this;
+}
+
+template <class T>
+inline PersistentIStream & PersistentIStream::
+operator>>(TransientConstRCPtr<T> & ptr) {
+  BPtr b = getObject();
+  ptr = dynamic_ptr_cast< TransientConstRCPtr<T> >(b);
+  if ( b && !ptr ) setBadState();
+  return *this;
+}
+
+template <typename T1, typename T2>
+inline PersistentIStream & operator>>(PersistentIStream & is ,
+				      pair<T1,T2> & p) {
+  return is >> p.first >> p.second;
+}
+
+template <typename Key, typename T, typename Cmp, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      map<Key,T,Cmp,A> & m) {
+  m.clear();
+  long size;
+  Key k;
+  is >> size;
+  while ( size-- && is ) {
+    is >> k;
+    is >> m[k];
+  }
+  return is;
+}
+
+template <typename Key, typename T, typename Cmp, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      multimap<Key,T,Cmp,A> & m) {
+  m.clear();
+  long size;
+  Key k;
+  T t;
+  is >> size;
+  while ( size-- && is ) {
+    is >> k;
+    is >> t;
+    m.insert(make_pair(k, t));
+  }
+  return is;
+}
+
+template <typename Key, typename Cmp, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      set<Key,Cmp,A> & s) {
+  is.getContainer(s);
+  return is;
+}
+
+template <typename Key, typename Cmp, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      multiset<Key,Cmp,A> & s) {
+  is.getContainer(s);
+  return is;
+}
+
+template <typename T, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      list<T,A> & l) {
+  is.getContainer(l);
+  return is;
+}
+
+template <typename T, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      vector<T,A> & v) {
+  is.getContainer(v);
+  return is;
+}
+
+template <typename T, typename A>
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      deque<T,A> & d) {
+  is.getContainer(d);
+  return is;
+}
+
+}

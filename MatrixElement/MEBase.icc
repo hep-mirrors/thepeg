@@ -1,0 +1,75 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MEBase class.
+//
+
+namespace ThePEG {
+
+inline Selector<MEBase::DiagramIndex>
+MEBase::diagrams(const DiagramVector &) const {
+  return Selector<DiagramIndex>();
+}
+
+inline Energy2 MEBase::sHat() const {
+  return theLastSHat;
+}
+
+inline double MEBase::preweight() const {
+  return lastPreweight;
+}
+
+inline Ptr<Amplitude>::pointer MEBase::amplitude() const {
+  return theAmplitude;
+}
+
+inline double MEBase::jacobian() const {
+  return theLastJacobian;
+}
+
+inline void MEBase::jacobian(double j) {
+  theLastJacobian = j;
+}
+
+inline void MEBase::add(DiagPtr dp) const {
+  theDiagrams.push_back(dp);
+}
+
+inline const MEBase::DiagramVector & MEBase::diagrams() const {
+  if ( theDiagrams.empty() ) getDiagrams();
+  return theDiagrams;
+}
+
+inline void MEBase::doupdate() throw(UpdateException) {
+  HandlerBase::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void MEBase::doinit() throw(InitException) {
+  HandlerBase::doinit();
+}
+
+inline void MEBase::dofinish() {
+  HandlerBase::dofinish();
+}
+
+inline IVector MEBase::getReferences() {
+  IVector ret = HandlerBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

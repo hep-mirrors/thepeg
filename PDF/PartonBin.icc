@@ -1,0 +1,138 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the PartonBin class.
+//
+
+namespace ThePEG {
+
+inline void PartonBin::lastParton(tPPtr p) {
+  info->lastParton = p;
+}
+
+inline tcPDPtr PartonBin::parton() const {
+  return theParton;
+}
+
+inline void PartonBin::lastParticle(tPPtr p) {
+  info->lastParticle = p;
+}
+
+inline tcPDPtr PartonBin::particle() const {
+  return theParticle;
+}
+
+inline const PVector & PartonBin::lastRemnants() const {
+  return info->lastRemnants;
+}
+
+inline const PVector & PartonBin::lastPartons() const {
+  return info->lastPartons;
+}
+
+inline tPBPtr PartonBin::incoming() const {
+  return theIncomingBin;
+}
+
+inline tcPDFPtr PartonBin::pdf() const {
+  return thePDF;
+}
+
+inline tcRemHPtr PartonBin::remnantHandler() const {
+  return theRemnantHandler;
+}
+
+inline tPPtr PartonBin::lastParticle() const {
+  return info->lastParticle;
+}
+
+inline tPPtr PartonBin::lastParton() const {
+  return info->lastParton;
+}
+
+inline double PartonBin::lastL() const {
+  return theLastL;
+}
+
+inline double PartonBin::lastPartialL() const {
+  return theLastPartialL;
+}
+
+inline double PartonBin::lastPartialX() const {
+  if ( theLastPartialX < 0.0 ) theLastPartialX = exp(-lastPartialL());
+  return theLastPartialX;
+}
+
+inline double PartonBin::lastPartialEps() const {
+  if ( theLastPartialEps < 0.0 )
+    theLastPartialEps = Math::exp1m(-lastPartialL());
+  return theLastPartialEps;
+}
+
+inline Energy2 PartonBin::lastScale() const {
+  return info->lastScale;
+}
+
+inline PVector & PartonBin::lastRemnants() {
+  return info->lastRemnants;
+}
+
+inline void PartonBin::lastRemnants(const PVector & r) {
+  info->lastRemnants = r;
+}
+
+inline PVector & PartonBin::lastPartons() {
+  return info->lastPartons;
+}
+
+inline void PartonBin::lastL(double l) {
+  theLastL = l;
+}
+
+inline void PartonBin::lastPartialL(double l) {
+  theLastPartialL = l;
+  theLastPartialX = theLastPartialEps = -1.0;
+}
+
+inline void PartonBin::lastScale(Energy2 Q2) {
+  info->lastScale = Q2;
+}
+
+inline const PDFCuts & PartonBin::cuts() const {
+  return theCuts;
+}
+
+inline int PartonBin::remDim() const {
+  return theRemDim;
+}
+
+inline int PartonBin::pdfDim() const {
+  return thePDFDim;
+}
+
+inline double PartonBin::lastJacobian() const {
+  return theLastJacobian;
+}
+
+inline void PartonBin::lastJacobian(double j) {
+  theLastJacobian = j;
+}
+
+inline double PartonBin::remnantWeight() const {
+  return info->remnantWeight;
+}
+
+inline void PartonBin::remnantWeight(double w) {
+  info->remnantWeight = w;
+}
+
+inline RemnantInfo * PartonBin::remnantInfo() const {
+  return info->remnantInfo;
+}
+
+inline void PartonBin::remnantInfo(RemnantInfo * i ) {
+  info->remnantInfo = i;
+}
+
+}
+

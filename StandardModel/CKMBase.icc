@@ -1,0 +1,15 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the CKMBase class.
+//
+
+namespace ThePEG {
+
+inline CKMBase::CKMBase() {}
+
+inline CKMBase::CKMBase(const CKMBase & x)
+  : Interfaced(x) {}
+
+}
+

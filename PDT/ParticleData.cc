@@ -1,0 +1,777 @@
+// -*- C++ -*-
+//
+// This is the implementation of the non-inlined, non-templated member
+// functions of the ParticleData class.
+//
+
+#include "ParticleData.h"
+#include "ParticleData.xh"
+#include "ThePEG/PDT/DecayMode.h"
+#include "ThePEG/PDT/MassGenerator.h"
+#include "ThePEG/PDT/WidthGenerator.h"
+#include "ThePEG/Utilities/HoldFlag.h"
+#include "ThePEG/Utilities/Rebinder.h"
+#include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/Command.h"
+#include "ThePEG/Repository/Repository.h"
+#include "ThePEG/Persistency/PersistentOStream.h"
+#include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Config/algorithm.h"
+#include "ThePEG/Utilities/Exception.h"
+#include "ThePEG/Utilities/EnumIO.h"
+
+namespace ThePEG {
+
+ParticleData::ParticleData()
+  : theId(0) {}
+
+ParticleData::ParticleData(const ParticleData & pd)
+  : Interfaced(pd), theId(pd.theId), thePDGName(pd.thePDGName),
+    theMass(pd.theMass), theWidth(pd.theWidth), theWidthCut(pd.theWidthCut),
+    theCTau(pd.theCTau), theCharge(pd.theCharge), theSpin(pd.theSpin),
+    theColor(pd.theColor), theMassGenerator(pd.theMassGenerator),
+    isStable(pd.isStable), theDecaySelector(pd.theDecaySelector),
+    theDecayModes(pd.theDecayModes), theWidthGenerator(pd.theWidthGenerator),
+    variableRatio(pd.variableRatio), theAntiPartner(pd.theAntiPartner),
+    syncAnti(pd.syncAnti), theDefMass(pd.theDefMass),
+    theDefWidth(pd.theDefWidth), theDefCut(pd.theDefCut),
+    theDefCTau(pd.theDefCTau), theDefCharge(pd.theDefCharge),
+    theDefSpin(pd.theDefSpin), theDefColour(pd.theDefColour) {}
+
+ParticleData::
+ParticleData(long newId, string newPDGName)
+  : theId(newId), thePDGName(newPDGName), theMass(-1.0*GeV), theWidth(-1.0*GeV),
+    theWidthCut(-1.0*GeV), theCTau(-1.0*mm), theCharge(PDT::ChargeUnknown),
+    theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
+    variableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
+    theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
+    theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
+    theDefColour(PDT::ColourUnknown) {}
+
+ParticleData::~ParticleData() {}
+
+PDPtr ParticleData::Create(long newId, string newPDGName) {
+  return new_ptr(ParticleData(newId, newPDGName));
+}
+
+PDPair ParticleData::
+Create(long newId, string newPDGName, string newAntiPDGName) {
+  PDPair pap;
+  pap.first = new_ptr(ParticleData(newId, newPDGName));
+  pap.second = new_ptr(ParticleData(-newId, newAntiPDGName));
+  antiSetup(pap);
+  return pap;
+}
+
+void ParticleData::readSetup(istream & is) throw(SetupException) {
+  is >> theId >> thePDGName >> iunit(theDefMass, GeV) >> iunit(theDefWidth, GeV)
+     >> iunit(theDefCut, GeV) >> iunit(theDefCTau, mm) >> ienum(theDefCharge)
+     >> ienum(theDefColour) >> ienum(theDefSpin) >> ienum(isStable);
+  theMass = theDefMass;
+  theWidth = theDefWidth;
+  theWidthCut = theDefCut;
+  theCTau = theDefCTau;
+  theCharge = theDefCharge;
+  theColor = theDefColour;
+  theSpin = theDefSpin;
+  return;
+}
+  
+void ParticleData::antiSetup(const PDPair & pap) {
+  pap.first->theAntiPartner = pap.second;
+  pap.second->theAntiPartner = pap.first;
+  pap.first->syncAnti = pap.second->syncAnti = true;
+}
+
+PDPtr ParticleData::pdclone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ParticleData::clone() const {
+  return pdclone();
+}
+  
+IBPtr ParticleData::fullclone() const {
+  PDPtr pd = pdclone();
+  Repository::Register(pd);
+  pd->theDecaySelector.clear();
+  pd->theDecayModes.clear();
+  PDPtr apd;
+  if ( CC() ) {
+    apd = CC()->pdclone();
+    Repository::Register(apd);
+    apd->theDecaySelector.clear();
+    apd->theDecayModes.clear();
+    pd->theAntiPartner = apd;
+    apd->theAntiPartner = pd;
+    pd->syncAnti = syncAnti;
+    apd->syncAnti = CC()->syncAnti;
+  }
+  HoldFlag<> dosync(pd->syncAnti, true);
+  for ( DecaySet::const_iterator it = theDecayModes.begin();
+	it != theDecayModes.end(); ++it )
+    pd->addDecayMode(*it);
+  return pd;
+}
+
+Energy ParticleData::width(Energy wi) {
+  theWidth = wi;
+  if ( synchronized() && CC() ) CC()->theWidth = theWidth;
+  return theWidth;
+}
+
+Energy ParticleData::widthCut(Energy wci) {
+  theWidthCut = wci;
+  if ( synchronized() && CC() ) CC()->theWidthCut = theWidthCut;
+  return theWidthCut;
+}
+
+Length ParticleData::cTau(Length ti) {
+  theCTau = ti;
+  if ( synchronized() && CC() ) CC()->theCTau = theCTau;
+  return theCTau;
+}
+
+PDT::Charge ParticleData::iCharge(PDT::Charge ci) {
+  theCharge = ci;
+  if ( synchronized() && CC() ) CC()->theCharge = PDT::Charge(-ci);
+  return theCharge;
+}
+
+PDT::Spin ParticleData::iSpin(PDT::Spin si) {
+  theSpin = si;
+  if ( synchronized() && CC() ) CC()->theSpin = si;
+  return si;
+}
+
+PDT::Color ParticleData::iColor(PDT::Color ci) {
+  theColor = ci;
+  if ( synchronized() && CC() ) CC()->theColor = PDT::Color(-ci);
+  return theColor;
+}
+
+PDT::Colour ParticleData::iColour(PDT::Colour ci) {
+  theColor = ci;
+  if ( synchronized() && CC() ) CC()->theColor = PDT::Color(-ci);
+  return theColor;
+}
+
+void ParticleData::stable(bool theSpin) {
+  isStable = s;
+  if ( synchronized() && CC() ) CC()->isStable = s;
+}
+
+void ParticleData::synchronized(bool h) {
+  syncAnti = h;
+  if ( CC() ) CC()->syncAnti = h;
+}
+
+void ParticleData::addDecayMode(tDMPtr dm) {
+  if ( member(theDecayModes, dm) ) return;
+  cPDPtr parent = dm->parent();
+  if ( !parent ) parent = this;
+  if ( parent != this ) {
+    dm = dm->clone(this);
+  }
+  theDecayModes.insert(dm);
+  theDecaySelector.insert(dm->brat(), dm);
+  if ( CC() ) {
+    if ( !synchronized() ) dm->CC()->switchOff();
+    CC()->theDecayModes.insert(dm->CC());
+    CC()->theDecaySelector.insert(dm->CC()->brat(), dm->CC());
+  }
+}
+
+void ParticleData::removeDecayMode(tDMPtr dm) {
+  theDecayModes.erase(theDecayModes.find(dm));
+  theDecaySelector.erase(dm);
+  if ( !CC() ) return;
+  CC()->theDecayModes.erase(dm->CC());
+  CC()->theDecaySelector.erase(dm->CC());
+}
+
+void ParticleData::synchronize() {
+  if ( !CC() ) return;
+  isStable = CC()->isStable;
+  theMass = CC()->theMass;
+  theWidth = CC()->theWidth;
+  theWidthCut = CC()->theWidthCut;
+  theCTau = CC()->theCTau;
+  theCharge = PDT::Charge(-CC()->theCharge);
+  theSpin = CC()->theSpin;
+  theColor = PDT::antiColor(CC()->theColor);
+  theMassGenerator = CC()->theMassGenerator;
+  theWidthGenerator = CC()->theWidthGenerator;
+  syncAnti = CC()->syncAnti;
+  theDecaySelector.clear();
+  for ( DecaySet::iterator it = theDecayModes.begin();
+	it != theDecayModes.end(); ++it ) {
+    (*it)->synchronize();
+    theDecaySelector.insert((*it)->brat(), *it);
+  }
+}
+
+void ParticleData::doupdate() throw(UpdateException) {
+  Interfaced::doupdate();
+  bool redo = touched();
+  for_each(theDecayModes, UpdateChecker(redo));
+  UpdateChecker::check(theMassGenerator, redo);
+  UpdateChecker::check(theWidthGenerator, redo);
+  if ( !redo ) return;
+
+  theDecaySelector.clear();
+  for ( DecaySet::const_iterator dit = theDecayModes.begin();
+	dit != theDecayModes.end(); ++dit ) {
+    tDMPtr dm = *dit;
+    dm->resetOverlap();
+    for ( DecaySet::const_iterator dit2 = theDecayModes.begin();
+	  dit2 != theDecayModes.end(); ++dit2 )
+      if ( dit2 != dit ) dm->addOverlap(dm);
+    if ( dm->brat() > 0.0 ) theDecaySelector.insert(dm->brat(), dm);
+  }
+  if ( theDecaySelector.empty() ) stable(true);
+  if ( theMassGenerator && !theMassGenerator->accept(*this) )
+    throw UpdateException();
+  if ( theWidthGenerator &&
+       !theWidthGenerator->accept(*this) )
+    throw UpdateException();
+  if ( theWidthGenerator ) theDecaySelector = theWidthGenerator->rate(*this);
+  touch();
+}
+
+tDMPtr ParticleData::selectMode(Particle & p) const {
+  if ( &(p.data()) != this ) return tDMPtr();
+  try {
+    if ( !theWidthGenerator || !variableRatio )
+      return theDecaySelector.select(generator()->random());
+    DecaySelector local;
+    if ( theWidthGenerator )
+      local = theWidthGenerator->rate(p);
+    else
+      for ( DecaySet::const_iterator mit = theDecayModes.begin();
+	    mit != theDecayModes.end(); ++mit  )
+	local.insert((*mit)->brat(p), *mit);
+    return local.select(generator()->random());
+  }
+  catch (range_error) {
+    return tDMPtr();
+  }
+}
+
+void ParticleData::rebind(const TranslationMap & trans) throw(RebindException) {
+  if ( CC() ) theAntiPartner = trans.translate(theAntiPartner);
+  DecaySet newModes;
+  DecaySelector newSelector;
+  for ( DecaySet::iterator it = theDecayModes.begin();
+	it != theDecayModes.end(); ++it ) {
+    DMPtr dm;
+    dm = trans.translate(*it);
+    if ( !dm ) throw RebindException();
+    newModes.insert(dm);
+    newSelector.insert(dm->brat(), dm);
+  }
+  theDecayModes.swap(newModes);
+  theDecaySelector.swap(newSelector);
+}
+
+IVector ParticleData::getReferences() {
+  IVector refs = Interfaced::getReferences();
+  if ( CC() ) refs.push_back(CC());
+  refs.insert(refs.end(), theDecayModes.begin(), theDecayModes.end());
+//    for ( DecaySet::iterator it = theDecayModes.begin();
+//  	it != theDecayModes.end(); ++it ) refs.push_back(*it);
+  return refs;
+}
+
+
+
+void ParticleData::massGenerator(tMassGenPtr mg) {
+  if ( mg && !mg->accept(*this) ) return;
+  if ( mg && synchronized() && CC() && !mg->accept(*CC()) ) return;
+  theMassGenerator = mg;
+  if ( synchronized() && CC() ) CC()->theMassGenerator = mg;
+}
+
+void ParticleData::widthGenerator(tWidthGeneratorPtr newGen) {
+  if ( newGen && !newGen->accept(*this) ) return;
+  if ( newGen && synchronized() && CC() && !newGen->accept(*CC()) ) return;
+  theWidthGenerator = newGen;
+  if ( synchronized() && CC() ) CC()->theWidthGenerator = newGen;
+}
+
+Energy ParticleData::generateMass() const {
+  return massGenerator()? massGenerator()->mass(*this): mass();
+}
+
+Energy ParticleData::generateWidth(Energy m) const {
+  return widthGenerator()? widthGenerator()->width(*this, m): width();
+}
+
+Length ParticleData::generateLifeTime(Energy m, Energy w) const {
+  return widthGenerator()? widthGenerator()->lifeTime(*this, m, w): cTau();
+}
+
+PPtr ParticleData::produceParticle(const Lorentz5Momentum & pp) const {
+  PPtr p = new_ptr(Particle(this));
+  p->set5Momentum(pp);
+  return p;
+}
+
+PPtr ParticleData::produceParticle(const LorentzMomentum & pp) const {
+  PPtr p(produceParticle(Lorentz5Momentum(pp)));
+  return p;
+}
+
+PPtr ParticleData::produceParticle(Energy m, const Momentum3 & pp) const {
+  PPtr p(produceParticle(Lorentz5Momentum(m, pp)));
+  return p;
+}
+
+PPtr ParticleData::produceParticle(const Momentum3 & pp) const {
+  PPtr p(produceParticle(Lorentz5Momentum(generateMass(), pp)));
+  return p;
+}
+
+PPtr ParticleData::
+produceParticle(Energy plus, Energy minus, Energy px, Energy py) const {
+  PPtr p(produceParticle(LorentzMomentum(px, py, 0.5*(plus-minus),
+					 0.5*(plus+minus))));
+  return p;
+}
+
+void ParticleData::setMass(Energy mi) {
+  theMass = mi;
+  ParticleData * apd = CC().operator->();
+  if ( synchronized() && apd ) apd->theMass = theMass;
+}
+
+Energy ParticleData::defMass() const {
+  return theDefMass;
+}
+
+Energy ParticleData::maxMass() const {
+  return 10.0*max(mass(),defMass());
+}
+
+void ParticleData::setWidth(Energy wi) {
+  width(wi);
+}
+
+Energy ParticleData::getWidth() const {
+  return width();
+}
+
+Energy ParticleData::defWidth() const {
+  return theDefWidth;
+}
+
+Energy ParticleData::maxWidth() const {
+  return 10.0*max(theWidth,theDefWidth);
+}
+
+void ParticleData::setCut(Energy ci) {
+  widthCut(ci);
+}
+
+Energy ParticleData::getCut() const {
+  return widthCut();
+}
+
+Energy ParticleData::defCut() const {
+  return theDefCut;
+}
+
+Energy ParticleData::maxCut() const {
+  return 10.0*max(theWidthCut,theDefCut);
+}
+
+void ParticleData::setCTau(Length ti) {
+  cTau(ti);
+}
+
+Length ParticleData::getCTau() const {
+  return cTau();
+}
+
+Length ParticleData::defCTau() const {
+  return theDefCTau;
+}
+
+Length ParticleData::maxCTau() const {
+  return 10.0*max(theCTau,theDefCTau);
+}
+
+void ParticleData::setStable(long is) {
+  stable(is);
+}
+
+long ParticleData::getStable() const {
+  return stable();
+}
+
+void ParticleData::setSync(long is) {
+  synchronized(is);
+}
+
+long ParticleData::getSync() const {
+  return synchronized();
+}
+
+string ParticleData::doSync(string) {
+  synchronize();
+  return "";
+}
+
+void ParticleData::setMassGenerator(MassGenPtr gi) {
+  massGenerator(gi);
+}
+
+void ParticleData::setWidthGenerator(WidthGeneratorPtr wg) {
+  widthGenerator(wg);
+}
+
+void ParticleData::setColour(long c) {
+  theColor = PDT::Colour(c);
+}
+
+long ParticleData::getColour() const {
+  return theColor;
+}
+
+long ParticleData::defColour() const {
+  return theDefColour;
+}
+
+void ParticleData::setCharge(int c) {
+  theCharge = PDT::Charge(c);
+}
+
+string ParticleData::ssetCharge(string arg) {
+  istringstream is(arg);
+  long i;
+  if ( is >> i ) {
+    theCharge = PDT::Charge(i);
+    return "New charge is " + arg;
+  }
+  if ( arg == "unknown" )
+    theCharge = PDT::ChargeUnknown;
+  else if ( arg == "charged" )
+    theCharge = PDT::Charged;
+  else if ( arg == "positive" )
+    theCharge = PDT::Positive;
+  else if ( arg == "negative" )
+    theCharge = PDT::Negative;
+  else throw ParticleChargeCommand(*this, arg);
+  return  "New charge is " + arg;
+}
+
+int ParticleData::getCharge() const {
+  return theCharge;
+}
+
+int ParticleData::defCharge() const {
+  return theDefCharge;
+}
+
+void ParticleData::setSpin(int s) {
+  theSpin = PDT::Spin(s);
+}
+
+int ParticleData::getSpin() const {
+  return theSpin;
+}
+
+int ParticleData::defSpin() const {
+  return theDefSpin;
+}
+
+ClassDescription<ParticleData> ParticleData::initParticleData;
+
+struct ParticleOrdering {
+  bool operator()(const tcPDPtr & p1, const tcPDPtr & p2) {
+    return abs(p1->id()) > abs(p2->id()) ||
+      ( abs(p1->id()) == abs(p2->id()) && p1->id() > p2->id() ) ||
+      ( p1->id() == p2->id() && p1->fullName() > p2->fullName() );
+  }
+};
+
+struct ModeOrdering {
+  bool operator()(const tcDMPtr & d1, const tcDMPtr & d2) {
+    ParticleOrdering ord;
+    return ord(d1->parent(), d2->parent()) ||
+      ( !ord(d2->parent(), d1->parent()) &&
+	( d1->tag() < d2->tag() ||
+	  ( d1->tag() == d2->tag() && d1->fullName() < d2->fullName() ) ) );
+  }
+};
+
+void ParticleData::persistentOutput(PersistentOStream & os) const {
+  multiset<tcDMPtr,ModeOrdering,Allocator<tcDMPtr> >
+    modes(theDecayModes.begin(), theDecayModes.end());
+//    os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
+//       << ounit(theWidthCut, GeV) << ounit(theCTau, mm)
+//       << long(theCharge) << long(theSpin) << long(theColor) << theMassGenerator
+//       << isStable << modes << theDecaySelector << theWidthGenerator
+//       << variableRatio << theAntiPartner << syncAnti << ounit(theDefMass, GeV)
+//       << ounit(theDefWidth, GeV) << ounit(theDefCut, GeV)
+//       << ounit(theDefCTau, mm) << long(theDefColour) << long(theDefCharge)
+//       << long(theDefSpin);
+  // for some reason I had to divide this << statements into two in order
+  // for the gcc compiler to optimize it correctly...
+
+  os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
+     << ounit(theWidthCut, GeV) << ounit(theCTau, mm) << oenum(theCharge)
+     << oenum(theSpin) << oenum(theColor);
+  os << theMassGenerator << isStable << modes << theDecaySelector
+     << theWidthGenerator << variableRatio << theAntiPartner << syncAnti
+     << ounit(theDefMass, GeV) << ounit(theDefWidth, GeV)
+     << ounit(theDefCut, GeV) << ounit(theDefCTau, mm) << oenum(theDefColour)
+     << oenum(theDefCharge) << oenum(theDefSpin);
+}
+
+void ParticleData::persistentInput(PersistentIStream & is, int) {
+  is >> theId >> thePDGName >> iunit(theMass, GeV) >> iunit(theWidth, GeV)
+     >> iunit(theWidthCut, GeV) >> iunit(theCTau, mm)
+     >> ienum(theCharge) >> ienum(theSpin) >> ienum(theColor)
+     >> theMassGenerator >> isStable
+     >> theDecayModes >> theDecaySelector >> theWidthGenerator >> variableRatio
+     >> theAntiPartner >> syncAnti >> iunit(theDefMass, GeV)
+     >> iunit(theDefWidth, GeV) >> iunit(theDefCut, GeV)
+     >> iunit(theDefCTau, mm) >> ienum(theDefColour) >> ienum(theDefCharge)
+     >> ienum(theDefSpin);
+}
+
+void ParticleData::Init() {
+  static Parameter<ParticleData,Energy> interfaceMass
+    ("NominalMass",
+     "The nominal mass in GeV of the particle. The actual mass "
+     "of a particle instance is generated depending on the "
+     "nominal mass and the width and is generated by the "
+     "\\interfacename{Mass_generator} object associated with the "
+     "particle.",
+     &ParticleData::theMass, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, false, true,
+     &ParticleData::setMass, 0, 0, &ParticleData::maxMass,
+     &ParticleData::defMass);
+
+  static Parameter<ParticleData,Energy> interfaceDefMass
+    ("DefaultMass",
+     "The default nominal mass in GeV of the particle. The actual mass "
+     "of a particle instance is generated depending on the "
+     "nominal mass and the width and is generated by the "
+     "\\interfacename{Mass_generator} object associated with the "
+     "particle.",
+     &ParticleData::theDefMass, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, true, true);
+
+  static Parameter<ParticleData,Energy> interfaceWidth
+    ("Width",
+     "The width of the particle in GeV.",
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     &ParticleData::setWidth, &ParticleData::getWidth,
+     0, &ParticleData::maxWidth, &ParticleData::defWidth);
+
+  static Parameter<ParticleData,Energy> interfaceDefWidth
+    ("DefaultWidth",
+     "The default width of the particle in GeV.",
+     &ParticleData::theDefWidth, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, true, true);
+
+  static Parameter<ParticleData,Energy> interfaceWidthCut
+    ("WidthCut",
+     "The hard cutoff in GeV in generated mass, which is the maximum "
+     "allowed deviation from the nominal mass.",
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     &ParticleData::setCut, &ParticleData::getCut,
+     0, &ParticleData::maxCut, &ParticleData::defCut);
+  
+  static Parameter<ParticleData,Energy> interfaceDefWidthCut
+    ("DefaultWidthCut",
+     "The default hard cutoff in GeV in generated mass, which is the maximum "
+     "allowed deviation from the nominal mass.",
+     &ParticleData::theDefCut, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, true, true);
+  
+  static Parameter<ParticleData,Length> interfaceCTau
+    ("LifeTime",
+     "c times the average lifetime of the particle measuerd in mm."
+     "The actual lifetime of a particle instance is generated "
+     "from this number by the \\interfacename{Mass_generator} "
+     "object associated with the particle.",
+     0, mm, 0.0*mm, 0.0*mm, Constants::MaxLength, false, false, true,
+     &ParticleData::setCTau, &ParticleData::getCTau,
+     0, &ParticleData::maxCTau, &ParticleData::defCTau);
+
+  static Parameter<ParticleData,Length> interfaceDefCTau
+    ("DefaultLifeTime",
+     "c times the default average lifetime of the particle measuerd in mm."
+     "The actual lifetime of a particle instance is generated "
+     "from this number by the \\interfacename{Mass_generator} "
+     "object associated with the particle.",
+     &ParticleData::theDefCTau, mm, 0.0*mm, 0.0*mm, Constants::MaxLength,
+     false, true, true);
+
+  static Switch<ParticleData> interfaceColour
+    ("Colour",
+     "The colour quantum number of this particle type.",
+     0, -1, false, false, &ParticleData::setColour, &ParticleData::getColour,
+     &ParticleData::defColour);
+  static SwitchOption interfaceColourUndefined
+    (interfaceColour, "Undefined", "The coulur is undefined.", -1);
+  static SwitchOption interfaceColourNeutral
+    (interfaceColour, "Neutral", "This particle is colour neutral.", 0);
+  static SwitchOption interfaceColour3
+    (interfaceColour, "Triplet", "This particle is a colour triplet.", 3);
+  static SwitchOption interfaceColour3bar
+    (interfaceColour, "AntiTriplet",
+     "This particle is a colour anti-triplet.", -3);
+  static SwitchOption interfaceColour8
+    (interfaceColour, "Octet", "This particle is a colour octet.", 8);
+  
+  static Switch<ParticleData,PDT::Color> interfaceDefColour
+    ("DefaultColour",
+     "The defaault colour quantum number of this particle type.",
+     &ParticleData::theDefColour, PDT::Color(-1), false, true);
+  static SwitchOption interfaceDefColourUndefined
+    (interfaceDefColour, "Undefined", "The coulur is undefined.", -1);
+  static SwitchOption interfaceDefColourNeutral
+    (interfaceDefColour, "Neutral", "This particle is colour neutral.", 0);
+  static SwitchOption interfaceDefColour3
+    (interfaceDefColour, "Triplet", "This particle is a colour triplet.", 3);
+  static SwitchOption interfaceDefColour3bar
+    (interfaceDefColour, "AntiTriplet",
+     "This particle is a colour anti-triplet.", -3);
+  static SwitchOption interfaceDefColour8
+    (interfaceDefColour, "Octet", "This particle is a colour octet.", 8);
+  
+  static Parameter<ParticleData, int> interfaceCharge
+    ("Charge",
+     "The charge of this particle in units of e/3. "
+     "See also \\command{SetCharge}.",
+     0, 0, -24, 24, false, false, true,
+     &ParticleData::setCharge, &ParticleData::getCharge, 0, 0,
+     &ParticleData::defCharge);
+
+  static Parameter<ParticleData, PDT::Charge> interfaceDefCharge
+    ("DefaultCharge",
+     "The default charge of this particle in units of e/3. "
+     "See also \\command{SetCharge}.",
+     &ParticleData::theDefCharge, PDT::Charge(0), PDT::Charge(-24),
+     PDT::Charge(24), false, true, true);
+
+  static Command<ParticleData> interfaceSetCharge
+    ("SetCharge",
+     "Set the charge of this particle. The argument should be given as an "
+     "interger giving three times the unit charge, or 'unknown', "
+     "'charged', 'positive' or 'negative'", &ParticleData::ssetCharge);
+
+  static Parameter<ParticleData, int> interfaceSpin
+    ("Spin",
+     "The spin quantim number of this particle on the form 2j+1.",
+     0, 0, 0, 9, false, false, true,
+     &ParticleData::setSpin, &ParticleData::getSpin, 0, 0,
+     &ParticleData::defSpin);
+
+  static Parameter<ParticleData, PDT::Spin> interfaceDefSpin
+    ("DefaultSpin",
+     "The default spin quantim number of this particle on the form 2j+1.",
+     &ParticleData::theDefSpin, PDT::Spin(0), PDT::Spin(0), PDT::Spin(9),
+     false, true, true);
+
+  static Switch<ParticleData> interfaceStable
+    ("Stable",
+     "Indicates if the particle is stable or not.",
+     0, 0, false, false,
+     &ParticleData::setStable, &ParticleData::getStable, 0);
+  static SwitchOption interfaceStableYes
+    (interfaceStable,
+     "Stable",
+     "This particle is stable",
+     1);
+  static SwitchOption interfaceStableNo
+    (interfaceStable,
+     "Unstable",
+     "This particle is not stable",
+     0);
+
+  static Switch<ParticleData> interfaceSync
+    ("Synchronized",
+     "Indicates if the changes to this particle is propagated to "
+     "its anti-partner or not. Not that seting this switch does not"
+     "actually synchronize the properties with the anti-partner, "
+     "it only assures that following changes are propagated. "
+     "To sync the particle with its anti-particle, use the "
+     "\\interfacename{Synchronize} command.",
+     0, 1, false, false,
+     &ParticleData::setSync, &ParticleData::getSync, 0);
+  static SwitchOption interfaceSyncYes
+    (interfaceSync,
+     "Synchronized",
+     "Changes to this particle will propagate to its "
+     "anti-partner",
+     1);
+  static SwitchOption interfaceSyncNo
+    (interfaceSync,
+     "Not_synchronized",
+     "Changes to this particle will propagate to its "
+     "anti-partner",
+     0);
+
+  static Command<ParticleData> interfaceSynchronize
+    ("Synchronize",
+     "Synchronizes this particle so that all its properties "
+     "correspond to those of its anti-partner",
+     &ParticleData::doSync, false);
+
+  static Reference<ParticleData,MassGenerator> interfaceMassGenerator
+    ("Mass_generator",
+     "An object derived from the \\classname{MassGenerator}"
+     "class, which is able to generate a mass for a given "
+     "particle instance",
+     &ParticleData::theMassGenerator, false, false, true, true,
+     &ParticleData::setMassGenerator, 0, 0);
+
+  static Reference<ParticleData,WidthGenerator> interfaceWidthGenerator
+    ("Width_generator",
+     "An object derived from the \\classname{WidthGenerator} class, "
+     "which is able to calculate the full and partial widths for"
+     "this particle type and for a given instance of this "
+     "particle type.",
+     &ParticleData::theWidthGenerator, false, false, true, true,
+     &ParticleData::setWidthGenerator, 0, 0);
+
+  static RefVector<ParticleData,DecayMode> interfaceDecayModes
+    ("DecayModes",
+     "The list of decay modes defined for this particle type.",
+     0, -1, false, false, false, false, 0,
+     &ParticleData::insDecayModes, &ParticleData::delDecayModes,
+     &ParticleData::getDecayModes);
+
+}
+
+void ParticleData::insDecayModes(DMPtr dm, int) {
+  addDecayMode(dm);
+}
+
+void ParticleData::delDecayModes(int i) {
+  vector<DMPtr> mv = getDecayModes();
+  if ( i >= 0 && (unsigned int)i < mv.size() ) removeDecayMode(mv[i]);
+}
+
+vector<DMPtr> ParticleData::getDecayModes() const {
+  return vector<DMPtr>(theDecayModes.begin(), theDecayModes.end());
+}
+
+ParticleChargeCommand::
+ParticleChargeCommand(const ParticleData & pd, string arg) {
+  theMessage << "Cannot set the charge of particle '" << pd.name()
+	     << "' to '" << arg << "'.";
+  severity(warning);
+}
+
+}
+

@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_RandBreitWigner_FH
+#define ThePEG_RandBreitWigner_FH
+
+// This is the forward declaration of the <!id>RandBreitWigner<!!id>
+// class from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
+// <!id>RandBreitWigner<!!id> and making it available in the
+// <!id>ThePEG<!!id> namespace.
+
+class RandBreitWigner;
+
+namespace CLHEP {
+
+  typedef ::RandBreitWigner RandBreitWigner;
+
+}
+
+namespace ThePEG {
+
+  using CLHEP::RandBreitWigner;
+
+}
+
+#endif /* ThePEG_RandBreitWigner_FH */

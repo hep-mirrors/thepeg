@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_Command_XH
+#define ThePEG_Command_XH
+//
+// This is the declarations of the exception classes used by the
+// Command class.
+//
+
+
+#include "InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct CmdExUnknown: public InterfaceException {
+  CmdExUnknown(const InterfaceBase & i, const InterfacedBase & o, string);
+};
+
+}
+
+#endif /* ThePEG_Command_XH */
+

@@ -1,0 +1,41 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the O1AlphaS class.
+//
+
+namespace ThePEG {
+
+inline O1AlphaS::O1AlphaS()
+: theLambdaQCD(0.25*GeV), theLambdaFlavour(4), theMaxFlav(6) {}
+
+inline O1AlphaS::O1AlphaS(const O1AlphaS & x)
+  : AlphaSBase(x), theLambdaQCD(x.theLambdaQCD),
+    theLambdaFlavour(x.theLambdaFlavour), theMaxFlav(x.theMaxFlav) {}
+
+inline void O1AlphaS::doupdate() throw(UpdateException) {
+  AlphaSBase::doupdate();
+}
+
+inline void O1AlphaS::doinit() throw(InitException) {
+  AlphaSBase::doinit();
+}
+
+inline void O1AlphaS::dofinish() {
+  AlphaSBase::dofinish();
+}
+
+inline void O1AlphaS::
+rebind(const TranslationMap & trans) throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  AlphaSBase::rebind(trans);
+}
+
+inline IVector O1AlphaS::getReferences() {
+  IVector ret = AlphaSBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}
+

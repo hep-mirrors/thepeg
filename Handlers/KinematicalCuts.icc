@@ -1,0 +1,288 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the KinematicalCuts class.
+//
+
+namespace ThePEG {
+
+inline Energy KinematicalCuts::mHatMin() const {
+  return theMHatMin;
+}
+
+inline Energy KinematicalCuts::mHatMax() const {
+  return theMHatMax > mHatMin()? theMHatMax: Constants::MaxEnergy;
+}
+
+inline Energy KinematicalCuts::sHatMin() const {
+  return sqr(mHatMin());
+}
+
+inline Energy KinematicalCuts::sHatMax() const {
+  return sqr(mHatMax());
+}
+
+inline Energy KinematicalCuts::pTHatMin() const {
+  return thePTHatMin;
+}
+
+inline Energy KinematicalCuts::pTHatMax() const {
+  return thePTHatMax > pTHatMin()? thePTHatMax: Constants::MaxEnergy;
+}
+
+inline Energy KinematicalCuts::pTHatSingularMin() const {
+  return thePTHatSingularMin;
+}
+
+inline Energy KinematicalCuts::singularMassMax() const {
+  return theSingularMassMax;
+}
+
+inline double KinematicalCuts::yStarMin() const {
+  return theYStarMin;
+}
+
+inline double KinematicalCuts::yStarMax() const {
+  return theYStarMax;
+}
+
+inline double KinematicalCuts::maxYMin() const {
+  return theMaxYMin;
+}
+
+inline double KinematicalCuts::maxYMax() const {
+  return theMaxYMax;
+}
+
+inline double KinematicalCuts::minYMin() const {
+  return theMinYMin;
+}
+
+inline double KinematicalCuts::minYMax() const {
+  return theMinYMax;
+}
+
+inline double KinematicalCuts::maxEtaMin() const {
+  return theMaxEtaMin;
+}
+
+inline double KinematicalCuts::maxEtaMax() const {
+  return theMaxEtaMax;
+}
+
+inline double KinematicalCuts::minEtaMin() const {
+  return theMinEtaMin;
+}
+
+inline double KinematicalCuts::minEtaMax() const {
+  return theMinEtaMax;
+}
+
+inline double KinematicalCuts::maxCTMin() const {
+  return theMaxCTMin;
+}
+
+inline double KinematicalCuts::maxCTMax() const {
+  return theMaxCTMax;
+}
+
+inline double KinematicalCuts::minCTMin() const {
+  return theMinCTMin;
+}
+
+inline double KinematicalCuts::minCTMax() const {
+  return theMinCTMax;
+}
+
+inline double KinematicalCuts::x1Min() const {
+  return theX1Min;
+}
+
+inline double KinematicalCuts::x1Max() const {
+  return theX1Max;
+}
+
+inline double KinematicalCuts::x2Min() const {
+  return theX2Min;
+}
+
+inline double KinematicalCuts::x2Max() const {
+  return theX2Max;
+}
+
+inline double KinematicalCuts::xFMin() const {
+  return theXFMin;
+}
+
+inline double KinematicalCuts::xFMax() const {
+  return theXFMax;
+}
+
+inline double KinematicalCuts::cTHMin() const {
+  return theCTHMin;
+}
+
+inline double KinematicalCuts::cTHMax() const {
+  return theCTHMax;
+}
+
+inline Energy2 KinematicalCuts::tHatMin() const {
+  return theTHatMin;
+}
+
+inline Energy2 KinematicalCuts::tHatMax() const {
+  return theTHatMax > tHatMin()? theTHatMax: Constants::MaxEnergy2;
+}
+
+inline Energy2 KinematicalCuts::scaleMin() const {
+  return theScaleMin;
+}
+
+inline Energy2 KinematicalCuts::scaleMax() const {
+  return theScaleMax > scaleMin()? theScaleMax: Constants::MaxEnergy2;
+}
+
+inline Energy2 KinematicalCuts::uHatMin() const {
+  return theUHatMin;
+}
+
+inline Energy2 KinematicalCuts::uHatMax() const {
+  return theUHatMax > uHatMin()? theUHatMax: Constants::MaxEnergy2;
+}
+
+
+inline Energy KinematicalCuts::DISLepton1EnergyMin() const {
+  return theDISLepton1EnergyMin;
+}
+
+inline Energy KinematicalCuts::DISLepton1EnergyMax() const {
+  return theDISLepton1EnergyMax < DISLepton1EnergyMin()?
+    theDISLepton1EnergyMax: Constants::MaxEnergy;
+}
+
+inline double KinematicalCuts::DISLepton1AngleMin() const {
+  return theDISLepton1AngleMin;
+}
+
+inline double KinematicalCuts::DISLepton1AngleMax() const {
+  return theDISLepton1AngleMax;
+}
+
+inline Energy2 KinematicalCuts::DISQ21Min() const {
+  return theDISQ21Min;
+}
+
+inline Energy2 KinematicalCuts::DISQ21Max() const {
+  return theDISQ21Max > DISQ21Min()? theDISQ21Max: Constants::MaxEnergy2;
+}
+
+inline Energy KinematicalCuts::DISLepton2EnergyMin() const {
+  return theDISLepton2EnergyMin;
+}
+
+inline Energy KinematicalCuts::DISLepton2EnergyMax() const {
+  return theDISLepton2EnergyMax > DISLepton2EnergyMin()?
+    theDISLepton2EnergyMax: Constants::MaxEnergy;
+}
+
+inline double KinematicalCuts::DISLepton2AngleMin() const {
+  return theDISLepton2AngleMin;
+}
+
+inline double KinematicalCuts::DISLepton2AngleMax() const {
+  return theDISLepton2AngleMax;
+}
+
+inline Energy2 KinematicalCuts::DISQ22Min() const {
+  return theDISQ22Min;
+}
+
+inline Energy2 KinematicalCuts::DISQ22Max() const {
+  return theDISQ22Max > DISQ22Min()? theDISQ22Max: Constants::MaxEnergy2;
+}
+
+inline Energy2 KinematicalCuts::DISW2Min() const {
+  return theDISW2Min;
+}
+
+inline Energy2 KinematicalCuts::DISW2Max() const {
+  return theDISW2Max > DISW2Min()? theDISW2Max: Constants::MaxEnergy2;
+}
+
+inline bool KinematicalCuts::mHat(Energy mhat) const {
+  return mHatMin() < mhat && mhat <= mHatMax();
+}
+
+inline bool KinematicalCuts::sHat(Energy2 shat) const {
+  return sHatMin() < shat && shat <= sHatMax();
+}
+
+inline bool KinematicalCuts::pTHat(Energy pt) const {
+  return pTHatMin() < pt && pt <= pTHatMax();
+}
+
+inline bool KinematicalCuts::yStar(double y) const {
+  return yStarMin() < y && y <= yStarMax();
+}
+
+inline bool KinematicalCuts::maxY(double y) const {
+  return maxYMin() < y && y <= maxYMax();
+}
+
+inline bool KinematicalCuts::minY(double y) const {
+  return minYMin() < y && y <= minYMax();
+}
+
+inline bool KinematicalCuts::maxEta(double eta) const {
+  return maxEtaMin() < eta && eta <= maxEtaMax();
+}
+
+inline bool KinematicalCuts::minEta(double eta) const {
+  return minEtaMin() < eta && eta <= minEtaMax();
+}
+
+inline bool KinematicalCuts::maxCT(double ct) const {
+  return maxCTMin() < ct && ct <= maxCTMax();
+}
+
+inline bool KinematicalCuts::minCT(double ct) const {
+  return minCTMin() < ct && ct <= minCTMax();
+}
+
+inline bool KinematicalCuts::x1(double x) const {
+  return x1Min() < x && x <= x1Max();
+}
+
+inline bool KinematicalCuts::x2(double x) const {
+  return x2Min() < x && x <= x2Max();
+}
+
+inline bool KinematicalCuts::xF(double x) const {
+  return xFMin() < x && x <= xFMax();
+}
+
+inline bool KinematicalCuts::cTH(double cth) const {
+  return cTHMin() < cth && cth <= cTHMax();
+}
+
+inline bool KinematicalCuts::tHat(Energy2 th) const {
+  return tHatMin() < th && th <= tHatMax();
+}
+
+inline bool KinematicalCuts::uHat(Energy2 uh) const {
+  return uHatMin() < uh && uh <= uHatMax();
+}
+
+inline bool KinematicalCuts::scale(Energy2 sc) const {
+  return scaleMin() < sc && sc <= scaleMax();
+}
+
+inline void KinematicalCuts::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void KinematicalCuts::dofinish() {
+  Interfaced::dofinish();
+}
+
+}

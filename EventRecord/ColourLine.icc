@@ -1,0 +1,64 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ColourLine class.
+//
+
+namespace ThePEG {
+
+inline ColourLine::ColourLine() {}
+
+inline ColourLine::ColourLine(const ColourLine & x)
+  : EventRecordBase(x), theColoured(x.theColoured),
+    theAntiColoured(x.theAntiColoured),
+    theSourceNeighbours(x.theSourceNeighbours),
+    theSinkNeighbours(x.theSinkNeighbours) {}
+
+inline const tPVector & ColourLine::coloured() const {
+  return theColoured;
+}
+
+inline const tPVector & ColourLine::antiColoured() const {
+  return theAntiColoured;
+}
+
+inline tPPtr ColourLine::startParticle() const {
+  return sinkNeighbours().first? tPPtr(): antiColoured().back();
+}
+
+inline tPPtr ColourLine::endParticle() const {
+  return sourceNeighbours().first? tPPtr(): coloured().back();
+}
+
+inline tColinePair ColourLine::sinkNeighbours() const {
+  return theSinkNeighbours;
+}
+
+inline tColinePair ColourLine::sourceNeighbours(bool anti) const {
+  return anti? theSinkNeighbours: theSourceNeighbours;
+}
+
+inline void ColourLine::setSinkNeighbours(tColinePtr l1, tColinePtr l2) {
+  theSinkNeighbours.second = l1->theSinkNeighbours.second = l2;
+  l2->theSinkNeighbours.second = theSinkNeighbours.first = l1;
+  l1->theSinkNeighbours.first = l2->theSinkNeighbours.first = this;
+}
+
+inline void ColourLine::setSourceNeighbours(tColinePtr l1, tColinePtr l2) {
+  theSourceNeighbours.second = l1->theSourceNeighbours.second = l2;
+  l2->theSourceNeighbours.second = theSourceNeighbours.first = l1;
+  l1->theSourceNeighbours.first = l2->theSourceNeighbours.first = this;
+}
+
+template <typename Iterator>
+inline typename std::iterator_traits<Iterator>::value_type
+ColourLine::
+getColouredParticle(Iterator first, Iterator last, bool anti) const {
+  typedef typename std::iterator_traits<Iterator>::value_type ParticlePointer;
+  for ( ; first != last; ++first )
+    if ( (**first).coloured() && (**first).colourLine(anti) == this )
+      return *first;
+  return ParticlePointer();
+}
+
+}

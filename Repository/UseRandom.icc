@@ -1,0 +1,79 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the UseRandom class.
+//
+
+namespace ThePEG {
+
+inline UseRandom::UseRandom()
+  : randomPushed(false) {}
+
+inline UseRandom::UseRandom(const UseRandom &)
+  : randomPushed(false) {}
+
+inline UseRandom::UseRandom(const RanGenPtr & r)
+  : randomPushed(false) {
+  if ( r ) {
+    theRandomStack.push_back(r);
+    randomPushed = true;
+  }
+}
+
+inline UseRandom::~UseRandom() {
+  if ( randomPushed ) theRandomStack.pop_back();
+}
+
+inline RandomGenerator & UseRandom::current() {
+  return *theRandomStack.back();
+}
+
+inline  double UseRandom::rnd() {
+  return current().rnd();
+}
+
+inline double UseRandom::rnd(double xu) {
+  return rnd()*xu;
+}
+  
+inline double UseRandom::rnd(double xl, double xu) {
+  return rnd(xu-xl)+xl;
+}
+ 
+inline bool UseRandom::rndbool() {
+  return rndbool(0.5);
+}
+
+inline bool UseRandom::rndbool(double p) {
+  return current().rndbool(p);
+}
+
+inline bool UseRandom::rndbool(double p1, double p2) {
+  return current().rndbool(p1, p2);
+}
+
+inline int UseRandom::rndsign(double p1, double p2, double p3) {
+  return current().rndsign(p1, p2, p3);
+}
+
+inline int UseRandom::rnd2(double p0, double p1) {
+  return current().rnd2(p0, p1);
+}
+
+inline int UseRandom::rnd3(double p0, double p1, double p2) {
+  return current().rnd3(p0, p1, p2);
+}
+
+inline int UseRandom::rnd4(double p0, double p1, double p2, double p3) {
+  return current().rnd4(p0, p1, p2, p3);
+}
+
+inline long UseRandom::irnd(long xu) {
+  return long(rnd()*double(xu));
+}
+
+inline long UseRandom::irnd(long xl, long xu) {
+  return xl + irnd(xu-xl);
+}
+
+}

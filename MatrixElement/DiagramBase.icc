@@ -1,0 +1,37 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the DiagramBase class.
+//
+
+namespace ThePEG {
+
+inline DiagramBase::DiagramBase()
+: theNIncoming(-1), theId(0) {}
+
+inline DiagramBase::DiagramBase(const DiagramBase & x)
+  : theNIncoming(x.theNIncoming), thePartons(x.thePartons), theId(x.theId) {}
+
+inline int DiagramBase::nIncoming() const {
+  return theNIncoming;
+}
+
+inline const cPDVector & DiagramBase::partons() const {
+  return thePartons;
+}
+
+inline int DiagramBase::id() const {
+  return theId;
+}
+
+inline void DiagramBase::partons(int ninc, const cPDVector & parts, int newId) {
+  theNIncoming = ninc;
+  thePartons = parts;
+  theId = newId;
+}
+
+inline bool DiagramBase::done() const {
+  return nIncoming() >= 0;
+}
+
+}

@@ -1,0 +1,174 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the LastXCombInfo class.
+//
+
+namespace ThePEG {
+
+template <int I>
+inline LastXCombInfo<I>::LastXCombInfo() {}
+
+template <int I>
+inline LastXCombInfo<I>::LastXCombInfo(const LastXCombInfo & x)
+  : LastXCombInfoBase(x) {}
+
+template <int I>
+inline LastXCombInfo<I> &
+LastXCombInfo<I>::operator=(const LastXCombInfo<I> & x) {
+  LastXCombInfoBase::operator=(x.theLastXComb);
+  return *this;
+}
+
+template <int I>
+inline const XComb & LastXCombInfo<I>::lastXComb() const {
+  return *theLastXComb;
+}
+
+template <int I>
+inline tXCombPtr LastXCombInfo<I>::lastXCombPtr() const {
+  return theLastXComb;
+}
+
+template <int I>
+inline const CollisionHandler & LastXCombInfo<I>::
+lastCollisionHandler() const {
+  return lastXComb().collisionHandler();
+}
+
+template <int I>
+inline const SubProcessHandler & LastXCombInfo<I>::lastSubHandler() const {
+  return lastXComb().subProcessHandler();
+}
+
+template <int I>
+inline tPExtrPtr LastXCombInfo<I>::lastExtractor() const {
+  return lastXComb().pExtractor();
+}
+
+template <int I>
+inline const KinematicalCuts & LastXCombInfo<I>::lastCuts() const {
+  return *lastXComb().cuts();
+}
+
+template <int I>
+inline tKinCutPtr LastXCombInfo<I>::lastCutsPtr() const {
+  return lastXComb().cuts();
+}
+
+template <int I>
+inline const PPair & LastXCombInfo<I>::lastParticles() const {
+  return lastXComb().lastParticles();
+}
+
+template <int I>
+inline Energy2 LastXCombInfo<I>::lastS() const {
+  return lastXComb().lastS();
+}
+
+template <int I>
+inline const PPair & LastXCombInfo<I>::lastPartons() const {
+  return lastXComb().lastPartons();
+}
+
+template <int I>
+inline Energy2 LastXCombInfo<I>::lastSHat() const {
+  return lastXComb().lastSHat();
+}
+
+template <int I>
+inline Energy2 LastXCombInfo<I>::lastScale() const {
+  return lastXComb().lastScale();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastTau() const {
+  return lastXComb().lastTau();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastY() const {
+  return lastXComb().lastY();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastP1() const {
+  return lastXComb().lastP1();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastP2() const {
+  return lastXComb().lastP2();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastL1() const {
+  return lastXComb().lastL1();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastL2() const {
+  return lastXComb().lastL2();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastX1() const {
+  return lastXComb().lastX1();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastX2() const {
+  return lastXComb().lastX2();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastE1() const {
+  return lastXComb().lastE1();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastE2() const {
+  return lastXComb().lastE2();
+}
+
+template <int I>
+inline double LastXCombInfo<I>::lastFL1L2() const {
+  return lastXComb().lastFL1L2();
+}
+
+template <int I>
+inline tMEPtr LastXCombInfo<I>::lastME() const {
+  return lastXComb().matrixElement();
+}
+
+template <int I>
+inline PDF LastXCombInfo<I>::pdf(tcPPtr parton) const {
+  return PDF(lastExtractor()->partonBin(parton));
+}
+
+template <int I>
+inline const vector<Lorentz5Momentum> & LastXCombInfo<I>::meMomenta() const {
+  return lastXComb().meMomenta();
+}
+
+template <int I>
+inline const tPVector & LastXCombInfo<I>::mePartons() const {
+  return lastXComb().mePartons();
+}
+
+template <int I>
+inline const cPDVector & LastXCombInfo<I>::mePartonData() const {
+  return lastXComb().mePartonData();
+}
+
+template <int I>
+inline const DVector & LastXCombInfo<I>::meInfo() const {
+  return lastXComb().meInfo();
+}
+
+template <int I>
+inline void LastXCombInfo<I>::meInfo(const DVector & info) const {
+  lastXCombPtr()->meInfo(info);
+}
+
+}

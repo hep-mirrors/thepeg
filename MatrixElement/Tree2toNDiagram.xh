@@ -1,0 +1,20 @@
+// -*- C++ -*-
+#ifndef ThePEG_Tree2toNDiagram_XH
+#define ThePEG_Tree2toNDiagram_XH
+//
+// This is the declarations of the exception classes used by the
+// Tree2toNDiagram class.
+//
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct Tree2toNDiagramError: public Exception {
+  Tree2toNDiagramError();
+};
+
+}
+
+#endif /* ThePEG_Tree2toNDiagram_XH */
+

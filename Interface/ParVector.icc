@@ -1,0 +1,118 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ParVector, ParVectorTBase and ParVectorBase classes.
+//
+
+namespace ThePEG {
+
+inline ParVectorBase::
+ParVectorBase(string newName, string newDescription,
+	      string newClassName, const type_info & newTypeInfo, int newSize,
+	      bool depSafe, bool readonly, bool islimited)
+  : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
+		  readonly), isLimited(islimited), theSize(newSize) {}
+
+inline bool ParVectorBase::limited() const {
+  return isLimited;
+}
+
+inline void ParVectorBase::setLimited() {
+  isLimited = true;
+}
+
+inline void ParVectorBase::setUnlimited() {
+  isLimited = false;
+}
+
+inline int ParVectorBase::size() const {
+  return theSize;
+}
+
+inline void ParVectorBase::setSize(int sz) {
+  theSize = sz;
+}
+
+inline void ParVectorBase::setVariableSize() {
+  theSize = 0;
+}
+
+template <typename Type>
+inline ParVectorTBase<Type>::
+ParVectorTBase(string newName, string newDescription, string newClassName,
+	       const type_info & newTypeInfo, Type newUnit, int newSize,
+	       bool depSafe, bool readonly, bool islimited)
+  : ParVectorBase(newName, newDescription, newClassName, newTypeInfo, newSize,
+		  depSafe, readonly, islimited), theUnit(newUnit) {}
+
+inline ParVectorBase::~ParVectorBase() {}
+
+template <typename Type>
+inline ParVectorTBase<Type>::~ParVectorTBase() {}
+
+template <typename Type>
+inline Type ParVectorTBase<Type>::unit() const {
+  return theUnit;
+}
+
+template <typename Type>
+inline void ParVectorTBase<Type>::unit(Type u) {
+  theUnit = u;
+}
+
+// template <typename T, typename Type>
+// inline ParVector<T,Type>::
+// ParVector(string newName, string newDescription,
+// 	  Member newMember, double newDef, double newMin,
+// 	  double newMax, bool depSafe, bool readonly, bool islimited,
+// 	  SetFn newSetFn, InsFn newInsFn, DelFn newDelFn, GetFn newGetFn,
+// 	  DefFn newDefFn, DefFn newMinFn, DefFn newMaxFn)
+//   : ParVectorTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
+// 			 typeid(T), depSafe, readonly, islimited),
+//     theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
+//     theSetFn(newSetFn), theInsFn(newInsFn), theDelFn(newDelFn),
+//     theGetFn(newGetFn), theDefFn(newDefFn), theMinFn(newMinFn),
+//     theMaxFn(newMaxFn) {}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setSetFunction(SetFn sf) {
+  theSetFn = sf;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setInsertFunction(InsFn ifn) {
+  theInsFn = ifn;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setGetFunction(GetFn gf) {
+  theGetFn = gf;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setEraseFunction(DelFn df) {
+  theDelFn = df;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setDefaultFunction(GetFn df) {
+  theDefFn = df;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setMinFunction(GetFn mf) {
+  theMinFn = mf;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setMaxFunction(GetFn mf) {
+  theMaxFn = mf;
+}
+
+template <typename T, typename Type>
+inline void ParVector<T,Type>::setStringGetFunction(StringGetFn gf) {
+  theStringGetFn = gf;
+}
+
+}
+

@@ -1,0 +1,19 @@
+// -*- C++ -*-
+#ifndef ThePEG_Strategy_FH
+#define ThePEG_Strategy_FH
+//
+// This is the forward declaration of the Strategy class.
+//
+
+#include "ThePEG/Config/ThePEG.h"
+
+namespace ThePEG {
+
+class Strategy;
+
+typedef Ptr<Strategy>::pointer StrategyPtr;
+typedef Ptr<Strategy>::const_pointer cStrategyPtr;
+
+}
+
+#endif /* ThePEG_Strategy_FH */

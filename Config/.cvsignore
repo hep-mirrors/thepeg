@@ -1,0 +1,4 @@
+*.rpo
+Makefile.common
+config.h
+test

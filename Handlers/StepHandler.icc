@@ -1,0 +1,39 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the StepHandler class.
+//
+
+namespace ThePEG {
+
+inline StepHandler::StepHandler() {}
+
+inline StepHandler::StepHandler(const StepHandler & x)
+  : HandlerBase(x) {}
+
+inline void StepHandler::doupdate() throw(UpdateException) {
+  HandlerBase::doupdate();
+  // First update base class.
+}
+
+inline void StepHandler::doinit() throw(InitException) {
+  HandlerBase::doinit();
+}
+
+inline void StepHandler::dofinish() {
+  HandlerBase::dofinish();
+}
+
+inline void StepHandler::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  HandlerBase::rebind(trans);
+}
+
+inline IVector StepHandler::getReferences() {
+  IVector ret = HandlerBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

@@ -1,0 +1,32 @@
+// -*- C++ -*-
+#ifndef ThePEG_DecayHandler_XH
+#define ThePEG_DecayHandler_XH
+//
+// This is the declarations of the exception classes used by the
+// DecayHandler class.
+//
+
+// #include "DecayHandler.fh"
+
+namespace ThePEG {
+
+struct DecHdlNoDecayMode: public Exception {
+  DecHdlNoDecayMode(const Interfaced &);
+};
+
+struct DecHdlNoDecayer: public Exception {
+  DecHdlNoDecayer(const Interfaced &, const Interfaced &);
+};
+
+struct DecHdlDecayFailed: public Exception {
+  DecHdlDecayFailed(const Interfaced &, long n);
+};
+
+struct DecHdlChildFail: public Exception {
+  DecHdlChildFail(const Interfaced &, const Interfaced &);
+};
+
+}
+
+#endif /* ThePEG_DecayHandler_XH */
+

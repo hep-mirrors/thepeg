@@ -1,0 +1,40 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the StandardRandom class.
+//
+
+namespace ThePEG {
+
+inline StandardRandom::StandardRandom()
+: theRandomGenerator(19780503) {}
+
+inline StandardRandom::StandardRandom(const StandardRandom & x)
+  : RandomGenerator(x), theRandomGenerator(x.theRandomGenerator) {}
+
+inline void StandardRandom::doupdate() throw(UpdateException) {
+  RandomGenerator::doupdate();
+}
+
+inline void StandardRandom::doinit() throw(InitException) {
+  RandomGenerator::doinit();
+}
+
+inline void StandardRandom::dofinish() {
+  RandomGenerator::dofinish();
+}
+
+inline IVector StandardRandom::getReferences() {
+  IVector ret = RandomGenerator::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+inline void StandardRandom::
+rebind(const TranslationMap & trans) throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  RandomGenerator::rebind(trans);
+}
+
+}
+

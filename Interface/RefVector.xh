@@ -1,0 +1,58 @@
+// -*- C++ -*-
+#ifndef ThePEG_RefVector_XH
+#define ThePEG_RefVector_XH
+//
+// This is the declarations of the exception classes used by the
+// RefVector class.
+//
+
+#include "InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct RefVExRefClass: public InterfaceException {
+  RefVExRefClass(const RefInterfaceBase & i, const InterfacedBase & o,
+		 cIBPtr r, const char *);
+};
+
+struct RefVExSetUnknown: public InterfaceException {
+  RefVExSetUnknown(const RefInterfaceBase & i, const InterfacedBase & o,
+		   cIBPtr r, int j, const char *);
+};
+
+struct RefVExSetUnfound: public InterfaceException {
+  RefVExSetUnfound(const InterfaceBase & i, const InterfacedBase & o, string);
+};
+
+struct RefVExIndex: public InterfaceException {
+  RefVExIndex(const InterfaceBase & i, const InterfacedBase & o, int j);
+};
+
+struct RefVExFixed: public InterfaceException {
+  RefVExFixed(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct RefVExDelUnknown: public InterfaceException {
+  RefVExDelUnknown(const InterfaceBase & i, const InterfacedBase & o, int j);
+};
+
+struct RefVExGetUnknown: public InterfaceException {
+  RefVExGetUnknown(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct RefVExNoSet: public InterfaceException {
+  RefVExNoSet(const InterfaceBase & i,  const InterfacedBase & o);
+};
+
+struct RefVExNoIns: public InterfaceException {
+  RefVExNoIns(const InterfaceBase & i,  const InterfacedBase & o);
+};
+
+struct RefVExNoDel: public InterfaceException {
+  RefVExNoDel(const InterfaceBase & i,  const InterfacedBase & o);
+};
+
+}
+
+#endif /* ThePEG_RefVector_XH */
+

@@ -1,0 +1,93 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the DecayMode class.
+//
+
+namespace ThePEG {
+
+inline DecayMode::~DecayMode() {}
+
+inline string DecayMode::tag() const {
+  return theTag.size()? theTag: ( theTag = makeTag() );
+}
+
+inline tcPDPtr DecayMode::parent() const {
+  return theParent;
+}
+
+inline void DecayMode::parent(tPDPtr pd) {
+  theParent = pd;
+}
+
+inline tDMPtr DecayMode::CC() const {
+  return theAntiPartner;
+}
+
+inline const ParticleMSet & DecayMode::products() const {
+  return theProducts;
+}
+
+inline ParticleMSet & DecayMode::products() {
+  return theProducts;
+}
+
+inline const ModeMSet & DecayMode::cascadeProducts() const {
+  return theCascadeProducts;
+}
+
+inline ModeMSet & DecayMode::cascadeProducts() {
+  return theCascadeProducts;
+}
+
+inline const MatcherMSet & DecayMode::productMatchers() const {
+  return theMatchers;
+}
+
+inline MatcherMSet & DecayMode::productMatchers() {
+  return theMatchers;
+}
+
+inline tPMPtr DecayMode::wildProductMatcher() const {
+  return theWildMatcher;
+}
+
+inline tPMPtr & DecayMode::wildProductMatcher() {
+  return theWildMatcher;
+}
+
+inline const ParticleMSet & DecayMode::excluded() const {
+  return theExcluded;
+}
+
+inline ParticleMSet & DecayMode::excluded() {
+  return theExcluded;
+}
+
+inline const DecayMode::ModeVector & DecayMode::overlap() const {
+  return theOverlap;
+}
+
+inline bool DecayMode::operator == (const DecayMode & d) const {
+  return ( tag() == d.tag() );
+}
+
+inline tDecayerPtr DecayMode::decayer() const {
+  return theDecayer;
+}
+
+inline void DecayMode::resetTag() {
+  theTag = "";
+  if ( CC() ) CC()->theTag = "";
+}
+
+inline void DecayMode::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void DecayMode::dofinish() {
+  Interfaced::dofinish();
+}
+
+}
+

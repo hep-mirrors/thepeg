@@ -1,0 +1,145 @@
+// -*- C++ -*-
+//
+// This is the implementation of the non-inlined, non-templated member
+// functions of the SubProcessHandler class.
+//
+
+#include "SubProcessHandler.h"
+#include "ThePEG/PDF/PartonExtractor.h"
+#include "ThePEG/Handlers/Hint.h"
+#include "ThePEG/Persistency/PersistentOStream.h"
+#include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
+#include "ThePEG/Handlers/MultipleInteractionHandler.h"
+#include "ThePEG/Handlers/HadronizationHandler.h"
+#include "ThePEG/Handlers/DecayHandler.h"
+#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/Reference.h"
+#include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/MatrixElement/MEBase.h"
+#include "ThePEG/MatrixElement/ReweightBase.h"
+
+using namespace ThePEG;
+
+SubProcessHandler::SubProcessHandler() {
+  setupGroups();
+}
+
+SubProcessHandler::SubProcessHandler(const SubProcessHandler & sph)
+  : HandlerBase(sph),
+    thePartonExtractor(sph.thePartonExtractor), theMEs(sph.theMEs),
+    theCuts(sph.theCuts), theSubprocessGroup(sph.theSubprocessGroup),
+    theCascadeGroup(sph.theCascadeGroup), theMultiGroup(sph.theMultiGroup),
+    theHadronizationGroup(sph.theHadronizationGroup),
+    theDecayGroup(sph.theDecayGroup),
+    reweights(sph.reweights), preweights(sph.preweights) {
+  setupGroups();
+}
+
+SubProcessHandler::~SubProcessHandler() {}
+
+void SubProcessHandler::setupGroups() {
+  theGroups.clear();
+  theGroups.push_back(&theSubprocessGroup);
+  theGroups.push_back(&theCascadeGroup);
+  theGroups.push_back(&theMultiGroup);
+  theGroups.push_back(&theHadronizationGroup);
+  theGroups.push_back(&theDecayGroup);
+}
+
+IBPtr SubProcessHandler::clone() const {
+  return new_ptr(*this);
+}
+
+const HandlerGroupBase &
+SubProcessHandler::handlerGroup(Group::Handler group) const {
+  return *(theGroups[group]);
+}
+
+void SubProcessHandler::persistentOutput(PersistentOStream & os) const {
+  os << thePartonExtractor << theCuts << theSubprocessGroup << theCascadeGroup
+     << theMultiGroup << theHadronizationGroup << theDecayGroup
+     << theMEs << reweights << preweights;
+}
+
+void SubProcessHandler::persistentInput(PersistentIStream & is, int) {
+  is >> thePartonExtractor >> theCuts >> theSubprocessGroup >> theCascadeGroup
+     >> theMultiGroup >> theHadronizationGroup >> theDecayGroup
+     >> theMEs >> reweights >> preweights;
+}
+
+void SubProcessHandler::doinit() throw(InitException) {
+  for ( MEVector::iterator me = theMEs.begin(); me != theMEs.end(); ++me ) {
+    (**me).init();
+    for ( ReweightVector::iterator i = reweights.begin();
+	  i != reweights.end(); ++i ) (**me).addReweighter(*i);
+    for ( ReweightVector::iterator i = preweights.begin();
+	  i != preweights.end(); ++i ) (**me).addPreweighter(*i);
+  }
+  HandlerBase::doinit();
+}
+
+ClassDescription<SubProcessHandler> SubProcessHandler::initSubProcessHandler;
+
+void SubProcessHandler::Init() {
+
+  static Reference<SubProcessHandler,PartonExtractor> interfacePartonExtractor
+    ("PartonExtractor",
+     "The PartonExtractor object to describe the way partons are extracted "
+     "from the incoming particles.",
+     &SubProcessHandler::thePartonExtractor, false, false, true, false);
+
+  static RefVector<SubProcessHandler,MEBase> interfaceMEs
+    ("MatrixElements",
+     "A list of MEBase objects describing the $2\rightarrow n$ hard "
+     "matrix elements.",
+     &SubProcessHandler::theMEs, 0, false, false, true, false);
+
+  static Reference<SubProcessHandler,KinematicalCuts> interfaceCuts
+    ("Cuts",
+     "Common kinematical cuts for this SubProcessHandler. These cuts "
+     "overides those in a CollisionHandler.",
+     &SubProcessHandler::theCuts, false, false, true, true);
+
+  static RefVector<SubProcessHandler,ReweightBase> interfaceReweights
+    ("Reweights",
+     "A list of \\class{ReweightBase} objects to modify all matrix elements "
+     "in this SubProcessHandler.",
+     &SubProcessHandler::reweights, 0, false, false, true, false);
+
+  static RefVector<SubProcessHandler,ReweightBase> interfacePreweights
+    ("Preweights",
+     "A list of \\class{ReweightBase} objects to bias the phase space for all "
+     "matrix elements without in this SubProcessHandler influencing the "
+     "actual cross section.",
+     &SubProcessHandler::preweights, 0, false, false, true, false);
+
+  ThePEG_DECLARE_PREPOST_OBJECTS(SubProcessHandler, SubProcessHandler,
+				  Post, after);
+
+  ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(SubProcessHandler, CascadeHandler);
+  ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(SubProcessHandler,
+					 MultipleInteractionHandler);
+  ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(SubProcessHandler,
+					 HadronizationHandler);
+  ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(SubProcessHandler, DecayHandler);
+
+}
+
+
+ThePEG_IMPLEMENT_PREPOST_GROUP(SubProcessHandler,SubProcessHandler,
+				theSubprocessGroup,Post)\
+
+ThePEG_IMPLEMENT_GROUPINTERFACE(SubProcessHandler,CascadeHandler,
+				 theCascadeGroup,CascHdlPtr) \
+
+ThePEG_IMPLEMENT_GROUPINTERFACE(SubProcessHandler,MultipleInteractionHandler,
+				 theMultiGroup,MIHdlPtr)  \
+
+ThePEG_IMPLEMENT_GROUPINTERFACE(SubProcessHandler,HadronizationHandler,
+				 theHadronizationGroup,HadrHdlPtr) \
+
+ThePEG_IMPLEMENT_GROUPINTERFACE(SubProcessHandler,DecayHandler,
+				 theDecayGroup,DecayHdlPtr) \
+

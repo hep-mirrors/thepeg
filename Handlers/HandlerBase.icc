@@ -1,0 +1,119 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the HandlerBase class.
+//
+
+namespace ThePEG {
+
+template <int I>
+inline HandlerBaseT<I>::HandlerBaseT() {}
+
+template <int I>
+inline HandlerBaseT<I>::HandlerBaseT(const HandlerBaseT<I> & x)
+  : Interfaced(x) {}
+
+template <int I>
+HandlerBaseT<I>::~HandlerBaseT() {}
+
+inline HandlerBase::HandlerBase() {}
+
+inline HandlerBase::HandlerBase(const HandlerBase & x)
+  : HandlerBaseT<0>(x) {}
+
+template <int I>
+inline double HandlerBaseT<I>::rnd() const {
+  return generator()->rnd();
+}
+
+template <int I>
+inline const StandardModelBase & HandlerBaseT<I>::SM() const {
+  return *standardModel();
+}
+
+template <int I>
+inline tSMPtr HandlerBaseT<I>::standardModel() const {
+  return generator()->standardModel();
+}
+
+template <int I>
+inline double HandlerBaseT<I>::rnd(double xu) const {
+  return rnd()*xu;
+}
+
+template <int I>
+inline double HandlerBaseT<I>::rnd(double xl, double xu) const {
+  return rnd(xu-xl)+xl;
+}
+
+template <int I>
+inline bool HandlerBaseT<I>::rndbool() const {
+  return rndbool(0.5);
+}
+
+template <int I>
+inline bool HandlerBaseT<I>::rndbool(double p) const {
+  return generator()->random().rndbool(p);
+}
+
+template <int I>
+inline bool HandlerBaseT<I>::rndbool(double p1, double p2) const {
+  return generator()->random().rndbool(p1, p2);
+}
+
+template <int I>
+inline int HandlerBaseT<I>::rndsign(double p1, double p2, double p3) const {
+  return generator()->random().rndsign(p1, p2, p3);
+}
+
+template <int I>
+inline int HandlerBaseT<I>::rnd2(double p0, double p1) const {
+  return generator()->random().rnd2(p0, p1);
+}
+
+template <int I>
+inline int HandlerBaseT<I>::rnd3(double p0, double p1, double p2) const {
+  return generator()->random().rnd3(p0, p1, p2);
+}
+
+template <int I>
+inline int HandlerBaseT<I>::
+rnd4(double p0, double p1, double p2, double p3) const {
+  return generator()->random().rnd4(p0, p1, p2, p3);
+}
+
+template <int I>
+inline long HandlerBaseT<I>::irnd(long xu) const {
+  return long(rnd()*double(xu));
+}
+
+template <int I>
+inline long HandlerBaseT<I>::irnd(long xl, long xu) const {
+  return xl + irnd(xu-xl);
+}
+
+inline void HandlerBase::doupdate() throw(UpdateException) {
+  Interfaced::doupdate();
+}
+
+inline void HandlerBase::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void HandlerBase::dofinish() {
+  Interfaced::dofinish();
+}
+
+inline void HandlerBase::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  Interfaced::rebind(trans);
+}
+
+inline IVector HandlerBase::getReferences() {
+  IVector ret = Interfaced::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

@@ -1,0 +1,30 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MEGG2QQ class.
+//
+
+namespace ThePEG {
+
+inline MEGG2QQ::MEGG2QQ() {}
+
+inline MEGG2QQ::MEGG2QQ(const MEGG2QQ & x)
+  : ME2to2QCD(x) {}
+
+inline double MEGG2QQ::colA() const {
+  return uHat()/tHat() - 2.0*sqr(uHat()/sHat());
+}
+
+inline double MEGG2QQ::colB() const {
+  return tHat()/uHat() - 2.0*sqr(tHat()/sHat());
+}
+
+inline IBPtr MEGG2QQ::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr MEGG2QQ::fullclone() const {
+  return new_ptr(*this);
+}
+
+}

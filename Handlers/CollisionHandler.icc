@@ -1,0 +1,59 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the CollisionHandler class.
+//
+
+namespace ThePEG {
+
+inline const cPDPair & CollisionHandler::incoming() const {
+  return theIncoming;
+}
+
+inline tKinCutPtr CollisionHandler::cuts() const {
+  return theCuts;
+}
+
+inline const CollisionHandler::SubHandlerList &
+CollisionHandler::subProcesses() const {
+  return theSubProcesses;
+}
+
+inline CollisionHandler::SubHandlerList &
+CollisionHandler::subProcesses() {
+  return theSubProcesses;
+}
+
+inline const CollisionHandler::XVector & CollisionHandler::xCombs() const {
+  return theXCombs;
+}
+
+inline CollisionHandler::XVector & CollisionHandler::xCombs() {
+  return theXCombs;
+}
+
+inline const CollisionHandler::XSVector & CollisionHandler::xSecs() const {
+  return theXSecs;
+}
+
+inline CollisionHandler::XSVector & CollisionHandler::xSecs() {
+  return theXSecs;
+}
+
+inline int CollisionHandler::binStrategy() const {
+  return theBinStrategy;
+}
+
+inline int CollisionHandler::maxDim(int bin) const {
+  return theMaxDims[bin];
+}
+
+inline const LorentzRotation & CollisionHandler::currentEventBoost() const {
+  return theCurrentEventBoost;
+}
+
+inline LorentzRotation & CollisionHandler::currentEventBoost() {
+  return theCurrentEventBoost;
+}
+
+}

@@ -1,0 +1,107 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Parameter, ParameterTBase and ParameterBase classes.
+//
+
+namespace ThePEG {
+
+inline ParameterBase::ParameterBase(string newName,
+				    string newDescription,
+				    string newClassName,
+				    const type_info & newTypeInfo, bool depSafe,
+				    bool readonly, bool islimited)
+  : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
+		  readonly), isLimited(islimited) {}
+
+inline ParameterBase::~ParameterBase() {}
+
+inline bool ParameterBase::limited() const {
+  return isLimited;
+}
+
+inline void ParameterBase::setLimited() {
+  isLimited = true;
+}
+
+inline void ParameterBase::setUnlimited() {
+  isLimited = false;
+}
+
+template <typename Type>
+inline ParameterTBase<Type>::
+ParameterTBase(string newName, string newDescription, string newClassName,
+	       const type_info & newTypeInfo, Type newUnit, bool depSafe,
+	       bool readonly,  bool islimited)
+  : ParameterBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
+		  readonly, islimited), theUnit(newUnit) {}
+
+template <typename Type>
+inline ParameterTBase<Type>::~ParameterTBase() {}
+
+template <typename Type>
+inline void ParameterTBase<Type>::setDef(InterfacedBase & i) const
+  throw(InterfaceException) {
+  tset(i, tdef(i));
+}
+
+template <typename Type>
+inline Type ParameterTBase<Type>::unit() const {
+  return theUnit;
+}
+
+template <typename Type>
+inline void ParameterTBase<Type>::unit(Type u) {
+  theUnit = u;
+}
+
+template <typename Type>
+inline void ParameterTBase<Type>::putUnit(ostream & os, Type val) const {
+  if ( unit() > Type() )
+    os << val/unit();
+  else
+    os << val;
+}
+
+// template <typename T, typename Type>
+// inline Parameter<T,Type>::
+// Parameter(string newName, string newDescription, Member newMember,
+// 	  double newDef, double newMin, double newMax, bool depSafe,
+// 	  bool readonly, bool islimited, SetFn newSetFn, GetFn newGetFn,
+// 	  GetFn newMinFn, GetFn newMaxFn, GetFn newDefFn)
+//   : ParameterTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
+// 			 typeid(T), depSafe, readonly, islimited),
+//     theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
+//     theSetFn(newSetFn), theGetFn(newGetFn), theDefFn(newDefFn),
+//     theMinFn(newMinFn), theMaxFn(newMaxFn) {}
+
+template <typename T, typename Type>
+inline Parameter<T,Type>::~Parameter() {}
+
+template <typename T, typename Type>
+inline void Parameter<T,Type>::setSetFunction(SetFn sf) {
+  theSetFn = sf;
+}
+
+template <typename T, typename Type>
+inline void Parameter<T,Type>::setGetFunction(GetFn gf) {
+  theGetFn = gf;
+}
+
+template <typename T, typename Type>
+inline void Parameter<T,Type>::setDefaultFunction(GetFn df) {
+  theDefFn = df;
+}
+
+template <typename T, typename Type>
+inline void Parameter<T,Type>::setMinFunction(GetFn mf) {
+  theMinFn = mf;
+}
+
+template <typename T, typename Type>
+inline void Parameter<T,Type>::setMaxFunction(GetFn mf) {
+  theMaxFn = mf;
+}
+
+}
+

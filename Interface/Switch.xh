@@ -1,0 +1,29 @@
+//
+// This is the declarations of the exception classes used by the
+// Switch class.
+//
+
+#ifndef ThePEG_Switch_XH
+#define ThePEG_Switch_XH
+
+#include "InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct SwExSetOpt: public InterfaceException {
+  SwExSetOpt(const InterfaceBase & i, const InterfacedBase & o, long v);
+};
+
+struct SwExSetUnknown: public InterfaceException {
+  SwExSetUnknown(const InterfaceBase & i, const InterfacedBase & o, long v);
+};
+
+struct SwExGetUnknown: public InterfaceException {
+  SwExGetUnknown(const InterfaceBase & i, const InterfacedBase & o,
+		 const char * s);
+};
+
+}
+
+#endif /* ThePEG_Switch_XH */
+

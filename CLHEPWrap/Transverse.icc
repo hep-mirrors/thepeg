@@ -1,0 +1,132 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Transverse class.
+//
+
+namespace ThePEG {
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse()
+  : BasePair(FloatType(), FloatType()) {}
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse(const Transverse & pt)
+  : BasePair(pt) {}
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse(const BasePair & p)
+  : BasePair(p) {}
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse(FloatType xx, FloatType yy)
+  : BasePair(xx, yy) {}
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse(const Vector3 & p)
+  : BasePair(p.x(), p.y()) {}
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse(const LorentzVector & p)
+  : BasePair(p.x(), p.y()) {}
+
+template <typename FloatType>
+inline Transverse<FloatType>::Transverse(const Lorentz5Vector<FloatType> & p)
+  : BasePair(p.x(), p.y()) {}
+
+template <typename FloatType>
+inline const Transverse<FloatType> & Transverse<FloatType>::
+operator=(const Transverse & pt) {
+  BasePair::operator=(pt);
+  return *this;
+}
+
+template <typename FloatType>
+inline const Transverse<FloatType> & Transverse<FloatType>::
+operator=(const BasePair & p) {
+  BasePair::operator=(p);
+  return *this;
+}
+
+template <typename FloatType>
+inline const Transverse<FloatType> & Transverse<FloatType>::
+operator=(const Vector3 & p) {
+  BasePair::operator=(BasePair(p.x(), p.y()));
+  return *this;
+}
+
+template <typename FloatType>
+inline const Transverse<FloatType> & Transverse<FloatType>::
+operator=(const LorentzVector & p) {
+  BasePair::operator=(BasePair(p.x(), p.y()));
+  return *this;
+}
+
+template <typename FloatType>
+inline const Transverse<FloatType> & Transverse<FloatType>::
+operator=(const Lorentz5Vector<FloatType> & p) {
+  BasePair::operator=(BasePair(p.x(), p.y()));
+  return *this;
+}
+
+template <typename FloatType>
+inline FloatType Transverse<FloatType>::x() const {
+  return BasePair::first;
+}
+
+template <typename FloatType>
+inline FloatType Transverse<FloatType>::y() const {
+  return BasePair::second;
+}
+
+template <typename FloatType>
+inline Transverse<FloatType> Transverse<FloatType>::operator-() const {
+  return Transverse(-x(), -y());
+}
+
+template <typename FloatType>
+inline Transverse<FloatType> Transverse<FloatType>::
+operator-(const Transverse & pt) const {
+  return Transverse(x() - pt.x(), y() - pt.y());
+}
+
+template <typename FloatType>
+inline Transverse<FloatType> & Transverse<FloatType>::
+operator-=(const Transverse & pt) {
+  BasePair::first -= pt.x();
+  BasePair::second -= pt.y();
+  return *this;
+}
+
+template <typename FloatType>
+inline Transverse<FloatType> Transverse<FloatType>::
+operator+(const Transverse & pt) const {
+  return Transverse(x() + pt.x(), y() + pt.y());
+}
+
+template <typename FloatType>
+inline Transverse<FloatType> & Transverse<FloatType>::
+operator+=(const Transverse & pt) {
+  BasePair::first += pt.x();
+  BasePair::second += pt.y();
+  return *this;
+}
+
+template <typename FloatType>
+inline typename Transverse<FloatType>::FloatType2
+Transverse<FloatType>::pt2() const {
+  return sqr(x()) + sqr(y());
+}
+
+template <typename FloatType>
+inline FloatType Transverse<FloatType>::pt() const {
+  return sqrt(pt2());
+}
+
+template <typename FloatType>
+inline double Transverse<FloatType>::phi() const {
+  return atan2(x()/FloatType(1.0), y()/FloatType(1.0));
+}
+
+}
+

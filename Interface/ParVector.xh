@@ -1,0 +1,44 @@
+// -*- C++ -*-
+#ifndef ThePEG_ParVector_XH
+#define ThePEG_ParVector_XH
+//
+// This is the declarations of the exception classes used by the
+// ParVector class.
+//
+
+#include "InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct ParVExLimit: public InterfaceException {
+template <typename T>
+  ParVExLimit(const InterfaceBase & i, const InterfacedBase & o, T v);
+};
+
+struct ParVExUnknown: public InterfaceException {
+template <typename T>
+  ParVExUnknown(const InterfaceBase & i, const InterfacedBase & o,
+		T v, int j, const char * s);
+};
+
+struct ParVExIndex: public InterfaceException {
+  ParVExIndex(const InterfaceBase & i, const InterfacedBase & o, int index);
+};
+
+struct ParVExFixed: public InterfaceException {
+  ParVExFixed(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct ParVExDelUnknown: public InterfaceException {
+  ParVExDelUnknown(const InterfaceBase & i, const InterfacedBase & o, int j);
+};
+
+struct ParVExGetUnknown: public InterfaceException {
+  ParVExGetUnknown(const InterfaceBase & i,
+		   const InterfacedBase & o, const char * s);
+};
+
+}
+
+#endif /* ThePEG_ParVector_XH */
+

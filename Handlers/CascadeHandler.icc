@@ -1,0 +1,62 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the CascadeHandler class.
+//
+
+namespace ThePEG {
+
+inline CascadeHandler::CascadeHandler() {}
+
+inline CascadeHandler::CascadeHandler(const CascadeHandler & x)
+  : StepHandler(x) {}
+
+inline const tPVector & CascadeHandler::tagged() const {
+  return *theTagged;
+}
+
+inline const Hint & CascadeHandler::hint() const {
+  return *theHint;
+}
+
+inline const PDF & CascadeHandler::firstPDF() const {
+  return pdfs().first;
+}
+
+inline const PDF & CascadeHandler::secondPDF() const {
+  return pdfs().second;
+}
+
+inline const pair<PDF,PDF> & CascadeHandler::pdfs() const {
+  return thePDFs;
+}
+
+inline tPartCollHdlPtr CascadeHandler::collisionHandler() const {
+  return theCollisionHandler;
+}
+
+inline void CascadeHandler::doupdate() throw(UpdateException) {
+  HandlerBase::doupdate();
+}
+
+inline void CascadeHandler::doinit() throw(InitException) {
+  HandlerBase::doinit();
+}
+
+inline void CascadeHandler::dofinish() {
+  HandlerBase::dofinish();
+}
+
+inline void CascadeHandler::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  HandlerBase::rebind(trans);
+}
+
+inline IVector CascadeHandler::getReferences() {
+  IVector ret = HandlerBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

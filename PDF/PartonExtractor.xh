@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_PartonExtractor_XH
+#define ThePEG_PartonExtractor_XH//
+// This is the declarations of the exception classes used by the
+// PartonExtractor class.
+//
+
+// #include "PartonExtractor.fh"
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct RemColException: public Exception {
+  RemColException(const PartonExtractor &);
+};
+
+}
+
+#endif /* ThePEG_PartonExtractor_XH */
+

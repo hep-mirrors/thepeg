@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_RandExponential_FH
+#define ThePEG_RandExponential_FH
+
+// This is the forward declaration of the <!id>RandExponential<!!id>
+// class from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
+// <!id>RandExponential<!!id> and making it available in the
+// <!id>ThePEG<!!id> namespace.
+
+class RandExponential;
+
+namespace CLHEP {
+
+  typedef ::RandExponential RandExponential;
+
+}
+
+namespace ThePEG {
+
+  using CLHEP::RandExponential;
+
+}
+
+#endif /* ThePEG_RandExponential_FH */

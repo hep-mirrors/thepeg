@@ -1,0 +1,64 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the PDFCuts class.
+//
+
+namespace ThePEG {
+
+inline PDFCuts::PDFCuts() {}
+
+inline PDFCuts::PDFCuts(const PDFCuts & x)
+  : theL(x.theL), theScale(x.theScale), theSMax(x.theSMax) {}
+
+inline PDFCuts::PDFCuts(const Interval<double> & newL,
+			const SInterval & newScale, const Energy2 & newSMax)
+  : theL(newL), theScale(newScale), theSMax(newSMax) {}
+
+inline PDFCuts::~PDFCuts() {}
+
+inline PDFCuts & PDFCuts::operator=(const PDFCuts & x) {
+  theL = x.theL;
+  theScale = x.theScale;
+  theSMax = x.theSMax;
+  return *this;
+}
+
+inline double PDFCuts::lMin() const {
+  return theL.lower();
+}
+
+inline double PDFCuts::lMax() const {
+  return theL.upper();
+}
+
+inline double PDFCuts::xMin() const {
+  return exp(-lMax());
+}
+
+inline double PDFCuts::xMax() const {
+  return exp(-lMin());
+}
+
+inline Energy2 PDFCuts::scaleMin() const {
+  return theScale.lower();
+}
+
+inline Energy2 PDFCuts::scaleMax() const {
+  return theScale.upper();
+}
+
+inline Energy2 PDFCuts::scaleMax(double x) const {
+  return min(scaleMax(), sMax()*x);
+}
+
+inline Energy2 PDFCuts::scaleMaxL(double l) const {
+  return scaleMax(exp(-l));
+}
+
+inline Energy2 PDFCuts::sMax() const {
+  return theSMax;
+}
+
+}
+

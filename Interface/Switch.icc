@@ -1,0 +1,92 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Switch, SwitchBase and SwitchOption classes.
+//
+
+namespace ThePEG {
+
+inline SwitchOption::SwitchOption(SwitchBase & theSwitch, string newName,
+				  string newDescription, long newValue)
+  : Named(newName), theDescription(newDescription), theValue(newValue) {
+  theSwitch.registerOption(*this);
+}
+
+inline SwitchOption::SwitchOption(const SwitchOption & o)
+  : Named(o), theDescription(o.theDescription),
+    theValue(o.theValue) {}
+
+inline SwitchOption::SwitchOption() {}
+
+inline const SwitchOption & SwitchOption::operator=(const SwitchOption & o) {
+  name(o.name());
+  theDescription = o.theDescription;
+  theValue = o.theValue;
+  return *this;
+}
+
+inline string SwitchOption::description() const {
+  return theDescription;
+}
+
+inline long SwitchOption::value() const {
+  return theValue;
+}
+
+inline SwitchBase::SwitchBase(string newName,
+			      string newDescription,
+			      string newClassName,
+			      const type_info & newTypeInfo,
+			      bool depSafe, bool readonly)
+  : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
+		  readonly) {}
+
+inline SwitchBase::~SwitchBase() {}
+
+inline void SwitchBase::setDef(InterfacedBase & i) const
+  throw(InterfaceException) {
+  set(i, def(i));
+}    
+
+inline bool SwitchBase::check(long newValue) const {
+  return member(theOptions, newValue);
+}
+
+inline void SwitchBase::registerOption(const SwitchOption & o) {
+  theOptions[o.value()] = o;
+  theOptionNames[o.name()] = o;
+}
+
+inline const SwitchBase::OptionMap & SwitchBase::options() const {
+  return theOptions;
+}
+
+//  template <typename T, typename Int>
+//  inline Switch<T,Int>::Switch(string newName, string newDescription,
+//  			     Member newMember, Int newDef, bool depSafe,
+//  			     bool readonly, SetFn newSetFn, GetFn newGetFn,
+//  			     GetFn newDefFn)
+//    : SwitchBase(newName, newDescription, ClassTraits<T>::className(),
+//  	       typeid(T), depSafe, readonly),
+//      theMember(newMember), theDef(newDef), theSetFn(newSetFn),
+//      theGetFn(newGetFn), theDefFn(newDefFn) {} 
+
+template <typename T, typename Int>
+inline Switch<T,Int>::~Switch() {}
+
+template <typename T, typename Int>
+inline void Switch<T,Int>::setSetFunction(SetFn sf) {
+  theSetFn = sf;
+}
+
+template <typename T, typename Int>
+inline void Switch<T,Int>::setGetFunction(GetFn gf) {
+  theGetFn = gf;
+}
+
+template <typename T, typename Int>
+inline void Switch<T,Int>::setDefaultFunction(GetFn df) {
+  theDefFn = df;
+}
+
+}

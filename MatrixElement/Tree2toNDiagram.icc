@@ -1,0 +1,64 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Tree2toNDiagram class.
+//
+
+namespace ThePEG {
+
+inline Tree2toNDiagram::Tree2toNDiagram(): theNSpace(0), theNOutgoing(0), nextOrig(0) {}
+
+inline Tree2toNDiagram::Tree2toNDiagram(const Tree2toNDiagram & x)
+  : DiagramBase(x), theNSpace(x.theNSpace), theNOutgoing(x.theNOutgoing),
+    nextOrig(x.nextOrig), thePartons(x.thePartons), theParents(x.theParents) {}
+
+inline Tree2toNDiagram::Tree2toNDiagram(int space)
+  : theNSpace(space), theNOutgoing(0), nextOrig(-1) {}
+
+inline Tree2toNDiagram::~Tree2toNDiagram() {}
+
+inline void Tree2toNDiagram::addSpacelike(tcPDPtr pd) {
+  if ( thePartons.size() >= theNSpace ) throw Tree2toNDiagramError();
+  theParents.push_back(thePartons.size() - 1);
+  thePartons.push_back(pd);
+}
+  
+inline Tree2toNDiagram & Tree2toNDiagram::operator,(int o) {
+  nextOrig = o - 1;
+  if ( o < 0 ) check();
+  return *this;
+}
+
+inline Tree2toNDiagram & Tree2toNDiagram::operator,(PDPtr pd) {
+  return add(pd);
+}
+
+inline Tree2toNDiagram & Tree2toNDiagram::operator,(cPDPtr pd) {
+  return add(pd);
+}
+
+inline Tree2toNDiagram & Tree2toNDiagram::operator,(tPDPtr pd) {
+  return add(pd);
+}
+
+inline Tree2toNDiagram & Tree2toNDiagram::operator,(tcPDPtr pd) {
+  return add(pd);
+}
+
+inline const cPDVector & Tree2toNDiagram::allPartons() const {
+  return thePartons;
+}
+
+inline int Tree2toNDiagram::parent(int i) const {
+  return theParents[i];
+}
+
+inline int Tree2toNDiagram::nOutgoing() const {
+  return theNOutgoing;
+}
+
+inline int Tree2toNDiagram::nSpace() const {
+  return theNSpace;
+}
+
+}

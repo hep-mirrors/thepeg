@@ -1,0 +1,30 @@
+// -*- C++ -*-
+#ifndef ThePEG_Two2NCuts_XH
+#define ThePEG_Two2NCuts_XH
+//
+// This is the declarations of the exception classes used by the
+// Two2NCuts class.
+//
+
+// #include "Two2NCuts.fh"
+
+namespace ThePEG {
+
+class Two2NCuts;
+
+struct KinCutCmdFail1: public InterfaceException {
+  KinCutCmdFail1(const Two2NCuts &, string, string);
+};
+
+struct KinCutCmdFail2: public InterfaceException {
+  KinCutCmdFail2(const Two2NCuts &, string, string);
+};
+
+struct KinCutCmdFail3: public InterfaceException {
+  KinCutCmdFail3(const Two2NCuts &, string, string);
+};
+
+}
+
+#endif /* ThePEG_Two2NCuts_XH */
+

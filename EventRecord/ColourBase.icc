@@ -1,0 +1,34 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ColourBase class.
+//
+
+namespace ThePEG {
+
+inline ColourBase::ColourBase() {}
+
+inline ColourBase::ColourBase(const ColourBase & x)
+  : EventInfoBase(x), theAntiColourLine(x.theAntiColourLine),
+    theColourLine(x.theColourLine) {}
+
+inline EIPtr ColourBase::clone() const {
+  return new_ptr(*this);
+}
+
+inline tColinePtr ColourBase::antiColourLine() const {
+  return theAntiColourLine;
+}
+
+inline tColinePtr ColourBase::colourLine() const {
+  return theColourLine;
+}
+inline void ColourBase::antiColourLine(tColinePtr l) {
+  theAntiColourLine = l;
+}
+
+inline void ColourBase::colourLine(tColinePtr l) {
+  theColourLine = l;
+}
+
+}

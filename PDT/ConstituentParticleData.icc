@@ -1,0 +1,46 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ConstituentParticleData class.
+//
+
+namespace ThePEG {
+
+inline ConstituentParticleData::ConstituentParticleData()
+  : theConstituentMass(0.0*GeV), theDefaultConstituentMass(0.0*GeV) {}
+
+inline ConstituentParticleData::
+ConstituentParticleData(const ConstituentParticleData & x)
+  : ParticleData(x), theConstituentMass(x.theConstituentMass),
+    theDefaultConstituentMass(x.theDefaultConstituentMass) {}
+
+inline void ConstituentParticleData::doupdate() throw(UpdateException) {
+  ParticleData::doupdate();
+}
+
+inline void ConstituentParticleData::doinit() throw(InitException) {
+  ParticleData::doinit();
+}
+
+inline void ConstituentParticleData::dofinish() {
+  ParticleData::dofinish();
+}
+
+inline void ConstituentParticleData::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  ParticleData::rebind(trans);
+}
+
+inline IVector ConstituentParticleData::getReferences() {
+  IVector ret = ParticleData::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+inline Energy ConstituentParticleData::constituentMass() const {
+  return theConstituentMass;
+}
+
+}
+

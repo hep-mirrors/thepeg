@@ -1,0 +1,49 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the EventHandler class.
+//
+
+namespace ThePEG {
+
+inline const LuminosityFunction & EventHandler::lumiFn() const {
+  return *theLumiFn;
+}
+
+inline LuminosityFunction & EventHandler::lumiFn() {
+  return *theLumiFn;
+}
+
+inline long EventHandler::maxLoop() const {
+  return theMaxLoop;
+}
+
+inline int EventHandler::statLevel() const {
+  return theStatLevel;
+}
+
+inline bool EventHandler::weighted() const {
+  return weightedEvents;
+}
+
+inline tSamplerPtr EventHandler::sampler() {
+  return theSampler;
+}
+
+inline tcSamplerPtr EventHandler::sampler() const {
+  return theSampler;
+}
+
+inline void EventHandler::doinit() throw(InitException) {
+  CollisionHandler::doinit();
+}
+
+inline int EventHandler::lumiDim() const {
+  return theLumiDim;
+}
+
+inline int EventHandler::nDim(int bin) const {
+  return lumiDim() + maxDim(bin);
+}
+
+}

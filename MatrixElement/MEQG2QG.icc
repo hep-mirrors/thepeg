@@ -1,0 +1,38 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MEQG2QG class.
+//
+
+namespace ThePEG {
+
+inline MEQG2QG::MEQG2QG() {}
+
+inline MEQG2QG::MEQG2QG(const MEQG2QG & x)
+  : ME2to2QCD(x) {}
+
+inline double MEQG2QG::colA1() const {
+  return ( interference()? 2.25: 2.0 )*sqr(uHat()/tHat());
+}
+
+inline double MEQG2QG::colA2() const {
+  return  -uHat()/sHat();
+}
+
+inline double MEQG2QG::colB1() const {
+  return ( interference()? 2.25: 2.0 )*sqr(sHat()/tHat());
+}
+
+inline double MEQG2QG::colB2() const {
+  return -sHat()/uHat();
+}
+
+inline IBPtr MEQG2QG::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr MEQG2QG::fullclone() const {
+  return new_ptr(*this);
+}
+
+}

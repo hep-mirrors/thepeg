@@ -1,0 +1,33 @@
+// -*- C++ -*-
+#ifndef ThePEG_InterfacedBase_XH
+#define ThePEG_InterfacedBase_XH
+//
+// This is the declarations of the exception classes used by the
+// InterfacedBase class.
+//
+
+// #include "InterfacedBase.fh"
+#include "InterfaceBase.h"
+
+namespace ThePEG {
+
+struct SetupException: public InterfaceException {
+  SetupException() {};
+};
+
+struct UpdateException: public InterfaceException {
+  UpdateException() {};
+};
+
+struct RebindException: public InterfaceException {
+  RebindException() {};
+};
+
+struct InitException: public InterfaceException {
+  InitException() {};
+};
+
+}
+
+#endif /* ThePEG_InterfacedBase_XH */
+

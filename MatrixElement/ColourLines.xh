@@ -1,0 +1,19 @@
+// -*- C++ -*-
+#ifndef ThePEG_ColourLines_XH
+#define ThePEG_ColourLines_XH//
+// This is the declarations of the exception classes used by the
+// ColourLines class.
+//
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct ColourGeometryException: public Exception {
+  ColourGeometryException(const tPVector &, const vector<int> & = vector<int>());
+};
+
+}
+
+#endif /* ThePEG_ColourLines_XH */
+

@@ -1,0 +1,20 @@
+// -*- C++ -*-
+#ifndef ThePEG_ParticleData_XH
+#define ThePEG_ParticleData_XH
+//
+// This is the declarations of the exception classes used by the
+// ParticleData class.
+//
+
+#include "ThePEG/Interface/InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct ParticleChargeCommand: public InterfaceException {
+  ParticleChargeCommand(const ParticleData &, string);
+};
+
+}
+
+#endif /* ThePEG_ParticleData_XH */
+

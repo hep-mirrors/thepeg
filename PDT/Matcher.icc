@@ -1,0 +1,33 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the Matcher class.
+//
+
+namespace ThePEG {
+
+template <class T>
+inline Matcher<T>::Matcher(const Matcher<T> & m)
+  : MatcherBase(m) {}
+
+template <class T>
+inline Matcher<T>::Matcher()
+  : MatcherBase() {}
+
+template <class T>
+inline bool Matcher<T>::check(const ParticleData & pd ) const { 
+  return T::Check(pd);                                           
+}                                                                  
+
+template <class T>
+inline bool Matcher<T>::Check(const ParticleData & pd) {
+  return T::Check(pd);
+}
+
+template <class T>
+inline void Matcher<T>::setCC(tPMPtr pm, tPMPtr apm) const {
+  MatcherBase::setCC(pm,apm);
+}  
+
+}
+

@@ -1,0 +1,31 @@
+// -*- C++ -*-
+#ifndef ThePEG_DecayMode_XH
+#define ThePEG_DecayMode_XH
+//
+// This is the declarations of the exception classes used by the
+// DecayMode class.
+//
+
+#include "ThePEG/Interface/InterfaceBase.xh"
+
+namespace ThePEG {
+
+class DecModNoAccept: public UpdateException {
+public:
+  DecModNoAccept(string, string);
+};
+
+class DecModSetupNoAccept: public SetupException {
+public:
+  DecModSetupNoAccept(string, string);
+};
+
+class DecModRebind: public RebindException {
+public:
+  DecModRebind(string, string);
+};
+
+}
+
+#endif /* ThePEG_DecayMode_XH */
+

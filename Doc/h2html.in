@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# h2html - automatic documentation of C++ header files
+#
+IN=""
+while test $# -ne 0 ; do
+case $1 in
+  -o) OUT=$2; shift; shift;;
+  -i) IN=$2; shift; shift;;
+  -io) IN=$2; OUT=${2}tml; shift; shift;;
+  -*) echo "Usage: $0 [-bw] [-i {file.h}] [-o {file.html}]"; exit;;
+  *) IN=$2; OUT=${2}tml; shift; shift;;
+esac
+done
+if test -z "$OUT"; then
+    gawk -f @BUILDDIR@/Doc/h2html.awk $IN
+else
+    if test ! -f $OUT -o $OUT -ot $IN ; then
+        gawk -f @BUILDDIR@/Doc/h2html.awk $IN > $OUT
+    fi
+fi

@@ -1,0 +1,63 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the PDT class.
+//
+
+namespace ThePEG {
+
+inline bool PDT::charged(Charge c) {
+  return c != ChargeNeutral && c != ChargeUndefined;
+}
+
+inline bool PDT::positive(Charge c) {
+  return c > ChargeNeutral && c != Charged;
+}
+
+inline bool PDT::negative(Charge c) {
+  return c < ChargeNeutral && c != ChargeUndefined;
+}
+
+inline bool PDT::colored(Color c) {
+  return c != ColourNeutral && c != ColourUnknown;
+}
+
+inline bool PDT::coloured(Color c) {
+  return c != ColourNeutral && c != ColourUnknown;
+}
+
+inline PDT::Color PDT::antiColor(Color c) {
+  if ( c == Color3 || c == Color3bar ) return Color(-c);
+  return c;
+}
+
+inline PDT::Colour PDT::antiColour(Color c) {
+  if ( c == Color3 || c == Color3bar ) return Color(-c);
+  return c;
+}
+
+template <typename IStream>
+inline IStream & operator>>(IStream & is, PDT::Colour & c) {
+  int ci;
+  is >> ci;
+  c = PDT::Colour(ci);
+  return is;
+}
+
+template <typename IStream>
+inline IStream & operator>>(IStream & is , PDT::Charge & c) {
+  int ci;
+  is >> ci;
+  c = PDT::Charge(ci);
+  return is;
+}
+
+template <typename IStream>
+inline IStream & operator>>(IStream & is, PDT::Spin & s) {
+  int si;
+  is >> si;
+  s = PDT::Spin(si);
+  return is;
+}
+
+}

@@ -1,0 +1,45 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ThePEGStrategy class.
+//
+
+namespace ThePEG {
+
+inline ThePEGStrategy::ThePEGStrategy() {}
+
+inline ThePEGStrategy::ThePEGStrategy(const ThePEGStrategy & x)
+  : Strategy(x) {}
+
+inline IBPtr ThePEGStrategy::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr ThePEGStrategy::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void ThePEGStrategy::doupdate() throw(UpdateException) {
+  Strategy::doupdate();
+}
+
+inline void ThePEGStrategy::doinit() throw(InitException) {
+  Strategy::doinit();
+}
+
+inline void ThePEGStrategy::dofinish() {
+  Strategy::dofinish();
+}
+
+inline void ThePEGStrategy::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  Strategy::rebind(trans);
+}
+
+inline IVector ThePEGStrategy::getReferences() {
+  IVector ret = Strategy::getReferences();
+  return ret;
+}
+
+}
+

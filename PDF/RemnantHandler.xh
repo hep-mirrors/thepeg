@@ -1,0 +1,22 @@
+// -*- C++ -*-
+#ifndef ThePEG_RemnantHandler_XH
+#define ThePEG_RemnantHandler_XH
+//
+// This is the declarations of the exception classes used by the
+// RemnantHandler class.
+//
+
+// #include "RemnantHandler.fh"
+
+#include "ThePEG/Utilities/Exception.h"
+
+namespace ThePEG {
+
+struct RemnantHandlerException: public Exception {
+  RemnantHandlerException(string p0, string p, string r, string mess);
+};
+
+}
+
+#endif /* ThePEG_RemnantHandler_XH */
+

@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_MassGenerator_FH
+#define ThePEG_MassGenerator_FH
+//
+// This is the forward declaration of the MassGenerator class.
+//
+
+#include "ThePEG/Config/ThePEG.h"
+
+namespace ThePEG {
+
+class MassGenerator;
+
+typedef Ptr<MassGenerator>::pointer MassGenPtr;
+typedef Ptr<MassGenerator>::const_pointer cMassGenPtr;
+typedef Ptr<MassGenerator>::transient_pointer tMassGenPtr;
+typedef Ptr<MassGenerator>::transient_const_pointer tcMassGenPtr;
+
+}
+
+#endif /* ThePEG_MassGenerator_FH */

@@ -1,0 +1,55 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SubProcess class.
+//
+
+// -*- C++ -*-
+
+namespace ThePEG {
+
+inline void * SubProcess::operator new(size_t) {
+  return FixedAllocator<SubProcess>::allocate();
+}
+
+inline void SubProcess::operator delete(void * p, size_t) {
+  FixedAllocator<SubProcess>::deallocate(p);
+}
+
+inline SubProcess::SubProcess() {}
+
+inline SubProcess::~SubProcess() {}
+
+inline tcEventBasePtr SubProcess::handler() const {
+  return theHandler;
+}
+
+inline tCollPtr SubProcess::collision() const {
+  return theCollision;
+}
+
+inline const PPair & SubProcess::incoming() const {
+  return theIncoming;
+}
+
+inline const ParticleVector & SubProcess::intermediates() const {
+  return theIntermediates;
+}
+
+inline const ParticleVector & SubProcess::outgoing() const {
+  return theOutgoing;
+}
+
+inline double SubProcess::shat() const {
+  return (incoming().first->momentum() + incoming().second->momentum()).m2();
+}
+
+inline double SubProcess::that() const {
+  return (incoming().first->momentum() - outgoing()[0]->momentum()).m2();
+}
+
+inline double SubProcess::uhat() const {
+  return (incoming().second->momentum() - outgoing()[0]->momentum()).m2();
+}
+
+}

@@ -1,0 +1,15 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the WidthGenerator class.
+//
+
+namespace ThePEG {
+
+inline WidthGenerator::WidthGenerator() {}
+
+inline WidthGenerator::WidthGenerator(const WidthGenerator & x)
+  : Interfaced(x) {}
+
+}
+

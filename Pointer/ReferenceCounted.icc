@@ -1,0 +1,35 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ReferenceCounted class.
+//
+
+namespace ThePEG {
+namespace Pointer {
+
+inline ReferenceCounted::ReferenceCounted()
+  : theReferenceCounter(CounterType(1)) {}
+
+inline ReferenceCounted::ReferenceCounted(const ReferenceCounted &)
+  : theReferenceCounter(CounterType(1)) {}
+
+inline ReferenceCounted & ReferenceCounted::
+operator=(const ReferenceCounted &) {
+  return *this;
+}
+
+inline ReferenceCounted::CounterType ReferenceCounted::referenceCount() const {
+  return theReferenceCounter;
+}
+
+inline void ReferenceCounted::incrementReferenceCount() const {
+  ++theReferenceCounter;
+}
+inline bool ReferenceCounted::
+decrementReferenceCount() const {
+  return !--theReferenceCounter;
+}
+
+}
+}
+

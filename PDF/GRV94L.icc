@@ -1,0 +1,55 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the GRV94L class.
+//
+
+namespace ThePEG {
+
+inline GRV94L::GRV94L() {}
+
+inline GRV94L::GRV94L(const GRV94L & x)
+  : GRVBase(x) {}
+
+inline IBPtr GRV94L::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr GRV94L::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline Energy2 GRV94L::mu2() const {
+  return 0.23*GeV2;
+}
+
+inline Energy2 GRV94L::lam2() const {
+  return sqr(0.2322*GeV);
+}
+
+inline void GRV94L::doupdate() throw(UpdateException) {
+  GRVBase::doupdate();
+}
+
+inline void GRV94L::doinit() throw(InitException) {
+  GRVBase::doinit();
+}
+
+inline void GRV94L::dofinish() {
+  GRVBase::dofinish();
+}
+
+inline void GRV94L::rebind(const TranslationMap & trans)
+   throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  GRVBase::rebind(trans);
+}
+
+inline IVector GRV94L::getReferences() {
+  IVector ret = GRVBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}
+

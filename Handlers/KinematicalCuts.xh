@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_KinematicalCuts_XH
+#define ThePEG_KinematicalCuts_XH
+//
+// This is the declarations of the exception classes used by the
+// KinematicalCuts class.
+//
+
+#include "ThePEG/Interface/Command.xh"
+
+namespace ThePEG {
+
+struct KinCutSetup: public Exception {
+  KinCutSetup();
+};
+
+struct KinCutZeroInterval: public UpdateException {
+  KinCutZeroInterval(const KinematicalCuts &, string);
+};
+
+}
+
+#endif /* ThePEG_KinematicalCuts_XH */
+

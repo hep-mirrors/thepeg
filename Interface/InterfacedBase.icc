@@ -1,0 +1,115 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the InterfacedBase class.
+//
+
+namespace ThePEG {
+
+inline InterfacedBase::InterfacedBase()
+  : Named(""), isLocked(false), isTouched(true), initState(uninitialized) {}
+
+inline InterfacedBase::InterfacedBase(const InterfacedBase & i)
+  : Named(i), isLocked(false), isTouched(true), initState(uninitialized) {}
+
+inline InterfacedBase::InterfacedBase(string newName)
+  : Named(newName), isLocked(false), isTouched(true),
+    initState(uninitialized) {}
+
+inline string InterfacedBase::name() const {
+  string ret = Named::name().substr(Named::name().rfind('/')+1);
+  return ret;
+}
+
+inline string InterfacedBase::fullName() const {
+  return Named::name();
+}
+
+inline string InterfacedBase::path() const {
+  string::size_type slash = Named::name().rfind('/');
+  string ret;
+  if ( slash != string::npos ) ret = Named::name().substr(0,slash);
+  return ret;
+}
+
+inline void InterfacedBase::doupdate() throw(UpdateException) {}
+
+inline void InterfacedBase::doinit() throw (InitException) {}
+
+inline void InterfacedBase::doinitrun() {}
+
+inline void InterfacedBase::dofinish() {}
+
+inline void InterfacedBase::update() throw(UpdateException) {
+  if ( initState ) return;
+  HoldFlag<InitState> hold(initState, initializing, initialized);
+  doupdate();
+}
+
+inline void InterfacedBase::init() throw (InitException) {
+  if ( initState ) return;
+  HoldFlag<InitState> hold(initState, initializing, initialized);
+  doinit();
+}
+
+inline void InterfacedBase::initrun() {
+  if ( initState == runready || initState == initializing ) return;
+  HoldFlag<InitState> hold(initState, initializing, runready);
+  doinitrun();
+}
+
+inline void InterfacedBase::finish() {
+  if ( initState == uninitialized || initState == initializing ) return;
+  HoldFlag<InitState> hold(initState, initializing, uninitialized);
+  dofinish();
+}
+
+inline void InterfacedBase::name(string newName) {
+  Named::name(newName);
+}
+
+inline IBPtr InterfacedBase::fullclone() const {
+  return clone();
+}
+
+inline IVector InterfacedBase::getReferences() {
+  return IVector();
+}
+
+inline void InterfacedBase::rebind(const TranslationMap &)
+  throw(RebindException) {}
+
+inline bool InterfacedBase::locked() const {
+  return isLocked;
+}
+
+inline bool InterfacedBase::touched() const {
+  return isTouched;
+}
+
+void InterfacedBase::touch() {
+  isTouched = true;
+}
+
+inline void InterfacedBase::lock() {
+  isLocked = true;
+}
+
+inline void InterfacedBase::unlock() {
+  isLocked = false;
+}
+
+inline void InterfacedBase::reset() {
+  initState = uninitialized;
+}
+
+inline void InterfacedBase::untouch() {
+  isTouched = false;
+}
+
+inline void InterfacedBase::clear() {
+  reset();
+  untouch();
+}
+
+}

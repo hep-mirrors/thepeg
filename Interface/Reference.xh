@@ -1,0 +1,38 @@
+// -*- C++ -*-
+#ifndef ThePEG_Reference_XH
+#define ThePEG_Reference_XH
+//
+// This is the declarations of the exception classes used by the
+// Reference class.
+//
+
+#include "InterfaceBase.xh"
+
+namespace ThePEG {
+
+struct RefExSetRefClass: public InterfaceException {
+  RefExSetRefClass(const RefInterfaceBase & i, const InterfacedBase & o,
+		   cIBPtr r);
+};
+
+struct RefExSetUnknown: public InterfaceException {
+  RefExSetUnknown(const InterfaceBase & i, const InterfacedBase & o, cIBPtr r);
+};
+
+struct RefExGetUnknown: public InterfaceException {
+  RefExGetUnknown(const InterfaceBase & i, const InterfacedBase & o);
+};
+
+struct RefExSetNoobj: public InterfaceException {
+  RefExSetNoobj(const InterfaceBase & i, const InterfacedBase & o, string);
+};
+
+struct RefExSetMessage: public InterfaceException {
+  RefExSetMessage(string ref, const InterfacedBase & o,
+		  const InterfacedBase & o2, string);
+};
+
+}
+
+#endif /* ThePEG_Reference_XH */
+

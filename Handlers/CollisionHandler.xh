@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_CollisionHandler_XH
+#define ThePEG_CollisionHandler_XH
+//
+// This is the declarations of the exception classes used by the
+// CollisionHandler class.
+//
+
+#include "ThePEG/Interface/InterfacedBase.xh"
+
+namespace ThePEG {
+
+struct CollHdlExtractorError: public UpdateException {
+  CollHdlExtractorError(const CollisionHandler &, const SubProcessHandler &,
+			const PartonExtractor &, const cPDPair &);
+};
+
+}
+
+#endif /* ThePEG_CollisionHandler_XH */
+

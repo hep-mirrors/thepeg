@@ -1,0 +1,96 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ColourSinglet class.
+//
+
+namespace ThePEG {
+
+inline ColourSinglet::ColourSinglet() {}
+
+inline ColourSinglet::ColourSinglet(const ColourSinglet & x)
+  : thePartons(x.thePartons), thePieces(x.thePieces),
+    theSources(x.theSources), theSinks(x.theSinks) {}
+
+inline ColourSinglet::~ColourSinglet() {}
+
+inline ColourSinglet & ColourSinglet::operator=(const ColourSinglet & x) {
+  thePartons = x.thePartons;
+  thePieces = x.thePieces;
+  theSources = x.theSources;
+  theSinks = x.theSinks;
+  return *this;
+}
+
+inline ColourSinglet::Index ColourSinglet::nPieces() const {
+  return thePieces.size();
+}
+
+inline tcPVector & ColourSinglet::partons() {
+  return thePartons;
+}
+
+inline const tcPVector & ColourSinglet::partons() const {
+  return thePartons;
+}
+
+inline tcPPtr ColourSinglet::parton(tcPVector::size_type i) const {
+  return thePartons[i];
+}
+
+inline ColourSinglet::StringPiece & ColourSinglet::piece(Index i) {
+  return thePieces[i - 1];
+}
+
+inline const ColourSinglet::StringPiece & ColourSinglet::piece(Index i) const {
+  return thePieces[i - 1];
+}
+
+inline ColourSinglet::Junction &
+ColourSinglet::junction(Index i, bool forward) {
+  return forward? sink(i): source(i);
+}
+
+inline const ColourSinglet::Junction &
+ColourSinglet::junction(Index i, bool forward) const {
+  return forward? sink(i): source(i);
+}
+
+inline ColourSinglet::Junction & ColourSinglet::sink(Index i) {
+  return theSinks[i - 1];
+}
+
+inline const ColourSinglet::Junction & ColourSinglet::sink(Index i) const {
+  return theSinks[i - 1];
+}
+
+inline ColourSinglet::Junction & ColourSinglet::source(Index i) {
+  return theSources[i - 1];
+}
+
+inline const ColourSinglet::Junction & ColourSinglet::source(Index i) const {
+  return theSources[i - 1];
+}
+
+template <typename Iterator>
+inline vector<ColourSinglet> ColourSinglet::
+getSinglets(Iterator first, Iterator last) {
+  tcParticleSet pset(first, last);
+  return getSinglets(pset);
+}
+
+inline void ColourSinglet::swap(ColourSinglet & x) {
+  thePartons.swap(x.thePartons);
+  thePieces.swap(x.thePieces);
+  theSources.swap(x.theSources);
+  theSinks.swap(x.theSinks);
+}
+
+inline ColourSinglet::Index ColourSinglet::addPiece() {
+  thePieces.push_back(StringPiece());
+  theSinks.push_back(Junction());
+  theSources.push_back(Junction());
+  return nPieces();
+}
+
+}

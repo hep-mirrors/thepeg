@@ -1,0 +1,140 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ParticleData class.
+//
+
+namespace ThePEG {
+
+inline long ParticleData::id() const {
+  return theId;
+}
+
+inline string ParticleData::PDGName() const {
+  return thePDGName;
+}
+
+inline string ParticleData::genericName() const {
+  return thePDGName;
+}
+
+inline const ParticleData::DecaySelector &
+ParticleData::decaySelector() const {
+  return theDecaySelector;
+}
+
+inline Energy ParticleData::mass() const {
+  return theMass;
+}
+
+inline Energy ParticleData::massMax() const {
+  return mass() + widthCut();
+}
+
+inline Energy ParticleData::massMin() const {
+  return max(mass() - widthCut(), 0.0*GeV);
+}
+
+inline Energy ParticleData::constituentMass() const {
+  return mass();
+}
+
+inline Energy ParticleData::width() const {
+  return theWidth >= 0.0? theWidth:
+    ( theCTau > 0.0? hbarc/theCTau:
+      ( theCTau == 0.0? FLT_MAX: 0.0 ) );
+}
+
+inline Energy ParticleData::widthCut() const {
+  return theWidthCut;
+}
+
+inline Length ParticleData::cTau() const {
+  return theCTau >= 0.0? theCTau:
+    ( theWidth > 0.0? hbarc/theWidth:
+      ( theWidth == 0.0? FLT_MAX: 0.0 ) );
+}
+
+inline Charge ParticleData::charge() const {
+  return eplus*double(theCharge)/3.0;
+}
+
+inline PDT::Charge ParticleData::iCharge() const {
+  return theCharge;
+}
+
+inline bool ParticleData::charged() const {
+  return PDT::charged(theCharge);
+}
+
+inline bool ParticleData::positive() const {
+  return PDT::positive(theCharge);
+}
+
+inline bool ParticleData::negative() const {
+  return PDT::negative(theCharge);
+}
+
+inline AngularMomentum ParticleData::spin() const {
+  return hbar_Planck*double(theSpin-1)*0.5;
+}
+
+inline PDT::Spin ParticleData::iSpin() const {
+  return theSpin;
+}
+
+inline PDT::Color ParticleData::iColor() const {
+  return theColor;
+}
+
+inline PDT::Colour ParticleData::iColour() const {
+  return theColor;
+}
+
+inline bool ParticleData::colored() const {
+  return PDT::colored(iColour());
+}
+
+inline bool ParticleData::coloured() const {
+  return PDT::colored(iColour());
+}
+
+inline bool ParticleData::hasColour(bool anti) const {
+  return anti? hasAntiColour():
+    ( iColour() == PDT::Colour3 || iColour() == PDT::Colour8 );
+}
+
+inline bool ParticleData::hasAntiColour() const {
+  return iColour() == PDT::Colour3bar || iColour() == PDT::Colour8;
+}
+
+inline bool ParticleData::stable() const {
+  return isStable || theDecayModes.empty();
+}
+
+inline tPDPtr ParticleData::CC() const {
+  return theAntiPartner;
+}
+
+inline bool ParticleData::synchronized() const {
+  return syncAnti;
+}
+
+inline tMassGenPtr ParticleData::massGenerator() const {
+  return theMassGenerator;
+}
+
+inline tWidthGeneratorPtr ParticleData::widthGenerator() const {
+  return theWidthGenerator;
+}
+
+inline void ParticleData::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void ParticleData::dofinish() {
+  Interfaced::dofinish();
+}
+
+}
+

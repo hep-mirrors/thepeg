@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_WidthGenerator_FH
+#define ThePEG_WidthGenerator_FH
+//
+// This is the forward declaration of the WidthGenerator class.
+//
+
+#include "ThePEG/Config/ThePEG.h"
+
+namespace ThePEG {
+
+class WidthGenerator;
+
+typedef Ptr<WidthGenerator>::pointer WidthGeneratorPtr;
+typedef Ptr<WidthGenerator>::const_pointer cWidthGeneratorPtr;
+typedef Ptr<WidthGenerator>::transient_pointer tWidthGeneratorPtr;
+typedef Ptr<WidthGenerator>::transient_const_pointer tcWidthGeneratorPtr;
+
+}
+
+#endif /* ThePEG_WidthGenerator_FH */

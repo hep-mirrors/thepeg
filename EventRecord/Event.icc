@@ -1,0 +1,86 @@
+// -*- C++ -*-
+//
+// This is the implementatios of the inlined member functions of
+// the Event class.
+//
+#include "Collision.h"
+#include "SubProcess.h"
+
+namespace ThePEG {
+
+inline void * Event::operator new(size_t) {
+  return FixedAllocator<Event>::allocate();
+}
+
+inline void Event::operator delete(void * p, size_t) {
+  FixedAllocator<Event>::deallocate(p);
+}
+
+inline Event::~Event() {}
+
+inline Event::Event()
+: theNumber(-1), theWeight(1.0) {}
+
+inline tcEventBasePtr Event::handler() const {
+  return theHandler;
+}
+
+template <class OutputIterator>
+inline void Event::selectFinalState(OutputIterator r) const {
+  select(r, SelectFinalState());
+}
+
+template <class Container>
+inline void Event::getFinalState(Container c) const {
+  selectFinalState(inserter(c));
+}
+
+inline tPVector Event::getFinalState() const {
+  tPVector ret;
+  selectFinalState(back_inserter(ret));
+  return ret;
+}
+
+inline tCollPtr Event::primaryCollision() const {
+  return collisions().empty()? tCollPtr(): tCollPtr(collisions()[0]);
+}
+
+inline const CollisionVector & Event::collisions() const {
+  return theCollisions;
+}
+
+inline tSubProPtr Event::primarySubProcess() const {
+  return collisions().empty()? tSubProPtr():
+    tSubProPtr(primaryCollision()->primarySubProcess());
+}
+
+inline const PPair & Event::incoming() const {
+  return theIncoming;
+}
+
+template <class Iterator>
+inline void Event::addParticles(Iterator first, Iterator last) {
+  while ( first != last ) addParticle(*first++);
+}
+
+inline void Event::addSubProcess(tSubProPtr p) {
+  if ( p ) allSubProcesses.insert(p);
+}
+
+inline void Event::addStep(tStepPtr s) {
+  if ( s ) allSteps.insert(s);
+}
+
+inline long Event::number() const {
+  return theNumber;
+}
+
+inline double Event::weight() const {
+  return theWeight;
+}
+
+inline void Event::weight(double w) {
+  theWeight = w;
+}
+
+}

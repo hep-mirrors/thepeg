@@ -1,0 +1,59 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the ReweightMinPT class.
+//
+
+namespace ThePEG {
+
+inline ReweightMinPT::ReweightMinPT(): power(4.0) {}
+
+inline ReweightMinPT::ReweightMinPT(const ReweightMinPT & x)
+  : ReweightBase(x), power(x.power) {}
+
+inline IBPtr ReweightMinPT::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr ReweightMinPT::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void ReweightMinPT::doupdate() throw(UpdateException) {
+  ReweightBase::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void ReweightMinPT::doinit() throw(InitException) {
+  ReweightBase::doinit();
+}
+
+inline void ReweightMinPT::dofinish() {
+  ReweightBase::dofinish();
+}
+
+inline void ReweightMinPT::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  ReweightBase::rebind(trans);
+}
+
+inline IVector ReweightMinPT::getReferences() {
+  IVector ret = ReweightBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

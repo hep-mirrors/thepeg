@@ -1,0 +1,123 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the EventGenerator class.
+//
+
+namespace ThePEG {
+
+inline tSMPtr EventGenerator::standardModel() const {
+  return theStandardModel;
+}
+
+inline tStrategyPtr EventGenerator::strategy() const {
+  return theStrategy;
+}
+
+inline const ObjectSet & EventGenerator::used() const {
+  return usedObjects;
+}
+
+inline RandomEngine & EventGenerator::randomEngine() const {
+  return random().randomGenerator();
+}
+
+inline double EventGenerator::rnd() {
+  return random().rnd();
+}
+
+
+inline RandomGenerator & EventGenerator::random() const {
+  return *theRandom;
+}
+
+inline const vector<IPtr> & EventGenerator::defaultObjects() const {
+  return theDefaultObjects;
+}
+
+inline ParticleMap & EventGenerator::localParticles() {
+  return theLocalParticles;
+}
+
+inline const ParticleMap & EventGenerator::localParticles() const {
+  return theLocalParticles;
+}
+
+inline string EventGenerator::runName() const {
+  return theRunName.size()? theRunName: name();
+}
+
+inline string EventGenerator::path() const {
+  return thePath;
+}
+
+inline string EventGenerator::filename() const {
+  return path() + "/" + runName();
+}
+
+inline void EventGenerator::path(string f) {
+  thePath = f;
+}
+
+inline void EventGenerator::runName(string f) {
+  theRunName = f;
+}
+
+inline ofstream & EventGenerator::outfile() {
+  return theOutfile;
+}
+
+inline ofstream & EventGenerator::logfile() {
+  return theLogfile;
+}
+
+inline ofstream & EventGenerator::reffile() {
+  return theReffile;
+}
+
+inline long EventGenerator::N() const {
+  return theNumberOfEvents;
+}
+
+inline long EventGenerator::currentEventNumber() const {
+  return ieve;
+}
+
+inline void EventGenerator::N(long n) {
+  theNumberOfEvents = n;
+}
+
+inline const ObjectSet & EventGenerator::objects() const {
+  return theObjects;
+}
+
+inline ObjectSet & EventGenerator::objects() {
+  return theObjects;
+}
+
+inline const ObjectMap & EventGenerator::objectMap() const {
+  return theObjectMap;
+}
+
+inline ObjectMap & EventGenerator::objectMap() {
+  return theObjectMap;
+}
+
+template <typename T>
+inline typename Ptr<T>::pointer EventGenerator::getObject(string name) const {
+  return dynamic_ptr_cast<typename Ptr<T>::pointer>(getPointer(name));
+}
+
+inline const MatcherSet & EventGenerator::matchers() const {
+  return theMatchers;
+}
+
+inline const ParticleMap & EventGenerator::particles() const {
+  return theParticles;
+}
+
+inline void EventGenerator::doupdate() throw(UpdateException) {
+  Interfaced::doupdate();
+}
+
+}

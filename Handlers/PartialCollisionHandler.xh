@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_PartialCollisionHandler_XH
+#define ThePEG_PartialCollisionHandler_XH
+//
+// This is the declarations of the exceptions used by the
+// PartialCollisionHandler class.
+//
+
+// #include "PartialCollisionHandler.fh"
+
+namespace ThePEG {
+
+struct CollHdlStepException: public Exception {
+  CollHdlStepException(const PartialCollisionHandler &, const StepHandler &,
+		       string);
+};
+
+}
+
+#endif /* ThePEG_PartialCollisionHandler_XH */
+

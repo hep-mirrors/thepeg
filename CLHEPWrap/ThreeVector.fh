@@ -1,0 +1,24 @@
+// -*- C++ -*-
+#ifndef ThePEG_ThreeVector_FH
+#define ThePEG_ThreeVector_FH
+
+// This is the forward declaration of the <!id>HepThreeVector<!!id>
+// class from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
+// <!id>Vector3<!!id> and making it available in the
+// <!id>ThePEG<!!id> namespace.
+
+class Hep3Vector;
+
+namespace CLHEP {
+
+  typedef Hep3Vector Vector3;
+
+}
+
+namespace ThePEG {
+
+  using CLHEP::Vector3;
+
+}
+
+#endif /* ThePEG_ThreeVector_FH */
