@@ -23,6 +23,7 @@ clean: setup
 
 distclean: setup clean
 	@cd src ; $(MAKE) distclean ; cd .. 
+	@cd Doc ; $(MAKE) distclean ; cd .. 
 	rm -f config.cache config.status config.log Config/Makefile.common Config/config.h
 
 depend: setup

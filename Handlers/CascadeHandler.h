@@ -1,22 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_CascadeHandler_H
 #define ThePEG_CascadeHandler_H
-//
-// This is the declaration of the <!id>CascadeHandler<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>CascadeHandler<!!id> is the base class of all handlers
-// implementing perturbative partonic cascade models. It is derived
-// from the more general <!class>StepHandler<!!class> class, and does
-// not introduce more functioanality as it stands.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:StepHandler.html">StepHandler.h</a>
-// <a href="http:CollisionHandler.html">CollisionHandler.h</a>
-// <a href="http:SubProcessHandler.html">SubProcessHandler.h</a>
-// 
+// This is the declaration of the CascadeHandler class.
 
 #include "StepHandler.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
@@ -27,90 +12,210 @@
 namespace ThePEG {
 
 
+/**
+ * The CascadeHandler is the base class of all handlers implementing
+ * perturbative partonic cascade models. It is derived from the more
+ * general StepHandler class, and implements the handle() function to
+ * do some standard initialization before calling the main cascade()
+ * function.
+ *
+ * @see StepHandler
+ * @see CollisionHandler
+ * @see SubProcessHandler
+ */
 class CascadeHandler: public StepHandler, public LastXCombInfo<> {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * The default constructor.
+   */
   inline CascadeHandler();
+
+  /**
+   * The copy constructor.
+   */
   inline CascadeHandler(const CascadeHandler &);
+
+  /**
+   * The destructor.
+   */
   virtual ~CascadeHandler();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
+  /** @name Virtual functions required by the StepHandler class. */
+  //@{
+  /**
+    * The main function called by the PartialCollisionHandler class to
+    * perform a step.
+    * @param ch the PartialCollisionHandler in charge of the Event generation.
+    * @param tagged if not empty these are the only particles which should
+    * be considered by the StepHandler.
+    * @param hint a Hint object with possible information from previously
+    * performed steps.
+    * @throws Veto if the StepHandler requires the current step to be discarded.
+    * @throws Stop if the generation of the current Event should be stopped
+    * after this call.
+    * @throws Exception if something goes wrong.
+    */
   virtual void handle(PartialCollisionHandler & ch, const tPVector & tagged,
 		      const Hint & hint)
     ThePEG_THROW_SPEC((Veto, Stop, Exception));
-  // The default version stores important information and calls cascade().
+  //@}
 
+  /**
+   * The main function to be overwritten by sub-classes. It is called
+   * by handle() after storing some information which is then
+   * available through simple access functions.
+   */
   virtual void cascade() = 0;
-  // The main function to be overwritten by sub-classes.
 
 public:
 
+  /** @name Access information stored by the handle() function. */
+  //@{
+  /**
+   * Return the vector of tagged particles which should be
+   * showered. It the vector is empty, the patons from the current
+   * sub-process is supposed to be showered.
+   */
   inline const tPVector & tagged() const;
-  // Return the vector of tagged particles which should be
-  // showered. It the vector is empty, the patons from the current
-  // sub-process is supposed to be showered.
 
+  /**
+   * Return the int provided in the current call to handle().
+   */
   inline const Hint & hint() const;
-  // Return the int provided in the current call to handle().
 
+  /**
+   * Return references to the PDF used by the first incoming particle.
+   */
   inline const PDF & firstPDF() const;
-  inline const PDF & secondPDF() const;
-  inline const pair<PDF,PDF> & pdfs() const;
-  // Return references to the currently used PDF's.
 
+  /**
+   * Return references to the PDF used by the first incoming particle.
+   */
+  inline const PDF & secondPDF() const;
+
+  /**
+   * Return references to the currently used PDF's.
+   */
+  inline const pair<PDF,PDF> & pdfs() const;
+
+  /**
+   * Return a pointer to the current collision handler.
+   */
   inline tPartCollHdlPtr collisionHandler() const;
-  // Return a pointer to the current collision handler.
+  //@}
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
+
+  //@}
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * Store the tagged argument given to handle().
+   */
   const tPVector * theTagged;
+
+  /**
+   * Store the Hint arguments given to handle().
+   */
   const Hint * theHint;
-  // Store the arguments given to handle().
 
+  /**
+   * The pdfs used to extract the incoming partons.
+   */
   pair<PDF,PDF> thePDFs;
-  // The pdfs used to extract the incoming partons.
 
+  /**
+   * The current collision handler.
+   */
   tPartCollHdlPtr theCollisionHandler;
-  // The current collision handler.
 
 private:
 
+  /**
+   * The static object used to initialize the description of this class.
+   * Indicates that this is an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<CascadeHandler> initCascadeHandler;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   CascadeHandler & operator=(const CascadeHandler &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the
+ *  base classes of CascadeHandler. */
 template <>
 struct BaseClassTrait<CascadeHandler,1> {
+  /** Typedef of the first base class of CascadeHandler. */
   typedef StepHandler NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of
+ *  the CascadeHandler class and the shared object where it is defined. */
 template <>
 struct ClassTraits<CascadeHandler>: public ClassTraitsBase<CascadeHandler> {
+  /** Return a platform-independent class name */
   static string className() { return "/ThePEG/CascadeHandler"; }
 };
 

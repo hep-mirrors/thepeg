@@ -36,25 +36,29 @@ inline tPartCollHdlPtr CascadeHandler::collisionHandler() const {
 }
 
 inline void CascadeHandler::doupdate() throw(UpdateException) {
-  HandlerBase::doupdate();
+  StepHandler::doupdate();
 }
 
 inline void CascadeHandler::doinit() throw(InitException) {
-  HandlerBase::doinit();
+  StepHandler::doinit();
+}
+
+inline void CascadeHandler::doinitrun() {
+  StepHandler::doinitrun();
 }
 
 inline void CascadeHandler::dofinish() {
-  HandlerBase::dofinish();
+  StepHandler::dofinish();
 }
 
 inline void CascadeHandler::rebind(const TranslationMap & trans)
    throw(RebindException) {
   // dummy = trans.translate(dummy);
-  HandlerBase::rebind(trans);
+  StepHandler::rebind(trans);
 }
 
 inline IVector CascadeHandler::getReferences() {
-  IVector ret = HandlerBase::getReferences();
+  IVector ret = StepHandler::getReferences();
   // ret.push_back(dummy);
   return ret;
 }
