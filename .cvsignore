@@ -1,6 +1,7 @@
 *.tar.gz
 *.tgz
 DB
+Peter
 Test
 autom4te.cache
 c++stubs.el
