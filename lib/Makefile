@@ -28,5 +28,6 @@ libThePEG.so: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
 
 install-local:
-	cp g++dep ThePEG.el $(INSTALLLIB)
+	mkdir -p $(INSTALLLIB); cp g++dep ThePEG.el $(INSTALLLIB)
+	ln -sfn $(INSTALLLIB) $(PREFIX)/lib/ThePEG/current
 
