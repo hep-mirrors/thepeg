@@ -1,5 +1,11 @@
 2003-07-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* PDT/OmegaPhi3PiDecayer.*, src/ThePEGDefaults.in,
+	src/ThePEGParticles.in: Added OmegaPhi3PiDecayer class to handle
+	omega-phi->3pi decays.
+
+	* lib/ThePEG.el: Added ThePEG-Decayer-class-files function.
+
 	* PDT/FlatDecayer.cc: Now uses DecayMode::produceProducts().
 
 	* src/ThePEGParticles.in, PDT/DecayMode.*: The naming of decay

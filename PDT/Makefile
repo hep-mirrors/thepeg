@@ -1,6 +1,7 @@
 SOURCES = ParticleData.cc DecayMode.cc MatcherBase.cc Matcher.cc Decayer.cc \
           MassGenerator.cc WidthGenerator.cc PYDECYDummy.cc \
-          ConstituentParticleData.cc FlatDecayer.cc BreitWignerMass.cc
+          ConstituentParticleData.cc FlatDecayer.cc BreitWignerMass.cc \
+          OmegaPhi3PiDecayer.cc
 
 LIBOBJECTS = ParticleData.o DecayMode.o MatcherBase.o Matcher.o Decayer.o \
              MassGenerator.o WidthGenerator.o PYDECYDummy.o \
@@ -8,19 +9,21 @@ LIBOBJECTS = ParticleData.o DecayMode.o MatcherBase.o Matcher.o Decayer.o \
 
 DEBUGOBJECTS = ParticleData.o 
 
-OBJECTS = libThePEGPDT.so BreitWignerMass.so
+OBJECTS = libThePEGPDT.so BreitWignerMass.so OmegaPhi3PiDecayer.so
 
 DOCFILES = CombinedMatcher.h DecayMode.h WidthGenerator.h Decayer.h \
            EnumParticles.h MassGenerator.h Matcher.h MatcherBase.h PDT.h \
            ParticleData.h StandardMatchers.h PYDECYDummy.h \
-           ConstituentParticleData.h FlatDecayer.h BreitWignerMass.h
+           ConstituentParticleData.h FlatDecayer.h BreitWignerMass.h \
+           OmegaPhi3PiDecayer.h
 
 INCLUDEFILES = $(DOCFILES) DecayMode.fh DecayMode.icc \
                DecayMode.xh WidthGenerator.fh WidthGenerator.icc Decayer.fh \
                Decayer.icc MassGenerator.fh MassGenerator.icc Matcher.icc \
                Matcher.tcc MatcherBase.icc PDT.icc PYDECYDummy.icc \
                ParticleData.icc ParticleData.tcc ParticleData.xh \
-               ConstituentParticleData.icc FlatDecayer.icc BreitWignerMass.icc
+               ConstituentParticleData.icc FlatDecayer.icc BreitWignerMass.icc \
+               OmegaPhi3PiDecayer.icc
 
 LIBFILES = $(OBJECTS)
 
@@ -1290,5 +1293,130 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Repository/EventGenerator.tcc \
   ../../ThePEG/CLHEPWrap/RandBreitWigner.h \
   ../../ThePEG/CLHEPWrap/RandBreitWigner.fh
+  OmegaPhi3PiDecayer.o: \
+  OmegaPhi3PiDecayer.cc \
+  OmegaPhi3PiDecayer.h \
+  ../../ThePEG/PDT/FlatDecayer.h \
+  ../../ThePEG/PDT/Decayer.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/PDT/Decayer.fh \
+  ../../ThePEG/Handlers/HandlerBase.h \
+  ../../ThePEG/Interface/Interfaced.h \
+  ../../ThePEG/Interface/InterfacedBase.h \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/DescriptionList.h \
+  ../../ThePEG/Utilities/DescriptionList.icc \
+  ../../ThePEG/Utilities/ClassDescription.icc \
+  ../../ThePEG/Utilities/ClassDescription.tcc \
+  ../../ThePEG/Utilities/HoldFlag.h \
+  ../../ThePEG/Utilities/HoldFlag.icc \
+  ../../ThePEG/Interface/InterfacedBase.xh \
+  ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Utilities/sstream.h \
+  ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Interface/InterfaceBase.icc \
+  ../../ThePEG/Interface/InterfacedBase.icc \
+  ../../ThePEG/Interface/Interfaced.icc \
+  ../../ThePEG/Handlers/HandlerBase.icc \
+  ../../ThePEG/MatrixElement/Amplitude.h \
+  ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/PDT/PDT.icc \
+  ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/Utilities/Selector.h \
+  ../../ThePEG/Utilities/Selector.icc \
+  ../../ThePEG/Utilities/Selector.tcc \
+  ../../ThePEG/PDT/WidthGenerator.fh \
+  ../../ThePEG/PDT/MassGenerator.fh \
+  ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/PDT/ParticleData.icc \
+  ../../ThePEG/EventRecord/Particle.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  ../../ThePEG/EventRecord/ColourBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/EventRecord/EventInfoBase.icc \
+  ../../ThePEG/EventRecord/ColourLine.h \
+  ../../ThePEG/EventRecord/ColourSinglet.h \
+  ../../ThePEG/EventRecord/ColourSinglet.icc \
+  ../../ThePEG/EventRecord/ColourLine.icc \
+  ../../ThePEG/EventRecord/ColourBase.icc \
+  ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/EventRecord/Particle.icc \
+  ../../ThePEG/EventRecord/Particle.tcc \
+  ../../ThePEG/MatrixElement/Amplitude.icc \
+  ../../ThePEG/PDT/Decayer.icc \
+  ../../ThePEG/PDT/FlatDecayer.icc \
+  OmegaPhi3PiDecayer.icc \
+  ../../ThePEG/Interface/ClassDocumentation.h \
+  ../../ThePEG/Interface/ClassDocumentation.fh \
+  ../../ThePEG/Interface/ClassDocumentation.icc \
+  ../../ThePEG/Interface/Parameter.h \
+  ../../ThePEG/Interface/Parameter.xh \
+  ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Interface/Parameter.icc \
+  ../../ThePEG/Interface/Parameter.tcc \
+  ../../ThePEG/PDT/DecayMode.h \
+  ../../ThePEG/PDT/MatcherBase.h \
+  ../../ThePEG/PDT/MatcherBase.icc \
+  ../../ThePEG/PDT/DecayMode.icc \
+  ../../ThePEG/PDT/EnumParticles.h \
+  ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Persistency/PersistentOStream.xh \
+  ../../ThePEG/Persistency/PersistentOStream.icc \
+  ../../ThePEG/Persistency/PersistentIStream.h \
+  ../../ThePEG/Persistency/InputDescription.h \
+  ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.icc \
+  ../../ThePEG/Persistency/PersistentIStream.tcc
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

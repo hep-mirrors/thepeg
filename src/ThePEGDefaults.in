@@ -5,6 +5,7 @@ mkdir /Defaults/Matchers
 mkdir /Defaults/Particles
 mkdir /Defaults/Decayers
 create /ThePEG/FlatDecayer /Defaults/Decayers/Flat
+create /ThePEG/OmegaPhi3PiDecayer /Defaults/Decayers/OmegaPhi3Pi OmegaPhi3PiDecayer.so
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY1
 setup /Dummy/Decayers/PYDECY1 1
 create /ThePEG/PYDECYDummy /Dummy/Decayers/PYDECY2

@@ -1,0 +1,65 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the OmegaPhi3PiDecayer class.
+//
+
+namespace ThePEG {
+
+inline OmegaPhi3PiDecayer::OmegaPhi3PiDecayer()
+: margin(150.0) {}
+
+inline OmegaPhi3PiDecayer::OmegaPhi3PiDecayer(const OmegaPhi3PiDecayer & x)
+  : FlatDecayer(x), margin(x.margin) {}
+
+inline IBPtr OmegaPhi3PiDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr OmegaPhi3PiDecayer::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void OmegaPhi3PiDecayer::doupdate() throw(UpdateException) {
+  FlatDecayer::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void OmegaPhi3PiDecayer::doinit() throw(InitException) {
+  FlatDecayer::doinit();
+}
+
+inline void OmegaPhi3PiDecayer::dofinish() {
+  FlatDecayer::dofinish();
+}
+
+inline void OmegaPhi3PiDecayer::doinitrun() {
+  FlatDecayer::doinitrun();
+}
+
+inline void OmegaPhi3PiDecayer::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  FlatDecayer::rebind(trans);
+}
+
+inline IVector OmegaPhi3PiDecayer::getReferences() {
+  IVector ret = FlatDecayer::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

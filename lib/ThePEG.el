@@ -29,6 +29,8 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	       "ThePEG/Handlers/DecayHandler.h")
 	      ((string-equal base "MEBase")
 	       "ThePEG/MatrixElement/MEBase.h")
+	      ((string-equal base "Decayer")
+	       "ThePEG/PDT/Decayer.h")
 	      ((string-equal base "PDFBase")
 	       "ThePEG/PDF/PDFBase.h")
 	      (t (concat namespace "/"
@@ -44,6 +46,7 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	((string-equal base "DecayHandler") (setq interfaced t))
 	((string-equal base "MEBase") (setq interfaced t))
 	((string-equal base "PDFBase") (setq interfaced t))
+	((string-equal base "Decayer") (setq interfaced t))
 	(t (setq interfaced (y-or-n-p "Will this class be interfaced "))))
 
   (setq declarations (cond ((string-equal base "MEBase")
@@ -76,6 +79,12 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
   (thepeg-specific-class-files "AnalysisHandler" "ThePEG/Handlers/AnalysisHandler.h"
 			       'thepeg-AnalysisHandler-declare
 			       'thepeg-AnalysisHandler-implement))
+
+(defun ThePEG-Decayer-class-files ()
+  (interactive)
+  (thepeg-specific-class-files "Decayer" "ThePEG/PDT/Decayer.h"
+			       'thepeg-Decayer-declare
+			       'thepeg-Decayer-implement))
 
 (defun thepeg-specific-class-files (base baseheader declfn implfn)
   (setq class (read-from-minibuffer "Class name: "))
@@ -649,7 +658,8 @@ public:
 "))
 
 (defun thepeg-AnalysisHandler-implement (class base)
-  (concat "void " class "::analyze(tEventPtr event, long ieve, int loop, int state) {
+  (concat "
+void " class "::analyze(tEventPtr event, long ieve, int loop, int state) {
   " base "::analyze(event, ieve, loop, state);
   // Rotate to CMS, extract final state particles and call analyze(particles).
 }
@@ -665,6 +675,34 @@ void " class "::analyze(const tPVector & particles) {
 }
 
 void " class "::analyze(tPPtr) {}
+"))
+
+(defun thepeg-Decayer-declare (class base)
+  (concat "
+public:
+
+  virtual bool accept(const DecayMode &) const;
+  // return true if this decayer can perfom the decay specified by the
+  // given decay mode.
+
+  virtual ParticleVector decay(const DecayMode &, const Particle &) const;
+  // for a given decay mode and a given particle instance, perform the
+  // decay and return the decay products.
+
+"))
+
+(defun thepeg-Decayer-implement (class base)
+  (concat "
+bool " class "::accept(const DecayMode & dm) const {
+  return false;
+}
+
+ParticleVector " class "::decay(const DecayMode & dm,
+				  const Particle & parent) const {
+  ParticleVector children = dm.produceProducts();
+  return children;
+}
+
 "))
 
 (defun ThePEG-parameter ()
