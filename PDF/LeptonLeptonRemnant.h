@@ -85,6 +85,9 @@ protected:
 
 private:
 
+  double minX;
+  // The minimum energy fraction allowed for a photon remnant.
+
   PDPtr photon;
   // Easy access to a proton data object.
 

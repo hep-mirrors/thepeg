@@ -164,6 +164,10 @@ private:
   // Add a junction which is a source (or sink if forward). Return the
   // indices of the two connected string pieces.
 
+public:
+
+  class ColourSingletException: public Exception {};
+
 private:
 
   tcPVector thePartons;

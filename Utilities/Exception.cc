@@ -43,6 +43,16 @@ extern "C" {
     using namespace ThePEG;
     cerr << *p;
   }
+  void debugParticles(int n, const ThePEG::Particle ** p) {
+    using namespace ThePEG;
+    LorentzMomentum sum;
+    for ( int i = 0; i < n; i++ ) {
+      cerr << **p;
+      sum += (**p).momentum();
+      ++p;
+    }
+    cerr << sum << '\t' << sum.m() << endl;
+  }
 
 }
 

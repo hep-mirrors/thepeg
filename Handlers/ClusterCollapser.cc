@@ -260,6 +260,8 @@ getCompensators(Energy mh, const ColourSinglet & cs,
 
   LorentzMomentum pcomp;
   LorentzMomentum pc = cs.momentum();
+  // start by only looking at other strings.
+  bool alsoSinglets = false;
   do {
     // Return an empty vector if no particles left.
     if ( compset.empty() ) return ret;
@@ -270,9 +272,18 @@ getCompensators(Energy mh, const ColourSinglet & cs,
     tParticleSet::iterator sel = compset.end();
     for ( tParticleSet::iterator it = compset.begin();
 	  it != compset.end(); ++it ) {
+      if ( !(**it).coloured() && !alsoSinglets ) continue;
       if ( -(pc - (**it).momentum()).m2() < dist ) {
 	dist = -(pc - (**it).momentum()).m2();
 	sel = it;
+      }
+    }
+
+    if ( sel == compset.end() ) {
+      if ( alsoSinglets ) return ret;
+      else {
+	alsoSinglets = true;
+	continue;
       }
     }
 
@@ -282,8 +293,10 @@ getCompensators(Energy mh, const ColourSinglet & cs,
     pcomp += (**sel).momentum();
 
     // If there was not enough energy, find an additional compensator
-    // particle.
-  } while ( (pc + pcomp).m() <= mh + pcomp.m() );
+    // particle. Also check that compensators have mass to avoid boost
+    // problems.
+  } while ( (pc + pcomp).m() <= mh + pcomp.m() ||
+	    ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) );
 
   // Now copy the compensators, add them to the new set and return them.
   ret.resize(comp.size());

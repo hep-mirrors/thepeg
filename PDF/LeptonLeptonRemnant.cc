@@ -14,6 +14,7 @@
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/Utilities/Timer.h"
+#include "ThePEG/Interface/Parameter.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LeptonLeptonRemnant.tcc"
@@ -21,10 +22,11 @@
 
 using namespace ThePEG;
 
-LeptonLeptonRemnant::LeptonLeptonRemnant() {}
+LeptonLeptonRemnant::LeptonLeptonRemnant()
+  : minX(1.0e-10) {}
 
 LeptonLeptonRemnant::LeptonLeptonRemnant(const LeptonLeptonRemnant & x)
-  : RemnantHandler(x), photon(x.photon) {}
+  : RemnantHandler(x), minX(x.minX), photon(x.photon) {}
 
 LeptonLeptonRemnant::~LeptonLeptonRemnant() {}
 
@@ -49,6 +51,10 @@ generate(PartonBinInstance & pb, const double * r,
       (pb.particleData()->name(), pb.partonData()->name(), name(),
        "The remnant handler can only extract leptons from "
        "leptons of the same type.");
+  if ( pb.eps() < minX ) {
+    pb.remnants(PVector());
+    return parent;
+  }
   LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
   TransverseMomentum qt;
   Energy2 qt2 = 0.0*GeV2;
@@ -59,7 +65,7 @@ generate(PartonBinInstance & pb, const double * r,
   }
   Energy pl = p.plus()*pb.eps();
   PPtr rem = 
-    photon->produceParticle(lightCone(pl, qt2/pl, qt));
+    photon->produceParticle(lightCone(pl, qt2/pl, qt), 0.0*GeV);
   rem->rotateY(parent.theta());
   rem->rotateZ(parent.phi());
   pb.remnants(PVector(1, rem));
@@ -74,6 +80,10 @@ generate(PartonBin & pb, const double * r,
       (pb.particle()->name(), pb.parton()->name(), name(),
        "The remnant handler can only extract leptons from "
        "leptons of the same type.");
+  if ( pb.lastPartialEps() < minX ) {
+    pb.lastRemnants(PVector());
+    return parent;
+  }
   LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
   TransverseMomentum qt;
   Energy2 qt2 = 0.0*GeV2;
@@ -84,7 +94,7 @@ generate(PartonBin & pb, const double * r,
   }
   Energy pl = p.plus()*pb.lastPartialEps();
   PPtr rem = 
-    photon->produceParticle(lightCone(pl, qt2/pl, qt));
+    photon->produceParticle(lightCone(pl, qt2/pl, qt), 0.0*GeV);
   rem->rotateY(parent.theta());
   rem->rotateZ(parent.phi());
   pb.lastRemnants(PVector(1, rem));
@@ -102,5 +112,14 @@ void LeptonLeptonRemnant::persistentInput(PersistentIStream & is, int) {
 ClassDescription<LeptonLeptonRemnant>
 LeptonLeptonRemnant::initLeptonLeptonRemnant;
 
-void LeptonLeptonRemnant::Init() {}
+void LeptonLeptonRemnant::Init() {
+
+  static Parameter<LeptonLeptonRemnant,double> interfaceMinX
+    ("MinX",
+     "The minimum energy fraction allowed for a photon remnant. "
+     "If less than this no remnant will be emitted.",
+     &LeptonLeptonRemnant::minX, 1.0e-10, 0.0, 1.0,
+     true, false, true);
+
+}
 

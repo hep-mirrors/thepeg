@@ -65,6 +65,7 @@ public:
 
   PPtr produceParticle(const Lorentz5Momentum &) const;
   PPtr produceParticle(const LorentzMomentum &) const;
+  PPtr produceParticle(const LorentzMomentum &, Energy m) const;
   PPtr produceParticle(const Momentum3 & pp = Momentum3()) const;
   PPtr produceParticle(Energy m, const Momentum3 & pp = Momentum3()) const;
   PPtr produceParticle(Energy plus, Energy minus, Energy px, Energy py) const;

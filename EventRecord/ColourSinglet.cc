@@ -80,6 +80,9 @@ fill(Index s0, bool forward, tcColinePtr cl, tcParticleSet & left) {
 
   // If we get here we have ended up in a colour source or sink.
   tColinePair fork = cl->sourceNeighbours(forward);
+  if ( !fork.first || !fork.second )
+    throw ColourSingletException()
+      << "Inconsistent Colour flow." << Exception::eventerror;
   Junction j = addJunction(s0, forward);
   fill(j.first, !forward, fork.first, left);
   fill(j.second, !forward, fork.second, left);

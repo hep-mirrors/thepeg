@@ -74,8 +74,12 @@ CMSn(Energy m0, const vector<Energy> & m)
       if ( bv.mag2() >= 1.0 ) {
 	continue;
       }
-      LorentzRotation r(bv);
-      for ( int j = i + 1; j < Np; ++j ) ret[j]*=r;
+      if ( i == Np -2 ) {
+	ret[Np - 1] = LorentzMomentum(p3, sqrt(sqr(m[Np - 1]) + p3.mag2()));
+      } else {
+	LorentzRotation r(bv);
+	for ( int j = i + 1; j < Np; ++j ) ret[j]*=r;
+      }
     }
     return ret;
   }

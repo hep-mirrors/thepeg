@@ -326,6 +326,11 @@ PPtr ParticleData::produceParticle(const LorentzMomentum & pp) const {
   return p;
 }
 
+PPtr ParticleData::produceParticle(const LorentzMomentum & pp, Energy m) const {
+  PPtr p(produceParticle(Lorentz5Momentum(pp, m)));
+  return p;
+}
+
 PPtr ParticleData::produceParticle(Energy m, const Momentum3 & pp) const {
   PPtr p(produceParticle(Lorentz5Momentum(m, pp)));
   return p;

@@ -1,3 +1,35 @@
+2003-07-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/SimplePhaseSpace.cc: Set the momentum of the first
+	particle rather than boosting it to avoid problems with massless
+	particles.
+
+	* Makefile: Hid unnecessary output with @.
+
+	* Utilities/UtilityBase.tcc: Fixed imediate returns in case ranges
+	of particles is empty. In setMomentum the boost version is only
+	tried if the invariant mass squared or the mass is non-negative,
+	otherwise the momentum is set directly.
+
+	* Utilities/Exception.cc: Added a debug function to print out a
+	range of particles (and summing their momenta).
+
+	* PDT/ParticleData.h: Added produceParticle method which takes a
+	Lorentz vector and a mass.
+
+	* PDF/LeptonLeptonRemnant.*: Added parameter to veto photon
+	remnants with too small energy fractions. Also the photons mass is
+	properly set to zero.
+
+	* Handlers/ClusterCollapser.cc: The procedure to find particles to
+	compensate with was changed so that coloured particles are tried
+	first and singlets only if the coloured particles were not enough.
+	Also required the compensating particles to have a positive
+	invariant mass squared to avoid boost problems.
+
+	* EventRecord/ColourSinglet.*: Introduced ColourSingletException
+	which is thrown if an inconsistent colour flow is detected.
+
 2003-07-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Exception.cc: Added debug function to print out

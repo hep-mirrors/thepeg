@@ -12,26 +12,26 @@ TAG = ThePEG-$(VERSION)
 all: check
 
 check: setup lib
-	cd src ;  $(MAKE) -$(MAKEFLAGS) check ; cd ..
+	@cd src ;  $(MAKE) -$(MAKEFLAGS) check ; cd ..
 
 lib: setup
-	for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib; cd .. ; done
+	@for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib; cd .. ; done
 
 clean: setup
-	for dir in $(SUBDIRS) lib src; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) clean ; cd .. ; done
+	@for dir in $(SUBDIRS) lib src; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) clean ; cd .. ; done
 
 distclean: setup clean
-	cd src ; $(MAKE) -$(MAKEFLAGS) distclean ; cd .. 
+	@cd src ; $(MAKE) -$(MAKEFLAGS) distclean ; cd .. 
 	rm -f config.cache config.status config.log Config/Makefile.common Config/config.h
 
 depend: setup
-	for dir in $(SUBDIRS) src ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) depend ; cd .. ; done
+	@for dir in $(SUBDIRS) src ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) depend ; cd .. ; done
 
 install: lib
-	for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) -$(MAKEFLAGS) install ; cd .. ; done
+	@for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) -$(MAKEFLAGS) install ; cd .. ; done
 
 doc: setup
-	for dir in $(SUBDIRS) ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) doc ; cd .. ; done
+	@for dir in $(SUBDIRS) ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) doc ; cd .. ; done
 
 setup: Config/Makefile.common Doc/h2html Config/config.h
 

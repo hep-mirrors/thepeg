@@ -46,6 +46,7 @@ LorentzRotation UtilityBase::getBoostFromCM(const pair<PType,PType> & pp) {
 template <typename Iterator>
 LorentzRotation UtilityBase::boostToCM(Iterator first, Iterator last,
 				       Iterator zAxis, Iterator xzPlane) {
+  if ( first == last ) return LorentzRotation();
   LorentzRotation boost(-sumMomentum(first, last).boostVector());
   typedef typename std::iterator_traits<Iterator>::value_type PType;
   typedef ParticleTraits<PType> Traits;
@@ -131,7 +132,8 @@ transformToCMS(const LV & sum, const LV & zAxis, LV xyPlane) {
 template <typename PType>
 void UtilityBase::setMomentum(PType & p, const Momentum3 & q) {
   typedef ParticleTraits<PType> Traits;
-  if ( Traits::mass(p) == 0.0*GeV ) {
+  if ( Traits::momentum(p).m2() <= 0.0*GeV2 ||
+       Traits::mass(p) <= 0.0*GeV ) {
     Traits::set3Momentum(p, q);
   } else {
     Traits::transform(p, transformToCMS(Traits::momentum(p)));
@@ -152,6 +154,7 @@ void UtilityBase::setMomentumFromCMS(PType & p, const Momentum3 & q) {
 
 template <typename Iter>
 void UtilityBase::setMomentum(Iter first, Iter last, const Momentum3 & q) {
+  if ( first == last ) return;
   typedef typename std::iterator_traits<Iter>::value_type PType;
   typedef ParticleTraits<PType> Traits;
   Iter second = first;
@@ -164,6 +167,7 @@ void UtilityBase::setMomentum(Iter first, Iter last, const Momentum3 & q) {
 template <typename Iter>
 void UtilityBase::
 setMomentumFromCMS(Iter first, Iter last, Energy2 m2, const Momentum3 & q) {
+  if ( first == last ) return;
   typedef typename std::iterator_traits<Iter>::value_type PType;
   typedef ParticleTraits<PType> Traits;
   Iter second = first;

@@ -442,6 +442,7 @@ PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp) {
 		    newp->momentum().dirPlus()));
       newpb->l(oldpb->l() - oldpb->li() + newpb->li());
       Energy2 sc = -newp->scale();
+      newpb->scale(newp->scale());
       if ( oldpb->incoming()->incoming() )
 	sc = -newpb->particle()->momentum().m2();
       newpb->remnantWeight(1.0);
