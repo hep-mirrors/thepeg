@@ -116,6 +116,16 @@ struct DiquarkMatcher {
 typedef Matcher<DiquarkMatcher> MatchDiquark;
 // Matches any meson.
 
+struct QuarkMatcher {
+  typedef QuarkMatcher CC;
+  static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  static bool Check(long id) {
+    return id && abs(id) < 10;
+  }
+  static string className() { return "Quark"; }
+};
+typedef Matcher<QuarkMatcher> MatchQuark;
+// Matches any meson.
 
 struct LeptonMatcher {
   typedef LeptonMatcher CC;

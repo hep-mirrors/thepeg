@@ -1,5 +1,11 @@
 2003-07-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* PDT/QuarksToHadronsDecayer.*: Added class for decay of particles
+	to quarks which are then converted to hadrons distributed
+	according to phase space. Not ready yet.
+
+	* PDT/StandardMatchers.h: Added QuarkMatcher.
+
 	* src/ThePEGParticles.in, src/ThePEGDefaults.in,
 	PDT/Onium3GDecayer.*: Added Onium3GDecayer class for decay of
 	spin-1 onia into three gluons or two gluons and a photon. The
