@@ -160,6 +160,29 @@ struct StandardQCDPartonMatcher {
 
 typedef Matcher<StandardQCDPartonMatcher> MatchStandardQCDParton;
 
+struct PseudoScalarMesonMatcher {
+  static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  static bool Check(long id) {
+    return ( (abs(id)/1000)%1 == 0 && abs(id) > 100 && abs(id)%10 == 1 ) ||
+      ( id == ParticleID::K_L0 || id == ParticleID::K_S0 );
+  }
+  static string className() { return "PseudoScalarMeson"; }
+};
+
+typedef Matcher<PseudoScalarMesonMatcher> MatchPseudoScalarMeson;
+
+typedef Matcher<StandardQCDPartonMatcher> MatchStandardQCDParton;
+
+struct VectorMesonMatcher {
+  static bool Check(const ParticleData & pd) { return Check(pd.id()); }
+  static bool Check(long id) {
+    return (abs(id)/1000)%1 == 0 && abs(id) > 100 && abs(id)%10 == 3;
+  }
+  static string className() { return "VectorMeson"; }
+};
+
+typedef Matcher<VectorMesonMatcher> MatchVectorMeson;
+
 }
 
 #endif /* ThePEG_StandardMatchers_H */

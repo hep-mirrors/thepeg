@@ -10,6 +10,11 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/EventRecord/Event.h"
+#include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Handlers/HandlerGroup.h"
+#include "ThePEG/Handlers/Hint.h"
+#include "ThePEG/Handlers/CollisionHandler.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "OmegaPhi3PiDecayer.tcc"
@@ -49,6 +54,12 @@ double OmegaPhi3PiDecayer::reweight(const DecayMode &, const Particle & parent,
     if ( children[i]->id() == ParticleID::pi0 )
       p0 = children[i]->momentum();
   }
+
+//   static bool first = true;
+//   if ( first ) {
+//     first = false;
+//     generator()->currentCollisionHandler()->addStep(Group::main, Group::hadron);
+//   }
 
   return (pp.mass2()*pm.mass2()*p0.mass2() + 2.0*(pp*pm)*(pp*p0)*(pm*p0)
 	  - pp.mass2()*sqr(pm*p0) - pm.mass2()*sqr(pp*p0)

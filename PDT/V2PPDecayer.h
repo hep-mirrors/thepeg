@@ -1,14 +1,17 @@
 // -*- C++ -*-
-#ifndef THEPEG_OmegaPhi3PiDecayer_H
-#define THEPEG_OmegaPhi3PiDecayer_H
+#ifndef THEPEG_V2PPDecayer_H
+#define THEPEG_V2PPDecayer_H
 //
-// This is the declaration of the <!id>OmegaPhi3PiDecayer<!!id> class.
+// This is the declaration of the <!id>V2PPDecayer<!!id> class.
 //
 // CLASSDOC SUBSECTION Description:
 //
-// This class performs the decay of a phi or an omega into pi+ pi-
-// p0. It will in fact decay anything into pi+ pi- p0 assuming the
-// same matrix element.
+// This class performs the decay of a vector meson into two
+// pseudo-scalars according to a flat phase space. If, however the
+// decaying particle comes from a pseudo-scalar and has only one
+// sibling which is a pseudo-scalar (or a photon) the decay is
+// reweighted with cos^2 (sin^2 for photon) of the angle between one
+// of the decay products and its grand parent.
 //
 // CLASSDOC SUBSECTION See also:
 //
@@ -17,18 +20,18 @@
 // 
 
 #include "ThePEG/PDT/FlatDecayer.h"
-// #include "OmegaPhi3PiDecayer.fh"
-// #include "OmegaPhi3PiDecayer.xh"
+// #include "V2PPDecayer.fh"
+// #include "V2PPDecayer.xh"
 
 namespace ThePEG {
 
-class OmegaPhi3PiDecayer: public FlatDecayer {
+class V2PPDecayer: public FlatDecayer {
 
 public:
 
-  inline OmegaPhi3PiDecayer();
-  inline OmegaPhi3PiDecayer(const OmegaPhi3PiDecayer &);
-  virtual ~OmegaPhi3PiDecayer();
+  inline V2PPDecayer();
+  inline V2PPDecayer(const V2PPDecayer &);
+  virtual ~V2PPDecayer();
   // Standard ctors and dtor.
 
 public:
@@ -36,6 +39,10 @@ public:
   virtual bool accept(const DecayMode &) const;
   // return true if this decayer can perfom the decay specified by the
   // given decay mode.
+
+  virtual ParticleVector decay(const DecayMode &, const Particle &) const;
+  // for a given decay mode and a given particle instance, perform the
+  // decay and return the decay products.
 
   inline virtual double reweight(const DecayMode &, const Particle & parent,
 				 const ParticleVector & children) const;
@@ -79,16 +86,18 @@ protected:
 
 private:
 
-  double margin;
-  // Used to multiply the bare weight to get something below unity. In
-  // the Fortran pythia version it was set to 150 for unknown reasons.
+  mutable tPPtr grandParent;
+  // The grand parent in case reweighting should be done.
+
+  mutable tPPtr sibling;
+  // The decaying particles sibling in case reweighting should be done.
 
 private:
 
-  static ClassDescription<OmegaPhi3PiDecayer> initOmegaPhi3PiDecayer;
+  static ClassDescription<V2PPDecayer> initV2PPDecayer;
   // Describe a concrete class with persistent data.
 
-  OmegaPhi3PiDecayer & operator=(const OmegaPhi3PiDecayer &);
+  V2PPDecayer & operator=(const V2PPDecayer &);
   // Private and non-existent assignment operator.
 
 };
@@ -100,20 +109,20 @@ private:
 namespace ThePEG {
 
 // The following template specialization informs ThePEG about the
-// base class of OmegaPhi3PiDecayer.
+// base class of V2PPDecayer.
 template <>
-struct BaseClassTrait<OmegaPhi3PiDecayer,1> {
+struct BaseClassTrait<V2PPDecayer,1> {
   typedef FlatDecayer NthBase;
 };
 
 // The following template specialization informs ThePEG about the
 // name of this class and the shared object where it is defined.
 template <>
-struct ClassTraits<OmegaPhi3PiDecayer>
-  : public ClassTraitsBase<OmegaPhi3PiDecayer> {
-  static string className() { return "/ThePEG/OmegaPhi3PiDecayer"; }
+struct ClassTraits<V2PPDecayer>
+  : public ClassTraitsBase<V2PPDecayer> {
+  static string className() { return "/ThePEG/V2PPDecayer"; }
   // Return the class name.
-  static string library() { return "OmegaPhi3PiDecayer.so"; }
+  static string library() { return "V2PPDecayer.so"; }
   // Return the name of the shared library to be loaded to get
   // access to this class and every other class it uses
   // (except the base class).
@@ -121,9 +130,9 @@ struct ClassTraits<OmegaPhi3PiDecayer>
 
 }
 
-#include "OmegaPhi3PiDecayer.icc"
+#include "V2PPDecayer.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "OmegaPhi3PiDecayer.tcc"
+// #include "V2PPDecayer.tcc"
 #endif
 
-#endif /* THEPEG_OmegaPhi3PiDecayer_H */
+#endif /* THEPEG_V2PPDecayer_H */

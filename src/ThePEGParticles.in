@@ -2288,7 +2288,7 @@ decaymode R0->tau-,tau'+; 0.0 1 /Defaults/Decayers/Flat
 decaymode LQ_ue->u,e-; 1.0 1 /Defaults/Decayers/Flat
 decaymode pi0->gamma,gamma; 0.9880 1 /Defaults/Decayers/Flat
 decaymode pi0->gamma,e-,e+; 0.0120 1 /Dummy/Decayers/PYDECY2
-decaymode rho0->pi+,pi-; 0.9987390 1 /Dummy/Decayers/PYDECY3
+decaymode rho0->pi+,pi-; 0.9987390 1 /Defaults/Decayers/V2PP
 decaymode rho0->pi0,gamma; 0.000790 1 /Defaults/Decayers/Flat
 decaymode rho0->eta,gamma; 0.000380 1 /Defaults/Decayers/Flat
 decaymode rho0->mu-,mu+; 0.0000460 1 /Defaults/Decayers/Flat
@@ -2313,7 +2313,7 @@ decaymode K_L0->pi0,pi0; 0.0010 1 /Defaults/Decayers/Flat
 decaymode K_L0->gamma,gamma; 0.00060 1 /Defaults/Decayers/Flat
 decaymode pi+->mu+,nu_mu; 0.9998770 1 /Defaults/Decayers/Flat
 decaymode pi+->e+,nu_e; 0.0001230 1 /Defaults/Decayers/Flat
-decaymode rho+->pi+,pi0; 0.999550 1 /Dummy/Decayers/PYDECY3
+decaymode rho+->pi+,pi0; 0.999550 1 /Defaults/Decayers/V2PP
 decaymode rho+->pi+,gamma; 0.000450 1 /Defaults/Decayers/Flat
 decaymode a_2+->rho+,pi0; 0.347250 1 /Defaults/Decayers/Flat
 decaymode a_2+->rho0,pi+; 0.347250 1 /Defaults/Decayers/Flat
@@ -2332,7 +2332,7 @@ decaymode eta->gamma,mu-,mu+; 0.00030 1 /Defaults/Decayers/Flat
 decaymode eta->pi0,gamma,gamma; 0.00070 1 /Defaults/Decayers/Flat
 decaymode omega->pi+,pi-,pi0; 0.890 1 /Defaults/Decayers/OmegaPhi3Pi
 decaymode omega->gamma,pi0; 0.086930 1 /Defaults/Decayers/Flat
-decaymode omega->pi+,pi-; 0.02210 1 /Dummy/Decayers/PYDECY3
+decaymode omega->pi+,pi-; 0.02210 1 /Defaults/Decayers/V2PP
 decaymode omega->eta,gamma; 0.000830 1 /Defaults/Decayers/Flat
 decaymode omega->pi0,pi0,gamma; 0.000070 1 /Defaults/Decayers/Flat
 decaymode omega->e-,e+; 0.000070 1 /Defaults/Decayers/Flat
@@ -2349,8 +2349,8 @@ decaymode K_S0->pi+,pi-; 0.68610 1 /Defaults/Decayers/Flat
 decaymode K_S0->pi0,pi0; 0.31390 1 /Defaults/Decayers/Flat
 decaymode K0->K_L0; 0.50 1 /Defaults/Decayers/Flat
 decaymode K0->K_S0; 0.50 1 /Defaults/Decayers/Flat
-decaymode K*0->K+,pi-; 0.6650 1 /Dummy/Decayers/PYDECY3
-decaymode K*0->K0,pi0; 0.3330 1 /Dummy/Decayers/PYDECY3
+decaymode K*0->K+,pi-; 0.6650 1 /Defaults/Decayers/V2PP
+decaymode K*0->K0,pi0; 0.3330 1 /Defaults/Decayers/V2PP
 decaymode K*0->K0,gamma; 0.0020 1 /Defaults/Decayers/Flat
 decaymode K*_20->K+,pi-; 0.3330 1 /Defaults/Decayers/Flat
 decaymode K*_20->K0,pi0; 0.1660 1 /Defaults/Decayers/Flat
@@ -2368,8 +2368,8 @@ decaymode K+->pi+,pi+,pi-; 0.05590 1 /Defaults/Decayers/Flat
 decaymode K+->pi+,pi0,pi0; 0.01730 1 /Defaults/Decayers/Flat
 decaymode K+->nu_e,e+,pi0; 0.04820 1 /Dummy/Decayers/PYDECY42
 decaymode K+->nu_mu,mu+,pi0; 0.03180 1 /Dummy/Decayers/PYDECY42
-decaymode K*+->K0,pi+; 0.6660 1 /Dummy/Decayers/PYDECY3
-decaymode K*+->K+,pi0; 0.3330 1 /Dummy/Decayers/PYDECY3
+decaymode K*+->K0,pi+; 0.6660 1 /Defaults/Decayers/V2PP
+decaymode K*+->K+,pi0; 0.3330 1 /Defaults/Decayers/V2PP
 decaymode K*+->K+,gamma; 0.0010 1 /Defaults/Decayers/Flat
 decaymode K*_2+->K0,pi+; 0.3320 1 /Defaults/Decayers/Flat
 decaymode K*_2+->K+,pi0; 0.1660 1 /Defaults/Decayers/Flat
@@ -2388,8 +2388,8 @@ decaymode eta'->gamma,rho0; 0.3020 1 /Defaults/Decayers/Flat
 decaymode eta'->gamma,omega; 0.03020 1 /Defaults/Decayers/Flat
 decaymode eta'->gamma,gamma; 0.02120 1 /Defaults/Decayers/Flat
 decaymode eta'->pi0,pi0,pi0; 0.00160 1 /Defaults/Decayers/Flat
-decaymode phi->K+,K-; 0.489470 1 /Dummy/Decayers/PYDECY3
-decaymode phi->K_L0,K_S0; 0.340 1 /Dummy/Decayers/PYDECY3
+decaymode phi->K+,K-; 0.489470 1 /Defaults/Decayers/V2PP
+decaymode phi->K_L0,K_S0; 0.340 1 /Defaults/Decayers/V2PP
 decaymode phi->rho-,pi+; 0.0430 1 /Defaults/Decayers/Flat
 decaymode phi->rho0,pi0; 0.0430 1 /Defaults/Decayers/Flat
 decaymode phi->rho+,pi-; 0.0430 1 /Defaults/Decayers/Flat
@@ -2468,8 +2468,8 @@ decaymode D+->Kbar0,rho0,pi+,pi+,pi-; 0.0010 1 /Defaults/Decayers/Flat
 decaymode D+->K-,rho0,pi+,pi+,pi0; 0.00190 1 /Defaults/Decayers/Flat
 decaymode D+->pi+,pi+,pi+,pi-,pi-; 0.00150 1 /Defaults/Decayers/Flat
 decaymode D+->rho0,pi+,pi+,pi-,pi0; 0.00280 1 /Defaults/Decayers/Flat
-decaymode D*+->D0,pi+; 0.6830 1 /Dummy/Decayers/PYDECY3
-decaymode D*+->D+,pi0; 0.3060 1 /Dummy/Decayers/PYDECY3
+decaymode D*+->D0,pi+; 0.6830 1 /Defaults/Decayers/V2PP
+decaymode D*+->D+,pi0; 0.3060 1 /Defaults/Decayers/V2PP
 decaymode D*+->D+,gamma; 0.0110 1 /Defaults/Decayers/Flat
 decaymode D*_2+->D0,pi+; 0.30 1 /Defaults/Decayers/Flat
 decaymode D*_2+->D+,pi0; 0.150 1 /Defaults/Decayers/Flat
@@ -2540,7 +2540,7 @@ decaymode D0->Kbar0,rho0,pi0,pi0,pi0; 0.05110 1 /Defaults/Decayers/Flat
 decaymode D0->pi+,pi+,pi-,pi-,pi0; 0.0170 1 /Defaults/Decayers/Flat
 decaymode D0->rho0,pi+,pi+,pi-,pi-; 0.00040 1 /Defaults/Decayers/Flat
 decaymode D0->K+,K-,pi+,pi-,pi0; 0.00280 1 /Defaults/Decayers/Flat
-decaymode D*0->D0,pi0; 0.6190 1 /Dummy/Decayers/PYDECY3
+decaymode D*0->D0,pi0; 0.6190 1 /Defaults/Decayers/V2PP
 decaymode D*0->D0,gamma; 0.3810 1 /Defaults/Decayers/Flat
 decaymode D*_20->D+,pi-; 0.30 1 /Defaults/Decayers/Flat
 decaymode D*_20->D0,pi0; 0.150 1 /Defaults/Decayers/Flat
