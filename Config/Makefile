@@ -16,7 +16,7 @@ INCLUDEDIR = Config
 
 install-local:
 	mkdir -p $(INSTALLLIB)
-	sed -e s:@:$(INSTALLLIB):g Makefile.install > $(INSTALLLIB)/Makefile
+	sed -e s:@:$(PREFIX)/lib/ThePEG/current:g Makefile.install > $(INSTALLLIB)/Makefile
 	sed -e s:../../ThePEG/lib:$(INSTALLLIB):g -e s:-I../../:-I$(INCLUDEINSTALL):g Makefile.common > $(INSTALLLIB)/Makefile.common
 
 include ../Config/Makefile.common
