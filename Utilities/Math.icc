@@ -5,6 +5,7 @@ namespace ThePEG {
 namespace Math {
 
 inline double exp1m(double x) {
+  using namespace std;
 #ifndef ThePEG_HAS_EXPM1
   return 2.0*std::exp(x/2.0)*std::sinh(-x/2.0);
 #else
@@ -13,6 +14,7 @@ inline double exp1m(double x) {
 }
 
 inline double log1m(double x) {
+  using namespace std;
 #ifndef ThePEG_HAS_LOG1P
   return 2.0*atanh(x/(x-2.0));
 #else
