@@ -97,7 +97,7 @@ public:
    */
   inline tEventPtr event() const;
 
-  /** @name Functions for accessing the <code>Particle</code>s, <code>Step</code>s and <code>SubProcess</code>es of a Collision. */
+  /** @name Functions for accessing particles etc. */
   //@{
   /**
    * Extract particles from this collision which satisfies the
@@ -246,7 +246,7 @@ public:
 
 protected:
 
-  /** @name Internal functions for adding and removing entires in a Collision. */
+  /** @name Internal functions for adding and removing entires. */
   //@{
   /**
    * Add a new Step to this Collision.
@@ -292,7 +292,7 @@ protected:
    * copy is done first, then all <code>Particle</code>s etc, are
    * cloned, and finally this method is used to see to that the
    * pointers in the cloned Collision points to the cloned
-   * <code>particles</code> etc.
+   * <code>Particle</code>s etc.
    */
   void rebind(const EventTranslationMap & trans);
 
@@ -364,7 +364,7 @@ private:
 
 };
 
-  /** Output a Collision to a standard ostream. */
+/** Output a Collision to a standard ostream. */
 ostream & operator<<(ostream &, const Collision &);
 
 
@@ -372,7 +372,7 @@ ostream & operator<<(ostream &, const Collision &);
  *  base class of Collision. */
 template <>
 struct BaseClassTrait<Collision,1> {
-  /** Typedef of the first base class of THECLASS. */
+  /** Typedef of the first base class of Collision. */
   typedef EventRecordBase NthBase;
 };
 

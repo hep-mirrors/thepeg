@@ -1,18 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_EventInfoBase_H
 #define ThePEG_EventInfoBase_H
-//
-// This is the declaration of the <!id>EventInfoBase<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-//
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:.html">.h</a>,
-// <a href="http:.html">.h</a>.
-// 
+// This is the declaration of the EventInfoBase class.
 
 #include "ThePEG/EventRecord/EventConfig.h"
 #include "ThePEG/Utilities/ClassDescription.h"
@@ -21,36 +10,68 @@
 
 namespace ThePEG {
 
+/**
+ * EventInfoBase is a base class for information objects. It is used
+ * as a base class for classes representing user-defined information
+ * which may be associated with a Particle. The class itself is
+ * practically empty. Information added in sub-classes can be accessed
+ * from a Particle by the Particle::getInfo() function and the
+ * resulting pointers need to be dynamically cast to check if they are
+ * of a desired class.
+ */
 class EventInfoBase: public EventRecordBase {
 
 public:
 
+  /**
+   * Default constructor..
+   */
   inline EventInfoBase();
+
+  /**
+   * Copy constructor.
+   */
   inline EventInfoBase(const EventInfoBase &);
+
+  /**
+   * Destructor.
+   */
   virtual ~EventInfoBase();
-  // Standard ctors and dtor.
 
 public:
 
+  /**
+   * Rebind to cloned objects. If an EventInfoBase is cloned together
+   * with a whole Event and this has pointers to other event record
+   * objects, these should be rebound to their clones in this
+   * function.
+   */
   virtual void rebind(const EventTranslationMap & trans);
 
+  /**
+   * Standard Init function. @see Base::Init().
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
+  /**
+   * Standard clone method.
+   */
   inline virtual EIPtr clone() const;
-  // Standard clone method.
 
 private:
 
+  /**
+   * Describe concrete class without persistent data.
+   */
   static NoPIOClassDescription<EventInfoBase> initEventInfoBase;
-  // Describe concrete class without persistent data.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   EventInfoBase & operator=(const EventInfoBase &);
-  //  Private and non-existent assignment operator.
 
 };
 
-// CLASSDOC OFF
 
 ThePEG_DECLARE_CLASS_TRAITS(EventInfoBase,EventRecordBase);
 

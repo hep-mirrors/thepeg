@@ -2,7 +2,7 @@
 #ifndef ThePEG_H
 #define ThePEG_H
 
-/** \file
+/** \file ThePEG.h
  * This is the main config header file for ThePEG. Do not make
  * changes in this file. If you need to modify anything, edit a copy
  * of the file which can be included instead of this file using the
