@@ -197,7 +197,7 @@ protected:
   PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp);
 
   /**
-   * Used by the public newRemnants() for each 0f the parton bins.
+   * Used by the public newRemnants() for each of the parton bins.
    */
   void addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step);
 
