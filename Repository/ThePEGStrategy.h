@@ -12,7 +12,7 @@ namespace ThePEG {
 /**
  * The ThePEGStrategy class is a sub-class of the Strategy class,
  * simply implementing the correct citation for ThePEG in the
- * modelReferences() method.
+ * ClassDocumentation interface.
  *
  * @see Strategy
  * 
@@ -65,9 +65,6 @@ protected:
    */
   inline virtual IBPtr fullclone() const;
   //@}
-
-protected:
-
 
 protected:
 

@@ -438,11 +438,11 @@ private:
 
 namespace ThePEG {
 
-template <>
 /**
  * This template specialization informs ThePEG about the base class of
  * SimpleFlavour.
  */
+template <>
 struct BaseClassTrait<SimpleFlavour,1>: public ClassTraitsType {
   /** Typedef of the base class of SimpleFlavour. */
   typedef FlavourGenerator NthBase;
