@@ -1,0 +1,106 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the CFileLineReader class.
+//
+
+namespace ThePEG {
+
+inline CFileLineReader::CFileLineReader()
+  : file(NULL), bufflen(defsize), buff(new char[defsize]), pos(buff),
+    bad(false), type(unknown) {}
+
+inline CFileLineReader::CFileLineReader(FILE * f, int len)
+  : file(NULL), bufflen(len), buff(new char[len]), pos(buff), bad(false),
+    type(unknown) {
+  setFILE(f);
+}
+
+inline CFileLineReader::CFileLineReader(string filename, int len)
+  : file(NULL), bufflen(len), buff(new char[len]), pos(buff), bad(false),
+    type(unknown) {
+  setFile(filename);
+}
+
+inline void CFileLineReader::setFILE(FILE * f) {
+  close();
+  file = f;
+  pos = buff;
+  bad = false;
+  type = unknown;
+}
+
+inline CFileLineReader::operator void *() {
+  return (void*)(!bad);
+}
+
+inline bool CFileLineReader::operator!() {
+  return bad;
+}
+
+inline  char CFileLineReader::getc() {
+  char c = *pos++;
+  bad = ( *pos == 0 );
+  return c;
+}
+
+inline std::string CFileLineReader::getline() const {
+  return std::string(pos);
+}
+
+inline CFileLineReader & CFileLineReader::operator>>(long & l) {
+  char * next;
+  l = std::strtol(pos, &next, 0);
+  bad = ( next == pos );
+  return *this;
+}
+
+inline  CFileLineReader & CFileLineReader::operator>>(int & i) {
+  char * next;
+  i = int(std::strtol(pos, &next, 0));
+  bad = ( next == pos );
+  return *this;
+}
+
+inline CFileLineReader & CFileLineReader::operator>>(unsigned long & l) {
+  char * next;
+  l = std::strtoul(pos, &next, 0);
+  bad = ( next == pos );
+  return *this;
+}
+
+inline CFileLineReader & CFileLineReader::operator>>(unsigned int & i) {
+  char * next;
+  i = (unsigned int)(std::strtoul(pos, &next, 0));
+  bad = ( next == pos );
+  return *this;
+}
+
+inline CFileLineReader & CFileLineReader::operator>>(double & d) {
+  char * next;
+  d = std::strtod(pos, &next);
+  bad = ( next == pos );
+  return *this;
+}
+
+inline CFileLineReader & CFileLineReader::operator>>(float & f) {
+  char * next;
+  f = float(std::strtod(pos, &next));
+  bad = ( next == pos );
+  return *this;
+}
+
+inline CFileLineReader & CFileLineReader::operator>>(std::string & s) {
+  while ( *pos != 0 && std::isspace(*pos) ) ++pos;
+  bad = ( *pos == 0 );
+  char * first = pos;
+  while ( *pos != 0 && !std::isspace(*pos) ) ++pos;
+  s.assign(first, pos);
+  return *this;
+}
+
+inline FILE * CFileLineReader::cfile() const {
+  return file;
+}
+
+}

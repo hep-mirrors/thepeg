@@ -1,10 +1,10 @@
 SOURCES = SimplePhaseSpace.cc Debug.cc DescriptionList.cc Math.cc \
           Direction.cc DynamicLoader.cc Timer.cc StringUtils.cc \
-          SystemUtils.cc Exception.cc ClassDescription.cc
+          SystemUtils.cc Exception.cc ClassDescription.cc CFileLineReader.cc
 
 OBJECTS = SimplePhaseSpace.o Debug.o DescriptionList.o Math.o Direction.o \
           DynamicLoader.o ClassDescription.o Timer.o StringUtils.o \
-          SystemUtils.o Exception.o
+          SystemUtils.o Exception.o CFileLineReader.o
 
 DEBUGOBJECTS = SimplePhaseSpace.o DynamicLoader.o
 
@@ -13,7 +13,8 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            SimplePhaseSpace.h Triplet.h sstream.h Direction.h UtilityBase.h \
            TypeInfo.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
-           FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h
+           FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h \
+           CFileLineReader.h
 
 INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                ClassDescription.tcc DescriptionList.icc HoldFlag.icc \
@@ -24,7 +25,8 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                TypeInfo.icc DynamicLoader.icc \
                Timer.icc Debug.icc StringUtils.icc SystemUtils.icc \
                Exception.icc Exception.fh Named.icc FixedSizeAllocator.icc \
-               VSelector.icc VSelector.tcc LoopGuard.icc ObjectIndexer.icc
+               VSelector.icc VSelector.tcc LoopGuard.icc ObjectIndexer.icc \
+               CFileLineReader.fh CFileLineReader.icc
 
 DISTFILES = $(INCLUDEFILES) $(SOURCES) Makefile
 
@@ -578,5 +580,41 @@ include ../Config/Makefile.common
   DescriptionList.icc \
   ClassDescription.icc \
   ClassDescription.tcc
+  CFileLineReader.o: \
+  CFileLineReader.cc \
+  CFileLineReader.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Config/config.h \
+  ../../ThePEG/Pointer/Ptr.h \
+  ../../ThePEG/Pointer/RCPtr.fh \
+  ../../ThePEG/Pointer/PtrTraits.h \
+  ../../ThePEG/Pointer/RCPtr.h \
+  ../../ThePEG/Pointer/ReferenceCounted.h \
+  ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/RCPtr.icc \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/Config/Units.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/CLHEP.h \
+  ../../ThePEG/CLHEPWrap/ThreeVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/SystemOfUnits.h \
+  ../../ThePEG/Utilities/UnitIO.h \
+  ../../ThePEG/Config/Constants.h \
+  ../../ThePEG/Config/std.h \
+  ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/Containers.h \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Utilities/Debug.h \
+  ../../ThePEG/Utilities/Debug.icc \
+  ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  CFileLineReader.fh \
+  CFileLineReader.icc
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

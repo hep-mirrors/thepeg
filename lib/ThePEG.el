@@ -535,7 +535,7 @@ using namespace ThePEG;
 #ifndef " NAMESPACE "_THECLASS_H
 #define " NAMESPACE "_THECLASS_H
 //
-// This is the declaration of the <!id>THECLASS<!!id> class.
+// This is the declaration of the THECLASS class.
 //
 
 #include \"" include "\"
@@ -586,7 +586,6 @@ private:
    * In fact, it should not even be implemented.
    */
   THECLASS & operator=(const THECLASS &);
-  // Private and non-existent assignment operator.
 
 };
 

@@ -1,3 +1,10 @@
+2004-09-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/CFileLineReader.*: Added class to read from C FILE
+	streams.
+
+	* lib/ThePEG.el: Cleaned up comments.
+
 2004-09-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* */Makefile:  Modified to fix installation procedures.
