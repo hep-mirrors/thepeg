@@ -303,7 +303,7 @@ namespace ThePEG {
  * SpinInfo.
  */
 template <>
-struct BaseClassTrait<ThePEG::Helicity::SpinInfo,1> {
+struct BaseClassTrait<ThePEG::Helicity::SpinInfo,1>: public ClassTraitsType {
   /** Typedef of the base class of SpinInfo. */
   typedef SpinBase NthBase;
 };

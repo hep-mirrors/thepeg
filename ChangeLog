@@ -1,3 +1,10 @@
+2004-08-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* *** GLOBAL ***: Fixed various doxygen comment issues.
+
+	* Doc/refman.h: Added file with embryo of mainpage reference
+	manual documentation.
+
 2004-08-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Fixed various doxygen comments.

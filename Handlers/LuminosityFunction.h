@@ -149,7 +149,7 @@ private:
  * base class of LuminosityFunction.
  */
 template <>
-struct BaseClassTrait<LuminosityFunction,1> {
+struct BaseClassTrait<LuminosityFunction,1>: public ClassTraitsType {
   /** Typedef of the base class of LuminosityFunction. */
   typedef HandlerBase NthBase;
 };

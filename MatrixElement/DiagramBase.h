@@ -180,7 +180,7 @@ namespace ThePEG {
  * base class of DiagramBase.
  */
 template <>
-struct BaseClassTrait<DiagramBase,1> {
+struct BaseClassTrait<DiagramBase,1>: public ClassTraitsType {
   /** Typedef of the base class of DiagramBase. */
   typedef Base NthBase;
 };

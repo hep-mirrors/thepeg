@@ -164,7 +164,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of StandardRandom. */
 template <>
-struct BaseClassTrait<StandardRandom,1> {
+struct BaseClassTrait<StandardRandom,1>: public ClassTraitsType {
   /** Typedef of the first base class of StandardRandom. */
   typedef RandomGenerator NthBase;
 };

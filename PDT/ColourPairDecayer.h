@@ -186,7 +186,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of ColourPairDecayer. */
 template <>
-struct BaseClassTrait<ColourPairDecayer,1> {
+struct BaseClassTrait<ColourPairDecayer,1>: public ClassTraitsType {
   /** Typedef of the first base class of ColourPairDecayer. */
   typedef FlatDecayer NthBase;
 };

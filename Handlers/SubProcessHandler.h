@@ -251,7 +251,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of SubProcessHandler. */
 template <>
-struct BaseClassTrait<SubProcessHandler,1> {
+struct BaseClassTrait<SubProcessHandler,1>: public ClassTraitsType {
   /** Typedef of the first base class of SubProcessHandler. */
   typedef HandlerBase NthBase;
 };

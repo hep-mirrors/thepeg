@@ -205,7 +205,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of CascadeHandler. */
 template <>
-struct BaseClassTrait<CascadeHandler,1> {
+struct BaseClassTrait<CascadeHandler,1>: public ClassTraitsType {
   /** Typedef of the first base class of CascadeHandler. */
   typedef StepHandler NthBase;
 };

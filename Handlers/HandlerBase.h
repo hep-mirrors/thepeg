@@ -233,7 +233,7 @@ private:
  * base class of HandlerBase.
  */
 template <>
-struct BaseClassTrait<HandlerBase,1> {
+struct BaseClassTrait<HandlerBase,1>: public ClassTraitsType {
   /** Typedef of the base class of HandlerBase. Note that HandlerBaseT
    *  is not treated as a base class in this respect. */
   typedef Interfaced NthBase;

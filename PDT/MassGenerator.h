@@ -125,7 +125,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of MassGenerator. */
 template <>
-struct BaseClassTrait<MassGenerator,1> {
+struct BaseClassTrait<MassGenerator,1>: public ClassTraitsType {
   /** Typedef of the first base class of MassGenerator. */
   typedef Interfaced NthBase;
 };

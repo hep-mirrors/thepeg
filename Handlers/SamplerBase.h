@@ -216,7 +216,7 @@ template <>
  * This template specialization informs ThePEG about the base class of
  * SamplerBase.
  */
-struct BaseClassTrait<SamplerBase,1> {
+struct BaseClassTrait<SamplerBase,1>: public ClassTraitsType {
   /** Typedef of the base class of SamplerBase. */
   typedef Interfaced NthBase;
 };

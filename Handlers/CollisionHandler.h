@@ -398,7 +398,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of CollisionHandler. */
 template <>
-struct BaseClassTrait<CollisionHandler,1> {
+struct BaseClassTrait<CollisionHandler,1>: public ClassTraitsType {
   /** Typedef of the base class of CollisionHandler. */
   typedef PartialCollisionHandler NthBase;
 };

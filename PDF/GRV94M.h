@@ -186,7 +186,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of GRV94M. */
 template <>
-struct BaseClassTrait<GRV94M,1> {
+struct BaseClassTrait<GRV94M,1>: public ClassTraitsType {
   /** Typedef of the first base class of GRV94M. */
   typedef GRVBase NthBase;
 };

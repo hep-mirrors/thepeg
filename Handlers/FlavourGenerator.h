@@ -207,7 +207,7 @@ class FlavourGeneratorException: public Exception {};
  * base class of FlavourGenerator.
  */
 template <>
-struct BaseClassTrait<FlavourGenerator,1> {
+struct BaseClassTrait<FlavourGenerator,1>: public ClassTraitsType {
   /** Typedef of the base class of FlavourGenerator. */
   typedef HandlerBase NthBase;
 };

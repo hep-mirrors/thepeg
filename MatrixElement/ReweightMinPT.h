@@ -156,7 +156,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the
  *  base classes of ReweightMinPT. */
 template <>
-struct BaseClassTrait<ReweightMinPT,1> {
+struct BaseClassTrait<ReweightMinPT,1>: public ClassTraitsType {
   /** Typedef of the first base class of ReweightMinPT. */
   typedef ReweightBase NthBase;
 };

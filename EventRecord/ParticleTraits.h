@@ -23,7 +23,7 @@ template <typename PType>
  * @see Lorentz5Vector
  * 
  */
-struct ParticleTraits {
+struct ParticleTraits: public TraitsType {
 
   /**
    * Return a reference to the particle.
@@ -79,7 +79,7 @@ struct ParticleTraits {
 
 /** Specialization of ParticleTraits for pointer to Particle. */
 template <>
-struct ParticleTraits<PPtr> {
+struct ParticleTraits<PPtr>: public TraitsType {
 
   /**
    * Return a reference to the particle.
@@ -134,7 +134,7 @@ struct ParticleTraits<PPtr> {
 
 /** Specialization of ParticleTraits for pointer to const Particle. */
 template <>
-struct ParticleTraits<cPPtr> {
+struct ParticleTraits<cPPtr>: public TraitsType {
 
   /**
    * Return a const reference to the particle.
@@ -167,7 +167,7 @@ struct ParticleTraits<cPPtr> {
 
 /** Specialization of ParticleTraits for transient pointer to Particle. */
 template <>
-struct ParticleTraits<tPPtr> {
+struct ParticleTraits<tPPtr>: public TraitsType {
 
   /**
    * Return a reference to the particle.
@@ -222,7 +222,7 @@ struct ParticleTraits<tPPtr> {
 
 /** Specialization of ParticleTraits for transient pointer to const Particle. */
 template <>
-struct ParticleTraits<tcPPtr> {
+struct ParticleTraits<tcPPtr>: public TraitsType {
 
   /**
    * Return a const reference to the particle.
@@ -257,7 +257,7 @@ struct ParticleTraits<tcPPtr> {
  *  a LorentzMomentum can be used where only the momentum parts of a
  *  Particle is required. */
 template <>
-struct ParticleTraits<LorentzMomentum> {
+struct ParticleTraits<LorentzMomentum>: public TraitsType {
 
   /**
    * Return a reference to the LorentzMomentum.
@@ -307,7 +307,7 @@ struct ParticleTraits<LorentzMomentum> {
  *  a Lorentz5Momentum can be used where only the momentum parts of a
  *  Particle is required. */
 template <>
-struct ParticleTraits<Lorentz5Momentum> {
+struct ParticleTraits<Lorentz5Momentum>: public TraitsType {
 
   /**
    * Return a reference to the Lorentz5Momentum.

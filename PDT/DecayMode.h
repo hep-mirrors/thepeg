@@ -557,7 +557,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of DecayMode. */
 template <>
-struct BaseClassTrait<DecayMode,1> {
+struct BaseClassTrait<DecayMode,1>: public ClassTraitsType {
   /** Typedef of the first base class of DecayMode. */
   typedef Interfaced NthBase;
 };

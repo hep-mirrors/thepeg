@@ -13,6 +13,12 @@ namespace ThePEG {
  *  mathematical functions. */
 namespace Math {
 
+/**
+ * MathType is an empty non-polymorphic base class for all
+ * mathematical function types.
+ */
+struct MathType {};
+
 /** The gamma function */
 double gamma(double);
 
@@ -70,7 +76,7 @@ inline T absmax(const T & x, const T & y);
 
 /** Templated helper class for calculating integer powers. */
 template <int N, bool Inv>
-struct Power {
+struct Power: public MathType {
   /** The actual function. */
   inline static double pow(double x);
 };
@@ -87,7 +93,7 @@ namespace Functions {
 
 /** Class corresponding to functions of the form \f$x^N\f$ with integer N. */
 template <int N>
-struct PowX {
+struct PowX: public MathType {
 
   /** The primitive function. */
   inline static double primitive(double x);
@@ -104,7 +110,7 @@ struct PowX {
 /** Class corresponding to functions of the form \f$(1-x)^N\f$
  *  with integer N. */
 template <int N>
-struct Pow1mX {
+struct Pow1mX: public MathType {
 
   /** The primitive function. */
   inline static double primitive(double x);
@@ -119,7 +125,7 @@ struct Pow1mX {
 };
 
 /** Class corresponding to functions of the form \f$1/(x(1-x))\f$ */
-struct InvX1mX {
+struct InvX1mX: public MathType {
 
   /** The primitive function. */
   inline static double primitive(double x);
@@ -134,7 +140,7 @@ struct InvX1mX {
 };
 
 /** Class corresponding to functions of the form \f$e^x\f$ */
-struct ExpX {
+struct ExpX: public MathType {
 
   /** The primitive function. */
   inline static double primitive(double x);
@@ -151,7 +157,7 @@ struct ExpX {
 /** Class corresponding to functions of the form \f$x^{N/D}\f$
  *  with integer N and D. */
 template <int N, int D>
-struct FracPowX {
+struct FracPowX: public MathType {
 
   /** The primitive function. */
   inline static double primitive(double x);

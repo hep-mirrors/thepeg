@@ -271,7 +271,7 @@ struct BaryonRemInfo: public RemInfoBase {
 /** This template specialization informs ThePEG about the
  *  base classes of BaryonRemnants. */
 template <>
-struct BaseClassTrait<BaryonRemnants,1> {
+struct BaseClassTrait<BaryonRemnants,1>: public ClassTraitsType {
   /** Typedef of the first base class of BaryonRemnants. */
   typedef RemnantHandler NthBase;
 };

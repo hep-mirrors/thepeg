@@ -289,7 +289,7 @@ private:
  * MECuts.
  */
 template <>
-struct BaseClassTrait<MECuts,1> {
+struct BaseClassTrait<MECuts,1>: public ClassTraitsType {
   /** Typedef of the base class of MECuts. */
   typedef Interfaced NthBase;
 };

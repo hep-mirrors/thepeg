@@ -75,6 +75,14 @@ struct Base: public ReferenceCounted {
 typedef Base PersistentBase;
 
 /**
+ * TraitsType is an empty, non-polymorphic, base class. It is used as
+ * a base class of all traits classes in ThePEG in order to group them
+ * together in the documentation. It currently serves no other
+ * purpose.
+ */
+struct TraitsType {};
+
+/**
  * A standard exception class to be used for vetoing a whole event.
  */
 struct Veto {

@@ -332,7 +332,7 @@ namespace ThePEG {
  * base class of ClusterCollapser.
  */
 template <>
-struct BaseClassTrait<ClusterCollapser,1> {
+struct BaseClassTrait<ClusterCollapser,1>: public ClassTraitsType {
   /** Typedef of the first base class of ClusterCollapser. */
   typedef StepHandler NthBase;
 };

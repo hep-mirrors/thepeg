@@ -187,7 +187,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of ConstituentParticleData. */
 template <>
-struct BaseClassTrait<ConstituentParticleData,1> {
+struct BaseClassTrait<ConstituentParticleData,1>: public ClassTraitsType {
   /** Typedef of the first base class of ConstituentParticleData. */
   typedef ParticleData NthBase;
 };

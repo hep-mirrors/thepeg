@@ -163,7 +163,7 @@ private:
  * base class of FixedCMSLuminosity.
  */
 template <>
-struct BaseClassTrait<FixedCMSLuminosity,1> {
+struct BaseClassTrait<FixedCMSLuminosity,1>: public ClassTraitsType {
   /** Typedef of the base class of FixedCMSLuminosity. */
   typedef LuminosityFunction NthBase;
 };

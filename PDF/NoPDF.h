@@ -149,7 +149,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of NoPDF. */
 template <>
-struct BaseClassTrait<NoPDF,1> {
+struct BaseClassTrait<NoPDF,1>: public ClassTraitsType {
   /** Typedef of the first base class of NoPDF. */
   typedef PDFBase NthBase;
 };

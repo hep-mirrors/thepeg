@@ -92,7 +92,8 @@ namespace ThePEG {
  * ScalarSpinInfo.
  */
 template <>
-struct BaseClassTrait<ThePEG::Helicity::ScalarSpinInfo,1> {
+struct BaseClassTrait<ThePEG::Helicity::ScalarSpinInfo,1>
+  : public ClassTraitsType {
   /** Typedef of the base class of ScalarSpinInfo. */
   typedef ThePEG::Helicity::SpinInfo NthBase;
 };

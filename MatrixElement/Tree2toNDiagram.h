@@ -253,7 +253,7 @@ namespace ThePEG {
  * base class of Tree2toNDiagram.
  */
 template <>
-struct BaseClassTrait<Tree2toNDiagram,1> {
+struct BaseClassTrait<Tree2toNDiagram,1>: public ClassTraitsType {
   /** Typedef of the base class of Tree2toNDiagram. */
   typedef DiagramBase NthBase;
 };

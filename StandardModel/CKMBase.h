@@ -72,7 +72,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of CKMBase. */
 template <>
-struct BaseClassTrait<CKMBase,1> {
+struct BaseClassTrait<CKMBase,1>: public ClassTraitsType {
   /** Typedef of the first base class of CKMBase. */
   typedef Interfaced NthBase;
 };

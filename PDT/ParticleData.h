@@ -840,7 +840,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of ParticleData. */
 template <>
-struct BaseClassTrait<ParticleData,1> {
+struct BaseClassTrait<ParticleData,1>: public ClassTraitsType {
   /** Typedef of the first base class of ParticleData. */
   typedef Interfaced NthBase;
 };

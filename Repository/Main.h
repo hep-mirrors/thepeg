@@ -129,7 +129,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of Main. */
 template <>
-struct BaseClassTrait<Main,1> {
+struct BaseClassTrait<Main,1>: public ClassTraitsType {
   /** Typedef of the first base class of Main. */
   typedef int NthBase;
 };

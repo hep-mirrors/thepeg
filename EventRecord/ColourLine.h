@@ -241,7 +241,7 @@ namespace ThePEG {
  * base class of ColourLine.
  */
 template <>
-struct BaseClassTrait<ColourLine,1> {
+struct BaseClassTrait<ColourLine,1>: public ClassTraitsType {
   /** Typedef of the first base class of ColourLine. */
   typedef EventRecordBase NthBase;
 };

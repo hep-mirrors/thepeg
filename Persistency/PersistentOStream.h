@@ -12,8 +12,8 @@
 
 namespace ThePEG {
 
-/**
- * <code>PersistentOStream</code> is used to write objects persistently
+/** \ingroup Persistency
+ * PersistentOStream is used to write objects persistently
  * to a stream from which they can be read in again with a
  * PersistentIStream. Pointers to objects of classes
  * derived from <code>PersistentBase</code> may be written out if a
@@ -234,7 +234,7 @@ public:
 
 private:
 
-  /**
+  /** \ingroup Persistency
    * Internal exception class.
    */
   struct MissingClass {};

@@ -220,7 +220,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of Onium3GDecayer. */
 template <>
-struct BaseClassTrait<Onium3GDecayer,1> {
+struct BaseClassTrait<Onium3GDecayer,1>: public ClassTraitsType {
   /** Typedef of the first base class of Onium3GDecayer. */
   typedef FlatDecayer NthBase;
 };

@@ -920,7 +920,7 @@ private:
  * base class of KinematicalCuts.
  */
 template <>
-struct BaseClassTrait<KinematicalCuts,1> {
+struct BaseClassTrait<KinematicalCuts,1>: public ClassTraitsType {
   /** Typedef of the base class of KinematicalCuts. */
   typedef Interfaced NthBase;
 };

@@ -443,7 +443,7 @@ template <>
  * This template specialization informs ThePEG about the base class of
  * SimpleFlavour.
  */
-struct BaseClassTrait<SimpleFlavour,1> {
+struct BaseClassTrait<SimpleFlavour,1>: public ClassTraitsType {
   /** Typedef of the base class of SimpleFlavour. */
   typedef FlavourGenerator NthBase;
 };

@@ -103,10 +103,16 @@ private:
 
 };
 
+/**
+ * MatcherType is an empty non-polymorphic base class for all matcher
+ * classes to be used as template argument to Matcher.
+ */
+struct MatcherType {};
+
 /** This partial template specialization informs ThePEG about the base
  *  classes of Matcher<T>. */
 template <typename T>
-struct BaseClassTrait<Matcher<T>,1> {
+struct BaseClassTrait<Matcher<T>,1>: public ClassTraitsType {
   /** Typedef of the first base class of Matcher<T>. */
   typedef MatcherBase NthBase;
 };

@@ -144,7 +144,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of NoRemnants. */
 template <>
-struct BaseClassTrait<NoRemnants,1> {
+struct BaseClassTrait<NoRemnants,1>: public ClassTraitsType {
   /** Typedef of the first base class of NoRemnants. */
   typedef RemnantHandler NthBase;
 };

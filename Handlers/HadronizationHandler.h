@@ -107,7 +107,7 @@ private:
  * base class of HadronizationHandler.
  */
 template <>
-struct BaseClassTrait<HadronizationHandler,1> {
+struct BaseClassTrait<HadronizationHandler,1>: public ClassTraitsType {
   /** Typedef of the base class of HadronizationHandler. */
   typedef StepHandler NthBase;
 };

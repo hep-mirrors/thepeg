@@ -129,7 +129,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of ThePEGStrategy. */
 template <>
-struct BaseClassTrait<ThePEGStrategy,1> {
+struct BaseClassTrait<ThePEGStrategy,1>: public ClassTraitsType {
   /** Typedef of the first base class of ThePEGStrategy. */
   typedef Strategy NthBase;
 };

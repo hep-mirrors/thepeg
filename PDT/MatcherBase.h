@@ -390,7 +390,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of MatcherBase. */
 template <>
-struct BaseClassTrait<MatcherBase,1> {
+struct BaseClassTrait<MatcherBase,1>: public ClassTraitsType {
   /** Typedef of the first base class of MatcherBase. */
   typedef Interfaced NthBase;
 };

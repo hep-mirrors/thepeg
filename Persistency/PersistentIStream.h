@@ -12,16 +12,17 @@
 
 namespace ThePEG {
 
-/**
- * Read persistent objects from a stream where they were previously
- * written using PersistentOStream. Basic types and
- * pointers to objects derived from <code>PersistentBase</code> should
- * be read in the same order they were written out. If
- * <code>pedantic()</code> is true the same classes that were written out
- * must be present in the current program. If <code>pedantic()</code> is
- * false anf if an object is read for which only a base class is present
- * in the current program, only the parts corresponding to the base
- * class will be read, and the rest will be gracefully skipped.
+/** \ingroup Persistency
+ * PersistentIStream is used to read persistent objects from a stream
+ * where they were previously written using PersistentOStream. Basic
+ * types and pointers to objects derived from
+ * <code>PersistentBase</code> should be read in the same order they
+ * were written out. If <code>pedantic()</code> is true the same
+ * classes that were written out must be present in the current
+ * program. If <code>pedantic()</code> is false anf if an object is
+ * read for which only a base class is present in the current program,
+ * only the parts corresponding to the base class will be read, and
+ * the rest will be gracefully skipped.
  *
  * Each base class of a given object will be asked to read its
  * members from the stream starting from the least derived class going to
@@ -247,17 +248,16 @@ public:
 
 private:
 
-  /** @name Internal exception classes. */
-  //@{
-  /** Thrown if a class is missing */
+  /** \ingroup Persistency Thrown if a class is missing */
   struct MissingClass {};
 
-  /** Thrown if an object which should have been read in is missing. */
+  /** \ingroup Persistency Thrown if an object which should have been
+      read in is missing. */
   struct MissingObject {};
 
-  /** Thrown if reading from the stream failed for some reason. */
+  /** \ingroup Persistency Thrown if reading from the stream failed
+      for some reason. */
   struct ReadFailior {};
-  //@}
 
   /**
    * Internal initialization.

@@ -227,7 +227,7 @@ namespace ThePEG {
  * base class of ACDCSampler.
  */
 template <>
-struct BaseClassTrait<ACDCSampler,1> {
+struct BaseClassTrait<ACDCSampler,1>: public ClassTraitsType {
   /** Typedef of the first base class of ACDCSampler. */
   typedef SamplerBase NthBase;
 };
@@ -258,7 +258,7 @@ namespace ACDCGenerator {
  * EventHandler object to be sampled by ACDCGen.
  */
 template <>
-struct ACDCFncTraits<ThePEG::tEHPtr> {
+struct ACDCFncTraits<ThePEG::tEHPtr>: public ACDCTraitsType {
   /** Convenient typdef. */
   typedef ThePEG::tEHPtr tEHPtr;
   /**
@@ -287,7 +287,7 @@ struct ACDCFncTraits<ThePEG::tEHPtr> {
 /** Specialized Traits class to inform ACDCGen how to use the
     RandomGenerator class. */
 template <>
-struct ACDCRandomTraits<ThePEG::RandomGenerator> {
+struct ACDCRandomTraits<ThePEG::RandomGenerator>: public ACDCTraitsType {
   /** Convenient typedef. */
   typedef ThePEG::RandomGenerator RandomGenerator;
 

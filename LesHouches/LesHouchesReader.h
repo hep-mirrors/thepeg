@@ -416,7 +416,7 @@ namespace ThePEG {
  * base class of LesHouchesReader.
  */
 template <>
-struct BaseClassTrait<LesHouchesReader,1> {
+struct BaseClassTrait<LesHouchesReader,1>: public ClassTraitsType {
   /** Typedef of the base class of LesHouchesReader. */
   typedef HandlerBase NthBase;
 };

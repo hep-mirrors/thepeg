@@ -81,7 +81,7 @@ private:
  * ZGenerator.
  */
 template <>
-struct BaseClassTrait<ZGenerator,1> {
+struct BaseClassTrait<ZGenerator,1>: public ClassTraitsType {
   /** Typedef of the base class of ZGenerator. */
   typedef HandlerBase NthBase;
 };

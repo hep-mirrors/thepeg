@@ -207,7 +207,7 @@ public:
  * base class of Interfaced.
  */
 template <>
-struct BaseClassTrait<Interfaced,1> {
+struct BaseClassTrait<Interfaced,1>: public ClassTraitsType {
   /** Typedef of the base class of Interfaced. */
   typedef InterfacedBase NthBase;
 };

@@ -188,7 +188,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of PYDECYDummy. */
 template <>
-struct BaseClassTrait<PYDECYDummy,1> {
+struct BaseClassTrait<PYDECYDummy,1>: public ClassTraitsType {
   /** Typedef of the first base class of PYDECYDummy. */
   typedef Decayer NthBase;
 };

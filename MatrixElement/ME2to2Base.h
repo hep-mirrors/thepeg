@@ -234,7 +234,7 @@ namespace ThePEG {
  * base class of ME2to2Base.
  */
 template <>
-struct BaseClassTrait<ME2to2Base,1> {
+struct BaseClassTrait<ME2to2Base,1>: public ClassTraitsType {
   /** Typedef of the base class of ME2to2Base. */
   typedef MEBase NthBase;
 };

@@ -132,7 +132,7 @@ private:
  * base class of EventManipulator.
  */
 template <>
-struct BaseClassTrait<EventManipulator,1> {
+struct BaseClassTrait<EventManipulator,1>: public ClassTraitsType {
   /** Typedef of the base class of EventManipulator. */
   typedef Interfaced NthBase;
 };

@@ -370,7 +370,7 @@ protected:
  * base class of InterfacedBase.
  */
 template <>
-struct BaseClassTrait<InterfacedBase,1> {
+struct BaseClassTrait<InterfacedBase,1>: public ClassTraitsType {
   /** Typedef of the base class of InterfacedBase. */
   typedef PersistentBase NthBase;
 };

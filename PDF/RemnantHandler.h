@@ -200,7 +200,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of RemnantHandler. */
 template <>
-struct BaseClassTrait<RemnantHandler,1> {
+struct BaseClassTrait<RemnantHandler,1>: public ClassTraitsType {
   /** Typedef of the first base class of RemnantHandler. */
   typedef HandlerBase NthBase;
 };

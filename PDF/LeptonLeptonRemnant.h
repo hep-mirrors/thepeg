@@ -178,7 +178,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of LeptonLeptonRemnant. */
 template <>
-struct BaseClassTrait<LeptonLeptonRemnant,1> {
+struct BaseClassTrait<LeptonLeptonRemnant,1>: public ClassTraitsType {
   /** Typedef of the first base class of LeptonLeptonRemnant. */
   typedef RemnantHandler NthBase;
 };

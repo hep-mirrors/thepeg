@@ -10,11 +10,10 @@
 
 namespace ThePEG {
 
-/**
- * <code>InputDescription</code> objects are used by the
- * PersistentIStream class to keep track of all
- * classes it has read from a stream. It keeps a pointer to the
- * corresponding ClassDescription in case the class
+/** \ingroup Persistency
+ * InputDescription objects are used by the PersistentIStream class to
+ * keep track of all classes it has read from a stream. It keeps a
+ * pointer to the corresponding ClassDescription in case the class
  * read in was actually present in the current program, a version
  * number of the read class which may be different from the class
  * present in the current program and a list of base class

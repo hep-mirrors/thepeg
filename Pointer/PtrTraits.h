@@ -7,6 +7,12 @@ namespace ThePEG {
 namespace Pointer {
 
 /**
+ * PtrTraitsType is an empty non-polymorphic base class for all
+ * PtrTraits classes.
+ */
+struct PtrTraitsType {};
+
+/**
  * The PtrTraits class is used everywhere in ThePEG to
  * interface to the pointers which are handled. In particular, ThePEG
  * never uses new or delete but always
@@ -23,13 +29,13 @@ namespace Pointer {
  *
  */
 template <class T>
-struct PtrTraits {};
+struct PtrTraits: public PtrTraitsType {};
 
 /**
  * Specialization of the PtrTraits class for standard bare pointers.
  */
 template <class T>
-struct PtrTraits<T *> {
+struct PtrTraits<T *>: public PtrTraitsType {
 
   /** Template argument typedef. */
   typedef T value_type;
@@ -90,7 +96,7 @@ struct PtrTraits<T *> {
  * const pointers.
  */
 template <class T>
-struct PtrTraits<const T *> {
+struct PtrTraits<const T *>: public PtrTraitsType {
 
   /** Template argument typedef. */
   typedef T value_type;

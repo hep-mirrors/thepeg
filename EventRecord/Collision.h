@@ -371,7 +371,7 @@ ostream & operator<<(ostream &, const Collision &);
 /** This template specialization informs ThePEG about the
  *  base class of Collision. */
 template <>
-struct BaseClassTrait<Collision,1> {
+struct BaseClassTrait<Collision,1>: public ClassTraitsType {
   /** Typedef of the first base class of Collision. */
   typedef EventRecordBase NthBase;
 };

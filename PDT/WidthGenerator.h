@@ -112,7 +112,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of WidthGenerator. */
 template <>
-struct BaseClassTrait<WidthGenerator,1> {
+struct BaseClassTrait<WidthGenerator,1>: public ClassTraitsType {
   /** Typedef of the first base class of WidthGenerator. */
   typedef Interfaced NthBase;
 };

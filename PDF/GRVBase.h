@@ -413,7 +413,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of GRVBase. */
 template <>
-struct BaseClassTrait<GRVBase,1> {
+struct BaseClassTrait<GRVBase,1>: public ClassTraitsType {
   /** Typedef of the first base class of GRVBase. */
   typedef PDFBase NthBase;
 };

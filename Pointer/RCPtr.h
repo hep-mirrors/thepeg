@@ -706,7 +706,7 @@ private:
  * Specialization of the PtrTraits class for RCPtr.
  */
 template <typename T>
-struct PtrTraits< RCPtr<T> > {
+struct PtrTraits< RCPtr<T> >: public PtrTraitsType {
 
   /** Template argument typedef. */
   typedef typename RCPtr<T>::value_type value_type;
@@ -781,7 +781,7 @@ struct PtrTraits< RCPtr<T> > {
  * Specialization of the PtrTraits class for ConstRCPtr.
  */
 template <typename T>
-struct PtrTraits< ConstRCPtr<T> > {
+struct PtrTraits< ConstRCPtr<T> >: public PtrTraitsType {
 
   /** Template argument typedef. */
   typedef typename ConstRCPtr<T>::value_type value_type;
@@ -862,7 +862,7 @@ struct PtrTraits< ConstRCPtr<T> > {
  * Specialization of the PtrTraits class for TransientRCPtr.
  */
 template <typename T>
-struct PtrTraits< TransientRCPtr<T> > {
+struct PtrTraits< TransientRCPtr<T> >: public PtrTraitsType {
 
   /** Template argument typedef. */
   typedef typename TransientRCPtr<T>::value_type value_type;
@@ -928,7 +928,7 @@ struct PtrTraits< TransientRCPtr<T> > {
  * Specialization of the PtrTraits class for TransientConstRCPtr.
  */
 template <typename T>
-struct PtrTraits< TransientConstRCPtr<T> > {
+struct PtrTraits< TransientConstRCPtr<T> >: public PtrTraitsType {
 
   /** Template argument typedef. */
   typedef typename TransientConstRCPtr<T>::value_type value_type;

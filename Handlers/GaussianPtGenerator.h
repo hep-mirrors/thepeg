@@ -174,7 +174,7 @@ namespace ThePEG {
  * base class of GaussianPtGenerator.
  */
 template <>
-struct BaseClassTrait<GaussianPtGenerator,1> {
+struct BaseClassTrait<GaussianPtGenerator,1>: public ClassTraitsType {
   /** Typedef of the base class of GaussianPtGenerator. */
   typedef PtGenerator NthBase;
 };

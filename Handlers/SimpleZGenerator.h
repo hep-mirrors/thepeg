@@ -165,7 +165,7 @@ namespace ThePEG {
  * SimpleZGenerator.
  */
 template <>
-struct BaseClassTrait<SimpleZGenerator,1> {
+struct BaseClassTrait<SimpleZGenerator,1>: public ClassTraitsType {
   /** Typedef of the base class of SimpleZGenerator. */
   typedef ZGenerator NthBase;
 };

@@ -80,7 +80,7 @@ private:
  * base class of PtGenerator.
  */
 template <>
-struct BaseClassTrait<PtGenerator,1> {
+struct BaseClassTrait<PtGenerator,1>: public ClassTraitsType {
   /** Typedef of the base class of PtGenerator. */
   typedef HandlerBase NthBase;
 };

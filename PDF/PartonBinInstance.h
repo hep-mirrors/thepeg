@@ -402,7 +402,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of PartonBinInstance. */
 template <>
-struct BaseClassTrait<PartonBinInstance,1> {
+struct BaseClassTrait<PartonBinInstance,1>: public ClassTraitsType {
   /** Typedef of the first base class of PartonBinInstance. */
   typedef Base NthBase;
 };

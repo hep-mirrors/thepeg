@@ -216,7 +216,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of MultiEventGenerator. */
 template <>
-struct BaseClassTrait<MultiEventGenerator,1> {
+struct BaseClassTrait<MultiEventGenerator,1>: public ClassTraitsType {
   /** Typedef of the first base class of MultiEventGenerator. */
   typedef FullEventGenerator NthBase;
 };

@@ -169,7 +169,7 @@ namespace ThePEG {
  * base class of MadGraphReader.
  */
 template <>
-struct BaseClassTrait<MadGraphReader,1> {
+struct BaseClassTrait<MadGraphReader,1>: public ClassTraitsType {
   /** Typedef of the base class of MadGraphReader. */
   typedef LesHouchesFileReader NthBase;
 };

@@ -147,7 +147,8 @@ namespace ThePEG {
  * FermionSpinInfo.
  */
 template <>
-struct BaseClassTrait<ThePEG::Helicity::FermionSpinInfo,1> {
+struct BaseClassTrait<ThePEG::Helicity::FermionSpinInfo,1>
+  : public ClassTraitsType {
   /** Typedef of the base class of FermionSpinInfo. */
   typedef ThePEG::Helicity::SpinInfo NthBase;
 };

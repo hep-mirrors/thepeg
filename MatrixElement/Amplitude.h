@@ -184,7 +184,7 @@ namespace ThePEG {
  * base class of Amplitude.
  */
 template <>
-struct BaseClassTrait<Amplitude,1> {
+struct BaseClassTrait<Amplitude,1>: public ClassTraitsType {
   /** Typedef of the base class of Amplitude. */
   typedef HandlerBase NthBase;
 };

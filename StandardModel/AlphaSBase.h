@@ -164,7 +164,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of AlphaSBase. */
 template <>
-struct BaseClassTrait<AlphaSBase,1> {
+struct BaseClassTrait<AlphaSBase,1>: public ClassTraitsType {
   /** Typedef of the first base class of AlphaSBase. */
   typedef Interfaced NthBase;
 };

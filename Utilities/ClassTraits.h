@@ -15,6 +15,14 @@
 namespace ThePEG {
 
 /**
+ * ClassTraitsType is an empty, non-polymorphic, base class. It is
+ * used as a base class of all class traits classes in order to group
+ * them together in the documentation. It currently serves no other
+ * purpose.
+ */
+struct ClassTraitsType: public TraitsType {};
+
+/**
  * The templated ClassTraitsBase class defines a set of default
  * information about classes used by ThePEG. By default, the
  * ClassTraits simply inherits from ClassTraitsBase, but it can be
@@ -34,7 +42,7 @@ namespace ThePEG {
  * @see PersistentIStream.
  */
 template <typename T>
-struct ClassTraitsBase {
+struct ClassTraitsBase: public ClassTraitsType {
 
   ThePEG_DECLARE_TEMPLATE_POINTERS(T,TPtr);
   ThePEG_DECLARE_POINTERS(Base,BPtr);
@@ -119,7 +127,8 @@ struct ClassTraits: public ClassTraitsBase<T> {};
  * class and so on. The typedef defaults to <code>int</code> which means
  * no base class.
  */
-template <typename Derived, int BaseN> struct BaseClassTrait {
+template <typename Derived, int BaseN>
+struct BaseClassTrait: public ClassTraitsType {
   /**
    * The type of the <code>BaseN</code>'th base class (int means there
    * are no further base classes).
@@ -138,7 +147,7 @@ template <typename Derived, int BaseN> struct BaseClassTrait {
 /** This template specialization informs ThePEG about the                  \
  *  base classes of Class. */                                              \
 template <>                                                                \
-struct BaseClassTrait<Class,1> {                                           \
+struct BaseClassTrait<Class,1>: public ClassTraitsType {                   \
   /** Typedef of the first base class of Class. */                         \
   typedef Base NthBase;                                                    \
 };                                                                         \
@@ -147,14 +156,14 @@ struct BaseClassTrait<Class,1> {                                           \
 /** This template specialization informs ThePEG about the                  \
  *  base classes of Class. */                                              \
 template <>                                                                \
-struct BaseClassTrait<Class,1> {                                           \
+struct BaseClassTrait<Class,1>: public ClassTraitsType {                   \
   /** Typedef of the first base class of Class. */                         \
   typedef Base1 NthBase;                                                   \
 };                                                                         \
 /** This template specialization informs ThePEG about the                  \
  *  base classes of Class. */                                              \
 template <>                                                                \
-struct BaseClassTrait<Class,2> {                                           \
+struct BaseClassTrait<Class,2>: public ClassTraitsType {                   \
   /** Typedef of the second base class of Class. */                        \
   typedef Base2 NthBase;                                                   \
 };                                                                         \

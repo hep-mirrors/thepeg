@@ -190,7 +190,7 @@ namespace ThePEG {
  * base class of LesHouchesFileReader.
  */
 template <>
-struct BaseClassTrait<LesHouchesFileReader,1> {
+struct BaseClassTrait<LesHouchesFileReader,1>: public ClassTraitsType {
   /** Typedef of the base class of LesHouchesFileReader. */
   typedef LesHouchesReader NthBase;
 };

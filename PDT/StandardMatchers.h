@@ -24,12 +24,10 @@ namespace ThePEG {
  * @see MatcherBase.
  */
 
-
-
 /**
  * A Matcher class which matches any particle.
  */
-struct AnyMatcher {
+struct AnyMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef AnyMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -47,7 +45,7 @@ typedef Matcher<AnyMatcher> MatchAny;
 /**
  * A Matcher class which matches any charged particle.
  */
-struct ChargedMatcher {
+struct ChargedMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef ChargedMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -66,7 +64,7 @@ struct NegativeMatcher;
 /**
  * A Matcher class which matches any positively charged particle.
  */
-struct PositiveMatcher {
+struct PositiveMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef NegativeMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -84,7 +82,7 @@ typedef Matcher<PositiveMatcher> MatchPositive;
 /**
  * A Matcher class which matches any uncharged particle.
  */
-struct NeutralMatcher {
+struct NeutralMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef NeutralMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -101,7 +99,7 @@ typedef Matcher<NeutralMatcher> MatchNeutral;
 /**
  * A Matcher class which matches any negatively charged particle.
  */
-struct NegativeMatcher {
+struct NegativeMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef PositiveMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -118,7 +116,7 @@ typedef Matcher<NegativeMatcher> MatchNegative;
 /**
  * A Matcher class which matches any baryon.
  */
-struct BaryonMatcher {
+struct BaryonMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef BaryonMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -139,7 +137,7 @@ typedef Matcher<BaryonMatcher> MatchBaryon;
 /**
  * A Matcher class which matches any meson.
  */
-struct MesonMatcher {
+struct MesonMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef MesonMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -160,7 +158,7 @@ typedef Matcher<MesonMatcher> MatchMeson;
 /**
  * A Matcher class which matches any (anti-)diquark.
  */
-struct DiquarkMatcher {
+struct DiquarkMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef DiquarkMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -180,7 +178,7 @@ typedef Matcher<DiquarkMatcher> MatchDiquark;
 /**
  * A Matcher class which matches any (anti-)quark.
  */
-struct QuarkMatcher {
+struct QuarkMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef QuarkMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -200,7 +198,7 @@ typedef Matcher<QuarkMatcher> MatchQuark;
 /**
  * A Matcher class which matches any lepton.
  */
-struct LeptonMatcher {
+struct LeptonMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef LeptonMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -222,7 +220,7 @@ struct LightAntiQuarkMatcher;
 /**
  * A Matcher class which matches any light quark (d,u or s).
  */
-struct LightQuarkMatcher {
+struct LightQuarkMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef LightAntiQuarkMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -245,7 +243,7 @@ typedef Matcher<LightQuarkMatcher> MatchLightQuark;
  * (\f$\bar{\mbox{d}}\f$,\f$\bar{\mbox{u}}\f$ or
  * \f$\bar{\mbox{s}}\f$).
  */
-struct LightAntiQuarkMatcher {
+struct LightAntiQuarkMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef LightQuarkMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -266,7 +264,7 @@ typedef Matcher<LightAntiQuarkMatcher> MatchLightAntiQuark;
  * A Matcher class which matches any standard QCD parton, ie. gluons
  * and quarks up to bottom.
  */
-struct StandardQCDPartonMatcher {
+struct StandardQCDPartonMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef StandardQCDPartonMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -287,7 +285,7 @@ typedef Matcher<StandardQCDPartonMatcher> MatchStandardQCDParton;
 /**
  * A Matcher class which matches any pseudo scalar meson.
  */
-struct PseudoScalarMesonMatcher {
+struct PseudoScalarMesonMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef PseudoScalarMesonMatcher CC;
   /** The main static function to check if a given particle type \a pd
@@ -310,7 +308,7 @@ typedef Matcher<PseudoScalarMesonMatcher> MatchPseudoScalarMeson;
 /**
  * A Matcher class which matches any vector meson.
  */
-struct VectorMesonMatcher {
+struct VectorMesonMatcher: public MatcherType {
   /** Typedef the class matching the complex conjugate particles. */
   typedef VectorMesonMatcher CC;
   /** The main static function to check if a given particle type \a pd

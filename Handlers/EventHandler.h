@@ -284,7 +284,7 @@ private:
  * base class of EventHandler.
  */
 template <>
-struct BaseClassTrait<EventHandler,1> {
+struct BaseClassTrait<EventHandler,1>: public ClassTraitsType {
   /** Typedef of the base class of EventHandler. */
   typedef CollisionHandler NthBase;
 };

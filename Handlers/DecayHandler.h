@@ -177,7 +177,7 @@ private:
  * base class of DecayHandler.
  */
 template <>
-struct BaseClassTrait<DecayHandler,1> {
+struct BaseClassTrait<DecayHandler,1>: public ClassTraitsType {
   /** Typedef of the base class of DecayHandler. */
   typedef StepHandler NthBase;
 };

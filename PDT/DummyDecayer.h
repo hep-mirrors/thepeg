@@ -174,7 +174,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of DummyDecayer. */
 template <>
-struct BaseClassTrait<DummyDecayer,1> {
+struct BaseClassTrait<DummyDecayer,1>: public ClassTraitsType {
   /** Typedef of the first base class of DummyDecayer. */
   typedef Decayer NthBase;
 };

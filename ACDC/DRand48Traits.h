@@ -15,7 +15,7 @@ struct DRAND48 {};
  * random number generator.
  */
 template <>
-struct ACDCRandomTraits<DRAND48> {
+struct ACDCRandomTraits<DRAND48>: public ACDCTraitsType {
 
   /**
    * Return a flat random number in the interval ]0,1[.

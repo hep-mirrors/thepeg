@@ -164,7 +164,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the
  *  base classes of MEGG2GG. */
 template <>
-struct BaseClassTrait<MEGG2GG,1> {
+struct BaseClassTrait<MEGG2GG,1>: public ClassTraitsType {
   /** Typedef of the first base class of MEGG2GG. */
   typedef ME2to2QCD NthBase;
 };

@@ -5,6 +5,12 @@
 namespace ACDCGenerator {
 
 /**
+ * ACDCTraitsType is an empty non-polymorphic base class for all
+ * traits classes in ACDCGenerator.
+ */
+struct ACDCTraitsType {};
+
+/**
  * ACDCFncTraits defines the interface to functions to be sampled by
  * ACDCGen. It only defines one function which defines how the
  * functions are called. If the default implementation is not
@@ -12,7 +18,7 @@ namespace ACDCGenerator {
  * implementing a function with the same signature.
  */
 template <typename FncPtr>
-struct ACDCFncTraits {
+struct ACDCFncTraits: public ACDCTraitsType {
 
   /**
    * Call a function to be sampled by ACDCGen.
@@ -31,7 +37,7 @@ struct ACDCFncTraits {
  * long as functions with the same signature are present.
  */
 template <typename Rnd>
-struct ACDCRandomTraits {
+struct ACDCRandomTraits: public ACDCTraitsType {
 
   /**
    * Return a flat random number in the interval ]0,1[.

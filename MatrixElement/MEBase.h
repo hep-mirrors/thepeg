@@ -417,7 +417,7 @@ namespace ThePEG {
  * MEBase.
  */
 template <>
-struct BaseClassTrait<MEBase,1> {
+struct BaseClassTrait<MEBase,1>: public ClassTraitsType {
   /** Typedef of the base class of MEBase. */
   typedef HandlerBase NthBase;
 };

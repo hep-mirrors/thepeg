@@ -162,7 +162,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of Decayer. */
 template <>
-struct BaseClassTrait<Decayer,1> {
+struct BaseClassTrait<Decayer,1>: public ClassTraitsType {
   /** Typedef of the first base class of Decayer. */
   typedef HandlerBase NthBase;
 };

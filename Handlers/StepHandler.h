@@ -192,7 +192,7 @@ private:
  * StepHandler.
  */
 template <>
-struct BaseClassTrait<StepHandler,1> {
+struct BaseClassTrait<StepHandler,1>: public ClassTraitsType {
   /** Typedef of the base class of StepHandler. */
   typedef HandlerBase NthBase;
 };

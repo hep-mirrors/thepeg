@@ -171,7 +171,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of LeptonLeptonPDF. */
 template <>
-struct BaseClassTrait<LeptonLeptonPDF,1> {
+struct BaseClassTrait<LeptonLeptonPDF,1>: public ClassTraitsType {
   /** Typedef of the first base class of LeptonLeptonPDF. */
   typedef PDFBase NthBase;
 };

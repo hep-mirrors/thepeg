@@ -619,7 +619,7 @@ private:
  * XComb.
  */
 template <>
-struct BaseClassTrait<XComb,1> {
+struct BaseClassTrait<XComb,1>: public ClassTraitsType {
   /** Typedef of the base class of XComb. */
   typedef Base NthBase;
 };

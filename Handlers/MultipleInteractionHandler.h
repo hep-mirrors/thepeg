@@ -107,7 +107,7 @@ private:
  * base class of MultipleInteractionHandler.
  */
 template <>
-struct BaseClassTrait<MultipleInteractionHandler,1> {
+struct BaseClassTrait<MultipleInteractionHandler,1>: public ClassTraitsType {
   /** Typedef of the base class of MultipleInteractionHandler. */
   typedef StepHandler NthBase;
 };

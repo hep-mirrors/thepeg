@@ -972,7 +972,7 @@ ostream & operator<<(ostream &, const Particle &);
 /** This template specialization informs ThePEG about the
  *  base class of Particle. */
 template <>
-struct BaseClassTrait<Particle,1> {
+struct BaseClassTrait<Particle,1>: public ClassTraitsType {
   /** Typedef of the first base class of Collision. */
   typedef EventRecordBase NthBase;
 };

@@ -256,7 +256,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of PartonBin. */
 template <>
-struct BaseClassTrait<PartonBin,1> {
+struct BaseClassTrait<PartonBin,1>: public ClassTraitsType {
   /** Typedef of the first base class of PartonBin. */
   typedef Base NthBase;
 };

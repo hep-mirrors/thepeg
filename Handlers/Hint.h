@@ -176,7 +176,7 @@ private:
  * base class of Hint.
  */
 template <>
-struct BaseClassTrait<Hint,1> {
+struct BaseClassTrait<Hint,1>: public ClassTraitsType {
   /** Typedef of the base class of Hint. */
   typedef Base NthBase;
 };

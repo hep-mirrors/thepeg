@@ -191,7 +191,7 @@ private:
 /** This template specialization informs ThePEG about the base classes
  *  of O1AlphaS. */
 template <>
-struct BaseClassTrait<O1AlphaS,1> {
+struct BaseClassTrait<O1AlphaS,1>: public ClassTraitsType {
   /** Typedef of the first base class of O1AlphaS. */
   typedef AlphaSBase NthBase;
 };

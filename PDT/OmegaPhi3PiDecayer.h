@@ -195,7 +195,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of OmegaPhi3PiDecayer. */
 template <>
-struct BaseClassTrait<OmegaPhi3PiDecayer,1> {
+struct BaseClassTrait<OmegaPhi3PiDecayer,1>: public ClassTraitsType {
   /** Typedef of the first base class of OmegaPhi3PiDecayer. */
   typedef FlatDecayer NthBase;
 };

@@ -173,7 +173,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of BeamParticleData. */
 template <>
-struct BaseClassTrait<BeamParticleData,1> {
+struct BaseClassTrait<BeamParticleData,1>: public ClassTraitsType {
   /** Typedef of the first base class of BeamParticleData. */
   typedef ParticleData NthBase;
 };

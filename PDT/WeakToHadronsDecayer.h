@@ -192,7 +192,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the base classes
  *  of WeakToHadronsDecayer. */
 template <>
-struct BaseClassTrait<WeakToHadronsDecayer,1> {
+struct BaseClassTrait<WeakToHadronsDecayer,1>: public ClassTraitsType {
   /** Typedef of the first base class of WeakToHadronsDecayer. */
   typedef QuarksToHadronsDecayer NthBase;
 };

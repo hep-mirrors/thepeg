@@ -252,7 +252,7 @@ namespace ThePEG {
  * ReweightBase.
  */
 template <>
-struct BaseClassTrait<ReweightBase,1> {
+struct BaseClassTrait<ReweightBase,1>: public ClassTraitsType {
   /** Typedef of the base class of ReweightBase. */
   typedef HandlerBase NthBase;
 };

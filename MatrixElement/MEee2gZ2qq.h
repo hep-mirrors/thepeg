@@ -193,7 +193,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of MEee2gZ2qq. */
 template <>
-struct BaseClassTrait<MEee2gZ2qq,1> {
+struct BaseClassTrait<MEee2gZ2qq,1>: public ClassTraitsType {
   /** Typedef of the first base class of MEee2gZ2qq. */
   typedef ME2to2QCD NthBase;
 };

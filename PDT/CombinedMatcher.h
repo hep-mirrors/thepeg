@@ -15,7 +15,7 @@ namespace ThePEG {
  * @see MatcherBase.
  */
 template <class T1, class T2>
-struct AndMatcher {
+struct AndMatcher: public MatcherType {
 
   /**
    * Typedef for the class representing the matcher for the
@@ -40,7 +40,7 @@ struct AndMatcher {
  * @see MatcherBase.
  */
 template <class T1, class T2>
-struct OrMatcher {
+struct OrMatcher: public MatcherType {
 
   /**
    * Typedef for the class representing the matcher for the
@@ -65,7 +65,7 @@ struct OrMatcher {
  * @see MatcherBase.
  */
 template <class T>
-struct NotMatcher {
+struct NotMatcher: public MatcherType {
 
   /**
    * Typedef for the class representing the matcher for the

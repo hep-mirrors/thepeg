@@ -201,7 +201,7 @@ private:
 /** This template specialization informs ThePEG about the
  *  base classes of AnalysisHandler. */
 template <>
-struct BaseClassTrait<AnalysisHandler,1> {
+struct BaseClassTrait<AnalysisHandler,1>: public ClassTraitsType {
   /** Typedef of the first base class of AnalysisHandler. */
   typedef HandlerBase NthBase;
 };

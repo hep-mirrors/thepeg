@@ -178,7 +178,8 @@ namespace ThePEG {
    * base class of HelicityVertex.
    */
   template <>
-  struct BaseClassTrait<ThePEG::Helicity::HelicityVertex,1> {
+  struct BaseClassTrait<ThePEG::Helicity::HelicityVertex,1>
+    : public ClassTraitsType {
   /** Typedef of the base class of HelicityVertex. */
     typedef EventInfoBase NthBase;
   };
