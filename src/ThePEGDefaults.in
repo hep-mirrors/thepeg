@@ -56,6 +56,8 @@ create ThePEG::MEqq2qq MEqq2qq
 cd /Defaults/Handlers/Hadronization
 create ThePEG::ClusterCollapser SimpleCollapser
 create ThePEG::SimpleFlavour SimpleFlavour SimpleFlavour.so
+create ThePEG::GaussianPtGenerator GaussianPt GaussianPtGenerator.so
+create ThePEG::SimpleZGenerator ZGenerator SimpleZGenerator.so
 set SimpleCollapser:FlavourGenerator SimpleFlavour
 set /Defaults/Decayers/QsToHadrons:FlavourGenerator SimpleFlavour
 set /Defaults/Decayers/QsTo3PlusHadrons:FlavourGenerator SimpleFlavour
@@ -79,6 +81,8 @@ create ThePEG::BaryonRemnants BaryonRemnants BaryonRemnants.so
 set GRV94L:RemnantHandler BaryonRemnants
 set GRV94M:RemnantHandler BaryonRemnants
 set BaryonRemnants:FlavourGenerator /Defaults/Handlers/Hadronization/SimpleFlavour
+set BaryonRemnants:PtGeneratorQ /Defaults/Handlers/Hadronization/GaussianPt
+set BaryonRemnants:ZGenerator /Defaults/Handlers/Hadronization/ZGenerator
 
 set /Defaults/Particles/g:DefaultSpin 3
 set /Defaults/Particles/g:Spin 3

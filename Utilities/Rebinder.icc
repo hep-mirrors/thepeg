@@ -21,7 +21,7 @@ template <class T>
 template <typename OutputIterator, typename InputIterator>
 inline void Rebinder<T>::translate(OutputIterator r,
 		      InputIterator first, InputIterator last) const {
-  while ( first != last ) *r++ = translate(*first);
+  while ( first != last ) *r++ = translate(*first++);
 }
 
 template <class T>

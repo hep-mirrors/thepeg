@@ -17,7 +17,12 @@ DISTFILES = Makefile fixCLHEP g++dep ThePEG.el
 include ../Config/Makefile.common
 
 lib: libThePEG.so libCLHEP.so
-	@for dir in $(SODIRS); do for sofile in ../$$dir/*.so; do ln -s -f $$sofile .; done; done;
+ifdef SHOWCOMMAND	
+	for dir in $(SODIRS); do for sofile in ../$$dir/*.so; do if test -e $$sofile; then ln -s -f $$sofile .; fi; done; done;
+else
+	@echo "symlinking other shared libraries ..."
+	@for dir in $(SODIRS); do for sofile in ../$$dir/*.so; do if test -e $$sofile; then ln -s -f $$sofile .; fi; done; done;
+endif
 
 libCLHEP.so:
 	./fixCLHEP $(CLHEPPATH) $(CLHEPLIB)
@@ -25,7 +30,12 @@ libCLHEP.so:
 LIBFILES = libThePEG.so
 
 libThePEG.so: $(OBJECTS)
+ifdef SHOWCOMMAND	
 	$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
+else
+	@echo "linking shared library $@ ..."
+	@$(CXX) $(CXXFLAGS) $(CXXDEBUGFLAG) $(CXXOPTFLAG) $(CXXDLFLAGS) $^ -o $@
+endif
 
 install-local:
 	mkdir -p $(INSTALLLIB); cp g++dep ThePEG.el $(INSTALLLIB)
