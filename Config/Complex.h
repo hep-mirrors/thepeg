@@ -11,6 +11,8 @@
 namespace ThePEG {
 
 using std::complex;
+
+/** ThePEG code should use Complex for all complex scalars */
 typedef std::complex<double> Complex;
 
 }

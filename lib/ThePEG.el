@@ -2,7 +2,7 @@
 
 (defun ThePEG-class-files (class)
   "Create the .h, .icc and .cc files with skeletons suitable for a class
-CLASS. THe user will be prompted for the base class and the main include file.
+CLASS. The user will be prompted for the base class and the main include file.
 The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
   (interactive "sClass Name: ")
   (setq base (read-from-minibuffer "Base class name: " "HandlerBase"))
@@ -51,9 +51,21 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 
   (setq declarations (cond ((string-equal base "MEBase")
 			    (thepeg-ME-declare class base))
+			   ((string-equal base "StepHandler")
+			    (thepeg-StepHandler-declare class base))
+			   ((string-equal base "AnalysisHandler")
+			    (thepeg-AnalysisHandler-declare class base))
+			   ((string-equal base "Decayer")
+			    (thepeg-Decayer-declare class base))
 			   (t "")))
   (setq implementations (cond ((string-equal base "MEBase")
 			       (thepeg-ME-implement class base))
+			      ((string-equal base "StepHandler")
+			       (thepeg-StepHandler-implement class base))
+			      ((string-equal base "AnalysisHandler")
+			       (thepeg-AnalysisHandler-implement class base))
+			      ((string-equal base "Decayer")
+			       (thepeg-Decayer-implement class base))
 			      (t "")))
 
   (setq persist (y-or-n-p "Will this class be persistent "))
@@ -301,7 +313,7 @@ declarations of a class CLASS."
 namespace " namespace " {
 
 class THECLASS;
-ThePEG_DECLARE_CLASS_POINTERS(THECLASS,THECLASSPtr);
+ThePEG_DECLARE_POINTERS(THECLASS,THECLASSPtr);
 
 }
 
@@ -330,34 +342,88 @@ BASEHEADER. The class may or may not be PERSISTENT, INTERFACED and/or CONCRETE.
 SPECIALFN may be used to include special function definitions"
 
   (setq piostring (cond (persistent "
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
+
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
 ")
 			(t "")))
   (setq cloning (cond ((and concrete interfaced) "
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 ")
 		      (t "")))
   (setq interface (cond (interfaced "
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void doinitrun();
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  inline virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 ")
 			(t "")))
   (setq include (cond ((string-equal baseheader "") "ThePEG/Config/ThePEG.h")
@@ -367,15 +433,28 @@ protected:
 public:
 " specialfn))))
   (setq description (cond (persistent (cond (concrete "
-  static ClassDescription<THECLASS> initTHECLASS;
-  // Describe a concrete class with persistent data.")
+  /**
+   * The static object used to initialize the description of this class.
+   * Indicates that this is a concrete class with persistent data.
+   */
+  static ClassDescription<THECLASS> initTHECLASS;")
 					    (t "
-  static AbstractClassDescription<THECLASS> initTHECLASS;
-  // Describe an abstract base class with persistent data.")))
+  /**
+   * The static object used to initialize the description of this class.
+   * Indicates that this is an abstract class with persistent data.
+   */
+  static AbstractClassDescription<THECLASS> initTHECLASS;")))
 			  (t (cond (concrete "
-  static NoPIOClassDescription<THECLASS> initTHECLASS;
-  // Describe a concrete class without persistent data.")
+  /**
+   * The static object used to initialize the description of this class.
+   * Indicates that this is an concrete class without persistent data.
+   */
+  static NoPIOClassDescription<THECLASS> initTHECLASS;")
 				   (t "
+  /**
+   * The static object used to initialize the description of this class.
+   * Indicates that this is an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<THECLASS> initTHECLASS;
   // Describe an abstract base class without persistent data.")))))
   
@@ -399,38 +478,54 @@ using namespace ThePEG;
 //
 // This is the declaration of the <!id>THECLASS<!!id> class.
 //
-// CLASSDOC SUBSECTION Description:
-//
-//
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href=\"http:.html\">.h</a>,
-// <a href=\"http:.html\">.h</a>.
-// 
 
 #include \"" include "\"
 #include \"THECLASS.fh\"
 
 namespace " namespace " {
 " using "
+/**
+ * Here is the documentation of the THECLASS class.
+ */
 class THECLASS" basedeclare " {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * The default constructor.
+   */
   inline THECLASS();
+
+  /**
+   * The copy constructor.
+   */
   inline THECLASS(const THECLASS &);
+
+  /**
+   * The destructor.
+   */
   virtual ~THECLASS();
-  // Standard ctors and dtor.
+  //@}
 " specialfn "
 public:
 " piostring "
+  /**
+   * The standard Init function used to initialize the interfaces.
+   * Called exactly once for each class by the class description system
+   * before the main function starts or
+   * when this class is dynamically loaded.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 " cloning interface "
 private:
 " description "
 
+  /**
+   * The assignment operator is private and must never be called.
+   * In fact, it should not even be implemented.
+   */
   THECLASS & operator=(const THECLASS &);
   // Private and non-existent assignment operator.
 
@@ -444,24 +539,25 @@ private:
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of THECLASS.
+/** This template specialization informs ThePEG about the
+ * base class of THECLASS. */
 template <>
 struct BaseClassTrait<" namespacequalifyer "THECLASS,1> {
   typedef THEBASE NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/** This template specialization informs ThePEG about the
+ * name of this class and the shared object where it is defined. */
 template <>
 struct ClassTraits<" namespacequalifyer "THECLASS>
   : public ClassTraitsBase<" namespacequalifyer "THECLASS> {
+
+  /** Return a platform-independent class name */
   static string className() { return \"" namespace "::THECLASS\"; }
-  // Return the class name.
+  /** Return the name of the shared library be loaded to get
+   * access to this class and every other class it uses
+   * (except the base class). */
   static string library() { return \"THECLASS.so\"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
 };
 
 }
@@ -585,54 +681,90 @@ Selector<const ColourLines *>
   (concat "
 public:
 
+  /** @name Virtual functions required by the MEBase class. */
+  //@{
+  /**
+   * Return the order in \\f$\\alpha_S\\f$ in which this matrix
+   * element is given.
+   */
   virtual unsigned int orderInAlphaS() const;
+
+  /**
+   * Return the order in \\f$\\alpha_{EW}\\f$ in which this matrix
+   * element is given.
+   */
   virtual unsigned int orderInAlphaEW() const;
-  // Return the order in respective couplings in which this matrix
-  // element is given.
 
+  /**
+   * The matrix element for the kinematical configuration
+   * previously provided by the last call to setKinematics(), suitably
+   * scaled by sHat() to give a dimension-less number.
+   * @return the matrix element scaled with sHat() to give a
+   * dimensionless number.
+   */
   virtual double me2() const;
-  // Return the matrix element for the kinematical configuation
-  // previously provided by the last call to setKinematics(), suitably
-  // scaled by sHat() to give a dimension-less number.
 
+  /**
+   * Return the scale associated with the last set phase space point.
+   */
   virtual Energy2 scale() const;
-  // Return the scale associated with the last set phase space point.
 
+  /**
+   * Set the typed and momenta of the incoming and outgoing partons to
+   * be used in subsequent calls to me() and colourGeometries()
+   * according to the associated XComb object. If the function is
+   * overridden in a sub class the new function must call the base
+   * class one first.
+   */
   virtual void setKinematics();
-  // Set the typed and momenta of the incoming and outgoing partons to
-  // be used in subsequent calls to me() and colourGeometries()
-  // according to the associated XComb object. If the fun ction is
-  // overridden in a sub class the new function must call the base
-  // class one first.
 
+  /**
+   * The number of internal degrees of freedom used in the matrix
+   * element.
+   */
   virtual int nDim() const;
-  // The number of internal degreed of freedom used in the matrix
-  // element. This default version returns 0;
 
+  /**
+   * Generate internal degrees of freedom given nDim() uniform
+   * random numbers in the interval \\f$ ]0,1[ \\f$. To help the phase space
+   * generator, the dSigHatDR should be a smooth function of these
+   * numbers, although this is not strictly necessary.
+   * @param r a pointer to the first of nDim() consecutive random numbers.
+   * @return true if the generation succeeded, otherwise false.
+   */
   virtual bool generateKinematics(const double * r);
-  // Generate internal degrees of freedom given 'nDim()' uniform
-  // random numbers in the interval ]0,1[. To help the phase space
-  // generator, the 'dSigHatDR' should be a smooth function of these
-  // numbers, although this is not strictly necessary. THe return
-  // value should be true of the generation succeeded.
 
+  /**
+   * Return the matrix element squared differential in the variables
+   * given by the last call to generateKinematics().
+   */
   virtual CrossSection dSigHatDR() const;
-  // Return the matrix element squared differential in the variables
-  // given by the last call to 'generateKinematics()'.
 
+  /**
+   * Add all possible diagrams with the add() function.
+   */
   virtual void getDiagrams() const;
-  // Add all possible diagrams with the add() function.
 
-  inline virtual Selector<DiagramIndex> diagrams(const DiagramVector &) const;
-  // With the information previously supplied with the
-  // setKinematics(...) method, a derived class may optionally
-  // override this method to weight the given diagrams with their
-  // (although certainly not physical) relative probabilities.
+  /**
+   * Get diagram selector. With the information previously supplied with the
+   * setKinematics method, a derived class may optionally
+   * override this method to weight the given diagrams with their
+   * (although certainly not physical) relative probabilities.
+   * @param dv the diagrams to be weighted.
+   * @return a Selector relating the given diagrams to their weights.
+   */
+  inline virtual Selector<DiagramIndex> diagrams(const DiagramVector & dv) const;
 
+  /**
+   * Return a Selector with possible colour geometries for the selected
+   * diagram weighted by their relative probabilities.
+   * @param diag the diagram chosen.
+   * @return the possible colour geometries weighted by their
+   * relative probabilities.
+   */
   virtual Selector<const ColourLines *>
   colourGeometries(tcDiagPtr diag) const;
-  // Return a Selector with possible colour geometries for the selected
-  // diagram weighted by their relative probabilities.
+  //@}
 
 "))
 
@@ -640,9 +772,26 @@ public:
   (concat "
 public:
 
+  /** @name Virtual functions required by the MEBase class. */
+  //@{
+  /**
+    * The main function called by the PartialCollisionHandler class to
+    * perform a step. Given the current state of an Event, this function
+    * performs the event generation step and includes the result in a new
+    * Step object int the Event record.
+    * @param ch the PartialCollisionHandler in charge of the Event generation.
+    * @param tagged if not empty these are the only particles which should
+    * be considered by the StepHandler.
+    * @param hint a Hint object with possible information from previously
+    * performed steps.
+    * @throws Veto if the StepHandler requires the current step to be discarded.
+    * @throws Stop if the generation of the current Event should be stopped
+    * after this call.
+    * @throws Exception if something goes wrong.
+    */
   virtual void handle(PartialCollisionHandler & ch, const tcPVector & tagged,
 		      const Hint & hint) throw(Veto, Stop, Exception);
-  // The main virtual method to be overridden by subclasses.
+  //@}
 "))
 
 (defun thepeg-StepHandler-implement (class base)
@@ -663,33 +812,48 @@ handle(PartialCollisionHandler & ch, const tcPVector & tagged,
   (concat "
 public:
 
+  /** @name Virtual functions required by the AnalysisHandler class. */
+  //@{
+  /**
+   * Analyze a given Event. Note that a fully generated event
+   * may be presented several times, if it has been manipulated in
+   * between. The default version of this function will call transform
+   * to make a lorentz transformation of the whole event, then extract
+   * all final state particles and call analyze(tPVector) of this
+   * analysis object and those of all associated analysis objects. The
+   * default version will not, however, do anything on events which
+   * have not been fully generated, or have been manipulated in any
+   * way.
+   * @param event pointer to the Event to be analyzed.
+   * @param ieve the event number.
+   * @param loop the number of times this event has been presented.
+   * If negative the event is now fully generated.
+   * @param state a number different from zero if the event has been
+   * manipulated in some way since it was last presented.
+   */
   virtual void analyze(tEventPtr event, long ieve, int loop, int state);
-  // Analyse a given 'event'. 'ieve' is the event number, 'loop' is
-  // the number of times this event has been presented. If loop is
-  // negative, the event is now fully generated.  'state' is a number
-  // different from zero if the event has been manipulated in some way
-  // since it was last presented. Note that a fully generated event
-  // may be presented several times, if it has been manipulated in
-  // between. The default version of this function will call transform
-  // to make a lorentz transformation of the whole event, then extract
-  // all final state particles and call analyze(tPVector) of this
-  // analysis object and those of all associated analysis objects. The
-  // default version will not, however, do anything on events which
-  // have not been fully generated, or have been manipulated in any
-  // way.
 
-  virtual LorentzRotation transform(tEventPtr) const;
-  // transform the event to the desired Lorentz frame and return the
-  // used LorentzRotation. The default version does nothing and
-  // returns the identity rotation.
+  /**
+   * Transform the event to the desired Lorentz frame and return the
+   * corresponding LorentzRotation.
+   * @param event a pointer to the Event to be transformed.
+   * @return the LorentzRotation used in the transformation.
+   */
+  virtual LorentzRotation transform(tEventPtr event) const;
 
+  /**
+   * Analyze the given vector of particles. The default version calls
+   * analyze(tPPtr) for each of the particles.
+   * @param particles the vector of pointers to particles to be analyzed
+   */
   virtual void analyze(const tPVector & particles);
-  // Analyze the given vector of particles. The default version calls
-  // analyze(tPPtr) for each of the particles.
 
+  /**
+   * Analyze the given particle.
+   * @param particle pointer to the particle to be analyzed.
+   */
   virtual void analyze(tPPtr particle);
-  // Analyze the given particle. The default version does nothing
-
+  //@}
 "))
 
 (defun thepeg-AnalysisHandler-implement (class base)
@@ -716,14 +880,24 @@ void " class "::analyze(tPPtr) {}
   (concat "
 public:
 
-  virtual bool accept(const DecayMode &) const;
-  // return true if this decayer can perfom the decay specified by the
-  // given decay mode.
+  /** @name Virtual functions required by the Decayer class. */
+  //@{
+  /**
+   * Check if this decayer can perfom the decay specified by the
+   * given decay mode.
+   * @param dm the DecayMode describing the decay.
+   * @return true if this decayer can handle the given mode, otherwise false.
+   */
+  virtual bool accept(const DecayMode & dm) const;
 
-  virtual ParticleVector decay(const DecayMode &, const Particle &) const;
-  // for a given decay mode and a given particle instance, perform the
-  // decay and return the decay products.
-
+  /**
+   * Perform a decay for a given DecayMode and a given Particle instance.
+   * @param dm the DecayMode describing the decay.
+   * @param p the Particle instance to be decayed.
+   * @return a ParticleVector containing the decay products.
+   */
+  virtual ParticleVector decay(const DecayMode & dm, const Particle & p) const;
+  //@}
 "))
 
 (defun thepeg-Decayer-implement (class base)

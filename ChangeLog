@@ -1,3 +1,10 @@
+2004-06-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Config, Persistency, Pointer (directory): Modified to use new
+	documentation format.
+
+	* lib/ThePEG.el: Modified to use new documentation format.
+
 2004-05-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGParticles.in: Made also the photon and pi0

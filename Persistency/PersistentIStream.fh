@@ -9,6 +9,7 @@ namespace ThePEG {
 
 class PersistentIStream;
 
+/** Defines a manipulator function type */
 typedef PersistentIStream & (* PersistentIManip) (PersistentIStream &);
 
 }

@@ -2,44 +2,52 @@
 #ifndef ThePEG_Pointers_H
 #define ThePEG_Pointers_H
 
-// This file declares typedefs of commonly used pointers in
-// ThePEG. The standard way of declaring the typedefs is by using the
-// <!id>ThePEG_DECLARE_CLASS_POINTERS<!!id> macro which in turn used
-// the <class>Ptr<!!class> traits class to define normal pointers,
-// normal const pointers, transient pointers and transient const
-// pointers for a given class. For the standard classes, the following
-// typedefs should be introduced for a class abbreviated with
-// <!id>T<!!id>: TPtr for a normal (smart) pointer, cTPtr for a normal
-// const pointer, tTPtr for a transient pointer and tcTPtr for
-// transient const pointer.
-//
-// Do not make changes in this file. If you need to modify any of the
-// standard pointer declarations used in ThePEG, edit a copy of this
-// file and include it in an alternative config file which can be
-// included in the main <a href="http:ThePEG.html">ThePEG.h</a>
-// config file using the macro <!id>ThePEG_ALTERNATE_CONFIG<!!id>.
+/** \file
+ * This file declares typedefs of commonly used pointers in
+ * ThePEG. The standard way of declaring the typedefs is by using the
+ * ThePEG_DECLARE_CLASS_POINTERS macro which in turn used the Ptr
+ * traits class to define normal pointers, normal const pointers,
+ * transient pointers and transient const pointers for a given
+ * class. For the standard classes, the following typedefs should be
+ * introduced for a class abbreviated with <code>T</code>:
+ * <code>TPtr</code> for a normal (smart) pointer, <code>cTPtr</code>
+ * for a normal const pointer, <code>tTPtr</code> for a transient
+ * pointer and <code>tcTPtr</code> for transient const pointer.
+ *
+ * Do not make changes in this file. If you need to modify any of the
+ * standard pointer declarations used in ThePEG, edit a copy of this
+ * file and include it in an alternative config file which can be
+ * included in the main ThePEG.h config file using the macro
+ * ThePEG_ALTERNATE_CONFIG.
+ */
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "Pointers.fh"
-// #include "Pointers.xh"
 
 namespace ThePEG {
 
 // This macro helps us to declare pointers and stuff to standard classes.
-#define ThePEG_DECLARE_TEMPLATE_POINTERS(full, abbrev)            \
+#define ThePEG_DECLARE_TEMPLATE_POINTERS(full, abbrev)             \
+  /** Alias for a reference counted pointer to full. */            \
   typedef typename Ptr<full>::pointer abbrev;                      \
+  /** Alias for a reference counted pointer to a const full. */    \
   typedef typename Ptr<full>::const_pointer c ## abbrev;           \
+  /** Alias for a transient pointer to full. */                    \
   typedef typename Ptr<full>::transient_pointer t ## abbrev;       \
+  /** Alias for a transient pointer to a const full. */            \
   typedef typename Ptr<full>::transient_const_pointer tc ## abbrev
 
-#define ThePEG_DECLARE_POINTERS(full, abbrev)            \
-  typedef Ptr<full>::pointer abbrev;                      \
-  typedef Ptr<full>::const_pointer c ## abbrev;           \
-  typedef Ptr<full>::transient_pointer t ## abbrev;       \
+#define ThePEG_DECLARE_POINTERS(full, abbrev)                      \
+  /** Alias for a reference counted pointer to full. */            \
+  typedef Ptr<full>::pointer abbrev;                               \
+  /** Alias for a reference counted pointer to a const full. */    \
+  typedef Ptr<full>::const_pointer c ## abbrev;                    \
+  /** Alias for a transient pointer to full. */                    \
+  typedef Ptr<full>::transient_pointer t ## abbrev;                \
+  /** Alias for a transient pointer to a const full. */            \
   typedef Ptr<full>::transient_const_pointer tc ## abbrev
 
-#define ThePEG_DECLARE_CLASS_POINTERS(full, abbrev)             \
-  class full;                                                    \
+#define ThePEG_DECLARE_CLASS_POINTERS(full, abbrev)                \
+  class full;                                                      \
   ThePEG_DECLARE_POINTERS(full, abbrev)
 
 ThePEG_DECLARE_CLASS_POINTERS(InterfacedBase,IBPtr);

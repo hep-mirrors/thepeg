@@ -2,15 +2,18 @@
 #ifndef ThePEG_std_H
 #define ThePEG_std_H
 
-// This file introduces a number of <!id>std::<!!id> classes into the
-// <!id>ThePEG<!!id> namespace.
-//
-// Do not make changes in this file. If you want to use alternatives
-// to the <!id>std::<!!id> classes in ThePEG, edit a copy of this
-// file and include it in an alternative config file which can be
-// included in the main <a href="http:ThePEG.html">ThePEG.h</a>
-// config file using the macro <!id>ThePEG_ALTERNATE_CONFIG<!!id>.
+/** \file
 
+ * This file introduces a number of <code>std::</code> classes into
+ * the ThePEG namespace. Also introduces some useful functions for
+ * standard library classes.
+ *
+ * Do not make changes in this file. If you want to use alternatives
+ * to the <code>std::</code> classes in ThePEG, edit a copy of this
+ * file and include it in an alternative config file which can be
+ * included in the main ThePEG.h config file using the macro
+ * <code>ThePEG_ALTERNATE_CONFIG</code>.
+ */
 
 #include <map>
 #include <set>
@@ -59,11 +62,13 @@ using std::min;
 using std::max;
 using std::mem_fun;
 
+/** Check if a given object is a part of a container. */
 template <typename Container, typename Key>
 inline bool member(const Container & c, const Key & k) {
   return c.find(k) != c.end();
 }
 
+/** Check if a given object is a part of a vector. */
 template <typename T, typename Key>
 inline bool member(const vector<T> & v, const Key & k) {
   for ( typename vector<T>::const_iterator i = v.begin(); i != v.end(); ++i )
@@ -72,16 +77,19 @@ inline bool member(const vector<T> & v, const Key & k) {
   // return find(v.begin(), v.end(), k) != v.end();
 }
 
+/** Return a insert iterator for a given container. */
 template <typename Cont>
 inline std::insert_iterator<Cont> inserter(Cont & c) {
   return std::insert_iterator<Cont>(c, c.end());
 }
 
+/** Stream manipulator setting an ostream to left-adjust its ouput. */
 inline ostream& left(ostream& os) {
   os.setf(ios::left, ios::adjustfield);
   return os;
 }
 
+/** Stream manipulator setting an ostream to right-adjust its ouput. */
 inline ostream& right(ostream& os) {
   os.setf(ios::right, ios::adjustfield);
   return os;

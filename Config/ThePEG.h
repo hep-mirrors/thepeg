@@ -2,11 +2,12 @@
 #ifndef ThePEG_H
 #define ThePEG_H
 
-// This is the main config header file for ThePEG. Do not make
-// changes in this file. If you need to modify anything, edit a copy
-// of the file which can be included instead of this file using the
-// macro <!id>ThePEG_ALTERNATE_CONFIG<!!id>.
-
+/** \file
+ * This is the main config header file for ThePEG. Do not make
+ * changes in this file. If you need to modify anything, edit a copy
+ * of the file which can be included instead of this file using the
+ * macro <code>ThePEG_ALTERNATE_CONFIG</code>.
+ */
 #include "ThePEG/Config/config.h"
 
 // For some reason the gcc compiler has a very slow exception
@@ -34,6 +35,12 @@
 #include "Constants.h"
 #include "std.h"
 
+/**
+ * This is the main namespace within which all identifiers in ThePEG
+ * are declared. External packages based on ThePEG should not
+ * introduce identifiers in the ThePEG namespace, but in a separate
+ * namespace which need not be nested within the ThePEG namespace.
+ */
 namespace ThePEG {
 
 // Introduce some identifiers in the ThePEG namespace/
@@ -41,30 +48,58 @@ using namespace ThePEG::Pointer;
 using ThePEG::Pointer::Ptr;
 using namespace ThePEG::Units;
 
-// Define the base class from which all (polymorphic) classes in
-// ThePEG are derived.
+/**
+ * Define the base class from which all (polymorphic) classes in
+ * ThePEG are derived.
+ */
 struct Base: public ReferenceCounted {
+
+  /** The virtual destructor */
   virtual ~Base() {}
+
+  /**
+   * The standard Init function used to initialize the interfaces.
+   * Called exactly once for each class by the class description system
+   * before the main function starts or
+   * when this class is dynamically loaded.
+   */
   static void Init() {}
 };
 
-// Define the base class from which all persistent classes in
-// ThePEG are derived.
+/**
+ * Define the base class from which all persistent classes in
+ * ThePEG are derived.
+ */
 typedef Base PersistentBase;
 
-// Define some standard exception classes.
+/**
+ * A standard exception class to be used for vetoing a whole event.
+ */
 struct Veto {
+
+  /** the default constructor. */
   Veto();
 };
+
+/**
+ * A standard exception class to be used to temporarily stop the
+ * generation of an event.
+ */
 struct Stop {};
 
-// Some standard inline functions which should have been in the C++
-// standard.
+/**
+ * The square function should really have been included in the
+ * standard C++ library.
+ */
 template <typename T>
 inline typename MultiplicationTraits<T>::ResultType sqr(const T& x) {
   return x*x;
 }
 
+/**
+ * The templated abs function should really have been included in the
+ * standard C++ library.
+ */
 template <typename T>
 inline T abs(const T & t) {
   return t < T()? -t: t;

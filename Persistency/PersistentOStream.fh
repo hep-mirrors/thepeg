@@ -9,6 +9,7 @@ namespace ThePEG {
 
 class PersistentOStream;
 
+/** Defines a manipulator function type */
 typedef PersistentOStream & (* PersistentOManip) (PersistentOStream &);
 
 }
