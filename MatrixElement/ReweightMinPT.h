@@ -1,18 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ReweightMinPT_H
 #define ThePEG_ReweightMinPT_H
-//
-// This is the declaration of the <!id>ReweightMinPT<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>ReweightMinPT<!!id> class matrix elements with the minimum of the transverse momenta of the outgoing partons to some power.
-//
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:ReweightBase.html">ReweightBase.h</a>.
-// 
+// This is the declaration of the ReweightMinPT class.
 
 #include "ThePEG/MatrixElement/ReweightBase.h"
 // #include "ReweightMinPT.fh"
@@ -20,88 +9,168 @@
 
 namespace ThePEG {
 
+/**
+ * The ReweightMinPT class reweights matrix elements with the minimum
+ * of the transverse momenta of the outgoing partons to some power.
+ *
+ * @see ReweightBase.
+ * 
+ */
 class ReweightMinPT: public ReweightBase {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline ReweightMinPT();
+
+  /**
+   * Copy-constructor.
+   */
   inline ReweightMinPT(const ReweightMinPT &);
+
+  /**
+   * Destructor.
+   */
   virtual ~ReweightMinPT();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /**
+   * Return the wieght for the kinematical configuation previously
+   * provided by the last call to setKinematics().
+   */
   virtual double weight() const;
-  // Return the wieght for the kinematical configuation
-  // previously provided by the last call to setKinematics().
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
   inline virtual IBPtr fullclone() const;
-  // Standard clone methods.
+  //@}
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * The weight is the minimum pt to a \a power.
+   */
   double power;
-  // The weight is the minimum pt^power.
 
 private:
 
+  /**
+   * Describe a concrete base class with persistent data.
+   */
   static ClassDescription<ReweightMinPT> initReweightMinPT;
-  // Describe an abstract base class with persistent data.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   ReweightMinPT & operator=(const ReweightMinPT &);
-  //  Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of ReweightMinPT.
+/** This template specialization informs ThePEG about the
+ *  base classes of ReweightMinPT. */
 template <>
 struct BaseClassTrait<ReweightMinPT,1> {
+  /** Typedef of the first base class of ReweightMinPT. */
   typedef ReweightBase NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/** This template specialization informs ThePEG about the name of
+ *  the ReweightMinPT class and the shared object where it is defined. */
 template <>
 struct ClassTraits<ReweightMinPT>: public ClassTraitsBase<ReweightMinPT> {
-  static string className() { return "/ThePEG/ReweightMinPT"; }
-  // Return the class name.
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::ReweightMinPT"; }
+  /** Return the name of the shared library be loaded to get
+   *  access to the ReweightMinPT class and every other class it uses
+   *  (except the base class). */
   static string library() { return "ReweightMinPT.so"; }
-  // Return the name of the shared library to be loaded to get
-  // access to this class and every other class it uses
-  // (except the base class).
 };
 
 }

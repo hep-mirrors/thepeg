@@ -557,7 +557,7 @@ struct ClassTraits<" namespacequalifyer "THECLASS>
   /** Return a platform-independent class name */
   static string className() { return \"" namespace "::THECLASS\"; }
   /** Return the name of the shared library be loaded to get
-   *  access to this class and every other class it uses
+   *  access to the THECLASS class and every other class it uses
    *  (except the base class). */
   static string library() { return \"THECLASS.so\"; }
 };

@@ -1,22 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ME2to2QCD_H
 #define ThePEG_ME2to2QCD_H
-//
-// This is the declaration of the <!id>ME2to2QCD<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>ME2to2QCD<!!id> class inherits from the
-// <!class>ME2to2Base<!!class> class and can be used as a sub class
-// for all QCD <i>2->2</i> processes. It implements some common
-// functions such as common pre-factors, maximum number of flavours,
-// treatment of interference terms and possibility to enhance certain
-// terms.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:ME2to2Base.html">ME2to2Base.h</a>.
-// 
+// This is the declaration of the ME2to2QCD class.
 
 #include "ThePEG/MatrixElement/ME2to2Base.h"
 // #include "ME2to2QCD.fh"
@@ -24,108 +9,214 @@
 
 namespace ThePEG {
 
+/**
+ * The ME2to2QCD class inherits from the ME2to2Base class and can be
+ * used as a sub class for all QCD 2\f$\rightarrow\f$2 processes. It
+ * implements some common functions such as common pre-factors,
+ * maximum number of flavours, treatment of interference terms and
+ * possibility to enhance certain terms.
+ *
+ * @see ME2to2Base.
+ * 
+ */
 class ME2to2QCD: public ME2to2Base {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline ME2to2QCD();
+
+  /**
+   * Copy-constructor.
+   */
   inline ME2to2QCD(const ME2to2QCD &);
+
+  /**
+   * Destructor.
+   */
   virtual ~ME2to2QCD();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /** @name Virtual functions required by the MEBase class. */
+  //@{
+  /**
+   * Return the order in \f$\alpha_S\f$ in which this matrix element
+   * is given. Returns 2.
+   */
   virtual unsigned int orderInAlphaS() const;
+
+  /**
+   * Return the order in \f$\alpha_{EM}\f$ in which this matrix
+   * element is given. Returns 0.
+   */
   virtual unsigned int orderInAlphaEW() const;
-  // Return the order in respective couplings in which this matrix
-  // element is given. Returns 2 and 0 respectively.
 
+  /**
+   * The common prefactor for all 2\f$\rightarrow\f$2 QCD sub-processes
+   * ie. \f$\alpha_S^2\f$.
+   */
   double comfac() const;
-  // The common prefactor for all 2->2 QCD sub-processes
-  // ie. alpha_s^2.
 
+  /**
+   * Return the heaviest flavour allowed for this matrix element.
+   */
   inline int maxFlavour() const;
-  // Return the heaviest flavour allowed for this matrix element.
 
+  /**
+   * K-factor for artificially boosting the cross-section.
+   */
   inline double Kfac() const;
-  // K-factor for artificially boosting the cross-section.
 
+  /**
+   * K-factor for artificially boosting colour-annihilation diagrams.
+   */
   inline double KfacA() const;
-  // K-factor for artificially boosting colour-annihilation diagrams.
 
+  /**
+   * Return true if interference terms should be used.
+   */
   inline bool interference() const;
-  // Return true if interference terms should be used.
 
+  /**
+   * Return true if argument is a quark.
+   */
   inline bool isQuark(const ParticleData &) const;
-  // Return true id argument is a quark.
 
+  /**
+   * Return the quark with flavour i (or gluon if i = 0);
+   */
   inline tcPDPtr quark(int i) const;
-  // Return the quark with flavour i (or gluon if i = 0);
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * The heaviest flavour allowed for incoming and outgoing partons.
+   */
   int theMaxFlavour;
-  // The heaviest flavour allowed for incoming and outgoing partons.
 
+  /**
+   * Overall K-factor used to boost this cross-section.
+   */
   double theKfac;
-  double theKfacA;
-  // Overall K-factors used to boost this cross-section.
 
+  /**
+   * Overall K-factors used to boost the colour annihilation diagram
+   * in the cross-section.
+   */
+  double theKfacA;
+
+  /**
+   * Flag so tell whether interference should be used or not.
+   */
   bool useInterference;
-  // Flag so tell whether interference should be used or not.
 
 private:
 
+  /**
+   * Describe an abstract base class with persistent data.
+   */
   static AbstractClassDescription<ME2to2QCD> initME2to2QCD;
-  // Describe an abstract base class with persistent data.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   ME2to2QCD & operator=(const ME2to2QCD &);
-  //  Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of ME2to2QCD.
+/**
+ * This template specialization informs ThePEG about the
+ * base class of ME2to2QCD.
+ */
 template <>
 struct BaseClassTrait<ME2to2QCD,1> {
+  /** Typedef of the base class of ME2to2QCD. */
   typedef ME2to2Base NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * ME2to2QCD class.
+ */
 template <>
 struct ClassTraits<ME2to2QCD>: public ClassTraitsBase<ME2to2QCD> {
-  static string className() { return "/ThePEG/ME2to2QCD"; }
-  // Return the class name.
+  /** Return the class name. */
+  static string className() { return "ThePEG::ME2to2QCD"; }
 };
 
 }

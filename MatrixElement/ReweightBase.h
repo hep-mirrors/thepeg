@@ -1,30 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_ReweightBase_H
 #define ThePEG_ReweightBase_H
-//
-// This is the declaration of the <!id>ReweightBase<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// The <!id>ReweightBase<!!id> class is the base class of all objects
-// representing external biases to matrix elements. These can be used
-// to enhance certain matrix elements or certain phase space
-// regions. They can be used in to ways, either to completely change
-// the matrix element (re-weight), in which case the total cross
-// section will be affected or, when using weighted events in an
-// <!class>EventHandler<!!class>, to pre-weight certain events but
-// leaving the cross section unchanged
-//
-// There is only one virtual function which must be overridden in
-// derived classes: <!id>double weight() const<!!id>.
-//
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:MEBase.html">MEBase.h</a>,
-// <a href="http:EventHandler.html">EventHandler.h</a>,
-// <a href="http:SubProcessHandler.html">SubProcessHandler.h</a>.
-// 
+// This is the declaration of the ReweightBase class.
 
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/EventRecord/SubProcess.h"
@@ -34,130 +11,260 @@
 
 namespace ThePEG {
 
+/**
+ * The ReweightBase class is the base class of all objects
+ * representing external biases to matrix elements. These can be used
+ * to enhance certain matrix elements or certain phase space
+ * regions. They can be used in to ways, either to completely change
+ * the matrix element (re-weight), in which case the total cross
+ * section will be affected or, when using weighted events in an
+ * EventHandler, to pre-weight certain events but leaving the cross
+ * section unchanged
+ *
+ * There is only one virtual function which must be overridden in
+ * derived classes: weight().
+ *
+ * @see MEBase,
+ * @see EventHandler,
+ * @see SubProcessHandler.
+ * 
+ */
 class ReweightBase: public HandlerBase, public LastXCombInfo<> {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline ReweightBase();
+
+  /**
+   * Copy-constructor.
+   */
   inline ReweightBase(const ReweightBase &);
+
+  /**
+   * Destructor.
+   */
   virtual ~ReweightBase();
-  // Standard ctors and dtor.
+  //@}
 
 public:
 
+  /**
+   * Return the wieght for the kinematical configuation
+   * previously provided by the last call to setKinematics().
+   */
   virtual double weight() const = 0;
-  // Return the wieght for the kinematical configuation
-  // previously provided by the last call to setKinematics().
 
+  /**
+   * Set the kinematics for the corresponding sub-process to be use in
+   * the reweighting.
+   */
   void setKinematics(Energy2 shat, tcPDPair in, const cPDVector & out,
 		     const Lorentz5Momentum & pina,
 		     const Lorentz5Momentum & pinb,
 		     const vector<Lorentz5Momentum> & pout);
 
+  /**
+   * Set the types and momenta of the incoming and outgoing partons to
+   * be used in the reweighting.
+   */
   void setKinematics(tPPair in, const PVector & out);
+
+  /**
+   * Set the types and momenta of the incoming and outgoing partons to
+   * be used in the reweighting.
+   */
   inline void setKinematics(const SubProcess & sub);
+
+  /**
+   * Set the types and momenta of the incoming and outgoing partons to
+   * be used in the reweighting.
+   */
   void setXComb(tXCombPtr);
-  // Set the typed and momenta of the incoming and outgoing partons to
-  // be used in subsequent calls to me() and colourGeometries().
 
+  /**
+   * This method does nothing in this base class. Derived classes may
+   * override it to setup derived quantities obtained from the
+   * information provided by a call to setKinematics(...). (Allways
+   * called from the setKinematics() methods.)
+   */
   inline virtual void setKinematics();
-  // This method does nothing in this base class. Derived classes may
-  // override it to setup derived quantities obtained from the
-  // information provided by a call to setKinematics(...). (Allways
-  // called from the setKinematics(...) method.)
 
+  /**
+   * Clear the information previously provided by a call to
+   * setKinematics().
+   */
   virtual void clearKinematics();
-  // Clear the information previously provided by a call to
-  // setKinematics(...).
 
 public:
 
+  /**
+   * Return the last set invariant mass squared.
+   */
   inline Energy2 sHat() const;
-  // Return the last set invariant mass squared.
 
+  /**
+   * Return the types of the last set incoming partons.
+   */
   inline const cPDPair & inData() const;
-  // Return the types of the last set incoming partons.
 
+  /**
+   * Return the types of the last set outgoing partons.
+   */
   inline const cPDVector & outData() const;
-  // Return the types of the last set outgoing partons.
 
+  /**
+   * Return the momentum of the last set first incoming parton.
+   */
   inline const Lorentz5Momentum & inMomentumA() const;
-  inline const Lorentz5Momentum & inMomentumB() const;
-  // Return the momenta of the last set incoming partons.
 
+  /**
+   * Return the momentum of the last set incoming second parton.
+   */
+  inline const Lorentz5Momentum & inMomentumB() const;
+
+  /**
+   * Return the momenta of the last set outgoing partons.
+   */
   inline const vector<Lorentz5Momentum> & outMomentum() const;
-  // Return the momenta of the last set outgoing partons.
 
 public:
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
+
+  /**
+   * Standard Init function used to initialize the interfaces.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 protected:
 
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
   inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
 
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
   inline virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
-  // Change all pointers to Interfaced objects to corresponding clones.
 
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
   inline virtual IVector getReferences();
-  // Return pointers to all Interfaced objects refered to by this.
+  //@}
 
 private:
 
+  /**
+   * The last set invariant mass squared.
+   */
   Energy2 theLastSHat;
-  // The last set invariant mass squared.
 
+  /**
+   * The types of the last set incoming partons.
+   */
   cPDPair theLastInData;
-  // The types of the last set incoming partons.
 
+  /**
+   * The types of the last set outgoing partons.
+   */
   cPDVector theLastOutData;
-  // The types of the last set outgoing partons.
 
+  /**
+   * The momentum of the last set first incoming parton.
+   */
   Lorentz5Momentum theLastInMomentumA;
-  Lorentz5Momentum theLastInMomentumB;
-  // The momenta of the last set incoming partons.
 
+  /**
+   * The momentum of the last set second incoming parton.
+   */
+  Lorentz5Momentum theLastInMomentumB;
+
+  /**
+   * The momenta of the last set outgoing partons.
+   */
   vector<Lorentz5Momentum> theLastOutMomentum;
-  // The momenta of the last set outgoing partons.
 
 private:
 
+  /**
+   * Describe an abstract base class with persistent data.
+   */
   static AbstractClassDescription<ReweightBase> initReweightBase;
-  // Describe an abstract base class with persistent data.
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   ReweightBase & operator=(const ReweightBase &);
-  //  Private and non-existent assignment operator.
 
 };
 
 }
 
-// CLASSDOC OFF
 
 namespace ThePEG {
 
-// The following template specialization informs ThePEG about the
-// base class of ReweightBase.
+/**
+ * This template specialization informs ThePEG about the base class of
+ * ReweightBase.
+ */
 template <>
 struct BaseClassTrait<ReweightBase,1> {
+  /** Typedef of the base class of ReweightBase. */
   typedef HandlerBase NthBase;
 };
 
-// The following template specialization informs ThePEG about the
-// name of this class and the shared object where it is defined.
+/**
+ * This template specialization informs ThePEG about the name of the
+ * ReweightBase class.
+ */
 template <>
 struct ClassTraits<ReweightBase>: public ClassTraitsBase<ReweightBase> {
-  static string className() { return "/ThePEG/ReweightBase"; }
-  // Return the class name.
+  /** Return the class name. */
+  static string className() { return "ThePEG::ReweightBase"; }
 };
 
 }
