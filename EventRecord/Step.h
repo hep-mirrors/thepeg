@@ -125,6 +125,13 @@ public:
   // flow to the first added child, while the anti colour will flow to
   // the last added child.
 
+  bool removeDecayProduct(tcPPtr parent, tPPtr child);
+  template <typename CIterator>
+  inline bool removeDecayProduct(tcPPtr parent,
+				 CIterator firstChild, CIterator lastChild);
+  // Remove the child(ren) form the given parent. The children are not
+  // removed from the decay record.
+
   template <typename Iterator>
   bool addDecayProduct(Iterator firstParent, Iterator lastParent, tPPtr child);
   template <typename PIterator, typename CIterator>

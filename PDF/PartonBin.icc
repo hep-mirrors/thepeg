@@ -34,6 +34,14 @@ inline tPBPtr PartonBin::incoming() const {
   return theIncomingBin;
 }
 
+inline const PartonBin::tPBVector & PartonBin::outgoing() const {
+  return theOutgoing;
+}
+
+inline void PartonBin::addOutgoing(tPBPtr pb) {
+  theOutgoing.push_back(pb);
+}
+
 inline tcPDFPtr PartonBin::pdf() const {
   return thePDF;
 }

@@ -41,6 +41,8 @@ tPBIPtr PartonBinInstance::getFirst() {
   return incoming()? incoming()->getFirst(): tPBIPtr(this);
 }
 
+
+// TAKE AWAY ?
 void PartonBinInstance::reset(double lx, Energy2 Q2) {
   l(lx);
   li(lx);
@@ -61,6 +63,7 @@ void PartonBinInstance::prepare() {
   incoming()->prepare();
 }
 
+// TAKE AWAY ?
 void PartonBinInstance::generate(const double * r) {
   scale(0.0*GeV2);
   if ( !incoming() ) return;
@@ -78,6 +81,7 @@ void PartonBinInstance::generate(const double * r) {
   l(li() + incoming()->l());
 }
 
+// TAKE AWAY ?
 double PartonBinInstance::fullFn(Energy2 newScale) {
   if ( !incoming() ) return 1.0;
   if ( newScale > 0.0*GeV2 ) scale(newScale);

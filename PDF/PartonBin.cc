@@ -39,7 +39,7 @@ PartonBin(tcPDPtr p, tPBPtr inc, tcPDPtr pi,
 
 PartonBin::PartonBin(const PartonBin & x)
   : Base(x), theParticle(x.theParticle), theIncomingBin(x.theIncomingBin),
-    theParton(x.theParton), thePDF(x.thePDF),
+    theOutgoing(x.theOutgoing), theParton(x.theParton), thePDF(x.thePDF),
     theRemnantHandler(x.theRemnantHandler),
     theLastPartialL(x.theLastPartialL), theLastPartialX(x.theLastPartialX),
     theLastPartialEps(x.theLastPartialEps), theLastL(x.theLastL),
@@ -128,7 +128,7 @@ void PartonBin::setInfo(PartonBinInfo * i, tPPtr inc) {
 }
 
 void PartonBin::persistentOutput(PersistentOStream & os) const {
-  os << theParticle << theIncomingBin << theParton << thePDF
+  os << theParticle << theIncomingBin << theOutgoing << theParton << thePDF
      << theRemnantHandler << theLastL << theLastPartialL << theLastPartialX
      << theLastPartialEps << thePDFDim << theRemDim << theLastJacobian
      << cuts().lMin() << cuts().lMax() << ounit(cuts().scaleMin(), GeV2)
@@ -141,7 +141,7 @@ void PartonBin::persistentInput(PersistentIStream & is, int) {
   Energy2 scmin = 0.0*GeV2;
   Energy2 scmax = 0.0*GeV2;
   Energy2 smax = 0.0*GeV2;
-  is >> theParticle >> theIncomingBin >> theParton >> thePDF
+  is >> theParticle >> theIncomingBin >> theOutgoing >> theParton >> thePDF
      >> theRemnantHandler >> theLastL >> theLastPartialL >> theLastPartialX
      >> theLastPartialEps >> thePDFDim >> theRemDim >> theLastJacobian
      >> lmin >> lmax >> iunit(scmin, GeV2) >> iunit(scmax, GeV)

@@ -1,3 +1,14 @@
+2003-07-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonBin.*: Added information about outgoing bins in
+	addition to the info about the incoming bin.
+
+	* PDF/PartonExtractor.*, Handlers/XComb.*,
+	Handlers/CollisionHandler.*: Changed to use PartonBinInstance
+	instead of PartonBinInfo.
+
+	* EventRecord/Step.*: Added removeDecayProducts methods.
+
 2003-07-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/XComb.cc: Fixed floating underflow problem due to

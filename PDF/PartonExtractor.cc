@@ -78,7 +78,8 @@ addPartons(tPBPtr incoming, const PDFCuts & cuts, PartonVector & pbins) const {
   for ( int i = 0, N = partons.size(); i < N; ++i ) {
     PBPtr pb =
       new_ptr(PartonBin(incoming->parton(), incoming, partons[i], pdf, cuts));
-      addPartons(pb, cuts, pbins);
+    incoming->addOutgoing(pb);
+    addPartons(pb, cuts, pbins);
   }
 
 }
@@ -416,6 +417,46 @@ construct(PartonBinInstance & pb, tStepPtr step) {
   colourConnect(pb.particle(), pb.parton(), rem);
   if ( pb.incoming()->incoming() ) step->addIntermediate(pb.particle());
   construct(*pb.incoming(), step);
+}
+
+void PartonExtractor::newRemnants(tPPair oldp, tPPair newp, tStepPtr step) {
+  Direction<0> dir(true);
+  Lorentz5Momentum p1 = newp.first->momentum();
+  newRemnants(partonBinInstance(oldp.first), newp.first, step);
+  dir.reverse();
+  Lorentz5Momentum p2 = newp.second->momentum();
+  newRemnants(partonBinInstance(oldp.second), newp.second, step);
+  p1 = p2;
+}
+
+PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step) {
+  if ( ! oldpb || !oldpb->incoming() ) return oldpb;
+  const PartonBin::tPBVector & sisters = oldpb->incoming()->bin()->outgoing();
+  for ( int i = 0, N = sisters.size(); i < N; ++i )
+    if ( sisters[i]->parton() == newp->dataPtr() ) {
+      PBIPtr newpb = new_ptr(PartonBinInstance(sisters[i], oldpb->incoming()));
+      newpb->particle(oldpb->particle());
+      newpb->parton(newp);
+      newpb->li(log(oldpb->particle()->momentum().dirPlus()/
+		    newp->momentum().dirPlus()));
+      newpb->l(oldpb->l() - oldpb->li() + newpb->li());
+      Energy2 sc = -1.0*GeV2;
+      if ( oldpb->incoming()->incoming() )
+	sc = -newpb->particle()->momentum().m2();
+      if ( !newpb->remnantHandler()->
+	   recreateRemnants(*newpb, oldpb->parton(), newp, newpb->li(),
+			    sc, newpb->particle()->momentum()) ) throw Veto();
+      tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
+      step->removeDecayProduct(newpb->particle(), oldpb->remnants().begin(),
+				oldpb->remnants().end());
+      if ( !step->addDecayProduct(newpb->particle(),
+				  rem.begin(), rem.end(), false) ) throw Veto();
+      colourConnect(newpb->particle(), newpb->parton(), rem);
+      partonBinInstances()[newp] = newpb;
+      return newpb;
+    }
+  throw Veto();
+  return PBIPtr();
 }
 
 void PartonExtractor::persistentOutput(PersistentOStream & os) const {

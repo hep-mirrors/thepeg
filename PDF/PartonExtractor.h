@@ -81,6 +81,11 @@ public:
   // parton. This default version does not accept that the incoming
   // particle is coloured.
 
+  void newRemnants(tPPair oldp, tPPair newp, tStepPtr step);
+  // If remnants has already been created for the given parton, remove
+  // them from the given step and generate new remnants corresponding
+  // to the parton newp and add them to the step.
+
   inline const PartonBinMap & lastPartonBins() const;
   // Return info about the current selection.
 
@@ -162,6 +167,9 @@ protected:
   virtual void construct(PartonBin & pb, tStepPtr step);
   virtual void construct(PartonBinInstance & pb, tStepPtr step);
   // Used by the public construct() for each of the final parton bins.
+
+  PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp, tStepPtr step);
+  // Used by the public newRemnants() for each f the parton bins.
 
 public:
 

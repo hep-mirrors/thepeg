@@ -58,6 +58,10 @@ XComb(Energy newMaxEnergy, const cPDPair & inc,
   partonDims = pExtractor()->nDims(partonBins());
   theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
   theMEPartonData = lastDiagram()->partons();
+  thePartonBinInstances.first =
+    new_ptr(PartonBinInstance(partonBins().first));
+  thePartonBinInstances.second =
+    new_ptr(PartonBinInstance(partonBins().second));
 }
 
 XComb::XComb(tMEPtr me, const tPVector & parts, DiagramIndex indx)
@@ -78,6 +82,10 @@ XComb::XComb(tMEPtr me, const tPVector & parts, DiagramIndex indx)
   for ( int i = 0, N = me->diagrams().size(); i < N; ++i )
     if ( me->diagrams()[i]->getTag() == tag )
       theDiagrams.push_back(me->diagrams()[i]);
+  thePartonBinInstances.first =
+    new_ptr(PartonBinInstance(partonBins().first));
+  thePartonBinInstances.second =
+    new_ptr(PartonBinInstance(partonBins().second));
 }
 
 XComb::XComb(const XComb & x)
@@ -136,12 +144,8 @@ void XComb::setPartonBinInfo() {
 }
 
 void XComb::setPartonBinInfoNEW() {
-  if ( !thePartonBinInstances.first )
-    thePartonBinInstances.first =
-      new_ptr(PartonBinInstance(partonBins().first));
-  if ( !thePartonBinInstances.second )
-    thePartonBinInstances.second =
-      new_ptr(PartonBinInstance(partonBins().second));
+  partonBinInstances().first->getFirst()->parton(lastParticles().first);
+  partonBinInstances().second->getFirst()->parton(lastParticles().second);
 }
 
 CrossSection XComb::
@@ -382,8 +386,9 @@ void XComb::Init() {}
 void XComb::persistentOutput(PersistentOStream & os) const {
 
   os << theCollisionHandler << theSubProcessHandler << thePartonExtractor
-     << theCuts << theParticles << thePartons << thePartonBins << theNAttempted
-     << theNAccepted << theSumWeight << theLastParticles << theLastPartons
+     << theCuts << theParticles << thePartons << thePartonBins
+     << thePartonBinInstances << theNAttempted << theNAccepted
+     << theSumWeight << theLastParticles << theLastPartons
      << ounit(theLastS, GeV2) << ounit(theLastSHat, GeV2) << theLastY
      << theLastP1P2 << theLastL1L2 << theLastX1X2 << theLastE1E2
      << ounit(theLastScale, GeV2) << ounit(theLastOutgoing, GeV)
@@ -394,8 +399,9 @@ void XComb::persistentOutput(PersistentOStream & os) const {
 
 void XComb::persistentInput(PersistentIStream & is, int) {
   is >> theCollisionHandler >> theSubProcessHandler >> thePartonExtractor
-     >> theCuts >> theParticles >> thePartons >> thePartonBins >> theNAttempted
-     >> theNAccepted >> theSumWeight >> theLastParticles >> theLastPartons
+     >> theCuts >> theParticles >> thePartons >> thePartonBins
+     >> thePartonBinInstances >> theNAttempted >> theNAccepted
+     >> theSumWeight >> theLastParticles >> theLastPartons
      >> iunit(theLastS, GeV2) >> iunit(theLastSHat, GeV2) >> theLastY
      >> theLastP1P2 >> theLastL1L2 >> theLastX1X2 >> theLastE1E2
      >> iunit(theLastScale, GeV2) >> iunit(theLastOutgoing, GeV)

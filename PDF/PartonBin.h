@@ -34,6 +34,10 @@ class PartonBin: public Base {
 
 public:
 
+typedef vector<tPBPtr> tPBVector;
+
+public:
+
   PartonBin(tcPDPtr p, tPBPtr prev, tcPDPtr pi, tcPDFPtr pdf,
 	    const PDFCuts & newCuts);
   // Standard ctors and dtor.
@@ -51,6 +55,14 @@ public:
   inline tPBPtr incoming() const;
   // In the case the incoming particle in turn is extracted from
   // another particle, return the PartonBin for that extraction.
+
+  inline const tPBVector & outgoing() const;
+  // The parton bins corresponding to the extracted parton if it can
+  // be extracted from.
+
+  inline void addOutgoing(tPBPtr);
+  // Add a parton bin corresponding to the extracted parton if it can
+  // be extracted from.
 
   inline tcPDPtr parton() const;
   // The extracted parton type.
@@ -197,6 +209,10 @@ private:
   PBPtr theIncomingBin;
   // In the case the incoming particle in turn is extracted from
   // another particle, return the PartonBin for that extraction.
+
+  tPBVector theOutgoing;
+  // The parton bins corresponding to the extracted parton if it can
+  // be extracted from.
 
   cPDPtr theParton;
   // The extracted parton type.

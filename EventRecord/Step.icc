@@ -83,7 +83,15 @@ addDecayProduct(tcPPtr parent, CIterator firstChild, CIterator lastChild,
   for ( ; firstChild != lastChild; ++firstChild )
     if ( !addDecayProduct(parent, *firstChild, fixColour) ) return false;
   return true;
-  
+}
+
+template <typename CIterator>
+inline bool Step::
+removeDecayProduct(tcPPtr parent, CIterator firstChild, CIterator lastChild) {
+  bool success = true;
+  for ( ; firstChild != lastChild; ++firstChild )
+    if ( !removeDecayProduct(parent, *firstChild) ) success = false;
+  return success;
 }
 
 template <typename PIterator>

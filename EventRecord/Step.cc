@@ -8,6 +8,7 @@
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Config/algorithm.h"
 #include <iostream>
 #include <iomanip>
 
@@ -163,6 +164,21 @@ tPPtr Step::copyParticle(tcPPtr pin) {
   return cp;
 }
 
+bool Step::removeDecayProduct(tcPPtr par, tPPtr child) {
+  if ( !collision() ) return false;
+  if ( !par->hasRep() ) return false;
+  tPPtr parent = const_ptr_cast<tPPtr>(par->final());
+  PVector::iterator it = ThePEG::find(parent->rep().theChildren, child);
+  if ( it == parent->rep().theChildren.end() ) return false;
+  parent->rep().theChildren.erase(it);
+  ParticleSet::iterator cit = theParticles.find(child);
+  if ( cit != theParticles.end() ) {
+    theParticles.erase(cit);
+    if ( child->birthStep() == this ) theIntermediates.insert(child);
+  }
+  return true;
+}
+  
 bool Step::addDecayProduct(tcPPtr par, tPPtr child, bool fixColour) {
   if ( !collision() ) return false;
   tPPtr parent = const_ptr_cast<tPPtr>(par->final());
