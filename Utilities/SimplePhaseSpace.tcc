@@ -114,7 +114,7 @@ void SimplePhaseSpace::CMSn(Container & particles, Energy m0)
     Iterator it = particles.begin();
     PType & p1 = *it++;
     PType & p2 = *it;
-    CMS(p1, p2, sqr(m0));
+    CMS(sqr(m0), p1, p2);
     return;
   }
   typedef ParticleTraits<PType> Traits;

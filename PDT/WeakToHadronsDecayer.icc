@@ -1,0 +1,65 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the WeakToHadronsDecayer class.
+//
+
+namespace ThePEG {
+
+inline WeakToHadronsDecayer::WeakToHadronsDecayer() {}
+
+inline WeakToHadronsDecayer::
+WeakToHadronsDecayer(const WeakToHadronsDecayer & x)
+  : QuarksToHadronsDecayer(x) {}
+
+inline IBPtr WeakToHadronsDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr WeakToHadronsDecayer::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void WeakToHadronsDecayer::doupdate() throw(UpdateException) {
+  QuarksToHadronsDecayer::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void WeakToHadronsDecayer::doinit() throw(InitException) {
+  QuarksToHadronsDecayer::doinit();
+}
+
+inline void WeakToHadronsDecayer::dofinish() {
+  QuarksToHadronsDecayer::dofinish();
+}
+
+inline void WeakToHadronsDecayer::doinitrun() {
+  QuarksToHadronsDecayer::doinitrun();
+}
+
+inline void WeakToHadronsDecayer::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  QuarksToHadronsDecayer::rebind(trans);
+}
+
+inline IVector WeakToHadronsDecayer::getReferences() {
+  IVector ret = QuarksToHadronsDecayer::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

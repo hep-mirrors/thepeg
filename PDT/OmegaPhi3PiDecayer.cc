@@ -50,12 +50,6 @@ double OmegaPhi3PiDecayer::reweight(const DecayMode &, const Particle & parent,
       p0 = children[i]->momentum();
   }
 
-//   static bool first = true;
-//   if ( first ) {
-//     first = false;
-//     generator()->currentCollisionHandler()->addStep(Group::main, Group::hadron);
-//   }
-
   return (pp.mass2()*pm.mass2()*p0.mass2() + 2.0*(pp*pm)*(pp*p0)*(pm*p0)
 	  - pp.mass2()*sqr(pm*p0) - pm.mass2()*sqr(pp*p0)
 	  - p0.mass2()*sqr(pp*pm))*margin/(m2*m2*m2);

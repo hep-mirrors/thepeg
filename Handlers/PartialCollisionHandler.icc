@@ -31,8 +31,8 @@ inline void PartialCollisionHandler::currentCollision(tCollPtr c) {
   theCurrentCollision = c;
 }
 
-inline tStepPtr PartialCollisionHandler::newStep() {
-  currentStep(currentCollision()->newStep());
+inline tStepPtr PartialCollisionHandler::newStep(tcStepHdlPtr sh) {
+  currentStep(currentCollision()->newStep(sh));
   return currentStep();
 }
 

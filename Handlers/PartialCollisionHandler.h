@@ -94,7 +94,7 @@ public:
   // In the curresnt list of step handlers to go through, add another
   // step handler and/or hint.
 
-  inline tStepPtr newStep();
+  inline tStepPtr newStep(tcStepHdlPtr sh = tcStepHdlPtr());
   // Create a new step and make it current.
 
   inline void popStep();

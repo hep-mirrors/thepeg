@@ -77,7 +77,7 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
   Energy summh = 0.0*GeV;
   PVector hadrons;
 
-  do {
+  if ( !quarks.empty() ) do {
 
     hadrons = getHadrons(getN(parent.mass(), summq, quarks.size()), quarks);
 
@@ -90,6 +90,9 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
   children.insert(children.end(), hadrons.begin(), hadrons.end());
 
   distribute(parent, children);
+
+  finalBoost(parent, children);
+  setScales(parent, children);
 
   return children;
 

@@ -37,10 +37,11 @@ CollPtr Collision::clone() const {
   return ptr_new<CollPtr>(*this);
 }
 
-tStepPtr Collision::newStep() {
+tStepPtr Collision::newStep(tcEventBasePtr newHandler) {
   if ( theSteps.empty() ) theSteps.push_back(new_ptr(Step(this)));
   else theSteps.push_back(new_ptr(Step(*finalStep())));
   tStepPtr s = finalStep();
+  s->handler(newHandler);
   s->theIntermediates.clear();
   s->theSubProcesses.clear();
   s->allParticles = s->theParticles;

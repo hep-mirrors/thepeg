@@ -4,26 +4,25 @@ mkdir /Defaults
 mkdir /Defaults/Matchers
 mkdir /Defaults/Particles
 mkdir /Defaults/Decayers
-create ThePEG::FlatDecayer /Defaults/Decayers/Flat
-create ThePEG::OmegaPhi3PiDecayer /Defaults/Decayers/OmegaPhi3Pi OmegaPhi3PiDecayer.so
-create ThePEG::V2PPDecayer /Defaults/Decayers/V2PP V2PPDecayer.so
-create ThePEG::DalitzDecayer /Defaults/Decayers/Dalitz DalitzDecayer.so
-create ThePEG::Tau2HadronsDecayer /Defaults/Decayers/Tau2Hadrons Tau2HadronsDecayer.so
-create ThePEG::Onium3GDecayer /Defaults/Decayers/Onium3G Onium3GDecayer.so
-create ThePEG::QuarksToHadronsDecayer /Defaults/Decayers/QsToHadrons QuarksToHadronsDecayer.so
-cp /Defaults/Decayers/QsToHadrons /Defaults/Decayers/QsTo3PlusHadrons
-set /Defaults/Decayers/QsTo3PlusHadrons:MinN 3
-cp /Defaults/Decayers/QsToHadrons /Defaults/Decayers/OniumToHadrons
-create ThePEG::ColourPairDecayer /Defaults/Decayers/ColourPairs ColourPairDecayer.so
-create ThePEG::DummyDecayer /Defaults/Decayers/Dummy DummyDecayer.so
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY42
-setup /Dummy/Decayers/PYDECY42 42
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY48
-setup /Dummy/Decayers/PYDECY48 48
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY51
-setup /Dummy/Decayers/PYDECY51 51
-create ThePEG::PYDECYDummy /Dummy/Decayers/PYDECY53
-setup /Dummy/Decayers/PYDECY53 53
+cd /Defaults/Decayers
+create ThePEG::FlatDecayer Flat
+create ThePEG::OmegaPhi3PiDecayer OmegaPhi3Pi OmegaPhi3PiDecayer.so
+create ThePEG::V2PPDecayer V2PP V2PPDecayer.so
+create ThePEG::DalitzDecayer Dalitz DalitzDecayer.so
+create ThePEG::Tau2HadronsDecayer Tau2Hadrons Tau2HadronsDecayer.so
+create ThePEG::Onium3GDecayer Onium3G Onium3GDecayer.so
+create ThePEG::QuarksToHadronsDecayer QsToHadrons QuarksToHadronsDecayer.so
+cp QsToHadrons QsTo3PlusHadrons
+set QsTo3PlusHadrons:MinN 3
+cp QsToHadrons OniumToHadrons
+create ThePEG::ColourPairDecayer ColourPairs ColourPairDecayer.so
+create ThePEG::WeakToHadronsDecayer WeakToHadrons WeakToHadronsDecayer.so
+cp WeakToHadrons WeakTo3PlusHadrons
+set WeakTo3PlusHadrons:MinN 3
+create ThePEG::DummyDecayer Dummy DummyDecayer.so
+cp Dummy ThresholdDummy
+cp Dummy NoThresholdDummy
+cd /
 create ThePEG::Matcher<Lepton> /Defaults/Matchers/MatchLepton
 create ThePEG::Matcher<LightQuark> /Defaults/Matchers/MatchLightQuark
 create ThePEG::Matcher<LightAntiQuark> /Defaults/Matchers/MatchLightAntiQuark
@@ -58,9 +57,11 @@ cd /Defaults/Handlers/Hadronization
 create ThePEG::ClusterCollapser SimpleCollapser
 create ThePEG::SimpleFlavour SimpleFlavour SimpleFlavour.so
 set SimpleCollapser:FlavourGenerator SimpleFlavour
-set /Defaults/Decayers/QsTo3PlusHadrons:FlavourGenerator SimpleFlavour
 set /Defaults/Decayers/QsToHadrons:FlavourGenerator SimpleFlavour
+set /Defaults/Decayers/QsTo3PlusHadrons:FlavourGenerator SimpleFlavour
 set /Defaults/Decayers/OniumToHadrons:FlavourGenerator SimpleFlavour
+set /Defaults/Decayers/WeakToHadrons:FlavourGenerator SimpleFlavour
+set /Defaults/Decayers/WeakTo3PlusHadrons:FlavourGenerator SimpleFlavour
 
 cd /Defaults/Partons
 create ThePEG::NoRemnants NoRemnants

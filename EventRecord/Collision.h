@@ -62,7 +62,7 @@ public:
   // Return a pointer to the CollisionHandler which produced this
   // Collision. May be the null pointer.
 
-  tStepPtr newStep();
+  tStepPtr newStep(tcEventBasePtr newHandler = tcEventBasePtr());
   // Create a new step in this collision, which is a copy of
   // the last step (if any) and return a pointer to it.
 

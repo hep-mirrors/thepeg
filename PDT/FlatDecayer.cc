@@ -12,7 +12,6 @@
 #include "ThePEG/CLHEPWrap/LorentzRotation.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/Timer.h"
-#include "ThePEG/Utilities/UtilityBase.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "FlatDecayer.tcc"
@@ -33,17 +32,6 @@ bool FlatDecayer::accept(const DecayMode & dm) const {
     dm.productMatchers().empty() && !dm.wildProductMatcher();
 }
 
-struct MassOrdering {
-  bool operator()(tPPtr p1, tPPtr p2) {
-    return p1->mass() < p2->mass();
-  }
-};
-
-ParticleVector FlatDecayer::getChildren(const DecayMode & dm,
-					const Particle & parent) const {
-  return dm.produceProducts();
-}
-
 ParticleVector FlatDecayer::decay(const DecayMode & dm,
 				  const Particle & parent) const {
   Timer<48> timer("FlatDecayer::decay");
@@ -57,7 +45,6 @@ ParticleVector FlatDecayer::decay(const DecayMode & dm,
       }
       else {
 	Timer<50> timern("FlatDecayer::decay::CMSn");
-	//	std::sort(children.begin(), children.end(), MassOrdering());
 	SimplePhaseSpace::CMSn(children, parent.mass());
       }
     } while ( reweight(dm, parent, children) < UseRandom::rnd() );
@@ -67,10 +54,8 @@ ParticleVector FlatDecayer::decay(const DecayMode & dm,
     return children;
   }
 
-  Utilities::setMomentum(children.begin(), children.end(),
-			 (Momentum3 &)(parent.momentum()), 1.0e-12);
-  for ( ParticleVector::size_type i = 0; i < children.size(); ++i )
-    children[i]->scale(parent.momentum().mass2());
+  finalBoost(parent, children);
+  setScales(parent, children);
 
   return children;
 }

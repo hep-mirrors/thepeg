@@ -1,3 +1,46 @@
+2003-08-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/DecayHandler.cc: Use the StepHandler::newStep()
+	function.
+
+	* Handlers/ClusterCollapser.h: Changed the signature of the
+	collapse() function to take a new step as argument instead of a
+	collision handler. Changed the handle method accordingly.
+
+	* EventRecord/Collision.*, Handlers/PartialCollisionHandler.*:
+	newStep() now have an optional argument to specify the step
+	handler.
+
+	* Handlers/StepHandler.cc: createNewStep now sets the handler to
+	this.
+
+2003-08-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/V2PPDecayer.cc: Fixed but in reweight() where the parent and
+	grand parent momenta were not boosted to the parent cms.
+
+	* PDT/WeakToHadronsDecayer.cc, PDT/V2PPDecayer.cc,
+	PDT/OmegaPhi3PiDecayer.cc, PDT/FlatDecayer.*,
+	PDT/DalitzDecayer.cc, PDT/Decayer.*: Added utility function
+	getChildren(), finalBoost() and setScales() in Decayer to be used
+	in subclasses.
+
+	* Utilities/SimplePhaseSpace.tcc: Fixed bug in CMSn. I the case of
+	two particles the angles were not properly distributed.
+
+	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
+	WeakToHadronsDecayer instead of dummies PYDECY42 and
+	PYDECY48. Also using DummyDecayer instead of PYDECY51 and PYDECY53
+
+	* PDT/WeakToHadronsDecayer.*: Added class for weak decays of taus,
+	charmed and bottom hadrons. Seems to work.
+
+	* PDT/QuarksToHadronsDecayer.cc: Fixed bug where the decay
+	products were not boosted to the parents frame. Also made minor
+	change tosimplify for the WeakToHadronsDecayer sub class.
+
+	* Makefile: Removed -$(MAKEFLAGS) in recursive calls.
+
 2003-08-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Makefile.common.in: Moved macro for THEPEGLIBS from src/Makefile to Config/Makefile.common

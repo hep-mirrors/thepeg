@@ -51,11 +51,14 @@ ParticleVector V2PPDecayer::decay(const DecayMode & dm,
 double V2PPDecayer::reweight(const DecayMode &, const Particle & parent,
 			     const ParticleVector & children) const {
   if ( !sibling || !grandParent ) return 1.0;
-  Energy2 p10 = parent.momentum()*grandParent->momentum();
-  Energy2 p12 = parent.momentum()*children[0]->momentum();
-  Energy2 p02 = grandParent->momentum()*children[0]->momentum();
-  Energy2 m02 = grandParent->momentum().mass2();
-  Energy2 m12 = parent.momentum().mass2();
+  LorentzMomentum gp = grandParent->momentum();
+  gp.boost(-parent.momentum().boostVector());
+  LorentzMomentum pp(0.0*GeV, 0.0*GeV, 0.0*GeV, parent.mass());
+  Energy2 p10 = pp*gp;
+  Energy2 p12 = pp*children[0]->momentum();
+  Energy2 p02 = gp*children[0]->momentum();
+  Energy2 m02 = gp.m2();
+  Energy2 m12 = pp.m2();
   Energy2 m22 = children[0]->momentum().mass2();
   if ( grandParent->id() == ParticleID::gamma )
     return m12*(2.0*p10*p12*p02 - m12*sqr(p02) - m02*sqr(p12) - m22*sqr(p10)

@@ -8,6 +8,8 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/PDT/DecayMode.h"
+#include "ThePEG/Utilities/UtilityBase.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Decayer.tcc"
@@ -22,6 +24,23 @@ double Decayer::brat(const DecayMode &,
   return b;
 
 }
+
+ParticleVector Decayer::getChildren(const DecayMode & dm,
+					const Particle & parent) const {
+  return dm.produceProducts();
+}
+
+void Decayer::finalBoost(const Particle & parent,
+			 const ParticleVector & children) const {
+  Utilities::setMomentum(children.begin(), children.end(),
+			 (Momentum3 &)(parent.momentum()), 1.0e-12);
+}  
+
+void Decayer::setScales(const Particle & parent,
+			 const ParticleVector & children) const {
+  for ( ParticleVector::size_type i = 0; i < children.size(); ++i )
+    children[i]->scale(parent.momentum().mass2());
+}  
 
 double Decayer::brat(const DecayMode &, const Particle &, double b) const {
   return b;

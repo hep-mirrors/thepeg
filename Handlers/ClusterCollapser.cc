@@ -32,18 +32,16 @@ ClusterCollapser::~ClusterCollapser() {}
 void ClusterCollapser::
 handle(PartialCollisionHandler & ch, const tPVector & tagged,
        const Hint & hint) throw(Veto, Stop, Exception) {
-  collapse(ch, tagged);
+  collapse(tagged, newStep());
 }
 
 vector<ColourSinglet> ClusterCollapser::
-collapse(PartialCollisionHandler & ch, tPVector tagged) const {
+collapse(tPVector tagged, tStepPtr newstep) {
   vector<ColourSinglet> newTagged;
-  tStepPtr newStep;
   multimap<Energy,ColourSinglet> clusters = getSinglets(tagged);
 
   // Go through all clusters below the cut.
   while ( !clusters.empty() && clusters.begin()->first < cut() ) {
-    if ( !newStep ) newStep = ch.newStep();
     ColourSinglet & cl = clusters.begin()->second;
 
     // If a cluster contains too many junctions, split them into
@@ -56,14 +54,14 @@ collapse(PartialCollisionHandler & ch, tPVector tagged) const {
     // If a cluster contains a junktion and a diquark, split the
     // diquark and make two simple strings.
     while ( diQuarkJunction(cl) ) {
-      ColourSinglet cs = splitDiQuarkJunction(cl, newStep);
+      ColourSinglet cs = splitDiQuarkJunction(cl, newstep);
       clusters.insert(make_pair(mass(cs), ColourSinglet()))->second.swap(cs);
     }
 
     // First try to collapse into two particles.
     int ntry = nTry2();
     while ( ntry > 0 ) {
-      if ( collapse2(newStep, cl) ) break;
+      if ( collapse2(newstep, cl) ) break;
       --ntry;
     }
 
@@ -73,11 +71,11 @@ collapse(PartialCollisionHandler & ch, tPVector tagged) const {
 
       // If this was a di-diquark cluster, split it into two.
       if ( diDiQuark(cl) ) {
-	ColourSinglet cs = splitDiDiQuark(cl, newStep);
+	ColourSinglet cs = splitDiDiQuark(cl, newstep);
 	clusters.insert(make_pair(mass(cs), ColourSinglet()))->second.swap(cs);
       }
 
-      collapse(newStep, cl, tagged);
+      collapse(newstep, cl, tagged);
     }
 
     // Update the tagged vector and remove partons which have already

@@ -23,7 +23,7 @@ void StepHandler::collisionHandler(tPartCollHdlPtr ch) {
 
 void StepHandler::createNewStep() {
   useMe();
-  theNewStep = collisionHandler()->newStep();
+  theNewStep = collisionHandler()->newStep(this);
 }
 
 AbstractNoPIOClassDescription<StepHandler> StepHandler::initStepHandler;

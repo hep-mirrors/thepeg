@@ -50,10 +50,6 @@ public:
   // For a given decay mode and a given particle instance, perform the
   // decay and return the decay products.
 
-  virtual ParticleVector getChildren(const DecayMode & dm,
-				     const Particle & parent) const;
-  // Used by decay() to produce instances of the children.
-
   inline virtual double reweight(const DecayMode &, const Particle & parent,
 				 const ParticleVector & children) const;
   // To be overridden by subclasses. For a given decay mode, decaying

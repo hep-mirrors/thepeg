@@ -57,6 +57,23 @@ public:
   inline Ptr<Amplitude>::pointer amplitude() const;
   // Return the eventual amplitude associated with this decay matrix element.
 
+  virtual ParticleVector getChildren(const DecayMode & dm,
+				     const Particle & parent) const;
+  // Can be used by sub-class decay() functions to produce instances
+  // of the children. This default implementation just calls the
+  // produceProducts() of the DecayMode object.
+
+  virtual void finalBoost(const Particle & parent,
+			  const ParticleVector & children) const;
+  // Can be used by sub-classes to perform the final boost back from
+  // the parents cms. This default version does just that.
+
+  virtual void setScales(const Particle & parent,
+			 const ParticleVector & children) const;
+  // Can be used by sub classes to set the production scale of the
+  // children. This default version sets the scale to the parents
+  // mass.
+
 public:
 
   void persistentOutput(PersistentOStream &) const;

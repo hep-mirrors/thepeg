@@ -11,7 +11,6 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
-#include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/Rebinder.h"
 
@@ -47,7 +46,7 @@ bool DalitzDecayer::accept(const DecayMode & dm) const {
 
 ParticleVector DalitzDecayer::decay(const DecayMode & dm,
 				  const Particle & parent) const {
-  ParticleVector children = dm.produceProducts();
+  ParticleVector children = getChildren(dm, parent);
   tPPtr ep;
   tPPtr em;
   tPPtr gam;
@@ -86,10 +85,8 @@ ParticleVector DalitzDecayer::decay(const DecayMode & dm,
   } while ( rnd() > ((mee2 - 2.0*me2)*(sqr(p0*pp) + sqr(p0*pm)) +
 		     mee2min*((p0*pp)*(p0*pm) + sqr(p0*pp) + sqr(p0*pm)))*4.0/
 	    (mee2*sqr(mm2 - mee2)) );
-  Utilities::setMomentum(children.begin(), children.end(),
-			 (Momentum3 &)(parent.momentum()), 1.0e-12);
-  for ( ParticleVector::size_type i = 0; i < children.size(); ++i )
-    children[i]->scale(parent.momentum().mass2());
+  finalBoost(parent, children);
+  setScales(parent, children);
 
   return children;
 }

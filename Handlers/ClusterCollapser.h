@@ -42,8 +42,8 @@ public:
 		      const Hint & hint) throw(Veto, Stop, Exception);
   // The main virtual method to be overridden by subclasses.
 
-  virtual vector<ColourSinglet> collapse(PartialCollisionHandler & ch,
-					 tPVector tagged) const;
+  virtual vector<ColourSinglet> collapse(tPVector tagged,
+					 tStepPtr newstep);
   // Perform all necessary collapses. Return the uncollapsed clusters.
 
   virtual multimap<Energy,ColourSinglet>

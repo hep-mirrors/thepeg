@@ -12,26 +12,26 @@ TAG = ThePEG-$(VERSION)
 all: check
 
 check: setup lib
-	@cd src ;  $(MAKE) -$(MAKEFLAGS) check ; cd ..
+	@cd src ;  $(MAKE) check ; cd ..
 
 lib: setup
-	@for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) lib; cd .. ; done
+	@for dir in $(SUBDIRS) lib; do cd $$dir ; $(MAKE) lib; cd .. ; done
 
 clean: setup
-	@for dir in $(SUBDIRS) lib src; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) clean ; cd .. ; done
+	@for dir in $(SUBDIRS) lib src; do cd $$dir ; $(MAKE) clean ; cd .. ; done
 
 distclean: setup clean
-	@cd src ; $(MAKE) -$(MAKEFLAGS) distclean ; cd .. 
+	@cd src ; $(MAKE) distclean ; cd .. 
 	rm -f config.cache config.status config.log Config/Makefile.common Config/config.h
 
 depend: setup
-	@for dir in $(SUBDIRS) src ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) depend ; cd .. ; done
+	@for dir in $(SUBDIRS) src ; do cd $$dir ; $(MAKE) depend ; cd .. ; done
 
 install: check
-	@for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) -$(MAKEFLAGS) install ; cd .. ; done
+	@for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) install ; cd .. ; done
 
 doc: setup
-	@for dir in $(SUBDIRS) ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) doc ; cd .. ; done
+	@for dir in $(SUBDIRS) ; do cd $$dir ; $(MAKE) doc ; cd .. ; done
 
 setup: Config/Makefile.common Doc/h2html Config/config.h
 
@@ -53,12 +53,12 @@ dist: doc
 	cp ../Makefile $(TAG)
 	cp ../configure $(TAG)
 	cp $(DISTFILES) $(TAG)/ThePEG
-	for dir in $(SUBDIRS) src Doc lib ; do cd $$dir ; $(MAKE) -$(MAKEFLAGS) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
+	for dir in $(SUBDIRS) src Doc lib ; do cd $$dir ; $(MAKE) TAGDIR=$(TAG)/ThePEG VERSION=$(VERSION) dist ; cd .. ; done
 	tar czf $(TAG).tgz $(TAG)
 	rm -rf $(TAG)
 
 snapshot: doc
-	$(MAKE) -$(MAKEFLAGS) thesnapshot SNAPTAG=ThePEG-`/bin/date '+%y%m%d'`
+	$(MAKE) thesnapshot SNAPTAG=ThePEG-`/bin/date '+%y%m%d'`
 
 thesnapshot:
 	rm -rf $(SNAPTAG)
