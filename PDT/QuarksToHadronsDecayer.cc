@@ -11,6 +11,7 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Utilities/SimplePhaseSpace.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "QuarksToHadronsDecayer.tcc"
@@ -31,7 +32,7 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
 				      const Particle & parent) const {
   PVector children;
   tcPDVector quarks;
-  tcPDVector prods = dm.orderedProducts();
+  PDVector prods = dm.orderedProducts();
   Energy summq = 0.0*GeV;
   Energy summp = 0.0*GeV;
   for ( int i = 0, N = prods.size(); i < N; ++i )
@@ -57,7 +58,7 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
 
   children.insert(children.end(), hadrons.begin(), hadrons.end());
 
-  distribute(children);
+  distribute(parent, children);
 
   return children;
 
@@ -95,7 +96,8 @@ getHadrons(int Nh, tcPDVector quarks) const {
   return hadrons;
 }
 
-void distribute(const Particle & parent, const PVector & children) const {
+void QuarksToHadronsDecayer::
+distribute(const Particle & parent, PVector & children) const {
   do {
     try {
       SimplePhaseSpace::CMSn(children, parent.mass());
@@ -105,6 +107,11 @@ void distribute(const Particle & parent, const PVector & children) const {
       return;
     }
   } while ( reweight(parent, children) > rnd() );
+}
+
+double QuarksToHadronsDecayer::
+reweight(const Particle &, const PVector &) const {
+  return 1.0;
 }
 
 void QuarksToHadronsDecayer::persistentOutput(PersistentOStream & os) const {

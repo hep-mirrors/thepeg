@@ -56,6 +56,15 @@ public:
   // Produce the specified number of hadrons from the specified
   // quarks. The last quark is considered to be a spectator quark.
 
+  virtual void distribute(const Particle & parent, PVector & children) const;
+  // Distribute the produced children in phase space. This default
+  // version uses a flat phase space which can be reweighted by
+  // overriding the reweight() function.
+
+  virtual double reweight(const Particle & parent,
+			  const PVector & children) const;
+  // Called by distribute() to reweight the default flat phase spece.
+
 public:
 
   inline int fixedN() const;
