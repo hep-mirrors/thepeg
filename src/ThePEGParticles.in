@@ -113,7 +113,7 @@ makeanti /Defaults/Particles/nu'_tau /Defaults/Particles/nu'_taubar
 create ThePEG::ConstituentParticleData /Defaults/Particles/g 
 setup /Defaults/Particles/g 21 g 0.0 0.0 0.0 0.0 0 8 0 1 0.0 
 defaultparticle /Defaults/Particles/g 
-create ThePEG::ParticleData /Defaults/Particles/gamma 
+create ThePEG::BeamParticleData /Defaults/Particles/gamma 
 setup /Defaults/Particles/gamma 22 gamma 0.0 0.0 0.0 0.0 0 0 0 1
 defaultparticle /Defaults/Particles/gamma 
 create ThePEG::ParticleData /Defaults/Particles/Z0 
@@ -175,7 +175,7 @@ makeanti /Defaults/Particles/LQ_ue /Defaults/Particles/LQ_uebar
 create ThePEG::ParticleData /Defaults/Particles/reggeon 
 setup /Defaults/Particles/reggeon 110 reggeon 0.0 0.0 0.0 0.0 0 0 0 1
 defaultparticle /Defaults/Particles/reggeon 
-create ThePEG::ParticleData /Defaults/Particles/pi0 
+create ThePEG::BeamParticleData /Defaults/Particles/pi0 
 setup /Defaults/Particles/pi0 111 pi0 0.134980 0.0 0.0 0.000030 0 0 1 0
 defaultparticle /Defaults/Particles/pi0 
 create ThePEG::ParticleData /Defaults/Particles/rho0 

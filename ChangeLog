@@ -1,5 +1,8 @@
 2004-05-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/ThePEGParticles.in: Made also the photon and pi0
+	BeamParticleData since they can have parton densities.
+
 	* Handlers/GaussianPtGenerator.cc: Fixed units in I/O.
 
 	* src/ThePEGDefaults.in: Set GaussianPtGenerator and
