@@ -1,3 +1,9 @@
+2003-06-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Repository.cc: Added code so that the load() command
+	will look in the ThePEG_INSTALL_PATH for a .rpo file if the given
+	filename did not exist.
+
 2003-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* First check-in of ThePEG. This is just what was previously

@@ -20,6 +20,7 @@ include ../Config/Makefile.common
 LIBFILES = ../lib/ThePEGDefaults.rpo ThePEGParticles.in ThePEGDefaults.in setupThePEG.exe runThePEG.exe
 
 install-local: ../lib/ThePEGDefaults.rpo runThePEG.exe setupThePEG.exe
+	mkdir -p $(INSTALLBIN)
 	sed -e s:@:$(INSTALLLIB):g setupThePEG.install > $(INSTALLBIN)/setupThePEG
 	sed -e s:@:$(INSTALLLIB):g runThePEG.install > $(INSTALLBIN)/runThePEG
 	chmod 755 $(INSTALLBIN)/setupThePEG $(INSTALLBIN)/runThePEG

@@ -15,6 +15,7 @@
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/StringUtils.h"
+#include "ThePEG/Utilities/SystemUtils.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Repository.tcc"
@@ -331,10 +332,21 @@ void Repository::load(string filename) {
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "loading '" << filename << "'... " << flush;
   currentFileName() = filename;
-  PersistentIStream is(filename);
-  is >> allObjects() >> defaultParticles()
-     >> particles() >> matchers() >> decayModes() >> generators()
-     >> directories() >> directoryStack();
+  PersistentIStream * is = new PersistentIStream(filename);
+  if ( !*is ) {
+    delete is;
+    is = new PersistentIStream(SystemUtils::getenv("ThePEG_INSTALL_PATH")
+			       + "/" + filename);
+    if ( !*is ) {
+      delete is;
+      cerr() << "Error: Could not find repository '" << filename << "'" << endl;
+      return;
+    }
+  }
+  *is >> allObjects() >> defaultParticles()
+      >> particles() >> matchers() >> decayModes() >> generators()
+      >> directories() >> directoryStack();
+  delete is;
   objects().clear();
   for ( ObjectSet::iterator it = allObjects().begin();
 	it != allObjects().end(); ++it )
