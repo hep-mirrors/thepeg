@@ -25,7 +25,7 @@
 
 namespace ThePEG {
 
-// This macro helps us to declare pointers and stuff to standard classes.
+/** This macro helps us to declare pointers and stuff to standard classes. */
 #define ThePEG_DECLARE_TEMPLATE_POINTERS(full, abbrev)             \
   /** Alias for a reference counted pointer to full. */            \
   typedef typename Ptr<full>::pointer abbrev;                      \
@@ -36,6 +36,7 @@ namespace ThePEG {
   /** Alias for a transient pointer to a const full. */            \
   typedef typename Ptr<full>::transient_const_pointer tc ## abbrev
 
+/** This macro helps us to declare pointers and stuff to standard classes. */
 #define ThePEG_DECLARE_POINTERS(full, abbrev)                      \
   /** Alias for a reference counted pointer to full. */            \
   typedef Ptr<full>::pointer abbrev;                               \
@@ -46,6 +47,7 @@ namespace ThePEG {
   /** Alias for a transient pointer to a const full. */            \
   typedef Ptr<full>::transient_const_pointer tc ## abbrev
 
+/** This macro helps us to declare pointers and stuff to standard classes. */
 #define ThePEG_DECLARE_CLASS_POINTERS(full, abbrev)                \
   class full;                                                      \
   ThePEG_DECLARE_POINTERS(full, abbrev)

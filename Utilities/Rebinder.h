@@ -67,7 +67,7 @@ public:
    * @param r a pointer to an object of a type which is derived from T.
    */
   template <typename R>
-  inline R alwaysTranslate(const R &) const throw(std::runtime_error);
+  inline R alwaysTranslate(const R & r) const throw(std::runtime_error);
 
   /**
    * Insert pointers to objects into the output iterator, pointers to

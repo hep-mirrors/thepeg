@@ -165,7 +165,10 @@ struct UtilityBase {
    * <code>ParticleTraits<T>::momentum(const T&)</code> and
    * <code>ParticleTraits<T>::transform(T&, const
    * LorentzRotation&)</code> are implemented correctly.
+   * @param first iterator pointing to the first particle in the range.
+   * @param last iterator indicating the end of the range.
    * @param m2 the invariant mass squared of the particles.
+   * @param q final summed momentum of the particles.
    */
   template <typename Iter>
   static void setMomentumFromCMS(Iter first, Iter last,

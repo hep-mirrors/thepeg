@@ -45,7 +45,11 @@ class PersistentOStream {
 public:
 
   ThePEG_DECLARE_POINTERS(PersistentBase,BPtr);
+
+  /** A map of objects indexed by integers */
   ThePEG_DECLARE_MAP(cBPtr, int, ObjectMap);
+
+  /** A map relating class descriptions to integers. */
   ThePEG_DECLARE_MAP(const ClassDescriptionBase *, int, ClassMap);
 
   /** A vector of bare pointers to InputDescription objects. */
@@ -77,7 +81,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const RCPtr<T> &);
+  inline PersistentOStream & operator<<(const RCPtr<T> & p);
 
   /**
    * Operator for writing persistent objects to the stream.
@@ -85,7 +89,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const ConstRCPtr<T> &);
+  inline PersistentOStream & operator<<(const ConstRCPtr<T> & p);
 
   /**
    * Operator for writing persistent objects to the stream.
@@ -93,7 +97,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const TransientRCPtr<T> &);
+  inline PersistentOStream & operator<<(const TransientRCPtr<T> & p);
 
   /**
    * Operator for writing persistent objects to the stream.
@@ -101,7 +105,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const TransientConstRCPtr<T> &);
+  inline PersistentOStream & operator<<(const TransientConstRCPtr<T> & p);
 
   /** @name Operators for extracting built-in types from the stream. */
   //@{
@@ -189,12 +193,12 @@ public:
 
   /**
    * For a given object, write the member variables corresponding to a
-   * given InputDescription object.
+   * given ClassDescriptionBase object.
    * @param obj the object to be written.
-   * @param pid a pointer to an InputDescription describing the
+   * @param cd a pointer to a ClassDescriptionBase describing the
    * (sub)class to written.
    */
-  void putObjectPart(tcBPtr, const ClassDescriptionBase *);
+  void putObjectPart(tcBPtr obj, const ClassDescriptionBase * cd);
 
   /**
    * Remove all objects that have been written, except those which are

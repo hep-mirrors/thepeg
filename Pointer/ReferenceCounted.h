@@ -21,6 +21,7 @@ namespace Pointer {
  */
 class ReferenceCounted {
 
+  /** The RCPtrBase class needs to acces the private parts of ReferenceCounted. */
   friend class RCPtrBase;
 
 public:

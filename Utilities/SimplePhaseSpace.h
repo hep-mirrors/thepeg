@@ -73,7 +73,7 @@ struct SimplePhaseSpace {
    * @param s the total invariant mass squared.
    * @param t \f$=(p0-p1)^2\f$.
    * @param phi azimuth angle of the first momentum around p0.
-   * @param p1 pointer or reference to an auxiliary momentum.
+   * @param p0 pointer or reference to an auxiliary momentum.
    * @throw ImpossibleKinematics if the sum of the invariant masses was
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
@@ -149,7 +149,7 @@ struct SimplePhaseSpace {
    * @param x1 the energy fraction \f$2e_1/\sqrt{s}\f$.
    * @param x3 the energy fraction \f$2e_3/\sqrt{s}\f$.
    * @param phii the azimuth angle of p2 around p1.
-   * @param the the polar angle of p1.
+   * @param theta the polar angle of p1.
    * @param phi the azimuth angle of p1.
    * @throw ImpossibleKinematics if the sum of the invariant masses was
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
@@ -177,7 +177,7 @@ struct SimplePhaseSpace {
    * Return a three-vector given the absolute momentum, cos(theta) and
    * phi.
    * @param p the magnitude of the momentum.
-   * @param cosTheta the cosine of the polar angle.
+   * @param costheta the cosine of the polar angle.
    * @param phi the azimuth angle.
    */
   inline static Momentum3 polar3Vector(Energy p, double costheta, double phi);

@@ -22,6 +22,7 @@ namespace Pointer {
  */
 class RCPtrBase {
 
+  /** Get counter type from ReferenceCounted class. */
   typedef ReferenceCounted::CounterType CounterType;
 
 protected:
@@ -49,16 +50,24 @@ class RCPtr: public RCPtrBase {
 
 public:
 
+  /** Template argument typedef. */
   typedef void iterator_category;
+  /** Template argument typedef. */
   typedef void difference_type;
+  /** Template argument typedef. */
   typedef T * pointer;
+  /** Template argument typedef. */
   typedef const T * const_pointer;
+  /** Template argument typedef. */
   typedef T & reference;
+  /** Template argument typedef. */
   typedef const T & const_reference;
+  /** Template argument typedef. */
   typedef T value_type;
 
 public:
 
+  /** <code></code> */
   /**
    * Constructor for null pointer.
    */
@@ -242,12 +251,19 @@ class ConstRCPtr : public RCPtrBase {
 
 public:
 
+  /** Template argument typedef. */
   typedef void iterator_category;
+  /** Template argument typedef. */
   typedef void difference_type;
+  /** Template argument typedef. */
   typedef T * pointer;
+  /** Template argument typedef. */
   typedef const T * const_pointer;
+  /** Template argument typedef. */
   typedef T & reference;
+  /** Template argument typedef. */
   typedef const T & const_reference;
+  /** Template argument typedef. */
   typedef T value_type;
 
 public:
@@ -398,12 +414,19 @@ class TransientRCPtr {
 
 public:
 
+  /** Template argument typedef. */
   typedef void iterator_category;
+  /** Template argument typedef. */
   typedef void difference_type;
+  /** Template argument typedef. */
   typedef T * pointer;
+  /** Template argument typedef. */
   typedef const T * const_pointer;
+  /** Template argument typedef. */
   typedef T & reference;
+  /** Template argument typedef. */
   typedef const T & const_reference;
+  /** Template argument typedef. */
   typedef T value_type;
 
 public:
@@ -545,12 +568,19 @@ class TransientConstRCPtr {
 
 public:
 
+  /** Template argument typedef. */
   typedef void iterator_category;
+  /** Template argument typedef. */
   typedef void difference_type;
+  /** Template argument typedef. */
   typedef T * pointer;
+  /** Template argument typedef. */
   typedef const T * const_pointer;
+  /** Template argument typedef. */
   typedef T & reference;
+  /** Template argument typedef. */
   typedef const T & const_reference;
+  /** Template argument typedef. */
   typedef T value_type;
 
 public:
@@ -678,12 +708,19 @@ private:
 template <typename T>
 struct PtrTraits< RCPtr<T> > {
 
+  /** Template argument typedef. */
   typedef typename RCPtr<T>::value_type value_type;
+  /** Template argument typedef. */
   typedef typename RCPtr<T>::reference reference;
+  /** Template argument typedef. */
   typedef typename RCPtr<T>::const_reference const_reference;
+  /** Template argument typedef. */
   typedef RCPtr<T> pointer;
+  /** Template argument typedef. */
   typedef ConstRCPtr<T> const_pointer;
+  /** Template argument typedef. */
   typedef TransientRCPtr<T> transient_pointer;
+  /** Template argument typedef. */
   typedef TransientConstRCPtr<T> transient_const_pointer;
 
   /**
@@ -746,12 +783,19 @@ struct PtrTraits< RCPtr<T> > {
 template <typename T>
 struct PtrTraits< ConstRCPtr<T> > {
 
+  /** Template argument typedef. */
   typedef typename ConstRCPtr<T>::value_type value_type;
+  /** Template argument typedef. */
   typedef typename ConstRCPtr<T>::reference reference;
+  /** Template argument typedef. */
   typedef typename ConstRCPtr<T>::const_reference const_reference;
+  /** Template argument typedef. */
   typedef RCPtr<T> pointer;
+  /** Template argument typedef. */
   typedef ConstRCPtr<T> const_pointer;
+  /** Template argument typedef. */
   typedef TransientRCPtr<T> transient_pointer;
+  /** Template argument typedef. */
   typedef TransientConstRCPtr<T> transient_const_pointer;
 
   /**
@@ -820,12 +864,19 @@ struct PtrTraits< ConstRCPtr<T> > {
 template <typename T>
 struct PtrTraits< TransientRCPtr<T> > {
 
+  /** Template argument typedef. */
   typedef typename TransientRCPtr<T>::value_type value_type;
+  /** Template argument typedef. */
   typedef typename TransientRCPtr<T>::reference reference;
+  /** Template argument typedef. */
   typedef typename TransientRCPtr<T>::const_reference const_reference;
+  /** Template argument typedef. */
   typedef RCPtr<T> pointer;
+  /** Template argument typedef. */
   typedef ConstRCPtr<T> const_pointer;
+  /** Template argument typedef. */
   typedef TransientRCPtr<T> transient_pointer;
+  /** Template argument typedef. */
   typedef TransientConstRCPtr<T> transient_const_pointer;
 
   /**
@@ -873,15 +924,25 @@ struct PtrTraits< TransientRCPtr<T> > {
 
 }; 
 
+/**
+ * Specialization of the PtrTraits class for TransientConstRCPtr.
+ */
 template <typename T>
 struct PtrTraits< TransientConstRCPtr<T> > {
 
+  /** Template argument typedef. */
   typedef typename TransientConstRCPtr<T>::value_type value_type;
+  /** Template argument typedef. */
   typedef typename TransientConstRCPtr<T>::reference reference;
+  /** Template argument typedef. */
   typedef typename TransientConstRCPtr<T>::const_reference const_reference;
+  /** Template argument typedef. */
   typedef RCPtr<T> pointer;
+  /** Template argument typedef. */
   typedef ConstRCPtr<T> const_pointer;
+  /** Template argument typedef. */
   typedef TransientRCPtr<T> transient_pointer;
+  /** Template argument typedef. */
   typedef TransientConstRCPtr<T> transient_const_pointer;
 
   /**

@@ -27,17 +27,29 @@ namespace Pointer {
 template <typename T>
 struct Ptr {
 
+  /** Template argument typedef. */
   typedef RCPtr<T> pointer;
+  /** Template argument typedef. */
   typedef ConstRCPtr<T> const_pointer;
+  /** Template argument typedef. */
   typedef TransientRCPtr<T> transient_pointer;
+  /** Template argument typedef. */
   typedef TransientConstRCPtr<T> transient_const_pointer;
+  /** Template argument typedef. */
   typedef pointer ptr;
+  /** Template argument typedef. */
   typedef const_pointer cptr;
+  /** Template argument typedef. */
   typedef transient_pointer tptr;
+  /** Template argument typedef. */
   typedef transient_const_pointer tcptr;
+  /** Template argument typedef. */
   typedef pointer p;
+  /** Template argument typedef. */
   typedef const_pointer cp;
+  /** Template argument typedef. */
   typedef transient_pointer tp;
+  /** Template argument typedef. */
   typedef transient_const_pointer tcp;
 
 };

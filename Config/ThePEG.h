@@ -15,8 +15,10 @@
 // specification throws. The following macro should therefore be used
 // for exception specifications.
 #ifndef __GNUG__
+/** Macro for declaring throw specification for a function. */
 #define ThePEG_THROW_SPEC(classes) throw classes
 #else
+/** Macro for declaring throw specification for a function. */
 #define ThePEG_THROW_SPEC(classes)
 #endif
 
@@ -109,10 +111,14 @@ inline T abs(const T & t) {
 // compilation swithc, eliminating possible overhead in error
 // checking.
 #ifndef ThePEG_NO_DEBUG
+/** Macro for accessing debug functions to enable compile-time disabling. */
 #define ThePEG_DEBUG_LEVEL Debug::level
+/** Macro for accessing debug functions to enable compile-time disabling. */
 #define ThePEG_DEBUG_ITEM(item) Debug::debugItem(item)
 #else
+/** Macro for accessing debug functions to enable compile-time disabling. */
 #define ThePEG_DEBUG_LEVEL 0
+/** Macro for accessing debug functions to enable compile-time disabling. */
 #define ThePEG_DEBUG_ITEM(item) false
 #endif
 

@@ -30,9 +30,9 @@ public:
   static int level;
 
   /**
-   * A vector of switches indicating whether a given <it>debug
-   * item</it> is switched on or not. The index of a debug item has no
-   * special meaning. An implementor may assume that a given number
+   * A vector of switches indicating whether a given <i>debug item</i>
+   * is switched on or not. The index of a debug item has no special
+   * meaning. An implementor may assume that a given number
    * corresponds to a certain request for debug output, but cannot be
    * sure that someone else uses that number for some other purpose.
    */

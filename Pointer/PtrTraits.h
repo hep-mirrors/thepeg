@@ -26,15 +26,20 @@ template <class T>
 struct PtrTraits {};
 
 /**
- * Specialization of the PtrTraits class for standard <it>bare</it> pointers.
+ * Specialization of the PtrTraits class for standard bare pointers.
  */
 template <class T>
 struct PtrTraits<T *> {
 
+  /** Template argument typedef. */
   typedef T value_type;
+  /** Template argument typedef. */
   typedef T & reference;
+  /** Template argument typedef. */
   typedef const T & const_reference;
+  /** Template argument typedef. */
   typedef T * pointer;
+  /** Template argument typedef. */
   typedef T * const_pointer;
 
   /**
@@ -81,16 +86,21 @@ struct PtrTraits<T *> {
 };
 
 /**
- * Specialization of the PtrTraits class for standard <it>bare</it>
+ * Specialization of the PtrTraits class for standard bare
  * const pointers.
  */
 template <class T>
 struct PtrTraits<const T *> {
 
+  /** Template argument typedef. */
   typedef T value_type;
+  /** Template argument typedef. */
   typedef T & reference;
+  /** Template argument typedef. */
   typedef const T & const_reference;
+  /** Template argument typedef. */
   typedef T * pointer;
+  /** Template argument typedef. */
   typedef T * const_pointer;
 
   /**

@@ -118,24 +118,28 @@ static const Energy2 GeV2 = GeV*GeV;
  */
 template <typename T>
 struct MultiplicationTraits {
+  /** The type resulting from multiplication of the template type with itself. */
   typedef T ResultType;
 };
 
 /** Specialization of MultiplicationTraits for Lorentz5Vector. */
 template <typename T>
 struct MultiplicationTraits< Lorentz5Vector<T> > {
+  /** The type resulting from multiplication of the template type with itself. */
   typedef T ResultType;
 };
 
 /** Specialization of MultiplicationTraits for LorentzVector. */
 template <>
 struct MultiplicationTraits< LorentzVector > {
+  /** The type resulting from multiplication of the template type with itself. */
   typedef double ResultType;
 };
 
 /** Specialization of MultiplicationTraits for Vector3. */
 template <>
 struct MultiplicationTraits< Vector3 > {
+  /** The type resulting from multiplication of the template type with itself. */
   typedef double ResultType;
 };
 

@@ -99,23 +99,30 @@ inline ostream& right(ostream& os) {
 
 #ifndef ThePEG_WRAP_STL_CONTAINERS
 
+/** Macro for declaring a set. */
 #define ThePEG_DECLARE_SET(VALTYPE,NAME)                               \
   typedef set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > NAME
 
+/** Macro for declaring a multiset. */
 #define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                          \
   typedef multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > NAME
 
+/** Macro for declaring a map. */
 #define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                       \
   typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>, Allocator<VALTYPE> > NAME
 
+/** Macro for implementing a set. */
 #define ThePEG_IMPLEMENT_SET(VALTYPE,NAME)
 
+/** Macro for implementing a multiset. */
 #define ThePEG_IMPLEMENT_MULTISET(VALTYPE,NAME)
 
+/** Macro for implementing a map. */
 #define ThePEG_IMPLEMENT_MAP(KEYTYPE,VALTYPE,NAME)
 
 #else
 
+/** Macro for declaring a set. */
 #define ThePEG_DECLARE_SET(VALTYPE,NAME)                               \
 class NAME : public set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > {  \
 public:                                                                 \
@@ -153,6 +160,7 @@ public:                                                                 \
 }
 
 
+/** Macro for declaring a multiset. */
 #define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                          \
 class NAME :                                                            \
  public multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > {         \
@@ -191,6 +199,7 @@ public:                                                                 \
 }
 
 
+/** Macro for declaring a map. */
 #define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                       \
 class NAME :                                                            \
   public map<KEYTYPE, VALTYPE, less<KEYTYPE>, Allocator<VALTYPE> > {    \
@@ -236,6 +245,7 @@ public:                                                                 \
 }
 
 
+/** Macro for implementing a set. */
 #define ThePEG_IMPLEMENT_SET(VALTYPE,NAME)                             \
 NAME::NAME() {}                                                         \
 NAME::NAME(const key_compare & c, const allocator_type & a)             \
@@ -287,6 +297,7 @@ NAME::equal_range(const key_type & x) const {                           \
 }                                                                       \
 
 
+/** Macro for implementing a multiset. */
 #define ThePEG_IMPLEMENT_MULTISET(VALTYPE,NAME)                        \
 NAME::NAME() {}                                                         \
 NAME::NAME(const key_compare & c, const allocator_type & a)             \
@@ -338,6 +349,7 @@ NAME::equal_range(const key_type & x) const {                           \
 }                                                                       \
 
 
+/** Macro for implementing a map. */
 #define ThePEG_IMPLEMENT_MAP(KEYTYPE,VALTYPE,NAME)                     \
 NAME::NAME() {}                                                         \
 NAME::NAME(const key_compare & c, const allocator_type & a)             \

@@ -84,7 +84,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(ConstRCPtr<T> &);
+  inline PersistentIStream & operator>>(ConstRCPtr<T> & p);
 
   /**
    * Operator for extracting persistent objects from the stream.
@@ -92,7 +92,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(TransientRCPtr<T> &);
+  inline PersistentIStream & operator>>(TransientRCPtr<T> & p);
 
   /**
    * Operator for extracting persistent objects from the stream.
@@ -100,7 +100,7 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(TransientConstRCPtr<T> &);
+  inline PersistentIStream & operator>>(TransientConstRCPtr<T> & p);
 
   /** @name Operators for extracting built-in types from the stream. */
   //@{

@@ -49,7 +49,7 @@ public:
   /**
    * Test for ordering.
    * @return true if <code>lower() < i.lower()</code> or <code>lower()
-   * == i.lower() and <code>upper() < i.upper()</code>.
+   * == i.lower()</code> and <code>upper() < i.upper()</code>.
    */
   inline bool operator<(const Interval & i) const;
 
