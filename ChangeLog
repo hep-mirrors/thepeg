@@ -2,7 +2,7 @@
 
 	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
 	QuarksToHadronsDecayer also instead of dummies PYDECY11 and
-	PYDECY12.
+	PYDECY12. Also using ColourPairDecayer instead of dummy PYDECY32.
 
 2003-08-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
