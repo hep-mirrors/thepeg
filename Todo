@@ -1,0 +1,4 @@
+* Change the EventHandler and EventGenerator hierarchies.
+
+* Implement LesHouchesEventHandler and LesHouchesReader classes.
+
