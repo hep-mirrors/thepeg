@@ -43,6 +43,12 @@ public:
    */
   static string cdr(string s, string ws = " \t\n");
 
+  /**
+   * Return the string \a str stripped from leading and trailing white
+   * space.
+   */
+  static string stripws(string str);
+
 };
 
 }

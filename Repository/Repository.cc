@@ -375,6 +375,13 @@ void Repository::read(istream & is, ostream & os, string prompt) {
   string line;
   if ( prompt.size() ) os << prompt;
   while ( getline(is, line) ) {
+    while ( line[line.size() - 1] == '\\' ) {
+      line[line.size() - 1] = ' ';
+      string cont;
+      if ( prompt.size() ) os << "> ";
+      getline(is, cont);
+      line += cont;
+    }
     if ( prompt.empty() && ThePEG_DEBUG_LEVEL > 0 )
       os << "(" << line << ")" << endl;;
     string reply = exec(line, os);

@@ -79,13 +79,31 @@ public:
    */
   inline string path() const;
 
+  /**
+   * Returns a comment assigned to this object.
+   */
+  inline string comment() const;
+
+  /**
+   * Read setup info from a standard istream \a is. May be called by
+   * the Repository to initialize an object. This function first calls
+   * the virtual readSetup() function to allow the sub classes the
+   * part \a is to initialize themselves. What ever is left in \a is
+   * after that will be assigned to the comment() of the object.
+   */
+  inline void setup(istream & is) throw(SetupException);
+
 protected:
 
   /** @name Standard InterfacedBase virtual functions. */
   //@{
   /**
-   * Read setup info from a standard stream. May be called by the
-   * Repository to initialize an object.
+   * Read setup info from a standard istream \a is. May be called by
+   * the Repository to initialize an object. This function is called
+   * by the non virtual setup() function. A sub-class implementing it
+   * should first call the base class version before parsing the \a
+   * is. If the \a is is not empty after readSetup is called the
+   * remaining string will be assigned to the comment() of the object.
    */
   virtual void readSetup(istream & is) throw(SetupException);
 
@@ -299,6 +317,13 @@ private:
 private:
 
   /**
+   * Used by the interface to add comments.
+   */
+  string addComment(string);
+
+private:
+
+  /**
    * True if this object is not to be changed by the user interface..
    */
   bool isLocked;
@@ -314,6 +339,11 @@ private:
    * being initialized.
    */
   InitState initState;
+
+  /**
+   * A comment assigned to this object.
+   */
+  string theComment;
 
 private:
 

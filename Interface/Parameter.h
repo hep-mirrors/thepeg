@@ -9,6 +9,7 @@
 #include "InterfaceBase.h"
 #include "Parameter.xh"
 #include "Parameter.fh"
+#include "ThePEG/Utilities/StringUtils.h"
 #include <limits>
 
 namespace ThePEG {
@@ -566,6 +567,261 @@ private:
    * 'tminimum()' and 'tmaximum()'
    */
   GetFn theGetFn, theDefFn, theMinFn, theMaxFn;
+
+};
+
+/**
+ * This is a specialization of ParameterTBase for the string case.
+ *
+ * @see ParameterTBase
+ * 
+ */
+template <>
+class ParameterTBase<string>: public ParameterBase {
+
+public:
+
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newClassName the name of the corresponding class.
+   *
+   * @param newTypeInfo the type_info object of the corresponding
+   * class.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   */
+  inline ParameterTBase(string newName, string newDescription,
+			string newClassName,
+			const type_info & newTypeInfo,
+			bool depSafe, bool readonlyd);
+
+  /**
+   * Destructor.
+   */
+  inline virtual ~ParameterTBase();
+
+  /**
+   * Return a code for the type of this parameter.
+   */
+ inline  virtual string type() const;
+
+  /**
+   * Set the member variables of \a ib to \a val. Uses a stringstream
+   * to read the \a val into a Type object and then calls
+   * tset(InterfacedBase &, Type).
+   */
+  inline virtual void set(InterfacedBase & ib, string newValue)
+    const throw(InterfaceException);
+
+  /**
+   * Set the member variables of \a ib to \a val.
+   */
+  virtual void tset(InterfacedBase & ib, string) const
+    throw(InterfaceException) = 0;
+
+  /**
+   * Return the value of the member variable of \a ib. Calls
+   * tget(const InterfacedBase &) and converts the returned value with
+   * an ostringstream.
+   */
+  inline virtual string get(const InterfacedBase & ib) const
+    throw(InterfaceException);
+
+  /**
+   * Return the value of the member variable of \a ib.
+   */
+  virtual string tget(const InterfacedBase & ib) const
+    throw(InterfaceException) = 0;
+
+  /**
+   * Return the minimum value allowed for the member variable of \a
+   * ib. Not relevant for strings. Returns the empty string.
+   */
+  inline virtual string minimum(const InterfacedBase & ib) const
+    throw(InterfaceException);
+
+  /**
+   * Return the maximum value allowed for the member variable of \a
+   * ib. Not relevant for strings. Returns the empty string.
+   */
+  inline virtual string maximum(const InterfacedBase & ib) const
+    throw(InterfaceException);
+
+  /**
+   * Return the default value for the member variables of \a ib. Calls
+   * tdef(const InterfacedBase &) and converts the returned value with
+   * an ostringstream.
+   */
+  inline virtual string def(const InterfacedBase & ib) const
+    throw(InterfaceException);
+
+  /**
+   * Return the default value for the member variables of \a ib.
+   */
+  virtual string tdef(const InterfacedBase &ib) const
+    throw(InterfaceException) = 0;
+
+  /**
+   * set the member variable of \a ib to its default value.
+   */
+  inline virtual void setDef(InterfacedBase & ib)
+    const throw(InterfaceException);
+
+  /**
+   * Return a string describing the type of interface to be included
+   * in the Doxygen documentation.
+   */
+  inline virtual string doxygenType() const;
+
+};
+
+/**
+ * This is a partial specialization of Parameter for the string case.
+ *
+ * @see Parameter
+ * 
+ */
+template <typename T>
+class Parameter<T,string>: public ParameterTBase<string> {
+
+public:
+
+  /**
+   * The declaration of member functions which can be used by this
+   * Switch interface for the 'set' action.
+   */
+  typedef void (T::*SetFn)(string);
+  /**
+   * The declaration of member functions which can be used by this
+   * Switch interface for the 'get', 'def', 'min' and 'max' actions.
+   */
+  typedef string (T::*GetFn)() const;
+
+  /**
+   * Declaration of a direct pointer to the member variable.
+   */
+  typedef string T::* Member;
+
+public:
+
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to the member variable. May be null if
+   * corresponding set/get functions are provided.
+   *
+   * @param newDef the default value for the member variable.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param newSetFn optional pointer to the member function for the
+   * 'set' action.
+   *
+   * @param newGetFn optional pointer to the member function for the
+   * 'get' action.
+   *
+   * @param newDefFn optional pointer to the member function for the
+   * 'def' action.
+   */
+  inline Parameter(string newName, string newDescription,
+		   Member newMember, string newDef,
+		   bool depSafe = false, bool readonly = false,
+		   SetFn newSetFn = 0, GetFn newGetFn = 0, GetFn newDefFn = 0)
+    : ParameterTBase<string>(newName, newDescription,
+			     ClassTraits<T>::className(),
+			 typeid(T), depSafe, readonly),
+    theMember(newMember), theDef(newDef),
+    theSetFn(newSetFn), theGetFn(newGetFn), theDefFn(newDefFn) {}
+
+
+  /**
+   * Default dtor.
+   */
+  inline virtual ~Parameter();
+
+  /**
+   * Set the member variable of \a ib to \a val.
+   */
+  virtual void tset(InterfacedBase & ib, string val)
+    const throw(InterfaceException);
+
+  /**
+   * Return the value of the member variable of ib.
+   */
+  virtual string tget(const InterfacedBase & ib) const
+    throw(InterfaceException);
+
+  /**
+   * Return the default value for the member variable of \a ib.
+   */
+  virtual string tdef(const InterfacedBase & ib) const
+    throw(InterfaceException);
+
+  /**
+   * Give a pointer to a member function to be used by 'tset()'.
+   */
+  inline void setSetFunction(SetFn);
+
+  /**
+   * Give a pointer to a member function to be used by 'tget()'.
+   */
+  inline void setGetFunction(GetFn);
+
+  /**
+   * Give a pointer to a member function to be used by 'tdef()'.
+   */
+  inline void setDefaultFunction(GetFn);
+
+  /**
+   * Print a description to be included in the Doxygen documentation
+   * to the given \a stream.
+   */
+  virtual void doxygenDescription(ostream & stream) const;
+
+private:
+
+  /**
+   * The pointer to the member variable.
+   */
+  Member theMember;
+
+  /**
+   * Default, minimum and maximum values to be used if no
+   * corresponding member function pointers are given.
+   */
+  string theDef;
+
+  /**
+   * A pointer to a member function to be used by 'tset()'.
+   */
+  SetFn theSetFn;
+
+  /**
+   * Pointers to member functions to be used by 'tget()', 'tdef()',
+   * 'tminimum()' and 'tmaximum()'
+   */
+  GetFn theGetFn, theDefFn;
 
 };
 

@@ -36,11 +36,24 @@ ParameterTBase(string newName, string newDescription, string newClassName,
   : ParameterBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
 		  readonly, islimited), theUnit(newUnit) {}
 
+inline ParameterTBase<string>::
+ParameterTBase(string newName, string newDescription, string newClassName,
+	       const type_info & newTypeInfo, bool depSafe, bool readonly)
+  : ParameterBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
+		  readonly, false) {}
+
 template <typename Type>
 inline ParameterTBase<Type>::~ParameterTBase() {}
 
+inline ParameterTBase<string>::~ParameterTBase() {}
+
 template <typename Type>
 inline void ParameterTBase<Type>::setDef(InterfacedBase & i) const
+  throw(InterfaceException) {
+  tset(i, tdef(i));
+}
+
+inline void ParameterTBase<string>::setDef(InterfacedBase & i) const
   throw(InterfaceException) {
   tset(i, tdef(i));
 }
@@ -78,8 +91,16 @@ inline void ParameterTBase<Type>::putUnit(ostream & os, Type val) const {
 template <typename T, typename Type>
 inline Parameter<T,Type>::~Parameter() {}
 
+template <typename T>
+inline Parameter<T,string>::~Parameter() {}
+
 template <typename T, typename Type>
 inline void Parameter<T,Type>::setSetFunction(SetFn sf) {
+  theSetFn = sf;
+}
+
+template <typename T>
+inline void Parameter<T,string>::setSetFunction(SetFn sf) {
   theSetFn = sf;
 }
 
@@ -88,8 +109,18 @@ inline void Parameter<T,Type>::setGetFunction(GetFn gf) {
   theGetFn = gf;
 }
 
+template <typename T>
+inline void Parameter<T,string>::setGetFunction(GetFn gf) {
+  theGetFn = gf;
+}
+
 template <typename T, typename Type>
 inline void Parameter<T,Type>::setDefaultFunction(GetFn df) {
+  theDefFn = df;
+}
+
+template <typename T>
+inline void Parameter<T,string>::setDefaultFunction(GetFn df) {
   theDefFn = df;
 }
 
@@ -103,5 +134,38 @@ inline void Parameter<T,Type>::setMaxFunction(GetFn mf) {
   theMaxFn = mf;
 }
 
+inline string ParameterTBase<string>::type() const {
+  return "Ps";
+}
+
+inline string ParameterTBase<string>::doxygenType() const {
+  return "Character string parameter";
+}
+
+inline void ParameterTBase<string>::
+set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
+  tset(i, StringUtils::stripws(newValue));
+}
+
+inline string ParameterTBase<string>::
+get(const InterfacedBase & i) const throw(InterfaceException) {
+  return tget(i);
+}
+
+inline string ParameterTBase<string>::
+def(const InterfacedBase & i) const throw(InterfaceException) {
+  return tdef(i);
+}
+
+inline string ParameterTBase<string>::
+minimum(const InterfacedBase & i) const throw(InterfaceException) {
+  return "";
+}
+
+inline string ParameterTBase<string>::
+maximum(const InterfacedBase & i) const throw(InterfaceException) {
+  return "";
+}
+    
 }
 

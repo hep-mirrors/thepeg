@@ -9,6 +9,9 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Utilities/StringUtils.h"
+#include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Command.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "InterfacedBase.tcc"
@@ -21,18 +24,37 @@ InterfacedBase::~InterfacedBase() {}
 void InterfacedBase::readSetup(istream &) throw(SetupException) {}
 
 void InterfacedBase::persistentOutput(PersistentOStream & os) const {
-  os << fullName() << isLocked << isTouched << oenum(initState);
+  os << fullName() << isLocked << isTouched << oenum(initState) << theComment;
 }
 
 void InterfacedBase::persistentInput(PersistentIStream & is, int) {
   string n;
-  is >> n >> isLocked >> isTouched >> ienum(initState);
+  is >> n >> isLocked >> isTouched >> ienum(initState) >> theComment;
   name(n);
+}
+
+string InterfacedBase::addComment(string c) {
+  if ( theComment.length() ) theComment += "\n";
+  theComment += StringUtils::stripws(c);
+  return "";
 }
 
 AbstractClassDescription<InterfacedBase> InterfacedBase::initInterfacedBase;
 
-void InterfacedBase::Init() {}
+void InterfacedBase::Init() {
+
+  static Parameter<InterfacedBase,string> interfaceComment
+    ("Comment",
+     "A comment assigned to this object.",
+     &InterfacedBase::theComment, "", true, false);
+
+  static Command<InterfacedBase> interfaceAddComment
+    ("AddComment",
+     "Add a comment to this object. Will be concatenated with the exixting "
+     "comment.",
+     &InterfacedBase::addComment, true);
+
+}
 
 void InterfacedBase::UpdateChecker::check(tIBPtr ip, bool & touch) {
   if ( !ip ) return;

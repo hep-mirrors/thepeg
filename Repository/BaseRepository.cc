@@ -396,7 +396,7 @@ string BaseRepository::getPosArgFromNoun(string noun) {
 }
 
 void BaseRepository::readSetup(tIBPtr ip, istream & is) {
-  ip->readSetup(is);
+  ip->setup(is);
 }
 
 string BaseRepository::exec(string command, ostream & os) {

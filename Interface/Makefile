@@ -166,7 +166,20 @@ libThePEGInter.so: $(LIBOBJECTS)
   ../../ThePEG/Persistency/InputDescription.icc \
   ../../ThePEG/Persistency/PersistentIStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.tcc \
-  ../../ThePEG/Utilities/EnumIO.h
+  ../../ThePEG/Utilities/EnumIO.h \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
+  ../../ThePEG/Interface/Parameter.h \
+  ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/Parameter.xh \
+  ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Interface/Parameter.icc \
+  ../../ThePEG/Interface/Parameter.tcc \
+  ../../ThePEG/Interface/Command.h \
+  ../../ThePEG/Interface/Command.fh \
+  ../../ThePEG/Interface/Command.xh \
+  ../../ThePEG/Interface/Command.icc \
+  ../../ThePEG/Interface/Command.tcc
   Interfaced.o: \
   Interfaced.cc \
   Interfaced.h \
@@ -418,6 +431,8 @@ libThePEGInter.so: $(LIBOBJECTS)
   Parameter.h \
   Parameter.xh \
   Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   Parameter.icc \
   Parameter.tcc
   RefVector.o: \

@@ -48,3 +48,10 @@ string StringUtils::cdr(string s, string ws) {
   return s.substr(p);
 }
 
+string StringUtils::stripws(string str) {
+  string::size_type i = str.find_first_not_of(" \t\n");
+  if ( i != string::npos ) str = str.substr(i);
+  i = str.find_last_not_of(" \t\n");
+  return str.substr(0, i);
+}
+

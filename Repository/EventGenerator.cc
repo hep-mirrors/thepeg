@@ -508,17 +508,17 @@ void EventGenerator::Init() {
      "if they wish.",
      &EventGenerator::theRandom, true, false, true, false);
 
-//   static Parameter<EventGenerator,string> interfacePath
-//     ("Path",
-//      "The directory where the output files are put.",
-//      &EventGenerator::thePath, ".", ".", ".", true, false, false,
-//      &EventGenerator::setPath, 0, 0, 0, &EventGenerator::defPath);
+  static Parameter<EventGenerator,string> interfacePath
+    ("Path",
+     "The directory where the output files are put.",
+     &EventGenerator::thePath, ".", true, false,
+      &EventGenerator::setPath, 0, &EventGenerator::defPath);
 
-//   static Parameter<EventGenerator,string> interfaceRunName
-//     ("RunName",
-//      "The name of this run. This name will be used in the output filenames.",
-//      &EventGenerator::theRunName, "", "", "", true, false, false,
-//      0, 0, 0, 0, &EventGenerator::name);
+   static Parameter<EventGenerator,string> interfaceRunName
+     ("RunName",
+      "The name of this run. This name will be used in the output filenames.",
+      &EventGenerator::theRunName, "", true, false,
+      0, 0, &EventGenerator::name);
 
   static Parameter<EventGenerator,long> interfaceNumberOfEvents
     ("NumberOfEvents",

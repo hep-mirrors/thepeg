@@ -230,6 +230,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Reference.h \
@@ -471,6 +473,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Reference.h \
@@ -1588,6 +1592,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -2147,6 +2153,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Reference.h \
@@ -2468,6 +2476,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -2655,6 +2665,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Reference.h \
@@ -3247,6 +3259,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Repository/EventGenerator.h \
@@ -3351,6 +3365,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Switch.h \
@@ -3661,6 +3677,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/PDT/ParticleData.h \
@@ -3795,8 +3813,20 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Repository/EventGenerator.h \
   ../../ThePEG/Repository/EventGenerator.fh \
   ../../ThePEG/Repository/RandomGenerator.h \

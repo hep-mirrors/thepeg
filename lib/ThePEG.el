@@ -1063,6 +1063,25 @@ ParticleVector " class "::decay(const DecayMode & dm,
  * defined for " class ".
 ")))
   
+(defun ThePEG-command ()
+  "Create a Command variable suitable for inclusion in an Init() function."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq name (read-from-minibuffer "Name: "))
+  (setq desc (read-from-minibuffer "Description: "))
+  (setq memb (read-from-minibuffer "Member function: "
+				   (concat "&" class "::do" name)))
+  (setq safe (y-or-n-p "Is this parameter dependency safe? "))
+  (insert-string (concat "
+  static Command<" class "> interface" name "
+    (\"" name "\",
+     \"" desc "\",
+     " memb ", " (cond (safe "true")(t "false")) ");
+")))
+
 (defun ThePEG-parameter ()
   "Create a Parameter variable suitable for inclusion in an Init() function."
   (interactive)
@@ -1071,16 +1090,19 @@ ParticleVector " class "::decay(const DecayMode & dm,
 				     (file-name-nondirectory
 				      (buffer-file-name)))))
   (setq type (read-from-minibuffer "Type: " "double"))
+  (setq isstring (cond ((string-equal type "string") t) (t nil)))
   (setq name (read-from-minibuffer "Name: "))
   (setq desc (read-from-minibuffer "Description: "))
   (setq memb (read-from-minibuffer "Member variable: "
 				   (concat "&" class "::the" name)))
-  (setq hasu (y-or-n-p "Does this parameter have a unit? "))
+  (setq hasu (cond (isstring nil)
+		   (t (y-or-n-p "Does this parameter have a unit? "))))
   (cond (hasu (setq unit (read-from-minibuffer "Unit: " "GeV"))
 	      (setq stru (concat "*" unit)))
 	(t    (setq stru "")))
   (setq defa (read-from-minibuffer "Default value: " (concat "1.0" stru)))
-  (setq limi (y-or-n-p "Is this parameter limited? "))
+  (setq limi (cond (isstring nil)
+		   (t (y-or-n-p "Is this parameter limited? "))))
   (cond (limi (setq mini (read-from-minibuffer "Minimum value: "
 					       (concat "0.0" stru)))
 	      (setq maxi (read-from-minibuffer "Maximum value: "
@@ -1093,24 +1115,28 @@ ParticleVector " class "::decay(const DecayMode & dm,
   static Parameter<" class "," type "> interface" name "
     (\"" name "\",
      \"" desc "\",
-     " memb ", " (cond (hasu (concat unit ", "))(t "")) defa ", "
-     mini ", " maxi ",
-     " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
-     (cond (limi "true")(t "false"))))
+     " memb ", " (cond (hasu (concat unit ", "))(t "")) defa
+     (cond (isstring "")(t (concat ", " mini ", " maxi)))
+     ",
+     " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false"))
+     (cond (isstring "")(limi ", true")(t ", false"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
      " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
-     ",
-     "
+     ", "
      (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
-     ", "
-     (read-from-minibuffer "Default-function: " (concat "&" class "::def" name))
-     ",
+     (cond (isstring "")
+	   (t (concat ",
      "
-     (read-from-minibuffer "Min-function: " (concat "&" class "::min" name))
+		      (read-from-minibuffer "Min-function: "
+					    (concat "&" class "::min" name))
+		      ", "
+		      (read-from-minibuffer "Max-function: "
+					    (concat "&" class "::max" name)))))
      ", "
-     (read-from-minibuffer "Max-function: " (concat "&" class "::max" name))))))
-  (insert-string ");
+     (read-from-minibuffer "Default-function: "
+			   (concat "&" class "::def" name))))))
+			(insert-string ");
 "))
 
 (defun ThePEG-parvector ()

@@ -90,8 +90,41 @@ void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
   if ( !InterfaceBase::dependencySafe() && oldValue != tget(i)) i.touch();
 }
 
+template <typename T>
+void Parameter<T,string>::tset(InterfacedBase & i, string newValue) const
+  throw(InterfaceException) {
+  if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
+  T * t = dynamic_cast<T *>(&i);
+  if ( !t ) throw InterExClass(*this, i);
+  string oldValue = tget(i);
+  if ( theSetFn ) {
+    try { (t->*theSetFn)(newValue); }
+    catch (InterfaceException) { throw; }
+    catch ( ... ) { throw ParExSetUnknown(*this, i, newValue); }
+  } else {
+    if ( theMember ) t->*theMember = newValue;
+    else throw InterExSetup(*this, i);
+  }
+  if ( !InterfaceBase::dependencySafe() && oldValue != tget(i)) i.touch();
+}
+
 template <typename T, typename Type>
-Type Parameter<T,Type>::tget(const InterfacedBase & i) const throw(InterfaceException) {
+Type Parameter<T,Type>::tget(const InterfacedBase & i) const
+  throw(InterfaceException) {
+  const T * t = dynamic_cast<const T *>(&i);
+  if ( !t ) throw InterExClass(*this, i);
+  if ( theGetFn ) {
+    try { return (t->*theGetFn)(); }
+    catch (InterfaceException) { throw; }
+    catch ( ... ) { throw ParExGetUnknown(*this, i, "current"); }
+  }
+  if ( theMember ) return t->*theMember;
+  else throw InterExSetup(*this, i);
+}
+
+template <typename T>
+string Parameter<T,string>::tget(const InterfacedBase & i) const
+  throw(InterfaceException) {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
@@ -142,6 +175,19 @@ Type Parameter<T,Type>::tdef(const InterfacedBase & i) const
   return theDef;
 }
 
+template <typename T>
+string Parameter<T,string>::tdef(const InterfacedBase & i) const
+  throw(InterfaceException) {
+  if ( theDefFn ) {
+    const T * t = dynamic_cast<const T *>(&i);
+    if ( !t ) throw InterExClass(*this, i);
+    try { return (t->*theDefFn)(); }
+    catch (InterfaceException) { throw; }
+    catch ( ... ) { throw ParExGetUnknown(*this, i, "default"); }
+  }
+  return theDef;
+}
+
 template <typename T, typename Type>
 void Parameter<T,Type>::doxygenDescription(ostream & os) const {
   ParameterTBase<Type>::doxygenDescription(os);
@@ -156,6 +202,14 @@ void Parameter<T,Type>::doxygenDescription(ostream & os) const {
     putUnit(os, theMax);
     if ( theMaxFn ) os << " (May be changed by member function.)";
   }
+  os << "<br>\n";
+}
+
+template <typename T>
+void Parameter<T,string>::doxygenDescription(ostream & os) const {
+  ParameterTBase<string>::doxygenDescription(os);
+  os << "<b>Default value:</b> " << theDef;
+  if ( theDefFn ) os << " (May be changed by member function.)";
   os << "<br>\n";
 }
 

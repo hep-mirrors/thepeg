@@ -163,6 +163,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Switch.h \
@@ -357,6 +359,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Reference.h \
@@ -1104,6 +1108,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -1436,6 +1442,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/PDT/DecayMode.h \
@@ -2051,6 +2059,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Switch.h \
@@ -2225,6 +2235,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Reference.h \

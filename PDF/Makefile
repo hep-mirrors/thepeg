@@ -222,6 +222,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/Switch.h \
@@ -1357,6 +1359,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -1755,6 +1759,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
   ../../ThePEG/Interface/Parameter.fh \
+  ../../ThePEG/Utilities/StringUtils.h \
+  ../../ThePEG/Utilities/StringUtils.icc \
   ../../ThePEG/Interface/Parameter.icc \
   ../../ThePEG/Interface/Parameter.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
