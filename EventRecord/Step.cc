@@ -32,6 +32,12 @@ Step::~Step() {
 	it != allParticles.end(); ++it )
     if ( (**it).hasRep() && (**it).birthStep() == this )
       (**it).rep().theBirthStep = tStepPtr();
+  theParticles.clear();
+  theIntermediates.clear();
+  theSubProcesses.clear();
+  allParticles.clear();
+  theCollision = tCollPtr();
+  theHandler = tcEventBasePtr();
 }
 
 StepPtr Step::clone() const {

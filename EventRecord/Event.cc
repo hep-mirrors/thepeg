@@ -37,6 +37,15 @@ Event::~Event() {
   for ( int i = 0, N = theCollisions.size(); i < N; ++i )
     if ( theCollisions[i]->event() == this )
       theCollisions[i]->theEvent = tEventPtr();
+  theIncoming = PPair();
+  theCollisions.clear();
+  allSteps.clear();
+  allSubProcesses.clear();
+  allParticles.clear();
+  theHandler = tcEventBasePtr();
+  theColourLines.clear();
+  theNumber = -1;
+  theWeight = 0.0;
 }
 
 void Event::setInfo(tcEventBasePtr newHandler, string newName,

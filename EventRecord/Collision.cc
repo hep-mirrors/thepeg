@@ -40,6 +40,12 @@ Collision::~Collision() {
   for ( int i = 0, N = theSubProcesses.size(); i < N; ++i )
     if ( theSubProcesses[i]->collision() == this )
       theSubProcesses[i]->theCollision = tCollPtr();
+  theIncoming = PPair();
+  theSteps.clear();
+  theSubProcesses.clear();
+  allParticles.clear();
+  theEvent = tEventPtr();
+  theHandler = tcEventBasePtr();
 }
 
 CollPtr Collision::clone() const {
