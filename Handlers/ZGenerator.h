@@ -40,7 +40,7 @@ public:
 
 public:
   virtual double generate(cPDPtr q1, cPDPtr q2, Energy2 mT2 ) const =0;
-  // Return the momentum fraction Z, of the fragmented hadron givent
+  // Return the momentum fraction Z, of the fragmented hadron given
   // its two constituent flavours (quark, antiquark) or (quark, diquark)
   // and transverse mass squared.
  
