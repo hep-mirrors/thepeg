@@ -30,6 +30,7 @@ HandlerGroupBase::~HandlerGroupBase() {}
 
 HandlerGroupBase::StepWithHint HandlerGroupBase::next() {
   StepWithHint sh = make_pair(StepHdlPtr(), HintPtr());
+  if ( isEmpty ) return sh;
   if (  !thePreHandlers.empty() ) {
     sh = thePreHandlers.back();
     thePreHandlers.pop_back();
@@ -57,7 +58,7 @@ void HandlerGroupBase::addPreHandler(tStepHdlPtr s, tHintPtr h,
 				     const HandlerGroupBase & ext) {
   if ( !s ) return;
   if ( !handler() ) refillDefaults(ext);
-  thePreHandlers.push_back(make_pair(s,h? h: Hint::Default()));
+  thePreHandlers.push_back(make_pair(s, h));
   isEmpty = false;
 }
 
@@ -65,14 +66,14 @@ void HandlerGroupBase::addPostHandler(tStepHdlPtr s, tHintPtr h,
 				      const HandlerGroupBase & ext) {
   if ( !s ) return;
   if ( empty() ) refillDefaults(ext);
-  thePostHandlers.push_back(make_pair(s,h? h: Hint::Default()));
+  thePostHandlers.push_back(make_pair(s, h));
   isEmpty = false;
 }
 
 void HandlerGroupBase::
 addHint(tHintPtr h, const HandlerGroupBase & ext) {
-  if ( !handler() ) refillDefaults(ext);
-  if ( count(theHints.begin(), theHints.end(), h? h: Hint::Default()) ) return;
+  if ( !handler() || theHints.empty() ) refillDefaults(ext);
+  if ( count(theHints.begin(), theHints.end(), h) ) return;
   theHints.push_back(h);
   isEmpty = false;
 }

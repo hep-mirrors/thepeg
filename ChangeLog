@@ -1,3 +1,33 @@
+2003-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.icc: Added member functions and
+	variables to access the current (partial) collision handler and
+	the current step handler.
+
+	* Handlers/PartialCollisionHandler.*: addStep() now has default
+	null arguments for the step handler and the hint. If the hint is
+	null, it is immediately converted to the default hint. If a step
+	was added to a given group, the subsequent groups are
+	automatically reinitialized.  In continueCollision(), the
+	currentCollisionHandler() of the current event generator is set to
+	this. In performStep() the currentStepHandler() in the current
+	event generator is set to the step handler which is called.
+
+	* Handlers/HandlerGroup.cc: next() will now return immediately for
+	an empty group. addPreHandler(), addHint() and addPostHandler()
+	now assumes (rightly) that the hint recieved is never null.
+	addHint will refill the whole group event if there is the main
+	handler is currently executing. I.e it is assumed that someone
+	adding a hint to the main handler wants the whole group to be
+	redone.
+
+	* EventRecord/Collision.cc: Fixed so that if a perticle is removed
+	from the event record its birthStep pointer is set to null.
+	Hopefully this will fix the problem that sometimes when a
+	generator is dumped (due to an error) a particle is written to a
+	persistent stream and then tries to write a no longer existent
+	birthStep.
+
 2003-07-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/OmegaPhi3PiDecayer.*, src/ThePEGDefaults.in,

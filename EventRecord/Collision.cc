@@ -96,6 +96,7 @@ void Collision::removeEntry(tPPtr p) {
 void Collision::removeParticle(tPPtr p) {
   if ( p->next() ) removeParticle(p->next());
   while ( !p->children().empty() ) removeParticle(p->children().back());
+  if ( p->hasRep() ) p->rep().theBirthStep = tStepPtr();
   removeEntry(p);
 }
 

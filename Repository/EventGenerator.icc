@@ -116,6 +116,22 @@ inline const ParticleMap & EventGenerator::particles() const {
   return theParticles;
 }
 
+inline tPartCollHdlPtr EventGenerator::currentCollisionHandler() const {
+  return theCurrentCollisionHandler;
+}
+
+inline void EventGenerator::currentCollisionHandler(tPartCollHdlPtr ch) {
+  theCurrentCollisionHandler = ch;
+}
+
+inline tStepHdlPtr EventGenerator::currentStepHandler() const {
+  return theCurrentStepHandler;
+}
+
+inline void EventGenerator::currentStepHandler(tStepHdlPtr sh) {
+  theCurrentStepHandler = sh;
+}
+
 inline void EventGenerator::doupdate() throw(UpdateException) {
   Interfaced::doupdate();
 }

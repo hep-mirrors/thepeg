@@ -50,7 +50,9 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theQuickSize(eg.theQuickSize), theMatchers(eg.theMatchers),
     usedObjects(eg.usedObjects), theDebugLevel(eg.theDebugLevel),
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
-    theCurrentGenerator(0) {}
+    theCurrentGenerator(0),
+    theCurrentCollisionHandler(eg.theCurrentCollisionHandler),
+    theCurrentStepHandler(eg.theCurrentStepHandler) {}
 
 EventGenerator::~EventGenerator() {
   if ( theCurrentRandom ) delete theCurrentRandom;
@@ -396,7 +398,8 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << theStrategy << theRandom << thePath << theRunName
      << theNumberOfEvents << theObjectMap << theParticles
      << theQuickParticles << theQuickSize << match << usedset
-     << ieve << theDebugLevel << maxWarnings << maxErrors;
+     << ieve << theDebugLevel << maxWarnings << maxErrors
+     << theCurrentCollisionHandler << theCurrentStepHandler;
 }
 
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
@@ -404,7 +407,8 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> theStrategy >> theRandom >> thePath >> theRunName
      >> theNumberOfEvents >> theObjectMap >> theParticles
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
-     >> ieve >> theDebugLevel >> maxWarnings >> maxErrors;
+     >> ieve >> theDebugLevel >> maxWarnings >> maxErrors
+     >> theCurrentCollisionHandler >> theCurrentStepHandler;
   theObjects.clear();
   for ( ObjectMap::iterator it = theObjectMap.begin();
 	it != theObjectMap.end(); ++it ) theObjects.insert(it->second);

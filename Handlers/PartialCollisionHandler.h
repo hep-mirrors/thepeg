@@ -90,7 +90,7 @@ public:
   // Perform a given step using a handler and a hint.
 
   void addStep(Group::Level, Group::Handler,
-	       tStepHdlPtr, tHintPtr);
+	       tStepHdlPtr = tStepHdlPtr(), tHintPtr = tHintPtr());
   // In the curresnt list of step handlers to go through, add another
   // step handler and/or hint.
 

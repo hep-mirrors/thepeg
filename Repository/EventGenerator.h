@@ -76,6 +76,14 @@ public:
   // Return a pointer to the strategy object containing a set of
   // non-default particles to use.
 
+  inline tPartCollHdlPtr currentCollisionHandler() const;
+  inline void currentCollisionHandler(tPartCollHdlPtr);
+  // Get/set the currently active (partial) collision handler.
+
+  inline tStepHdlPtr currentStepHandler() const;
+  inline void currentStepHandler(tStepHdlPtr);
+  // Get/set the currently active step handler.
+
 public:
   // The following functions are only relevant during the actual event
   // generation
@@ -389,6 +397,12 @@ private:
   // EventGenerator run so that the default event generator always can
   // be accessed through the static methods of the CurrentGenerator
   // class.
+
+  tPartCollHdlPtr theCurrentCollisionHandler;
+  // The currently active (partial) collision handler.
+
+  tStepHdlPtr theCurrentStepHandler;
+  // The currently active step handler.
 
 private:
 

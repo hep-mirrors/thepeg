@@ -90,6 +90,7 @@ tEventPtr PartialCollisionHandler::partialCollision(tEventPtr e) {
 
 tCollPtr PartialCollisionHandler::continueCollision() {
   Timer<45> timer("PartialCollisionHandler::continueCollision()");
+  generator()->currentCollisionHandler(this);
   while (1) {
     bool done = true;
     for ( GroupVector::iterator git = groups().begin();
@@ -100,6 +101,7 @@ tCollPtr PartialCollisionHandler::continueCollision() {
       if ( !group.empty() ) {
 	performStep(sh.first, sh.second);
 	done = false;
+	break;
       }
     }
     if ( done ) break;
@@ -128,9 +130,12 @@ performStep(tStepHdlPtr handler, tHintPtr hint) {
   currentStepHandler(handler);
   handler->collisionHandler(this);
   try {
+    generator()->currentStepHandler(handler);
     handler->handle(*this, hint->tagged(*oldStep), *hint);
+    generator()->currentStepHandler(tStepHdlPtr());
   }
   catch (...) {
+    generator()->currentStepHandler(tStepHdlPtr());
     if ( oldStep != currentStep() ) currentCollision()->popStep();
     throw;
   }
@@ -143,6 +148,7 @@ performStep(tStepHdlPtr handler, tHintPtr hint) {
 
 void PartialCollisionHandler::
 addStep(Group::Level level, Group::Handler group, tStepHdlPtr s, tHintPtr h) {
+  if ( !h ) h = Hint::Default();
   switch ( level ) {
   case Group::main:
     if ( s &&
@@ -157,6 +163,8 @@ addStep(Group::Level level, Group::Handler group, tStepHdlPtr s, tHintPtr h) {
     groups()[group]->addPostHandler(s, h, *optGroups[group]);
     break;
   }
+  for ( long gr = group + 1; gr <= Group::decay; ++gr )
+    groups()[gr]->addHint(Hint::Default(), *optGroups[group]);
 }
 
 void PartialCollisionHandler::throwCurrent() {
