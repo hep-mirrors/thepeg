@@ -8,7 +8,5 @@
 // <!id>ThePEG<!!id> namespace.
 
 #include "RandomEngine.fh"
-#include "CLHEP.h"
-#include "CLHEP/Random/RandomEngine.h"
 
 #endif /* ThePEG_RandomEngine_H */

@@ -7,7 +7,8 @@
 // <!id>Rotation<!!id> and making it available in the
 // <!id>ThePEG<!!id> namespace.
 
-class HepRotation;
+#include "CLHEP.h"
+#include "CLHEP/Vector/Rotation.h"
 
 namespace CLHEP {
 

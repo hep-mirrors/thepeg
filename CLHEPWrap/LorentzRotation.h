@@ -8,7 +8,5 @@
 // <!id>ThePEG<!!id> namespace.
 
 #include "LorentzRotation.fh"
-#include "CLHEP.h"
-#include "CLHEP/Vector/LorentzRotation.h"
 
 #endif /* ThePEG_LorentzRotation_H */

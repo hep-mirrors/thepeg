@@ -7,7 +7,8 @@
 // <!id>JamesRandom<!!id> and making it available in the <!id>ThePEG<!!id>
 // namespace.
 
-class HepJamesRandom;
+#include "CLHEP.h"
+#include "CLHEP/Random/JamesRandom.h"
 
 namespace CLHEP {
 

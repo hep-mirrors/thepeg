@@ -7,7 +7,5 @@ f// -*- C++ -*-
 // made available in the <!id>ThePEG<!!id> namespace.
 
 #include "Rotation.fh"
-#include "CLHEP.h"
-#include "CLHEP/Vector/Rotation.h"
 
 #endif /* ThePEG_Rotation_H */

@@ -7,17 +7,18 @@
 // <!id>RandBreitWigner<!!id> and making it available in the
 // <!id>ThePEG<!!id> namespace.
 
-class RandBreitWigner;
+#include "CLHEP.h"
+#include "CLHEP/Random/RandBreitWigner.h"
 
 namespace CLHEP {
 
-  typedef ::RandBreitWigner RandBreitWigner;
+  typedef RandBreitWigner ThePEGRandBreitWigner;
 
 }
 
 namespace ThePEG {
 
-  using CLHEP::RandBreitWigner;
+  typedef CLHEP::ThePEGRandBreitWigner RandBreitWigner;
 
 }
 

@@ -1,3 +1,8 @@
+2003-07-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* CLHEPWrap/*.fh, CLHEPWrap/*.h: Reordered include paths to
+	prepare for next version of CLHEP which will use namespace CLHEP.
+
 2003-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/DecayMode.*: Added new member variable to remember the order

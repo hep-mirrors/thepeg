@@ -7,8 +7,6 @@
 // and made available in the <!id>ThePEG<!!id> namespace.
 
 #include "ThreeVector.fh"
-#include "CLHEP.h"
-#include "CLHEP/Vector/ThreeVector.h"
 #include "ThePEG/Utilities/UnitIO.h"
 
 namespace ThePEG {

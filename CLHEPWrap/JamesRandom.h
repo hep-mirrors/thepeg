@@ -7,7 +7,5 @@
 // available in the <!id>ThePEG<!!id> namespace.
 
 #include "JamesRandom.fh"
-#include "CLHEP.h"
-#include "CLHEP/Random/JamesRandom.h"
 
 #endif /* ThePEG_JamesRandom_H */

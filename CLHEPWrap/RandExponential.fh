@@ -7,17 +7,18 @@
 // <!id>RandExponential<!!id> and making it available in the
 // <!id>ThePEG<!!id> namespace.
 
-class RandExponential;
+#include "CLHEP.h"
+#include "CLHEP/Random/RandExponential.h"
 
 namespace CLHEP {
 
-  typedef ::RandExponential RandExponential;
+  typedef RandExponential ThePEGRandExponential;
 
 }
 
 namespace ThePEG {
 
-  using CLHEP::RandExponential;
+  typedef CLHEP::ThePEGRandExponential RandExponential;
 
 }
 

@@ -7,7 +7,8 @@
 // <!id>CLHEP<!!id> namespace as <!id>LorentzRotation<!!id> and making
 // it available in the <!id>ThePEG<!!id> namespace.
 
-class HepLorentzRotation;
+#include "CLHEP.h"
+#include "CLHEP/Vector/LorentzRotation.h"
 
 namespace CLHEP {
 

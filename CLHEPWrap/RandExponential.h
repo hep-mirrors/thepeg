@@ -8,7 +8,5 @@
 // <!id>ThePEG<!!id> namespace.
 
 #include "RandExponential.fh"
-#include "CLHEP.h"
-#include "CLHEP/Random/RandExponential.h"
 
 #endif /* ThePEG_RandExponential_H */

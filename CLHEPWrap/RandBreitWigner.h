@@ -8,7 +8,5 @@
 // <!id>ThePEG<!!id> namespace.
 
 #include "RandBreitWigner.fh"
-#include "CLHEP.h"
-#include "CLHEP/Random/RandBreitWigner.h"
 
 #endif /* ThePEG_RandBreitWigner_H */

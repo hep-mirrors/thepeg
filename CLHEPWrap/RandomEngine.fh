@@ -7,7 +7,8 @@
 // <!id>RandomEngine<!!id> and making it available in the
 // <!id>ThePEG<!!id> namespace.
 
-class HepRandomEngine;
+#include "CLHEP.h"
+#include "CLHEP/Random/RandomEngine.h"
 
 namespace CLHEP {
 

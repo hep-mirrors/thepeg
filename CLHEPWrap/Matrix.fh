@@ -6,9 +6,10 @@
 // placing them in the <!id>CLHEP<!!id> namespace without making them
 // available in the <!id>ThePEG<!!id> namespace.
 
-class HepMatrix;
-class HepSymMatrix;
-class HepVector;
+#include "CLHEP.h"
+#include "CLHEP/Matrix/Matrix.h"
+#include "CLHEP/Matrix/SymMatrix.h"
+#include "CLHEP/Matrix/Vector.h"
 
 namespace CLHEP {
 

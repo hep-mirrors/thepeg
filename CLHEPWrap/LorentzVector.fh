@@ -7,7 +7,8 @@
 // <!id>LorentzVector<!!id> and making it available in the
 // <!id>ThePEG<!!id> namespace.
 
-class HepLorentzVector;
+#include "CLHEP.h"
+#include "CLHEP/Vector/LorentzVector.h"
 
 namespace CLHEP {
 
@@ -18,7 +19,6 @@ typedef HepLorentzVector LorentzVector;
 namespace ThePEG {
 
 using CLHEP::LorentzVector;
-
 
 }
 

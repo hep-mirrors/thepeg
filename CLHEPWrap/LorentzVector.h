@@ -8,8 +8,6 @@
 // <!id>ThePEG<!!id> namespace.
 
 #include "LorentzVector.fh"
-#include "CLHEP.h"
-#include "CLHEP/Vector/LorentzVector.h"
 #include "ThePEG/CLHEPWrap/Transverse.h"
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/UnitIO.h"
