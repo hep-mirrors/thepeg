@@ -210,5 +210,18 @@ inline LorentzPolarizationVector operator * (Complex a,
 				   v.pz()*a,v.e()*a);
 }
 
+inline LorentzPolarizationVector &
+LorentzPolarizationVector::transform(const HepLorentzRotation & m){
+  Complex lx(x());
+  Complex ly(y());
+  Complex lz(z());
+  Complex lt(t());
+  _vec[0] = m.xx()*lx + m.xy()*ly + m.xz()*lz + m.xt()*lt;
+  _vec[1] = m.yx()*lx + m.yy()*ly + m.yz()*lz + m.yt()*lt;
+  _vec[2] = m.zx()*lx + m.zy()*ly + m.zz()*lz + m.zt()*lt;
+  _vec[3] = m.tx()*lx + m.ty()*ly + m.tz()*lz + m.tt()*lt;
+  return *this;
+}
+
 }
 }

@@ -7,6 +7,8 @@
 #include "ThePEG/CLHEPWrap/LorentzVector.h"
 #include "ThePEG/CLHEPWrap/Lorentz5Vector.h"
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
+#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+
 
 namespace ThePEG {
 namespace Helicity {
@@ -243,6 +245,11 @@ public:
    * Standard Lorentz boost specifying the beta vector.
    */
   inline LorentzPolarizationVector & boost(const Hep3Vector &);
+
+  /**
+   * general transform method
+   */
+  inline LorentzPolarizationVector & transform(const HepLorentzRotation & );
 
   /**
    * Normalizes the Hep3Vector \a axis to define a direction, and uses
