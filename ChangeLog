@@ -1,5 +1,8 @@
 2004-12-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Utilities/CFileLineReader.cc: Fixed bug in checking if a file is
+	bzip2 format.
+
 	* configure.in: Fixed default compress commands in
 	ThePEG_BZ2WRITE_FILE and ThePEG_GZWRITE_FILE macros.
 

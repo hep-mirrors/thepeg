@@ -33,7 +33,7 @@ void CFileLineReader::open(string filename) {
   }
 #endif
 #ifdef ThePEG_BZ2READ_FILE
-  else if ( filename.substr(filename.length()-3,3) == ".bz2" ) {
+  else if ( filename.substr(filename.length()-4,4) == ".bz2" ) {
     filename = ThePEG_BZ2READ_FILE " " + filename;
     file = popen(filename.c_str(), "r");
     type = pipe;

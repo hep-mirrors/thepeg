@@ -7,6 +7,7 @@
 #include "ThePEG/Utilities/ObjectIndexer.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "LesHouchesReader.fh"
+#include <cstdio>
 
 namespace ThePEG {
 
@@ -91,6 +92,14 @@ public:
 
   /** @name Access information about the current event. */
   //@{
+
+  /**
+   * Return the size of this event in bytes. To be used for the cache
+   * file. \a npart is the number of particles. If \a npart is 0, the
+   * number is taken from NUP.
+   */
+  inline size_t eventSize(int npart = 0) const;
+
   /**
    * Return the instances of the beam particles for the current event.
    */
@@ -158,6 +167,71 @@ public:
   //@}
 
 protected:
+
+  /** @name Functions for manipulating cache files. */
+  //@{
+
+  /**
+   * Name of file used to cache the events form the reader in a
+   * fast-readable form. If empty, no cache file will be generated.
+   */
+  inline string cacheFileName() const;
+
+  /**
+   * Should the events from this Reader be randomized in order to
+   * avoid problems if not all events are used.
+   */
+  inline bool randomize() const;
+
+  /**
+   * File stream for the cache.
+   */
+  inline FILE * cacheFile() const;
+
+  /**
+   * Open the cache file for reading.
+   */
+  void openReadCacheFile();
+
+  /**
+   * Open the cache file for writing.
+   */
+  void openWriteCacheFile();
+
+  /**
+   * Close the cache file;
+   */
+  void closeCacheFile();
+
+  /**
+   * Returns true if the cache file is compressed.
+   */
+  inline bool compressedCache() const;
+
+  /**
+   * Write the current event to the cache file.
+   */
+  void cacheEvent() const;
+
+  /**
+   * Read an event from the cache file. Return false if something went wrong.
+   */
+  bool uncacheEvent();
+
+  /**
+   * Helper function to write a variable to a memory location
+   */
+  template <typename T>
+  static char * mwrite(char * pos, const T & t, size_t n = 1);
+
+  /**
+   * Helper function to read a variable from a memory location
+   */
+  template <typename T>
+  static const char * mread(const char * pos, T & t, size_t n = 1);
+
+
+  //@}
 
   /** @name Auxilliary virtual methods which may be verridden by sub-classes. */
   //@{
@@ -465,6 +539,18 @@ protected:
   bool hasNegativeWeights;
 
   /**
+   * Name of file used to cache the events form the reader in a
+   * fast-readable form. If empty, no cache file will be generated.
+   */
+  string theCacheFileName;
+
+  /**
+   * Should the events from this Reader be randomized in order to
+   * avoid problems if not all events are used.
+   */
+  bool doRandomize;
+
+  /**
    * Association between ColourLines and colour indices in the current
    * translation.
    */
@@ -498,6 +584,11 @@ protected:
    * the current event.
    */
   PVector theIntermediates;
+
+  /**
+   * File stream for the cache.
+   */
+  FILE * theCacheFile;
 
 private:
 

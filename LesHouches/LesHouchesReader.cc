@@ -8,6 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/Switch.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesReader.tcc"
@@ -25,7 +26,8 @@ LesHouchesReader::LesHouchesReader()
 : IDWTUP(0), NRUP(0), NUP(0), IDPRUP(0), XWGTUP(0.0),
   SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0), theXSec(0.0*picobarn),
   theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1),
-  isWeighted(false), hasNegativeWeights(false) {}
+  isWeighted(false), hasNegativeWeights(false), theCacheFileName(""),
+  doRandomize(false), theCacheFile(NULL) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
@@ -39,7 +41,9 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP), theXSec(x.theXSec),
     theMaxXSec(x.theMaxXSec), theMaxWeight(x.theMaxWeight),
     theNEvents(x.theNEvents), theMaxScan(x.theMaxScan),
-    isWeighted(x.isWeighted), hasNegativeWeights(x.hasNegativeWeights) {}
+    isWeighted(x.isWeighted), hasNegativeWeights(x.hasNegativeWeights),
+    theCacheFileName(x.theCacheFileName), doRandomize(x.doRandomize),
+    theCacheFile(NULL) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -200,6 +204,74 @@ void LesHouchesReader::connectMothers() {
   }
 }
 
+void LesHouchesReader::openReadCacheFile() {
+  if ( cacheFile() != NULL ) closeCacheFile();
+  if ( compressedCache() ) {
+    string cmd = ThePEG_GZWRITE_FILE " " + cacheFileName();
+    theCacheFile = popen(cmd.c_str(), "r");
+  } else {
+    theCacheFile = fopen(cacheFileName().c_str(), "r");
+  }
+}
+
+void LesHouchesReader::openWriteCacheFile() {
+  if ( cacheFile() != NULL ) closeCacheFile();
+  if ( compressedCache() ) {
+    string cmd = ThePEG_GZWRITE_FILE " " + cacheFileName();
+    theCacheFile = popen(cmd.c_str(), "w");
+  } else {
+    theCacheFile = fopen(cacheFileName().c_str(), "w");
+  }
+}
+
+void LesHouchesReader::closeCacheFile() {
+  if ( compressedCache() ) pclose(cacheFile());
+  else fclose(cacheFile());
+}
+
+void LesHouchesReader::cacheEvent() const {
+  static vector<char> buff;
+  fwrite(&NUP, sizeof(NUP), 1, cacheFile());
+  buff.resize(eventSize());
+  char * pos = &buff[0];
+  pos = mwrite(pos, IDPRUP);
+  pos = mwrite(pos, XWGTUP);
+  pos = mwrite(pos, SCALUP);
+  pos = mwrite(pos, AQEDUP);
+  pos = mwrite(pos, AQCDUP);
+  pos = mwrite(pos, IDUP[0], NUP);
+  pos = mwrite(pos, ISTUP[0], NUP);
+  pos = mwrite(pos, MOTHUP[0], NUP);
+  pos = mwrite(pos, ICOLUP[0], NUP);
+  for ( int i = 0; i < NUP; ++i ) 
+    pos = mwrite(pos, PUP[i][0], 5);
+  pos = mwrite(pos, VTIMUP[0], NUP);
+  pos = mwrite(pos, SPINUP[0], NUP);
+  fwrite(&buff[0], buff.size(), 1, cacheFile());
+}
+
+bool LesHouchesReader::uncacheEvent() {
+  static vector<char> buff;
+  fread(&NUP, sizeof(NUP), 1, cacheFile());
+  buff.resize(eventSize());
+  fread(&buff[0], buff.size(), 1, cacheFile());
+  const char * pos = &buff[0];
+  pos = mread(pos, IDPRUP);
+  pos = mread(pos, XWGTUP);
+  pos = mread(pos, SCALUP);
+  pos = mread(pos, AQEDUP);
+  pos = mread(pos, AQCDUP);
+  pos = mread(pos, IDUP[0], NUP);
+  pos = mread(pos, ISTUP[0], NUP);
+  pos = mread(pos, MOTHUP[0], NUP);
+  pos = mread(pos, ICOLUP[0], NUP);
+  for ( int i = 0; i < NUP; ++i ) 
+    pos = mread(pos, PUP[i][0], 5);
+  pos = mread(pos, VTIMUP[0], NUP);
+  pos = mread(pos, SPINUP[0], NUP);
+  return true;
+}
+
 void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
   os << IDBMUP << EBMUP << PDFGUP << PDFSUP << thePDFA << thePDFB
      << IDWTUP << NRUP
@@ -208,10 +280,11 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
      << ounit(theXSec, picobarn) << ounit(theMaxXSec, picobarn)
      << theMaxWeight << theNEvents << theMaxScan << isWeighted
-     << hasNegativeWeights;
+     << hasNegativeWeights << theCacheFileName << doRandomize;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
+  closeCacheFile();
   is >> IDBMUP >> EBMUP >> PDFGUP >> PDFSUP >> thePDFA >> thePDFB
      >> IDWTUP >> NRUP
      >> XSECUP >> XERRUP >> XMAXUP >> LPRUP >> NUP >> IDPRUP
@@ -219,7 +292,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
      >> iunit(theXSec, picobarn) >> iunit(theMaxXSec, picobarn)
      >> theMaxWeight >> theNEvents >> theMaxScan >> isWeighted
-     >> hasNegativeWeights;
+     >> hasNegativeWeights >> theCacheFileName >> doRandomize;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -301,6 +374,30 @@ void LesHouchesReader::Init() {
      "processes and cross section in the intialization.",
      &LesHouchesReader::theMaxScan, -1, 0, 0,
      true, false, false);
+
+
+  static Parameter<LesHouchesReader,string> interfaceCacheFileName
+    ("CacheFileName",
+     "Name of file used to cache the events form the reader in a fast-readable "
+     "form. If empty, no cache file will be generated.",
+     &LesHouchesReader::theCacheFileName, "",
+     true, false);
+
+  static Switch<LesHouchesReader,bool> interfaceRandomize
+    ("Randomize",
+     "Should the events from this Reader be randomized in order to avoid "
+     "problems if not all events are used.",
+     &LesHouchesReader::doRandomize, false, true, false);
+  static SwitchOption interfaceRandomizeYes
+    (interfaceRandomize,
+     "Yes",
+     "The events from this Reader be randomized.",
+     true);
+  static SwitchOption interfaceRandomizeNo
+    (interfaceRandomize,
+     "No",
+     "The events from this Reader should not be randomized.",
+     false);
 
 
 }
