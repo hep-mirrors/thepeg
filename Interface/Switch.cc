@@ -38,7 +38,9 @@ string SwitchBase::exec(InterfacedBase & i, string action,
       set(i, val);
       return ret.str();
     }
-    catch ( ... ) {}
+    catch ( Exception & ex ) {
+      ex.handle();
+    }
     istringstream arg2(arguments.c_str());
     string sval;
     arg2 >> sval;
