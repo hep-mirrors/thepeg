@@ -18,7 +18,7 @@ inline tPBPtr PartonBin::incoming() const {
   return theIncomingBin;
 }
 
-inline const PartonBin::tPBVector & PartonBin::outgoing() const {
+inline const PartonBin::PBVector & PartonBin::outgoing() const {
   return theOutgoing;
 }
 

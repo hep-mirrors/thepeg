@@ -63,6 +63,10 @@ getPartons(Energy maxEnergy, const cPDPair & incoming,
     for ( PartonVector::iterator it2 = second.begin();
 	it2 != second.end(); ++it2 )
       result.push_back(PBPair(*it1, *it2));
+
+  // We add the original parton bins as well to avoid them being
+  // deleted.
+  result.push_back(PBPair(p1, p2));
   return result;
 }
 
@@ -289,7 +293,7 @@ PBIPair PartonExtractor::newRemnants(tPPair oldp, tPPair newp, tStepPtr step) {
 
 PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp) {
   if ( ! oldpb || !oldpb->incoming() ) return oldpb;
-  const PartonBin::tPBVector & sisters = oldpb->incoming()->bin()->outgoing();
+  const PartonBin::PBVector & sisters = oldpb->incoming()->bin()->outgoing();
   for ( int i = 0, N = sisters.size(); i < N; ++i )
     if ( sisters[i]->parton() == newp->dataPtr() ) {
       PBIPtr newpb = new_ptr(PartonBinInstance(sisters[i], oldpb->incoming()));

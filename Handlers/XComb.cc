@@ -62,6 +62,8 @@ XComb(Energy newMaxEnergy, const cPDPair & inc,
     new_ptr(PartonBinInstance(partonBins().first));
   thePartonBinInstances.second =
     new_ptr(PartonBinInstance(partonBins().second));
+  theParticleBins.first = thePartonBins.first->getFirst();
+  theParticleBins.second = thePartonBins.second->getFirst();
 }
 
 XComb::XComb(tMEPtr me, const tPVector & parts, DiagramIndex indx)
@@ -94,6 +96,7 @@ XComb::XComb(const XComb & x)
     thePartonExtractor(x.thePartonExtractor),
     theCuts(x.theCuts), theParticles(x.theParticles),
     thePartons(x.thePartons), thePartonBins(x.thePartonBins),
+    theParticleBins(x.theParticleBins),
     thePartonBinInstances(x.thePartonBinInstances),
     theNAttempted(x.theNAttempted), theNAccepted(x.theNAccepted),
     theSumWeight(x.theSumWeight), theLastParticles(x.theLastParticles),
@@ -255,6 +258,7 @@ void XComb::persistentOutput(PersistentOStream & os) const {
 
   os << theCollisionHandler << theSubProcessHandler << thePartonExtractor
      << theCuts << theParticles << thePartons << thePartonBins
+     << theParticleBins
      << thePartonBinInstances << theNAttempted << theNAccepted
      << theSumWeight << theLastParticles << theLastPartons
      << ounit(theLastS, GeV2) << ounit(theLastSHat, GeV2) << theLastY
@@ -268,6 +272,7 @@ void XComb::persistentOutput(PersistentOStream & os) const {
 void XComb::persistentInput(PersistentIStream & is, int) {
   is >> theCollisionHandler >> theSubProcessHandler >> thePartonExtractor
      >> theCuts >> theParticles >> thePartons >> thePartonBins
+     >> theParticleBins
      >> thePartonBinInstances >> theNAttempted >> theNAccepted
      >> theSumWeight >> theLastParticles >> theLastPartons
      >> iunit(theLastS, GeV2) >> iunit(theLastSHat, GeV2) >> theLastY

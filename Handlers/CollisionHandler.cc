@@ -150,6 +150,12 @@ void CollisionHandler::initialize(Energy maxEnergy) {
     PExtrPtr pextract = (**sit).pExtractor();
 
     PartonPairVec vpc = pextract->getPartons(maxEnergy, incoming(), *kincuts);
+
+    // The last parton bin pair was in fact the bins corresponding to
+    // the incoming particles, so we remove them, but save them to
+    // keep them referenced.
+    PBPair orig = vpc.back();
+    vpc.pop_back();
     for ( PartonPairVec::iterator ppit = vpc.begin();
 	  ppit != vpc.end(); ++ppit )
       for ( MEVector::const_iterator meit = (**sit).MEs().begin();

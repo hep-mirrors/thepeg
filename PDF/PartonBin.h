@@ -31,7 +31,7 @@ class PartonBin: public Base {
 
 public:
 
-typedef vector<tPBPtr> tPBVector;
+typedef vector<PBPtr> PBVector;
 
 public:
 
@@ -53,7 +53,7 @@ public:
   // In the case the incoming particle in turn is extracted from
   // another particle, return the PartonBin for that extraction.
 
-  inline const tPBVector & outgoing() const;
+  inline const PBVector & outgoing() const;
   // The parton bins corresponding to the extracted parton if it can
   // be extracted from.
 
@@ -111,11 +111,11 @@ private:
   cPDPtr theParticle;
   // The incoming particle type.
 
-  PBPtr theIncomingBin;
+  tPBPtr theIncomingBin;
   // In the case the incoming particle in turn is extracted from
   // another particle, return the PartonBin for that extraction.
 
-  tPBVector theOutgoing;
+  PBVector theOutgoing;
   // The parton bins corresponding to the extracted parton if it can
   // be extracted from.
 

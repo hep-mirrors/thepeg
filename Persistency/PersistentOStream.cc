@@ -10,12 +10,12 @@
 
 namespace ThePEG {
 
-PersistentOStream::PersistentOStream(ostream & os) 
+PersistentOStream::PersistentOStream(ostream & os)
 : theOStream(&os), badState(false), allocStream(false) {
   init();
 }
 
-PersistentOStream::PersistentOStream(string file) 
+PersistentOStream::PersistentOStream(string file)
   : badState(false), allocStream(true) {
 //    if ( file[0] == '|' )
 //      theOStream = new opfstream(file.substr(1).c_str());
@@ -87,7 +87,9 @@ PersistentOStream::outputPointer(tcBPtr obj) {
 const ClassDescriptionBase *
 PersistentOStream::writeClassId(tcBPtr obj) {
   const ClassDescriptionBase * db = DescriptionList::find(typeid(*obj));
-  if ( !db ) throw MissingClass();
+  if ( !db ) {
+    throw MissingClass();
+  }
   writeClassDescription(db);
   return db;
 }

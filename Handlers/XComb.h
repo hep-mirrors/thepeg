@@ -256,6 +256,9 @@ private:
   PBPair thePartonBins;
   // Additional information about the incoming partons.
 
+  PBPair theParticleBins;
+  // Additional information about the origins of the incoming partons.
+
   PBIPair thePartonBinInstances;
   // Additional information about the incoming partons.
 

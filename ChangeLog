@@ -1,6 +1,24 @@
+2004-03-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Persistency/PersistentOStream.cc: Minor changes to facilitate
+	debugging.
+
+	* Handlers/XComb.h, Handlers/CollisionHandler.cc,
+	PDF/PartonExtractor.cc, PDF/PartonBin.*: The incoming PartonBin is
+	now a transient pointer while the outgoing ones are reference
+	counted (before it was vice versa). This is to avoid that outgoing
+	PartonBins which are not used get deleted while the transient
+	pointers are still around. Also the PartonExtractor was changed to
+	reflect this change. In PartonExtractor::getPartons the bins
+	corresponding to the incoming particles are also saved last in the
+	returned vector to avoid them being deleted. This is then also
+	taken care of in CollisionHandler::initialize.In addition, the
+	XComb objects now also hold reference counted pointers to the bins
+	corresponding to the incoming particles.
+
 2004-03-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* Helicity/HelicityDefinitions.h (Module): Removed the
+	* Helicity/HelicityDefinitions.h: Removed the
 	HelicityDefinitions class.
 
 2004-03-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>

@@ -96,7 +96,7 @@ void SubProcessHandler::Init() {
 
   static RefVector<SubProcessHandler,MEBase> interfaceMEs
     ("MatrixElements",
-     "A list of MEBase objects describing the $2\rightarrow n$ hard "
+     "A list of MEBase objects describing the $2\\rightarrow n$ hard "
      "matrix elements.",
      &SubProcessHandler::theMEs, 0, false, false, true, false);
 
