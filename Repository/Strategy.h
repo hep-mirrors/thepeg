@@ -50,9 +50,9 @@ public:
    * Destructor.
    */
   virtual ~Strategy();
+  //@}
 
 public:
-  //@}
 
   /** @name Access the special objects in this Strategy. */
   //@{

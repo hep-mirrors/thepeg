@@ -185,7 +185,7 @@ template <>
 struct ClassTraits<DummyDecayer>
   : public ClassTraitsBase<DummyDecayer> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/DummyDecayer"; }
+  static string className() { return "ThePEG::DummyDecayer"; }
 
 };
 

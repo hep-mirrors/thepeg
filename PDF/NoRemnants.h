@@ -154,7 +154,7 @@ struct BaseClassTrait<NoRemnants,1> {
 template <>
 struct ClassTraits<NoRemnants>: public ClassTraitsBase<NoRemnants> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/NoRemnants"; }
+  static string className() { return "ThePEG::NoRemnants"; }
 };
 
 }

@@ -409,9 +409,7 @@ template <>
 struct ClassTraits<CollisionHandler>:
     public ClassTraitsBase<CollisionHandler> {
   /** Return a platform-independent class name */
-  static string className() {
-    return "/ThePEG/CollisionHandler";
-  }
+  static string className() { return "ThePEG::CollisionHandler"; }
 };
 
 }

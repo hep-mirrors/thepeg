@@ -380,7 +380,7 @@ struct BaseClassTrait<PartonExtractor,1> {
 template <>
   /** Return a platform-independent class name */
 struct ClassTraits<PartonExtractor>: public ClassTraitsBase<PartonExtractor> {
-  static string className() { return "/ThePEG/PartonExtractor"; }
+  static string className() { return "ThePEG::PartonExtractor"; }
 };
 
 }

@@ -381,7 +381,7 @@ struct BaseClassTrait<InterfacedBase,1> {
 template <>
 struct ClassTraits<InterfacedBase>: public ClassTraitsBase<InterfacedBase> {
   /** Return the class name. */
-  static string className() { return "/ThePEG/InterfacedBase"; }
+  static string className() { return "ThePEG::InterfacedBase"; }
 };
 
 }

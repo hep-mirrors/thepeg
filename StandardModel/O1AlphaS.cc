@@ -60,10 +60,6 @@ vector<Energy> O1AlphaS::LambdaQCDs() const {
   return lambdas;
 }  
 
-unsigned int O1AlphaS::getMaxFlav() const {
-  return theMaxFlav;
-}
-
 void O1AlphaS::persistentOutput(PersistentOStream & os) const {
   os << ounit(theLambdaQCD, GeV) << theLambdaFlavour << theMaxFlav;
 }

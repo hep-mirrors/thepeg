@@ -253,7 +253,7 @@ struct BaseClassTrait<ColourLine,1> {
 template <>
 struct ClassTraits<ColourLine>: public ClassTraitsBase<ColourLine> {
   /** Return the class name. */
-  static string className() { return "/ThePEG/ColourLine"; }
+  static string className() { return "ThePEG::ColourLine"; }
   /** Return the name of the shared library to be loaded to get
    * access to this class. */
   static string library() { return "ColourLine.so"; }

@@ -174,9 +174,7 @@ struct BaseClassTrait<MECuts,1> {
 template <>
 struct ClassTraits<MECuts>:
     public ClassTraitsBase<MECuts> {
-  static string className() {
-    return "/ThePEG/MECuts";
-  }
+  static string className() { return "ThePEG::MECuts"; }
 };
 
 }

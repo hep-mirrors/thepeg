@@ -298,7 +298,7 @@ struct ClassTraits<EventHandler>: public ClassTraitsBase<EventHandler> {
   /**
    * Return the class name.
    */
-  static string className() { return "/ThePEG/EventHandler"; }
+  static string className() { return "ThePEG::EventHandler"; }
 };
 
 }

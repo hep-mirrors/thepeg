@@ -982,7 +982,7 @@ struct BaseClassTrait<Particle,1> {
 template <>
 struct ClassTraits<Particle>: public ClassTraitsBase<Particle> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/Particle"; }
+  static string className() { return "ThePEG::Particle"; }
   /** Create a Event object. */
   static TPtr create() { return TPtr::Create(Particle()); }
 };

@@ -93,7 +93,7 @@ struct BaseClassTrait<ZGenerator,1> {
 template <>
 struct ClassTraits<ZGenerator>: public ClassTraitsBase<ZGenerator> {
   /** Return the class name.  */
-  static string className() { return "/ThePEG/ZGenerator"; }
+  static string className() { return "ThePEG::ZGenerator"; }
 };
   
 }

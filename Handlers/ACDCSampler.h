@@ -241,7 +241,7 @@ struct ClassTraits<ACDCSampler>: public ClassTraitsBase<ACDCSampler> {
   /**
    * Return the class name.
    */
-  static string className() { return "/ThePEG/ACDCSampler"; }
+  static string className() { return "ThePEG::ACDCSampler"; }
   /** Return the name of the shared library to be loaded to get
    * access to this class and every other class it uses
    * (except the base class).

@@ -190,7 +190,7 @@ struct BaseClassTrait<DecayHandler,1> {
 template <>
 struct ClassTraits<DecayHandler>: public ClassTraitsBase<DecayHandler> {
   /** Return the class name. */
-  static string className() { return "/ThePEG/DecayHandler"; }
+  static string className() { return "ThePEG::DecayHandler"; }
 };
 
 }

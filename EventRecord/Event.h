@@ -379,7 +379,7 @@ struct BaseClassTrait<Event,1> {
 template <>
 struct ClassTraits<Event>: public ClassTraitsBase<Event> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/Event"; }
+  static string className() { return "ThePEG::Event"; }
   /** Create a Event object. */
   static TPtr create() { return TPtr::Create(Event()); }
 };

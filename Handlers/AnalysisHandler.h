@@ -211,7 +211,7 @@ struct BaseClassTrait<AnalysisHandler,1> {
 template <>
 struct ClassTraits<AnalysisHandler>: public ClassTraitsBase<AnalysisHandler> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/AnalysisHandler"; }
+  static string className() { return "ThePEG::AnalysisHandler"; }
 };
 
 }

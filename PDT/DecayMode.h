@@ -568,7 +568,7 @@ template <>
 struct ClassTraits<DecayMode>:
     public ClassTraitsBase<DecayMode> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/DecayMode"; }
+  static string className() { return "ThePEG::DecayMode"; }
 };
 
 }

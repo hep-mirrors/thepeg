@@ -221,7 +221,7 @@ struct ClassTraits<FlavourGenerator>:
     public ClassTraitsBase<FlavourGenerator> {
   /** Return the class name. */
   static string className() {
-    return "/ThePEG/FlavourGenerator";
+    return "ThePEG::FlavourGenerator";
   }
 };
 

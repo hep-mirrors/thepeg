@@ -1,19 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_CKMBase_H
 #define ThePEG_CKMBase_H
-//
-// This is the declaration of the <!id>CKMBase<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>CKMBase<!!id> is used by the
-// <!class>StandardModelBase<!!class> to implement the
-// Cabibbo-Kobayashi-Mascawa mixing matrix.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:StandardModelBase.html">StandardModelBase.h</a>.
-// 
+// This is the declaration of the CKMBase class.
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "StandardModelBase.fh"
@@ -22,42 +10,79 @@
 
 namespace ThePEG {
 
+/**
+ * CKMBase is an abstract base classused by the StandardModelBase to
+ * implement the Cabibbo-Kobayashi-Mascawa mixing matrix. Concrete
+ * sub-classes must implement the getMatrix(unsigned int) function.
+ *
+ * @see StandardModelBase.
+ */
 class CKMBase: public Interfaced {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline CKMBase();
+
+  /**
+   * Copy-constructor.
+   */
   inline CKMBase(const CKMBase &);
+
+  /**
+   * Destructor.
+   */
   virtual ~CKMBase();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
-  virtual vector< vector<double> >  getMatrix(unsigned int nFamilies) const = 0;
-  // Return the matrix of squared matrix elements.
+  /**
+   * Return the matrix of squared CKM matrix elements. The returned
+   * matrix should be for \a nf families. This function must be
+   * overridden by sub-classes.
+   */
+  virtual vector< vector<double> >  getMatrix(unsigned int nf) const = 0;
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
 
 private:
 
+  /**
+   * Describe an abstract class without persistent data.
+   */
   static AbstractNoPIOClassDescription<CKMBase> initCKMBase;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   CKMBase & operator=(const CKMBase &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the base classes
+ *  of CKMBase. */
 template <>
 struct BaseClassTrait<CKMBase,1> {
+  /** Typedef of the first base class of CKMBase. */
   typedef Interfaced NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  CKMBase class. */
 template <>
 struct ClassTraits<CKMBase>: public ClassTraitsBase<CKMBase> {
-  static string className() { return "/ThePEG/CKMBase"; }
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::CKMBase"; }
 };
 
 }

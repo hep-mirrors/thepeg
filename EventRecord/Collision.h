@@ -381,7 +381,7 @@ struct BaseClassTrait<Collision,1> {
 template <>
 struct ClassTraits<Collision>: public ClassTraitsBase<Collision> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/Collision"; }
+  static string className() { return "ThePEG::Collision"; }
   /** Create a Collision object. */
   static TPtr create() { return TPtr::Create(Collision()); }
 };

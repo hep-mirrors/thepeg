@@ -401,7 +401,7 @@ template <>
 struct ClassTraits<MatcherBase>:
     public ClassTraitsBase<MatcherBase> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/MatcherBase"; }
+  static string className() { return "ThePEG::MatcherBase"; }
 };
 
 }

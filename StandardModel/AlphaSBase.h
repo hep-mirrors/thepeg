@@ -1,21 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_AlphaSBase_H
 #define ThePEG_AlphaSBase_H
-//
-// This is the declaration of the <!id>AlphaSBase<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>AlphaSBase<!!id> is used by the
-// <!class>StandardModelBase<!!class> to implement the QCD
-// coupling. The <!id>AlphaSBase<!!id> also encodes the number of
-// active flavours at a given scale and the Lambda<SUB>QCD</SUB> for a
-// given number of active flavours or for a given scale.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:StandardModelBase.html">StandardModelBase.h</a>.
-// 
+// This is the declaration of the AlphaSBase class.
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "StandardModelBase.fh"
@@ -24,72 +10,171 @@
 
 namespace ThePEG {
 
+/**
+ * AlphaSBase is an abstract base class used by the StandardModelBase
+ * to implement the QCD coupling, \f$\alpha_S\$f. The AlphaSBase also
+ * encodes the number of active flavours at a given scale and the
+ * \f$\Lambda_{QCD}\f$ for a given number of active flavours or for a
+ * given scale.
+ *
+ *
+ * @see StandardModelBase.
+ * 
+ */
 class AlphaSBase: public Interfaced {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline AlphaSBase();
+
+  /**
+   * Copy-constructor.
+   */
   inline AlphaSBase(const AlphaSBase &);
+
+  /**
+   * Destructor.
+   */
   virtual ~AlphaSBase();
-  // Standard ctors and dtor
+  //@}
 
 public:
 
-  virtual double value(Energy2 scale, const StandardModelBase &) const = 0;
-  // Return the alpha_S for a given scale.
+  /** @name Virtual functions to be overridden by sub-classes. */
+  //@{
+  /**
+   * The \f$\alpha_S\$f. Return the QCD coupling for a given \a scale
+   * using the given standard model object \a sm.
+   */
+  virtual double value(Energy2 scale, const StandardModelBase & sm) const = 0;
 
+  /**
+   * Return the flavour thresholds used. The returned vector contains
+   * (in position <code>i</code>) the scales when the active number of
+   * flavours changes from <code>i</code> to <code>i+1</code>.
+   */
   virtual vector<Energy2> flavourThresholds() const = 0;
-  // Return the flavour thresholds used.
 
+  /**
+   * Return the \f$\Lambda_{QCD}\f$ used for different numbers of
+   * active flavours.
+   */
   virtual vector<Energy> LambdaQCDs() const = 0;
-  // Return the lambda_QCD used for different numbers of active flavours.
+  //@}
 
+  /** @name Access information about number of flavours and
+      \f$\Lambda_{QCD}\f$. */
+  //@{
+  /**
+   * Return the number of avtive quark flavours.
+   */
   inline unsigned int Nf(Energy2 scale) const;
-  // Return the number of avtive quark flavours.
 
+  /**
+   * Return the \f$\Lambda_{QCD}\f$ used for \a nflav active flavours.
+   */
   inline Energy LambdaQCD(unsigned int nflav) const;
+
+  /**
+   * Return the \f$\Lambda_{QCD}\f$ used for corresponding given \a scale.
+   */
   inline Energy LambdaQCD(Energy2 scale) const;
-  // Return the \Lambda_{QCD} for the number of active flavours
-  // (corresponding to the given scale).
+  //@}
 
 public:
 
-  inline virtual void doupdate() throw(UpdateException);
-  virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
 
-  void persistentOutput(PersistentOStream &) const;
-  void persistentInput(PersistentIStream &, int);
-  // Standard functions for writing and reading from persistent streams.
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
 
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
+
+protected:
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
+  inline virtual void doupdate() throw(UpdateException);
+
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+  //@}
 
 private:
 
+  /**
+   * Flavour thresholds, set from the virtual functions in the
+   * initialization.
+   */
   vector<Energy2> theFlavourThresholds;
+
+  /**
+   * The values of \f$\Lambda_{QCD}\f$ corresponding to
+   * theFlavourThresholds, set from the virtual functions in the
+   * initialization.
+   */
   vector<Energy> theLambdaQCDs;
-  // flavour thresholds and the corresponding lambdas, set from
-  // theRunningAlphaS at initialization.
 
 private:
 
+  /**
+   * Describe an abstract class with persistent data.
+   */
   static AbstractClassDescription<AlphaSBase> initAlphaSBase;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   AlphaSBase & operator=(const AlphaSBase &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the base classes
+ *  of AlphaSBase. */
 template <>
 struct BaseClassTrait<AlphaSBase,1> {
+  /** Typedef of the first base class of AlphaSBase. */
   typedef Interfaced NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  AlphaSBase class. */
 template <>
 struct ClassTraits<AlphaSBase>: public ClassTraitsBase<AlphaSBase> {
-  static string className() { return "/ThePEG/AlphaSBase"; }
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::AlphaSBase"; }
 };
 
 }

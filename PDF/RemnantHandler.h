@@ -210,7 +210,7 @@ struct BaseClassTrait<RemnantHandler,1> {
 template <>
 struct ClassTraits<RemnantHandler>: public ClassTraitsBase<RemnantHandler> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/RemnantHandler"; }
+  static string className() { return "ThePEG::RemnantHandler"; }
 };
 
 }

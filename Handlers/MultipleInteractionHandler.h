@@ -120,7 +120,7 @@ template <>
 struct ClassTraits<MultipleInteractionHandler>:
     public ClassTraitsBase<MultipleInteractionHandler> {
   /** Return the class name. */
-  static string className() { return "/ThePEG/MultipleInteractionHandler"; }
+  static string className() { return "ThePEG::MultipleInteractionHandler"; }
 };
 
 }

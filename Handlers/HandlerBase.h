@@ -245,7 +245,7 @@ struct BaseClassTrait<HandlerBase,1> {
 template <>
 struct ClassTraits<HandlerBase>: public ClassTraitsBase<HandlerBase> {
   /** Return the class name. */
-  static string className() { return "/ThePEG/HandlerBase"; }
+  static string className() { return "ThePEG::HandlerBase"; }
 };
 
 }

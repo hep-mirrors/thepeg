@@ -1,19 +1,7 @@
 // -*- C++ -*-
 #ifndef ThePEG_SimpleAlphaEM_H
 #define ThePEG_SimpleAlphaEM_H
-//
-// This is the declaration of the <!id>SimpleAlphaEM<!!id> class.
-//
-// CLASSDOC SUBSECTION Description:
-//
-// <!id>SimpleAlphaEM<!!id> inherits from <!class>AlphaEMBase<!!class>
-// and implements a simple running of the electromagnetic coupling as
-// parameterized by H.~Buckhardt et al.
-//
-// CLASSDOC SUBSECTION See also:
-//
-// <a href="http:AlphaEMBase.html">AlphaEMBase.h</a>.
-// 
+// This is the declaration of the SimpleAlphaEM class.
 
 #include "AlphaEMBase.h"
 // #include "SimpleAlphaEM.fh"
@@ -21,52 +9,122 @@
 
 namespace ThePEG {
 
+/**
+ * SimpleAlphaEM inherits from AlphaEMBase and implements a simple
+ * running of the electromagnetic coupling as parameterized by
+ * H.~Buckhardt et al.
+ *
+ *
+ * @see AlphaEMBase.
+ * 
+ */
 class SimpleAlphaEM: public AlphaEMBase {
 
 public:
 
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
   inline SimpleAlphaEM();
+
+  /**
+   * Copy-constructor.
+   */
   inline SimpleAlphaEM(const SimpleAlphaEM &);
+
+  /**
+   * Destructor.
+   */
   virtual ~SimpleAlphaEM();
-  // Standard ctors and dtor
-
-  virtual IBPtr clone() const;
-  virtual IBPtr fullclone() const;
-  // Standard clone methods
+  //@}
 
 public:
 
-  virtual double value(Energy2 scale, const StandardModelBase &) const;
-  // Return the value of the coupling at a given scale using the given
-  // standard model object.
+  /**
+   * The \$f\alpha_{\EM}\f$. Return the value of the coupling at a
+   * given \a scale using the given standard model object, \a sm.
+   */
+virtual double value(Energy2 scale, const StandardModelBase &) const;
 
 public:
 
-  inline virtual void doupdate() throw(UpdateException);
-  inline virtual void doinit() throw(InitException);
-  inline virtual void dofinish();
-  // Standard Interfaced virtual functions.
-
+  /**
+   * Standard Init function used to initialize the interface.
+   */
   static void Init();
-  // Standard Init function used to initialize the interface.
+
+protected:
+
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
+  virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
+  virtual IBPtr fullclone() const;
+  //@}
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
+  inline virtual void doupdate() throw(UpdateException);
+
+  /**
+   * Initialize this object after the setup phase before saving and
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+  //@}
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<SimpleAlphaEM> initSimpleAlphaEM;
 
+  /**
+   *  Private and non-existent assignment operator.
+   */
   SimpleAlphaEM & operator=(const SimpleAlphaEM &);
-  //  Private and non-existent assignment operator.
 
 };
 
+/** This template specialization informs ThePEG about the base classes
+ *  of SimpleAlphaEM. */
 template <>
 struct BaseClassTrait<SimpleAlphaEM,1> {
+  /** Typedef of the first base class of SimpleAlphaEM. */
   typedef AlphaEMBase NthBase;
 };
 
+/** This template specialization informs ThePEG about the name of the
+ *  SimpleAlphaEM class and the shared object where it is
+ *  defined. */
 template <>
 struct ClassTraits<SimpleAlphaEM>: public ClassTraitsBase<SimpleAlphaEM> {
-  static string className() { return "/ThePEG/SimpleAlphaEM"; }
+  /** Return a platform-independent class name */
+  static string className() { return "ThePEG::SimpleAlphaEM"; }
+  /** Return the name of the shared library be loaded to get access to
+   *  the SimpleAlphaEM class and every other class it uses
+   *  (except the base class). */
   static string library() { return "SimpleAlphaEM.so"; }
 };
 

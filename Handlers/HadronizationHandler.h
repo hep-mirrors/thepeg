@@ -120,7 +120,7 @@ template <>
 struct ClassTraits<HadronizationHandler>:
     public ClassTraitsBase<HadronizationHandler> {
   /** Return the class name. */
-  static string className() { return "/ThePEG/HadronizationHandler"; }
+  static string className() { return "ThePEG::HadronizationHandler"; }
 };
 
 }

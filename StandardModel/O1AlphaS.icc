@@ -13,6 +13,10 @@ inline O1AlphaS::O1AlphaS(const O1AlphaS & x)
   : AlphaSBase(x), theLambdaQCD(x.theLambdaQCD),
     theLambdaFlavour(x.theLambdaFlavour), theMaxFlav(x.theMaxFlav) {}
 
+inline unsigned int O1AlphaS::getMaxFlav() const {
+  return theMaxFlav;
+}
+
 inline void O1AlphaS::doupdate() throw(UpdateException) {
   AlphaSBase::doupdate();
 }

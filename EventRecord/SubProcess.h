@@ -251,7 +251,7 @@ struct BaseClassTrait<SubProcess,1> {
 template <>
 struct ClassTraits<SubProcess>: public ClassTraitsBase<SubProcess> {
   /** Return a platform-independent class name */
-  static string className() { return "/ThePEG/SubProcess"; }
+  static string className() { return "ThePEG::SubProcess"; }
   /** Create a SubProcess object. */
   static TPtr create() { return TPtr::Create(SubProcess()); }
 };

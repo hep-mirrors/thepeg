@@ -145,7 +145,7 @@ template <>
 struct ClassTraits<EventManipulator>:
     public ClassTraitsBase<EventManipulator> {
   /** Return the class name. */
-  static string className() {  return "/ThePEG/EventManipulator"; }
+  static string className() {  return "ThePEG::EventManipulator"; }
 };
 
 }
