@@ -1,5 +1,8 @@
 2004-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Config/Makefile.common.in, Makefile: Modified the doc target to
+	use doxygen.
+
 	* Interface/Switch.*, Interface/Reference.*,
 	Interface/RefVector.*, Interface/Parameter.*,
 	Interface/ParVector.*, Interface/Command.*,

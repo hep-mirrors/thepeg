@@ -32,7 +32,7 @@ depend: setup
 install: check
 	@for dir in $(SUBDIRS) lib src ; do cd $$dir ; $(MAKE) VERSION=$(VERSION) install ; cd .. ; done
 
-doc: setup
+doc: check
 	@cd Doc ; $(MAKE) doc ; cd ..
 
 setup: Config/Makefile.common Config/config.h
