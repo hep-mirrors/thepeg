@@ -2773,8 +2773,8 @@ decaymode Upsilon->d=dbar; 0.0150 1 /Dummy/Decayers/PYDECY32
 decaymode Upsilon->u=ubar; 0.0450 1 /Dummy/Decayers/PYDECY32
 decaymode Upsilon->s=sbar; 0.0150 1 /Dummy/Decayers/PYDECY32
 decaymode Upsilon->c=cbar; 0.0450 1 /Dummy/Decayers/PYDECY32
-decaymode Upsilon->g,g,g; 0.77430 1 /Dummy/Decayers/PYDECY4
-decaymode Upsilon->gamma,g,g; 0.0290 1 /Dummy/Decayers/PYDECY4
+decaymode Upsilon->g,g,g; 0.77430 1 /Defaults/Decayers/Onium3G
+decaymode Upsilon->gamma,g,g; 0.0290 1 /Defaults/Decayers/Onium3G
 decaymode chi_2b->Upsilon,gamma; 0.220 1 /Defaults/Decayers/Flat
 decaymode chi_2b->g,g; 0.780 1 /Dummy/Decayers/PYDECY32
 decaymode Delta-->n0,pi-; 1.0 1 /Defaults/Decayers/Flat
@@ -3317,8 +3317,8 @@ decaymode Upsilon'->d=dbar; 0.0080 1 /Dummy/Decayers/PYDECY32
 decaymode Upsilon'->u=ubar; 0.0240 1 /Dummy/Decayers/PYDECY32
 decaymode Upsilon'->s=sbar; 0.0080 1 /Dummy/Decayers/PYDECY32
 decaymode Upsilon'->c=cbar; 0.0240 1 /Dummy/Decayers/PYDECY32
-decaymode Upsilon'->g,g,g; 0.4250 1 /Dummy/Decayers/PYDECY4
-decaymode Upsilon'->gamma,g,g; 0.020 1 /Dummy/Decayers/PYDECY4
+decaymode Upsilon'->g,g,g; 0.4250 1 /Defaults/Decayers/Onium3G
+decaymode Upsilon'->gamma,g,g; 0.020 1 /Defaults/Decayers/Onium3G
 decaymode Upsilon'->Upsilon,pi+,pi-; 0.1850 1 /Defaults/Decayers/Flat
 decaymode Upsilon'->Upsilon,pi0,pi0; 0.0880 1 /Defaults/Decayers/Flat
 decaymode Upsilon'->chi_0b,gamma; 0.0430 1 /Defaults/Decayers/Flat

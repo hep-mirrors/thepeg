@@ -1,14 +1,15 @@
 // -*- C++ -*-
-#ifndef THEPEG_OmegaPhi3PiDecayer_H
-#define THEPEG_OmegaPhi3PiDecayer_H
+#ifndef THEPEG_Onium3GDecayer_H
+#define THEPEG_Onium3GDecayer_H
 //
-// This is the declaration of the <!id>OmegaPhi3PiDecayer<!!id> class.
+// This is the declaration of the <!id>Onium3GDecayer<!!id> class.
 //
 // CLASSDOC SUBSECTION Description:
 //
-// This class performs the decay of a phi or an omega into pi+ pi-
-// p0. It will in fact decay anything into pi+ pi- p0 assuming the
-// same matrix element.
+// This class performs the decay of a spin-1 onium resonance into
+// three gluons or two gluons and a photon. After the decay the
+// collision handler is instructed to restart the generation from the
+// hadronization (or optionally the parton cascade) stage.
 //
 // CLASSDOC SUBSECTION See also:
 //
@@ -17,18 +18,18 @@
 // 
 
 #include "ThePEG/PDT/FlatDecayer.h"
-// #include "OmegaPhi3PiDecayer.fh"
-// #include "OmegaPhi3PiDecayer.xh"
+// #include "Onium3GDecayer.fh"
+// #include "Onium3GDecayer.xh"
 
 namespace ThePEG {
 
-class OmegaPhi3PiDecayer: public FlatDecayer {
+class Onium3GDecayer: public FlatDecayer {
 
 public:
 
-  inline OmegaPhi3PiDecayer();
-  inline OmegaPhi3PiDecayer(const OmegaPhi3PiDecayer &);
-  virtual ~OmegaPhi3PiDecayer();
+  inline Onium3GDecayer();
+  inline Onium3GDecayer(const Onium3GDecayer &);
+  virtual ~Onium3GDecayer();
   // Standard ctors and dtor.
 
 public:
@@ -36,6 +37,10 @@ public:
   virtual bool accept(const DecayMode &) const;
   // return true if this decayer can perfom the decay specified by the
   // given decay mode.
+
+  virtual ParticleVector decay(const DecayMode &, const Particle &) const;
+  // for a given decay mode and a given particle instance, perform the
+  // decay and return the decay products.
 
   virtual double reweight(const DecayMode &, const Particle & parent,
 				 const ParticleVector & children) const;
@@ -46,6 +51,13 @@ public:
   // point may be rejected, but the chosen decay channel will
   // not. This means that the weight returned by this function does
   // not influence the branching ratios.
+
+  inline bool shower() const;
+  // Return true if the produced gluons should be showered.
+
+  inline Energy minGGMass() const;
+  // Return the minimum invariant mass between two gluons in gamma-g-g
+  // decays.
 
 public:
 
@@ -79,16 +91,19 @@ protected:
 
 private:
 
-  double margin;
-  // Used to multiply the bare weight to get something below unity. In
-  // the Fortran pythia version it was set to 150 for unknown reasons.
+  bool doShower;
+  // If true the produced gluons should be showered.
+
+  Energy theMinGGMass;
+  // The minimum invariant mass between two gluons in gamma-g-g
+  // decays.
 
 private:
 
-  static ClassDescription<OmegaPhi3PiDecayer> initOmegaPhi3PiDecayer;
+  static ClassDescription<Onium3GDecayer> initOnium3GDecayer;
   // Describe a concrete class with persistent data.
 
-  OmegaPhi3PiDecayer & operator=(const OmegaPhi3PiDecayer &);
+  Onium3GDecayer & operator=(const Onium3GDecayer &);
   // Private and non-existent assignment operator.
 
 };
@@ -100,20 +115,20 @@ private:
 namespace ThePEG {
 
 // The following template specialization informs ThePEG about the
-// base class of OmegaPhi3PiDecayer.
+// base class of Onium3GDecayer.
 template <>
-struct BaseClassTrait<OmegaPhi3PiDecayer,1> {
+struct BaseClassTrait<Onium3GDecayer,1> {
   typedef FlatDecayer NthBase;
 };
 
 // The following template specialization informs ThePEG about the
 // name of this class and the shared object where it is defined.
 template <>
-struct ClassTraits<OmegaPhi3PiDecayer>
-  : public ClassTraitsBase<OmegaPhi3PiDecayer> {
-  static string className() { return "ThePEG::OmegaPhi3PiDecayer"; }
+struct ClassTraits<Onium3GDecayer>
+  : public ClassTraitsBase<Onium3GDecayer> {
+  static string className() { return "ThePEG::Onium3GDecayer"; }
   // Return the class name.
-  static string library() { return "OmegaPhi3PiDecayer.so"; }
+  static string library() { return "Onium3GDecayer.so"; }
   // Return the name of the shared library to be loaded to get
   // access to this class and every other class it uses
   // (except the base class).
@@ -121,9 +136,9 @@ struct ClassTraits<OmegaPhi3PiDecayer>
 
 }
 
-#include "OmegaPhi3PiDecayer.icc"
+#include "Onium3GDecayer.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "OmegaPhi3PiDecayer.tcc"
+// #include "Onium3GDecayer.tcc"
 #endif
 
-#endif /* THEPEG_OmegaPhi3PiDecayer_H */
+#endif /* THEPEG_Onium3GDecayer_H */

@@ -10,11 +10,6 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/EventRecord/Particle.h"
-#include "ThePEG/EventRecord/Event.h"
-#include "ThePEG/Repository/EventGenerator.h"
-#include "ThePEG/Handlers/HandlerGroup.h"
-#include "ThePEG/Handlers/Hint.h"
-#include "ThePEG/Handlers/CollisionHandler.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "OmegaPhi3PiDecayer.tcc"
