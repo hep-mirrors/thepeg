@@ -18,7 +18,7 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
                LorentzPolarizationVector.icc LorentzSpinor.fh \
                LorentzSpinor.icc LorentzSpinorBar.fh LorentzSpinorBar.icc \
                LorentzTensor.icc FermionSpinInfo.fh RhoDMatrix.icc \
-               SpinInfo.fh SpinInfo.icc FermionSpinInfo.fh \
+               SpinInfo.fh SpinInfo.icc \
                FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
                ScalarSpinInfo.fh ScalarSpinInfo.icc \
                TensorSpinInfo.fh TensorSpinInfo.icc \

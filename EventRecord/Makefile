@@ -12,7 +12,7 @@ DEBUGOBJECTS = Particle.o Step.o
 
 DOCFILES = EventConfig.h Collision.h Event.h Particle.h ParticleTraits.h \
            SelectorBase.h StandardSelectors.h Step.h SubProcess.h \
-           EventInfoBase.h ColourLine.h ColourBase.h SpinBase.h EventConfig.h \
+           EventInfoBase.h ColourLine.h ColourBase.h SpinBase.h \
            ColourSinglet.h
 
 INCLUDEFILES = $(DOCFILES) Collision.icc Collision.tcc Event.icc \
