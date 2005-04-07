@@ -33,6 +33,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
@@ -61,7 +62,9 @@ include ../Config/Makefile.common
   ../../ThePEG/EventRecord/EventConfig.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
@@ -70,12 +73,14 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassTraits.h \
@@ -85,6 +90,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/ColourBase.h \
   ../../ThePEG/EventRecord/EventInfoBase.h \
+  ../../ThePEG/EventRecord/EventConfig.h \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/ColourLine.h \
   ../../ThePEG/EventRecord/ColourSinglet.h \
@@ -98,13 +104,16 @@ include ../Config/Makefile.common
   ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
   ../../ThePEG/Interface/Interfaced.h \
   ../../ThePEG/Interface/InterfacedBase.h \
   ../../ThePEG/Utilities/HoldFlag.h \
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
   ../../ThePEG/Interface/Interfaced.icc \
@@ -122,50 +131,58 @@ include ../Config/Makefile.common
   ../../ThePEG/EventRecord/ParticleTraits.h \
   ../../ThePEG/EventRecord/Event.icc \
   ../../ThePEG/EventRecord/Collision.h \
+  ../../ThePEG/EventRecord/Particle.h \
   ../../ThePEG/EventRecord/Collision.icc \
   ../../ThePEG/EventRecord/Step.h \
+  ../../ThePEG/EventRecord/StandardSelectors.h \
   ../../ThePEG/EventRecord/Step.icc \
   ../../ThePEG/EventRecord/SubProcess.h \
   ../../ThePEG/EventRecord/SubProcess.icc \
   ../../ThePEG/EventRecord/SubProcess.tcc \
   ../../ThePEG/EventRecord/Step.tcc \
+  ../../ThePEG/EventRecord/Event.h \
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   GenEventConverter.icc \
-  ../../ThePEG/Handlers/EventHandler.h \
-  ../../ThePEG/Handlers/CollisionHandler.h \
-  ../../ThePEG/Handlers/PartialCollisionHandler.h \
-  ../../ThePEG/Handlers/HandlerBase.h \
-  ../../ThePEG/Handlers/HandlerBase.icc \
-  ../../ThePEG/Handlers/HandlerGroup.h \
-  ../../ThePEG/Handlers/HandlerGroup.icc \
-  ../../ThePEG/Handlers/HandlerGroup.tcc \
-  ../../ThePEG/Handlers/Hint.h \
-  ../../ThePEG/Handlers/Hint.icc \
-  ../../ThePEG/Handlers/StepHandler.h \
-  ../../ThePEG/Handlers/StepHandler.icc \
-  ../../ThePEG/Handlers/LastXCombInfo.h \
-  ../../ThePEG/PDF/PDF.fh \
-  ../../ThePEG/Handlers/LastXCombInfo.icc \
-  ../../ThePEG/Handlers/PartialCollisionHandler.xh \
-  ../../ThePEG/Handlers/PartialCollisionHandler.icc \
-  ../../ThePEG/Handlers/CollisionHandler.xh \
-  ../../ThePEG/Utilities/Interval.h \
-  ../../ThePEG/Utilities/Interval.icc \
-  ../../ThePEG/Utilities/Interval.tcc \
-  ../../ThePEG/Handlers/CollisionHandler.icc \
-  ../../ThePEG/Handlers/EventHandler.xh \
-  ../../ThePEG/Repository/Strategy.fh \
-  ../../ThePEG/Handlers/SamplerBase.fh \
-  ../../ThePEG/Handlers/EventHandler.icc \
+  ../../ThePEG/StandardModel/StandardModelBase.h \
+  ../../ThePEG/StandardModel/AlphaEMBase.h \
+  ../../ThePEG/StandardModel/StandardModelBase.fh \
+  ../../ThePEG/StandardModel/AlphaEMBase.icc \
+  ../../ThePEG/StandardModel/CKMBase.h \
+  ../../ThePEG/StandardModel/CKMBase.icc \
+  ../../ThePEG/StandardModel/AlphaSBase.h \
+  ../../ThePEG/StandardModel/AlphaSBase.icc \
+  ../../ThePEG/StandardModel/StandardModelBase.icc \
+  ../../ThePEG/Repository/EventGenerator.h \
+  ../../ThePEG/Repository/EventGenerator.fh \
+  ../../ThePEG/Repository/RandomGenerator.h \
+  ../../ThePEG/CLHEPWrap/RandomEngine.fh \
+  ../../ThePEG/Repository/RandomGenerator.icc \
+  ../../ThePEG/Repository/UseRandom.h \
+  ../../ThePEG/Repository/RandomGenerator.h \
+  ../../ThePEG/Repository/UseRandom.icc \
+  ../../ThePEG/Repository/CurrentGenerator.fh \
+  ../../ThePEG/Repository/EventGenerator.xh \
+  ../../ThePEG/Repository/EventGenerator.icc \
+  ../../ThePEG/Repository/EventGenerator.tcc \
+  ../../ThePEG/EventRecord/Collision.h \
+  ../../ThePEG/EventRecord/Step.h \
+  ../../ThePEG/EventRecord/SubProcess.h \
   ../../ThePEG/Handlers/XComb.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/PDF/PartonExtractor.fh \
   ../../ThePEG/PDF/PartonBin.h \
   ../../ThePEG/PDF/PDFBase.h \
+  ../../ThePEG/Handlers/HandlerBase.h \
+  ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/PDF/PDFCuts.h \
+  ../../ThePEG/Utilities/Interval.h \
+  ../../ThePEG/Utilities/Interval.fh \
+  ../../ThePEG/Utilities/Interval.icc \
+  ../../ThePEG/Utilities/Interval.tcc \
   ../../ThePEG/PDF/PDFCuts.icc \
   ../../ThePEG/PDF/PDFBase.xh \
+  ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/PDF/PDFBase.icc \
   ../../ThePEG/PDF/PartonBin.icc \
   ../../ThePEG/PDF/PartonBinInstance.h \
@@ -183,27 +200,31 @@ include ../Config/Makefile.common
   ../../ThePEG/MatrixElement/Amplitude.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
+  ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/PDF/PDF.h \
+  ../../ThePEG/PDF/PDF.icc \
+  ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/Handlers/XComb.icc \
-  ../../ThePEG/StandardModel/StandardModelBase.h \
-  ../../ThePEG/StandardModel/AlphaEMBase.h \
-  ../../ThePEG/StandardModel/StandardModelBase.fh \
-  ../../ThePEG/StandardModel/AlphaEMBase.icc \
-  ../../ThePEG/StandardModel/CKMBase.h \
-  ../../ThePEG/StandardModel/CKMBase.icc \
-  ../../ThePEG/StandardModel/AlphaSBase.h \
-  ../../ThePEG/StandardModel/AlphaSBase.icc \
-  ../../ThePEG/StandardModel/StandardModelBase.icc \
-  ../../ThePEG/Repository/EventGenerator.h \
-  ../../ThePEG/Repository/EventGenerator.fh \
-  ../../ThePEG/Repository/RandomGenerator.h \
-  ../../ThePEG/CLHEPWrap/RandomEngine.fh \
-  ../../ThePEG/Repository/RandomGenerator.icc \
-  ../../ThePEG/Repository/UseRandom.h \
-  ../../ThePEG/Repository/UseRandom.icc \
-  ../../ThePEG/Repository/CurrentGenerator.fh \
-  ../../ThePEG/Repository/EventGenerator.xh \
-  ../../ThePEG/Repository/EventGenerator.icc \
-  ../../ThePEG/Repository/EventGenerator.tcc
+  ../../ThePEG/Handlers/EventHandler.h \
+  ../../ThePEG/Handlers/CollisionHandler.h \
+  ../../ThePEG/Handlers/PartialCollisionHandler.h \
+  ../../ThePEG/Handlers/HandlerGroup.h \
+  ../../ThePEG/Handlers/HandlerGroup.icc \
+  ../../ThePEG/Handlers/HandlerGroup.tcc \
+  ../../ThePEG/Handlers/Hint.h \
+  ../../ThePEG/Handlers/Hint.icc \
+  ../../ThePEG/Handlers/StepHandler.h \
+  ../../ThePEG/Utilities/Exception.fh \
+  ../../ThePEG/Handlers/StepHandler.icc \
+  ../../ThePEG/Handlers/PartialCollisionHandler.xh \
+  ../../ThePEG/Handlers/PartialCollisionHandler.icc \
+  ../../ThePEG/Handlers/CollisionHandler.xh \
+  ../../ThePEG/Interface/InterfacedBase.xh \
+  ../../ThePEG/Handlers/CollisionHandler.icc \
+  ../../ThePEG/Handlers/EventHandler.xh \
+  ../../ThePEG/Repository/Strategy.fh \
+  ../../ThePEG/Handlers/SamplerBase.fh \
+  ../../ThePEG/Handlers/EventHandler.icc
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

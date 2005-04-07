@@ -108,6 +108,7 @@ addFunction(DimType dim, FncPtrType fnc, double maxrat) {
       levels.clear();
     }
   }
+  //  cells().back()->smooth(1.0/nTry());
   return true;
 }
 

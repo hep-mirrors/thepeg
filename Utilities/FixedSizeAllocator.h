@@ -7,6 +7,7 @@
 #include "ThePEG/Utilities/Debug.h"
 // #include "FixedSizeAllocator.fh"
 // #include "FixedSizeAllocator.xh"
+#include <memory>
 
 namespace ThePEG {
 

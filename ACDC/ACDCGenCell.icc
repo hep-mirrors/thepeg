@@ -79,9 +79,23 @@ inline bool ACDCGenCell::isSplit() const {
   return upper();
 }
 
-inline double ACDCGenCell::doMaxInt() {
+inline double ACDCGenCell::doMaxInt(double scale) {
   if ( isSplit() ) theG = (upper()->doMaxInt() + lower()->doMaxInt())/v();
+  else theG *= scale;
   return maxInt();
+}
+
+inline void ACDCGenCell::smooth(double frac) {
+  if ( !isSplit() ) return;
+  upper()->smooth(frac);
+  lower()->smooth(frac);
+  if ( upper()->maxInt() < lower()->maxInt()*frac &&
+       upper()->maxInt() > 0.0 )
+    upper()->doMaxInt(lower()->maxInt()*frac/upper()->maxInt());
+  else if ( lower()->maxInt() < upper()->maxInt()*frac &&
+	    lower()->maxInt() > 0.0 )
+    lower()->doMaxInt(upper()->maxInt()*frac/lower()->maxInt());
+  doMaxInt();
 }
 
 inline double ACDCGenCell::maxInt() const {

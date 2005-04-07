@@ -5,8 +5,6 @@
 //
 
 #include "GenEventConverter.h"
-#include "ThePEG/Handlers/EventHandler.h"
-#include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "CLHEP/HepMC/GenParticle.h"
@@ -16,6 +14,8 @@
 #include "ThePEG/EventRecord/Collision.h"
 #include "ThePEG/EventRecord/Step.h"
 #include "ThePEG/EventRecord/SubProcess.h"
+#include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/EventHandler.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "GenEventConverter.tcc"

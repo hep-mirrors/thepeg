@@ -62,15 +62,23 @@ public:
   inline ACDCGenCell * getCell(DVector & lo, const DVector & x, DVector &  up);
 
   /**
+   * Smooth out the levels. If one cell has an overestimated integral
+   * which is less than \a frac of the adjacent one, rescale it to
+   * avoid situations where it is never sampled.
+   */
+  inline void smooth(double frac);
+
+  /**
    * Returns true if this cell has been split.
    */
   inline bool isSplit() const;
 
   /**
    * Recalculate (recursively) the overestimated integral for this
-   * cell (and of the sub-cells) and return it.
+   * cell (and of the sub-cells) and return it. Optionally \a rescale
+   * the overestimated integral.
    */
-  inline double doMaxInt();
+  inline double doMaxInt(double rescale = 1.0);
 
   /**
    * Return the last calculated the overestimated integral for this

@@ -4,7 +4,7 @@
 // This is the declaration of the LastXCombInfo class.
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/PDF/PDF.fh"
+#include "ThePEG/PDF/PDF.h"
 // #include "LastXCombInfo.fh"
 // #include "LastXCombInfo.xh"
 

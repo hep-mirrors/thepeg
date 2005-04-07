@@ -1,3 +1,23 @@
+2005-04-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/LastXCombInfo.h: Included PDF.h instead of PDF.fh,
+	since gcc-4 insists on trying to compile a templated function even
+	though it is not used.
+
+	* Persistency/PersistentOStream.icc: Workaround for gcc-4
+	defining tYes and tNo in a strange way.
+
+2005-04-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/FixedSizeAllocator.h: Added include of <memory>.
+
+	* Utilities/Selector.h, Config/std.h: fixed Allocator template
+	argument in ThePEG_DECLARE_MAP. Thanks to David Grellscheid.
+
+	* ACDC/ACDCGen.*, ACDC/ACDCGenCell.*: Added a smooth function to
+	disallow to large differences between neighboring cells. Not yet
+	used.
+
 2005-03-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* ACDC/ACDCGen.*: Changed the procedure for presampling. The

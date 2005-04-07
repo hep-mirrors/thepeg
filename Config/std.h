@@ -112,7 +112,8 @@ inline ostream& right(ostream& os) {
 /** Macro for declaring a map. */
 #define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                       \
   /** A map of VALTYPE indexed by KEYTYPE. */                          \
-  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>, Allocator<VALTYPE> > NAME
+  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>,                         \
+              Allocator<std::pair<KEYTYPE const,VALTYPE> > > NAME
 
 /** Macro for implementing a set. */
 #define ThePEG_IMPLEMENT_SET(VALTYPE,NAME)
@@ -126,7 +127,7 @@ inline ostream& right(ostream& os) {
 #else
 
 /** Macro for declaring a set. */
-#define ThePEG_DECLARE_SET(VALTYPE,NAME)                               \
+#define ThePEG_DECLARE_SET(VALTYPE,NAME)                                \
 class NAME : public set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > {  \
 public:                                                                 \
   typedef set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > SETTYPE;     \
@@ -164,7 +165,7 @@ public:                                                                 \
 
 
 /** Macro for declaring a multiset. */
-#define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                          \
+#define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                           \
 class NAME :                                                            \
  public multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > {         \
 public:                                                                 \
@@ -203,11 +204,13 @@ public:                                                                 \
 
 
 /** Macro for declaring a map. */
-#define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                       \
+#define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                        \
 class NAME :                                                            \
-  public map<KEYTYPE, VALTYPE, less<KEYTYPE>, Allocator<VALTYPE> > {    \
+  public map<KEYTYPE, VALTYPE, less<KEYTYPE>,                           \
+             Allocator<std::pair<KEYTYPE const,VALTYPE> > > {           \
 public:                                                                 \
-  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>, Allocator<VALTYPE> >     \
+  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>,                          \
+             Allocator<std::pair<KEYTYPE const,VALTYPE> > >             \
     MAPTYPE;                                                            \
   NAME();                                                               \
   explicit NAME(const key_compare & c,                                  \

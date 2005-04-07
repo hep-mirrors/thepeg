@@ -172,7 +172,12 @@ PersistentOStream::operator<<(double d) {
 
 inline PersistentOStream &
 PersistentOStream::operator<<(bool t) {
-  put(t? tYes: tNo);
+  if (t) put(tYes);
+  else put(tNo);
+  // This is a workaround for a possible bug in gcc 4.0.0
+  // which inserts tYes and tNo as global symbols although
+  // they are private
+  //  put(t? tYes: tNo);
   put(tSep);
   return *this;
 }
