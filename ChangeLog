@@ -1,3 +1,9 @@
+2005-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/CascadeHandler.cc, Handlers/LastXCombInfo.*: Made the
+	LastXCombInfo::pdf function templated to avoid having to include
+	PDF.h (which in turn includes a lot of stuff) in LastXCombInfo.h.
+
 2005-04-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/LastXCombInfo.h: Included PDF.h instead of PDF.fh,

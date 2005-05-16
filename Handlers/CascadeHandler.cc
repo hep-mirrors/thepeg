@@ -31,7 +31,8 @@ handle(PartialCollisionHandler & ch, const tPVector & tagged,
     //    theTagged = &notags;
     //
   if ( !lastXComb().empty() )
-    thePDFs = make_pair(pdf(lastPartons().first), pdf(lastPartons().second));
+    thePDFs = make_pair(pdf<PDF>(lastPartons().first),
+			pdf<PDF>(lastPartons().second));
 
   theCollisionHandler = &ch;
 

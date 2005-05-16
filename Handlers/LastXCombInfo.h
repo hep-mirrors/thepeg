@@ -4,7 +4,6 @@
 // This is the declaration of the LastXCombInfo class.
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/PDF/PDF.h"
 // #include "LastXCombInfo.fh"
 // #include "LastXCombInfo.xh"
 
@@ -122,9 +121,12 @@ public:
   inline tMEPtr lastME() const;
 
   /**
-   * Return the parton density used to extract the given parton.
+   * Return the parton density used to extract the given parton. This
+   * function is templated to avoid having to include the PDF.h and
+   * all its dependencies in this header.
    */
-  inline PDF pdf(tcPPtr parton) const;
+  template <typename PDFT>
+  inline PDFT pdf(tcPPtr parton) const;
 
   /**
    * A reference to the currently used kinematical cuts.
