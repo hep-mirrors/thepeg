@@ -16,6 +16,7 @@ SimpleLEP.log
 SimpleLEP.p7
 SimpleLEP.ps
 SimpleLEP_frag.p7
+W3Jet.dat.gz
 dummy
 dummy.dat
 dummy2.dat
@@ -24,6 +25,7 @@ dump6.out
 file.dat
 gprof.*
 redump
+runEventLoop
 runPartial
 runPythia.exe
 runPythia7

@@ -847,15 +847,15 @@ Some influential environment variables:
               nonstandard directory <lib dir>
   CPPFLAGS    C/C++ preprocessor flags, e.g. -I<include dir> if you have
               headers in a nonstandard directory <include dir>
-  CXXEXT      The compiler option for generating position indicated code if
+  CXXEXT      The compiler option for generating position-independent code if
               needed for dynamic linking. Default is '-fpic'
   CXXDLFLAGS  The compiler link option for creating a shared object file for
               dynamic linking. Default is '-shared'
-  CXXOPTFLAG  The compiler option for generating optimized code. Set her
-              rather than in CXXFLAGS. Default is '-O'
+  CXXOPTFLAG  The compiler option for generating optimized code. Set here
+              rather than in $CXXFLAGS. Default is '-O2'
   CXXDEBUGFLAG
               The compiler option for generating debugging information. Set
-              her rather than in CXXFLAGS. Default is '-g'
+              here rather than in $CXXFLAGS. Default is '-g'
   CLHEPPATH   The path where CLHEP is installed. Default is $prefix.
   CLHEPLIB    The name of the CLHEP library. The full path is assumed to be
               $CLHEPPATH/lib/lib${CLHEPLIB}.a or
@@ -863,19 +863,21 @@ Some influential environment variables:
   CLHEPINCLUDE
               The include directive needed to find the CLHEP include files.
               Default is -I$CLHEPPATH/include.
-  GZREAD_FILE The command which taking the name of a gzipped file as argument
-              unzips it and prints it to stdout. Default is "gunzip -c".
+  GZREAD_FILE The command which, taking the name of a gzipped file as
+              argument, unzips it, and prints it to stdout. Default is "gunzip
+              -c".
   GZWRITE_FILE
-              The command which taking the name of a gzipped file as argument
-              reads stdin zips it and writes it to the file. Default is "gzip
-              -c".
+              The command which, taking the name of a gzipped file as
+              argument, reads stdin, zips it and writes it to the file.
+              Default is "gzip -c".
   BZ2READ_FILE
-              The command which taking the name of a bzipped file as argument
-              unzips it and prints it to stdout. Default is "bunzip2 -c".
+              The command which, taking the name of a bzipped file as
+              argument, unzips it, and prints it to stdout. Default is
+              "bunzip2 -c".
   BZ2WRITE_FILE
-              The command which taking the name of a bzipped file as argument
-              reads stdin zips it and writes it to the file. Default is "bzip2
-              -c".
+              The command which, taking the name of a bzipped file as
+              argument, reads stdin zips it, and writes it to the file.
+              Default is "bzip2 -c".
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -2097,8 +2099,61 @@ BUILDDIR=`pwd`
 
 
 
-echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
+echo $ECHO_N "checking for atanh... $ECHO_C" 1>&6
 
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <cmath>
+
+int
+main ()
+{
+atanh(0.5);
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  cat >>confdefs.h <<\_ACEOF
+#define ThePEG_HAS_ATANH 1
+_ACEOF
+
+echo "${ECHO_T}yes" 1>&6
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+echo "${ECHO_T}no" 1>&6
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF

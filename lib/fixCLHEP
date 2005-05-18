@@ -1,16 +1,8 @@
 #!/bin/csh -f
-set wd = `pwd`
-cd $1/lib
-if ( -e lib${2}.so ) then
-  ln -sf $1/lib/lib${2}.so $wd/libCLHEP.so
-  if ( "lib${2}.so" != "libCLHEP.so" ) then
-    ln -sf $1/lib/lib${2}.so $wd
-  endif
-  ln -sf $1/lib/lib${2}.so.* $wd >& /dev/null
-  set LIB=`readlink lib${2}.so`
-  if ( "$LIB" != "" ) then
-    ln -sf $1/lib/$LIB.* $wd >& /dev/null
-  endif
+if ( -e $1/lib/lib${2}.so ) then
+  cp $1/lib/lib${2}.so libCLHEP.so
 else
+  set wd = `pwd`
+  cd $1/lib
   g++ -shared -Wl,--whole-archive lib${2}.a -o $wd/libCLHEP.so
 endif

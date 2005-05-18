@@ -414,7 +414,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -590,8 +590,6 @@ private:
 };
 
 }
-
-// CLASSDOC OFF
 
 #include \"ThePEG/Utilities/ClassTraits.h\"
 
@@ -913,11 +911,11 @@ public:
   /** @name Virtual functions required by the StepHandler class. */
   //@{
   /**
-    * The main function called by the PartialCollisionHandler class to
+    * The main function called by the EventHandler class to
     * perform a step. Given the current state of an Event, this function
     * performs the event generation step and includes the result in a new
     * Step object int the Event record.
-    * @param ch the PartialCollisionHandler in charge of the Event generation.
+    * @param eh the EventHandler in charge of the Event generation.
     * @param tagged if not empty these are the only particles which should
     * be considered by the StepHandler.
     * @param hint a Hint object with possible information from previously
@@ -927,7 +925,7 @@ public:
     * after this call.
     * @throws Exception if something goes wrong.
     */
-  virtual void handle(PartialCollisionHandler & ch, const tcPVector & tagged,
+  virtual void handle(EventHandler & eh, const tcPVector & tagged,
 		      const Hint & hint) throw(Veto, Stop, Exception);
   //@}
 "))
@@ -935,7 +933,7 @@ public:
 (defun thepeg-StepHandler-implement (class base)
   (concat "
 void " class "::
-handle(PartialCollisionHandler & ch, const tcPVector & tagged,
+handle(EventHandler & eh, const tcPVector & tagged,
        const Hint & hint) throw(Veto, Stop, Exception) {
   // Implement the Handle method here.
   // Note that if the method actually does anything to the current event
@@ -1101,14 +1099,16 @@ ParticleVector " class "::decay(const DecayMode & dm,
 	      (setq stru (concat "*" unit)))
 	(t    (setq stru "")))
   (setq defa (read-from-minibuffer "Default value: " (concat "1.0" stru)))
-  (setq limi (cond (isstring nil)
-		   (t (y-or-n-p "Is this parameter limited? "))))
-  (cond (limi (setq mini (read-from-minibuffer "Minimum value: "
-					       (concat "0.0" stru)))
-	      (setq maxi (read-from-minibuffer "Maximum value: "
-					       (concat "10.0" stru))))
-	(t    (setq mini (concat "0" stru))
-	      (setq maxi (concat "0" stru))))
+  (setq limlo (cond (isstring nil)
+		    (t (y-or-n-p "Is this parameter limited from below? "))))
+  (cond (limlo (setq mini (read-from-minibuffer "Minimum value: "
+						(concat "0.0" stru))))
+	(t    (setq mini (concat "0" stru))))
+  (setq limup (cond (isstring nil)
+		    (t (y-or-n-p "Is this parameter limited from above? "))))
+  (cond (limup (setq maxi (read-from-minibuffer "Maximum value: "
+						(concat "10.0" stru))))
+	(t    (setq maxi (concat "0" stru))))
   (setq safe (y-or-n-p "Is this parameter dependency safe? "))
   (setq ronl (y-or-n-p "Is this parameter read-only? "))
   (insert-string (concat "
@@ -1119,7 +1119,11 @@ ParticleVector " class "::decay(const DecayMode & dm,
      (cond (isstring "")(t (concat ", " mini ", " maxi)))
      ",
      " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false"))
-     (cond (isstring "")(limi ", true")(t ", false"))))
+     (cond (isstring "")
+	   ((and limup limlo) ", Interface::limited")
+	   (limup ", Interface::upperlim")
+	   (limlo ", Interface::upperlim")
+	   (t ", Interface::nolimits"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
      " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
@@ -1157,13 +1161,16 @@ ParticleVector " class "::decay(const DecayMode & dm,
 	(t    (setq stru "")))
   (setq size (read-from-minibuffer "Size of vector (varying if < 0): " "-1"))
   (setq defa (read-from-minibuffer "Default value: " (concat "1.0" stru)))
-  (setq limi (y-or-n-p "Are the parameters limited? "))
-  (cond (limi (setq mini (read-from-minibuffer "Minimum value: "
-					       (concat "0.0" stru)))
-	      (setq maxi (read-from-minibuffer "Maximum value: "
-					       (concat "10.0" stru))))
-	(t    (setq mini (concat "0" stru))
-	      (setq maxi (concat "0" stru))))
+  (setq limlo (cond (isstring nil)
+		    (t (y-or-n-p "Is this parameter limited from below? "))))
+  (cond (limlo (setq mini (read-from-minibuffer "Minimum value: "
+						(concat "0.0" stru))))
+	(t    (setq mini (concat "0" stru))))
+  (setq limup (cond (isstring nil)
+		    (t (y-or-n-p "Is this parameter limited from above? "))))
+  (cond (limup (setq maxi (read-from-minibuffer "Maximum value: "
+						(concat "10.0" stru))))
+	(t    (setq maxi (concat "0" stru))))
   (setq safe (y-or-n-p "Is this parameter vector dependency safe? "))
   (setq ronl (y-or-n-p "Are the parameters read-only? "))
   (insert-string (concat "
@@ -1173,7 +1180,10 @@ ParticleVector " class "::decay(const DecayMode & dm,
      " memb ", " (cond (hasu (concat unit ", "))(t "")) defa ", " size ", "
      mini ", " maxi ",
      " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
-     (cond (limi "true")(t "false"))))
+     (cond ((and limup limlo) ", Interfaced::limited")
+	   (limup ", Interfaced::upperlim")
+	   (limlo ", Interfaced::upperlim")
+	   (t ", Interfaced::nolimits"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
      " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))

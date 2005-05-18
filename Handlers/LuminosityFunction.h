@@ -123,8 +123,6 @@ public:
    */
   static void Init();
 
-protected:
-
   /**
    * Set information about the selected XComb.
    */

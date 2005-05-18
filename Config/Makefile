@@ -41,6 +41,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   Units.h \
@@ -54,18 +55,21 @@ include ../Config/Makefile.common
   Constants.h \
   std.h \
   Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
   ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
@@ -78,6 +82,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
   ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
@@ -87,6 +92,9 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -98,7 +106,9 @@ include ../Config/Makefile.common
   ../../ThePEG/Interface/InterfaceBase.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
+  ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
   ../../ThePEG/Interface/Interfaced.icc \
@@ -108,13 +118,22 @@ include ../Config/Makefile.common
   ../../ThePEG/PDT/WidthGenerator.fh \
   ../../ThePEG/PDT/MassGenerator.fh \
   ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/PDT/MatcherBase.h \
   ../../ThePEG/PDT/ParticleData.h \
   ../../ThePEG/EventRecord/Particle.h \
   ../../ThePEG/EventRecord/EventConfig.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Utilities/Rebinder.fh \
+  ../../ThePEG/Utilities/FixedSizeAllocator.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/EventRecord/ColourBase.h \
   ../../ThePEG/EventRecord/EventInfoBase.h \
   ../../ThePEG/EventRecord/EventConfig.h \
@@ -127,6 +146,7 @@ include ../Config/Makefile.common
   ../../ThePEG/EventRecord/SpinBase.h \
   ../../ThePEG/EventRecord/SpinBase.icc \
   ../../ThePEG/EventRecord/Particle.icc \
+  ../../ThePEG/PDT/ParticleData.h \
   ../../ThePEG/EventRecord/Particle.tcc \
   ../../ThePEG/PDT/MatcherBase.icc \
   ../../ThePEG/PDT/DecayMode.h \
@@ -135,23 +155,34 @@ include ../Config/Makefile.common
   ../../ThePEG/PDT/Decayer.h \
   ../../ThePEG/PDT/Decayer.fh \
   ../../ThePEG/Handlers/HandlerBase.h \
+  ../../ThePEG/Interface/Interfaced.h \
   ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/MatrixElement/Amplitude.h \
+  ../../ThePEG/Handlers/HandlerBase.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/EventRecord/Particle.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/PDT/Decayer.icc \
   ../../ThePEG/PDT/DecayMode.icc \
   ../../ThePEG/Interface/InterfacedBase.h \
   ../../ThePEG/Repository/EventGenerator.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Repository/EventGenerator.fh \
   ../../ThePEG/Repository/RandomGenerator.h \
+  ../../ThePEG/Interface/Interfaced.h \
   ../../ThePEG/CLHEPWrap/RandomEngine.fh \
   ../../ThePEG/Repository/RandomGenerator.icc \
   ../../ThePEG/Repository/UseRandom.h \
   ../../ThePEG/Repository/RandomGenerator.h \
   ../../ThePEG/Repository/UseRandom.icc \
   ../../ThePEG/Repository/CurrentGenerator.fh \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Handlers/EventHandler.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Repository/EventGenerator.xh \
+  ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Repository/EventGenerator.icc \
   ../../ThePEG/Repository/EventGenerator.tcc
 

@@ -16,7 +16,7 @@ namespace ThePEG {
  * @see \ref MultipleInteractionHandlerInterfaces "The interfaces"
  * defined for MultipleInteractionHandler.
  * @see StepHandler
- * @see CollisionHandler
+ * @see EventHandler
  * @see SubProcessHandler
  */
 class MultipleInteractionHandler: public StepHandler {
@@ -58,7 +58,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

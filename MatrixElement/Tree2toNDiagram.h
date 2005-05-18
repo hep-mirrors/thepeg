@@ -5,6 +5,7 @@
 
 #include "ThePEG/MatrixElement/DiagramBase.h"
 #include "ThePEG/MatrixElement/ColourLines.h"
+#include "ThePEG/Handlers/StandardXComb.fh"
 // #include "Tree2toNDiagram.fh"
 #include "Tree2toNDiagram.xh"
 
@@ -115,7 +116,7 @@ public:
    * correspondingly and the partons should be colour connected as
    * specified by the ColourLines object.
    */
-  virtual tPVector construct(SubProPtr sb, const XComb &,
+  virtual tPVector construct(SubProPtr sb, const StandardXComb &,
 			     const ColourLines &) const;
 
   /**

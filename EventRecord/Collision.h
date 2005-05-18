@@ -29,10 +29,10 @@ class Collision: public EventRecordBase {
 
 public:
 
-  /** PartialCollisionHandler is a friend of most Event classes. */
-  friend class PartialCollisionHandler;
-  /** Most of the Event classes are friends with each other. */
-  friend class CollisionHandler;
+  /**
+   * EventHandler is a friend of most Event classes.
+   */
+  friend class EventHandler;
   /** Most of the Event classes are friends with each other. */
   friend class Event;
   /** Most of the Event classes are friends with each other. */
@@ -55,7 +55,7 @@ public:
   /**
    * The standard constructor takes a pair of incoming particles as
    * argument. Optionally can be given a pointer to the Event which
-   * this Collision belongs, and a pointer to the CollisionHandler
+   * this Collision belongs, and a pointer to the EventHandler
    * which produced this collision.
    * @param newIncoming a pair of incoming particles.
    * @param newEvent the Event to which this Collision belongs.
@@ -86,7 +86,12 @@ public:
   tStepPtr newStep(tcEventBasePtr newHandler = tcEventBasePtr());
 
   /**
-   * Return a pointer to the CollisionHandler which produced this
+   * Add a new Step to this Collision.
+   */
+  void addStep(tStepPtr s);
+
+  /**
+   * Return a pointer to the EventHandler which produced this
    * Collision. May be the null pointer.
    */
   inline tcEventBasePtr handler() const;
@@ -249,11 +254,6 @@ protected:
   /** @name Internal functions for adding and removing entires. */
   //@{
   /**
-   * Add a new Step to this Collision.
-   */
-  void addStep(tStepPtr s);
-
-  /**
    * Add a new SubProcess to this Collision.
    */
   void addSubProcess(tSubProPtr p);
@@ -325,7 +325,7 @@ private:
   tEventPtr theEvent;
 
   /**
-   * A pointer to the CollisionHandler which performed the generation
+   * A pointer to the EventHandler which performed the generation
    * of this Collision.
    */
   tcEventBasePtr theHandler;

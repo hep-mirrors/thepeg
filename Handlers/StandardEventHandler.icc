@@ -1,0 +1,77 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the StandardEventHandler class.
+//
+
+namespace ThePEG {
+
+inline tKinCutPtr StandardEventHandler::cuts() const {
+  return theCuts;
+}
+
+inline const StandardEventHandler::SubHandlerList &
+StandardEventHandler::subProcesses() const {
+  return theSubProcesses;
+}
+
+inline StandardEventHandler::SubHandlerList &
+StandardEventHandler::subProcesses() {
+  return theSubProcesses;
+}
+
+inline const StandardEventHandler::XVector &
+StandardEventHandler::xCombs() const {
+  return theXCombs;
+}
+
+inline StandardEventHandler::XVector & StandardEventHandler::xCombs() {
+  return theXCombs;
+}
+
+inline const StandardEventHandler::XSVector &
+StandardEventHandler::xSecs() const {
+  return theXSecs;
+}
+
+inline StandardEventHandler::XSVector & StandardEventHandler::xSecs() {
+  return theXSecs;
+}
+
+inline int StandardEventHandler::binStrategy() const {
+  return theBinStrategy;
+}
+
+inline int StandardEventHandler::maxDim(int bin) const {
+  return theMaxDims[bin];
+}
+
+inline const LorentzRotation & StandardEventHandler::currentEventBoost() const {
+  return theCurrentEventBoost;
+}
+
+inline LorentzRotation & StandardEventHandler::currentEventBoost() {
+  return theCurrentEventBoost;
+}
+
+inline bool StandardEventHandler::weighted() const {
+  return weightedEvents;
+}
+
+inline tSamplerPtr StandardEventHandler::sampler() {
+  return theSampler;
+}
+
+inline tcSamplerPtr StandardEventHandler::sampler() const {
+  return theSampler;
+}
+
+inline int StandardEventHandler::lumiDim() const {
+  return theLumiDim;
+}
+
+inline int StandardEventHandler::nDim(int bin) const {
+  return lumiDim() + maxDim(bin);
+}
+
+}

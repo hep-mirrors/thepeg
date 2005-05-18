@@ -22,7 +22,7 @@ namespace ThePEG {
  * @see \ref CascadeHandlerInterfaces "The interfaces"
  * defined for CascadeHandler.
  * @see StepHandler
- * @see CollisionHandler
+ * @see EventHandler
  * @see SubProcessHandler
  */
 class CascadeHandler: public StepHandler, public LastXCombInfo<> {
@@ -34,12 +34,12 @@ public:
   /**
    * The default constructor.
    */
-  inline CascadeHandler();
+  CascadeHandler();
 
   /**
    * The copy constructor.
    */
-  inline CascadeHandler(const CascadeHandler &);
+  CascadeHandler(const CascadeHandler &);
 
   /**
    * The destructor.
@@ -52,9 +52,9 @@ public:
   /** @name Virtual functions required by the StepHandler class. */
   //@{
   /**
-    * The main function called by the PartialCollisionHandler class to
+    * The main function called by the EventHandler class to
     * perform a step.
-    * @param ch the PartialCollisionHandler in charge of the Event generation.
+    * @param eh the EventHandler in charge of the Event generation.
     * @param tagged if not empty these are the only particles which should
     * be considered by the StepHandler.
     * @param hint a Hint object with possible information from previously
@@ -65,7 +65,7 @@ public:
     * after this call.
     * @throws Exception if something goes wrong.
     */
-  virtual void handle(PartialCollisionHandler & ch, const tPVector & tagged,
+  virtual void handle(EventHandler & eh, const tPVector & tagged,
 		      const Hint & hint)
     ThePEG_THROW_SPEC((Veto, Stop, Exception));
   //@}
@@ -111,7 +111,7 @@ public:
   /**
    * Return a pointer to the current collision handler.
    */
-  inline tPartCollHdlPtr collisionHandler() const;
+  inline tEHPtr eventHandler() const;
   //@}
 
 public:
@@ -131,7 +131,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -187,7 +187,7 @@ private:
   /**
    * The current collision handler.
    */
-  tPartCollHdlPtr theCollisionHandler;
+  tEHPtr theEventHandler;
 
 private:
 

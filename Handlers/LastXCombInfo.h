@@ -4,64 +4,30 @@
 // This is the declaration of the LastXCombInfo class.
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/MatrixElement/MEBase.fh"
 // #include "LastXCombInfo.fh"
 // #include "LastXCombInfo.xh"
 
 namespace ThePEG {
 
 /**
- * LastXCombInfoBase is the base class of the temlated
- * LastXCombInfo. Classes which need to have easy access to the last
- * selected XComb object with information about the sub-process which
- * is being generated, should (possibly multiple) inherit from the
+ * LastXCombInfo is a templated class giving easy access to the
+ * information in an XComb object. The default template argument is
+ * the basic XComb class, but also subclasses of XComb can be
+ * used. Classes which need to have easy access to the last selected
+ * XComb object with information about the sub-process which is being
+ * generated, should (possibly multiple) inherit from the
  * LastXCombInfo class. The LastXCombInfo is templated to enable
  * derived classes to only include dependencies necessary for the
  * access function which are actually used.
  * 
  */
-class LastXCombInfoBase {
+template <typename XC = XComb>
+class LastXCombInfo {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  LastXCombInfoBase();
-
-  /**
-   * Copy-constructor.
-   */
-  LastXCombInfoBase(const LastXCombInfoBase &);
-
-  /**
-   * Destructor.
-   */
-  ~LastXCombInfoBase();
-  //@}
-
-protected:
-
-  /**
-   * The pointer to the last selected XComb.
-   */
-  XCombPtr theLastXComb;
-
-};
-
-/**
- * LastXCombInfo is a templated sub-class of
- * LastXCombInfoBase. Classes which need to have easy access to the
- * last selected XComb object with information about the sub-process
- * which is being generated, should (possibly multiple) inherit from
- * the LastXCombInfo class. The LastXCombInfo is templated to enable
- * derived classes to only include dependencies necessary for the
- * access function which are actually used.
- * 
- */
-template <int I = 0>
-class LastXCombInfo: public LastXCombInfoBase {
+  ThePEG_DECLARE_TEMPLATE_POINTERS(XC,XCPtr);
 
 public:
 
@@ -75,12 +41,12 @@ public:
   /**
    * Copy-constructor.
    */
-  inline LastXCombInfo(const LastXCombInfo<I> &);
+  inline LastXCombInfo(const LastXCombInfo<XC> &);
 
   /**
    * Destructor.
    */
-  inline LastXCombInfo & operator=(const LastXCombInfo<I> &);
+  inline LastXCombInfo & operator=(const LastXCombInfo<XC> &);
   //@}
 
   /** @name Acces to the actual XComb object. */
@@ -89,24 +55,19 @@ public:
    * Return a reference to the last selected XComb.
    */
 
-  inline const XComb & lastXComb() const;
+  inline const XC & lastXComb() const;
   /**
    * Return a pointer to the last selected XComb.
    */
-  inline tXCombPtr lastXCombPtr() const;
+  inline tXCPtr lastXCombPtr() const;
   //@}
 
   /** @name Access the objects used by the XComb object. */
   //@{
   /**
-   * Return a reference to the currently used collision handler
+   * Return a reference to the currently used EventHandler
    */
-  inline const CollisionHandler & lastCollisionHandler() const;
-
-  /**
-   * Return a reference to the currently used sub-process handler
-   */
-  inline tcSubHdlPtr lastSubHandler() const;
+  inline const EventHandler & lastEventHandler() const;
 
   /**
    * A pointer to the currently used parton extractor.
@@ -255,6 +216,13 @@ public:
   inline const cPDVector & mePartonData() const;
 
   //@}
+
+protected:
+
+  /**
+   * The pointer to the last selected XComb.
+   */
+  XCPtr theLastXComb;
 
 };
 

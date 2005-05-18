@@ -6,6 +6,7 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/MatrixElement/ColourLines.h"
+#include "ThePEG/Handlers/StandardXComb.fh"
 #include "DiagramBase.fh"
 #include "DiagramBase.xh"
 
@@ -63,7 +64,7 @@ public:
    * correspondingly and the partons should be colour connected as
    * specified by the ColourLines object.
    */
-  virtual tPVector construct(SubProPtr sb, const XComb &,
+  virtual tPVector construct(SubProPtr sb, const StandardXComb &,
 			     const ColourLines &) const = 0;
   //@}
   

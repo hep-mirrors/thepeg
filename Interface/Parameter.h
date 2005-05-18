@@ -56,14 +56,14 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
    */
   inline ParameterBase(string newName, string newDescription,
 		       string newClassName,
 		       const type_info & newTypeInfo, bool depSafe,
-		       bool readonly, bool islimited);
-  
+		       bool readonly, int limits);  
   /**
    * The destructor.
    */
@@ -121,9 +121,19 @@ public:
     throw(InterfaceException) = 0;
 
   /**
-   * True if there are limits associated with the variable.
+   * True if there the variable is limited from above and below.
    */
   inline bool limited() const;
+
+  /**
+   * True if there the variable is limited from abovew.
+   */
+  inline bool upperLimit() const;
+
+  /**
+   * True if there the variable is limited from  below.
+   */
+  inline bool lowerLimit() const;
 
   /**
    * Set flag indicating that there are limits associated with the
@@ -140,9 +150,11 @@ public:
 private:
 
   /**
-   * True if there are limits associated with the variable.
+   * Determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
    */
-  bool isLimited;
+  int limit;
 
 };
 
@@ -192,13 +204,14 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
    */
   inline ParameterTBase(string newName, string newDescription,
 			string newClassName,
 			const type_info & newTypeInfo, Type newUnit,
-			bool depSafe, bool readonly, bool islimited);
+			bool depSafe, bool readonly, int limits);
 
   /**
    * Destructor.
@@ -391,8 +404,8 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and below.
    *
    * @param newSetFn optional pointer to the member function for the
    * 'set' action.
@@ -412,11 +425,11 @@ public:
   inline Parameter(string newName, string newDescription,
 		   Member newMember, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
-		   bool islimited = true, SetFn newSetFn = 0,
+		   bool limits = true, SetFn newSetFn = 0,
 		   GetFn newGetFn = 0, GetFn newMinFn = 0,
 		   GetFn newMaxFn = 0, GetFn newDefFn = 0)
   : ParameterTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
-			 typeid(T), Type(), depSafe, readonly, islimited),
+			 typeid(T), Type(), depSafe, readonly, limits),
     theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
     theSetFn(newSetFn), theGetFn(newGetFn), theDefFn(newDefFn),
     theMinFn(newMinFn), theMaxFn(newMaxFn) {}
@@ -448,8 +461,8 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and below.
    *
    * @param newSetFn optional pointer to the member function for the
    * 'set' action.
@@ -469,15 +482,127 @@ public:
   inline Parameter(string newName, string newDescription,
 		   Member newMember, Type newUnit, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
-		   bool islimited = true, SetFn newSetFn = 0,
+		   bool limits = true, SetFn newSetFn = 0,
 		   GetFn newGetFn = 0, GetFn newMinFn = 0,
 		   GetFn newMaxFn = 0, GetFn newDefFn = 0)
   : ParameterTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
-			 typeid(T), newUnit, depSafe, readonly, islimited),
+			 typeid(T), newUnit, depSafe, readonly, limits),
     theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
     theSetFn(newSetFn), theGetFn(newGetFn), theDefFn(newDefFn),
     theMinFn(newMinFn), theMaxFn(newMaxFn) {}
 
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to the member variable. May be null if
+   * corresponding set/get functions are provided.
+   *
+   * @param newDef the default value for the member variable.
+   *
+   * @param newMin the minimum value for the member variable.
+   *
+   * @param newMax the maximum value for the member variable.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
+   *
+   * @param newSetFn optional pointer to the member function for the
+   * 'set' action.
+   *
+   * @param newGetFn optional pointer to the member function for the
+   * 'get' action.
+   *
+   * @param newMinFn optional pointer to the member function for the
+   * 'min' action.
+   *
+   * @param newMaxFn optional pointer to the member function for the
+   * 'max' action.
+   *
+   * @param newDefFn optional pointer to the member function for the
+   * 'def' action.
+   */
+  inline Parameter(string newName, string newDescription,
+		   Member newMember, Type newDef, Type newMin,
+		   Type newMax, bool depSafe = false, bool readonly = false,
+		   int limits = Interface::limited, SetFn newSetFn = 0,
+		   GetFn newGetFn = 0, GetFn newMinFn = 0,
+		   GetFn newMaxFn = 0, GetFn newDefFn = 0)
+  : ParameterTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
+			 typeid(T), Type(), depSafe, readonly, limits),
+    theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
+    theSetFn(newSetFn), theGetFn(newGetFn), theDefFn(newDefFn),
+    theMinFn(newMinFn), theMaxFn(newMaxFn) {}
+
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to the member variable. May be null if
+   * corresponding set/get functions are provided.
+   *
+   * @param newUnit the unit assumed when a number is read or written
+   * to a stream.
+   *
+   * @param newDef the default value for the member variable.
+   *
+   * @param newMin the minimum value for the member variable.
+   *
+   * @param newMax the maximum value for the member variable.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
+   *
+   * @param newSetFn optional pointer to the member function for the
+   * 'set' action.
+   *
+   * @param newGetFn optional pointer to the member function for the
+   * 'get' action.
+   *
+   * @param newMinFn optional pointer to the member function for the
+   * 'min' action.
+   *
+   * @param newMaxFn optional pointer to the member function for the
+   * 'max' action.
+   *
+   * @param newDefFn optional pointer to the member function for the
+   * 'def' action.
+   */
+  inline Parameter(string newName, string newDescription,
+		   Member newMember, Type newUnit, Type newDef, Type newMin,
+		   Type newMax, bool depSafe = false, bool readonly = false,
+		   int limits = Interface::limited, SetFn newSetFn = 0,
+		   GetFn newGetFn = 0, GetFn newMinFn = 0,
+		   GetFn newMaxFn = 0, GetFn newDefFn = 0)
+  : ParameterTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
+			 typeid(T), newUnit, depSafe, readonly, limits),
+    theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
+    theSetFn(newSetFn), theGetFn(newGetFn), theDefFn(newDefFn),
+    theMinFn(newMinFn), theMaxFn(newMaxFn) {}
 
   /**
    * Default dtor.
@@ -604,7 +729,7 @@ public:
   inline ParameterTBase(string newName, string newDescription,
 			string newClassName,
 			const type_info & newTypeInfo,
-			bool depSafe, bool readonlyd);
+			bool depSafe, bool readonly);
 
   /**
    * Destructor.

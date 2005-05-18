@@ -8,6 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Switch.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -25,65 +26,96 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/RandomGenerator.h"
 #include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Handlers/XComb.h"
+#include "LesHouchesEventHandler.h"
 
 using namespace ThePEG;
 
-LesHouchesReader::LesHouchesReader()
-  : IDWTUP(0), NRUP(0), NUP(0), IDPRUP(0), XWGTUP(0.0), XPDWUP(0.0, 0.0),
-  SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0), theXSec(0.0*picobarn),
-  theMaxXSec(0.0*picobarn), theMaxWeight(0.0), theNEvents(0), theMaxScan(-1),
-  isWeighted(false), hasNegativeWeights(false), theCacheFileName(""),
-  doRandomize(false), theNAttempted(0), theNAccepted(0), theCacheFile(NULL) {}
+LesHouchesReader::LesHouchesReader(bool active)
+  : theNEvents(0), position(0), reopened(0), theMaxScan(-1),
+    isActive(active), isWeighted(false), hasNegativeWeights(false),
+    theCacheFileName(""), theCacheFile(NULL), preweight(1.0) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
-  : HandlerBase(x), IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
-    PDFGUP(x.PDFGUP), PDFSUP(x.PDFSUP), thePDFA(x.thePDFA), thePDFB(x.thePDFB),
+  : HandlerBase(x), heprup(x.heprup), hepeup(x.hepeup),
+    thePDFA(x.thePDFA), thePDFB(x.thePDFB),
     thePartonExtractor(x.thePartonExtractor), thePartonBins(x.thePartonBins),
-    theCuts(x.theCuts), IDWTUP(x.IDWTUP),
-    NRUP(x.NRUP), XSECUP(x.XSECUP), XERRUP(x.XERRUP),
-    XMAXUP(x.XMAXUP), LPRUP(x.LPRUP), NUP(x.NUP),
-    IDPRUP(x.IDPRUP), XWGTUP(x.XWGTUP), XPDWUP(x.XPDWUP), SCALUP(x.SCALUP),
-    AQEDUP(x.AQEDUP), AQCDUP(x.AQCDUP), IDUP(x.IDUP),
-    ISTUP(x.ISTUP), MOTHUP(x.MOTHUP), ICOLUP(x.ICOLUP),
-    PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP), theXSec(x.theXSec),
-    theMaxXSec(x.theMaxXSec), theMaxWeight(x.theMaxWeight),
-    theNEvents(x.theNEvents), theMaxScan(x.theMaxScan),
-    isWeighted(x.isWeighted), hasNegativeWeights(x.hasNegativeWeights),
-    theCacheFileName(x.theCacheFileName), doRandomize(x.doRandomize),
-    theNAttempted(x.theNAttempted), theAttemptMap(x.theAttemptMap),
-    theNAccepted(x.theNAccepted), theAcceptMap(x.theAcceptMap),
+    theXCombs(x.theXCombs), theCuts(x.theCuts),
+    theNEvents(x.theNEvents), position(x.position), reopened(x.reopened),
+    theMaxScan(x.theMaxScan), isActive(x.isActive), isWeighted(x.isWeighted),
+    hasNegativeWeights(x.hasNegativeWeights),
+    theCacheFileName(x.theCacheFileName),
+    stats(x.stats), statmap(x.statmap),
     thePartonBinInstances(x.thePartonBinInstances),
-    theCacheFile(NULL) {}
+    theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
+    preweight(x.preweight) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
-void LesHouchesReader::doinit() throw(InitException) {
-  HandlerBase::doinit();
+void LesHouchesReader::doinitrun() {
+  HandlerBase::doinitrun();
+  stats.reset();
+  for ( StatMap::iterator i = statmap.begin(); i != statmap.end(); ++i )
+    i->second.reset();
   open();
-  if ( !IDBMUP.first || !IDBMUP.second ) throw LesHouchesInitError()
-    << "No information about incoming particles were found in "
-    << "LesHouchesReader '" << name() << "'." << Exception::warning;
-  if ( EBMUP.first <= 0.0 || EBMUP.second <= 0.0 ) throw LesHouchesInitError()
-    << "No information about the energy of incoming particles were found in "
-    << "LesHouchesReader '" << name() << "'." << Exception::warning;
-
-  Energy emax = 2.0*sqrt(EBMUP.first*EBMUP.second)*GeV;
-  tcPDPair inc(getParticleData(IDBMUP.first), getParticleData(IDBMUP.second));
-  thePartonBins = partonExtractor()->getPartons(emax, inc, cuts());
-
-  close();
-  scan();
+  if ( cacheFileName().length() ) openReadCacheFile();
+  position = 0;
+  reopened = 0;
 }
 
-void LesHouchesReader::scan() {
-  NRUP = 0;
-  XSECUP.clear();
-  XERRUP.clear();
-  XMAXUP.clear();
-  LPRUP.clear();
-  xSec(0.0*picobarn);
-  maxXSec(0.0*picobarn);
-  maxWeight(0.0);
+void LesHouchesReader::doinit() throw(InitException) {
+  HandlerBase::doinit();
+}
+
+void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
+  if ( !theCuts ) theCuts = eh.kinematicalCuts();
+  if ( !theCuts ) throw LesHouchesInitError()
+    << "No KinematicalCuts object was assigned to the LesHouchesReader '"
+    << name() << "' nor was one assigned to the controlling "
+    << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
+    << "needs to have a KinematicalCuts object." << Exception::warning;
+
+  if ( !partonExtractor() ) thePartonExtractor = eh.partonExtractor();
+  if ( !partonExtractor() )  throw LesHouchesInitError()
+    << "No PartonExtractor object was assigned to the LesHouchesReader '"
+    << name() << "' nor was one assigned to the controlling "
+    << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
+    << "needs to have a PartonExtractor object." << Exception::warning;
+
+  open();
+  if ( !heprup.IDBMUP.first || !heprup.IDBMUP.second )
+    throw LesHouchesInitError()
+    << "No information about incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
+  if ( heprup.EBMUP.first <= 0.0 || heprup.EBMUP.second <= 0.0 )
+    throw LesHouchesInitError()
+    << "No information about the energy of incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
+  if ( !thePDFA || !thePDFB ) throw LesHouchesInitError()
+    << "No information about the PDFs of incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
+
+  Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
+  tcPDPair inc(getParticleData(heprup.IDBMUP.first),
+	       getParticleData(heprup.IDBMUP.second));
+  thePartonBins = partonExtractor()->getPartons(emax, inc, cuts());
+  for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
+    theXCombs[partonBins()[i]] =
+      new_ptr(XComb(emax, inc, &eh, partonExtractor(), partonBins()[i], theCuts));
+    partonExtractor()->nDims(partonBins()[i]);
+  }
+  close();
+  scan();
+  initStat();
+}
+
+
+long LesHouchesReader::scan() {
+  heprup.NRUP = 0;
+  heprup.XSECUP.clear();
+  heprup.XERRUP.clear();
+  heprup.XMAXUP.clear();
+  heprup.LPRUP.clear();
   
   open();
 
@@ -94,22 +126,20 @@ void LesHouchesReader::scan() {
     if ( ThePEG_DEBUG_LEVEL )
       generator()->log() << "Writing cache file for LesHouchesReader '"
 			  << name() << "' ..." << flush;
-    if ( randomize() )
-      theCacheFile = tmpfile();
-    else
-      openWriteCacheFile();
+    openWriteCacheFile();
   }
 
   // Use posi to remember the positions of the cached events on the
   // temporary stream (if present).
   vector<long> posi;
 
+  // Keep track of the number of events scanned.
+  long neve = 0;
+
   // If the open() has not already gotten information about subprocesses
   // and cross sections we have to scan through the events.
-  if ( !NRUP || cacheFile() != NULL ) {
-    vector<long> LPRN;
+  if ( !heprup.NRUP || cacheFile() != NULL ) {
     double xlast = 0.0;
-    long neve = 0;
     weighted(false);
     negativeWeights(false);
     for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
@@ -120,139 +150,171 @@ void LesHouchesReader::scan() {
       if ( cacheFile() != NULL ) {
 	// We are caching events. Remember where they were written in
 	// case we want to randomize
-	if ( randomize() ) posi.push_back(std::ftell(cacheFile()));
 	cacheEvent();
       }
       ++neve;
-      vector<int>::iterator idit = find(LPRUP.begin(), LPRUP.end(), IDPRUP);
-      if ( idit == LPRUP.end() ) {
-	LPRUP.push_back(IDPRUP);
-	LPRN.push_back(1);
-	XSECUP.push_back(XWGTUP);
-	XERRUP.push_back(sqr(XWGTUP));
-	XMAXUP.push_back(abs(XWGTUP));
+      vector<int>::iterator idit =
+	find(heprup.LPRUP.begin(), heprup.LPRUP.end(), hepeup.IDPRUP);
+      if ( idit == heprup.LPRUP.end() ) {
+	++heprup.NRUP;
+	heprup.LPRUP.push_back(hepeup.IDPRUP);
+	heprup.XSECUP.push_back(hepeup.XWGTUP);
+	heprup.XERRUP.push_back(sqr(hepeup.XWGTUP));
+	heprup.XMAXUP.push_back(abs(hepeup.XWGTUP));
       } else {
-	int id = idit - LPRUP.begin();
-	++LPRN[id];
-	XSECUP[id] += XWGTUP;
-	XERRUP[id] += sqr(XWGTUP);
-	XMAXUP[id] = max(XMAXUP[id], abs(XWGTUP));
+	int id = idit - heprup.LPRUP.begin();
+	heprup.XSECUP[id] += hepeup.XWGTUP;
+	heprup.XERRUP[id] += sqr(hepeup.XWGTUP);
+	heprup.XMAXUP[id] = max(heprup.XMAXUP[id], abs(hepeup.XWGTUP));
       }
-      if ( i == 0 ) xlast = abs(XWGTUP);
-      if ( !weighted() && xlast != abs(XWGTUP) ) weighted(true);
-      if ( !negativeWeights() && XWGTUP < 0.0 ) negativeWeights(true);
+      if ( i == 0 ) xlast = hepeup.XWGTUP;
+      if ( xlast != hepeup.XWGTUP ) weighted(true);
+      if ( hepeup.XWGTUP < 0.0 ) negativeWeights(true);
     }
     if ( maxScan() < 0 || neve > NEvents() ) NEvents(neve);
-    for ( int id = 0, N = LPRUP.size(); id < N; ++id ) {
-      if ( !weighted() ) XERRUP[id] = XSECUP[id]/sqrt(double(LPRN[id]));
-      else XERRUP[id] = sqrt(max(0.0, XSECUP[id] - sqr(XERRUP[id])/LPRN[id]));
+    for ( int id = 0, N = heprup.LPRUP.size(); id < N; ++id ) {
+      heprup.XSECUP[id] /= neve;
+      heprup.XERRUP[id] = weighted()? sqrt(heprup.XERRUP[id])/neve: 0.0;
     }
   }
-
-  CrossSection xsec = 0.0*picobarn;
-  maxWeight(0.0);
-  for ( int ip = 0; ip < NRUP; ++ip ) {
-    xsec += XSECUP[ip]*picobarn;
-    if ( maxWeight() < XMAXUP[ip] ) maxWeight(XMAXUP[ip]);
-  }
-  if ( xSec() <= 0.0*picobarn ) xSec(xsec);
-  if ( weighted() && maxXSec() <= 0.0*picobarn && NEvents() > 0 )
-    maxXSec(NEvents()*maxWeight());
 
   if ( cacheFile() != NULL ) {
-    if ( randomize() ) {
-      // If we should randomize the cached events, randomize the
-      // positions where the events are stored in the temporary file
-      // and read them into the cache file in the new order.
-      random_shuffle(posi.begin(), posi.end(), generator()->random());
-      CFile tmp = cacheFile();
-      openWriteCacheFile();
-      static vector<char> buff;
-      for ( int i = 0, N = posi.size(); i < N; ++i ) {
-	fseek(tmp, posi[i], SEEK_SET);
-	fread(&NUP, sizeof(NUP), 1, tmp);
-	buff.resize(eventSize(NUP));
-	fread(&buff[0], buff.size(), 1, tmp);
-	fwrite(&NUP, sizeof(NUP), 1, cacheFile());
-	fwrite(&buff[0], buff.size(), 1, cacheFile());
-      }
-      fclose(tmp);
-    }
     closeCacheFile();
     if ( ThePEG_DEBUG_LEVEL ) generator()->log() << "done." << endl;
   }
 
-  return;
+  return neve;
+
 }
 
-void LesHouchesReader::fillEvent(tEventPtr event) {
+void LesHouchesReader::initStat() {
+
+  stats.reset();
+  statmap.clear();
+  if ( heprup.NRUP <= 0 ) return;
+
+  if ( !weighted() ) {
+    double xsec = 0.0;
+    for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+      xsec += heprup.XSECUP[ip];
+      statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XSECUP[ip]*picobarn);
+    }
+    stats.maxXSec(xsec*picobarn);
+  } else {
+    heprup.XSECUP.clear();
+    heprup.XERRUP.clear();
+    double maxx = 0.0;
+    for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+      maxx = max(maxx, heprup.XMAXUP[ip]);
+    }
+    stats.maxXSec(maxx*picobarn);
+    for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+      statmap[heprup.LPRUP[ip]] = XSecStat(maxx*picobarn);
+    }
+  }
+}
+
+tXCombPtr LesHouchesReader::getXComb() {
+  fillEvent();
+  connectMothers();
+  tcPBPair sel = createPartonBinInstances();
+  tXCombPtr xc = xCombs()[sel];
+  xc->setPartonBinInstances(partonBinInstances(), sqr(hepeup.SCALUP)*GeV2);
+  return xc;
+}
+
+
+void LesHouchesReader::fillEvent() {
+  if ( !particleIndex.empty() ) return;
   particleIndex.clear();
   colourIndex.clear();
   colourIndex(0, tColinePtr());
   createParticles();
   createBeams();
-  connectMothers();
-  CollPtr coll = new_ptr(Collision(beams(), event, this));
-  //  event->addCollision(coll);
-  StepPtr step = new_ptr(Step(coll));
-  //  coll->addStep(step);
-  SubProPtr sub = new_ptr(SubProcess(incoming(), coll, this));
-  sub->setOutgoing(outgoing().begin(), outgoing().end());
-  sub->setIntermediates(intermediates().begin(), intermediates().end());
-  createPartonBinInstances();
-
-
-  step->addSubProcess(sub);
-  ++theNAttempted;
-  ++theAttemptMap[IDPRUP];
 }
+
+void LesHouchesReader::reopen() {
+  // If we didn't know how many events there were, we know now.
+  if ( NEvents() <= 0 ) NEvents(position);
+  ++reopened;
+  // How large fraction of the events have we actually used? And how
+  // large will we have used if we go through the file again?
+  double frac = double(stats.attempts())/double(NEvents());
+  if ( frac*double(reopened + 1)/double(reopened) > 1.0 &&
+    NEvents() - stats.attempts() <
+       generator()->N() - generator()->currentEventNumber() )
+    generator()->logWarning(
+      LesHouchesReopenWarning()
+      << "Reopening LesHouchesReader '" << name()
+      << "' after accessing " << stats.attempts() << " events out of "
+      << NEvents() << Exception::warning);
+  if ( cacheFile() != NULL ) {
+    closeCacheFile();
+    openReadCacheFile();
+    if ( !uncacheEvent() ) throw LesHouchesReopenError()
+      << "Could not reopen LesHouchesReader '" << name()
+      << "'." << Exception::runerror;
+  } else {  
+    close();
+    open();
+    if ( !readEvent() ) throw LesHouchesReopenError()
+      << "Could not reopen LesHouchesReader '" << name()
+      << "'." << Exception::runerror;
+  }
+}
+
+void LesHouchesReader::reset() {
+  particleIndex.clear();
+  colourIndex.clear();
+}  
 
 double LesHouchesReader::getEvent() {
   if ( cacheFile() != NULL ) {
-    if ( !uncacheEvent() ) {
-      generator()->logWarning(
-	LesHouchesReopenWarning()
-	<< "Reopening LesHouchesReader '" << name()
-	<< "' after using " << nAccepted() << " events out of "
-	<< (NEvents() > 0? NEvents(): nAttempted()) << Exception::warning);
-      closeCacheFile();
-      openReadCacheFile();
-      if ( !uncacheEvent() ) throw LesHouchesReopenError()
-	<< "Could not reopen LesHouchesReader '" << name()
-	<< "'." << Exception::runerror;
-    }
+    if ( !uncacheEvent() ) reopen();
   } else {
-    if ( !readEvent() ) {
-      generator()->logWarning(
-	LesHouchesReopenWarning()
-	<< "Reopening LesHouchesReader '" << name()
-	<< "' after using " << nAccepted() << " events out of "
-	<< (NEvents() > 0? NEvents(): nAttempted()) << Exception::warning);
-      close();
-      open();
-      if ( !readEvent() ) throw LesHouchesReopenError()
-	<< "Could not reopen LesHouchesReader '" << name()
-	<< "'." << Exception::runerror;
-    }
+    if ( !readEvent() ) reopen();
   }
-  ++theNAttempted;
-  ++theAttemptMap[IDPRUP];
-  return XWGTUP/maxWeight();
+  ++position;
+
+  return weighted()?
+    hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec(): 1.0;
+}
+
+void LesHouchesReader::skip(long n) {
+  while ( n-- ) getEvent();
+}
+
+double LesHouchesReader::reweight() {
+  preweight = 1.0;
+  if ( reweights.empty() && preweights.empty() ) return 1.0;
+  fillEvent();
+  for ( int i = 0, N = preweights.size(); i < N; ++i ) {
+    preweights[i]->setKinematics(incoming(), outgoing());
+    preweight *= preweights[i]->weight();
+  }
+  double weight = preweight;
+  for ( int i = 0, N = reweights.size(); i < N; ++i ) {
+    reweights[i]->setKinematics(incoming(), outgoing());
+    weight *= reweights[i]->weight();
+  }
+  return weight;
 }
 
 bool LesHouchesReader::checkPartonBin() {
 
   // First find the positions of the incoming partons.
   pair< vector<int>, vector<int> > inc;
-  for ( int i = 0; i < NUP; ++i ) {
-    if ( ISTUP[i] == -9 ) {
+  for ( int i = 0; i < hepeup.NUP; ++i ) {
+    if ( hepeup.ISTUP[i] == -9 ) {
       if ( inc.first.empty() ) inc.first.push_back(i);
       else if ( inc.second.empty() ) inc.second.push_back(i);
     }
-    else if ( ISTUP[i] == -1 ) {
-      if ( inc.first.size() && MOTHUP[i].first == inc.first.back() + 1 )
+    else if ( hepeup.ISTUP[i] == -1 ) {
+      if ( inc.first.size() &&
+	   hepeup.MOTHUP[i].first == inc.first.back() + 1 )
 	inc.first.push_back(i);
-      else if ( inc.second.size() && MOTHUP[i].first == inc.second.back() + 1 )
+      else if ( inc.second.size() &&
+		hepeup.MOTHUP[i].first == inc.second.back() + 1 )
 	inc.second.push_back(i);
       else if ( inc.first.empty() ) {
 	inc.first.push_back(-1);
@@ -271,12 +333,14 @@ bool LesHouchesReader::checkPartonBin() {
 
   // Now store the corresponding id numbers
   pair< vector<long>, vector<long> > ids;
-  ids.first.push_back(inc.first[0] < 0? IDBMUP.first: IDUP[inc.first[0]]);
+  ids.first.push_back(inc.first[0] < 0? heprup.IDBMUP.first:
+		      hepeup.IDUP[inc.first[0]]);
   for ( int i = 1, N = inc.first.size(); i < N; ++i )
-    ids.first.push_back(IDUP[inc.first[i]]);
-  ids.second.push_back(inc.second[0] < 0? IDBMUP.second: IDUP[inc.second[0]]);
+    ids.first.push_back(hepeup.IDUP[inc.first[i]]);
+  ids.second.push_back(inc.second[0] < 0? heprup.IDBMUP.second:
+		       hepeup.IDUP[inc.second[0]]);
   for ( int i = 1, N = inc.second.size(); i < N; ++i )
-    ids.second.push_back(IDUP[inc.second[i]]);
+    ids.second.push_back(hepeup.IDUP[inc.second[i]]);
 
   // Find the correct pair of parton bins.
   PBPair pbp;
@@ -307,13 +371,13 @@ bool LesHouchesReader::checkPartonBin() {
 
 }
 
-void LesHouchesReader::createPartonBinInstances() {
-  PBPair sel;
+tcPBPair LesHouchesReader::createPartonBinInstances() {
+  tcPBPair sel;
   for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
     tcPBPtr bin = partonBins()[i].first;
     tPPtr p = incoming().first;
     while ( bin && p ) {
-      if ( p->dataPtr() != bin->parton() ) continue;
+      if ( p->dataPtr() != bin->parton() ) break;
       bin = bin->incoming();
       p = p->parents().size()? p->parents()[0]: tPPtr();
     }
@@ -321,7 +385,7 @@ void LesHouchesReader::createPartonBinInstances() {
     bin = partonBins()[i].second;
     p = incoming().second;
     while ( bin && p ) {
-      if ( p->dataPtr() != bin->parton() ) continue;
+      if ( p->dataPtr() != bin->parton() ) break;
       bin = bin->incoming();
       p = p->parents().size()? p->parents()[0]: tPPtr();
     }
@@ -335,10 +399,14 @@ void LesHouchesReader::createPartonBinInstances() {
 
   Direction<0> dir(true);
   thePartonBinInstances.first =
-    new_ptr(PartonBinInstance(incoming().first, sel.first, sqr(SCALUP*GeV)));
+    new_ptr(PartonBinInstance(incoming().first, sel.first,
+			      sqr(hepeup.SCALUP*GeV)));
   dir.reverse();
   thePartonBinInstances.second =
-    new_ptr(PartonBinInstance(incoming().second, sel.second, sqr(SCALUP*GeV)));
+    new_ptr(PartonBinInstance(incoming().second, sel.second,
+			      sqr(hepeup.SCALUP*GeV)));
+
+  return sel;
 
 }
 		     
@@ -348,17 +416,18 @@ void LesHouchesReader::createParticles() {
   theIncoming = PPair();
   theOutgoing = PVector();
   theIntermediates = PVector();
-  for ( int i = 0, N = IDUP.size(); i < N; ++i ) {
-    if ( !IDUP[i] ) continue;
-    Lorentz5Momentum mom(PUP[i][1]*GeV, PUP[i][2]*GeV, PUP[i][3]*GeV,
-			 PUP[i][4]*GeV, PUP[i][5]*GeV);
-    PPtr p = getParticleData(IDUP[i])->produceParticle(mom);
-    tColinePtr c = colourIndex(ICOLUP[i].first);
+  for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
+    if ( !hepeup.IDUP[i] ) continue;
+    Lorentz5Momentum mom(hepeup.PUP[i][0]*GeV, hepeup.PUP[i][1]*GeV,
+			 hepeup.PUP[i][2]*GeV, hepeup.PUP[i][3]*GeV,
+			 hepeup.PUP[i][4]*GeV);
+    PPtr p = getParticleData(hepeup.IDUP[i])->produceParticle(mom);
+    tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
     if ( c ) c->addColoured(p);
-    c = colourIndex(ICOLUP[i].second);
+    c = colourIndex(hepeup.ICOLUP[i].second);
     if ( c ) c->addAntiColoured(p);
     particleIndex(i + 1, p);
-    switch ( ISTUP[i] ) {
+    switch ( hepeup.ISTUP[i] ) {
     case -9:
       if ( !theBeams.first ) theBeams.first = p;
       else if ( !theBeams.second ) theBeams.second = p;
@@ -369,9 +438,9 @@ void LesHouchesReader::createParticles() {
     case -1:
       if ( !theIncoming.first ) theIncoming.first = p;
       else if ( !theIncoming.second ) theIncoming.second = p;
-      else if ( particleIndex(theIncoming.first) == MOTHUP[i].first )
+      else if ( particleIndex(theIncoming.first) == hepeup.MOTHUP[i].first )
 	theIncoming.first = p;
-      else if ( particleIndex(theIncoming.second) == MOTHUP[i].first )
+      else if ( particleIndex(theIncoming.second) == hepeup.MOTHUP[i].first )
 	theIncoming.second = p;
       else throw LesHouchesInconsistencyError()
 	<< "To many incoming particles to hard subprocess in the "
@@ -387,8 +456,9 @@ void LesHouchesReader::createParticles() {
       break;
     default:
       throw LesHouchesInconsistencyError()
-	<< "Unknown status code (" << ISTUP[i] << ") in the LesHouchesReader '"
-	<< name() << "'." << Exception::runerror;
+	<< "Unknown status code (" << hepeup.ISTUP[i]
+	<< ") in the LesHouchesReader '" << name() << "'."
+	<< Exception::runerror;
     }
   }
 }
@@ -396,42 +466,48 @@ void LesHouchesReader::createParticles() {
 void LesHouchesReader::createBeams() {
 
   if ( !theBeams.first ) {
-    theBeams.first = getParticleData(IDBMUP.first)->produceParticle();
+    theBeams.first = getParticleData(heprup.IDBMUP.first)->produceParticle();
     double m = theBeams.first->mass()/GeV;
     theBeams.first->set5Momentum
-      (Lorentz5Momentum(0.0*GeV, 0.0*GeV, sqrt(sqr(EBMUP.first) - sqr(m))*GeV,
-			EBMUP.first*GeV, m*GeV));
-    IDUP.push_back(IDBMUP.first);
-    ISTUP.push_back(-9);
-    MOTHUP.push_back(make_pair(0, 0));
-    ICOLUP.push_back(make_pair(0, 0));
-    VTIMUP.push_back(0.0);
-    SPINUP.push_back(0.0);
-    MOTHUP[particleIndex(theIncoming.first)].first = IDUP.size();
+      (Lorentz5Momentum(0.0*GeV, 0.0*GeV,
+			sqrt(sqr(heprup.EBMUP.first) - sqr(m))*GeV,
+			heprup.EBMUP.first*GeV, m*GeV));
+    hepeup.IDUP.push_back(heprup.IDBMUP.first);
+    hepeup.ISTUP.push_back(-9);
+    hepeup.MOTHUP.push_back(make_pair(0, 0));
+    hepeup.ICOLUP.push_back(make_pair(0, 0));
+    hepeup.VTIMUP.push_back(0.0);
+    hepeup.SPINUP.push_back(0.0);
+    particleIndex(hepeup.IDUP.size(), theBeams.first);
+    hepeup.MOTHUP[particleIndex(theIncoming.first) - 1].first =
+      hepeup.IDUP.size();
   }
   if ( !theBeams.second ) {
-    theBeams.second = getParticleData(IDBMUP.second)->produceParticle();
+    theBeams.second = getParticleData(heprup.IDBMUP.second)->produceParticle();
     double m = theBeams.second->mass()/GeV;
     theBeams.second->set5Momentum
-      (Lorentz5Momentum(0.0*GeV, 0.0*GeV, -sqrt(sqr(EBMUP.second) - sqr(m))*GeV,
-			EBMUP.second*GeV, m*GeV));
-    IDUP.push_back(IDBMUP.second);
-    ISTUP.push_back(-9);
-    MOTHUP.push_back(make_pair(0, 0));
-    ICOLUP.push_back(make_pair(0, 0));
-    VTIMUP.push_back(0.0);
-    SPINUP.push_back(0.0);
-    MOTHUP[particleIndex(theIncoming.second)].first = IDUP.size();
+      (Lorentz5Momentum(0.0*GeV, 0.0*GeV,
+			-sqrt(sqr(heprup.EBMUP.second) - sqr(m))*GeV,
+			heprup.EBMUP.second*GeV, m*GeV));
+    hepeup.IDUP.push_back(heprup.IDBMUP.second);
+    hepeup.ISTUP.push_back(-9);
+    hepeup.MOTHUP.push_back(make_pair(0, 0));
+    hepeup.ICOLUP.push_back(make_pair(0, 0));
+    hepeup.VTIMUP.push_back(0.0);
+    hepeup.SPINUP.push_back(0.0);
+    particleIndex(hepeup.IDUP.size(), theBeams.second);
+    hepeup.MOTHUP[particleIndex(theIncoming.second) - 1].first =
+      hepeup.IDUP.size();
   }
 }
 
 void LesHouchesReader::connectMothers() {
   const ObjectIndexer<long,Particle> & pi = particleIndex;
-  for ( int i = 0, N = IDUP.size(); i < N; ++i ) {
-    if ( pi(MOTHUP[i].first) )
-      pi(MOTHUP[i].first)->addChild(pi(i + 1));
-    if ( pi(MOTHUP[i].second) )
-      pi(MOTHUP[i].second)->addChild(pi(i + 1));
+  for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
+    if ( pi(hepeup.MOTHUP[i].first) )
+      pi(hepeup.MOTHUP[i].first)->addChild(pi(i + 1));
+    if ( pi(hepeup.MOTHUP[i].second) )
+      pi(hepeup.MOTHUP[i].second)->addChild(pi(i + 1));
   }
 }
 
@@ -443,6 +519,7 @@ void LesHouchesReader::openReadCacheFile() {
   } else {
     theCacheFile = fopen(cacheFileName().c_str(), "r");
   }
+  position = 0;
 }
 
 void LesHouchesReader::openWriteCacheFile() {
@@ -458,90 +535,96 @@ void LesHouchesReader::openWriteCacheFile() {
 void LesHouchesReader::closeCacheFile() {
   if ( compressedCache() ) pclose(cacheFile());
   else fclose(cacheFile());
+  theCacheFile = NULL;
 }
 
 void LesHouchesReader::cacheEvent() const {
   static vector<char> buff;
-  fwrite(&NUP, sizeof(NUP), 1, cacheFile());
-  buff.resize(eventSize(NUP));
+  fwrite(&hepeup.NUP, sizeof(hepeup.NUP), 1, cacheFile());
+  buff.resize(eventSize(hepeup.NUP));
   char * pos = &buff[0];
-  pos = mwrite(pos, IDPRUP);
-  pos = mwrite(pos, XWGTUP);
-  pos = mwrite(pos, XPDWUP);
-  pos = mwrite(pos, SCALUP);
-  pos = mwrite(pos, AQEDUP);
-  pos = mwrite(pos, AQCDUP);
-  pos = mwrite(pos, IDUP[0], NUP);
-  pos = mwrite(pos, ISTUP[0], NUP);
-  pos = mwrite(pos, MOTHUP[0], NUP);
-  pos = mwrite(pos, ICOLUP[0], NUP);
-  for ( int i = 0; i < NUP; ++i ) 
-    pos = mwrite(pos, PUP[i][0], 5);
-  pos = mwrite(pos, VTIMUP[0], NUP);
-  pos = mwrite(pos, SPINUP[0], NUP);
+  pos = mwrite(pos, hepeup.IDPRUP);
+  pos = mwrite(pos, hepeup.XWGTUP);
+  pos = mwrite(pos, hepeup.XPDWUP);
+  pos = mwrite(pos, hepeup.SCALUP);
+  pos = mwrite(pos, hepeup.AQEDUP);
+  pos = mwrite(pos, hepeup.AQCDUP);
+  pos = mwrite(pos, hepeup.IDUP[0], hepeup.NUP);
+  pos = mwrite(pos, hepeup.ISTUP[0], hepeup.NUP);
+  pos = mwrite(pos, hepeup.MOTHUP[0], hepeup.NUP);
+  pos = mwrite(pos, hepeup.ICOLUP[0], hepeup.NUP);
+  for ( int i = 0; i < hepeup.NUP; ++i ) 
+    pos = mwrite(pos, hepeup.PUP[i][0], 5);
+  pos = mwrite(pos, hepeup.VTIMUP[0], hepeup.NUP);
+  pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   fwrite(&buff[0], buff.size(), 1, cacheFile());
 }
 
 bool LesHouchesReader::uncacheEvent() {
   static vector<char> buff;
-  if ( fread(&NUP, sizeof(NUP), 1, cacheFile()) != 1 ) return false;
-  buff.resize(eventSize(NUP));
+  if ( fread(&hepeup.NUP, sizeof(hepeup.NUP), 1, cacheFile()) != 1 )
+    return false;
+  buff.resize(eventSize(hepeup.NUP));
   if ( fread(&buff[0], buff.size(), 1, cacheFile()) != 1 ) return false;
   const char * pos = &buff[0];
-  pos = mread(pos, IDPRUP);
-  pos = mread(pos, XWGTUP);
-  pos = mread(pos, XPDWUP);
-  pos = mread(pos, SCALUP);
-  pos = mread(pos, AQEDUP);
-  pos = mread(pos, AQCDUP);
-  pos = mread(pos, IDUP[0], NUP);
-  pos = mread(pos, ISTUP[0], NUP);
-  pos = mread(pos, MOTHUP[0], NUP);
-  pos = mread(pos, ICOLUP[0], NUP);
-  for ( int i = 0; i < NUP; ++i ) 
-    pos = mread(pos, PUP[i][0], 5);
-  pos = mread(pos, VTIMUP[0], NUP);
-  pos = mread(pos, SPINUP[0], NUP);
+  pos = mread(pos, hepeup.IDPRUP);
+  pos = mread(pos, hepeup.XWGTUP);
+  pos = mread(pos, hepeup.XPDWUP);
+  pos = mread(pos, hepeup.SCALUP);
+  pos = mread(pos, hepeup.AQEDUP);
+  pos = mread(pos, hepeup.AQCDUP);
+  pos = mread(pos, hepeup.IDUP[0], hepeup.NUP);
+  pos = mread(pos, hepeup.ISTUP[0], hepeup.NUP);
+  pos = mread(pos, hepeup.MOTHUP[0], hepeup.NUP);
+  pos = mread(pos, hepeup.ICOLUP[0], hepeup.NUP);
+  for ( int i = 0; i < hepeup.NUP; ++i ) 
+    pos = mread(pos, hepeup.PUP[i][0], 5);
+  pos = mread(pos, hepeup.VTIMUP[0], hepeup.NUP);
+  pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
   return true;
 }
 
 void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
-  os << IDBMUP << EBMUP << PDFGUP << PDFSUP << thePDFA << thePDFB
-     << thePartonExtractor << thePartonBins << theCuts << IDWTUP << NRUP
-     << XSECUP << XERRUP << XMAXUP << LPRUP << NUP << IDPRUP
-     << XWGTUP << XPDWUP << SCALUP << AQEDUP << AQCDUP << IDUP << ISTUP
-     << MOTHUP << ICOLUP << PUP << VTIMUP << SPINUP
-     << ounit(theXSec, picobarn) << ounit(theMaxXSec, picobarn)
-     << theMaxWeight << theNEvents << theMaxScan << isWeighted
-     << hasNegativeWeights << theCacheFileName << doRandomize
-     << theNAttempted << theAttemptMap << theNAccepted << theAcceptMap;
+  os << heprup.IDBMUP << heprup.EBMUP << heprup.PDFGUP << heprup.PDFSUP
+     << heprup.IDWTUP << heprup.NRUP << heprup.XSECUP << heprup.XERRUP
+     << heprup.XMAXUP << heprup.LPRUP << hepeup.NUP << hepeup.IDPRUP
+     << hepeup.XWGTUP << hepeup.XPDWUP << hepeup.SCALUP << hepeup.AQEDUP
+     << hepeup.AQCDUP << hepeup.IDUP << hepeup.ISTUP << hepeup.MOTHUP
+     << hepeup.ICOLUP << hepeup.PUP << hepeup.VTIMUP << hepeup.SPINUP
+     << thePDFA << thePDFB << thePartonExtractor << thePartonBins << theXCombs
+     << theCuts << theNEvents << position << reopened << theMaxScan << isActive
+     << isWeighted << hasNegativeWeights << theCacheFileName << stats
+     << statmap << thePartonBinInstances << theBeams << theIncoming
+     << theOutgoing << theIntermediates << reweights << preweights << preweight;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
-  closeCacheFile();
-  is >> IDBMUP >> EBMUP >> PDFGUP >> PDFSUP >> thePDFA >> thePDFB
-     >> thePartonExtractor >> thePartonBins >> theCuts >> IDWTUP >> NRUP
-     >> XSECUP >> XERRUP >> XMAXUP >> LPRUP >> NUP >> IDPRUP
-     >> XWGTUP >> XPDWUP >> SCALUP >> AQEDUP >> AQCDUP >> IDUP >> ISTUP
-     >> MOTHUP >> ICOLUP >> PUP >> VTIMUP >> SPINUP
-     >> iunit(theXSec, picobarn) >> iunit(theMaxXSec, picobarn)
-     >> theMaxWeight >> theNEvents >> theMaxScan >> isWeighted
-     >> hasNegativeWeights >> theCacheFileName >> doRandomize
-     >> theNAttempted >> theAttemptMap >> theNAccepted >> theAcceptMap;
+  if ( cacheFile() ) closeCacheFile();
+  is >> heprup.IDBMUP >> heprup.EBMUP >> heprup.PDFGUP >> heprup.PDFSUP
+     >> heprup.IDWTUP >> heprup.NRUP >> heprup.XSECUP >> heprup.XERRUP
+     >> heprup.XMAXUP >> heprup.LPRUP >> hepeup.NUP >> hepeup.IDPRUP
+     >> hepeup.XWGTUP >> hepeup.XPDWUP >> hepeup.SCALUP >> hepeup.AQEDUP
+     >> hepeup.AQCDUP >> hepeup.IDUP >> hepeup.ISTUP >> hepeup.MOTHUP
+     >> hepeup.ICOLUP >> hepeup.PUP >> hepeup.VTIMUP >> hepeup.SPINUP
+     >> thePDFA >> thePDFB >> thePartonExtractor >> thePartonBins >> theXCombs
+     >> theCuts >> theNEvents >> position >> reopened >> theMaxScan >> isActive
+     >> isWeighted >> hasNegativeWeights >> theCacheFileName >> stats
+     >> statmap >> thePartonBinInstances >> theBeams >> theIncoming
+     >> theOutgoing >> theIntermediates >> reweights >> preweights >> preweight;
 }
 
 AbstractClassDescription<LesHouchesReader>
 LesHouchesReader::initLesHouchesReader;
 // Definition of the static class description member.
 
-void LesHouchesReader::setBeamA(long id) { IDBMUP.first = id; }
-long LesHouchesReader::getBeamA() const { return IDBMUP.first; }
-void LesHouchesReader::setBeamB(long id) { IDBMUP.second = id; }
-long LesHouchesReader::getBeamB() const { return IDBMUP.second; }
-void LesHouchesReader::setEBeamA(Energy e) { EBMUP.first = e; }
-Energy LesHouchesReader::getEBeamA() const { return EBMUP.first; }
-void LesHouchesReader::setEBeamB(Energy e) { EBMUP.second = e; }
-Energy LesHouchesReader::getEBeamB() const { return EBMUP.second; }
+void LesHouchesReader::setBeamA(long id) { heprup.IDBMUP.first = id; }
+long LesHouchesReader::getBeamA() const { return heprup.IDBMUP.first; }
+void LesHouchesReader::setBeamB(long id) { heprup.IDBMUP.second = id; }
+long LesHouchesReader::getBeamB() const { return heprup.IDBMUP.second; }
+void LesHouchesReader::setEBeamA(Energy e) { heprup.EBMUP.first = e/GeV; }
+Energy LesHouchesReader::getEBeamA() const { return heprup.EBMUP.first*GeV; }
+void LesHouchesReader::setEBeamB(Energy e) { heprup.EBMUP.second = e/GeV; }
+Energy LesHouchesReader::getEBeamB() const { return heprup.EBMUP.second*GeV; }
 
 void LesHouchesReader::Init() {
 
@@ -618,34 +701,32 @@ void LesHouchesReader::Init() {
      &LesHouchesReader::theCacheFileName, "",
      true, false);
 
-  static Switch<LesHouchesReader,bool> interfaceRandomize
-    ("Randomize",
-     "Should the events from this Reader be randomized in order to avoid "
-     "problems if not all events are used.",
-     &LesHouchesReader::doRandomize, false, true, false);
-  static SwitchOption interfaceRandomizeYes
-    (interfaceRandomize,
-     "Yes",
-     "The events from this Reader be randomized.",
-     true);
-  static SwitchOption interfaceRandomizeNo
-    (interfaceRandomize,
-     "No",
-     "The events from this Reader should not be randomized.",
-     false);
-
-
   static Reference<LesHouchesReader,PartonExtractor> interfacePartonExtractor
     ("PartonExtractor",
-     "The PartonExtractor object used to construct remnants.",
-     &LesHouchesReader::thePartonExtractor, true, false, true, false, true);
+     "The PartonExtractor object used to construct remnants. If no object is "
+     "provided the LesHouchesEventHandler object must provide one instead.",
+     &LesHouchesReader::thePartonExtractor, true, false, true, true, false);
 
 
   static Reference<LesHouchesReader,KinematicalCuts> interfaceCuts
     ("Cuts",
      "The KinematicalCuts object to be used for this reader. Note that these "
-     "must not be looser cuts than those used in the actual generation.",
+     "must not be looser cuts than those used in the actual generation. "
+     "If no object is provided the LesHouchesEventHandler object must "
+     "provide one instead.",
      &LesHouchesReader::theCuts, true, false, true, false, true);
+
+  static RefVector<LesHouchesReader,ReweightBase> interfaceReweights
+    ("Reweights",
+     "A list of ThePEG::ReweightBase objects to modify this the weight of "
+     "this reader.",
+     &LesHouchesReader::reweights, 0, false, false, true, false);
+
+  static RefVector<LesHouchesReader,ReweightBase> interfacePreweights
+    ("Preweights",
+     "A list of ThePEG::ReweightBase objects to bias the phase space for this "
+     "reader without influencing the actual cross section.",
+     &LesHouchesReader::preweights, 0, false, false, true, false);
 
 }
 

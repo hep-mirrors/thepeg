@@ -7,7 +7,7 @@
 #include "ReweightMinPT.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
-#include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/StandardXComb.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "ReweightMinPT.tcc"

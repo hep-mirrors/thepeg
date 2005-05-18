@@ -234,7 +234,7 @@ private:
   /**
    * The actual pointer.
    */
-  pointer thePointer;
+  pointer ptr;
 
 };
 
@@ -398,7 +398,7 @@ private:
   /**
    * The actual pointer.
    */
-  const_pointer thePointer;
+  const_pointer ptr;
 
 };
 
@@ -551,7 +551,7 @@ private:
   /**
    * The actual pointer.
    */
-  pointer thePointer;
+  pointer ptr;
 
 };
 
@@ -698,7 +698,7 @@ private:
   /**
    * The actual pointer.
    */
-  const_pointer thePointer;
+  const_pointer ptr;
 
 };
 

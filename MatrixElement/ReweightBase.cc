@@ -11,11 +11,19 @@
 // #include "ReweightBase.tcc"
 #endif
 
-#include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
+
+ReweightBase::ReweightBase() {}
+
+ReweightBase::ReweightBase(const ReweightBase & x)
+  : HandlerBase(x), theLastSHat(x.theLastSHat), theLastInData(x.theLastInData),
+    theLastOutData(x.theLastOutData), theLastInMomentumA(x.theLastInMomentumA),
+    theLastInMomentumB(x.theLastInMomentumB),
+    theLastOutMomentum(x.theLastOutMomentum) {}
 
 ReweightBase::~ReweightBase() {}
 
@@ -49,14 +57,14 @@ void ReweightBase::setKinematics(tPPair in, const PVector & out) {
   setKinematics();
 }
 
-void ReweightBase::setXComb(tXCombPtr xc) {
+void ReweightBase::setXComb(tStdXCombPtr xc) {
   theLastXComb = xc;
   theLastSHat = lastSHat();
 }
 
 void ReweightBase::clearKinematics() {
   theLastSHat = -1.0*GeV;
-  theLastXComb = tXCombPtr();
+  theLastXComb = tStdXCombPtr();
 }
 
 void ReweightBase::persistentOutput(PersistentOStream & os) const {

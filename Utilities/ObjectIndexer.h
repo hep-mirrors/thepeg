@@ -67,6 +67,11 @@ public:
    */
   inline void clear();
 
+  /**
+   * Return true if no associations has been made.
+   */
+  bool empty() const;
+
 private:
 
   /**

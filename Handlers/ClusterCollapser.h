@@ -32,6 +32,9 @@ public:
   /** Declare a pointer to a FlavourGenerator object. */
   typedef Ptr<FlavourGenerator>::pointer FlavGenPtr;
 
+  /** Declare a multimap of singlets indexed by their mass. */
+  typedef multimap<Energy,ColourSinglet> SingletMap;
+
 public:
 
   /** @name Standard constructors and destructors. */
@@ -57,9 +60,9 @@ public:
   /** @name Virtual functions required by the StepHandler class. */
   //@{
   /**
-    * The main function called by the PartialCollisionHandler class to
+    * The main function called by the EventHandler class to
     * perform a step. This function simply calls the collapse() function.
-    * @param ch the PartialCollisionHandler in charge of the Event generation.
+    * @param eh the EventHandler in charge of the Event generation.
     * @param tagged if not empty these are the only particles which should
     * be considered by the StepHandler.
     * @param hint a Hint object with possible information from previously
@@ -69,7 +72,7 @@ public:
     * after this call.
     * @throws Exception if something goes wrong.
     */
-  virtual void handle(PartialCollisionHandler & ch, const tPVector & tagged,
+  virtual void handle(EventHandler & eh, const tPVector & tagged,
 		      const Hint & hint) throw(Veto, Stop, Exception);
   //@}
 
@@ -84,8 +87,7 @@ public:
    * combination of partons. Order them in invariant mass (minus the
    * constituent masses of the partons).
    */
-  virtual multimap<Energy,ColourSinglet>
-  getSinglets(const tPVector & tagged) const;
+  virtual SingletMap getSinglets(const tPVector & tagged) const;
 
   /**
    * If a singlet contains at least one diquark and a junction, split
@@ -131,6 +133,11 @@ public:
    * masses of its partons.
    */
   static Energy mass(const ColourSinglet & cl);
+
+  /**
+   * Insert a ColourSinglet object in a SingletMap.
+   */
+  static void insert(SingletMap & mmap, const ColourSinglet & cl);
 
   /**
    * Pick a random flavour. Default version picks u,d or s with ratio
@@ -228,7 +235,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

@@ -3,7 +3,7 @@
 #define ThePEG_MultiEventGenerator_H
 // This is the declaration of the MultiEventGenerator class.
 
-#include "FullEventGenerator.h"
+#include "EventGenerator.h"
 // #include "MultiEventGenerator.fh"
 // #include "MultiEventGenerator.xh"
 
@@ -11,7 +11,7 @@ namespace ThePEG {
 
 /**
  * The MultiEventGenerator class is derived from the
- * FullEventGenerator class and is capable of making several runs with
+ * EventGenerator class and is capable of making several runs with
  * a pre-defined set of parameter and switch values.
  *
  * With the Command<MultiEventGenerator> interface AddInterface set of
@@ -23,10 +23,10 @@ namespace ThePEG {
  * the event generator will be run once for each possible combination
  * arguments to object interfaces.
  *
- * @see FullEventGenerator
+ * @see EventGenerator
  * 
  */
-class MultiEventGenerator: public FullEventGenerator {
+class MultiEventGenerator: public EventGenerator {
 
 public:
 
@@ -103,9 +103,6 @@ public:
 
 protected:
 
-
-protected:
-
   /** @name Clone Methods. */
   //@{
   /**
@@ -123,9 +120,6 @@ protected:
 
 protected:
 
-
-protected:
-
   /** @name Standard Interfaced functions. */
   //@{
   /**
@@ -134,7 +128,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -218,7 +212,7 @@ private:
 template <>
 struct BaseClassTrait<MultiEventGenerator,1>: public ClassTraitsType {
   /** Typedef of the first base class of MultiEventGenerator. */
-  typedef FullEventGenerator NthBase;
+  typedef EventGenerator NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of the

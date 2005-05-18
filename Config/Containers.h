@@ -90,9 +90,6 @@ ThePEG_DECLARE_MAP(string,EGPtr,GeneratorMap);
 /** A vector of pointers to AnalysisHandler objects. */
 typedef vector<AnaPtr> AnalysisVector;
 
-/** A pair of pointers to ParicleBin objects. */
-typedef pair<PBPtr, PBPtr> PBPair;
-
 /** A pair of pointers to ParticleData objects. */
 typedef pair<PDPtr, PDPtr> PDPair;
 
@@ -120,23 +117,14 @@ typedef pair<tcPPtr, tcPPtr> tcPPair;
 /** An Interval in scale. */
 typedef Interval<Energy2> SInterval;
 
-/** A vector of scales */
-typedef vector<Energy2> SVector;
-
 /** A vector of intervals of scales. */
 typedef vector<SInterval> SIntervalVector;
-
-/** A vector of pairs of pointers to PartonBins. */
-typedef vector<PBPair> PartonPairVec;
 
 /** A vector of pairs of transient pointers to PartonBins. */
 typedef vector<tPDPair> tPartonPairVec;
 
 /** A pair of transient pointers to ColourLine objects. */
 typedef pair<tColinePtr,tColinePtr> tColinePair;
-
-/** A vector of pointers to PartonBin objects. */
-typedef vector<PBPtr> PartonVector;
 
 /** A set of pointers to DecayMode objects. */
 ThePEG_DECLARE_SET(tDMPtr,DecaySet);
@@ -149,9 +137,6 @@ typedef vector<Energy> EnergyVector;
 
 /** A vector of pointers to EventInfoBase objects. */
 typedef vector<EIPtr> EIVector;
-
-/** A vector of pointers to MEBase objects. */
-typedef vector<MEPtr> MEVector;
 
 /** A vector of doubles. */
 typedef vector<double> DVector;

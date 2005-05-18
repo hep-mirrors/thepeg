@@ -6,6 +6,7 @@
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
+#include "ThePEG/Handlers/StandardXComb.fh"
 // #include "ReweightBase.fh"
 // #include "ReweightBase.xh"
 
@@ -30,7 +31,7 @@ namespace ThePEG {
  * @see EventHandler
  * @see SubProcessHandler
  */
-class ReweightBase: public HandlerBase, public LastXCombInfo<> {
+class ReweightBase: public HandlerBase, public LastXCombInfo<StandardXComb> {
 
 public:
 
@@ -39,12 +40,12 @@ public:
   /**
    * Default constructor.
    */
-  inline ReweightBase();
+  ReweightBase();
 
   /**
    * Copy-constructor.
    */
-  inline ReweightBase(const ReweightBase &);
+  ReweightBase(const ReweightBase &);
 
   /**
    * Destructor.
@@ -85,7 +86,7 @@ public:
    * Set the types and momenta of the incoming and outgoing partons to
    * be used in the reweighting.
    */
-  void setXComb(tXCombPtr);
+  void setXComb(tStdXCombPtr);
 
   /**
    * This method does nothing in this base class. Derived classes may
@@ -166,7 +167,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

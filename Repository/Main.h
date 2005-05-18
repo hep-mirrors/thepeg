@@ -12,11 +12,10 @@ namespace ThePEG {
 
 /**
  * This is a base class for classes implementing a main steering
- * routine for running an EventGenerator, in case the standard 'go()'
- * function in the EventGenerator is not enough. An example is a
- * PartialEventGenerator where the class deriving from Main specifies
- * an initial set of partons which should be cascaded and hadronized
- * etc.
+ * routine for running an EventGenerator, in case the standard
+ * 'go()' function in the EventGenerator is not enough. An example
+ * is a EventGenerator where the class deriving from Main specifies an
+ * initial set of partons which should be cascaded and hadronized etc.
  *
  * The derived class will be dynamically loaded by the standard
  * <code>runThePEG</code> program and the static Init() function will

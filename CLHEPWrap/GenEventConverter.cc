@@ -37,14 +37,14 @@ GenEventConverter::GenEventConverter(const Event & ev) {
   geneve->set_event_number(ev.number());
   geneve->weights().push_back(ev.weight());
 
-  tcCollHdlPtr collh;
-  if ( ev.primaryCollision() && ( collh =
-       dynamic_ptr_cast<tcCollHdlPtr>(ev.primaryCollision()->handler()) ) ) {
+  tcEHPtr eh;
+  if ( ev.primaryCollision() && ( eh =
+       dynamic_ptr_cast<tcEHPtr>(ev.primaryCollision()->handler()) ) ) {
 
     // Get general event info if present.
-    geneve->set_event_scale(sqrt(collh->lastScale()));
-    geneve->set_alphaQCD(collh->SM().alphaS(collh->lastScale()));
-    geneve->set_alphaQED(collh->SM().alphaEM(collh->lastScale()));
+    geneve->set_event_scale(sqrt(eh->lastScale()));
+    geneve->set_alphaQCD(eh->SM().alphaS(eh->lastScale()));
+    geneve->set_alphaQED(eh->SM().alphaEM(eh->lastScale()));
   }
 
   // Extract all particles.

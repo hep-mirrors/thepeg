@@ -30,13 +30,18 @@ void ACDCSampler::initialize() {
   for ( int i = 0, N = eventHandler()->nBins(); i < N; ++i )
     if ( theSampler.addFunction(eventHandler()->nDim(i), eventHandler()) )
       nozero = true;
-  if ( !nozero ) throw EventInitNoXSec(*eventHandler());
+  if ( !nozero ) throw EventInitNoXSec()
+    << "The event handler '" << eventHandler()->name()
+    << "' cannot be initialized because the cross-section for the selected "
+    << "sub-processes was zero." << Exception::maybeabort;
   theSampler.clear();
 }
 
 double ACDCSampler::generate() {
-  if ( !theSampler.generate() )
-    throw EventLoopException(*eventHandler());
+  if ( !theSampler.generate() ) throw EventLoopException()
+    << "The maximum number of attempts per event (" << eventHandler()->maxLoop()
+    << ") in event handler '" << eventHandler()->name() << "' was exceeded."
+    << Exception::maybeabort;
   lastPoint() = theSampler.lastPoint();
   return 1.0;
 }
@@ -96,7 +101,10 @@ void ACDCSampler::doinitrun() {
   for ( int i = 0, N = eventHandler()->nBins(); i < N; ++i )
     if ( theSampler.addFunction(eventHandler()->nDim(i), eventHandler()) )
       nozero = true;
-  if ( !nozero ) throw EventInitNoXSec(*eventHandler());
+  if ( !nozero ) throw EventInitNoXSec()
+    << "The event handler '" << eventHandler()->name()
+    << "' cannot be initialized because the cross-section for the selected "
+    << "sub-processes was zero." << Exception::maybeabort;
 }
 
 void ACDCSampler::persistentOutput(PersistentOStream & os) const {

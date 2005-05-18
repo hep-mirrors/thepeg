@@ -5,7 +5,7 @@
 //
 
 #include "StandardXComb.h"
-#include "ThePEG/Handlers/CollisionHandler.h"
+#include "ThePEG/Handlers/StandardEventHandler.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
 #include "ThePEG/Handlers/KinematicalCuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
@@ -31,16 +31,19 @@
 using namespace ThePEG;
 
 StandardXComb::StandardXComb()
-  : XComb(), isMirror(false), theNDim(0),
+  : XComb(), theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
+    isMirror(false), theNDim(0),
     partonDims(make_pair(0, 0)), theLastDiagramIndex(0) {}
 
 StandardXComb::
 StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
-      tCollHdlPtr newCollisionHandler, tSubHdlPtr newSubProcessHandler,
+      tStdEHPtr newEventHandler, tSubHdlPtr newSubProcessHandler,
       tPExtrPtr newExtractor, const PBPair & newPartonBins, tKinCutPtr newCuts,
       tMEPtr newME, const DiagramVector & newDiagrams, bool mir)
-  : XComb(newMaxEnergy, inc, newCollisionHandler, newSubProcessHandler,
-	  newExtractor, newPartonBins, newCuts, newME),
+  : XComb(newMaxEnergy, inc, newEventHandler,
+	  newExtractor, newPartonBins, newCuts),
+    theSubProcessHandler(newSubProcessHandler), theME(newME),
+    theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
     theDiagrams(newDiagrams), isMirror(mir),  theLastDiagramIndex(0) {
   partonDims = pExtractor()->nDims(partonBins());
   theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
@@ -48,9 +51,30 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
 }
 
 StandardXComb::StandardXComb(const StandardXComb & x)
-  : XComb(x), theDiagrams(x.theDiagrams),
+  : XComb(x), theSubProcessHandler(x.theSubProcessHandler), theME(x.theME),
+    theNAttempted(x.theNAttempted), theNAccepted(x.theNAccepted),
+    theSumWeight(x.theSumWeight), theDiagrams(x.theDiagrams),
     isMirror(x.isMirror), theNDim(x.theNDim), partonDims(x.partonDims),
+    theMEMomenta(x.theMEMomenta), theMEPartons(x.theMEPartons),
+    theMEPartonData(x.theMEPartonData),
     theLastDiagramIndex(x.theLastDiagramIndex), theMEInfo(x.theMEInfo) {}
+
+StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts, DiagramIndex indx)
+  : theME(me), theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
+    isMirror(false), theNDim(0), partonDims(make_pair(0, 0)), theMEPartons(parts),
+    theLastDiagramIndex(0) {
+  
+  for ( int i = 0, N = parts.size(); i < N; ++i ) {
+    theMEPartonData.push_back(parts[i]->dataPtr());
+    theMEMomenta.push_back(parts[i]->momentum());
+  }
+  lastSHat((meMomenta()[0] + meMomenta()[1]).m2());
+  string tag = me->diagrams()[indx]->getTag();
+  for ( int i = 0, N = me->diagrams().size(); i < N; ++i )
+    if ( me->diagrams()[i]->getTag() == tag )
+      theDiagrams.push_back(me->diagrams()[i]);
+  createPartonBinInstances();
+}
 
 StandardXComb::~StandardXComb() {}
 
@@ -182,13 +206,19 @@ void StandardXComb::Init() {}
 
 void StandardXComb::persistentOutput(PersistentOStream & os) const {
 
-  os << theDiagrams << isMirror << theNDim
-     << partonDims << theLastDiagramIndex << theMEInfo;
+  os << theSubProcessHandler << theME
+     << theNAttempted << theNAccepted << theSumWeight
+     << theDiagrams << isMirror << theNDim << partonDims
+     << theLastDiagramIndex << theMEInfo << theMEPartons << theMEPartonData
+     << theLastDiagramIndex << theMEInfo;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
-  is >> theDiagrams >> isMirror >> theNDim
-     >> partonDims >> theLastDiagramIndex >> theMEInfo;
+  is >> theSubProcessHandler >> theME
+     >> theNAttempted >> theNAccepted >> theSumWeight
+     >> theDiagrams >> isMirror >> theNDim >> partonDims
+     >> theLastDiagramIndex >> theMEInfo >> theMEPartons >> theMEPartonData
+     >> theLastDiagramIndex >> theMEInfo;
 }
 
 ClassDescription<StandardXComb> StandardXComb::initStandardXComb;

@@ -6,14 +6,6 @@
 
 namespace ThePEG {
 
-inline ReweightBase::ReweightBase() {}
-
-inline ReweightBase::ReweightBase(const ReweightBase & x)
-  : HandlerBase(x), theLastSHat(x.theLastSHat), theLastInData(x.theLastInData),
-    theLastOutData(x.theLastOutData), theLastInMomentumA(x.theLastInMomentumA),
-    theLastInMomentumB(x.theLastInMomentumB),
-    theLastOutMomentum(x.theLastOutMomentum) {}
-
 inline void ReweightBase::setKinematics() {}
 
 inline void ReweightBase::setKinematics(const SubProcess & sub) {

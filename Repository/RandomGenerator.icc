@@ -11,6 +11,12 @@ inline double RandomGenerator::rnd() {
   return *nextNumber++;
 }
 
+inline RandomGenerator::RndVector RandomGenerator::rndvec(int n) {
+  RndVector ret(n);
+  for ( int i = 0; i < n; ++i ) ret[i] = rnd();
+  return ret;
+}
+
 inline double RandomGenerator::operator()() {
   return rnd();
 }

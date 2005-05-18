@@ -65,4 +65,9 @@ inline void ObjectIndexer<IntT,ObjT>::clear() {
   objectIndex.clear();
 }
 
+template <typename IntT, typename ObjT>
+inline bool ObjectIndexer<IntT,ObjT>::empty() const {
+  return indexObject.empty() && objectIndex.empty();
+}
+
 }

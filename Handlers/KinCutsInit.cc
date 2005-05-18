@@ -20,6 +20,9 @@ using namespace ThePEG;
 
 void KinematicalCuts::Init() {
 
+  typedef double (ThePEG::KinematicalCuts::*IGFN)() const;
+  typedef void (ThePEG::KinematicalCuts::*ISFN)(double);
+
   static ClassDocumentation<KinematicalCuts> documentation
     ("There is no documentation for the ThePEG::KinematicalCuts class");
 
@@ -102,7 +105,7 @@ void KinematicalCuts::Init() {
      "checked by the event handler.",
      &KinematicalCuts::theYStarMin,
      -10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
-     false, false, true, 0, 0, 0, &KinematicalCuts::yStarMax);
+     false, false, true, (ISFN)0, 0, 0, &KinematicalCuts::yStarMax);
 
   static Parameter<KinematicalCuts,double> interfaceYStarMax
     ("Collision/YStarMiax",
@@ -113,7 +116,7 @@ void KinematicalCuts::Init() {
      "checked by the event handler.",
      &KinematicalCuts::theYStarMax,
      10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
-     false, false, true, 0, 0, &KinematicalCuts::yStarMin, 0);
+     false, false, true, (ISFN)0, 0, &KinematicalCuts::yStarMin, 0);
 
   static Parameter<KinematicalCuts,double> interfaceMaxYMin
     ("Collision/MaxYMin",
@@ -129,7 +132,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMaxYMin,
      -10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, &KinematicalCuts::minYMin, &KinematicalCuts::maxYMax);
+     (ISFN)0, 0, &KinematicalCuts::minYMin, &KinematicalCuts::maxYMax);
 
   static Parameter<KinematicalCuts,double> interfaceMaxYMax
     ("Collision/MaxYMax",
@@ -145,7 +148,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMaxYMax,
      10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, &KinematicalCuts::maxYMinMax, 0);
+     (ISFN)0, 0, &KinematicalCuts::maxYMinMax, 0);
 
   static Parameter<KinematicalCuts,double> interfaceMinYMin
     ("Collision/MinYMin",
@@ -161,7 +164,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMinYMin,
      -10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, 0, &KinematicalCuts::minYMaxMin);
+     (ISFN)0, 0, 0, &KinematicalCuts::minYMaxMin);
 
   static Parameter<KinematicalCuts,double> interfaceMinYMax
     ("Collision/MinYMax",
@@ -177,7 +180,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMinYMax,
      10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, &KinematicalCuts::minYMin, &KinematicalCuts::maxYMax);
+     (ISFN)0, 0, &KinematicalCuts::minYMin, &KinematicalCuts::maxYMax);
 
   static Parameter<KinematicalCuts,double> interfaceMaxEtaMin
     ("Collision/MaxEtaMin",
@@ -193,7 +196,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMaxEtaMin,
      -10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, &KinematicalCuts::minEtaMin, &KinematicalCuts::maxEtaMax);
+     (ISFN)0, 0, &KinematicalCuts::minEtaMin, &KinematicalCuts::maxEtaMax);
 
   static Parameter<KinematicalCuts,double> interfaceMaxEtaMax
     ("Collision/MaxEtaMax",
@@ -209,7 +212,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMaxEtaMax,
      10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, &KinematicalCuts::maxEtaMinMax, 0);
+     (ISFN)0, 0, &KinematicalCuts::maxEtaMinMax, 0);
 
   static Parameter<KinematicalCuts,double> interfaceMinEtaMin
     ("Collision/MinEtaMin",
@@ -225,7 +228,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMinEtaMin,
      -10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, 0, &KinematicalCuts::minEtaMaxMin);
+     (ISFN)0, 0, 0, &KinematicalCuts::minEtaMaxMin);
 
   static Parameter<KinematicalCuts,double> interfaceMinEtaMax
     ("Collision/MinEtaMax",
@@ -241,7 +244,7 @@ void KinematicalCuts::Init() {
      &KinematicalCuts::theMinEtaMax,
      10.0, -Constants::MaxRapidity, Constants::MaxRapidity,
      false, false, true,
-     0, 0, &KinematicalCuts::minEtaMin, &KinematicalCuts::maxEtaMax);
+     (ISFN)0, 0, &KinematicalCuts::minEtaMin, &KinematicalCuts::maxEtaMax);
 
   static Parameter<KinematicalCuts,double> interfaceMaxCTMin
     ("Collision/MaxCosThetaMin",
@@ -257,7 +260,7 @@ void KinematicalCuts::Init() {
      "Decay handler performing the resonance decay to check the limit.",
      &KinematicalCuts::theMaxCTMin,
      -1.0, -1.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::minCTMin, &KinematicalCuts::maxCTMax);
+     (ISFN)0, 0, &KinematicalCuts::minCTMin, &KinematicalCuts::maxCTMax);
 
   static Parameter<KinematicalCuts,double> interfaceMaxCTMax
     ("Collision/MaxCosThetaMax",
@@ -272,7 +275,7 @@ void KinematicalCuts::Init() {
      "Decay handler performing the resonance decay to check the limit.",
      &KinematicalCuts::theMaxCTMax,
      1.0, -1.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::maxCTMinMax, 0);
+     (ISFN)0, 0, &KinematicalCuts::maxCTMinMax, 0);
 
   static Parameter<KinematicalCuts,double> interfaceMinCTMin
     ("Collision/MinCosThetaMin",
@@ -287,7 +290,7 @@ void KinematicalCuts::Init() {
      "Decay handler performing the resonance decay to check the limit.",
      &KinematicalCuts::theMinCTMin,
      -1.0, -1.0, 1.0, false, false, true,
-     0, 0, 0, &KinematicalCuts::minCTMaxMin);
+     (ISFN)0, 0, 0, &KinematicalCuts::minCTMaxMin);
 
   static Parameter<KinematicalCuts,double> interfaceMinCTMax
     ("Collision/MinCosThetaMax",
@@ -302,7 +305,7 @@ void KinematicalCuts::Init() {
      "Decay handler performing the resonance decay to check the limit.",
      &KinematicalCuts::theMinCTMax,
      1.0, -1.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::minCTMin, &KinematicalCuts::maxCTMax);
+     (ISFN)0, 0, &KinematicalCuts::minCTMin, &KinematicalCuts::maxCTMax);
 
   static Parameter<KinematicalCuts,double> interfaceX1Min
     ("Collision/X1Min",
@@ -311,7 +314,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theX1Min,
      0.0, 0.0, 1.0, false, false, true,
-     0, 0, 0, &KinematicalCuts::x1Max);
+     (ISFN)0, 0, 0, &KinematicalCuts::x1Max);
 
   static Parameter<KinematicalCuts,double> interfaceX1Max
     ("Collision/X1Max",
@@ -320,7 +323,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theX1Max,
      1.0, 0.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::x1Min, 0);
+     (ISFN)0, (IGFN)0, &KinematicalCuts::x1Min, (IGFN)0);
 
   static Parameter<KinematicalCuts,double> interfaceX2Min
     ("Collision/X2Min",
@@ -329,7 +332,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theX2Min,
      0.0, 0.0, 1.0, false, false, true,
-     0, 0, 0, &KinematicalCuts::x2Max);
+     (ISFN)0, 0, 0, &KinematicalCuts::x2Max);
 
   static Parameter<KinematicalCuts,double> interfaceX2Max
     ("Collision/X2Max",
@@ -338,7 +341,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theX2Max,
      1.0, 0.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::x2Min, 0);
+     (ISFN)0, 0, &KinematicalCuts::x2Min, 0);
 
   static Parameter<KinematicalCuts,double> interfaceXFMin
     ("Collision/XFMin",
@@ -346,7 +349,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler",
      &KinematicalCuts::theXFMin,
      -1.0, -1.0, 1.0, false, false, true,
-     0, 0, 0, &KinematicalCuts::xFMax);
+     (ISFN)0, 0, 0, &KinematicalCuts::xFMax);
 
   static Parameter<KinematicalCuts,double> interfaceXFMax
     ("Collision/XFMax",
@@ -354,7 +357,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theXFMin,
      1.0, -1.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::xFMin, 0);
+     (ISFN)0, 0, &KinematicalCuts::xFMin, 0);
 
   static Parameter<KinematicalCuts,double> interfaceCTHMin
     ("SubProcess/CosThetaHatMin",
@@ -364,7 +367,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theCTHMin,
      -1.0, -1.0, 1.0, false, false, true,
-     0, 0, 0, &KinematicalCuts::cTHMax);
+     (ISFN)0, 0, 0, &KinematicalCuts::cTHMax);
 
   static Parameter<KinematicalCuts,double> interfaceCTHMax
     ("SubProcess/CosThetaHatMax",
@@ -374,7 +377,7 @@ void KinematicalCuts::Init() {
      "This limit is automatically checked by the event handler.",
      &KinematicalCuts::theCTHMax,
      1.0, -1.0, 1.0, false, false, true,
-     0, 0, &KinematicalCuts::cTHMin, 0);
+     (ISFN)0, 0, &KinematicalCuts::cTHMin, 0);
 
   static Parameter<KinematicalCuts,Energy2> interfaceTHatMin
     ("SubProcess/THatMin",
@@ -497,7 +500,7 @@ void KinematicalCuts::Init() {
      "DIS/UseDISCuts is on.",
      &KinematicalCuts::theDISLepton1AngleMin,
      0.0, 0.0, Constants::pi, false, false, true,
-     0, 0, 0, &KinematicalCuts::DISLepton1AngleMax);
+     (ISFN)0, 0, 0, &KinematicalCuts::DISLepton1AngleMax);
 
   static Parameter<KinematicalCuts,double> interfaceDISLepton1AngleMax
     ("DIS/Lepton1AngleMax",
@@ -507,7 +510,7 @@ void KinematicalCuts::Init() {
      "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISLepton1AngleMax,
      Constants::pi, 0.0, Constants::pi, false, false, true,
-     0, 0, &KinematicalCuts::DISLepton1AngleMin, 0);
+     (ISFN)0, 0, &KinematicalCuts::DISLepton1AngleMin, 0);
 
   static Parameter<KinematicalCuts,double> interfaceDISLepton2AngleMin
     ("DIS/Lepton2AngleMin",
@@ -517,7 +520,7 @@ void KinematicalCuts::Init() {
      "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISLepton2AngleMin,
      0.0, 0.0, Constants::pi, false, false, true,
-     0, 0, 0, &KinematicalCuts::DISLepton2AngleMax);
+     (ISFN)0, 0, 0, &KinematicalCuts::DISLepton2AngleMax);
 
   static Parameter<KinematicalCuts,double> interfaceDISLepton2AngleMax
     ("DIS/Lepton2AngleMax",
@@ -527,7 +530,7 @@ void KinematicalCuts::Init() {
      "<interface>DIS/UseDISCuts</interface> is on.",
      &KinematicalCuts::theDISLepton2AngleMax,
      Constants::pi, 0.0, Constants::pi, false, false, true,
-     0, 0, &KinematicalCuts::DISLepton2AngleMin, 0);
+     (ISFN)0, 0, &KinematicalCuts::DISLepton2AngleMin, 0);
 
   static Parameter<KinematicalCuts,Energy2> interfaceDISQ21Min
     ("DIS/Q21Min",
@@ -609,7 +612,7 @@ void KinematicalCuts::Init() {
     ("LeptonMatcher",
      "A matcher object to be used to identify leptons.",
      &KinematicalCuts::theLeptonMatcher,
-     true, true, true, false);
+     true, false, true, false);
 
 }
 

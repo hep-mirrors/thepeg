@@ -6,16 +6,8 @@
 
 namespace ThePEG {
 
-inline const CollisionHandler & XComb::collisionHandler() const {
-  return *theCollisionHandler;
-}
-
-inline tcSubHdlPtr XComb::subProcessHandler() const {
-  return theSubProcessHandler;
-}
-
-inline tMEPtr XComb::matrixElement() const {
-  return theME;
+inline const EventHandler & XComb::eventHandler() const {
+  return *theEventHandler;
 }
 
 inline const cPDPair & XComb::particles() const {
@@ -40,39 +32,6 @@ inline tPExtrPtr XComb::pExtractor() const {
 
 inline tKinCutPtr XComb::cuts() const {
   return theCuts;
-}
-
-inline long XComb::nAccepted() const {
-  return theNAccepted;
-}
-
-inline double XComb::sumWeight() const {
-  return theSumWeight;
-}
-
-inline long XComb::nAttempted() const {
-  return theNAttempted;
-}
-
-inline void XComb::attempt() {
-  ++theNAttempted;
-}
-
-inline void XComb::accept() {
-  ++theNAccepted;
-}
-
-inline void XComb::sumWeight(double w) {
-  theSumWeight += w;;
-}
-
-inline void XComb::unAccept() {
-  --theNAccepted;
-}
-
-inline void XComb::reset() {
-  theNAttempted = theNAccepted = 0;
-  theSumWeight = 0.0;
 }
 
 inline const PPair & XComb::lastParticles() const {
@@ -140,67 +99,11 @@ inline void XComb::lastScale(Energy2 Q2) {
 }
 
 inline bool XComb::empty() const {
-  return !theCollisionHandler;
+  return !theEventHandler;
 }
 
 inline Energy XComb::maxEnergy() const {
   return theMaxEnergy;
-}
-
-inline const XComb::DiagramVector & XComb::diagrams() const {
-  return theDiagrams;
-}
-
-inline bool XComb::mirror() const {
-  return isMirror;
-}
-
-inline int XComb::nDim() const {
-  return theNDim;
-}
-
-inline const vector<Lorentz5Momentum> & XComb::meMomenta() const {
-  return theMEMomenta;
-}
-
-inline vector<Lorentz5Momentum> & XComb::meMomenta() {
-  return theMEMomenta;
-}
-
-inline const tPVector & XComb::mePartons() const {
-  return theMEPartons;
-}
-
-inline tPVector & XComb::mePartons() {
-  return theMEPartons;
-}
-
-inline const cPDVector & XComb::mePartonData() const {
-  return theMEPartonData;
-}
-
-inline cPDVector & XComb::mePartonData() {
-  return theMEPartonData;
-}
-
-inline void XComb::lastDiagramIndex(XComb::DiagramIndex i) {
-  theLastDiagramIndex = i;
-}
-
-inline XComb::DiagramIndex XComb::lastDiagramIndex() const {
-  return theLastDiagramIndex;
-}
-
-inline tcDiagPtr XComb::lastDiagram() const {
-  return diagrams()[lastDiagramIndex()];
-}
-
-inline const DVector & XComb::meInfo() const {
-  return theMEInfo;
-}
-
-inline void XComb::meInfo(const DVector & info) {
-  theMEInfo = info;
 }
 
 inline void XComb::lastS(Energy2 s) {

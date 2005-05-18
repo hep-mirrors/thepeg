@@ -8,7 +8,8 @@
 #include "ThePEG/Handlers/EventHandler.h"
 #include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
-#include "ThePEG/Utilities/VSelector.h"
+#include "ThePEG/Utilities/CompSelector.h"
+#include "ThePEG/Utilities/XSecStat.h"
 
 namespace ThePEG {
 
@@ -24,12 +25,7 @@ namespace ThePEG {
  * requested by LesHouchesEventHandler, one of the readers are chosen,
  * an event is read in and then passed to the different
  * <code>StepHandler</code> defined in the underlying
- * PartialCollisionHandler class.
- *
- * As it stands a number of functions in the EventHandler and
- * CollisionHandler base classes are overridden and the functionality
- * of these base classes is not used at all. This is expected to
- * change in the future.
+ * EventHandler class.
  *
  * @see \ref LesHouchesEventHandlerInterfaces "The interfaces"
  * defined for LesHouchesEventHandler.
@@ -46,7 +42,7 @@ public:
   /**
    * A selector of readers.
    */
-  typedef VSelector<int,CrossSection> ReaderSelector;
+  typedef CompSelector<int,CrossSection> ReaderSelector;
 
   /**
    * Enumerate the weighting options.
@@ -80,11 +76,11 @@ public:
 
 public:
 
+  /** @name Initialization and finalization functions. */
+  //@{
   /**
    * Initialize this event handler and all related objects needed to
-   * generate events. Note that the base class version of this
-   * function is not called as it stands and EventHandler and
-   * CollisionHandler sub-objects are not properly initialized.
+   * generate events.
    */
   virtual void initialize();
 
@@ -93,6 +89,7 @@ public:
    * and stuff.
    */
   virtual void statistics(ostream &) const;
+  //@}
 
   /** @name Functions used for the actual generation */
   //@{
@@ -102,12 +99,55 @@ public:
   virtual EventPtr generateEvent();
 
   /**
+   * Create the Event and Collision objects. Used by the
+   * generateEvent() function.
+   */
+  virtual tCollPtr performCollision();
+
+  /**
    * Continue generating an event if the generation has been stopped
    * before finishing.
    */
   virtual EventPtr continueEvent();
   //@}
 
+  /** @name Functions to manipulate statistics. */
+  //@{
+  /**
+   * An event has been selected. Signal that an event has been
+   * selected with the given \a weight. If unit weights are requested,
+   * the event will be accepted with that weight. This also takes care
+   * of the statistics collection of the selected reader object.
+   */
+  void select(double weight);
+
+  /**
+   * Accept the current event, taking care of the statistics
+   * collection of the corresponding reader objects.
+   */
+  void accept();
+
+  /**
+   * Reject the current event, taking care of the statistics
+   * collection of the corresponding reader objects.
+   */
+  void reject();
+
+  /**
+   * Increase the overestimated cross section for the selected reader.
+   */
+  void increaseMaxXSec(CrossSection maxxsec);
+
+  /**
+   * Skip some events. To ensure a reader file is scanned an even
+   * number of times, skip a number of events for the selected reader.
+   */
+  void skipEvents();
+
+  //@}
+
+  /** @name Simple access functions. */
+  //@{
   /**
    * The way weights are to be treated.
    */
@@ -119,15 +159,21 @@ public:
   inline const ReaderVector & readers() const;
 
   /**
-   * The number of attempted events so far.
-   */
-  inline long NAttempted() const;
-
-  /**
    * The selector to choose readers according to their overestimated
    * cross section.
    */
   inline const ReaderSelector & selector() const;
+
+  /**
+   * The currently selected reader object.
+   */
+  inline tLesHouchesReaderPtr currentReader() const;
+
+  /**
+   * Set the currently selected reader object.
+   */
+  inline void currentReader(tLesHouchesReaderPtr);
+  //@}
 
 public:
 
@@ -182,7 +228,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -198,7 +244,7 @@ protected:
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish();
+  virtual void dofinish();
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -223,28 +269,9 @@ protected:
 protected:
 
   /**
-   * Initialize groups of <code>StepHandler</code>s. This overrides
-   * the method in the PartialCollisionHandler, and the
-   * <code>StepHandler</code>s given in the currently selected
-   * SubProcess take precedence over the ones specified in the
-   * PartialCollisionHandler sub class.
-   */
-  virtual void initGroups();
-
-  /**
    * Access the list of readers.
    */
   inline ReaderVector & readers();
-
-  /**
-   * The number of attempted events so far.
-   */
-  inline void NAttempted(long);
-
-  /**
-   * The number of attempted events so far.
-   */
-  inline void newAttempt();
 
   /**
    * The selector to choose readers according to their overestimated
@@ -252,17 +279,17 @@ protected:
    */
   inline ReaderSelector & selector();
 
+  /**
+   * Collect statistics for this reader.
+   */
+  XSecStat stats;
+
 private:
 
   /**
    * The list of readers.
    */
   ReaderVector theReaders;
-
-  /**
-   * The number of attempted events so far.
-   */
-  long theNAttempted;
 
   /**
    * The selector to choose readers according to their overestimated
@@ -274,6 +301,11 @@ private:
    * The way weights are to be treated.
    */
   WeightOpt theWeightOption;
+
+  /**
+   * The currently selected reader object.
+   */
+  tLesHouchesReaderPtr theCurrentReader;
 
 public:
 
@@ -322,7 +354,7 @@ struct ClassTraits<LesHouchesEventHandler>
   /** Return the name of the shared library be loaded to get access to
    *  the LesHouchesEventHandler class and every other class it uses
    *  (except the base class). */
-  static string library() { return "LesHouchesEventHandler.so"; }
+  static string library() { return "libThePEGLesHouches.so"; }
 };
 
 }

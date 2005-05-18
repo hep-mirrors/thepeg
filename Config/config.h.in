@@ -11,6 +11,11 @@
 /* Define this if the <sstream> header is available */
 #undef ThePEG_HAS_SSTREAM
 
+/* Define this if standard function atanh is available on this
+   platform. This should always be the case, but under CygWin it is
+   sometimes it is not found. */
+#undef ThePEG_HAS_ATANH
+
 /* Define this if XPG4-UNIX standard function expm1 is available on
    this platform */
 #undef ThePEG_HAS_EXPM1

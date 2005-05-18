@@ -75,8 +75,8 @@ void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
   if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
-  if ( ParameterBase::limited() &&
-       ( newValue < tminimum(i) || newValue > tmaximum(i) ) )
+  if ( ( ParameterBase::lowerLimit() && newValue < tminimum(i) ) ||
+       ( ParameterBase::upperLimit() && newValue > tmaximum(i) ) )
     throw ParExSetLimit(*this, i, newValue);
   Type oldValue = tget(i);
   if ( theSetFn ) {
@@ -194,10 +194,12 @@ void Parameter<T,Type>::doxygenDescription(ostream & os) const {
   os << "<b>Default value:</b> ";
   putUnit(os, theDef);
   if ( theDefFn ) os << " (May be changed by member function.)";
-  if ( ParameterBase::limited() ) {
+  if ( ParameterBase::lowerLimit() ) {
     os << "<br>\n<b>Minimum value:</b> ";
     putUnit(os, theMin);
     if ( theMinFn ) os << " (May be changed by member function.)";
+  }
+  if ( ParameterBase::upperLimit() ) {
     os << "<br>\n<b>Maximum value:</b> ";
     putUnit(os, theMax);
     if ( theMaxFn ) os << " (May be changed by member function.)";

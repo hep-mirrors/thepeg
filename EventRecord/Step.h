@@ -29,8 +29,6 @@ class Step: public EventRecordBase {
 
 public:
 
-  /** PartialCollisionHandler is a friend of most Event classes. */
-  friend class PartialCollisionHandler;
   /** Most of the Event classes are friends with each other. */
   friend class Collision;
   /** Most of the Event classes are friends with each other. */

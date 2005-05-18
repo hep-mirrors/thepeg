@@ -6,6 +6,14 @@
 
 namespace ThePEG {
 
+inline IBPtr EventGenerator::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr EventGenerator::fullclone() const {
+  return new_ptr(*this);
+}
+
 inline tSMPtr EventGenerator::standardModel() const {
   return theStandardModel;
 }
@@ -116,12 +124,12 @@ inline const ParticleMap & EventGenerator::particles() const {
   return theParticles;
 }
 
-inline tPartCollHdlPtr EventGenerator::currentCollisionHandler() const {
-  return theCurrentCollisionHandler;
+inline tEHPtr EventGenerator::currentEventHandler() const {
+  return theCurrentEventHandler;
 }
 
-inline void EventGenerator::currentCollisionHandler(tPartCollHdlPtr ch) {
-  theCurrentCollisionHandler = ch;
+inline void EventGenerator::currentEventHandler(tEHPtr eh) {
+  theCurrentEventHandler = eh;
 }
 
 inline tStepHdlPtr EventGenerator::currentStepHandler() const {
@@ -130,6 +138,18 @@ inline tStepHdlPtr EventGenerator::currentStepHandler() const {
 
 inline void EventGenerator::currentStepHandler(tStepHdlPtr sh) {
   theCurrentStepHandler = sh;
+}
+
+inline tEHPtr EventGenerator::eventHandler() const {
+  return theEventHandler;
+}
+
+inline AnalysisVector & EventGenerator::analysisHandlers() {
+  return theAnalysisHandlers;
+}
+
+inline tEvtManipPtr EventGenerator::manipulator() const {
+  return theEventManipulator;
 }
 
 inline void EventGenerator::doupdate() throw(UpdateException) {

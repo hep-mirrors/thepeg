@@ -8,6 +8,7 @@
 #include "InterfaceBase.xh"
 #include "ThePEG/Utilities/Named.h"
 #include "ThePEG/Utilities/ClassTraits.h"
+#include "Interface.h"
 
 namespace ThePEG {
 

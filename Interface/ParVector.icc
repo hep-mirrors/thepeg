@@ -9,20 +9,28 @@ namespace ThePEG {
 inline ParVectorBase::
 ParVectorBase(string newName, string newDescription,
 	      string newClassName, const type_info & newTypeInfo, int newSize,
-	      bool depSafe, bool readonly, bool islimited)
+	      bool depSafe, bool readonly, int limits)
   : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
-		  readonly), isLimited(islimited), theSize(newSize) {}
+		  readonly), limit(limits), theSize(newSize) {}
 
 inline bool ParVectorBase::limited() const {
-  return isLimited;
+  return limit != Interface::nolimits;
+}
+
+inline bool ParVectorBase::upperLimit() const {
+  return limit == Interface::limited || limit == Interface::upperlim;
+}
+
+inline bool ParVectorBase::lowerLimit() const {
+  return limit == Interface::limited || limit == Interface::lowerlim;
 }
 
 inline void ParVectorBase::setLimited() {
-  isLimited = true;
+  limit = Interface::limited;
 }
 
 inline void ParVectorBase::setUnlimited() {
-  isLimited = false;
+  limit = Interface::nolimits;
 }
 
 inline int ParVectorBase::size() const {
@@ -41,9 +49,9 @@ template <typename Type>
 inline ParVectorTBase<Type>::
 ParVectorTBase(string newName, string newDescription, string newClassName,
 	       const type_info & newTypeInfo, Type newUnit, int newSize,
-	       bool depSafe, bool readonly, bool islimited)
+	       bool depSafe, bool readonly, int limits)
   : ParVectorBase(newName, newDescription, newClassName, newTypeInfo, newSize,
-		  depSafe, readonly, islimited), theUnit(newUnit) {}
+		  depSafe, readonly, limits), theUnit(newUnit) {}
 
 inline ParVectorBase::~ParVectorBase() {}
 

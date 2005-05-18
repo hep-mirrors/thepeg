@@ -32,8 +32,7 @@ namespace ThePEG {
  *
  *
  * @see StepHandler
- * @see PartialCollisionHandler
- * @see CollisionHandler
+ * @see EventHandler
  * @see Particle
  * @see Event
  * @see Step

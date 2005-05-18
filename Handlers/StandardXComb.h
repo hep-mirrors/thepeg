@@ -3,6 +3,7 @@
 #define ThePEG_StandardXComb_H
 // This is the declaration of the StandardXComb class.
 
+#include "ThePEG/Config/ThePEG.h"
 #include "SubProcessHandler.fh"
 #include "ThePEG/PDF/PartonExtractor.fh"
 #include "ThePEG/PDF/PartonBin.h"
@@ -13,8 +14,10 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/Handlers/XComb.h"
-// #include "StandardXComb.fh"
-// #include "StandardXComb.xh"
+#include "ThePEG/Handlers/StandardEventHandler.h"
+#include "ThePEG/MatrixElement/MEBase.h"
+#include "ThePEG/Handlers/SubProcessHandler.fh"
+#include "StandardXComb.fh"
 
 namespace ThePEG {
 
@@ -59,7 +62,7 @@ public:
    * Standard constructor.
    */
   StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
-	tCollHdlPtr newCollisionHandler,tSubHdlPtr newSubProcessHandler,
+	tStdEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
 	tPExtrPtr newExtractor,	const PBPair & newPartonBins,
 	tKinCutPtr newCuts, tMEPtr newME, const DiagramVector & newDiagrams,
 	bool mir);
@@ -79,6 +82,25 @@ public:
    */
   ~StandardXComb();
 
+  /**
+   * Constructor used by MEBase to create a temporary object to store info.
+   */
+  StandardXComb(tMEPtr me, const tPVector & parts, DiagramIndex i);
+
+  //@}
+
+  /** @name Access the assigned objects used in the generation. */
+  //@{
+  /**
+   * Return a pointer to the corresponding sub-process handler. May be
+   * null if the standard process generation in ThePEG was not used.
+   */
+  inline tcSubHdlPtr subProcessHandler() const;
+
+  /**
+   * The matrix element to be used.
+   */
+  inline tMEPtr matrixElement() const;
   //@}
 
   /** @name Main functions used for the generation. */
@@ -107,6 +129,49 @@ public:
   void construct(tSubProPtr);
   //@}
 
+  /** @name Functions used for collecting statistics. */
+  //@{
+  /**
+   * The number of attempted generations so far.
+   */
+  inline long nAccepted() const;
+
+  /**
+   * The number of accepted generations so far.
+   */
+  inline long nAttempted() const;
+
+  /**
+   * The sum of accumulated weights.
+   */
+  inline double sumWeight() const;
+
+  /**
+   * Increase the number of attempted generations.
+   */
+  inline void attempt();
+
+  /**
+   * Accept the last generated phase-space point.
+   */
+  inline void accept();
+
+  /**
+   * Sum weight of the last generated phase-space point.
+   */
+  inline void sumWeight(double w);
+
+  /**
+   * The last generated phase-space point was vetoed.
+   */
+  inline void unAccept();
+
+  /**
+   * Reset statistics.
+   */
+  inline void reset();
+  //@}
+
   /** @name Access information used by the MEBase object. */
   //@{
   /**
@@ -119,6 +184,26 @@ public:
    * be mirrored before used to create an actual sub-rocess.
    */
   inline bool mirror() const;
+
+  /**
+   * Return the momenta of the partons to be used by the matrix
+   * element object, in the order specified by the TreeDiagram objects
+   * given by the matrix element.
+   */
+  inline const vector<Lorentz5Momentum> & meMomenta() const;
+
+  /**
+   * Return the partons to be used by the matrix element object, in the order
+   * specified by the TreeDiagram objects given by the matrix element.
+   */
+  inline const tPVector & mePartons() const;
+
+  /**
+   * Return the parton types to be used by the matrix element object,
+   * in the order specified by the TreeDiagram objects given by the
+   * matrix element.
+   */
+  inline const cPDVector & mePartonData() const;
 
   /**
    * Return the last selected diagram.
@@ -146,6 +231,27 @@ public:
   //@}
 
 protected:
+
+  /**
+   * Return the momenta of the partons to be used by the matrix
+   * element object, in the order specified by the TreeDiagram objects
+   * given by the matrix element.
+   */
+  inline vector<Lorentz5Momentum> & meMomenta();
+
+  /**
+   * Return the parton types to be used by the matrix element object,
+   * in the order specified by the TreeDiagram objects given by the
+   * matrix element.
+   */
+  inline cPDVector & mePartonData();
+
+  /**
+   * Return the partons to be used by the matrix element object, in
+   * the order specified by the TreeDiagram objects given by the
+   * matrix element.
+   */
+  inline tPVector & mePartons();
 
   /**
    * Set the last selected diagram.
@@ -178,6 +284,31 @@ public:
 private:
 
   /**
+   * The corresponding sub-process handler
+   */
+  SubHdlPtr theSubProcessHandler;
+
+  /**
+   * The matrix element to be used.
+   */
+  tMEPtr theME;
+
+  /**
+   * The number of attempted generations so far.
+   */
+  long theNAttempted;
+
+  /**
+   * The number of accepted generations so far.
+   */
+  long theNAccepted;
+
+  /**
+   * The summed weights of the generations so far..
+   */
+  double theSumWeight;
+
+  /**
    * The diagrams used by the matrix element.
    */
   DiagramVector theDiagrams;
@@ -199,6 +330,26 @@ private:
    * incoming partons.
    */
   pair<int,int> partonDims;
+
+  /**
+   * The momenta of the partons to be used by the matrix element
+   * object, in the order specified by the TreeDiagram objects given
+   * by the matrix element.
+   */
+  vector<Lorentz5Momentum> theMEMomenta;
+
+  /**
+   * The partons to be used by the matrix element object, in the order
+   * specified by the TreeDiagram objects given by the matrix element.
+   */
+  tPVector theMEPartons;
+
+  /**
+   * The parton types to be used by the matrix element object, in the
+   * order specified by the TreeDiagram objects given by the matrix
+   * element.
+   */
+  cPDVector theMEPartonData;
 
   /**
    * The last selected tree diagram.

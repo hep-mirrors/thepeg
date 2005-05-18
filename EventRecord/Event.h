@@ -30,10 +30,10 @@ class Event : public EventRecordBase, public Named {
 
 public:
 
-  /** PartialCollisionHandler is a friend of most Event classes. */
-  friend class PartialCollisionHandler;
-  /** CollisionHandler is a friend. */
-  friend class CollisionHandler;
+  /**
+   * EventHandler is a friend of most Event classes.
+   */
+  friend class EventHandler;
   /** Most of the Event classes are friends with each other. */
   friend class Collision;
 
@@ -214,8 +214,6 @@ public:
    */
   inline void weight(double);
 
-protected:
-
   /**
    * Set event info.
    */
@@ -231,6 +229,8 @@ protected:
    * Set the primary collision in this Event.
    */
   void primaryCollision(tCollPtr c);
+
+protected:
 
   /**
    * Add a range of particles to this Collision.

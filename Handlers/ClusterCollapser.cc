@@ -15,7 +15,7 @@
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Repository/EventGenerator.h"
-#include "ThePEG/Handlers/PartialCollisionHandler.h"
+#include "ThePEG/Handlers/EventHandler.h"
 #include "ThePEG/Utilities/EnumIO.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -30,7 +30,7 @@ using namespace ThePEG;
 ClusterCollapser::~ClusterCollapser() {}
 
 void ClusterCollapser::
-handle(PartialCollisionHandler & ch, const tPVector & tagged,
+handle(EventHandler & eh, const tPVector & tagged,
        const Hint & hint) throw(Veto, Stop, Exception) {
   collapse(tagged, newStep());
 }
@@ -38,7 +38,7 @@ handle(PartialCollisionHandler & ch, const tPVector & tagged,
 vector<ColourSinglet> ClusterCollapser::
 collapse(tPVector tagged, tStepPtr newstep) {
   vector<ColourSinglet> newTagged;
-  multimap<Energy,ColourSinglet> clusters = getSinglets(tagged);
+  SingletMap clusters = getSinglets(tagged);
 
   // Go through all clusters below the cut.
   while ( !clusters.empty() && clusters.begin()->first < cut() ) {
@@ -46,17 +46,12 @@ collapse(tPVector tagged, tStepPtr newstep) {
 
     // If a cluster contains too many junctions, split them into
     // several singlets.
-    while ( cl.nPieces() > 3 ) {
-      ColourSinglet cs = cl.splitInternal();
-      clusters.insert(make_pair(mass(cs), ColourSinglet()))->second.swap(cs);
-    }
+    while ( cl.nPieces() > 3 ) insert(clusters, cl.splitInternal());
 
     // If a cluster contains a junktion and a diquark, split the
     // diquark and make two simple strings.
-    while ( diQuarkJunction(cl) ) {
-      ColourSinglet cs = splitDiQuarkJunction(cl, newstep);
-      clusters.insert(make_pair(mass(cs), ColourSinglet()))->second.swap(cs);
-    }
+    while ( diQuarkJunction(cl) )
+      insert(clusters, splitDiQuarkJunction(cl, newstep));
 
     // First try to collapse into two particles.
     int ntry = nTry2();
@@ -70,10 +65,7 @@ collapse(tPVector tagged, tStepPtr newstep) {
     if ( ntry == 0 ) {
 
       // If this was a di-diquark cluster, split it into two.
-      if ( diDiQuark(cl) ) {
-	ColourSinglet cs = splitDiDiQuark(cl, newstep);
-	clusters.insert(make_pair(mass(cs), ColourSinglet()))->second.swap(cs);
-      }
+      if ( diDiQuark(cl) ) insert(clusters, splitDiDiQuark(cl, newstep));
 
       collapse(newstep, cl, tagged);
     }
@@ -97,7 +89,7 @@ collapse(tPVector tagged, tStepPtr newstep) {
       ColourSinglet & cl = clusters.begin()->second;
       for ( int i = 0, N = cl.partons().size(); i < N; ++i )
 	cl.partons()[i] = cl.partons()[i]->final();
-      newClusters.insert(make_pair(mass(cl), ColourSinglet()))->second.swap(cl);
+      insert(newClusters, cl);
       clusters.erase(clusters.begin());
     }
     clusters.swap(newClusters);
@@ -122,6 +114,10 @@ Energy ClusterCollapser::mass(const ColourSinglet & cl) {
     sump += cl.parton(i)->momentum();
   }
   return sump.m() - summ;
+}
+
+void ClusterCollapser::insert(SingletMap & mmap, const ColourSinglet & cl) {
+  mmap.insert(make_pair(mass(cl), cl));
 }
 
 bool ClusterCollapser::diDiQuark(const ColourSinglet & cs) {
@@ -230,18 +226,16 @@ splitDiQuarkJunction(ColourSinglet & cs, tStepPtr newStep) const {
 
 }
 
-multimap<Energy,ColourSinglet>
+ClusterCollapser::SingletMap
 ClusterCollapser::getSinglets(const tPVector & pv) const {
-  multimap<Energy,ColourSinglet> ret;
+  SingletMap ret;
 
   // Get initial singlets
   vector<ColourSinglet> clus = ColourSinglet::getSinglets(pv.begin(), pv.end());
 
   // Return the singlets ordered in mass.
   for ( int i = 0, N = clus.size(); i < N; ++i )
-    if ( !clus[i].partons().empty() )
-      ret.insert(make_pair(mass(clus[i]), ColourSinglet()))->
-	second.swap(clus[i]);
+    if ( !clus[i].partons().empty() ) insert(ret, clus[i]);
   return ret;
 }
 

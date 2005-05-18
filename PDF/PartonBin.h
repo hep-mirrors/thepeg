@@ -10,13 +10,12 @@
 #include "ThePEG/PDF/PDFCuts.h"
 #include "ThePEG/CLHEPWrap/Transverse.h"
 #include "ThePEG/EventRecord/Particle.h"
-// #include "PartonBin.fh"
-// #include "PartonBin.xh"
+#include "PartonBin.fh"
 
 namespace ThePEG {
 
 /**
- * The PartonBin class is used py the PartonExtractor class to store
+ * The PartonBin class is used by the PartonExtractor class to store
  * information about the extraction of a parton from a
  * particle. Several PartonBin objects can be used to specify a whole
  * chain of partons extracted from particles extracted from other

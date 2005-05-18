@@ -1,0 +1,104 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the XSecStat class.
+//
+
+namespace ThePEG {
+
+inline XSecStat::XSecStat()
+  : theMaxXSec(0.0*picobarn), theAttempts(0), theAccepted(0),
+    theSumWeights(0.0), theSumWeights2(0.0), lastWeight(0.0) {}
+
+inline XSecStat::XSecStat(const XSecStat & x)
+  : theMaxXSec(x.theMaxXSec), theAttempts(x.theAttempts),
+    theAccepted(x.theAccepted), theSumWeights(x.theSumWeights),
+    theSumWeights2(x.theSumWeights2), lastWeight(0.0) {}
+
+inline XSecStat::XSecStat(CrossSection xsecmax)
+  : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0),
+    theSumWeights(0.0), theSumWeights2(0.0), lastWeight(0.0) {}
+
+inline XSecStat::~XSecStat() {}
+
+inline XSecStat & XSecStat::operator=(const XSecStat & x) {
+  theMaxXSec = x.theMaxXSec;
+  theAttempts = x.theAttempts;
+  theAccepted = x.theAccepted;
+  theSumWeights = x.theSumWeights;
+  theSumWeights2 = x.theSumWeights2;
+  lastWeight = 0.0;
+  return *this;
+}
+
+inline XSecStat & XSecStat::operator+=(const XSecStat & x) {
+  theMaxXSec += x.theMaxXSec;
+  theAttempts += x.theAttempts;
+  theAccepted += x.theAccepted;
+  theSumWeights += x.theSumWeights;
+  theSumWeights2 += x.theSumWeights2;
+  lastWeight = 0.0;
+  return *this;
+}
+
+inline void XSecStat::accept() {
+  ++theAccepted;
+}
+
+inline void XSecStat::select(double weight) {
+  ++theAttempts;
+  theSumWeights += weight;
+  theSumWeights2 += sqr(weight);
+  lastWeight = weight;
+}
+
+inline void XSecStat::reject() {
+  theSumWeights -= lastWeight;
+  theSumWeights2 -= sqr(lastWeight);
+  --theAccepted;
+  lastWeight = 0.0;
+}
+
+inline void XSecStat::reset() {
+  theAttempts = theAccepted = 0;
+  theSumWeights = theSumWeights2 = lastWeight = 0.0;
+}
+
+inline CrossSection XSecStat::xSec() const {
+  return attempts()? maxXSec()*sumWeights()/attempts(): 0.0*picobarn;
+}
+
+inline CrossSection XSecStat::xSecErr() const {
+  return attempts()? maxXSec()*sqrt(sumWeights2())/attempts(): 0.0*picobarn;
+}
+
+inline CrossSection XSecStat::maxXSec() const {
+  return theMaxXSec;
+}
+
+inline void XSecStat::maxXSec(CrossSection x) {
+  theMaxXSec = x;
+}
+
+inline long XSecStat::attempts() const {
+  return theAttempts;
+}
+
+inline long XSecStat::accepted() const {
+  return theAccepted;
+}
+
+inline double XSecStat::sumWeights() const {
+  return theSumWeights;
+}
+
+inline double XSecStat::sumWeights2() const {
+  return theSumWeights;
+}
+
+inline XSecStat operator+(const XSecStat & x1, const XSecStat & x2) {
+  XSecStat x = x1;
+  return x += x2;
+}
+
+}

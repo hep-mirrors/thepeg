@@ -165,8 +165,8 @@ public:
    * corresponding class..
    */
   inline ClassDocumentation(string newDocumentation,
-			 string newModelDescription = "",
-			 string newModelReferences = "");
+			    string newModelDescription = "",
+			    string newModelReferences = "");
 
   /**
    * Destructor.

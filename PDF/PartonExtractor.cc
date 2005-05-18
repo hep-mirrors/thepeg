@@ -22,6 +22,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "PartonExtractor.tcc"
@@ -247,6 +248,128 @@ generate(PartonBinInstance & pb, const double * r,
   return true;
 }
 
+void PartonExtractor::
+constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
+  LorentzMomentum k1 = pbins.first->parton()->momentum();
+  LorentzMomentum k2 = pbins.second->parton()->momentum();
+  LorentzMomentum Ph = k1 + k2;
+  LorentzMomentum Phold = Ph;
+
+  bool pickside = rndbool();
+  if ( pickside && pbins.first->incoming() ) {
+    Direction<0> dir(true);
+    constructRemnants(*pbins.first, Ph, k2);
+    construct(*pbins.first, step);
+  }
+  if ( pbins.second->incoming() ) {
+    Direction<0> dir(false);
+    constructRemnants(*pbins.second, Ph, pbins.first->parton()->momentum());
+    construct(*pbins.second, step);
+  }
+  if ( (!pickside) && pbins.first->incoming() ) {
+    Direction<0> dir(true);
+    constructRemnants(*pbins.first, Ph, pbins.second->parton()->momentum());
+    construct(*pbins.first, step);
+  }
+  LorentzRotation rot = Utilities::transformToMomentum(Phold, Ph);
+  Utilities::transform(sub->outgoing().begin(), sub->outgoing().end(), rot);
+  Utilities::transform(sub->intermediates().begin(),
+ 		       sub->intermediates().end(), rot);
+}
+
+void PartonExtractor::
+constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
+		  const LorentzMomentum & k) const {
+  DVector r = UseRandom::rndvec(pb.bin()->remDim());
+  pb.remnantHandler()->generate(pb, &r[0], pb.scale(),
+ 				pb.particle()->momentum());
+  pb.remnantHandler()->createRemnants(pb);
+  LorentzMomentum Pr = Utilities::sumMomentum(pb.remnants());
+  transformRemnants(Ph, Pr, k, pb.particle()->momentum());
+  pb.parton()->setMomentum(pb.particle()->momentum() - Pr);
+  Utilities::setMomentum(pb.remnants().begin(),
+			 pb.remnants().end(),
+			 (const LorentzMomentum &)Pr);
+  if ( !pb.incoming()->incoming() ) return;
+
+  // We get here if we need to construct remnants recursively.
+  LorentzMomentum Phnew = Ph + Pr;
+  constructRemnants(*pb.incoming(), Phnew, k);
+  LorentzRotation rot = Utilities::transformToMomentum(Ph + Pr, Phnew);
+  Utilities::transform(pb.remnants().begin(), pb.remnants().end(), rot);
+  Ph.transform(rot);
+}
+
+LorentzRotation PartonExtractor::
+boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
+	 bool side1, bool side2) const {
+  if ( !side1 && !side2 ) return LorentzRotation();
+
+  LorentzMomentum P1 = bins.first->parton()->momentum();
+  LorentzMomentum Pr1;
+  if ( side1 ) {
+    P1 = bins.first->particle()->momentum();
+    Pr1 = Utilities::sumMomentum(bins.first->remnants());
+  }
+  LorentzMomentum P2 = bins.second->parton()->momentum();
+  LorentzMomentum Pr2;
+  if ( side2 ) {
+    P2 = bins.second->particle()->momentum();
+    Pr2 = Utilities::sumMomentum(bins.second->remnants());
+  }
+  LorentzMomentum Ph = k1 + k2;
+  LorentzMomentum Phold = Ph;
+
+  bool otherside = rndbool();
+  if ( otherside && side2 ){
+    Direction<0> dir(false);
+    transformRemnants(Ph, Pr2, k1, P2);
+    k2 = P2 - Pr2;
+  }
+  if ( side1 ){
+    Direction<0> dir(true);
+    transformRemnants(Ph, Pr1, k2, P1);
+    k1 = P1 - Pr1;
+  }
+  if ( side2 && !otherside ) {
+    Direction<0> dir(false);
+    transformRemnants(Ph, Pr2, k1, P2);
+    k2 = P2 - Pr2;
+  }
+  Utilities::setMomentum(bins.first->remnants().begin(),
+			 bins.first->remnants().end(),
+			 (const LorentzMomentum &)Pr1);
+  bins.second->parton()->setMomentum(k1);
+  Utilities::setMomentum(bins.second->remnants().begin(),
+			 bins.second->remnants().end(),
+			 (const LorentzMomentum &)Pr2);
+  bins.second->parton()->setMomentum(k2);
+
+  return Utilities::transformToMomentum(Phold, Ph);
+
+}
+
+void PartonExtractor::
+transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
+		  const LorentzMomentum & k, const LorentzMomentum & P) const {
+  TransverseMomentum pt = Pr;
+  try {
+    if ( Direction<0>::pos() )
+      SimplePhaseSpace::CMS(Pr, Ph, (P + k).m2(), 1.0, 0.0);
+    else
+      SimplePhaseSpace::CMS(Ph, Pr, (k + P).m2(), 1.0, 0.0);
+    LorentzRotation rpt;
+    if ( sqr(Pr.z()) > 0.0*GeV2 ) rpt.rotateY(asin(pt.pt()/Pr.z()));
+    rpt.rotateZ(pt.phi());
+    rpt = Direction<0>::pos()?
+      Utilities::getBoostFromCM(make_pair(P, k))*rpt:
+      Utilities::getBoostFromCM(make_pair(k, P))*rpt;
+    Ph.transform(rpt);
+    Pr.transform(rpt);
+  } catch ( ImpossibleKinematics ) {}
+}
+
+
 double PartonExtractor::fullFn(const PBIPair & pbins, Energy2 scale) {
   pbins.first->scale(scale);
   pbins.second->scale(scale);
@@ -261,7 +384,7 @@ double PartonExtractor::fullFn(const PartonBinInstance & pb) {
 }
 
 void PartonExtractor::
-construct(const PBIPair & pbins, tStepPtr step) {
+construct(const PBIPair & pbins, tStepPtr step) const {
   Direction<0> dir(true);
   construct(*pbins.first, step);
   dir.reverse();
@@ -269,11 +392,9 @@ construct(const PBIPair & pbins, tStepPtr step) {
 }
 
 void PartonExtractor::
-construct(PartonBinInstance & pb, tStepPtr step) {
+construct(PartonBinInstance & pb, tStepPtr step) const {
   if ( !pb.incoming() ) return;
-  Energy2 m2 = pb.particle()->momentum().m2();
-  LorentzMomentum p = lightCone(sqrt(abs(m2)), m2/sqrt(abs(m2)));
-  pb.remnantHandler()->createRemnants(pb);
+  if ( pb.remnants().empty() ) pb.remnantHandler()->createRemnants(pb);
   tPVector rem(pb.remnants().begin(), pb.remnants().end());
   if ( !step->addDecayProduct(pb.particle(), rem.begin(), rem.end(), false) );
   colourConnect(pb.particle(), pb.parton(), rem);

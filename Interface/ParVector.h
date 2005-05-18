@@ -62,13 +62,14 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
    */
   inline ParVectorBase(string newName, string newDescription,
 		       string newClassName,
 		       const type_info & newTypeInfo, int newSize,
-		       bool depSafe, bool readonly, bool islimited);
+		       bool depSafe, bool readonly, int limits);
 
   /**
    * Destructor.
@@ -146,10 +147,19 @@ public:
     throw(InterfaceException) = 0;
 
   /**
-   * Get the flag indicating if there are limits associated with the
-   * variables.
+   * True if there the variable is limited from above and below.
    */
   inline bool limited() const;
+
+  /**
+   * True if there the variable is limited from abovew.
+   */
+  inline bool upperLimit() const;
+
+  /**
+   * True if there the variable is limited from  below.
+   */
+  inline bool lowerLimit() const;
 
   /**
    * Set a flag indicating that there are limits associated with the
@@ -187,7 +197,7 @@ private:
    * True if there are limits associated with the
    * variables.
    */
-  bool isLimited;
+  int limit;
 
   /**
    * The size of the container being interfaced.
@@ -251,13 +261,14 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
    */
   inline ParVectorTBase(string newName, string newDescription,
 			string newClassName, const type_info & newTypeInfo,
 			Type newUnit, int newSize, bool depSafe,
-			bool readonly, bool islimited);
+			bool readonly, int limits);
 
   /**
    * Destructor.
@@ -514,8 +525,8 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and below.
    *
    * @param newSetFn optional pointer to member function for the 'set'
    * action.
@@ -544,13 +555,13 @@ public:
   inline ParVector(string newName, string newDescription,
 		   Member newMember, int newSize, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
-		   bool islimited = true, SetFn newSetFn = 0,
+		   bool limits = true, SetFn newSetFn = 0,
 		   InsFn newInsFn = 0, DelFn newDelFn = 0, GetFn newGetFn = 0,
 		   DefFn newDefFn = 0, DefFn newMinFn = 0, DefFn newMaxFn = 0,
 		   StringGetFn newStringGetFn = 0)
     : ParVectorTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
 			   typeid(T), Type(), newSize, depSafe, readonly,
-			   islimited),
+			   limits),
       theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
       theSetFn(newSetFn), theInsFn(newInsFn), theDelFn(newDelFn),
       theGetFn(newGetFn), theDefFn(newDefFn), theMinFn(newMinFn),
@@ -590,8 +601,8 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    *
-   * @param islimited if this is set to true, the values of the
-   * parameters are limited from above and below.
+   * @param limits determines if the values of the parameters are
+   * limited from above and below.
    *
    * @param newSetFn optional pointer to member function for the 'set'
    * action.
@@ -617,18 +628,160 @@ public:
   inline ParVector(string newName, string newDescription, Member newMember,
 		   Type newUnit, int newSize, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
-		   bool islimited = true, SetFn newSetFn = 0,
+		   bool limits = true, SetFn newSetFn = 0,
 		   InsFn newInsFn = 0, DelFn newDelFn = 0, GetFn newGetFn = 0,
 		   DefFn newDefFn = 0, DefFn newMinFn = 0, DefFn newMaxFn = 0,
 		   StringGetFn newStringGetFn = 0)
     : ParVectorTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
 			   typeid(T), newUnit, newSize, depSafe, readonly,
-			   islimited),
+			   limits),
       theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
       theSetFn(newSetFn), theInsFn(newInsFn), theDelFn(newDelFn),
       theGetFn(newGetFn), theDefFn(newDefFn), theMinFn(newMinFn),
       theMaxFn(newMaxFn), theStringGetFn(newStringGetFn) {}
 
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to a Member which is a TypeVector. May
+   * be null, in which case the pointers to member functions must be
+   * specified.
+   *
+   * @param newSize the size of the container or -1 if varying.
+   *
+   * @param newDef the default value of the corresponding parameters.
+   *
+   * @param newMin the minimum value of the corresponding parameters.
+   *
+   * @param newMax the maximum value of the corresponding parameters.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
+   *
+   * @param newSetFn optional pointer to member function for the 'set'
+   * action.
+   *
+   * @param newInsFn optional pointer to member function for the
+   * 'insert' action.
+   *
+   * @param newDelFn optional pointer to member function for the
+   * 'erase' action.
+   *
+   * @param newDefFn optional pointer to member function for the
+   * 'default' action.
+   *
+   * @param newGetFn optional pointer to member function for the
+   * 'get' action.
+   *
+   * @param newMinFn optional pointer to member function for the
+   * 'minimum' action.
+   *
+   * @param newMaxFn optional pointer to member function for the
+   * 'maximum' action.
+   *
+   * @param newStringGetFn optional pointer to member function for the
+   * 'get' action.
+   */
+  inline ParVector(string newName, string newDescription,
+		   Member newMember, int newSize, Type newDef, Type newMin,
+		   Type newMax, bool depSafe = false, bool readonly = false,
+		   int limits = Interface::limited, SetFn newSetFn = 0,
+		   InsFn newInsFn = 0, DelFn newDelFn = 0, GetFn newGetFn = 0,
+		   DefFn newDefFn = 0, DefFn newMinFn = 0, DefFn newMaxFn = 0,
+		   StringGetFn newStringGetFn = 0)
+    : ParVectorTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
+			   typeid(T), Type(), newSize, depSafe, readonly,
+			   limits),
+      theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
+      theSetFn(newSetFn), theInsFn(newInsFn), theDelFn(newDelFn),
+      theGetFn(newGetFn), theDefFn(newDefFn), theMinFn(newMinFn),
+      theMaxFn(newMaxFn), theStringGetFn(newStringGetFn) {}
+
+  /**
+   * Standard constructor.
+   *
+   * @param newName the name of the interface, may only contain
+   * letters [a-zA-z0-9_].
+   *
+   * @param newDescription a brief description of the interface.
+   *
+   * @param newMember a pointer to a Member which is a TypeVector. May
+   * be null, in which case the pointers to member functions must be
+   * specified.
+   *
+   * @param newUnit the unit assumed when a number is read or written
+   * to a stream.
+   *
+   * @param newSize the size of the container or -1 if varying.
+   *
+   * @param newDef the default value of the corresponding parameters.
+   *
+   * @param newGetFn optional pointer to member function for the
+   * 'get' action.
+   *
+   * @param newMin the minimum value of the corresponding parameters.
+   *
+   * @param newMax the maximum value of the corresponding parameters.
+   *
+   * @param depSafe set to true if calls to this interface for one
+   * object does not influence other objects.
+   *
+   * @param readonly if this is set true the interface will not be
+   * able to manipulate objects of the corresponding class, but will
+   * still be able to access information.
+   *
+   * @param limits determines if the values of the parameters are
+   * limited from above and/or below. The possible values are given by
+   * Interface::Limits.
+   *
+   * @param newSetFn optional pointer to member function for the 'set'
+   * action.
+   *
+   * @param newInsFn optional pointer to member function for the
+   * 'insert' action.
+   *
+   * @param newDelFn optional pointer to member function for the
+   * 'erase' action.
+   *
+   * @param newDefFn optional pointer to member function for the
+   * 'default' action.
+   *
+   * @param newMinFn optional pointer to member function for the
+   * 'minimum' action.
+   *
+   * @param newMaxFn optional pointer to member function for the
+   * 'maximum' action.
+   *
+   * @param newStringGetFn optional pointer to member function for the
+   * 'get' action.
+   */
+  inline ParVector(string newName, string newDescription, Member newMember,
+		   Type newUnit, int newSize, Type newDef, Type newMin,
+		   Type newMax, bool depSafe = false, bool readonly = false,
+		   int limits = Interface::limited, SetFn newSetFn = 0,
+		   InsFn newInsFn = 0, DelFn newDelFn = 0, GetFn newGetFn = 0,
+		   DefFn newDefFn = 0, DefFn newMinFn = 0, DefFn newMaxFn = 0,
+		   StringGetFn newStringGetFn = 0)
+    : ParVectorTBase<Type>(newName, newDescription, ClassTraits<T>::className(),
+			   typeid(T), newUnit, newSize, depSafe, readonly,
+			   limits),
+      theMember(newMember), theDef(newDef), theMin(newMin), theMax(newMax),
+      theSetFn(newSetFn), theInsFn(newInsFn), theDelFn(newDelFn),
+      theGetFn(newGetFn), theDefFn(newDefFn), theMinFn(newMinFn),
+      theMaxFn(newMaxFn), theStringGetFn(newStringGetFn) {}
 
   /**
    * Set the \a i'th element of a container of member variables of \a

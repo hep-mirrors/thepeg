@@ -11,8 +11,8 @@ inline StepHandler::StepHandler() {}
 inline StepHandler::StepHandler(const StepHandler & x)
   : HandlerBase(x) {}
 
-inline tPartCollHdlPtr StepHandler::collisionHandler() const {
-  return theCollisionHandler;
+inline tEHPtr StepHandler::eventHandler() const {
+  return theEventHandler;
 }
 
 inline tStepPtr StepHandler::newStep() {

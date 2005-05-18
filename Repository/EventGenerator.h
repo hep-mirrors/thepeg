@@ -10,6 +10,7 @@
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/CurrentGenerator.fh"
 #include "ThePEG/Utilities/ClassDescription.h"
+#include "ThePEG/Handlers/EventHandler.fh"
 #include <fstream>
 #include "EventGenerator.xh"
 
@@ -29,18 +30,19 @@ namespace ThePEG {
  * error messages to, etc.
  *
  * There are three main external member functions:<BR>
- * go() generates a specified number of events and * exits.<BR>
+ * go() generates a specified number of events and exits.<BR>
  *
  * shoot() generates one Event and returns it.<BR>
  *
- * partialEvent() takes an initial Step as argument and generates
- * subsequent steps defined in the generator.<BR>
+ * generateEvent() takes an initial Step or a partially generated
+ * Event as argument and generates subsequent steps defined in the
+ * generator.<BR>
  *
- * doShoot() is a pure virtual function called by shoot() and needs to
- * be implemented the sub-classes.<BR>
+ * doShoot() is a virtual function called by shoot() and may be
+ * overridden in sub-classes.<BR>
  *
- * doPartialEvent() is a pure virtual function called by
- * partialEvent() and needs to be implemented the sub-classes.
+ * doGenrateEvent() is a virtual function called by generateEvent() and
+ * may to be overridden in sub-classes.
  *
  * @see \ref EventGeneratorInterfaces "The interfaces"
  * defined for EventGenerator.
@@ -101,14 +103,14 @@ public:
   inline tStrategyPtr strategy() const;
 
   /**
-   * Get the currently active (partial) collision handler.
+   * Get the currently active EventHandler.
    */
-  inline tPartCollHdlPtr currentCollisionHandler() const;
+  inline tEHPtr currentEventHandler() const;
 
   /**
-   * Set the currently active (partial) collision handler.
+   * Set the currently active EventHandler.
    */
-  inline void currentCollisionHandler(tPartCollHdlPtr);
+  inline void currentEventHandler(tEHPtr);
 
   /**
    * Get the currently active step handler.
@@ -131,6 +133,21 @@ public:
    * RandomGenerator object in this run.
    */
   inline RandomEngine & randomEngine() const;
+
+  /**
+   * Return a pointer to the EventHandler.
+   */
+  inline tEHPtr eventHandler() const;
+
+  /**
+   * Return the vector of analysis objects to be used in the run.
+   */
+  inline AnalysisVector & analysisHandlers();
+
+  /**
+   * Return the EventManipulator used in the run.
+   */
+  inline tEvtManipPtr manipulator() const;
   //@}
 
 public:
@@ -161,9 +178,16 @@ public:
   /**
    * Finish generating an \a event which has already been partially
    * constructed from the outside.  Calls the virtual method do
-   * doPartialEvent().
+   * doGenerateEvent().
    */
-  EventPtr partialEvent(tEventPtr event);
+  EventPtr generateEvent(Event & event);
+
+  /**
+   * Finish generating an event starting from a \a step which has
+   * already been partially constructed from the outside.  Calls the
+   * virtual method do doGenerateEvent().
+   */
+  EventPtr generateEvent(Step & step);
 
   /**
    * Indicate that the run has ended and call finish() for all objects
@@ -174,7 +198,8 @@ public:
 
   /**
    * Return the maximum center of mass energy possible for an
-   * event. Return zero if this is only a partial generator.
+   * event. Return zero if the assigned EventHander is not able to
+   * generatr full events.
    */
   virtual Energy maximumCMEnergy() const;
 
@@ -186,7 +211,7 @@ public:
   /**
    * Return the event being generated.
    */
-  virtual tcEventPtr currentEvent() const = 0;
+  tcEventPtr currentEvent() const;
 
   /**
    * Dump the full state of the current run - including the number of
@@ -387,13 +412,19 @@ protected:
   /**
    * Generate one event. Is called from shoot().
    */
-  virtual EventPtr doShoot() = 0;
+  virtual EventPtr doShoot();
 
   /**
    * Finish generating an event constructed from the outside. Is
-   * called by partialEvent(tEventPtr).
+   * called by generateEvent(tEventPtr).
    */
-  virtual EventPtr doPartialEvent(tEventPtr) = 0;
+  virtual EventPtr doGenerateEvent(tEventPtr);
+
+  /**
+   * Finish generating an event starting from a Step constructed from
+   * the outside. Is called by generateEvent(tStepPtr).
+   */
+  virtual EventPtr doGenerateEvent(tStepPtr);
   //@}
 
   /**
@@ -472,7 +503,20 @@ public:
 
 protected:
 
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr clone() const;
 
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr fullclone() const;
+  //@}
 
 protected:
 
@@ -484,7 +528,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -553,6 +597,22 @@ private:
    * Pointer to the default RandomGenerator to be used in this run.
    */
   RanGenPtr theRandom;
+
+  /**
+   * Pointer to the event handler used to generate the indivudual
+   * events.
+   */
+  EHPtr theEventHandler;
+
+  /**
+   * A vector of all analysis handlers to be called after each event.
+   */
+  AnalysisVector theAnalysisHandlers;
+
+  /**
+   * A pointer to an optional event manipulator object.
+   */
+  EvtManipPtr theEventManipulator;
 
   /**
    * The directory where the input and output files resides.
@@ -637,6 +697,24 @@ protected:
 private:
 
   /**
+   * If the debug level is higher than 0, print the first 'printEvent'
+   * events to the logfile.
+   */
+  int printEvent;
+
+  /**
+   * If the dubug level is higher than 0, dump the complete state of
+   * this run to the default dump file every 'dumpPeriod' events.
+   */
+  long dumpPeriod;
+
+  /**
+   * If the dubug level is higher than 0, step up to the highest debug
+   * level just before the event with number debugEvent is performed.
+   */
+  long debugEvent;
+
+  /**
    * The maximum number of warnings reported of each type. If more
    * than maxWarnings warnings of one type is issued, the generation
    * will continue without reporting this warning.
@@ -706,9 +784,9 @@ private:
   CurrentGenerator * theCurrentGenerator;
 
   /**
-   * The currently active (partial) collision handler.
+   * The currently active EventHandler.
    */
-  tPartCollHdlPtr theCurrentCollisionHandler;
+  tEHPtr theCurrentEventHandler;
 
   /**
    * The currently active step handler.
@@ -720,7 +798,7 @@ private:
   /**
    * Describe an abstract class with persistent data.
    */
-  static AbstractClassDescription<EventGenerator> initEventGenerator;
+  static ClassDescription<EventGenerator> initEventGenerator;
 
   /**
    *  Private and non-existent assignment operator.

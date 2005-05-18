@@ -11,7 +11,16 @@
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
+#include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/LoopGuard.h"
+#include "ThePEG/EventRecord/Event.h"
+#include "ThePEG/EventRecord/Collision.h"
+#include "ThePEG/EventRecord/Step.h"
+#include "ThePEG/EventRecord/SubProcess.h"
+#include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/CLHEPWrap/RandPoisson.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesEventHandler.tcc"
@@ -25,7 +34,7 @@ using namespace ThePEG;
 LesHouchesEventHandler::~LesHouchesEventHandler() {}
 
 void LesHouchesEventHandler::doinit() throw(InitException) {
-  PartialCollisionHandler::doinit();
+  EventHandler::doinit();
   for ( int i = 0, N = readers().size(); i < N; ++i )
     readers()[i]->init();
 }
@@ -39,7 +48,6 @@ void LesHouchesEventHandler::initialize() {
     << "particles will be determined by the used LesHouchesReader objects."
     << Exception::warning;
 
-  typedef map<int,tLesHouchesReaderPtr> ProcessMap;
   if ( readers().empty() )
     throw LesHouchesInitError()
       << "No readers were defined for the LesHouchesEventHandler '"
@@ -47,21 +55,21 @@ void LesHouchesEventHandler::initialize() {
 
   // Go through all the readers and collect information about cross
   // sections and processes.
-  CrossSection sum = 0.0*picobarn;
-  CrossSection maxxsec = 0.0*picobarn;
+  typedef map<int,tLesHouchesReaderPtr> ProcessMap;
   ProcessMap processes;
   PDPair incoming;
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
+    reader.initialize(*this);
 
     // Check that the incoming particles are consistent between the
     // readers.
     if ( !incoming.first )
-      incoming.first = getParticleData(reader.IDBMUP.first);
+      incoming.first = getParticleData(reader.heprup.IDBMUP.first);
     if ( !incoming.second )
-      incoming.second = getParticleData(reader.IDBMUP.second);
-    if ( incoming.first->id() != reader.IDBMUP.first ||
-	 incoming.second->id() != reader.IDBMUP.second )
+      incoming.second = getParticleData(reader.heprup.IDBMUP.second);
+    if ( incoming.first->id() != reader.heprup.IDBMUP.first ||
+	 incoming.second->id() != reader.heprup.IDBMUP.second )
       Repository::clog()
 	<< "The different LesHouchesReader objects in the "
 	<< "LesHouchesEventHandler '" << name() << "' have different "
@@ -76,16 +84,14 @@ void LesHouchesEventHandler::initialize() {
 	<< "' contains negatively weighted events, "
 	<< "which is not allowed for the LesHouchesEventHandler '"
 	<< name() << "'." << Exception::warning;
-    maxxsec += reader.maxXSec();
 
     // Check that we do not have the same process numbers in different
     // readers.
-    for ( int ip = 0; ip < reader.NRUP; ++ip ) {
-      sum += reader.XSECUP[ip]*picobarn;
-      if ( reader.LPRUP[ip] ) {
-	ProcessMap::iterator pit = processes.find(reader.LPRUP[ip]);
+    for ( int ip = 0; ip < reader.heprup.NRUP; ++ip ) {
+      if ( reader.heprup.LPRUP[ip] ) {
+	ProcessMap::iterator pit = processes.find(reader.heprup.LPRUP[ip]);
 	if ( pit == processes.end() )
-	  processes[reader.LPRUP[ip]] = readers()[i];
+	  processes[reader.heprup.LPRUP[ip]] = readers()[i];
 	else
 	  Repository::clog()
 	    << "Warning: In the LesHouchesEventHandler '"
@@ -94,10 +100,13 @@ void LesHouchesEventHandler::initialize() {
 	    << ". This process may be double-counted in this run." << endl;
       }
     }
+    selector().insert(reader.stats.maxXSec(), i);
   }
 
+  stats.maxXSec(selector().sum());
+
   // Check that we have any cross section at all.
-  if ( sum <= 0.0*picobarn )
+  if ( stats.maxXSec() <= 0.0*picobarn )
     throw LesHouchesInitError()
       << "The sum of the cross sections of the readers in the "
       << "LesHouchesEventHandler '" << name()
@@ -106,16 +115,11 @@ void LesHouchesEventHandler::initialize() {
 }
 
 void LesHouchesEventHandler::doinitrun() {
-  PartialCollisionHandler::doinitrun();
-  NAttempted(0);
-  selector().clear();
+  EventHandler::doinitrun();
+  stats.reset();
 
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     readers()[i]->initrun();
-    if ( weightOption() == unitweight || weightOption() == unitnegweight )
-      selector().insert(readers()[i]->maxXSec(), i);
-    else
-      selector().insert(readers()[i]->xSec(), i);
   }
 }
 
@@ -127,22 +131,216 @@ EventPtr LesHouchesEventHandler::generateEvent() {
   while ( true ) {
     loopGuard();
 
-    LesHouchesReader & reader = *readers()[selector()[rnd()]];
+    currentReader(readers()[selector().select(generator()->random())]);
 
-    reader.getEvent();
+    skipEvents();
+    currentReader()->reset();
+
+    double weight = currentReader()->getEvent();
+    if ( weightOption() == unitweight && weight < 0.0 ) weight = 0.0;
+
+    if ( weightOption() == unitweight || weightOption() == unitnegweight ) {
+      CrossSection newmax = selector().reweight(weight);
+      if ( newmax > 0 )	increaseMaxXSec(newmax);
+    }
+
+    select(weight);
+
+    if ( weightOption() == unitweight  || weightOption() == unitnegweight ) {
+      if ( !rndbool(abs(weight)) ) continue;
+      weight = Math::sign(weight, 1.0);
+    }
+
+    accept();
+
+    // Divide by the bias introduced by the preweights in the reader.
+    weight /= currentReader()->preweight;
+
+    theLastXComb = currentReader()->getXComb();
+
+    currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
+			       generator()->currentEventNumber(), weight)));
+    performCollision();
+
+    if ( !currentCollision() ) throw Veto();
+
+    return currentEvent();
 
   }
 
 }
 
+void LesHouchesEventHandler::skipEvents() {
+
+  // Don't do this for readers which seem to generate events on the fly.
+  if ( currentReader()->active() || currentReader()->NEvents() <= 0 ) return;
+
+  // Estimate the fration of the total events available from
+  // currentReader() which will be requested.
+  double frac = currentReader()->stats.maxXSec()/
+    ( stats.attempts() > 0? stats.xSec(): stats.maxXSec() );
+  double xscan = generator()->N()*frac/currentReader()->NEvents();
+
+  // Estimate the number of times we need to go through the events for
+  // the currentReader(), and how many events on average we need to
+  // skip for each attempted event to gor through the file an integer
+  // number of times.
+  volatile long nscan = long(xscan) + 1;
+  double meanskip = double(nscan)/xscan - 1.0;
+
+  // Skip an average numer of steps with a Poissonian distribution.
+  long nskip = RandPoisson::shoot(&(generator()->randomEngine()), meanskip);
+  currentReader()->skip(nskip);
+}
+
+void LesHouchesEventHandler::select(double weight) {
+  stats.select(weight);
+  currentReader()->select(weight);
+}
+
+tCollPtr LesHouchesEventHandler::performCollision() {
+  lastExtractor()->select(lastXCombPtr());
+  currentCollision(new_ptr(Collision(lastParticles(), currentEvent(), this)));
+  if ( currentEvent() ) currentEvent()->addCollision(currentCollision());
+  currentStep(new_ptr(Step(currentCollision(), this)));
+  currentCollision()->addStep(currentStep());
+  SubProPtr sub =
+    new_ptr(SubProcess(lastPartons(), currentCollision(),
+		       currentReader()));
+  sub->setOutgoing(currentReader()->outgoing().begin(),
+		   currentReader()->outgoing().end());
+  sub->setIntermediates(currentReader()->intermediates().begin(),
+			currentReader()->intermediates().end());
+  
+  currentStep()->addSubProcess(sub);
+  lastExtractor()->constructRemnants(lastXCombPtr()->partonBinInstances(),
+				     sub, currentStep());
+
+  initGroups();
+  if ( ThePEG_DEBUG_ITEM(1) ) {
+    if ( currentEvent() )    
+      generator()->logfile() << *currentEvent();
+    else
+      generator()->logfile() << *currentCollision();
+  }
+  return continueCollision();
+}
+
+EventPtr LesHouchesEventHandler::continueEvent() {
+
+  try {
+    continueCollision();
+  }
+  catch (Veto) {
+    reject();
+  }
+  catch (Stop) {
+  }
+  catch (Exception & ex) {
+    reject();
+    throw;
+  }
+  return currentEvent(); 
+}
+
+void LesHouchesEventHandler::dofinish() {
+  EventHandler::dofinish();
+  if ( selector().compensating() ) generator()->log()
+    << "Warning: The run was ended while the LesHouchesEventHandler '" << name()
+    << "' was still trying to compensate for weights larger than 1. "
+    << "The cross section estimates may therefore be statistically "
+    << "inaccurate." << endl;
+}
+
+void LesHouchesEventHandler::statistics(ostream & os) const {
+  if ( statLevel() == 0 ) return;
+
+  string line = "======================================="
+    "=======================================\n";
+
+  if ( stats.accepted() <= 0 ) {
+    os << line << "No events generated by event handler '" << name() << "'."
+       << endl;
+      return;
+  }
+
+  os << line << "Statistics for Les Houches event handler \'" << name() << "\':\n"
+     << "                                       "
+     << "generated    number of    Cross-section\n"
+     << "                                       "
+     << "   events     attempts             (nb)\n";
+
+  os << line << "Total:" << setw(42) << stats.accepted() << setw(13)
+     << stats.attempts() << setw(17) << stats.xSec()/nanobarn << endl
+     << line;
+
+  if ( statLevel() == 1 ) return;
+
+  if ( statLevel() == 2 ) {
+
+    os << "Per Les Houches Reader breakdown:\n";
+  
+    for ( int i = 0, N = readers().size(); i < N; ++i ) {
+      LesHouchesReader & reader = *readers()[i];
+      string n = reader.name();
+      n.resize(37, ' ');
+      os << n << setw(11) << reader.stats.accepted() << setw(13)
+	 << reader.stats.attempts() << setw(17)
+	 << reader.stats.xSec()/nanobarn << endl;
+    }
+    os << line;
+    return;
+  }
+
+  os << "Per Les Houches Reader (and process #) breakdown:\n";
+  
+  for ( int i = 0, N = readers().size(); i < N; ++i ) {
+    LesHouchesReader & reader = *readers()[i];
+    string n = reader.name() + " (all)";
+    n.resize(37, ' ');
+    os << n << setw(11) << reader.stats.accepted() << setw(13)
+       << reader.stats.attempts() << setw(17)
+       << reader.stats.xSec()/nanobarn << endl;
+    typedef LesHouchesReader::StatMap::const_iterator const_iterator;
+    for ( LesHouchesReader::StatMap::const_iterator i = reader.statmap.begin();
+	  i != reader.statmap.end(); ++i ) {
+      ostringstream ss;
+      ss << reader.name() << " (" << i->first << ")";
+      string n = ss.str();
+      n.resize(37, ' ');
+      os << n << setw(11) << i->second.accepted() << setw(13)
+	 << i->second.attempts() << setw(17)
+	 << i->second.xSec()/nanobarn << endl;
+    }
+    os << line;
+  }
+
+}
+
+
+void LesHouchesEventHandler::increaseMaxXSec(CrossSection maxxsec) {
+  stats.maxXSec(maxxsec);
+  currentReader()->increaseMaxXSec(maxxsec);
+}
+
+void LesHouchesEventHandler::accept() {
+  stats.accept();
+  currentReader()->accept();
+}
+
+void LesHouchesEventHandler::reject() {
+  stats.reject();
+  currentReader()->reject();
+}
+
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
-  os << theReaders << theNAttempted << theSelector
-     << theWeightOption;
+  os << stats << theReaders << theSelector
+     << oenum(theWeightOption) << theCurrentReader;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theReaders >> theNAttempted >> theSelector
-     >> theWeightOption;
+  is >> stats >> theReaders >> theSelector
+     >> ienum(theWeightOption) >> theCurrentReader;
 }
 
 ClassDescription<LesHouchesEventHandler>

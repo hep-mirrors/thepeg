@@ -6,6 +6,47 @@
 
 namespace ThePEG {
 
+inline tcSubHdlPtr StandardXComb::subProcessHandler() const {
+  return theSubProcessHandler;
+}
+
+inline tMEPtr StandardXComb::matrixElement() const {
+  return theME;
+}
+
+inline long StandardXComb::nAccepted() const {
+  return theNAccepted;
+}
+
+inline double StandardXComb::sumWeight() const {
+  return theSumWeight;
+}
+
+inline long StandardXComb::nAttempted() const {
+  return theNAttempted;
+}
+
+inline void StandardXComb::attempt() {
+  ++theNAttempted;
+}
+
+inline void StandardXComb::accept() {
+  ++theNAccepted;
+}
+
+inline void StandardXComb::sumWeight(double w) {
+  theSumWeight += w;;
+}
+
+inline void StandardXComb::unAccept() {
+  --theNAccepted;
+}
+
+inline void StandardXComb::reset() {
+  theNAttempted = theNAccepted = 0;
+  theSumWeight = 0.0;
+}
+
 inline const StandardXComb::DiagramVector & StandardXComb::diagrams() const {
   return theDiagrams;
 }
@@ -16,6 +57,30 @@ inline bool StandardXComb::mirror() const {
 
 inline int StandardXComb::nDim() const {
   return theNDim;
+}
+
+inline const vector<Lorentz5Momentum> & StandardXComb::meMomenta() const {
+  return theMEMomenta;
+}
+
+inline vector<Lorentz5Momentum> & StandardXComb::meMomenta() {
+  return theMEMomenta;
+}
+
+inline const tPVector & StandardXComb::mePartons() const {
+  return theMEPartons;
+}
+
+inline tPVector & StandardXComb::mePartons() {
+  return theMEPartons;
+}
+
+inline const cPDVector & StandardXComb::mePartonData() const {
+  return theMEPartonData;
+}
+
+inline cPDVector & StandardXComb::mePartonData() {
+  return theMEPartonData;
 }
 
 inline void StandardXComb::lastDiagramIndex(StandardXComb::DiagramIndex i) {

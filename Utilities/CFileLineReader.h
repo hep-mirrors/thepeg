@@ -62,7 +62,7 @@ public:
   /**
    * The destructor.
    */
-  virtual ~CFileLineReader();
+  ~CFileLineReader();
   //@}
 
   /** @name Initialization functions. */

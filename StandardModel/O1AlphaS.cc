@@ -76,26 +76,29 @@ void O1AlphaS::Init() {
    static ClassDocumentation<O1AlphaS> documentation
     ("There is no documentation for the ThePEG::O1AlphaS class");
 
- static Parameter<O1AlphaS,Energy> interfaceLambdaQCD
-    ("LambdaQCD",
-     "The \\f$\\Lambda_{QCD}\\f$ in GeV for "
-     "<interface>LambdaFlav</interface> active "
-     "flavours. The value for other numbers of active flavours is derived by "
-     "assuming that \\f$\\alpha_S\\f$ is continuous.",
-     &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 10.0*GeV,
-     false, false, true);
+   static Parameter<O1AlphaS,Energy> interfaceLambdaQCD
+     ("LambdaQCD",
+      "The \\f$\\Lambda_{QCD}\\f$ in GeV for "
+      "<interface>LambdaFlav</interface> active "
+      "flavours. The value for other numbers of active flavours is derived by "
+      "assuming that \\f$\\alpha_S\\f$ is continuous.",
+      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 10.0*GeV,
+      false, false, true);
 
-  static Parameter<O1AlphaS,unsigned int> interfaceMaxFlav
-    ("MaxFlav",
-     "The maximum number of flavours used to calculate \\f$\\alpha_S\\f$.",
-     &O1AlphaS::theMaxFlav, 6, 3, 8,
-     false, false, true);
+   static Parameter<O1AlphaS,unsigned int> interfaceMaxFlav
+     ("MaxFlav",
+      "The maximum number of flavours used to calculate \\f$\\alpha_S\\f$.",
+      &O1AlphaS::theMaxFlav, 6, 3, 8,
+      false, false, true);
+
+  typedef void (ThePEG::O1AlphaS::*IFN)(unsigned int);
 
   static Parameter<O1AlphaS,unsigned int> interfaceLambdaFlavour
     ("LambdaFlav",
      "The number of active flavours for which LambdaQCD is specified.",
      &O1AlphaS::theLambdaFlavour, 4, 3, 8,
-     false, false, true, 0, 0, 0, &O1AlphaS::getMaxFlav, 0);
+     false, false, true, (IFN)0, 0, 0,
+     &O1AlphaS::getMaxFlav, 0);
 
 }
 

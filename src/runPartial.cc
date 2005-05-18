@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
     if ( !eg ) throw std::runtime_error("No generator found.");
 
     eg->initialize();
-    // Open a persistent stream and read an EventGenerator object
+    // Open a persistent stream and read an OldEventGenerator object
     // from it and initialize the Event generator.
 
 

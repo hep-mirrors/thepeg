@@ -12,6 +12,7 @@
 #include "ThePEG/MatrixElement/ReweightBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/StandardXComb.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MEBase.tcc"
@@ -47,7 +48,7 @@ void MEBase::addPreweighter(tReweightPtr rw) {
 
 void MEBase::setKinematics(tPPair in, const PVector & out) {
   theLastSHat = -1.0*GeV;
-  theLastXComb = tXCombPtr();
+  theLastXComb = tStdXCombPtr();
   for ( int i = 0, N = diagrams().size(); i < N; ++i ) {
     tPVector parts;
     const DiagramBase & diag = *(diagrams()[i]);
@@ -76,7 +77,7 @@ void MEBase::setKinematics(tPPair in, const PVector & out) {
       omap.erase(it);
     }
     if ( !omap.empty() ) continue;
-    theLastXComb = new_ptr(XComb(this, parts, i));
+    theLastXComb = new_ptr(StandardXComb(this, parts, i));
     setKinematics();
     return;
   }
@@ -95,7 +96,7 @@ void MEBase::setKinematics() {
 
 void MEBase::clearKinematics() {
   theLastSHat = -1.0*GeV;
-  theLastXComb = tXCombPtr();
+  theLastXComb = tStdXCombPtr();
 }
 
 MEBase::DiagramIndex MEBase::diagram(const DiagramVector & dv) const {
@@ -113,7 +114,7 @@ int MEBase::nDim() const {
   return 0;
 }
 
-void MEBase::setXComb(tXCombPtr xc) {
+void MEBase::setXComb(tStdXCombPtr xc) {
   theLastXComb = xc;
   theLastSHat = lastSHat();
 }

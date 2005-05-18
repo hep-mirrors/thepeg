@@ -12,7 +12,7 @@ inline SamplerBase::SamplerBase(const SamplerBase & x)
   : Interfaced(x), theEventHandler(x.theEventHandler),
     theLastPoint(x.theLastPoint) {}
 
-inline void SamplerBase::setEventHandler(tEHPtr eh) {
+inline void SamplerBase::setEventHandler(tStdEHPtr eh) {
   theEventHandler = eh;
 }
 
@@ -24,7 +24,7 @@ inline vector<double> & SamplerBase::lastPoint() {
   return theLastPoint;
 }
 
-inline tEHPtr SamplerBase::eventHandler() const {
+inline tStdEHPtr SamplerBase::eventHandler() const {
   return theEventHandler;
 }
 

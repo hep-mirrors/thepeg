@@ -4,6 +4,7 @@
 // This is the declaration of the EventManipulator class.
 
 #include "ThePEG/Interface/Interfaced.h"
+#include "ThePEG/Handlers/EventHandler.fh"
 #include <stdexcept>
 // #include "EventManipulator.fh"
 // #include "EventManipulator.xh"
@@ -58,7 +59,6 @@ public:
 
   /**
    * Manipulate an event and the event handler.
-
    * @param eh the EventHandler in charge of the generation.
    * @param event the Event to be manipulated.
    * @return zero if the event was not manipulated. Otherwise return
@@ -84,7 +84,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

@@ -3,10 +3,15 @@
 #define THEPEG_LesHouchesReader_H
 // This is the declaration of the LesHouchesReader class.
 
+#include "LesHouches.h"
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/Utilities/ObjectIndexer.h"
 #include "ThePEG/Utilities/Exception.h"
+#include "ThePEG/Utilities/XSecStat.h"
 #include "ThePEG/PDF/PartonBinInstance.h"
+#include "ThePEG/PDF/PartonBin.fh"
+#include "ThePEG/MatrixElement/ReweightBase.h"
+#include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
 #include <cstdio>
 
@@ -23,9 +28,52 @@ namespace ThePEG {
  * block, this base class will then be responsible for transforming
  * this data to the ThePEG Event record in the getEvent()
  * method. <code>LesHouchesReader</code>s can only be used inside
- * LesHouchesEventHandler objects and not in the standard EventHandler
- * objects.
+ * LesHouchesEventHandler objects.
  *
+ * A class inheriting from LesHouchesReader must implement a number of
+ * virtual functions which should fill the protected variables
+ * corresponding to the Les Houches protocoll common blocks. The
+ * structure assumes that the reader is passive and blindly provides
+ * events when asked, as if it was reading from a file of events. It
+ * is however possible to also have an active reader, which actually
+ * produces the events on demand for a specific process. In the latter
+ * case, a derived class must set the active flag in the constructor
+ * to true.
+ *
+ * In the initialization the virtual open() and scan() functions are
+ * called. Here the derived class must provide the information about
+ * the processes in the variables corresponding to the HEPRUP common
+ * block. Note that the IDWTUP variable is not explicitly
+ * used. Instead the derived class must specify whether the generated
+ * events are weighted with or without negative weights using the
+ * weighted(bool) and negativeWeights(bool) functions. If the events
+ * are not weighted, the XSECUP vector should be filled with the
+ * correct cross sections (in pb) for the corresponding subprocesses
+ * and the getEvent() function should always return 1. Otherwise, the
+ * XMAXUP vector should be filled with the overestimated cross
+ * sections (in pb) for the corresponding subprocesses and the
+ * getEvent() function should return a probability with which the
+ * event should be accepted.
+ *
+ * note that the information given per process in e.g. the XSECUP and
+ * XMAXUP vectors is not used by the LesHouchesEventHandler and by
+ * default the LesHouchesReader is not assumed to be able to actively
+ * choose between the sub-processes. Instead, the
+ * LesHouchesEventHandler can handle several LesHouchesReader objects
+ * and choose between them. However, a sub-class of LesHouchesReader
+ * may set the flag isActive, in which case it is assumed to be able
+ * to select between its sub-processes itself.
+ *
+ * The LesHouchesReader may be assigned a number ReweightBase objects
+ * which either completely reweights the events produced (in the
+ * reweights vector), or only biases the selection without influencing
+ * the cross section (in the preweights vector). Note that it is the
+ * responsibility of a sub-class to call the reweight() function and
+ * multiply the weight according to its return value (typically done
+ * in the readEvent() function).
+ *
+ * @see \ref LesHouchesReaderInterfaces "The interfaces"
+ * defined for LesHouchesReader.
  * @see Event
  * @see LesHouchesEventHandler
  */
@@ -47,18 +95,32 @@ class LesHouchesReader: public HandlerBase {
   typedef pair<CFile, CFile> CFilePair;
 
   /**
-   * Map for counting the numer of events per process number.
+   * Map for accumulating statistics of cross sections per process
+   * number.
    */
-  typedef map<int, long> CountMap;
+  typedef map<int,XSecStat> StatMap;
+
+  /**
+   * Map of XComb objects describing the incoming partons indexed by
+   * the corresponding PartonBin pair.
+   */
+  typedef map<tcPBPair,XCombPtr> XCombMap;
+
+  /**
+   * A vector of pointers to ReweightBase objects.
+   */
+  typedef vector<ReweightPtr> ReweightVector;
 
 public:
 
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * Default constructor.
+   * Default constructor. If the optional argument is true, the reader
+   * is assumed to be able to produce events on demand for a given
+   * process.
    */
-  LesHouchesReader();
+  LesHouchesReader(bool active = false);
 
   /**
    * Copy-constructor.
@@ -75,6 +137,12 @@ public:
 
   /** @name Main virtual fuctions to be overridden in sub-classes. */
   //@{
+  /**
+   * Initialize. This function is called by the LesHouchesEventHandler
+   * to which this object is assigned.
+   */
+  virtual void initialize(LesHouchesEventHandler & eh);
+
   /**
    * Open a file or stream with events and read in the run information
    * into the corresponding protected variables.
@@ -95,9 +163,17 @@ public:
 
   /**
    * Scan the file or stream to obtain information about cross section
-   * weights and particles etc.
+   * weights and particles etc. This function should fill the
+   * variables corresponding to the /HEPRUP/ common block. The
+   * function returns the number of events scanned.
    */
-  virtual void scan();
+  virtual long scan();
+
+  /**
+   * Take the information corresponding to the HEPRUP common block and
+   * initialize the statistics for this reader.
+   */
+  virtual void initStat();
 
   /**
    * Calls readEvent() or uncacheEvent() to read information into the
@@ -112,11 +188,38 @@ public:
   virtual double getEvent();
 
   /**
-   * Converts the information in the Les Houches common block
-   * variables into a Collision object and inserts it in the provided
-   * \a event object.
+   * Skip \a n events. Used by LesHouchesEventHandler to make sure
+   * that a file is scanned an even number of times in case the events
+   * are not ramdomly distributed in the file.
    */
-  virtual void fillEvent(tEventPtr event);
+  virtual void skip(long n);
+
+  /**
+   * Get XComb object. Converts the information in the Les Houches
+   * common block variables to an XComb object describing the sub
+   * process.
+   */
+  tXCombPtr getXComb();
+
+  /**
+   * Reweights the current event using the reweights and preweights
+   * vectors. Can be used after the HEPEUP information has been
+   * retrieved.
+   */
+  double reweight();
+
+  /**
+   * Converts the information in the Les Houches common block
+   * variables into a Particle objects.
+   */
+  virtual void fillEvent();
+
+  /**
+   * Removes the particles created in the last generated event,
+   * preparing to produce a new one.
+   */
+  void reset();
+
   //@}
 
   /** @name Access information about the current event. */
@@ -162,26 +265,16 @@ public:
   /** @name Other inlined access functions. */
   //@{
   /**
-   * The total cross section for the sub processes in this reader.
-   */
-  inline CrossSection xSec() const;
-
-  /**
-   * The overestimated cross section for the sub processes in this
-   * reader.
-   */
-  inline CrossSection maxXSec() const;
-
-  /**
-   * The maximum weight to be expected.
-   */
-  inline double maxWeight() const;
-
-  /**
    * The number of events found in this reader. If less than zero the
    * number of events are unlimited.
    */
   inline long NEvents() const;
+
+  /**
+   * The number of events produced so far. Is reset to zero if an
+   * event file is reopened.
+   */
+  inline long currentPosition() const;
 
   /**
    * The maximum number of events to scan to collect information about
@@ -189,6 +282,11 @@ public:
    * scanned.
    */
   inline long maxScan() const;
+
+  /**
+   * Return true if this reader is active.
+   */
+  inline bool active() const;
 
   /**
    * Return true if this reader produces weighted events.
@@ -201,29 +299,35 @@ public:
   inline bool negativeWeights() const;
 
   /**
-   * The total number of events requested so far.
+   * The collected cross section statistics for this reader.
    */
-  inline long nAttempted() const;
+  inline const XSecStat & xSecStats() const;
 
   /**
-   * Number of requested events per process number.
+   * Collected statistics about the individual processes..
    */
-  inline const CountMap & attemptMap() const;
+  inline const StatMap & processStats() const;
 
   /**
-   * The number of events accepted so far.
+   * Select the current event. It will later be rejected with a
+   * probability given by \a weight.
    */
-  inline long nAccepted() const;
+  inline void select(double weight);
 
   /**
-   * Accept the current event.
+   * Accept the current event assuming it was previously selcted.
    */
   inline void accept();
 
   /**
-   * Number of accepted events per process number.
+   * Reject the current event assuming it was previously accepted.
    */
-  inline const CountMap & acceptMap() const;
+  inline void reject();
+
+  /**
+   * Increase the overestimated cross section for this reader.
+   */
+  inline void increaseMaxXSec(CrossSection maxxsec);
 
   /**
    * The PartonExtractor object used to construct remnants.
@@ -235,6 +339,12 @@ public:
    * be extracted by the PartonExtractor object.
    */
   inline const PartonPairVec & partonBins() const;
+
+  /**
+   * The map of XComb objects indexed by the corresponding PartonBin
+   * pair.
+   */
+  inline const XCombMap & xCombs() const;
 
   /**
    * The KinematicalCuts object to be used for this reader.
@@ -253,12 +363,6 @@ protected:
    * fast-readable form. If empty, no cache file will be generated.
    */
   inline string cacheFileName() const;
-
-  /**
-   * Should the events from this Reader be randomized in order to
-   * avoid problems if not all events are used.
-   */
-  inline bool randomize() const;
 
   /**
    * File stream for the cache.
@@ -296,6 +400,13 @@ protected:
   bool uncacheEvent();
 
   /**
+   * Reopen a reader. If we have reached the end of an event file,
+   * reopen it and issue a warning if we have used up a large fraction
+   * of it.
+   */
+  void reopen();
+
+  /**
    * Helper function to write a variable to a memory location
    */
   template <typename T>
@@ -327,9 +438,10 @@ protected:
 
   /**
    * Using the already created particles create a pair of
-   * PartonBinInstance objects corresponding to the incoming partons.
+   * PartonBinInstance objects corresponding to the incoming
+   * partons. Return the corresponding PartonBin objects.
    */
-  virtual void createPartonBinInstances();
+  virtual tcPBPair createPartonBinInstances();
 
   /**
    * Create instances of the incoming beams in the event and store
@@ -372,19 +484,9 @@ protected:
   /** @name Set functions for some variables not in the Les Houches accord. */
   //@{
   /**
-   * The cross section for the sub processes in this reader.
-   */
-  inline void xSec(CrossSection);
-
-  /**
    * Set true if this reader produces weighted events.
    */
   inline void weighted(bool);
-
-  /**
-   * The overestimated cross section for the sub processes in this reader.
-   */
-  inline void maxXSec(CrossSection);
 
   /**
    * The number of events in this reader. If less than zero the number
@@ -393,14 +495,15 @@ protected:
   inline void NEvents(long);
 
   /**
-   * The maximum weight to be expected.
-   */
-  inline void maxWeight(double);
-
-  /**
    * Set true if negative weights may be produced.
    */
   inline void negativeWeights(bool);
+
+  /**
+   * The map of XComb objects indexed by the corresponding PartonBin
+   * pair.
+   */
+  inline XCombMap & xCombs();
   //@}
 
   /** @name Standard Interfaced functions. */
@@ -411,7 +514,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -421,7 +524,7 @@ protected:
    * Initialize this object. Called in the run phase just before
    * a run begins.
    */
-  inline virtual void doinitrun();
+  virtual void doinitrun();
 
   /**
    * Finalize this object. Called in the run phase just after a
@@ -451,26 +554,14 @@ protected:
 protected:
 
   /**
-   * PDG id's of beam particles. (first/second is in +/-z direction).
+   * The HEPRUP common block.
    */
-  pair<long,long> IDBMUP;
+  HEPRUP heprup;
 
   /**
-   * Energy of beam particles given in GeV.
+   * The HEPEUP common block.
    */
-  pair<double,double> EBMUP;
-
-  /**
-   * The author group for the PDF used for the beams according to the
-   * PDFLib specification.
-   */
-  pair<int,int> PDFGUP;
-
-  /**
-   * The id number the PDF used for the beams according to the
-   * PDFLib specification.
-   */
-  pair<int,int> PDFSUP;
+  HEPEUP hepeup;
 
   /**
    * The PDFBase object used for the first beam particle. Specified in
@@ -496,137 +587,15 @@ protected:
   PartonPairVec thePartonBins;
 
   /**
+   * The map of XComb objects indexed by the corresponding PartonBin
+   * pair.
+   */
+  XCombMap theXCombs;
+
+  /**
    * The KinematicalCuts object to be used for this reader.
    */
   KinCutPtr theCuts;
-
-  /**
-   * Master switch indicating how the ME generator envisages the
-   * events weights should be interpreted according to the Les Houches
-   * accord.
-   */
-  int IDWTUP;
-
-  /**
-   * The number of different subprocesses in this file (should
-   * typically be just one)
-   */
-  int NRUP;
-
-  /**
-   * The cross sections for the different subprocesses in pb.
-   */
-  vector<double> XSECUP;
-
-  /**
-   * The statistical error in the cross sections for the different
-   * subprocesses in pb.
-   */
-  vector<double> XERRUP;
-
-  /**
-   * The maximum event weights (in XWGTUP) for different subprocesses.
-   */
-  vector<double> XMAXUP;
-
-  /**
-   * The subprocess code for the different subprocesses.
-   */
-  vector<int> LPRUP;
-
-  /**
-   * The number of particle entries in the current event.
-   */
-  int NUP;
-
-  /**
-   * The subprocess code for this event (as given in LPRUP).
-   */
-  int IDPRUP;
-
-  /**
-   * The weight for this event.
-   */
-  double XWGTUP;
-
-  /**
-   * The PDF weights for the two incoming partons. Nota that this
-   * variable is not present in the current LesHouches accord.
-   */
-  pair<double,double> XPDWUP;
-
-  /**
-   * The scale in GeV used in the calculation of the PDF's in this
-   * event.
-   */
-  double SCALUP;
-
-  /**
-   * The value of the QED coupling used in this event.
-   */
-  double AQEDUP;
-
-  /**
-   * The value of the QCD coupling used in this event.
-   */
-  double AQCDUP;
-
-  /**
-   * The PDG id's for the particle entries in this event.
-   */
-  vector<long> IDUP;
-
-  /**
-   * The status codes for the particle entries in this event.
-   */
-  vector<int> ISTUP;
-
-  /**
-   * Indices for the first and last mother for the particle entries in
-   * this event.
-   */
-  vector< pair<int,int> > MOTHUP;
-
-  /**
-   * The colour-line indices (first(second) is (anti)colour) for the
-   * particle entries in this event.
-   */
-  vector< pair<int,int> > ICOLUP;
-
-  /**
-   * Lab frame momentum (Px, Py, Pz, E and M in GeV) for the particle
-   * entries in this event.
-   */
-  vector< vector<double> > PUP;
-
-  /**
-   * Invariant lifetime (c*tau, distance from production to decay im
-   * mm) for the particle entries in this event.
-   */
-  vector<double> VTIMUP;
-
-  /**
-   * Spin info for the particle entries in this event given as the
-   * cosine of the angle between the spin vector of a particle and the
-   * 3-momentum of the decaying particle, specified in the lab frame.
-   */
-  vector<double> SPINUP;
-
-  /**
-   * The total cross section for the sub processes in this reader.
-   */
-  CrossSection theXSec;
-
-  /**
-   * The overestimated cross section for the sub processes in this
-   * reader.
-   */
-  CrossSection theMaxXSec;
-
-  /**
-   * The maximum weight found in this reader.
-   */
-  double theMaxWeight;
 
   /**
    * The number of events in this reader. If less than zero the number
@@ -635,11 +604,27 @@ protected:
   long theNEvents;
 
   /**
+   * The number of events produced by this reader so far. Is reset
+   * every time an event file is reopened.
+   */
+  long position;
+
+  /**
+   * The number of times this reader has been reopened.
+   */
+  int reopened;
+
+  /**
    * The maximum number of events to scan to collect information about
    * processes and cross sections. If less than 0, all events will be
    * scanned.
    */
   long theMaxScan;
+
+  /**
+   * True if this is an active reader.
+   */
+  bool isActive;
 
   /**
    * True if this reader produces weighted events.
@@ -658,30 +643,14 @@ protected:
   string theCacheFileName;
 
   /**
-   * Should the events from this Reader be randomized in order to
-   * avoid problems if not all events are used.
+   * Collect statistics for this reader.
    */
-  bool doRandomize;
+  XSecStat stats;
 
   /**
-   * The total number of events requested so far.
+   * Collect statistics for each individual process.
    */
-  long theNAttempted;
-
-  /**
-   * Number of requested events per process number.
-   */
-  CountMap theAttemptMap;
-
-  /**
-   * The number of events accepted so far.
-   */
-  long theNAccepted;
-
-  /**
-   * Number of accepted events per process number.
-   */
-  CountMap theAcceptMap;
+  StatMap statmap;
 
   /**
    * The pair of PartonBinInstance objects describing the current
@@ -728,6 +697,21 @@ protected:
    * File stream for the cache.
    */
   CFile theCacheFile;
+
+  /**
+   * The reweight objects modifying the weights of this reader.
+   */
+  ReweightVector reweights;
+
+  /**
+   * The preweight objects modifying the weights of this reader.
+   */
+  ReweightVector preweights;
+
+  /**
+   * The factor with which this reader was last pre-weighted.
+   */
+  double preweight;
 
 private:
 

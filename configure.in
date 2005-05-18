@@ -27,10 +27,10 @@ if test -z "$ARFLAGS"; then
 fi
 AC_PROG_RANLIB
 
-AC_ARG_VAR(CXXEXT,The compiler option for generating position indicated code if needed for dynamic linking. Default is '-fpic')
+AC_ARG_VAR(CXXEXT,The compiler option for generating position-independent code if needed for dynamic linking. Default is '-fpic')
 AC_ARG_VAR(CXXDLFLAGS,The compiler link option for creating a shared object file for dynamic linking. Default is '-shared')
-AC_ARG_VAR(CXXOPTFLAG,The compiler option for generating optimized code. Set her rather than in CXXFLAGS. Default is '-O')
-AC_ARG_VAR(CXXDEBUGFLAG,The compiler option for generating debugging information. Set her rather than in CXXFLAGS. Default is '-g')
+AC_ARG_VAR(CXXOPTFLAG,The compiler option for generating optimized code. Set here rather than in $CXXFLAGS. Default is '-O2')
+AC_ARG_VAR(CXXDEBUGFLAG,The compiler option for generating debugging information. Set here rather than in $CXXFLAGS. Default is '-g')
 if test -z "$CLHEPPATH"; then
   if test "x$prefix" == "xNONE"; then
     CLHEPPATH=$ac_default_prefix
@@ -53,25 +53,25 @@ AC_ARG_VAR(CLHEPINCLUDE,The include directive needed to find the CLHEP include f
 if test -z "$GZREAD_FILE"; then
    GZREAD_FILE="gunzip -c"
 fi
-AC_ARG_VAR(GZREAD_FILE,The command which taking the name of a gzipped file as argument unzips it and prints it to stdout. Default is "gunzip -c".)
+AC_ARG_VAR(GZREAD_FILE,[The command which, taking the name of a gzipped file as argument, unzips it, and prints it to stdout. Default is "gunzip -c".])
 AC_DEFINE_UNQUOTED(ThePEG_GZREAD_FILE, "$GZREAD_FILE")
 
 if test -z "$GZWRITE_FILE"; then
    GZWRITE_FILE="gzip -c > "
 fi
 AC_DEFINE_UNQUOTED(ThePEG_GZWRITE_FILE, "$GZWRITE_FILE")
-AC_ARG_VAR(GZWRITE_FILE,The command which taking the name of a gzipped file as argument reads stdin zips it and writes it to the file. Default is "gzip -c".)
+AC_ARG_VAR(GZWRITE_FILE,[The command which, taking the name of a gzipped file as argument, reads stdin, zips it and writes it to the file. Default is "gzip -c".])
 
 if test -z "$BZ2READ_FILE"; then
    BZ2READ_FILE="bunzip2 -c"
 fi
-AC_ARG_VAR(BZ2READ_FILE,The command which taking the name of a bzipped file as argument unzips it and prints it to stdout. Default is "bunzip2 -c".)
+AC_ARG_VAR(BZ2READ_FILE,[The command which, taking the name of a bzipped file as argument, unzips it, and prints it to stdout. Default is "bunzip2 -c"].)
 AC_DEFINE_UNQUOTED(ThePEG_BZ2READ_FILE, "$BZ2READ_FILE")
 
 if test -z "$BZ2WRITE_FILE"; then
    BZ2WRITE_FILE="bzip2 -c > "
 fi
-AC_ARG_VAR(BZ2WRITE_FILE,The command which taking the name of a bzipped file as argument reads stdin zips it and writes it to the file. Default is "bzip2 -c".)
+AC_ARG_VAR(BZ2WRITE_FILE,[The command which, taking the name of a bzipped file as argument, reads stdin zips it, and writes it to the file. Default is "bzip2 -c".])
 AC_DEFINE_UNQUOTED(ThePEG_BZ2WRITE_FILE, "$BZ2WRITE_FILE")
 
 BUILDDIR=`pwd`
@@ -93,6 +93,13 @@ AC_SUBST(GZREAD_FILE)
 AC_SUBST(GZWRITE_FILE)
 AC_SUBST(BZ2READ_FILE)
 AC_SUBST(BZ2WRITE_FILE)
+echo $ECHO_N "checking for atanh... $ECHO_C" 1>&6
+AC_TRY_COMPILE(
+#include <cmath>
+, atanh(0.5);
+, AC_DEFINE(ThePEG_HAS_ATANH)
+echo "${ECHO_T}yes" 1>&6
+, echo "${ECHO_T}no" 1>&6)
 echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
 AC_TRY_COMPILE(
 #include <cmath>

@@ -19,7 +19,7 @@ namespace ThePEG {
  * objects responsible for extracting partons from particles. It is
  * used by a SubProcessHandler which combines one PartonExtractor with
  * a number of MEBase objects which are the used in an XComb in a
- * CollisionHandler to generate hard sub-processes.
+ * StandardEventHandler to generate hard sub-processes.
  *
  * PartonExtractor inherits from the general HandlerBase class and
  * from the LastXCombInfo class to have easy acces to information
@@ -29,15 +29,14 @@ namespace ThePEG {
  * defined for PartonExtractor.
  * @see SubProcessHandler
  * @see MEBase
- * @see CollisionHandler
+ * @see EventHandler
+ * @see StandardEventHandler
  * @see XComb
  * @see HandlerBase
- * 
+ *
  */
 class PartonExtractor: public HandlerBase, public LastXCombInfo<> {
 
-  /** CollisionHandler is a friend. */
-  friend class CollisionHandler;
   /** XComb is a friend. */
   friend class XComb;
 
@@ -139,7 +138,32 @@ public:
   /**
    * Construct remnants and add them to the step.
    */
-  virtual void construct(const PBIPair & pbins, tStepPtr step);
+  virtual void construct(const PBIPair & pbins, tStepPtr step) const;
+
+  /**
+   * Construct remnants for partons created outside of this
+   * extractor. Information about the incoming partons should be set
+   * in \a pbins and the hard subprocess should be present in \a
+   * sub. Generated remnants will be added to the \a step.
+   */
+  virtual void constructRemnants(const PBIPair & pbins, tSubProPtr sub,
+			 tStepPtr step) const;
+
+  /**
+   * Get boost for hard subsystem and boost remnants. To be called
+   * after re-constructing remnants and obtaining new momenta of the
+   * partons entering the hard subsystem, but ignoring detailed energy
+   * and momentum conservation. Perform boosts of the remnants to
+   * conserve energy and momentum and return the boost needed for the
+   * hard subsystem. \a bins contains the current state of the
+   * incoming partons, including the momenta obtained after the
+   * remnant generation. \a k1 and \a k2 contains the momenta of the
+   * incoming partons before the remnant generation. If either side
+   * has no new remnants, \a side1 and/or \a side2 should be false.
+   */
+  virtual LorentzRotation
+  boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
+	   bool side1, bool side2) const;
   //@}
 
   /** @name Access information about the current paron extraction. */
@@ -170,6 +194,9 @@ public:
 
 protected:
 
+  /** @name Functions used by the main virtual functions. Some of
+      these may be overridden in sub-classes. */
+  //@{
   /**
    * Used by generateL() for each of the final parton
    * bins. Direction<0> is set to positive(negative) for the
@@ -195,7 +222,7 @@ protected:
   /**
    * Used by the public construct() for each of the final parton bins.
    */
-  virtual void construct(PartonBinInstance & pb, tStepPtr step);
+  virtual void construct(PartonBinInstance & pb, tStepPtr step) const;
 
   /**
    * Used by the public newRemnants() for each of the parton bins.
@@ -206,6 +233,36 @@ protected:
    * Used by the public newRemnants() for each of the parton bins.
    */
   void addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step);
+
+  /**
+   * Transform remnant momentum. Assuming remnants have been generated
+   * with momentum \a Pr without considering energy-momentum
+   * conservation, shift the momentum, possibly compensating with the
+   * momentum of the hard subsystem, \a Ph. For information the
+   * momentum of the parton entering the hard subsystem from the other
+   * side, \a k, and the momentum of the remnants parent particle , \a
+   * P is given. Note that Direction<0> must be set to determine if
+   * the parent particle is to be assumed to go in the positive or
+   * negative direction.
+   */
+  virtual void transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
+				 const LorentzMomentum & k,
+				 const LorentzMomentum & P) const;
+
+  /**
+   * Construct remnants recursively for the parton represented by \a
+   * pb. Used by constructRemnants(const PBIPair &, tSubProPtr, tStepPtr).
+   * Shift the momentum, \a Ph, of the hard subsystem to conserve
+   * energy and momentum if necessary. The momentum, \a k, of the
+   * parton coming into the hars subsystem from the other side is
+   * given for information. Note that Direction<0> must be set to
+   * determine if the parent particle is to be assumed to go in the
+   * positive or negative direction.
+   */
+  virtual void
+  constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
+		    const LorentzMomentum & k) const;
+  //@}
 
 public:
 
@@ -238,7 +295,7 @@ protected:
    */
   virtual void addPartons(tPBPtr incoming ,const PDFCuts & cuts,
 		  PartonVector & pbins) const;
-  
+
   /**
    * Return the PDFBase object to be used for the incoming particle
    * type. If one of theSpecialDensities matches the particle type it
@@ -291,7 +348,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

@@ -5,7 +5,7 @@
 
 #include "ThePEG/Handlers/SamplerBase.h"
 #include "ThePEG/ACDC/ACDCGen.h"
-#include "ThePEG/Handlers/EventHandler.h"
+#include "ThePEG/Handlers/StandardEventHandler.h"
 #include "ThePEG/Repository/RandomGenerator.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.xh"
 // #include "ACDCSampler.fh"
@@ -27,7 +27,7 @@ class ACDCSampler: public SamplerBase {
 public:
 
   /** Typedef the underlying ACDCGen class. */
-  typedef ACDCGenerator::ACDCGen<RandomGenerator,tEHPtr> SamplerType;
+  typedef ACDCGenerator::ACDCGen<RandomGenerator,tStdEHPtr> SamplerType;
 
   /** @name Standard constructors and destructors. */
   //@{
@@ -143,7 +143,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -204,7 +204,18 @@ private:
 
 protected:
 
+  /** Exception class used by ACDCSampler if the undelying ACDCGen was
+      still in a compensating mode when the run was finished */
   struct ACDCStillCompensating: public Exception {};
+
+  /** Exception class used by ACDCSampler if a StandardEventHandler
+      was not able to produce a non-zero cross section. */
+  struct EventInitNoXSec: public Exception {};
+
+  /** Exception class used if ACDCSampler was not able to produce a
+      phase space point within the maximum allowed number of
+      attempts. */
+  struct EventLoopException: public Exception {};
 
 private:
 
@@ -258,17 +269,17 @@ struct ClassTraits<ACDCSampler>: public ClassTraitsBase<ACDCSampler> {
 namespace ACDCGenerator {
 
 /** Specialized Traits class to define the interface to the
- * EventHandler object to be sampled by ACDCGen.
+ * StandardEventHandler object to be sampled by ACDCGen.
  */
 template <>
-struct ACDCFncTraits<ThePEG::tEHPtr>: public ACDCTraitsType {
+struct ACDCFncTraits<ThePEG::tStdEHPtr>: public ACDCTraitsType {
   /** Convenient typdef. */
-  typedef ThePEG::tEHPtr tEHPtr;
+  typedef ThePEG::tStdEHPtr tStdEHPtr;
   /**
    * Call a function to be sampled by ACDCGen.
    * @return <code>(*f)(x)</code>.
    */
-  static inline double value(const tEHPtr & eh, const DVector & x) {
+  static inline double value(const tStdEHPtr & eh, const DVector & x) {
     using namespace ThePEG::Units;
     try {
       return eh->dSigDR(x)*ThePEG::sqr(hbarc)/nanobarn;

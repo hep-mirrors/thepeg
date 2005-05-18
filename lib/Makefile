@@ -1,7 +1,7 @@
 LIBRARIES = libThePEG.so
 
 SODIRS = EventRecord Handlers Interface MatrixElement PDF PDT Repository \
-         StandardModel Helicity
+         StandardModel Helicity LesHouches
 
 OBJECTS = ../Utilities/ClassDescription.o ../Config/Containers.o \
           ../Utilities/Debug.o ../Utilities/DescriptionList.o \
@@ -10,7 +10,8 @@ OBJECTS = ../Utilities/ClassDescription.o ../Config/Containers.o \
           ../Utilities/Math.o ../Persistency/PersistentIStream.o \
           ../Persistency/PersistentOStream.o ../Utilities/SimplePhaseSpace.o \
           ../Utilities/StringUtils.o ../Utilities/SystemUtils.o \
-          ../Utilities/Timer.o
+          ../Utilities/Timer.o ../Utilities/CFileLineReader.o \
+          ../Utilities/XSecStat.o
 
 DISTFILES = Makefile fixCLHEP g++dep ThePEG.el
 

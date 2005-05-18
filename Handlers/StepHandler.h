@@ -14,11 +14,11 @@ namespace ThePEG {
  * StepHandler is the base class for implementing any model for a step
  * in the event generation chain. It has one main virtual method,
  * handle(), which should be overridden by sub classes. The handle
- * method is given a reference to a PartialCollisionHandler, a vector
+ * method is given a reference to a EventHandler, a vector
  * of particles and a Hint as arguments. The handler is only allowed
  * to treat particles which are in the vector. The Hint may be cast
  * dynamically to a sub class and do whatever it wishes with the
- * information found there. The PartialCollisionHandler can be used to
+ * information found there. The EventHandler can be used to
  * add other <code>StepHandler</code>s and Hints to modify the
  * subsequent generation. If the StepHandler actually performs some
  * action, the resulting particles should be added to a new Step which
@@ -26,7 +26,7 @@ namespace ThePEG {
  *
  * @see \ref StepHandlerInterfaces "The interfaces"
  * defined for StepHandler.
- * @see PartialCollisionHandler
+ * @see EventHandler
  * @see Hint
  * @see Step
  * 
@@ -58,9 +58,9 @@ public:
   /** @name Virtual functions to be implemented by concrete sub-classes. */
   //@{
   /**
-    * The main function called by the PartialCollisionHandler class to
+    * The main function called by the EventHandler class to
     * perform a step.
-    * @param ch the PartialCollisionHandler in charge of the Event generation.
+    * @param eh the EventHandler in charge of the Event generation.
     * @param tagged if not empty these are the only particles which should
     * be considered by the StepHandler.
     * @param hint a Hint object with possible information from previously
@@ -71,24 +71,25 @@ public:
     * after this call.
     * @throws Exception if something goes wrong.
     */
-  virtual void handle(PartialCollisionHandler & ch, const tPVector & tagged,
+  virtual void handle(EventHandler & eh, const tPVector & tagged,
 		      const Hint & hint)
     ThePEG_THROW_SPEC((Veto, Stop, Exception)) = 0;
+
   //@}
 
-  /** @name Access to the calling PartialCollisionHandler and current Step. */
+  /** @name Access to the calling EventHandler and current Step. */
   //@{
   /**
-   * Set a pointer to the (partial) collision handler which made the
-   * last call to handle().
+   * Get a pointer to the EventHandler which made the last call to
+   * handle().
    */
-  inline tPartCollHdlPtr collisionHandler() const;
+  inline tEHPtr eventHandler() const;
 
   /**
-   * Get a pointer to the (partial) collision handler which made the
-   * last call to handle().
+   * Set a pointer to the EventHandler which made the last call to
+   * handle().
    */
-  void collisionHandler(tPartCollHdlPtr);
+  void eventHandler(tEHPtr);
 
   /**
    * Return a pointer to a new step. If one has alredy been created in
@@ -98,7 +99,7 @@ public:
 
   /**
    * If a new step has been created, return it, otherwise return the
-   * current step from the collisionHandler().
+   * current step from the eventHandler().
    */
   inline tStepPtr currentStep();
   //@}
@@ -125,7 +126,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -162,7 +163,7 @@ private:
    * A pointer to the (partial) collision handler which made the current
    * call to handle().
    */
-  tPartCollHdlPtr theCollisionHandler;
+  tEHPtr theEventHandler;
 
   /**
    * A pointer to a new step if created in the last call to handle().

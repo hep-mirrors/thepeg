@@ -20,24 +20,24 @@ inline bool RCPtrBase::release(const ReferenceCounted * rcp) {
 
 template <typename T>
 inline RCPtr<T>::RCPtr()
-  : thePointer(0) {}
+  : ptr(0) {}
 
 template <typename T>
 inline RCPtr<T>::RCPtr(const RCPtr & p)
-  : thePointer(p.thePointer) {
+  : ptr(p.ptr) {
   increment();
 }
 
 template <typename T>
 template <typename UPtr>
 inline RCPtr<T>::RCPtr(const UPtr & u)
-  : thePointer(PtrTraits<UPtr>::barePointer(u)) {
+  : ptr(PtrTraits<UPtr>::barePointer(u)) {
   increment();
 }
 
 template <typename T>
 inline RCPtr<T>::RCPtr(pointer p)
-  : thePointer(p) {
+  : ptr(p) {
   increment();
 }
 
@@ -62,7 +62,7 @@ inline RCPtr<T> RCPtr<T>::Create(const_reference t) {
 template <typename T>
 inline RCPtr<T> & RCPtr<T>::create(const_reference t) {
   release();
-  thePointer = new T(t);
+  ptr = new T(t);
   //  increment();
   return *this;
 }
@@ -70,16 +70,16 @@ inline RCPtr<T> & RCPtr<T>::create(const_reference t) {
 template <typename T>
 inline RCPtr<T> & RCPtr<T>::create() {
   release();
-  thePointer = new T;
+  ptr = new T;
   //  increment();
   return *this;
 }
 
 template <typename T>
 inline RCPtr<T> & RCPtr<T>::operator=(const RCPtr & p) {
-  if ( thePointer == p.thePointer ) return *this;
+  if ( ptr == p.ptr ) return *this;
   release();
-  thePointer = p.thePointer;
+  ptr = p.ptr;
   increment();
   return *this;
 }
@@ -87,9 +87,9 @@ inline RCPtr<T> & RCPtr<T>::operator=(const RCPtr & p) {
 template <typename T>
 template <typename UPtr>
 inline RCPtr<T> & RCPtr<T>::operator=(const UPtr & u) {
-  if ( thePointer == PtrTraits<UPtr>::barePointer(u) ) return *this;
+  if ( ptr == PtrTraits<UPtr>::barePointer(u) ) return *this;
   release();
-  thePointer = PtrTraits<UPtr>::barePointer(u);
+  ptr = PtrTraits<UPtr>::barePointer(u);
   increment();
   return *this;
 }
@@ -98,9 +98,9 @@ template <typename T>
 template <typename UPtr>
 inline RCPtr<T> & RCPtr<T>::assignDynamic(const UPtr & u) {
   pointer up = dynamic_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
-  if ( thePointer == up ) return *this;
+  if ( ptr == up ) return *this;
   release();
-  thePointer = up;
+  ptr = up;
   increment();
   return *this;
 }
@@ -109,114 +109,114 @@ template <typename T>
 template <typename UPtr>
 inline RCPtr<T> & RCPtr<T>::assignConst(const UPtr & u) {
   pointer up = const_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
-  if ( thePointer == up ) return *this;
+  if ( ptr == up ) return *this;
   release();
-  thePointer = up;
+  ptr = up;
   increment();
   return *this;
 }
 
 template <typename T>
 inline void RCPtr<T>::swap(RCPtr & p) {
-  const pointer tmp = thePointer;
-  thePointer = p.thePointer;
-  p.thePointer = tmp;
-  //  std::swap(thePointer, p.thePointer);
+  const pointer tmp = ptr;
+  ptr = p.ptr;
+  p.ptr = tmp;
+  //  std::swap(ptr, p.ptr);
 }  
 
 template <typename T>
 inline bool RCPtr<T>::operator==(const RCPtr & p) const {
-  return thePointer == p.thePointer;
+  return ptr == p.ptr;
 }
 
 template <typename T>
 inline bool RCPtr<T>::operator==(const_pointer p) const {
-  return thePointer == p;
+  return ptr == p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool RCPtr<T>::operator==(const UPtr & u) const {
-  return thePointer == PtrTraits<UPtr>::barePointer(u);
+  return ptr == PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool RCPtr<T>::operator!=(const RCPtr & p) const {
-  return thePointer != p.thePointer;
+  return ptr != p.ptr;
 }
 
 template <typename T>
 inline bool RCPtr<T>::operator!=(const_pointer p) const {
-  return thePointer != p;
+  return ptr != p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool RCPtr<T>::operator!=(const UPtr & u) const {
-  return thePointer != PtrTraits<UPtr>::barePointer(u);
+  return ptr != PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool RCPtr<T>::operator<(const RCPtr & p) const {
-  return thePointer < p.thePointer;
+  return ptr < p.ptr;
 }
 
 template <typename T>
 inline bool RCPtr<T>::operator<(const_pointer p) const {
-  return thePointer < p;
+  return ptr < p;
 }
 
 template <typename T>
 inline bool RCPtr<T>::operator!() const {
-  return !thePointer;
+  return !ptr;
 }
 
 template <typename T>
 inline RCPtr<T>::operator T * () const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename RCPtr<T>::pointer RCPtr<T>::operator->() const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename RCPtr<T>::reference RCPtr<T>::operator*() const {
-  return *thePointer;
+  return *ptr;
 }
 
 template <typename T>
 inline void RCPtr<T>::release() {
-  if ( RCPtrBase::release(thePointer) )  delete thePointer;
+  if ( RCPtrBase::release(ptr) )  delete ptr;
 }
 
 template <typename T>
 inline void RCPtr<T>::increment() {
-  RCPtrBase::increment(thePointer);
+  RCPtrBase::increment(ptr);
 }
 // ConstRCPtr
 
 template <typename T>
 inline ConstRCPtr<T>::ConstRCPtr()
-  : thePointer(0) {}
+  : ptr(0) {}
 
 template <typename T>
 inline ConstRCPtr<T>::ConstRCPtr(const ConstRCPtr & p)
-  : thePointer(p.thePointer) {
+  : ptr(p.ptr) {
   increment();
 }
 
 template <typename T>
 template <typename UPtr>
 inline ConstRCPtr<T>::ConstRCPtr(const UPtr & u)
-  : thePointer(PtrTraits<UPtr>::barePointer(u)) {
+  : ptr(PtrTraits<UPtr>::barePointer(u)) {
   increment();
 }
 
 template <typename T>
 inline ConstRCPtr<T>::ConstRCPtr(const_pointer p)
-  : thePointer(p) {
+  : ptr(p) {
   increment();
 }
 
@@ -229,9 +229,9 @@ inline ConstRCPtr<T>::~ConstRCPtr(){
 template <typename T>
 inline ConstRCPtr<T> & ConstRCPtr<T>::
 operator=(const ConstRCPtr & p) {
-  if ( thePointer == p.thePointer ) return *this;
+  if ( ptr == p.ptr ) return *this;
   release();
-  thePointer = p.thePointer;
+  ptr = p.ptr;
   increment();
   return *this;
 }
@@ -239,9 +239,9 @@ operator=(const ConstRCPtr & p) {
 template <typename T>
 template <typename UPtr>
 inline ConstRCPtr<T> & ConstRCPtr<T>::operator=(const UPtr & u) {
-  if ( thePointer == PtrTraits<UPtr>::barePointer(u) ) return *this;
+  if ( ptr == PtrTraits<UPtr>::barePointer(u) ) return *this;
   release();
-  thePointer = PtrTraits<UPtr>::barePointer(u);
+  ptr = PtrTraits<UPtr>::barePointer(u);
   increment();
   return *this;
 }
@@ -252,115 +252,115 @@ inline ConstRCPtr<T> & ConstRCPtr<T>::
 assignDynamic(const UPtr & u) {
   const_pointer up =
     dynamic_cast<const_pointer>(PtrTraits<UPtr>::barePointer(u));
-  if ( thePointer == up ) return *this;
+  if ( ptr == up ) return *this;
   release();
-  thePointer = up;
+  ptr = up;
   increment();
   return *this;
 }
 
 template <typename T>
 inline void ConstRCPtr<T>::swap(ConstRCPtr & p) {
-  const const_pointer tmp = thePointer;
-  thePointer = p.thePointer;
-  p.thePointer = tmp;
-  //  std::swap(thePointer, p.thePointer);
+  const const_pointer tmp = ptr;
+  ptr = p.ptr;
+  p.ptr = tmp;
+  //  std::swap(ptr, p.ptr);
 }  
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator==(const ConstRCPtr & p) const {
-  return thePointer == p.thePointer;
+  return ptr == p.ptr;
 }
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator==(const_pointer p) const {
-  return thePointer == p;
+  return ptr == p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool ConstRCPtr<T>::operator==(const UPtr & u) const {
-  return thePointer == PtrTraits<UPtr>::barePointer(u);
+  return ptr == PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator!=(const ConstRCPtr & p) const {
-  return thePointer != p.thePointer;
+  return ptr != p.ptr;
 }
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator!=(const_pointer p) const {
-  return thePointer != p;
+  return ptr != p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool ConstRCPtr<T>::operator!=(const UPtr & u) const {
-  return thePointer != PtrTraits<UPtr>::barePointer(u);
+  return ptr != PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator<(const ConstRCPtr & p) const {
-  return thePointer < p.thePointer;
+  return ptr < p.ptr;
 }
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator<(const_pointer p) const {
-  return thePointer < p;
+  return ptr < p;
 }
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator!() const {
-  return !thePointer;
+  return !ptr;
 }
 
 template <typename T>
 inline ConstRCPtr<T>::operator const T * () const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename ConstRCPtr<T>::const_pointer
 ConstRCPtr<T>::operator->() const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename ConstRCPtr<T>::const_reference
 ConstRCPtr<T>::operator*() const {
-  return *thePointer;
+  return *ptr;
 }
 
 template <typename T>
 inline void ConstRCPtr<T>::release() {
-  if ( RCPtrBase::release(thePointer) ) delete thePointer;
+  if ( RCPtrBase::release(ptr) ) delete ptr;
 }
 
 template <typename T>
 inline void ConstRCPtr<T>::increment() {
-  RCPtrBase::increment(thePointer);
+  RCPtrBase::increment(ptr);
 }
 
 // TransientRCPtr
 
 template <typename T>
 inline TransientRCPtr<T>::TransientRCPtr()
-  : thePointer(0) {}
+  : ptr(0) {}
 
 template <typename T>
 inline TransientRCPtr<T>::TransientRCPtr(const TransientRCPtr & p)
-  : thePointer(p.thePointer) {
+  : ptr(p.ptr) {
 }
 
 template <typename T>
 template <typename UPtr>
 inline TransientRCPtr<T>::TransientRCPtr(const UPtr & u)
-  : thePointer(PtrTraits<UPtr>::barePointer(u)) {
+  : ptr(PtrTraits<UPtr>::barePointer(u)) {
 }
 
 template <typename T>
 inline TransientRCPtr<T>::TransientRCPtr(pointer p)
-  : thePointer(p) {}
+  : ptr(p) {}
 
 
 template <typename T>
@@ -370,7 +370,7 @@ inline TransientRCPtr<T>::~TransientRCPtr(){
 template <typename T>
 inline TransientRCPtr<T> & TransientRCPtr<T>::
 operator=(const TransientRCPtr & p) {
-  thePointer = p.thePointer;
+  ptr = p.ptr;
   return *this;
 }
   
@@ -378,7 +378,7 @@ template <typename T>
 template <typename UPtr>
 inline TransientRCPtr<T> & TransientRCPtr<T>::
 operator=(const UPtr & u) {
-  thePointer = PtrTraits<UPtr>::barePointer(u);
+  ptr = PtrTraits<UPtr>::barePointer(u);
   return *this;
 }
 
@@ -386,7 +386,7 @@ template <typename T>
 template <typename UPtr>
 inline TransientRCPtr<T> & TransientRCPtr<T>::
 assignDynamic(const UPtr & u) {
-  thePointer = dynamic_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
+  ptr = dynamic_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
   return *this;
 }
 
@@ -394,95 +394,95 @@ template <typename T>
 template <typename UPtr>
 inline TransientRCPtr<T> & TransientRCPtr<T>::
 assignConst(const UPtr & u) {
-  thePointer = const_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
+  ptr = const_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
   return *this;
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::
 operator==(const TransientRCPtr & p) const {
-  return thePointer == p.thePointer;
+  return ptr == p.ptr;
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::operator==(const_pointer p) const {
-  return thePointer == p;
+  return ptr == p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool TransientRCPtr<T>::operator==(const UPtr & u) const {
-  return thePointer == PtrTraits<UPtr>::barePointer(u);
+  return ptr == PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::
 operator!=(const TransientRCPtr & p) const {
-  return thePointer != p.thePointer;
+  return ptr != p.ptr;
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::operator!=(const_pointer p) const {
-  return thePointer != p;
+  return ptr != p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool TransientRCPtr<T>::operator!=(const UPtr & u) const {
-  return thePointer != PtrTraits<UPtr>::barePointer(u);
+  return ptr != PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::operator<(const TransientRCPtr & p) const {
-  return thePointer < p.thePointer;
+  return ptr < p.ptr;
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::operator<(const_pointer p) const {
-  return thePointer < p;
+  return ptr < p;
 }
 
 template <typename T>
 inline bool TransientRCPtr<T>::operator!() const {
-  return !thePointer;
+  return !ptr;
 }
 
 template <typename T>
 inline TransientRCPtr<T>::operator T * () const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename TransientRCPtr<T>::pointer
 TransientRCPtr<T>::operator->() const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename TransientRCPtr<T>::reference
 TransientRCPtr<T>::operator*() const {
-  return *thePointer;
+  return *ptr;
 }
 
 // TransientConstRCPtr
 
 template <typename T>
 inline TransientConstRCPtr<T>::TransientConstRCPtr()
-  : thePointer(0) {}
+  : ptr(0) {}
 
 template <typename T>
 inline TransientConstRCPtr<T>::
 TransientConstRCPtr(const TransientConstRCPtr & p)
-  : thePointer(p.thePointer) {}
+  : ptr(p.ptr) {}
 
 template <typename T>
 template <typename UPtr>
 inline TransientConstRCPtr<T>::TransientConstRCPtr(const UPtr & u)
-  : thePointer(PtrTraits<UPtr>::barePointer(u)) {}
+  : ptr(PtrTraits<UPtr>::barePointer(u)) {}
 
 template <typename T>
 inline TransientConstRCPtr<T>::TransientConstRCPtr(const_pointer p)
-  : thePointer(p) {}
+  : ptr(p) {}
 
 
 template <typename T>
@@ -491,7 +491,7 @@ inline TransientConstRCPtr<T>::~TransientConstRCPtr() {}
 template <typename T>
 inline TransientConstRCPtr<T> & TransientConstRCPtr<T>::
 operator=(const TransientConstRCPtr & p) {
-  thePointer = p.thePointer;
+  ptr = p.ptr;
   return *this;
 }
   
@@ -499,7 +499,7 @@ template <typename T>
 template <typename UPtr>
 inline TransientConstRCPtr<T> & TransientConstRCPtr<T>::
 operator=(const UPtr & u) {
-  thePointer = PtrTraits<UPtr>::barePointer(u);
+  ptr = PtrTraits<UPtr>::barePointer(u);
   return *this;
 }
 
@@ -507,75 +507,75 @@ template <typename T>
 template <typename UPtr>
 inline TransientConstRCPtr<T> & TransientConstRCPtr<T>::
 assignDynamic(const UPtr & u) {
-  thePointer = dynamic_cast<const_pointer>(PtrTraits<UPtr>::barePointer(u));
+  ptr = dynamic_cast<const_pointer>(PtrTraits<UPtr>::barePointer(u));
   return *this;
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::
 operator==(const TransientConstRCPtr & p) const {
-  return thePointer == p.thePointer;
+  return ptr == p.ptr;
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::operator==(const_pointer p) const {
-  return thePointer == p;
+  return ptr == p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool TransientConstRCPtr<T>::operator==(const UPtr & u) const {
-  return thePointer == PtrTraits<UPtr>::barePointer(u);
+  return ptr == PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::
 operator!=(const TransientConstRCPtr & p) const {
-  return thePointer != p.thePointer;
+  return ptr != p.ptr;
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::operator!=(const_pointer p) const {
-  return thePointer != p;
+  return ptr != p;
 }
 
 template <typename T>
 template <typename UPtr>
 inline bool TransientConstRCPtr<T>::operator!=(const UPtr & u) const {
-  return thePointer != PtrTraits<UPtr>::barePointer(u);
+  return ptr != PtrTraits<UPtr>::barePointer(u);
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::
 operator<(const TransientConstRCPtr & p) const {
-  return thePointer < p.thePointer;
+  return ptr < p.ptr;
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::operator<(const_pointer p) const {
-  return thePointer < p;
+  return ptr < p;
 }
 
 template <typename T>
 inline bool TransientConstRCPtr<T>::operator!() const {
-  return !thePointer;
+  return !ptr;
 }
 
 template <typename T>
 inline TransientConstRCPtr<T>::operator const T * () const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename TransientConstRCPtr<T>::const_pointer
 TransientConstRCPtr<T>::operator->() const {
-  return thePointer;
+  return ptr;
 }
 
 template <typename T>
 inline typename TransientConstRCPtr<T>::const_reference
 TransientConstRCPtr<T>::operator*() const {
-  return *thePointer;
+  return *ptr;
 }
 
 }

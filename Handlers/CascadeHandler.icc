@@ -6,11 +6,6 @@
 
 namespace ThePEG {
 
-inline CascadeHandler::CascadeHandler() {}
-
-inline CascadeHandler::CascadeHandler(const CascadeHandler & x)
-  : StepHandler(x) {}
-
 inline const tPVector & CascadeHandler::tagged() const {
   return *theTagged;
 }
@@ -31,8 +26,8 @@ inline const pair<PDF,PDF> & CascadeHandler::pdfs() const {
   return thePDFs;
 }
 
-inline tPartCollHdlPtr CascadeHandler::collisionHandler() const {
-  return theCollisionHandler;
+inline tEHPtr CascadeHandler::eventHandler() const {
+  return theEventHandler;
 }
 
 inline void CascadeHandler::doupdate() throw(UpdateException) {

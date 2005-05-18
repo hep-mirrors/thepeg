@@ -19,7 +19,7 @@ namespace ThePEG {
  * @see \ref DecayHandlerInterfaces "The interfaces"
  * defined for DecayHandler.
  * @see StepHandler
- * @see CollisionHandler
+ * @see EventHandler
  * @see SubProcessHandler
  * 
  */
@@ -51,12 +51,12 @@ public:
   //@{
   /**
    * Look through all \a tagged particled and decay all unstable ones.
-   * @param ch the PartialCollisionHandler in charge of the generation.
+   * @param ch the EventHandler in charge of the generation.
    * @param tagged the vector of particles to consider. If empty, all
    * final state particles in the current Step is considered.
    * @param hint a possible Hint which is ignored in this implementation.
    */
-  virtual void handle(PartialCollisionHandler & ch, const tPVector & tagged,
+  virtual void handle(EventHandler & eh, const tPVector & tagged,
 		      const Hint & hint)
     ThePEG_THROW_SPEC((Veto, Stop, Exception));
   //@}
@@ -122,7 +122,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

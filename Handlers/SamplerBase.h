@@ -5,6 +5,7 @@
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "SamplerBase.fh"
+#include "ThePEG/Handlers/StandardEventHandler.fh"
 // #include "SamplerBase.xh"
 
 namespace ThePEG {
@@ -51,10 +52,10 @@ public:
 
   /**
    * Set the event handler for which the function
-   * EventHandler::dSigDR(const vector<double> &) function returns the
-   * cross section for the chosen phase space point.
+   * StandardEventHandler::dSigDR(const vector<double> &) function
+   * returns the cross section for the chosen phase space point.
    */
-  inline void setEventHandler(tEHPtr eh);
+  inline void setEventHandler(tStdEHPtr eh);
 
   /** @name Virtual functions to be overridden by sub-classes. */
   //@{
@@ -110,7 +111,7 @@ protected:
   /**
    * Return the associated event handler.
    */
-  inline tEHPtr eventHandler() const;
+  inline tStdEHPtr eventHandler() const;
 
 public:
 
@@ -145,7 +146,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -187,7 +188,7 @@ private:
   /**
    * The associated event handler.
    */
-  tEHPtr theEventHandler;
+  tStdEHPtr theEventHandler;
 
   /**
    * The last generated phase space point.

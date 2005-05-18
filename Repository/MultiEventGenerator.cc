@@ -90,7 +90,7 @@ string MultiEventGenerator::addInterface(string cmd) {
 void MultiEventGenerator::doGo(long next, long maxevent) {
 
   if ( theObjects.empty() ) {
-    FullEventGenerator::go(next, maxevent);
+    EventGenerator::go(next, maxevent);
     return;
   }
 
@@ -163,7 +163,7 @@ void MultiEventGenerator::rebind(const TranslationMap & trans)
   throw(RebindException) {
   for ( string::size_type i = 0; i < theObjects.size(); ++i )
     theObjects[i] = trans.translate(theObjects[i]);
-  FullEventGenerator::rebind(trans);
+  EventGenerator::rebind(trans);
 }
 
 ClassDescription<MultiEventGenerator>
@@ -174,7 +174,7 @@ void MultiEventGenerator::Init() {
 
   static ClassDocumentation<MultiEventGenerator> documentation
     ("The ThePEG::MultiEventGenerator class is derived from the "
-     "ThePEG::FullEventGenerator and is capable of making "
+     "ThePEG::EventGenerator and is capable of making "
      "several runs with a pre-defined set of parameter and switch values.");
 
   static Command<MultiEventGenerator> interfaceAddInterface

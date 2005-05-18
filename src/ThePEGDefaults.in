@@ -108,7 +108,7 @@ create ThePEG::DecayHandler StandardDecayHandler
 
 create ThePEG::ACDCSampler ACDCSampler ACDCSampler.so
 
-create ThePEG::EventHandler SimpleLEPHandler
+create ThePEG::StandardEventHandler SimpleLEPHandler
 create ThePEG::FixedCMSLuminosity FixedLEPLuminosity FixedCMSLuminosity.so
 set FixedLEPLuminosity:Energy 91.2
 set SimpleLEPHandler:LuminosityFunction FixedLEPLuminosity
@@ -123,7 +123,7 @@ set SimpleLEPHandler:BeamB /Defaults/Particles/e+
 set SimpleLEPHandler:Sampler ACDCSampler
 
 cd /Defaults/Generators
-create ThePEG::FullEventGenerator SimpleLEPGenerator
+create ThePEG::EventGenerator SimpleLEPGenerator
 set SimpleLEPGenerator:RandomNumberGenerator /Defaults/Random
 set SimpleLEPGenerator:StandardModelParameters /Defaults/StandardModel
 set SimpleLEPGenerator:EventHandler /Defaults/Handlers/SimpleLEPHandler

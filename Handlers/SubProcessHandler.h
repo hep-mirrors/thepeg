@@ -3,9 +3,12 @@
 #define ThePEG_SubProcessHandler_H
 // This is the declaration of the SubProcessHandler class.
 
+#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/Interval.h"
 #include "ThePEG/Handlers/HandlerGroup.h"
 #include "ThePEG/Handlers/HandlerBase.h"
+#include "ThePEG/MatrixElement/MEBase.fh"
+#include "SubProcessHandler.fh"
 
 
 namespace ThePEG {
@@ -13,27 +16,26 @@ namespace ThePEG {
 /**
  * The SubProcessHandler class is used to handle a set of MEBase
  * objects together with a PartonExtractor. It is used by the
- * CollisionHandler to group together different ways of extracting
+ * StandardEventHandler to group together different ways of extracting
  * partons from incoming particles with associated hard parton-parton
  * matrix elements.
  *
- * Just as the PartialCollisionHandler class (the base class of
- * CollisionHandler), a SubProcessHandler keeps a full set of
- * <code>HandlerGroup</code>s, which may be filled with defaults which
- * overrides the ones specified in the PartialCollisionHandler in each
- * event the SubProcessHandler is chosen.
+ * Just as the EventHandler class, a SubProcessHandler keeps a full
+ * set of <code>HandlerGroup</code>s, which may be filled with
+ * defaults which overrides the ones specified in the EventHandler in
+ * each event the SubProcessHandler is chosen.
  *
  * The SubProcessHandler has also a KinematicalCuts object which is
  * responsible for restricting the kinematics of the sub-process and
  * produced collision. This object takes precedence over the one in
- * the CollisionHandler in each event the SubProcessHandler is chosen.
+ * the EventHandler in each event the SubProcessHandler is chosen.
  *
  * @see \ref SubProcessHandlerInterfaces "The interfaces"
  * defined for SubProcessHandler.
  * @see MEBase
  * @see PartonExtractor
- * @see CollisionHandler
- * @see PartialCollisionHandler
+ * @see EventHandler
+ * @see StandardEventHandler
  * @see HandlerGroup
  * @see KinematicalCuts
  */
@@ -150,7 +152,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

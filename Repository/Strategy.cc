@@ -81,7 +81,7 @@ void Strategy::Init() {
      "null pointer is encountered this vector is gone through until an "
      "acceptable object is found in which case the null pointer is replaced "
      "by a pointer to this object. Note that the default objects given in the "
-     "ThePEG::EventGenerator are gone through first and are given precedence.",
+     "ThePEG::OldEventGenerator are gone through first and are given precedence.",
      &Strategy::theDefaultObjects, 0, true, false, true, false, false);
 
 }

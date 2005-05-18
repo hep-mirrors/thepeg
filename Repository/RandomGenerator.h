@@ -81,6 +81,12 @@ public:
   inline double rnd();
 
   /**
+   * Return \a n flat random number in the interval
+   * \f$]0,1[\f$.
+   */
+  inline RndVector rndvec(int n);
+
+  /**
    * Return a (possibly cached) flat random number in the interval
    * \f$]0,1[\f$.
    */

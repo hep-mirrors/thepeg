@@ -3,37 +3,70 @@
 #define ThePEG_EventHandler_H
 // This is the declaration of the EventHandler class.
 
-#include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/Handlers/CollisionHandler.h"
-#include "ThePEG/Handlers/EventHandler.xh"
-#include "ThePEG/Repository/Strategy.fh"
-#include "ThePEG/Handlers/SamplerBase.fh"
-#include <fstream>
+#include "ThePEG/Handlers/HandlerBase.h"
+#include "ThePEG/Handlers/HandlerGroup.h"
+#include "ThePEG/Handlers/StepHandler.h"
+#include "ThePEG/EventRecord/Event.h"
+#include "ThePEG/Handlers/LastXCombInfo.h"
+#include "ThePEG/Handlers/SubProcessHandler.fh"
+#include "EventHandler.fh"
 
 namespace ThePEG {
 
 /**
- * The EventHandler class is the main class for generating simple
- * events without overlayed collisions. It is derived from the
- * CollisionHandler class and introduces a LuminosityFunction to
- * describe the momentum distribution of incoming particles.
+ * The EventHandler is the base class used to implement event handlers
+ * in ThePEG. Objects of this class is assigned to an EventGenerator
+ * object which supervises a run. This base class is not able to
+ * generate complete events, although it does have a virtual
+ * generateEvent(). If the EventGenerator to which an EventGenerator
+ * is assinged is asked to generate a full event, it will call the
+ * generateEvent() function which will write an error message and
+ * abort the run.
  *
- * Besides the standard doinit() method, the EventHandler needs to be
- * separately initialized with the initialize() method. In the
- * dofinish() method statistics is written out to the EventGenerators
- * default output file.
+ * Objects of this base class can, however, be used to administer the
+ * evolution of a partially generated event supplied from the
+ * outside. To specify this event evolution the EventHandler maintains
+ * five groups of so-called StepHandlers implemented as
+ * HandlerGroups. Each group have a main step handler:
+ * SubProcessHandler, CascadeHandler, MultipleInteractionHandler,
+ * HadronizationHandler and DecayHandler respectively, whereof the
+ * first group only uses the post-handler part of the group.
  *
- * @see \ref EventHandlerInterfaces "The interfaces"
- * defined for EventHandler.
- * @see CollisionHandler
- * @see LuminosityFunction
- * @see EventGenerator
- * @see Event
- * 
+ * The EventHandler class inherits from the LastXCombInfo class to
+ * have easy interface to the information in the last selected XComb
+ * which carries information about the hard sub-process in the event.
+ *
+ * If a sub-class implements the generation of sub-processes and thus
+ * becomes a full event handler it should implement the
+ * generateEvent() function appropriately. It should also set the flag
+ * warnIncomplete to false, to avoid warnings when initialized as the main
+ * EventHandler of an Eventgenerator.
+ *
+ * @see \ref EventHandlerInterfaces "The interfaces" defined for EventHandler.
+ * @see Collision
+ * @see StepHandler
+ * @see HandlerGroup
+ * @see SubProcessHandler
+ * @see CascadeHandler
+ * @see MultipleInteractionHandler
+ * @see HadronizationHandler
+ * @see DecayHandler
  */
-class EventHandler: public CollisionHandler {
+class EventHandler: public HandlerBase, public LastXCombInfo<> {
 
 public:
+
+  /** A vector of <code>HandlerGroup</code>s. */
+  typedef vector<HandlerGroupBase *> GroupVector;
+
+public:
+
+  /** @name Standard constructors and destructors. */
+  //@{
+  /**
+   * Default constructor.
+   */
+  EventHandler(bool warnincomplete = true);
 
   /**
    * Copy-constructor.
@@ -41,17 +74,15 @@ public:
   EventHandler(const EventHandler &);
 
   /**
-   * Default constructor.
-   */
-  EventHandler();
-
-  /**
    * Destructor.
    */
-  ~EventHandler();
+  virtual ~EventHandler();
+  //@}
 
 public:
 
+  /** @name Main functions, some of which may be overridden by subclasses. */
+  //@{
   /**
    * Initialize this event handler and all related objects needed to
    * generate events.
@@ -59,33 +90,58 @@ public:
   virtual void initialize();
 
   /**
-   * Write out accumulated statistics about intergrated cross sections
-   * and stuff.
-   */
-  virtual void statistics(ostream &) const;
-
-  /** @name Functions used for the actual generation */
-  //@{
-  /**
-   * Return the cross section for the chosen phase space point.
-   * @param r a vector of random numbers to be used in the generation
-   * of a phase space point.
-   */
-  virtual CrossSection dSigDR(const vector<double> & r);
-
-  /**
-   * Generate an event.
+   * Generate an event. This base class is not capable of generating
+   * complete events and calling this function will result in an
+   * exception. Sub-classes which are capable of generating complete
+   * events from scratch must override this function.
    */
   virtual EventPtr generateEvent();
+
+  /**
+   * Generate an Event, where the initial state is supplied
+   * from the outside.
+   * @return a pointer to the generated Event.
+   */
+  tEventPtr generateEvent(tEventPtr e);
+
+  /**
+   * Generate an Event, where the initial state is supplied as a
+   * single step from the outside.
+   * @return a pointer to the generated Event.
+   */
+  tEventPtr generateEvent(tStepPtr s);
 
   /**
    * Continue generating an event if the generation has been stopped
    * before finishing.
    */
   virtual EventPtr continueEvent();
+
+  /**
+   * Continue the generation of a Collision. Used if the generation
+   * was previously interrupted.
+   */
+  tCollPtr continueCollision();
+
+  /**
+   * Clear all step handlers, making the handler ready for a new event.
+   */
+  void clearEvent();
+
+  /**
+   * Returns true if there are no step handlers left to apply to the
+   * current event;
+   */
+  virtual bool empty() const;
+
+  /**
+   * Write out accumulated statistics about intergrated cross sections
+   * and stuff.
+   */
+  virtual void statistics(ostream &) const;
   //@}
 
-  /** @name Simple access functions */
+  /** @name Simple access functions. */
   //@{
   /**
    * Return the maximum number attemts allowed to select a sub-process
@@ -94,22 +150,10 @@ public:
   inline long maxLoop() const;
 
   /**
-   * The level of statistics. Controlls the amount of statistics
-   * written out after each run to the <code>EventGenerator</code>s
-   * <code>.out</code> file.
+   * The pair of incoming particle types. These are null if not set by
+   * a subclass.
    */
-  inline int statLevel() const;
-
-  /**
-   * Return true if this event handler should produce weightes events
-   */
-  inline bool weighted() const;
-
-  /**
-   * Returns true if we are currently in a compensating mode after
-   * encountering a weight larger than 1.
-   */
-  inline bool compensating() const;
+  inline const cPDPair & incoming() const;
 
   /**
    * Access the luminosity function.
@@ -122,46 +166,112 @@ public:
   inline tcLumiFnPtr lumiFnPtr() const;
 
   /**
-   * The number of phase space dimensions used by the luminosity
-   * function.
+   * Access to the luminosity function.
    */
-  inline int lumiDim() const;
+  inline tLumiFnPtr lumiFnPtr();
 
   /**
-   * The number of dimensions of the basic phase space to generate
-   * sub-processes in for a given bin of XComb objects.
+   * The kinematical cuts to used by subclasses which do not provide their own.
    */
-  inline int nDim(int bin) const;
+  inline tKinCutPtr kinematicalCuts() const;
+
+  /**
+   * A PartonExtractor object to be used by sub classes which do not
+   * provide their own.
+   */
+  inline tPExtrPtr partonExtractor() const;
+
+  /**
+   * Gget current event.
+   */
+  inline tEventPtr currentEvent() const;
+
+  /**
+   * Get current collision.
+   */
+  inline tCollPtr currentCollision() const;
+
+  /**
+   * Get current step.
+   */
+  inline tStepPtr currentStep() const;
+
+  /**
+   * The level of statistics. Controlls the amount of statistics
+   * written out after each run to the <code>EventGenerator</code>s
+   * <code>.out</code> file.
+   */
+  inline int statLevel() const;
+  //@}
+
+  /** @name Internal functions used by main functions and possibly
+      from the outside. */
+  //@{
+  /**
+   * Perform a given step using a handler and a hint.
+   */
+  void performStep(tStepHdlPtr handler, tHintPtr hint);
+
+  /**
+   * In the curresnt list of step handlers to go through, add another
+   * step handler and/or hint.
+   */
+  void addStep(Group::Level, Group::Handler,
+	       tStepHdlPtr = tStepHdlPtr(), tHintPtr = tHintPtr());
+
+  /**
+   * Create a new step and make it current. Optionally supply a
+   * StepHandler which will be set as the handler for the created
+   * Step.
+   */
+  inline tStepPtr newStep(tcStepHdlPtr sh = tcStepHdlPtr());
+
+  /**
+   * Remove the last step.
+   */
+  inline void popStep();
+
+  /**
+   * Initialize the groups of step handlers.
+   */
+  virtual void initGroups();
+
+  /**
+   * Set current event.
+   */
+  inline void currentEvent(tEventPtr e);
+
+  /**
+   * Set current collision.
+   */
+  inline void currentCollision(tCollPtr c);
+
+  /**
+   * Set current step.
+   */
+  inline void currentStep(tStepPtr s);
+
+  /**
+   * Get current StepHandler.
+   */
+  inline tStepHdlPtr currentStepHandler() const;
+  /**
+   * Set current StepHandler.
+   */
+  inline void currentStepHandler(tStepHdlPtr sh);
+
+  /**
+   * Throw away the current event/collision.
+   */
+  void throwCurrent();
+
+  /**
+   * Throw away the last generated event before generating a new one.
+   */
+  virtual void clean();
   //@}
 
 public:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving and
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Writes out statistics on the generation.
-   */
-  virtual void dofinish();
-  //@}
 
   /** @name Functions used by the persistent I/O system. */
   //@{
@@ -192,14 +302,55 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  virtual IBPtr clone() const;
+  inline virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  virtual IBPtr fullclone() const;
+  inline virtual IBPtr fullclone() const;
   //@}
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Check sanity of the object during the setup phase.
+   */
+  inline virtual void doupdate() throw(UpdateException);
+
+  /**
+   * Initialize this object after the setup phase before saving an
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  inline virtual void doinit() throw(InitException);
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  inline virtual void dofinish();
+
+  /**
+   * Rebind pointer to other Interfaced objects. Called in the setup phase
+   * after all objects used in an EventGenerator has been cloned so that
+   * the pointers will refer to the cloned objects afterwards.
+   * @param trans a TranslationMap relating the original objects to
+   * their respective clones.
+   * @throws RebindException if no cloned object was found for a given pointer.
+   */
+  inline virtual void rebind(const TranslationMap & trans)
+    throw(RebindException);
+
+  /**
+   * Return a vector of all pointers to Interfaced objects used in
+   * this object.
+   * @return a vector of pointers.
+   */
+  inline virtual IVector getReferences();
+  //@}
+
+protected:
 
   /**
    * Access to the luminosity function.
@@ -207,25 +358,19 @@ protected:
   inline LuminosityFunction & lumiFn();
 
   /**
-   * Access to the luminosity function.
+   * Setup the step handler groups.
    */
-  inline tLumiFnPtr lumiFnPtr();
+  void setupGroups();
 
   /**
-   * Reject a (partially) generated event.
-   * @param weight the weight given for the event.
+   * Access the step handler groups
    */
-  void reject(double weight);
+  inline GroupVector & groups();
 
   /**
-   * Return the sampler assigned to this event handler.
+   * Access the step handler groups
    */
-  inline tSamplerPtr sampler();
-
-  /**
-   * Return the sampler assigned to this event handler.
-   */
-  inline tcSamplerPtr sampler() const;
+  inline const GroupVector & groups() const;
 
 private:
 
@@ -235,16 +380,6 @@ private:
   void lumiFn(LumiFnPtr);
 
 private:
-
-  /**
-   * Pointer to the luminosity function.
-   */
-  LumiFnPtr theLumiFn;
-
-  /**
-   * True if this event handler should produce weightes events
-   */
-  bool weightedEvents;
 
   /**
    * The maximum number of attempts to select a sub-process allowed
@@ -259,62 +394,170 @@ private:
   int theStatLevel;
 
   /**
-   * The phase space sampler responsible for generating phase space
-   * points according to the cross section given by this event
-   * handler.
+   * Pointer to a luminosity function tobe used by subclasses.
    */
-  SamplerPtr theSampler;
+  LumiFnPtr theLumiFn;
 
   /**
-   * The number of phase space dimensions used by the luminosity
-   * function.
+   * The kinematical cuts to used by subclasses which do not provide
+   * their own.
    */
-  int theLumiDim;
+  KinCutPtr theKinematicalCuts;
 
   /**
-   * The number of dimensions of the basic phase space to generate
-   * sub-processes in.
+   * A PartonExtractor object to be used by sub classes which do not
+   * provide their own.
    */
-  int theNDim;
+  PExtrPtr thePartonExtractor;
 
   /**
-   * Standard Initialization object.
+   * The SubProcessHandler group.
    */
-  static ClassDescription<EventHandler> initEventHandler;
+  HandlerGroup<SubProcessHandler> theSubprocessGroup;
+
+  /**
+   * The CascadeHandler group.
+   */
+  HandlerGroup<CascadeHandler> theCascadeGroup;
+
+  /**
+   * The MultipleInteractionHandler group.
+   */
+  HandlerGroup<MultipleInteractionHandler> theMultiGroup;
+
+  /**
+   * The HadronizationHandler group.
+   */
+  HandlerGroup<HadronizationHandler> theHadronizationGroup;
+
+  /**
+   * The DecayHandler group.
+   */
+  HandlerGroup<DecayHandler> theDecayGroup;
+
+  /**
+   * The step handler groups.
+   */
+  GroupVector theGroups;
+
+  /**
+   * The current Event.
+   */
+  EventPtr theCurrentEvent;
+
+  /**
+   * The current Collision.
+   */
+  CollPtr theCurrentCollision;
+
+  /**
+   * The current Step.
+   */
+  StepPtr theCurrentStep;
+
+  /**
+   * The current StepHandler.
+   */
+  StepHdlPtr theCurrentStepHandler;
+
+protected:
+
+  /**
+   * Utility object to facilitate default selection of step handlers.
+   */
+  HandlerGroup<SubProcessHandler> optSubprocessGroup;
+
+  /**
+   * Utility object to facilitate default selection of step handlers.
+   */
+  HandlerGroup<CascadeHandler> optCascadeGroup;
+
+  /**
+   * Utility object to facilitate default selection of step handlers.
+   */
+  HandlerGroup<MultipleInteractionHandler> optMultiGroup;
+
+  /**
+   * Utility object to facilitate default selection of step handlers.
+   */
+  HandlerGroup<HadronizationHandler> optHadronizationGroup;
+
+  /**
+   * Utility object to facilitate default selection of step handlers.
+   */
+  HandlerGroup<DecayHandler> optDecayGroup;
+
+protected:
+
+  /**
+   * Utility object to facilitate default selection of step handlers.
+   */
+  GroupVector optGroups;
+
+protected:
+
+  /**
+   * Emit warning that this EventHandler is incomplete.
+   */
+  bool warnIncomplete;
+
+  /**
+   * The pair of incoming particle types. Should be set by a subclass
+   * which implements a complete EventHandler.
+   */
+  cPDPair theIncoming;
+
+protected:
+
+  /**
+   * Exception class used by EventHandler when a StepHandler of the
+   * wrong class was added.
+   */
+  class EventHandlerStepError: public Exception {};
+
+  /**
+   * Exception class used by EventHandler if asked to generate a
+   * complete event.
+   */
+  class EventHandlerIncompleteError: public Exception {};
+
+  /** Exception class used if too many attempts to generate an event
+   *  failed. */
+  struct EventLoopException: public Exception {
+    /** Standard constructor. */
+    EventLoopException(const EventHandler &);
+  };
+
+  /**
+   * Exception class used if the assignment of a LuminosityFunction
+   * failed
+   */
+  struct LumiFuncError: public Exception {};
 
 private:
 
+  ThePEG_DECLARE_PREPOST_GROUP(SubProcessHandler,Post);
+  ThePEG_DECLARE_GROUPINTERFACE(CascadeHandler,CascHdlPtr);
+  ThePEG_DECLARE_GROUPINTERFACE(MultipleInteractionHandler,MIHdlPtr);
+  ThePEG_DECLARE_GROUPINTERFACE(HadronizationHandler,HadrHdlPtr);
+  ThePEG_DECLARE_GROUPINTERFACE(DecayHandler,DecayHdlPtr);
+
+  ThePEG_DECLARE_CLASS_DESCRIPTION(EventHandler);
+
   /**
-   * Private and non-existent assignment operator.
+   *  Private and non-existent assignment operator.
    */
-  const EventHandler & operator=(const EventHandler &);
+  EventHandler & operator=(const EventHandler &);
 
 };
 
-/**
- * The following template specialization informs ThePEG about the
- * base class of EventHandler.
- */
-template <>
-struct BaseClassTrait<EventHandler,1>: public ClassTraitsType {
-  /** Typedef of the base class of EventHandler. */
-  typedef CollisionHandler NthBase;
-};
-
-/**
- * The following template specialization informs ThePEG about the name
- * of theEventHandler class and the shared object where it is defined.
- */
-template <>
-struct ClassTraits<EventHandler>: public ClassTraitsBase<EventHandler> {
-  /**
-   * Return the class name.
-   */
-  static string className() { return "ThePEG::EventHandler"; }
-};
+ThePEG_DECLARE_CLASS_TRAITS(EventHandler,HandlerBase);
 
 }
 
 #include "EventHandler.icc"
+#ifndef ThePEG_TEMPLATES_IN_CC_FILE
+// #include "EventHandler.tcc"
+#endif
 
 #endif /* ThePEG_EventHandler_H */

@@ -16,7 +16,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Repository/EventGenerator.h"
-#include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/Handlers/KinematicalCuts.h"
 
 using namespace ThePEG;

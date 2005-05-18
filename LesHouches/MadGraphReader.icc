@@ -7,10 +7,11 @@
 namespace ThePEG {
 
 inline MadGraphReader::MadGraphReader()
-  : neve(0), ieve(0) {}
+: fixedScale(91.188*GeV), fixedAEM(0.007546772), fixedAS(0.12) {}
 
 inline MadGraphReader::MadGraphReader(const MadGraphReader & x)
-  : LesHouchesFileReader(x), neve(x.neve), ieve(0) {}
+  : LesHouchesFileReader(x), fixedScale(x.fixedScale),
+    fixedAEM(x.fixedAEM), fixedAS(x.fixedAS) {}
 
 inline IBPtr MadGraphReader::clone() const {
   return new_ptr(*this);
@@ -44,6 +45,7 @@ inline void MadGraphReader::doinit() throw(InitException) {
 
 inline void MadGraphReader::dofinish() {
   LesHouchesFileReader::dofinish();
+  if ( stats.accepted() > 0 ) useMe();
 }
 
 inline void MadGraphReader::doinitrun() {

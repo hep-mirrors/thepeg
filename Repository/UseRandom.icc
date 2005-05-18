@@ -32,6 +32,10 @@ inline  double UseRandom::rnd() {
   return current().rnd();
 }
 
+inline RandomGenerator::RndVector UseRandom::rndvec(int n) {
+  return current().rndvec(n);
+}
+
 inline double UseRandom::rnd(double xu) {
   return rnd()*xu;
 }

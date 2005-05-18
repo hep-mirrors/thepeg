@@ -107,7 +107,7 @@ void SubProcessHandler::Init() {
   static Reference<SubProcessHandler,KinematicalCuts> interfaceCuts
     ("Cuts",
      "Common kinematical cuts for this SubProcessHandler. These cuts "
-     "overides those in a CollisionHandler.",
+     "overides those in a EventHandler.",
      &SubProcessHandler::theCuts, false, false, true, true);
 
   static RefVector<SubProcessHandler,ReweightBase> interfaceReweights

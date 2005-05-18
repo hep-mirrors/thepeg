@@ -79,7 +79,9 @@ else
 endif
 
 depend:
-	$(LIBDIR)/g++dep $(INCLUDES) $(SOURCES) $(CHECKSOURCES)
+ifdef SOURCES
+	$(LIBDIR)/g++dep $(INCLUDES) $(SOURCES)
+endif
 
 lib: $(OBJECTS)
 
@@ -96,7 +98,7 @@ tagsfile:
 	ctags --c++ --language=c++ --ignore-indentation --members --typedefs-and-c++ --no-warn  *cc *h
 
 clean:
-	rm -f $(CHECKPROGS) $(PROGS) $(LIBRARIES) *.o *.so a.out
+	rm -f $(CHECKPROGS) $(PROGS) $(LIBRARIES) *.o *.so *~ a.out
 
 dist:
 	SRCDIR=`pwd`; DIR=`basename $$SRCDIR` ; mkdir -p ../$(TAGDIR)/$$DIR ; cp $(DISTFILES) ../$(TAGDIR)/$$DIR

@@ -57,7 +57,7 @@ generate(PartonBinInstance & pb, const double * r,
 
   double x = pb.xi();
   double eps = pb.eps();
-  Energy2 smax = (parent.m2()*x*eps + eps*abs(scale))/x;
+  Energy2 smax = (parent.m2()*x*eps + eps*max(abs(scale), parent.m2()))/x;
   if ( smax < sqr(pb.particle()->nominalMass() +
 		  2.0*pb.parton()->nominalMass() + margin()) ) {
     pb.remnantWeight(0.0);
@@ -166,9 +166,9 @@ generate(PartonBinInstance & pb, const double * r,
 
     TransverseMomentum kt;
    
-    if ( scale < 0.0*GeV2 ) {
+    if ( scale <= 0.0*GeV2 ) {
       kt = ptGeneratorQ().generate();
-      if ( kt.pt2() > parent.m2()*x*eps - s*x - eps*scale ) continue;
+      if ( kt.pt2() > smax*x - s*x ) continue;
     } else {
       Energy2 kt2 = parent.m2()*x*eps - s*x + eps*scale;
       double phi = rnd(2.0*Constants::pi);

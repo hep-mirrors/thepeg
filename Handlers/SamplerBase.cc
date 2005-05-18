@@ -6,7 +6,7 @@
 
 #include "SamplerBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-#include "ThePEG/Handlers/EventHandler.h"
+#include "ThePEG/Handlers/StandardEventHandler.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "SamplerBase.tcc"

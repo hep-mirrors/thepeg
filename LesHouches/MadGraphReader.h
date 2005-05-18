@@ -8,7 +8,11 @@
 namespace ThePEG {
 
 /**
- * MadGraphReader inherits from LesHouchesFileReader
+ * MadGraphReader inherits from LesHouchesFileReader and is able to
+ * read event files produced by the MadGraph/MadEvent program.
+ *
+ * @see \ref MadGraphReaderInterfaces "The interfaces"
+ * defined for MadGraphReader.
  */
 class MadGraphReader: public LesHouchesFileReader {
 
@@ -43,17 +47,21 @@ public:
   virtual void open();
 
   /**
+   * Scan the file or stream to obtain information about cross section
+   * weights and particles etc. This function should fill the
+   * variables corresponding to the /HEPRUP/ common block. The
+   * function returns the number of events scanned. This version calls
+   * the base class function and the readjusts the values in HEPRUP to
+   * cure some inconsistencies in the MadGraph files.
+   */
+  virtual long scan();
+
+  /**
    * Read the next event form the file or stream into the
    * corresponding protected variables. Return false if there is no
    * more events.
    */
   virtual bool readEvent();
-
-  /**
-   * Scan the file or stream to obtain information about cross section
-   * weights and particles etc.  
-   */
-  virtual void scan();
   //@}
 
 public:
@@ -106,7 +114,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -146,14 +154,25 @@ protected:
 protected:
 
   /**
-   * The number of events in this file.
+   * Fixed scale. Old MadGraph files do not necessarily contain
+   * information about the factorization (or renormalization)
+   * scale. In this case this is used instead.
    */
-  long neve;
+  Energy fixedScale;
 
   /**
-   * The current event number.
+   * Fixed \f$\alpha_{EM}\f$.  Old MadGraph files do not necessarily
+   * contain information about the value of \f$\alpha_{EM}\f$. In this
+   * case this is used instead.
    */
-  long ieve;
+  double fixedAEM;
+
+  /**
+   * Fixed \f$\alpha_S\f$.  Old MadGraph files do not necessarily
+   * contain information about the value of \f$\alpha_S\f$. In this
+   * case this is used instead.
+   */
+  double fixedAS;
 
 private:
 

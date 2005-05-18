@@ -7,11 +7,12 @@
 namespace ThePEG {
 
 inline LesHouchesFileReader::LesHouchesFileReader()
-  : theFile(NULL) {}
+  : neve(0), ieve(0), theFile(NULL) {}
 
 inline LesHouchesFileReader::
 LesHouchesFileReader(const LesHouchesFileReader & x)
-  : LesHouchesReader(x), theFile(NULL), theFileName(x.theFileName) {}
+  : LesHouchesReader(x), neve(x.neve), ieve(0),
+    theFile(NULL), theFileName(x.theFileName) {}
 
 inline string LesHouchesFileReader::filename() const {
   return theFileName;

@@ -9,7 +9,7 @@ namespace ThePEG {
 inline MultiEventGenerator::MultiEventGenerator() {}
 
 inline MultiEventGenerator::MultiEventGenerator(const MultiEventGenerator & x)
-  : FullEventGenerator(x), theObjects(x.theObjects),
+  : EventGenerator(x), theObjects(x.theObjects),
     theInterfaces(x.theInterfaces), thePosArgs(x.thePosArgs),
     theValues(x.theValues) {}
 
@@ -22,7 +22,7 @@ inline IBPtr MultiEventGenerator::fullclone() const {
 }
 
 inline void MultiEventGenerator::doupdate() throw(UpdateException) {
-  FullEventGenerator::doupdate();
+  EventGenerator::doupdate();
   // First update base class.
   bool redo = touched();
   // redo if touched.
@@ -40,19 +40,19 @@ inline void MultiEventGenerator::doupdate() throw(UpdateException) {
 }
 
 inline void MultiEventGenerator::doinit() throw(InitException) {
-  FullEventGenerator::doinit();
+  EventGenerator::doinit();
 }
 
 inline void MultiEventGenerator::doinitrun() {
-  FullEventGenerator::doinitrun();
+  EventGenerator::doinitrun();
 }
 
 inline void MultiEventGenerator::dofinish() {
-  FullEventGenerator::dofinish();
+  EventGenerator::dofinish();
 }
 
 inline IVector MultiEventGenerator::getReferences() {
-  IVector ret = FullEventGenerator::getReferences();
+  IVector ret = EventGenerator::getReferences();
   ret.insert(ret.end(), theObjects.begin(), theObjects.end());
   return ret;
 }

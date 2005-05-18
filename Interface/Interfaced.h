@@ -143,7 +143,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException) = 0;
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk. Nothing should have changed since the
    * last update() call.
    * @throws InitException if object could not be initialized properly.

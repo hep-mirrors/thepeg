@@ -20,6 +20,9 @@ namespace ThePEG {
  * standard way in C++ to connect a pipe to a stream for reading
  * eg. gzipped files.
  *
+ * @see \ref LesHouchesFileReaderInterfaces "The interfaces"
+ * defined for LesHouchesFileReader.
+ * @see Event
  * @see LesHouchesReader
  */
 class LesHouchesFileReader: public LesHouchesReader {
@@ -105,7 +108,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
@@ -148,6 +151,18 @@ protected:
    * The wrapper around the C FILE stream from which to read
    */
   CFileLineReader cfile;
+
+protected:
+
+  /**
+   * The number of events in this file.
+   */
+  long neve;
+
+  /**
+   * The current event number.
+   */
+  long ieve;
 
 private:
 

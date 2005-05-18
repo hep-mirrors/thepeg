@@ -9,6 +9,7 @@
 namespace ThePEG {
 
 class SubProcessHandler;
+ThePEG_DECLARE_POINTERS(SubProcessHandler,SubHdlPtr);
 
 }
 

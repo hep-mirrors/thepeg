@@ -29,15 +29,6 @@ inline void LesHouchesReader::dofinish() {
   HandlerBase::dofinish();
 }
 
-inline void LesHouchesReader::doinitrun() {
-  HandlerBase::doinitrun();
-  theNAttempted = theNAccepted = 0;
-  theAttemptMap.clear();
-  theAcceptMap.clear();
-  open();
-  if ( cacheFileName().length() ) openReadCacheFile();
-}
-
 inline void LesHouchesReader::rebind(const TranslationMap & trans)
   throw(RebindException) {
   // dummy = trans.translate(dummy);
@@ -50,16 +41,12 @@ inline IVector LesHouchesReader::getReferences() {
   return ret;
 }
 
-inline CrossSection LesHouchesReader::xSec() const {
-  return theXSec;
-}
-
-inline double LesHouchesReader::maxWeight() const {
-  return theMaxWeight;
-}
-
 inline long LesHouchesReader::NEvents() const {
   return theNEvents;
+}
+
+inline long LesHouchesReader::currentPosition() const {
+  return position;
 }
 
 inline long LesHouchesReader::maxScan() const {
@@ -82,6 +69,10 @@ inline const PVector & LesHouchesReader::intermediates() const {
   return theIntermediates;
 }
 
+inline bool LesHouchesReader::active() const {
+  return isActive;
+}
+
 inline bool LesHouchesReader::weighted() const {
   return isWeighted;
 }
@@ -90,24 +81,8 @@ inline void LesHouchesReader::weighted(bool x) {
   isWeighted = x;
 }
 
-inline CrossSection LesHouchesReader::maxXSec() const {
-  return theMaxXSec;
-}
-
-inline void LesHouchesReader::maxXSec(CrossSection x) {
-  theMaxXSec = x;
-}
-
-inline void LesHouchesReader::xSec(CrossSection x) {
-  theXSec = x;
-}
-
 inline void LesHouchesReader::NEvents(long x) {
   theNEvents = x;
-}
-
-inline void LesHouchesReader::maxWeight(double x) {
-  theMaxWeight = x;
 }
 
 inline bool LesHouchesReader::negativeWeights() const {
@@ -120,10 +95,6 @@ inline void LesHouchesReader::negativeWeights(bool x) {
 
 inline string LesHouchesReader::cacheFileName() const {
   return theCacheFileName;
-}
-
-inline bool LesHouchesReader::randomize() const {
-  return doRandomize;
 }
 
 inline size_t LesHouchesReader::eventSize(int N) {
@@ -141,7 +112,8 @@ inline FILE * LesHouchesReader::cacheFile() const {
 inline bool LesHouchesReader::compressedCache() const {
 #ifdef ThePEG_GZREAD_FILE
 #ifdef ThePEG_GZWRITE_FILE
-  return cacheFileName().substr(cacheFileName().length()-3,3) == ".gz";
+  return cacheFileName().length() > 3 &&
+    cacheFileName().substr(cacheFileName().length()-3,3) == ".gz";
 #else
   return false;
 #endif
@@ -162,27 +134,34 @@ const char * LesHouchesReader::mread(const char * pos, T & t, size_t n) {
   return pos + n*sizeof(T);
 }
 
-inline long LesHouchesReader::nAttempted() const {
-  return theNAttempted;
+inline const LesHouchesReader::StatMap &
+LesHouchesReader::processStats() const {
+  return statmap;
 }
 
-inline long LesHouchesReader::nAccepted() const {
-  return theNAccepted;
+inline const XSecStat &
+LesHouchesReader::xSecStats() const {
+  return stats;
 }
 
-inline const LesHouchesReader::CountMap &
-LesHouchesReader::attemptMap() const {
-  return theAttemptMap;
+inline void LesHouchesReader::select(double weight) {
+  stats.select(weight);
+  statmap[hepeup.IDPRUP].select(weight);
 }
 
 inline void LesHouchesReader::accept() {
-  ++theNAccepted;
-  ++theAcceptMap[IDPRUP];
+  stats.accept();
+  statmap[hepeup.IDPRUP].accept();
 }
 
-inline const LesHouchesReader::CountMap &
-LesHouchesReader::acceptMap() const {
-  return theAcceptMap;
+inline void LesHouchesReader::reject() {
+  stats.reject();
+  statmap[hepeup.IDPRUP].reject();
+}
+
+inline void LesHouchesReader::increaseMaxXSec(CrossSection maxxsec) {
+  stats.maxXSec(maxxsec);
+  statmap[hepeup.IDPRUP].maxXSec(maxxsec);
 }
 
 inline tPExtrPtr LesHouchesReader::partonExtractor() const {
@@ -199,6 +178,14 @@ inline const KinematicalCuts & LesHouchesReader::cuts() const {
 
 inline const PBIPair & LesHouchesReader::partonBinInstances() const {
   return thePartonBinInstances;
+}
+
+inline LesHouchesReader::XCombMap & LesHouchesReader::xCombs() {
+  return theXCombs;
+}
+
+inline const LesHouchesReader::XCombMap & LesHouchesReader::xCombs() const {
+  return theXCombs;
 }
 
 }

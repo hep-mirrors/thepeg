@@ -1,0 +1,27 @@
+// -*- C++ -*-
+#ifndef ThePEG_RandPoisson_FH
+#define ThePEG_RandPoisson_FH
+
+// This is the forward declaration of the <!id>RandPoisson<!!id>
+// class from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
+// <!id>RandPoisson<!!id> and making it available in the
+// <!id>ThePEG<!!id> namespace.
+
+#include "CLHEP.h"
+#include "CLHEP/Random/RandPoisson.h"
+
+namespace CLHEP {
+
+/** Typedef in the CLHEP namespace to avoid clashes. */
+typedef RandPoisson ThePEGRandPoisson;
+
+}
+
+namespace ThePEG {
+
+/** Typedef in the ThePEG namespace to avoid clashes. */
+typedef CLHEP::ThePEGRandPoisson RandPoisson;
+
+}
+
+#endif /* ThePEG_RandPoisson_FH */

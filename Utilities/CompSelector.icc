@@ -1,0 +1,152 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the CompSelector class.
+//
+
+namespace ThePEG {
+
+template <typename T, typename WeightType>
+inline CompSelector<T,WeightType>::CompSelector(double m)
+  : N(0), last(T()), theMargin(m) {}
+
+template <typename T, typename WeightType>
+inline CompSelector<T,WeightType>::CompSelector(const CompSelector & x)
+  : selector(x.selector), N(x.N), last(x.last),
+    theMargin(x.theMargin), levels(x.levels) {}
+
+template <typename T, typename WeightType>
+inline CompSelector<T,WeightType>::~CompSelector() {}
+
+template <typename T, typename WeightType>
+inline CompSelector<T,WeightType> & CompSelector<T,WeightType>::
+operator=(const CompSelector<T,WeightType> & x) {
+  selector = x.selector;
+  N = x.N;
+  last = x.last;
+  theMargin = x.theMargin;
+  levels = x.levels;
+  return *this;
+}
+
+template <typename T, typename WeightType>
+inline WeightType CompSelector<T,WeightType>::
+insert(WeightType d, const T & t) {
+  reset();
+  return selector.insert(d, t);
+}
+
+template <typename T, typename WeightType>
+template <typename RNDGEN>
+inline T & CompSelector<T,WeightType>::
+select(RNDGEN & rnd) throw(range_error) {
+  ++N;
+  if ( !compensating() ) last = selector.select(rnd);
+  return last;
+}
+
+template <typename T, typename WeightType>
+inline WeightType CompSelector<T,WeightType>::reweight(double & weight) {
+  if ( abs(weight) > 1.0 ) {
+    // Retrieve the old overestimate of the object by seing how much
+    // the summed weights are decreased when removing the object.
+    WeightType oldmax = selector.sum();
+    oldmax -= selector.erase(last);
+    WeightType newmax = oldmax*abs(weight)*margin();
+    selector.insert(newmax, last);
+    double rat = newmax/oldmax;
+
+    // Setup the new compensation level.
+    Level level;
+    level.weight = 1.0/rat;
+    level.lastN = long(N*rat);
+
+    // If we are already compensating, reweight the previous
+    // compensation levels.
+    for ( int i = 0, M = levels.size(); i < M; ++i ) {
+      levels[i].lastN = long(levels[i].lastN*rat);
+      levels[i].weight /= rat;
+    }
+    levels.push_back(level);
+    weight /= rat;
+    return newmax;
+  }
+
+  // If we are compensating we should only accept the selection if the
+  // weight is above the previous overestimate.
+  if ( compensating() ) if ( abs(weight) < levels.back().weight ) weight = 0.0;
+
+  return WeightType();
+}
+
+template <typename T, typename WeightType>
+inline void CompSelector<T,WeightType>::reset() {
+  N = 0;
+  levels.clear();
+  last = T();
+}
+
+template <typename T, typename WeightType>
+inline void CompSelector<T,WeightType>::clear() {
+  selector.clear();
+  reset();
+}
+
+template <typename T, typename WeightType>
+inline WeightType CompSelector<T,WeightType>::sum() const {
+  return selector.sum();
+}
+
+template <typename T, typename WeightType>
+inline void CompSelector<T,WeightType>::margin(double m) {
+  theMargin = m;
+}
+
+template <typename T, typename WeightType>
+inline bool CompSelector<T,WeightType>::compensating() {
+  // Leave all levels which has reached there 'expiry date'.
+  while ( levels.size() && levels.back().lastN < N ) levels.pop_back();
+  return !levels.empty();
+}
+
+template <typename T, typename WeightType>
+inline long CompSelector<T,WeightType>::compleft() const {
+  return levels.empty()? 0: levels.back().lastN - N;
+}
+
+template <typename T, typename WeightType>
+inline double CompSelector<T,WeightType>::margin() const {
+  return theMargin;
+}
+
+template <typename T, typename WeightType>
+template <typename OStream>
+void CompSelector<T,WeightType>::output(OStream & os) const {
+  os << selector << N << last << theMargin << levels.size();
+  for ( int i = 0, M = levels.size(); i < M; ++i )
+    os << levels[i].lastN << levels[i].weight;
+}
+
+template <typename T, typename WeightType>
+template <typename IStream>
+inline void CompSelector<T,WeightType>::input(IStream & is) {
+  long M;
+  is >> selector >> N >> last >> theMargin >> M;
+  levels.resize(M);
+  for ( int i = 0; i < M; ++i ) is >> levels[i].lastN >> levels[i].weight;
+}
+
+template <typename OStream, typename T, typename WeightType>
+inline OStream &
+operator<<(OStream & os, const CompSelector<T,WeightType> & s) {
+  s.output(os);
+  return os;
+}
+
+template <typename IStream, typename T, typename WeightType>
+inline IStream & operator>>(IStream & is, CompSelector<T,WeightType> & s) {
+  s.input(is);
+  return is;
+}
+
+}

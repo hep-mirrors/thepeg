@@ -21,6 +21,9 @@
 #include "ThePEG/StandardModel/StandardModelBase.h"
 #include "ThePEG/Repository/Strategy.h"
 #include "ThePEG/Repository/CurrentGenerator.h"
+#include "ThePEG/Handlers/AnalysisHandler.h"
+#include "ThePEG/Handlers/EventManipulator.h"
+#include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
@@ -36,7 +39,8 @@ using namespace ThePEG;
 
 EventGenerator::EventGenerator()
   : thePath("."), theNumberOfEvents(1000), theQuickSize(7000), ieve(0),
-    theDebugLevel(0), maxWarnings(10), maxErrors(10), theCurrentRandom(0),
+    theDebugLevel(0), printEvent(0), dumpPeriod(0), debugEvent(0),
+    maxWarnings(10), maxErrors(10), theCurrentRandom(0),
     theCurrentGenerator(0) {}
 
 EventGenerator::EventGenerator(const EventGenerator & eg)
@@ -44,20 +48,29 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theLocalParticles(eg.theLocalParticles),
     theStandardModel(eg.theStandardModel),
     theStrategy(eg.theStrategy), theRandom(eg.theRandom),
+    theEventHandler(eg.theEventHandler),
+    theAnalysisHandlers(eg.theAnalysisHandlers),
+    theEventManipulator(eg.theEventManipulator),
     thePath(eg.thePath), theRunName(eg.theRunName),
     theNumberOfEvents(eg.theNumberOfEvents), theObjects(eg.theObjects),
     theObjectMap(eg.theObjectMap),
     theParticles(eg.theParticles), theQuickParticles(eg.theQuickParticles),
     theQuickSize(eg.theQuickSize), theMatchers(eg.theMatchers),
     usedObjects(eg.usedObjects), theDebugLevel(eg.theDebugLevel),
+    printEvent(eg.printEvent), dumpPeriod(eg.dumpPeriod),
+    debugEvent(eg.debugEvent),
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
     theCurrentGenerator(0),
-    theCurrentCollisionHandler(eg.theCurrentCollisionHandler),
+    theCurrentEventHandler(eg.theCurrentEventHandler),
     theCurrentStepHandler(eg.theCurrentStepHandler) {}
 
 EventGenerator::~EventGenerator() {
   if ( theCurrentRandom ) delete theCurrentRandom;
   if ( theCurrentGenerator ) delete theCurrentGenerator;
+}
+
+tcEventPtr EventGenerator::currentEvent() const {
+  return eventHandler()->currentEvent();
 }
 
 void
@@ -114,6 +127,10 @@ void EventGenerator::doinit() throw (InitException) {
   standardModel()->init();
   if ( strategy() ) strategy()->init();
   for_each(objects(), mem_fun(&InterfacedBase::init));
+
+  // Then initialize the Event Handler calculating initial cross
+  // sections and stuff.
+  eventHandler()->initialize();
 }
 
 void EventGenerator::doinitrun() {
@@ -149,6 +166,9 @@ void EventGenerator::finalize() {
 }
 
 void EventGenerator::dofinish() {
+
+  // first write out statistics from the event handler.
+  eventHandler()->statistics(out());
 
   // Call the finish method for all other objects.
   for_each(objects(), mem_fun(&InterfacedBase::finish));
@@ -194,10 +214,112 @@ EventPtr EventGenerator::shoot() {
   return doShoot();
 }
 
-EventPtr EventGenerator::partialEvent(tEventPtr e) {
+EventPtr EventGenerator::doShoot() {
+  EventPtr event;
+  if ( N() >= 0 && ++ieve > N() ) return event;
+  HoldFlag<int> debug(Debug::level, theDebugLevel);
+  do { 
+    int state = 0;
+    int loop = 1;
+    eventHandler()->clearEvent();
+    try {
+      do {
+	// Generate a full event or part of an event
+	if ( eventHandler()->empty() ) event = eventHandler()->generateEvent();
+	else event = eventHandler()->continueEvent();
+
+	if ( eventHandler()->empty() ) loop = -loop;
+	
+	// Analyze the possibly uncomplete event
+	for ( AnalysisVector::iterator it = analysisHandlers().begin();
+	      it != analysisHandlers().end(); ++it )
+	  (**it).analyze(event, ieve, loop, state);
+	
+	// Manipulate the current event, possibly deleting some steps
+	// and telling the event handler to redo them.
+	if ( manipulator() )
+	  state = manipulator()->manipulate(eventHandler(), event);
+	
+	// If the event was not completed, continue generation and continue.
+	loop = abs(loop) + 1;
+      } while ( !eventHandler()->empty() );
+    }
+    catch (Exception & ex) {
+      if ( logException(ex, eventHandler()->currentEvent()) ) throw;
+    }
+    catch (...) {
+      dump();
+      event = eventHandler()->currentEvent();
+      if ( event )
+	log() << *event;
+      else
+	log() << "An exception occurred before any event object was created!";
+      log() << endl;
+      throw;
+    }
+    if ( ThePEG_DEBUG_LEVEL ) {
+      if ( ( ThePEG_DEBUG_LEVEL == Debug::printEveryEvent ||
+	     ieve < printEvent ) && event ) log() << *event;
+      if ( debugEvent > 0 && ieve + 1 >= debugEvent )
+	Debug::level = Debug::full;
+      if ( dumpPeriod > 0 && ieve%dumpPeriod == 0 ) dump();
+    }
+  } while ( !event );
+  return event;
+}
+
+EventPtr EventGenerator::doGenerateEvent(tEventPtr e) {
+  if ( N() >= 0 && ++ieve > N() ) return EventPtr();
+  EventPtr event = e;
+  try {
+    event = eventHandler()->generateEvent(e);
+  }
+  catch (Exception & ex) {
+    if ( logException(ex, eventHandler()->currentEvent()) ) throw;
+  }
+  catch (...) {
+    dump();
+    event = eventHandler()->currentEvent();
+    if ( !event ) event = e;
+    log() << *event << endl;
+    throw;
+  }
+  return event;
+}
+
+EventPtr EventGenerator::doGenerateEvent(tStepPtr s) {
+  if ( N() >= 0 && ++ieve > N() ) return EventPtr();
+  EventPtr event;
+  try {
+    event = eventHandler()->generateEvent(s);
+  }
+  catch (Exception & ex) {
+    if ( logException(ex, eventHandler()->currentEvent()) ) throw;
+  }
+  catch (...) {
+    dump();
+    event = eventHandler()->currentEvent();
+    if ( event ) log() << *event << endl;
+    throw;
+  }
+  return event;
+}
+
+EventPtr EventGenerator::generateEvent(Event & e) {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
-  return doPartialEvent(e);
+  return doGenerateEvent(tEventPtr(&e));
+}
+
+EventPtr EventGenerator::generateEvent(Step & s) {
+  UseRandom currentRandom(theRandom);
+  CurrentGenerator currentGenerator(this);
+  return doGenerateEvent(tStepPtr(&s));
+}
+
+Energy EventGenerator::maximumCMEnergy() const {
+  tcEHPtr eh = eventHandler();
+  return eh->lumiFnPtr()? eh->lumiFn().maximumCMEnergy(): 0.0*GeV;
 }
 
 void EventGenerator::doInitialize() {
@@ -227,10 +349,6 @@ void EventGenerator::doGo(long next, long maxevent) {
 
   finish();
 
-}
-
-Energy EventGenerator::maximumCMEnergy() const {
-  return 0.0*GeV;
 }
 
 void EventGenerator::dump() const {
@@ -396,20 +514,24 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
   set<tcPMPtr,MatcherOrdering> match(theMatchers.begin(), theMatchers.end());
   set<tcIBPtr,ObjectOrdering> usedset(usedObjects.begin(), usedObjects.end());
   os << theDefaultObjects << theLocalParticles << theStandardModel
-     << theStrategy << theRandom << thePath << theRunName
+     << theStrategy << theRandom << theEventHandler << theAnalysisHandlers
+     << theEventManipulator << thePath << theRunName
      << theNumberOfEvents << theObjectMap << theParticles
      << theQuickParticles << theQuickSize << match << usedset
-     << ieve << theDebugLevel << maxWarnings << maxErrors
-     << theCurrentCollisionHandler << theCurrentStepHandler;
+     << ieve << theDebugLevel << printEvent << dumpPeriod << debugEvent
+     << maxWarnings << maxErrors << theCurrentEventHandler
+     << theCurrentStepHandler;
 }
 
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
   is >> theDefaultObjects >> theLocalParticles >> theStandardModel
-     >> theStrategy >> theRandom >> thePath >> theRunName
+     >> theStrategy >> theRandom >> theEventHandler >> theAnalysisHandlers
+     >> theEventManipulator >> thePath >> theRunName
      >> theNumberOfEvents >> theObjectMap >> theParticles
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
-     >> ieve >> theDebugLevel >> maxWarnings >> maxErrors
-     >> theCurrentCollisionHandler >> theCurrentStepHandler;
+     >> ieve >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
+     >> maxWarnings >> maxErrors >> theCurrentEventHandler
+     >> theCurrentStepHandler;
   theObjects.clear();
   for ( ObjectMap::iterator it = theObjectMap.begin();
 	it != theObjectMap.end(); ++it ) theObjects.insert(it->second);
@@ -463,7 +585,7 @@ ostream & EventGenerator::ref() {
   return reffile().is_open()? reffile(): BaseRepository::cout();
 }
 
-AbstractClassDescription<EventGenerator> EventGenerator::initEventGenerator;
+ClassDescription<EventGenerator> EventGenerator::initEventGenerator;
 
 void EventGenerator::Init() {
   
@@ -475,6 +597,26 @@ void EventGenerator::Init() {
      "The ThePEG::StandardModelBase object to be used to access standard "
      "model parameters in this run.",
      &EventGenerator::theStandardModel, false, false, true, false);
+
+  static Reference<EventGenerator,EventHandler> interfaceEventHandler
+    ("EventHandler",
+     "The ThePEG::EventHandler object to be used to generate the "
+     "individual events in this run.",
+     &EventGenerator::theEventHandler, false, false, true, false);
+
+  static RefVector<EventGenerator,AnalysisHandler> interfaceAnalysisHandlers
+    ("AnalysisHandlers",
+     "ThePEG::AnalysisHandler objects to be used to analyze the produced "
+     "events in this run.",
+     &EventGenerator::theAnalysisHandlers, 0, true, false, true, false);
+
+  static Reference<EventGenerator,EventManipulator> interfaceEventManip
+    ("EventManipulator",
+     "An ThePEG::EventManipulator called each time the generation of an "
+     "event is stopped. The ThePEG::EventManipulator object is able to "
+     "manipulate the generated event, as opposed to an "
+     "ThePEG::AnalysisHandler which may only look at the event.",
+     &EventGenerator::theEventManipulator, true, false, true, true);
 
   static RefVector<EventGenerator,ParticleData> interfaceLocalParticles
     ("LocalParticles",
@@ -535,6 +677,25 @@ void EventGenerator::Init() {
      "Level 5 will print every event. "
      "Level 9 will print every step in every event.",
      &EventGenerator::theDebugLevel, 0, 0, 9, true, false, true);
+
+  static Parameter<EventGenerator,int> interfacePrintEvent
+    ("PrintEvent",
+     "If the debug level is above zero, print the first 'PrintEvent' events.",
+     &EventGenerator::printEvent, 0, 0, 1000, true, false, true);
+
+  static Parameter<EventGenerator,long> interfaceDumpPeriod
+    ("DumpPeriod",
+     "If the debug level is above zero, dump the full state of the run every "
+     "'DunpPeriod' events.",
+     &EventGenerator::dumpPeriod, 0, 0, Constants::MaxInt,
+     true, false, true);
+
+  static Parameter<EventGenerator,long> interfaceDebugEvent
+    ("DebugEvent",
+     "If the debug level is above zero, step up to the highest debug level "
+     "befor event number 'DebugEvent'.",
+     &EventGenerator::debugEvent, 0, 0, Constants::MaxInt,
+     true, false, true);
 
   static Parameter<EventGenerator,int> interfaceMaxWarnings
     ("MaxWarnings",

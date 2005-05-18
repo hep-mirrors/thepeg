@@ -5,7 +5,7 @@
 //
 
 #include "CascadeHandler.h"
-#include "ThePEG/Handlers/PartialCollisionHandler.h"
+#include "ThePEG/Handlers/EventHandler.h"
 #include "ThePEG/Handlers/Hint.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/PDF/PartonExtractor.h"
@@ -17,13 +17,18 @@
 
 using namespace ThePEG;
 
+CascadeHandler::CascadeHandler() {}
+
+CascadeHandler::CascadeHandler(const CascadeHandler & x)
+  : StepHandler(x) {}
+
 CascadeHandler::~CascadeHandler() {}
 
 void CascadeHandler::
-handle(PartialCollisionHandler & ch, const tPVector & tagged,
+handle(EventHandler & eh, const tPVector & tagged,
        const Hint & hint) {
   static tPVector notags;
-  theLastXComb = ch.lastXCombPtr();
+  theLastXComb = eh.lastXCombPtr();
   theHint = &hint;
   //  if ( hint.tagged() )
     theTagged = &tagged;
@@ -34,7 +39,7 @@ handle(PartialCollisionHandler & ch, const tPVector & tagged,
     thePDFs = make_pair(pdf<PDF>(lastPartons().first),
 			pdf<PDF>(lastPartons().second));
 
-  theCollisionHandler = &ch;
+  theEventHandler = &eh;
 
   cascade();
 

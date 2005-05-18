@@ -129,8 +129,8 @@ void Repository::saveRun(string EGname, string name, string filename) {
 
 EGPtr Repository::makeRun(tEGPtr eg, string name) {
 
-  // Clone all objects relevant for the EventGenerator. This is
-  // the EventGenerator itself, all particles and all particle
+  // Clone all objects relevant for the OldEventGenerator. This is
+  // the OldEventGenerator itself, all particles and all particle
   // matchers. 'localObject' is the set of all object refered to by
   // the generator particles and matcher and in the end these are
   // cloned as well.
@@ -161,8 +161,8 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
 
 
   // Clone the particles. But only the ones which should be
-  // used. First select the localParticles of the EventGenerator, then
-  // add particles from the strategy of the EventGenerator which have
+  // used. First select the localParticles of the OldEventGenerator, then
+  // add particles from the strategy of the OldEventGenerator which have
   // not already been selected. Finally add particles from the global
   // default which have not already been selected.
   PDVector allParticles;
@@ -198,7 +198,7 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "done\nCloning other objects... " << flush;
 
-  // Clone the EventGenerator object to be used:
+  // Clone the OldEventGenerator object to be used:
   localObjects.insert(eg);
   addReferences(eg, localObjects);
   EGPtr egrun = clone(*eg);

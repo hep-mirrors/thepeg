@@ -35,11 +35,12 @@ void LesHouchesFileReader::close() {
 }
 
 void LesHouchesFileReader::persistentOutput(PersistentOStream & os) const {
-  os << theFileName;
+  os << neve << theFileName;
 }
 
 void LesHouchesFileReader::persistentInput(PersistentIStream & is, int) {
-  is >> theFileName;
+  is >> neve >> theFileName;
+  ieve = 0;
 }
 
 AbstractClassDescription<LesHouchesFileReader>
@@ -61,7 +62,8 @@ void LesHouchesFileReader::Init() {
      "<code>zcat</code>. If a file name ends in <code>|</code> the "
      "preceeding string is interpreted as a command, the output of which "
      "will be read through a pipe.",
-     &LesHouchesFileReader::theFileName, "", "", "", false, false, false);
+     &LesHouchesFileReader::theFileName, "", false, false);
+
 
 }
 

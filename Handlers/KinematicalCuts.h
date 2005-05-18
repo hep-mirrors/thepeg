@@ -15,7 +15,7 @@ namespace ThePEG {
 /**
  * The KinematicalCuts class is used to make cuts on generated
  * events. A KinematicalCuts object is selected for each generated
- * collision. The CollisionHandler has a default KinematicalCuts
+ * collision. The EventHandler has a default KinematicalCuts
  * object, which may be overridden by the selected SubProcessHandler
  * object, which in turn may be overridden by the selected MEBase
  * object.
@@ -23,14 +23,14 @@ namespace ThePEG {
  * The KinematicalCuts is used in two different ways. Individual
  * handlers may use the specific member functions which specify cuts
  * on individual variables. In addition the cut() member functions are
- * always called by the CollisionHandler to automatically check that
+ * always called by the EventHandler to automatically check that
  * all cuts are passed. It is possible to derive new classes from the
  * KinematicalCuts class, in which case the virtual newcut() methods
  * may be overridden and will be called from the cut() methods.
  *
  * @see \ref KinematicalCutsInterfaces "The interfaces"
  * defined for KinematicalCuts.
- * @see CollisionHandler
+ * @see EventHandler
  * @see SubProcessHandler
  * @see MEBase
  * @see Collision
@@ -61,18 +61,18 @@ public:
 
 public:
 
-  /** @name Functions called by the CollisionHandler to check if
+  /** @name Functions called by the EventHandler to check if
    *  generated SubProcess or Event passes all cuts. */
   //@{
   /**
-   * This method is called by the CollisionHandler with the primary
+   * This method is called by the EventHandler with the primary
    * SubProcess provided in its cm frame.
    * @throws Veto if the SubProcess did not pass all cuts.
    */
   void cut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));
 
   /**
-   * This method is called by the CollisionHandler with the primary
+   * This method is called by the EventHandler with the primary
    * collision after its first step provided in int cm frame. The
    * LorentzRotation provided should give the transformation to the
    * laboratory frame.
@@ -538,7 +538,7 @@ protected:
   virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

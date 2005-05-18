@@ -65,6 +65,12 @@ public:
   inline static double rnd();
 
   /**
+   * Return \a n simple flat random number (from the current
+   * RandomGenerator object) in the range ]0,1[.
+   */
+  inline static RandomGenerator::RndVector rndvec(int n);
+
+  /**
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]0,\a xu[.
    */

@@ -19,7 +19,7 @@ namespace ThePEG {
  * post-handlers.
  *
  * The <code>HandlerGroup</code> class is used in the
- * PartialCollisionHandler and SubProcessHandler to manage the
+ * EventHandler and SubProcessHandler to manage the
  * post-sub-process handler, the cascade, multiple interaction,
  * hadronization and decay handler groups. When an event is generated,
  * after the main sub-process is performed, all handler groups are
@@ -294,11 +294,11 @@ private:
  * the pre- and post- handlers may only have one hint each.
  *
  * The <code>HandlerGroup</code> class is used in the
- * PartialCollisionHandler and SubProcessHandler to manage the
+ * EventHandler and SubProcessHandler to manage the
  * post-sub-process handler, the cascade, multiple interaction,
  * hadronization and decay handler groups.
  * 
- * @see PartialCollisionHandler
+ * @see EventHandler
  * @see SubProcessHandler
  * @see StepHandler
  * @see CascadeHandler
@@ -480,39 +480,39 @@ vector<StepHdlPtr> ThisClass::interfaceGet##pp##HandlerClass() const {     \
   return member.interfaceGet##pp##handlers();                                  \
 }
 
-#define ThePEG_IMPLEMENT_GROUPINTERFACE(ThisClass,HandlerClass,member,ptr)    \
-ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,Pre)             \
-void ThisClass::interfaceSet##HandlerClass(ptr p) {                      \
-  member.interfaceSetHandler(p);                                             \
+#define ThePEG_IMPLEMENT_GROUPINTERFACE(ThisClass,HandlerClass,member,ptr)     \
+ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,Pre)              \
+void ThisClass::interfaceSet##HandlerClass(ptr p) {                            \
+  member.interfaceSetHandler(p);                                               \
 }                                                                              \
-ptr ThisClass::interfaceGet##HandlerClass() const {                        \
-  return member.interfaceGetHandler();                                       \
+ptr ThisClass::interfaceGet##HandlerClass() const {                            \
+  return member.interfaceGetHandler();                                         \
 }                                                                              \
-ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,Post)            \
+ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,Post)             \
 
-#define ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,pp,ba)          \
+#define ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,pp,ba)           \
 static RefVector<ThisClass,StepHandler> interface##pp##HandlerClass            \
 (#pp #HandlerClass "s",                                                        \
  "A list of handlers to be called " #ba " the " #HandlerClass ". "             \
- "If handler objects are specified in a CollisionHandler and "                 \
+ "If handler objects are specified in a EventHandler and "                     \
  "the SubProcessHandler chosen in a given collision also specifies some, "     \
  "the latter will caled first.",                                               \
- 0, 0, false, false, true, false,                                             \
- &ThisClass::interfaceSet##pp##HandlerClass,                               \
- &ThisClass::interfaceInsert##pp##HandlerClass,                            \
- &ThisClass::interfaceErase##pp##HandlerClass,                             \
+ 0, 0, false, false, true, false,                                              \
+ &ThisClass::interfaceSet##pp##HandlerClass,                                   \
+ &ThisClass::interfaceInsert##pp##HandlerClass,                                \
+ &ThisClass::interfaceErase##pp##HandlerClass,                                 \
  &ThisClass::interfaceGet##pp##HandlerClass)
 
  
-#define ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(ThisClass,HandlerClass)         \
-ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Pre, before);           \
+#define ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(ThisClass,HandlerClass)          \
+ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Pre, before);            \
 static Reference<ThisClass,HandlerClass> interface ## HandlerClass             \
 (#HandlerClass,                                                                \
  "The " #HandlerClass " object used in this " #ThisClass ". "                  \
- "If a " #HandlerClass " object is specified in a CollisionHandler and "       \
+ "If a " #HandlerClass " object is specified in a EventHandler and "           \
  "the SubProcessHandler chosen in a given collision also specifies one,"       \
  "the latter will be used.",                                                   \
- 0, false, false, true, true,                                                 \
+ 0, false, false, true, true,                                                  \
  &ThisClass::interfaceSet ## HandlerClass,                                     \
  &ThisClass::interfaceGet ## HandlerClass);                                    \
 ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Post, after)

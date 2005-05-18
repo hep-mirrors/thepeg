@@ -15,7 +15,7 @@ namespace ThePEG {
 /**
  * The MECuts class is (currently not at all) used to make cuts on
  * generated phase space points for the hard interaction. A MECuts
- * object is selected for each matrix element. The CollisionHandler
+ * object is selected for each matrix element. The EventHandler
  * has a default MECuts object, which may be overridden by the
  * selected SubProcessHandler object, which in turn may be overridden
  * by the selected MEBase object.
@@ -23,13 +23,13 @@ namespace ThePEG {
  * The MECuts is used in two different ways. Individual handlers may
  * use the specific member functions which specify cuts on individual
  * variables. In addition the cut() member functions are always called
- * by the CollisionHandler to automatically check that all cuts are
+ * by the EventHandler to automatically check that all cuts are
  * passed. It is possible to derive new classes from the MECuts class,
  * in which case the virtual newcut() methods may be overridden and
  * will be called from the cut() methods.
  *
  *
- * @see CollisionHandler
+ * @see EventHandler
  * @see SubProcessHandler
  * @see MEBase
  * @see Collision
@@ -56,7 +56,7 @@ public:
 public:
 
   /**
-   * This method is called by the CollisionHandler with the primary
+   * This method is called by the EventHandler with the primary
    * SubProcess provided in its cm frame.
    */
   void cut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));

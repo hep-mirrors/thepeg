@@ -9,6 +9,7 @@
 #include "ThePEG/MatrixElement/ColourLines.h"
 #include "ThePEG/MatrixElement/Amplitude.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
+#include "ThePEG/Handlers/StandardXComb.fh"
 
 // #include "MEBase.fh"
 // #include "MEBase.xh"
@@ -56,7 +57,7 @@ namespace ThePEG {
  * @see ColourLines
  * 
  */
-class MEBase: public HandlerBase, public LastXCombInfo<> {
+class MEBase: public HandlerBase, public LastXCombInfo<StandardXComb> {
 
 public:
 
@@ -264,7 +265,7 @@ public:
    * Set the XComb object to be used in the next call to
    * generateKinematics() and dSigHatDR().
    */
-  virtual void setXComb(tXCombPtr);
+  virtual void setXComb(tStdXCombPtr);
 
   /**
    * Retrieve information obtained in the calculation of the cross
@@ -314,7 +315,7 @@ protected:
    * Access the momenta set by the last call to generateKinematics().
    */
   vector<Lorentz5Momentum> & meMomenta();
-  using LastXCombInfo<>::meMomenta;
+  using LastXCombInfo<StandardXComb>::meMomenta;
 
   /**
    * Get the last jacobian obtained when generating the kinematics
@@ -338,7 +339,7 @@ protected:
   inline virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving and
+   * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */

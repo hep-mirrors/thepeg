@@ -10,31 +10,39 @@ inline ParameterBase::ParameterBase(string newName,
 				    string newDescription,
 				    string newClassName,
 				    const type_info & newTypeInfo, bool depSafe,
-				    bool readonly, bool islimited)
+				    bool readonly, int limits)
   : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
-		  readonly), isLimited(islimited) {}
+		  readonly), limit(limits) {}
 
 inline ParameterBase::~ParameterBase() {}
 
 inline bool ParameterBase::limited() const {
-  return isLimited;
+  return limit != Interface::nolimits;
+}
+
+inline bool ParameterBase::upperLimit() const {
+  return limit == Interface::limited || limit == Interface::upperlim;
+}
+
+inline bool ParameterBase::lowerLimit() const {
+  return limit == Interface::limited || limit == Interface::lowerlim;
 }
 
 inline void ParameterBase::setLimited() {
-  isLimited = true;
+  limit = Interface::limited;
 }
 
 inline void ParameterBase::setUnlimited() {
-  isLimited = false;
+  limit = Interface::nolimits;
 }
 
 template <typename Type>
 inline ParameterTBase<Type>::
 ParameterTBase(string newName, string newDescription, string newClassName,
 	       const type_info & newTypeInfo, Type newUnit, bool depSafe,
-	       bool readonly,  bool islimited)
+	       bool readonly,  int limits)
   : ParameterBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
-		  readonly, islimited), theUnit(newUnit) {}
+		  readonly, limits), theUnit(newUnit) {}
 
 inline ParameterTBase<string>::
 ParameterTBase(string newName, string newDescription, string newClassName,

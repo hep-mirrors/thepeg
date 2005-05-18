@@ -5,7 +5,6 @@
 //
 
 #include "DecayHandler.h"
-#include "CollisionHandler.h"
 #include "Hint.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/DecayMode.h"
@@ -28,7 +27,7 @@ using namespace ThePEG;
 DecayHandler::~DecayHandler() {}
 
 void DecayHandler::
-handle(PartialCollisionHandler & ch, const tPVector & tagged,
+handle(EventHandler & eh, const tPVector & tagged,
        const Hint & hint) ThePEG_THROW_SPEC((Veto, Stop, Exception)) {
   // First go through to see which of the tagged particles should be
   // decayed: Exit if none are found.

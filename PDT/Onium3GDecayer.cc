@@ -15,7 +15,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/HandlerGroup.h"
 #include "ThePEG/Handlers/Hint.h"
-#include "ThePEG/Handlers/PartialCollisionHandler.h"
+#include "ThePEG/Handlers/EventHandler.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Onium3GDecayer.tcc"
@@ -54,7 +54,7 @@ ParticleVector Onium3GDecayer::decay(const DecayMode & dm,
   HintPtr h = ptr_new<HintPtr>();
   h->tag(children.begin(), children.end());
   using namespace Group;
-  generator()->currentCollisionHandler()->
+  generator()->currentEventHandler()->
     addStep(main, shower()? cascade: hadron, tStepHdlPtr(), h);
 
   return children;

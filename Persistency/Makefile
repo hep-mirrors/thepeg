@@ -33,7 +33,9 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -47,6 +49,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -57,6 +60,8 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -85,7 +90,9 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -99,6 +106,7 @@ include ../Config/Makefile.common
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -110,6 +118,8 @@ include ../Config/Makefile.common
   ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -127,6 +137,7 @@ include ../Config/Makefile.common
   PersistentOStream.fh \
   PersistentIStream.xh \
   ../../ThePEG/Utilities/DynamicLoader.h \
-  ../../ThePEG/Utilities/DynamicLoader.icc
+  ../../ThePEG/Utilities/DynamicLoader.icc \
+  ../../ThePEG/Utilities/sstream.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

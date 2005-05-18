@@ -10,7 +10,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Utilities/UtilityBase.h"
-#include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/PDT/EnumParticles.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -35,7 +35,7 @@ void Tree2toNDiagram::addTimelike(tcPDPtr pd, size_type orig) {
 }
 
 tPVector Tree2toNDiagram::
-construct(SubProPtr sp, const XComb & xc, const ColourLines & cl) const {
+construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const {
   tPVector out;
   vector<Lorentz5Momentum> pout(xc.meMomenta().begin() + 2,
 				xc.meMomenta().end());
