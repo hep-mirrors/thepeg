@@ -153,7 +153,7 @@ bool MadGraphReader::readEvent() {
   cfile >> hepeup.NUP >> evno >> hepeup.XWGTUP >> scale >> aEM >> aS;
   if ( !cfile ) {
     hepeup.IDPRUP = evno;
-    hepeup.SCALUP = fixedScale;
+    hepeup.SCALUP = fixedScale/GeV;
     hepeup.AQEDUP = fixedAEM;
     hepeup.AQCDUP = fixedAS;
     ++ieve;

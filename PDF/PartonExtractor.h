@@ -169,11 +169,6 @@ public:
   /** @name Access information about the current paron extraction. */
   //@{
   /**
-   * Return the current parton bin instances.
-   */
-  inline const PartonBinInstanceMap & partonBinInstances() const;
-
-  /**
    * Return the corresponding parton bin instance for a given
    * extracted parton.
    */
@@ -311,11 +306,6 @@ protected:
   inline tcPDFPtr noPDF() const;
 
   /**
-   * The PartonBinInstance's used mapped to the respective partons.
-   */
-  inline PartonBinInstanceMap & partonBinInstances();
-
-  /**
    * Connect the first (\a anti) coloured particle in the given range
    * (not equal to \a parton) and connect it to the colour \a line.
    */
@@ -385,7 +375,7 @@ private:
   /**
    * The PartonBinInstance's used mapped to the respective partons.
    */
-  PartonBinInstanceMap thePartonBinInstances;
+  mutable PartonBinInstanceMap partonBinInstances;
 
   /**
    * A list of special PDFBase objects to be used.

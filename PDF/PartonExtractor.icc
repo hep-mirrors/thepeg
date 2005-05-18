@@ -22,16 +22,6 @@ inline bool PartonExtractor::canHandle(const cPDPair &) {
   return true;
 }
 
-inline PartonExtractor::PartonBinInstanceMap &
-PartonExtractor::partonBinInstances() {
-  return thePartonBinInstances;
-}
-
-inline const PartonExtractor::PartonBinInstanceMap &
-PartonExtractor::partonBinInstances() const {
-  return thePartonBinInstances;
-}
-
 inline int PartonExtractor::maxTries() const {
   return theMaxTries;
 }

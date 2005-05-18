@@ -137,16 +137,6 @@ public:
   /** @name Functions used in the generation. */
   //@{
   /**
-   * Reset last generated l and Q2 values of this and parent bins.
-   */
-  void prepare();
-
-  /**
-   * Generate l and Q2 of this and parent bins.
-   */
-  void generate(const double * r);
-
-  /**
    * Return the cuts specified for this bin.
    */
   inline const PDFCuts & cuts() const;

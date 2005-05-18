@@ -400,11 +400,11 @@ tcPBPair LesHouchesReader::createPartonBinInstances() {
   Direction<0> dir(true);
   thePartonBinInstances.first =
     new_ptr(PartonBinInstance(incoming().first, sel.first,
-			      sqr(hepeup.SCALUP*GeV)));
+			      -sqr(hepeup.SCALUP*GeV)));
   dir.reverse();
   thePartonBinInstances.second =
     new_ptr(PartonBinInstance(incoming().second, sel.second,
-			      sqr(hepeup.SCALUP*GeV)));
+			      -sqr(hepeup.SCALUP*GeV)));
 
   return sel;
 
@@ -445,9 +445,11 @@ void LesHouchesReader::createParticles() {
       else throw LesHouchesInconsistencyError()
 	<< "To many incoming particles to hard subprocess in the "
 	<< "LesHouchesReader '"	<< name() << "'." << Exception::runerror;
+      p->scale(sqr(hepeup.SCALUP*GeV));
       break;
     case 1:
       theOutgoing.push_back(p);
+      p->scale(sqr(hepeup.SCALUP*GeV));
       break;
     case -2:
     case 2:
