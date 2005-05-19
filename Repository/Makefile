@@ -211,6 +211,8 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -304,8 +306,6 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/LuminosityFunction.icc \
   ../../ThePEG/EventRecord/Event.h \
   ../../ThePEG/Handlers/SubProcessHandler.h \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/SubProcessHandler.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
@@ -849,6 +849,8 @@ libThePEGRepo.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \

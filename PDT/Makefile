@@ -2811,6 +2811,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -3244,6 +3246,8 @@ libThePEGPDT.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \

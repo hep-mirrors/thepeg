@@ -107,6 +107,8 @@ libThePEGPDF.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/PDF/PartonBin.h \
   ../../ThePEG/Config/ThePEG.h \

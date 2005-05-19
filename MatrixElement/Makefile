@@ -645,6 +645,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/EventRecord/Particle.h \
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/Handlers/XComb.h \
@@ -689,8 +691,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \
   ../../ThePEG/Handlers/StandardEventHandler.icc \
@@ -842,6 +842,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/StandardXComb.fh \
   MEBase.icc \
@@ -959,8 +961,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Repository/Strategy.fh \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \
   ../../ThePEG/Handlers/StandardEventHandler.icc \
@@ -1108,6 +1108,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/EventRecord/SubProcess.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Config/Pointers.h \
@@ -1209,8 +1211,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \
   ../../ThePEG/Handlers/StandardEventHandler.icc \
@@ -1374,6 +1374,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -1506,8 +1508,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Repository/Strategy.fh \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \
   ../../ThePEG/Handlers/StandardEventHandler.icc \
@@ -1671,6 +1671,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -1885,6 +1887,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -2045,6 +2049,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -2206,6 +2212,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -2366,6 +2374,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -2526,6 +2536,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -2686,6 +2698,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -2846,6 +2860,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -3006,6 +3022,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -3166,6 +3184,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/MatrixElement/Tree2toNDiagram.h \
@@ -3285,8 +3305,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Repository/Strategy.fh \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \
   ../../ThePEG/Handlers/StandardEventHandler.icc \
@@ -3435,6 +3453,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/EventRecord/SubProcess.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Config/Pointers.h \
@@ -3540,8 +3560,6 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \
   ../../ThePEG/Handlers/StandardEventHandler.icc \
@@ -3690,6 +3708,8 @@ libThePEGMEQCD.so: $(LIBQCDOBJECTS)
   ../../ThePEG/EventRecord/SubProcess.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Config/Pointers.h \

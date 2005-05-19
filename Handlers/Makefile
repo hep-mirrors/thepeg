@@ -224,6 +224,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   EventHandler.fh \
@@ -294,8 +296,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/SubProcessHandler.h \
   ../../ThePEG/Utilities/Interval.h \
   ../../ThePEG/Handlers/HandlerGroup.h \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/SubProcessHandler.icc \
   ../../ThePEG/Handlers/KinematicalCuts.h \
@@ -454,6 +454,7 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/PartonExtractor.h \
   ../../ThePEG/Handlers/HandlerBase.h \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/PDF/PartonBin.h \
   ../../ThePEG/Config/ThePEG.h \
@@ -1059,14 +1060,14 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
   ../../ThePEG/Handlers/EventHandler.icc \
   ../../ThePEG/Handlers/SubProcessHandler.h \
   ../../ThePEG/Utilities/Interval.h \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/SubProcessHandler.icc \
   ../../ThePEG/Handlers/KinematicalCuts.h \
@@ -1404,6 +1405,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   StepHandler.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/PDF/PDF.h \
   ../../ThePEG/PDF/PartonBinInstance.h \
@@ -2052,6 +2055,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -2704,6 +2709,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/Interval.h \
@@ -2886,6 +2893,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/HandlerBase.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   ../../ThePEG/Utilities/Interval.h \
@@ -3078,6 +3087,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -3088,7 +3099,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/PDF/PartonBin.fh \
   ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   SubProcessHandler.fh \
   StandardXComb.fh \
   ../../ThePEG/Config/Pointers.h \
@@ -3152,7 +3162,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/StandardXComb.icc \
   ../../ThePEG/Handlers/SubProcessHandler.h \
   ../../ThePEG/Utilities/Interval.h \
-  ../../ThePEG/MatrixElement/MEBase.fh \
   ../../ThePEG/Handlers/SubProcessHandler.icc \
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
@@ -3585,6 +3594,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -3593,8 +3604,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/Config/Pointers.h \
-  ../../ThePEG/MatrixElement/MEBase.fh \
   ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/StandardXComb.fh \
@@ -3784,6 +3793,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/EventRecord/Collision.tcc \
   ../../ThePEG/EventRecord/Event.tcc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -3792,8 +3803,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/Config/Pointers.h \
-  ../../ThePEG/MatrixElement/MEBase.fh \
   ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/StandardXComb.fh \
@@ -4071,6 +4080,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Handlers/StepHandler.h \
   ../../ThePEG/EventRecord/Event.h \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
@@ -4931,6 +4942,8 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/MatrixElement/Amplitude.icc \
   ../../ThePEG/Handlers/LastXCombInfo.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/MatrixElement/MEBase.icc \
   ../../ThePEG/Handlers/XComb.h \
@@ -4982,8 +4995,6 @@ libThePEGHandlers.so: $(LIBOBJECTS)
   ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Handlers/SamplerBase.fh \
   ../../ThePEG/PDF/PartonBin.fh \
-  ../../ThePEG/MatrixElement/MEBase.fh \
-  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/StandardXComb.fh \
   ../../ThePEG/Handlers/StandardEventHandler.fh \

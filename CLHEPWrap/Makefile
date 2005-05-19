@@ -250,6 +250,8 @@ include ../Config/Makefile.common
   ../../ThePEG/Handlers/StepHandler.icc \
   ../../ThePEG/EventRecord/Event.h \
   ../../ThePEG/Handlers/LastXCombInfo.h \
+  ../../ThePEG/MatrixElement/MEBase.fh \
+  ../../ThePEG/Config/Pointers.h \
   ../../ThePEG/Handlers/LastXCombInfo.icc \
   ../../ThePEG/Handlers/SubProcessHandler.fh \
   ../../ThePEG/Handlers/EventHandler.fh \
