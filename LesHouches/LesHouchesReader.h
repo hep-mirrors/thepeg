@@ -21,24 +21,18 @@ namespace ThePEG {
  * LesHouchesReader is an abstract base class to be used for objects
  * which reads event files or streams from matrix element
  * generators. Derived classes must at least implement the open() and
- * readEvent() methods to read in information about the whole run and
- * next event respectively and the close function to close the file or
- * stream read. The derived class can fill the protected variables
- * which corresponds very closely to the Les Houches protocol common
- * block, this base class will then be responsible for transforming
- * this data to the ThePEG Event record in the getEvent()
- * method. <code>LesHouchesReader</code>s can only be used inside
- * LesHouchesEventHandler objects.
+ * readEvent() methods to read in information about the whole run into
+ * the HEPRUP variable and next event into the HEPEUP variable
+ * respectively. Also the close() function to close the file or stream
+ * read must be implemented. Although these functions are named as if
+ * we are reading from event files, they could just as well implement
+ * the actual generation of events.
  *
- * A class inheriting from LesHouchesReader must implement a number of
- * virtual functions which should fill the protected variables
- * corresponding to the Les Houches protocoll common blocks. The
- * structure assumes that the reader is passive and blindly provides
- * events when asked, as if it was reading from a file of events. It
- * is however possible to also have an active reader, which actually
- * produces the events on demand for a specific process. In the latter
- * case, a derived class must set the active flag in the constructor
- * to true.
+ * After filling the HEPRUP and HEPEUP variables, which are protected
+ * and easily accesible from the sub-class, this base class will then
+ * be responsible for transforming this data to the ThePEG Event
+ * record in the getEvent() method. <code>LesHouchesReader</code>s can
+ * only be used inside LesHouchesEventHandler objects.
  *
  * In the initialization the virtual open() and scan() functions are
  * called. Here the derived class must provide the information about
@@ -55,7 +49,7 @@ namespace ThePEG {
  * getEvent() function should return a probability with which the
  * event should be accepted.
  *
- * note that the information given per process in e.g. the XSECUP and
+ * Note that the information given per process in e.g. the XSECUP and
  * XMAXUP vectors is not used by the LesHouchesEventHandler and by
  * default the LesHouchesReader is not assumed to be able to actively
  * choose between the sub-processes. Instead, the
@@ -88,11 +82,6 @@ class LesHouchesReader: public HandlerBase {
    * Alias for standard C file streams.
    */
   typedef FILE * CFile;
-
-  /**
-   * Alias for a pair of C file streams.
-   */
-  typedef pair<CFile, CFile> CFilePair;
 
   /**
    * Map for accumulating statistics of cross sections per process
@@ -135,17 +124,14 @@ public:
 
 public:
 
-  /** @name Main virtual fuctions to be overridden in sub-classes. */
+  /** @name Main virtual fuctions to be overridden in
+   *  sub-classes. They are named as if we are reading from event
+   *  files, but could equally well implement the actual generation of
+   *  events. */
   //@{
   /**
-   * Initialize. This function is called by the LesHouchesEventHandler
-   * to which this object is assigned.
-   */
-  virtual void initialize(LesHouchesEventHandler & eh);
-
-  /**
    * Open a file or stream with events and read in the run information
-   * into the corresponding protected variables.
+   * into the heprup variable.
    */
   virtual void open() = 0;
 
@@ -160,24 +146,24 @@ public:
    * Close the file or stream from which events have been read.
    */
   virtual void close() = 0;
+  //@}
 
+  /** @name Other important function which may be overridden in
+   *  sub-classes which wants to bypass the basic HEPRUP or HEPEUP
+   *  variables or otherwise facilitate the conversion to ThePEG
+   *  objects.. */
+  //@{
   /**
-   * Scan the file or stream to obtain information about cross section
-   * weights and particles etc. This function should fill the
-   * variables corresponding to the /HEPRUP/ common block. The
-   * function returns the number of events scanned.
+   * Initialize. This function is called by the LesHouchesEventHandler
+   * to which this object is assigned.
    */
-  virtual long scan();
-
-  /**
-   * Take the information corresponding to the HEPRUP common block and
-   * initialize the statistics for this reader.
-   */
-  virtual void initStat();
+  virtual void initialize(LesHouchesEventHandler & eh);
 
   /**
    * Calls readEvent() or uncacheEvent() to read information into the
-   * LesHouches common block variables.
+   * LesHouches common block variables. This function is called by the
+   * LesHouchesEventHandler if this reader has been selectod to
+   * produce an event.
    *
    * @return the weight asociated with this event. If negative weights
    * are allowed it should be between -1 and 1, otherwise between 0
@@ -195,16 +181,31 @@ public:
   virtual void skip(long n);
 
   /**
-   * Get XComb object. Converts the information in the Les Houches
+   * Get an XComb object. Converts the information in the Les Houches
    * common block variables to an XComb object describing the sub
-   * process.
+   * process. This is the way information is conveyed from the reader
+   * to the controlling LesHouchesEventHandler.
    */
   tXCombPtr getXComb();
 
   /**
+   * Scan the file or stream to obtain information about cross section
+   * weights and particles etc. This function should fill the
+   * variables corresponding to the /HEPRUP/ common block. The
+   * function returns the number of events scanned.
+   */
+  virtual long scan();
+
+  /**
+   * Take the information corresponding to the HEPRUP common block and
+   * initialize the statistics for this reader.
+   */
+  virtual void initStat();
+
+  /**
    * Reweights the current event using the reweights and preweights
-   * vectors. Can be used after the HEPEUP information has been
-   * retrieved.
+   * vectors. It is the responsibility of the sub-class to call this
+   * function after the HEPEUP information has been retrieved.
    */
   double reweight();
 
