@@ -1,5 +1,11 @@
 2005-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesReader.cc: Fixed bug in reading cached
+	files (name of the gzip program and resizing of vectors HEPEUP.
+
+	* LesHouches/LesHouchesReader.icc: Fixed bug in calculating the
+	byte-size of the HEPEUP struct.
+
 	* LesHouches/MadGraphReader.cc: Set correct units on the SCALUP
 	variable.
 
@@ -12,7 +18,7 @@
 	variable to partonBinInstances and cleared it in the beginning of
 	the constructRemnants function.
 
-	* PDF/PartonBin.h: Removed declaration of inimplemented functions.
+	* PDF/PartonBin.h: Removed declaration of unimplemented functions.
 
 2005-05-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

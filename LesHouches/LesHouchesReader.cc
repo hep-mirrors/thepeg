@@ -516,7 +516,7 @@ void LesHouchesReader::connectMothers() {
 void LesHouchesReader::openReadCacheFile() {
   if ( cacheFile() != NULL ) closeCacheFile();
   if ( compressedCache() ) {
-    string cmd = ThePEG_GZWRITE_FILE " " + cacheFileName();
+    string cmd = ThePEG_GZREAD_FILE " " + cacheFileName();
     theCacheFile = popen(cmd.c_str(), "r");
   } else {
     theCacheFile = fopen(cacheFileName().c_str(), "r");
@@ -555,7 +555,7 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.ISTUP[0], hepeup.NUP);
   pos = mwrite(pos, hepeup.MOTHUP[0], hepeup.NUP);
   pos = mwrite(pos, hepeup.ICOLUP[0], hepeup.NUP);
-  for ( int i = 0; i < hepeup.NUP; ++i ) 
+  for ( int i = 0; i < hepeup.NUP; ++i )
     pos = mwrite(pos, hepeup.PUP[i][0], 5);
   pos = mwrite(pos, hepeup.VTIMUP[0], hepeup.NUP);
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
@@ -575,13 +575,20 @@ bool LesHouchesReader::uncacheEvent() {
   pos = mread(pos, hepeup.SCALUP);
   pos = mread(pos, hepeup.AQEDUP);
   pos = mread(pos, hepeup.AQCDUP);
+  hepeup.IDUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.IDUP[0], hepeup.NUP);
+  hepeup.ISTUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.ISTUP[0], hepeup.NUP);
+  hepeup.MOTHUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.MOTHUP[0], hepeup.NUP);
+  hepeup.ICOLUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.ICOLUP[0], hepeup.NUP);
+  hepeup.PUP.resize(hepeup.NUP, vector<double>(5));
   for ( int i = 0; i < hepeup.NUP; ++i ) 
     pos = mread(pos, hepeup.PUP[i][0], 5);
+  hepeup.VTIMUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.VTIMUP[0], hepeup.NUP);
+  hepeup.SPINUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
   return true;
 }
