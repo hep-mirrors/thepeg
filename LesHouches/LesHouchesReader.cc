@@ -122,12 +122,7 @@ long LesHouchesReader::scan() {
   // Shall we write the events to a cache file for fast reading? If so
   // we write to a temporary file if the caches events should be
   // randomized.
-  if ( cacheFileName().length() ) {
-    if ( ThePEG_DEBUG_LEVEL )
-      generator()->log() << "Writing cache file for LesHouchesReader '"
-			  << name() << "' ..." << flush;
-    openWriteCacheFile();
-  }
+  if ( cacheFileName().length() ) openWriteCacheFile();
 
   // Use posi to remember the positions of the cached events on the
   // temporary stream (if present).
@@ -178,10 +173,7 @@ long LesHouchesReader::scan() {
     }
   }
 
-  if ( cacheFile() != NULL ) {
-    closeCacheFile();
-    if ( ThePEG_DEBUG_LEVEL ) generator()->log() << "done." << endl;
-  }
+  if ( cacheFile() != NULL ) closeCacheFile();
 
   return neve;
 

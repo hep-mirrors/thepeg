@@ -2,6 +2,7 @@
 
 	* LesHouches/LesHouchesReader.cc: Fixed bug in reading cached
 	files (name of the gzip program and resizing of vectors HEPEUP.
+	Also removed debugging information about writing the cach file.
 
 	* LesHouches/LesHouchesReader.icc: Fixed bug in calculating the
 	byte-size of the HEPEUP struct.
