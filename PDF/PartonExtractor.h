@@ -202,12 +202,18 @@ protected:
   /**
    * Used by generateSHat() for each of the final parton
    * bins. Direction<0> is set to positive(negative) for the
-   * first(second) final bin. Should ask the remnant handler to
+   * first(second) final bin, \a pb. Should ask the remnant handler to
    * generate what is needed to construct the extracted parton
-   * momentum. Returns false if no remnants could be generated.
+   * momentum. \a r is a pointer to an array of random numbers to be
+   * used and \a shat is the approximate invariant mass squared of the
+   * hard system produced by the extracted parton and the primary
+   * parton from the other side. \a first is the momentum of the
+   * original incoming particle.
+   *
+   * @return false if no remnants could be generated.
    */
   virtual bool generate(PartonBinInstance & pb, const double * r,
-			const Lorentz5Momentum & first);
+			Energy2 shat, const Lorentz5Momentum & first);
 
   /**
    * Used by the public fullFn() for each of the final parton bins.
@@ -222,7 +228,7 @@ protected:
   /**
    * Used by the public newRemnants() for each of the parton bins.
    */
-  PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp);
+  PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp, const LorentzMomentum & k);
 
   /**
    * Used by the public newRemnants() for each of the parton bins.

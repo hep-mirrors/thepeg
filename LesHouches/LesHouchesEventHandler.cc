@@ -246,8 +246,8 @@ EventPtr LesHouchesEventHandler::continueEvent() {
 void LesHouchesEventHandler::dofinish() {
   EventHandler::dofinish();
   if ( selector().compensating() ) generator()->log()
-    << "Warning: The run was ended while the LesHouchesEventHandler '" << name()
-    << "' was still trying to compensate for weights larger than 1. "
+    << "Warning: The run was ended while the LesHouchesEventHandler '"
+    << name() << "' was still trying to compensate for weights larger than 1. "
     << "The cross section estimates may therefore be statistically "
     << "inaccurate." << endl;
 }
@@ -289,32 +289,44 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
 	 << reader.stats.xSec()/nanobarn << endl;
     }
     os << line;
-    return;
+  } else {
+
+    os << "Per Les Houches Reader (and process #) breakdown:\n";
+  
+    for ( int i = 0, N = readers().size(); i < N; ++i ) {
+      LesHouchesReader & reader = *readers()[i];
+      string n = reader.name() + " (all)";
+      n.resize(37, ' ');
+      os << n << setw(11) << reader.stats.accepted() << setw(13)
+	 << reader.stats.attempts() << setw(17)
+	 << reader.stats.xSec()/nanobarn << endl;
+      typedef LesHouchesReader::StatMap::const_iterator const_iterator;
+      for ( const_iterator i = reader.statmap.begin();
+	    i != reader.statmap.end(); ++i ) {
+	ostringstream ss;
+	ss << reader.name() << " (" << i->first << ")";
+	string n = ss.str();
+	n.resize(37, ' ');
+	os << n << setw(11) << i->second.accepted() << setw(13)
+	   << i->second.attempts() << setw(17)
+	   << i->second.xSec()/nanobarn << endl;
+      }
+      os << line;
+    }
   }
 
-  os << "Per Les Houches Reader (and process #) breakdown:\n";
-  
+  string warn = "Warning: Result may be statistically incorrect since\n"
+    " the following LesHouchesReaders were oversampled:\n";
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
-    string n = reader.name() + " (all)";
-    n.resize(37, ' ');
-    os << n << setw(11) << reader.stats.accepted() << setw(13)
-       << reader.stats.attempts() << setw(17)
-       << reader.stats.xSec()/nanobarn << endl;
-    typedef LesHouchesReader::StatMap::const_iterator const_iterator;
-    for ( LesHouchesReader::StatMap::const_iterator i = reader.statmap.begin();
-	  i != reader.statmap.end(); ++i ) {
-      ostringstream ss;
-      ss << reader.name() << " (" << i->first << ")";
-      string n = ss.str();
-      n.resize(37, ' ');
-      os << n << setw(11) << i->second.accepted() << setw(13)
-	 << i->second.attempts() << setw(17)
-	 << i->second.xSec()/nanobarn << endl;
+    if ( reader.NEvents() > 0 && reader.stats.attempts() > reader.NEvents() ) {
+      os << warn;
+      warn = "";
+      os << "'" << reader.name() << "' (by a factor "
+	 << double(reader.stats.attempts())/double(reader.NEvents())
+	 << ")" << endl;
     }
-    os << line;
   }
-
 }
 
 

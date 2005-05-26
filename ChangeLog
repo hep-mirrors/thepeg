@@ -1,3 +1,30 @@
+2005-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/ClusterCollapser.cc: Changed to use new transfrom of
+	whole container in ThePEG::UtilityBase.
+
+	* Utilities/UtilityBase.*: Added transform() function which takes
+	a whole container as argument.
+
+	* PDF/PartonExtractor.*, PDF/RemnantHandler.*, PDF/NoRemnants.*,
+	PDF/LeptonLeptonRemnant.*, PDF/BaryonRemnants.*: Changed the
+	signatures of the generate() and recreateRemnants() functions to
+	also require information about the shat of the subprocess, to
+	allow the remnant handlers to catch situations where they might
+	get into trouble with kinematics. The old functions are still
+	there, but will be removed shortly.
+
+	* LesHouches/LesHouchesEventHandler.cc: Added warnings about
+	oversampling in the statistics() function.
+
+	* MatrixElement/MEBase.h: (David Grellscheid) Now includes
+	MEBase.fh as this is no longer done by LastXCombInfo.h.
+
+	* Handlers/LastXCombInfo.h: (David Grellscheid) Removed
+	declaration of lastME(), which was needed and not
+	implemented. Also removed the inclusioon of the MEBase.fh header
+	file.
+
 2005-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc: Fixed bug in reading cached

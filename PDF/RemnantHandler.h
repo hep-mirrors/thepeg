@@ -85,6 +85,24 @@ public:
 				    const LorentzMomentum & parent) const = 0;
 
   /**
+   * Generate the momentum of the extracted parton with the \a parent
+   * momentum given by the last argument. If the \a scale is negative,
+   * it means that the doScale in the previous call to nDim() was
+   * true, otherwise the given \a scale should be the virtuality of
+   * the extracted parton. \a shat is the total invariant mass squared
+   * of the hard sub-system produced by the extracted parton and the
+   * primary parton entering from the other side. Generated quantities
+   * which are not returned in the momentum may be saved in the
+   * PartonBinInstance, \a pb, for later use. In particular, if the
+   * nDim() random numbers, \a r, are not enough to generate with
+   * weight one, the resulting weight should be stored with the
+   * remnantWeight() method of the parton bin.
+   */
+  virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
+				    Energy2 scale, Energy2 shat,
+				    const LorentzMomentum & parent) const = 0;
+
+  /**
    * If the actual remnants were not fully generated in the previous
    * call to generate(), do that now and store them in the parton bin
    * \a pb.
@@ -102,6 +120,22 @@ public:
   virtual bool recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp,
 				double newl, Energy2 scale,
 				const LorentzMomentum & p,
+				const PVector & prev = PVector()) const;
+  /**
+   * Redo the remnant generation for the given particle bin, \a pb. If
+   * \a oldp is non-null it corresponds to the previously extracted
+   * parton which should be replaced by \a newp. If \a oldp is null it
+   * means \a newp should be extracted in addition to the previously
+   * extracted ones available in \a prev. In either case \a shat is
+   * the total invariant mass squared of the hard sub-system produced
+   * by the extracted parton and the primary parton entering from the other
+   * side. 
+   *
+   * @return false if the generation failed.
+   */
+  virtual bool recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp,
+				double newl, Energy2 scale,
+				Energy2 shat, const LorentzMomentum & p,
 				const PVector & prev = PVector()) const;
   //@}
 

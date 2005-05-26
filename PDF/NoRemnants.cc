@@ -26,6 +26,16 @@ generate(PartonBinInstance & pb, const double * r,
   return p;
 }
 
+Lorentz5Momentum NoRemnants::
+generate(PartonBinInstance & pb, const double * r, Energy2 scale,
+	 Energy2 shat, const LorentzMomentum & p) const {
+  if ( pb.particleData() != pb.partonData() || pb.li() > 0.0 )
+    throw RemnantHandlerException
+      (pb.particleData()->name(), pb.partonData()->name(), name(),
+       "This remnant handler cannot handle any remnants!");
+  return p;
+}
+
 NoPIOClassDescription<NoRemnants> NoRemnants::initNoRemnants;
 
 void NoRemnants::Init() {}

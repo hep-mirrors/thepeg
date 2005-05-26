@@ -458,9 +458,9 @@ void EventGenerator::printException(const Exception & ex) {
 void EventGenerator::logWarning(const Exception & ex) {
   if ( ex.severity() != Exception::info &&
        ex.severity() != Exception::warning ) throw ex;
+  ex.handle();  
   if ( count(ex) > maxWarnings ) return;
   printException(ex);
-  ex.handle();  
 }
 
 bool EventGenerator::

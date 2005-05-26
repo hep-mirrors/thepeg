@@ -26,6 +26,12 @@ inline void UtilityBase::transform(Iterator first, Iterator last,
   while ( first != last ) Traits::transform(*first++, boost);
 }
 
+template <typename Cont>
+inline void UtilityBase::
+transform(Cont & cont, const LorentzRotation & boost) {
+  transform(cont.begin(), cont.end(), boost);
+}
+
 template <typename Iterator>
 inline LorentzRotation UtilityBase::boostToCM(Iterator first, Iterator last) {
   return boostToCM(first, last, last, last);

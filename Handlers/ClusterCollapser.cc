@@ -340,7 +340,7 @@ collapse(tStepPtr newStep, const ColourSinglet & cs,
     //    R = R*LorentzRotation(0.0, 0.0, -pnew/sqrt(sqr(pnew) + pcomp.m2())) *
     //      LorentzRotation(0.0, 0.0, boost);
     //    Utilities::transform(comp.begin(), comp.end() - 1, R);
-    Utilities::transform(comp.begin(), comp.end(), R);
+    Utilities::transform(comp, R);
   }
 
   // Add the new particle to the step.
@@ -370,7 +370,7 @@ collapse2(tStepPtr newStep, const ColourSinglet & cs) const {
   // Now set the momenta of the hadrons (distributed isotropically in
   // the cluster cm system).
   SimplePhaseSpace::CMS(s, h[0], h[1]);
-  Utilities::transform(h.begin(), h.end(), LorentzRotation(pc.boostVector()));
+  Utilities::transform(h, LorentzRotation(pc.boostVector()));
 
   // Add the hadrons as decay products of the partons in the
   // cluster. Returns false if it fails (although throwing an

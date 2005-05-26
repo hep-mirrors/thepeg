@@ -4,7 +4,6 @@
 // This is the declaration of the LastXCombInfo class.
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/MatrixElement/MEBase.fh"
 // #include "LastXCombInfo.fh"
 // #include "LastXCombInfo.xh"
 
@@ -73,13 +72,6 @@ public:
    * A pointer to the currently used parton extractor.
    */
   inline tPExtrPtr lastExtractor() const;
-
-  /**
-   * A pointer to the currently used matrix element. The returned
-   * pointer mau be null if a non-standard sub-process generation has
-   * been performed.
-   */
-  inline tMEPtr lastME() const;
 
   /**
    * Return the parton density used to extract the given parton. This

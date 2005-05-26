@@ -52,6 +52,19 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
   return true;
 }  
 
+bool RemnantHandler::
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
+		 Energy2 scale, Energy2 shat,
+		 const LorentzMomentum & p, const PVector & prev) const {
+  if ( !oldp || !prev.empty() ) return false;
+  vector<double> rv;
+  int rd = pb.bin()->remDim();
+  for ( int i = 0; i < rd; ++i) rv.push_back(rnd());
+  newp->set5Momentum(generate(pb, rd > 0? &rv[0]: 0, scale, shat, p));
+  createRemnants(pb);
+  return true;
+}  
+
 AbstractClassDescription<RemnantHandler> RemnantHandler::initRemnantHandler;
 
 void RemnantHandler::Init() {

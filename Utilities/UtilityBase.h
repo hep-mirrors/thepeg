@@ -36,7 +36,7 @@ struct UtilityBase {
   static inline LorentzMomentum sumMomentum(Iterator first, Iterator last);
 
   /**
-   * Transform the entries between first and last.The class
+   * Transform the entries between \a first and \a last. The class
    * <code>Iterator::value_type</code> must be of a type
    * <code>T</code> for which <code>ParticleTraits<T>::momentum(const
    * T&)</code> is implemented correctly.
@@ -44,6 +44,15 @@ struct UtilityBase {
   template <typename Iterator>
   static inline void transform(Iterator first, Iterator last,
 			       const LorentzRotation & boost);
+
+  /**
+   * Transform the entries in a container \a cont. The class
+   * <code>Cont::value_type</code> must be of a type <code>T</code>
+   * for which <code>ParticleTraits<T>::momentum(const T&)</code> is
+   * implemented correctly.
+   */
+  template <typename Cont>
+  static inline void transform(Cont & cont, const LorentzRotation & boost);
 
   /**
    * Boost the two objects in the pair to their CM system. Also rotate

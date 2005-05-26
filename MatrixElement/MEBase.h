@@ -11,7 +11,7 @@
 #include "ThePEG/Handlers/LastXCombInfo.h"
 #include "ThePEG/Handlers/StandardXComb.fh"
 
-// #include "MEBase.fh"
+#include "MEBase.fh"
 // #include "MEBase.xh"
 
 namespace ThePEG {

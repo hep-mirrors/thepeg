@@ -16,6 +16,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/VSelector.h"
 #include "ThePEG/Utilities/Timer.h"
@@ -174,6 +175,151 @@ generate(PartonBinInstance & pb, const double * r,
       double phi = rnd(2.0*Constants::pi);
       kt = TransverseMomentum(sqrt(kt2)*cos(phi), sqrt(kt2)*sin(phi));
     }
+
+    pb.remnants(rem);
+
+    p = lightCone(x*p.plus(), p.minus() - (s + kt.pt2())/(eps*p.plus()), kt);
+    p.rotateY(parent.theta());
+    p.rotateZ(parent.phi());
+	      
+    return p;
+  }
+}
+
+Lorentz5Momentum BaryonRemnants::
+generate(PartonBinInstance & pb, const double * r, Energy2 scale,
+	 Energy2 shat, const LorentzMomentum & parent) const {
+  Timer<16> timer("BaryonRemnants::generate(...)");
+  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+
+  double x = pb.xi();
+  double eps = pb.eps();
+  Energy2 stot = shat/x;
+  Energy mrmax = sqrt(stot) - sqrt(shat);
+  if ( scale > 0.0*GeV2 )
+    mrmax = sqrt((parent.m2()*x*eps + eps*max(abs(scale), parent.m2()))/x);
+  if ( mrmax < pb.particle()->nominalMass() +
+               2.0*pb.parton()->nominalMass() + margin() ) {
+    pb.remnantWeight(0.0);
+    return parent;
+  }
+ 
+  Timer<17> timera("BaryonRemnants::generate(...):accepted");
+  PVector rem;
+  rem.reserve(2);
+
+  typedef Ptr<BaryonRemInfo>::pointer BRemIPtr;
+
+  BRemIPtr ip;
+  if ( !(ip = dynamic_ptr_cast<BRemIPtr>(pb.remnantInfo())) ) {
+    // If this is the first time for this parton bin, generate some
+    // information to save.
+    ip = new_ptr(BaryonRemInfo());
+    pb.remnantInfo(ip);
+    BaryonRemInfo & i = *ip;
+
+    // Get the extracted flavour.
+    i.iq = pb.partonData()->id();
+    int pid = pb.particleData()->id();
+    i.sign = pid < 0? -1: 1;
+
+    // Get all valence flavours and check if extracted parton may be
+    // valens.
+    i.flav = i.vflav = vector<int>(3);
+    i.flav[0] = i.vflav[0] = (pid = abs(pid)/10)%10;
+    i.flav[1] = i.vflav[1] = (pid /= 10)%10;
+    i.flav[2] = i.vflav[2] = (pid /= 10)%10;
+    vector<int>::iterator v = find(i.vflav.begin(), i.vflav.end(), i.sign*i.iq);
+    if ( v != i.vflav.end() ) {
+      i.vflav.erase(v);
+      i.mayval = true;
+    } else {
+      i.mayval = false;
+    }
+
+    // Weight possible combinations of valens quarks.
+    for ( int iq1 = 0; iq1 < 3; ++iq1 ) {
+      int iq2 = (iq1 + 1)%3;
+      int iq3 = (iq2 + 1)%3;
+      int idq = 1000*max(i.flav[iq2], i.flav[iq3]) +
+	100*min(i.flav[iq2], i.flav[iq3]) + 3;
+      i.flavsel.insert(3.0, make_pair(i.flav[iq1], idq));
+      if ( i.flav[iq2] == i.flav[iq3] ) continue;
+      i.flavsel.insert(1.0, make_pair(i.flav[iq1], idq - 2));
+    }
+  }
+  BaryonRemInfo & i = *ip;
+
+  Timer<19> timerc("BaryonRemnants::generate(...):loop");
+
+  while ( true ) {
+
+    rem.clear();
+    Energy2 s = 0.0*GeV2;
+
+
+    // If the extracted quark was a valence quark simply return a di-quark.
+
+    if ( i.mayval &&
+	 rndbool(pb.pdf()->xfvl(pb.particleData(), pb.partonData(),
+				abs(pb.scale()), pb.li()),
+		 pb.pdf()->xfl(pb.particleData(), pb.partonData(),
+			       abs(pb.scale()), pb.li())) ) {
+      int idqr = 1000*max(i.vflav[0], i.vflav[1]) +
+	100*min(i.vflav[0], i.vflav[1]) + 3;
+      if ( i.vflav[0] != i.vflav[1] && rnd() < 0.25 ) idqr -= 2;
+      rem.push_back(getParticleData(i.sign*idqr)->produceParticle());
+      s = sqr(rem[0]->mass());
+    } else {
+      // We haven't extracted a valence so we first divide up the baryon
+      // in a quark and a diquark.
+      pair<int,int> r = i.flavsel.select(generator()->random());
+      int iqr = r.first*i.sign;
+      int idqr = r.second*i.sign;
+
+      if ( i.iq == ParticleID::g ) {
+	rem.push_back(getParticleData(iqr)->produceParticle());
+	rem.push_back(getParticleData(idqr)->produceParticle());
+      } else if ( i.iq*iqr > 0 ) {
+	rem.push_back(getParticleData(idqr)->produceParticle());
+	rem.push_back(flavourGenerator().getHadron
+		      (getParticleData(-i.iq),
+		       getParticleData(iqr))->produceParticle());
+      } else {
+	rem.push_back(getParticleData(iqr)->produceParticle());
+	rem.push_back(flavourGenerator().getHadron
+		      (getParticleData(-i.iq),
+		       getParticleData(idqr))->produceParticle());
+      }
+      TransverseMomentum ptr = ptGeneratorR().generate();
+      Energy2 mt02 = rem[0]->momentum().mass2() + ptr.pt2();
+      Energy2 mt12 = rem[1]->momentum().mass2() + ptr.pt2();
+      double z = zGenerator().generate(rem[1]->dataPtr(),
+				       rem[0]->dataPtr(), mt12);
+      s = mt02/(1.0 - z) + mt12/z;
+      Energy W = sqrt(s);
+      if ( W > mrmax ) continue;
+      rem[0]->set3Momentum((const LorentzMomentum &)
+			   lightCone((1.0 - z)*W, mt02/((1.0 - z)*W), ptr));
+      rem[1]->set3Momentum((const LorentzMomentum &)
+			   lightCone(z*W, mt12/(z*W), -ptr));
+    }
+
+    // calculate the total longitudinal momentum available for the
+    // remnat in the rest system together with the hard sub-system.
+    Energy pz =  SimplePhaseSpace::getMagnitude(stot, sqrt(shat), sqrt(s));
+
+    TransverseMomentum kt;
+   
+    if ( scale <= 0.0*GeV2 ) {
+      kt = ptGeneratorQ().generate();
+      //      if ( kt.pt2() > smax*x - s*x ) continue;
+    } else {
+      Energy2 kt2 = parent.m2()*x*eps - s*x + eps*scale;
+      double phi = rnd(2.0*Constants::pi);
+      kt = TransverseMomentum(sqrt(kt2)*cos(phi), sqrt(kt2)*sin(phi));
+    }
+    if ( kt.pt() >= pz ) continue;
 
     pb.remnants(rem);
 

@@ -81,6 +81,25 @@ public:
 				    Energy2 scale,
 				    const LorentzMomentum & p) const;
 
+
+  /**
+   * Generate the momentum of the extracted parton with the \a parent
+   * momentum given by the last argument. If the \a scale is negative,
+   * it means that the doScale in the previous call to nDim() was
+   * true, otherwise the given \a scale should be the virtuality of
+   * the extracted parton. \a shat is the total invariant mass squared
+   * of the hard sub-system produced by the extracted parton and the
+   * primary parton entering from the other side. Generated quantities
+   * which are not returned in the momentum may be saved in the
+   * PartonBinInstance, \a pb, for later use. In particular, if the
+   * nDim() random numbers, \a r, are not enough to generate with
+   * weight one, the resulting weight should be stored with the
+   * remnantWeight() method of the parton bin.
+   */
+  virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
+				    Energy2 scale, Energy2 shat,
+				    const LorentzMomentum & parent) const;
+
   /**
    * If the actual remnants were not fully generated in the previous
    * call to generate(), do that now and store them in the parton bin,

@@ -199,12 +199,12 @@ generateSHat(Energy2 s, const PBIPair & pbins,
 
   Direction<0> dir(true);
   pbins.first->scale(-lastScale());
-  if ( !generate(*pbins.first, r1,
+  if ( !generate(*pbins.first, r1, lastSHat(),
 		 pbins.first->getFirst()->parton()->momentum()) )
     return -1.0*GeV2;
   dir.reverse();
   pbins.second->scale(-lastScale());
-  if ( !generate(*pbins.second, r2,
+  if ( !generate(*pbins.second, r2, lastSHat(),
 		 pbins.second->getFirst()->parton()->momentum()) )
     return -1.0*GeV2;
   
@@ -234,14 +234,14 @@ generateL(PartonBinInstance & pb, const double * r) {
 
 bool PartonExtractor::
 generate(PartonBinInstance & pb, const double * r,
-	 const Lorentz5Momentum & first) {
+	 Energy2 shat, const Lorentz5Momentum & first) {
   if ( !pb.incoming() ) return true;
-  if ( !generate(*pb.incoming(),
-		 r + pb.bin()->pdfDim() + pb.bin()->remDim(), first) )
+  if ( !generate(*pb.incoming(), r + pb.bin()->pdfDim() + pb.bin()->remDim(),
+		 shat/pb.xi(), first) )
     return false;;
   pb.remnantWeight(1.0);
   pb.parton()->setMomentum
-    (pb.remnantHandler()->generate(pb, r, pb.scale(),
+    (pb.remnantHandler()->generate(pb, r, pb.scale(), shat,
 				   pb.particle()->momentum()));
   if ( pb.remnantWeight() <= 0.0 ) return false;
   partonBinInstances[pb.parton()] = &pb;
@@ -273,16 +273,21 @@ constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
     construct(*pbins.first, step);
   }
   LorentzRotation rot = Utilities::transformToMomentum(Phold, Ph);
-  Utilities::transform(sub->outgoing().begin(), sub->outgoing().end(), rot);
-  Utilities::transform(sub->intermediates().begin(),
- 		       sub->intermediates().end(), rot);
+  Utilities::transform(sub->outgoing(), rot);
+  Utilities::transform(sub->intermediates(), rot);
+  k1 = pbins.first->parton()->momentum();
+  k2 = pbins.second->parton()->momentum();
+  Ph = k1 + k2;
+  if ( abs(Ph.m2() - Phold.m2())/Phold.m2() > 0.000001 )
+    cerr << Ph.m2()/GeV2 << " was (" << Phold.m2()/GeV2 << ")" << endl;
 }
 
 void PartonExtractor::
 constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
 		  const LorentzMomentum & k) const {
+  LorentzMomentum P = pb.particle()->momentum();
   DVector r = UseRandom::rndvec(pb.bin()->remDim());
-  pb.remnantHandler()->generate(pb, &r[0], pb.scale(), pb.particle()->momentum());
+  pb.remnantHandler()->generate(pb, &r[0], pb.scale(), Ph.m2(), P);
   pb.remnantHandler()->createRemnants(pb);
   LorentzMomentum Pr = Utilities::sumMomentum(pb.remnants());
   transformRemnants(Ph, Pr, k, pb.particle()->momentum());
@@ -297,7 +302,7 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
   LorentzMomentum Phnew = Ph + Pr;
   constructRemnants(*pb.incoming(), Phnew, k);
   LorentzRotation rot = Utilities::transformToMomentum(Ph + Pr, Phnew);
-  Utilities::transform(pb.remnants().begin(), pb.remnants().end(), rot);
+  Utilities::transform(pb.remnants(), rot);
   Ph.transform(rot);
 }
 
@@ -406,19 +411,27 @@ construct(PartonBinInstance & pb, tStepPtr step) const {
 PBIPair PartonExtractor::newRemnants(tPPair oldp, tPPair newp, tStepPtr step) {
   PBIPair pb;
   Direction<0> dir(true);
-  pb.first = newRemnants(partonBinInstance(oldp.first), newp.first);
+  pb.first = newRemnants(partonBinInstance(oldp.first),
+			 newp.first, newp.second->momentum());
   dir.reverse();
-  pb.second = newRemnants(partonBinInstance(oldp.second), newp.second);
+  pb.second = newRemnants(partonBinInstance(oldp.second),
+			  newp.second, newp.first->momentum());
   addNewRemnants(partonBinInstance(oldp.first), pb.first, step);
   addNewRemnants(partonBinInstance(oldp.second), pb.second, step);
   return pb;
 }
 
-PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp) {
+PBIPtr PartonExtractor::
+newRemnants(tPBIPtr oldpb, tPPtr newp, const LorentzMomentum & k) {
   if ( ! oldpb || !oldpb->incoming() ) return oldpb;
+  Energy2 shat = (k + newp->momentum()).m2();
+
+  // Loop over all possible PartonBin sisters to find the one
+  // corresponding to the newly extracted parton.
   const PartonBin::PBVector & sisters = oldpb->incoming()->bin()->outgoing();
   for ( int i = 0, N = sisters.size(); i < N; ++i )
     if ( sisters[i]->parton() == newp->dataPtr() ) {
+      // Setup necessary info in new PartonBinInstance object.
       PBIPtr newpb = new_ptr(PartonBinInstance(sisters[i], oldpb->incoming()));
       newpb->particle(oldpb->particle());
       newpb->parton(newp);
@@ -429,10 +442,12 @@ PBIPtr PartonExtractor::newRemnants(tPBIPtr oldpb, tPPtr newp) {
       newpb->scale(newp->scale());
       if ( oldpb->incoming()->incoming() )
 	sc = -newpb->particle()->momentum().m2();
+      // Now we can construct the new remnants.
       newpb->remnantWeight(1.0);
       if ( !newpb->remnantHandler()->
 	   recreateRemnants(*newpb, oldpb->parton(), newp, newpb->li(),
-			    sc, newpb->particle()->momentum()) ) throw Veto();
+			    sc, shat, newpb->particle()->momentum()) )
+	throw Veto();
       if ( newpb->remnantWeight() <= 0.0 ) throw Veto();
       return newpb;
     }
