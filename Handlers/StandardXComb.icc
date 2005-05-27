@@ -14,37 +14,24 @@ inline tMEPtr StandardXComb::matrixElement() const {
   return theME;
 }
 
-inline long StandardXComb::nAccepted() const {
-  return theNAccepted;
-}
-
-inline double StandardXComb::sumWeight() const {
-  return theSumWeight;
-}
-
-inline long StandardXComb::nAttempted() const {
-  return theNAttempted;
-}
-
-inline void StandardXComb::attempt() {
-  ++theNAttempted;
+inline const XSecStat & StandardXComb::stats() const {
+  return theStats;
 }
 
 inline void StandardXComb::accept() {
-  ++theNAccepted;
+  theStats.accept();
 }
 
-inline void StandardXComb::sumWeight(double w) {
-  theSumWeight += w;;
+inline void StandardXComb::select(double weight) {
+  theStats.select(weight);
 }
 
-inline void StandardXComb::unAccept() {
-  --theNAccepted;
+inline void StandardXComb::reject() {
+  theStats.reject();
 }
 
 inline void StandardXComb::reset() {
-  theNAttempted = theNAccepted = 0;
-  theSumWeight = 0.0;
+  theStats.reset();
 }
 
 inline const StandardXComb::DiagramVector & StandardXComb::diagrams() const {

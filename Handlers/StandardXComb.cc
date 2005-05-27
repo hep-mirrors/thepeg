@@ -31,8 +31,7 @@
 using namespace ThePEG;
 
 StandardXComb::StandardXComb()
-  : XComb(), theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
-    isMirror(false), theNDim(0),
+  : XComb(), isMirror(false), theNDim(0),
     partonDims(make_pair(0, 0)), theLastDiagramIndex(0) {}
 
 StandardXComb::
@@ -43,7 +42,6 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
   : XComb(newMaxEnergy, inc, newEventHandler,
 	  newExtractor, newPartonBins, newCuts),
     theSubProcessHandler(newSubProcessHandler), theME(newME),
-    theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
     theDiagrams(newDiagrams), isMirror(mir),  theLastDiagramIndex(0) {
   partonDims = pExtractor()->nDims(partonBins());
   theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
@@ -52,17 +50,16 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
 
 StandardXComb::StandardXComb(const StandardXComb & x)
   : XComb(x), theSubProcessHandler(x.theSubProcessHandler), theME(x.theME),
-    theNAttempted(x.theNAttempted), theNAccepted(x.theNAccepted),
-    theSumWeight(x.theSumWeight), theDiagrams(x.theDiagrams),
+    theStats(x.theStats), theDiagrams(x.theDiagrams),
     isMirror(x.isMirror), theNDim(x.theNDim), partonDims(x.partonDims),
     theMEMomenta(x.theMEMomenta), theMEPartons(x.theMEPartons),
     theMEPartonData(x.theMEPartonData),
     theLastDiagramIndex(x.theLastDiagramIndex), theMEInfo(x.theMEInfo) {}
 
-StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts, DiagramIndex indx)
-  : theME(me), theNAttempted(0), theNAccepted(0), theSumWeight(0.0),
-    isMirror(false), theNDim(0), partonDims(make_pair(0, 0)), theMEPartons(parts),
-    theLastDiagramIndex(0) {
+StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
+			     DiagramIndex indx)
+  : theME(me), isMirror(false), theNDim(0), partonDims(make_pair(0, 0)),
+    theMEPartons(parts), theLastDiagramIndex(0) {
   
   for ( int i = 0, N = parts.size(); i < N; ++i ) {
     theMEPartonData.push_back(parts[i]->dataPtr());
@@ -90,7 +87,7 @@ CrossSection StandardXComb::
 dSigDR(const pair<double,double> ll, int nr, const double * r) {
   Timer<7> timera("StandardXComb::dSigDR()");
   CrossSection zero = 0.0*nanobarn;
-  attempt();
+  //  attempt();
 
   pExtractor()->select(this);
   setPartonBinInfo();
@@ -206,16 +203,14 @@ void StandardXComb::Init() {}
 
 void StandardXComb::persistentOutput(PersistentOStream & os) const {
 
-  os << theSubProcessHandler << theME
-     << theNAttempted << theNAccepted << theSumWeight
+  os << theSubProcessHandler << theME << theStats
      << theDiagrams << isMirror << theNDim << partonDims
      << theLastDiagramIndex << theMEInfo << theMEPartons << theMEPartonData
      << theLastDiagramIndex << theMEInfo;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
-  is >> theSubProcessHandler >> theME
-     >> theNAttempted >> theNAccepted >> theSumWeight
+  is >> theSubProcessHandler >> theME >> theStats
      >> theDiagrams >> isMirror >> theNDim >> partonDims
      >> theLastDiagramIndex >> theMEInfo >> theMEPartons >> theMEPartonData
      >> theLastDiagramIndex >> theMEInfo;

@@ -48,8 +48,7 @@ StandardEventHandler::~StandardEventHandler() {}
 void StandardEventHandler::reject(double weight) {
   tStdXCombPtr last = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
   if ( !last ) return;
-  last->unAccept();
-  last->sumWeight(-weight);
+  last->reject();
 }
 
 void StandardEventHandler::doupdate() throw(UpdateException) {
@@ -269,7 +268,7 @@ tStdXCombPtr StandardEventHandler::select(int bin, double weight) {
     break;
   }
   theLastXComb = lastXC;
-  lastXC->sumWeight(weight);
+  lastXC->select(weight);
   lastXC->accept();
   lastXC->matrixElement()->setXComb(lastXC);
   return lastXC;
@@ -326,8 +325,9 @@ void StandardEventHandler::statistics(ostream & os) const {
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
     Stat s;
-    s = Stat(x.nAttempted(), x.nAccepted(), x.sumWeight(),
-	     sampler()->integratedXSec(), sampler()->sumWeights());
+    s = Stat(x.stats().attempts(), x.stats().accepted(),
+	     x.stats().sumWeights(), sampler()->integratedXSec(),
+	     sampler()->sumWeights());
     partonMap[x.partons()] += s;
     meMap[x.matrixElement()] += s;
     extractMap[x.pExtractor()] += s;
@@ -400,8 +400,8 @@ void StandardEventHandler::statistics(ostream & os) const {
       
        << " (" << x.matrixElement()->name() << " "
        << x.lastDiagram()->getTag() << ") " << endl
-       << setw(48) << x.nAccepted() << setw(13) << x.nAttempted()
-       << setw(17) << x.sumWeight()*xsectot << endl;
+       << setw(48) << x.stats().accepted() << setw(13) << x.stats().attempts()
+       << setw(17) << x.stats().sumWeights()*xsectot << endl;
   }
 
   os << line;

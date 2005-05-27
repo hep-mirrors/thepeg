@@ -1,3 +1,11 @@
+2005-05-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StandardEventHandler.*, Handlers/StandardXComb.*:
+	StandardXComb now uses the XSecStat class to collect
+	statistics. It is not quite used as intended as the maximum cross
+	section for each XComb is not explicitly known, but it cleaned up
+	the class a bit...
+
 2005-05-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.*: Removed setting of XPDWUP giving

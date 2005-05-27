@@ -11,6 +11,7 @@
 #include "ThePEG/Utilities/VSelector.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/XSecStat.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/Handlers/XComb.h"
@@ -132,39 +133,25 @@ public:
   /** @name Functions used for collecting statistics. */
   //@{
   /**
-   * The number of attempted generations so far.
+   * The statistics object for this XComb.
    */
-  inline long nAccepted() const;
+  inline const XSecStat & stats() const;
 
   /**
-   * The number of accepted generations so far.
+   * Select the current event. It will later be rejected with a
+   * probability given by \a weight.
    */
-  inline long nAttempted() const;
+  inline void select(double weight);
 
   /**
-   * The sum of accumulated weights.
-   */
-  inline double sumWeight() const;
-
-  /**
-   * Increase the number of attempted generations.
-   */
-  inline void attempt();
-
-  /**
-   * Accept the last generated phase-space point.
+   * Accept the current event assuming it was previously selcted.
    */
   inline void accept();
 
   /**
-   * Sum weight of the last generated phase-space point.
+   * Reject the current event assuming it was previously accepted.
    */
-  inline void sumWeight(double w);
-
-  /**
-   * The last generated phase-space point was vetoed.
-   */
-  inline void unAccept();
+  inline void reject();
 
   /**
    * Reset statistics.
@@ -294,19 +281,9 @@ private:
   tMEPtr theME;
 
   /**
-   * The number of attempted generations so far.
+   * Statistics gathering for this XComb.
    */
-  long theNAttempted;
-
-  /**
-   * The number of accepted generations so far.
-   */
-  long theNAccepted;
-
-  /**
-   * The summed weights of the generations so far..
-   */
-  double theSumWeight;
+  XSecStat theStats;
 
   /**
    * The diagrams used by the matrix element.
