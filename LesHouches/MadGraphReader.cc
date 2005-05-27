@@ -138,7 +138,7 @@ long MadGraphReader::scan() {
   return neve;
 }
 
-bool MadGraphReader::readEvent() {
+bool MadGraphReader::doReadEvent() {
   if ( !cfile ) return false;
 
   hepeup.NUP = 0;
@@ -231,37 +231,11 @@ bool MadGraphReader::readEvent() {
     else if ( partpos.first < 0 ) partpos.first = i;
   }
 
-  // Now determine the corresponding PDF weights.
-  if ( partpos.first < 0 || partpos.second < 0 )
-    throw LesHouchesInconsistencyError()
-      << "No incoming partons were found in event number " << ieve
-      << " in MadGraphReader '" << name() << "'." << Exception::runerror;
-  tcPDPtr particle =
-    getParticleData(beampos.first > 0?
-		    hepeup.IDUP[beampos.first]: heprup.IDBMUP.first);
-  tcPDPtr parton = getParticleData(hepeup.IDUP[partpos.first]);
-  double totp = beampos.first > 0?
-    hepeup.PUP[beampos.first][3] + hepeup.PUP[beampos.first][2]:
-    2.0*heprup.EBMUP.first;
-  double x = (hepeup.PUP[partpos.first][3] + hepeup.PUP[partpos.first][2])/totp;
-  hepeup.XPDWUP.first =
-    thePDFA->xfx(particle, parton, sqr(hepeup.SCALUP*GeV), x);
-  particle =
-    getParticleData(beampos.second > 0?
-		    hepeup.IDUP[beampos.second]: heprup.IDBMUP.second);
-  parton = getParticleData(hepeup.IDUP[partpos.second]);
-  totp = beampos.second > 0?
-    hepeup.PUP[beampos.second][3] - hepeup.PUP[beampos.second][2]:
-    2.0*heprup.EBMUP.second;
-  x = (hepeup.PUP[partpos.second][3] - hepeup.PUP[partpos.second][2])/totp;
-  hepeup.XPDWUP.second =
-    thePDFB->xfx(particle, parton, sqr(hepeup.SCALUP*GeV), x);
+  // We set these to -1 to let the base class do the work.
+  hepeup.XPDWUP.first = -1.0;
+  hepeup.XPDWUP.second = -1.0;
 
   cfile.readline();
-
-  // Reweight according to the re- and pre-weights objects in the
-  // LesHouchesReader base class.
-  hepeup.XWGTUP *= reweight();
 
   // Return true even if last read failed.
   return true;

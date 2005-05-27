@@ -34,11 +34,12 @@ using namespace ThePEG;
 LesHouchesReader::LesHouchesReader(bool active)
   : theNEvents(0), position(0), reopened(0), theMaxScan(-1),
     isActive(active), isWeighted(false), hasNegativeWeights(false),
-    theCacheFileName(""), theCacheFile(NULL), preweight(1.0) {}
+    theCacheFileName(""), theCacheFile(NULL), preweight(1.0),
+    reweightPDF(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), heprup(x.heprup), hepeup(x.hepeup),
-    thePDFA(x.thePDFA), thePDFB(x.thePDFB),
+    inData(x.inData), inPDF(x.inPDF), outPDF(x.outPDF),
     thePartonExtractor(x.thePartonExtractor), thePartonBins(x.thePartonBins),
     theXCombs(x.theXCombs), theCuts(x.theCuts),
     theNEvents(x.theNEvents), position(x.position), reopened(x.reopened),
@@ -48,7 +49,7 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     stats(x.stats), statmap(x.statmap),
     thePartonBinInstances(x.thePartonBinInstances),
     theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
-    preweight(x.preweight) {}
+    preweight(x.preweight), reweightPDF(x.reweightPDF) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -91,19 +92,22 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
     throw LesHouchesInitError()
     << "No information about the energy of incoming particles were found in "
     << "LesHouchesReader '" << name() << "'." << Exception::warning;
-  if ( !thePDFA || !thePDFB ) throw LesHouchesInitError()
+  if ( !inPDF.first || !inPDF.second ) throw LesHouchesInitError()
     << "No information about the PDFs of incoming particles were found in "
     << "LesHouchesReader '" << name() << "'." << Exception::warning;
 
   Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
-  tcPDPair inc(getParticleData(heprup.IDBMUP.first),
-	       getParticleData(heprup.IDBMUP.second));
-  thePartonBins = partonExtractor()->getPartons(emax, inc, cuts());
+  inData = make_pair(getParticleData(heprup.IDBMUP.first),
+		     getParticleData(heprup.IDBMUP.second));
+  thePartonBins = partonExtractor()->getPartons(emax, inData, cuts());
   for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
     theXCombs[partonBins()[i]] =
-      new_ptr(XComb(emax, inc, &eh, partonExtractor(), partonBins()[i], theCuts));
+      new_ptr(XComb(emax, inData, &eh, partonExtractor(),
+		    partonBins()[i], theCuts));
     partonExtractor()->nDims(partonBins()[i]);
   }
+  outPDF = make_pair(partonExtractor()->getPDF(inData.first),
+		     partonExtractor()->getPDF(inData.second));
   close();
   scan();
   initStat();
@@ -258,7 +262,48 @@ void LesHouchesReader::reopen() {
 void LesHouchesReader::reset() {
   particleIndex.clear();
   colourIndex.clear();
-}  
+}
+
+bool LesHouchesReader::readEvent() {
+  if ( !doReadEvent() ) return false;
+  // Reweight according to the re- and pre-weights objects in the
+  // LesHouchesReader base class.
+  hepeup.XWGTUP *= reweight();
+
+  if ( !reweightPDF ) return true;
+  // We should try to reweight the PDFs here.
+
+  fillEvent();
+  
+  if ( inPDF.first && outPDF.first && inPDF.first != outPDF.first ) {
+    double x = incoming().first->momentum().plus()/
+      beams().first->momentum().plus();
+    if ( hepeup.XPDWUP.first <= 0.0 )
+      hepeup.XPDWUP.first =
+	inPDF.first->xfx(inData.first, incoming().first->dataPtr(),
+			 sqr(hepeup.SCALUP*GeV), x);
+    double xf = outPDF.first->xfx(inData.first, incoming().first->dataPtr(),
+				  sqr(hepeup.SCALUP*GeV), x);
+    hepeup.XWGTUP *= xf/hepeup.XPDWUP.first;
+    hepeup.XPDWUP.first = xf;
+  }
+
+  if ( inPDF.second && outPDF.second && inPDF.second != outPDF.second ) {
+    double x = incoming().second->momentum().minus()/
+      beams().second->momentum().minus();
+    if ( hepeup.XPDWUP.second <= 0.0 )
+      hepeup.XPDWUP.second =
+	inPDF.second->xfx(inData.second, incoming().second->dataPtr(),
+			 sqr(hepeup.SCALUP*GeV), x);
+    double xf =
+      outPDF.second->xfx(inData.second, incoming().second->dataPtr(),
+			 sqr(hepeup.SCALUP*GeV), x);
+    hepeup.XWGTUP *= xf/hepeup.XPDWUP.second;
+    hepeup.XPDWUP.second = xf;
+  }
+
+  return true;
+}
 
 double LesHouchesReader::getEvent() {
   if ( cacheFile() != NULL ) {
@@ -592,11 +637,12 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << hepeup.XWGTUP << hepeup.XPDWUP << hepeup.SCALUP << hepeup.AQEDUP
      << hepeup.AQCDUP << hepeup.IDUP << hepeup.ISTUP << hepeup.MOTHUP
      << hepeup.ICOLUP << hepeup.PUP << hepeup.VTIMUP << hepeup.SPINUP
-     << thePDFA << thePDFB << thePartonExtractor << thePartonBins << theXCombs
-     << theCuts << theNEvents << position << reopened << theMaxScan << isActive
-     << isWeighted << hasNegativeWeights << theCacheFileName << stats
-     << statmap << thePartonBinInstances << theBeams << theIncoming
-     << theOutgoing << theIntermediates << reweights << preweights << preweight;
+     << inData << inPDF << outPDF << thePartonExtractor << thePartonBins
+     << theXCombs << theCuts << theNEvents << position << reopened
+     << theMaxScan << isActive << isWeighted << hasNegativeWeights
+     << theCacheFileName << stats << statmap << thePartonBinInstances
+     << theBeams << theIncoming << theOutgoing << theIntermediates
+     << reweights << preweights << preweight << reweightPDF;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -607,11 +653,12 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> hepeup.XWGTUP >> hepeup.XPDWUP >> hepeup.SCALUP >> hepeup.AQEDUP
      >> hepeup.AQCDUP >> hepeup.IDUP >> hepeup.ISTUP >> hepeup.MOTHUP
      >> hepeup.ICOLUP >> hepeup.PUP >> hepeup.VTIMUP >> hepeup.SPINUP
-     >> thePDFA >> thePDFB >> thePartonExtractor >> thePartonBins >> theXCombs
-     >> theCuts >> theNEvents >> position >> reopened >> theMaxScan >> isActive
-     >> isWeighted >> hasNegativeWeights >> theCacheFileName >> stats
-     >> statmap >> thePartonBinInstances >> theBeams >> theIncoming
-     >> theOutgoing >> theIntermediates >> reweights >> preweights >> preweight;
+     >> inData >> inPDF >> outPDF >> thePartonExtractor >> thePartonBins
+     >> theXCombs >> theCuts >> theNEvents >> position >> reopened
+     >> theMaxScan >> isActive >> isWeighted >> hasNegativeWeights
+     >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
+     >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
+     >> reweights >> preweights >> preweight >> reweightPDF;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -626,9 +673,12 @@ void LesHouchesReader::setEBeamA(Energy e) { heprup.EBMUP.first = e/GeV; }
 Energy LesHouchesReader::getEBeamA() const { return heprup.EBMUP.first*GeV; }
 void LesHouchesReader::setEBeamB(Energy e) { heprup.EBMUP.second = e/GeV; }
 Energy LesHouchesReader::getEBeamB() const { return heprup.EBMUP.second*GeV; }
+void LesHouchesReader::setPDFA(PDFPtr pdf) { inPDF.first = pdf; }
+PDFPtr LesHouchesReader::getPDFA() const { return inPDF.first; }
+void LesHouchesReader::setPDFB(PDFPtr pdf) { inPDF.second = pdf; }
+PDFPtr LesHouchesReader::getPDFB() const { return inPDF.second; }
 
 void LesHouchesReader::Init() {
-
   static ClassDocumentation<LesHouchesReader> documentation
     ("ThePEG::LesHouchesReader is an abstract base class to be used "
      "for objects which reads event files or streams from matrix element "
@@ -677,14 +727,16 @@ void LesHouchesReader::Init() {
      "The PDF used for incoming particle along the positive z-axis. "
      "If null the corresponding information is to be deduced from the "
      "event stream/file.",
-     &LesHouchesReader::thePDFA, true, false, true, true, false);
+     0, true, false, true, true, false,
+     &LesHouchesReader::setPDFA, &LesHouchesReader::getPDFA, 0);
 
   static Reference<LesHouchesReader,PDFBase> interfacePDFB
     ("PDFB",
      "The PDF used for incoming particle along the negative z-axis. "
      "If null the corresponding information is to be deduced from the "
      "event stream/file.",
-     &LesHouchesReader::thePDFB, true, false, true, true, false);
+     0, true, false, true, true, false,
+     &LesHouchesReader::setPDFB, &LesHouchesReader::getPDFB, 0);
 
 
   static Parameter<LesHouchesReader,long> interfaceMaxScan
@@ -728,6 +780,19 @@ void LesHouchesReader::Init() {
      "A list of ThePEG::ReweightBase objects to bias the phase space for this "
      "reader without influencing the actual cross section.",
      &LesHouchesReader::preweights, 0, false, false, true, false);
+
+  static Switch<LesHouchesReader,bool> interfaceReweightPDF
+    ("ReweightPDF",
+     "If the PDFs used in the generation for this reader is different "
+     "from the ones assumed by the associated PartonExtractor object, "
+     "should the events be reweighted to fit the latter?",
+     &LesHouchesReader::reweightPDF, false, true, false);
+  static SwitchOption interfaceReweightPDFNo
+    (interfaceReweightPDF, "No", "The event weights are kept as they are.",
+     false);
+  static SwitchOption interfaceReweightPDFYes
+    (interfaceReweightPDF,
+     "Yes", "The events are reweighted.", true);
 
 }
 

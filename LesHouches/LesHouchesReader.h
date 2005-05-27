@@ -21,7 +21,7 @@ namespace ThePEG {
  * LesHouchesReader is an abstract base class to be used for objects
  * which reads event files or streams from matrix element
  * generators. Derived classes must at least implement the open() and
- * readEvent() methods to read in information about the whole run into
+ * doReadEvent() methods to read in information about the whole run into
  * the HEPRUP variable and next event into the HEPEUP variable
  * respectively. Also the close() function to close the file or stream
  * read must be implemented. Although these functions are named as if
@@ -140,7 +140,7 @@ public:
    * corresponding protected variables. Return false if there is no
    * more events.
    */
-  virtual bool readEvent() = 0;
+  virtual bool doReadEvent() = 0;
 
   /**
    * Close the file or stream from which events have been read.
@@ -172,6 +172,13 @@ public:
    * updated from the outside.
    */
   virtual double getEvent();
+
+  /**
+   * Calls doReadEvent() and performs pre-defined reweightings. A
+   * sub-class overrides this function it must make sure that the
+   * corresponding reweightings are done.
+   */
+  virtual bool readEvent();
 
   /**
    * Skip \a n events. Used by LesHouchesEventHandler to make sure
@@ -565,16 +572,21 @@ protected:
   HEPEUP hepeup;
 
   /**
+   * The ParticleData objcest corresponding to the incoming particles.
+   */
+  tcPDPair inData;
+
+  /**
    * The PDFBase object used for the first beam particle. Specified in
    * the interface or derived from PDFGUP and PDFSUP.
    */
-  PDFPtr thePDFA;
+  pair<PDFPtr,PDFPtr> inPDF;
 
   /**
    * The PDFBase object used for the second beam particle. Specified in
    * the interface or derived from PDFGUP and PDFSUP.
    */
-  PDFPtr thePDFB;
+  pair<cPDFPtr,cPDFPtr> outPDF;
 
   /**
    * The PartonExtractor object used to construct remnants.
@@ -714,6 +726,11 @@ protected:
    */
   double preweight;
 
+  /**
+   * Should the event be reweighted by PDFs used by the PartonExtractor?
+   */
+  bool reweightPDF;
+
 private:
 
   /** Access function for the interface. */
@@ -732,6 +749,14 @@ private:
   void setEBeamB(Energy e);
   /** Access function for the interface. */
   Energy getEBeamB() const;
+  /** Access function for the interface. */
+  void setPDFA(PDFPtr);
+  /** Access function for the interface. */
+  PDFPtr getPDFA() const;
+  /** Access function for the interface. */
+  void setPDFB(PDFPtr);
+  /** Access function for the interface. */
+  PDFPtr getPDFB() const;
 
 private:
 

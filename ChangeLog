@@ -1,3 +1,20 @@
+2005-05-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphReader.*: Removed setting of XPDWUP giving
+	the responsibility for that to the base class. Also renamed
+	readEvent() to doReadEvent().
+
+	* LesHouches/LesHouchesReader.*: Renamed the readEvent() function
+	to doReadEvent() which is called from the new readEvent()
+	function, which also does the reweighting (with newly introduced
+	reweightPDF option and the (p)reweights). Aslo sets the XPDWUP
+	varaiables if not done by the sub-class (but set to -1).
+
+	* LesHouches/LesHouchesEventHandler.cc: Added cuts - they were
+	there before, but were never used.
+
+	* PDF/PartonExtractor.h: Made the getPDF function public.
+
 2005-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ClusterCollapser.cc: Changed to use new transfrom of

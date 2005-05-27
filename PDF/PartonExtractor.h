@@ -187,6 +187,15 @@ public:
    */
   inline int maxTries() const;
 
+  /**
+   * Return the PDFBase object to be used for the incoming particle
+   * type. If one of theSpecialDensities matches the particle type it
+   * is returned, otherwise if particle is a BeamParticleData use the
+   * PDFBase object specified there. If also this fails, return a
+   * NoPDF object.
+   */
+  tcPDFPtr getPDF(tcPDPtr particle) const;
+
 protected:
 
   /** @name Functions used by the main virtual functions. Some of
@@ -296,15 +305,6 @@ protected:
    */
   virtual void addPartons(tPBPtr incoming ,const PDFCuts & cuts,
 		  PartonVector & pbins) const;
-
-  /**
-   * Return the PDFBase object to be used for the incoming particle
-   * type. If one of theSpecialDensities matches the particle type it
-   * is returned, otherwise if particle is a BeamParticleData use the
-   * PDFBase object specified there. If also this fails, return a
-   * NoPDF object.
-   */
-  tcPDFPtr getPDF(tcPDPtr particle) const;
 
   /**
    * The NoPDF object.

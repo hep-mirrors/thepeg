@@ -12,6 +12,7 @@
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/KinematicalCuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/LoopGuard.h"
 #include "ThePEG/EventRecord/Event.h"
@@ -156,18 +157,28 @@ EventPtr LesHouchesEventHandler::generateEvent() {
     // Divide by the bias introduced by the preweights in the reader.
     weight /= currentReader()->preweight;
 
-    theLastXComb = currentReader()->getXComb();
+    try {
+      theLastXComb = currentReader()->getXComb();
 
-    currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
-			       generator()->currentEventNumber(), weight)));
-    performCollision();
+      currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
+				 generator()->currentEventNumber(), weight)));
+      performCollision();
 
-    if ( !currentCollision() ) throw Veto();
+      if ( !currentCollision() ) throw Veto();
 
-    return currentEvent();
-
+      return currentEvent();
+    }
+    catch (Veto) {
+      reject();
+    }
+    catch (Stop) {
+    }
+    catch (Exception & ex) {
+      reject();
+      throw;
+    }
   }
-
+  return currentEvent();
 }
 
 void LesHouchesEventHandler::skipEvents() {
@@ -178,7 +189,8 @@ void LesHouchesEventHandler::skipEvents() {
   // Estimate the fration of the total events available from
   // currentReader() which will be requested.
   double frac = currentReader()->stats.maxXSec()/
-    ( stats.attempts() > 0? stats.xSec(): stats.maxXSec() );
+    ( stats.attempts() > 0 && stats.xSec() > 0.0*picobarn?
+      stats.xSec(): stats.maxXSec() );
   double xscan = generator()->N()*frac/currentReader()->NEvents();
 
   // Estimate the number of times we need to go through the events for
@@ -212,9 +224,13 @@ tCollPtr LesHouchesEventHandler::performCollision() {
   sub->setIntermediates(currentReader()->intermediates().begin(),
 			currentReader()->intermediates().end());
   
+  currentReader()->cuts().cut(*sub);
+
   currentStep()->addSubProcess(sub);
   lastExtractor()->constructRemnants(lastXCombPtr()->partonBinInstances(),
 				     sub, currentStep());
+
+  currentReader()->cuts().cut(*currentCollision(), LorentzRotation());
 
   initGroups();
   if ( ThePEG_DEBUG_ITEM(1) ) {

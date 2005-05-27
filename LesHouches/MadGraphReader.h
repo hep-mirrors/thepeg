@@ -61,7 +61,7 @@ public:
    * corresponding protected variables. Return false if there is no
    * more events.
    */
-  virtual bool readEvent();
+  virtual bool doReadEvent();
   //@}
 
 public:
