@@ -1,5 +1,9 @@
 2005-05-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/BaseRepository.cc: Added optional class name to the
+	'ls' command to only list objects (and directories with objects)
+	of a specified class. To be used in the Java GUI.
+
 	* Handlers/StandardEventHandler.*, Handlers/StandardXComb.*:
 	StandardXComb now uses the XSecStat class to collect
 	statistics. It is not quite used as intended as the maximum cross

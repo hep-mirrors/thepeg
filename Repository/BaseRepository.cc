@@ -447,8 +447,13 @@ string BaseRepository::exec(string command, ostream & os) {
       return "";
     }
     if ( verb == "ls" ) {
+      string className;
       string dir = StringUtils::car(command);
-      if ( dir.size() ) PushDirectory(dir);
+      if ( dir.size() ) {
+	PushDirectory(dir);
+	command = StringUtils::cdr(command);
+	className = StringUtils::car(command);
+      }
       string ret;
       string thisdir = directoryStack().back();
       for ( DirectorySet::iterator it = directories().begin();
@@ -457,13 +462,23 @@ string BaseRepository::exec(string command, ostream & os) {
 	if ( d.size() <= thisdir.size() ) continue;
 	string d0 = d.substr(0, thisdir.size());
 	string d1 = d.substr(thisdir.size());
-	if ( d0 == thisdir && d1.find('/') == d1.size() - 1 )
+	if ( d0 == thisdir && d1.find('/') == d1.size() - 1 ) {
+	  if ( className.size() && SearchDirectory(d, className).empty() )
+	    continue;
 	  ret += (dir.size()? d: d1) + "\n";
+	}
       }
       for ( ObjectMap::iterator it = objects().begin();
-	    it != objects().end(); ++it )
+	    it != objects().end(); ++it ) {
+	if ( className.size() ) {
+	  const ClassDescriptionBase * cdb = DescriptionList::find(className);
+	  if ( cdb &&
+	       !DescriptionList::find(typeid(*(it->second)))->isA(*cdb) )
+	    continue;
+	}
 	if ( thisdir + it->second->name() == it->first )
 	  ret += (dir.size()? it->first: it->second->name()) + '\n';
+      }
       if ( dir.size() ) PopDirectory();
       return ret;
     }
@@ -475,6 +490,8 @@ string BaseRepository::exec(string command, ostream & os) {
 	  "\n - " + DynamicLoader::lastErrorMessage;
       return "";
     }
+
+
     if ( verb == "create" ) {
       string className = StringUtils::car(command);
       command = StringUtils::cdr(command);
