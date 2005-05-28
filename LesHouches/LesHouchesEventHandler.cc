@@ -105,6 +105,7 @@ void LesHouchesEventHandler::initialize() {
   }
 
   stats.maxXSec(selector().sum());
+  histStats.maxXSec(selector().sum());
 
   // Check that we have any cross section at all.
   if ( stats.maxXSec() <= 0.0*picobarn )
@@ -118,6 +119,7 @@ void LesHouchesEventHandler::initialize() {
 void LesHouchesEventHandler::doinitrun() {
   EventHandler::doinitrun();
   stats.reset();
+  histStats.reset();
 
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     readers()[i]->initrun();
@@ -145,7 +147,8 @@ EventPtr LesHouchesEventHandler::generateEvent() {
       if ( newmax > 0 )	increaseMaxXSec(newmax);
     }
 
-    select(weight);
+    select(weight/currentReader()->preweight);
+    histStats.select(weight);
 
     if ( weightOption() == unitweight  || weightOption() == unitnegweight ) {
       if ( !rndbool(abs(weight)) ) continue;
@@ -348,26 +351,33 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
 
 void LesHouchesEventHandler::increaseMaxXSec(CrossSection maxxsec) {
   stats.maxXSec(maxxsec);
+  histStats.maxXSec(maxxsec);
   currentReader()->increaseMaxXSec(maxxsec);
 }
 
 void LesHouchesEventHandler::accept() {
   stats.accept();
+  histStats.accept();
   currentReader()->accept();
 }
 
 void LesHouchesEventHandler::reject() {
   stats.reject();
+  histStats.reject();
   currentReader()->reject();
 }
 
+CrossSection LesHouchesEventHandler::histogramScale() const {
+  return histStats.xSec()/histStats.accepted();
+}
+
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
-  os << stats << theReaders << theSelector
+  os << stats << histStats << theReaders << theSelector
      << oenum(theWeightOption) << theCurrentReader;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> stats >> theReaders >> theSelector
+  is >> stats >> histStats >> theReaders >> theSelector
      >> ienum(theWeightOption) >> theCurrentReader;
 }
 

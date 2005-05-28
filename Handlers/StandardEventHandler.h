@@ -87,6 +87,13 @@ public:
    */
   virtual void statistics(ostream &) const;
 
+  /**
+   * Histogram scale. A histogram bin which has been filled with the
+   * weights associated with the Event objects should be scaled by
+   * this factor to give the correct cross section.
+   */
+  virtual CrossSection histogramScale() const;
+
   /** @name Functions used for the actual generation */
   //@{
   /**

@@ -239,6 +239,13 @@ public:
    * The number of events to be generated in this run.
    */
   inline long N() const;
+
+  /**
+   * Histogram scale. A histogram bin which has been filled with the
+   * weights associated with the Event objects should be scaled by
+   * this factor to give the correct cross section.
+   */
+  CrossSection histogramScale() const;
   //@}
 
   /** @name Functions for accessing output files. */

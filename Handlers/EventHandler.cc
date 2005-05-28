@@ -227,6 +227,14 @@ EventPtr EventHandler::continueEvent() {
   return currentEvent(); 
 }
 
+CrossSection EventHandler::histogramScale() const {
+  generator()->logWarning(
+    EventHandlerHistError()
+    << "The event handler '" << name() << "' was not able give a cross "
+    "section for scaling histograms. The resulting histograms will not "
+    "yeald correct cross section." << Exception::warning);
+  return 1.0*picobarn;
+}
 
 void EventHandler::persistentOutput(PersistentOStream & os) const {
   os << theLastXComb << theMaxLoop << theStatLevel << theLumiFn

@@ -11,8 +11,8 @@ inline LesHouchesEventHandler::LesHouchesEventHandler()
 
 inline LesHouchesEventHandler::
 LesHouchesEventHandler(const LesHouchesEventHandler & x)
-  : EventHandler(x), stats(x.stats), theReaders(x.theReaders),
-    theSelector(x.theSelector),
+  : EventHandler(x), stats(x.stats), histStats(x.histStats),
+    theReaders(x.theReaders), theSelector(x.theSelector),
     theWeightOption(x.theWeightOption), theCurrentReader(x.theCurrentReader) {}
 
 inline IBPtr LesHouchesEventHandler::clone() const {

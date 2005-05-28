@@ -89,6 +89,13 @@ public:
    * and stuff.
    */
   virtual void statistics(ostream &) const;
+
+  /**
+   * Histogram scale. A histogram bin which has been filled with the
+   * weights associated with the Event objects should be scaled by
+   * this factor to give the correct cross section.
+   */
+  virtual CrossSection histogramScale() const;
   //@}
 
   /** @name Functions used for the actual generation */
@@ -280,9 +287,15 @@ protected:
   inline ReaderSelector & selector();
 
   /**
-   * Collect statistics for this reader.
+   * Collect statistics for this event handler.
    */
   XSecStat stats;
+
+  /**
+   * Collect statistics for this event handler. To be used for
+   * histogram scaling.
+   */
+  XSecStat histStats;
 
 private:
 

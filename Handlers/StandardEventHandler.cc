@@ -408,6 +408,20 @@ void StandardEventHandler::statistics(ostream & os) const {
 
 }
 
+CrossSection StandardEventHandler::histogramScale() const {
+  Stat tot;
+  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
+    const StandardXComb & x = *xCombs()[i];
+    Stat s;
+    s = Stat(x.stats().attempts(), x.stats().accepted(),
+	     x.stats().sumWeights(), sampler()->integratedXSec(),
+	     sampler()->sumWeights());
+    tot += s;
+  }
+
+  return tot.xSec()/tot.accepted;
+}
+
 void StandardEventHandler::doinitrun() {
   EventHandler::doinitrun();
   sampler()->initrun();

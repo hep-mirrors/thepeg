@@ -1,5 +1,10 @@
 2005-05-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/EventHandler.*, Repository/EventGenerator.*,
+	LesHouches/LesHouchesEventHandler.*,
+	Handlers/StandardEventHandler.*: introduced histogramScale()
+	function.
+
 	* Repository/BaseRepository.cc: Added optional class name to the
 	'ls' command to only list objects (and directories with objects)
 	of a specified class. To be used in the Java GUI.

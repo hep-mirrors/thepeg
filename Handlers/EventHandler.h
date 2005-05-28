@@ -139,6 +139,16 @@ public:
    * and stuff.
    */
   virtual void statistics(ostream &) const;
+
+  /**
+   * Histogram scale. A histogram bin which has been filled with the
+   * weights associated with the Event objects should be scaled by
+   * this factor to give the correct cross section. This version of
+   * the function will produce an error message. It is up to a
+   * sub-class able to generate full events to return the correct
+   * value.
+   */
+  virtual CrossSection histogramScale() const;
   //@}
 
   /** @name Simple access functions. */
@@ -514,6 +524,12 @@ protected:
    * wrong class was added.
    */
   class EventHandlerStepError: public Exception {};
+
+  /**
+   * Exception class used by EventHandler when not able to produce a
+   * correct histogram scale..
+   */
+  class EventHandlerHistError: public Exception {};
 
   /**
    * Exception class used by EventHandler if asked to generate a

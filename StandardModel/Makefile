@@ -36,11 +36,14 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Config/Units.h \
@@ -54,6 +57,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -65,6 +69,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -74,11 +82,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -91,12 +101,17 @@ libThePEGSM.so: $(LIBOBJECTS)
   AlphaSBase.icc \
   StandardModelBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.tcc \
   ../../ThePEG/Interface/Parameter.h \
@@ -120,25 +135,36 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/Interface/Interfaced.h \
   ../../ThePEG/Utilities/Selector.h \
   ../../ThePEG/Utilities/Selector.icc \
   ../../ThePEG/Utilities/Selector.tcc \
   ../../ThePEG/PDT/WidthGenerator.fh \
   ../../ThePEG/PDT/MassGenerator.fh \
   ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/PDT/ParticleData.icc
   AlphaEMBase.o: \
   AlphaEMBase.cc \
@@ -152,10 +178,12 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
@@ -170,6 +198,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -179,6 +208,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -188,11 +221,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -214,10 +249,12 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
@@ -232,6 +269,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -241,6 +279,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -250,11 +292,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -262,12 +306,17 @@ libThePEGSM.so: $(LIBOBJECTS)
   StandardModelBase.fh \
   CKMBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -285,10 +334,12 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
@@ -303,6 +354,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -312,6 +364,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -321,11 +377,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -333,12 +391,17 @@ libThePEGSM.so: $(LIBOBJECTS)
   StandardModelBase.fh \
   AlphaSBase.icc \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.tcc \
   ../../ThePEG/Interface/ClassDocumentation.h \
@@ -357,10 +420,12 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
@@ -375,6 +440,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -384,6 +450,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -393,11 +463,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -407,33 +479,50 @@ libThePEGSM.so: $(LIBOBJECTS)
   O1AlphaS.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.tcc \
   ../../ThePEG/PDT/ParticleData.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/PDT/PDT.icc \
+  ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
   ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
   ../../ThePEG/Utilities/Math.h \
   ../../ThePEG/Utilities/Math.icc \
   ../../ThePEG/Utilities/Direction.h \
   ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/Utilities/UnitIO.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
   ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/Interface/Interfaced.h \
   ../../ThePEG/Utilities/Selector.h \
   ../../ThePEG/Utilities/Selector.icc \
   ../../ThePEG/Utilities/Selector.tcc \
   ../../ThePEG/PDT/WidthGenerator.fh \
   ../../ThePEG/PDT/MassGenerator.fh \
   ../../ThePEG/PDT/DecayMode.fh \
+  ../../ThePEG/Utilities/ClassTraits.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/PDT/ParticleData.icc \
   ../../ThePEG/Interface/Parameter.h \
   ../../ThePEG/Interface/Parameter.xh \
@@ -458,10 +547,12 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
@@ -476,6 +567,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -485,6 +577,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -494,11 +590,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -511,8 +609,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
   ../../ThePEG/StandardModel/StandardModelBase.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/StandardModel/AlphaEMBase.h \
   ../../ThePEG/StandardModel/CKMBase.h \
+  ../../ThePEG/Interface/Interfaced.h \
   ../../ThePEG/StandardModel/StandardModelBase.fh \
   ../../ThePEG/StandardModel/CKMBase.icc \
   ../../ThePEG/StandardModel/AlphaSBase.h \
@@ -531,10 +631,12 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Pointer/RCPtr.h \
   ../../ThePEG/Pointer/ReferenceCounted.h \
   ../../ThePEG/Pointer/ReferenceCounted.icc \
+  ../../ThePEG/Pointer/PtrTraits.h \
   ../../ThePEG/Pointer/RCPtr.icc \
   ../../ThePEG/Utilities/Rebinder.fh \
   ../../ThePEG/Utilities/Interval.fh \
   ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.fh \
@@ -549,6 +651,7 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Config/Constants.h \
   ../../ThePEG/Config/std.h \
   ../../ThePEG/Config/Pointers.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Containers.h \
   ../../ThePEG/Utilities/FixedSizeAllocator.h \
   ../../ThePEG/Utilities/Debug.h \
@@ -558,6 +661,10 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Named.h \
   ../../ThePEG/Utilities/Named.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/ClassDescription.fh \
+  ../../ThePEG/Utilities/Named.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Utilities/DescriptionList.h \
   ../../ThePEG/Utilities/DescriptionList.icc \
@@ -567,11 +674,13 @@ libThePEGSM.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/HoldFlag.icc \
   ../../ThePEG/Interface/InterfacedBase.xh \
   ../../ThePEG/Interface/InterfaceBase.h \
+  ../../ThePEG/Interface/InterfaceBase.fh \
   ../../ThePEG/Interface/InterfaceBase.xh \
   ../../ThePEG/Utilities/Exception.h \
   ../../ThePEG/Utilities/Exception.fh \
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
+  ../../ThePEG/Utilities/ClassTraits.h \
   ../../ThePEG/Interface/Interface.h \
   ../../ThePEG/Interface/InterfaceBase.icc \
   ../../ThePEG/Interface/InterfacedBase.icc \
@@ -581,12 +690,17 @@ libThePEGSM.so: $(LIBOBJECTS)
   StandardCKM.icc \
   ../../ThePEG/CLHEPWrap/PhysicalConstants.h \
   ../../ThePEG/Persistency/PersistentOStream.h \
+  ../../ThePEG/Config/ThePEG.h \
   ../../ThePEG/Config/Complex.h \
+  ../../ThePEG/Utilities/ClassDescription.h \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Persistency/PersistentOStream.fh \
   ../../ThePEG/Persistency/PersistentOStream.xh \
   ../../ThePEG/Persistency/PersistentOStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.h \
   ../../ThePEG/Persistency/InputDescription.h \
   ../../ThePEG/Persistency/InputDescription.icc \
+  ../../ThePEG/Persistency/PersistentIStream.fh \
   ../../ThePEG/Persistency/PersistentIStream.icc \
   ../../ThePEG/Persistency/PersistentIStream.tcc \
   ../../ThePEG/Interface/Parameter.h \

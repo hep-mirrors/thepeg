@@ -73,6 +73,10 @@ tcEventPtr EventGenerator::currentEvent() const {
   return eventHandler()->currentEvent();
 }
 
+CrossSection EventGenerator::histogramScale() const {
+  return eventHandler()->histogramScale();
+}
+
 void
 EventGenerator::setup(string newRunName,
 		      ObjectSet & newObjects,
