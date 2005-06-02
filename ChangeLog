@@ -1,3 +1,8 @@
+2005-06-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* lib/ThePEG.el: Just fixed so that THePEG-variable-cutnpaste
+	opens in another window - not the one we want to paste into.
+
 2005-05-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.*, Repository/EventGenerator.*,

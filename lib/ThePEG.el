@@ -1373,7 +1373,7 @@ ParticleVector " class "::decay(const DecayMode & dm,
   (setq win (cond (buf (get-buffer-window buf 'visible))
 		  (t nil)))
   (cond (win (select-window win))
-	(t (switch-to-buffer "*ThePEG-scratch*")))
+	(t (switch-to-buffer-other-window "*ThePEG-scratch*")))
   (c++-mode)
   (beginning-of-buffer)
   (insert-string (concat "
