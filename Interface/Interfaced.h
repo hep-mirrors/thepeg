@@ -70,6 +70,12 @@ public:
    * used.
    */
   inline void useMe() const;
+
+  /**
+   * Return a pointer to the EventGenerator controlling the run.
+   * During the setup phase this returns a null pointer.
+   */
+  inline tEGPtr generator() const;
   //@}
 
 public:
@@ -122,12 +128,6 @@ protected:
    * Protected copy-constructor.
    */
   inline Interfaced(const Interfaced &);
-
-  /**
-   * Return a pointer to the EventGenerator controlling the run.
-   * During the setup phase this returns a null pointer.
-   */
-  inline tEGPtr generator() const;
 
   /** @name Standard Interfaced virtual functions. */
   //@{
