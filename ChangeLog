@@ -1,3 +1,7 @@
+2005-06-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* lib/ThePEG.el: Fixed bug in specifying limited parameters.
+
 2005-06-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Just fixed so that THePEG-variable-cutnpaste

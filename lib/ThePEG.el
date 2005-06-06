@@ -1122,7 +1122,7 @@ ParticleVector " class "::decay(const DecayMode & dm,
      (cond (isstring "")
 	   ((and limup limlo) ", Interface::limited")
 	   (limup ", Interface::upperlim")
-	   (limlo ", Interface::upperlim")
+	   (limlo ", Interface::lowerlim")
 	   (t ", Interface::nolimits"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
