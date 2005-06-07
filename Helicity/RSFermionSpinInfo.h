@@ -22,6 +22,11 @@ namespace Helicity {
  *  The basis states in the rest frame of the particles can then be accessed by
  *  the decayers to produce the correct correlations.
  *
+ *  N.B. in our convention 0 is the \f$-\frac32\f$ helicity state,
+ *  1 is the \f$-\frac12\f$ helicity state,
+ *  2 is the \f$+\frac12\f$ helicity state,
+ *  3 is the \f$+\frac32\f$ helicity state.
+ *
  * @see SpinInfo
  *
  * \author Peter Richardson
@@ -62,28 +67,29 @@ public:
   //@{
   /**
    * Set the basis state, this is production state.
-   * @param hel the helicity.
+   * @param hel the helicity (0,1,2,3 as described above.)
    * @param in the LorentzRSSpinor for the given helicity.
    */
-  inline void setBasisState(int hel,LorentzRSSpinor in) const;
+  inline void setBasisState(unsigned int hel,LorentzRSSpinor in) const;
 
   /**
    * Set the basis state for the decay.
-   * @param hel the helicity.
+   * @param hel the helicity (0,1,2,3 as described above.)
    * @param in the LorentzRSSpinor for the given helicity.
    */
-  inline void setDecayState(int hel,LorentzRSSpinor in) const;
+  inline void setDecayState(unsigned int hel,LorentzRSSpinor in) const;
 
   /**
    * Get the basis state for the production for the given helicity, \a
-   * hel.
+   * hel (0,1,2,3 as described above.)
    */
-  inline LorentzRSSpinor getProductionBasisState(int hel) const;
+  inline LorentzRSSpinor getProductionBasisState(unsigned int hel) const;
 
   /**
-   * Get the basis state for the decay for the given helicity, \a hel.
+   * Get the basis state for the decay for the given helicity, \a hel
+   * (0,1,2,3 as described above.)
    */
-  inline LorentzRSSpinor getDecayBasisState(int hel) const;
+  inline LorentzRSSpinor getDecayBasisState(unsigned int hel) const;
   //@}
 
 public:

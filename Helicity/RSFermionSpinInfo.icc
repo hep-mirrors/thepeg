@@ -13,7 +13,7 @@ inline RSFermionSpinInfo::RSFermionSpinInfo()
 {
   _productionstates.resize(4,LorentzRSSpinor());
   _decaystates.resize(4,LorentzRSSpinor());
-  setSpin(4);
+  iSpin(PDT::Spin3Half);
   _decaycalc=false;
 }
 
@@ -21,7 +21,7 @@ inline RSFermionSpinInfo::RSFermionSpinInfo(const Lorentz5Momentum & in,bool int
 {
   _productionstates.resize(4,LorentzRSSpinor());
   _decaystates.resize(4,LorentzRSSpinor());
-  setSpin(4);
+  iSpin(PDT::Spin3Half);
   setProductionMomentum(in);
   _decaycalc=false;
   setTimelike(intime);
@@ -44,47 +44,41 @@ inline void RSFermionSpinInfo::rebind(const EventTranslationMap & trans) {
 
 // set and get methods for the basis states
 // set the basis state, this is production state
-inline void RSFermionSpinInfo::setBasisState(int ihel,LorentzRSSpinor in) const
+inline void RSFermionSpinInfo::setBasisState(unsigned int ihel,
+					     LorentzRSSpinor in) const
 {
-  unsigned int ispin=ihel+2;
-  if(ihel>0){--ispin;}
-  if(ihel==-1||ihel==1||ihel==-2||ihel==2){_productionstates[ispin]=in;}
+  if(ihel<4){_productionstates[ihel]=in;}
   else throw HelicityLogicalError()
       << "Tried to set invalid fermion basis state in RSFermionSpinInfo class."
       << Exception::abortnow;
 
 }
 
-inline void RSFermionSpinInfo::setDecayState(int ihel,LorentzRSSpinor in) const
+inline void RSFermionSpinInfo::setDecayState(unsigned int ihel,
+					     LorentzRSSpinor in) const
 {
-  unsigned int ispin=ihel+2;
-  if(ihel>0){--ispin;}
-  if(ihel==-1||ihel==1||ihel==-2||ihel==2){
+  if(ihel<4){
     _decaycalc=true;
-    _decaystates[ispin]=in;
+    _decaystates[ihel]=in;
   } else throw HelicityLogicalError()
     << "Tried to set invalid fermion basis state in RSFermionSpinInfo class."
     << Exception::abortnow;
 }
 
 // get the basis state for the production
-inline LorentzRSSpinor RSFermionSpinInfo::getProductionBasisState(int ihel) const
+inline LorentzRSSpinor RSFermionSpinInfo::
+getProductionBasisState(unsigned int ihel) const
 {
-  unsigned int ispin=ihel+2;
-  if(ihel>0){--ispin;}
-  if ( ihel != -1 && ihel != 1 && ihel!=-2 && ihel!=2) throw HelicityLogicalError()
+  if (ihel>3) throw HelicityLogicalError()
     << "Tried to get invalid fermion basis state in RSFermionSpinInfo class."
     << Exception::abortnow;
-  return _productionstates[ispin];
+  return _productionstates[ihel];
 }
 
 // get the bassis state for the decay
-inline LorentzRSSpinor RSFermionSpinInfo::getDecayBasisState(int ihel) const
+inline LorentzRSSpinor RSFermionSpinInfo::getDecayBasisState(unsigned int ihel) const
 {
-  unsigned int ispin=ihel+2;
-  if(ihel>0){--ispin;}
-  // check this is a valid helicity
-  if ( ihel != -1 && ihel != 1  && ihel!=-2 && ihel!=2)
+  if (ihel>3)
     throw HelicityLogicalError()
       << "Tried to get invalid fermion basis state in RSFermionSpinInfo class."
       << Exception::abortnow;
@@ -93,14 +87,12 @@ inline LorentzRSSpinor RSFermionSpinInfo::getDecayBasisState(int ihel) const
     {
       // now use this to evaluate the basis states in the decay frame
       Hep3Vector boostv=- productionMomentum().boostVector();
-      _decaystates[0] =_productionstates[0].boost(boostv);
-      _decaystates[1] =_productionstates[1].boost(boostv);
-      _decaystates[2] =_productionstates[2].boost(boostv);
-      _decaystates[3] =_productionstates[3].boost(boostv);
+      for(unsigned int ix=0;ix<4;++ix)
+	{_decaystates[ix] =_productionstates[ix].boost(boostv);}
       _decaycalc=true;
     }
   // return the basis function
-  return _decaystates[ispin];
+  return _decaystates[ihel];
 }
 
 }
