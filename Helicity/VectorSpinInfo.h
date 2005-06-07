@@ -23,6 +23,10 @@ namespace Helicity {
  *  The basis states in the rest frame of the particles can then be
  *  accessed by decayers to produce the correct correlation.
  *
+ *  N.B. in our convention 0 is the \f$-1\f$ helicity state,
+ *  1 is the \f$0\f$ helicity state and
+ *  2 is the \f$+1\f$ helicity state.
+ *
  * @author Peter Richardson
  *
  */
@@ -61,29 +65,30 @@ public:
   //@{
   /**
    * Set the basis state, this is production state.
-   * @param hel the helicity.
+   * @param hel the helicity (0,1,2 as described above.)
    * @param in the LorentzPolarizationVector for the given helicity.
    */
-  inline void setBasisState(int hel, LorentzPolarizationVector in) const;
+  inline void setBasisState(unsigned int hel, LorentzPolarizationVector in) const;
 
   /**
    * Set the basis state for the decay.
-   * @param hel the helicity.
+   * @param hel the helicity (0,1,2 as described above.)
    * @param in the LorentzPolarizationVector for the given helicity.
    */
-  inline void setDecayState(int hel, LorentzPolarizationVector in) const;
+  inline void setDecayState(unsigned int hel, LorentzPolarizationVector in) const;
   //@}
 
   /**
    * Get the basis state for the production for the given helicity, \a
-   * hel.
+   * hel (0,1,2 as described above.)
    */
-  inline LorentzPolarizationVector getProductionBasisState(int hel) const;
+  inline LorentzPolarizationVector getProductionBasisState(unsigned int hel) const;
 
   /**
-   * Get the basis state for the decay for the given helicity, \a hel.
+   * Get the basis state for the decay for the given helicity, \a hel 
+   * (0,1,2 as described above.)
    */
-  inline LorentzPolarizationVector getDecayBasisState(int hel) const;
+  inline LorentzPolarizationVector getDecayBasisState(unsigned int hel) const;
 
   /**
    * Perform a lorentz rotation of the spin information assuming the
