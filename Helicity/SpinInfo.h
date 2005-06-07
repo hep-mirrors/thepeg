@@ -4,6 +4,7 @@
 // This is the declaration of the SpinInfo class.
 
 #include "ThePEG/EventRecord/SpinBase.h"
+#include "ThePEG/PDT/PDT.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Helicity/HelicityVertex.h"
 #include "SpinInfo.fh"
@@ -167,7 +168,7 @@ public:
   /**
    * Return 2s+1 for the particle
    */
-  inline int Spin() const;
+  inline PDT::Spin iSpin() const;
 
   /**
    * Return true if this is a particle (rather than an antiparticle).
@@ -215,7 +216,7 @@ protected:
   /**
    * Set the spin of the particle.
    */
-  inline void setSpin(int);
+  inline PDT::Spin iSpin(PDT::Spin);
 
   /**
    * Set the production momentum  of the particle.
@@ -283,7 +284,7 @@ private:
   /**
    * The spin of the particle
    */
-  int _ispin;
+  PDT::Spin _spin;
 
   /**
    * Momentum of the particle when it was produced

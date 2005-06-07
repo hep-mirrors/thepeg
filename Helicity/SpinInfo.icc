@@ -21,7 +21,7 @@ inline SpinInfo::SpinInfo(const SpinInfo & x)
     _timelike(x._timelike),
     _prodloc(x._prodloc), _decayloc(x._decayloc),
     _decayed(x._decayed), _developed(x._developed),_rhomatrix(x._rhomatrix),
-    _Dmatrix(x._Dmatrix),_ispin(x._ispin),
+    _Dmatrix(x._Dmatrix),_spin(x._spin),
     _productionmomentum(x._productionmomentum)
 {
   x._production=VertexPtr();
@@ -114,14 +114,15 @@ inline RhoDMatrix SpinInfo::DMatrix() const {return _Dmatrix;}
 inline RhoDMatrix & SpinInfo::DMatrix() {return _Dmatrix;}
 
 // return 2s+1 for the particle
-inline int SpinInfo::Spin() const {return _ispin;}
+inline PDT::Spin SpinInfo::iSpin() const {return _spin;}
 
 // set the spin of the particle
-inline void SpinInfo::setSpin(int in)
+  inline PDT::Spin SpinInfo::iSpin(PDT::Spin in)
 {
-  _ispin=in;
-  _rhomatrix.setSpin(_ispin);_rhomatrix.average();
-  _Dmatrix.setSpin(_ispin);_Dmatrix.average();
+  _spin=in;
+  _rhomatrix.iSpin(_spin);_rhomatrix.average();
+  _Dmatrix.iSpin(_spin);_Dmatrix.average();
+  return _spin;
 }
 
 inline const Lorentz5Momentum & SpinInfo::productionMomentum() const
