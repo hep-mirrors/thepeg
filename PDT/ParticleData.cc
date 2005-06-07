@@ -32,7 +32,7 @@ ParticleData::ParticleData()
     theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
     theCharge(PDT::ChargeUnknown),
     theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
-    variableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
+    theVariableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
     theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
     theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
     theDefColour(PDT::ColourUnknown) {}
@@ -46,7 +46,7 @@ ParticleData::ParticleData(const ParticleData & pd)
     theColor(pd.theColor), theMassGenerator(pd.theMassGenerator),
     isStable(pd.isStable), theDecaySelector(pd.theDecaySelector),
     theDecayModes(pd.theDecayModes), theWidthGenerator(pd.theWidthGenerator),
-    variableRatio(pd.variableRatio), theAntiPartner(pd.theAntiPartner),
+    theVariableRatio(pd.theVariableRatio), theAntiPartner(pd.theAntiPartner),
     syncAnti(pd.syncAnti), theDefMass(pd.theDefMass),
     theDefWidth(pd.theDefWidth), theDefCut(pd.theDefCut),
     theDefCTau(pd.theDefCTau), theDefCharge(pd.theDefCharge),
@@ -58,7 +58,7 @@ ParticleData(long newId, string newPDGName)
     theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
     theCharge(PDT::ChargeUnknown),
     theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
-    variableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
+    theVariableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
     theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
     theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
     theDefColour(PDT::ColourUnknown) {}
@@ -183,9 +183,14 @@ void ParticleData::stable(bool theSpin) {
   if ( synchronized() && CC() ) CC()->isStable = s;
 }
 
+
 void ParticleData::synchronized(bool h) {
   syncAnti = h;
   if ( CC() ) CC()->syncAnti = h;
+}
+
+void ParticleData::variableRatio(bool varRatio) {
+  theVariableRatio=varRatio;
 }
 
 void ParticleData::addDecayMode(tDMPtr dm) {
@@ -265,7 +270,7 @@ void ParticleData::doupdate() throw(UpdateException) {
 tDMPtr ParticleData::selectMode(Particle & p) const {
   if ( &(p.data()) != this ) return tDMPtr();
   try {
-    if ( !theWidthGenerator || !variableRatio )
+    if ( !theWidthGenerator || !theVariableRatio )
       return theDecaySelector.select(generator()->random());
     DecaySelector local;
     if ( theWidthGenerator )
@@ -461,6 +466,14 @@ long ParticleData::getSync() const {
   return synchronized();
 }
 
+void ParticleData::setVariableRatio(long is) {
+  variableRatio(is);
+}
+
+long ParticleData::getVariableRatio() const {
+  return variableRatio();
+}
+
 string ParticleData::doSync(string) {
   synchronize();
   return "";
@@ -557,7 +570,7 @@ void ParticleData::persistentOutput(PersistentOStream & os) const {
      << ounit(theCTau, mm) << oenum(theCharge) << oenum(theSpin)
      << oenum(theColor);
   os << theMassGenerator << isStable << modes << theDecaySelector
-     << theWidthGenerator << variableRatio << theAntiPartner << syncAnti
+     << theWidthGenerator << theVariableRatio << theAntiPartner << syncAnti
      << ounit(theDefMass, GeV) << ounit(theDefWidth, GeV)
      << ounit(theDefCut, GeV) << ounit(theDefCTau, mm) << oenum(theDefColour)
      << oenum(theDefCharge) << oenum(theDefSpin);
@@ -568,7 +581,7 @@ void ParticleData::persistentInput(PersistentIStream & is, int) {
      >> iunit(theWidthUpCut, GeV) >> iunit(theWidthLoCut, GeV)
      >> iunit(theCTau, mm) >> ienum(theCharge) >> ienum(theSpin)
      >> ienum(theColor) >> theMassGenerator >> isStable
-     >> theDecayModes >> theDecaySelector >> theWidthGenerator >> variableRatio
+     >> theDecayModes >> theDecaySelector >> theWidthGenerator >> theVariableRatio
      >> theAntiPartner >> syncAnti >> iunit(theDefMass, GeV)
      >> iunit(theDefWidth, GeV) >> iunit(theDefCut, GeV)
      >> iunit(theDefCTau, mm) >> ienum(theDefColour) >> ienum(theDefCharge)
@@ -748,6 +761,23 @@ void ParticleData::Init() {
     (interfaceStable,
      "Unstable",
      "This particle is not stable",
+     0);
+
+  static Switch<ParticleData> interfaceVariableRatio
+    ("VariableRatio",
+     "Indicates if the branching ratios of the particle are allowed"
+     " to vary for given Particle instances depending on the mass of the instance.",
+     0, 0, false, false,
+     &ParticleData::setVariableRatio, &ParticleData::getVariableRatio, 0);
+  static SwitchOption interfaceVariableRatioYes
+    (interfaceVariableRatio,
+     "Yes",
+     "The branching ratio varies.",
+     1);
+  static SwitchOption interfaceVariableRatioNo
+    (interfaceVariableRatio,
+     "No",
+     "The branching ratio does not vary.",
      0);
 
   static Switch<ParticleData> interfaceSync

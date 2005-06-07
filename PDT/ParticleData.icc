@@ -133,6 +133,10 @@ inline bool ParticleData::synchronized() const {
   return syncAnti;
 }
 
+inline bool ParticleData::variableRatio() const {
+  return theVariableRatio;
+}
+
 inline tMassGenPtr ParticleData::massGenerator() const {
   return theMassGenerator;
 }

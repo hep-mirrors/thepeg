@@ -381,6 +381,18 @@ public:
    */
   inline tWidthGeneratorPtr widthGenerator() const;
 
+  /**
+   * Specify if the branching ratio of the Particle instances should vary with their
+   * masses. 
+   */
+  void variableRatio(bool varRatio);
+
+  /**
+   * Return true if the branching ratio should vary with the mass of the Particle
+   * instance.
+   */
+  inline bool variableRatio() const;
+
 public:
 
 
@@ -586,7 +598,7 @@ private:
    * Determine whether the branching fractions are allowed to change
    * on a particle-by-particle basis.
    */
-  bool variableRatio;
+  bool theVariableRatio;
 
   /**
    * Pointer to the object corresponding to the antiparticle. Set to
@@ -749,6 +761,16 @@ private:
    * Utility function for the interface.
    */
   long getSync() const;
+
+  /**
+   * Utility function for the interface.
+   */
+  void setVariableRatio(long);
+
+  /**
+   * Utility function for the interface.
+   */
+  long getVariableRatio() const;
 
   /**
    * Utility function for the interface.
