@@ -13,7 +13,7 @@ inline TensorSpinInfo::TensorSpinInfo()
 {
   _productionstates.resize(5);
   _decaystates.resize(5);
-  setSpin(5);
+  iSpin(PDT::Spin2);
   _decaycalc = false;
 }
 
@@ -25,7 +25,7 @@ inline TensorSpinInfo::TensorSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
   _productionstates.resize(5);
   _decaystates.resize(5);
-  setSpin(5);
+  iSpin(PDT::Spin2);
   setProductionMomentum(in);
   _decaycalc=false;
   setTimelike(intime);
@@ -43,39 +43,40 @@ inline void TensorSpinInfo::rebind(const EventTranslationMap & trans) {
 
 // set and get methods for the basis states
 // set the basis state, this is production state
-inline void TensorSpinInfo::setBasisState(int ihel, LorentzTensor in) const
+inline void TensorSpinInfo::setBasisState(unsigned int ihel, LorentzTensor in) const
 {
-  if (ihel>=-2&&ihel<=2) _productionstates[ihel+2]=in;
+  if (ihel<5) _productionstates[ihel]=in;
   else throw HelicityLogicalError()
     << "Tried to set invalid tensor basis state in TensorSpinInfo."
     << Exception::abortnow;
 }
 
-inline void TensorSpinInfo::setDecayState(int ihel, LorentzTensor in) const
+inline void TensorSpinInfo::setDecayState(unsigned int ihel,
+					  LorentzTensor in) const
 {
-  if(ihel>=-2&&ihel<=2) {
+  if(ihel<5) {
     _decaycalc=true;
-    _decaystates[ihel+2]=in;
+    _decaystates[ihel]=in;
   } else throw HelicityLogicalError()
     << "Tried to set invalid tensor basis state in TensorSpinInfo."
     << Exception::abortnow;
 }
 
 // get the basis state for the production
-inline LorentzTensor TensorSpinInfo::getProductionBasisState(int ihel) const
+inline LorentzTensor TensorSpinInfo::getProductionBasisState(unsigned int ihel) const
 {
-  if (ihel<-2||ihel>2) throw HelicityLogicalError()
+  if (ihel>4) throw HelicityLogicalError()
     << "Tried to get invalid tensor basis state in TensorSpinInfo."
     << Exception::abortnow;
-  return _productionstates[ihel+2];
+  return _productionstates[ihel];
 }
 
 
 // get the bassis state for the decay
-inline LorentzTensor TensorSpinInfo::getDecayBasisState(int ihel) const
+inline LorentzTensor TensorSpinInfo::getDecayBasisState(unsigned int ihel) const
 {
   // check this is a valid helicity
-  if (ihel<-2||ihel>2) throw HelicityLogicalError()
+  if (ihel>4) throw HelicityLogicalError()
     << "Tried to get invalid tensor basis state in TensorSpinInfo."
     << Exception::abortnow;
   // calculate the decay basis states if needed
@@ -88,7 +89,7 @@ inline LorentzTensor TensorSpinInfo::getDecayBasisState(int ihel) const
       _decaycalc=true;
     }
   // return the basis function
-  return _decaystates[ihel+2];
+  return _decaystates[ihel];
 }
 
 
