@@ -11,97 +11,89 @@
 namespace ThePEG {
 namespace Helicity {
 
-inline RhoDMatrix::RhoDMatrix(int inspin)
-  :  _ispin(inspin){}
+inline RhoDMatrix::RhoDMatrix(PDT::Spin inspin)
+  :  _spin(inspin)
+{
+  if(inspin<1||inspin>5) throw HelicityLogicalError()
+    << "Invalid spin for a RhoDMatrix " << inspin <<  Exception::abortnow;
+  _ispin=abs(int(inspin));
+}
 
 inline RhoDMatrix::RhoDMatrix() {}
 
 inline RhoDMatrix::RhoDMatrix(const RhoDMatrix & x)
-  :   _ispin(x._ispin)
+  :   _spin(x._spin), _ispin(x._ispin)
 {
-  for(int ix=0;ix<_ispin&&ix<5;++ix)
-    {for(int iy=0;iy<_ispin&&iy<5;++iy){_matrix[ix][iy]=x._matrix[ix][iy];}}
+  unsigned int ix,iy;
+  for(ix=0;ix<_ispin&&ix<5;++ix)
+    {for(iy=0;iy<_ispin&&iy<5;++iy){_matrix[ix][iy]=x._matrix[ix][iy];}}
 }
 
-inline Complex RhoDMatrix::operator () (int ix,int iy) const
+inline Complex RhoDMatrix::operator () (unsigned int ix,unsigned int iy) const
   // operator to return an element of the matrix
 {
-  if ( ix < -_ispin/2 || ix > _ispin/2 ) throw HelicityLogicalError()
+  if(ix>_ispin) throw HelicityLogicalError()
     << "Invalid 1st index called for RhoDMatrix " << ix
     << "   " << _ispin << Exception::abortnow;
-  if( ix == 0 && _ispin%2 == 0 ) throw HelicityLogicalError()
-    << "Zero element called for RhoDMatrix with a fermion"
-    << Exception::abortnow;
-  if( iy < -_ispin/2 || iy > _ispin/2 ) throw HelicityLogicalError()
+  if(iy>_ispin) throw HelicityLogicalError()
     << "Invalid 2nd index called for RhoDMatrix " << iy
     << "   " << _ispin << Exception::abortnow;
-  if( iy == 0 && _ispin%2 == 0 ) throw HelicityLogicalError()
-    << "Zero element called for rho matrix with a fermion"
-    << Exception::abortnow;
-  return _matrix[ix+_ispin][iy+_ispin];
+  return _matrix[ix][iy];
 }
 
-inline Complex & RhoDMatrix::operator () (int ix,int iy)
+inline Complex & RhoDMatrix::operator () (unsigned int ix,unsigned int iy)
   // operator to return an element of the matrix
 {
-  if ( ix < -_ispin/2 || ix > _ispin/2 ) throw HelicityLogicalError()
+  if(ix>_ispin) throw HelicityLogicalError()
     << "Invalid 1st index called for RhoDMatrix " << ix
     << "   " << _ispin << Exception::abortnow;
-  if( ix == 0 && _ispin%2 == 0 ) throw HelicityLogicalError()
-    << "Zero element called for RhoDMatrix with a fermion"
-    << Exception::abortnow;
-  if( iy < -_ispin/2 || iy > _ispin/2 ) throw HelicityLogicalError()
+  if(iy>_ispin) throw HelicityLogicalError()
     << "Invalid 2nd index called for RhoDMatrix " << iy
     << "   " << _ispin << Exception::abortnow;
-  if( iy == 0 && _ispin%2 == 0 ) throw HelicityLogicalError()
-    << "Zero element called for rho matrix with a fermion"
-    << Exception::abortnow;
-  int ia=int(_ispin/2)+ix-int(_ispin%2==0&&ix>0);
-  int ib=int(_ispin/2)+iy-int(_ispin%2==0&&iy>0);
-  return _matrix[ia][ib];
+  return _matrix[ix][iy];
 }
+  
+// set the spin
+inline PDT::Spin RhoDMatrix::iSpin(PDT::Spin inspin)
+{
+  if(inspin<1||inspin>5) throw HelicityLogicalError()
+    << "Invalid spin for a RhoDMatrix " << inspin <<  Exception::abortnow;
+  _spin=inspin;
+  _ispin=abs(int(_spin));
+  return _spin;
+ }
 
-// set 2s+1 for the particle
-inline void RhoDMatrix::setSpin(int in){_ispin=in;}
-
-// get 2s+1 for the particle
-inline int RhoDMatrix::getSpin(){return _ispin;}
+// get the spin
+inline PDT::Spin RhoDMatrix::iSpin() const { return _spin;}
 
 // set the matrix to 1/(2s+1) on diagonals and zero elsewhere
 inline void RhoDMatrix::average()
 {
-  if(_ispin>0&_ispin<6)
+  unsigned int ix,iy;
+  for(ix=0;ix<_ispin;++ix)
     {
-      for(int ix=0;ix<_ispin;++ix)
-	{
-	  for(int iy=0;iy<_ispin;++iy){_matrix[ix][iy]=0.;}
-	  _matrix[ix][ix]=1./_ispin;
-	}
+      for(iy=0;iy<_ispin;++iy){_matrix[ix][iy]=0.;}
+      _matrix[ix][ix]=1./_ispin;
     }
-  else
-    throw HelicityLogicalError()
-      << "Invalid spin in RhoDMatrix::average." << Exception::abortnow;
 }
 
 // assignment operator.
 inline RhoDMatrix & RhoDMatrix::operator=(const RhoDMatrix & in)
 {
+  _spin=in._spin;
   _ispin=in._ispin;
-  for(int ix=0;ix<_ispin&&ix<5;++ix)
-    {
-      for(int iy=0;iy<_ispin&&iy<5;++iy)
-	{
-	  _matrix[ix][iy]=in._matrix[ix][iy];
-	}
-    }
+  unsigned int ix,iy;
+  for(ix=0;ix<_ispin&&ix<5;++ix)
+    {for(iy=0;iy<_ispin&&iy<5;++iy){_matrix[ix][iy]=in._matrix[ix][iy];}}
   return *this;
 }
 
 inline void RhoDMatrix::normalize()
 {
   static double epsa=1e-30,epsb=1e-10;
+  unsigned int ix,iy;
   Complex norm=0;
-  for(int ix=0;ix<5&&ix<_ispin;++ix){norm+=_matrix[ix][ix];}
+  for(ix=0;ix<5&&ix<_ispin;++ix){norm+=_matrix[ix][ix];}
   if ( norm.real() < epsa ) throw HelicityConsistencyError()
     << "RhoDMatrix::normalize() the trace is too small "
     << norm.real() << Exception::maybeabort;
@@ -109,25 +101,26 @@ inline void RhoDMatrix::normalize()
     << "RhoDMatrix::normalize() the imaginary part of the trace is too large"
     << norm.imag() << Exception::maybeabort;
   norm=1./norm;
-  for(int ix=0;ix<5&&ix<_ispin;++ix)
-    for(int iy=0;iy<5&&iy<_ispin;++iy) _matrix[ix][iy]*=norm;
+  for(ix=0;ix<5&&ix<_ispin;++ix)
+    for(iy=0;iy<5&&iy<_ispin;++iy) _matrix[ix][iy]*=norm;
 }
 
 inline void RhoDMatrix::output()
 {
-
-  for(int ix=0;ix<5&&ix<_ispin;++ix)
+  unsigned int ix,iy;
+  for(ix=0;ix<5&&ix<_ispin;++ix)
     {
-      for(int iy=0;ix<5&&iy<_ispin;++iy){cout << _matrix[ix][iy] << "  ";}
+      for(iy=0;ix<5&&iy<_ispin;++iy){cout << _matrix[ix][iy] << "  ";}
       cout << endl;
     }
 }
 
 inline void RhoDMatrix::zero()
 {
-  for(int ix=0;ix<5&&ix<_ispin;++ix)
+  unsigned int ix,iy;
+  for(ix=0;ix<5&&ix<_ispin;++ix)
     {
-      for(int iy=0;ix<5&&iy<_ispin;++iy){_matrix[ix][iy]=0.;}}
+      for(iy=0;ix<5&&iy<_ispin;++iy){_matrix[ix][iy]=0.;}}
 }
 
 }

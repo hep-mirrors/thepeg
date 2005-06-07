@@ -4,6 +4,7 @@
 // This is the declaration of the RhoDMatrix class.
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/PDT/PDT.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Config/Complex.h"
 // #include "RhoDMatrix.fh"
@@ -34,7 +35,7 @@ public:
   /**
    * Standard constructor giving the spin as 2s+1.
    */
-  inline RhoDMatrix(int);
+  inline RhoDMatrix(PDT::Spin);
 
   /**
    * Copy constructor.
@@ -54,12 +55,12 @@ public:
   /**
    * Return an element of the matrix.
    */
-  inline Complex operator () (int,int) const;
+  inline Complex operator () (unsigned int,unsigned int) const;
 
   /**
    * Set an element of the matrix.
    */
-  inline Complex & operator () (int,int);
+  inline Complex & operator () (unsigned int,unsigned int);
 
   /**
    * set the matrix to 1/(2s+1) on diagonals and zero elsewhere
@@ -80,14 +81,15 @@ public:
   /** @name Access the spin. */
   //@{
   /**
-   * Set 2s+1 for the particle.
+   * Set the spin. The spin should be given as 2J+1 (in units of
+   * hbar/2) using the PDT::Spin enum.
    */
-  inline void setSpin(int);
+  inline PDT::Spin iSpin(PDT::Spin);
 
   /**
-   * Get 2s+1 for the particle.
+   * Get the spin. The spin is returned as 2J+1 in units of hbar/2.
    */
-  inline int getSpin();
+  inline PDT::Spin iSpin() const;
   //@}
 
   /**
@@ -105,7 +107,12 @@ private:
   /**
    * 2s+1 for the particle.
    */
-  int _ispin;
+  PDT::Spin _spin;
+
+  /**
+   *  Storage of 2s+1 for speed.
+   */
+  unsigned int _ispin;
 
   /**
    * Storage for the matrix allowing up to spin 2 particles
