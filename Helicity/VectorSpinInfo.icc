@@ -16,7 +16,7 @@ inline VectorSpinInfo::VectorSpinInfo()
   _productionstates.resize(3,LorentzPolarizationVector());
   _currentstates.resize(3,LorentzPolarizationVector());
   _decaystates.resize(3,LorentzPolarizationVector());
-  setSpin(3);
+  iSpin(PDT::Spin1);
   _decaycalc = false;
 }
 
@@ -30,7 +30,7 @@ inline VectorSpinInfo::VectorSpinInfo(const Lorentz5Momentum & in,bool intime)
   _productionstates.resize(3,LorentzPolarizationVector());
   _currentstates.resize(3,LorentzPolarizationVector());
   _decaystates.resize(3,LorentzPolarizationVector());
-  setSpin(3);
+  iSpin(PDT::Spin1);
   setProductionMomentum(in);
   _decaycalc=false;
   setTimelike(intime);
@@ -49,12 +49,12 @@ inline void VectorSpinInfo::rebind(const EventTranslationMap & trans) {
 // set and get methods for the basis states
 // set the basis state, this is production state
 inline void VectorSpinInfo::
-setBasisState(int ihel, LorentzPolarizationVector in) const
+setBasisState(unsigned int ihel, LorentzPolarizationVector in) const
 {  
-  if ( ihel == -1 || ihel == 1 || ihel == 0 )
+  if (ihel<3)
     {
-      _productionstates[ihel+1]=in;
-      _currentstates[ihel+1]=in;
+      _productionstates[ihel]=in;
+      _currentstates[ihel]=in;
     }
   else throw HelicityLogicalError()
     << "Tried to set invalid vector basis state in VectorSpinInfo."
@@ -62,11 +62,11 @@ setBasisState(int ihel, LorentzPolarizationVector in) const
 }
 
 inline void VectorSpinInfo::
-setDecayState(int ihel, LorentzPolarizationVector in) const
+setDecayState(unsigned int ihel, LorentzPolarizationVector in) const
 {
-  if(ihel==-1||ihel==1||ihel==0) {
+  if(ihel<3) {
     _decaycalc=true;
-    _decaystates[ihel+1]=in;
+    _decaystates[ihel]=in;
   } else throw HelicityLogicalError()
     << "Tried to set invalid vector basis state in VectorSpinInfo."
     << Exception::abortnow;
@@ -74,20 +74,20 @@ setDecayState(int ihel, LorentzPolarizationVector in) const
 
 // get the basis state for the production
 inline LorentzPolarizationVector VectorSpinInfo::
-getProductionBasisState(int ihel) const
+getProductionBasisState(unsigned int ihel) const
 {
-  if ( ihel != -1 && ihel != 1 && ihel != 0 ) throw HelicityLogicalError()
+  if (ihel>2) throw HelicityLogicalError()
     << "Tried to get invalid vector basis state in VectorSpinInfo."
     << Exception::abortnow;
-  return _productionstates[ihel+1];
+  return _productionstates[ihel];
 }
 
 // get the bassis state for the decay
 inline LorentzPolarizationVector VectorSpinInfo::
-getDecayBasisState(int ihel) const
+getDecayBasisState(unsigned int ihel) const
 {
   // check this is a valid helicity
-  if ( ihel != -1 && ihel != 1 && ihel != 0 ) throw HelicityLogicalError()
+  if (ihel>2) throw HelicityLogicalError()
     << "Tried to get invalid vector basis state in VectorSpinInfo."
     << Exception::abortnow;
   // calculate the decay basis states if needed
@@ -98,7 +98,7 @@ getDecayBasisState(int ihel) const
       _decaycalc=true;
     }
   // return the basis function
-  return _decaystates[ihel+1];
+  return _decaystates[ihel];
 }
 
 }
