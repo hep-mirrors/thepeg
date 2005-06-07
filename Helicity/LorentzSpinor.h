@@ -6,7 +6,8 @@
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzSpinor.fh"
-#include "LorentzSpinorBar.fh"
+#include "LorentzSpinorBar.h"
+#include "LorentzPolarizationVector.h"
 
 namespace ThePEG{
 namespace Helicity{
@@ -241,6 +242,71 @@ public:
    * Return the type of the spinor.
    */
   inline SpinorType Type();
+  //@}
+
+
+  /** @name Functions to calculate certain currents. */
+  //@{
+  /**
+   *  Calculate the left-handed current \f$\bar{f}\gamma^\mu P_Lf\f$.
+   * @param fbar The barred spinor.
+   */
+  inline LorentzPolarizationVector leftCurrent(LorentzSpinorBar& fbar);
+  /**
+   *  Calculate the right-handed current \f$\bar{f}\gamma^\mu P_Rf\f$.
+   * @param fbar The barred spinor.
+   */
+  inline LorentzPolarizationVector rightCurrent(LorentzSpinorBar& fbar);
+  /**
+   *  Calculate the vector current \f$\bar{f}\gamma^\mu f\f$
+   * @param fbar The barred spinor.
+   */
+  inline LorentzPolarizationVector vectorCurrent(LorentzSpinorBar& fbar);
+
+  /**
+   * Calculate a general current with arbitary left and right couplings,
+   * i.e. \f$\bar{f}\gamma^\mu(c_lP_L+c_RP_R)f\f\f$
+   * @param fbar The barred spinor.
+   * @param left The left coupling, \f$c_L\f$.
+   * @param right The right coupling, \f$c_R\f$.
+   */
+  inline LorentzPolarizationVector generalCurrent(LorentzSpinorBar& fbar,
+						  Complex left, Complex right);
+  //@}
+
+  /** @name Functions to calculate certain scalars. */
+  //@{
+  /**
+   * Calculate the left-handed scalar \f$\bar{f}P_Lf\f$.
+   * @param fbar The barred spinor.
+   */
+  inline Complex leftScalar(LorentzSpinorBar& fbar);
+
+  /**
+   * Calculate the right-handed scalar \f$\bar{f}P_Rf\f$.
+   * @param fbar The barred spinor.
+   */
+  inline Complex rightScalar(LorentzSpinorBar& fbar);
+
+  /**
+   *  Calculate the scalar \f$\bar{f}f\f$.
+   * @param fbar The barred spinor.
+   */
+  inline Complex scalar(LorentzSpinorBar& fbar);
+  /**
+   *  Calculate the pseudoscalar \f$\bar{f}\gamma_5f\f$.
+   * @param fbar The barred spinor.
+   */
+  inline Complex pseudoScalar(LorentzSpinorBar& fbar);
+
+  /**
+   * Calculate a general scalar product with arbitary left and right couplings,
+   * i.e. \f$\bar{f}c_lP_L+c_RP_Rf\f\f$
+   * @param fbar The barred spinor.
+   * @param left The left coupling, \f$c_L\f$.
+   * @param right The right coupling, \f$c_R\f$.
+   */
+  inline Complex generalScalar(LorentzSpinorBar& fbar,Complex left, Complex right);
   //@}
 
 private:
