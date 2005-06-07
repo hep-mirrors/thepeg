@@ -9,6 +9,7 @@
 #include "LorentzRSSpinor.fh"
 #include "LorentzRSSpinorBar.fh"
 #include "LorentzSpinorBar.h"
+#include "LorentzSpinor.h"
 #include "LorentzPolarizationVector.h"
 
 namespace ThePEG {
@@ -298,6 +299,14 @@ public:
   inline SpinorType Type();
   //@}
 
+  /**
+   * Current \f$\bar{f}^\alpha(c_LP_L+c_RP_R)f\f$ for general couplings.
+   * @param f The unbarred spinor
+   * @param left The left-handed coupling, \f$c_L\f$.
+   * @param right The right-handed coupling, \f$c_R\f$.
+   */
+  inline LorentzPolarizationVector generalCurrent(LorentzSpinor& f,Complex left,
+						  Complex right);
 private:
 
   /**

@@ -364,5 +364,74 @@ inline LorentzSpinor LorentzRSSpinor::dot(const LorentzVector & vec) const
   return output;
 }
 
+inline Complex LorentzRSSpinor::generalScalar(LorentzRSSpinorBar& fbar,Complex left,
+					      Complex right)
+{
+  Complex output; 
+  unsigned int iz;
+  // ensure both spinors are in the same representation, otherwise change to default
+  if(Rep()!=fbar.Rep())
+    {
+      fbar.changeRep(defaultDRep);
+      changeRep(defaultDRep);
+    }
+  // low energy conventions
+  if(Rep()==HaberDRep)
+    {
+      output=  left*( (fbar(3,0)-fbar(3,2))*(_spin[3][0]-_spin[3][2])
+		     +(fbar(3,1)-fbar(3,3))*(_spin[3][1]-_spin[3][3]))
+	     +right*( (fbar(3,0)+fbar(3,2))*(_spin[3][0]+_spin[3][2])
+		     +(fbar(3,1)+fbar(3,3))*(_spin[3][1]+_spin[3][3]));
+      for(iz=0;iz<3;++iz)
+	{output-=
+	    left*( (fbar(iz,0)-fbar(iz,2))*(_spin[iz][0]-_spin[iz][2])
+		  +(fbar(iz,1)-fbar(iz,3))*(_spin[iz][1]-_spin[iz][3]))
+	  +right*( (fbar(iz,0)+fbar(iz,2))*(_spin[iz][0]+_spin[iz][2])
+		  +(fbar(iz,1)+fbar(iz,3))*(_spin[iz][1]+_spin[iz][3]));}
+      output*=0.5;
+    }
+  // high energy conventions
+  else
+    {
+      output = 
+	  left*(fbar(3,0)*_spin[3][0]+fbar(3,1)*_spin[3][1])
+	+right*(fbar(3,2)*_spin[3][2]+fbar(3,3)*_spin[3][3]);
+      for(iz=0;iz<3;++iz)
+	{output-=
+	      left*(fbar(iz,0)*_spin[iz][0]+fbar(iz,1)*_spin[iz][1])
+	    +right*(fbar(iz,2)*_spin[iz][2]+fbar(iz,3)*_spin[iz][3]);
+	}
+    }
+  return output;
+}
+
+inline LorentzPolarizationVector LorentzRSSpinor::generalCurrent(LorentzSpinorBar& fbar,
+								 Complex left,
+								 Complex right)
+{
+  LorentzPolarizationVector output;
+  // ensure both spinors are in the same representation, otherwise change to default
+  if(Rep()!=fbar.Rep())
+    {
+      fbar.changeRep(defaultDRep);
+      changeRep(defaultDRep);
+    }
+  unsigned int iz;
+  // low energy
+  if(Rep()==HaberDRep)
+    {
+      for(iz=0;iz<4;++iz)
+	{output[iz] = 
+	    0.5*left*( (fbar.s1()-fbar.s3())*(_spin[iz][0]-_spin[iz][2])
+		      +(fbar.s2()-fbar.s4())*(_spin[iz][1]-_spin[iz][3]))
+	    +0.5*right*( (fbar.s1()+fbar.s3())*(_spin[iz][0]+_spin[iz][2])
+			+(fbar.s2()+fbar.s4())*(_spin[iz][1]+_spin[iz][3]));}
+    }
+  // high energy
+  else
+    {output[iz]= left*(fbar.s1()*_spin[iz][0]+fbar.s2()*_spin[iz][1])
+        	+right*(fbar.s3()*_spin[iz][2]+fbar.s4()*_spin[iz][3]);}
+  return output;
+}
 }
 }

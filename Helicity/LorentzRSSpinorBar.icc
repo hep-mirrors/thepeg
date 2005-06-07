@@ -353,6 +353,37 @@ inline LorentzSpinorBar LorentzRSSpinorBar::dot(const LorentzVector & vec) const
     }
   return output;
 }
+
+inline LorentzPolarizationVector  LorentzRSSpinorBar::generalCurrent(LorentzSpinor& f,
+								     Complex left,
+								     Complex right)
+{
+  LorentzPolarizationVector output;
+  // ensure both spinors are in the same representation, otherwise change to default
+  if(Rep()!=f.Rep())
+    {
+      f.changeRep(defaultDRep);
+      changeRep(defaultDRep);
+    }
+  unsigned int iz;
+  // low energy
+  if(Rep()==HaberDRep)
+    {
+      for(iz=0;iz<4;++iz)
+	{output[iz] = 
+	    0.5*left*( (_spin[iz][0]-_spin[iz][2])*(f.s1()-f.s3())
+		      +(_spin[iz][1]-_spin[iz][3])*(f.s2()-f.s4()))
+	  +0.5*right*( (_spin[iz][0]+_spin[iz][2])*(f.s1()+f.s3())
+		      +(_spin[iz][1]+_spin[iz][3])*(f.s2()+f.s4()));}
+    }
+  else
+    {
+      for(iz=0;iz<4;++iz)
+	{output[iz]=  left*(_spin[iz][0]*f.s1()+_spin[iz][1]*f.s2())
+	            +right*(_spin[iz][2]*f.s3()+_spin[iz][3]*f.s4());}
+    }
+  return output;
+}
 }
 }
 

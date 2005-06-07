@@ -6,7 +6,8 @@
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzRSSpinor.fh"
-#include "LorentzRSSpinorBar.fh"
+#include "LorentzRSSpinorBar.h"
+#include "LorentzSpinorBar.h"
 #include "LorentzSpinor.h"
 #include "LorentzPolarizationVector.h"
 
@@ -376,6 +377,23 @@ public:
    */
   inline SpinorType Type();
   //@}
+
+  /**
+   * Scalar product \f$\bar{f}^\alpha(c_LP_L+c_RP_R)f_\alpha\f$for general couplings
+   * @param fbar The barred spinor
+   * @param left The left-handed coupling, \f$c_L\f$.
+   * @param right The right-handed coupling, \f$c_R\f$.
+   */
+  inline Complex generalScalar(LorentzRSSpinorBar& fbar,Complex left,Complex right);
+
+  /**
+   *  Current \f$\bar{f}(c_LP_L+c_RP_R)f^\alpha\f$ for general couplings.
+   * @param fbar The barred spinor
+   * @param left The left-handed coupling, \f$c_L\f$.
+   * @param right The right-handed coupling, \f$c_R\f$.
+   */
+  inline LorentzPolarizationVector generalCurrent(LorentzSpinorBar& fbar,Complex left,
+						  Complex right);
 
 private:
 
