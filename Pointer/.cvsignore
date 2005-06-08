@@ -1,5 +1,8 @@
+*.rpo
+Makefile
+Makefile.in
 a.out
 test
-*.rpo
 testptr.cc
 testptr.i
+ .svn Makefile

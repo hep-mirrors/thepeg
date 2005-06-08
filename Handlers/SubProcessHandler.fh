@@ -5,6 +5,7 @@
 // This is the forward declaration of the SubProcessHandler class.
 //
 
+#include "ThePEG/Config/Pointers.h"
 
 namespace ThePEG {
 

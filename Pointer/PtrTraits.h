@@ -138,7 +138,7 @@ struct PtrTraits<const T *>: public PtrTraitsType {
   }
 
   /**
-   * Do not cast away constness..
+   * Do not cast away constness.
    */
   static const_pointer ConstCast(const T * r) { return r; }
 

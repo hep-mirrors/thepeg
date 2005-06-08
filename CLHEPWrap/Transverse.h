@@ -101,7 +101,7 @@ public:
   /** @name Arithmetric operations */
   //@{
   /**
-   * Unary minus..
+   * Unary minus.
    */
   inline Transverse operator-() const;
 
@@ -149,7 +149,7 @@ public:
   inline FloatType pt() const;
 
   /**
-   * The azimuth angle..
+   * The azimuth angle.
    */
   inline double phi() const;
   //@}

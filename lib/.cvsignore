@@ -1,3 +1,9 @@
+ .svn Makefile
+*.la
+.libs
+Makefile
+Makefile.in
 Pythia7Defaults.rpo
 ThePEGDefaults.rpo
 a.out
+done-all-links

@@ -146,7 +146,7 @@ protected:
 private:
 
   /**
-   * The underlying random engine..
+   * The underlying random engine.
    */
   JamesRandom theRandomGenerator;
 

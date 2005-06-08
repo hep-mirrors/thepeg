@@ -1,7 +1,11 @@
 *.html
 AllInterfaces.h
+Makefile
+Makefile
+Makefile.in
 Proof
 ThePEG-refman.tag
 h2html
 refman-html
 refman-latex
+ .svn Makefile

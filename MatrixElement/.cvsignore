@@ -1,4 +1,11 @@
+*.la
+*.lo
+.deps
+.libs
+Makefile
+Makefile.in
 SigmaHatSTU2.cc
 SigmaHatSTU2.h
 SigmaHatSTU2.icc
 math
+ .svn Makefile

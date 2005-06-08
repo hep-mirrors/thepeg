@@ -231,7 +231,7 @@ struct ClassTraits<LesHouchesFileReader>
    * to the LesHouchesFileReader class and every other class it uses
    * (except the base class).
    */
-  static string library() { return "libThePEGLesHouches.so"; }
+  static string library() { return "LesHouches.so"; }
 
 };
 

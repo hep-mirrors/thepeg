@@ -164,7 +164,7 @@ private:
   Energy theLambdaQCD;
 
   /**
-   * The number of flavours for which theLambdaQCD is given..
+   * The number of flavours for which theLambdaQCD is given.
    */
   unsigned int theLambdaFlavour;
 

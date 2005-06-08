@@ -23,7 +23,7 @@ class Two2NCuts: public KinematicalCuts {
   /** Map three-dimensional indices to energies. */
   typedef map<Triplet<int,int,int>,Energy> Limits3Map;
 
-  /** A vector of energies.. */
+  /** A vector of energies. */
   typedef vector<Energy> LimitsVector;
 
   /** A vector of character strings. */
@@ -31,6 +31,7 @@ class Two2NCuts: public KinematicalCuts {
 
 public:
 
+  /** @name Standard constructors and destructor. */
   //@{
   /**
    * Default constructor.

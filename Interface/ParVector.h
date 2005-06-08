@@ -469,7 +469,7 @@ public:
 
   /**
    * The declaration of member functions which can be used by this
-   * ParVector interface for 'get' actions..
+   * ParVector interface for 'get' actions.
    */
   typedef TypeVector (T::*GetFn)() const;
 

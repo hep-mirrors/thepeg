@@ -8,6 +8,13 @@
  * of the file which can be included instead of this file using the
  * macro <code>ThePEG_ALTERNATE_CONFIG</code>.
  */
+#undef VERSION
+#undef PACKAGE
+#undef PACKAGE_BUGREPORT
+#undef PACKAGE_NAME
+#undef PACKAGE_STRING
+#undef PACKAGE_TARNAME
+#undef PACKAGE_VERSION
 #include "ThePEG/Config/config.h"
 
 // For some reason the gcc compiler has a very slow exception

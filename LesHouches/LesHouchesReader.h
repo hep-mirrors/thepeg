@@ -312,7 +312,7 @@ public:
   inline const XSecStat & xSecStats() const;
 
   /**
-   * Collected statistics about the individual processes..
+   * Collected statistics about the individual processes.
    */
   inline const StatMap & processStats() const;
 
@@ -824,7 +824,7 @@ struct ClassTraits<LesHouchesReader>
    * to the LesHouchesReader class and every other class it uses
    * (except the base class).
    */
-  static string library() { return "libThePEGLesHouches.so"; }
+  static string library() { return "LesHouches.so"; }
 
 };
 

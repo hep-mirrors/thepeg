@@ -1,14 +1,20 @@
 *.tar.gz
 *.tgz
 DB
+Makefile
+Makefile.in
 Peter
 Test
+aclocal.m4
 autom4te.cache
 c++stubs.el
 config.cache
 config.log
 config.status
+configure
 doxygen.conf
+libtool
 makeout*
 teststat.cc
 torbjorn
+ .svn Makefile

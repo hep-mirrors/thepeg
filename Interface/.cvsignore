@@ -1,4 +1,10 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
+Makefile
+Makefile.in
 a.out
 dummy.cc
 test.cc
@@ -6,3 +12,4 @@ testclass.cc
 testclass.h
 testmember.cc
 testx.cc
+ .svn Makefile

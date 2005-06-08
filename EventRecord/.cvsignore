@@ -1,6 +1,13 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
 BasicSelector.h
+Makefile
+Makefile.in
 a.out
 all.ps
 all.txt
 testtemp.cc
+ .svn Makefile

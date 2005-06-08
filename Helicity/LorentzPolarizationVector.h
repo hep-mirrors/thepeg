@@ -3,6 +3,7 @@
 #define ThePEG_LorentzPolarizationVector_H
 // This is the declaration of the LorentzPolarizationVector class.
 
+#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
 #include "ThePEG/CLHEPWrap/LorentzVector.h"
 #include "ThePEG/CLHEPWrap/Lorentz5Vector.h"

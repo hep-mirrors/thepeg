@@ -322,8 +322,10 @@ private:
 
 public:
 
+  /**
+   * Exception class used if no readers were assigned.
+   */
   class LesHouchesInitError: public InitException {};
-  class LesHouchesLumiWarning: public InitException {};
 
 private:
 
@@ -367,7 +369,7 @@ struct ClassTraits<LesHouchesEventHandler>
   /** Return the name of the shared library be loaded to get access to
    *  the LesHouchesEventHandler class and every other class it uses
    *  (except the base class). */
-  static string library() { return "libThePEGLesHouches.so"; }
+  static string library() { return "LesHouches.so"; }
 };
 
 }

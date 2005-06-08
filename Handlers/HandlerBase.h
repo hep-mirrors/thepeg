@@ -73,7 +73,7 @@ public:
   inline double rnd(double xl, double xu) const;
 
   /**
-   * Return true with 50% probability..
+   * Return true with 50% probability.
    */
   inline bool rndbool() const;
 

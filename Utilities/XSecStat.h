@@ -77,7 +77,7 @@ public:
 
   /**
    * An event of the corresponding class has been accepted. The
-   * attempt() method must have been called before.
+   * select() method must have been called before.
    */
   inline void accept();
 
@@ -179,7 +179,7 @@ private:
   double theSumWeights2;
 
   /**
-   * The weight given in the last call to attempt().
+   * The weight given in the last call to select(double).
    */
   double lastWeight;
 

@@ -28,7 +28,7 @@ class SpinBase: public EventInfoBase {
 public:
 
   /**
-   * Default constructor..
+   * Default constructor.
    */
   inline SpinBase();
 

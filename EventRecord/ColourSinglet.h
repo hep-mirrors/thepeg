@@ -38,7 +38,7 @@ public:
 public:
 
   /**
-   * Default constructor..
+   * Default constructor.
    */
   inline ColourSinglet();
 

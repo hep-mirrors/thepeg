@@ -3,6 +3,7 @@
 #define ThePEG_LorentzRSSpinorBar_H
 // This is the declaration of the LorentzRSSpinorBar class.
 
+#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "HelicityDefinitions.h"

@@ -1,2 +1,9 @@
+*.la
+*.lo
+.deps
+.libs
+Makefile
+Makefile.in
 a.out
 plotfile
+ .svn Makefile

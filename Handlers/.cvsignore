@@ -1,3 +1,10 @@
+*.la
+*.lo
 *.rpo
 *.s
+.deps
+.libs
+Makefile
+Makefile.in
 testIntegrator.cc
+ .svn Makefile

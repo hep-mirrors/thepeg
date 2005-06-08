@@ -1,4 +1,7 @@
 *.dat
+Makefile
+Makefile.in
 bins.hist
 norm
 test
+ .svn Makefile

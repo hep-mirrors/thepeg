@@ -1,0 +1,65 @@
+mySOURCES = EventHandler.cc SubProcessHandler.cc \
+          HandlerGroup.cc Hint.cc XComb.cc AnalysisHandler.cc \
+          CascadeHandler.cc MultipleInteractionHandler.cc DecayHandler.cc \
+          EventManipulator.cc StepHandler.cc HadronizationHandler.cc \
+          HandlerBase.cc KinematicalCuts.cc KinCutsInit.cc \
+          FlavourGenerator.cc LuminosityFunction.cc \
+          FixedCMSLuminosity.cc StandardEventHandler.cc  \
+          SamplerBase.cc  ClusterCollapser.cc \
+          PtGenerator.cc ZGenerator.cc   \
+           StandardXComb.cc
+
+DOCFILES = AnalysisHandler.h CascadeHandler.h \
+           DecayHandler.h EventHandler.h EventManipulator.h \
+           FixedCMSLuminosity.h FlavourGenerator.h HadronizationHandler.h \
+           HandlerBase.h HandlerGroup.h Hint.h \
+           KinematicalCuts.h LuminosityFunction.h \
+           MultipleInteractionHandler.h StandardEventHandler.h \
+           StepHandler.h SubProcessHandler.h XComb.h LastXCombInfo.h \
+            SamplerBase.h  ClusterCollapser.h \
+           PtGenerator.h ZGenerator.h   \
+            StandardXComb.h
+
+INCLUDEFILES = $(DOCFILES) AnalysisHandler.icc CascadeHandler.icc \
+               DecayHandler.icc DecayHandler.xh \
+               EventHandler.icc EventManipulator.icc \
+               FixedCMSLuminosity.icc FlavourGenerator.icc \
+               HadronizationHandler.icc HandlerBase.icc HandlerGroup.icc \
+               HandlerGroup.tcc Hint.icc \
+               KinematicalCuts.icc KinematicalCuts.xh LuminosityFunction.icc \
+               MultipleInteractionHandler.icc StandardEventHandler.icc \
+               StandardEventHandler.fh StepHandler.icc \
+               SubProcessHandler.fh SubProcessHandler.icc XComb.icc \
+               EventHandler.fh  \
+               LastXCombInfo.icc SamplerBase.icc SamplerBase.fh \
+                ClusterCollapser.fh ClusterCollapser.icc \
+               PtGenerator.icc ZGenerator.icc  \
+                StandardXComb.fh \
+               StandardXComb.icc
+
+
+noinst_LTLIBRARIES = libThePEGHandlers.la
+pkglib_LTLIBRARIES = FixedCMSLuminosity.la Two2NCuts.la \
+          ACDCSampler.la SimpleFlavour.la GaussianPtGenerator.la \
+          SimpleZGenerator.la
+
+
+libThePEGHandlers_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+FixedCMSLuminosity_la_LDFLAGS = -module
+FixedCMSLuminosity_la_SOURCES = FixedCMSLuminosity.cc FixedCMSLuminosity.h FixedCMSLuminosity.icc
+
+Two2NCuts_la_LDFLAGS = -module
+Two2NCuts_la_SOURCES = Two2NCuts.cc Two2NCuts.h Two2NCuts.xh  Two2NCuts.icc
+
+ACDCSampler_la_LDFLAGS = -module
+ACDCSampler_la_SOURCES = ACDCSampler.cc ACDCSampler.h ACDCSampler.icc 
+
+SimpleFlavour_la_LDFLAGS = -module
+SimpleFlavour_la_SOURCES = SimpleFlavour.cc SimpleFlavour.h SimpleFlavour.icc 
+
+GaussianPtGenerator_la_LDFLAGS = -module
+GaussianPtGenerator_la_SOURCES = GaussianPtGenerator.cc GaussianPtGenerator.h GaussianPtGenerator.icc 
+
+SimpleZGenerator_la_LDFLAGS = -module
+SimpleZGenerator_la_SOURCES = SimpleZGenerator.cc SimpleZGenerator.h SimpleZGenerator.icc

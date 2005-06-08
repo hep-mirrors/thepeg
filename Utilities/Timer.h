@@ -26,7 +26,7 @@ public:
   inline TimeCounter(string newName = "");
 
   /**
-   * Copy constructor..
+   * Copy constructor.
    */
   inline TimeCounter(const TimeCounter &);
 

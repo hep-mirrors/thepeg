@@ -24,7 +24,7 @@ class EventInfoBase: public EventRecordBase {
 public:
 
   /**
-   * Default constructor..
+   * Default constructor.
    */
   inline EventInfoBase();
 

@@ -34,7 +34,7 @@ public:
 public:
 
   /**
-   * Default constructor..
+   * Default constructor.
    */
   inline ColourBase();
 

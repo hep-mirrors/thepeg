@@ -1,4 +1,14 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
+Makefile
 Makefile.common
+Makefile.in
 config.h
+config.h.in
+ltmain.sh
+stamp-h1
 test
+ .svn Makefile

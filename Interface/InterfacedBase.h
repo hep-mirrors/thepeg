@@ -324,7 +324,7 @@ private:
 private:
 
   /**
-   * True if this object is not to be changed by the user interface..
+   * True if this object is not to be changed by the user interface.
    */
   bool isLocked;
 

@@ -1,1 +1,8 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
+Makefile
+Makefile.in
+ .svn Makefile

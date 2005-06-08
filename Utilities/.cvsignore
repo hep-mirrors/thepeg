@@ -1,4 +1,12 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
 Interpolator2D.h
+Makefile
+Makefile.in
+SimplePhaseSpace.loT
 a.out
 testinterpolator.cc
+ .svn Makefile

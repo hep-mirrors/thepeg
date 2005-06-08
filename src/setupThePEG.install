@@ -2,9 +2,9 @@
 export ThePEG_INSTALL_PATH=@
 if [ $# -gt 1 ]; then
   if [ "$1" == "-v" ]; then
-    ThePEG_INSTALL_PATH=${ThePEG_INSTALL_PATH}/../$2
+    VERSION="-$2"
     shift 2
   fi
 fi
 export LD_LIBRARY_PATH=${ThePEG_INSTALL_PATH}:${LD_LIBRARY_PATH}
-exec ${ThePEG_INSTALL_PATH}/setupThePEG.exe $*
+exec ${ThePEG_INSTALL_PATH}/setupThePEG${VERSION}.bin $*

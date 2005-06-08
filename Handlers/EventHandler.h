@@ -527,7 +527,7 @@ protected:
 
   /**
    * Exception class used by EventHandler when not able to produce a
-   * correct histogram scale..
+   * correct histogram scale.
    */
   class EventHandlerHistError: public Exception {};
 

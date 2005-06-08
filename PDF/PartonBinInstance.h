@@ -79,7 +79,7 @@ public:
 
   /**
    * Return pointers to the bins this instance refer to in case more
-   * than one parton has been extracted..
+   * than one parton has been extracted.
    */
   inline const PartonVector & bins() const;
 

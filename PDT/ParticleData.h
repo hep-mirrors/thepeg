@@ -77,7 +77,7 @@ public:
   /** @name Acces to number and name. */
   //@{
   /**
-   * Return the PDG id number..
+   * Return the PDG id number.
    */
   inline long id() const;
 

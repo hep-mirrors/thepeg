@@ -529,7 +529,7 @@ private:
   struct Slicer {
 
     /**
-     * The constructor takes the number of dipmensions of the function
+     * The constructor takes the number of dimensions of the function
      * approximated by the current cell, the ACDCGen object
      * controlling the generation and the lower-left and upper-right
      * corners of the cell to be sliced.
@@ -543,6 +543,11 @@ private:
     Slicer(DimType Din, const Slicer & s, ACDCGenCell * cellin,
 	   const DVector & loin, const DVector & xselin, const DVector & upin,
 	   double fselin);
+
+    /**
+     * Destructor.
+     */
+    ~Slicer();
 
     /**
      * Called from both constructors to do the actual work.

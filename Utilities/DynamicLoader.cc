@@ -73,7 +73,7 @@ vector<string> DynamicLoader::defaultPaths() {
   string spaths = SystemUtils::getenv("ThePEG_PATH");
   vector<string> vpaths = StringUtils::split(spaths, ":");
   string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
-  if ( instpath.empty() ) instpath = "../lib";
+  if ( instpath.empty() ) instpath = "../../ThePEG/lib";
   if ( vpaths.empty() ) vpaths.push_back(instpath);
   else replace(vpaths, string("+"), instpath);
   vpaths.push_back(".");

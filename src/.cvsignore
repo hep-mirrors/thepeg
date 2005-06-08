@@ -5,9 +5,13 @@
 *.run
 *.save
 *.tex
+.deps
+.libs
 .runPythia.timer
 Alberto.in
 EnumParticles.h
+Makefile
+Makefile.in
 Pythia7Defaults.rpo
 SetupTheEG.class
 SimpleLEP.aux
@@ -16,6 +20,7 @@ SimpleLEP.log
 SimpleLEP.p7
 SimpleLEP.ps
 SimpleLEP_frag.p7
+ThePEGDefaults.rpo
 W3Jet.dat.gz
 dummy
 dummy.dat
@@ -29,9 +34,13 @@ runEventLoop
 runPartial
 runPythia.exe
 runPythia7
+runThePEG
+runThePEG.bin
 save
 setupPythia.exe
 setupPythia7
+setupThePEG
+setupThePEG.bin
 test.cc
 test.in
 testFlavourGen
@@ -41,3 +50,4 @@ testboost
 testboost.cc
 testrun
 testsetup
+ .svn Makefile

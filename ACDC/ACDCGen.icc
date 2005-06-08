@@ -471,6 +471,10 @@ Slicer(DimType Din, ACDCGen & gen, const DVector & loin, const DVector & upin)
   divideandconquer();
 }
 
+template <typename Rnd, typename FncPtr>
+ACDCGen<Rnd,FncPtr>::Slicer::~Slicer() {
+  // Added for debugging purposes.
+}
 
 template <typename Rnd, typename FncPtr>
 void ACDCGen<Rnd,FncPtr>::Slicer::divideandconquer() {

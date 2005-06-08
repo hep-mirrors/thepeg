@@ -1,5 +1,12 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
+Makefile
+Makefile.in
 all.ps
 all.txt
 test.cc
 teststatic.cc
+ .svn Makefile

@@ -4,6 +4,7 @@
 // This is the declaration of the LorentzTensor class.
 
 
+#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
 #include "LorentzPolarizationVector.h"
 

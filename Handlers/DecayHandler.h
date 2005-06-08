@@ -51,7 +51,7 @@ public:
   //@{
   /**
    * Look through all \a tagged particled and decay all unstable ones.
-   * @param ch the EventHandler in charge of the generation.
+   * @param eh the EventHandler in charge of the generation.
    * @param tagged the vector of particles to consider. If empty, all
    * final state particles in the current Step is considered.
    * @param hint a possible Hint which is ignored in this implementation.

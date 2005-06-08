@@ -1,4 +1,11 @@
+*.la
+*.lo
 *.rpo
+.deps
+.libs
 CLHEP
+Makefile
+Makefile.in
 a.out
 test64.cc
+ .svn Makefile
