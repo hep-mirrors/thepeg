@@ -118,6 +118,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Config/Complex.h \
   RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -138,6 +141,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   HelicityVertex.icc \
   ../../ThePEG/Helicity/SpinInfo.h \
   ../../ThePEG/EventRecord/SpinBase.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -257,11 +261,32 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   LorentzSpinor.fh \
-  LorentzSpinorBar.fh \
-  LorentzSpinor.icc \
-  ../../ThePEG/Helicity/HelicityDefinitions.h \
   LorentzSpinorBar.h \
-  LorentzSpinorBar.icc
+  LorentzSpinorBar.fh \
+  LorentzSpinorBar.icc \
+  LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  LorentzPolarizationVector.icc \
+  LorentzSpinor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h
   LorentzSpinorBar.o: \
   LorentzSpinorBar.cc \
   LorentzSpinorBar.h \
@@ -313,6 +338,27 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   LorentzSpinorBar.fh \
   LorentzSpinorBar.icc \
   LorentzSpinor.h \
+  LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.fh \
+  ../../ThePEG/Utilities/Math.h \
+  ../../ThePEG/Utilities/Math.icc \
+  ../../ThePEG/Utilities/Direction.h \
+  ../../ThePEG/Utilities/Direction.xh \
+  ../../ThePEG/Utilities/Exception.h \
+  ../../ThePEG/Utilities/Direction.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.icc \
+  ../../ThePEG/CLHEPWrap/Transverse.fh \
+  ../../ThePEG/CLHEPWrap/Transverse.icc \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
+  LorentzPolarizationVector.icc \
   LorentzSpinor.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h
   LorentzTensor.o: \
@@ -422,6 +468,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/Debug.h \
   ../../ThePEG/Utilities/Debug.icc \
   ../../ThePEG/Utilities/FixedSizeAllocator.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Utilities/ClassDescription.fh \
   ../../ThePEG/Utilities/Named.h \
@@ -521,6 +570,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -529,6 +581,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -625,6 +678,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -633,6 +689,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -653,7 +710,14 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Helicity/LorentzSpinor.fh \
+  ../../ThePEG/Helicity/LorentzSpinorBar.h \
   ../../ThePEG/Helicity/LorentzSpinorBar.fh \
+  ../../ThePEG/Helicity/LorentzSpinorBar.icc \
+  ../../ThePEG/Helicity/LorentzPolarizationVector.h \
+  ../../ThePEG/CLHEPWrap/LorentzVector.h \
+  ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
+  ../../ThePEG/CLHEPWrap/LorentzRotation.h \
+  ../../ThePEG/Helicity/LorentzPolarizationVector.icc \
   ../../ThePEG/Helicity/LorentzSpinor.icc \
   FermionSpinInfo.fh \
   FermionSpinInfo.icc
@@ -738,6 +802,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -746,6 +813,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -852,6 +920,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -860,6 +931,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -958,6 +1030,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -966,6 +1041,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -1040,12 +1116,13 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/sstream.h \
   ../../ThePEG/Utilities/Exception.icc \
   LorentzRSSpinor.fh \
+  LorentzRSSpinorBar.h \
   LorentzRSSpinorBar.fh \
-  LorentzSpinor.h \
+  LorentzSpinorBar.h \
   LorentzSpinor.fh \
   LorentzSpinorBar.fh \
-  LorentzSpinor.icc \
-  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  LorentzSpinorBar.icc \
+  LorentzSpinor.h \
   LorentzPolarizationVector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
@@ -1067,11 +1144,10 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   LorentzPolarizationVector.icc \
-  LorentzRSSpinor.icc \
-  LorentzRSSpinorBar.h \
-  LorentzSpinorBar.h \
-  LorentzSpinorBar.icc \
-  LorentzRSSpinorBar.icc
+  LorentzSpinor.icc \
+  ../../ThePEG/Helicity/HelicityDefinitions.h \
+  LorentzRSSpinorBar.icc \
+  LorentzRSSpinor.icc
   LorentzRSSpinorBar.o: \
   LorentzRSSpinorBar.cc \
   LorentzRSSpinorBar.h \
@@ -1125,6 +1201,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   LorentzSpinor.fh \
   LorentzSpinorBar.fh \
   LorentzSpinorBar.icc \
+  LorentzSpinor.h \
   LorentzPolarizationVector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.fh \
@@ -1146,11 +1223,10 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.fh \
   LorentzPolarizationVector.icc \
-  LorentzRSSpinorBar.icc \
-  LorentzRSSpinor.h \
-  LorentzSpinor.h \
   LorentzSpinor.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
+  LorentzRSSpinorBar.icc \
+  LorentzRSSpinor.h \
   LorentzRSSpinor.icc
   RSFermionSpinInfo.o: \
   RSFermionSpinInfo.cc \
@@ -1233,6 +1309,9 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.tcc \
   ../../ThePEG/EventRecord/EventInfoBase.icc \
   ../../ThePEG/EventRecord/SpinBase.icc \
+  ../../ThePEG/PDT/PDT.h \
+  ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.icc \
   ../../ThePEG/Interface/ClassDocumentation.h \
   ../../ThePEG/Interface/ClassDocumentation.fh \
   ../../ThePEG/Interface/ClassDocumentation.icc \
@@ -1241,6 +1320,7 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/Utilities/ClassDescription.h \
   ../../ThePEG/Helicity/RhoDMatrix.h \
   ../../ThePEG/Config/ThePEG.h \
+  ../../ThePEG/PDT/PDT.h \
   ../../ThePEG/Config/Complex.h \
   ../../ThePEG/Helicity/RhoDMatrix.icc \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
@@ -1261,16 +1341,20 @@ libThePEGHelicity.so: $(LIBOBJECTS)
   ../../ThePEG/CLHEPWrap/ThreeVector.fh \
   ../../ThePEG/Helicity/HelicityDefinitions.h \
   ../../ThePEG/Helicity/LorentzRSSpinor.fh \
+  ../../ThePEG/Helicity/LorentzRSSpinorBar.h \
   ../../ThePEG/Helicity/LorentzRSSpinorBar.fh \
-  ../../ThePEG/Helicity/LorentzSpinor.h \
+  ../../ThePEG/Helicity/LorentzSpinorBar.h \
   ../../ThePEG/Helicity/LorentzSpinor.fh \
   ../../ThePEG/Helicity/LorentzSpinorBar.fh \
-  ../../ThePEG/Helicity/LorentzSpinor.icc \
+  ../../ThePEG/Helicity/LorentzSpinorBar.icc \
+  ../../ThePEG/Helicity/LorentzSpinor.h \
   ../../ThePEG/Helicity/LorentzPolarizationVector.h \
   ../../ThePEG/CLHEPWrap/LorentzVector.h \
   ../../ThePEG/CLHEPWrap/Lorentz5Vector.h \
   ../../ThePEG/CLHEPWrap/LorentzRotation.h \
   ../../ThePEG/Helicity/LorentzPolarizationVector.icc \
+  ../../ThePEG/Helicity/LorentzSpinor.icc \
+  ../../ThePEG/Helicity/LorentzRSSpinorBar.icc \
   ../../ThePEG/Helicity/LorentzRSSpinor.icc \
   RSFermionSpinInfo.fh \
   ../../ThePEG/Utilities/ClassTraits.h \
