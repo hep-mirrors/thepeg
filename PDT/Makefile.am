@@ -22,31 +22,49 @@ pkglib_LTLIBRARIES = BreitWignerMass.la OmegaPhi3PiDecayer.la \
 
 libThePEGPDT_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
-BreitWignerMass_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+BreitWignerMass_la_LDFLAGS = -module -version-info 1:0:0
 BreitWignerMass_la_SOURCES = BreitWignerMass.cc BreitWignerMass.h  BreitWignerMass.icc
 
-OmegaPhi3PiDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+OmegaPhi3PiDecayer_la_LDFLAGS = -module -version-info 1:0:0
 OmegaPhi3PiDecayer_la_SOURCES = OmegaPhi3PiDecayer.cc OmegaPhi3PiDecayer.h OmegaPhi3PiDecayer.icc
 
-V2PPDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+V2PPDecayer_la_LDFLAGS = -module -version-info 1:0:0
 V2PPDecayer_la_SOURCES = V2PPDecayer.cc V2PPDecayer.h V2PPDecayer.icc
 
-DalitzDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+DalitzDecayer_la_LDFLAGS = -module -version-info 1:0:0
 DalitzDecayer_la_SOURCES = DalitzDecayer.cc DalitzDecayer.h  DalitzDecayer.icc
 
-Tau2HadronsDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+Tau2HadronsDecayer_la_LDFLAGS = -module -version-info 1:0:0
 Tau2HadronsDecayer_la_SOURCES = Tau2HadronsDecayer.cc Tau2HadronsDecayer.h Tau2HadronsDecayer.icc
 
-Onium3GDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+Onium3GDecayer_la_LDFLAGS = -module -version-info 1:0:0
 Onium3GDecayer_la_SOURCES = Onium3GDecayer.cc Onium3GDecayer.h Onium3GDecayer.icc
 
-QuarksToHadronsDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+QuarksToHadronsDecayer_la_LDFLAGS = -module -version-info 1:0:0
 QuarksToHadronsDecayer_la_SOURCES = QuarksToHadronsDecayer.cc QuarksToHadronsDecayer.h QuarksToHadronsDecayer.icc
 
-ColourPairDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+ColourPairDecayer_la_LDFLAGS = -module -version-info 1:0:0
 ColourPairDecayer_la_SOURCES = ColourPairDecayer.cc ColourPairDecayer.h  ColourPairDecayer.icc 
 
-WeakToHadronsDecayer_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+WeakToHadronsDecayer_la_LDFLAGS = -module -version-info 1:0:0
 WeakToHadronsDecayer_la_SOURCES = WeakToHadronsDecayer.cc WeakToHadronsDecayer.h WeakToHadronsDecayer.icc
 
 noinst_HEADERS = PYDECYDummy.h PYDECYDummy.icc

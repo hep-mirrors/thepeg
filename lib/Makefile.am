@@ -6,8 +6,10 @@ dist_pkgdata_DATA = ThePEG.el
 
 pkglib_LTLIBRARIES = libThePEG.la
 
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+libThePEG_la_LDFLAGS = -version-info 1:0:0 -export-dynamic -L$(CLHEPPATH)/lib
 libThePEG_la_SOURCES =
-libThePEG_la_LDFLAGS = -export-dynamic -L$(CLHEPPATH)/lib 
 libThePEG_la_LIBADD = \
 	$(top_builddir)/Utilities/libThePEGUtilities.la \
 	$(top_builddir)/CLHEPWrap/libThePEGCLHEPWrap.la \

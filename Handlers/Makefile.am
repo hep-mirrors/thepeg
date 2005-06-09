@@ -46,20 +46,32 @@ pkglib_LTLIBRARIES = FixedCMSLuminosity.la Two2NCuts.la \
 
 libThePEGHandlers_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
-FixedCMSLuminosity_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+FixedCMSLuminosity_la_LDFLAGS = -module -version-info 1:0:0
 FixedCMSLuminosity_la_SOURCES = FixedCMSLuminosity.cc FixedCMSLuminosity.h FixedCMSLuminosity.icc
 
-Two2NCuts_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+Two2NCuts_la_LDFLAGS = -module -version-info 1:0:0
 Two2NCuts_la_SOURCES = Two2NCuts.cc Two2NCuts.h Two2NCuts.xh  Two2NCuts.icc
 
-ACDCSampler_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+ACDCSampler_la_LDFLAGS = -module -version-info 1:0:0
 ACDCSampler_la_SOURCES = ACDCSampler.cc ACDCSampler.h ACDCSampler.icc 
 
-SimpleFlavour_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+SimpleFlavour_la_LDFLAGS = -module -version-info 1:0:0
 SimpleFlavour_la_SOURCES = SimpleFlavour.cc SimpleFlavour.h SimpleFlavour.icc 
 
-GaussianPtGenerator_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+GaussianPtGenerator_la_LDFLAGS = -module -version-info 1:0:0
 GaussianPtGenerator_la_SOURCES = GaussianPtGenerator.cc GaussianPtGenerator.h GaussianPtGenerator.icc 
 
-SimpleZGenerator_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+SimpleZGenerator_la_LDFLAGS = -module -version-info 1:0:0
 SimpleZGenerator_la_SOURCES = SimpleZGenerator.cc SimpleZGenerator.h SimpleZGenerator.icc

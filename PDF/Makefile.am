@@ -21,20 +21,33 @@ pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
 
 libThePEGPDF_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
-LeptonLeptonPDF_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+LeptonLeptonPDF_la_LDFLAGS = -module -version-info 1:0:0
 LeptonLeptonPDF_la_SOURCES = LeptonLeptonPDF.cc LeptonLeptonPDF.h LeptonLeptonPDF.icc 
 
-LeptonLeptonRemnant_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+LeptonLeptonRemnant_la_LDFLAGS = -module -version-info 1:0:0
 LeptonLeptonRemnant_la_SOURCES = LeptonLeptonRemnant.cc LeptonLeptonRemnant.h LeptonLeptonRemnant.icc 
 
-GRVBase_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+GRVBase_la_LDFLAGS = -module -version-info 1:0:0
 GRVBase_la_SOURCES = GRVBase.cc GRVBase.h GRVBase.icc 
 
-GRV94L_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+GRV94L_la_LDFLAGS = -module -version-info 1:0:0
 GRV94L_la_SOURCES = GRV94L.cc GRV94L.h GRV94L.icc 
 
-GRV94M_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+GRV94M_la_LDFLAGS = -module -version-info 1:0:0
 GRV94M_la_SOURCES = GRV94M.cc GRV94M.h GRV94M.icc 
 
-BaryonRemnants_la_LDFLAGS = -module
-BaryonRemnants_la_SOURCES = BaryonRemnants.cc BaryonRemnants.h BaryonRemnants.icc 
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+BaryonRemnants_la_LDFLAGS = -module -version-info 1:0:0
+BaryonRemnants_la_SOURCES = BaryonRemnants.cc BaryonRemnants.h \
+                            BaryonRemnants.icc 

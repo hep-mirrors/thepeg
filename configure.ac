@@ -43,11 +43,8 @@ AC_CHECK_FPUCONTROL
 
 AM_CPPFLAGS="-I\$(top_builddir)/include $CLHEPINCLUDE"
 AM_CXXFLAGS="-ansi -pedantic -Wall"
-# required for libtool versioning. Should really be specified separately for each lib!
-AM_LDFLAGS="-version-info 1:0:0"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CXXFLAGS)
-AC_SUBST(AM_LDFLAGS)
 
 AC_EMPTY_SUBST
 

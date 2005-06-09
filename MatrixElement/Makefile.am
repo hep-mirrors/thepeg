@@ -23,10 +23,18 @@ pkglib_LTLIBRARIES = libThePEGMEQCD.la MEee2gZ2qq.la \
                      ReweightConstant.la
 
 libThePEGME_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+libThePEGMEQCD_la_LDFLAGS = -module -version-info 1:0:0
 libThePEGMEQCD_la_SOURCES = $(myQCDSOURCES) 
 
-MEee2gZ2qq_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+MEee2gZ2qq_la_LDFLAGS = -module -version-info 1:0:0
 MEee2gZ2qq_la_SOURCES = MEee2gZ2qq.cc MEee2gZ2qq.h MEee2gZ2qq.icc
 
-ReweightConstant_la_LDFLAGS = -module
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+ReweightConstant_la_LDFLAGS = -module -version-info 1:0:0
 ReweightConstant_la_SOURCES = MEee2gZ2qq.cc MEee2gZ2qq.h MEee2gZ2qq.icc
