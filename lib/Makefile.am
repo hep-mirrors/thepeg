@@ -2,6 +2,10 @@
 LINK = $(LIBTOOL) --tag=CXX --mode=link $(CXX) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 
+LINKDIRS = Config Utilities Helicity Interface LesHouches CLHEPWrap \
+           PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
+           StandardModel Repository EventRecord
+
 dist_pkgdata_DATA = ThePEG.el
 
 pkglib_LTLIBRARIES = libThePEG.la
@@ -30,15 +34,15 @@ all-local: done-all-links
 
 done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
-	for sofile in ../*/.libs/*.so; \
-          do $(LN_S) -f $$sofile $$sofile.* \
-                   `dirname $$sofile`/`basename $$sofile so`la .; done
+	for dir in $(LINKDIRS); do for sofile in ../$$dir/.libs/*.so; \
+          do if test -f $$sofile; then $(LN_S) -f $$sofile $$sofile.* \
+                   `dirname $$sofile`/`basename $$sofile so`la .; fi; done; done
 	echo "stamp" > done-all-links
 @EMPTY@else
 	@echo "Sym-linking all shared libraries ..."
-	@for sofile in ../*/.libs/*.so; \
-          do $(LN_S) -f $$sofile $$sofile.* \
-                   `dirname $$sofile`/`basename $$sofile so`la .; done
+	@for dir in $(LINKDIRS); do for sofile in ../$$dir/.libs/*.so; \
+          do if test -f $$sofile; then $(LN_S) -f $$sofile $$sofile.* \
+                   `dirname $$sofile`/`basename $$sofile so`la .; fi; done; done
 	@echo "stamp" > done-all-links
 @EMPTY@endif
 

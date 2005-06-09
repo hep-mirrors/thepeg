@@ -41,7 +41,7 @@ CMS(PType & p1, PType & p2, PType & p3,
     Energy2 s, double x1, double x3)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
   CMS(p1, p2, p3, s, x1, x3,
-      twopi*UseRandom::rnd(), 2.0*UseRandom::rnd() - 1.0,
+      twopi*UseRandom::rnd(), acos(2.0*UseRandom::rnd() - 1.0),
       twopi*UseRandom::rnd());
 }
 
@@ -65,7 +65,7 @@ CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
   Traits::set3Momentum(p1, Momentum3(0.0*GeV, 0.0*GeV, r1));
   double cthe2 = (sqr(r3)-sqr(r2)-sqr(r1))/(2.0*r2*r1);
   double cthe3 = (sqr(r2)-sqr(r3)-sqr(r1))/(2.0*r3*r1);
-  if ( abs(cthe2) > 1.0 || abs(cthe3) ) throw ImpossibleKinematics();
+  if ( abs(cthe2) > 1.0 || abs(cthe3) > 1.0 ) throw ImpossibleKinematics();
   double sthe2 = sqrt(1.0-sqr(cthe2));
   Energy px = r2*sthe2*cos(phii);
   Energy py = r2*sthe2*sin(phii);

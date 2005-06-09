@@ -1,3 +1,15 @@
+2005-06-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/Makefile.am: Added versioned executables in installation
+	again.
+
+	* lib/Makefile.am: Fix up sym-linking of shared libraries.
+
+	* Utilities/SimplePhaseSpace.tcc: Fixed bug in angles of
+	three-body phase space.
+
+	* Config/Makefile.am: Cosmetics.
+
 2005-06-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.icc: Introduced simple functions for

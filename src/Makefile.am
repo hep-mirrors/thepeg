@@ -44,15 +44,13 @@ SimpleLEP.run: setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
 	time ./runThePEG.bin -d 0 SimpleLEP.run
 
-## those need to be modified
-##
-##install-data-local:
-##	cd $(pkglibdir); \
-##      rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin; \
-##      ln setupThePEG.bin setupThePEG-$(VERSION).bin; \
-##     ln runThePEG.bin runThePEG-$(VERSION).bin
+install-data-local:
+	cd $(DESTDIR)$(pkglibdir); \
+	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin; \
+	ln setupThePEG.bin setupThePEG-$(VERSION).bin; \
+	ln runThePEG.bin runThePEG-$(VERSION).bin;
 
-##uninstall-local:
-##	cd $(pkglibdir); \
-##       rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin
+uninstall-local:
+	cd $(DESTDIR)$(pkglibdir); \
+	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin
 
