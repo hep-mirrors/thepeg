@@ -5,6 +5,7 @@
 //
 
 #include "PersistentOStream.h"
+#include "ThePEG/Utilities/DynamicLoader.h"
 #include <fstream>
 // #include <pfstream.h>
 
@@ -112,7 +113,7 @@ writeClassDescription(const ClassDescriptionBase * db) {
   operator<<(cid);
   operator<<(db->name());
   operator<<(db->version());
-  operator<<(db->library());
+  operator<<(DynamicLoader::dlnameversion(db->library()));
   // Now write its base classes or a zero if the base class is PersistentBase.
   operator<<(db->descriptions().size());
   DescriptionVector::const_iterator bit = db->descriptions().begin();

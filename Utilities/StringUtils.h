@@ -49,6 +49,30 @@ public:
    */
   static string stripws(string str);
 
+  /**
+   * Return the directory path part (excluding the trailing slash) of
+   * the given filename, or an empty string if no directory path is
+   * included
+   */
+  inline static string dirname(string file);
+
+  /**
+   * Return the base name of the given filename, removing the
+   * directory path if present.
+   */
+  inline static string basename(string file);
+
+  /**
+   * Remove the trailing suffix from the given filename.
+   */
+  inline static string remsuf(string file);
+
+  /**
+   * Return the trailing suffix (without the dot) of the given
+   * filename.
+   */
+  inline static string suffix(string file);
+
 };
 
 }

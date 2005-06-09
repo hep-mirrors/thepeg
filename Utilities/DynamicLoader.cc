@@ -21,8 +21,44 @@
 
 using namespace ThePEG;
 
+void DynamicLoader::dlname(string sofile) {
+  if ( StringUtils::suffix(sofile) == "so" ) {
+    string lafile = StringUtils::remsuf(sofile) + ".la";
+    ifstream is(lafile.c_str());
+    string line;
+    while ( getline(is, line) ) {
+      if ( line.find("dlname='") != string::npos ) {
+	int pos = line.find('\'') + 1;
+	int l = line.rfind('\'') - pos;
+	sofile = StringUtils::basename(sofile);
+	versionMap[sofile] = line.substr(pos, l);
+      }
+    }
+  } else if ( StringUtils::suffix(StringUtils::remsuf(sofile)) == "so" ) {
+    versionMap[StringUtils::basename(StringUtils::remsuf(sofile))] =
+      StringUtils::basename(sofile);
+  }
+
+}
+
+string DynamicLoader::dlnameversion(string libs) {
+  string ret;
+  do {
+    string soname = StringUtils::car(libs);
+    string dir = StringUtils::dirname(soname);
+    if ( dir.length() ) dir += '/';
+    libs = StringUtils::cdr(libs);
+    if ( versionMap.find(StringUtils::basename(soname)) != versionMap.end() )
+      ret += dir + versionMap[StringUtils::basename(soname)] + " ";
+    else
+      ret += soname + " ";
+  } while ( libs.length() );
+  return StringUtils::stripws(ret);
+}
+
 bool DynamicLoader::loadcmd(string file) {
 #ifdef ThePEG_HAS_DLOPEN
+  dlname(file);
   bool ret = dlopen(file.c_str(), RTLD_LAZY|RTLD_GLOBAL) != 0;
   if ( !ret ) lastErrorMessage += string(dlerror()) + string("\n");
   return ret;
@@ -68,6 +104,8 @@ bool DynamicLoader::load(string name) {
 vector<string> DynamicLoader::paths = DynamicLoader::defaultPaths();
 
 string DynamicLoader::lastErrorMessage;
+
+map<string,string> DynamicLoader::versionMap;
 
 vector<string> DynamicLoader::defaultPaths() {
   string spaths = SystemUtils::getenv("ThePEG_PATH");

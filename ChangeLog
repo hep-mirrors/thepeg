@@ -1,5 +1,17 @@
 2005-06-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Utilities/StringUtils.icc: Introduced simple functions for
+	manipulating filenames.
+
+	* Persistency/PersistentOStream.*, Utilities/DynamicLoader.*:
+	Created a map in DynamicLoader relating generic shared library
+	file names to the ones with version suffix, so that the
+	PersistentOStream can output information about the latter
+	filenames if present.
+
+	* lib/Makefile.am: Link all the shared libraries including the
+	ones with version suffix and the ones ending with .la.
+
 	* */Makefile.am, configure.ac: Moved -version-info to the
 	individual _LDFLAGS variables in the Makefiles
 

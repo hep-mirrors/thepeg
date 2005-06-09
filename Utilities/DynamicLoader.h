@@ -53,6 +53,17 @@ public:
    */
   static string lastErrorMessage;
 
+  /**
+   * Insert the name of the given library with correct version numbers
+   * appended, in the corresponding map.
+   */
+  static void dlname(string);
+
+  /**
+   * Given a list of generic library names, return the same list with
+   * appended version numbers where available.
+   */
+  static string dlnameversion(string libs);
 private:
 
   /**
@@ -66,6 +77,12 @@ private:
    * environment.
    */
   static vector<string> defaultPaths();
+
+  /**
+   * Map of names of dynamic libraries with correct version numbers
+   * indexed by their generic names.
+   */
+  static map<string,string> versionMap;
 
 };
 

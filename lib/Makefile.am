@@ -29,8 +29,18 @@ libThePEG_la_LIBADD = \
 all-local: done-all-links
 
 done-all-links:
-	$(LN_S) -f ../*/.libs/*.so .
+@EMPTY@ifdef SHOWCOMMAND
+	for sofile in ../*/.libs/*.so; \
+          do $(LN_S) -f $$sofile $$sofile.* \
+                   `dirname $$sofile`/`basename $$sofile so`la .; done
 	echo "stamp" > done-all-links
+@EMPTY@else
+	@echo "Sym-linking all shared libraries ..."
+	@for sofile in ../*/.libs/*.so; \
+          do $(LN_S) -f $$sofile $$sofile.* \
+                   `dirname $$sofile`/`basename $$sofile so`la .; done
+	@echo "stamp" > done-all-links
+@EMPTY@endif
 
 clean-local:
-	rm -f *.so done-all-links
+	rm -f *.so* *.la *.rpo done-all-links
