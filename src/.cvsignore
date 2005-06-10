@@ -1,3 +1,4 @@
+ .svn Makefile
 *,*
 *.dump
 *.log
@@ -22,6 +23,7 @@ SimpleLEP.ps
 SimpleLEP_frag.p7
 ThePEGDefaults.rpo
 W3Jet.dat.gz
+done-all-links
 dummy
 dummy.dat
 dummy2.dat
@@ -50,4 +52,3 @@ testboost
 testboost.cc
 testrun
 testsetup
- .svn Makefile

@@ -1,7 +1,7 @@
 2005-06-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* src/Makefile.am: Added versioned executables in installation
-	again.
+	* src/Makefile.am: Fixes to make distcheck work properly. Added
+	versioned executables in installation again.
 
 	* lib/Makefile.am: Fix up sym-linking of shared libraries.
 

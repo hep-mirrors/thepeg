@@ -1,3 +1,5 @@
+CLEANFILES = AllInterfaces.h
+
 html-clean:
 	rm -rf refman-html
 

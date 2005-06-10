@@ -22,23 +22,37 @@ runPartial_LDFLAGS = $(myLDFLAGS)
 
 dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in ThePEGParticles.in debugItems.txt
 
-dist_pkglib_DATA = ThePEGDefaults.rpo
+nodist_pkglib_DATA = ThePEGDefaults.rpo
 
-CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex ThePEGDefaults.rpo setupThePEG runThePEG
+CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex ThePEGDefaults.rpo setupThePEG runThePEG done-all-links
 
-setupThePEG: setupThePEG.install
+INPUTFILES = ThePEGDefaults.in ThePEGParticles.in SimpleLEP.in
+
+done-all-links:
+@EMPTY@ifdef SHOWCOMMAND
+	for file in $(INPUTFILES); do \
+	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
+	echo "stamp" > done-all-links
+@EMPTY@else
+	@echo "sym-linking input files files..."
+	@for file in $(INPUTFILES); do \
+	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
+	@echo "stamp" > done-all-links
+@EMPTY@endif
+
+setupThePEG: $(srcdir)/setupThePEG.install
 	sed -e s:@:$(pkglibdir):g $(srcdir)/setupThePEG.install > setupThePEG
 
-runThePEG: runThePEG.install
+runThePEG: $(srcdir)/runThePEG.install
 	sed -e s:@:$(pkglibdir):g $(srcdir)/runThePEG.install > runThePEG
 
-ThePEGDefaults.rpo: setupThePEG.bin ThePEGDefaults.in ThePEGParticles.in
-	./setupThePEG.bin -init -r ThePEGDefaults.rpo
+ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in ThePEGParticles.in
+	./setupThePEG.bin -init -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 
 check-local: SimpleLEP.out
 
-SimpleLEP.run: setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
+SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
 	./setupThePEG.bin -r ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
