@@ -1,5 +1,4 @@
 
-bin_SCRIPTS = runThePEG setupThePEG
 pkglib_PROGRAMS = runThePEG.bin setupThePEG.bin
 EXTRA_PROGRAMS = runPartial
 
@@ -59,16 +58,21 @@ SimpleLEP.out: runThePEG.bin SimpleLEP.run
 	time ./runThePEG.bin -d 0 SimpleLEP.run
 
 install-data-local:
+	sed -e s:@:$(DESTDIR)$(pkglibdir):g $(srcdir)/setupThePEG.install > setupThePEG
+	sed -e s:@:$(DESTDIR)$(pkglibdir):g $(srcdir)/runThePEG.install > runThePEG
+	test -z "$(bindir)" || $(mkdir_p) "$(DESTDIR)$(bindir)"
+	$(INSTALL) setupThePEG $(DESTDIR)$(bindir)/setupThePEG
+	$(INSTALL) runThePEG $(DESTDIR)$(bindir)/runThePEG
 	cd $(DESTDIR)$(pkglibdir); \
 	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin ThePEGDefaults-$(VERSION).rpo; \
 	ln setupThePEG.bin setupThePEG-$(VERSION).bin; \
 	ln runThePEG.bin runThePEG-$(VERSION).bin; \
 	cp ThePEGDefaults.rpo ThePEGDefaults-$(VERSION).rpo
 
-
 uninstall-local:
+	rm -f  $(DESTDIR)$(bindir)/setupThePEG $(DESTDIR)$(bindir)/runThePEG
 	cd $(DESTDIR)$(pkglibdir); \
-	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin ThePEGDefaults-$(VERSION).rpo
+	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin ThePEGDefaults-$(VERSION).rpo 
 
 installcheck-local:
 	$(mkdir_p) _test
