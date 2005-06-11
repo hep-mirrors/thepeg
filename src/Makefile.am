@@ -40,10 +40,10 @@ done-all-links:
 	@echo "stamp" > done-all-links
 @EMPTY@endif
 
-setupThePEG: $(srcdir)/setupThePEG.install
+setupThePEG: $(srcdir)/setupThePEG.install Makefile
 	sed -e s:@:$(pkglibdir):g $(srcdir)/setupThePEG.install > setupThePEG
 
-runThePEG: $(srcdir)/runThePEG.install
+runThePEG: $(srcdir)/runThePEG.install Makefile
 	sed -e s:@:$(pkglibdir):g $(srcdir)/runThePEG.install > runThePEG
 
 ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in ThePEGParticles.in
@@ -60,11 +60,18 @@ SimpleLEP.out: runThePEG.bin SimpleLEP.run
 
 install-data-local:
 	cd $(DESTDIR)$(pkglibdir); \
-	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin; \
+	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin ThePEGDefaults-$(VERSION).rpo; \
 	ln setupThePEG.bin setupThePEG-$(VERSION).bin; \
-	ln runThePEG.bin runThePEG-$(VERSION).bin;
+	ln runThePEG.bin runThePEG-$(VERSION).bin; \
+	cp ThePEGDefaults.rpo ThePEGDefaults-$(VERSION).rpo
+
 
 uninstall-local:
 	cd $(DESTDIR)$(pkglibdir); \
-	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin
+	rm -f setupThePEG-$(VERSION).bin runThePEG-$(VERSION).bin ThePEGDefaults-$(VERSION).rpo
+
+installcheck-local:
+	$(mkdir_p) _test
+	cd _test; $(DESTDIR)$(bindir)/setupThePEG $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run
+	rm -rf _test
 
