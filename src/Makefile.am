@@ -49,7 +49,9 @@ ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in ThePEGParti
 	./setupThePEG.bin -init -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 
-check-local: SimpleLEP.out
+check-local:
+	./setupThePEG.bin -r ThePEGDefaults.rpo SimpleLEP.in
+	time ./runThePEG.bin -d 0 SimpleLEP.run
 
 SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
 	./setupThePEG.bin -r ThePEGDefaults.rpo SimpleLEP.in
