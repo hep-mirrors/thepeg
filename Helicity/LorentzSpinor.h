@@ -266,7 +266,7 @@ public:
 
   /**
    * Calculate a general current with arbitary left and right couplings,
-   * i.e. \f$\bar{f}\gamma^\mu(c_lP_L+c_RP_R)f\f\f$
+   * i.e. \f$\bar{f}\gamma^\mu(c_lP_L+c_RP_R)f\f$
    * @param fbar The barred spinor.
    * @param left The left coupling, \f$c_L\f$.
    * @param right The right coupling, \f$c_R\f$.
@@ -302,7 +302,7 @@ public:
 
   /**
    * Calculate a general scalar product with arbitary left and right couplings,
-   * i.e. \f$\bar{f}c_lP_L+c_RP_Rf\f\f$
+   * i.e. \f$\bar{f}c_lP_L+c_RP_Rf\f$
    * @param fbar The barred spinor.
    * @param left The left coupling, \f$c_L\f$.
    * @param right The right coupling, \f$c_R\f$.

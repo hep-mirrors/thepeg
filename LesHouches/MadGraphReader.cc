@@ -277,14 +277,14 @@ void MadGraphReader::Init() {
   static Parameter<MadGraphReader,double> interfaceFixedAlphaEM
     ("FixedAlphaEM",
      "Old MadGraph files do not necessarily contain information about "
-     "the value of \f$\alpha_{EM}\f$. In this case this is used instead.",
+     "the value of \\f$\\alpha_{EM}\\f$. In this case this is used instead.",
      &MadGraphReader::fixedAEM, 0.007546772, 0.0, 1.0,
      true, false, true);
 
   static Parameter<MadGraphReader,double> interfaceFixedAlphaS
     ("FixedAlphaS",
      "Old MadGraph files do not necessarily contain information about "
-     "the value of \f$\alpha_S\f$. In this case this is used instead.",
+     "the value of \\f$\\alpha_S\\f$. In this case this is used instead.",
      &MadGraphReader::fixedAS, 0.12, 0.0, 1.0,
      true, false, true);
 

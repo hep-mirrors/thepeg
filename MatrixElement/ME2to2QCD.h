@@ -93,6 +93,7 @@ public:
    * Return the quark with flavour i (or gluon if i = 0);
    */
   inline tcPDPtr quark(int i) const;
+  //@}
 
 public:
 

@@ -88,7 +88,7 @@ if test "$THEPEGBUILD" == "no"; then
   AM_CPPFLAGS="-I\$(top_builddir)/include -I$THEPEGPATH/include $CLHEPINCLUDE"
   SETUPTHEPEG="$THEPEGPATH/bin/setupThePEG"
   RUNTHEPEG="$THEPEGPATH/bin/runThePEG"
-  THEPEGDOC="$THEPEGPATH/share/ThePEG/ThePEG/Doc"
+  THEPEGDOC="$THEPEGPATH/share/ThePEG/Doc"
   AC_MSG_CHECKING([if the installed ThePEG works])
   if test -x $SETUPTHEPEG && $SETUPTHEPEG /dev/null; then
     AC_MSG_RESULT(yes)
