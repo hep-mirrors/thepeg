@@ -48,6 +48,8 @@ AC_SUBST(AM_CXXFLAGS)
 
 AC_EMPTY_SUBST
 
+AC_PATH_PROG(PERL, perl)
+
 AC_CONFIG_FILES([Helicity/Makefile
 Utilities/Makefile
 include/Makefile
@@ -62,12 +64,16 @@ Handlers/Makefile
 MatrixElement/Makefile
 Pointer/Makefile
 lib/Makefile
+lib/Makefile.common.install
 src/Makefile
 ACDC/Makefile
 Repository/Makefile
 EventRecord/Makefile
 StandardModel/Makefile
 Doc/Makefile
+Doc/fixinterfaces.pl
+Doc/refman.h
+Doc/refman.conf
 Makefile])
 ## don't know what to do here  'Doc/Makefile'
 

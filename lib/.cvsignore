@@ -2,6 +2,9 @@
 *.la
 .libs
 Makefile
+Makefile.common
+Makefile.common.install
+Makefile.dist
 Makefile.in
 Pythia7Defaults.rpo
 ThePEGDefaults.rpo

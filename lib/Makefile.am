@@ -6,9 +6,13 @@ LINKDIRS = Config Utilities Helicity Interface LesHouches CLHEPWrap \
            PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
            StandardModel Repository EventRecord
 
+EXTRA_DIST = Makefile.dist.install
+
 dist_pkgdata_DATA = ThePEG.el
 
 pkglib_LTLIBRARIES = libThePEG.la
+
+CLEANFILES = Makefile.dist Makefile.common
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
@@ -45,6 +49,16 @@ done-all-links:
                    `dirname $$sofile`/`basename $$sofile so`la .; fi; done; done
 	@echo "stamp" > done-all-links
 @EMPTY@endif
+
+install-data-local: Makefile.common.install
+	sed -e s:@THEPEGLIB@:$(DESTDIR)$(pkglibdir):g -e s:@THEPEGINCLUDE@:-I$(DESTDIR)$(includedir):g Makefile.common.install > Makefile.common
+	sed -e s:@THEPEGLIB@:$(DESTDIR)$(pkglibdir):g $(srcdir)/Makefile.dist.install > Makefile.dist
+	test -z "$(pkglibdir)" || $(mkdir_p) "$(DESTDIR)$(pkglibdir)"
+	$(INSTALL_DATA) Makefile.common $(DESTDIR)$(pkglibdir)/Makefile.common
+	$(INSTALL_DATA) Makefile.dist $(DESTDIR)$(pkglibdir)/Makefile
+
+uninstall-local:
+	rm -f $(DESTDIR)$(pkglibdir)/Makefile.common $(DESTDIR)$(pkglibdir)/Makefile
 
 clean-local:
 	rm -f *.so* *.la *.rpo done-all-links

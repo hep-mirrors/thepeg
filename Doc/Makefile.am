@@ -2,7 +2,9 @@ CLEANFILES = AllInterfaces.h
 
 docdir = $(pkgdatadir)/Doc
 
-doc_DATA = refman.conf refman.h repository.hlp
+doc_DATA = refman.conf refman.h
+
+dist_doc_DATA = repository.hlp
 
 doc_SCRIPTS = fixinterfaces.pl
 
@@ -16,8 +18,8 @@ html-local: refman-html
 pdf-local: refman-html
 	if test -d refman-latex; then cd refman-latex; make refman.pdf; fi
 
-refman-html: refman.conf refman.h
-	./fixinterfaces.pl AllInterfaces.h
+refman-html: refman.conf.in refman.h.in
+	$(srcdir)/fixinterfaces.pl AllInterfaces.h
 	doxygen $<
 
 install-data-local:
