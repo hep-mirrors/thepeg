@@ -1,3 +1,4 @@
+ .svn Makefile
 *.html
 AllInterfaces.h
 Makefile
@@ -5,7 +6,9 @@ Makefile
 Makefile.in
 Proof
 ThePEG-refman.tag
+fixinterfaces.pl
 h2html
 refman-html
 refman-latex
- .svn Makefile
+refman.conf
+refman.h
