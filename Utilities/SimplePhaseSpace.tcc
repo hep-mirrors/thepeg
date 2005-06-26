@@ -57,7 +57,7 @@ CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
   Energy m3 = Traits::mass(p3);
   Energy e1 = 0.5*x1*Etot;
   Energy e3 = 0.5*x3*Etot;
-  Energy e2 = Etot - e1 - e2;
+  Energy e2 = Etot - e1 - e3;
   if ( e1 < m1 || e2 < m2 || e3 < m3 ) throw ImpossibleKinematics();
   Energy r1 = sqrt(sqr(e1)-sqr(m1));
   Energy r2 = sqrt(sqr(e2)-sqr(m2));
