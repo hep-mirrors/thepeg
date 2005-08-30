@@ -1,5 +1,9 @@
 2005-08-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Config/std.h: Added specialization for std::less template class
+	to handle type_info pointers properly using type_info::before
+	function.
+
 	* Utilities/DescriptionList.*: Introduced conditional
 	compilation. The map relating type_info pointers to
 	ClassDescriptionBase objects does not work with dynamic linking

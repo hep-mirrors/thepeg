@@ -28,6 +28,27 @@
 #include <typeinfo>
 #include <stdexcept>
 
+namespace std {
+
+/**
+ * This specialization of the std::less class is needed in order to be
+ * able use put pointers to type_info objects as keys in maps and
+ * sets.
+ */
+template <>
+struct less<const type_info *> :
+    public binary_function<const type_info *, const type_info *, bool> 
+{
+  /**
+   * This is the function called when comparing two pointers to
+   * type_info.
+   */
+  bool operator()(const type_info * x, const type_info * y) const {
+    return x->before(*y); }
+};
+
+}
+
 namespace ThePEG {
 
 using std::deque;
