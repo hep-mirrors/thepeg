@@ -31,7 +31,11 @@ DescriptionList::StringMap & DescriptionList::stringMap() {
 }
 
 void DescriptionList::insert(ClassDescriptionBase & pb) {
+#ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
   descriptionMap()[&(pb.info())] = &pb;
+#else
+  descriptionMap()[pb.info().name()] = &pb;
+#endif
   stringMap()[pb.name()] = &pb;
   // The following is for backward compatibility and will eventually
   // be removed.
@@ -55,7 +59,12 @@ void DescriptionList::printHierarchies(ostream & os) {
   typedef ClassDescriptionBase::DescriptionVector DescVec;
   for ( DescriptionMap::iterator it = descriptionMap().begin();
 	it != descriptionMap().end(); ++it ) {
-    os << "Class Name '" << it->second->name() << "'\n (" << it->first->name()
+    os << "Class Name '" << it->second->name() << "'\n ("
+#ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
+       << it->first->name()
+#else
+       << it->first
+#endif
        << "," <<  it->second << ") version " << it->second->version()
        << endl << "  Base classes:" << endl;
     for ( unsigned int i = 0; i < it->second->descriptions().size(); ++i )

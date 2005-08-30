@@ -16,8 +16,13 @@ class DescriptionList {
 
 public:
 
+#ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
   /** Map of class descriptions indexed by type_info objects. */
   typedef map<const type_info *, ClassDescriptionBase *> DescriptionMap;
+#else
+  /** Map of class descriptions indexed by type_info objects. */
+  typedef map<string, ClassDescriptionBase *> DescriptionMap;
+#endif
 
   /** Map of class descriptions indexed by platform-independent class
    * names. */

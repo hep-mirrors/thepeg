@@ -8,7 +8,11 @@ namespace ThePEG {
 
 inline const ClassDescriptionBase *
 DescriptionList::find(const type_info & ti) {
+#ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
   DescriptionMap::const_iterator it =  descriptionMap().find(&ti);
+#else
+  DescriptionMap::const_iterator it =  descriptionMap().find(ti.name());
+#endif
   if ( it == descriptionMap().end() ) return 0;
   return (*it).second;
 }
