@@ -1,5 +1,10 @@
 2005-08-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/HandlerBase.*: Changed to use UseRandom instead of
+	gerenator()->random().
+
+	* Repository/UseRandom.fh: Added to forward declare UseRandom.
+
 	* Handlers/ACDCSampler.*: Use pointer to RandomGenerator instead
 	of reference when talking to ACDCGen, which now use UseRandom.
 

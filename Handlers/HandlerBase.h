@@ -4,11 +4,12 @@
 // This is the declaration of the HandlerBase class.
 
 #include "ThePEG/Interface/Interfaced.h"
+#include "ThePEG/Repository/UseRandom.fh"
 #include <stdexcept>
 
 namespace ThePEG {
 
-template <int I = 0>
+template <typename T = UseRandom>
 /**
  * HandlerBaseT is a dummy abstract templated class used as base class
  * to HandlerBase. HandlerBaseT inherits from the Interfaced class
@@ -18,7 +19,8 @@ template <int I = 0>
  * a base class. The fact that it is templated allows classes which in
  * turn inherits from HandlerBase to not explicitly depend on
  * EventGenerator class if the inlined accessor funtions are not
- * actually used.
+ * actually used. The only class which actually works as a template
+ * argument is UseRandom, which is used to generate random numbers.
  *
  * @see Interfaced
  * @see RandomGenerator
@@ -145,7 +147,7 @@ public:
  * @see EventGenerator
  * 
  */
-class HandlerBase: public HandlerBaseT<0> {
+class HandlerBase: public HandlerBaseT<UseRandom> {
 
 public:
 

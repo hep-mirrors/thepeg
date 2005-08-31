@@ -6,90 +6,90 @@
 
 namespace ThePEG {
 
-template <int I>
-inline HandlerBaseT<I>::HandlerBaseT() {}
+template <typename T>
+inline HandlerBaseT<T>::HandlerBaseT() {}
 
-template <int I>
-inline HandlerBaseT<I>::HandlerBaseT(const HandlerBaseT<I> & x)
+template <typename T>
+inline HandlerBaseT<T>::HandlerBaseT(const HandlerBaseT<T> & x)
   : Interfaced(x) {}
 
-template <int I>
-HandlerBaseT<I>::~HandlerBaseT() {}
+template <typename T>
+HandlerBaseT<T>::~HandlerBaseT() {}
 
 inline HandlerBase::HandlerBase() {}
 
 inline HandlerBase::HandlerBase(const HandlerBase & x)
-  : HandlerBaseT<0>(x) {}
+  : HandlerBaseT<UseRandom>(x) {}
 
-template <int I>
-inline double HandlerBaseT<I>::rnd() const {
-  return generator()->rnd();
+template <typename T>
+inline double HandlerBaseT<T>::rnd() const {
+  return T::rnd();
 }
 
-template <int I>
-inline const StandardModelBase & HandlerBaseT<I>::SM() const {
+template <typename T>
+inline const StandardModelBase & HandlerBaseT<T>::SM() const {
   return *standardModel();
 }
 
-template <int I>
-inline tSMPtr HandlerBaseT<I>::standardModel() const {
+template <typename T>
+inline tSMPtr HandlerBaseT<T>::standardModel() const {
   return generator()->standardModel();
 }
 
-template <int I>
-inline double HandlerBaseT<I>::rnd(double xu) const {
-  return rnd()*xu;
+template <typename T>
+inline double HandlerBaseT<T>::rnd(double xu) const {
+  return T::rnd(xu);
 }
 
-template <int I>
-inline double HandlerBaseT<I>::rnd(double xl, double xu) const {
-  return rnd(xu-xl)+xl;
+template <typename T>
+inline double HandlerBaseT<T>::rnd(double xl, double xu) const {
+  return T::rnd(xl, xu);
 }
 
-template <int I>
-inline bool HandlerBaseT<I>::rndbool() const {
-  return rndbool(0.5);
+template <typename T>
+inline bool HandlerBaseT<T>::rndbool() const {
+  return T::rndbool();
 }
 
-template <int I>
-inline bool HandlerBaseT<I>::rndbool(double p) const {
-  return generator()->random().rndbool(p);
+template <typename T>
+inline bool HandlerBaseT<T>::rndbool(double p) const {
+  return T::rndbool(p);
 }
 
-template <int I>
-inline bool HandlerBaseT<I>::rndbool(double p1, double p2) const {
-  return generator()->random().rndbool(p1, p2);
+template <typename T>
+inline bool HandlerBaseT<T>::rndbool(double p1, double p2) const {
+  return T::rndbool(p1, p2);
 }
 
-template <int I>
-inline int HandlerBaseT<I>::rndsign(double p1, double p2, double p3) const {
-  return generator()->random().rndsign(p1, p2, p3);
+template <typename T>
+inline int HandlerBaseT<T>::rndsign(double p1, double p2, double p3) const {
+  return T::rndsign(p1, p2, p3);
 }
 
-template <int I>
-inline int HandlerBaseT<I>::rnd2(double p0, double p1) const {
-  return generator()->random().rnd2(p0, p1);
+template <typename T>
+inline int HandlerBaseT<T>::rnd2(double p0, double p1) const {
+  return T::rnd2(p0, p1);
 }
 
-template <int I>
-inline int HandlerBaseT<I>::rnd3(double p0, double p1, double p2) const {
-  return generator()->random().rnd3(p0, p1, p2);
+template <typename T>
+inline int HandlerBaseT<T>::rnd3(double p0, double p1, double p2) const {
+  return T::rnd3(p0, p1, p2);
 }
 
-template <int I>
-inline int HandlerBaseT<I>::
+template <typename T>
+inline int HandlerBaseT<T>::
 rnd4(double p0, double p1, double p2, double p3) const {
-  return generator()->random().rnd4(p0, p1, p2, p3);
+  return T::rnd4(p0, p1, p2, p3);
 }
 
-template <int I>
-inline long HandlerBaseT<I>::irnd(long xu) const {
-  return long(rnd()*double(xu));
+template <typename T>
+inline long HandlerBaseT<T>::irnd(long xu) const {
+  return T::irnd(xu);
 }
 
-template <int I>
-inline long HandlerBaseT<I>::irnd(long xl, long xu) const {
-  return xl + irnd(xu-xl);
+template <typename T>
+inline long HandlerBaseT<T>::irnd(long xl, long xu) const {
+  return T::irnd(xl, xu);
 }
 
 inline void HandlerBase::doupdate() throw(UpdateException) {
