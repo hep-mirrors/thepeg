@@ -72,6 +72,7 @@ if test -z "$THEPEGPATH"; then
     SETUPTHEPEG="$THEPEGPATH/src/setupThePEG.bin -L $THEPEGPATH/lib"
     RUNTHEPEG="$THEPEGPATH/src/runThePEG.bin -L $THEPEGPATH/lib"
     THEPEGDOC="\$(top_builddir)/../ThePEG/Doc"
+    THEPEGLIB="\$(top_builddir)/../ThePEG/lib"
   else
     if test "x$prefix" == "xNONE"; then
       THEPEGPATH=$ac_default_prefix
@@ -89,6 +90,7 @@ if test "$THEPEGBUILD" == "no"; then
   SETUPTHEPEG="$THEPEGPATH/bin/setupThePEG"
   RUNTHEPEG="$THEPEGPATH/bin/runThePEG"
   THEPEGDOC="$THEPEGPATH/share/ThePEG/Doc"
+  THEPEGLIB="$THEPEGPATH/lib/ThePEG"
   AC_MSG_CHECKING([if the installed ThePEG works])
   if test -x $SETUPTHEPEG && $SETUPTHEPEG /dev/null; then
     AC_MSG_RESULT(yes)
@@ -104,6 +106,7 @@ AC_SUBST(pkglibdir)
 AC_SUBST(THEPEGPATH)
 AC_SUBST(THEPEGINCLUDE)
 AC_SUBST(THEPEGDOC)
+AC_SUBST(THEPEGLIB)
 AC_SUBST(SETUPTHEPEG)
 AC_SUBST(RUNTHEPEG)
 AC_SUBST(AM_CPPFLAGS)
@@ -115,13 +118,61 @@ AC_DEFUN([AC_EMPTY_SUBST],
 AC_SUBST(EMPTY)
 ])
 
+AC_DEFUN([AC_SEARCH_PREFIXDIR_FILES],
+[AC_MSG_CHECKING([if $1 and $2 is set])
+if test -z "$$1"; then
+  for dirbase in / /usr $ac_default_prefix $prefix; do
+    if test -z "$$2"; then
+      for filename in $4; do
+        if test -f $dirbase/$3/$filename; then
+          $1=$dirbase/$3
+	  $2=$filename
+        fi
+      done
+    else
+      if test -f $dirbase/$3/$$2; then
+        $1=$dirbase/$3
+      fi
+    fi
+  done
+  if test -z "$$1" -o -z "$$2"; then
+    AC_MSG_ERROR(no. Could not guess appropriate value for $1 and $2)
+  else
+    AC_MSG_RESULT([no (found $$1 and $$2)])
+  fi
+else
+  if test -z "$$2"; then
+    for filename in $4; do
+      if test -f $$1/$filename; then
+	  $2=$filename
+      fi
+    done
+    AC_MSG_RESULT([no (found $$1 and $$2)])
+  else
+    if test -f $$1/$$2; then
+      AC_MSG_RESULT([yes ($$1 and $$2)])
+    else
+      AC_MSG_ERROR(no. Could not guess appropriate value for $1 and $2)
+    fi
+  fi
+fi
+AC_ARG_VAR($1,$5)
+AC_ARG_VAR($2,$6)
+])
+
 AC_DEFUN([AC_CHECK_PREFIXDIR],
 [AC_MSG_CHECKING([if $1 is set])
 if test -z "$$1"; then
-   if test "x$prefix" == "xNONE"; then
-      $1=$ac_default_prefix/$2
-   else
+   if test -d $prefix/$2; then
       $1=$prefix/$2
+   elif test -d $ac_default_prefix/$2; then
+      $1=$ac_default_prefix/$2
+   elif test -d /usr/$2; then
+      $1=/usr/$2
+   elif test -d /$2; then
+      $1=/$2
+   else
+     AC_MSG_ERROR(no. Could not guess appropriate value for $1)
    fi
    AC_MSG_RESULT([no (using $$1)])
 else
