@@ -20,7 +20,7 @@ inline ACDCGenCell::~ACDCGenCell() {
 
 template <typename RndType>
 inline ACDCGenCell * ACDCGenCell::
-generate(DVector & lo, DVector & up, RndType & rnd) {
+generate(DVector & lo, DVector & up, RndType * rnd) {
   if ( isSplit() ) {
     if ( ACDCRandomTraits<RndType>::
 	 rndBool(rnd, upper()->maxInt(), lower()->maxInt()) ) {

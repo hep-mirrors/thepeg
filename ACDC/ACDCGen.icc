@@ -3,8 +3,8 @@
 namespace ACDCGenerator {
 
 template <typename Rnd, typename FncPtr>
-inline ACDCGen<Rnd,FncPtr>::ACDCGen(Rnd & r)
-  : theRnd(&r), theNAcc(0), theN(0),
+inline ACDCGen<Rnd,FncPtr>::ACDCGen(Rnd * r)
+  : theRnd(r), theNAcc(0), theN(0),
     theEps(100*std::numeric_limits<double>::epsilon()), theMargin(1.1),
     theNTry(100), theMaxTry(10000), useCheapRandom(false), theFunctions(1),
     theDimensions(1, 0), thePrimaryCells(1), theSumMaxInts(1, 0.0), theLast(0),
@@ -23,8 +23,8 @@ inline ACDCGen<Rnd,FncPtr>::ACDCGen()
 }
 
 template <typename Rnd, typename FncPtr>
-inline void ACDCGen<Rnd,FncPtr>::setRnd(Rnd & r) {
-  theRnd = &r;
+inline void ACDCGen<Rnd,FncPtr>::setRnd(Rnd * r) {
+  theRnd = r;
 }
 
 template <typename Rnd, typename FncPtr>
@@ -133,7 +133,7 @@ inline void ACDCGen<Rnd,FncPtr>::chooseCell(DVector & lo, DVector & up) {
 
   // Now select randomly a sub-cell of the chosen cell
   if ( cheapRandom() ) {
-    theLastCell = lastCell()->generate(lo, up, *theRnd);
+    theLastCell = lastCell()->generate(lo, up, theRnd);
   } else {
     DVector rndv(lastDimension());
     rnd(lastDimension(), rndv);
@@ -339,29 +339,29 @@ inline double ACDCGen<Rnd,FncPtr>::margin() const {
 
 template <typename Rnd, typename FncPtr>
 inline double ACDCGen<Rnd,FncPtr>::rnd() const {
-  return RndTraits::rnd(*theRnd);
+  return RndTraits::rnd(theRnd);
 }
 
 template <typename Rnd, typename FncPtr>
 inline double ACDCGen<Rnd,FncPtr>::rnd(double lo, double up) const {
-  return RndTraits::rnd(*theRnd, lo, up);
+  return RndTraits::rnd(theRnd, lo, up);
 }
 
 template <typename Rnd, typename FncPtr>
 inline void ACDCGen<Rnd,FncPtr>::
 rnd(const DVector & lo, const DVector & up, DVector & r) const {
-  RndTraits::rnd(*theRnd, lo.begin(), lo.end(), up.begin(), r.begin());
+  RndTraits::rnd(theRnd, lo.begin(), lo.end(), up.begin(), r.begin());
 }
 
 template <typename Rnd, typename FncPtr>
 inline void ACDCGen<Rnd,FncPtr>::
 rnd(DimType D, DVector & r) const {
-  RndTraits::rnd(*theRnd, D, r.begin());
+  RndTraits::rnd(theRnd, D, r.begin());
 }
 
 template <typename Rnd, typename FncPtr>
 inline long ACDCGen<Rnd,FncPtr>::rndInt(long x) const {
-  return RndTraits::rndInt(*theRnd, x);
+  return RndTraits::rndInt(theRnd, x);
 }
 
 template <typename Rnd, typename FncPtr>

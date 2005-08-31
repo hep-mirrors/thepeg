@@ -42,12 +42,12 @@ struct ACDCRandomTraits: public ACDCTraitsType {
   /**
    * Return a flat random number in the interval ]0,1[.
    */
-  static inline double rnd(Rnd & r) { return r.flat(); }
+  static inline double rnd(Rnd * r) { return r->flat(); }
 
   /**
    * Return a flat random number in the interval ]\a xl,\a xu[.
    */
-  static inline double rnd(Rnd & r, double xl, double xu) {
+  static inline double rnd(Rnd * r, double xl, double xu) {
     return xl + (xu - xl)*rnd(r);
   }
 
@@ -63,7 +63,7 @@ struct ACDCRandomTraits: public ACDCTraitsType {
    * @param res the ouput iterator used to output the random numbers.
    */
   template <typename InputIterator, typename OutputIterator>
-  static inline void rnd(Rnd & r, InputIterator l, InputIterator lend,
+  static inline void rnd(Rnd * r, InputIterator l, InputIterator lend,
 			   InputIterator u, OutputIterator res) {
     for ( ; l != lend; ++l ) *res++ = *l + (*u++ - *l)*rnd(r);
   }
@@ -73,25 +73,25 @@ struct ACDCRandomTraits: public ACDCTraitsType {
    * OutputIterator \a res.
    */
   template <typename OutputIterator>
-  static inline void rnd(Rnd & r, int D, OutputIterator res) {
+  static inline void rnd(Rnd * r, int D, OutputIterator res) {
     for ( int d = 0; d < D; ++d ) *res++ = rnd(r);
   }
 
   /**
    * Return true with probability \a x.
    */
-  static inline bool rndBool(Rnd & r, double x) { return rnd(r) < x; }
+  static inline bool rndBool(Rnd * r, double x) { return rnd(r) < x; }
 
   /**
    * Return true with probability \a x(\a x + \a y).
    */
-  static inline bool rndBool(Rnd & r, double x, double y) {
+  static inline bool rndBool(Rnd * r, double x, double y) {
     return rndBool(r, x/(x + y)); }
 
   /**
    * Return a random integer in the interval [0,\a x[.
    */
-  static inline long rndInt(Rnd & r, long x) {
+  static inline long rndInt(Rnd * r, long x) {
     return long(rnd(r, 0.0, double(x)));
   }
 

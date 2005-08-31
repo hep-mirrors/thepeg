@@ -1,5 +1,12 @@
 2005-08-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/ACDCSampler.*: Use pointer to RandomGenerator instead
+	of reference when talking to ACDCGen.
+
+	* ACDC/*: Preparing to get rid of the specific RandomGenerator
+	object and instead use UseRandom. Specifically use pointers
+	instead of references to a random generator.
+
 	* acinclude.m4: Added AC_SEACH_PREFIXDIR_FILES to search for files
 	in standard directories. Also added THEPEGLIB variable in
 	AC_CHECK_THEPEG.

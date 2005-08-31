@@ -64,7 +64,7 @@ public:
    * Standard constructor requiring a random generator object to be
    * used.
    */
-  inline ACDCGen(Rnd & r);
+  inline ACDCGen(Rnd * r);
 
   /**
    * Default Constructor.
@@ -270,7 +270,7 @@ public:
   /**
    * Set a new random number generator.
    */
-  inline void setRnd(Rnd & r);
+  inline void setRnd(Rnd * r);
 
   /**
    * Double precision number in the interval ]0,1[.

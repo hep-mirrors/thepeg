@@ -39,7 +39,7 @@ public:
    * @return a pointer to the chosen cell.
    */
   template <typename RndType>
-  inline ACDCGenCell * generate(DVector & lo, DVector & up, RndType & rnd);
+  inline ACDCGenCell * generate(DVector & lo, DVector & up, RndType * rnd);
 
   /**
    * Choose a cell recursively according to their relative
