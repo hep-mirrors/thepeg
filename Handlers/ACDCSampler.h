@@ -7,6 +7,7 @@
 #include "ThePEG/ACDC/ACDCGen.h"
 #include "ThePEG/Handlers/StandardEventHandler.h"
 #include "ThePEG/Repository/RandomGenerator.h"
+#include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.xh"
 // #include "ACDCSampler.fh"
 // #include "ACDCSampler.xh"
@@ -27,7 +28,7 @@ class ACDCSampler: public SamplerBase {
 public:
 
   /** Typedef the underlying ACDCGen class. */
-  typedef ACDCGenerator::ACDCGen<RandomGenerator,tStdEHPtr> SamplerType;
+  typedef ACDCGenerator::ACDCGen<UseRandom,tStdEHPtr> SamplerType;
 
   /** @name Standard constructors and destructors. */
   //@{
@@ -362,6 +363,75 @@ struct ACDCRandomTraits<ThePEG::RandomGenerator>: public ACDCTraitsType {
    * Return a random integer in the interval [0,\a x[.
    */
   static inline long rndInt(RandomGenerator * r, long x) {
+    return long(rnd(r, 0.0, double(x)));
+  }
+
+};
+
+/** Specialized Traits class to inform ACDCGen how to use the
+    static UseRandom class. */
+template <>
+struct ACDCRandomTraits<ThePEG::UseRandom>: public ACDCTraitsType {
+  /** Convenient typedef. */
+  typedef ThePEG::UseRandom UseRandom;
+
+  /**
+   * Return a flat random number in the interval ]0,1[.
+   */
+  static inline double rnd(UseRandom *) { return UseRandom::rnd(); }
+
+  /**
+   * Return a flat random number in the interval ]\a xl,\a xu[.
+   */
+  static inline double rnd(UseRandom * r, double xl, double xu) {
+    return xl + (xu - xl)*rnd(r);
+  }
+
+  /**
+   * Generate a set of random numbers.
+   * @param r the random generator.
+   * @param l an input iterator giving the lower limit of the interval
+   * of the first requested random number.
+   * @param lend an input iterator marking the end of the range of
+   * requested random numbers.
+   * @param u an input iterator giving the upper limit of the interval
+   * of the first requested random number.
+   * @param res the ouput iterator used to output the random numbers.
+   */
+  template <typename InputIterator, typename OutputIterator>
+  static inline void rnd(UseRandom * r,
+			 InputIterator l, InputIterator lend,
+			 InputIterator u, OutputIterator res) {
+    for ( ; l != lend; ++l ) *res++ = *l + (*u++ - *l)*rnd(r);
+  }
+
+  /**
+   * Generate \a D random numbers. The numbers are put into the
+   * OutputIterator \a res.
+   */
+  template <typename OutputIterator>
+  static inline void rnd(UseRandom * r, int D, OutputIterator res) {
+    for ( int d = 0; d < D; ++d ) *res++ = rnd(r);
+  }
+
+  /**
+   * Return true with probability \a x.
+   */
+  static inline bool rndBool(UseRandom * r, double x) {
+    return UseRandom::rndbool(x);
+  }
+
+  /**
+   * Return true with probability \a x(\a x + \a y).
+   */
+  static inline bool rndBool(UseRandom * r, double x, double y) {
+    return UseRandom::rndbool(x, y);
+  }
+
+  /**
+   * Return a random integer in the interval [0,\a x[.
+   */
+  static inline long rndInt(UseRandom * r, long x) {
     return long(rnd(r, 0.0, double(x)));
   }
 
