@@ -417,22 +417,22 @@ struct ACDCRandomTraits<ThePEG::UseRandom>: public ACDCTraitsType {
   /**
    * Return true with probability \a x.
    */
-  static inline bool rndBool(UseRandom * r, double x) {
+  static inline bool rndBool(UseRandom, double x) {
     return UseRandom::rndbool(x);
   }
 
   /**
    * Return true with probability \a x(\a x + \a y).
    */
-  static inline bool rndBool(UseRandom * r, double x, double y) {
+  static inline bool rndBool(UseRandom *, double x, double y) {
     return UseRandom::rndbool(x, y);
   }
 
   /**
    * Return a random integer in the interval [0,\a x[.
    */
-  static inline long rndInt(UseRandom * r, long x) {
-    return long(rnd(r, 0.0, double(x)));
+  static inline long rndInt(UseRandom *, long x) {
+    return UseRandom::irnd(x);
   }
 
 };
