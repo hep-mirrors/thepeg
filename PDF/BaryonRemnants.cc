@@ -21,6 +21,7 @@
 #include "ThePEG/Utilities/VSelector.h"
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "BaryonRemnants.tcc"
@@ -134,7 +135,7 @@ generate(PartonBinInstance & pb, const double * r,
     } else {
       // We haven't extracted a valence so we first divide up the baryon
       // in a quark and a diquark.
-      pair<int,int> r = i.flavsel.select(generator()->random());
+      pair<int,int> r = i.flavsel.select(UseRandom::current());
       int iqr = r.first*i.sign;
       int idqr = r.second*i.sign;
 
@@ -273,7 +274,7 @@ generate(PartonBinInstance & pb, const double * r, Energy2 scale,
     } else {
       // We haven't extracted a valence so we first divide up the baryon
       // in a quark and a diquark.
-      pair<int,int> r = i.flavsel.select(generator()->random());
+      pair<int,int> r = i.flavsel.select(UseRandom::current());
       int iqr = r.first*i.sign;
       int idqr = r.second*i.sign;
 

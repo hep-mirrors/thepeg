@@ -11,8 +11,8 @@ INCLUDEFILES = $(DOCFILES) BaseRepository.icc BaseRepository.tcc \
                EventGenerator.tcc EventGenerator.xh RandomGenerator.icc \
                Repository.icc \
                Repository.tcc StandardRandom.icc Strategy.fh Strategy.icc \
-                RandomGenerator.fh \
-               UseRandom.icc CurrentGenerator.icc CurrentGenerator.fh \
+               RandomGenerator.fh UseRandom.icc UseRandom.fh \
+               CurrentGenerator.icc CurrentGenerator.fh \
                Main.icc
 
 noinst_LTLIBRARIES = libThePEGRepo.la

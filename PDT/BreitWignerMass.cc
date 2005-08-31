@@ -9,6 +9,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/CLHEPWrap/RandBreitWigner.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "BreitWignerMass.tcc"
@@ -21,7 +22,7 @@ BreitWignerMass::~BreitWignerMass() {}
 Energy BreitWignerMass::mass(const ParticleData & pd) const {
   Energy ret = 0.0*GeV;
   do {
-    ret = RandBreitWigner::shootM2(&(generator()->randomEngine()),
+    ret = RandBreitWigner::shootM2(&(UseRandom::currentEngine()),
 				   pd.mass()/GeV, pd.width()/GeV,
 				   pd.widthCut()/GeV)*GeV;
   } while ( ret > pd.massMax() || ret < pd.massMin() );

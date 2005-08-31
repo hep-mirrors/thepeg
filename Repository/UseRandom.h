@@ -59,6 +59,11 @@ public:
   inline static RandomGenerator & current();
 
   /**
+   * Return a reference to the currently chosen RandomGenerator object.
+   */
+  inline static RandomEngine & currentEngine();
+
+  /**
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]0,1[.
    */

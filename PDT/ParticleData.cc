@@ -24,6 +24,7 @@
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 namespace ThePEG {
 
@@ -271,7 +272,7 @@ tDMPtr ParticleData::selectMode(Particle & p) const {
   if ( &(p.data()) != this ) return tDMPtr();
   try {
     if ( !theWidthGenerator || !theVariableRatio )
-      return theDecaySelector.select(generator()->random());
+      return theDecaySelector.select(UseRandom::current());
     DecaySelector local;
     if ( theWidthGenerator )
       local = theWidthGenerator->rate(p);
@@ -279,7 +280,7 @@ tDMPtr ParticleData::selectMode(Particle & p) const {
       for ( DecaySet::const_iterator mit = theDecayModes.begin();
 	    mit != theDecayModes.end(); ++mit  )
 	local.insert((*mit)->brat(p), *mit);
-    return local.select(generator()->random());
+    return local.select(UseRandom::current());
   }
   catch (range_error) {
     return tDMPtr();

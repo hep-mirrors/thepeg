@@ -28,6 +28,10 @@ inline RandomGenerator & UseRandom::current() {
   return *theRandomStack.back();
 }
 
+inline RandomEngine & UseRandom::currentEngine() {
+  return current().randomGenerator();
+}
+
 inline  double UseRandom::rnd() {
   return current().rnd();
 }

@@ -15,13 +15,14 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 using namespace ThePEG;
 
 WidthGenerator::~WidthGenerator() {}
 
 Length WidthGenerator::lifeTime(const ParticleData &, Energy, Energy w) const {
-  return RandExponential::shoot(&(generator()->randomEngine()), hbarc/w/mm)*mm;
+  return RandExponential::shoot(&(UseRandom::currentEngine()), hbarc/w/mm)*mm;
 }
 
 WidthGenerator::DecayMap WidthGenerator::rate(const Particle & p) {

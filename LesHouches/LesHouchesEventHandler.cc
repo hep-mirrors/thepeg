@@ -22,6 +22,7 @@
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/CLHEPWrap/RandPoisson.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesEventHandler.tcc"
@@ -134,7 +135,7 @@ EventPtr LesHouchesEventHandler::generateEvent() {
   while ( true ) {
     loopGuard();
 
-    currentReader(readers()[selector().select(generator()->random())]);
+    currentReader(readers()[selector().select(UseRandom::current())]);
 
     skipEvents();
     currentReader()->reset();
@@ -204,7 +205,7 @@ void LesHouchesEventHandler::skipEvents() {
   double meanskip = double(nscan)/xscan - 1.0;
 
   // Skip an average numer of steps with a Poissonian distribution.
-  long nskip = RandPoisson::shoot(&(generator()->randomEngine()), meanskip);
+  long nskip = RandPoisson::shoot(&(UseRandom::currentEngine()), meanskip);
   currentReader()->skip(nskip);
 }
 

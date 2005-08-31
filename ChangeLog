@@ -1,5 +1,13 @@
 2005-08-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/UseRandom.*: Added access function to the
+	RandomEngine of the current RandomGenerator.
+
+	* PDT/WidthGenerator.cc, PDT/ParticleData.cc,
+	PDT/BreitWignerMass.cc, PDF/BaryonRemnants.cc,
+	LesHouches/LesHouchesEventHandler.cc: Now use UseRandom
+	everywhere.
+
 	* Handlers/HandlerBase.*: Changed to use UseRandom instead of
 	gerenator()->random().
 
