@@ -21,3 +21,12 @@ NoPIOClassDescription<FermionSpinInfo> FermionSpinInfo::initFermionSpinInfo;
 // Definition of the static class description member.
 
 void FermionSpinInfo::Init() {}
+
+void FermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
+{
+  if(currentMomentum()==m)
+    {
+      for(unsigned int ix=0;ix<2;++ix){_currentstates[ix].transform(r);}
+      SpinInfo::transform(m,r);
+    }
+}

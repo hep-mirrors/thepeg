@@ -106,6 +106,11 @@ public:
    */
   inline void update() const;
 
+  /**
+   * Perform a lorentz rotation of the spin information
+   */
+  virtual void transform(const LorentzMomentum &,LorentzRotation);
+
 public:
 
 
@@ -179,6 +184,11 @@ public:
    * Return the momentum of the particle when it was produced.
    */
   inline const Lorentz5Momentum & productionMomentum() const;
+
+  /**
+   *  The current momentum of the particle
+   */
+  inline const Lorentz5Momentum & currentMomentum() const;
 
   /**
    * Return true if particle is timelike (rather than spacelike).
@@ -291,6 +301,16 @@ private:
    */
   Lorentz5Momentum _productionmomentum;
 
+  /**
+   * Momentum of the particle when it decayed
+   */
+  mutable Lorentz5Momentum _decaymomentum;
+  
+  /**
+   * Current momentum of the particle
+   */
+  Lorentz5Momentum _currentmomentum;
+  
 };
 
 }

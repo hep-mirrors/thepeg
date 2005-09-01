@@ -348,12 +348,17 @@ public:
   /**
    * Standard Lorentz boost specifying the components of the beta vector.
    */
-  inline LorentzRSSpinor  boost(double,double,double) const;
+  LorentzRSSpinor & boost(double,double,double);
 
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzRSSpinor  boost(const Hep3Vector &) const;
+  LorentzRSSpinor & boost(const Hep3Vector &);
+
+  /**
+   * General transform
+   */
+  LorentzRSSpinor & transform(const LorentzRotation &);
   //@}
 
   /** @name Functions related to type and representation. */
@@ -366,7 +371,7 @@ public:
   /**
    * Return the spinor in a different representation.
    */
-  inline LorentzRSSpinor transformRep(DiracRep);
+  inline LorentzRSSpinor transformRep(DiracRep) const;
 
   /**
    * Return the representation of the spinor.

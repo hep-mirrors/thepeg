@@ -12,26 +12,28 @@ namespace Helicity {
 inline FermionSpinInfo::FermionSpinInfo()
 {
   _productionstates.resize(2,LorentzSpinor());
+  _currentstates.resize(2,LorentzSpinor());
   _decaystates.resize(2,LorentzSpinor());
   iSpin(PDT::Spin1Half);
   _decaycalc=false;
 }
 
+inline FermionSpinInfo::FermionSpinInfo(const FermionSpinInfo & x)
+  : SpinInfo(x), _productionstates(x._productionstates),
+    _decaystates(x._decaystates), _currentstates(x._currentstates),
+    _decaycalc(x._decaycalc) {}
+
 inline FermionSpinInfo::
 FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
   _productionstates.resize(2,LorentzSpinor());
+  _currentstates.resize(2,LorentzSpinor());
   _decaystates.resize(2,LorentzSpinor());
   iSpin(PDT::Spin1Half);
   setProductionMomentum(in);
   _decaycalc=false;
   setTimelike(intime);
 }
-
-inline FermionSpinInfo::FermionSpinInfo(const FermionSpinInfo & x)
-  : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _decaycalc(x._decaycalc)
-{}
 
 inline EIPtr FermionSpinInfo::clone() const
 {
@@ -47,7 +49,11 @@ inline void FermionSpinInfo::rebind(const EventTranslationMap & trans) {
 // set the basis state, this is production state
 inline void FermionSpinInfo::setBasisState(unsigned int ihel,LorentzSpinor in) const
 {
-  if(ihel<=1) _productionstates[ihel]=in;
+  if(ihel<=1)
+    {
+      _productionstates[ihel]=in;
+      _currentstates[ihel]=in;
+    }
   else throw HelicityLogicalError()
       << "Tried to set invalid fermion basis state in FermionSpinInfo class."
       << Exception::abortnow;
@@ -73,7 +79,7 @@ inline LorentzSpinor FermionSpinInfo::getProductionBasisState(unsigned int ihel)
   return _productionstates[ihel];
 }
 
-// get the bassis state for the decay
+// get the basis state for the decay
 inline LorentzSpinor FermionSpinInfo::getDecayBasisState(unsigned int ihel) const
 {
   // check this is a valid helicity
@@ -84,10 +90,8 @@ inline LorentzSpinor FermionSpinInfo::getDecayBasisState(unsigned int ihel) cons
   // calculate the decay basis states if needed
   if(!_decaycalc)
     {
-      // now use this to evaluate the basis states in the decay frame
-      Hep3Vector boostv=- productionMomentum().boostVector();
-      _decaystates[0] =_productionstates[0].boost(boostv);
-      _decaystates[1] =_productionstates[1].boost(boostv);
+      for(unsigned int ix=0;ix<2;++ix)
+	{_decaystates[ix]=_currentstates[ix];}
       _decaycalc=true;
     }
   // return the basis function

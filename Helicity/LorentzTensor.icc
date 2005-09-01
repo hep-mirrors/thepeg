@@ -118,8 +118,36 @@ inline LorentzTensor & LorentzTensor::operator = (const LorentzTensor & q) {
 }
 
 // boost
-inline LorentzTensor LorentzTensor::boost(const Hep3Vector & b) const {
+inline LorentzTensor & LorentzTensor::boost(const Hep3Vector & b) {
   return boost(b.x(), b.y(), b.z());
+}
+
+// general lorentz transform
+inline LorentzTensor & LorentzTensor::transform(const SpinOneLorentzRotation &r)
+{
+  unsigned int ix,iy,ixa,iya;
+  LorentzTensor output;
+  Complex temp;
+  for(ix=0;ix<4;++ix)
+    {for(iy=0;iy<4;++iy)
+	{
+	  temp=0.;
+	  for(ixa=0;ixa<4;++ixa)
+	    {for(iya=0;iya<4;++iya)
+		{temp+=r(ix,ixa)*r(iy,iya)*(*this)(ixa,iya);}
+	    }
+	  output(ix,iy)=temp;
+	}
+    }
+  *this=output;
+  return *this;
+}
+
+inline LorentzTensor & LorentzTensor::transform(const LorentzRotation &r)
+{
+  SpinOneLorentzRotation one(r.one());
+  transform(one);
+  return *this;
 }
 
 inline LorentzTensor LorentzTensor::conjugate()

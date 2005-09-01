@@ -5,7 +5,8 @@ using namespace ThePEG;
 using namespace Helicity;
 
 // general boost
-LorentzTensor LorentzTensor::boost(double bx, double by, double bz) const{
+LorentzTensor & LorentzTensor::boost(double bx, double by, double bz)
+{
   // basic definitions
   double boostm[4][4];
   double b2 = bx*bx+by*by+bz*bz;
@@ -24,16 +25,19 @@ LorentzTensor LorentzTensor::boost(double bx, double by, double bz) const{
   // apply the boost
   LorentzTensor output;
   Complex temp;
-  for(unsigned int ix=0;ix<4;++ix)
-    {for(unsigned int iy=0;iy<4;++iy)
+  unsigned int ix,iy,ixa,iya;
+  for(ix=0;ix<4;++ix)
+    {for(iy=0;iy<4;++iy)
       {
 	temp=0.;
-	for(unsigned int ixa=0;ixa<4;++ixa)
-	  {for(unsigned int iya=0;iya<4;++iya)
+	for(ixa=0;ixa<4;++ixa)
+	  {for(iya=0;iya<4;++iya)
 	      {temp+=boostm[ix][ixa]*boostm[iy][iya]*(*this)(ixa,iya);}
 	  }
 	output(ix,iy)=temp;
       }
     }
-  return output;
+  *this=output;
+  return *this;
 }
+

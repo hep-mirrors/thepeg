@@ -111,67 +111,6 @@ inline LorentzSpinor & LorentzSpinor::operator = (const LorentzSpinor & in) {
   return *this;
 }
 
-// boost the spinor
-inline LorentzSpinor LorentzSpinor::boost(double bx,double by,double bz) const
-{
-  // work out beta and chi
-  double beta=sqrt(bx*bx+by*by+bz*bz);
-  double chi = atanh(beta);
-  double sinhchi = sinh(0.5*chi)/beta, coshchi = cosh(0.5*chi);
-  // calculate the new spinor
-  Complex out[4],ii(0.,1.);
-  Complex nxminy=bx-ii*by;
-  Complex nxpiny=bx+ii*by;
-  switch(_dirac)
-    {
-      // Haber lower energy
-    case HaberDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*( bz*_spin[2]+nxminy*_spin[3]);
-      out[1] = coshchi*_spin[1]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
-      out[2] = coshchi*_spin[2]+sinhchi*( bz*_spin[0]+nxminy*_spin[1]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[1]+nxpiny*_spin[0]);
-      break;
-      // HELAS
-    case HELASDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxminy*_spin[1]);
-      out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxpiny*_spin[0]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxminy*_spin[3]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
-      break;
-    }
-  return LorentzSpinor(out[0],out[1],out[2],out[3],_type,_dirac);
-}
-
-// boost the spinor
-inline LorentzSpinor LorentzSpinor::boost(const Hep3Vector & boostv) const
-{
-  double beta = boostv.mag();
-  double bx=boostv.x(),by=boostv.y(),bz=boostv.z();
-  double chi = atanh(beta);
-  double sinhchi = sinh(0.5*chi)/beta, coshchi = cosh(0.5*chi);
-  Complex out[4],ii(0.,1.);
-  Complex nxminy=bx-ii*by;
-  Complex nxpiny=bx+ii*by;
-  switch(_dirac)
-    {
-      // Haber lower energy
-    case HaberDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(+bz*_spin[2]+nxminy*_spin[3]);
-      out[1] = coshchi*_spin[1]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[0]+nxminy*_spin[1]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[1]+nxpiny*_spin[0]);
-      break;
-      // HELAS
-    case HELASDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxminy*_spin[1]);
-      out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxpiny*_spin[0]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxminy*_spin[3]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
-      break;
-    }
-  return LorentzSpinor(out[0],out[1],out[2],out[3],_type,_dirac);
-}
-
 // change the dirac matrix representation
 inline void LorentzSpinor::changeRep(DiracRep newdirac)
 {
@@ -182,7 +121,7 @@ inline void LorentzSpinor::changeRep(DiracRep newdirac)
 inline LorentzSpinor LorentzSpinor::transformRep(DiracRep newdirac)
 {
   // do nothing if all ready in the correct representation
-  if(newdirac==_dirac){return *this;}
+  if(newdirac==_dirac){return LorentzSpinor(*this);}
   double fact=1./sqrt(2.);
   // transform from HELAS representation to Haber one
   Complex output[4];
@@ -469,6 +408,12 @@ inline Complex LorentzSpinor::pseudoScalar(LorentzSpinorBar& fbar)
     {output=-fbar.s1()*s1()-fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();}
   return output;
 }
-		
+
+inline LorentzSpinor & LorentzSpinor::transform(const LorentzRotation & r)
+{
+  SpinHalfLorentzRotation half(r.half());
+  transform(half);
+  return *this;
+}
 }
 }

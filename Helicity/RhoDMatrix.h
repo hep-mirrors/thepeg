@@ -98,7 +98,7 @@ public:
   inline RhoDMatrix & operator=(const RhoDMatrix &);
 
   /**
-   * Rutput the spin density matrix for debugging purposes.
+   * Output the spin density matrix for debugging purposes.
    */
   inline void output();
 

@@ -1,3 +1,4 @@
+// -*- C++ -*-
 // These are the definitions of the inlined member functions in the
 // Lorentz5Vector class.
 
@@ -152,5 +153,12 @@ inline FloatType Lorentz5Vector<FloatType>::dirMinus() const {
   return Direction<0>::neg()? plus(): minus();
 }
 
+template <typename FloatType>
+inline Lorentz5Vector<FloatType> &
+Lorentz5Vector<FloatType>::transform(const LorentzRotation & r)
+{
+  LorentzVector::transform(r.one());
+  return *this;
+}
 }
 

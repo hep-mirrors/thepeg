@@ -12,6 +12,7 @@ namespace Helicity {
 inline TensorSpinInfo::TensorSpinInfo() 
 {
   _productionstates.resize(5);
+  _currentstates.resize(5);
   _decaystates.resize(5);
   iSpin(PDT::Spin2);
   _decaycalc = false;
@@ -19,11 +20,13 @@ inline TensorSpinInfo::TensorSpinInfo()
 
 inline TensorSpinInfo::TensorSpinInfo(const TensorSpinInfo & x)
   : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _decaycalc(x._decaycalc) {}
+    _decaystates(x._decaystates), _currentstates(x._currentstates),
+    _decaycalc(x._decaycalc) {}
 
 inline TensorSpinInfo::TensorSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
   _productionstates.resize(5);
+  _currentstates.resize(5);
   _decaystates.resize(5);
   iSpin(PDT::Spin2);
   setProductionMomentum(in);
@@ -45,7 +48,11 @@ inline void TensorSpinInfo::rebind(const EventTranslationMap & trans) {
 // set the basis state, this is production state
 inline void TensorSpinInfo::setBasisState(unsigned int ihel, LorentzTensor in) const
 {
-  if (ihel<5) _productionstates[ihel]=in;
+  if (ihel<5)
+    {
+      _productionstates[ihel]=in;
+      _currentstates[ihel]=in;
+    }
   else throw HelicityLogicalError()
     << "Tried to set invalid tensor basis state in TensorSpinInfo."
     << Exception::abortnow;
@@ -82,10 +89,8 @@ inline LorentzTensor TensorSpinInfo::getDecayBasisState(unsigned int ihel) const
   // calculate the decay basis states if needed
   if(!_decaycalc)
     {
-      // now use this to evaluate the basis states in the decay frame
-      Hep3Vector boostv=- productionMomentum().boostVector();
-      for(unsigned int ix=0;ix<_productionstates.size();++ix)
-      	{_decaystates[ix] =_productionstates[ix].boost(boostv).conjugate();}
+      for(unsigned int ix=0;ix<5;++ix)
+	{_decaystates[ix]=_currentstates[ix].conjugate();}
       _decaycalc=true;
     }
   // return the basis function

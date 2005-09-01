@@ -14,7 +14,7 @@ inline SpinInfo::SpinInfo()
 
 inline SpinInfo::SpinInfo(const Lorentz5Momentum & in, bool intim)
   :  _timelike(intim),_decayed(false), _developed(false),
-     _productionmomentum(in) {}
+     _productionmomentum(in),_currentmomentum(in) {}
 
 inline SpinInfo::SpinInfo(const SpinInfo & x)
   : SpinBase(x), _production(x._production), _decay(x._decay),
@@ -22,7 +22,9 @@ inline SpinInfo::SpinInfo(const SpinInfo & x)
     _prodloc(x._prodloc), _decayloc(x._decayloc),
     _decayed(x._decayed), _developed(x._developed),_rhomatrix(x._rhomatrix),
     _Dmatrix(x._Dmatrix),_spin(x._spin),
-    _productionmomentum(x._productionmomentum)
+    _productionmomentum(x._productionmomentum),
+    _decaymomentum(x._decaymomentum),
+    _currentmomentum(x._currentmomentum)
 {
   x._production=VertexPtr();
   x._decay=VertexPtr();
@@ -90,6 +92,7 @@ inline void SpinInfo::decay() const
   // otherwise we need to obtain the correct rho matrix
   _decayed=true;
   _rhomatrix = _production->getRhoMatrix(_prodloc);
+  _decaymomentum = _currentmomentum;
 }
 
 inline void SpinInfo::develop() const
@@ -98,7 +101,13 @@ inline void SpinInfo::develop() const
   if(_developed){return;}
   // otherwise we need to obtain the correct D matrix
   _developed=true;
-  _Dmatrix= _decay->getDMatrix(_decayloc);
+  if(_decay)
+    {_Dmatrix= _decay->getDMatrix(_decayloc);}
+  else
+    {
+      _Dmatrix=RhoDMatrix(iSpin());
+      _Dmatrix.average();
+    }
 }
 
 // set the decayed variable for the particle
@@ -127,9 +136,15 @@ inline PDT::Spin SpinInfo::iSpin() const {return _spin;}
 
 inline const Lorentz5Momentum & SpinInfo::productionMomentum() const
 {return _productionmomentum;}
+ 
+inline const Lorentz5Momentum & SpinInfo::currentMomentum() const
+{return _currentmomentum;}
 
 inline void SpinInfo::setProductionMomentum(const Lorentz5Momentum & in)
-{_productionmomentum=in;}
+{
+  _productionmomentum=in;
+  _currentmomentum=in;
+}
 
 inline void SpinInfo::setTimelike(bool in){_timelike=in;}
 

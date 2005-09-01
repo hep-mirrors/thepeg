@@ -196,12 +196,12 @@ cut(const Collision & c, const LorentzRotation & r) const
       }
   }
 
-  p1 *= r;
-  p2 *= r;
+  p1 *= r.one();
+  p2 *= r.one();
   if ( l1 ) {
     if ( Q21 < DISQ21Min() || Q21 >= DISQ21Max() ) throw Veto();
     LorentzMomentum q = l1->momentum();
-    q *= r;
+    q *= r.one();
     if ( q.e() < DISLepton1EnergyMin() ||
 	 q.e() >= DISLepton1EnergyMax() ) throw Veto();
     double the = q.angle((const LorentzMomentum &)p1);
@@ -212,7 +212,7 @@ cut(const Collision & c, const LorentzRotation & r) const
   if ( l2 ) {
     if ( Q22 < DISQ22Min() || Q22 >= DISQ22Max() ) throw Veto();
     LorentzMomentum q = l2->momentum();
-    q *= r;
+    q *= r.one();
     if ( q.e() < DISLepton2EnergyMin() ||
 	 q.e() >= DISLepton2EnergyMax() ) throw Veto();
     double the = q.angle((const LorentzMomentum &)p2);

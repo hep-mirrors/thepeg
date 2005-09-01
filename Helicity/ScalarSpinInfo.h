@@ -66,6 +66,11 @@ public:
    * function.
    */
   inline virtual void rebind(const EventTranslationMap & trans);
+  
+  /**
+   * Perform a lorentz rotation of the spin information
+   */
+  virtual void transform(const LorentzMomentum &,LorentzRotation);
 
 private:
 

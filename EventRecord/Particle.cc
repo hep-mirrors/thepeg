@@ -132,7 +132,7 @@ void Particle::transform(const LorentzRotation & r) {
   if ( hasRep() && spinInfo() ) spinInfo()->transform(momentum(), r);
   theMomentum.transform(r);
   if ( !hasRep() ) return;
-  rep().theVertex.transform(r);
+  rep().theVertex.transform(r.one());
   rep().theLifeLength.transform(r);
 }
 

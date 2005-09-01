@@ -269,12 +269,17 @@ public:
   /**
    * Standard Lorentz boost specifying the components of the beta vector.
    */
-  inline LorentzRSSpinorBar boost(double,double,double) const;
+  LorentzRSSpinorBar & boost(double,double,double);
 
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzRSSpinorBar boost(const Hep3Vector &) const;
+  LorentzRSSpinorBar & boost(const Hep3Vector &);
+
+  /**
+   * General transform
+   */
+  LorentzRSSpinorBar & transform(const LorentzRotation &);
   //@}
 
   /** @name Functions related to type and representation. */

@@ -5,6 +5,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
+#include "ThePEG/CLHEPWrap/LorentzRotation.h"
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzSpinor.fh"
@@ -136,12 +137,22 @@ public:
   /**
    * Standard Lorentz boost specifying the components of the beta vector.
    */
-  inline LorentzSpinorBar boost(double,double,double) const;
+  LorentzSpinorBar & boost(double,double,double);
 
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzSpinorBar boost(const Hep3Vector &) const;
+  LorentzSpinorBar & boost(const Hep3Vector &);
+
+  /**
+   * General Lorentz transformation
+   */
+  LorentzSpinorBar & transform(const SpinHalfLorentzRotation &);
+
+  /**
+   * General Lorentz transformation
+   */
+  inline LorentzSpinorBar & transform(const LorentzRotation &);
   //@}
 
   /** @name Functions related to type and representation. */

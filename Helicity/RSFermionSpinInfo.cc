@@ -29,3 +29,12 @@ void RSFermionSpinInfo::Init() {
 
 }
 
+void RSFermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
+{
+  if(currentMomentum()==m)
+    {
+      for(unsigned int ix=0;ix<4;++ix){_currentstates[ix].transform(r);}
+      SpinInfo::transform(m,r);
+    }
+}
+

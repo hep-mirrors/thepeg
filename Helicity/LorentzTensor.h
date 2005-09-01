@@ -235,12 +235,22 @@ class LorentzTensor{
   /**
    * Standard Lorentz boost specifying the components of the beta vector.
    */
-  LorentzTensor boost(double,double,double) const;
+  LorentzTensor & boost(double,double,double);
 
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzTensor boost(const Hep3Vector &) const;
+  inline LorentzTensor & boost(const Hep3Vector &);
+
+  /**
+   * General Lorentz transformation
+   */
+  inline LorentzTensor & transform(const SpinOneLorentzRotation &);
+
+  /**
+   * General Lorentz transformation
+   */
+  inline LorentzTensor & transform(const LorentzRotation &);
 
   /**
    * Return the complex conjugate.

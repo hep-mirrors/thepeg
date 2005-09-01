@@ -76,7 +76,7 @@ CMSn(Energy m0, const vector<Energy> & m)
 	Vector3 bv = p3*(1.0/sqrt(sqr(p[i]) + sqr(sm[i + 1])));
 	if ( bv.mag2() >= 1.0 ) throw ImpossibleKinematics();
 	LorentzRotation r(bv);
-	for ( int j = i + 1; j < Np; ++j ) ret[j]*=r;
+	for ( int j = i + 1; j < Np; ++j ) ret[j]*=r.one();
       }
     }
     return ret;

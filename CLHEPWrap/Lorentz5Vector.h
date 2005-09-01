@@ -8,6 +8,7 @@
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/UnitIO.h"
+#include "LorentzRotation.h"
 
 namespace ThePEG {
 
@@ -220,6 +221,11 @@ public:
    */
   inline FloatType dirMinus() const;
   //@}
+
+  /**
+   *  Perform a Lorentz transformation
+   */
+  inline Lorentz5Vector & transform(const LorentzRotation &);
 
 private:
 

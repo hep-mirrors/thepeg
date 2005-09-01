@@ -10,16 +10,9 @@
 #include "CLHEP.h"
 #include "CLHEP/Vector/LorentzRotation.h"
 
-namespace CLHEP {
-
-/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
-typedef HepLorentzRotation LorentzRotation;
-
-}
-
 namespace ThePEG {
 
-using CLHEP::LorentzRotation;
+class LorentzRotation;
 
 }
 

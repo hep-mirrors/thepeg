@@ -92,6 +92,11 @@ public:
   inline LorentzTensor getDecayBasisState(unsigned int hel) const;
   //@}
 
+  /**
+   * Perform a lorentz rotation of the spin information
+   */
+  virtual void transform(const LorentzMomentum &,LorentzRotation );
+
 public:
 
   /**
@@ -135,6 +140,11 @@ private:
    * Basis states in the frame in which the particle decays.
    */
   mutable vector<LorentzTensor> _decaystates;
+
+  /**
+   * Basis states in the current frame of the particle
+   */
+  mutable vector<LorentzTensor> _currentstates;
 
   /**
    * True if the decay state has been set.

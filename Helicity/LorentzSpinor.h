@@ -4,6 +4,7 @@
 // This is the declaration of the LorentzSpinor class.
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
+#include "ThePEG/CLHEPWrap/LorentzRotation.h"
 #include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzSpinor.fh"
@@ -214,12 +215,22 @@ public:
   /**
    * Standard Lorentz boost specifying the components of the beta vector.
    */
-  inline LorentzSpinor  boost(double,double,double) const;
+  LorentzSpinor & boost(double,double,double);
 
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzSpinor  boost(const Hep3Vector &) const;
+  LorentzSpinor & boost(const Hep3Vector &);
+
+  /**
+   * General Lorentz transformation
+   */
+  LorentzSpinor & transform(const SpinHalfLorentzRotation & );
+
+  /**
+   * General Lorentz transformation
+   */
+  inline LorentzSpinor & transform(const LorentzRotation &);
   //@}
 
   /** @name Functions related to type and representation. */

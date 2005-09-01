@@ -18,3 +18,5 @@ NoPIOClassDescription<SpinInfo> SpinInfo::initSpinInfo;
 
 void SpinInfo::Init() {}
 
+void SpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
+{_currentmomentum.transform(r);}

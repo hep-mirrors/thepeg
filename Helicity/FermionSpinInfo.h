@@ -71,12 +71,6 @@ public:
   inline void setBasisState(unsigned int hel, LorentzSpinor in) const;
 
   /**
-   * Get the basis state for the production for the given helicity, \a
-   * hel (which is 0 or 1 as described above.)
-   */
-  inline LorentzSpinor getProductionBasisState(unsigned int hel) const;
-
-  /**
    * Set the basis state for the decay.
    * @param hel the helicity (0 or 1 as described above.)
    * @param in the LorentzSpinor for the given helicity.
@@ -84,11 +78,22 @@ public:
   inline void setDecayState(unsigned int hel, LorentzSpinor in) const;
 
   /**
+   * Get the basis state for the production for the given helicity, \a
+   * hel (which is 0 or 1 as described above.)
+   */
+  inline LorentzSpinor getProductionBasisState(unsigned int hel) const;
+
+  /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (which is 0 or 1 as described above.)
    */
   inline LorentzSpinor getDecayBasisState(unsigned int hel) const;
   //@}
+
+  /**
+   * Perform a lorentz rotation of the spin information
+   */
+  virtual void transform(const LorentzMomentum &,LorentzRotation );
 
 public:
 
@@ -133,6 +138,11 @@ private:
    * basis states in the frame in which the particle decays
    */
   mutable vector<LorentzSpinor> _decaystates;
+
+  /**
+   * basis states in the current frame of the particle
+   */
+  mutable vector<LorentzSpinor> _currentstates;
 
   /**
    * True if the decay state has been set.

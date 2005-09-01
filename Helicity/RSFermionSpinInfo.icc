@@ -12,25 +12,27 @@ namespace Helicity {
 inline RSFermionSpinInfo::RSFermionSpinInfo() 
 {
   _productionstates.resize(4,LorentzRSSpinor());
+  _currentstates.resize(4,LorentzRSSpinor());
   _decaystates.resize(4,LorentzRSSpinor());
   iSpin(PDT::Spin3Half);
   _decaycalc=false;
 }
 
+inline RSFermionSpinInfo::RSFermionSpinInfo(const RSFermionSpinInfo & x)
+  : SpinInfo(x), _productionstates(x._productionstates),
+    _decaystates(x._decaystates), _currentstates(x._currentstates),
+    _decaycalc(x._decaycalc) {}
+
 inline RSFermionSpinInfo::RSFermionSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
   _productionstates.resize(4,LorentzRSSpinor());
+  _currentstates.resize(4,LorentzRSSpinor());
   _decaystates.resize(4,LorentzRSSpinor());
   iSpin(PDT::Spin3Half);
   setProductionMomentum(in);
   _decaycalc=false;
   setTimelike(intime);
 }
-
-inline RSFermionSpinInfo::RSFermionSpinInfo(const RSFermionSpinInfo & x)
-  : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _decaycalc(x._decaycalc)
-{}
 
 inline EIPtr RSFermionSpinInfo::clone() const
 {
@@ -47,7 +49,11 @@ inline void RSFermionSpinInfo::rebind(const EventTranslationMap & trans) {
 inline void RSFermionSpinInfo::setBasisState(unsigned int ihel,
 					     LorentzRSSpinor in) const
 {
-  if(ihel<4){_productionstates[ihel]=in;}
+  if(ihel<4)
+    {
+      _productionstates[ihel]=in;
+      _currentstates[ihel]=in;
+    }
   else throw HelicityLogicalError()
       << "Tried to set invalid fermion basis state in RSFermionSpinInfo class."
       << Exception::abortnow;
@@ -85,10 +91,7 @@ inline LorentzRSSpinor RSFermionSpinInfo::getDecayBasisState(unsigned int ihel) 
   // calculate the decay basis states if needed
   if(!_decaycalc)
     {
-      // now use this to evaluate the basis states in the decay frame
-      Hep3Vector boostv=- productionMomentum().boostVector();
-      for(unsigned int ix=0;ix<4;++ix)
-	{_decaystates[ix] =_productionstates[ix].boost(boostv);}
+      for(unsigned int ix=0;ix<4;++ix){_decaystates[ix]=_currentstates[ix];}
       _decaycalc=true;
     }
   // return the basis function

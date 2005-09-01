@@ -303,7 +303,7 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
   constructRemnants(*pb.incoming(), Phnew, k);
   LorentzRotation rot = Utilities::transformToMomentum(Ph + Pr, Phnew);
   Utilities::transform(pb.remnants(), rot);
-  Ph.transform(rot);
+  Ph.transform(rot.one());
 }
 
 LorentzRotation PartonExtractor::
@@ -370,8 +370,8 @@ transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
     rpt = Direction<0>::pos()?
       Utilities::getBoostFromCM(make_pair(P, k))*rpt:
       Utilities::getBoostFromCM(make_pair(k, P))*rpt;
-    Ph.transform(rpt);
-    Pr.transform(rpt);
+    Ph.transform(rpt.one());
+    Pr.transform(rpt.one());
   } catch ( ImpossibleKinematics ) {}
 }
 
