@@ -1,0 +1,21 @@
+// -*- C++ -*-
+#ifndef ThePEG_SpinOneLorentzRotation_FH
+#define ThePEG_SpinOneLorentzRotation_FH
+
+// This is the forward declaration of the
+// <!id>HepLorentzRotation<!!id> class from CLHEP, placing it in the
+// <!id>ThePEG<!!id> namespace as <!id>SpinOneLorentzRotation<!!id>.
+
+#include "CLHEP.h"
+#include "CLHEP/Vector/LorentzRotation.h"
+
+namespace ThePEG {
+
+  /**
+   *  Typedef CLHEP Lorentz Rotation to SpinOneLorentzRotation
+   */
+  typedef CLHEP::HepLorentzRotation SpinOneLorentzRotation;
+
+}
+
+#endif /* ThePEG_SpinOneLorentzRotation_FH */
