@@ -263,7 +263,7 @@ generate(PartonBinInstance & pb, const double * r, Energy2 scale,
 
     // If the extracted quark was a valence quark simply return a di-quark.
 
-    if ( specialValence() || ( i.mayval &&
+    if ( i.mayval && ( specialValence() ||
 	 rndbool(pb.pdf()->xfvl(pb.particleData(), pb.partonData(),
 				abs(pb.scale()), pb.li()),
 		 pb.pdf()->xfl(pb.particleData(), pb.partonData(),

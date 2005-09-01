@@ -1,7 +1,7 @@
 2005-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/BaryonRemnants.*: Added option to always give di-quark when
-	extracting valence flavour.
+	extracting valence flavour. And fixed a stupid bug...
 
 	* src/runThePEG.cc, src/runEventLoop.cc: Use new
 	EventGenerator::setSeed() function.
