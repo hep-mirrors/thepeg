@@ -205,7 +205,7 @@ void LesHouchesEventHandler::skipEvents() {
   double meanskip = double(nscan)/xscan - 1.0;
 
   // Skip an average numer of steps with a Poissonian distribution.
-  long nskip = RandPoisson::shoot(&(UseRandom::currentEngine()), meanskip);
+  long nskip = RandPoisson::shoot(UseRandom::currentEngine(), meanskip);
   currentReader()->skip(nskip);
 }
 

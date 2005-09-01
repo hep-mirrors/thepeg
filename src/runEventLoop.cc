@@ -70,7 +70,7 @@ int main(int argc, char * argv[]) {
 
     if ( eg ) {
 
-      if ( seed > 0 ) eg->random().setSeed(seed);
+      if ( seed > 0 ) eg->setSeed(seed);
 
       // Initialize the Event generator
       eg->initialize();

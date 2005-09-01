@@ -13,6 +13,7 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/UtilityBase.h"
@@ -30,12 +31,13 @@
 using namespace ThePEG;
 
 BaryonRemnants::BaryonRemnants()
-  : theMargin(1.0*GeV) {}
+  : theMargin(1.0*GeV), useSpecialValence(false) {}
 
 BaryonRemnants::BaryonRemnants(const BaryonRemnants & x)
   : RemnantHandler(x), thePtGeneratorQ(x.thePtGeneratorQ),
     thePtGeneratorR(x.thePtGeneratorR), theZGenerator(x.theZGenerator),
-    theFlavourGenerator(x.theFlavourGenerator), theMargin(x.theMargin) {}
+    theFlavourGenerator(x.theFlavourGenerator), theMargin(x.theMargin),
+    useSpecialValence(x.useSpecialValence) {}
 
 BaryonRemnants::~BaryonRemnants() {}
 
@@ -261,11 +263,11 @@ generate(PartonBinInstance & pb, const double * r, Energy2 scale,
 
     // If the extracted quark was a valence quark simply return a di-quark.
 
-    if ( i.mayval &&
+    if ( specialValence() || ( i.mayval &&
 	 rndbool(pb.pdf()->xfvl(pb.particleData(), pb.partonData(),
 				abs(pb.scale()), pb.li()),
 		 pb.pdf()->xfl(pb.particleData(), pb.partonData(),
-			       abs(pb.scale()), pb.li())) ) {
+			       abs(pb.scale()), pb.li())) ) ) {
       int idqr = 1000*max(i.vflav[0], i.vflav[1]) +
 	100*min(i.vflav[0], i.vflav[1]) + 3;
       if ( i.vflav[0] != i.vflav[1] && rnd() < 0.25 ) idqr -= 2;
@@ -344,12 +346,12 @@ void BaryonRemnants::createRemnants(PartonBinInstance & pb) const {
 
 void BaryonRemnants::persistentOutput(PersistentOStream & os) const {
   os << thePtGeneratorQ << thePtGeneratorR << theZGenerator
-     << theFlavourGenerator << theMargin;
+     << theFlavourGenerator << theMargin << useSpecialValence;
 }
 
 void BaryonRemnants::persistentInput(PersistentIStream & is, int) {
   is >> thePtGeneratorQ >> thePtGeneratorR >> theZGenerator
-     >> theFlavourGenerator >> theMargin;
+     >> theFlavourGenerator >> theMargin >> useSpecialValence;
 }
 
 ClassDescription<BaryonRemnants>
@@ -391,6 +393,21 @@ void BaryonRemnants::Init() {
      "with the given (upper limit of the) virtuality of the extracted parton.",
      &BaryonRemnants::theMargin, GeV, 1.0*GeV, 0.0*GeV, 10.0*GeV,
      false, false, true);
+
+  static Switch<BaryonRemnants,bool> interfaceSpecialValence
+    ("SpecialValence",
+     "If true, an extracted valence quark will always give a di-quark remnant.",
+     &BaryonRemnants::useSpecialValence, false, true, false);
+  static SwitchOption interfaceSpecialValenceYes
+    (interfaceSpecialValence,
+     "Yes",
+     "An extracted valence quark will always give a di-quark remnant.",
+     true);
+  static SwitchOption interfaceSpecialValenceNo
+    (interfaceSpecialValence,
+     "No",
+     "An extracted valence flavour may be considered to be a sea-quark.",
+     false);
 
 }
 

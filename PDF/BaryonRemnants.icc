@@ -22,6 +22,10 @@ inline FlavourGenerator & BaryonRemnants::flavourGenerator() const {
   return *theFlavourGenerator;
 }
 
+inline bool BaryonRemnants::specialValence() const {
+  return useSpecialValence;
+}
+
 inline Energy BaryonRemnants::margin() const {
   return theMargin;
 }

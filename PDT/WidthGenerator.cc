@@ -22,7 +22,7 @@ using namespace ThePEG;
 WidthGenerator::~WidthGenerator() {}
 
 Length WidthGenerator::lifeTime(const ParticleData &, Energy, Energy w) const {
-  return RandExponential::shoot(&(UseRandom::currentEngine()), hbarc/w/mm)*mm;
+  return RandExponential::shoot(UseRandom::currentEngine(), hbarc/w/mm)*mm;
 }
 
 WidthGenerator::DecayMap WidthGenerator::rate(const Particle & p) {

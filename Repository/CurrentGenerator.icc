@@ -71,12 +71,4 @@ inline typename Ptr<T>::pointer CurrentGenerator::getDefault() {
   return current().getDefault<T>();
 }
 
-inline RandomGenerator & CurrentGenerator::random() {
-  return current().random();
-}
-
-inline RandomEngine & CurrentGenerator::randomEngine() {
-  return current().randomEngine();
-}
-
 }

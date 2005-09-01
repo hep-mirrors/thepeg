@@ -26,14 +26,9 @@ inline const ObjectSet & EventGenerator::used() const {
   return usedObjects;
 }
 
-inline RandomEngine & EventGenerator::randomEngine() const {
-  return random().randomGenerator();
+inline void EventGenerator::setSeed(long seed) {
+  random().setSeed(seed);
 }
-
-inline double EventGenerator::rnd() {
-  return random().rnd();
-}
-
 
 inline RandomGenerator & EventGenerator::random() const {
   return *theRandom;

@@ -105,19 +105,19 @@ public:
    * Specify a boost by the given factor along the x-axis
    * @param boost The Lorentz boost  
    */
-  LorentzRotation & setBoostX (double & boost);
+  inline LorentzRotation & setBoostX (double boost);
 
   /**
    * Specify a boost by the given factor along the y-axis
    * @param boost The Lorentz boost  
    */
-  LorentzRotation & setBoostY (double & boost);
+  inline LorentzRotation & setBoostY (double boost);
 
   /**
    * Specify a boost by the given factor along the z-axis
    * @param boost The Lorentz boost  
    */
-  LorentzRotation & setBoostZ (double & boost);
+  inline LorentzRotation & setBoostZ (double boost);
 
   /**
    * Specify a rotation about a general axis by the angle given.
@@ -130,19 +130,19 @@ public:
    * Specify a rotation by the given angle about the x-axis
    * @param angle The rotation angle 
    */
-  inline LorentzRotation & setRotateX (double & angle);
+  inline LorentzRotation & setRotateX (double angle);
 
   /**
    * Specify a rotation by the given angle about the y-axis
    * @param angle The rotation angle 
    */
-  inline LorentzRotation & setRotateY (double & angle);
+  inline LorentzRotation & setRotateY (double angle);
 
   /**
    * Specify a rotation by the given angle about the z-axis
    * @param angle The rotation angle 
    */
-  inline LorentzRotation & setRotateZ (double & angle);
+  inline LorentzRotation & setRotateZ (double angle);
   
   //@}
 
@@ -152,12 +152,17 @@ public:
   /**
    * The spin-\f$\frac12\f$ transformation
    */
-  inline SpinHalfLorentzRotation half() const;
+  inline const SpinHalfLorentzRotation & half() const;
 
   /**
    * The spin-1 transformation
    */
-  inline SpinOneLorentzRotation one() const;
+  inline const SpinOneLorentzRotation & one() const;
+
+  /**
+   * Automatically cast to the spin-1 transformation
+   */
+  inline operator const SpinOneLorentzRotation & () const;
   //@}
 
   /** @name Access methods for the components of the spin-1 rotation */
@@ -330,6 +335,18 @@ public:
 
   /** @name Transformation and product members */
   //@{
+
+  /**
+   * Product with a LorentzVector simply returns the rotated vector.
+   */
+  inline LorentzVector operator*(const LorentzVector & lv) const;
+
+  /**
+   * Product with a Lorentz5Vector simply returns the rotated vector.
+   */
+  template <typename FloatType>
+  inline Lorentz5Vector<FloatType>
+  operator*(const Lorentz5Vector<FloatType> & lv) const;
 
   /**
    * Product of two LorentzRotations (this) * lt - matrix multiplication  

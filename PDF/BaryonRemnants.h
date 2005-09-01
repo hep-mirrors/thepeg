@@ -142,6 +142,11 @@ protected:
    */
   inline FlavourGenerator & flavourGenerator() const;
 
+  /**
+   * If true an extracted valens quark will always give a di-quark remnant.
+   */
+  inline bool specialValence() const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */
@@ -255,6 +260,10 @@ private:
    */
   Energy theMargin;
 
+  /**
+   * If true an extracted valens quark will always give a di-quark remnant.
+   */
+  bool useSpecialValence;
 
 private:
 

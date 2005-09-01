@@ -82,7 +82,7 @@ LorentzRotation::setBoost (const Hep3Vector & b)
 
 // Specify a boost by the given factor along the x-axis
 inline LorentzRotation & 
-LorentzRotation::setBoostX (double & boost)
+LorentzRotation::setBoostX (double boost)
 {
   _half.setBoostX(boost);
   _one.set(HepBoostX(boost));
@@ -91,7 +91,7 @@ LorentzRotation::setBoostX (double & boost)
 
 // Specify a boost by the given factor along the y-axis
 inline LorentzRotation & 
-LorentzRotation::setBoostY (double & boost)
+LorentzRotation::setBoostY (double boost)
 {
   _half.setBoostY(boost);
   _one.set(HepBoostY(boost));
@@ -100,7 +100,7 @@ LorentzRotation::setBoostY (double & boost)
 
 // Specify a boost by the given factor along the z-axis
 inline LorentzRotation & 
-LorentzRotation::setBoostZ (double & boost)
+LorentzRotation::setBoostZ (double boost)
 {
   _half.setBoostZ(boost);
   _one.set(HepBoostZ(boost));
@@ -117,7 +117,7 @@ LorentzRotation::setRotate(double delta, const Hep3Vector& axis)
 }
 
 // Specify a rotation by the given angle about the x-axis
-inline LorentzRotation & LorentzRotation::setRotateX (double & angle)
+inline LorentzRotation & LorentzRotation::setRotateX (double angle)
 {
   _half.setRotateX(angle);
   _one.set(HepRotationX(angle));
@@ -125,7 +125,7 @@ inline LorentzRotation & LorentzRotation::setRotateX (double & angle)
 }
 
 // Specify a rotation by the given angle about the y-axis
-inline LorentzRotation & LorentzRotation::setRotateY (double & angle)
+inline LorentzRotation & LorentzRotation::setRotateY (double angle)
 {
   _half.setRotateY(angle);
   _one.set(HepRotationY(angle));
@@ -133,7 +133,7 @@ inline LorentzRotation & LorentzRotation::setRotateY (double & angle)
 }
 
 // Specify a rotation by the given angle about the z-axis
-inline LorentzRotation & LorentzRotation::setRotateZ (double & angle)
+inline LorentzRotation & LorentzRotation::setRotateZ (double angle)
 {
   _half.setRotateY(angle);
   _one.set(HepRotationY(angle));
@@ -141,10 +141,20 @@ inline LorentzRotation & LorentzRotation::setRotateZ (double & angle)
 }
 
 // The spin-\f$\frac12\f$ transformation
-inline SpinHalfLorentzRotation LorentzRotation::half() const {return _half;}
+inline const SpinHalfLorentzRotation &
+LorentzRotation::half() const {
+  return _half;
+}
 
 // The spin-1 transformation
-inline SpinOneLorentzRotation LorentzRotation::one() const {return _one;}
+inline const SpinOneLorentzRotation &
+LorentzRotation::one() const {
+  return _one;
+}
+
+inline LorentzRotation::operator const SpinOneLorentzRotation & () const {
+  return _one;
+}
 
 // access spin 1 members
 inline double LorentzRotation::xx() const {return _one.xx();}
@@ -181,6 +191,17 @@ inline Complex LorentzRotation::s4s1() const {return _half.s4s1();}
 inline Complex LorentzRotation::s4s2() const {return _half.s4s2();}
 inline Complex LorentzRotation::s4s3() const {return _half.s4s3();}
 inline Complex LorentzRotation::s4s4() const {return _half.s4s4();}
+
+inline LorentzVector
+LorentzRotation::operator*(const LorentzVector & lv) const {
+  return one()*lv;
+}
+
+template <typename FloatType>
+inline Lorentz5Vector<FloatType>
+LorentzRotation::operator*(const Lorentz5Vector<FloatType> & lv) const {
+  return one()*lv;
+}
 
 // Product of two LorentzRotations (this) * lt - matrix multiplication  
 inline LorentzRotation 

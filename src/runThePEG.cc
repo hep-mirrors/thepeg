@@ -69,7 +69,7 @@ int main(int argc, char * argv[]) {
 	std::cout << "Main class file '" << mainclass << "' not found." << endl;
       else if ( eg ) eg->finish();
     } else if ( eg ) {
-      if ( seed > 0 ) eg->random().setSeed(seed);
+      if ( seed > 0 ) eg->setSeed(seed);
       eg->go(1, N);
     } else std::cout << "eg = nil" << endl;
 

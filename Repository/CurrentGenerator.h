@@ -129,18 +129,6 @@ public:
   template <typename T>
   inline static typename Ptr<T>::pointer getDefault();
 
-  /**
-   * Return a reference to the default RandomGenerator object in the current
-   * EventGenerator.
-   */
-  inline static RandomGenerator & random();
-
-  /**
-   * Return a reference to the RandomEngine object used in the default
-   * RandomGenerator object in the current EventGenerator.
-   */
-  inline static RandomEngine & randomEngine();
-
 private:
 
   /**

@@ -284,7 +284,7 @@ struct ParticleTraits<LorentzMomentum>: public TraitsType {
    * Perform a Lorentz transformation.
    */
   static void transform(LorentzMomentum & p, const LorentzRotation & r) {
-    p.transform(r.one());
+    p.transform(r);
   }
 
   /**

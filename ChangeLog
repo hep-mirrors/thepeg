@@ -1,3 +1,33 @@
+2005-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/BaryonRemnants.*: Added option to always give di-quark when
+	extracting valence flavour.
+
+	* src/runThePEG.cc, src/runEventLoop.cc: Use new
+	EventGenerator::setSeed() function.
+
+	* Repository/EventGenerator.*: Removed randomEngine()
+	function. Made random() protected. Introduced setSeed() function.
+
+	* Repository/CurrentGenerator.*: Remove functions accessing the
+	random generator.
+
+	* Repository/UseRandom.*, PDT/WidthGenerator.cc,
+	PDT/BreitWignerMass.cc, LesHouches/LesHouchesEventHandler.cc:
+	UseRandom::currentEngine() now returns pointer.
+
+	* Handlers/ACDCSampler.*: Now completely use UseRandom.
+
+	* PDF/PartonExtractor.cc, Handlers/KinematicalCuts.cc,
+	EventRecord/ParticleTraits.h, EventRecord/Particle.cc: Removed
+	.one() methods calls and use implicit conversion instead.
+
+	* CLHEPWrap/LorentzRotation.*: Changed some reference to double
+	arguments to simple doubles. Changed returning _half and _one as
+	const references instead of objects. Also introduced cast operator
+	synonomous to one(). Introduces multiplication operators for
+	Lorentz(5)Vectors.
+
 2005-08-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/UseRandom.*: Added access function to the

@@ -123,18 +123,6 @@ public:
   inline void currentStepHandler(tStepHdlPtr);
 
   /**
-   * Return a reference to the default RandomGenerator object in this
-   * run.
-   */
-  inline RandomGenerator & random() const;
-
-  /**
-   * Return a reference to the RandomEngine object used in the default
-   * RandomGenerator object in this run.
-   */
-  inline RandomEngine & randomEngine() const;
-
-  /**
    * Return a pointer to the EventHandler.
    */
   inline tEHPtr eventHandler() const;
@@ -226,9 +214,9 @@ public:
   void use(const Interfaced & i);
 
   /**
-   * Return a simple flat random number in the range ]0,1[.
+   * Set the random seed for the global random number generator.
    */
-  inline double rnd();
+  inline void setSeed(long seed);
 
   /**
    * Log a given exception.
@@ -395,6 +383,12 @@ public:
   //@}
 
 protected:
+
+  /**
+   * Return a reference to the default RandomGenerator object in this
+   * run.
+   */
+  inline RandomGenerator & random() const;
 
   /**
    * Finish the setup of an event generator run. Set run name, all
