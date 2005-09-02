@@ -260,8 +260,9 @@ inline LorentzPolarizationVector LorentzRSSpinor::generalCurrent(LorentzSpinorBa
     }
   // high energy
   else
-    {output[iz]= left*(fbar.s1()*_spin[iz][0]+fbar.s2()*_spin[iz][1])
-        	+right*(fbar.s3()*_spin[iz][2]+fbar.s4()*_spin[iz][3]);}
+    {for(iz=0;iz<4;++iz)
+	{output[iz]= left*(fbar.s1()*_spin[iz][0]+fbar.s2()*_spin[iz][1])
+	    +right*(fbar.s3()*_spin[iz][2]+fbar.s4()*_spin[iz][3]);}}
   return output;
 }
 }
