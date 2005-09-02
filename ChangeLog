@@ -1,5 +1,8 @@
 2005-09-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Doc/Makefile.am: Fixed typo in dependencies for refman-html
+	target.
+
 	* configure.ac: Now uses AC_SEARCH_CLHEP instead of AC_CHECK_CLHEP.
 
 	* acinclude.m4: Introduces AC_SEARCH_CLHEP and AC_SEARCH_THEPEG

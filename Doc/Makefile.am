@@ -18,7 +18,7 @@ html-local: refman-html
 pdf-local: refman-html
 	if test -d refman-latex; then cd refman-latex; make refman.pdf; fi
 
-refman-html: refman.conf.in refman.h.in
+refman-html: refman.conf refman.h
 	$(srcdir)/fixinterfaces.pl AllInterfaces.h
 	doxygen $<
 
