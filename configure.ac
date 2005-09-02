@@ -24,7 +24,7 @@ AC_LIBTOOL_DLOPEN
 
 AC_PROG_LIBTOOL
 
-AC_CHECK_CLHEP
+AC_SEARCH_CLHEP
 
 AC_DEFINE_ENVDEFAULT(ThePEG_GZREAD_FILE,GZREAD_FILE,gunzip -c,[The command which, taking the name of a gzipped file as argument, unzips it and prints it to stdout. Default is "gunzip -c"])
 

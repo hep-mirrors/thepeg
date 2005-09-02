@@ -1,3 +1,12 @@
+2005-09-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* configure.ac: Now uses AC_SEARCH_CLHEP instead of AC_CHECK_CLHEP.
+
+	* acinclude.m4: Introduces AC_SEARCH_CLHEP and AC_SEARCH_THEPEG
+	macros to replace AC_CHECK_CLHEP and AC_CHECK_THEPEG. The new
+	macros will actively search for valid CLHEP and ThePEG
+	installations in standard places.
+
 2005-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/BaryonRemnants.*: Added option to always give di-quark when
