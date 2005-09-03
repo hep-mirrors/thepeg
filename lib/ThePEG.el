@@ -1352,6 +1352,21 @@ ParticleVector " class "::decay(const DecayMode & dm,
     (insert-string "  //@}
 ")))
 
+(defun ThePEG-cond-section ()
+  "Make a region of code a conditional section for doxygen."
+  (interactive)
+  (setq sect (read-from-minibuffer "Section: "))
+  (cond ((string-equal sect "") (setq sect "DEVELOPER")))
+  (save-excursion
+    (goto-char (region-beginning))
+    (beginning-of-line)
+    (insert-string (concat "  /** @cond " sect " */
+")))
+  (save-excursion
+    (goto-char (region-end))
+    (insert-string "  /** @endcond */
+")))
+
 (defun ThePEG-variable-cutnpaste ()
   "Create code fragments for a variable declaration together with
    corresponding set and get functions, I/O functions and constructors."

@@ -1,5 +1,8 @@
 2005-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* lib/ThePEG.el: Added function ThePEG-cond-section to make a
+	region a conditional section for doxygen.
+
 	* src/runThePEG.cc, PDT/: Removed the last traces of PYDECYDummy.
 
 	* *** GLOBAL ***: Put all template specializations in conditional
