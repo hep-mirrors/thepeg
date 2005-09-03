@@ -12,11 +12,13 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by RemnantHandler if something goes wrong. */
 struct RemnantHandlerException: public Exception {
   /** Standard constructor. */
   RemnantHandlerException(string p0, string p, string r, string mess);
 };
+/** @endcond */
 
 }
 

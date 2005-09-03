@@ -322,10 +322,12 @@ private:
 
 public:
 
+  /** @cond EXCEPTIONCLASSES */
   /**
    * Exception class used if no readers were assigned.
    */
   class LesHouchesInitError: public InitException {};
+  /** @endcond */
 
 private:
 

@@ -205,6 +205,7 @@ private:
 
 protected:
 
+  /** @cond EXCEPTIONCLASSES */
   /** Exception class used by ACDCSampler if the undelying ACDCGen was
       still in a compensating mode when the run was finished */
   struct ACDCStillCompensating: public Exception {};
@@ -217,6 +218,7 @@ protected:
       phase space point within the maximum allowed number of
       attempts. */
   struct EventLoopException: public Exception {};
+  /** @endcond */
 
 private:
 

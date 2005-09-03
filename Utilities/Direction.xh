@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by Direction when multiple objects of the
  *  same direction class is requested. */
 struct MultipleDirectionException: public Exception {
@@ -23,6 +24,7 @@ struct UndefinedDirectionException: public Exception {
   /** Constructor */
   UndefinedDirectionException(int);
 };
+/** @endcond */
 
 }
 

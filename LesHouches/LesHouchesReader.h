@@ -772,6 +772,7 @@ private:
 
 public:
 
+  /** @cond EXCEPTIONCLASSES */
   /** Exception class used by LesHouchesReader in case inconsistencies
    *  are encountered. */
   class LesHouchesInconsistencyError: public Exception {};
@@ -787,6 +788,7 @@ public:
   /** Exception class used by LesHouchesReader in case there is
       information missing in the initialization phase. */
   class LesHouchesInitError: public InitException {};
+  /** @endcond */
 
 };
 

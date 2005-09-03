@@ -200,9 +200,11 @@ private:
 
 };
 
+/** @cond EXCEPTIONCLASSES */
 /** An Exception class used by FlavourGenerator classes if no hadrons
     could be generated. */
 class FlavourGeneratorException: public Exception {};
+/** @endcond */
 
 /** @cond TRAITSPECIALIZATIONS */
 

@@ -10,7 +10,7 @@
 
 namespace ThePEG {
 
-/** \ingroup Persistency
+/** @ingroup Persistency
  * InputDescription objects are used by the PersistentIStream class to
  * keep track of all classes it has read from a stream. It keeps a
  * pointer to the corresponding ClassDescription in case the class

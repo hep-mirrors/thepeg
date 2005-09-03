@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by MECuts to signal inconsistent cuts. */
 struct MECutSetup: public Exception {
   /** Default constuctor. */
@@ -21,6 +22,7 @@ struct MECutZeroInterval: public UpdateException {
   /** Standard constuctor. */
   MECutZeroInterval(const MECuts &, string);
 };
+/** @endcond */
 
 }
 

@@ -11,6 +11,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by Switch if variable is set to a value which
  *  is not a listed option. */
 struct SwExSetOpt: public InterfaceException {
@@ -32,6 +33,7 @@ struct SwExGetUnknown: public InterfaceException {
   SwExGetUnknown(const InterfaceBase & i, const InterfacedBase & o,
 		 const char * s);
 };
+/** @endcond */
 
 }
 

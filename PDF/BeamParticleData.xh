@@ -11,12 +11,14 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by BeamParticleData if a specified PDF cannot
  *  handle the particle. */
 struct BeamParticleWrongPDF: public InterfaceException {
   /** Standard constructor. */
   BeamParticleWrongPDF(string p, string pdf);
 };
+/** @endcond */
 
 }
 

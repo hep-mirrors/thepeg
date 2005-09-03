@@ -191,9 +191,11 @@ private:
 
 public:
 
+  /** @cond EXCEPTIONCLASSES */
   /** Exception class used by LesHouchesFileReader if reading the file
    *  fails. */
-class LesHouchesFileError: public Exception {};
+  class LesHouchesFileError: public Exception {};
+  /** @endcond */
 
 };
 

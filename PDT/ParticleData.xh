@@ -10,11 +10,13 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by ParticleData if the setting of the charge fails. */
 struct ParticleChargeCommand: public InterfaceException {
   /** Standard constructor. */
   ParticleChargeCommand(const ParticleData &, string);
 };
+/** @endcond */
 
 }
 

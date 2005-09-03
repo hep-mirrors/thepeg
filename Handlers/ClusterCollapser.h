@@ -271,6 +271,7 @@ protected:
   inline virtual IVector getReferences();
   //@}
 
+  /** @cond EXCEPTIONCLASSES */
   /** Exception class used by ClusterCollapser. */
   class ClusterException: public Exception {
   public:
@@ -279,6 +280,7 @@ protected:
       theMessage << "In ClusterCollapser '" << cc.name() << "': ";
     }
   };
+  /** @endcond */
 
 private:
 

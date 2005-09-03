@@ -454,6 +454,7 @@ private:
 
 protected:
 
+  /** @cond EXCEPTIONCLASSES */
   /**
    * Exception class used by EventHandler when a StepHandler of the
    * wrong class was added.
@@ -465,6 +466,7 @@ protected:
    * wrong class was added.
    */
   class StandardEventHandlerInitError: public Exception {};
+  /** @endcond */
 
 private:
 

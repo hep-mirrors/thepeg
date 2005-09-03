@@ -11,6 +11,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used as base class for errors detected by
  *  interface classes. */
 struct InterfaceException: public Exception {
@@ -52,6 +53,7 @@ struct InterExNoNull: public InterfaceException {
   /** Standard constructor. */
   InterExNoNull(const InterfaceBase & i, const InterfacedBase & o);
 };
+/** @endcond */
 
 }
 

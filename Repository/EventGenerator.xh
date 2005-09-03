@@ -10,12 +10,14 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by EventGenerator if a directory could not be
     found/created. */
 struct EGNoPath: public Exception {
   /** Standard constructor. */
   EGNoPath(string);
 };
+/** @endcond */
 
 }
 

@@ -29,6 +29,7 @@ class GenEventConverter  {
 
 public:
 
+  /** @cond EXCEPTIONCLASSES */
   /** Exception class for GenEventConverter. */
   struct GenEventConverterException: public Exception {
     /** Default constructor */
@@ -36,6 +37,7 @@ public:
       theMessage << "In GenEventConverter: ";
     }
   };
+  /** @endcond */
 
   /**
    * Help class to represent a temporary vertex which can be

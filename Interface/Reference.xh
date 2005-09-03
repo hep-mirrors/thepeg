@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by Reference if trying to set a pointer of
  *  the wrong type.  */
 struct RefExSetRefClass: public InterfaceException {
@@ -44,6 +45,7 @@ struct RefExSetMessage: public InterfaceException {
   RefExSetMessage(string ref, const InterfacedBase & o,
 		  const InterfacedBase & o2, string);
 };
+/** @endcond */
 
 }
 

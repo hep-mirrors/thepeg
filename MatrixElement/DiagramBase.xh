@@ -9,12 +9,14 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by DiagramBase if an object was not correctly
  *  set up. */
 struct DiagramBaseSetupException: public Exception {
   /** Standard constructor. */
   DiagramBaseSetupException(const DiagramBase &);
 };
+/** @endcond */
 
 }
 

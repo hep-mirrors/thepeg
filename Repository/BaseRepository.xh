@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by BaseRepository if an object does not
     implement the InterfacedBase::clone() function properly. */
 struct BadClassClone: public InterfaceException {
@@ -51,6 +52,7 @@ struct RepositoryClassMisMatch: public InterfaceException {
   /** Standard constructor. */
   RepositoryClassMisMatch(const InterfacedBase & o, string name);
 };
+/** @endcond */
 
 }
 

@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used if a DecayMode is found to be inconsistent
     during the setup phase. */
 class DecModNoAccept: public UpdateException {
@@ -32,6 +33,7 @@ public:
   /** Standard constructor. */
   DecModRebind(string, string);
 };
+/** @endcond */
 
 }
 

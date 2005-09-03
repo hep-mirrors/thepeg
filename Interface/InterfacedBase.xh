@@ -11,6 +11,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception base class used if something goes wrong in the setup phase. */
 struct SetupException: public InterfaceException {
   /** Constructor. */
@@ -35,6 +36,7 @@ struct InitException: public InterfaceException {
   /** Constructor. */
   InitException() {};
 };
+/** @endcond */
 
 }
 

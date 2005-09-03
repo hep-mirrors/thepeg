@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by ParVector if a value is set outside the
  *  given limits. */
 struct ParVExLimit: public InterfaceException {
@@ -52,6 +53,7 @@ struct ParVExGetUnknown: public InterfaceException {
   ParVExGetUnknown(const InterfaceBase & i,
 		   const InterfacedBase & o, const char * s);
 };
+/** @endcond */
 
 }
 

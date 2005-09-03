@@ -255,9 +255,11 @@ private:
 
 public:
 
+  /** @cond EXCEPTIONCLASSES */
   /** An exception class to indicate that something went wrong with a
    *  ColourSinglet. */
   class ColourSingletException: public Exception {};
+  /** @endcond */
 
 private:
 

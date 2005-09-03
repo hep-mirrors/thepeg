@@ -519,6 +519,7 @@ protected:
 
 protected:
 
+  /** @cond EXCEPTIONCLASSES */
   /**
    * Exception class used by EventHandler when a StepHandler of the
    * wrong class was added.
@@ -549,6 +550,7 @@ protected:
    * failed
    */
   struct LumiFuncError: public Exception {};
+  /** @endcond */
 
 private:
 

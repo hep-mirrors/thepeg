@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used if an unstable particle has no decay modes. */
 struct DecHdlNoDecayMode: public Exception {
   /** Standard constructor. */
@@ -33,6 +34,7 @@ struct DecHdlChildFail: public Exception {
   /** Standard constructor. */
   DecHdlChildFail(const Interfaced &, const Interfaced &);
 };
+/** @endcond */
 
 }
 

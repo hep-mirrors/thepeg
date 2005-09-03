@@ -42,11 +42,13 @@ enum SpinorType {
   unknown_spinortype /**< Undefined spinor type. */
 };
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by Helicity classes to signal a logical error. */
 class HelicityLogicalError: public Exception {};
 
 /** Exception class used by Helicity classes to signal a inconsistencies. */
 class HelicityConsistencyError: public Exception {};
+/** @endcond */
 
 }
 }

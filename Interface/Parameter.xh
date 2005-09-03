@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by Parameter if variable is set outside the
  *  specified limits. */
 struct ParExSetLimit: public InterfaceException {
@@ -34,6 +35,7 @@ struct ParExGetUnknown: public InterfaceException {
   ParExGetUnknown(const InterfaceBase & i,
 		  const InterfacedBase & o, const char *);
 };
+/** @endcond */
 
 }
 

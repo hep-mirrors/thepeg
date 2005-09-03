@@ -12,7 +12,7 @@
 
 namespace ThePEG {
 
-/** \ingroup Persistency
+/** @ingroup Persistency
  * PersistentIStream is used to read persistent objects from a stream
  * where they were previously written using PersistentOStream. Basic
  * types and pointers to objects derived from
@@ -248,17 +248,19 @@ public:
 
 private:
 
-  /** \ingroup Persistency
+  /** @cond EXCEPTIONCLASSES */
+  /** @ingroup Persistency
       Thrown if a class is missing */
   struct MissingClass {};
 
-  /** \ingroup Persistency Thrown if an object which should have been
+  /** @ingroup Persistency Thrown if an object which should have been
       read in is missing. */
   struct MissingObject {};
 
-  /** \ingroup Persistency Thrown if reading from the stream failed
+  /** @ingroup Persistency Thrown if reading from the stream failed
       for some reason. */
   struct ReadFailior {};
+  /** @endcond */
 
   /**
    * Internal initialization.

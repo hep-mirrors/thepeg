@@ -10,6 +10,7 @@
 
 namespace ThePEG {
 
+/** @cond EXCEPTIONCLASSES */
 /** Exception class used by KinematicalCuts to signal setup
  *  problems. */
 struct KinCutSetup: public Exception {
@@ -23,6 +24,7 @@ struct KinCutZeroInterval: public UpdateException {
   /** Standard constructor. */
   KinCutZeroInterval(const KinematicalCuts &, string);
 };
+/** @endcond */
 
 }
 
