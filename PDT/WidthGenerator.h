@@ -110,6 +110,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of WidthGenerator. */
 template <>
@@ -125,6 +127,8 @@ struct ClassTraits<WidthGenerator>: public ClassTraitsBase<WidthGenerator> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::WidthGenerator"; }
 };
+
+/** @endcond */
 
 }
 

@@ -138,7 +138,9 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
 ThePEG_DECLARE_DYNAMIC_CLASS_TRAITS(BreitWignerMass,MassGenerator,"BreitWignerMass.so");
+/** @endcond */
 
 }
 

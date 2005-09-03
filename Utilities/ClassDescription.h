@@ -369,6 +369,8 @@ struct ClassDescriptionHelper {
   static void addBases(vector<const ClassDescriptionBase *> & c);
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * A helper class for tracing the base classes of a class to be
  * described
@@ -378,6 +380,8 @@ struct ClassDescriptionHelper<T, IBase, int> {
   /** Add base classes */
   static void addBases(vector<const ClassDescriptionBase *> & c);
 };
+
+/** @endcond */
 
 }
 

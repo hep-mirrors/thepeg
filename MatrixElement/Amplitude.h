@@ -182,6 +182,8 @@ protected:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of Amplitude.
@@ -201,6 +203,8 @@ struct ClassTraits<Amplitude>: public ClassTraitsBase<Amplitude> {
   /** Return the class name. */
   static string className() { return "ThePEG::Amplitude"; }
 };
+
+/** @endcond */
 
 }
 

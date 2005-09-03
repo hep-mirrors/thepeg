@@ -234,8 +234,9 @@ private:
 
 }
 
-
 namespace ThePEG {
+
+/** @cond TRAITSPECIALIZATIONS */
 
 /**
  * The following template specialization informs ThePEG about the
@@ -265,9 +266,13 @@ struct ClassTraits<ACDCSampler>: public ClassTraitsBase<ACDCSampler> {
 
 };
 
+/** @endcond */
+
 }
 
 namespace ACDCGenerator {
+
+/** @cond TRAITSPECIALIZATIONS */
 
 /** Specialized Traits class to define the interface to the
  * StandardEventHandler object to be sampled by ACDCGen.
@@ -367,6 +372,8 @@ struct ACDCRandomTraits<ThePEG::UseRandom>: public ACDCTraitsType {
   }
 
 };
+
+/** @endcond */
 
 }
 

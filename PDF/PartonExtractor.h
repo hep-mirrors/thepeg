@@ -420,6 +420,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of PartonExtractor. */
 template <>
@@ -435,6 +437,8 @@ template <>
 struct ClassTraits<PartonExtractor>: public ClassTraitsBase<PartonExtractor> {
   static string className() { return "ThePEG::PartonExtractor"; }
 };
+
+/** @endcond */
 
 }
 

@@ -555,6 +555,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of DecayMode. */
 template <>
@@ -571,6 +573,8 @@ struct ClassTraits<DecayMode>:
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::DecayMode"; }
 };
+
+/** @endcond */
 
 }
 

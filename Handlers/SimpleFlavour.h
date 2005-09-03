@@ -439,6 +439,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * SimpleFlavour.
@@ -466,6 +468,8 @@ struct ClassTraits<SimpleFlavour>
   static string library() { return "SimpleFlavour.so"; }
 
 };
+
+/** @endcond */
 
 }
 

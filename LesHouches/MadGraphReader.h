@@ -195,6 +195,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of MadGraphReader.
@@ -221,6 +223,8 @@ struct ClassTraits<MadGraphReader>
   static string library() { return "MadGraphReader.so"; }
 
 };
+
+/** @endcond */
 
 }
 

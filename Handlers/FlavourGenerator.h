@@ -204,6 +204,8 @@ private:
     could be generated. */
 class FlavourGeneratorException: public Exception {};
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of FlavourGenerator.
@@ -226,6 +228,8 @@ struct ClassTraits<FlavourGenerator>:
     return "ThePEG::FlavourGenerator";
   }
 };
+
+/** @endcond */
 
 }
 

@@ -296,6 +296,8 @@ struct BaryonRemInfo: public RemInfoBase {
   bool mayval;
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of BaryonRemnants. */
 template <>
@@ -315,6 +317,8 @@ struct ClassTraits<BaryonRemnants>: public ClassTraitsBase<BaryonRemnants> {
    *  the base class). */
   static string library() { return "BaryonRemnants.so"; }
 };
+
+/** @endcond */
 
 }
 

@@ -159,6 +159,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of NoRemnants. */
 template <>
@@ -174,6 +176,8 @@ struct ClassTraits<NoRemnants>: public ClassTraitsBase<NoRemnants> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::NoRemnants"; }
 };
+
+/** @endcond */
 
 }
 

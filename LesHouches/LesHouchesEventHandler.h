@@ -351,6 +351,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of LesHouchesEventHandler. */
 template <>
@@ -371,6 +373,8 @@ struct ClassTraits<LesHouchesEventHandler>
    *  (except the base class). */
   static string library() { return "LesHouches.so"; }
 };
+
+/** @endcond */
 
 }
 

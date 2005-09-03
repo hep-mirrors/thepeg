@@ -218,6 +218,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of Onium3GDecayer. */
 template <>
@@ -239,6 +241,8 @@ struct ClassTraits<Onium3GDecayer>
    *  (except the base class). */
   static string library() { return "Onium3GDecayer.so"; }
 };
+
+/** @endcond */
 
 }
 

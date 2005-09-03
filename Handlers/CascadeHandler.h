@@ -204,6 +204,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of CascadeHandler. */
 template <>
@@ -219,6 +221,8 @@ struct ClassTraits<CascadeHandler>: public ClassTraitsBase<CascadeHandler> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::CascadeHandler"; }
 };
+
+/** @endcond */
 
 }
 

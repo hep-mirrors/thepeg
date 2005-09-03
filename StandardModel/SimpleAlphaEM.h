@@ -106,6 +106,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of SimpleAlphaEM. */
 template <>
@@ -126,6 +128,8 @@ struct ClassTraits<SimpleAlphaEM>: public ClassTraitsBase<SimpleAlphaEM> {
    *  (except the base class). */
   static string library() { return "SimpleAlphaEM.so"; }
 };
+
+/** @endcond */
 
 }
 

@@ -214,26 +214,30 @@ private:
 
 namespace ThePEG {
 
-template <>
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * SamplerBase.
  */
+template <>
 struct BaseClassTrait<SamplerBase,1>: public ClassTraitsType {
   /** Typedef of the base class of SamplerBase. */
   typedef Interfaced NthBase;
 };
 
-template <>
 /**
  * This template specialization informs ThePEG about the name of the
  * SamplerBase class.
  */
+template <>
 struct ClassTraits<SamplerBase>: public ClassTraitsBase<SamplerBase> {
   /** Return the class name. */
   static string className() { return "ThePEG::SamplerBase"; }
 
 };
+
+/** @endcond */
 
 }
 

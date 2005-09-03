@@ -474,7 +474,9 @@ private:
 /** Output a Step to an ostream */
 ostream & operator<<(ostream &, const Step &);
 
+/** @cond TRAITSPECIALIZATIONS */
 ThePEG_DECLARE_CLASS_TRAITS(Step,EventRecordBase);
+/** @endcond */
 
 }
 

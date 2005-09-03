@@ -76,6 +76,8 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of PtGenerator.
@@ -96,6 +98,8 @@ struct ClassTraits<PtGenerator>: public ClassTraitsBase<PtGenerator> {
   static string className() { return "ThePEG::PtGenerator"; }
 };
 
+
+/** @endcond */
 
 }
 

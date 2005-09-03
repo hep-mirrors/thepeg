@@ -419,6 +419,8 @@ struct RemInfoBase: public Base {
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of PartonBinInstance. */
 template <>
@@ -435,6 +437,8 @@ struct ClassTraits<PartonBinInstance>:
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::PartonBinInstance"; }
 };
+
+/** @endcond */
 
 }
 

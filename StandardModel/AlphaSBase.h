@@ -161,6 +161,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of AlphaSBase. */
 template <>
@@ -176,6 +178,8 @@ struct ClassTraits<AlphaSBase>: public ClassTraitsBase<AlphaSBase> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::AlphaSBase"; }
 };
+
+/** @endcond */
 
 }
 

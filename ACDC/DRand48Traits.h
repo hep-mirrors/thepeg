@@ -7,6 +7,8 @@
 
 namespace ACDCGenerator {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** Dummy struct to represent the standard drand48() random number generator. */
 struct DRAND48 {};
 
@@ -73,6 +75,8 @@ struct ACDCRandomTraits<DRAND48>: public ACDCTraitsType {
     return long(rnd(r, 0.0, double(x))); }
 
 };
+
+/** @endcond */
 
 }
 

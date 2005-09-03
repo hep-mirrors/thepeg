@@ -284,6 +284,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * MECuts.
@@ -304,6 +306,8 @@ struct ClassTraits<MECuts>:
     public ClassTraitsBase<MECuts> {
   static string className() { return "ThePEG::MECuts"; }
 };
+
+/** @endcond */
 
 }
 

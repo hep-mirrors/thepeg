@@ -102,7 +102,9 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
 ThePEG_DECLARE_CLASS_TRAITS(SpinBase,EventInfoBase);
+/** @endcond */
 
 }
 

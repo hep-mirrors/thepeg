@@ -143,6 +143,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of LuminosityFunction.
@@ -163,6 +165,8 @@ struct ClassTraits<LuminosityFunction>:
   /** Return the class name. */
   static string className() { return "ThePEG::LuminosityFunction"; }
 };
+
+/** @endcond */
 
 }
 

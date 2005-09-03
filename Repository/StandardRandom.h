@@ -164,6 +164,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of StandardRandom. */
 template <>
@@ -179,6 +181,8 @@ struct ClassTraits<StandardRandom>: public ClassTraitsBase<StandardRandom> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::StandardRandom"; }
 };
+
+/** @endcond */
 
 }
 

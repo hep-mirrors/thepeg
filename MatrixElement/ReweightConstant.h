@@ -166,6 +166,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of ReweightConstant. */
 template <>
@@ -186,6 +188,8 @@ struct ClassTraits<ReweightConstant>
    *  (except the base class). */
   static string library() { return "ReweightConstant.so"; }
 };
+
+/** @endcond */
 
 }
 

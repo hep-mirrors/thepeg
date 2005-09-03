@@ -413,6 +413,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of GRVBase. */
 template <>
@@ -432,6 +434,8 @@ struct ClassTraits<GRVBase>: public ClassTraitsBase<GRVBase> {
    *  the base class). */
   static string library() { return "GRVBase.so"; }
 };
+
+/** @endcond */
 
 }
 

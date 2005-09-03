@@ -427,6 +427,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * MEBase.
@@ -446,6 +448,8 @@ struct ClassTraits<MEBase>: public ClassTraitsBase<MEBase> {
   /** Return the class name. */
   static string className() { return "ThePEG::MEBase"; }
 };
+
+/** @endcond */
 
 }
 

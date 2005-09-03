@@ -443,7 +443,9 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
 ThePEG_DECLARE_DYNAMIC_CLASS_TRAITS(Two2NCuts,KinematicalCuts,"Two2NCuts.so");
+/** @endcond */
 
 }
 

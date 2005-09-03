@@ -380,6 +380,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of StandardModelBase. */
 template <>
@@ -396,6 +398,8 @@ struct ClassTraits<StandardModelBase>:
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::StandardModelBase"; }
 };
+
+/** @endcond */
 
 }
 

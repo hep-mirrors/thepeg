@@ -125,6 +125,8 @@ struct MultiplicationTraits {
   typedef T ResultType;
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** Specialization of MultiplicationTraits for Lorentz5Vector. */
 template <typename T>
 struct MultiplicationTraits< Lorentz5Vector<T> > {
@@ -145,6 +147,8 @@ struct MultiplicationTraits< Vector3 > {
   /** The type resulting from multiplication of the template type with itself. */
   typedef double ResultType;
 };
+
+/** @endcond */
 
 }
 

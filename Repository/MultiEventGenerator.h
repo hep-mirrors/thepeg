@@ -207,6 +207,8 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of MultiEventGenerator. */
 template <>
@@ -229,6 +231,8 @@ struct ClassTraits<MultiEventGenerator>:
   static string library() { return "MultiEventGenerator.so"; }
 
 };
+
+/** @endcond */
 
 }
 

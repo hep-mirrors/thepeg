@@ -200,6 +200,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of AnalysisHandler. */
 template <>
@@ -215,6 +217,8 @@ struct ClassTraits<AnalysisHandler>: public ClassTraitsBase<AnalysisHandler> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::AnalysisHandler"; }
 };
+
+/** @endcond */
 
 }
 

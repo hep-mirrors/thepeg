@@ -395,6 +395,8 @@ protected:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of InterfacedBase.
@@ -414,6 +416,8 @@ struct ClassTraits<InterfacedBase>: public ClassTraitsBase<InterfacedBase> {
   /** Return the class name. */
   static string className() { return "ThePEG::InterfacedBase"; }
 };
+
+/** @endcond */
 
 }
 

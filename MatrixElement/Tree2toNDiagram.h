@@ -249,6 +249,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of Tree2toNDiagram.
@@ -268,6 +270,8 @@ struct ClassTraits<Tree2toNDiagram>: public ClassTraitsBase<Tree2toNDiagram> {
   /** Return the class name. */
   static string className() { return "ThePEG::Tree2toNDiagram"; }
 };
+
+/** @endcond */
 
 }
 

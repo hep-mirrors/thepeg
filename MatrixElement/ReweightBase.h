@@ -249,6 +249,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * ReweightBase.
@@ -268,6 +270,8 @@ struct ClassTraits<ReweightBase>: public ClassTraitsBase<ReweightBase> {
   /** Return the class name. */
   static string className() { return "ThePEG::ReweightBase"; }
 };
+
+/** @endcond */
 
 }
 

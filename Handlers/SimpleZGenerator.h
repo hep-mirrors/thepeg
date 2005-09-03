@@ -163,6 +163,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * SimpleZGenerator.
@@ -190,6 +192,8 @@ struct ClassTraits<SimpleZGenerator>
   static string library() { return "SimpleZGenerator.so"; }
 
 };
+
+/** @endcond */
 
 }
 

@@ -30,6 +30,7 @@
 
 namespace std {
 
+/** @cond TRAITSPECIALIZATIONS */
 /**
  * This specialization of the std::less class is needed in order to be
  * able use put pointers to type_info objects as keys in maps and
@@ -46,6 +47,7 @@ struct less<const type_info *> :
   bool operator()(const type_info * x, const type_info * y) const {
     return x->before(*y); }
 };
+/** @endcond */
 
 }
 

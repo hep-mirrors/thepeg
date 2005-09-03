@@ -123,6 +123,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of MassGenerator. */
 template <>
@@ -138,6 +140,8 @@ struct ClassTraits<MassGenerator>: public ClassTraitsBase<MassGenerator> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::MassGenerator"; }
 };
+
+/** @endcond */
 
 }
 

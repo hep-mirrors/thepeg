@@ -193,6 +193,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of OmegaPhi3PiDecayer. */
 template <>
@@ -214,6 +216,8 @@ struct ClassTraits<OmegaPhi3PiDecayer>
    *  (except the base class). */
   static string library() { return "OmegaPhi3PiDecayer.so"; }
 };
+
+/** @endcond */
 
 }
 

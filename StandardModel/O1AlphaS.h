@@ -187,6 +187,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of O1AlphaS. */
 template <>
@@ -207,6 +209,8 @@ struct ClassTraits<O1AlphaS>: public ClassTraitsBase<O1AlphaS> {
    *  (except the base class). */
   static string library() { return "O1AlphaS.so"; }
 };
+
+/** @endcond */
 
 }
 

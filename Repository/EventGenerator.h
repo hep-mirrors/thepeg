@@ -808,6 +808,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of EventGenerator. */
 template <>
@@ -823,6 +825,8 @@ struct ClassTraits<EventGenerator>: public ClassTraitsBase<EventGenerator> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::EventGenerator"; }
 };
+
+/** @endcond */
 
 }
 

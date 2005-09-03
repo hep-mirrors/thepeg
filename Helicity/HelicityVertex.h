@@ -173,6 +173,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
   /**
    * This template specialization informs ThePEG about the
    * base class of HelicityVertex.
@@ -203,6 +205,8 @@ struct ClassTraits<ThePEG::Helicity::HelicityVertex>
   static string library() { return "libThePEGHelicity.so"; }
 
 };
+
+/** @endcond */
 
 }
 

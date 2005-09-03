@@ -595,6 +595,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of THECLASS. */
 template <>
@@ -615,6 +617,8 @@ struct ClassTraits<" namespacequalifyer "THECLASS>
    *  (except the base class). */
   static string library() { return \"THECLASS.so\"; }
 };
+
+/** @endcond */
 
 }
 

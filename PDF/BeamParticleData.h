@@ -171,6 +171,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of BeamParticleData. */
 template <>
@@ -187,6 +189,8 @@ struct ClassTraits<BeamParticleData>:
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::BeamParticleData"; }
 };
+
+/** @endcond */
 
 }
 

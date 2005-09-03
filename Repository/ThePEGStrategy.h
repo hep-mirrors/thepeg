@@ -123,6 +123,8 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of ThePEGStrategy. */
 template <>
@@ -143,6 +145,8 @@ struct ClassTraits<ThePEGStrategy>: public ClassTraitsBase<ThePEGStrategy> {
    *  (except the base class). */
   static string library() { return "ThePEGStrategy.so"; }
 };
+
+/** @endcond */
 
 }
 

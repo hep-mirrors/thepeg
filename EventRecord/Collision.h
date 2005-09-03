@@ -368,6 +368,8 @@ private:
 ostream & operator<<(ostream &, const Collision &);
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base class of Collision. */
 template <>
@@ -385,6 +387,8 @@ struct ClassTraits<Collision>: public ClassTraitsBase<Collision> {
   /** Create a Collision object. */
   static TPtr create() { return TPtr::Create(Collision()); }
 };
+
+/** @endcond */
 
 }
 

@@ -252,6 +252,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of RandomGenerator. */
 template <>
@@ -276,6 +278,8 @@ struct ClassTraits<RandomGenerator>:
     return TPtr();
   }
 };
+
+/** @endcond */
 
 }
 

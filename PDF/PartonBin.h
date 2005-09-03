@@ -242,6 +242,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of PartonBin. */
 template <>
@@ -257,6 +259,8 @@ struct ClassTraits<PartonBin>: public ClassTraitsBase<PartonBin> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::PartonBin"; }
 };
+
+/** @endcond */
 
 }
 

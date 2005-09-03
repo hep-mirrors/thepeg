@@ -146,6 +146,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of NoPDF. */
 template <>
@@ -161,6 +163,8 @@ struct ClassTraits<NoPDF>: public ClassTraitsBase<NoPDF> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::NoPDF"; }
 };
+
+/** @endcond */
 
 }
 

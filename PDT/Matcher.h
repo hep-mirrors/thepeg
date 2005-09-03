@@ -109,6 +109,8 @@ private:
  */
 struct MatcherType {};
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This partial template specialization informs ThePEG about the base
  *  classes of Matcher<T>. */
 template <typename T>
@@ -127,6 +129,8 @@ struct ClassTraits< Matcher<T> >: public ClassTraitsBase< Matcher<T> > {
     return "ThePEG::Matcher<" + ClassTraits<T>::className() + ">";
   }
 };
+
+/** @endcond */
 
 }
 

@@ -104,6 +104,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of HadronizationHandler.
@@ -124,6 +126,8 @@ struct ClassTraits<HadronizationHandler>:
   /** Return the class name. */
   static string className() { return "ThePEG::HadronizationHandler"; }
 };
+
+/** @endcond */
 
 }
 

@@ -159,6 +159,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of FixedCMSLuminosity.
@@ -183,6 +185,8 @@ struct ClassTraits<FixedCMSLuminosity>:
    *  (except the base class). */
   static string library() { return "FixedCMSLuminosity.so"; }
 };
+
+/** @endcond */
 
 }
 

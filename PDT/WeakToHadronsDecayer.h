@@ -188,6 +188,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of WeakToHadronsDecayer. */
 template <>
@@ -209,6 +211,8 @@ struct ClassTraits<WeakToHadronsDecayer>
    *  (except the base class). */
   static string library() { return "WeakToHadronsDecayer.so"; }
 };
+
+/** @endcond */
 
 }
 

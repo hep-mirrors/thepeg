@@ -475,6 +475,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * The following template specialization informs ThePEG about the
  * base class of StandardEventHandler.
@@ -497,6 +499,8 @@ struct ClassTraits<StandardEventHandler>
    */
   static string className() { return "ThePEG::StandardEventHandler"; }
 };
+
+/** @endcond */
 
 }
 

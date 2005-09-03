@@ -172,6 +172,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of GaussianPtGenerator.
@@ -198,6 +200,8 @@ struct ClassTraits<GaussianPtGenerator>
   static string library() { return "GaussianPtGenerator.so"; }
 
 };
+
+/** @endcond */
 
 }
 

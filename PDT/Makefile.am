@@ -67,4 +67,3 @@ ColourPairDecayer_la_SOURCES = ColourPairDecayer.cc ColourPairDecayer.h  ColourP
 WeakToHadronsDecayer_la_LDFLAGS = -module -version-info 1:0:0
 WeakToHadronsDecayer_la_SOURCES = WeakToHadronsDecayer.cc WeakToHadronsDecayer.h WeakToHadronsDecayer.icc
 
-noinst_HEADERS = PYDECYDummy.h PYDECYDummy.icc

@@ -77,6 +77,8 @@ private:
 };
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * ZGenerator.
@@ -97,6 +99,8 @@ struct ClassTraits<ZGenerator>: public ClassTraitsBase<ZGenerator> {
   static string className() { return "ThePEG::ZGenerator"; }
 };
   
+/** @endcond */
+
 }
 
 #include "ZGenerator.icc"

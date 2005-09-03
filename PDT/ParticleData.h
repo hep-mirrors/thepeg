@@ -859,6 +859,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of ParticleData. */
 template <>
@@ -874,6 +876,8 @@ struct ClassTraits<ParticleData>: public ClassTraitsBase<ParticleData> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::ParticleData"; }
 };
+
+/** @endcond */
 
 }
 

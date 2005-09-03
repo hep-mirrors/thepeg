@@ -153,6 +153,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of ReweightMinPT. */
 template <>
@@ -172,6 +174,8 @@ struct ClassTraits<ReweightMinPT>: public ClassTraitsBase<ReweightMinPT> {
    *  (except the base class). */
   static string library() { return "ReweightMinPT.so"; }
 };
+
+/** @endcond */
 
 }
 

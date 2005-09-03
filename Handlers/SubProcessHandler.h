@@ -252,6 +252,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of SubProcessHandler. */
 template <>
@@ -268,6 +270,8 @@ struct ClassTraits<SubProcessHandler>:
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::SubProcessHandler"; }
 };
+
+/** @endcond */
 
 }
 

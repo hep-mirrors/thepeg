@@ -366,6 +366,8 @@ private:
 ostream & operator<<(ostream &, const Event &);
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base class of Event. */
 template <>
@@ -383,6 +385,8 @@ struct ClassTraits<Event>: public ClassTraitsBase<Event> {
   /** Create a Event object. */
   static TPtr create() { return TPtr::Create(Event()); }
 };
+
+/** @endcond */
 
 }
 

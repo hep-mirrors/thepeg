@@ -191,6 +191,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of MEee2gZ2qq. */
 template <>
@@ -210,6 +212,8 @@ struct ClassTraits<MEee2gZ2qq>: public ClassTraitsBase<MEee2gZ2qq> {
    *  (except the base class). */
   static string library() { return "MEee2gZ2qq.so"; }
 };
+
+/** @endcond */
 
 }
 

@@ -185,6 +185,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of ConstituentParticleData. */
 template <>
@@ -201,6 +203,8 @@ struct ClassTraits<ConstituentParticleData>:
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::ConstituentParticleData"; }
 };
+
+/** @endcond */
 
 }
 

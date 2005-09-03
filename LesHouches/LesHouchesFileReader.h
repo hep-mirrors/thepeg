@@ -204,6 +204,8 @@ class LesHouchesFileError: public Exception {};
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of LesHouchesFileReader.
@@ -234,6 +236,8 @@ struct ClassTraits<LesHouchesFileReader>
   static string library() { return "LesHouches.so"; }
 
 };
+
+/** @endcond */
 
 }
 

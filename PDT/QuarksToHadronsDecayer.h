@@ -283,6 +283,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of QuarksToHadronsDecayer. */
 template <>
@@ -304,6 +306,8 @@ struct ClassTraits<QuarksToHadronsDecayer>
    *  (except the base class). */
   static string library() { return "QuarksToHadronsDecayer.so"; }
 };
+
+/** @endcond */
 
 }
 

@@ -176,6 +176,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of DiagramBase.
@@ -195,6 +197,8 @@ struct ClassTraits<DiagramBase>: public ClassTraitsBase<DiagramBase> {
   /** Return the class name. */
   static string className() { return "ThePEG::DiagramBase"; }
 };
+
+/** @endcond */
 
 }
 

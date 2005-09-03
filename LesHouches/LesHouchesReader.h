@@ -797,6 +797,8 @@ public:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of LesHouchesReader.
@@ -827,6 +829,8 @@ struct ClassTraits<LesHouchesReader>
   static string library() { return "LesHouches.so"; }
 
 };
+
+/** @endcond */
 
 }
 

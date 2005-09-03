@@ -427,6 +427,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * XComb.
@@ -447,6 +449,8 @@ struct ClassTraits<XComb>:
   /** Return the class name. */
   static string className() { return "ThePEG::XComb"; }
 };
+
+/** @endcond */
 
 }
 

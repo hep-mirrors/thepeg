@@ -174,6 +174,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of DalitzDecayer. */
 template <>
@@ -196,6 +198,8 @@ struct ClassTraits<DalitzDecayer>
   static string library() { return "DalitzDecayer.so"; }
 
 };
+
+/** @endcond */
 
 }
 

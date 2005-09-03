@@ -917,6 +917,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of KinematicalCuts.
@@ -937,6 +939,8 @@ struct ClassTraits<KinematicalCuts>:
   /** Return the class name. */
   static string className() { return "ThePEG::KinematicalCuts"; }
 };
+
+/** @endcond */
 
 }
 

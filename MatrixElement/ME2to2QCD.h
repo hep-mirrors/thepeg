@@ -201,6 +201,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of ME2to2QCD.
@@ -220,6 +222,8 @@ struct ClassTraits<ME2to2QCD>: public ClassTraitsBase<ME2to2QCD> {
   /** Return the class name. */
   static string className() { return "ThePEG::ME2to2QCD"; }
 };
+
+/** @endcond */
 
 }
 

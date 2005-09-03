@@ -139,6 +139,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of MEqq2qq. */
 template <>
@@ -158,6 +160,8 @@ struct ClassTraits<MEqq2qq>: public ClassTraitsBase<MEqq2qq> {
    *  (except the base class). */
   static string library() { return "libThePEGMEQCD.so"; }
 };
+
+/** @endcond */
 
 }
 

@@ -125,6 +125,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of Main. */
 template <>
@@ -141,6 +143,8 @@ struct ClassTraits<Main>: public ClassTraitsBase<Main> {
   static string className() { return "ThePEG::Main"; }
 
 };
+
+/** @endcond */
 
 }
 

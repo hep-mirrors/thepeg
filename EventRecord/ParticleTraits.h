@@ -77,6 +77,8 @@ struct ParticleTraits: public TraitsType {
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** Specialization of ParticleTraits for pointer to Particle. */
 template <>
 struct ParticleTraits<PPtr>: public TraitsType {
@@ -352,6 +354,8 @@ struct ParticleTraits<Lorentz5Momentum>: public TraitsType {
     p = Lorentz5Momentum(p.mass(), q);
   }
 };  
+
+/** @endcond */
 
 /** A helper class to be used in <code>std::</code> algorithms to
  *  transform a range of particles. */

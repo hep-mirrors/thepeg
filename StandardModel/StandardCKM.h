@@ -170,6 +170,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of StandardCKM. */
 template <>
@@ -190,6 +192,8 @@ struct ClassTraits<StandardCKM>: public ClassTraitsBase<StandardCKM> {
    *  (except the base class). */
   static string library() { return "StandardCKM.so"; }
 };
+
+/** @endcond */
 
 }
 

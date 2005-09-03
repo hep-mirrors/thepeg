@@ -168,6 +168,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of LeptonLeptonPDF. */
 template <>
@@ -188,6 +190,8 @@ struct ClassTraits<LeptonLeptonPDF>: public ClassTraitsBase<LeptonLeptonPDF> {
    *  the base class). */
   static string library() { return "LeptonLeptonPDF.so"; }
 };
+
+/** @endcond */
 
 }
 

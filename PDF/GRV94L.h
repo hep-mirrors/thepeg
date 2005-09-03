@@ -182,6 +182,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of GRV94L. */
 template <>
@@ -201,6 +203,8 @@ struct ClassTraits<GRV94L>: public ClassTraitsBase<GRV94L> {
    *  the base class). */
   static string library() { return "GRV94L.so"; }
 };
+
+/** @endcond */
 
 }
 

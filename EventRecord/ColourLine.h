@@ -236,6 +236,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * The following template specialization informs ThePEG about the
  * base class of ColourLine.
@@ -258,6 +260,8 @@ struct ClassTraits<ColourLine>: public ClassTraitsBase<ColourLine> {
    * access to this class. */
   static string library() { return "ColourLine.so"; }
 };
+
+/** @endcond */
 
 }
 

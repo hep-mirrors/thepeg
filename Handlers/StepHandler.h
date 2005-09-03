@@ -190,6 +190,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * StepHandler.
@@ -209,6 +211,8 @@ struct ClassTraits<StepHandler>: public ClassTraitsBase<StepHandler> {
   /** Return the class name.  */
   static string className() { return "ThePEG::StepHandler"; }
 };
+
+/** @endcond */
 
 }
 

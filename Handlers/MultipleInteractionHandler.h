@@ -104,6 +104,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of MultipleInteractionHandler.
@@ -124,6 +126,8 @@ struct ClassTraits<MultipleInteractionHandler>:
   /** Return the class name. */
   static string className() { return "ThePEG::MultipleInteractionHandler"; }
 };
+
+/** @endcond */
 
 }
 

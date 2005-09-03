@@ -161,6 +161,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * The following template specialization informs ThePEG about the
  * base class of RSFermionSpinInfo.
@@ -190,6 +192,8 @@ struct ClassTraits<ThePEG::Helicity::RSFermionSpinInfo>
   static string library() { return "libThePEGHelicity.so"; }
 
 };
+
+/** @endcond */
 
 }
 

@@ -171,6 +171,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of DummyDecayer. */
 template <>
@@ -188,6 +190,8 @@ struct ClassTraits<DummyDecayer>
   static string className() { return "ThePEG::DummyDecayer"; }
 
 };
+
+/** @endcond */
 
 }
 

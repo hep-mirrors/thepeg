@@ -72,6 +72,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of AlphaEMBase. */
 template <>
@@ -87,6 +89,8 @@ struct ClassTraits<AlphaEMBase>: public ClassTraitsBase<AlphaEMBase> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::AlphaEMBase"; }
 };
+
+/** @endcond */
 
 }
 

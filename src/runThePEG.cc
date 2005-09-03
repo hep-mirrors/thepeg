@@ -1,7 +1,6 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/StandardMatchers.h"
-#include "ThePEG/PDT/PYDECYDummy.h"
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Utilities/DynamicLoader.h"

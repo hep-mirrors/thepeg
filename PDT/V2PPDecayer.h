@@ -206,6 +206,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of V2PPDecayer. */
 template <>
@@ -227,6 +229,8 @@ struct ClassTraits<V2PPDecayer>
    *  (except the base class). */
   static string library() { return "V2PPDecayer.so"; }
 };
+
+/** @endcond */
 
 }
 

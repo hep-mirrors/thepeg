@@ -202,6 +202,8 @@ public:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the
  * base class of Interfaced.
@@ -221,6 +223,8 @@ struct ClassTraits<Interfaced>: public ClassTraitsBase<Interfaced> {
   /** Return the class name. */
   static string className() { return "ThePEG::Interfaced"; }
 };
+
+/** @endcond */
 
 }
 

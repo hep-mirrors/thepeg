@@ -182,6 +182,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of ColourPairDecayer. */
 template <>
@@ -204,6 +206,8 @@ struct ClassTraits<ColourPairDecayer>
   static string library() { return "ColourPairDecayer.so"; }
 
 };
+
+/** @endcond */
 
 }
 

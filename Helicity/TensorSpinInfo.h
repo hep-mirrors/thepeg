@@ -159,6 +159,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * This template specialization informs ThePEG about the base class of
  * TensorSpinInfo.
@@ -189,6 +191,8 @@ struct ClassTraits<ThePEG::Helicity::TensorSpinInfo>
   static string library() { return "libThePEGHelicity.so"; }
 
 };
+
+/** @endcond */
 
 }
 

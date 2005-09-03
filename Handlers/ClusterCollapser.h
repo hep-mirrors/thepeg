@@ -336,6 +336,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  * The following template specialization informs ThePEG about the
  * base class of ClusterCollapser.
@@ -366,6 +368,8 @@ struct ClassTraits<ClusterCollapser>:
   static string library() { return "libThePEGString.so"; }
 
 };
+
+/** @endcond */
 
 }
 

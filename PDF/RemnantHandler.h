@@ -233,6 +233,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of RemnantHandler. */
 template <>
@@ -248,6 +250,8 @@ struct ClassTraits<RemnantHandler>: public ClassTraitsBase<RemnantHandler> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::RemnantHandler"; }
 };
+
+/** @endcond */
 
 }
 

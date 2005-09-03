@@ -969,6 +969,8 @@ private:
 ostream & operator<<(ostream &, const Particle &);
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base class of Particle. */
 template <>
@@ -986,6 +988,8 @@ struct ClassTraits<Particle>: public ClassTraitsBase<Particle> {
   /** Create a Event object. */
   static TPtr create() { return TPtr::Create(Particle()); }
 };
+
+/** @endcond */
 
 }
 

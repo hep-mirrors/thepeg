@@ -71,6 +71,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of CKMBase. */
 template <>
@@ -86,6 +88,8 @@ struct ClassTraits<CKMBase>: public ClassTraitsBase<CKMBase> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::CKMBase"; }
 };
+
+/** @endcond */
 
 }
 

@@ -238,6 +238,8 @@ private:
 ostream & operator<<(ostream &, const SubProcess &);
 
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base class of Collision. */
 template <>
@@ -255,6 +257,8 @@ struct ClassTraits<SubProcess>: public ClassTraitsBase<SubProcess> {
   /** Create a SubProcess object. */
   static TPtr create() { return TPtr::Create(SubProcess()); }
 };
+
+/** @endcond */
 
 }
 

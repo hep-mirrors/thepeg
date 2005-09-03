@@ -181,6 +181,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of Tau2HadronsDecayer. */
 template <>
@@ -202,6 +204,8 @@ struct ClassTraits<Tau2HadronsDecayer>
    *  (except the base class). */
   static string library() { return "Tau2HadronsDecayer.so"; }
 };
+
+/** @endcond */
 
 }
 

@@ -174,6 +174,8 @@ private:
 
 namespace ThePEG {
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of FlatDecayer. */
 template <>
@@ -189,6 +191,8 @@ struct ClassTraits<FlatDecayer>: public ClassTraitsBase<FlatDecayer> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::FlatDecayer"; }
 };
+
+/** @endcond */
 
 }
 

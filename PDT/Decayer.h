@@ -160,6 +160,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the base classes
  *  of Decayer. */
 template <>
@@ -175,6 +177,8 @@ struct ClassTraits<Decayer>: public ClassTraitsBase<Decayer> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::Decayer"; }
 };
+
+/** @endcond */
 
 }
 

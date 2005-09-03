@@ -1,3 +1,10 @@
+2005-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/runThePEG.cc, PDT/: Removed the last traces of PYDECYDummy.
+
+	* *** GLOBAL ***: Put all template specializations in conditional
+	doxygen section called TRAITSPECIALIZATIONS.
+
 2005-09-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Doc/Makefile.am: Fixed typo in dependencies for refman-html

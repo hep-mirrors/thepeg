@@ -194,6 +194,8 @@ private:
 
 };
 
+/** @cond TRAITSPECIALIZATIONS */
+
 /** This template specialization informs ThePEG about the
  *  base classes of LeptonLeptonRemnant. */
 template <>
@@ -215,6 +217,8 @@ struct ClassTraits<LeptonLeptonRemnant>:
    *  (except the base class). */
   static string library() { return "LeptonLeptonRemnant.so"; }
 };
+
+/** @endcond */
 
 }
 
