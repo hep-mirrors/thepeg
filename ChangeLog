@@ -1,3 +1,15 @@
+2005-09-08  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* src/Makefile.am: Explicitly set ThePEG_INSTALL_PATH, to fix
+	problems with some versions of gcc-3.2. Made temporary directory
+	name in installcheck-local more unique to prevent accidental
+	deletion of pre-existing directory.
+
+	* Repository/Repository.cc, Repository/BaseRepository.cc: Expanded
+	error messages to mention the class name that has the problem.
+
+	* PDF/PDFBase.cc: Fixed 'inline' bug.
+
 2005-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added function ThePEG-cond-section to make a

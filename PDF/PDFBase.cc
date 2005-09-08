@@ -36,7 +36,7 @@ bool PDFBase::canHandle(tcPDPtr particle) const {
     remnantHandler()->canHandle(particle, partons(particle));
 }
 
-inline double PDFBase::
+double PDFBase::
 xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double x,
     double eps, Energy2 particleScale) const {
   using Math::log1m;
