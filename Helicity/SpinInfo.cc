@@ -20,3 +20,5 @@ void SpinInfo::Init() {}
 
 void SpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
 {_currentmomentum.transform(r);}
+
+const Energy SpinInfo::_eps=1e-10*MeV;

@@ -238,6 +238,11 @@ protected:
    */
   inline void setTimelike(bool);
 
+  /**
+   *  Check if momentum is near to the current momentum
+   */
+  inline bool isNear(const Lorentz5Momentum &);
+
 private:
 
   /**
@@ -310,7 +315,12 @@ private:
    * Current momentum of the particle
    */
   Lorentz5Momentum _currentmomentum;
-  
+
+  /**
+   *  A small energy for comparing momenta to check if Lorentz Transformations
+   *  should be performed
+   */
+  const static Energy _eps;
 };
 
 }

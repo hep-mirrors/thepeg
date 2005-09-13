@@ -7,6 +7,7 @@
 //
 
 #include "RSFermionSpinInfo.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -31,7 +32,7 @@ void RSFermionSpinInfo::Init() {
 
 void RSFermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
 {
-  if(currentMomentum()==m)
+  if(isNear(m))
     {
       for(unsigned int ix=0;ix<4;++ix){_currentstates[ix].transform(r);}
       SpinInfo::transform(m,r);

@@ -23,4 +23,4 @@ NoPIOClassDescription<ScalarSpinInfo> ScalarSpinInfo::initScalarSpinInfo;
 void ScalarSpinInfo::Init() {}
 
 void ScalarSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
-{if(currentMomentum()==m){SpinInfo::transform(m,r);}}
+{if(isNear(m)){SpinInfo::transform(m,r);}}

@@ -1,3 +1,8 @@
+2005-09-13  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity (Repository): fixes to use isNear rather than equals in
+	Helicity classes to avoid boost problems
+
 2005-09-08  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* src/Makefile.am: Explicitly set ThePEG_INSTALL_PATH, to fix
@@ -10,6 +15,11 @@
 
 	* PDF/PDFBase.cc: Fixed 'inline' bug.
 
+
+2005-09-02  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity/LorentzRSSpinor.icc: fixed bug in the generalCurrent member
+	
 2005-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added function ThePEG-cond-section to make a
