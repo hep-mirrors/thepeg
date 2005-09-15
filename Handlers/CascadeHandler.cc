@@ -20,7 +20,7 @@ using namespace ThePEG;
 CascadeHandler::CascadeHandler() {}
 
 CascadeHandler::CascadeHandler(const CascadeHandler & x)
-  : StepHandler(x) {}
+  : StepHandler(x), LastXCombInfo<>(x) {}
 
 CascadeHandler::~CascadeHandler() {}
 

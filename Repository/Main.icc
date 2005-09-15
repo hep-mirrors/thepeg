@@ -8,7 +8,7 @@ namespace ThePEG {
 
 inline Main::Main() {}
 
-inline Main::Main(const Main & x) {}
+inline Main::Main(const Main & x) : Base(x) {}
 
 inline void Main::eventGenerator(tEGPtr eg) {
   theEventGenerator = eg;

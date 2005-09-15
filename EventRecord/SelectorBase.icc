@@ -110,7 +110,7 @@ inline SelectIfNot::SelectIfNot(const SelectorBase & S)
   : s(S) {}
 
 inline SelectIfNot::SelectIfNot(const SelectIfNot & S) 
-  : s(S.s) {}
+  : SelectorBase(S), s(S.s) {}
 
 inline bool SelectIfNot::check(const Particle &  p) const {
   return !s.check(p);
@@ -137,7 +137,7 @@ inline SelectIfBoth::SelectIfBoth(const SelectorBase & S1,
   : s1(S1), s2(S2) {}
 
 inline SelectIfBoth::SelectIfBoth(const SelectIfBoth & S)
-  : s1(S.s1), s2(S.s2) {}
+  : SelectorBase(S), s1(S.s1), s2(S.s2) {}
 
 inline bool SelectIfBoth::check(const Particle &  p) const {
   return s1.check(p) && s2.check(p);
@@ -164,7 +164,7 @@ inline SelectIfEither::SelectIfEither(const SelectorBase & S1,
   : s1(S1), s2(S2) {}
 
 inline SelectIfEither::SelectIfEither(const SelectIfEither & S)
-  : s1(S.s1), s2(S.s2) {}
+  : SelectorBase(S), s1(S.s1), s2(S.s2) {}
 
 inline bool SelectIfEither::check(const Particle &  p) const {
   return s1.check(p) || s2.check(p);

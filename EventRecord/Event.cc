@@ -28,7 +28,8 @@ Event::Event(const PPair & newIncoming, tcEventBasePtr newHandler,
 }
 
 Event::Event(const Event & e)
-  : Named(e), theIncoming(e.theIncoming), theCollisions(e.theCollisions),
+  : Base(e), Named(e), 
+    theIncoming(e.theIncoming), theCollisions(e.theCollisions),
     allSteps(e.allSteps), allSubProcesses(e.allSubProcesses),
     allParticles(e.allParticles), theHandler(e.theHandler),
     theNumber(e.theNumber), theWeight(e.theWeight) {}

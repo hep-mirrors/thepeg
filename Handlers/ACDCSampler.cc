@@ -21,7 +21,7 @@ using namespace ThePEG;
 ACDCSampler::~ACDCSampler() {}
 
 void ACDCSampler::initialize() {
-  theSampler.setRnd((UseRandom *)0);
+  theSampler.setRnd(0);
   theSampler.eps(theEps);
   theSampler.margin(theMargin);
   theSampler.nTry(2);
@@ -92,7 +92,7 @@ void ACDCSampler::dofinish() {
 
 void ACDCSampler::doinitrun() {
   SamplerBase::doinitrun();
-  theSampler.setRnd((UseRandom *)0);
+  theSampler.setRnd(0);
   theSampler.eps(theEps);
   theSampler.margin(theMargin);
   theSampler.nTry(theNTry);
@@ -115,7 +115,7 @@ void ACDCSampler::persistentOutput(PersistentOStream & os) const {
 void ACDCSampler::persistentInput(PersistentIStream & is, int) {
   is >> theEps >> theMargin >> theNTry;
   theSampler.input(is);
-  if ( generator() ) theSampler.setRnd((UseRandom *)0);
+  if ( generator() ) theSampler.setRnd(0);
 }
 
 ClassDescription<ACDCSampler> ACDCSampler::initACDCSampler;

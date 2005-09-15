@@ -28,7 +28,7 @@ Collision::Collision(const PPair & newIncoming, tEventPtr newEvent,
 }
 
 Collision::Collision(const Collision & c)
-  : theIncoming(c.theIncoming), theSteps(c.theSteps),
+  : Base(c), theIncoming(c.theIncoming), theSteps(c.theSteps),
     theSubProcesses(c.theSubProcesses),
     allParticles(c.allParticles), theEvent(c.theEvent),
     theHandler(c.theHandler), theVertex(c.theVertex) {}

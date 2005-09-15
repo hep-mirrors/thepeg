@@ -190,12 +190,13 @@ splitDiQuarkJunction(Index sp, tcPPtr diq, tcPPair qq,
     // and end with one of the anti quarks.
     j = sink(sp);
     sink(j.first) = sink(j.second) = Junction();
-    for ( unsigned i = piece(sp).size() - 1; i >= 0; --i ) {
+    // 'i' can't be unsigned here. would get infinite loop!
+    for ( int i = piece(sp).size() - 1; i >= 0; --i ) {
       if ( diq == piece(sp)[i] ) {
 	piece(j.first).push_front(qq.first);
 	piece(j.second).push_front(qq.second);
       }
-      ((i < assign.size()? assign[i]: UseRandom::rndbool() )?
+      ((static_cast<size_t>(i) < assign.size()? assign[i]: UseRandom::rndbool() )?
        piece(j.first): piece(j.second)).push_front(piece(sp)[i]);
     }
   }

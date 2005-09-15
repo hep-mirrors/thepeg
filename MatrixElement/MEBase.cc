@@ -27,7 +27,8 @@ MEBase::MEBase()
 : theLastSHat(-1.0*GeV2), lastPreweight(1.0), theLastJacobian(1.0) {}
 
 MEBase::MEBase(const MEBase & x)
-  : HandlerBase(x), theDiagrams(x.theDiagrams),
+  : HandlerBase(x), LastXCombInfo<StandardXComb>(x),
+    theDiagrams(x.theDiagrams),
     theLastSHat(x.theLastSHat),
     reweights(x.reweights), preweights(x.preweights),
     lastPreweight(x.lastPreweight),

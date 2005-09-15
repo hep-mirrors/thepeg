@@ -23,7 +23,8 @@ Step(tCollPtr newCollision, tcEventBasePtr newHandler)
   : theCollision(newCollision), theHandler(newHandler) {}
 
 Step::Step(const Step & s)
-  : theParticles(s.theParticles), theIntermediates(s.theIntermediates),
+  : Base(s), 
+    theParticles(s.theParticles), theIntermediates(s.theIntermediates),
     allParticles(s.allParticles), theCollision(s.theCollision),
     theHandler(s.theHandler) {}
 

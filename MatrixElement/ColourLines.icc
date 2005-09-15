@@ -9,6 +9,6 @@ namespace ThePEG {
 inline ColourLines::ColourLines() {}
 
 inline ColourLines::ColourLines(const ColourLines & x)
-  : theLines(x.theLines) {}
+  : Base(x), theLines(x.theLines) {}
 
 }

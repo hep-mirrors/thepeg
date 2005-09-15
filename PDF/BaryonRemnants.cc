@@ -162,10 +162,10 @@ generate(PartonBinInstance & pb, const double * r,
 				       rem[0]->dataPtr(), mt12);
       s = mt02/(1.0 - z) + mt12/z;
       Energy W = sqrt(s);
-      rem[0]->set3Momentum((const LorentzMomentum &)
-			   lightCone((1.0 - z)*W, mt02/((1.0 - z)*W), ptr));
-      rem[1]->set3Momentum((const LorentzMomentum &)
-			   lightCone(z*W, mt12/(z*W), -ptr));
+      rem[0]->set3Momentum(static_cast<const LorentzMomentum &>
+			   (lightCone((1.0 - z)*W, mt02/((1.0 - z)*W), ptr)));
+      rem[1]->set3Momentum(static_cast<const LorentzMomentum &>
+			   (lightCone(z*W, mt12/(z*W), -ptr)));
     }
 
     TransverseMomentum kt;
@@ -302,10 +302,10 @@ generate(PartonBinInstance & pb, const double * r, Energy2 scale,
       s = mt02/(1.0 - z) + mt12/z;
       Energy W = sqrt(s);
       if ( W > mrmax ) continue;
-      rem[0]->set3Momentum((const LorentzMomentum &)
-			   lightCone((1.0 - z)*W, mt02/((1.0 - z)*W), ptr));
-      rem[1]->set3Momentum((const LorentzMomentum &)
-			   lightCone(z*W, mt12/(z*W), -ptr));
+      rem[0]->set3Momentum(static_cast<const LorentzMomentum &>
+			   (lightCone((1.0 - z)*W, mt02/((1.0 - z)*W), ptr)));
+      rem[1]->set3Momentum(static_cast<const LorentzMomentum &>
+			   (lightCone(z*W, mt12/(z*W), -ptr)));
     }
 
     // calculate the total longitudinal momentum available for the

@@ -31,7 +31,9 @@ inline void CFileLineReader::open(FILE * f) {
 }
 
 inline CFileLineReader::operator void *() {
-  return (void*)(!bad);
+  // the returned address is not meant to be dereferenced,
+  // it only indicates success.
+  return bad ? 0 : &bad;
 }
 
 inline bool CFileLineReader::operator!() {
@@ -84,7 +86,7 @@ inline CFileLineReader & CFileLineReader::operator>>(unsigned long & l) {
 
 inline CFileLineReader & CFileLineReader::operator>>(unsigned int & i) {
   char * next;
-  i = (unsigned int)(std::strtoul(pos, &next, 0));
+  i = static_cast<unsigned int>(std::strtoul(pos, &next, 0));
   bad = ( next == pos );
   pos = next;
   return *this;

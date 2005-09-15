@@ -152,7 +152,7 @@ inline Complex SpinHalfLorentzRotation::s4s4() const {return _mx[3][3];}
 
 // subscript operator
 inline Complex SpinHalfLorentzRotation::operator () (unsigned int i,unsigned int j) const {
-  if(i>=0&&i<=3&&j>=0&&j<=3){return _mx[i][j];}
+  if(i<=3 && j<=3){return _mx[i][j];}
   else{throw Exception() << "SpinHalfLorentzRotation subscripting: bad indeces "
 			 << "(" << i << "," << j << ")\n" << Exception::warning;}
   return 0.;

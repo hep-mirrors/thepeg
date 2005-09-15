@@ -48,7 +48,7 @@ set(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
     catch ( ... ) { throw RefVExSetUnknown(*this, i, r, place, "set"); }
   } else {
     if ( !theMember ) throw RefVExNoSet(*this, i);
-    if ( place < 0 || (unsigned long)place >= (t->*theMember).size() )
+    if ( place < 0 || static_cast<unsigned long>(place) >= (t->*theMember).size() )
       throw RefVExIndex(*this, i, place);
     (t->*theMember)[place] = r;
   }
@@ -73,7 +73,7 @@ insert(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
     catch ( ... ) { throw RefVExSetUnknown(*this, i, r, place, "insert"); }
   } else {
     if ( !theMember ) throw RefVExNoIns(*this, i);
-    if ( place < 0 || (unsigned long)place > (t->*theMember).size() )
+    if ( place < 0 || static_cast<unsigned long>(place) > (t->*theMember).size() )
       throw RefVExIndex(*this, i, place);
     (t->*theMember).insert((t->*theMember).begin()+place, r);
   }
@@ -94,7 +94,7 @@ void RefVector<T,R>::erase(InterfacedBase & i, int place) const
     catch ( ... ) { throw RefVExDelUnknown(*this, i, place); }
   } else {
     if ( !theMember ) throw RefVExNoDel(*this, i);
-    if ( place < 0 || (unsigned long)place >= (t->*theMember).size() )
+    if ( place < 0 || static_cast<unsigned long>(place) >= (t->*theMember).size() )
       throw RefVExIndex(*this, i, place);
     (t->*theMember).erase((t->*theMember).begin()+place);
   }
@@ -129,7 +129,7 @@ bool RefVector<T,R>::check(const InterfacedBase & i, cIBPtr ir, int place) const
   if ( !r && ir ) return false;
   if ( theCheckFn ) return (t->*theCheckFn)(r, place);
   if ( !theMember ) return true;
-  return place >= 0 && (unsigned long)place <= (t->*theMember).size(); 
+  return place >= 0 && static_cast<unsigned long>(place) <= (t->*theMember).size(); 
 }
 
 }

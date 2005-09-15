@@ -294,7 +294,7 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
   pb.parton()->setMomentum(pb.particle()->momentum() - Pr);
   Utilities::setMomentum(pb.remnants().begin(),
 			 pb.remnants().end(),
-			 (const LorentzMomentum &)Pr);
+			 static_cast<const LorentzMomentum &>(Pr));
   partonBinInstances[pb.parton()] = &pb;
   if ( !pb.incoming()->incoming() ) return;
 
@@ -344,11 +344,11 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
   }
   Utilities::setMomentum(bins.first->remnants().begin(),
 			 bins.first->remnants().end(),
-			 (const LorentzMomentum &)Pr1);
+			 static_cast<const LorentzMomentum &>(Pr1));
   bins.second->parton()->setMomentum(k1);
   Utilities::setMomentum(bins.second->remnants().begin(),
 			 bins.second->remnants().end(),
-			 (const LorentzMomentum &)Pr2);
+			 static_cast<const LorentzMomentum &>(Pr2));
   bins.second->parton()->setMomentum(k2);
 
   return Utilities::transformToMomentum(Phold, Ph);

@@ -25,7 +25,7 @@ SubProcess(const PPair & newIncoming,
     theIncoming(newIncoming) {}
 
 SubProcess::SubProcess(const SubProcess & s)
-  : theHandler(s.theHandler), theCollision(s.theCollision),
+  : Base(s), theHandler(s.theHandler), theCollision(s.theCollision),
     theIncoming(s.theIncoming), theIntermediates(s.theIntermediates),
     theOutgoing(s.theOutgoing) {}
 

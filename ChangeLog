@@ -1,3 +1,11 @@
+2005-09-15  David Grellscheid <David.Grellscheid@durham.ac.uk>
+
+	* *** several files ***: Adressed warning messages from
+	"-W -Wno-float-equal -Wcast-qual -Wwrite-strings -Wconversion
+	-Wredundant-decls -Wold-style-cast -Woverloaded-virtual":
+	-- explicitly initialize base class in copy constructor, 
+	-- fixed C-style casts
+	
 2005-09-13  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* Helicity (Repository): fixes to use isNear rather than equals in

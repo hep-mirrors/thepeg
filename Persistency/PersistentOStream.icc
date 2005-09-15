@@ -99,12 +99,12 @@ PersistentOStream::operator<<(char c) {
 
 inline PersistentOStream &
 PersistentOStream::operator<<(signed char c) {
-  return (*this) << (char)c;
+  return (*this) << static_cast<char>(c);
 }
 
 inline PersistentOStream &
 PersistentOStream::operator<<(unsigned char c) {
-  return (*this) << (char)c;
+  return (*this) << static_cast<char>(c);
 }
 
 inline PersistentOStream &

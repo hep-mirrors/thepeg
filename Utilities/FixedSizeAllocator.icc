@@ -40,8 +40,8 @@ inline void FixedSizeAllocator<Size,ChunkSize>::grow() {
   if ( ThePEG_DEBUG_ITEM(4) )
     cerr << "FixedSizeAllocator<" << Size << "," << ChunkSize
 	 << ">:: chunk  " << chunkstack.s.size()
-	 << "(" << (void*)(chunkstack.s.back())
-	 << " - " << (void*)(chunkstack.s.back() + last)
+	 << "(" << static_cast<void*>(chunkstack.s.back())
+	 << " - " << static_cast<void*>(chunkstack.s.back() + last)
 	 << ")" << endl;
 }
 
@@ -51,7 +51,7 @@ inline void * FixedSizeAllocator<Size,ChunkSize>::newallocate() {
   last -= Size;
   if ( ThePEG_DEBUG_ITEM(5) )
     cerr << "FixedSizeAllocator<" << Size << "," << ChunkSize
-	 << ">:: allocate " << (void*)(chunkstack.s.back() + last) << endl;
+	 << ">:: allocate " << static_cast<void*>(chunkstack.s.back() + last) << endl;
   return chunkstack.s.back() + last;
 }
 

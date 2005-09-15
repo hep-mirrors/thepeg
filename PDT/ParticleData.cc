@@ -842,7 +842,7 @@ void ParticleData::insDecayModes(DMPtr dm, int) {
 
 void ParticleData::delDecayModes(int i) {
   vector<DMPtr> mv = getDecayModes();
-  if ( i >= 0 && (unsigned int)i < mv.size() ) removeDecayMode(mv[i]);
+  if ( i >= 0 && static_cast<unsigned int>(i) < mv.size() ) removeDecayMode(mv[i]);
 }
 
 vector<DMPtr> ParticleData::getDecayModes() const {

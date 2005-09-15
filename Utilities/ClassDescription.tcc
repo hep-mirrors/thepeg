@@ -20,6 +20,6 @@ addBases(vector<const ClassDescriptionBase *> & c) {
 
 template <typename T, int IBase>
 void ClassDescriptionHelper<T, IBase, int>::
-addBases(vector<const ClassDescriptionBase *> & c) {}
+addBases(vector<const ClassDescriptionBase *> & ) {}
 
 }

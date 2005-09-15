@@ -10,7 +10,8 @@ inline DiagramBase::DiagramBase()
 : theNIncoming(-1), theId(0) {}
 
 inline DiagramBase::DiagramBase(const DiagramBase & x)
-  : theNIncoming(x.theNIncoming), thePartons(x.thePartons), theId(x.theId) {}
+  : Base(x), theNIncoming(x.theNIncoming), 
+    thePartons(x.thePartons), theId(x.theId) {}
 
 inline int DiagramBase::nIncoming() const {
   return theNIncoming;

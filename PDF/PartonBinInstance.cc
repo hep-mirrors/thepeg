@@ -20,7 +20,8 @@ PartonBinInstance::PartonBinInstance()
     theL(-1.0), theScale(0.0*GeV2), theRemnantWeight(0.0) {}
 
 PartonBinInstance::PartonBinInstance(const PartonBinInstance & x)
-  : theBin(x.theBin), theBins(x.theBins), theIncoming(x.theIncoming),
+  : Base(x),
+    theBin(x.theBin), theBins(x.theBins), theIncoming(x.theIncoming),
     theJacobian(x.theJacobian), theParticle(x.theParticle),
     theParton(x.theParton), thePartons(x.thePartons), theXi(x.theXi),
     theEps(x.theEps), theLi(x.theLi), theX(x.theX), theL(x.theL),

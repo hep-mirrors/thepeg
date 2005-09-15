@@ -96,14 +96,14 @@ inline PersistentIStream & PersistentIStream::operator>>(char & c) {
 inline PersistentIStream & PersistentIStream::operator>>(unsigned char & c) {
   char cc;
   *this >> cc;
-  c = (unsigned char) cc;
+  c = static_cast<unsigned char>(cc);
   return *this;
 }
 
 inline PersistentIStream & PersistentIStream::operator>>(signed char & c) {
   char cc;
   *this >> cc;
-  c = (signed char) cc;
+  c = static_cast<signed char>(cc);
   return *this;
 }
 

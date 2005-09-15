@@ -34,7 +34,7 @@ ParticleVector Decayer::getChildren(const DecayMode & dm,
 void Decayer::finalBoost(const Particle & parent,
 			 const ParticleVector & children) const {
   Utilities::setMomentum(children.begin(), children.end(),
-			 (Momentum3 &)(parent.momentum()), 1.0e-12);
+			 static_cast<const Momentum3 &>(parent.momentum()), 1.0e-12);
 }  
 
 void Decayer::setScales(const Particle & parent,

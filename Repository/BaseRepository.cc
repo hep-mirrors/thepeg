@@ -361,7 +361,7 @@ IBPtr BaseRepository::TraceObject(string path) {
 	place = atoi(path.substr(bra + 1,ket - bra - 1).c_str());
       }
       IVector iv = rvb->get(*ip);
-      if ( place >= iv.size() || place < 0 ) throw RepositoryNotFound(path);
+      if ( place >= iv.size() ) throw RepositoryNotFound(path);
       ip = iv[place];
       continue;
     }

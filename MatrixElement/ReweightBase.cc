@@ -20,7 +20,8 @@ using namespace ThePEG;
 ReweightBase::ReweightBase() {}
 
 ReweightBase::ReweightBase(const ReweightBase & x)
-  : HandlerBase(x), theLastSHat(x.theLastSHat), theLastInData(x.theLastInData),
+  : HandlerBase(x), LastXCombInfo<StandardXComb>(x),
+    theLastSHat(x.theLastSHat), theLastInData(x.theLastInData),
     theLastOutData(x.theLastOutData), theLastInMomentumA(x.theLastInMomentumA),
     theLastInMomentumB(x.theLastInMomentumB),
     theLastOutMomentum(x.theLastOutMomentum) {}

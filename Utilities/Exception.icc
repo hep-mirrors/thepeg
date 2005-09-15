@@ -13,7 +13,8 @@ inline Exception::Exception()
 }
 
 inline Exception::Exception(const Exception & ex)
-  : theMessage(ex.message()), handled(ex.handled), theSeverity(ex.severity()) {
+  : std::exception(ex), theMessage(ex.message()), 
+    handled(ex.handled), theSeverity(ex.severity()) {
   ex.handle();
 }
 

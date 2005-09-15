@@ -27,7 +27,7 @@ Tree2toNDiagram & Tree2toNDiagram::add(tcPDPtr pd) {
 }
 
 void Tree2toNDiagram::addTimelike(tcPDPtr pd, size_type orig) {
-  if ( allPartons().size() < theNSpace || orig < 0 ||
+  if ( allPartons().size() < theNSpace ||
        orig >= allPartons().size())
     throw Tree2toNDiagramError();
   thePartons.push_back(pd);

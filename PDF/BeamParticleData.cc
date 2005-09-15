@@ -51,7 +51,7 @@ void BeamParticleData::persistentInput(PersistentIStream & is, int) {
 ClassDescription<BeamParticleData> BeamParticleData::initBeamParticleData;
 
 void BeamParticleData::setPDF(PDFPtr pdf) {
-  if ( pdf && !pdf->canHandle(tcPDPtr((const ParticleData *)this)) )
+  if ( pdf && !pdf->canHandle(tcPDPtr(dynamic_cast<const ParticleData *>(this))) )
     throw BeamParticleWrongPDF(name(), pdf? pdf->name(): string("<NULL>"));
   thePDF = pdf;
 }

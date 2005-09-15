@@ -10,7 +10,7 @@ inline Hint::Hint()
   : theScale(0.0), theStopFlag(false) {}
 
 inline Hint::Hint(const Hint & h)
-  : theTagged(h.theTagged), theScale(h.theScale),
+  : Base(h), theTagged(h.theTagged), theScale(h.theScale),
     theStopFlag(h.theStopFlag) {}
 
 inline Hint::~Hint() {}

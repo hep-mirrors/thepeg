@@ -204,7 +204,7 @@ cut(const Collision & c, const LorentzRotation & r) const
     q *= r;
     if ( q.e() < DISLepton1EnergyMin() ||
 	 q.e() >= DISLepton1EnergyMax() ) throw Veto();
-    double the = q.angle((const LorentzMomentum &)p1);
+    double the = q.angle(static_cast<const LorentzMomentum &>(p1));
     if ( the < DISLepton1AngleMin() ||
 	 the > DISLepton1AngleMax() ) throw Veto();
     p1 -= q;
@@ -215,7 +215,7 @@ cut(const Collision & c, const LorentzRotation & r) const
     q *= r;
     if ( q.e() < DISLepton2EnergyMin() ||
 	 q.e() >= DISLepton2EnergyMax() ) throw Veto();
-    double the = q.angle((const LorentzMomentum &)p2);
+    double the = q.angle(static_cast<const LorentzMomentum &>(p2));
     if ( the < DISLepton2AngleMin() ||
 	 the > DISLepton2AngleMax() ) throw Veto();
     p1 -= q;

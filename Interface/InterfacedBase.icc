@@ -10,8 +10,8 @@ inline InterfacedBase::InterfacedBase()
   : Named(""), isLocked(false), isTouched(true), initState(uninitialized) {}
 
 inline InterfacedBase::InterfacedBase(const InterfacedBase & i)
-  : Named(i), isLocked(false), isTouched(true), initState(uninitialized),
-    theComment(i.theComment) {}
+  : Base(i), Named(i), isLocked(false), isTouched(true), 
+    initState(uninitialized), theComment(i.theComment) {}
 
 inline InterfacedBase::InterfacedBase(string newName)
   : Named(newName), isLocked(false), isTouched(true),

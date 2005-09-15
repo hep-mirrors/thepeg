@@ -41,7 +41,7 @@ Particle::ParticleRep::ParticleRep(const ParticleRep & p)
 }
 
 Particle::Particle(const Particle & p)
-  : theData(p.theData), theMomentum(p.theMomentum), theRep(p.theRep) {
+  : Base(p), theData(p.theData), theMomentum(p.theMomentum), theRep(p.theRep) {
   if ( p.theRep ) theRep = new ParticleRep(*p.theRep);
 }
 
@@ -50,7 +50,7 @@ void Particle::initFull() const {
   theRep = new ParticleRep;
   theRep->theLifeLength.setMass
     (data().generateLifeTime(mass(), data().generateWidth(mass())));
-  theRep->theLifeLength.setVect((const LorentzMomentum &)
+  theRep->theLifeLength.setVect(static_cast<const LorentzMomentum &>
     (momentum()*(lifeTime()/max(mass(), Constants::epsilon*GeV))));
 }
 

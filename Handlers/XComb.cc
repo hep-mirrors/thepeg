@@ -57,7 +57,8 @@ XComb(Energy newMaxEnergy, const cPDPair & inc, tEHPtr newEventHandler,
 }
 
 XComb::XComb(const XComb & x)
-  : theEventHandler(x.theEventHandler),
+  : Base(x),
+    theEventHandler(x.theEventHandler),
     thePartonExtractor(x.thePartonExtractor),
     theCuts(x.theCuts), theParticles(x.theParticles),
     thePartons(x.thePartons), thePartonBins(x.thePartonBins),

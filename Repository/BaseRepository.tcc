@@ -10,7 +10,7 @@ template <typename T>
 typename Ptr<T>::pointer BaseRepository::GetPtr(const T & t) {
   typedef typename Ptr<T>::pointer ptr;
   ObjectSet::iterator it = allObjects().find
-    (IBPtr(const_cast<InterfacedBase *>((const InterfacedBase*)&t)));
+    (IBPtr(const_cast<InterfacedBase *>(dynamic_cast<const InterfacedBase*>(&t))));
   return it == allObjects().end()? ptr():
     dynamic_ptr_cast<ptr>(*it);
 }
