@@ -311,13 +311,15 @@ of a class CLASS."
   "Return a skeleton suitable for the fh-header file for the forward
 declarations of a class CLASS."
 
+  (setq NAMESPACE (upcase namespace))
+  
   (thepeg-replace "THECLASS" class
 		  (concat "// -*- C++ -*-
 //
 // This is the forward declaration of the THECLASS class.
 //
-#ifndef ThePEG_THECLASS_FH
-#define ThePEG_THECLASS_FH
+#ifndef " NAMESPACE "_THECLASS_FH
+#define " NAMESPACE "_THECLASS_FH
 
 #include \"ThePEG/Config/Pointers.h\"
 
