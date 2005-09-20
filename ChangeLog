@@ -1,3 +1,9 @@
+2005-09-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/ClassTraits.h, lib/ThePEG.el: Modified the comment to
+	the library() function to indicate the possibility to have several
+	libraries.
+
 2005-09-15  David Grellscheid <David.Grellscheid@durham.ac.uk>
 
 	* *** several files ***: Adressed warning messages from

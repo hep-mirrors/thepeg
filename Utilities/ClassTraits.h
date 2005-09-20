@@ -64,8 +64,9 @@ struct ClassTraitsBase: public ClassTraitsType {
 
 
   /**
-   * The name of a file containing the dynamic
-   * library where the class T is implemented.
+   * The name of a file containing the dynamic library where the class
+   * T is implemented. It may also include several libraries if the
+   * class T depends on other classes.
    */
   static string library() { return ""; }
 
