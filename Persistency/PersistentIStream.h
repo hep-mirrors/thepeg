@@ -19,7 +19,7 @@ namespace ThePEG {
  * <code>PersistentBase</code> should be read in the same order they
  * were written out. If <code>pedantic()</code> is true the same
  * classes that were written out must be present in the current
- * program. If <code>pedantic()</code> is false anf if an object is
+ * program. If <code>pedantic()</code> is false and if an object is
  * read for which only a base class is present in the current program,
  * only the parts corresponding to the base class will be read, and
  * the rest will be gracefully skipped.
@@ -251,15 +251,15 @@ private:
   /** @cond EXCEPTIONCLASSES */
   /** @ingroup Persistency
       Thrown if a class is missing */
-  struct MissingClass {};
+  struct MissingClass: public Exception {};
 
   /** @ingroup Persistency Thrown if an object which should have been
       read in is missing. */
-  struct MissingObject {};
+  struct MissingObject: public Exception {};
 
   /** @ingroup Persistency Thrown if reading from the stream failed
       for some reason. */
-  struct ReadFailior {};
+  struct ReadFailior: public Exception {};
   /** @endcond */
 
   /**
@@ -306,9 +306,11 @@ private:
   void endObject();
 
   /**
-   * Scan stream for "end base class" marker.
+   * Scan stream for "end base class" marker. The \a classname is the
+   * name of the class currently being read and is only used for
+   * documenting exceptions.
    */
-  void endBase();
+  void endBase(string classname);
 
   /**
    * Return a reference to the associated stream.

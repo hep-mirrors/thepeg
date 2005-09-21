@@ -65,12 +65,17 @@ void PersistentIStream::endObject() {
   };
 }
 
-void PersistentIStream::endBase() {
+void PersistentIStream::endBase(string classname) {
   // We have just read an object part, but we may only have acces to a
   // base class of the originally written object. Therefore we must
   // skip everything that the unknown derived class may have
   // written. So we check one field at the time...
-  if ( is().peek() != tNext && pedantic() ) throw ReadFailior();
+  if ( is().peek() != tNext && pedantic() ) throw ReadFailior()
+    << "PersistentIStream could not read an object of class '" << classname
+    << "' since no such class could be found. The base class was found, "
+    << "however, and if the PersistentIStream is 'setTolerant()' it may "
+    << "still be possible to read the part of the object corresponding to "
+    << "this base class." << Exception::runerror;
   while ( good() ) {
     switch ( is().peek() ) {
     case tNext:
@@ -88,7 +93,10 @@ void PersistentIStream::endBase() {
       break;
     case tEnd:
       // OOPS we found the end of an object, something went wrong, let's quit
-      throw ReadFailior();
+      throw ReadFailior()
+	<< "PersistentIStream could not read an object of class '"
+	<< classname << "'. Maybe the file was written with another version "
+	<< "of the class." << Exception::runerror;
     default:
       // Just an ordinary character, this means we are in a field,
       // skip to the end of the field.
@@ -106,11 +114,15 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
       *this >> oid;
       if ( !oid ) return obj;
       if ( oid <= readObjects.size() ) return readObjects[oid-1];
-      throw MissingObject();
+      throw MissingObject()
+	<< "PersistentIStream could not find object number " << oid
+	<< " which should have already been read." << Exception::runerror;
     }
     get();
     *this >> oid;
-    if ( oid > readObjects.size() + 1 ) throw MissingObject();
+    if ( oid > readObjects.size() + 1 ) throw MissingObject()
+      << "PersistentIStream could not read in object because its number ("
+      << oid << ") was inconsistent." << Exception::runerror;
     const InputDescription * pid = getClass();
     obj = pid->create();
     readObjects.erase(readObjects.begin()+oid-1, readObjects.end());
@@ -131,7 +143,7 @@ getObjectPart(tBPtr obj, const InputDescription * pid) {
   DescriptionVector::const_iterator bit = pid->descriptions().begin();
   while ( bit != pid->descriptions().end() ) {
     getObjectPart(obj, *bit++);
-    endBase();
+    endBase(pid->name());
   }
   pid->input(obj, *this);
 }
@@ -140,9 +152,12 @@ const InputDescription * PersistentIStream::getClass() {
   unsigned int cid;
   operator>>(cid);
   if ( cid < readClasses.size() ) return readClasses[cid];
-  if ( cid != readClasses.size() ) throw MissingClass();
   string className;
   operator>>(className);
+  if ( cid != readClasses.size() ) throw MissingClass()
+    << "PersistentIStream could not read info on class '" << className
+    << "' because its number (" << cid << ") was inconsistent."
+    << Exception::runerror;
   int version;
   string libraries;
   operator>>(version);
@@ -159,7 +174,9 @@ const InputDescription * PersistentIStream::getClass() {
     while ( is >> library ) DynamicLoader::load(library);
   }
   db = DescriptionList::find(className);
-  if ( pedantic() && !db ) throw MissingClass();
+  if ( pedantic() && !db ) throw MissingClass()
+    << "PersistentIStream could not find the class '" << className << "'."
+    << Exception::runerror;
   id->setDescription(db);
   return id;
 }

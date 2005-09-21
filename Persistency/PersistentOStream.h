@@ -238,7 +238,7 @@ private:
   /** @ingroup Persistency
    * Internal exception class.
    */
-  struct MissingClass {};
+  struct MissingClass: public Exception {};
   /** @endcond */
 
   /**

@@ -1,3 +1,10 @@
+2005-09-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Persistency/PersistentOStream.*,
+	Persistency/PersistentIStream.*: Let all exception classes inherit
+	from ThePEG::Exception and added informative (?) errormessages
+	when anything gös wrong.
+
 2005-09-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/ClassTraits.h, lib/ThePEG.el: Modified the comment to
