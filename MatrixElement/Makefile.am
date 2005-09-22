@@ -19,15 +19,15 @@ INCLUDEFILES = $(DOCFILES) Amplitude.icc ColourLines.xh ColourLines.icc \
                ReweightConstant.icc MEBase.fh
 
 noinst_LTLIBRARIES = libThePEGME.la
-pkglib_LTLIBRARIES = libThePEGMEQCD.la MEee2gZ2qq.la \
+pkglib_LTLIBRARIES = MEQCD.la MEee2gZ2qq.la \
                      ReweightConstant.la
 
 libThePEGME_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-libThePEGMEQCD_la_LDFLAGS = -module -version-info 1:0:0
-libThePEGMEQCD_la_SOURCES = $(myQCDSOURCES) 
+MEQCD_la_LDFLAGS = -module -version-info 1:0:0
+MEQCD_la_SOURCES = $(myQCDSOURCES) 
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

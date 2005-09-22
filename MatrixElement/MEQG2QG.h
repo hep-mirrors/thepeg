@@ -170,7 +170,7 @@ struct ClassTraits<MEQG2QG>: public ClassTraitsBase<MEQG2QG> {
   /** Return the name of the shared library be loaded to get
    *  access to the MEQG2QG class and every other class it uses
    *  (except the base class). */
-  static string library() { return "libThePEGMEQCD.so"; }
+  static string library() { return "MEQCD.so"; }
 };
 
 /** @endcond */

@@ -45,7 +45,7 @@ set /Defaults/StandardModel:EW/CKM /Defaults/CKM
 
 cd /Defaults/MatrixElements
 create ThePEG::MEee2gZ2qq MEee2gZ2qq MEee2gZ2qq.so
-create ThePEG::MEGG2GG MEGG2GG libThePEGMEQCD.so
+create ThePEG::MEGG2GG MEGG2GG MEQCD.so
 create ThePEG::MEQG2QG MEQG2QG
 create ThePEG::MEQQ2GG MEQQ2GG
 create ThePEG::MEQQ2QQ MEQQ2QQ
