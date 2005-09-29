@@ -1,26 +1,37 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl
 
 AC_PREREQ(2.59)
 AC_INIT([ThePEG],[1.0],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
-AM_INIT_AUTOMAKE
-AC_LANG(C++)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
 AC_CONFIG_HEADERS([Config/config.h])
+
+AC_CANONICAL_HOST
+
+case "${host}" in
+  *-darwin[[0156]].*)
+    AC_MSG_ERROR([ThePEG requires OS X 10.3 or later])
+    ;;
+  *-darwin*)
+    if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then
+      AC_MSG_ERROR([Please export the MACOSX_DEPLOYMENT_TARGET variable, set to\
+ 10.3])
+    fi
+esac
+
+
+AC_LANG(C++)
+AM_INIT_AUTOMAKE
 
 dnl Checks for programs.
 AC_PROG_CXX
 #AC_PROG_RANLIB
 AC_PROG_INSTALL
-AC_PROG_MAKE_SET #???
+AC_PROG_MAKE_SET
 AC_PROG_LN_S
 AC_DISABLE_STATIC
 AC_LIBTOOL_DLOPEN
-
-# AC_MSG_CHECKING([YOOOHOOOO])
-# AC_MSG_RESULT([done])
 
 AC_PROG_LIBTOOL
 
