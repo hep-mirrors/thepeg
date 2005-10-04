@@ -1,2 +1,0 @@
-/<!code>/ s/\([a-zA-Z_][a-zA-Z0-9_]*\)\([ \t]*(\)/<FONT COLOR=\"#A00000\">\1<\/FONT>\2/g
-/<!code>/ s/\<\(auto\|bool\|char\|class\|const\|double\|enum\|extern\|float\|friend\|inline\|int\|long\|register\|short\|signed\|static\|struct\|namespace\|typename\|template\|typedef\|virtual\|void\|volatile\|union\|unsigned\|operator\|case\|goto\|break\|catch\|continue\|delete\|do\|else\|for\|of\|new\|private\|protected\|public\|return\|sizeof\|switch\|this\|throw\|try\|while\|\)\>/<FONT COLOR=\"#008000\">&<\/FONT>/g

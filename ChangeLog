@@ -1,3 +1,16 @@
+2005-10-04  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Doc/reformat.pl, Doc/keywords.sed, Doc/h2html.in, Doc/h2html.awk: 
+	removed obsolete files
+
+	* Doc/refman.conf.in: replaced ../../ThePEG with @top_srcdir@
+
+	* configure.ac: fixed permissions for Doc/fixincludes.pl. Solves
+	bug #10
+
+	* Repository/Repository.cc: Error message if '.in' file can't be
+	found. Fixes bug #3.
+
 2005-09-29  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* configure.ac: Added configure check for OS X

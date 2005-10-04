@@ -465,6 +465,7 @@ string Repository::exec(string command, ostream & os) {
     if ( verb == "read" ) {
       string file = StringUtils::car(command);
       ifstream input(file.c_str());
+      if (!input) return "Error: Could not access file " + file;
       read(input, os);
       return "";
     }      

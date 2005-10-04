@@ -82,11 +82,9 @@ Repository/Makefile
 EventRecord/Makefile
 StandardModel/Makefile
 Doc/Makefile
-Doc/fixinterfaces.pl
 Doc/refman.h
 Doc/refman.conf
 Makefile])
-## don't know what to do here  'Doc/Makefile'
+AC_CONFIG_FILES([Doc/fixinterfaces.pl],[chmod +x Doc/fixinterfaces.pl])
 
 AC_OUTPUT
-
