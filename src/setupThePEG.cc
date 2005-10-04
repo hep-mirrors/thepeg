@@ -74,8 +74,13 @@ int main(int argc, char * argv[]) {
       }
     }
   }
+  catch ( Exception & e ) {
+    cerr << "Unexpected exception caught: " << e.what() << endl;
+    e.handle();
+    return 1;
+  }
   catch ( std::exception & e ) {
-    cerr << e.what() << endl;
+    cerr << "Unexpected exception caught: " << e.what() << endl;
     return 1;
   }
   catch ( ... ) {
