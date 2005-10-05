@@ -6,16 +6,15 @@ if test -z "$CLHEPPATH"; then
   notset="true"
   for dirbase in / /usr $ac_default_prefix $prefix; do
     if test -z "$CLHEPLIB"; then
-      for filename in $dirbase/lib/libCLHEP-?.?.?.?.so $dirbase/lib/libCLHEP.so; do
+      for filename in $dirbase/lib/libCLHEP-?.?.?.?.{so,dylib} $dirbase/lib/libCLHEP.{so,dylib}; do
         if test -f $filename; then
           CLHEPPATH=$dirbase
-          filename=`basename $filename`
-          CLHEPLIB=`echo $filename | sed -e 's/^lib/-l/' -e 's/\.so$//'`
+          CLHEPLIB=`basename $filename | sed -e 's/^lib/-l/' -e 's/\.\(so\|dylib\)$//'`
         fi
       done
     else
-      filename=`echo $CLHEPLIB | sed -e 's/^-l/lib/'`.so
-      if test -f $dirbase/lib/$filename; then
+      filename=`echo $CLHEPLIB | sed -e 's/^-l/lib/'`
+      if test -f $dirbase/lib/$filename.so -o -f $dirbase/lib/$filename.dylib; then
 	CLHEPPATH=$dirbase
       fi
     fi
@@ -23,10 +22,9 @@ if test -z "$CLHEPPATH"; then
 else
   if test -z "$CLHEPLIB"; then
     notset="true"
-    for filename in $CLHEPPATH/lib/libCLHEP-?.?.?.?.so CLHEPPATH/lib/libCLHEP.so; do
+    for filename in $CLHEPPATH/lib/libCLHEP-?.?.?.?.{so,dylib} CLHEPPATH/lib/libCLHEP.{so,dylib}; do
       if test -f $filename; then
-        filename=`basename $filename`
-        CLHEPLIB=`echo $filename | sed -e 's/^lib/-l/' -e 's/\.so$//'`
+        CLHEPLIB=`basename $filename | sed -e 's/^lib/-l/' -e 's/\.\(so\|dylib\)$//'`
       fi
     done
   fi
