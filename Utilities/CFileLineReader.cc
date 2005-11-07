@@ -40,7 +40,7 @@ void CFileLineReader::open(string filename) {
   }
 #endif
   else {
-    std::fopen(filename.c_str(), "r");
+    file = std::fopen(filename.c_str(), "r");
     type = plainfile;
   }
   bad = ( file == NULL );
