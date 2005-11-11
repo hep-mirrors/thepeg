@@ -36,7 +36,7 @@ void MadGraphReader::open() {
   // First scan banner to extract some information
   while ( cfile.readline() ) {
     if ( !cfile || cfile.getc() != '#' ) break;
-    if ( cfile.find("Number of events") ) {
+    if ( cfile.find("Number of Events") ) {
       cfile.skip(':');
       cfile >> neve;
     } else if ( cfile.find("Integrated weight") ) {
