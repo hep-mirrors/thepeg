@@ -1,3 +1,9 @@
+2005-12-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/Step.h, EventRecord/Particle.h: Fixed the
+	documentation for the colour neighbour methods. Before the
+	documentation had reversed the colour and anti-colour.
+
 2005-11-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.icc: Fixed bug in skip(), now also

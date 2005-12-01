@@ -575,41 +575,41 @@ public:
 
   /**
    * Get a pointer to the colour neighbor. Returns a particle in the
-   * Step where this particle was created which anti-colour is
-   * connected to the same line as this particles colour. If \a anti
-   * is true return antiColourNeighbour().
+   * Step where this particle was created which colour is connected to
+   * the same line as this particles anti-colour. If \a anti is true
+   * return antiColourNeighbour().
    */
   tPPtr colourNeighbour(bool anti = false) const;
 
   /**
    * Get a pointer to the anti-colour neighbor. Returns a particle in
-   * the Step where this particle was created which colour is
-   * connected to the same line as this particles anti-colour.
+   * the Step where this particle was created which anti-colour is
+   * connected to the same line as this particles colour.
    */
   inline tPPtr antiColourNeighbour() const;
 
   /**
-   * Set the colour neighbor. Connects the given particles anti-colour
-   * to the same colour line as this particles colour. If \a anti
-   * is true call antiColourNeighbour(tPPtr).
+   * Set the colour neighbor. Connects the given particles colour to
+   * the same colour line as this particles anti-colour. If \a anti is
+   * true call antiColourNeighbour(tPPtr).
    */
   void colourNeighbour(tPPtr, bool anti = false);
 
   /**
-   * Set the anti-colour neighbor. Connects the given particles colour
-   * to the same colour line as this particles anti-colour.
+   * Set the anti-colour neighbor. Connects the given particles
+   * anti-colour to the same colour line as this particles colour.
    */
   inline void antiColourNeighbour(tPPtr);
 
   /**
    * Connect colour. Create a colour line connecting to it this
-   * particles anti-colour and the given particles colour.
+   * particles colour and the given particles anti-colour.
    */
   inline void antiColourConnect(tPPtr neighbour);
 
   /**
    * Connect colour. Create a colour line connecting to it this
-   * particles colour and the given particles anti-colour. If \a anti
+   * particles anti-colour and the given particles colour. If \a anti
    * is true call antiColourConnect(tPPtr).
    */
   inline void colourConnect(tPPtr neighbour, bool anti = false);

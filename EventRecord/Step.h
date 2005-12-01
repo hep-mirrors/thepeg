@@ -272,15 +272,19 @@ public:
 
   /**
    * Return the (\a anti-)colour neighbour of the given \a particle if
-   * one exists in the final state of this Step. Will return null if
-   * the given \a particle is not in the final state of this Step.
+   * one exists in the final state of this Step. The colour neighbour
+   * has its colour connected to the same colour line as the given \a
+   * particles anti-colour. Will return null if the given \a particle
+   * is not in the final state of this Step.
    */
   tPPtr colourNeighbour(tcPPtr particle, bool anti = false) const;
 
   /**
    * Return the anti-colour neighbour of the given \a particle if one
-   * exists in the final state of this Step. Will return null if the
-   * given \a particle is not in the final state of this Step.
+   * exists in the final state of this Step. The anti-colour neighbour
+   * has its anti-colour connected to the same colour line as the
+   * given \a particles colour. Will return null if the given \a
+   * particle is not in the final state of this Step.
    */
   tPPtr antiColourNeighbour(tcPPtr particle) const;
 
