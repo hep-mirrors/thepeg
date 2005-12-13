@@ -278,7 +278,7 @@ protected:
    * @throws RebindException if no cloned object was found for a given
    * pointer.
    */
-  inline virtual void rebind(const TranslationMap & trans)
+  virtual void rebind(const TranslationMap & trans)
     throw(RebindException);
 
   /**
