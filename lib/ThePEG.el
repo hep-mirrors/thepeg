@@ -326,7 +326,12 @@ declarations of a class CLASS."
 namespace " namespace " {
 
 class THECLASS;
-ThePEG_DECLARE_POINTERS(THECLASS,THECLASSPtr);
+
+}
+
+namespace ThePEG {
+
+ThePEG_DECLARE_POINTERS(" namespace "::THECLASS,THECLASSPtr);
 
 }
 

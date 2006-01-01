@@ -1,3 +1,8 @@
+2006-01-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/setupThePEG.install: added VERSION="" to avoid problems when
+	VERSION is set during 'make distcheck'.
+
 2005-12-12  David Grellscheid <David.Grellscheid@durham.ac.uk>
 	* PDT/DecayMode.h: rebind() is not an inline!
 
