@@ -41,7 +41,7 @@ void RandomGenerator::getFlatNumbers() {
 void RandomGenerator::setSize(size_type newSize) {
   RndVector newNumbers(newSize);
   RndVector::iterator nextNew = newNumbers.end() -
-    min( theNumbers.end() - nextNumber, int(newSize) );
+    min( int(theNumbers.end() - nextNumber), int(newSize) );
   for ( RndVector::iterator i = nextNew; i != newNumbers.end(); ++i )
     *i = *nextNumber++;
   RndVector::difference_type pos = nextNew - newNumbers.begin();
