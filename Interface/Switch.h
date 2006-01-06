@@ -170,6 +170,11 @@ public:
 		    string arguments) const throw(InterfaceException);
 
   /**
+   * Return a complete description of this switch.
+   */
+  virtual string fullDescription(const InterfacedBase & ib) const;
+
+  /**
    * Return a code for the type of this switch.
    */
   virtual string type() const;

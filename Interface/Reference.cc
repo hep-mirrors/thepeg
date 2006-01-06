@@ -48,6 +48,16 @@ string ReferenceBase::exec(InterfacedBase & i, string action,
   return ret.str();
 }
 
+string ReferenceBase::fullDescription(const InterfacedBase & ib) const {
+  string ret = InterfaceBase::fullDescription(ib) +
+    ( noNull()? "nevernull\n": "nullable\n" ) +
+    ( defaultIfNull()? "defnull\n": "nodefnull\n" );
+  tIBPtr ref = get(ib);
+  if ( !ref ) ret += "NULL\n";
+  else ret += ref->fullName() + '\n';
+  return ret;
+}
+
 string ReferenceBase::type() const {
   return string("R<") + refClassName() + ">";
 }

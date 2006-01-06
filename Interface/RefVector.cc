@@ -59,6 +59,19 @@ string RefVectorBase::exec(InterfacedBase & i, string action,
   return ret.str();
 }
 
+string RefVectorBase::fullDescription(const InterfacedBase & ib) const {
+  ostringstream os;
+  os << InterfaceBase::fullDescription(ib)
+     << ( noNull()? "nevernull\n": "nullable\n" )
+     << ( defaultIfNull()? "defnull\n": "nodefnull\n" );
+  IVector refs = get(ib);
+  os << size() << '\n' << refs.size() << '\n';
+  for ( int i = 0, N = refs.size(); i < N; ++i )
+  if ( !refs[i] ) os << "NULL\n";
+  else os << refs[i]->fullName() << '\n';
+  return os.str();
+}
+
 string RefVectorBase::type() const {
   return string("V<") + refClassName() + ">";
 }

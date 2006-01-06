@@ -88,6 +88,11 @@ public:
 		      string arguments) const throw(InterfaceException);
 
   /**
+   * Return a complete description of this reference.
+   */
+  virtual string fullDescription(const InterfacedBase & ib) const;
+
+  /**
    * Return a code for the type of this reference.
    */
   virtual string type() const;

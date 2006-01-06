@@ -60,6 +60,18 @@ string SwitchBase::doxygenType() const {
   return "Switch";
 }
 
+string SwitchBase::fullDescription(const InterfacedBase & ib) const {
+  ostringstream os;
+  os << InterfaceBase::fullDescription(ib) << get(ib) << '\n'
+     << def(ib) << '\n' << options().size() << '\n';
+  for ( OptionMap::const_iterator it = options().begin();
+	it != options().end(); ++it )
+    os << it->second.value() << '\n'
+       << it->second.name() << '\n'
+       << it->second.description() << endl;
+  return os .str();
+}
+
 SwExSetOpt::SwExSetOpt(const InterfaceBase & i,
 		       const InterfacedBase & o, long v) {
   theMessage << "Could not set the switch \"" << i.name()
