@@ -10,6 +10,7 @@ template <typename T, typename Int>
 void Switch<T,Int>::set(InterfacedBase & i, long newValue) const
   throw(InterfaceException) {
   T * t = dynamic_cast<T *>(&i);
+  if ( readOnly() ) throw InterExReadOnly(*this, i);
   if ( !t ) throw InterExClass(*this, i);
   if ( !check(newValue) ) throw SwExSetOpt(*this, i, newValue);
   long oldValue = get(i);
@@ -29,7 +30,6 @@ template <typename T, typename Int>
 long Switch<T,Int>::get(const InterfacedBase & i) const
   throw(InterfaceException) {
   const T * t = dynamic_cast<const T *>(&i);
-  if ( readOnly() ) throw InterExReadOnly(*this, i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
     try { return (t->*theGetFn)(); }
