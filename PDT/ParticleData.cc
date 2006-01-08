@@ -700,7 +700,7 @@ void ParticleData::Init() {
   
   static Switch<ParticleData,PDT::Color> interfaceDefColour
     ("DefaultColour",
-     "The defaault colour quantum number of this particle type.",
+     "The default colour quantum number of this particle type.",
      &ParticleData::theDefColour, PDT::Color(-1), false, true);
   static SwitchOption interfaceDefColourUndefined
     (interfaceDefColour, "Undefined", "The coulur is undefined.", -1);
@@ -784,7 +784,7 @@ void ParticleData::Init() {
   static Switch<ParticleData> interfaceSync
     ("Synchronized",
      "Indicates if the changes to this particle is propagated to "
-     "its anti-partner or not. Not that seting this switch does not"
+     "its anti-partner or not. Note that setting this switch does not "
      "actually synchronize the properties with the anti-partner, "
      "it only assures that following changes are propagated. "
      "To sync the particle with its anti-particle, use the "
