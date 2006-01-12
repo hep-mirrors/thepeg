@@ -32,7 +32,7 @@ unsigned int ME2to2QCD::orderInAlphaEW() const {
 }
 
 double ME2to2QCD::comfac() const {
-  return 32.0*jacobian()*sqr(Constants::pi*SM().alphaS(scale()));
+  return 32.0*sqr(Constants::pi*SM().alphaS(scale()));
 }
 
 void ME2to2QCD::persistentOutput(PersistentOStream & os) const {
