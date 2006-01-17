@@ -2,6 +2,8 @@
 
 	* lib/ThePEG.el: Preliminary fix of the ParVector emacs macro. It
 	now works in a simple case, but it probably needs more testing.
+	... and I did some more testing and slight modifications. It
+	should now be stable.
 
 2006-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

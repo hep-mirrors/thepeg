@@ -1137,21 +1137,29 @@ ParticleVector " class "::decay(const DecayMode & dm,
 	   (t ", Interface::nolimits"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
-     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     " (thepeg-ifn "Set-function: " (concat "&" class "::set" name)
+		   (concat "(void(" class "::*)(" type "))(0)"))
      ", "
-     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     (thepeg-ifn "Get-function: " (concat "&" class "::get" name)
+		   (concat "(" type "(" class "::*)()const)(0)"))
      (cond (isstring "")
-	   (t (concat ",
+	   (t
+	    (concat ",
      "
-		      (read-from-minibuffer "Min-function: "
-					    (concat "&" class "::min" name))
-		      ", "
-		      (read-from-minibuffer "Max-function: "
-					    (concat "&" class "::max" name)))))
-     ", "
-     (read-from-minibuffer "Default-function: "
-			   (concat "&" class "::def" name))))))
-			(insert-string ");
+		    (thepeg-ifn "Min-function: "
+				(concat "&" class "::min" name)
+				(concat "(" type "(" class "::*)()const)(0)"))
+		    ", "
+		    (thepeg-ifn "Max-function: "
+				(concat "&" class "::max" name)
+				(concat "(" type "(" class "::*)()const)(0)"))
+		    )))
+     ",
+     "
+     (thepeg-ifn "Default-function: "
+			   (concat "&" class "::def" name)
+			   (concat "(" type "(" class "::*)()const)(0)"))))))
+  (insert-string ");
 "))
 
 (defun ThePEG-parvector ()
@@ -1195,29 +1203,40 @@ ParticleVector " class "::decay(const DecayMode & dm,
 	   (t ", Interface::nolimits"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
-     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     " (thepeg-ifn "Set-function" (concat "&" class "::set" name)
+		   (concat "(void(" class "::*)(" type ",int))(0)"))
+     ", "
+     (thepeg-ifn "Insert-function: " (concat "&" class "::ins" name)
+		 (concat "(void(" class "::*)(" type ",int))(0)"))
      ",
      "
-     (read-from-minibuffer "Insert-function: " (concat "&" class "::ins" name))
+     (thepeg-ifn "Remove-function: " (concat "&" class "::del" name)
+		 (concat "(void(" class "::*)(int))(0)"))
      ", "
-     (read-from-minibuffer "Remove-function: " (concat "&" class "::del" name))
+     (thepeg-ifn "Get-function: " (concat "&" class "::get" name)
+		 (concat "(vector<" type ">(" class "::*)()const)(0)"))
      ",
      "
-     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     (thepeg-ifn "Default-function: " (concat "&" class "::def" name)
+		 (concat "(" type "(" class "::*)(int)const)(0)"))
      ", "
-     (read-from-minibuffer "Default-function: " (concat "&" class "::def" name))
+     (thepeg-ifn "Min-function: " (concat "&" class "::min" name)
+		 (concat "(" type "(" class "::*)(int)const)(0)"))
      ",
      "
-     (read-from-minibuffer "Min-function: " (concat "&" class "::min" name))
+     (thepeg-ifn "Max-function: " (concat "&" class "::max" name)
+		 (concat "(" type "(" class "::*)(int)const)(0)"))
      ", "
-     (read-from-minibuffer "Max-function: " (concat "&" class "::max" name))))))
+     (thepeg-ifn "Strin-get-function: " (concat "&" class "::max" name)
+		 (concat "(vector<string>(" class "::*)()const)(0)"))))))
   (insert-string ");
 "))
 
-(defun thepeg-getfn (class, name , desc, def, zero)
-  (cond ((y-or-n-p (concat "Is there a " desc " function?"))
+(defun thepeg-ifn (desc def zero)
+  (cond ((y-or-n-p (concat "Is there a " desc "?"))
 	 (read-from-minibuffer (concat desc ": ") def))
-	(t zero)))
+	(t zero)));
+
 
 (defun ThePEG-reference ()
   "Create a Reference variable suitable for inclusion in an Init() function."
@@ -1247,13 +1266,18 @@ ParticleVector " class "::decay(const DecayMode & dm,
      (cond (defn "true")(t "false"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
-     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     " (thepeg-ifn "Set-function: " (concat "&" class "::set" name)
+		   (concat "(void(" class "::*)(Ptr<" type ">::pointer))(0)"))
      ",
      "
-     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
-     ", "
-     (read-from-minibuffer "Check-function: "
-			   (concat "&" class "::check" name))))))
+     (thepeg-ifn "Get-function: " (concat "&" class "::get" name)
+		 (concat "(Ptr<" type ">::pointer(" class "::*)()const)(0)"))
+     ",
+     "
+     (thepeg-ifn "Check-function: "
+		 (concat "&" class "::check" name)
+		 (concat "(bool(" class "::*)(Ptr<"
+			 type ">::const_pointer)const)(0)"))))))
   (insert-string ");
 "))
 
@@ -1289,19 +1313,29 @@ ParticleVector " class "::decay(const DecayMode & dm,
      (cond (defn "true")(t "false"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
-     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     " (thepeg-ifn "Set-function: " (concat "&" class "::set" name)
+		   (concat "(void(" class "::*)(Ptr<"
+			   type ">::pointer,int))(0)"))
      ",
      "
-     (read-from-minibuffer "Insert-function: " (concat "&" class "::ins" name))
-     ", "
-     (read-from-minibuffer "Remove-function: "
-			   (concat "&" class "::del" name))
+     (thepeg-ifn "Insert-function: " (concat "&" class "::ins" name)
+		 (concat "(void(" class "::*)(Ptr<"
+			 type ">::pointer,int))(0)"))
      ",
      "
-     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
-     ", "
-     (read-from-minibuffer "Check-function: "
-			   (concat "&" class "::check" name))))))
+     (thepeg-ifn "Remove-function: " (concat "&" class "::del" name)
+		 (concat "(void(" class "::*)(int))(0)"))
+     ",
+     "
+     (thepeg-ifn "Get-function: " (concat "&" class "::get" name)
+		 (concat "(vector<Ptr<"
+			 type ">::pointer>(" class "::*)()const)(0)"))
+     ",
+     "
+     (thepeg-ifn "Check-function: "
+		 (concat "&" class "::check" name)
+		 (concat "(bool(" class "::*)(Ptr<" type
+			 ">::const_pointer,int)const)(0)"))))))
   (insert-string ");
 "))
 
@@ -1344,13 +1378,16 @@ ParticleVector " class "::decay(const DecayMode & dm,
      (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
-     " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     " (thepeg-ifn "Set-function: " (concat "&" class "::set" name)
+		   (concat "(void(" class "::*)(" type "))(0)"))
      ",
      "
-     (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
+     (thepeg-ifn "Get-function: " (concat "&" class "::get" name)
+		   (concat "(" type "(" class "::*)()const)(0)"))
      ", "
-     (read-from-minibuffer "Default-function: "
-			   (concat "&" class "::def" name))))))
+     (thepeg-ifn "Default-function: "
+			   (concat "&" class "::def" name)
+		   (concat "(" type "(" class "::*)()const)(0)"))))))
   (insert-string ");")
   (thepeg-switch-option (concat "interface" name)))
 
