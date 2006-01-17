@@ -1172,13 +1172,11 @@ ParticleVector " class "::decay(const DecayMode & dm,
 	(t    (setq stru "")))
   (setq size (read-from-minibuffer "Size of vector (varying if < 0): " "-1"))
   (setq defa (read-from-minibuffer "Default value: " (concat "1.0" stru)))
-  (setq limlo (cond (isstring nil)
-		    (t (y-or-n-p "Is this parameter limited from below? "))))
+  (setq limlo (y-or-n-p "Is this parameter limited from below? "))
   (cond (limlo (setq mini (read-from-minibuffer "Minimum value: "
 						(concat "0.0" stru))))
 	(t    (setq mini (concat "0" stru))))
-  (setq limup (cond (isstring nil)
-		    (t (y-or-n-p "Is this parameter limited from above? "))))
+  (setq limup (y-or-n-p "Is this parameter limited from above? "))
   (cond (limup (setq maxi (read-from-minibuffer "Maximum value: "
 						(concat "10.0" stru))))
 	(t    (setq maxi (concat "0" stru))))
@@ -1188,13 +1186,13 @@ ParticleVector " class "::decay(const DecayMode & dm,
   static ParVector<" class "," type "> interface" name "
     (\"" name "\",
      \"" desc "\",
-     " memb ", " (cond (hasu (concat unit ", "))(t "")) defa ", " size ", "
+     " memb ", " (cond (hasu (concat unit ", "))(t "")) size ", " defa ", "
      mini ", " maxi ",
-     " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false")) ", "
-     (cond ((and limup limlo) ", Interfaced::limited")
-	   (limup ", Interfaced::upperlim")
-	   (limlo ", Interfaced::upperlim")
-	   (t ", Interfaced::nolimits"))))
+     " (cond (safe "true")(t "false")) ", " (cond (ronl "true")(t "false"))
+     (cond ((and limup limlo) ", Interface::limited")
+	   (limup ", Interface::upperlim")
+	   (limlo ", Interface::upperlim")
+	   (t ", Interface::nolimits"))))
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
      " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
