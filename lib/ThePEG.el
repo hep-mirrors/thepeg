@@ -1198,6 +1198,11 @@ ParticleVector " class "::decay(const DecayMode & dm,
      " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
      ",
      "
+     (read-from-minibuffer "Insert-function: " (concat "&" class "::ins" name))
+     ", "
+     (read-from-minibuffer "Remove-function: " (concat "&" class "::del" name))
+     ",
+     "
      (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
      ", "
      (read-from-minibuffer "Default-function: " (concat "&" class "::def" name))
@@ -1208,6 +1213,11 @@ ParticleVector " class "::decay(const DecayMode & dm,
      (read-from-minibuffer "Max-function: " (concat "&" class "::max" name))))))
   (insert-string ");
 "))
+
+(defun thepeg-getfn (class, name , desc, def, zero)
+  (cond ((y-or-n-p (concat "Is there a " desc " function?"))
+	 (read-from-minibuffer (concat desc ": ") def))
+	(t zero)))
 
 (defun ThePEG-reference ()
   "Create a Reference variable suitable for inclusion in an Init() function."
@@ -1263,7 +1273,7 @@ ParticleVector " class "::decay(const DecayMode & dm,
   (setq safe (y-or-n-p "Is this reference vector dependency safe? "))
   (setq ronl (y-or-n-p "Is this reference vector read-only? "))
   (setq rebi (y-or-n-p
-	      "Should the reference in the vector be automatically rebound? "))
+	      "Should the references in the vector be automatically rebound? "))
   (setq null (y-or-n-p "Can the references in the vector be null? "))
   (setq defn
 	(y-or-n-p
@@ -1280,6 +1290,12 @@ ParticleVector " class "::decay(const DecayMode & dm,
   (cond ((y-or-n-p "Are there any set/get functions? ")
 	 (insert-string (concat ",
      " (read-from-minibuffer "Set-function: " (concat "&" class "::set" name))
+     ",
+     "
+     (read-from-minibuffer "Insert-function: " (concat "&" class "::ins" name))
+     ", "
+     (read-from-minibuffer "Remove-function: "
+			   (concat "&" class "::del" name))
      ",
      "
      (read-from-minibuffer "Get-function: " (concat "&" class "::get" name))
