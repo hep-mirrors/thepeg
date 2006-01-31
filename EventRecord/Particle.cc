@@ -48,10 +48,16 @@ Particle::Particle(const Particle & p)
 void Particle::initFull() const {
   if ( theRep ) return;
   theRep = new ParticleRep;
-  theRep->theLifeLength.setMass
-    (data().generateLifeTime(mass(), data().generateWidth(mass())));
+
+  double width = data().generateWidth(mass());
+  double lifetime = data().generateLifeTime(mass(), width);
+
+  theRep->theLifeLength.setTau(lifetime);
+
   theRep->theLifeLength.setVect(static_cast<const LorentzMomentum &>
-    (momentum()*(lifeTime()/max(mass(), Constants::epsilon*GeV))));
+    (momentum()*(lifetime/max(mass(), Constants::epsilon*GeV))));
+
+  theRep->theLifeLength.rescaleEnergy();
 }
 
 PPtr Particle::clone() const {

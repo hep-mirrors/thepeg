@@ -25,6 +25,7 @@
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Repository/UseRandom.h"
+#include "ThePEG/CLHEPWrap/RandExponential.h"
 
 namespace ThePEG {
 
@@ -337,7 +338,9 @@ Energy ParticleData::generateWidth(Energy m) const {
 }
 
 Length ParticleData::generateLifeTime(Energy m, Energy w) const {
-  return widthGenerator()? widthGenerator()->lifeTime(*this, m, w): cTau();
+  return widthGenerator() ? 
+    widthGenerator()->lifeTime(*this, m, w) : 
+    RandExponential::shoot(UseRandom::currentEngine(), cTau()/mm)*mm;
 }
 
 PPtr ParticleData::produceParticle(const Lorentz5Momentum & pp) const {

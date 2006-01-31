@@ -1,3 +1,8 @@
+2006-01-31  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDT/ParticleData.cc, EventRecord/Particle.cc: Bugfixes to
+	correct the setting of life lengths. Displaced vertices now work.
+
 2006-01-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Preliminary fix of the ParVector emacs macro. It
