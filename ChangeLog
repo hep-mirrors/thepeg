@@ -1,5 +1,8 @@
 2006-01-31  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Repository/EventGenerator.cc: Increased upper limit for
+	MaxErrors to 100000. 
+
 	* PDT/ParticleData.cc, EventRecord/Particle.cc: Bugfixes to
 	correct the setting of life lengths. Displaced vertices now work.
 
