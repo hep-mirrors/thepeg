@@ -469,10 +469,11 @@ void Particle::persistentOutput(PersistentOStream & os) const {
 }
 
 void Particle::persistentInput(PersistentIStream & is, int) {
-  bool hasRep;
+  bool readRep;
   EventConfig::getParticleData(is, theData);
-  is >> iunit(theMomentum, GeV) >> hasRep;
-  if ( !hasRep ) return;
+  is >> iunit(theMomentum, GeV) >> readRep;
+  if ( !readRep ) return;
+  if ( !hasRep() ) theRep = new ParticleRep;
 
   is >> rep().theParents >> rep().theChildren
      >> rep().thePrevious >> rep().theNext >> rep().theBirthStep

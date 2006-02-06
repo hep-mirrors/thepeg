@@ -57,21 +57,20 @@ int main(int argc, char * argv[]) {
 
     breakThePEG();
 
-    if ( !mainclass.empty() ) {
-      if ( eg ) eg->initialize();
-      Main::eventGenerator(eg);
-      vector<string> args;
-      for ( int iarg = 1; iarg < argc; ++iarg ) args.push_back(argv[iarg]);
-      Main::arguments(args);
-      Main::N(N);
-      if ( !DynamicLoader::load(mainclass) )
-	std::cout << "Main class file '" << mainclass << "' not found." << endl;
-      else if ( eg ) eg->finish();
-    } else if ( eg ) {
-      if ( seed > 0 ) eg->setSeed(seed);
-      eg->go(1, N);
-    } else std::cout << "eg = nil" << endl;
+    if ( !eg ) {
+      std::cout << "eg = nil" << endl;
+      return 1;
+    }
 
+    if ( seed > 0 ) eg->setSeed(seed);
+    if ( !mainclass.empty() ) {
+      Main::arguments(vector<string>(argv + 1, argv + argc));
+      Main::N(N);
+      if ( !eg->loadMain(mainclass) )
+	std::cout << "Main class file '" << mainclass << "' not found." << endl;
+    } else {
+      eg->go(1, N);
+    }
   }
   catch ( Exception & e ) {
     cerr << "Unexpected exception caught: " << e.what() << endl;

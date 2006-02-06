@@ -185,6 +185,14 @@ public:
   void finalize();
 
   /**
+   * Dynamically load the Main class in the given \a file, making it
+   * run its Init() method where it may use this EventGenerator. Also
+   * call the initialize function before and the finish() function
+   * afterwards.
+   */
+  bool loadMain(string file);
+
+  /**
    * Return the maximum center of mass energy possible for an
    * event. Return zero if the assigned EventHander is not able to
    * generatr full events.

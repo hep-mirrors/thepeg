@@ -29,7 +29,9 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Config/algorithm.h"
+#include "ThePEG/Utilities/DynamicLoader.h"
 #include <cstdlib>
+#include "ThePEG/Repository/Main.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "EventGenerator.tcc"
@@ -205,6 +207,17 @@ void EventGenerator::initialize() {
   CurrentGenerator currentGenerator(this);
   doInitialize();
 }
+
+bool EventGenerator::loadMain(string file) {
+  initialize();
+  UseRandom currentRandom(theRandom);
+  CurrentGenerator currentGenerator(this);
+  Main::eventGenerator(this);
+  bool ok = DynamicLoader::load(file);
+  finish();
+  return ok;
+}
+
 
 void EventGenerator::go(long next, long maxevent) {
   UseRandom currentRandom(theRandom);
@@ -671,7 +684,7 @@ void EventGenerator::Init() {
      "The number of events to be generated in this run. If less than zero, "
      "the number of events is unlimited",
      &EventGenerator::theNumberOfEvents, 1000, -1, Constants::MaxInt,
-     true, false, true);
+     true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,int> interfaceDebugLevel
     ("DebugLevel",
@@ -685,38 +698,41 @@ void EventGenerator::Init() {
   static Parameter<EventGenerator,int> interfacePrintEvent
     ("PrintEvent",
      "If the debug level is above zero, print the first 'PrintEvent' events.",
-     &EventGenerator::printEvent, 0, 0, 1000, true, false, true);
+     &EventGenerator::printEvent, 0, 0, 1000, true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,long> interfaceDumpPeriod
     ("DumpPeriod",
      "If the debug level is above zero, dump the full state of the run every "
-     "'DunpPeriod' events.",
+     "'DumpPeriod' events.",
      &EventGenerator::dumpPeriod, 0, 0, Constants::MaxInt,
-     true, false, true);
+     true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,long> interfaceDebugEvent
     ("DebugEvent",
      "If the debug level is above zero, step up to the highest debug level "
      "befor event number 'DebugEvent'.",
      &EventGenerator::debugEvent, 0, 0, Constants::MaxInt,
-     true, false, true);
+     true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,int> interfaceMaxWarnings
     ("MaxWarnings",
      "The maximum number of warnings of each type which will be printed.",
-     &EventGenerator::maxWarnings, 10, 1, 100, true, false, true);
+     &EventGenerator::maxWarnings,
+     10, 1, 100, true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,int> interfaceMaxErrors
     ("MaxErrors",
      "The maximum number of errors of each type which will be tolerated. "
      "If more errors are reported, the run will be aborted.",
-     &EventGenerator::maxErrors, 10, 1, 100000, true, false, true);
+     &EventGenerator::maxErrors,
+     10, 1, 100000, true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,int> interfaceQuickSize
     ("QuickSize",
      "The max absolute id number of particle data objects which are accessed "
      "quickly through a vector indexed by the id number.",
-     &EventGenerator::theQuickSize, 7000, 0, 50000, true, false, true);
+     &EventGenerator::theQuickSize,
+     7000, 0, 50000, true, false, Interface::lowerlim);
 
 }
 
