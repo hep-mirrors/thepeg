@@ -65,8 +65,10 @@ struct ClassTraitsBase: public ClassTraitsType {
 
   /**
    * The name of a file containing the dynamic library where the class
-   * T is implemented. It may also include several libraries if the
-   * class T depends on other classes.
+   * T is implemented. It may also include several, space separated,
+   * libraries if the class T depends on other classes (base classes
+   * excepted). In this case the listed libraries will be dynamically
+   * linked in the order they are specified.
    */
   static string library() { return ""; }
 
@@ -177,9 +179,13 @@ struct ClassTraits<Class>:                                                 \
     public ClassTraitsBase<Class> {                                        \
   /** Return a platform-independent class name */                          \
   static string className() { return Name; }                               \
-  /** Return the name of the shared library be loaded to get               \
-   *  access to this class and every other class it uses                   \
-   *  (except the base class). */                                          \
+  /**                                                                      \
+   * The name of a file containing the dynamic library where the class     \
+   * T is implemented. It may also include several, space separated,       \
+   * libraries if the class T depends on other classes (base classes       \
+   * excepted). In this case the listed libraries will be dynamically      \
+   * linked in the order they are specified.                               \
+   */                                                                      \
   static string library() { return Lib; }                                  \
 }                                                                          \
 

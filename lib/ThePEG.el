@@ -619,9 +619,13 @@ struct ClassTraits<" namespacequalifyer "THECLASS>
   : public ClassTraitsBase<" namespacequalifyer "THECLASS> {
   /** Return a platform-independent class name */
   static string className() { return \"" namespace "::THECLASS\"; }
-  /** Return the name(s) of the shared library (or libraries) be loaded to get
-   *  access to the THECLASS class and any other class on which it depends
-   *  (except the base class). */
+  /**
+   * The name of a file containing the dynamic library where the class
+   * THECLASS is implemented. It may also include several, space-separated,
+   * libraries if the class THECLASS depends on other classes (base classes
+   * excepted). In this case the listed libraries will be dynamically
+   * linked in the order they are specified.
+   */
   static string library() { return \"THECLASS.so\"; }
 };
 
