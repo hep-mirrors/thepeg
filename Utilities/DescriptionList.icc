@@ -24,4 +24,8 @@ DescriptionList::find(const string & name) {
   return it->second;
 }
 
+inline const DescriptionList::DescriptionMap & DescriptionList::all() {
+  return descriptionMap();
+}
+
 }

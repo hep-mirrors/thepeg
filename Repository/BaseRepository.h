@@ -242,6 +242,12 @@ public:
   static IBPtr TraceObject(string name);
 
   /**
+   * Return a string containing the name of the given class
+   * description and its base classes, one on each line.
+   */
+  static string GetInterfacedBaseClasses(const ClassDescriptionBase * cdb);
+
+  /**
    * Get an object. Decompose a string of the form
    * <code>object:interface</code> or
    * <code>object:vector-interface[pos]</code>. Retrun a pointer to

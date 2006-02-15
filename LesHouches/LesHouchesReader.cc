@@ -753,6 +753,7 @@ void LesHouchesReader::Init() {
      "form. If empty, no cache file will be generated.",
      &LesHouchesReader::theCacheFileName, "",
      true, false);
+  interfaceCacheFileName.fileType();
 
   static Reference<LesHouchesReader,PartonExtractor> interfacePartonExtractor
     ("PartonExtractor",

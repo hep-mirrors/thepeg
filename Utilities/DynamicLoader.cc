@@ -72,11 +72,13 @@ bool DynamicLoader::loadcmd(string file) {
 void DynamicLoader::appendPath(string path) {
   if ( path[path.size()-1] != '/' ) path += '/';
   paths.push_back(path);
+  apppaths.push_back(path);
 }
 
 void DynamicLoader::prependPath(string path) {
   if ( path[path.size()-1] != '/' ) path += '/';
   paths.insert(paths.begin(), path);
+  prepaths.push_back(path);
 }
 
 bool DynamicLoader::load(string name) {
@@ -101,7 +103,23 @@ bool DynamicLoader::load(string name) {
   return false;
 }
 
+const vector<string> & DynamicLoader::appendedPaths() {
+  return apppaths;
+}
+
+const vector<string> & DynamicLoader::prependedPaths() {
+  return prepaths;
+}
+
+const vector<string> & DynamicLoader::allPaths() {
+  return paths;
+}
+
 vector<string> DynamicLoader::paths = DynamicLoader::defaultPaths();
+
+vector<string> DynamicLoader::prepaths = vector<string>();
+
+vector<string> DynamicLoader::apppaths = vector<string>();
 
 string DynamicLoader::lastErrorMessage;
 

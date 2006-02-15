@@ -34,6 +34,15 @@ void PersistentIStream::init() {
   if ( tag != "ThePEG version 1 Database" ) setBadState();
   operator>>(version);
   operator>>(subVersion);
+  if ( version > 0 || subVersion > 0 ) {
+    vector<string> paths;
+    *this >> paths;
+    for ( int i = 0, N = paths.size(); i < N; ++i )
+      DynamicLoader::appendPath(paths[i]);
+    *this >> paths;
+    for ( int i = 0, N = paths.size(); i < N; ++i )
+      DynamicLoader::prependPath(paths[i]);
+  }
 }
 
 void PersistentIStream::endObject() {

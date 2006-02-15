@@ -48,7 +48,7 @@ inline ParameterTBase<string>::
 ParameterTBase(string newName, string newDescription, string newClassName,
 	       const type_info & newTypeInfo, bool depSafe, bool readonly)
   : ParameterBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
-		  readonly, false) {}
+		  readonly, false), isFileType(NoFile) {}
 
 template <typename Type>
 inline ParameterTBase<Type>::~ParameterTBase() {}
@@ -143,7 +143,27 @@ inline void Parameter<T,Type>::setMaxFunction(GetFn mf) {
 }
 
 inline string ParameterTBase<string>::type() const {
-  return "Ps";
+  switch ( file() ) {
+  case File: return "PF";
+  case Directory: return "PD";
+  default: return "Ps";
+  }
+}
+
+inline void ParameterTBase<string>::file(FileType t) {
+  isFileType = t;
+}
+
+inline void ParameterTBase<string>::fileType() {
+  file(File);
+}
+
+inline void ParameterTBase<string>::directoryType() {
+  file(Directory);
+}
+
+inline ParameterTBase<string>::FileType ParameterTBase<string>::file() const {
+  return isFileType;
 }
 
 inline string ParameterTBase<string>::doxygenType() const {

@@ -73,10 +73,12 @@ protected:
    * @param newInfo the type_info object corresponding to the class.
    * @param newVersion the implementation version of the class.
    * @param newLibrary the name of a file containing the dynamic
+   * @param abst true if the class is abstract.
    * library where the class is implemented.
    */
   inline ClassDescriptionBase(string newName, const type_info & newInfo,
-			      int newVersion, string newLibrary);
+			      int newVersion, string newLibrary,
+			      bool abst);
 
 public:
 
@@ -145,6 +147,11 @@ public:
    */
   bool isA(const ClassDescriptionBase & base) const;
 
+  /**
+   * Return true if the corresponding class is abstract.
+   */
+  bool abstract() const;
+
 protected:
 
   /**
@@ -179,6 +186,11 @@ private:
   DescriptionVector theBaseClasses;
 
   /**
+   * True if this class is abstract.
+   */
+  bool isAbstract;
+
+  /**
    * True if this object was set up properly.
    */
   bool done;
@@ -200,9 +212,10 @@ public:
 public:
 
   /**
-   * Default constructor.
+   * Default constructor. If \a abst is true then the corresponding
+   * class is abstract.
    */
-  inline ClassDescriptionTBase();
+  inline ClassDescriptionTBase(bool abst);
 
   /**
    * The descructor.
@@ -229,6 +242,11 @@ public:
   typedef ClassTraits<T> Traits;
 
 public:
+
+  /**
+   * Default constructor.
+   */
+  inline AbstractClassDescription();
 
   /**
    * Do not create an object of the described class (which is
@@ -271,6 +289,11 @@ public:
 public:
 
   /**
+   * Default constructor.
+   */
+  inline ClassDescription();
+
+  /**
    * Create an object of the described class.
    */
   inline virtual BPtr create() const;
@@ -310,6 +333,11 @@ public:
 public:
 
   /**
+   * Default constructor.
+   */
+  inline NoPIOClassDescription();
+
+  /**
    * Create an object of the described class.
    */
   inline virtual BPtr create() const;
@@ -339,6 +367,11 @@ public:
   typedef ClassTraits<T> Traits;
 
 public:
+
+  /**
+   * Default constructor.
+   */
+  inline AbstractNoPIOClassDescription();
 
   /**
    * Do not create an object of the described class (which is

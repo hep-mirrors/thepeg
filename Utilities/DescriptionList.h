@@ -46,6 +46,12 @@ public:
   static inline const ClassDescriptionBase * find(const string & name);
 
   /**
+   * Return the static set of descriptions mapped to the relevant
+   * type_info objects.
+   */
+  static inline const DescriptionMap & all();
+
+  /**
    * Print the classes in the list and their base classes to a
    * stream. Mainly intended for debugging purposes.
    */
@@ -65,7 +71,8 @@ protected:
 
   /**
    * Return the static set of descriptions mapped to the relevant
-   * type_info objects. This function has a static DescriptionMap variable which is initialized the first time it is called.
+   * type_info objects. This function has a static DescriptionMap
+   * variable which is initialized the first time it is called.
    */
   static DescriptionMap & descriptionMap();
 

@@ -64,6 +64,6 @@ void LesHouchesFileReader::Init() {
      "will be read through a pipe.",
      &LesHouchesFileReader::theFileName, "", false, false);
 
-
+  interfaceFileName.fileType();
 }
 

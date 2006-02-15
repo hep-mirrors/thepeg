@@ -660,11 +660,6 @@ private:
   /**
    * Utility function for the interface.
    */
-  Energy maxMass() const;
-
-  /**
-   * Utility function for the interface.
-   */
   void setWidth(Energy);
 
   /**
@@ -680,11 +675,6 @@ private:
   /**
    * Utility function for the interface.
    */
-  Energy maxWidth() const;
-
-  /**
-   * Utility function for the interface.
-   */
   void setCut(Energy);
 
   /**
@@ -696,11 +686,6 @@ private:
    * Utility function for the interface.
    */
   Energy defCut() const;
-
-  /**
-   * Utility function for the interface.
-   */
-  Energy maxCut() const;
 
   /**
    * Utility function for the interface.
@@ -736,11 +721,6 @@ private:
    * Utility function for the interface.
    */
   Length defCTau() const;
-
-  /**
-   * Utility function for the interface.
-   */
-  Length maxCTau() const;
 
   /**
    * Utility function for the interface.

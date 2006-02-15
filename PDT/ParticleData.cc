@@ -385,10 +385,6 @@ Energy ParticleData::defMass() const {
   return theDefMass;
 }
 
-Energy ParticleData::maxMass() const {
-  return 10.0*max(mass(),defMass());
-}
-
 void ParticleData::setWidth(Energy wi) {
   width(wi);
 }
@@ -401,10 +397,6 @@ Energy ParticleData::defWidth() const {
   return theDefWidth;
 }
 
-Energy ParticleData::maxWidth() const {
-  return 10.0*max(theWidth,theDefWidth);
-}
-
 void ParticleData::setCut(Energy ci) {
   widthCut(ci);
 }
@@ -415,10 +407,6 @@ Energy ParticleData::getCut() const {
 
 Energy ParticleData::defCut() const {
   return theDefCut;
-}
-
-Energy ParticleData::maxCut() const {
-  return 10.0*max(max(theWidthUpCut, theWidthLoCut), theDefCut);
 }
 
 void ParticleData::setUpCut(Energy ci) {
@@ -447,10 +435,6 @@ Length ParticleData::getCTau() const {
 
 Length ParticleData::defCTau() const {
   return theDefCTau;
-}
-
-Length ParticleData::maxCTau() const {
-  return 10.0*max(theCTau,theDefCTau);
 }
 
 void ParticleData::setStable(long is) {
@@ -604,9 +588,8 @@ void ParticleData::Init() {
      "<interface>Mass_generator</interface> object associated with the "
      "particle.",
      &ParticleData::theMass, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
-     false, false, true,
-     &ParticleData::setMass, 0, 0, &ParticleData::maxMass,
-     &ParticleData::defMass);
+     false, false, Interface::lowerlim,
+     &ParticleData::setMass, 0, 0, 0, &ParticleData::defMass);
 
   static Parameter<ParticleData,Energy> interfaceDefMass
     ("DefaultMass",
@@ -616,45 +599,49 @@ void ParticleData::Init() {
      "<interface>Mass_generator</interface> object associated with the "
      "particle.",
      &ParticleData::theDefMass, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
-     false, true, true);
+     false, true, Interface::lowerlim);
 
   static Parameter<ParticleData,Energy> interfaceWidth
     ("Width",
      "The width of the particle in GeV.",
-     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, false, Interface::lowerlim,
      &ParticleData::setWidth, &ParticleData::getWidth,
-     0, &ParticleData::maxWidth, &ParticleData::defWidth);
+     0, 0, &ParticleData::defWidth);
 
   static Parameter<ParticleData,Energy> interfaceDefWidth
     ("DefaultWidth",
      "The default width of the particle in GeV.",
      &ParticleData::theDefWidth, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
-     false, true, true);
+     false, true, Interface::lowerlim);
 
   static Parameter<ParticleData,Energy> interfaceWidthUpCut
     ("WidthUpCut",
      "The upper hard cutoff in GeV in generated mass, which is the maximum "
      "allowed upwards deviation from the nominal mass.",
-     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, false, Interface::lowerlim,
      &ParticleData::setUpCut, &ParticleData::getUpCut,
-     0, &ParticleData::maxCut, &ParticleData::defCut);
+     0, 0, &ParticleData::defCut);
   
   static Parameter<ParticleData,Energy> interfaceWidthLoCut
     ("WidthLoCut",
      "The lower hard cutoff in GeV in generated mass, which is the maximum "
      "allowed downwards deviation from the nominal mass.",
-     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, false, Interface::lowerlim,
      &ParticleData::setLoCut, &ParticleData::getLoCut,
-     0, &ParticleData::maxCut, &ParticleData::defCut);
+     0, 0, &ParticleData::defCut);
   
   static Parameter<ParticleData,Energy> interfaceWidthCut
     ("WidthCut",
      "The hard cutoff in GeV in generated mass, which is the maximum "
      "allowed deviation from the nominal mass. Sets both the upper and lower "
      "cut. (The displayed value is the maximium of the upper and lower cut.)",
-     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true,
+     0, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, false, Interface::lowerlim,
      &ParticleData::setCut, &ParticleData::getCut,
-     0, &ParticleData::maxCut, &ParticleData::defCut);
+     0, 0, &ParticleData::defCut);
   
   static Parameter<ParticleData,Energy> interfaceDefWidthCut
     ("DefaultWidthCut",
@@ -662,7 +649,7 @@ void ParticleData::Init() {
      "allowed deviation from the nominal mass. For the actual cutoff, the "
      "upper and lower cut can be set separately.",
      &ParticleData::theDefCut, GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
-     false, true, true);
+     false, true, Interface::lowerlim);
   
   static Parameter<ParticleData,Length> interfaceCTau
     ("LifeTime",
@@ -670,9 +657,10 @@ void ParticleData::Init() {
      "The actual lifetime of a particle instance is generated "
      "from this number by the <interface>Mass_generator</interface> "
      "object associated with the particle.",
-     0, mm, 0.0*mm, 0.0*mm, Constants::MaxLength, false, false, true,
+     0, mm, 0.0*mm, 0.0*mm, Constants::MaxLength,
+     false, false, Interface::lowerlim,
      &ParticleData::setCTau, &ParticleData::getCTau,
-     0, &ParticleData::maxCTau, &ParticleData::defCTau);
+     0, 0, &ParticleData::defCTau);
 
   static Parameter<ParticleData,Length> interfaceDefCTau
     ("DefaultLifeTime",
@@ -681,7 +669,7 @@ void ParticleData::Init() {
      "from this number by the <interface>Mass_generator</interface> "
      "object associated with the particle.",
      &ParticleData::theDefCTau, mm, 0.0*mm, 0.0*mm, Constants::MaxLength,
-     false, true, true);
+     false, true, Interface::lowerlim);
 
   static Switch<ParticleData> interfaceColour
     ("Colour",
@@ -835,6 +823,18 @@ void ParticleData::Init() {
      0, -1, false, false, false, false, 0,
      &ParticleData::insDecayModes, &ParticleData::delDecayModes,
      &ParticleData::getDecayModes);
+
+  interfaceStable.rank(14);
+  interfaceDecayModes.rank(13);
+  interfaceMass.rank(12);
+  interfaceWidth.rank(11);
+  interfaceWidthCut.rank(10);
+  interfaceCTau.rank(9);
+  interfaceMassGenerator.rank(8);
+  interfaceWidthGenerator.rank(7);
+  interfaceWidthUpCut.rank(-0.1);
+  interfaceWidthLoCut.rank(-0.1);
+
 
 }
 

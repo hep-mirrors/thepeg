@@ -64,6 +64,25 @@ public:
    * appended version numbers where available.
    */
   static string dlnameversion(string libs);
+
+  /**
+   * Return the full list of directories to seach for dynaically
+   * linkable libraries.
+   */
+  static const vector<string> & allPaths();
+
+  /**
+   * Return the list of appended directories to seach for dynaically
+   * linkable libraries.
+   */
+  static const vector<string> & appendedPaths();
+
+  /**
+   * Return the list of prepended directories to seach for dynaically
+   * linkable libraries.
+   */
+  static const vector<string> & prependedPaths();
+
 private:
 
   /**
@@ -71,6 +90,18 @@ private:
    * libraries.
    */
   static vector<string> paths;
+
+  /**
+   * The list of prepended directories to seach for dynaically linkable
+   * libraries.
+   */
+  static vector<string> prepaths;
+
+  /**
+   * The list of appended directories to seach for dynaically linkable
+   * libraries.
+   */
+  static vector<string> apppaths;
 
   /**
    * Used to initialize the paths vector from the ThePEG_PATH

@@ -154,11 +154,6 @@ private:
    */
   Energy defConstituentMass() const;
 
-  /**
-   * Utility function for the interface.
-   */
-  Energy maxConstituentMass() const;
-
 private:
 
   /**

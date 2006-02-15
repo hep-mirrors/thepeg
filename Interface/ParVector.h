@@ -88,6 +88,11 @@ public:
 		      string arguments) const throw(InterfaceException);
 
   /**
+   * Return a complete description of this parameter vector.
+   */
+  virtual string fullDescription(const InterfacedBase & ib) const;
+
+  /**
    * Set the \a i'th element of a container of member variables of \a
    * ib to \a val. \a val should be able to be read into the
    * corresponding variable type through a stringstream with the
@@ -138,6 +143,11 @@ public:
    */
   virtual string def(const InterfacedBase & ib, int i) const
     throw(InterfaceException) = 0;
+
+  /**
+   * Return the general default value for this parameter vector.
+   */
+  virtual string def() const = 0;
 
   /**
    * Set the \a i'th element of a container of member variables of \a
@@ -287,6 +297,11 @@ public:
   virtual string doxygenType() const;
 
   /**
+   * Return a complete description of this parameter vector.
+   */
+  virtual string fullDescription(const InterfacedBase & ib) const;
+
+  /**
    * Set the \a i'th element of a container of member variables of \a
    * ib to val. Uses a stringstream to read the \a val into a Type
    * object and then calls tset(InterfacedBase &, Type, int).
@@ -379,6 +394,17 @@ public:
    */
   virtual Type tdef(const InterfacedBase & ib, int i) const
     throw(InterfaceException) = 0;
+
+  /**
+   * Return the general default value for this parameter vector. Calls
+   * tdef() and converts the returned value with an ostringstream.
+   */
+  virtual string def() const;
+
+  /**
+   * Return the general default value for this parameter vector.
+   */
+  virtual Type tdef() const = 0;
 
   /**
    * set the \a i'th element of a container of member variables of \a ib to
@@ -839,6 +865,11 @@ public:
    */
   virtual Type tdef(const InterfacedBase &, int) const
     throw(InterfaceException);
+
+  /**
+   * Return the general default value for this parameter vector.
+   */
+  virtual Type tdef() const;
 
   /**
    * Give a pointer to a member function to be used by 'tset()'.

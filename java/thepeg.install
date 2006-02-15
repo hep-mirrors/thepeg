@@ -1,0 +1,11 @@
+#!/bin/sh
+export ThePEG_INSTALL_PATH=@path@
+VERSION=""
+if [ $# -gt 1 ]; then
+  if [ "$1" == "-v" ]; then
+    VERSION="-$2"
+    shift 2
+  fi
+fi
+export LD_LIBRARY_PATH=${ThePEG_INSTALL_PATH}:${LD_LIBRARY_PATH}
+exec @java@ -jar ${ThePEG_INSTALL_PATH}/ThePEG.jar ${ThePEG_INSTALL_PATH}/setupThePEG${VERSION}.bin $*

@@ -1,5 +1,7 @@
 2006-02-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* *** GLOBAL ***: Joined in changes from the Java-devel branch.
+
 	* Interface/InterfacedBase.h, Interface/Interfaced.h: Removed the
 	'pure abstract' qualifiers on the doupdate, doinit,
 	etc. functions.
@@ -37,12 +39,98 @@
 	* PDT/ParticleData.cc, EventRecord/Particle.cc: Bugfixes to
 	correct the setting of life lengths. Displaced vertices now work.
 
+2006-01-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.cc): Indicated that the Path parameter
+	corresponds to a directory.
+
+	* LesHouches/LesHouchesFileReader.cc: Indicated that the FileName
+	parameter corresponds to a file.
+
+	* Interface/Parameter.*: Added option to indicate that a string
+	parameter corresponds to a file or a directory.
+
+2006-01-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.cc: Modified format of optional
+	printout of event number.
+
+	* Repository/Repository.*: Added command to save a run to a
+	specific file.
+
+2006-01-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Repository.*: Added command to remove a run.
+
+2006-01-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/runThePEG.cc, Repository/MultiEventGenerator.*,
+	Repository/EventGenerator.*: Added run-time option to write out
+	event number at suitable intervals. Also added possibility to read
+	a run file from standard input and to execute runThePEG remotely
+	with ssh.
+
+2006-01-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.*: Added command interfaces to make
+	and save event generator runs.
+
+	* Repository/Repository.cc: Fixed bug in makerun command.
+
+	* Repository/BaseRepository.*: Added commands to describe classes
+	and to get base classes.
+
+	* configure.ac, acinclude.m4: Cleaned up configure script.
+
+2006-01-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Makefile.am, configure.ac: Fixed checks and conditional
+	compilation for the java GUI.
+
 2006-01-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Preliminary fix of the ParVector emacs macro. It
 	now works in a simple case, but it probably needs more testing.
 	... and I did some more testing and slight modifications. It
 	should now be stable.
+
+2006-01-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/BaseRepository.cc: Added commands to append
+	libraries.
+
+	* Utilities/DynamicLoader.*, Persistency/*: The persistent streams
+	now remembers which library paths were added to search for dynamic
+	libraries.
+
+	* PDT/DecayMode.cc: Mad the Decayer interface non-nullable.
+
+2006-01-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/BaseRepository.cc: Added "check" command and fixed
+	"rcp" command.
+
+2006-01-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/ParticleData.*, PDT/ConstituentParticleData.*,
+	PDF/BeamParticleData.cc: Added ranking of interfaces and fixed the
+	limits of parameters.
+
+	* Interface/Parameter.*: Fixed output from fulldescribe to handle
+	unlimited parameters reasonably.
+
+	* Repository/BaseRepository.*, Interface/InterfaceBase.*: Added
+	facility for ranking interfaces. This is used to sort interfaces
+	for UIs.
+
+	* Utilities/DescriptionList.h: Added possibility access map of all
+	classes.
+
+	* Utilities/ClassDescription.*: Added possibility to ask a
+	CLassDescription whether it is abstract or not.
+
+	* Repository/BaseRepository.cc: Added lsclass command to list
+	concrete (sub)classes.
 
 2006-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

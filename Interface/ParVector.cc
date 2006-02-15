@@ -44,6 +44,25 @@ exec(InterfacedBase & i, string action, string arguments) const
   return ret.str();
 }
 
+string ParVectorBase::fullDescription(const InterfacedBase & ib) const {
+  ostringstream os;
+  StringVector vals = get(ib);
+  os << InterfaceBase::fullDescription(ib)
+     << size() << "\n" << vals.size() << "\n";
+  for ( int i = 0, N = vals.size(); i < N; ++i ) {
+    string min = minimum(ib, i);
+    if ( min.empty() ) min = "-inf";
+    string max = maximum(ib, i);
+    if ( max.empty() ) max = "inf";
+    os << vals[i] << "\n"
+       << min << "\n"
+       << def(ib, i) << "\n"
+       << max << "\n";
+  }
+  return os.str();
+}
+
+
 ParVExIndex::ParVExIndex(const InterfaceBase & i, const InterfacedBase & o,
 			 int j) {
   theMessage << "Could not access element " << j

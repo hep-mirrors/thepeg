@@ -707,6 +707,18 @@ class ParameterTBase<string>: public ParameterBase {
 public:
 
   /**
+   * Enumerated variables to determine of a string parameter
+   * corresponds to a file or a directory.
+   */
+  enum FileType {
+    NoFile,    /**< Neither file nor directory. */
+    File,      /**< The parameter corresponds to a file. */
+    Directory  /**< The parameter corresponds to a directory. */
+  };
+
+public:
+
+  /**
    * Standard constructor.
    *
    * @param newName the name of the interface, may only contain
@@ -739,7 +751,27 @@ public:
   /**
    * Return a code for the type of this parameter.
    */
- inline  virtual string type() const;
+  inline virtual string type() const;
+
+  /**
+   * Indicate that this parameter corresponds to a file. 
+   */
+  inline void fileType();
+
+  /**
+   * Indicate that this parameter corresponds to a directory. 
+   */
+  inline void directoryType();
+
+  /**
+   * Indicate if this parameter corresponds to a file or directory. 
+   */
+  inline void file(FileType t);
+
+  /**
+   * See if this parameter corresponds to a file or directory.
+   */
+  inline FileType file() const;
 
   /**
    * Set the member variables of \a ib to \a val. Uses a stringstream
@@ -808,6 +840,13 @@ public:
    * in the Doxygen documentation.
    */
   inline virtual string doxygenType() const;
+
+private:
+
+  /**
+   * Indicates if this parameter corresponds to a file or directory. 
+   */
+  FileType isFileType;
 
 };
 

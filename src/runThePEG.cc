@@ -14,6 +14,7 @@ int main(int argc, char * argv[]) {
   long N = -1;
   long seed = 0;
   string mainclass;
+  bool tics = false;
 
   for ( int iarg = 1; iarg < argc; ++iarg ) {
     string arg = argv[iarg];
@@ -31,6 +32,7 @@ int main(int argc, char * argv[]) {
     else if ( arg == "-N" ) N = atoi(argv[++iarg]);
     else if ( arg.substr(0,2) == "-N" ) N = atoi(arg.substr(2).c_str());
     else if ( arg == "-seed" ) seed = atoi(argv[++iarg]);
+    else if ( arg == "-tics" ) tics = true;
     else if ( arg == "-h" ) {
     cerr << "Usage: " << argv[0] << " [-d {debuglevel|-debugitem}] "
 	 << "[-l load-path] [-L first-load-path] run-file" << endl;
@@ -49,10 +51,14 @@ int main(int argc, char * argv[]) {
 
   try {
 
-    PersistentIStream is(run);
     EGPtr eg;
-    is >> eg;
-
+    if ( run == "-" ) {
+      PersistentIStream is(cin);
+      is >> eg;
+    } else {
+      PersistentIStream is(run);
+      is >> eg;
+    }
     MainTimer timer(".runThePEG.timer." + run);
 
     breakThePEG();
@@ -69,7 +75,7 @@ int main(int argc, char * argv[]) {
       if ( !eg->loadMain(mainclass) )
 	std::cout << "Main class file '" << mainclass << "' not found." << endl;
     } else {
-      eg->go(1, N);
+      eg->go(1, N, tics);
     }
   }
   catch ( Exception & e ) {

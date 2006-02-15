@@ -49,7 +49,7 @@ template <typename Type>
 string ParameterTBase<Type>::
 minimum(const InterfacedBase & i) const throw(InterfaceException) {
   ostringstream os;
-  putUnit(os, tminimum(i));
+  if ( ParameterBase::lowerLimit() ) putUnit(os, tminimum(i));
   return os.str();
 }
 
@@ -57,7 +57,7 @@ template <typename Type>
 string ParameterTBase<Type>::
 maximum(const InterfacedBase & i) const throw(InterfaceException) {
   ostringstream os;
-  putUnit(os, tmaximum(i));
+  if ( ParameterBase::upperLimit() ) putUnit(os, tmaximum(i));
   return os.str();
 }
     

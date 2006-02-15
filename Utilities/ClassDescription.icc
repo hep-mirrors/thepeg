@@ -10,9 +10,9 @@ namespace ThePEG {
 
 inline ClassDescriptionBase::
 ClassDescriptionBase(string newName, const type_info & newInfo,
-		     int newVersion, string newLibrary)
+		     int newVersion, string newLibrary, bool abst)
   : Named(newName), theVersion(newVersion), theLibrary(newLibrary),
-    theInfo(newInfo), done(false) {
+    theInfo(newInfo), isAbstract(abst), done(false) {
 }
 
 inline ClassDescriptionBase::~ClassDescriptionBase() {}
@@ -33,6 +33,10 @@ inline bool ClassDescriptionBase::check() const {
   return done;
 }
 
+inline bool ClassDescriptionBase::abstract() const {
+  return isAbstract;
+}
+
 inline const ClassDescriptionBase::DescriptionVector &
 ClassDescriptionBase::descriptions() const {
   return theBaseClasses;
@@ -45,9 +49,9 @@ void ClassDescriptionBase::baseClasses(DescriptionVector::iterator first,
 }
 
 template <typename T>
-inline ClassDescriptionTBase<T>::ClassDescriptionTBase()
+inline ClassDescriptionTBase<T>::ClassDescriptionTBase(bool abst)
   : ClassDescriptionBase(Traits::className(), typeid(T), Traits::version(),
-			 Traits::library()) {
+			 Traits::library(), abst) {
   DescriptionList::Register(*this);
   T::Init();
 }
@@ -61,6 +65,10 @@ inline void ClassDescriptionTBase<T>::setup() {
   ClassDescriptionHelper<T,1>::addBases(bases);
   baseClasses(bases.begin(), bases.end());
 }
+
+template <typename T>
+inline ClassDescription<T>::ClassDescription()
+  : ClassDescriptionTBase<T>(false) {}
 
 template <typename T>
 inline BPtr ClassDescription<T>::create() const {
@@ -78,6 +86,10 @@ inline void ClassDescription<T>::
 input(tBPtr b, PersistentIStream & is, int oldVersion) const {
   Traits::input(Traits::cast(b), is, oldVersion);
 }
+
+template <typename T>
+inline AbstractClassDescription<T>::AbstractClassDescription()
+  : ClassDescriptionTBase<T>(true) {}
 
 template <typename T>
 inline BPtr AbstractClassDescription<T>::create() const {
@@ -98,6 +110,10 @@ input(tBPtr b, PersistentIStream & is, int oldVersion) const {
 }
 
 template <typename T>
+inline NoPIOClassDescription<T>::NoPIOClassDescription()
+  : ClassDescriptionTBase<T>(false) {}
+
+template <typename T>
 inline BPtr NoPIOClassDescription<T>::create() const {
   return Traits::create();
 }
@@ -111,6 +127,10 @@ template <typename T>
 inline void NoPIOClassDescription<T>::
 input(tBPtr, PersistentIStream &, int) const {
 }
+
+template <typename T>
+inline AbstractNoPIOClassDescription<T>::AbstractNoPIOClassDescription()
+  : ClassDescriptionTBase<T>(true) {}
 
 template <typename T>
 inline BPtr

@@ -67,6 +67,8 @@ void BeamParticleData::Init() {
      &BeamParticleData::thePDF, false, false, true, true,
      &BeamParticleData::setPDF, 0, 0);
 
+  interfacePDF.rank(15);
+
 }
 
 BeamParticleWrongPDF::BeamParticleWrongPDF(string p, string pdf) {

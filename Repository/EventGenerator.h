@@ -155,8 +155,10 @@ public:
    * generated. Default is 1.
    * @param maxevent the maximum number of events to be generated. If negative
    * the N() is used instead. Default is -1.
+   * @param tics if true information the number of events generated
+   * and elapsed time will be written to std::cerr after each event.
    */
-  void go(long next = 1, long maxevent = -1);
+  void go(long next = 1, long maxevent = -1, bool tics = false);
 
   /**
    * Generate one event. Calls the virtual method doShoot();
@@ -411,7 +413,7 @@ protected:
   /**
    * Run this EventGenerator session. Is called from go(long,long).
    */
-  virtual void doGo(long next, long maxevent);
+  virtual void doGo(long next, long maxevent, bool tics);
 
   /**
    * Initialize this generator. Is called from initialize().
@@ -422,6 +424,12 @@ protected:
    * Generate one event. Is called from shoot().
    */
   virtual EventPtr doShoot();
+
+  /**
+   * Write out the number of events generated and the elapsed time in
+   * suitable periods.
+   */
+  void tic(long currev = 0, long totev = 0) const;
 
   /**
    * Finish generating an event constructed from the outside. Is
@@ -485,6 +493,16 @@ private:
    * non-default particles to use.
    */
   void strategy(StrategyPtr);
+
+  /**
+   * Isolate, initialize and save this generator to a file.
+   */
+  string doSaveRun(string);
+
+  /**
+   * Isolate and initialize this generator.
+   */
+  string doMakeRun(string);
 
 public:
 

@@ -182,6 +182,18 @@ public:
   inline bool anonymous() const;
 
   /**
+   * Get the rank for this interface. Used for sorting by user
+   * interface.
+   */
+  inline double rank() const;
+
+  /**
+   * Set the rank for this interface. Used for sorting by user
+   * interface.
+   */
+  inline void rank(double r);
+
+  /**
    * If set to true, all read-only interfaces can be changed.
    */
   static bool NoReadOnly;
@@ -197,6 +209,12 @@ private:
    * The class name and for the class this interface is defined for.
    */
   string theClassName;
+
+  /**
+   * A rank assigned to this interface. Used for sorting by user
+   * interface.
+   */
+  double theRank;
 
 protected:
 

@@ -638,7 +638,7 @@ void DecayMode::Init() {
   static Reference<DecayMode,Decayer> interfaceDecayer
     ("Decayer",
      "The ThePEG::Decayer object responsible for performing this decay.",
-     &DecayMode::theDecayer, false, false, true, true,
+     &DecayMode::theDecayer, false, false, true, false,
      &DecayMode::setDecayer);
 
 }

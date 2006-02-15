@@ -14,6 +14,7 @@
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Utilities/StringUtils.h"
+#include <ctime>
 
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -87,10 +88,10 @@ string MultiEventGenerator::addInterface(string cmd) {
   return "";
 }
 
-void MultiEventGenerator::doGo(long next, long maxevent) {
+void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
 
   if ( theObjects.empty() ) {
-    EventGenerator::go(next, maxevent);
+    EventGenerator::doGo(next, maxevent, tics);
     return;
   }
 
@@ -108,6 +109,7 @@ void MultiEventGenerator::doGo(long next, long maxevent) {
 
   string baseName = runName();
 
+  if ( tics ) tic(next - 1, nargs*N());
   for ( long iargs = 0; iargs < nargs; ++iargs ) {
 
     ostringstream subname;
@@ -141,13 +143,20 @@ void MultiEventGenerator::doGo(long next, long maxevent) {
 
     ieve = next-1;
 
-    while ( shoot() ) {}
-
-    runName(baseName);
-
-    finish();
-
+    try {
+      while ( shoot() ) {
+	if ( tics ) tic(ieve + iargs*N(), nargs*N());
+      }
+    }
+    catch ( ... ) {
+      finish();
+      throw;
+    }
   }
+
+  runName(baseName);
+
+  finish();
 
 }
 

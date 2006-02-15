@@ -249,7 +249,7 @@ private:
   /**
    * The subversion of this PersistentOStream implementation.
    */
-  static const int subVersion = 0;
+  static const int subVersion = 1;
 
   /** @name Special marker characters */
   //@{

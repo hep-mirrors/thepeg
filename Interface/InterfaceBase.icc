@@ -46,6 +46,14 @@ inline bool InterfaceBase::anonymous() const {
   return description().empty();
 }
 
+inline double InterfaceBase::rank() const {
+  return theRank;
+}
+
+inline void InterfaceBase::rank(double r) {
+  theRank = r;
+}
+
 inline RefInterfaceBase::
 RefInterfaceBase(string newName, string newDescription, string newClassName,
 		 const type_info & newTypeInfo, string newRefClassName,

@@ -32,8 +32,13 @@ string ParameterBase::exec(InterfacedBase & i, string action,
 }
 
 string ParameterBase::fullDescription(const InterfacedBase & ib) const {
+  string min = minimum(ib);
+  if ( min.empty() ) min = "-inf";
+  string max = maximum(ib);
+  if ( max.empty() ) max = "inf";
+  
   return InterfaceBase::fullDescription(ib) + get(ib) + '\n' +
-    minimum(ib) + '\n' + def(ib) + '\n' + maximum(ib) + '\n';
+    min + '\n' + def(ib) + '\n' + max + '\n';
 }
 
 ParExGetUnknown::ParExGetUnknown(const InterfaceBase & i,

@@ -56,7 +56,7 @@ protected:
    * Run this EventGenerator session. Is called from
    * EventGenerator::go(long,long).
    */
-  virtual void doGo(long next, long maxevent);
+  virtual void doGo(long next, long maxevent, bool tics);
   //@}
 
   /** @name Functions used by the Command<MultiEventGenerator>

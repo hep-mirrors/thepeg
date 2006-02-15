@@ -16,7 +16,7 @@ InterfaceBase::InterfaceBase(string newName,
 			     const type_info & newTypeInfo, bool depSafe,
 			     bool readonly)
   : Named(newName), theDescription(newDescription),
-    theClassName(newClassName), isDependencySafe(depSafe),
+    theClassName(newClassName), theRank(-1.0), isDependencySafe(depSafe),
     isReadOnly(readonly) {
   BaseRepository::Register(*this, newTypeInfo);
 }

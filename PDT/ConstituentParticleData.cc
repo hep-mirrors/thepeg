@@ -66,10 +66,6 @@ Energy ConstituentParticleData::defConstituentMass() const {
   return theDefaultConstituentMass;
 }
 
-Energy ConstituentParticleData::maxConstituentMass() const {
-  return 10.0*max(constituentMass(),defConstituentMass());
-}
-
 ClassDescription<ConstituentParticleData>
 ConstituentParticleData::initConstituentParticleData;
 
@@ -82,11 +78,12 @@ void ConstituentParticleData::Init() {
     ("ConstituentMass",
      "The constituent mass of the particle in GeV.",
      &ConstituentParticleData::theConstituentMass,
-     GeV, 0.0*GeV, 0.0*GeV,
-     Constants::MaxEnergy, false, false, true,
-     &ConstituentParticleData::setConstituentMass, 0, 0,
-     &ConstituentParticleData::maxConstituentMass,
+     GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     false, false, Interface::lowerlim,
+     &ConstituentParticleData::setConstituentMass, 0, 0, 0,
      &ConstituentParticleData::defConstituentMass);
+
+  interfaceMass.rank(11.5);
 
 }
 

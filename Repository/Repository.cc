@@ -485,13 +485,18 @@ string Repository::exec(string command, ostream & os) {
     }
     if ( verb == "makerun" ) {
       string runname = StringUtils::car(command);
-      string generator = StringUtils::cdr(StringUtils::car(command));
+      string generator = StringUtils::car(StringUtils::cdr(command));
       DirectoryAppend(generator);
       EGPtr eg = BaseRepository::GetObject<EGPtr>(generator);
       makeRun(eg, runname);
       return "";
     }
-    if ( verb == "saverun" || verb == "run" ) {
+    if ( verb == "rmrun" ) {
+      string runname = StringUtils::car(command);
+      generators().erase(runname);
+      return "";
+    }
+    if ( verb == "saverun" || verb == "saverunfile" || verb == "run" ) {
       string runname = StringUtils::car(command);
       string generator = StringUtils::car(StringUtils::cdr(command));
       DirectoryAppend(generator);
@@ -506,7 +511,12 @@ string Repository::exec(string command, ostream & os) {
 	return "Error: Could not create/find run named'" + runname + "'.";
       if ( verb == "run" ) 
 	eg->go();
-      else {
+      else if ( verb == "saverunfile" ) {
+	string file = generator;
+	PersistentOStream os(file);
+	os << eg;
+	if ( !os ) return "Save failed! (I/O error)";
+      } else {
 	string file = eg->path() + "/" + eg->filename() + ".run";
 	PersistentOStream os(file);
 	os << eg;

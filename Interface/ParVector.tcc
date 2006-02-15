@@ -31,6 +31,11 @@ string ParVectorTBase<Type>::doxygenType() const {
 }
 
 template <typename Type>
+string ParVectorTBase<Type>::fullDescription(const InterfacedBase & ib) const {
+  return ParVectorBase::fullDescription(ib) + def() + "\n";
+}
+
+template <typename Type>
 void ParVectorTBase<Type>::setDef(InterfacedBase & i, int place) const
   throw(InterfaceException) {
   if ( place >= 0 ) tset(i, tdef(i, place), place);
@@ -109,7 +114,6 @@ maximum(const InterfacedBase & i, int place) const throw(InterfaceException) {
   return os.str();
 }
 
-
 template <typename Type>
 string ParVectorTBase<Type>::
 def(const InterfacedBase & i, int place) const throw(InterfaceException) {
@@ -121,6 +125,20 @@ def(const InterfacedBase & i, int place) const throw(InterfaceException) {
   return os.str();
 }
 
+template <typename Type>
+string ParVectorTBase<Type>::def() const {
+  ostringstream os;
+  if ( unit() > Type() )
+    os << tdef()/unit();
+  else
+    os << tdef();
+  return os.str();
+}
+
+template <typename T, typename Type>
+Type ParVector<T,Type>::tdef() const {
+  return theDef;
+}
 
 template <typename T, typename Type>
 void ParVector<T,Type>::tset(InterfacedBase & i, Type newValue, int place) const

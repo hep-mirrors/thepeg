@@ -185,7 +185,7 @@ IVector BaseRepository::GetObjectsReferingTo(IBPtr obj) {
     if ( member(ov, obj) ) ret.push_back(i->second);
   }
   return ret;
-} 
+}
 
 IVector BaseRepository::DirectReferences(IBPtr obj) {
   IVector ov = obj->getReferences();
@@ -395,6 +395,23 @@ string BaseRepository::getPosArgFromNoun(string noun) {
   return "";
 }
 
+string BaseRepository::
+GetInterfacedBaseClasses(const ClassDescriptionBase * cdb) {
+  if ( !cdb || cdb->name() == "ThePEG::Interfaced" ||
+       cdb->name() == "ThePEG::InterfacedBase" ) return "";
+  string ret = cdb->name() + "\n";
+  for ( int i = 0, N = cdb->descriptions().size(); i < N; ++i )
+    ret += GetInterfacedBaseClasses(cdb->descriptions()[i]);
+  return ret;
+}
+
+struct InterfaceOrder {
+  bool operator()(const InterfaceBase * x, const InterfaceBase * y) const {
+    return x->rank() > y->rank() ||
+      ( x->rank() == y->rank() && x->name() < y->name() );
+  }
+};
+
 void BaseRepository::readSetup(tIBPtr ip, istream & is) {
   ip->setup(is);
 }
@@ -446,6 +463,12 @@ string BaseRepository::exec(string command, ostream & os) {
       rename(obj, newname);
       return "";
     }
+    if ( verb == "check" ) {
+      string name = StringUtils::car(command);
+      if ( directories().find(name) != directories().end() ) return name;
+      if ( objects().find(name) != objects().end() ) return name;
+      return "Not found";
+    }
     if ( verb == "ls" ) {
       string className;
       string dir = StringUtils::car(command);
@@ -491,6 +514,24 @@ string BaseRepository::exec(string command, ostream & os) {
       return "";
     }
 
+    if ( verb == "appendpath" ) {
+      string path = StringUtils::car(command);
+      if ( !path.empty() ) DynamicLoader::appendPath(path);
+      return "";
+    }
+
+    if ( verb == "lspaths" ) {
+      string paths;
+      for ( int i = 0, N = DynamicLoader::allPaths().size(); i < N; ++i )
+	paths += DynamicLoader::allPaths()[i] + "\n";
+      return paths;
+    }
+
+    if ( verb == "prependpath" ) {
+      string path = StringUtils::car(command);
+      if ( !path.empty() ) DynamicLoader::prependPath(path);
+      return "";
+    }
 
     if ( verb == "create" ) {
       string className = StringUtils::car(command);
@@ -574,6 +615,7 @@ string BaseRepository::exec(string command, ostream & os) {
       }
       for ( ObjectSet::iterator i = toclone.begin(); i != toclone.end(); ++i )
 	Register((**i).clone(), newName + (**i).name());
+      return "";
     }
     if ( verb == "doxygendump" ) {
       string spacename = StringUtils::car(command);
@@ -688,12 +730,66 @@ string BaseRepository::exec(string command, ostream & os) {
 	  ret << cdoc->second->documentation() << endl;
 	ret << "Interfaces:" << endl;
 	InterfaceMap imap = getInterfaces(typeid(*ip));
+	typedef set<const InterfaceBase *, InterfaceOrder> InterfaceSet;
+	InterfaceSet iset;
 	for ( InterfaceMap::iterator it = imap.begin(); it != imap.end(); ++it )
-	  ret << it->second->type() << " " << it->second->name() << endl;
+	  iset.insert(it->second);
+	double rank = 1.0;
+	for ( InterfaceSet::iterator it = iset.begin();
+	      it != iset.end(); ++it ) {
+	  if ( rank >= 0.0 && (**it).rank() < 0.0 ) ret << "0" << endl;
+	  rank = (**it).rank();
+	  ret << (**it).type() << " " << (**it).name() << endl;
+	}
 	return ret.str();
       } else
 	return ifb->exec(*ip, verb, arguments);
     }
+    if ( verb == "baseclasses" ) {
+      string className = StringUtils::car(command);
+      const ClassDescriptionBase * cdb = 0;
+      if ( className.size() ) {
+	cdb = DescriptionList::find(className);
+	if ( !cdb ) return "Error: no class '" + className + "' found.";
+      }
+      return GetInterfacedBaseClasses(cdb);
+    }
+    if ( verb == "describeclass" ) {
+      string className = StringUtils::car(command);
+      const ClassDescriptionBase * cdb = 0;
+      if ( className.size() ) {
+	cdb = DescriptionList::find(className);
+	if ( !cdb ) return "Error: no class '" + className + "' found.";
+      }
+      TypeDocumentationMap::const_iterator cdoc = documentations().find(cdb);
+      if ( cdoc != documentations().end() )
+	return cdoc->second->documentation() + "\n";
+      else
+	return "";
+    }
+    if ( verb == "lsclass" ) {
+      string className = StringUtils::car(command);
+      const ClassDescriptionBase * cdb = 0;
+      if ( className.size() ) {
+	cdb = DescriptionList::find(className);
+	if ( !cdb ) return "Error: no class '" + className + "' found.";
+      }
+      vector<const ClassDescriptionBase *> classes;
+      if ( cdb && !cdb->abstract() ) classes.push_back(cdb);
+      for ( DescriptionList::DescriptionMap::const_iterator
+	      it = DescriptionList::all().begin();
+	    it != DescriptionList::all().end(); ++it ) {
+	if ( it->second == cdb || it->second->abstract() ) continue;
+	if ( cdb && !it->second->isA(*cdb) ) continue;
+	classes.push_back(it->second);
+      }
+      if ( classes.empty() )  return "Error: no classes found.";
+      string ret;
+      for ( int i = 0, N = classes.size(); i < N; ++i ) 
+	ret += classes[i]->name() + "\n";
+      return ret;
+    }
+    
   }
   catch (const Exception & e) {
     e.handle();

@@ -26,7 +26,6 @@ AM_INIT_AUTOMAKE
 
 dnl Checks for programs.
 AC_PROG_CXX
-#AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
@@ -61,6 +60,15 @@ AC_EMPTY_SUBST
 
 AC_PATH_PROG(PERL, perl)
 
+AC_ARG_WITH(javagui,
+            [  --with-javagui          Compile and install the java-based GUI.])
+
+if test "x$with_javagui" != "xno"; then
+  AC_HAS_JAVA([1.4], [], [with_javagui=no; AC_MSG_NOTICE([Java GUI disabled])])
+fi
+
+AM_CONDITIONAL([JAVAGUI], [test "x$with_javagui" != "xno"])
+
 AC_CONFIG_FILES([Helicity/Makefile
 Utilities/Makefile
 include/Makefile
@@ -84,6 +92,7 @@ StandardModel/Makefile
 Doc/Makefile
 Doc/refman.h
 Doc/refman.conf
+java/Makefile
 Makefile])
 AC_CONFIG_FILES([Doc/fixinterfaces.pl],[chmod +x Doc/fixinterfaces.pl])
 

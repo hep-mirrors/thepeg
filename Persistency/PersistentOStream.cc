@@ -34,6 +34,8 @@ void PersistentOStream::init() {
   operator<<(string("ThePEG version 1 Database"));
   operator<<(version);
   operator<<(subVersion);
+  *this << DynamicLoader::appendedPaths();
+  *this << DynamicLoader::prependedPaths();
 }
 
 PersistentOStream::~PersistentOStream() {

@@ -14,6 +14,7 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Command.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/MatcherBase.h"
@@ -219,10 +220,10 @@ bool EventGenerator::loadMain(string file) {
 }
 
 
-void EventGenerator::go(long next, long maxevent) {
+void EventGenerator::go(long next, long maxevent, bool tics) {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
-  doGo(next, maxevent);
+  doGo(next, maxevent, tics);
 }
 
 EventPtr EventGenerator::shoot() {
@@ -348,7 +349,7 @@ void EventGenerator::doInitialize() {
 
 }
 
-void EventGenerator::doGo(long next, long maxevent) {
+void EventGenerator::doGo(long next, long maxevent, bool tics) {
 
   if ( maxevent >= 0 ) N(maxevent);
 
@@ -356,8 +357,11 @@ void EventGenerator::doGo(long next, long maxevent) {
 
   ieve = next-1;
 
+  if ( tics ) tic();
   try {
-    while ( shoot() ) {}
+    while ( shoot() ) {
+      if ( tics ) tic();
+    }
   }
   catch ( ... ) {
     finish();
@@ -367,6 +371,23 @@ void EventGenerator::doGo(long next, long maxevent) {
   finish();
 
 }
+
+void EventGenerator::tic(long currev, long totev) const {
+  if ( !currev ) currev = ieve;
+  if ( !totev ) totev = N();
+  long i = currev;
+  long n = totev;
+  bool skip = currev%(totev/100);
+  if ( i > n/2 ) i = n-i;
+  while ( skip && i >= 10 && !(i%10) ) i /= 10;
+  if ( i == 1 || i == 2 || i == 5 ) skip = false;
+  if ( skip ) return;
+  cerr << "tic> " << currev << "\t" << totev << "\r";
+  cerr.flush();
+  if ( currev == totev ) cerr << endl;
+}
+  
+  
 
 void EventGenerator::dump() const {
   PersistentOStream file((filename() + ".dump").c_str());
@@ -602,12 +623,42 @@ ostream & EventGenerator::ref() {
   return reffile().is_open()? reffile(): BaseRepository::cout();
 }
 
+string EventGenerator::doSaveRun(string runname) {
+  runname = StringUtils::car(runname);
+  if ( runname.empty() ) runname = theRunName;
+  if ( runname.empty() ) runname = name();
+  EGPtr eg = Repository::makeRun(this, runname);
+  string file = eg->path() + "/" + eg->filename() + ".run";
+  PersistentOStream os(file);
+  os << eg;
+  if ( !os ) return "Error: Save failed! (I/O error)";
+  return "";
+}
+
+string EventGenerator::doMakeRun(string runname) {
+  runname = StringUtils::car(runname);
+  if ( runname.empty() ) runname = theRunName;
+  if ( runname.empty() ) runname = name();
+  Repository::makeRun(this, runname);
+  return "";
+}
+
 ClassDescription<EventGenerator> EventGenerator::initEventGenerator;
 
 void EventGenerator::Init() {
   
   static ClassDocumentation<EventGenerator> documentation
-    ("There is no documentation for the ThePEG::EventGenerator class");
+    ("This is the main class used to administer an event generation run. "
+     "The actual generation of each event is handled by the assigned "
+     "<interface>EventHandler</interface> object. When the event generator"
+     "is properly set up it can be initialized with the command "
+     "<interface>MakeRun</interface> and/or saved to a file with the command "
+     "<interface>SaveRun</interface>. If saved to a file, the event generator "
+     "can be read into another program to produce events. The file can also "
+     "be read into the <tt>runThePEG</tt> program where a number of events "
+     "determined by the parameter <interface>NumberOfEvents</interface> is "
+     "generated with each event analysed by the list of assigned "
+     "<interface>AnalysisHandlers</interface>.");
 
   static Reference<EventGenerator,StandardModelBase> interfaceStandardModel
     ("StandardModelParameters",
@@ -672,12 +723,16 @@ void EventGenerator::Init() {
      "The directory where the output files are put.",
      &EventGenerator::thePath, ".", true, false,
       &EventGenerator::setPath, 0, &EventGenerator::defPath);
+  interfacePath.directoryType();
 
-   static Parameter<EventGenerator,string> interfaceRunName
-     ("RunName",
-      "The name of this run. This name will be used in the output filenames.",
-      &EventGenerator::theRunName, "", true, false,
-      0, 0, &EventGenerator::name);
+  static Parameter<EventGenerator,string> interfaceRunName
+    ("RunName",
+     "The name of this run. This name will be used in the output filenames. "
+     "The files wil be placed in the directory specified by the "
+     "<interface>Path</interface> parameter"
+     "If empty the name of the event generator will be used instead.",
+     &EventGenerator::theRunName, "", true, false,
+     0, 0, &EventGenerator::name);
 
   static Parameter<EventGenerator,long> interfaceNumberOfEvents
     ("NumberOfEvents",
@@ -733,6 +788,30 @@ void EventGenerator::Init() {
      "quickly through a vector indexed by the id number.",
      &EventGenerator::theQuickSize,
      7000, 0, 50000, true, false, Interface::lowerlim);
+
+
+  static Command<EventGenerator> interfaceSaveRun
+    ("SaveRun",
+     "Isolate, initialize and save this event generator to a file, from which "
+     "it can be read in and run in another program. If an agument is given "
+     "this is used as the run name, otherwise the run name is taken from the "
+     "<interface>RunName</interface> parameter.",
+     &EventGenerator::doSaveRun, true);
+
+
+  static Command<EventGenerator> interfaceMakeRun
+    ("MakeRun",
+     "Isolate and initialize this event generator and give it a run name. "
+     "If no argument is given, the run name is taken from the "
+     "<interface>RunName</interface> parameter.",
+     &EventGenerator::doMakeRun, true);
+
+  interfaceEventHandler.rank(11.0);
+  interfaceSaveRun.rank(10.0);
+  interfaceMakeRun.rank(9.0);
+  interfaceRunName.rank(8.0);
+  interfaceNumberOfEvents.rank(7.0);
+  interfaceAnalysisHandlers.rank(6.0);
 
 }
 

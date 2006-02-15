@@ -392,3 +392,28 @@ fi
 AC_SUBST($1)
 ])
 
+AC_DEFUN([AC_HAS_JAVA],
+[  hasjava=yes
+   AC_PATH_PROG(JAVAC, javac)
+   AC_PATH_PROG(JAVA, java)
+   AC_PATH_PROG(JAR, jar)
+   if test -z "$JAR" -o -z "$JAVA" -o -z "$JAVAC"; then hasjava=no; else
+     AC_MSG_CHECKING([if java works])
+     echo 'public class conftest { public static void main(String[[]]arg){}}' > conftest.java
+     $JAVAC -source $1 conftest.java 1>&5 2>&5
+     if test $? -ne 0; then hasjava=no; fi
+     echo "Main-Class: conftest" > conftest.manifest
+     $JAR cmf conftest.manifest conftest.jar conftest.class 1>&5 2>&5
+     if test $? -ne 0; then hasjava=no; fi
+     $JAVA -jar conftest.jar 1>&5 2>&5
+     if test $? -ne 0; then hasjava=no; fi
+     rm -f conftest.java conftest.err conftest.class conftest.manifest conftest.jar
+   fi
+   if test "x$hasjava" != "xno"; then
+     AC_MSG_RESULT([yes])
+     $2
+   else
+     AC_MSG_RESULT([no])
+     $3
+   fi
+])
