@@ -1,0 +1,51 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the V2LeptonsCut class.
+//
+
+namespace ThePEG {
+
+inline V2LeptonsCut::V2LeptonsCut()
+  : theMinM(70.0*GeV), theMaxM(90.0*GeV), theFamilies(electron|muon),
+    theCComb(negneu|posneu) {}
+
+inline V2LeptonsCut::V2LeptonsCut(const V2LeptonsCut & x)
+  : MultiCutBase(x), theMinM(x.theMinM), theMaxM(x.theMaxM),
+    theFamilies(x.theFamilies), theCComb(x.theCComb) {}
+
+inline IBPtr V2LeptonsCut::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr V2LeptonsCut::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void V2LeptonsCut::doupdate() throw(UpdateException) {
+  MultiCutBase::doupdate();
+}
+
+inline void V2LeptonsCut::doinit() throw(InitException) {
+  MultiCutBase::doinit();
+}
+
+inline void V2LeptonsCut::dofinish() {
+  MultiCutBase::dofinish();
+}
+
+inline void V2LeptonsCut::doinitrun() {
+  MultiCutBase::doinitrun();
+}
+
+inline void V2LeptonsCut::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  MultiCutBase::rebind(trans);
+}
+
+inline IVector V2LeptonsCut::getReferences() {
+  IVector ret = MultiCutBase::getReferences();
+  return ret;
+}
+
+}

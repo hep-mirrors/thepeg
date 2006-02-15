@@ -1,0 +1,42 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MultiCutBase class.
+//
+
+namespace ThePEG {
+
+inline MultiCutBase::MultiCutBase() {}
+
+inline MultiCutBase::MultiCutBase(const MultiCutBase & x)
+  : Interfaced(x) {}
+
+inline void MultiCutBase::doupdate() throw(UpdateException) {
+  Interfaced::doupdate();
+}
+
+inline void MultiCutBase::doinit() throw(InitException) {
+  Interfaced::doinit();
+}
+
+inline void MultiCutBase::dofinish() {
+  Interfaced::dofinish();
+}
+
+inline void MultiCutBase::doinitrun() {
+  Interfaced::doinitrun();
+}
+
+inline void MultiCutBase::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  Interfaced::rebind(trans);
+}
+
+inline IVector MultiCutBase::getReferences() {
+  IVector ret = Interfaced::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

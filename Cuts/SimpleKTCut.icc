@@ -1,0 +1,51 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SimpleKTCut class.
+//
+
+namespace ThePEG {
+
+inline SimpleKTCut::SimpleKTCut()
+  : theMinKT(10.0*GeV), theMinEta(-Constants::MaxRapidity),
+    theMaxEta(Constants::MaxRapidity) {}
+
+inline SimpleKTCut::SimpleKTCut(const SimpleKTCut & x)
+  : OneCutBase(x), theMinKT(x.theMinKT), theMinEta(x.theMinEta),
+    theMaxEta(x.theMaxEta), theMatcher(x.theMatcher) {}
+
+inline IBPtr SimpleKTCut::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr SimpleKTCut::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void SimpleKTCut::doupdate() throw(UpdateException) {
+  OneCutBase::doupdate();
+}
+
+inline void SimpleKTCut::doinit() throw(InitException) {
+  OneCutBase::doinit();
+}
+
+inline void SimpleKTCut::dofinish() {
+  OneCutBase::dofinish();
+}
+
+inline void SimpleKTCut::doinitrun() {
+  OneCutBase::doinitrun();
+}
+
+inline void SimpleKTCut::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  OneCutBase::rebind(trans);
+}
+
+inline IVector SimpleKTCut::getReferences() {
+  IVector ret = OneCutBase::getReferences();
+  return ret;
+}
+
+}
