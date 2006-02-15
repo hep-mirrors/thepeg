@@ -180,11 +180,10 @@ PDT::Colour ParticleData::iColour(PDT::Colour ci) {
   return theColor;
 }
 
-void ParticleData::stable(bool theSpin) {
+void ParticleData::stable(bool s) {
   isStable = s;
   if ( synchronized() && CC() ) CC()->isStable = s;
 }
-
 
 void ParticleData::synchronized(bool h) {
   syncAnti = h;
