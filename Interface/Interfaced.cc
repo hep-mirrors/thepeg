@@ -10,6 +10,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/Interface/Command.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Interfaced.tcc"
@@ -23,6 +24,23 @@ void Interfaced::registerRepository(IBPtr i) {
 
 void Interfaced::registerRepository(IBPtr i, string newName) {
   Repository::Register(i, newName);
+}
+
+void Interfaced::reporeg(IBPtr object, string name) const {
+  Repository::CreateDirectory(fullName());
+  string full = fullName() + "/" + name;
+  IBPtr old = Repository::GetPointer(full);
+  if ( old ) {
+    if ( Repository::GetObjectsReferringTo(old).empty() )
+      Repository::remove(old);
+    else
+      Repository::rename(old, fullName() + "/old-" + name);
+  }
+  Repository::Register(object, full);
+}
+
+bool Interfaced::defaultInit() {
+  return true;
 }
 
 void Interfaced::setUsed() const {
@@ -51,7 +69,22 @@ void Interfaced::persistentInput(PersistentIStream & is , int) {
 
 AbstractClassDescription<Interfaced> Interfaced::initInterfaced;
 
-void Interfaced::Init() {}
+string Interfaced::doDefaultInit(string) {
+  if ( !defaultInit() ) return "Default initialization failed.";
+  return "";
+}
+
+void Interfaced::Init() {
+
+  static Command<Interfaced> interfaceDefaultInit
+    ("DefaultInit",
+     "Perform a default initialization of this object. This typically "
+     "involves creating sub-objects which are needed. In this case the "
+     "objects can be added to the repository in a sub-directory with the "
+     "same name as this object.",
+     &Interfaced::doDefaultInit, true);
+
+}
 
 void Interfaced::debug() const {
   cerr << "Object name: " << name() << " Class name: "

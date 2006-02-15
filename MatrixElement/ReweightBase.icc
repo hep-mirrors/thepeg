@@ -6,36 +6,6 @@
 
 namespace ThePEG {
 
-inline void ReweightBase::setKinematics() {}
-
-inline void ReweightBase::setKinematics(const SubProcess & sub) {
-  setKinematics(tPPair(sub.incoming()), sub.outgoing());
-}
-
-inline Energy2 ReweightBase::sHat() const {
-  return theLastSHat;
-}
-
-inline const cPDPair & ReweightBase::inData() const {
-  return theLastInData;
-}
-
-inline const cPDVector & ReweightBase::outData() const {
-  return theLastOutData;
-}
-
-inline const Lorentz5Momentum & ReweightBase::inMomentumA() const {
-  return theLastInMomentumA;
-}
-
-inline const Lorentz5Momentum & ReweightBase::inMomentumB() const {
-  return theLastInMomentumB;
-}
-
-inline const vector<Lorentz5Momentum> & ReweightBase::outMomentum() const {
-  return theLastOutMomentum;
-}
-
 inline void ReweightBase::doupdate() throw(UpdateException) {
   HandlerBase::doupdate();
   // First update base class.

@@ -6,7 +6,7 @@
 
 namespace ThePEG {
 
-inline tKinCutPtr StandardEventHandler::cuts() const {
+inline tCutsPtr StandardEventHandler::cuts() const {
   return theCuts;
 }
 

@@ -47,8 +47,7 @@ inline  char CFileLineReader::getc() {
 }
 
 inline bool CFileLineReader::skip(char c) {
-  while ( *pos != 0 && *pos != c ) ++pos;
-  if ( *pos != 0 ) ++pos;
+  while ( *pos != 0 && *pos++ != c );
   bad = ( *pos == 0 );
   return !bad;
 }

@@ -176,7 +176,7 @@ IVector BaseRepository::SearchDirectory(string name, string className) {
   return ret;
 }
 
-IVector BaseRepository::GetObjectsReferingTo(IBPtr obj) {
+IVector BaseRepository::GetObjectsReferringTo(IBPtr obj) {
   IVector ret;
   for ( ObjectMap::const_iterator i = objects().begin();
 	i != objects().end(); ++i ) {
@@ -283,7 +283,7 @@ string BaseRepository::remove(const ObjectSet & rmset) {
   ObjectSet refset;
   for ( ObjectSet::const_iterator oi = rmset.begin();
 	oi != rmset.end(); ++oi ) {
-    IVector ov = GetObjectsReferingTo(*oi);
+    IVector ov = GetObjectsReferringTo(*oi);
     refset.insert(ov.begin(), ov.end());
   }
   for ( ObjectSet::iterator oi = rmset.begin(); oi != rmset.end(); ++oi )
@@ -312,6 +312,7 @@ void BaseRepository::rename(tIBPtr ip, string newName) {
   
   objects().erase(mit);
   ip->name(newName);
+  while ( member(objects(), ip->fullName()) ) ip->name(ip->fullName() + "#");
   objects()[ip->fullName()] = ip;
 }
 

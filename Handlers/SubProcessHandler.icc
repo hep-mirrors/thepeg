@@ -6,7 +6,7 @@
 
 namespace ThePEG {
 
-inline tKinCutPtr SubProcessHandler::cuts() const {
+inline tCutsPtr SubProcessHandler::cuts() const {
   return theCuts;
 }
 

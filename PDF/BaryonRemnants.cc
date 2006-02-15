@@ -344,6 +344,16 @@ void BaryonRemnants::createRemnants(PartonBinInstance & pb) const {
     rem[i]->scale(pb.particle()->momentum().mass2());
 }
 
+bool BaryonRemnants::defaultInit() {
+  if ( !setDefaultReference(thePtGeneratorQ, "ThePEG::GaussianPtGenerator",
+			    "PtGenerator") ) return false;
+  if ( !setDefaultReference(theZGenerator, "ThePEG::SimpleZGenerator",
+			    "ZGenerator") ) return false;
+  if ( !setDefaultReference(theFlavourGenerator, "ThePEG::SimpleFlavour",
+			    "FlavourGenerator") ) return false;
+  return true;
+}
+
 void BaryonRemnants::persistentOutput(PersistentOStream & os) const {
   os << thePtGeneratorQ << thePtGeneratorR << theZGenerator
      << theFlavourGenerator << theMargin << useSpecialValence;

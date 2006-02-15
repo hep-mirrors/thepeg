@@ -8,6 +8,7 @@
 #include "ThePEG/Handlers/HandlerGroup.h"
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/MatrixElement/MEBase.fh"
+#include "ThePEG/Cuts/Cuts.fh"
 #include "SubProcessHandler.fh"
 
 
@@ -25,7 +26,7 @@ namespace ThePEG {
  * defaults which overrides the ones specified in the EventHandler in
  * each event the SubProcessHandler is chosen.
  *
- * The SubProcessHandler has also a KinematicalCuts object which is
+ * The SubProcessHandler has also a Cuts object which is
  * responsible for restricting the kinematics of the sub-process and
  * produced collision. This object takes precedence over the one in
  * the EventHandler in each event the SubProcessHandler is chosen.
@@ -37,7 +38,7 @@ namespace ThePEG {
  * @see EventHandler
  * @see StandardEventHandler
  * @see HandlerGroup
- * @see KinematicalCuts
+ * @see Cuts
  */
 class SubProcessHandler: public HandlerBase {
 
@@ -86,7 +87,13 @@ public:
   /**
    * Return a pointer to the kinematical cuts used.
    */
-  inline tKinCutPtr cuts() const;
+  inline tCutsPtr cuts() const;
+
+  /**
+   * Return a pointer (possibly null) to the assigned main
+   * CascadeHandler to be used as CKKW-reweighter.
+   */
+  tCascHdlPtr CKKWHandler() const;
 
   /**
    * Access a step handler group.
@@ -187,7 +194,7 @@ private:
   /**
    * The pointer to the kinematical cuts used.
    */
-  KinCutPtr theCuts;
+  CutsPtr theCuts;
 
   /**
    * The SubProcessHandler group.

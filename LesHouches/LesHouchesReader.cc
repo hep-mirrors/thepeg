@@ -10,6 +10,7 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/Command.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesReader.tcc"
@@ -25,8 +26,14 @@
 #include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/RandomGenerator.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Handlers/XComb.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
+#include "ThePEG/Repository/Repository.h"
+#include "ThePEG/Utilities/DynamicLoader.h"
+#include "ThePEG/Utilities/StringUtils.h"
+#include "ThePEG/PDT/StandardMatchers.h"
+#include "ThePEG/PDT/EnumParticles.h"
 #include "LesHouchesEventHandler.h"
 
 using namespace ThePEG;
@@ -38,7 +45,7 @@ LesHouchesReader::LesHouchesReader(bool active)
     reweightPDF(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
-  : HandlerBase(x), heprup(x.heprup), hepeup(x.hepeup),
+  : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
     inData(x.inData), inPDF(x.inPDF), outPDF(x.outPDF),
     thePartonExtractor(x.thePartonExtractor), thePartonBins(x.thePartonBins),
     theXCombs(x.theXCombs), theCuts(x.theCuts),
@@ -69,12 +76,21 @@ void LesHouchesReader::doinit() throw(InitException) {
 }
 
 void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
-  if ( !theCuts ) theCuts = eh.kinematicalCuts();
+  Energy2 Smax = 0.0*GeV2;
+  double Y = 0.0;
+  if ( !theCuts ) {
+    theCuts = eh.cuts();
+    Smax = cuts().SMax();
+    Y = cuts().Y();
+  }
+
+  theCKKW = eh.CKKWHandler();
+
   if ( !theCuts ) throw LesHouchesInitError()
-    << "No KinematicalCuts object was assigned to the LesHouchesReader '"
+    << "No Cuts object was assigned to the LesHouchesReader '"
     << name() << "' nor was one assigned to the controlling "
     << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
-    << "needs to have a KinematicalCuts object." << Exception::warning;
+    << "needs to have a Cuts object." << Exception::warning;
 
   if ( !partonExtractor() ) thePartonExtractor = eh.partonExtractor();
   if ( !partonExtractor() )  throw LesHouchesInitError()
@@ -97,12 +113,23 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
     << "LesHouchesReader '" << name() << "'." << Exception::warning;
 
   Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
+  theCuts->initialize(sqr(emax),
+		      0.5*log(heprup.EBMUP.first/heprup.EBMUP.second));
+  if ( Smax > 0.0*GeV && ( Smax != cuts().SMax() || Y != cuts().Y() ) )
+    throw LesHouchesInitError()
+      << "The LesHouchesReader '" << name() << "' uses the same Cuts object "
+      << "as another LesHouchesReader which has not got the same energies of "
+      << "the colliding particles. For the generation to work properly "
+      << "different LesHouchesReader object with different colliding particles "
+      << "must be assigned different (although possibly identical) Cuts "
+      << "objects." << Exception::warning;
+
   inData = make_pair(getParticleData(heprup.IDBMUP.first),
 		     getParticleData(heprup.IDBMUP.second));
   thePartonBins = partonExtractor()->getPartons(emax, inData, cuts());
   for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
     theXCombs[partonBins()[i]] =
-      new_ptr(XComb(emax, inData, &eh, partonExtractor(),
+      new_ptr(XComb(emax, inData, &eh, partonExtractor(), CKKWHandler(),
 		    partonBins()[i], theCuts));
     partonExtractor()->nDims(partonBins()[i]);
   }
@@ -211,14 +238,28 @@ void LesHouchesReader::initStat() {
 }
 
 tXCombPtr LesHouchesReader::getXComb() {
+  if ( lastXCombPtr() ) return lastXCombPtr();
   fillEvent();
   connectMothers();
   tcPBPair sel = createPartonBinInstances();
-  tXCombPtr xc = xCombs()[sel];
-  xc->setPartonBinInstances(partonBinInstances(), sqr(hepeup.SCALUP)*GeV2);
-  return xc;
+  theLastXComb = xCombs()[sel];
+  lastXCombPtr()->subProcess(SubProPtr());
+  lastXCombPtr()->setPartonBinInstances(partonBinInstances(),
+					sqr(hepeup.SCALUP)*GeV2);
+  lastXCombPtr()->lastAlphaS(hepeup.AQCDUP);
+  lastXCombPtr()->lastAlphaEM(hepeup.AQEDUP);
+  return lastXCombPtr();
 }
 
+tSubProPtr LesHouchesReader::getSubProcess() {
+  getXComb();
+  if ( subProcess() ) return subProcess();
+  lastXCombPtr()->subProcess(new SubProcess(lastPartons(), tCollPtr(), this));
+  subProcess()->setOutgoing(outgoing().begin(), outgoing().end());
+  subProcess()->setIntermediates(intermediates().begin(),
+				 intermediates().end());
+  return subProcess();
+}
 
 void LesHouchesReader::fillEvent() {
   if ( !particleIndex.empty() ) return;
@@ -262,6 +303,7 @@ void LesHouchesReader::reopen() {
 void LesHouchesReader::reset() {
   particleIndex.clear();
   colourIndex.clear();
+  theLastXComb = tXCombPtr();
 }
 
 bool LesHouchesReader::readEvent() {
@@ -274,33 +316,39 @@ bool LesHouchesReader::readEvent() {
   // We should try to reweight the PDFs here.
 
   fillEvent();
+
+  double x1 = incoming().first->momentum().plus()/
+    beams().first->momentum().plus();
   
   if ( inPDF.first && outPDF.first && inPDF.first != outPDF.first ) {
-    double x = incoming().first->momentum().plus()/
-      beams().first->momentum().plus();
     if ( hepeup.XPDWUP.first <= 0.0 )
       hepeup.XPDWUP.first =
 	inPDF.first->xfx(inData.first, incoming().first->dataPtr(),
-			 sqr(hepeup.SCALUP*GeV), x);
+			 sqr(hepeup.SCALUP*GeV), x1);
     double xf = outPDF.first->xfx(inData.first, incoming().first->dataPtr(),
-				  sqr(hepeup.SCALUP*GeV), x);
+				  sqr(hepeup.SCALUP*GeV), x1);
     hepeup.XWGTUP *= xf/hepeup.XPDWUP.first;
     hepeup.XPDWUP.first = xf;
   }
 
+  double x2 = incoming().second->momentum().minus()/
+    beams().second->momentum().minus();
+
   if ( inPDF.second && outPDF.second && inPDF.second != outPDF.second ) {
-    double x = incoming().second->momentum().minus()/
-      beams().second->momentum().minus();
     if ( hepeup.XPDWUP.second <= 0.0 )
       hepeup.XPDWUP.second =
 	inPDF.second->xfx(inData.second, incoming().second->dataPtr(),
-			 sqr(hepeup.SCALUP*GeV), x);
+			 sqr(hepeup.SCALUP*GeV), x2);
     double xf =
       outPDF.second->xfx(inData.second, incoming().second->dataPtr(),
-			 sqr(hepeup.SCALUP*GeV), x);
+			 sqr(hepeup.SCALUP*GeV), x2);
     hepeup.XWGTUP *= xf/hepeup.XPDWUP.second;
     hepeup.XPDWUP.second = xf;
   }
+
+  if ( !cuts().initSubProcess((incoming().first->momentum() +
+			       incoming().second->momentum()).m2(),
+			      0.5*log(x1/x2)) ) return false;
 
   return true;
 }
@@ -323,16 +371,21 @@ void LesHouchesReader::skip(long n) {
 
 double LesHouchesReader::reweight() {
   preweight = 1.0;
-  if ( reweights.empty() && preweights.empty() ) return 1.0;
+  if ( reweights.empty() && preweights.empty() && !CKKWHandler() ) return 1.0;
   fillEvent();
+  getSubProcess();
   for ( int i = 0, N = preweights.size(); i < N; ++i ) {
-    preweights[i]->setKinematics(incoming(), outgoing());
+    preweights[i]->setXComb(lastXCombPtr());
     preweight *= preweights[i]->weight();
   }
   double weight = preweight;
   for ( int i = 0, N = reweights.size(); i < N; ++i ) {
-    reweights[i]->setKinematics(incoming(), outgoing());
+    reweights[i]->setXComb(lastXCombPtr());
     weight *= reweights[i]->weight();
+  }
+  if ( CKKWHandler() ) {
+    CKKWHandler()->setXComb(lastXCombPtr());
+    weight *= CKKWHandler()->reweightCKKW();
   }
   return weight;
 }
@@ -637,12 +690,12 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << hepeup.XWGTUP << hepeup.XPDWUP << hepeup.SCALUP << hepeup.AQEDUP
      << hepeup.AQCDUP << hepeup.IDUP << hepeup.ISTUP << hepeup.MOTHUP
      << hepeup.ICOLUP << hepeup.PUP << hepeup.VTIMUP << hepeup.SPINUP
-     << inData << inPDF << outPDF << thePartonExtractor << thePartonBins
-     << theXCombs << theCuts << theNEvents << position << reopened
-     << theMaxScan << isActive << isWeighted << hasNegativeWeights
+     << inData << inPDF << outPDF << thePartonExtractor << theCKKW
+     << thePartonBins << theXCombs << theCuts << theNEvents << position
+     << reopened << theMaxScan << isActive << isWeighted << hasNegativeWeights
      << theCacheFileName << stats << statmap << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
-     << reweights << preweights << preweight << reweightPDF;
+     << reweights << preweights << preweight << reweightPDF << theLastXComb;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -653,12 +706,12 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> hepeup.XWGTUP >> hepeup.XPDWUP >> hepeup.SCALUP >> hepeup.AQEDUP
      >> hepeup.AQCDUP >> hepeup.IDUP >> hepeup.ISTUP >> hepeup.MOTHUP
      >> hepeup.ICOLUP >> hepeup.PUP >> hepeup.VTIMUP >> hepeup.SPINUP
-     >> inData >> inPDF >> outPDF >> thePartonExtractor >> thePartonBins
-     >> theXCombs >> theCuts >> theNEvents >> position >> reopened
-     >> theMaxScan >> isActive >> isWeighted >> hasNegativeWeights
+     >> inData >> inPDF >> outPDF >> thePartonExtractor >> theCKKW
+     >> thePartonBins >> theXCombs >> theCuts >> theNEvents >> position
+     >> reopened >> theMaxScan >> isActive >> isWeighted >> hasNegativeWeights
      >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
-     >> reweights >> preweights >> preweight >> reweightPDF;
+     >> reweights >> preweights >> preweight >> reweightPDF >> theLastXComb;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -677,6 +730,144 @@ void LesHouchesReader::setPDFA(PDFPtr pdf) { inPDF.first = pdf; }
 PDFPtr LesHouchesReader::getPDFA() const { return inPDF.first; }
 void LesHouchesReader::setPDFB(PDFPtr pdf) { inPDF.second = pdf; }
 PDFPtr LesHouchesReader::getPDFB() const { return inPDF.second; }
+
+string LesHouchesReader::scanPDF(string args) {
+  if ( inPDF.first && inPDF.second ) return "PDFs already set.";
+  open();
+  close();
+  if ( ( heprup.PDFGUP.first == 0 && heprup.PDFGUP.second == 0 ) ||
+       ( heprup.PDFSUP.first == 0 && heprup.PDFSUP.second == 0 ) )
+    return "No PDF info found.";
+  const ClassDescriptionBase * db = DescriptionList::find("F77ThePEG::PDFLIB");
+  if ( !db ) {
+    DynamicLoader::load("PDFLIB.so");
+    db = DescriptionList::find("F77ThePEG::PDFLIB");
+  }
+  if ( !db ) return "Could not find the class 'F77ThePEG::PDFLIB' which is "
+	       "needed to automatically deduce PDFs. Please make sure you "
+	       "you have the F77ThePEG package installed.";
+  if ( !inPDF.first && heprup.PDFGUP.first != 0 &&
+       heprup.PDFSUP.first != 0 && heprup.IDBMUP.first ) {
+    IBPtr obj = dynamic_ptr_cast<IBPtr>(db->create());
+    if ( !obj ) return "Could not create a F77ThePEG::PDFLIB object.";
+    const InterfaceBase * ifb = Repository::FindInterface(obj, "PType");
+    if ( !ifb )
+      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
+    string result;
+    string remh;
+    if ( BaryonMatcher::Check(heprup.IDBMUP.first) ) {
+      result = ifb->exec(*obj, "set", "1");
+      remh = "ThePEG::BaryonRemnants";
+    }
+    else if ( MesonMatcher::Check(heprup.IDBMUP.first) )
+      result = ifb->exec(*obj, "set", "2");
+    else if ( heprup.IDBMUP.first == ParticleID::gamma )
+      result = ifb->exec(*obj, "set", "3");
+    else
+      return "No matching particle type for the F77ThePEG::PDFLIB object.";
+    if ( result != "" ) return result;
+    ifb = Repository::FindInterface(obj, "Group");
+    if ( !ifb )
+      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
+    ostringstream osg;
+    osg << heprup.PDFGUP.first;
+    result = ifb->exec(*obj, "set", osg.str());
+    if ( result != "" ) return result;
+    ifb = Repository::FindInterface(obj, "Set");
+    if ( !ifb )
+      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
+    ostringstream oss;
+    oss << heprup.PDFSUP.first;
+    result = ifb->exec(*obj, "set", oss.str());
+    if ( result != "" ) return result;
+    inPDF.first = dynamic_ptr_cast<PDFPtr>(obj);
+    reporeg(obj, "PDFA");
+    if ( StringUtils::car(args).length() ) remh = StringUtils::car(args);
+    ifb = Repository::FindInterface(obj, "RemnantHandler");
+    if ( ifb && remh.length() ) {
+      const ClassDescriptionBase * db = DescriptionList::find(remh);
+      if ( db ) {
+	IPtr rh = dynamic_ptr_cast<IPtr>(db->create());
+	if ( rh ) {
+	  reporeg(rh, "RemnantsA");
+	  rh->defaultInit();
+	  result = ifb->exec(*obj, "set", rh->fullName());
+	  if ( result != "" ) return result;
+	}
+      }
+    }
+    if ( !inPDF.first->canHandle
+	 (Repository::defaultParticle(heprup.IDBMUP.first)) )
+      return "The created PDFA object could not handle the incoming "
+	"particle type A.";
+  }
+  if ( !inPDF.second && heprup.PDFGUP.second != 0 &&
+       heprup.PDFSUP.second != 0 && heprup.IDBMUP.second ) {
+    IBPtr obj = dynamic_ptr_cast<IBPtr>(db->create());
+    if ( !obj ) return "Could not create a F77ThePEG::PDFLIB object.";
+    const InterfaceBase * ifb = Repository::FindInterface(obj, "PType");
+    if ( !ifb )
+      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
+    string result;
+    string remh;
+    if ( BaryonMatcher::Check(heprup.IDBMUP.second) ) {
+      result = ifb->exec(*obj, "set", "1");
+      remh = "ThePEG::BaryonRemnants";
+    }
+    else if ( MesonMatcher::Check(heprup.IDBMUP.second) )
+      result = ifb->exec(*obj, "set", "2");
+    else if ( heprup.IDBMUP.second == ParticleID::gamma )
+      result = ifb->exec(*obj, "set", "3");
+    else
+      return "No matching particle type for the F77ThePEG::PDFLIB object.";
+    if ( result != "" ) return result;
+    ifb = Repository::FindInterface(obj, "Group");
+    if ( !ifb )
+      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
+    ostringstream osg;
+    osg << heprup.PDFGUP.second;
+    result = ifb->exec(*obj, "set", osg.str());
+    if ( result != "" ) return result;
+    ifb = Repository::FindInterface(obj, "Set");
+    if ( !ifb )
+      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
+    ostringstream oss;
+    oss << heprup.PDFSUP.second;
+    result = ifb->exec(*obj, "set", oss.str());
+    if ( result != "" ) return result;
+    inPDF.second = dynamic_ptr_cast<PDFPtr>(obj);
+    reporeg(obj, "PDFB");
+    if ( StringUtils::car(args).length() ) remh = StringUtils::car(args);
+    if ( StringUtils::car(StringUtils::cdr(args)).length())
+      remh = StringUtils::car(StringUtils::cdr(args));
+    ifb = Repository::FindInterface(obj, "RemnantHandler");
+    if ( ifb && remh.length() ) {
+      const ClassDescriptionBase * db = DescriptionList::find(remh);
+      if ( db ) {
+	IPtr rh = dynamic_ptr_cast<IPtr>(db->create());
+	if ( rh ) {
+	  reporeg(rh, "RemnantsB");
+	  rh->defaultInit();
+	  result = ifb->exec(*obj, "set", rh->fullName());
+	  if ( result != "" ) return result;
+	}
+      }
+    }
+    if ( !inPDF.second->canHandle
+	 (Repository::defaultParticle(heprup.IDBMUP.second)) )
+      return "The created PDFB object could not handle the incoming "
+	"particle type B.";
+  }
+
+  if ( !inPDF.first ) return "Could not set PDF for beam A.";
+  if ( !inPDF.second ) return "Could not set PDF for beam B.";
+  if ( !inPDF.first->remnantHandler() )
+    return "Could not set remnant handler for beam A.";
+  if ( !inPDF.second->remnantHandler() )
+    return "Could not set remnant handler for beam B.";
+
+  return "";
+}
 
 void LesHouchesReader::Init() {
   static ClassDocumentation<LesHouchesReader> documentation
@@ -738,7 +929,6 @@ void LesHouchesReader::Init() {
      0, true, false, true, true, false,
      &LesHouchesReader::setPDFB, &LesHouchesReader::getPDFB, 0);
 
-
   static Parameter<LesHouchesReader,long> interfaceMaxScan
     ("MaxScan",
      "The maximum number of events to scan to obtain information about "
@@ -762,13 +952,13 @@ void LesHouchesReader::Init() {
      &LesHouchesReader::thePartonExtractor, true, false, true, true, false);
 
 
-  static Reference<LesHouchesReader,KinematicalCuts> interfaceCuts
+  static Reference<LesHouchesReader,Cuts> interfaceCuts
     ("Cuts",
-     "The KinematicalCuts object to be used for this reader. Note that these "
+     "The Cuts object to be used for this reader. Note that these "
      "must not be looser cuts than those used in the actual generation. "
      "If no object is provided the LesHouchesEventHandler object must "
      "provide one instead.",
-     &LesHouchesReader::theCuts, true, false, true, false, true);
+     &LesHouchesReader::theCuts, true, false, true, true, false);
 
   static RefVector<LesHouchesReader,ReweightBase> interfaceReweights
     ("Reweights",
@@ -795,5 +985,18 @@ void LesHouchesReader::Init() {
     (interfaceReweightPDF,
      "Yes", "The events are reweighted.", true);
 
+
+  static Command<LesHouchesReader> interfaceScanPDF
+    ("ScanPDF",
+     "If <interface>PDFA</interface> or <interface>PDFB</interface> has not "
+     "been set, the LesHouches common blocks are checked for PDF information. "
+     "If the F77ThePEG::PDFLIB class is available such objects will be created "
+     "in a sub-directory with the same name as this object and assigned as the "
+     "<interface>PDFA</interface> and/or <interface>PDFB</interface> of this "
+     "reader. If an argument is given it will be interpreted as the name of a "
+     "RemnantHandler class which should be assigned to the PDFs. If two "
+     "arguments are given they will be interpreted as remnant handler classes "
+     "for beam A and B respectively.",
+     &LesHouchesReader::scanPDF, true);
 }
 

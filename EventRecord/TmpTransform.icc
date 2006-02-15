@@ -1,0 +1,21 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the TmpTransform class.
+//
+
+namespace ThePEG {
+
+template <typename Ptr>
+TmpTransform<Ptr>::TmpTransform(Ptr p, const LorentzRotation & r)
+  : ptr(p), rot(r) {
+  ptr->transform(rot);
+}
+
+template <typename Ptr>
+TmpTransform<Ptr>::~TmpTransform() {
+  rot.invert();
+  ptr->transform(rot);
+}
+
+}

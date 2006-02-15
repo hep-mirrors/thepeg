@@ -31,8 +31,8 @@ inline tLumiFnPtr EventHandler::lumiFnPtr() {
   return theLumiFn;
 }
 
-inline tKinCutPtr EventHandler::kinematicalCuts() const {
-  return theKinematicalCuts;
+inline tCutsPtr EventHandler::cuts() const {
+  return theCuts;
 }
 
 inline tPExtrPtr EventHandler::partonExtractor() const {

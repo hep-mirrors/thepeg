@@ -124,11 +124,11 @@ public:
   /** @name Simple access functions */
   //@{
   /**
-   * Return a reference to the KinematicalCuts of this
+   * Return a reference to the Cuts of this
    * EventHandler. Note that these cuts may be overridden by the
    * SubProcess chosen.
    */
-  inline tKinCutPtr cuts() const;
+  inline tCutsPtr cuts() const;
 
   /**
    * Return the number of separate bins of StandardXComb objects to
@@ -197,13 +197,14 @@ protected:
    * @param maxEnergy the maximum CMS energy of the incoming particles.
    * @param sub a pointer to the SubProcessHandler object.
    * @param extractor a pointer to the PartonExtractor object.
-   * @param cuts a pointer to the KinematicalCuts object.
+   * @param cuts a pointer to the Cuts object.
+   * @param ckkw a pointer to a CascadeHandler to be used for CKKW reweighting.
    * @param me a pointer to the MEBase object.
    * @param pBins a pair of <code>PartonBin</code>s describing the
    * partons extracted from the particles
    */
   void addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor,
-	     tKinCutPtr cuts, tMEPtr me, const PBPair & pBins);
+	     tCutsPtr cuts, tCascHdlPtr ckkw, tMEPtr me, const PBPair & pBins);
 
   /**
    * For the sub-procss and phase-space point selected in the previous
@@ -383,7 +384,7 @@ private:
   /**
    * The kinematical cuts used for this collision handler.
    */
-  KinCutPtr theCuts;
+  CutsPtr theCuts;
 
   /**
    * The StandardXComb objects.

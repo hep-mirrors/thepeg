@@ -68,7 +68,6 @@ ThePEG_DECLARE_CLASS_POINTERS(MultipleInteractionHandler,MIHdlPtr);
 ThePEG_DECLARE_CLASS_POINTERS(DecayHandler,DecayHdlPtr);
 ThePEG_DECLARE_CLASS_POINTERS(PileupHandler,PileHdlPtr);
 ThePEG_DECLARE_CLASS_POINTERS(LuminosityFunction,LumiFnPtr);
-ThePEG_DECLARE_CLASS_POINTERS(KinematicalCuts,KinCutPtr);
 ThePEG_DECLARE_CLASS_POINTERS(PartonExtractor,PExtrPtr);
 ThePEG_DECLARE_CLASS_POINTERS(RandomGenerator,RanGenPtr);
 ThePEG_DECLARE_CLASS_POINTERS(AnalysisHandler,AnaPtr);

@@ -18,10 +18,14 @@ inline const cPDPair & XComb::partons() const {
   return thePartons;
 }
 
+inline tSubProPtr XComb::subProcess() const {
+  return theSub;
+}
+
 inline const PBPair & XComb::partonBins() const {
   return thePartonBins;
 }
-
+  
 inline const PBIPair & XComb::partonBinInstances() const {
   return thePartonBinInstances;
 }
@@ -30,7 +34,11 @@ inline tPExtrPtr XComb::pExtractor() const {
   return thePartonExtractor;
 }
 
-inline tKinCutPtr XComb::cuts() const {
+inline tCascHdlPtr XComb::CKKWHandler() const {
+  return theCKKW;
+}
+
+inline tCutsPtr XComb::cuts() const {
   return theCuts;
 }
 
@@ -96,6 +104,22 @@ inline Energy2 XComb::lastScale() const {
 
 inline void XComb::lastScale(Energy2 Q2) {
   theLastScale = Q2;
+}
+
+inline double XComb::lastAlphaS() const {
+  return theLastAlphaS;
+}
+
+inline void XComb::lastAlphaS(double a) {
+  theLastAlphaS = a;
+}
+
+inline double XComb::lastAlphaEM() const {
+  return theLastAlphaEM;
+}
+
+inline void XComb::lastAlphaEM(double a) {
+  theLastAlphaEM = a;
 }
 
 inline bool XComb::empty() const {

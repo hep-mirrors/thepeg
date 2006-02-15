@@ -22,7 +22,8 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Handlers/SamplerBase.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Config/algorithm.h"
 
 using namespace ThePEG;
@@ -88,8 +89,8 @@ IBPtr StandardEventHandler::fullclone() const {
 }
 
 void StandardEventHandler::
-addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tKinCutPtr cuts,
-      tMEPtr me, const PBPair & pBins) {
+addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tCutsPtr cuts,
+      tCascHdlPtr ckkw, tMEPtr me, const PBPair & pBins) {
   typedef MEBase::DiagramVector DiagramVector;
   typedef map<string,DiagramVector> DiagramMap;
   cPDPair pin(pBins.first->parton(), pBins.second->parton());
@@ -109,8 +110,8 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tKinCutPtr cuts,
   if ( ( mirror = tdiag.empty() ) ) tdiag = tmdiag;
   for ( DiagramMap::iterator dit = tdiag.begin(); dit != tdiag.end(); ++dit ) {
     StdXCombPtr xcomb =
-      new_ptr(StandardXComb(maxEnergy, incoming(), this, sub,
-			    extractor, pBins, cuts, me, dit->second, mirror));
+      new_ptr(StandardXComb(maxEnergy, incoming(), this, sub, extractor,
+			    ckkw, pBins, cuts, me, dit->second, mirror));
     if ( xcomb->checkInit() ) xCombs().push_back(xcomb);
     else generator()->logWarning(
       StandardEventHandlerInitError() << "The matrix element '"
@@ -130,21 +131,20 @@ void StandardEventHandler::initGroups() {
 tCollPtr StandardEventHandler::performCollision() {
   Timer<6> timer1("StandardEventHandler::performCollision()");
   tStdXCombPtr lastXC = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
+  if ( CKKWHandler() ) CKKWHandler()->setXComb(lastXCombPtr());
   lastExtractor()->select(lastXC);
   currentCollision(new_ptr(Collision(lastParticles(), currentEvent(), this)));
   if ( currentEvent() ) currentEvent()->addCollision(currentCollision());
   currentStep(new_ptr(Step(currentCollision())));
   currentCollision()->addStep(currentStep());
-  SubProPtr sub =
-    new_ptr(SubProcess(lastPartons(), currentCollision(),
-		       lastXC->matrixElement()));
+
   Timer<36> timer2("StandardEventHandler::performCollision():2");
-  lastXC->construct(sub);
+  currentStep()->addSubProcess(lastXC->construct());
+
   Timer<37> timer3("StandardEventHandler::performCollision():3");
-  currentStep()->addSubProcess(sub);
   lastExtractor()->construct(lastXC->partonBinInstances(),
 			     currentStep());
-  lastCuts().cut(*currentCollision(), currentEventBoost());
+  if ( !lastCuts().passCuts(*currentCollision()) ) throw Veto();
   initGroups();
   if ( ThePEG_DEBUG_ITEM(1) ) {
     if ( currentEvent() )    
@@ -167,10 +167,16 @@ void StandardEventHandler::initialize() {
   xCombs().clear();
   xSecs().clear();
 
+  cuts()->initialize(sqr(maxEnergy), lumiFn().Y());
+
   for ( SubHandlerList::const_iterator sit = subProcesses().begin();
 	sit != subProcesses().end(); ++sit ) {
-    KinCutPtr kincuts = (**sit).cuts()? (**sit).cuts(): cuts();
+    CutsPtr kincuts = (**sit).cuts()? (**sit).cuts(): cuts();
+    if ( (**sit).cuts() ) kincuts->initialize(sqr(maxEnergy), lumiFn().Y());
     PExtrPtr pextract = (**sit).pExtractor();
+
+    tCascHdlPtr ckkw = (**sit).CKKWHandler();
+    if ( !ckkw ) ckkw = CKKWHandler();
 
     PartonPairVec vpc = pextract->getPartons(maxEnergy, incoming(), *kincuts);
 
@@ -183,7 +189,7 @@ void StandardEventHandler::initialize() {
 	  ppit != vpc.end(); ++ppit )
       for ( MEVector::const_iterator meit = (**sit).MEs().begin();
 	    meit != (**sit).MEs().end(); ++meit )
-	addME(maxEnergy, *sit, pextract, kincuts, *meit, *ppit);
+	addME(maxEnergy, *sit, pextract, kincuts, ckkw, *meit, *ppit);
   }
   xSecs().resize(xCombs().size());
 
@@ -533,7 +539,7 @@ void StandardEventHandler::Init() {
      "The list of sub-process handlers used in this StandardEventHandler. ",
      &StandardEventHandler::theSubProcesses, 0, false, false, true, false);
 
-  static Reference<StandardEventHandler,KinematicalCuts> interfaceCuts
+  static Reference<StandardEventHandler,Cuts> interfaceCuts
     ("Cuts",
      "Common kinematical cuts for this StandardEventHandler. These cuts "
      "may be overidden in individual sub-process handlers.",

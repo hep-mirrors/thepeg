@@ -40,7 +40,7 @@ namespace ThePEG {
  *
  * @see ParonExtractor
  * @see MEBase
- * @see KinematicalCuts
+ * @see Cuts
  */
 class StandardXComb: public XComb {
 
@@ -63,10 +63,10 @@ public:
    * Standard constructor.
    */
   StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
-	tStdEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
-	tPExtrPtr newExtractor,	const PBPair & newPartonBins,
-	tKinCutPtr newCuts, tMEPtr newME, const DiagramVector & newDiagrams,
-	bool mir);
+		tStdEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+		tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
+		const PBPair & newPartonBins, tCutsPtr newCuts, tMEPtr newME,
+		const DiagramVector & newDiagrams, bool mir);
 
   /**
    * Copy-constructor.
@@ -127,7 +127,7 @@ public:
   /**
    * Construct a sub-process object from the information available.
    */
-  void construct(tSubProPtr);
+  tSubProPtr construct();
   //@}
 
   /** @name Functions used for collecting statistics. */
@@ -180,10 +180,9 @@ public:
   inline const vector<Lorentz5Momentum> & meMomenta() const;
 
   /**
-   * Return the partons to be used by the matrix element object, in the order
-   * specified by the TreeDiagram objects given by the matrix element.
+   * Return the last selected diagram.
    */
-  inline const tPVector & mePartons() const;
+  inline tcDiagPtr lastDiagram() const;
 
   /**
    * Return the parton types to be used by the matrix element object,
@@ -191,11 +190,6 @@ public:
    * matrix element.
    */
   inline const cPDVector & mePartonData() const;
-
-  /**
-   * Return the last selected diagram.
-   */
-  inline tcDiagPtr lastDiagram() const;
 
   /**
    * Return the index of the last selected diagram.
@@ -220,6 +214,12 @@ public:
 protected:
 
   /**
+   * Construct the corresponding SubProcess object if it hasn't been
+   * done before.
+   */
+  void newSubProcess();
+
+  /**
    * Return the momenta of the partons to be used by the matrix
    * element object, in the order specified by the TreeDiagram objects
    * given by the matrix element.
@@ -232,13 +232,6 @@ protected:
    * matrix element.
    */
   inline cPDVector & mePartonData();
-
-  /**
-   * Return the partons to be used by the matrix element object, in
-   * the order specified by the TreeDiagram objects given by the
-   * matrix element.
-   */
-  inline tPVector & mePartons();
 
   /**
    * Set the last selected diagram.
@@ -314,12 +307,6 @@ private:
    * by the matrix element.
    */
   vector<Lorentz5Momentum> theMEMomenta;
-
-  /**
-   * The partons to be used by the matrix element object, in the order
-   * specified by the TreeDiagram objects given by the matrix element.
-   */
-  tPVector theMEPartons;
 
   /**
    * The parton types to be used by the matrix element object, in the

@@ -28,6 +28,10 @@ void LuminosityFunction::select(tXCombPtr xcomb) {
   theLastXComb = xcomb;
 }
 
+double LuminosityFunction::Y() const {
+  return 0.0;
+}
+
 LorentzRotation LuminosityFunction::getBoost() const {
   LorentzRotation r;
   return r;

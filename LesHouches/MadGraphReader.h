@@ -154,6 +154,15 @@ protected:
 protected:
 
   /**
+   * Interface function to scan a madgraph file and extract
+   * information about used cuts. The corresponding cut objects are
+   * created in the Repository and assigned to this reader.
+   */
+  string scanCuts(string);
+
+protected:
+
+  /**
    * Fixed scale. Old MadGraph files do not necessarily contain
    * information about the factorization (or renormalization)
    * scale. In this case this is used instead.
@@ -173,6 +182,13 @@ protected:
    * case this is used instead.
    */
   double fixedAS;
+
+  /**
+   * New MadGraph files contain suitable information about cuts used
+   * in the generation. The non-zero ones are stored in this map.
+   */
+  map<string,double> cuts;
+  
 
 private:
 

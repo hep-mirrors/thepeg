@@ -6,7 +6,7 @@
 
 #include "PartonExtractor.h"
 #include "ThePEG/Handlers/XComb.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/PDF/NoPDF.h"
 #include "ThePEG/PDF/RemnantHandler.h"
 #include "ThePEG/PDF/BeamParticleData.h"
@@ -48,7 +48,7 @@ void PartonExtractor::doinit() throw(InitException) {
 
 PartonPairVec PartonExtractor::
 getPartons(Energy maxEnergy, const cPDPair & incoming,
-	   const KinematicalCuts & kc) const {
+	   const Cuts & kc) const {
   PartonPairVec result;
   PartonVector first;
   PDFCuts cuts1(kc, true, maxEnergy);
@@ -165,17 +165,10 @@ generateL(const PBIPair & pbins, const double * r1, const double * r2) {
   if ( !flatSHatY ) return true;
 
   Energy2 shmax = lastCuts().sHatMax();
-  shmax = min(shmax, lastCuts().x1Max()*lastCuts().x2Max()*lastS());
   Energy2 shmin = lastCuts().sHatMin();
-  shmin = max(shmin, lastCuts().tHatMin());
-  shmin = max(shmin, lastCuts().uHatMin());
-  shmin = max(shmin, sqr(2.0*lastCuts().pTHatMin()));
-  shmin = max(shmin, lastCuts().x1Min()*lastCuts().x2Min()*lastS());
   Energy2 sh = shmin*pow(shmax/shmin, *r1);
-  double ymax = lastCuts().yStarMax();
-  double ymin = lastCuts().yStarMin();
-  ymax = min(ymax, 0.5*log(lastCuts().x1Max()/lastCuts().x2Min()));
-  ymin = max(ymin, 0.5*log(lastCuts().x1Min()/lastCuts().x2Max()));
+  double ymax = lastCuts().yHatMax();
+  double ymin = lastCuts().yHatMin();
   double km = log(shmax/shmin);
   ymax = min(ymax, log(lastCuts().x1Max()*sqrt(lastS()/sh)));
   ymin = max(ymin, -log(lastCuts().x2Max()*sqrt(lastS()/sh)));

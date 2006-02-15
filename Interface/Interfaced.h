@@ -76,6 +76,16 @@ public:
    * During the setup phase this returns a null pointer.
    */
   inline tEGPtr generator() const;
+
+  /**
+   * A sub class can implement this function to implement some default
+   * initialization for this object. A typical example is if this
+   * object need some references to other objects and if these can be
+   * easily created. In this case the objects can be added to the
+   * repository in a sub-directory with the same name as this object.
+   * @return false if the initialization failed.
+   */
+  virtual bool defaultInit();
   //@}
 
 public:
@@ -113,6 +123,25 @@ protected:
    * name.
    */
   static void registerRepository(IBPtr, string newName);
+
+  /**
+   * Register the given \a object in the Repository with the given \a
+   * name in a subdirectory with the same name as this object. If an
+   * object with that name already exists it will be removed unless
+   * there are other objects referring to it, in which case it will be
+   * renamed.
+   */
+  void reporeg(IBPtr object, string name) const;
+
+  /**
+   * If the pointer, \a ptr, to an object is not set, create an object
+   * of class \a classname and register it with the Repository with
+   * the given \a objectname in a sib-directory with the same name as
+   * this object.
+   */
+  template <typename PtrT>
+  inline bool setDefaultReference(PtrT & ptr, string classname,
+				  string objectname);
 
   /**
    * Protected default constructor.
@@ -179,6 +208,11 @@ private:
    * Flag to tell whether this object has been used or not.
    */
   mutable bool theUseFlag;
+
+  /**
+   * Command interface function which calls defaultInit().
+   */
+  string doDefaultInit(string);
 
 private:
 

@@ -1,0 +1,68 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MadGraphTwoCut class.
+//
+
+namespace ThePEG {
+
+inline MadGraphTwoCut::MadGraphTwoCut()
+: cutType(DELTAR), pairType(JETJET), theCut(0.0) {}
+
+inline MadGraphTwoCut::MadGraphTwoCut(CutType t, PPType p, double c)
+: cutType(t), pairType(p), theCut(c) {}
+
+inline MadGraphTwoCut::MadGraphTwoCut(const MadGraphTwoCut & x)
+  : TwoCutBase(x), cutType(x.cutType), pairType(x.pairType), theCut(x.theCut) {}
+
+inline IBPtr MadGraphTwoCut::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr MadGraphTwoCut::fullclone() const {
+  return new_ptr(*this);
+}
+
+inline void MadGraphTwoCut::doupdate() throw(UpdateException) {
+  TwoCutBase::doupdate();
+  // First update base class.
+  bool redo = touched();
+  // redo if touched.
+//  UpdateChecker::check(aDependentMember, redo);
+  // Update referenced objects on which this depends redo is set to true
+  // if the dependent object is touched.
+//  for_each(ContainerOfDependencies, UpdateChecker(redo));
+  // Update a container of references.
+//  for_each(MapOfDependencies, UpdateMapChecker(redo));
+  // Update a map of references.
+  if ( !redo ) return;
+  // return if nothing has been touched. Otherwise do the actual update.
+//  touch()
+  // Touch if anything has changed.
+}
+
+inline void MadGraphTwoCut::doinit() throw(InitException) {
+  TwoCutBase::doinit();
+}
+
+inline void MadGraphTwoCut::dofinish() {
+  TwoCutBase::dofinish();
+}
+
+inline void MadGraphTwoCut::doinitrun() {
+  TwoCutBase::doinitrun();
+}
+
+inline void MadGraphTwoCut::rebind(const TranslationMap & trans)
+  throw(RebindException) {
+  // dummy = trans.translate(dummy);
+  TwoCutBase::rebind(trans);
+}
+
+inline IVector MadGraphTwoCut::getReferences() {
+  IVector ret = TwoCutBase::getReferences();
+  // ret.push_back(dummy);
+  return ret;
+}
+
+}

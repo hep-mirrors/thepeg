@@ -7,7 +7,7 @@
 #include "XComb.h"
 #include "ThePEG/Handlers/EventHandler.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Math.h"
@@ -18,10 +18,12 @@
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/CLHEPWrap/LorentzRotation.h"
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/MatrixElement/ColourLines.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
 #include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -34,18 +36,20 @@ XComb::XComb()
   : theLastS(Energy2()), theLastSHat(Energy2()), theLastY(0.0),
     theLastP1P2(make_pair(1.0, 1.0)), theLastL1L2(make_pair(1.0, 1.0)),
     theLastX1X2(make_pair(1.0, 1.0)), theLastE1E2(make_pair(0.0, 0.0)),
-    theLastScale(0.0*GeV2), theMaxEnergy(0.0*GeV) {}
+    theLastScale(0.0*GeV2), theLastAlphaS(-1.0), theLastAlphaEM(-1.0),
+    theMaxEnergy(0.0*GeV) {}
 
 XComb::
 XComb(Energy newMaxEnergy, const cPDPair & inc, tEHPtr newEventHandler,
-      tPExtrPtr newExtractor, const PBPair & newPartonBins, tKinCutPtr newCuts)
+      tPExtrPtr newExtractor, tCascHdlPtr newCKKW, const PBPair & newPartonBins,
+      tCutsPtr newCuts)
   : theEventHandler(newEventHandler),
-    thePartonExtractor(newExtractor), theCuts(newCuts), theParticles(inc),
-    thePartonBins(newPartonBins), theLastS(Energy2()), theLastSHat(Energy2()),
-    theLastY(0.0), theLastP1P2(make_pair(1.0, 1.0)),
+    thePartonExtractor(newExtractor), theCKKW(newCKKW), theCuts(newCuts),
+    theParticles(inc), thePartonBins(newPartonBins), theLastS(Energy2()),
+    theLastSHat(Energy2()), theLastY(0.0), theLastP1P2(make_pair(1.0, 1.0)),
     theLastL1L2(make_pair(1.0, 1.0)), theLastX1X2(make_pair(1.0, 1.0)),
     theLastE1E2(make_pair(0.0, 0.0)), theLastScale(0.0*GeV2),
-    theMaxEnergy(newMaxEnergy) {
+    theLastAlphaS(-1.0), theLastAlphaEM(-1.0), theMaxEnergy(newMaxEnergy) {
   thePartons = cPDPair(partonBins().first->parton(),
 		       partonBins().second->parton());
   thePartonBinInstances.first =
@@ -59,7 +63,7 @@ XComb(Energy newMaxEnergy, const cPDPair & inc, tEHPtr newEventHandler,
 XComb::XComb(const XComb & x)
   : Base(x),
     theEventHandler(x.theEventHandler),
-    thePartonExtractor(x.thePartonExtractor),
+    thePartonExtractor(x.thePartonExtractor), theCKKW(x.theCKKW),
     theCuts(x.theCuts), theParticles(x.theParticles),
     thePartons(x.thePartons), thePartonBins(x.thePartonBins),
     theParticleBins(x.theParticleBins),
@@ -69,7 +73,9 @@ XComb::XComb(const XComb & x)
     theLastSHat(x.theLastSHat), theLastY(x.theLastY),
     theLastP1P2(x.theLastP1P2), theLastL1L2(x.theLastL1L2),
     theLastX1X2(x.theLastX1X2), theLastE1E2(x.theLastE1E2),
-    theLastScale(x.theLastScale), theMaxEnergy(x.theMaxEnergy) {}
+    theLastScale(x.theLastScale), theLastAlphaS(x.theLastAlphaS),
+    theLastAlphaEM(x.theLastAlphaEM), theMaxEnergy(x.theMaxEnergy),
+    theMEInfo(x.theMEInfo), theSub(x.theSub) {}
 
 XComb::~XComb() {}
 
@@ -77,14 +83,20 @@ void XComb::clean() {
   theLastParticles = PPair();
   theLastPartons = PPair();
   theLastS = theLastSHat = theLastScale = 0.0*GeV2;
+  theLastAlphaS = theLastAlphaEM = -1.0;
   theLastY = 0.0;
   theLastP1P2 = theLastL1L2 = theLastX1X2 = theLastE1E2 = DPair(0.0, 0.0);
+  theSub = SubProPtr();
 }
 
 void XComb::prepare(const PPair & inc) {
   clean();
   theLastParticles = inc;
   pExtractor()->prepare(partonBinInstances());
+}
+
+void XComb::subProcess(tSubProPtr sp) {
+  theSub = sp;
 }
 
 void XComb::setPartonBinInfo() {
@@ -124,23 +136,25 @@ void XComb::Init() {}
 
 void XComb::persistentOutput(PersistentOStream & os) const {
 
-  os << theEventHandler << thePartonExtractor
+  os << theEventHandler << thePartonExtractor << theCKKW
      << theCuts << theParticles << thePartons << thePartonBins
      << theParticleBins << thePartonBinInstances
      << theLastParticles << theLastPartons
      << ounit(theLastS, GeV2) << ounit(theLastSHat, GeV2) << theLastY
      << theLastP1P2 << theLastL1L2 << theLastX1X2 << theLastE1E2
-     << ounit(theLastScale, GeV2) << ounit(theMaxEnergy, GeV);
+     << ounit(theLastScale, GeV2) << theLastAlphaS << theLastAlphaEM
+     << ounit(theMaxEnergy, GeV) << theMEInfo << theSub;
 }
 
 void XComb::persistentInput(PersistentIStream & is, int) {
-  is >> theEventHandler >> thePartonExtractor
+  is >> theEventHandler >> thePartonExtractor >> theCKKW
      >> theCuts >> theParticles >> thePartons >> thePartonBins
      >> theParticleBins >> thePartonBinInstances
      >> theLastParticles >> theLastPartons
      >> iunit(theLastS, GeV2) >> iunit(theLastSHat, GeV2) >> theLastY
      >> theLastP1P2 >> theLastL1L2 >> theLastX1X2 >> theLastE1E2
-     >> iunit(theLastScale, GeV2) >> iunit(theMaxEnergy, GeV);
+     >> iunit(theLastScale, GeV2) >> theLastAlphaS >> theLastAlphaEM
+     >> iunit(theMaxEnergy, GeV) >> theMEInfo >> theSub;
 }
 
 ClassDescription<XComb> XComb::initXComb;

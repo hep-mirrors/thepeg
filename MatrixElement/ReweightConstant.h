@@ -41,8 +41,8 @@ public:
 public:
 
   /**
-   * Return the wieght for the kinematical configuation
-   * previously provided by the last call to setKinematics().
+   * Return the wieght for the kinematical configuation provided by
+   * the assigned XComb object (in the LastXCombInfo base class).
    */
   virtual double weight() const;
 

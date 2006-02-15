@@ -1,5 +1,7 @@
 2006-02-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* *** GLOBAL ***: Joined in changes from the cuts-devel branch.
+
 	* *** GLOBAL ***: Joined in changes from the Java-devel branch.
 
 	* Interface/InterfacedBase.h, Interface/Interfaced.h: Removed the
@@ -19,6 +21,40 @@
 	possibility to list several dynamic libraries in the
 	ClassTraits<T>::library() function.
 
+2006-02-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/BaryonRemnants.*: Implemented defaultInit() function to
+	create default ZGenerator, PtGenerator and FlavourGenerator
+	objects.
+
+	* LesHouches/LesHouchesReader.*: Still not quite ready with the
+	scanPDF() function.
+
+	* Interface/Interfaced.*: Added a defaultInit() function and a
+	corresponding Command interface. defaultInit() can be implemented
+	by sub-classes to automatically create objects for mandatory
+	references. Also introduced reporeg() and setDefaultReference()
+	functions to help sub-classes with this.
+
+2006-02-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/CFileLineReader.*: Fixed bug in opening plain files
+	(they were never assigned to a file handle). Also fixed bug in
+	skip() function (didn't actually skip the character found).
+
+	* LesHouches/MadGraphReader.*: Fixed some bugs when reading
+	MadGraph version 3 files.
+
+	* LesHouches/LesHouchesReader.*: Introduced command interface to
+	automatically deduce which PDFs was used for the generation. Not
+	quite working yet (still need to fix remnant handlers).
+
+2006-02-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesEventHandler.cc,
+	Handlers/StandardEventHandler.cc: Fixed so that theLastXComb is
+	always set for the CKKWHandler().
+
 2006-02-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runThePEG.cc, Repository/EventGenerator.*,
@@ -30,6 +66,92 @@
 
 	* Repository/EventGenerator.cc: Removed the upper limit for
 	MaxErrors altogether. Also did the same for other parameters.
+
+2006-02-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphReader.*: Finished functions for scanning
+	cuts. It now seems to work OK.
+
+	* LesHouches/MadGraphOneCut.cc: The CutType interface is no longer
+	read-only.
+
+	* Cuts/Cuts.h: Added public functions to add one- two and
+	multi-cut objects
+
+	* LesHouches/LesHouchesReader.*: The Cuts interface is now
+	nullable.
+
+	* Repository/BaseRepository.*: Fixed bug in Rename() to avoid more
+	than one object with the same name. Also renamed the function
+	GetObjectsReferingTo to GetObjectsReferringTo.
+
+2006-02-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphOneCut.*, LesHouches/MadGraphTwoCut.*: New
+	classes to be used by MadGraphReader to implement cuts.
+
+	* Cuts/OneCutBase.*: Added minimum of maximum functions.
+
+	* LesHouches/MadGraphReader.cc: Added command interface extracting
+	cuts from MadGraph version 3 event files.
+
+2006-02-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphReader.cc: Preparing for extracting cuts from
+	MadGraph version 3 event files.
+
+	* MatrixElement/Tree2toNDiagram.cc: Modified according to the
+	changes in XComb.
+
+	* MatrixElement/ReweightMinPT.cc: Modified according to the
+	changes in XComb.
+
+	* LesHouches/LesHouchesReader.*, LesHouches/LesHouchesEventHandler.*:
+	Modified according to the changes in XComb.
+
+	* Handlers/StandardXComb.*, Handlers/XComb.*,
+	Handlers/LastXCombInfo.*: Instead of just having access to the
+	incoming and outgoing partons in the generated sub-process XComb
+	now have access to the full SubProcess object if it has been
+	provided. LastXCombInfo and Standard XComb has been modified
+	accordingly.
+
+	* EventRecord/Collision.cc: Adding a SubProcess, now sets its
+	pointer to this collision if none was provided before.
+
+2006-02-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/ReweightBase.*, MatrixElement/ReweightConstant.*,
+	MatrixElement/ReweightMinPT.*: Reweighting now only use
+	information in the LastXCombInfo. All other functions for setting
+	kinematics has been removed. ReweightMinPT was added to the
+	makefile and has now a scale parameter.
+
+	* MatrixElement/MEBase.*: Fixed proper initialization of
+	LastXCombInfo in ctor. Also introduced functions for returning
+	alpha_S and alpha_EM.
+
+	* LesHouches/LesHouchesReader.*: Now inherits from LastXCombInfo,
+	and information to (p)reweighting is conveyed with the XComb
+	object.
+
+	* Handlers/StandardXComb.*: Changes from XComb. Initialization of
+	mePartons still doesn't work...
+
+	* Handlers/XComb.*, Handlers/LastXCombInfo.*: XComb now has
+	information of the last alpha_s and alpha_ME. Also moved the
+	mePartons() here from StandardXComb and added corresponding
+	initialization function.
+
+	* Handlers/CascadeHandler.cc: Fixed proper initialization of
+	LastXCombInfo in ctor.
+
+	* LesHouches/LesHouchesReader.*, Handlers/XComb.*,
+	Handlers/SubProcessHandler.*, Handlers/StandardXComb.*,
+	Handlers/StandardEventHandler.*, Handlers/LastXCombInfo.*,
+	Handlers/EventHandler.*, Handlers/CascadeHandler.*: Started
+	implementing CKKW rewighting infrastructure. Not quite working
+	yet.
 
 2006-01-31  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
@@ -138,6 +260,12 @@
 	twice for 2->2 QCD MEs resulting in completely wrong cross
 	sections.
 
+2006-01-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/ME2to2QCD.cc: Fixed serious bug where the
+	jacobian() was applied twice for QCD matrix elements giving
+	completely wrong results.
+
 2006-01-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.cc: Fixed typos in documentation.
@@ -165,6 +293,20 @@
 	* src/setupThePEG.install: added VERSION="" to avoid problems when
 	VERSION is set during 'make distcheck'.
 
+2005-12-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/Exception.h: Added new Throw class to encapsulate the
+	throwing of exceptions.
+
+	* MatrixElement/ME2to2Base.cc: Temporary changes trying to figure
+	out what goes wrong here.
+
+	* Handlers/StandardXComb.cc: Temporarily removed unnecessary call
+	to MEBase::generateKinematics().
+
+	* Handlers/ACDCSampler.cc: Added more info to log file in
+	dofinish().
+
 2005-12-12  David Grellscheid <David.Grellscheid@durham.ac.uk>
 	* PDT/DecayMode.h: rebind() is not an inline!
 
@@ -188,6 +330,20 @@
 	the filehandle from the std::fopen call was not stored properly
 	(thanks to Simon Plaetzer).
 
+2005-10-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* *** GLOBAL ***: Replace old KinematicalCuts classes with new
+	Cuts classes. It all compiles, but still problem with the
+	initialization.
+
+	* Handlers/Two2NCuts.*, Handlers/KinematicalCuts.*,
+	Handlers/KinCutsInit.cc: Removed the old KinematicalCuts classes. 
+
+2005-10-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/TmpTransform.*: Added wrapper class to make safe
+	temporary Lorentz transforms of objects.
+
 2005-10-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* acinclude.m4: Fixed #15. Not tested on Mac.
@@ -209,6 +365,11 @@
 
 	* Repository/Repository.cc: Error message if '.in' file can't be
 	found. Fixes bug #3.
+
+2005-10-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Cuts/*CutBase.*: Added base classes for cuts on one, two and
+	many particles.
 
 2005-09-29  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
@@ -259,10 +420,10 @@
 	* PDF/PDFBase.cc: Fixed 'inline' bug.
 
 
-2005-09-02  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+2005-09-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* Helicity/LorentzRSSpinor.icc: fixed bug in the generalCurrent member
-	
+	* Cuts/Cuts.*: Fixed buggy doxygen comments.
+
 2005-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added function ThePEG-cond-section to make a
@@ -285,6 +446,10 @@
 	macros will actively search for valid CLHEP and ThePEG
 	installations in standard places.
 
+2005-09-02  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity/LorentzRSSpinor.icc: fixed bug in the generalCurrent member
+	
 2005-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/BaryonRemnants.*: Added option to always give di-quark when
@@ -314,6 +479,14 @@
 	const references instead of objects. Also introduced cast operator
 	synonomous to one(). Introduces multiplication operators for
 	Lorentz(5)Vectors.
+
+2005-06-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Cuts/Cuts.*: Added Cuts base class to implement the new handling
+	of matrix element cuts.
+
+	* lib/Makefile.am, configure.ac, Makefile.am: Added Cuts
+	directory.
 
 2005-08-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

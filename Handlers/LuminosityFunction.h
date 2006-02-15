@@ -76,6 +76,13 @@ public:
   virtual LorentzRotation getBoost() const;
 
   /**
+   * Return the rapidity of the colliding particles (at the maximum
+   * energy) in the laboratory system. This default version assumes
+   * the CM system is the same as the lab system and returns zero.
+   */
+  virtual double Y() const;
+
+  /**
    * How many random numbers are needed to generate a phase space
    * point? Default is zero in which means the energy of the incoming
    * particles is fixed. The only other reasonable values are 1 and 2.

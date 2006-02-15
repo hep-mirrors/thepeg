@@ -4,6 +4,7 @@
 // This is the declaration of the LastXCombInfo class.
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/Cuts/Cuts.fh"
 // #include "LastXCombInfo.fh"
 // #include "LastXCombInfo.xh"
 
@@ -84,12 +85,12 @@ public:
   /**
    * A reference to the currently used kinematical cuts.
    */
+  inline const Cuts & lastCuts() const;
 
-  inline const KinematicalCuts & lastCuts() const;
   /**
    * A pointer to the currently used kinematical cuts.
    */
-  inline tKinCutPtr lastCutsPtr() const;
+  inline tCutsPtr lastCutsPtr() const;
   //@}
 
   /** @name Access information about the incoming particles and partons. */
@@ -187,6 +188,18 @@ public:
   inline Energy2 lastScale() const;
 
   /**
+   * Get the \f$\alpha_S\f$ used in the hard scattering. Is negative
+   * if no value has been set.
+   */
+  inline double lastAlphaS() const;
+
+  /**
+   * Get the \f$\alpha_{EM}\f$ used in the hard scattering. Is negative
+   * if no value has been set.
+   */
+  inline double lastAlphaEM() const;
+
+  /**
    * Return the momenta of the incoming and outgoing partons to be
    * used by the matrix element object, in the order specified by the
    * TreeDiagram objects given by the matrix element.
@@ -194,11 +207,10 @@ public:
   inline const vector<Lorentz5Momentum> & meMomenta() const;
 
   /**
-   * Return the incoming and outgoing partons to be used by the matrix
-   * element object, in the order specified by the TreeDiagram objects
-   * given by the matrix element.
+   * Return the SubProcess object corresponding to the last generated
+   * sub-process.
    */
-  inline const tPVector & mePartons() const;
+  inline tSubProPtr subProcess() const;
 
   /**
    * Return the incoming and outgoing parton types to be used by the

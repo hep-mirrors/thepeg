@@ -9,6 +9,7 @@
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
 #include "ThePEG/Handlers/SubProcessHandler.fh"
+#include "ThePEG/Cuts/Cuts.fh"
 #include "EventHandler.fh"
 
 namespace ThePEG {
@@ -183,13 +184,19 @@ public:
   /**
    * The kinematical cuts to used by subclasses which do not provide their own.
    */
-  inline tKinCutPtr kinematicalCuts() const;
+  inline tCutsPtr cuts() const;
 
   /**
    * A PartonExtractor object to be used by sub classes which do not
    * provide their own.
    */
   inline tPExtrPtr partonExtractor() const;
+
+  /**
+   * Return a pointer (possibly null) to the assigned main
+   * CascadeHandler to be used as CKKW-reweighter.
+   */
+  tCascHdlPtr CKKWHandler() const;
 
   /**
    * Gget current event.
@@ -412,7 +419,7 @@ private:
    * The kinematical cuts to used by subclasses which do not provide
    * their own.
    */
-  KinCutPtr theKinematicalCuts;
+  CutsPtr theCuts;
 
   /**
    * A PartonExtractor object to be used by sub classes which do not

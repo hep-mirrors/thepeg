@@ -43,12 +43,12 @@ inline tPExtrPtr LastXCombInfo<XC>::lastExtractor() const {
 }
 
 template <typename XC>
-inline const KinematicalCuts & LastXCombInfo<XC>::lastCuts() const {
+inline const Cuts & LastXCombInfo<XC>::lastCuts() const {
   return *lastXComb().cuts();
 }
 
 template <typename XC>
-inline tKinCutPtr LastXCombInfo<XC>::lastCutsPtr() const {
+inline tCutsPtr LastXCombInfo<XC>::lastCutsPtr() const {
   return lastXComb().cuts();
 }
 
@@ -75,6 +75,16 @@ inline Energy2 LastXCombInfo<XC>::lastSHat() const {
 template <typename XC>
 inline Energy2 LastXCombInfo<XC>::lastScale() const {
   return lastXComb().lastScale();
+}
+
+template <typename XC>
+inline double LastXCombInfo<XC>::lastAlphaS() const {
+  return lastXComb().lastAlphaS();
+}
+
+template <typename XC>
+inline double LastXCombInfo<XC>::lastAlphaEM() const {
+  return lastXComb().lastAlphaEM();
 }
 
 template <typename XC>
@@ -144,8 +154,8 @@ inline const vector<Lorentz5Momentum> & LastXCombInfo<XC>::meMomenta() const {
 }
 
 template <typename XC>
-inline const tPVector & LastXCombInfo<XC>::mePartons() const {
-  return lastXComb().mePartons();
+inline tSubProPtr LastXCombInfo<XC>::subProcess() const {
+  return lastXComb().subProcess();
 }
 
 template <typename XC>

@@ -4,7 +4,7 @@ LINK = $(LIBTOOL) --tag=CXX --mode=link $(CXX) $(AM_CXXFLAGS) \
 
 LINKDIRS = Config Utilities Helicity Interface LesHouches CLHEPWrap \
            PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
-           StandardModel Repository EventRecord
+           StandardModel Repository EventRecord Cuts
 
 EXTRA_DIST = Makefile.dist.install
 
@@ -32,6 +32,7 @@ libThePEG_la_LIBADD = \
 	$(top_builddir)/StandardModel/libThePEGSM.la \
 	$(top_builddir)/Interface/libThePEGInter.la \
 	$(top_builddir)/Helicity/libThePEGHelicity.la \
+	$(top_builddir)/Cuts/libThePEGCuts.la \
 	$(CLHEPLIB) -ldl 
 
 all-local: done-all-links

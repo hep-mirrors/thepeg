@@ -41,7 +41,8 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
 				xc.meMomenta().end());
 //   Utilities::transform(pout.begin(), pout.end(),
 // 		       Utilities::getBoostFromCM(xc.lastPartons()));
-  tPPair in = make_pair(xc.mePartons()[0], xc.mePartons()[1]);
+  tPPair in = xc.lastPartons();
+  if ( xc.mirror() ) swap(in.first, in.second);
 
   tPVector ret;
   if ( in.first->dataPtr() != allPartons()[0] ||

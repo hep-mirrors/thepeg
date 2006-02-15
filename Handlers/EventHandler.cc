@@ -14,7 +14,7 @@
 #include "ThePEG/Handlers/HadronizationHandler.h"
 #include "ThePEG/Handlers/DecayHandler.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Parameter.h"
@@ -42,7 +42,7 @@ EventHandler::
 EventHandler(const EventHandler & x)
   : HandlerBase(x), LastXCombInfo<>(x),
     theMaxLoop(x.theMaxLoop), theStatLevel(x.theStatLevel),
-    theLumiFn(x.theLumiFn), theKinematicalCuts(x.theKinematicalCuts),
+    theLumiFn(x.theLumiFn), theCuts(x.theCuts),
     thePartonExtractor(x.thePartonExtractor),
     theSubprocessGroup(x.theSubprocessGroup),
     theCascadeGroup(x.theCascadeGroup), theMultiGroup(x.theMultiGroup),
@@ -81,6 +81,10 @@ void EventHandler::setupGroups() {
 void EventHandler::initGroups() {
   for ( unsigned int i = 0; i < groups().size(); ++i )
     groups()[i]->init(*optGroups[i]);
+}
+
+tCascHdlPtr EventHandler::CKKWHandler() const {
+  return dynamic_ptr_cast<tCascHdlPtr>(theCascadeGroup.defaultHandler());
 }
 
 EventPtr EventHandler::generateEvent() {
@@ -238,7 +242,7 @@ CrossSection EventHandler::histogramScale() const {
 
 void EventHandler::persistentOutput(PersistentOStream & os) const {
   os << theLastXComb << theMaxLoop << theStatLevel << theLumiFn
-     << theKinematicalCuts << thePartonExtractor
+     << theCuts << thePartonExtractor
      << theSubprocessGroup << theCascadeGroup << theMultiGroup
      << theHadronizationGroup << theDecayGroup << theCurrentEvent
      << theCurrentCollision << theCurrentStep << theCurrentStepHandler
@@ -247,7 +251,7 @@ void EventHandler::persistentOutput(PersistentOStream & os) const {
 
 void EventHandler::persistentInput(PersistentIStream & is, int) {
   is >> theLastXComb >> theMaxLoop >> theStatLevel >> theLumiFn
-     >> theKinematicalCuts >> thePartonExtractor
+     >> theCuts >> thePartonExtractor
      >> theSubprocessGroup >> theCascadeGroup >> theMultiGroup
      >> theHadronizationGroup >> theDecayGroup >> theCurrentEvent
      >> theCurrentCollision >> theCurrentStep >> theCurrentStepHandler
@@ -297,11 +301,11 @@ void EventHandler::Init() {
      &EventHandler::theLumiFn, false, false, true, true,
      &EventHandler::lumiFn);
 
-  static Reference<EventHandler,KinematicalCuts> interfaceCuts
+  static Reference<EventHandler,Cuts> interfaceCuts
     ("Cuts",
      "Kinematical cuts to be used by subclasses which do not provide "
      "their own. Note that this may be overridden by subclasses.",
-     &EventHandler::theKinematicalCuts, true, false, true, true, false);
+     &EventHandler::theCuts, true, false, true, true, false);
 
   static Reference<EventHandler,PartonExtractor> interfacePartonExtractor
     ("PartonExtractor",

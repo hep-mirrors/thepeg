@@ -7,9 +7,13 @@
 #include "MadGraphReader.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Command.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDF/PDFBase.h"
+#include "ThePEG/LesHouches/MadGraphOneCut.h"
+#include "ThePEG/LesHouches/MadGraphTwoCut.h"
+#include "ThePEG/Cuts/Cuts.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MadGraphReader.tcc"
@@ -25,6 +29,13 @@ using std::fgets;
 void MadGraphReader::open() {
   LesHouchesFileReader::open();
 
+  static char * cuttags[] = {"ptj", "ptb", "pta", "ptl",
+			     "etaj", "etab", "etaa", "etal",
+			     "drjj", "drbb", "draa", "drll",
+			     "drbj", "draj", "drjl", "drab",
+			     "drbl", "dral", "mmjj", "mbbj", "mmaa", "mmll",
+			     "xptj", "xptb", "xpta", "xptl"};
+
   double xsec = -1.0;
   double maxw = -1.0;
   ieve = neve = 0;
@@ -33,10 +44,18 @@ void MadGraphReader::open() {
   int lpp1 = 0;
   int lpp2 = 0;
   string pdftag;
+  double mgvers = 0.0;
+  int mgskipbl = 0;
   // First scan banner to extract some information
   while ( cfile.readline() ) {
-    if ( !cfile || cfile.getc() != '#' ) break;
-    if ( cfile.find("Number of Events") ) {
+    if ( !cfile ) break;
+    if ( cfile.getc() != '#' && mgskipbl-- <= 0 ) break;
+    if ( cfile.find("# madgraph version") ) {
+      cfile.skip(':');
+      cfile.skip('V');
+      cfile >> mgvers;
+      if ( mgvers >= 3.0 ) mgskipbl = 1;
+    } else if ( cfile.find("#  Number of Events") ) {
       cfile.skip(':');
       cfile >> neve;
     } else if ( cfile.find("Integrated weight") ) {
@@ -45,18 +64,31 @@ void MadGraphReader::open() {
     } else if ( cfile.find("Max wgt") ) {
       cfile.skip(':');
       cfile >> maxw;
-    } else if ( cfile.find("ebeam(1)") ) {
+    } else if ( cfile.find("ebeam(1)") || cfile.find("ebeam1") ) {
       cfile >> ebeam1;
-    } else if ( cfile.find("ebeam(2)") ) {
+    } else if ( cfile.find("ebeam(2)") || cfile.find("ebeam2") ) {
       cfile >> ebeam2;
-    } else if ( cfile.find("lpp(1)") ) {
+    } else if ( cfile.find("lpp(1)") || cfile.find("lpp1") ) {
       cfile >> lpp1;
-    } else if ( cfile.find("lpp(2)") ) {
+    } else if ( cfile.find("lpp(2)") || cfile.find("lpp2") ) {
       cfile >> lpp2;
     } else if ( cfile.find("PDF set") ) {
       cfile.skip('\'');
       cfile >> pdftag;
       pdftag = pdftag.substr(0, 7);
+    } else {
+      for ( int itag = 0; itag < 26; ++itag ) {
+	if ( cfile.find(string("= ") + cuttags[itag]) ) {
+	  
+	  cfile >> cuts[cuttags[itag]];
+	  if ( cfile.getc() == 'd' ) {
+	    long x = 0;
+	    cfile >> x;
+	    cuts[cuttags[itag]] *= pow(10.0, x);
+	  }
+	  break;
+	}
+      }
     }
   }
 
@@ -245,11 +277,86 @@ bool MadGraphReader::doReadEvent() {
 MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
-  os << ounit(fixedScale, GeV) << fixedAEM << fixedAS;
+  os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts;
 }
 
 void MadGraphReader::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS;
+  is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts;
+}
+
+string MadGraphReader::scanCuts(string) {
+  if ( theCuts )
+    return "A Cuts object has already been assigned to this reader.";
+  open();
+  close();
+  if ( cuts.empty() ) return "No information about cuts were found. "
+			"Maybe the file was from an old version of MadGraph";
+  vector<OneCutPtr> ones;
+  vector<TwoCutPtr> twos;
+  vector<string> onames;
+  vector<string> tnames;
+  for ( map<string,double>::iterator i = cuts.begin(); i != cuts.end(); ++i ) {
+    if ( i->second <= 0.0 ) continue;
+    MadGraphOneCut::CutType t = MadGraphOneCut::PT;
+    char p = 0;
+    if ( i->first.substr(0, 2) == "pt" ) {
+      t = MadGraphOneCut::PT;
+      p = i->first[2];
+    }
+    else if  ( i->first.substr(0, 3) == "eta" ) {
+      t = MadGraphOneCut::ETA;
+      p = i->first[3];
+    }
+    else if  ( i->first.substr(0, 3) == "xpt" ) {
+      t = MadGraphOneCut::XPT;
+      p = i->first[3];
+    }
+    if ( p ) {
+      MadGraphOneCut::PType pt = MadGraphOneCut::JET;
+      switch ( p ) {
+      case 'j':	pt = MadGraphOneCut::JET; break;
+      case 'b':	pt = MadGraphOneCut::BOT; break;
+      case 'a':	pt = MadGraphOneCut::PHO; break;
+      case 'l':	pt = MadGraphOneCut::LEP; break;
+      }
+      ones.push_back(new_ptr(MadGraphOneCut(t, pt, i->second)));
+      onames.push_back(i->first);
+      continue;
+    }
+    if ( i->first.substr(0, 2) == "dr" || i->first.substr(0, 2) == "mm" ) {
+      MadGraphTwoCut::CutType tt = MadGraphTwoCut::DELTAR;
+      if ( i->first.substr(0, 2) == "mm" ) tt = MadGraphTwoCut::INVMASS;
+      MadGraphTwoCut::PPType pp = MadGraphTwoCut::JETJET;
+      if ( i->first.substr(2, 2) == "jj" ) pp = MadGraphTwoCut::JETJET;
+      else if ( i->first.substr(2, 2) == "bb" )	pp = MadGraphTwoCut::BOTBOT;
+      else if ( i->first.substr(2, 2) == "aa" )	pp = MadGraphTwoCut::PHOPHO;
+      else if ( i->first.substr(2, 2) == "ll" )	pp = MadGraphTwoCut::LEPLEP;
+      else if ( i->first.substr(2, 2) == "bj" )	pp = MadGraphTwoCut::BOTJET;
+      else if ( i->first.substr(2, 2) == "aj" )	pp = MadGraphTwoCut::PHOJET;
+      else if ( i->first.substr(2, 2) == "jl" )	pp = MadGraphTwoCut::JETLEP;
+      else if ( i->first.substr(2, 2) == "ab" )	pp = MadGraphTwoCut::PHOBOT;
+      else if ( i->first.substr(2, 2) == "bl" )	pp = MadGraphTwoCut::BOTLEP;
+      else if ( i->first.substr(2, 2) == "al" )	pp = MadGraphTwoCut::PHOLEP;
+      twos.push_back(new_ptr(MadGraphTwoCut(tt, pp, i->second)));
+      tnames.push_back(i->first);
+    }
+  }
+  if ( ones.empty() && twos.empty() ) return "No non-zero cuts found.";
+
+  theCuts = new_ptr(Cuts());
+  reporeg(theCuts, "ExtractedCuts");
+
+  for ( int i = 0, N = ones.size(); i < N; ++i ) {
+    reporeg(ones[i], onames[i]);
+    theCuts->add(tOneCutPtr(ones[i]));
+  }
+
+  for ( int i = 0, N = twos.size(); i < N; ++i ) {
+    reporeg(twos[i], tnames[i]);
+    theCuts->add(tTwoCutPtr(twos[i]));
+  }
+
+  return "";
 }
 
 ClassDescription<MadGraphReader> MadGraphReader::initMadGraphReader;
@@ -262,7 +369,8 @@ void MadGraphReader::Init() {
      "to read event files generated with the MadGraph/MadEvent program.",
      "Events were read from event files generated "
      "with the MadGraph/MadEvent\\cite{ThePEG::MadGraph} program.",
-     "\\bibitem{ThePEG::MadGraph} F. Maltoni and T. Stelzer, hep-ph/0208156;\\\\"
+     "\\bibitem{ThePEG::MadGraph} F. Maltoni and T. Stelzer, "
+     "hep-ph/0208156;\\\\"
      "T. Stelzer and W.F. Long, \\textit{Comput.~Phys.~Commun.} "
      "\\textbf{81} (1994) 357-371.");
 
@@ -287,6 +395,15 @@ void MadGraphReader::Init() {
      "the value of \\f$\\alpha_S\\f$. In this case this is used instead.",
      &MadGraphReader::fixedAS, 0.12, 0.0, 1.0,
      true, false, true);
+
+  static Command<MadGraphReader> interfaceScanCuts
+    ("ScanCuts",
+     "If no <interface>Cuts</interface> has been assigned, the event file "
+     "is scanned for information about generation cuts. If cuts are found, "
+     "the corresponding objects will be created in a sub-directory with the "
+     "same name as this object and assigned as the <interface>Cuts</interface> "
+     "of this reader.",
+     &MadGraphReader::scanCuts, true);
 
 }
 

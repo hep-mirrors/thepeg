@@ -12,7 +12,8 @@
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Handlers/XComb.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/LoopGuard.h"
 #include "ThePEG/EventRecord/Event.h"
@@ -60,6 +61,7 @@ void LesHouchesEventHandler::initialize() {
   typedef map<int,tLesHouchesReaderPtr> ProcessMap;
   ProcessMap processes;
   PDPair incoming;
+  
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
     reader.initialize(*this);
@@ -216,25 +218,16 @@ void LesHouchesEventHandler::select(double weight) {
 
 tCollPtr LesHouchesEventHandler::performCollision() {
   lastExtractor()->select(lastXCombPtr());
+  if ( CKKWHandler() ) CKKWHandler()->setXComb(lastXCombPtr());
   currentCollision(new_ptr(Collision(lastParticles(), currentEvent(), this)));
   if ( currentEvent() ) currentEvent()->addCollision(currentCollision());
   currentStep(new_ptr(Step(currentCollision(), this)));
   currentCollision()->addStep(currentStep());
-  SubProPtr sub =
-    new_ptr(SubProcess(lastPartons(), currentCollision(),
-		       currentReader()));
-  sub->setOutgoing(currentReader()->outgoing().begin(),
-		   currentReader()->outgoing().end());
-  sub->setIntermediates(currentReader()->intermediates().begin(),
-			currentReader()->intermediates().end());
-  
-  currentReader()->cuts().cut(*sub);
-
-  currentStep()->addSubProcess(sub);
+  currentStep()->addSubProcess(currentReader()->getSubProcess());
   lastExtractor()->constructRemnants(lastXCombPtr()->partonBinInstances(),
-				     sub, currentStep());
+				     subProcess(), currentStep());
 
-  currentReader()->cuts().cut(*currentCollision(), LorentzRotation());
+  if ( !currentReader()->cuts().passCuts(*currentCollision()) ) throw Veto();
 
   initGroups();
   if ( ThePEG_DEBUG_ITEM(1) ) {

@@ -71,7 +71,7 @@ namespace ThePEG {
  * @see Event
  * @see LesHouchesEventHandler
  */
-class LesHouchesReader: public HandlerBase {
+class LesHouchesReader: public HandlerBase, public LastXCombInfo<> {
 
   /**
    * LesHouchesEventHandler should have access to our private parts.
@@ -136,7 +136,7 @@ public:
   virtual void open() = 0;
 
   /**
-   * Read the next event form the file or stream into the
+   * Read the next event from the file or stream into the
    * corresponding protected variables. Return false if there is no
    * more events.
    */
@@ -194,6 +194,12 @@ public:
    * to the controlling LesHouchesEventHandler.
    */
   tXCombPtr getXComb();
+
+  /**
+   * Get a SubProcess object corresponding to the information in the
+   * Les Houches common block variables.
+   */
+  tSubProPtr getSubProcess();
 
   /**
    * Scan the file or stream to obtain information about cross section
@@ -343,6 +349,12 @@ public:
   inline tPExtrPtr partonExtractor() const;
 
   /**
+   * Return a possibly null pointer to a CascadeHandler to be used for
+   * CKKW-reweighting.
+   */
+  inline tCascHdlPtr CKKWHandler() const;
+
+  /**
    * The pairs of PartonBin objects describing the partons which can
    * be extracted by the PartonExtractor object.
    */
@@ -355,9 +367,9 @@ public:
   inline const XCombMap & xCombs() const;
 
   /**
-   * The KinematicalCuts object to be used for this reader.
+   * The Cuts object to be used for this reader.
    */
-  inline const KinematicalCuts & cuts() const;
+  inline const Cuts & cuts() const;
 
   //@}
 
@@ -594,6 +606,11 @@ protected:
   PExtrPtr thePartonExtractor;
 
   /**
+   * A pointer to a CascadeHandler to be used for CKKW-reweighting.
+   */
+  tCascHdlPtr theCKKW;
+
+  /**
    * The pairs of PartonBin objects describing the partons which can
    * be extracted by the PartonExtractor object.
    */
@@ -606,9 +623,9 @@ protected:
   XCombMap theXCombs;
 
   /**
-   * The KinematicalCuts object to be used for this reader.
+   * The Cuts object to be used for this reader.
    */
-  KinCutPtr theCuts;
+  CutsPtr theCuts;
 
   /**
    * The number of events in this reader. If less than zero the number
@@ -757,6 +774,8 @@ private:
   void setPDFB(PDFPtr);
   /** Access function for the interface. */
   PDFPtr getPDFB() const;
+  /** Access function for the interface. */
+  string scanPDF(string);
 
 private:
 

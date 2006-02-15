@@ -225,6 +225,16 @@ protected:
    * @return a vector of pointers.
    */
   inline virtual IVector getReferences();
+
+  /**
+   * A sub class can implement this function to implement some default
+   * initialization for this object. A typical example is if this
+   * object need some references to other objects and if these can be
+   * easily created. In this case the objects can be added to the
+   * repository in a sub-directory with the same name as this object.
+   * @return false if the initialization failed.
+   */
+  virtual bool defaultInit();
   //@}
 
 private:
@@ -233,24 +243,24 @@ private:
    * The object responsible for generating primordial pt for the struck
    * quark.
    */
-  Ptr<PtGenerator>::pointer thePtGeneratorQ;
+  PtGPtr thePtGeneratorQ;
 
   /**
    * The object responsible for generating primordial pt within the remnants.
    */
-  Ptr<PtGenerator>::pointer thePtGeneratorR;
+  PtGPtr thePtGeneratorR;
 
   /**
    * The object responsible for generating momentum fractions in case
    * of more than one remnant.
    */
-  Ptr<ZGenerator>::pointer theZGenerator;
+  ZGPtr theZGenerator;
 
   /**
    * The object responsible for handling the flavour contents of a
    * baryon.
    */
-  Ptr<FlavourGenerator>::pointer theFlavourGenerator;
+  FlGPtr theFlavourGenerator;
 
   /**
    * The energy margin to be added to the sum of the parent and parton

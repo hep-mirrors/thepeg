@@ -77,6 +77,22 @@ public:
    */
   virtual void cascade() = 0;
 
+  /**
+   * The CascadeHandler can be used inside the process generation to
+   * do so-called CKKW reweighting of the hard sub-process. In this
+   * case this function is called after information about the
+   * sub-process is made available through the LastXCombInfo base
+   * class. Only the function belonging to the primary CascadeHandler
+   * for the event to be generated is called. Sub-classes may
+   * implement it to give a suitable weight in return. The
+   * CascadeHandler may store information about the generated
+   * sub-process to be used in the subsequent cascade. It is however
+   * not guaranteed that the reweightCKKW() will have been called for
+   * the subprocess handed to the handle() function. This default
+   * implementation of the function simply return one.
+   */
+  virtual double reweightCKKW();
+
 public:
 
   /** @name Access information stored by the handle() function. */
@@ -112,6 +128,12 @@ public:
    * Return a pointer to the current collision handler.
    */
   inline tEHPtr eventHandler() const;
+
+  /**
+   * Set the XComb object with information about the sub-process
+   * generation.
+   */
+  void setXComb(tXCombPtr xc);
   //@}
 
 public:

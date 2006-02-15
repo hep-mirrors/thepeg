@@ -45,6 +45,14 @@ handle(EventHandler & eh, const tPVector & tagged,
 
 }
 
+double CascadeHandler::reweightCKKW() {
+  return 1.0;
+}
+
+void CascadeHandler::setXComb(tXCombPtr xc) {
+  theLastXComb = xc;
+}
+
 AbstractNoPIOClassDescription<CascadeHandler>
 CascadeHandler::initCascadeHandler;
 

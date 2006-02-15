@@ -6,10 +6,10 @@
 
 namespace ThePEG {
 
-inline ReweightMinPT::ReweightMinPT(): power(4.0) {}
+inline ReweightMinPT::ReweightMinPT(): power(4.0), scale(50.0*GeV) {}
 
 inline ReweightMinPT::ReweightMinPT(const ReweightMinPT & x)
-  : ReweightBase(x), power(x.power) {}
+  : ReweightBase(x), power(x.power), scale(x.scale) {}
 
 inline IBPtr ReweightMinPT::clone() const {
   return new_ptr(*this);

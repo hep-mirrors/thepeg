@@ -11,6 +11,7 @@
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Handlers/EventHandler.fh"
+#include "ThePEG/Cuts/Cuts.fh"
 // #include "XComb.fh"
 // #include "XComb.xh"
 
@@ -29,7 +30,7 @@ namespace ThePEG {
  * functions.
  *
  * @see PartonExtractor
- * @see KinematicalCuts
+ * @see Cuts
  * @see LastXCombInfo
  */
 class XComb: public Base {
@@ -42,9 +43,8 @@ public:
    * Standard constructor.
    */
   XComb(Energy newMaxEnergy, const cPDPair & inc,
-	tEHPtr newEventHandler,
-	tPExtrPtr newExtractor,	const PBPair & newPartonBins,
-	tKinCutPtr newCuts);
+	tEHPtr newEventHandler,	tPExtrPtr newExtractor, tCascHdlPtr newCKKW,
+	const PBPair & newPartonBins,	tCutsPtr newCuts);
 
   /**
    * Copy-constructor.
@@ -79,7 +79,13 @@ public:
   /**
    * A pointer to the kinematical cuts.
    */
-  inline tKinCutPtr cuts() const;
+  inline tCutsPtr cuts() const;
+
+  /**
+   * Return a possibly null pointer to a CascadeHandler to be used for
+   * CKKW-reweighting.
+   */
+  inline tCascHdlPtr CKKWHandler() const;
   //@}
 
   /** @name Access information about incoming particles and partons. */
@@ -146,6 +152,18 @@ public:
    * Set the pair of incoming parton instances.
    */
   inline void lastPartons(PPair);
+
+  /**
+   * Return the SubProcess object corresponding to the last generated
+   * sub-process.
+   */
+  inline tSubProPtr subProcess() const;
+
+  /**
+   * Set the SubProcess object corresponding to the last generated
+   * sub-process.
+   */
+  void subProcess(tSubProPtr);
 
   /**
    * Additional information about the incoming partons.
@@ -265,10 +283,33 @@ public:
    * Get the last chosen scale of the hard scattering.
    */
   inline Energy2 lastScale() const;
+
   /**
    * Set the last chosen scale of the hard scattering.
    */
   inline void lastScale(Energy2);
+
+  /**
+   * Get the \f$\alpha_S\f$ used in the hard scattering. Is negative
+   * if no value has been set.
+   */
+  inline double lastAlphaS() const;
+
+  /**
+   * Set the \f$\alpha_S\f$ used in the hard scattering.
+   */
+  inline void lastAlphaS(double);
+
+  /**
+   * Get the \f$\alpha_{EM}\f$ used in the hard scattering. Is negative
+   * if no value has been set.
+   */
+  inline double lastAlphaEM() const;
+
+  /**
+   * Set the \f$\alpha_{EM}\f$ used in the hard scattering.
+   */
+  inline void lastAlphaEM(double);
   //@}
 
 protected:
@@ -319,9 +360,14 @@ private:
   PExtrPtr thePartonExtractor;
 
   /**
+   * A pointer to a CascadeHandler to be used for CKKW-reweighting.
+   */
+  tCascHdlPtr theCKKW;
+
+  /**
    * A pointer to the kinematical cuts used.
    */
-  KinCutPtr theCuts;
+  CutsPtr theCuts;
 
   /**
    * The incoming particle types.
@@ -402,6 +448,16 @@ private:
   Energy2 theLastScale;
 
   /**
+   * The \f$\alpha_S\f$ used in the hard scattering.
+   */
+  double theLastAlphaS;
+
+  /**
+   * The \f$\alpha_{EM}\f$ used in the hard scattering.
+   */
+  double theLastAlphaEM;
+
+  /**
    * The maximum cm energy for this process.
    */
   Energy theMaxEnergy;
@@ -412,6 +468,12 @@ private:
    * flow.
    */
   DVector theMEInfo;
+
+  /**
+   * The SubProcess object corresponding to the last generated
+   * sub-process.
+   */
+  SubProPtr theSub;
 
 private:
 

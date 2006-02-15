@@ -20,64 +20,20 @@ using namespace ThePEG;
 ReweightBase::ReweightBase() {}
 
 ReweightBase::ReweightBase(const ReweightBase & x)
-  : HandlerBase(x), LastXCombInfo<StandardXComb>(x),
-    theLastSHat(x.theLastSHat), theLastInData(x.theLastInData),
-    theLastOutData(x.theLastOutData), theLastInMomentumA(x.theLastInMomentumA),
-    theLastInMomentumB(x.theLastInMomentumB),
-    theLastOutMomentum(x.theLastOutMomentum) {}
+  : HandlerBase(x), LastXCombInfo<>(x) {}
 
 ReweightBase::~ReweightBase() {}
 
-void ReweightBase::
-setKinematics(Energy2 shat, tcPDPair in,
-	      const cPDVector & out,
-	      const Lorentz5Momentum & pina,
-	      const Lorentz5Momentum & pinb,
-	      const vector<Lorentz5Momentum> & pout) {
-  theLastSHat = shat;
-  theLastInData = in;
-  theLastOutData.clear();
-  theLastOutData = out;
-  theLastInMomentumA = pina;
-  theLastInMomentumB = pinb;
-  theLastOutMomentum = pout;
-  setKinematics();
-}
-
-void ReweightBase::setKinematics(tPPair in, const PVector & out) {
-  theLastSHat =  (in.first->momentum() + in.second->momentum()).m2();
-  theLastInData = make_pair(in.first->dataPtr(), in.second->dataPtr());
-  theLastInMomentumA = in.first->momentum();
-  theLastInMomentumB = in.second->momentum();
-  theLastOutData.clear();
-  theLastOutMomentum.clear();
-  for ( PVector::size_type i = 0; i < out.size(); ++i ) {
-    theLastOutMomentum.push_back(out[i]->momentum());
-    theLastOutData.push_back(out[i]->dataPtr());
-  }
-  setKinematics();
-}
-
-void ReweightBase::setXComb(tStdXCombPtr xc) {
+void ReweightBase::setXComb(tXCombPtr xc) {
   theLastXComb = xc;
-  theLastSHat = lastSHat();
-}
-
-void ReweightBase::clearKinematics() {
-  theLastSHat = -1.0*GeV;
-  theLastXComb = tStdXCombPtr();
 }
 
 void ReweightBase::persistentOutput(PersistentOStream & os) const {
-  os << ounit(theLastSHat, GeV) << theLastInData << theLastOutData
-     << ounit(theLastInMomentumA, GeV) << ounit(theLastInMomentumB, GeV)
-     << ounit(theLastOutMomentum, GeV);
+  os << theLastXComb;
 }
 
 void ReweightBase::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(theLastSHat, GeV) >> theLastInData >> theLastOutData
-     >> iunit(theLastInMomentumA, GeV) >> iunit(theLastInMomentumB, GeV)
-     >> iunit(theLastOutMomentum, GeV);
+  is >> theLastXComb;
 }
 
 AbstractClassDescription<ReweightBase> ReweightBase::initReweightBase;

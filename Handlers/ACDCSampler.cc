@@ -71,9 +71,10 @@ void ACDCSampler::dofinish() {
   else if ( eventHandler() && eventHandler()->statLevel() > 1 )
     generator()->log()
       << "Statistics for the ACDC sampler '" << name() << "':" << endl
-      << "Number of bins:" << setw(10) << theSampler.nBins() << endl
-      << "Depth of bins: " << setw(10) << theSampler.depth() << endl
-      << "efficiency:    " << setw(10) << theSampler.efficiency() << endl;
+      << "Number of samplers:" << setw(10) << theSampler.size() << endl
+      << "Number of bins:    " << setw(10) << theSampler.nBins() << endl
+      << "Depth of bins:     " << setw(10) << theSampler.depth() << endl
+      << "efficiency:        " << setw(10) << theSampler.efficiency() << endl;
   if ( theSampler.compensating() )
     generator()->logWarning(
       ACDCStillCompensating()

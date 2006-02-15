@@ -169,11 +169,15 @@ inline tPExtrPtr LesHouchesReader::partonExtractor() const {
   return thePartonExtractor;
 }
 
+inline tCascHdlPtr LesHouchesReader::CKKWHandler() const {
+  return theCKKW;
+}
+
 inline const PartonPairVec & LesHouchesReader::partonBins() const {
   return thePartonBins;
 }
 
-inline const KinematicalCuts & LesHouchesReader::cuts() const {
+inline const Cuts & LesHouchesReader::cuts() const {
   return *theCuts;
 }
 

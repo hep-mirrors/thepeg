@@ -118,6 +118,20 @@ public:
   virtual Energy2 scale() const = 0;
 
   /**
+   * Return the value of \f$\alpha_S\f$ associated with the phase
+   * space point provided by the last call to setKinematics(). This
+   * versions returns SM().alphaS(scale()).
+   */
+  virtual double alphaS() const;
+
+  /**
+   * Return the value of \f$\alpha_EM\f$ associated with the phase
+   * space point provided by the last call to setKinematics(). This
+   * versions returns SM().alphaEM(scale()).
+   */
+  virtual double alphaEM() const;
+
+  /**
    * Set the typed and momenta of the incoming and outgoing partons to
    * be used in subsequent calls to me() and colourGeometries().
    */
@@ -148,7 +162,8 @@ public:
    * numbers in the interval ]0,1[. To help the phase space generator,
    * the 'dSigHatDR' should be a smooth function of these numbers,
    * although this is not strictly necessary. The return value should
-   * be true of the generation succeeded.
+   * be true of the generation succeeded. If so the generated momenta
+   * should be stored in the meMomenta() vector.
    */
   virtual bool generateKinematics(const double * r) = 0;
 

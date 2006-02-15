@@ -41,8 +41,8 @@ public:
 public:
 
   /**
-   * Return the wieght for the kinematical configuation previously
-   * provided by the last call to setKinematics().
+   * Return the wieght for the kinematical configuation provided by
+   * the assigned XComb object (in the LastXCombInfo base class).
    */
   virtual double weight() const;
 
@@ -130,9 +130,14 @@ protected:
 private:
 
   /**
-   * The weight is the minimum pt to a \a power.
+   * The weight is the minimum pt/scale to a \a power.
    */
   double power;
+
+  /**
+   * The weight is the minimum pt/\a scale to a power.
+   */
+  Energy scale;
 
 private:
 

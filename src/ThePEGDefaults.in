@@ -130,9 +130,8 @@ create ThePEG::EventGenerator SimpleLEPGenerator
 set SimpleLEPGenerator:RandomNumberGenerator /Defaults/Random
 set SimpleLEPGenerator:StandardModelParameters /Defaults/StandardModel
 set SimpleLEPGenerator:EventHandler /Defaults/Handlers/SimpleLEPHandler
-create ThePEG::KinematicalCuts EECuts
-set EECuts:LeptonMatcher /Defaults/Matchers/MatchLepton
-set EECuts:SubProcess/MHatMin 22.36068
+create ThePEG::Cuts EECuts
+set EECuts:MHatMin 22.36068
 set SimpleLEPGenerator:EventHandler:Cuts EECuts
 
 cd /

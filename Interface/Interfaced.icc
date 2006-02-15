@@ -46,5 +46,18 @@ inline void Interfaced::dofinish() {
   InterfacedBase::dofinish();
 }
 
+template <typename PtrT>
+inline bool Interfaced::
+setDefaultReference(PtrT & ptr, string classname, string objectname) {
+  if ( ptr ) return true;
+  const ClassDescriptionBase * db = DescriptionList::find(classname);
+  if ( !db ) return false;
+  ptr = dynamic_ptr_cast<PtrT>(db->create());
+  if ( !ptr ) return false;
+  reporeg(ptr, objectname);
+  if ( !ptr->defaultInit() ) return false;
+  return true;
+}
+
 }
 

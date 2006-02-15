@@ -93,6 +93,7 @@ void Collision::addStep(tStepPtr s) {
 
 void Collision::addSubProcess(tSubProPtr p) {
   theSubProcesses.push_back(p);
+  if ( !p->collision() ) p->theCollision = this;
   if ( event() ) event()->addSubProcess(p);
 }
 

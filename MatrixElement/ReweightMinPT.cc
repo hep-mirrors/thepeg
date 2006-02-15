@@ -21,26 +21,18 @@ using namespace ThePEG;
 ReweightMinPT::~ReweightMinPT() {}
 
 double ReweightMinPT::weight() const {
-  double minPt = 1.0;
-  if ( lastXCombPtr() ) {
-    for ( vector<Lorentz5Momentum>::const_iterator p = outMomentum().begin();
-	  p != outMomentum().end(); ++p )
-      minPt = min(minPt, p->perp()/sqrt(sHat()));
-  } else {
-    for ( vector<Lorentz5Momentum>::const_iterator p = meMomenta().begin();
-	  p != meMomenta().end(); ++p )
-      minPt = min(minPt, p->perp()/sqrt(sHat()));
-  }
-  breakThePEG();
-  return pow(minPt, power);
+  Energy minPt = Constants::MaxEnergy;
+  for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
+    minPt = min(minPt, subProcess()->outgoing()[i]->momentum().perp());
+  return pow(minPt/scale, power);
 }
 
 void ReweightMinPT::persistentOutput(PersistentOStream & os) const {
-  os << power;
+  os << power << scale;
 }
 
 void ReweightMinPT::persistentInput(PersistentIStream & is, int) {
-  is >> power;
+  is >> power >> scale;
 }
 
 ClassDescription<ReweightMinPT> ReweightMinPT::initReweightMinPT;
@@ -53,9 +45,17 @@ void ReweightMinPT::Init() {
 
   static Parameter<ReweightMinPT,double> interfacePower
     ("Power",
-     "The power to which the minimum tranverse momentum is raised to give "
-     "the weight.",
+     "The power to which the minimum tranverse momentum (divided by a "
+     "<interface>Scale</interface>) is raised to give the weight.",
      &ReweightMinPT::power, 4.0, -10.0, 10.0, false, false, true);
+
+  static Parameter<ReweightMinPT,Energy> interfaceScale
+    ("Scale",
+     "The scale with which the minimum transverse momentum is divided "
+     "befor it is raised to a <interface>Power</interface> to give the "
+     "weight..",
+     &ReweightMinPT::scale, GeV, 50.0*GeV, 0.0*GeV, 0.0*GeV,
+     false, false, Interface::lowerlim);
 
 }
 

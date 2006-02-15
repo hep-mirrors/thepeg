@@ -13,7 +13,7 @@
 #include "ThePEG/Handlers/MultipleInteractionHandler.h"
 #include "ThePEG/Handlers/HadronizationHandler.h"
 #include "ThePEG/Handlers/DecayHandler.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
@@ -62,6 +62,10 @@ SubProcessHandler::handlerGroup(Group::Handler group) const {
   return *(theGroups[group]);
 }
 
+tCascHdlPtr SubProcessHandler::CKKWHandler() const {
+  return dynamic_ptr_cast<tCascHdlPtr>(theCascadeGroup.defaultHandler());
+}
+
 void SubProcessHandler::persistentOutput(PersistentOStream & os) const {
   os << thePartonExtractor << theCuts << theSubprocessGroup << theCascadeGroup
      << theMultiGroup << theHadronizationGroup << theDecayGroup
@@ -104,7 +108,7 @@ void SubProcessHandler::Init() {
      "matrix elements.",
      &SubProcessHandler::theMEs, 0, false, false, true, false);
 
-  static Reference<SubProcessHandler,KinematicalCuts> interfaceCuts
+  static Reference<SubProcessHandler,Cuts> interfaceCuts
     ("Cuts",
      "Common kinematical cuts for this SubProcessHandler. These cuts "
      "overides those in a EventHandler.",

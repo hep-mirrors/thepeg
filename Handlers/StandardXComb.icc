@@ -54,14 +54,6 @@ inline vector<Lorentz5Momentum> & StandardXComb::meMomenta() {
   return theMEMomenta;
 }
 
-inline const tPVector & StandardXComb::mePartons() const {
-  return theMEPartons;
-}
-
-inline tPVector & StandardXComb::mePartons() {
-  return theMEPartons;
-}
-
 inline const cPDVector & StandardXComb::mePartonData() const {
   return theMEPartonData;
 }

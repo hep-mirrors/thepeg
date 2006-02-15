@@ -81,7 +81,7 @@ public:
    * invariant mass squared, \a maxEnergy sBin.
    */
   virtual PartonPairVec getPartons(Energy maxEnergy, const cPDPair &,
-				   const KinematicalCuts &) const;
+				   const Cuts &) const;
 
   /**
    * May be overriden by sub-classes which have their own oppinion

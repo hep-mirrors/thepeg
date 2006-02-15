@@ -5,6 +5,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/Interval.h"
+#include "ThePEG/Cuts/Cuts.fh"
 // #include "PDFCuts.fh"
 // #include "PDFCuts.xh"
 
@@ -46,17 +47,17 @@ public:
 		 const SInterval & newScale, const Energy2 & newSMax);
 
   /**
-   * Construction from a KinematicalCuts object, using the values for
+   * Construction from a Cuts object, using the values for
    * the first incoming parton (or not).
    */
-  PDFCuts(const KinematicalCuts &, bool first, const SInterval & S,
+  PDFCuts(const Cuts &, bool first, const SInterval & S,
 	  const SInterval & sHat);
 
   /**
-   * Construction from a KinematicalCuts object, using the values for
+   * Construction from a Cuts object, using the values for
    * the first incoming parton (or not).
    */
-  PDFCuts(const KinematicalCuts &, bool first, Energy maxEnergy);
+  PDFCuts(const Cuts &, bool first, Energy maxEnergy);
 
   /**
    * Assignment operator.

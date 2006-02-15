@@ -1498,3 +1498,14 @@ void " class "::persistentInput(PersistentIStream & is, int) {
 ))
 (beginning-of-buffer))
 
+(defun ThePEG-comment-function ()
+  "Insert a Doxygen comment block to preceed a function declaration."
+  (interactive)
+  (insert-string "
+  /**
+   * 
+   */
+  "))
+
+(global-set-key "\C-c\C-f" 'ThePEG-comment-function)
+

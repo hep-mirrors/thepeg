@@ -7,7 +7,7 @@
 #include "StandardXComb.h"
 #include "ThePEG/Handlers/StandardEventHandler.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
-#include "ThePEG/Handlers/KinematicalCuts.h"
+#include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Math.h"
@@ -22,6 +22,7 @@
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/MatrixElement/ColourLines.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
 #include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -36,11 +37,12 @@ StandardXComb::StandardXComb()
 
 StandardXComb::
 StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
-      tStdEHPtr newEventHandler, tSubHdlPtr newSubProcessHandler,
-      tPExtrPtr newExtractor, const PBPair & newPartonBins, tKinCutPtr newCuts,
-      tMEPtr newME, const DiagramVector & newDiagrams, bool mir)
+	      tStdEHPtr newEventHandler, tSubHdlPtr newSubProcessHandler,
+	      tPExtrPtr newExtractor, tCascHdlPtr newCKKW,
+	      const PBPair & newPartonBins, tCutsPtr newCuts,
+	      tMEPtr newME, const DiagramVector & newDiagrams, bool mir)
   : XComb(newMaxEnergy, inc, newEventHandler,
-	  newExtractor, newPartonBins, newCuts),
+	  newExtractor, newCKKW, newPartonBins, newCuts),
     theSubProcessHandler(newSubProcessHandler), theME(newME),
     theDiagrams(newDiagrams), isMirror(mir),  theLastDiagramIndex(0) {
   partonDims = pExtractor()->nDims(partonBins());
@@ -52,16 +54,18 @@ StandardXComb::StandardXComb(const StandardXComb & x)
   : XComb(x), theSubProcessHandler(x.theSubProcessHandler), theME(x.theME),
     theStats(x.theStats), theDiagrams(x.theDiagrams),
     isMirror(x.isMirror), theNDim(x.theNDim), partonDims(x.partonDims),
-    theMEMomenta(x.theMEMomenta), theMEPartons(x.theMEPartons),
-    theMEPartonData(x.theMEPartonData),
+    theMEMomenta(x.theMEMomenta), theMEPartonData(x.theMEPartonData),
     theLastDiagramIndex(x.theLastDiagramIndex), theMEInfo(x.theMEInfo) {}
 
 StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
 			     DiagramIndex indx)
   : theME(me), isMirror(false), theNDim(0), partonDims(make_pair(0, 0)),
-    theMEPartons(parts), theLastDiagramIndex(0) {
+    theLastDiagramIndex(0) {
   
+  subProcess(new_ptr(SubProcess(make_pair(parts[0], parts[1]),
+				tCollPtr(), me)));
   for ( int i = 0, N = parts.size(); i < N; ++i ) {
+    subProcess()->addOutgoing(parts[i], false);
     theMEPartonData.push_back(parts[i]->dataPtr());
     theMEMomenta.push_back(parts[i]->momentum());
   }
@@ -106,12 +110,14 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   if ( lastSHat()  < cuts()->sHatMin() ) return zero;
 
+  lastY(0.5*(partonBinInstances().first->l() -
+	     partonBinInstances().second->l()));
+  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) return zero;
+
   meMomenta().resize(mePartonData().size());
-  mePartons().resize(mePartonData().size());
-  mePartons()[0 + mirror()] = lastPartons().first;
-  mePartons()[1 - mirror()] = lastPartons().second;
-  meMomenta()[0] = mePartons()[0]->momentum();
-  meMomenta()[1] = mePartons()[1]->momentum();
+  meMomenta()[0] = lastPartons().first->momentum();
+  meMomenta()[1] = lastPartons().second->momentum();
+  if ( mirror() ) swap(meMomenta()[0], meMomenta()[1]);
   SimplePhaseSpace::CMS(meMomenta()[0], meMomenta()[1], lastSHat());
 
   Energy summ = 0.0*GeV;
@@ -127,8 +133,9 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   
   Timer<23> timerc("StandardXComb::dSigDR():generateKinematics-1");
   matrixElement()->setXComb(this);
-  if ( !matrixElement()->generateKinematics(r + partonDims.first) ) return zero;
-  lastScale(matrixElement()->scale());
+  //  if ( !matrixElement()->generateKinematics(r + partonDims.first) ) return zero;
+  // lastScale(matrixElement()->scale());
+  lastScale(max(lastSHat()/4.0, cuts()->scaleMin()));
 
   Timer<24> timerd("StandardXComb::dSigDR():generateSHat");
   lastSHat(pExtractor()->generateSHat(lastS(), partonBinInstances(),
@@ -147,10 +154,11 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   
   lastY((lastPartons().first->momentum() +
 	 lastPartons().second->momentum()).rapidity());
-  if ( !cuts()->yStar(lastY()) ) return zero;
+  if ( !cuts()->yHat(lastY()) ) return zero;
 
-  meMomenta()[0] = mePartons()[0]->momentum();
-  meMomenta()[1] = mePartons()[1]->momentum();
+  meMomenta()[0] = lastPartons().first->momentum();
+  meMomenta()[1] = lastPartons().second->momentum();
+  if ( mirror() ) swap(meMomenta()[0], meMomenta()[1]);
   SimplePhaseSpace::CMS(meMomenta()[0], meMomenta()[1], lastSHat());
 
   if ( meMomenta().size() == 3 )
@@ -162,41 +170,63 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   matrixElement()->setXComb(this);
   Timer<25> timere("StandardXComb::dSigDR():generateKinematics-2");
   if ( !matrixElement()->generateKinematics(r) ) return zero;
-  for ( int i = 2, N = meMomenta().size(); i < N; ++i )
-    if ( !cuts()->pTHat(meMomenta()[i].perp()) ) return zero;
   Timer<26> timerf("StandardXComb::dSigDR():dSigHatDR");
   CrossSection xsec = matrixElement()->dSigHatDR();
   lastScale(matrixElement()->scale());
   if ( !cuts()->scale(lastScale()) ) return zero;
 
+  lastAlphaS(matrixElement()->alphaS());
+  lastAlphaEM(matrixElement()->alphaEM());
+
+  subProcess(SubProPtr());
+  if ( CKKWHandler() ) {
+    newSubProcess();
+    CKKWHandler()->setXComb(this);
+    xsec *= CKKWHandler()->reweightCKKW();
+  }
+
   return xsec * pExtractor()->fullFn(partonBinInstances(), lastScale()) *
     matrixElement()->reWeight() * matrixElement()->preWeight();
 }
 
-void StandardXComb::construct(tSubProPtr sub) {
-  Timer<27> timera("StandardXComb::construct()");
+void StandardXComb::newSubProcess() {
+  if ( subProcess() ) return;
 
-  matrixElement()->setXComb(this);
-  setPartonBinInfo();
-  matrixElement()->setKinematics();
-
+  subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), matrixElement())));
   lastDiagramIndex(matrixElement()->diagram(diagrams()));
   const ColourLines & cl = matrixElement()->selectColourGeometry(lastDiagram());
   Lorentz5Momentum p1 = lastPartons().first->momentum();
   Lorentz5Momentum p2 = lastPartons().second->momentum();
-  LorentzRotation r =
-    Utilities::boostToCM(make_pair(mePartons()[0], mePartons()[1]));
-  mePartons() = lastDiagram()->construct(sub, *this, cl);
-  cuts()->cut(*sub);
-  sub->transform(r.inverse());
+  tPPair inc = lastPartons();
+  if ( mirror() ) swap(inc.first, inc.second);
+  LorentzRotation r =  Utilities::boostToCM(inc);
+  lastDiagram()->construct(subProcess(), *this, cl);
+  subProcess()->transform(r.inverse());
   lastPartons().first->set5Momentum(p1);
   lastPartons().second->set5Momentum(p2);
   lastPartons().first->scale(lastScale());
   lastPartons().second->scale(lastScale());
-  for ( int i = 0, N = sub->outgoing().size(); i < N; ++i )
-    sub->outgoing()[i]->scale(lastScale());
+  for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
+    subProcess()->outgoing()[i]->scale(lastScale());
   // construct the spin information for the interaction
-  matrixElement()->constructVertex(sub);
+  matrixElement()->constructVertex(subProcess());
+}
+
+tSubProPtr StandardXComb::construct() {
+  Timer<27> timera("StandardXComb::construct()");
+
+  matrixElement()->setXComb(this);
+  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
+
+  setPartonBinInfo();
+  matrixElement()->setKinematics();
+
+  newSubProcess();
+
+  if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
+
+  return subProcess();
+
 }
 
 void StandardXComb::Init() {}
@@ -205,14 +235,14 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
 
   os << theSubProcessHandler << theME << theStats
      << theDiagrams << isMirror << theNDim << partonDims
-     << theLastDiagramIndex << theMEInfo << theMEPartons << theMEPartonData
+     << theLastDiagramIndex << theMEInfo << theMEPartonData
      << theLastDiagramIndex << theMEInfo;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
   is >> theSubProcessHandler >> theME >> theStats
      >> theDiagrams >> isMirror >> theNDim >> partonDims
-     >> theLastDiagramIndex >> theMEInfo >> theMEPartons >> theMEPartonData
+     >> theLastDiagramIndex >> theMEInfo >> theMEPartonData
      >> theLastDiagramIndex >> theMEInfo;
 }
 

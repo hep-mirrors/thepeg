@@ -11,7 +11,7 @@ inline MadGraphReader::MadGraphReader()
 
 inline MadGraphReader::MadGraphReader(const MadGraphReader & x)
   : LesHouchesFileReader(x), fixedScale(x.fixedScale),
-    fixedAEM(x.fixedAEM), fixedAS(x.fixedAS) {}
+    fixedAEM(x.fixedAEM), fixedAS(x.fixedAS), cuts(x.cuts) {}
 
 inline IBPtr MadGraphReader::clone() const {
   return new_ptr(*this);

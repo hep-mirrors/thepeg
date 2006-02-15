@@ -32,12 +32,12 @@ public:
 public:
 
   /**
-   * Collision uses the FixedSizeAllocator for (de)allocation.
+   * SubProcess uses the FixedSizeAllocator for (de)allocation.
    */
   inline void * operator new(size_t);
 
   /**
-   * Collision uses the FixedSizeAllocator for (de)allocation.
+   * SubProcess uses the FixedSizeAllocator for (de)allocation.
    */
   inline void operator delete(void *, size_t);
 

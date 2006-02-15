@@ -14,7 +14,11 @@ pkglib_LTLIBRARIES = LesHouches.la MadGraphReader.la
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 MadGraphReader_la_LDFLAGS = -module -version-info 1:0:0
-MadGraphReader_la_SOURCES = MadGraphReader.cc MadGraphReader.h MadGraphReader.icc
+MadGraphReader_la_SOURCES = MadGraphReader.cc MadGraphReader.h \
+                            MadGraphReader.icc MadGraphOneCut.cc \
+                            MadGraphOneCut.icc MadGraphOneCut.h \
+                            MadGraphTwoCut.cc MadGraphTwoCut.icc \
+                            MadGraphTwoCut.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

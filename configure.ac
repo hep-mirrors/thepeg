@@ -89,6 +89,7 @@ ACDC/Makefile
 Repository/Makefile
 EventRecord/Makefile
 StandardModel/Makefile
+Cuts/Makefile
 Doc/Makefile
 Doc/refman.h
 Doc/refman.conf

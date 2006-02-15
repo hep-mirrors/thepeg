@@ -13,6 +13,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/Handlers/StandardXComb.h"
+#include "ThePEG/StandardModel/StandardModelBase.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MEBase.tcc"
@@ -150,6 +151,14 @@ const DVector & MEBase::meInfo() const {
 
 void MEBase::meInfo(const DVector & info) const {
   lastXCombPtr()->meInfo(info);
+}
+
+double MEBase::alphaS() const {
+  return SM().alphaS(scale());
+}
+
+double MEBase::alphaEM() const {
+  return SM().alphaEM(scale());
 }
 
 void MEBase::persistentOutput(PersistentOStream & os) const {

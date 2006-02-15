@@ -262,7 +262,7 @@ public:
    * Get referring objects. Return all object which refers to the
    * given object through a Reference of RefVector interface.
    */
-  static IVector GetObjectsReferingTo(IBPtr);
+  static IVector GetObjectsReferringTo(IBPtr);
 
   /**
    * Get direct references. Return all objects the given object refers

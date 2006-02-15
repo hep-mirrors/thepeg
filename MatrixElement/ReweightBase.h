@@ -31,7 +31,7 @@ namespace ThePEG {
  * @see EventHandler
  * @see SubProcessHandler
  */
-class ReweightBase: public HandlerBase, public LastXCombInfo<StandardXComb> {
+class ReweightBase: public HandlerBase, public LastXCombInfo<> {
 
 public:
 
@@ -56,83 +56,16 @@ public:
 public:
 
   /**
-   * Return the wieght for the kinematical configuation
-   * previously provided by the last call to setKinematics().
+   * Return the wieght for the kinematical configuation provided by
+   * the assigned XComb object (in the LastXCombInfo base class).
    */
   virtual double weight() const = 0;
 
   /**
-   * Set the kinematics for the corresponding sub-process to be use in
-   * the reweighting.
-   */
-  void setKinematics(Energy2 shat, tcPDPair in, const cPDVector & out,
-		     const Lorentz5Momentum & pina,
-		     const Lorentz5Momentum & pinb,
-		     const vector<Lorentz5Momentum> & pout);
-
-  /**
-   * Set the types and momenta of the incoming and outgoing partons to
+   * Assigne an XComb object with information about the sub-process to
    * be used in the reweighting.
    */
-  void setKinematics(tPPair in, const PVector & out);
-
-  /**
-   * Set the types and momenta of the incoming and outgoing partons to
-   * be used in the reweighting.
-   */
-  inline void setKinematics(const SubProcess & sub);
-
-  /**
-   * Set the types and momenta of the incoming and outgoing partons to
-   * be used in the reweighting.
-   */
-  void setXComb(tStdXCombPtr);
-
-  /**
-   * This method does nothing in this base class. Derived classes may
-   * override it to setup derived quantities obtained from the
-   * information provided by a call to setKinematics(...). (Allways
-   * called from the setKinematics() methods.)
-   */
-  inline virtual void setKinematics();
-
-  /**
-   * Clear the information previously provided by a call to
-   * setKinematics().
-   */
-  virtual void clearKinematics();
-
-public:
-
-  /**
-   * Return the last set invariant mass squared.
-   */
-  inline Energy2 sHat() const;
-
-  /**
-   * Return the types of the last set incoming partons.
-   */
-  inline const cPDPair & inData() const;
-
-  /**
-   * Return the types of the last set outgoing partons.
-   */
-  inline const cPDVector & outData() const;
-
-  /**
-   * Return the momentum of the last set first incoming parton.
-   */
-  inline const Lorentz5Momentum & inMomentumA() const;
-
-  /**
-   * Return the momentum of the last set incoming second parton.
-   */
-  inline const Lorentz5Momentum & inMomentumB() const;
-
-  /**
-   * Return the momenta of the last set outgoing partons.
-   */
-  inline const vector<Lorentz5Momentum> & outMomentum() const;
+  void setXComb(tXCombPtr);
 
 public:
 
@@ -197,38 +130,6 @@ protected:
    */
   inline virtual IVector getReferences();
   //@}
-
-private:
-
-  /**
-   * The last set invariant mass squared.
-   */
-  Energy2 theLastSHat;
-
-  /**
-   * The types of the last set incoming partons.
-   */
-  cPDPair theLastInData;
-
-  /**
-   * The types of the last set outgoing partons.
-   */
-  cPDVector theLastOutData;
-
-  /**
-   * The momentum of the last set first incoming parton.
-   */
-  Lorentz5Momentum theLastInMomentumA;
-
-  /**
-   * The momentum of the last set second incoming parton.
-   */
-  Lorentz5Momentum theLastInMomentumB;
-
-  /**
-   * The momenta of the last set outgoing partons.
-   */
-  vector<Lorentz5Momentum> theLastOutMomentum;
 
 private:
 
