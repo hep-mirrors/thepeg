@@ -140,7 +140,7 @@ protected:
    * @throws UpdateException if the setup is such that the object
    * would not work properly.
    */
-  inline virtual void doupdate() throw(UpdateException) = 0;
+  inline virtual void doupdate() throw(UpdateException);
 
   /**
    * Initialize this object after the setup phase before saving an
@@ -148,7 +148,7 @@ protected:
    * last update() call.
    * @throws InitException if object could not be initialized properly.
    */
-  inline virtual void doinit() throw (InitException) = 0;
+  inline virtual void doinit() throw (InitException);
 
   /**
    * Initialize this object. Called in the run phase just before
@@ -160,7 +160,7 @@ protected:
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish() = 0;
+  inline virtual void dofinish();
   //@}
 
 private:

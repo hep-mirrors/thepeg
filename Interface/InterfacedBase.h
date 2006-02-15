@@ -124,7 +124,7 @@ protected:
    * @throws UpdateException if the setup is such that the object
    * would not work properly.
    */
-  virtual void doupdate() throw(UpdateException) = 0;
+  virtual void doupdate() throw(UpdateException);
 
   /**
    * Initialize this object. This method is called after the setup
@@ -143,7 +143,7 @@ protected:
    * method is called for other objects.
    * @throws InitException if object could not be initialized properly.
    */
-  virtual void doinit() throw (InitException) = 0;
+  virtual void doinit() throw (InitException);
 
   /**
    * Initialize this object. This method is called juast before
@@ -166,7 +166,7 @@ protected:
    * the dofinish() method of the base class is called while the
    * finish() methd is called for other objects.
    */
-  virtual void dofinish() = 0;
+  virtual void dofinish();
 
   /**
    * Return a vector of all pointers to Interfaced objects used in this
