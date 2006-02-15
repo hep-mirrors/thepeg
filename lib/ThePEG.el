@@ -222,21 +222,7 @@ may not be INTERFACED and/or CONCRETE."
 	   (beginning-of-buffer))))
 
 
-(defun thepeg-iheader (namespace class base interfaced concrete)
-  "Return a skeleton suitable for the icc-header file for the inline
-function definitions of a class CLASS which derives from the base
-class BASE."
-
-  (setq interface (cond (interfaced (concat (cond (concrete "
-inline IBPtr THECLASS::clone() const {
-  return new_ptr(*this);
-}
-
-inline IBPtr THECLASS::fullclone() const {
-  return new_ptr(*this);
-}
-")
-						  (t "")) "
+(defconst thepeg-interfaced-impl "
 inline void THECLASS::doupdate() throw(UpdateException) {
   THEBASE::doupdate();
   // First update base class.
@@ -278,6 +264,28 @@ inline IVector THECLASS::getReferences() {
   // ret.push_back(dummy);
   return ret;
 }
+")
+
+(defun thepeg-iheader (namespace class base interfaced concrete)
+  "Return a skeleton suitable for the icc-header file for the inline
+function definitions of a class CLASS which derives from the base
+class BASE."
+
+  (setq interface (cond (interfaced (concat (cond (concrete "
+inline IBPtr THECLASS::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr THECLASS::fullclone() const {
+  return new_ptr(*this);
+}
+")
+						  (t ""))
+					    "
+
+// If needed, insert default implementations of virtual function defined
+// in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
+
 "))
 			(t "")))
   (thepeg-replace "THECLASS" class
@@ -351,27 +359,6 @@ SPECIALFN may be used to include special function definitions"
 					 persistent concrete interfaced
 					 specialfn))
 	   (beginning-of-buffer))))
-
-(defun ThePEG-persistent-decl ()
-  "Insert declarations of the standard ThePEG persistent I/O functions."
-  (interactive)
-  (insert-string "
-  /** @name Functions used by the persistent I/O system. */
-  //@{
-  /**
-   * Function used to write out object persistently.
-   * @param os the persistent output stream written to.
-   */
-  void persistentOutput(PersistentOStream & os) const;
-
-  /**
-   * Function used to read in object persistently.
-   * @param is the persistent input stream read from.
-   * @param version the version number of the object when written.
-   */
-  void persistentInput(PersistentIStream & is, int version);
-  //@}
-"))
 
 (defconst thepeg-persistent-decl "
   /** @name Functions used by the persistent I/O system. */
@@ -475,6 +462,18 @@ protected:
   (interactive)
   (insert-string thepeg-interfaced-decl))
 
+(defun ThePEG-interfaced-impl ()
+  "Insert default implementations of the standard ThePEG interfaced functions."
+  (interactive)
+  (setq class (read-from-minibuffer "Class Name: "
+				    (file-name-sans-extension
+				     (file-name-nondirectory
+				      (buffer-file-name)))))
+  (setq base (read-from-minibuffer "Base class Name: "))
+  (insert-string (thepeg-replace "THEBASE" base
+				 (thepeg-replace "THECLASS" class
+						 thepeg-interfaced-impl))))
+
 (defun thepeg-header (namespace class base baseheader persistent
 				concrete interfaced specialfn)
   "Return a skeleton suitable for the header file of a class CLASS
@@ -486,7 +485,12 @@ SPECIALFN may be used to include special function definitions"
 			(t "")))
   (setq cloning (cond ((and concrete interfaced) thepeg-clone-decl)
 		      (t "")))
-  (setq interface (cond (interfaced thepeg-interfaced-decl)
+  (setq interface (cond (interfaced "
+
+// If needed, insert declarations of virtual function defined in the
+// InterfacedBase class here (using ThePEG-interfaced-decl in Emacs).
+
+")
 			(t "")))
   (setq doxygen-see-interfaces (cond (interfaced (concat "
  *

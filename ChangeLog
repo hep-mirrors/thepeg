@@ -1,5 +1,10 @@
 2006-02-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* lib/ThePEG.el: Changed ThePEF-class-files so that the standard
+	InterfacedBase virtual functions (doupdate, doinit, ...) are not
+	included from start. They can be added afterwards with
+	ThePEG-interfaced-decl and ThePEG-interfaced-impl functions.
+
 	* PDT/ParticleData.cc: Fixed bug in stable(bool) function.
 
 2006-02-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
