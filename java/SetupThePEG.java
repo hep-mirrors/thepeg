@@ -25,7 +25,7 @@ public class SetupThePEG extends JFrame implements ActionListener {
 
   TreeMap objects = new TreeMap();
   ButtonGroup showgroup = new ButtonGroup();
-  JMenu showmenu = new JMenu("Show...");
+  JMenu showmenu = new JMenu("Show");
 
   Vector actions = new Vector();
   File actionFile;
@@ -238,8 +238,8 @@ public class SetupThePEG extends JFrame implements ActionListener {
       showmenu.add(cr);
       cr.addActionListener(this);
 
-      edit.add(showmenu);
       menubar.add(edit);
+      menubar.add(showmenu);
 
       createHelpText();
       helparea.setContentType("text/html");

@@ -116,8 +116,8 @@ public class ObjectFrame extends JFrame
   }
 
   public static String htmlFormat(String text) {
-    return text.replaceAll("<interface>(\\w+)</interface>",
-			   "<a href=\"interface:$1\">$1</a>");
+    return text.replaceAll("<interface>(\\w+::)?(\\w+)</interface>",
+			   "<a href=\"interface:$2\">$2</a>");
   }
 
   private void fixDescription(String desc) {
