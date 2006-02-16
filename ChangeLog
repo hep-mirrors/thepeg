@@ -3,10 +3,10 @@
 	* java/SetupThePEG.java, java/ObjectFrame.java: Modified to show
 	interfaces better in documentation.
 
-	* LesHouches/MadGraphReader.cc, Cuts/OneCutBase.h,
-	Cuts/SimpleDISCut.cc, Cuts/SimpleKTCut.h, src/ThePEGDefaults.in,
-	LesHouches/MadGraphOneCut.h: Fixed doxygen documentation of
-	interfaces.
+	* Doc/fixinterfaces.pl.in, LesHouches/MadGraphReader.cc,
+	Cuts/OneCutBase.h, Cuts/SimpleDISCut.cc, Cuts/SimpleKTCut.h,
+	src/ThePEGDefaults.in, LesHouches/MadGraphOneCut.h: Fixed doxygen
+	documentation of interfaces.
 
 	* MatrixElement/Makefile.am: Cleaned up mixed dependencies.
 
