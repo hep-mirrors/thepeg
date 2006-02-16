@@ -1,3 +1,7 @@
+2006-02-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/Makefile.am: Cleaned up mixed dependencies.
+
 2006-02-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Joined in changes from the cuts-devel branch.

@@ -1,6 +1,5 @@
 mySOURCES = Amplitude.cc ColourLines.cc DiagramBase.cc Tree2toNDiagram.cc \
-            MEBase.cc ReweightBase.cc ME2to2Base.cc ME2to2QCD.cc \
-            ReweightMinPT.cc
+            MEBase.cc ReweightBase.cc ME2to2Base.cc ME2to2QCD.cc
 
 myQCDSOURCES = 
 
