@@ -1,4 +1,3 @@
-library ReweightConstant.so
 mkdir /Dummy
 mkdir /Dummy/Decayers
 mkdir /Defaults
@@ -124,6 +123,12 @@ set SimpleLEPHandler:BeamB /Defaults/Particles/e+
 set SimpleLEPHandler:Sampler ACDCSampler
 library LesHouches.so
 library MadGraphReader.so
+library ReweightMinPT.so
+library KTClus.so
+library SimpleDISCut.so
+library SimpleKTCut.so
+library V2LeptonsCut.so
+library ReweightConstant.so
 
 cd /Defaults/Generators
 create ThePEG::EventGenerator SimpleLEPGenerator

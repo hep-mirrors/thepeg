@@ -67,7 +67,7 @@ public:
 
   /**
    * Return true if a particle with type \a ptype and momentum \a p
-   * passes the cuts. The \parent contains information about the
+   * passes the cuts. The \a parent contains information about the
    * kinematics of the hard sub-process.
    */
   virtual bool passCuts(tcCutsPtr parent,

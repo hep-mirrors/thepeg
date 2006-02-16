@@ -99,14 +99,14 @@ void SimpleDISCut::Init() {
 
   static Parameter<SimpleDISCut,Energy2> interfaceMinQ2
     ("MinQ2",
-     "The minimum \\f$Q^2\\$f.",
+     "The minimum \\f$Q^2\\f$.",
      &SimpleDISCut::theMinQ2, GeV2, 1.0*GeV2, 0.0*GeV2, Constants::MaxEnergy2,
      true, false, Interface::limited,
      0, 0, 0, &SimpleDISCut::maxMinQ2, 0);
 
   static Parameter<SimpleDISCut,Energy2> interfaceMaxQ2
     ("MaxQ2",
-     "The maximum \\f$Q^2\\$f. Note that this is only applied as a post-cut "
+     "The maximum \\f$Q^2\\f$. Note that this is only applied as a post-cut "
      "and will not affect the initial phase space cuts in the generation.",
      &SimpleDISCut::theMaxQ2, GeV2, 100.0*GeV2, 0.0*GeV2, 0.0*GeV2,
      true, false, Interface::lowerlim,

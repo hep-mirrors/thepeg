@@ -398,11 +398,11 @@ void MadGraphReader::Init() {
 
   static Command<MadGraphReader> interfaceScanCuts
     ("ScanCuts",
-     "If no <interface>Cuts</interface> has been assigned, the event file "
-     "is scanned for information about generation cuts. If cuts are found, "
-     "the corresponding objects will be created in a sub-directory with the "
-     "same name as this object and assigned as the <interface>Cuts</interface> "
-     "of this reader.",
+     "If no <interface>LesHouchesReader::Cuts</interface> has been assigned, "
+     "the event file is scanned for information about generation cuts. If cuts "
+     "are found, the corresponding objects will be created in a sub-directory "
+     "with the same name as this object and assigned as the "
+     "<interface>LesHouchesReader::Cuts</interface> of this reader.",
      &MadGraphReader::scanCuts, true);
 
 }
