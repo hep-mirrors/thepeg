@@ -112,7 +112,7 @@ public:
   inline Energy2 uHat() const;
 
   /**
-   * Peturn the azimuth angle of the last set phase space point.
+   * Return the azimuth angle of the last set phase space point.
    */
   inline double phi() const;
   //@}
@@ -179,6 +179,26 @@ protected:
    * @return a vector of pointers.
    */
   inline virtual IVector getReferences();
+  //@}
+
+protected:
+
+  /** @name Set the cached values in of the last set phase space point. */
+  //@{
+  /**
+   * Set the \f$\hat{t}\f$ of the last set phase space point.
+   */
+  inline void tHat(Energy2);
+
+  /**
+   * Set the \f$\hat{u}\f$ of the last set phase space point.
+   */
+  inline void uHat(Energy2);
+
+  /**
+   * Set the azimuth angle of the last set phase space point.
+   */
+  inline void phi(double);
   //@}
 
 protected:

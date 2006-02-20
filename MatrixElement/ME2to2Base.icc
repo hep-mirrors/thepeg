@@ -30,6 +30,18 @@ inline double ME2to2Base::phi() const {
   return theLastPhi;
 }
 
+inline void ME2to2Base::tHat(Energy2 input) {
+  theLastTHat=input;
+}
+
+inline void ME2to2Base::uHat(Energy2 input) {
+  theLastUHat=input;
+}
+
+inline void ME2to2Base::phi(double input) {
+  theLastPhi=input;
+}
+
 inline void ME2to2Base::doupdate() throw(UpdateException) {
   MEBase::doupdate();
   // First update base class.
