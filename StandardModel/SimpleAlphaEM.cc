@@ -31,7 +31,9 @@ double SimpleAlphaEM::value(Energy2 scale, const StandardModelBase & sm) const {
   double alem3pi = alem/(3.0*pi);
   double rpigg;
   double Q2 = scale/GeV2;
-  if ( Q2 < 0.09 )
+  if(Q2<=2e-6)
+    rpigg=0.;
+  else if ( Q2 < 0.09 )
     rpigg = alem3pi*(13.4916 + log(Q2)) + 0.00835*log(1.0 + Q2);
   else if ( Q2 < 9.0 )
     rpigg=alem3pi*(16.3200 + 2.0*log(Q2)) + 0.00238*log(1.0 + 3.927*Q2);
