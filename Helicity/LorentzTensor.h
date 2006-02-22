@@ -284,6 +284,11 @@ class LorentzTensor{
    * Subtraction.
    */
   inline LorentzTensor operator-(const LorentzTensor &) const;
+
+  /**
+   * Trace
+   */
+  inline Complex trace();
   //@}
 
 private:

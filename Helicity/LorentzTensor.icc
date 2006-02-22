@@ -228,6 +228,9 @@ inline LorentzPolarizationVector operator *
   return outvec;
 }
 
+inline Complex LorentzTensor::trace()
+{return _tensor[3][3]-_tensor[0][0]-_tensor[1][1]-_tensor[2][2];}
+
 }
 }
 

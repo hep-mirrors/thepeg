@@ -1,3 +1,7 @@
+2006-02-22  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity/LorentzTensor.h (Repository): added trace member 
+
 2006-02-20  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* MatrixElement/ME2to2Base.icc (Repository): change so that inheriting classes can set phi, uHat and tHat. 
