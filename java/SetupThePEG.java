@@ -132,7 +132,7 @@ public class SetupThePEG extends JFrame implements ActionListener {
 	g.drawLine(1, 6, 1, 14);
 	g.drawLine(1, 6, 3, 6);
 	g.drawLine(1, 10, 3, 10);
-	g.drawLine(4, 7, 4, 10);
+	g.drawLine(4, 7, 4, 9);
 
 	// E
 	g.drawLine(6, 6, 6, 14);
