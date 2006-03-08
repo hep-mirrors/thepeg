@@ -203,8 +203,8 @@ void LesHouchesEventHandler::skipEvents() {
   // the currentReader(), and how many events on average we need to
   // skip for each attempted event to gor through the file an integer
   // number of times.
-  volatile long nscan = long(xscan) + 1;
-  double meanskip = double(nscan)/xscan - 1.0;
+  double nscan = ceil(xscan);
+  double meanskip = nscan/xscan - 1.0;
 
   // Skip an average numer of steps with a Poissonian distribution.
   long nskip = RandPoisson::shoot(UseRandom::currentEngine(), meanskip);

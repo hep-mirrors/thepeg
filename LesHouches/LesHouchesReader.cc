@@ -596,9 +596,9 @@ void LesHouchesReader::createBeams() {
 void LesHouchesReader::connectMothers() {
   const ObjectIndexer<long,Particle> & pi = particleIndex;
   for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
-    if ( pi(hepeup.MOTHUP[i].first) )
+    if ( pi(hepeup.MOTHUP[i].first) ) 
       pi(hepeup.MOTHUP[i].first)->addChild(pi(i + 1));
-    if ( pi(hepeup.MOTHUP[i].second) )
+    if ( pi(hepeup.MOTHUP[i].second) && hepeup.MOTHUP[i].second != hepeup.MOTHUP[i].first) 
       pi(hepeup.MOTHUP[i].second)->addChild(pi(i + 1));
   }
 }
