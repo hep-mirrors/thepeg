@@ -194,9 +194,11 @@ void LesHouchesEventHandler::skipEvents() {
 
   // Estimate the fration of the total events available from
   // currentReader() which will be requested.
-  double frac = currentReader()->stats.maxXSec()/
-    ( stats.attempts() > 0 && stats.xSec() > 0.0*picobarn?
-      stats.xSec(): stats.maxXSec() );
+  double frac = currentReader()->stats.maxXSec()/stats.maxXSec();
+  if ( stats.accepted() > 0 )
+    frac *= double(stats.attempts())/double(stats.accepted());
+  else
+    frac *= double(stats.attempts() + 1);
   double xscan = generator()->N()*frac/currentReader()->NEvents();
 
   // Estimate the number of times we need to go through the events for
