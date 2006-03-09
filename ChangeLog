@@ -1,3 +1,8 @@
+2006-03-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* LesHouches/LesHouchesEventHandler.cc: Fixed unitnegweight
+	problem (Ticket #30)
+
 2006-03-08  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* LesHouches/LesHouchesReader.cc, LesHouchesEventHandler.cc: Fixed

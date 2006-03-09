@@ -155,7 +155,7 @@ EventPtr LesHouchesEventHandler::generateEvent() {
 
     if ( weightOption() == unitweight  || weightOption() == unitnegweight ) {
       if ( !rndbool(abs(weight)) ) continue;
-      weight = Math::sign(weight, 1.0);
+      weight = Math::sign(1.0, weight);
     }
 
     accept();
