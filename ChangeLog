@@ -1,5 +1,7 @@
 2006-03-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Utilities/Math.icc, Repository/EventGenerator.h: Fixes for gcc-4.1.0
+
 	* LesHouches/LesHouchesEventHandler.cc: Fixed unitnegweight
 	problem (Ticket #30)
 

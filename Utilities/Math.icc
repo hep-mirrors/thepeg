@@ -138,47 +138,50 @@ inline double Math::Functions::PowX<N>::
 generate(double x0, double x1, double R) {
   return pow(primitive(x0) + R*integrate(x0, x1), 1.0/double(N+1));
 }
+  namespace Math {
+    namespace Functions {
 
 template <>
-inline double Math::Functions::PowX<1>::
+inline double PowX<1>::
 generate(double x0, double x1, double R) {
   return std::sqrt(x0*x0 + R*(x1*x1 - x0*x0));
 }
 
 template <>
-inline double Math::Functions::PowX<0>::
+inline double PowX<0>::
 generate(double x0, double x1, double R) {
   return x0 + R*(x1 - x0);
 }
 
 template<>
-inline double Math::Functions::PowX<-1>::primitive(double x) {
+inline double PowX<-1>::primitive(double x) {
   return log(x);
 }
 
 template <>
-inline double Math::Functions::PowX<-1>::integrate(double x0, double x1) {
+inline double PowX<-1>::integrate(double x0, double x1) {
   return log(x1/x0);
 }
 
 template <>
-inline double Math::Functions::PowX<-1>::
+inline double PowX<-1>::
 generate(double x0, double x1, double R) {
   return x0*pow(x1/x0, R);
 }
 
 template <>
-inline double Math::Functions::PowX<-2>::
+inline double PowX<-2>::
 generate(double x0, double x1, double R) {
   return x0*x1/(x1 - R*(x1 - x0));
 }
 
 template <>
-inline double Math::Functions::PowX<-3>::
+inline double PowX<-3>::
 generate(double x0, double x1, double R) {
   return x0*x1/std::sqrt(x1*x1 - R*(x1*x1 - x0*x0));
 }
-
+    }
+  }
 template <int N>
 inline double Math::Functions::Pow1mX<N>::primitive(double x) {
   return -PowX<N>::primitive(1.0 - x);

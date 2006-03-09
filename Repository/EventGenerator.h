@@ -8,6 +8,7 @@
 #include "EventGenerator.fh"
 #include "RandomGenerator.h"
 #include "ThePEG/Repository/UseRandom.h"
+#include "ThePEG/Repository/Strategy.h"
 #include "ThePEG/Repository/CurrentGenerator.fh"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Handlers/EventHandler.fh"
