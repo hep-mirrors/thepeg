@@ -43,19 +43,19 @@ public class ObjectFrame extends JFrame
     }
     if ( parameterList != null ) {
       parameterList.addMouseListener(this);
-      addCard("Parameters:", parameterList);
+      addCard("All Parameters:", parameterList);
     }
     if ( switchList != null ) {
       switchList.addMouseListener(this);
-      addCard("Switches:", switchList);
+      addCard("All Switches:", switchList);
     }
     if ( referenceList != null ) {
       referenceList.addMouseListener(this);
-      addCard("References:", referenceList);
+      addCard("All References:", referenceList);
     }
     if ( commandList != null ) {
       commandList.addMouseListener(this);
-      addCard("Commands:", commandList);
+      addCard("All Commands:", commandList);
     }
     if ( secondaryList != null ) {
       secondaryList.addMouseListener(this);
@@ -197,11 +197,11 @@ public class ObjectFrame extends JFrame
       if ( prim ) primary.add(name);
       else secondary.add(name);
     }
+    primaryList = new JList(primary);
     if ( parameters.size() > 0 ) parameterList = new JList(parameters);
     if ( switches.size() > 0 ) switchList = new JList(switches);
     if ( references.size() > 0 ) referenceList = new JList(references);
     if ( commands.size() > 0 ) commandList = new JList(commands);
-    if ( primary.size() > 0 ) primaryList = new JList(primary);
     if ( secondary.size() > 0 ) secondaryList = new JList(secondary);
     fixDescription(description);
   }

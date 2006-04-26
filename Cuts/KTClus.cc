@@ -113,5 +113,9 @@ void KTClus::Init() {
      "All",
      "The cut is applied to all particle types.",
      false);
+
+  interfaceCut.rank(10);
+  interfaceOnlyJets.rank(9);
+
 }
 

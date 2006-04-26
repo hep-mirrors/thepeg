@@ -223,5 +223,9 @@ void MadGraphTwoCut::Init() {
      &MadGraphTwoCut::theCut, 0.0, 0.0, 0,
      true, false, Interface::lowerlim);
 
+  interfaceCut.rank(10);
+  interfaceCutType.rank(9);
+  interfacePairType.rank(8);
+
 }
 

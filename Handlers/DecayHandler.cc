@@ -88,11 +88,13 @@ ClassDescription<DecayHandler> DecayHandler::initDecayHandler;
 void DecayHandler::Init() {
 
   static ClassDocumentation<DecayHandler> documentation
-    ("There is no documentation for the ThePEG::DecayHandler class");
+    ("This is the main class handling the decay of unstable particles. Note "
+     "that the actual decays will be performed by objects of the "
+     "ThePEG::Decayer class.");
 
   static Parameter<DecayHandler,long> interfaceMaxLoop
     ("MaxLoop",
-     "The maximum number of attempts per event when selecting a sub-process.",
+     "The maximum number of attempts per event when selecting a decay channel.",
      &DecayHandler::theMaxLoop, 100000, 100, 100000000, true, false, true);
 }
 

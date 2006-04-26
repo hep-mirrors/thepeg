@@ -484,5 +484,13 @@ void SimpleFlavour::Init() {
      &SimpleFlavour::thePSpinC1, 0.75, 0.0, 1.0,
      true, false, true);
 
+  interfaceSSup.rank(10);
+  interfaceDiSup.rank(9);
+  interfaceDi1Sup.rank(8);
+  interfaceBaryon10Sup.rank(7);
+  interfacePSpin1.rank(6);
+  interfacePSpinS1.rank(5);
+  interfacePSpinC1.rank(4);
+
 }
 

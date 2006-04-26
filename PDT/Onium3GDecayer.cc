@@ -116,5 +116,7 @@ void Onium3GDecayer::Init() {
      &Onium3GDecayer::theMinGGMass, GeV, 2.0*GeV, 0.0*GeV, 10.0*GeV,
      true, false, true);
 
+  interfaceShower.rank(10);
+
 }
 

@@ -21,7 +21,7 @@ HadronizationHandler::initHadronizationHandler;
 void HadronizationHandler::Init() {
 
   static ClassDocumentation<HadronizationHandler> documentation
-    ("There is no documentation for the ThePEG::HadronizationHandler class");
+    ("This is the base class to be used by all models for hadronization.");
 
 }
 

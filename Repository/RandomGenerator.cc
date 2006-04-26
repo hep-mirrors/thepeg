@@ -119,10 +119,15 @@ void RandomGenerator::Init() {
      "The Random numbers are generated in chunks of this size.",
      &RandomGenerator::theSize, 1000, 10, 100000, true, false, true,
      &RandomGenerator::setSize);
+
   static Parameter<RandomGenerator,long> interfaceSeed
     ("Seed",
      "The seed with which this random generator is initialized. "
      "If set to zero, the default build-in seed will be used.",
      &RandomGenerator::theSeed, 0, 0, 100000000, true, false, false);
+
+  interfaceSize.rank(10);
+  interfaceSeed.rank(9);
+
 }
 

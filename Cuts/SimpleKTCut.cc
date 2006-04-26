@@ -112,5 +112,11 @@ void SimpleKTCut::Init() {
      "If non-null only particles matching this object will be affected "
      "by the cut.",
      &SimpleKTCut::theMatcher, true, false, true, true, false);
+
+  interfaceMinKT.rank(10);
+  interfaceMinEta.rank(9);
+  interfaceMaxEta.rank(8);
+  interfaceMatcher.rank(7);
+
 }
 

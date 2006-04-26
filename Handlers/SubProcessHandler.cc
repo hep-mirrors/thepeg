@@ -94,7 +94,14 @@ ClassDescription<SubProcessHandler> SubProcessHandler::initSubProcessHandler;
 void SubProcessHandler::Init() {
 
   static ClassDocumentation<SubProcessHandler> documentation
-    ("There is no documentation for the ThePEG::SubProcessHandler class");
+    ("This object contains information about a set of possible sub-processes "
+     "to be generated from inside ThePEG. It must contain a "
+     "<interface>PartonExtractor</interface> do describe how the partons "
+     "entering into the hard sub-process are extracted from the beam "
+     "particles. It must also include at least one matrix element object "
+     "in <interface>MatrixElements</interface> and a "
+     "<interface>Cuts</interface> object describing the kinematical cuts "
+     "imposed on the sub-process generation.");
 
   static Reference<SubProcessHandler,PartonExtractor> interfacePartonExtractor
     ("PartonExtractor",
@@ -136,6 +143,10 @@ void SubProcessHandler::Init() {
   ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(SubProcessHandler,
 					 HadronizationHandler);
   ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(SubProcessHandler, DecayHandler);
+
+  interfacePartonExtractor.rank(10);
+  interfaceMEs.rank(9);
+  interfaceCuts.rank(8);
 
 }
 

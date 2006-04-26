@@ -66,7 +66,8 @@ initLuminosityFunction;
 void LuminosityFunction::Init() {
 
   static ClassDocumentation<LuminosityFunction> documentation
-    ("There is no documentation for the ThePEG::LuminosityFunction class");
+    ("This base class should be used by all classes describing the luminosity "
+     "and energy distribution of colliding particle beams.");
 
 }
 

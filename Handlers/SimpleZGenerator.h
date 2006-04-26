@@ -10,7 +10,7 @@ namespace ThePEG {
 /**
  * SimpleZGenerator is a very simple concrete subclass of
  * ZGenerator. It implements a naive unphysical model to generate the
- * momentum fraction (Z) taken by hadrons produced in a hadronization
+ * momentum fraction, \f$z\f$, taken by hadrons produced in a hadronization
  * scenario. It should only be used for testing purposes.
  *
  * @see \ref SimpleZGeneratorInterfaces "The interfaces"

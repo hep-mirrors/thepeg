@@ -59,7 +59,7 @@ CascadeHandler::initCascadeHandler;
 void CascadeHandler::Init() {
 
   static ClassDocumentation<CascadeHandler> documentation
-    ("There is no documentation for the ThePEG::CascadeHandler class");
+    ("This is the base class to be used by all models of partonic cascades.");
 
 }
 

@@ -617,7 +617,7 @@ void DecayMode::setDecayer(DecayerPtr dp) {
 void DecayMode::Init() {
 
   static ClassDocumentation<DecayMode> documentation
-    ("There is no documentation for the ThePEG::DecayMode class");
+    ("Represents a specific decay channel of a particle.");
 
   static Parameter<DecayMode,double> interfaceBrat
     ("BranchingRatio",
@@ -640,6 +640,10 @@ void DecayMode::Init() {
      "The ThePEG::Decayer object responsible for performing this decay.",
      &DecayMode::theDecayer, false, false, true, false,
      &DecayMode::setDecayer);
+
+  interfaceBrat.rank(10);
+  interfaceDecayer.rank(9);
+  interfaceOn.rank(8);
 
 }
 

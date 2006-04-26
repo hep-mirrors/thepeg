@@ -116,7 +116,7 @@ NoPIOClassDescription<GRV94L> GRV94L::initGRV94L;
 void GRV94L::Init() {
 
   static ClassDocumentation<GRV94L> documentation
-    ("There is no documentation for the ThePEG::GRV94L class");
+    ("Implements the GRV94L PDF parameterization.");
 
 }
 

@@ -20,7 +20,8 @@ AbstractNoPIOClassDescription<MassGenerator> MassGenerator::initMassGenerator;
 void MassGenerator::Init() {
 
   static ClassDocumentation<MassGenerator> documentation
-    ("There is no documentation for the ThePEG::MassGenerator class");
+    ("This is the base class for models giving specific masses to particle "
+     "instances.");
 
 }
 

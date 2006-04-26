@@ -30,7 +30,8 @@ AbstractClassDescription<PtGenerator> PtGenerator::initPtGenerator;
 void PtGenerator::Init() {
 
   static ClassDocumentation<PtGenerator> documentation
-    ("There is no documentation for the ThePEG::PtGenerator class");
+    ("This base class should be used by models describing intrinsic "
+     "transverse momenta distributions in hadrons.");
 
 }
 

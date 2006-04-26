@@ -266,7 +266,17 @@ ThePEG_IMPLEMENT_CLASS_DESCRIPTION(EventHandler);
 void EventHandler::Init() {
 
   static ClassDocumentation<EventHandler> documentation
-    ("There is no documentation for the ThePEG::EventHandler class");
+    ("This is the base class controlling the generation of the event after "
+     "the hard sub-process generation. To its help it has a number of step "
+     "handler objects, most noticeable the "
+     "<interface>CascadeHandler</interface>, the "
+     "<interface>HadronizationHandler</interface> and the "
+     "<interface>DecayHandler</interface>. Derived classes may "
+     "also make use of the <interface>LuminosityFunction</interface> "
+     "to specify the incoming beams, the "
+     "<interface>PartonExtractor</interface> to administer the "
+     "extraction of partons from incoming hadrons, and the "
+     "<interface>Cuts</interface> to specify cuts on the primary sub-process.");
 
   static Parameter<EventHandler,long> interfaceMaxLoop
     ("MaxLoop",
@@ -341,6 +351,14 @@ void EventHandler::Init() {
      "This EventHandler is either complete or no warning should be emitted "
      "in either case.",
      false);
+
+  interfaceLumifn.rank(10);
+  interfaceCascadeHandler.rank(9);
+  interfaceHadronizationHandler.rank(8);
+  interfaceDecayHandler.rank(7);
+  interfaceCuts.rank(6);
+  interfacePartonExtractor.rank(5);
+
 }
 
 ThePEG_IMPLEMENT_PREPOST_GROUP(EventHandler,SubProcessHandler,

@@ -199,5 +199,9 @@ void V2LeptonsCut::Init() {
      "Zneutrinos",
      "Cut on neutrino anti-neutrino pairs.",
      neuneu);
+
+  interfaceMinM.rank(10);
+  interfaceMaxM.rank(9);
+
 }
 

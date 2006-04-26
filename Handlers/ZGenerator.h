@@ -12,7 +12,7 @@ namespace ThePEG {
 
 /**
  * ZGenerator is the base class for all classes implementing models to
- * generate the momentum fraction (Z) taken by hadrons produced in a
+ * generate the momentum fraction, \f$z\f$, taken by hadrons produced in a
  * hadronization scenario.
  * 
  * It inherits from <code>HandlerBase</code> class which among other

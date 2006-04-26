@@ -86,7 +86,8 @@ NoPIOClassDescription<LeptonLeptonPDF> LeptonLeptonPDF::initLeptonLeptonPDF;
 void LeptonLeptonPDF::Init() {
 
   static ClassDocumentation<LeptonLeptonPDF> documentation
-    ("There is no documentation for the ThePEG::LeptonLeptonPDF class");
+    ("Describes the distribution of leptons within leptons, ie. the energy "
+     "loss of leptons due to radiation of soft photons.");
 
 }
 

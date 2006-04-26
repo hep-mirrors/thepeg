@@ -384,7 +384,8 @@ LesHouchesEventHandler::initLesHouchesEventHandler;
 void LesHouchesEventHandler::Init() {
 
   static ClassDocumentation<LesHouchesEventHandler> documentation
-    ("There is no documentation for the LesHouchesEventHandler class");
+    ("THis is the main class administrating the selection of hard "
+     "subprocesses from a set of ThePEG::LesHouchesReader objects.");
 
 
   static RefVector<LesHouchesEventHandler,LesHouchesReader>
@@ -419,6 +420,9 @@ void LesHouchesEventHandler::Init() {
      "VarNegWeight",
      "Events may have varying weights, both positive and negative.",
      varnegweight);
+
+  interfaceLesHoushesReaders.rank(10);
+  interfaceWeightOption.rank(9);
 
 }
 

@@ -20,7 +20,8 @@ AbstractNoPIOClassDescription<AlphaEMBase> AlphaEMBase::initAlphaEMBase;
 void AlphaEMBase::Init() {
 
   static ClassDocumentation<AlphaEMBase> documentation
-    ("There is no documentation for the ThePEG::AlphaEMBase class");
+    ("An abstract base class used by the StandardModelBase class to "
+     "implement the electro-magnetic coupling.");
 
 }
 

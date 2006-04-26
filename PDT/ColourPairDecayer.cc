@@ -93,5 +93,7 @@ void ColourPairDecayer::Init() {
      "The produced partons should be hadronized whithout preceeding shower.",
      false);
 
+  interfaceShower.rank(10);
+
 }
 

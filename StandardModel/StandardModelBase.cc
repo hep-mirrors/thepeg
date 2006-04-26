@@ -224,5 +224,10 @@ void StandardModelBase::Init() {
      "stron coupling at a given scale",
      &StandardModelBase::theRunningAlphaS, false, false, true, false);
 
+  interfaceRunningAlphaEM.rank(10);
+  interfaceRunningAlphaS.rank(9);
+  interfaceSin2ThetaW.rank(8);
+  interfaceCKM.rank(7);
+
 }
 

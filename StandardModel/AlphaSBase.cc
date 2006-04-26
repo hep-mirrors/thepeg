@@ -36,7 +36,8 @@ AbstractClassDescription<AlphaSBase> AlphaSBase::initAlphaSBase;
 void AlphaSBase::Init() {
 
   static ClassDocumentation<AlphaSBase> documentation
-    ("There is no documentation for the ThePEG::AlphaSBase class");
+    ("An abstract base class used by the StandardModelBase to implement the "
+     "QCD coupling.");
 
 }
 

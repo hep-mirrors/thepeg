@@ -40,9 +40,9 @@ void SamplerBase::Init() {
 
   static ClassDocumentation<SamplerBase> documentation
     ("This is the base class for all phase space sampler classes to be"
-     "used by the ThePEG::EventHandler class to sample the phase"
+     "used by the ThePEG::StandardEventHandler class to sample the phase"
      "space according to the cross sections for the proceses in the"
-     "ThePEG::EventHandler.");
+     "ThePEG::StandardEventHandler.");
 
 }
 

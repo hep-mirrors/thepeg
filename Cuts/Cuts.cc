@@ -401,5 +401,17 @@ void Cuts::Init() {
      "The objects defining cuts on sets of outgoing particles from the "
      "hard sub-process.",
      &Cuts::theMultiCuts, -1, true, false, true, false, false);
+
+  interfaceX1Min.rank(10);
+  interfaceX1Max.rank(9);
+  interfaceX2Min.rank(8);
+  interfaceX2Max.rank(7);
+  interfaceMHatMin.rank(6);
+  interfaceMHatMax.rank(5);
+  interfaceYHatMin.rank(4);
+  interfaceYHatMax.rank(3);
+  interfaceOneCuts.rank(2);
+  interfaceTwoCuts.rank(1);
+
 }
 

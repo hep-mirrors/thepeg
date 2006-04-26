@@ -42,6 +42,7 @@ void ReweightConstant::Init() {
      &ReweightConstant::C, 1.0, 0, 0,
      true, false, Interface::nolimits);
 
+  interfaceC.rank(10);
 
 }
 

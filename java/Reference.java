@@ -49,7 +49,19 @@ public class Reference extends Interface implements ActionListener {
     ok.addActionListener(this);
     fixButtons();
     getContentPane().add(buttons, BorderLayout.SOUTH);
-    getContentPane().add(selected, BorderLayout.NORTH);
+    Font f = selected.getFont();
+    selected.setFont(new Font(f.getName(), f.getStyle(), f.getSize() + 2));
+    selected.addMouseListener(new MouseAdapter() {
+	public void mousePressed(MouseEvent e) {
+	  if ( e.getSource() == selected && e.getClickCount() >= 2 &&
+	       ! selected.getName().equals("NULL") ) owner.openObject(current);
+	}
+      });
+    //    getContentPane().add(selected, BorderLayout.NORTH);
+    JPanel top = new JPanel();
+    top.add(new JLabel("Current Value: "));
+    top.add(selected);
+    getContentPane().add(top, BorderLayout.NORTH);
     setTitle("Reference");
     setupFrame(500,150);
   }

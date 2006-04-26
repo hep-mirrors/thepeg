@@ -70,7 +70,7 @@ AbstractClassDescription<RemnantHandler> RemnantHandler::initRemnantHandler;
 void RemnantHandler::Init() {
 
   static ClassDocumentation<RemnantHandler> documentation
-    ("There is no documentation for the ThePEG::RemnantHandler class");
+    ("This is the base class to be used by models describing remnants.");
 
 }
 

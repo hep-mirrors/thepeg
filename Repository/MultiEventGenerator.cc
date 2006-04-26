@@ -207,5 +207,8 @@ void MultiEventGenerator::Init() {
      "and the interfaced will be left unchanged during the generation.",
      &MultiEventGenerator::removeInterface);
 
+  interfaceAddInterface.rank(10.7);
+  interfaceRemoveInterface.rank(10.5);
+
 }
 

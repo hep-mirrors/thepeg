@@ -30,7 +30,9 @@ AbstractClassDescription<ZGenerator> ZGenerator::initZGenerator;
 void ZGenerator::Init(){
 
   static ClassDocumentation<ZGenerator> documentation
-    ("There is no documentation for the ThePEG::ZGenerator class");
+    ("The base class for all classes implementing models to generate the "
+     "momentum fraction, \\f$z\\f$, taken by hadrons produced in a "
+     "hadronization scenario.");
 
 }
 

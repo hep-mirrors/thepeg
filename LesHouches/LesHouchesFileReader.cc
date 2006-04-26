@@ -65,5 +65,7 @@ void LesHouchesFileReader::Init() {
      &LesHouchesFileReader::theFileName, "", false, false);
 
   interfaceFileName.fileType();
+  interfaceFileName.rank(11);
+
 }
 

@@ -70,28 +70,37 @@ ClassDescription<StandardCKM> StandardCKM::initStandardCKM;
 void StandardCKM::Init() {
 
   static ClassDocumentation<StandardCKM> documentation
-    ("There is no documentation for the ThePEG::StandardCKM class");
+    ("Implements the standard parameterization of the CKM matrix in terms "
+     "of three angles and a phase.");
 
   static Parameter<StandardCKM,double> interfaceTheta12
     ("theta_12",
      "The mixing angle between the first and second generation in the standard "
      "parameterization of the CKM matrix",
      &StandardCKM::theta12, 0.222357, 0.0, twopi, false, false, true);
+
   static Parameter<StandardCKM,double> interfaceTheta13
     ("theta_13",
      "The mixing angle between the first and third generation in the standard "
      "parameterization of the CKM matrix",
      &StandardCKM::theta13, 0.0003150, 0.0, twopi, false, false, true);
+
   static Parameter<StandardCKM,double> interfaceTheta23
     ("theta_23",
      "The mixing angle between the second and third generation in the standard "
      "parameterization of the CKM matrix",
      &StandardCKM::theta12, 0.039009, 0.0, twopi, false, false, true);
+
   static Parameter<StandardCKM,double> interfaceDelta
     ("delta",
      "The phase angle in the standard "
      "parameterization of the CKM matrix",
      &StandardCKM::delta, 1.35819, 0.0, twopi, false, false, true);
-     
+
+  interfaceTheta12.rank(10);
+  interfaceTheta13.rank(9);
+  interfaceTheta23.rank(8);
+  interfaceDelta.rank(7);
+
 }
 

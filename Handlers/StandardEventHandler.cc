@@ -522,7 +522,13 @@ StandardEventHandler::initStandardEventHandler;	//
 void StandardEventHandler::Init() {
 
   static ClassDocumentation<StandardEventHandler> documentation
-    ("There is no documentation for the ThePEG::StandardEventHandler class");
+    ("This is the standard event handler to generate hard sub-processes "
+     "within ThePEG. It must specify a pair of incoming particle beams "
+     "in <interface>BeamA</interface> and <interface>BeamB</interface> "
+     "and a suiteable <interface>LuminosityFunction</interface>. In "
+     "addition at least one object describing the sub-processes to be "
+     "generated must be specified in "
+     "<interface>SubProcessHandlers</interface>.");
 
   static Reference<StandardEventHandler,ParticleData> interfaceIncomingA
     ("BeamA",
@@ -587,6 +593,10 @@ void StandardEventHandler::Init() {
      "The phase space sampler responsible for generating phase space"
      "points according to the cross section given by this event handler",
      &StandardEventHandler::theSampler, false, false, true, true);
+
+  interfaceSubhandlers.rank(11);
+  interfaceIncomingA.rank(3);
+  interfaceIncomingB.rank(2);
 
 }
 

@@ -87,7 +87,8 @@ AbstractNoPIOClassDescription<FlavourGenerator>
 void FlavourGenerator::Init() {
 
   static ClassDocumentation<FlavourGenerator> documentation
-    ("There is no documentation for the ThePEG::FlavourGenerator class");
+    ("This class is used to generate hadron types using a given flavour "
+     "content.");
 
 }
 

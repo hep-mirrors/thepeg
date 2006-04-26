@@ -192,7 +192,8 @@ AbstractClassDescription<MatcherBase> MatcherBase::initMatcherBase;
 void MatcherBase::Init() {
 
   static ClassDocumentation<MatcherBase> documentation
-    ("There is no documentation for the ThePEG::MatcherBase class");
+    ("This is the base class for objects representing groups of particle "
+     "types.");
 
 }
 

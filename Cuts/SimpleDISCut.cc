@@ -127,5 +127,9 @@ void SimpleDISCut::Init() {
      "Neutral",
      "The cut is only applied to neutral current events.",
      false);
+
+  interfaceMinQ2.rank(10);
+  interfaceMaxQ2.rank(9);
+  interfaceCurrent.rank(8);
 }
 

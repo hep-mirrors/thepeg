@@ -34,13 +34,15 @@ FixedCMSLuminosity::initFixedCMSLuminosity;
   static ClassDocumentation<FixedCMSLuminosity> documentation
     ("The ThePEG::FixedCMSLuminosity class describes an experiment "
      "with incoming particles colliding with precicely defined and "
-     "opposite momenta. It is derived from the "
-     "ThePEG::LuminosityFunction base class.");
+     "opposite momenta given by half the <interface>Energy</interface>.");
 
   static Parameter<FixedCMSLuminosity,Energy> interfaceEnergy
     ("Energy",
      "The total energy in GeV in the cms of the colliding particles.",
      &FixedCMSLuminosity::theEnergy, GeV, 91.2*GeV, 0.0*GeV,
      Constants::MaxEnergy, false, false, true);
+
+  interfaceEnergy.rank(10);
+
 }
 

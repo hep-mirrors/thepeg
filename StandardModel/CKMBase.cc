@@ -22,7 +22,8 @@ AbstractNoPIOClassDescription<CKMBase> CKMBase::initCKMBase;
 void CKMBase::Init() {
 
   static ClassDocumentation<CKMBase> documentation
-    ("There is no documentation for the ThePEG::CKMBase class");
+    ("An abstract base classused by the StandardModelBase to implement "
+     "the Cabibbo-Kobayashi-Mascawa mixing matrix.");
 
 }
 

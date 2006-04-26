@@ -57,5 +57,8 @@ void ReweightMinPT::Init() {
      &ReweightMinPT::scale, GeV, 50.0*GeV, 0.0*GeV, 0.0*GeV,
      false, false, Interface::lowerlim);
 
+  interfacePower.rank(10);
+  interfaceScale.rank(9);
+
 }
 

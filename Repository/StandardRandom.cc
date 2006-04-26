@@ -49,7 +49,7 @@ ClassDescription<StandardRandom> StandardRandom::initStandardRandom;
 void StandardRandom::Init() {
 
   static ClassDocumentation<StandardRandom> documentation
-    ("There is no documentation for the ThePEG::StandardRandom class");
+    ("Interface to the CLHEP::JamesRandom engine class.");
 
 }
 

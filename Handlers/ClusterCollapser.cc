@@ -541,6 +541,11 @@ void ClusterCollapser::Init() {
      "The object used to combine quarks and diquarks into hadrons.",
      &ClusterCollapser::flavGen, true, false, true, false);
      
+  interfaceEnergyCut.rank(10);
+  interfacePStrange.rank(9);
+  interfaceFlavGen.rank(8);
+  interfaceNTry2.rank(7);
+  interfaceLevel.rank(6);
 
 }
 

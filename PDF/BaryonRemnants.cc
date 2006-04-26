@@ -419,6 +419,10 @@ void BaryonRemnants::Init() {
      "An extracted valence flavour may be considered to be a sea-quark.",
      false);
 
-}
+  interfacePtGeneratorQ.rank(10);
+  interfacePtGeneratorR.rank(9);
+  interfaceZGenerator.rank(8);
+  interfaceFlavourGenerator.rank(7);
 
+}
 

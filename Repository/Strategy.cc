@@ -63,7 +63,13 @@ vector<PDPtr> Strategy::getLocalParticles() const {
 void Strategy::Init() {
   
   static ClassDocumentation<Strategy> documentation
-    ("There is no documentation for the ThePEG::Strategy class");
+    ("Represents a general strategy to be assigned to an EventGenerator. "
+     "It contains a set of default ParticleData objects which takes "
+     "presedence over the ones in the Repository (although not over "
+     "the ones in the EventGenerator). It also contains a set of other "
+     "default objects which are automatically assigned to all Reference "
+     "and RefVector interfaces which have the "
+     "InterfaceBase::defaultIfNull() flag set.");
 
   static RefVector<Strategy,ParticleData> interfaceLocalParticles
     ("LocalParticles",
@@ -81,8 +87,11 @@ void Strategy::Init() {
      "null pointer is encountered this vector is gone through until an "
      "acceptable object is found in which case the null pointer is replaced "
      "by a pointer to this object. Note that the default objects given in the "
-     "ThePEG::OldEventGenerator are gone through first and are given precedence.",
+     "ThePEG::EventGenerator are gone through first and are given precedence.",
      &Strategy::theDefaultObjects, 0, true, false, true, false, false);
+
+  interfaceLocalParticles.rank(10);
+  interfaceDefaultObjects.rank(9);
 
 }
 

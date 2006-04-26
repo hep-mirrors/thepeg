@@ -52,7 +52,8 @@ void GaussianPtGenerator::Init() {
 
   static Parameter<GaussianPtGenerator,Energy> interfaceSigma
     ("Sigma",
-     "The width of the Gaussian distribution. The average squared transverse momentum is Sigma squared.",
+     "The width of the Gaussian distribution. The average squared transverse "
+     "momentum is Sigma squared.",
      &GaussianPtGenerator::theSigma, GeV, 1.0*GeV, 0.0*GeV, 10.0*GeV,
      true, false, true);
 
@@ -61,6 +62,8 @@ void GaussianPtGenerator::Init() {
      "Upper cutoff for the transverse momentum distribution.",
      &GaussianPtGenerator::theUpperCut, GeV, 5.0*GeV, 0.0*GeV, 50.0*GeV,
      true, false, true);
+
+  interfaceSigma.rank(10);
 
 }
 

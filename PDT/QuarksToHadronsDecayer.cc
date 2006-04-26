@@ -216,5 +216,9 @@ void QuarksToHadronsDecayer::Init() {
      &QuarksToHadronsDecayer::theFlavourGenerator,
      true, false, true, false, true);
 
+  interfaceFixedN.rank(10);
+  interfaceMinN.rank(9);
+  interfaceFlavourGenerator.rank(8);
+
 }
 

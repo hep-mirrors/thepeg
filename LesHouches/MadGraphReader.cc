@@ -405,5 +405,7 @@ void MadGraphReader::Init() {
      "<interface>LesHouchesReader::Cuts</interface> of this reader.",
      &MadGraphReader::scanCuts, true);
 
+  interfaceScanCuts.rank(10.5);
+
 }
 

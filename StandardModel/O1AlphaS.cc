@@ -100,5 +100,9 @@ void O1AlphaS::Init() {
      false, false, true, (IFN)0, 0, 0,
      &O1AlphaS::getMaxFlav, 0);
 
+  interfaceLambdaQCD.rank(10);
+  interfaceLambdaFlavour.rank(9);
+  interfaceMaxFlav.rank(8);
+
 }
 

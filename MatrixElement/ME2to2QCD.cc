@@ -87,5 +87,7 @@ void ME2to2QCD::Init() {
     (interfaceUseInterfecence, "Included",
      "Use the full matrix element.", true);
 
+  interfaceMaxFlavour.rank(10);
+
 }
 

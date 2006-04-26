@@ -40,7 +40,8 @@ WidthGenerator::initWidthGenerator;
 void WidthGenerator::Init() {
 
   static ClassDocumentation<WidthGenerator> documentation
-    ("There is no documentation for the ThePEG::WidthGenerator class");
+    ("Abstract base class to be used to encapsulate models for giving the "
+     "partial decay width of a ParticleData given the specified DecayModes.");
 
 }
 

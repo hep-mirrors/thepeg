@@ -125,5 +125,7 @@ void LeptonLeptonRemnant::Init() {
      &LeptonLeptonRemnant::minX, 1.0e-10, 0.0, 1.0,
      true, false, true);
 
+  interfaceMinX.rank(10);
+
 }
 

@@ -44,7 +44,9 @@ ClassDescription<SimpleZGenerator> SimpleZGenerator::initSimpleZGenerator;
 void SimpleZGenerator::Init() {
 
   static ClassDocumentation<SimpleZGenerator> documentation
-    ("There is no documentation for the ThePEG::SimpleZGenerator class");
+    ("Implements a naive unphysical model to generate the momentum fraction "
+     "\\f$z\\f$ taken by hadrons produced in a hadronization scenario. It "
+     "should only be used for testing purposes.");
 
 }
 

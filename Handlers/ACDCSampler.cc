@@ -148,5 +148,8 @@ void ACDCSampler::Init() {
      "The number of phase space points tried in the initialization.",
      &ACDCSampler::theNTry, 1000, 2, 1000000, true, false, true);
 
+  interfaceNTry.rank(10);
+  interfaceEps.rank(9);
+
 }
 

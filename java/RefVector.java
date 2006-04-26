@@ -55,7 +55,7 @@ public class RefVector extends Interface
 	  if ( i < 0 || i > current.size() - 2 ) return;
 	  RefRef r = (RefRef)current.get(i);
 	  if ( r == null ) return;
-	  if(e.getClickCount() == 2) owner.openObject(r.getFullName());
+	  if ( e.getClickCount() >= 2) owner.openObject(r.getFullName());
 	}
       });
     getContentPane().add(new JScrollPane(selector), BorderLayout.NORTH);

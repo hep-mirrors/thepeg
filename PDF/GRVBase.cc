@@ -181,7 +181,7 @@ AbstractNoPIOClassDescription<GRVBase> GRVBase::initGRVBase;
 void GRVBase::Init() {
 
   static ClassDocumentation<GRVBase> documentation
-    ("There is no documentation for the ThePEG::GRVBase class");
+    ("THis is the base class used by different GRV PDF parameterizations.");
 
 }
 

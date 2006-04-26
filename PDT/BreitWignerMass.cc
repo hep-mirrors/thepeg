@@ -34,7 +34,8 @@ NoPIOClassDescription<BreitWignerMass> BreitWignerMass::initBreitWignerMass;
 void BreitWignerMass::Init() {
 
   static ClassDocumentation<BreitWignerMass> documentation
-    ("There is no documentation for the ThePEG::BreitWignerMass class");
+    ("Generates masses of particle instances according to a Breit-Wigner "
+     "distribution.");
 
 }
 

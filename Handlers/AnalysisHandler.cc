@@ -70,4 +70,6 @@ void AnalysisHandler::Init() {
      "particles as this one.",
      &AnalysisHandler::theSlaves, 0, true, false, true, false);
 
+  interfaceSlaves.rank(10);
+
 }

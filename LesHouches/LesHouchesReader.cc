@@ -998,5 +998,14 @@ void LesHouchesReader::Init() {
      "arguments are given they will be interpreted as remnant handler classes "
      "for beam A and B respectively.",
      &LesHouchesReader::scanPDF, true);
+
+  interfaceCuts.rank(8);
+  interfacePartonExtractor.rank(7);
+  interfaceScanPDF.rank(6);
+  interfaceBeamA.rank(5);
+  interfaceBeamB.rank(4);
+  interfaceEBeamA.rank(3);
+  interfaceEBeamB.rank(2);
+
 }
 
