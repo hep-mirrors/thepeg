@@ -31,7 +31,7 @@ set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
     is >> t;
     tset(i, Type(t*unit()));
   } else {
-    Type t;
+    Type t = Type();
     is >> t;
     tset(i, t);
   }

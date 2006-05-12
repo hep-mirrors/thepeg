@@ -108,8 +108,13 @@ protected:
   virtual void readSetup(istream & is) throw(SetupException);
 
   /**
-   * Check sanity of the object during the setup phase. This method
-   * may be called by the user interface during the setup phase
+   * Check sanity of the object during the setup phase.  This function
+   * is called everytime the object is changed through an interface
+   * during the setup phase. Also if the setup is changed for an
+   * object on which this is dependent. Note that the generator() is
+   * not available when this method is called.
+   *
+   * This method may be called by the user interface during the setup phase
    * through the update() method after manipulating objects to check
    * the sanity of the object. When implemented by a sub class it is
    * important that the doupdate() method of the base class is called,
@@ -127,7 +132,11 @@ protected:
   virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object. This method is called after the setup
+   * Initialize this object after the setup phase before saving an
+   * EventGenerator to disk. Nothing should have changed since the
+   * last update() call.
+   * 
+   * This method is called after the setup
    * phase through the init() method to indicate that the setup of a
    * run is finished. This is typpically done in a setup program
    * before this object has been saved to a run file. It must
@@ -146,7 +155,10 @@ protected:
   virtual void doinit() throw (InitException);
 
   /**
-   * Initialize this object. This method is called juast before
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   *
+   * This method is called just before
    * running starts through the initrun() method to indicate that the
    * actual running is to start. When implemented by a sub class it is
    * important that the doinitrun() method of the base class is called
@@ -160,7 +172,10 @@ protected:
   virtual void doinitrun();
 
   /**
-   * Finalize this object. This method is called after the running
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   *
+   * This method is called after the running
    * phase through the finish() and can eg. be used to write out
    * statistics. When implemented by a sub class it is important that
    * the dofinish() method of the base class is called while the

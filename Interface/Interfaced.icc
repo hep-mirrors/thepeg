@@ -21,6 +21,10 @@ inline tEGPtr Interfaced::generator() const {
   return theGenerator;
 }
 
+inline void Interfaced::setGenerator(tEGPtr generator) {
+  theGenerator=generator;
+}
+
 inline bool Interfaced::used() const {
   return theUseFlag;
 }
@@ -28,22 +32,6 @@ inline bool Interfaced::used() const {
 inline void Interfaced::useMe() const {
   if ( used() ) return;
   setUsed();
-}
-
-inline void Interfaced::doupdate() throw(UpdateException) {
-  InterfacedBase::doupdate();
-}
-
-inline void Interfaced::doinit() throw (InitException) {
-  InterfacedBase::doinit();
-}
-
-inline void Interfaced::doinitrun() {
-  InterfacedBase::doinitrun();
-}
-
-inline void Interfaced::dofinish() {
-  InterfacedBase::dofinish();
 }
 
 template <typename PtrT>

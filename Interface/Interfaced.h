@@ -158,39 +158,13 @@ protected:
    */
   inline Interfaced(const Interfaced &);
 
-  /** @name Standard Interfaced virtual functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase. This function
-   * is called everytime the object is changed through an interface
-   * during the setup phase. Also if the setup is changed for an
-   * object on which this is dependent. Note that the generator() is
-   * not available when this method is called.
-   * @throws UpdateException if the setup is such that the object
-   * would not work properly.
-   */
-  inline virtual void doupdate() throw(UpdateException);
+protected:
 
   /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk. Nothing should have changed since the
-   * last update() call.
-   * @throws InitException if object could not be initialized properly.
+   * Protected function to reset the generator pointer, required
+   * for automatic decayer generation in Herwig++ BSM models
    */
-  inline virtual void doinit() throw (InitException);
-
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  inline virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-  //@}
+  inline void setGenerator(tEGPtr generator);
 
 private:
 

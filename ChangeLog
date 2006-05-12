@@ -1,3 +1,16 @@
+2006-05-12  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Interface/Parameter.tcc: Added default initialization for
+	template Type.
+
+	* Interface/InterfacedBase.h, Interface/Interfaced.{h,icc}:
+	Removed Interface functions that only call InterfacedBase. Added
+	documentation across to InterfacedBase.
+
+	* Interface/Interfaced.{h,icc}: Added setGenerator() protected
+	function. This is required for the automatic Decayer generator in
+	BSM Herwig++.
+
 2006-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* */*.cc: Ranked interfaces and made minor improvement of
