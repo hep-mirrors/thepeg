@@ -1,3 +1,13 @@
+2006-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.*: Fixed bug by adding argument to internal
+	construct method to determine whether the produced remnants need
+	boosting.
+
+	* PDF/RemnantHandler.*, PDF/BaryonRemnants.*: Changed name from
+	createRemnants to boostRemnants, since that is what the method
+	actually does.
+
 2006-05-12  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Interface/Parameter.tcc: Added default initialization for

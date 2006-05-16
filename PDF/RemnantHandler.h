@@ -103,11 +103,10 @@ public:
 				    const LorentzMomentum & parent) const = 0;
 
   /**
-   * If the actual remnants were not fully generated in the previous
-   * call to generate(), do that now and store them in the parton bin
-   * \a pb.
+   * Boost the generated remnants to the proper momentum given the
+   * information in the parton bin, \a pb.
    */
-  virtual void createRemnants(PartonBinInstance & pb) const;
+  virtual void boostRemnants(PartonBinInstance & pb) const;
 
   /**
    * Redo the remnant generation for the given particle bin, \a pb. If

@@ -230,9 +230,12 @@ protected:
   virtual double fullFn(const PartonBinInstance & pb);
 
   /**
-   * Used by the public construct() for each of the final parton bins.
+   * Used by the public construct() for each of the final parton
+   * bins. If boost is false, no boost is necessary to give the
+   * remnants proper momenta. 
    */
-  virtual void construct(PartonBinInstance & pb, tStepPtr step) const;
+  virtual void construct(PartonBinInstance & pb,
+			 tStepPtr step, bool boost = true) const;
 
   /**
    * Used by the public newRemnants() for each of the parton bins.

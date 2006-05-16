@@ -30,7 +30,7 @@ int RemnantHandler::nDim(const PartonBin &, bool) const {
 }
 
 void RemnantHandler::
-createRemnants(PartonBinInstance & pb) const {}
+boostRemnants(PartonBinInstance & pb) const {}
 
 void RemnantHandler::persistentOutput(PersistentOStream & os) const {
   os << isMultiCapable;
@@ -48,7 +48,7 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
   vector<double> rv;
   for ( int i = 0, N = pb.bin()->remDim(); i < N; ++i) rv.push_back(rnd());
   newp->set5Momentum(generate(pb, pb.bin()->remDim()? &rv[0]: 0, scale, p));
-  createRemnants(pb);
+  boostRemnants(pb);
   return true;
 }  
 
@@ -61,7 +61,7 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
   int rd = pb.bin()->remDim();
   for ( int i = 0; i < rd; ++i) rv.push_back(rnd());
   newp->set5Momentum(generate(pb, rd > 0? &rv[0]: 0, scale, shat, p));
-  createRemnants(pb);
+  boostRemnants(pb);
   return true;
 }  
 

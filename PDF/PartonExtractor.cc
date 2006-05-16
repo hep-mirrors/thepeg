@@ -253,17 +253,17 @@ constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
   if ( pickside && pbins.first->incoming() ) {
     Direction<0> dir(true);
     constructRemnants(*pbins.first, Ph, k2);
-    construct(*pbins.first, step);
+    construct(*pbins.first, step, false);
   }
   if ( pbins.second->incoming() ) {
     Direction<0> dir(false);
     constructRemnants(*pbins.second, Ph, pbins.first->parton()->momentum());
-    construct(*pbins.second, step);
+    construct(*pbins.second, step, false);
   }
   if ( (!pickside) && pbins.first->incoming() ) {
     Direction<0> dir(true);
     constructRemnants(*pbins.first, Ph, pbins.second->parton()->momentum());
-    construct(*pbins.first, step);
+    construct(*pbins.first, step, false);
   }
   LorentzRotation rot = Utilities::transformToMomentum(Phold, Ph);
   Utilities::transform(sub->outgoing(), rot);
@@ -281,7 +281,7 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
   LorentzMomentum P = pb.particle()->momentum();
   DVector r = UseRandom::rndvec(pb.bin()->remDim());
   pb.remnantHandler()->generate(pb, &r[0], pb.scale(), Ph.m2(), P);
-  pb.remnantHandler()->createRemnants(pb);
+  pb.remnantHandler()->boostRemnants(pb);
   LorentzMomentum Pr = Utilities::sumMomentum(pb.remnants());
   transformRemnants(Ph, Pr, k, pb.particle()->momentum());
   pb.parton()->setMomentum(pb.particle()->momentum() - Pr);
@@ -391,9 +391,9 @@ construct(const PBIPair & pbins, tStepPtr step) const {
 }
 
 void PartonExtractor::
-construct(PartonBinInstance & pb, tStepPtr step) const {
+construct(PartonBinInstance & pb, tStepPtr step, bool boost) const {
   if ( !pb.incoming() ) return;
-  if ( pb.remnants().empty() ) pb.remnantHandler()->createRemnants(pb);
+  if ( boost ) pb.remnantHandler()->boostRemnants(pb);
   tPVector rem(pb.remnants().begin(), pb.remnants().end());
   if ( !step->addDecayProduct(pb.particle(), rem.begin(), rem.end(), false) );
   colourConnect(pb.particle(), pb.parton(), rem);

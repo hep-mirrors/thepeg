@@ -142,8 +142,7 @@ tCollPtr StandardEventHandler::performCollision() {
   currentStep()->addSubProcess(lastXC->construct());
 
   Timer<37> timer3("StandardEventHandler::performCollision():3");
-  lastExtractor()->construct(lastXC->partonBinInstances(),
-			     currentStep());
+  lastExtractor()->construct(lastXC->partonBinInstances(), currentStep());
   if ( !lastCuts().passCuts(*currentCollision()) ) throw Veto();
   initGroups();
   if ( ThePEG_DEBUG_ITEM(1) ) {
