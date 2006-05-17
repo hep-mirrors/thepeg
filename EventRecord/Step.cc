@@ -93,10 +93,14 @@ void Step::addSubProcess(tSubProPtr sp) {
 }
 
 void Step::addIntermediate(tPPtr p) {
-  if ( !p->birthStep() ) p->rep().theBirthStep = this;
   theIntermediates.insert(p);
-  allParticles.insert(p);
-  if ( collision() ) collision()->addParticle(p);
+  ParticleSet::iterator pit = theParticles.find(p);
+  if ( pit != theParticles.end() ) theParticles.erase(pit);
+  else {
+    if ( !p->birthStep() ) p->rep().theBirthStep = this;
+    allParticles.insert(p);
+    if ( collision() ) collision()->addParticle(p);
+  }
 }
 
 void Step::

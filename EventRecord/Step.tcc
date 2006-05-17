@@ -27,8 +27,11 @@ void Step::addIntermediates(Iterator first, Iterator last) {
   theIntermediates.insert(first, last);
   allParticles.insert(first, last);
   if ( collision() ) collision()->addParticles(first, last);
-  for ( ; first != last; ++first )
+  for ( ; first != last; ++first ) {
     if ( !(**first).birthStep() ) (**first).rep().theBirthStep = this;
+    ParticleSet::iterator pit = theParticles.find(*first);
+    if ( pit != theParticles.end() ) theParticles.erase(pit);
+  }
 }
 
 template <typename Iterator>

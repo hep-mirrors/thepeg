@@ -306,19 +306,23 @@ public:
   void addParticle(tPPtr p);
 
   /**
-   * Add a range of intermediate particles in this step. If this
-   * step belongs to a Collision, the particles will also be added to
-   * the Collision. If this particle has not previously been in a
-   * Step, the birthStep pointer of the particle will be set.
+   * Add a range of intermediate particles in this step. If this step
+   * belongs to a Collision, the particles will also be added to the
+   * Collision. If any particle has not previously been in a Step,
+   * the birthStep pointer of the particle will be set. The particles
+   * will be removed from the list of final state particles if
+   * present.
    */
   template <typename Iterator>
   void addIntermediates(Iterator first, Iterator last);
 
   /**
-   * Add an intermediate particle in this Step. If this
-   * Step belongs to a Collision, the particle will also be added to
-   * the Collision. If this particle has not previously been in a
-   * step, the birthStep pointer of the particle will be set.
+   * Add an intermediate particle in this Step. If this Step belongs
+   * to a Collision, the particle will also be added to the
+   * Collision. If this particle has not previously been in a step,
+   * the birthStep pointer of the particle will be set. The particle
+   * will be removed from the list of final state particles if
+   * present.
    */
   void addIntermediate(tPPtr p);
 
