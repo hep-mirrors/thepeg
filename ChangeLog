@@ -1,3 +1,9 @@
+2006-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/StandardRandom.cc, Repository/RandomGenerator.cc:
+	Make sure the cache is flushed when the random generator is
+	initialized or when a new seed is given.
+
 2006-05-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.cc: Fixed addIntermediate(s) functions to

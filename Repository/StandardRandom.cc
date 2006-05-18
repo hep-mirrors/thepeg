@@ -29,6 +29,7 @@ RandomEngine & StandardRandom::randomGenerator() {
 
 void StandardRandom::setSeed(long seed) {
   theRandomGenerator.setSeed(seed);
+  flush();
 }
 
 void StandardRandom::persistentOutput(PersistentOStream & os) const {

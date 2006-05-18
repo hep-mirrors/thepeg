@@ -30,6 +30,7 @@ RandomGenerator::~RandomGenerator() {}
 
 void RandomGenerator::doinit() throw (InitException) {
   if ( theSeed > 0 ) setSeed(theSeed);
+  flush();
 }
 
 void RandomGenerator::getFlatNumbers() {
