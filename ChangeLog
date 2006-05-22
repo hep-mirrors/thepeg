@@ -1,3 +1,11 @@
+2006-05-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/Step.*: Added optional boolean argument for checking
+	the consistency of the parents in the Step in templated
+	addDecayProducts(Iterator firstParent, Iterator lastParent, tPPtr
+	child, bool checkfinal). Default is true, which is also the
+	previous behavior.
+
 2006-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/StandardRandom.cc, Repository/RandomGenerator.cc:

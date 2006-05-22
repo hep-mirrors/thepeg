@@ -243,10 +243,13 @@ public:
    * in the addDecayProduct(tcPPtr,tPPtr,bool) function. If any of the
    * parents fail false is returned and nothing is changed. The
    * parent/child pointers of the affected particles will be set
-   * accordingly, but no colour flow wll be set.
+   * accordingly, but no colour flow wll be set. If \a checkfinal is
+   * true the parents or its immediate children must be in the final
+   * state.
    */
   template <typename Iterator>
-  bool addDecayProduct(Iterator firstParent, Iterator lastParent, tPPtr child);
+  bool addDecayProduct(Iterator firstParent, Iterator lastParent, tPPtr child,
+		       bool checkfinal = true);
 
   /**
    * Add the children as a decay products of all the listed

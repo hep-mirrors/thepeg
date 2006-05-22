@@ -36,14 +36,17 @@ void Step::addIntermediates(Iterator first, Iterator last) {
 
 template <typename Iterator>
 bool Step::
-addDecayProduct(Iterator firstParent, Iterator lastParent, tPPtr child) {
+addDecayProduct(Iterator firstParent, Iterator lastParent, tPPtr child,
+		bool checkfinal) {
   if ( !collision() ) return false;
   if ( collision()->finalStep() != this ) return false;
-  for ( Iterator it = firstParent; it != lastParent; ++it ) {
-    tPPtr parent = const_ptr_cast<tPPtr>((**it).final());
-    if ( member(theParticles, parent) ) continue;
-    if ( parent->children().empty() ||
-      !member(theParticles, parent->children()[0]) ) return false;
+  if ( checkfinal ) {
+    for ( Iterator it = firstParent; it != lastParent; ++it ) {
+      tPPtr parent = const_ptr_cast<tPPtr>((**it).final());
+      if ( member(theParticles, parent) ) continue;
+      if ( parent->children().empty() ||
+	   !member(theParticles, parent->children()[0]) ) return false;
+    }
   }
   for ( Iterator it = firstParent; it != lastParent; ++it ) {
     tPPtr parent = const_ptr_cast<tPPtr>((**it).final());
