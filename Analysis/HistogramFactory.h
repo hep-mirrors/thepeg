@@ -15,11 +15,6 @@
 namespace ThePEG {
 
 /**
- * Convenient typedef for pointer to AIDA::IHistogram1D.
- */
-typedef AIDA::IHistogram1D * tH1DPtr;
-
-/**
  * Here is the documentation of the HistogramFactory class. This
  * abstract class is used to wrap the interface to a particular
  * AIDA-compliant histogram package to be used in
@@ -37,6 +32,13 @@ typedef AIDA::IHistogram1D * tH1DPtr;
  * defined for HistogramFactory.
  */
 class HistogramFactory: public Interfaced {
+
+public:
+
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef AIDA::IHistogram1D * tH1DPtr;
 
 public:
 
@@ -171,8 +173,6 @@ public:
    */
   static void Init();
 
-
-
 protected:
 
   /** @name Standard Interfaced functions. */
@@ -189,7 +189,6 @@ protected:
    */
   virtual void dofinish();
   //@}
-
 
 private:
 
