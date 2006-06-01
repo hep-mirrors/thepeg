@@ -1,0 +1,59 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the HistogramFactory class.
+//
+
+namespace ThePEG {
+
+inline HistogramFactory::HistogramFactory()
+  : theFilename(""), theSuffix("aida"), theStoreType("xml"),
+    theAnalysisFactory(0), theTree(0), theHistogramFactory(0) {}
+
+inline HistogramFactory::HistogramFactory(const HistogramFactory & x)
+  : Interfaced(x), theFilename(x.theFilename), theSuffix(x.theSuffix),
+    theStoreType(x.theStoreType), theAnalysisFactory(0), theTree(0),
+    theHistogramFactory(0) {}
+
+inline string HistogramFactory::filename() const {
+  return theFilename;
+}
+
+inline string HistogramFactory::suffix() const {
+  return theSuffix;
+}
+
+inline string HistogramFactory::storeType() const {
+  return theStoreType;
+}
+
+inline AIDA::IAnalysisFactory & HistogramFactory::analysisFactory() const {
+  return *theAnalysisFactory;
+}
+
+inline void HistogramFactory::analysisFactory(AIDA::IAnalysisFactory * x) {
+  theAnalysisFactory = x;
+}
+
+inline AIDA::ITree & HistogramFactory::tree() const {
+  return *theTree;
+}
+
+inline AIDA::IHistogramFactory & HistogramFactory::histogramFactory() const {
+  return *theHistogramFactory;
+}
+
+inline void HistogramFactory::mkdir(string path) {
+  tree().mkdir(path);
+}
+
+inline void HistogramFactory::mkdirs(string path) {
+  tree().mkdirs(path);
+}
+
+inline tH1DPtr
+HistogramFactory::createHistogram1D(string path, int nb, double lo, double up) {
+  return histogramFactory().createHistogram1D(path, nb, lo, up);
+}
+
+}
