@@ -12,6 +12,7 @@
 #include "AITree.h"
 #include "AIHistogramFactory.h"
 #include "AIHistogram1D.h"
+#include "AIAxis.h"
 
 namespace ThePEG {
 
@@ -127,6 +128,14 @@ public:
    */
   inline tH1DPtr createHistogram1D(string path, int nb, double lo, double up);
 
+  /**
+   * Used by a \a client object to indicate that he has required
+   * histograms from this factory. It is guaranteed that the clients
+   * finish() function is called before the underlying AIDA::ITree is
+   * committed and the AIDA::IHistogramFactory is deleted together
+   * with all histograms.
+   */
+  inline void registerClient(tIPtr client);
   //@}
 
 protected:
@@ -225,6 +234,12 @@ private:
    * A pointer to the underlying AIDA::IHistogramFactory object.
    */
   AIDA::IHistogramFactory * theHistogramFactory;
+
+  /**
+   * A set of client objects which have required histograms from this
+   * factory.
+   */
+  set<IPtr> clients;
 
 private:
 

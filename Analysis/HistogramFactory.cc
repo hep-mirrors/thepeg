@@ -8,6 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Config/algorithm.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "HistogramFactory.tcc"
@@ -31,6 +32,7 @@ void HistogramFactory::clear() {
 
 void HistogramFactory::dofinish() {
   Interfaced::dofinish();
+  for_each(clients, mem_fun(&InterfacedBase::finish));
   tree().commit();
   clear();
 }

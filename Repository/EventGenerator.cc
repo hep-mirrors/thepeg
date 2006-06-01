@@ -150,7 +150,6 @@ void EventGenerator::doinitrun() {
   // Then call the init method for all objects. Start with the
   // standard model and the strategy.
   standardModel()->initrun();
-  if ( histogramFactory() ) histogramFactory()->initrun();
   if ( strategy() ) strategy()->initrun();
   for_each(objects(), mem_fun(&InterfacedBase::initrun));
 
