@@ -23,6 +23,7 @@
 #include "ThePEG/Repository/Strategy.h"
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
+#include "ThePEG/Analysis/HistogramFactory.h"
 #include "ThePEG/Handlers/EventManipulator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/EventRecord/Event.h"
@@ -53,6 +54,7 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theStrategy(eg.theStrategy), theRandom(eg.theRandom),
     theEventHandler(eg.theEventHandler),
     theAnalysisHandlers(eg.theAnalysisHandlers),
+    theHistogramFactory(eg.theHistogramFactory),
     theEventManipulator(eg.theEventManipulator),
     thePath(eg.thePath), theRunName(eg.theRunName),
     theNumberOfEvents(eg.theNumberOfEvents), theObjects(eg.theObjects),
@@ -148,6 +150,7 @@ void EventGenerator::doinitrun() {
   // Then call the init method for all objects. Start with the
   // standard model and the strategy.
   standardModel()->initrun();
+  if ( histogramFactory() ) histogramFactory()->initrun();
   if ( strategy() ) strategy()->initrun();
   for_each(objects(), mem_fun(&InterfacedBase::initrun));
 
@@ -553,7 +556,7 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
   set<tcIBPtr,ObjectOrdering> usedset(usedObjects.begin(), usedObjects.end());
   os << theDefaultObjects << theLocalParticles << theStandardModel
      << theStrategy << theRandom << theEventHandler << theAnalysisHandlers
-     << theEventManipulator << thePath << theRunName
+     << theHistogramFactory << theEventManipulator << thePath << theRunName
      << theNumberOfEvents << theObjectMap << theParticles
      << theQuickParticles << theQuickSize << match << usedset
      << ieve << theDebugLevel << printEvent << dumpPeriod << debugEvent
@@ -564,7 +567,7 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
   is >> theDefaultObjects >> theLocalParticles >> theStandardModel
      >> theStrategy >> theRandom >> theEventHandler >> theAnalysisHandlers
-     >> theEventManipulator >> thePath >> theRunName
+     >> theHistogramFactory >> theEventManipulator >> thePath >> theRunName
      >> theNumberOfEvents >> theObjectMap >> theParticles
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
      >> ieve >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
@@ -677,6 +680,12 @@ void EventGenerator::Init() {
      "ThePEG::AnalysisHandler objects to be used to analyze the produced "
      "events in this run.",
      &EventGenerator::theAnalysisHandlers, 0, true, false, true, false);
+
+  static Reference<EventGenerator,HistogramFactory> interfaceHistogramFactory
+    ("HistogramFactory",
+     "An associated factory objects for handling histograms to be used by "
+     "<interface>AnalysisHandlers</interfaced>.",
+     &EventGenerator::theHistogramFactory, true, false, true, true, true);
 
   static Reference<EventGenerator,EventManipulator> interfaceEventManip
     ("EventManipulator",

@@ -1,3 +1,20 @@
+2006-06-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/AnalysisHandler.: Added utility function to access the
+	HistogramFactory in the current run.
+
+	* Repository/EventGenerator.*: The EventGenerator may now have a
+	HistogramFactory associated with it.
+
+	* configure.ac, Makefile.am, include/Makefile.am, lib/Makefile.am:
+	Added the Analysis directory.
+
+	* Analysis: Added Analysis directory with the classes
+	HistogramFactory, an abstract base class for handling histograms
+	using the AIDA interface, and LWHFactory a concrete class
+	interfacing the light-weight histogram package LWH which
+	implements a small part of the AIDA interface.
+	LWH is also included in this directory.
 2006-05-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.*: Added optional boolean argument for checking

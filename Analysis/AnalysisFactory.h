@@ -33,7 +33,7 @@ using namespace AIDA;
  * Typically accessed by:
  * <pre>IAnalysisFactory* af = AIDA_createAnalysisFactory();</pre>
  */
-class AnalysisFactory {
+class AnalysisFactory: public IAnalysisFactory {
 
 public: 
   /// Destructor.

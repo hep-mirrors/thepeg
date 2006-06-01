@@ -143,6 +143,10 @@ inline AnalysisVector & EventGenerator::analysisHandlers() {
   return theAnalysisHandlers;
 }
 
+inline tHistFacPtr EventGenerator::histogramFactory() const {
+  return theHistogramFactory;
+}
+
 inline tEvtManipPtr EventGenerator::manipulator() const {
   return theEventManipulator;
 }

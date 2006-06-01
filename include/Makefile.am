@@ -16,14 +16,16 @@ ThePEG/PDF \
 ThePEG/Helicity \
 ThePEG/Utilities \
 ThePEG/MatrixElement \
-ThePEG/Cuts  
+ThePEG/Cuts \
+ThePEG/Analysis  
 
 ## replace ThePEG with $(PACKAGE)
 ## replace find with explicit list of directories
 
 my_directories=Repository EventRecord \
 Pointer StandardModel CLHEPWrap PDT ACDC Interface Handlers \
-LesHouches Config Persistency PDF Helicity Utilities MatrixElement Cuts
+LesHouches Config Persistency PDF Helicity Utilities MatrixElement Cuts \
+Analysis
 
 done-all-links:
 @EMPTY@ifdef SHOWCOMMAND

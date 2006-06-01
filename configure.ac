@@ -90,6 +90,7 @@ Repository/Makefile
 EventRecord/Makefile
 StandardModel/Makefile
 Cuts/Makefile
+Analysis/Makefile
 Doc/Makefile
 Doc/refman.h
 Doc/refman.conf

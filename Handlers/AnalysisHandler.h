@@ -5,6 +5,7 @@
 
 #include "HandlerBase.h"
 #include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Analysis/HistogramFactory.h"
 #include <stdexcept>
 
 namespace ThePEG {
@@ -29,6 +30,13 @@ namespace ThePEG {
  * @see Event
  */
 class AnalysisHandler: public HandlerBase {
+
+public:
+
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef HistogramFactory::tH1DPtr tH1DPtr;
 
 public:
 
@@ -95,6 +103,11 @@ public:
   virtual void analyze(tPPtr particle);
 
   //@}
+
+  /**
+   * Access the HistogramFactory from the EventGenerator.
+   */
+  HistogramFactory & histogramFactory();
 
 public:
 

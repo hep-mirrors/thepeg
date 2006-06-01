@@ -9,6 +9,7 @@
 #include "HistogramFactory.fh"
 #include "AIAnalysisFactory.h"
 #include "AITreeFactory.h"
+#include "AITree.h"
 #include "AIHistogramFactory.h"
 #include "AIHistogram1D.h"
 

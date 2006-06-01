@@ -262,7 +262,7 @@ public:
       s += sumw[i];
       sx += ax.binMidPoint(i - 2)*sumw[i];
     }
-    return sx/s;
+    return sx/std::max(s, 1.0);
   }
 
   /**
@@ -279,7 +279,7 @@ public:
       sx += x*sumw[i];
       sx2 += x*x*sumw[i];
     }
-    return sqrt(sx2/s - sx*sx/(s*s));
+    return sqrt(s*sx2 - sx*sx)/std::max(s, 1.0);
   }
 
   /**

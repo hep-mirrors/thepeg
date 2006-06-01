@@ -10,6 +10,7 @@
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "AnalysisHandler.tcc"
@@ -18,6 +19,10 @@
 using namespace ThePEG;
 
 AnalysisHandler::~AnalysisHandler() {}
+
+HistogramFactory & AnalysisHandler::histogramFactory() {
+  return *(generator()->histogramFactory());
+}
 
 IBPtr AnalysisHandler::clone() const {
   return new_ptr(*this);

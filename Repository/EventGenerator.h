@@ -12,6 +12,7 @@
 #include "ThePEG/Repository/CurrentGenerator.fh"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Handlers/EventHandler.fh"
+#include "ThePEG/Analysis/HistogramFactory.fh"
 #include <fstream>
 #include "EventGenerator.xh"
 
@@ -132,6 +133,12 @@ public:
    * Return the vector of analysis objects to be used in the run.
    */
   inline AnalysisVector & analysisHandlers();
+
+  /**
+   * Return a pointer to an associated factory objects for handling
+   * histograms to be used by <code>AnalysisHandler</code>s.
+   */
+  inline tHistFacPtr histogramFactory() const;
 
   /**
    * Return the EventManipulator used in the run.
@@ -636,6 +643,12 @@ private:
    * A vector of all analysis handlers to be called after each event.
    */
   AnalysisVector theAnalysisHandlers;
+
+  /**
+   * A pointer to an associated factory objects for handling
+   * histograms to be used by <code>AnalysisHandler</code>s.
+   */
+  HistFacPtr theHistogramFactory;
 
   /**
    * A pointer to an optional event manipulator object.

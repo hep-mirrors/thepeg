@@ -33,6 +33,7 @@ libThePEG_la_LIBADD = \
 	$(top_builddir)/Interface/libThePEGInter.la \
 	$(top_builddir)/Helicity/libThePEGHelicity.la \
 	$(top_builddir)/Cuts/libThePEGCuts.la \
+	$(top_builddir)/Analysis/libThePEGHist.la \
 	$(CLHEPLIB) -ldl 
 
 all-local: done-all-links

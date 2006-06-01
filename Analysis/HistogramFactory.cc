@@ -31,7 +31,7 @@ void HistogramFactory::clear() {
 
 void HistogramFactory::dofinish() {
   Interfaced::dofinish();
-  tree->commit();
+  tree().commit();
   clear();
 }
 
@@ -40,7 +40,7 @@ void HistogramFactory::doinitrun() {
   string file = filename();
   if ( file == "" ) file = generator()->filename();
   file += "." + suffix();
-  if ( file[0] != "/" ) file = generator()->path() + "/" + file;
+  if ( file[0] != '/' ) file = generator()->path() + "/" + file;
   theTree = analysisFactory().createTreeFactory()->create
     (file, storeType(), false, true);
   theHistogramFactory = analysisFactory().createHistogramFactory(tree());
