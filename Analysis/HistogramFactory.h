@@ -42,6 +42,11 @@ public:
    */
   typedef AIDA::IHistogram1D * tH1DPtr;
 
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef const AIDA::IHistogram1D * tcH1DPtr;
+
 public:
 
   /** @name Standard constructors and destructors. */

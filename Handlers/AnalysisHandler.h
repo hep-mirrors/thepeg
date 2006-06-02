@@ -38,6 +38,11 @@ public:
    */
   typedef HistogramFactory::tH1DPtr tH1DPtr;
 
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef HistogramFactory::tcH1DPtr tcH1DPtr;
+
 public:
 
   /** @name Standard constructors and destructors. */
@@ -104,10 +109,23 @@ public:
 
   //@}
 
+  /** @name Functions to access histograms. */
+  //@{
   /**
    * Access the HistogramFactory from the EventGenerator.
    */
   HistogramFactory & histogramFactory();
+
+  /**
+   * Normalize the histogran \a h using the collected statistics from
+   * the EventGenerator. If the histogram has been filled with the
+   * Event::weight() as weight a plotted function will correspond to a
+   * proper cross section distribution in units of \a unit. This only
+   * works for evenly binned histograms. If not evenly binned, nothing
+   * will be done.
+   */
+  void normalize(tH1DPtr h, CrossSection unit = picobarn) const;
+  //@}
 
 public:
 

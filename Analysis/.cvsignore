@@ -1,6 +1,9 @@
+*.la
+*.lo
 .deps
 .libs
-*.lo
 Makefile
 Makefile.in
-*.la
+a.out
+test.aida
+test.cc

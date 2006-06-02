@@ -4,6 +4,8 @@
 
 #ifndef LWH_USING_AIDA
 
+#include <string>
+
 /** @cond DONT_DOCUMENT_STRIPPED_DOWN_AIDA_INTERFACES */
 
 namespace AIDA {

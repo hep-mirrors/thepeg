@@ -829,10 +829,13 @@ public:
 	 << "\" direction=\"x\"\n        rms=\"" << h.rms()
 	 << "\"/>\n    </statistics>\n    <data1d>\n";
 	for ( int i = 2; i < h.ax.bins() + 2; ++i ) if ( h.sum[i] )
-	  os << "      <bin1d entries=\"" << h.sum[i]
+	  os << "      <bin1d binNum=\"" << i - 2
+	     << "\" entries=\"" << h.sum[i]
 	     << "\" height=\"" << h.sumw[i]
-	     << "\"\n        error=\"" << sqrt(h.sumw2[i])
-	     << "\" binNum=\"" << i - 2
+	     << "\"\n        error=\"" << std::sqrt(h.sumw2[i])
+	     << "\" error2=\"" << h.sumw2[i]
+	     << "\"\n        weightedMean=\"" << h.binMean(i - 2)
+	     << "\" weightedRms=\"" << h.binRms(i - 2)
 	     << "\"/>\n";
       os << "    </data1d>\n  </histogram1d>" << std::endl;
     }
@@ -847,7 +850,7 @@ public:
       os << "# " << h.title() << " " << it->second << " " << h.ax.lowerEdge()
 	 << " " << h.ax.bins() << " " << h.ax.upperEdge() << std::endl;
       for ( int i = 2; i < h.ax.bins() + 2; ++i )
-	os << h.ax.binMidPoint(i - 2) << " " << h.sum[i] << " "
+	os << h.binMean(i - 2) << " " << h.sum[i] << " "
 	   << h.sumw[i] << " " << sqrt(h.sumw2[i]) << std::endl;
       os << std::endl;
     }

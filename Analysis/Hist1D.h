@@ -30,20 +30,23 @@ public:
    * Standard constructor.
    */
   Hist1D(int n, double lo, double up)
-    : ax(n, lo, up), sum(n + 2), sumw(n + 2), sumw2(n + 2) {}
+    : ax(n, lo, up), sum(n + 2), sumw(n + 2), sumw2(n + 2), sumxw(n + 2),
+      sumx2w(n + 2) {}
 
   /**
    * Constructor form Axis object.
    */
   Hist1D(const Axis & a)
     : ax(a.bins(), a.lowerEdge(), a.upperEdge()),
-      sum(a.bins() + 2), sumw(a.bins() + 2), sumw2(a.bins() + 2) {}
+      sum(a.bins() + 2), sumw(a.bins() + 2), sumw2(a.bins() + 2),
+      sumxw(a.bins() + 2), sumx2w(a.bins() + 2) {}
 
   /**
    * Copy constructor.
    */
   Hist1D(const Hist1D & h)
-    : ax(h.ax), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2) {}
+    : ax(h.ax), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2),
+      sumxw(h.sumxw), sumx2w(h.sumx2w) {}
 
   /// Destructor.
   virtual ~Hist1D() {}
@@ -95,9 +98,11 @@ public:
    * @return false If something goes wrong.
    */
   bool reset() {
-    sum = std::vector<int>(ax.bins());
-    sumw = std::vector<double>(ax.bins());
-    sumw2 = std::vector<double>(ax.bins());
+    sum = std::vector<int>(ax.bins() + 2);
+    sumw = std::vector<double>(ax.bins() + 2);
+    sumxw = std::vector<double>(ax.bins() + 2);
+    sumx2w = std::vector<double>(ax.bins() + 2);
+    sumw2 = std::vector<double>(ax.bins() + 2);
     return true;
   }
 
@@ -208,6 +213,8 @@ public:
     int i = ax.coordToIndex(x) + 2;
     ++sum[i];
     sumw[i] += weight;
+    sumxw[i] += x*weight;
+    sumx2w[i] += x*x*weight;
     sumw2[i] += weight*weight;
     return weight >= 0 && weight <= 1;
   }
@@ -218,7 +225,19 @@ public:
    * @return      The mean of the corresponding bin.
    */
   double binMean(int index) const {
-    return sumw[index + 2]/double(std::max(sum[index + 2], 1));
+    return sumw[index] != 0.0? sumxw[index]/sumw[index]:
+      0.5*(ax.binUpperEdge(index) + ax.binLowerEdge(index));
+  };
+
+  /**
+   * The weighted RMS of a bin. 
+   * @param index The bin number (0...N-1) or OVERFLOW or UNDERFLOW.
+   * @return      The RMS of the corresponding bin.
+   */
+  double binRms(int index) const {
+    return sumw[index] == 0.0? ax.binWidth(index):
+      std::sqrt(std::max(sumw[index]*sumx2w[index] -
+			 sumxw[index]*sumxw[index], 0.0))/sumw[index];
   };
 
   /**
@@ -248,7 +267,7 @@ public:
    *
    */
   double binError(int index) const {
-    return sqrt(sumw2[index + 2]);
+    return std::sqrt(sumw2[index + 2]);
   }
 
   /**
@@ -260,9 +279,9 @@ public:
     double sx = 0.0;
     for ( int i = 2; i < ax.bins() + 2; ++i ) {
       s += sumw[i];
-      sx += ax.binMidPoint(i - 2)*sumw[i];
+      sx += sumxw[i];
     }
-    return sx/std::max(s, 1.0);
+    return s != 0.0? sx/s: 0.0;
   }
 
   /**
@@ -274,12 +293,12 @@ public:
     double sx = 0.0;
     double sx2 = 0.0;
     for ( int i = 2; i < ax.bins() + 2; ++i ) {
-      double x = ax.binMidPoint(i - 2);
       s += sumw[i];
-      sx += x*sumw[i];
-      sx2 += x*x*sumw[i];
+      sx += sumxw[i];
+      sx2 += sumx2w[i];
     }
-    return sqrt(s*sx2 - sx*sx)/std::max(s, 1.0);
+    return s != 0.0? std::sqrt(std::max(s*sx2 - sx*sx, 0.0))/s:
+      ax.upperEdge() - ax.lowerEdge();
   }
 
   /**
@@ -313,6 +332,8 @@ public:
     for ( int i = 0; i < ax.bins() + 2; ++i ) {
       sum[i] += h.sum[i];
       sumw[i] += h.sumw[i];
+      sumxw[i] += h.sumxw[i];
+      sumx2w[i] += h.sumx2w[i];
       sumw2[i] += h.sumw2[i];
     }
     return true;
@@ -334,24 +355,11 @@ public:
   bool scale(double s) {
     for ( int i = 0; i < ax.bins() + 2; ++i ) {
       sumw[i] *= s;
+      sumxw[i] *= s;
+      sumx2w[i] *= s;
       sumw2[i] *= s*s;
     }
     return true;
-  }
-
-  /**
-   * Return the integral of this histogram between the edges.
-   */
-  double integral() const {
-    return sumBinHeights()*ax.binWidth(0);
-  }
-
-  /**
-   * Normalize this histogram so that the integral between the edges
-   * becomes \a N.
-   */
-  void norm(double N = 1.0) {
-    scale(N/integral());
   }
 
   /**
@@ -379,6 +387,13 @@ private:
   /** The squared weights. */
   std::vector<double> sumw2;
 
+  /** The weighted x-values. */
+  std::vector<double> sumxw;
+
+  /** The weighted x-square-values. */
+  std::vector<double> sumx2w;
+
+  /** The squared weights. */
   /** dummy pointer to non-existen annotation. */
   IAnnotation * anno;
 
