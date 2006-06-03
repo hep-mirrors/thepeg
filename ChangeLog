@@ -1,3 +1,7 @@
+2006-06-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/HistFactory.h: Fixed histogram name/title confusion.
+
 2006-06-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/AnalysisHandler.*: Added function to normalize

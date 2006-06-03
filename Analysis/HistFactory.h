@@ -817,7 +817,8 @@ public:
     for ( std::map<IBaseHistogram *, std::string>::iterator it = hists.begin();
 	  it != hists.end(); ++it ) {
       const Hist1D & h = dynamic_cast<const Hist1D &>(*(it->first));
-      os << "  <histogram1d name=\"" << h.title()
+      os << "  <histogram1d name=\""
+	 << it->second.substr(it->second.rfind('/') + 1)
 	 << "\"\n    title=\"" << h.title()
 	 << "\" path=\"" << it->second.substr(0, it->second.rfind('/'))
 	 << "\">\n    <axis max=\"" << h.ax.upperEdge()
