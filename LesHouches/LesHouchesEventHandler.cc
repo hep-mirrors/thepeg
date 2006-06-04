@@ -384,17 +384,16 @@ LesHouchesEventHandler::initLesHouchesEventHandler;
 void LesHouchesEventHandler::Init() {
 
   static ClassDocumentation<LesHouchesEventHandler> documentation
-    ("THis is the main class administrating the selection of hard "
+    ("This is the main class administrating the selection of hard "
      "subprocesses from a set of ThePEG::LesHouchesReader objects.");
 
 
   static RefVector<LesHouchesEventHandler,LesHouchesReader>
-    interfaceLesHoushesReaders
-    ("LesHoushesReaders",
+    interfaceLesHouchesReaders
+    ("LesHouchesReaders",
      "Objects capable of reading events from an event file or an "
      "external matrix element generator.",
      &LesHouchesEventHandler::theReaders, -1, false, false, true, false, false);
-
 
   static Switch<LesHouchesEventHandler,WeightOpt> interfaceWeightOption
     ("WeightOption",
@@ -421,7 +420,7 @@ void LesHouchesEventHandler::Init() {
      "Events may have varying weights, both positive and negative.",
      varnegweight);
 
-  interfaceLesHoushesReaders.rank(10);
+  interfaceLesHouchesReaders.rank(10);
   interfaceWeightOption.rank(9);
 
 }

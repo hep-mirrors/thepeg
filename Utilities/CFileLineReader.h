@@ -93,6 +93,13 @@ public:
   bool readline();
 
   /**
+   * Undo reading from the current line, ie. the next read will be
+   * from the beginning of the current line. Afterwards the state will
+   * be not bad.
+   */
+  inline void resetline();
+
+  /**
    * Return a string containing what is left of the line buffer.
    */
   inline string getline() const;

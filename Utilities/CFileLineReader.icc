@@ -121,4 +121,9 @@ inline FILE * CFileLineReader::cfile() const {
   return file;
 }
 
+inline void CFileLineReader::resetline() {
+  bad = false;
+  pos = buff;
+}
+
 }

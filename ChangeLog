@@ -1,3 +1,21 @@
+2006-06-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/CFileLineReader.h: Added function to enable re-reading
+	of the current line.
+
+	* LesHouches/MadGraphReader.cc: Fixed the workaround where
+	MadGraph for some reason includes empty lines in the middle of the
+	header block.
+
+	Also fixed bug when MadGraph events have been unweighted and we
+	before read the wrong number of events.
+
+	Sometimes MadGraph exchanges the colour and anti-colour
+	lines. Introduced hack to try to notice this and fix it.
+
+	* LesHouches/LesHouchesEventHandler.cc: Renamed interface
+	LesHoushesReaders -> LesHouchesReaders
+
 2006-06-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistFactory.h: Fixed histogram name/title confusion.

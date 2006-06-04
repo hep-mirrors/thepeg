@@ -44,18 +44,19 @@ void MadGraphReader::open() {
   int lpp1 = 0;
   int lpp2 = 0;
   string pdftag;
-  double mgvers = 0.0;
-  int mgskipbl = 0;
+  bool unweighted = false;
   // First scan banner to extract some information
   while ( cfile.readline() ) {
     if ( !cfile ) break;
-    if ( cfile.getc() != '#' && mgskipbl-- <= 0 ) break;
-    if ( cfile.find("# madgraph version") ) {
-      cfile.skip(':');
-      cfile.skip('V');
-      cfile >> mgvers;
-      if ( mgvers >= 3.0 ) mgskipbl = 1;
-    } else if ( cfile.find("#  Number of Events") ) {
+    if ( cfile.getc() != '#' ) {
+      int test;
+      cfile >> test;
+      if ( cfile ) {
+	cfile.resetline();
+	break;
+      }
+    }
+    if ( cfile.find("#  Number of Events") ) {
       cfile.skip(':');
       cfile >> neve;
     } else if ( cfile.find("Integrated weight") ) {
@@ -76,6 +77,12 @@ void MadGraphReader::open() {
       cfile.skip('\'');
       cfile >> pdftag;
       pdftag = pdftag.substr(0, 7);
+    } else if ( cfile.find("Unweighting Statistics") ) {
+      unweighted = true;      
+    } else if ( cfile.find("Number of Events Written ") ) {
+      cfile.skip(':');
+      cfile >> neve;
+      maxw = xsec/double(neve);
     } else {
       for ( int itag = 0; itag < 26; ++itag ) {
 	if ( cfile.find(string("= ") + cuttags[itag]) ) {
@@ -102,6 +109,7 @@ void MadGraphReader::open() {
   heprup.XERRUP.push_back(0.0);
   heprup.XMAXUP.push_back(maxw);
   weighted(true);
+  if ( unweighted ) weighted(false);
   NEvents(neve);
   negativeWeights(false);
 
@@ -163,7 +171,7 @@ void MadGraphReader::open() {
 
 long MadGraphReader::scan() {
   long neve = LesHouchesFileReader::scan();
-  for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+  if ( neve > 0 ) for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
     heprup.XSECUP[ip] *= neve;
     heprup.XERRUP[ip] *= neve;
   }
@@ -213,6 +221,14 @@ bool MadGraphReader::doReadEvent() {
   for ( int i = 0; i < hepeup.NUP; ++i ) cfile >> hepeup.ICOLUP[i].first;
   if ( !cfile.readline() ) return false;
   for ( int i = 0; i < hepeup.NUP; ++i ) cfile >> hepeup.ICOLUP[i].second;
+
+  // Try to figure out if the colour lines are reversed
+  bool colrev = false;
+  for ( int i = 0; i < hepeup.NUP; ++i )
+    if ( abs(hepeup.IDUP[i]) < 10 && hepeup.IDUP[i] < 0 &&
+	 !hepeup.ICOLUP[i].second ) colrev = true;
+  if ( colrev ) for ( int i = 0; i < hepeup.NUP; ++i )
+    swap(hepeup.ICOLUP[i].first, hepeup.ICOLUP[i].second);
 
   if ( oldformat ) {
     hepeup.ISTUP.assign(hepeup.NUP, 1);
