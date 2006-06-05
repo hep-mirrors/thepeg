@@ -281,6 +281,7 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
   LorentzMomentum P = pb.particle()->momentum();
   DVector r = UseRandom::rndvec(pb.bin()->remDim());
   pb.remnantHandler()->generate(pb, &r[0], pb.scale(), Ph.m2(), P);
+  if ( pb.remnantWeight() <= 0.0 ) throw Veto();
   pb.remnantHandler()->boostRemnants(pb);
   LorentzMomentum Pr = Utilities::sumMomentum(pb.remnants());
   transformRemnants(Ph, Pr, k, pb.particle()->momentum());

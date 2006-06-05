@@ -102,6 +102,7 @@ public:
    * them from the given step and generate new remnants corresponding
    * to the parton newp and add them to the step. The new parton bins
    * are returned.
+   * @throws Veto if remnant generation failed for whatever reason.
    */
   virtual PBIPair newRemnants(tPPair oldp, tPPair newp, tStepPtr step);
 
@@ -145,6 +146,7 @@ public:
    * extractor. Information about the incoming partons should be set
    * in \a pbins and the hard subprocess should be present in \a
    * sub. Generated remnants will be added to the \a step.
+   * @throws Veto if remnant generation failed for whatever reason.
    */
   virtual void constructRemnants(const PBIPair & pbins, tSubProPtr sub,
 			 tStepPtr step) const;
@@ -239,6 +241,7 @@ protected:
 
   /**
    * Used by the public newRemnants() for each of the parton bins.
+   * @throws Veto if remnant generation failed for whatever reason.
    */
   PBIPtr newRemnants(tPBIPtr oldpb, tPPtr newp, const LorentzMomentum & k);
 
@@ -267,10 +270,11 @@ protected:
    * pb. Used by constructRemnants(const PBIPair &, tSubProPtr, tStepPtr).
    * Shift the momentum, \a Ph, of the hard subsystem to conserve
    * energy and momentum if necessary. The momentum, \a k, of the
-   * parton coming into the hars subsystem from the other side is
+   * parton coming into the hard subsystem from the other side is
    * given for information. Note that Direction<0> must be set to
    * determine if the parent particle is to be assumed to go in the
    * positive or negative direction.
+   * @throws Veto if remnant generation failed for whatever reason.
    */
   virtual void
   constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
