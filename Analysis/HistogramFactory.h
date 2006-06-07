@@ -130,6 +130,7 @@ public:
    *                  if something went wrong, such as a non existing
    *                  directrory in the path or that an object with the
    *                  given path already existed.
+   * @throws          std::runtime_error if histogram could not be created.
    */
   IHistogram1D *
   createHistogram1D(const std::string & path, const std::string & title,
@@ -137,7 +138,12 @@ public:
 		    const std::string & options = "") {
     Histogram1D * hist = new Histogram1D(nBins, lowerEdge, upperEdge);
     hist->setTitle(title);
-    if ( !tree->insert(path, hist) ) return 0;
+    if ( !tree->insert(path, hist) ) {
+      delete hist;
+      hist = 0;
+      throw std::runtime_error("LWH ccould not create histogram '"
+			       + title + "'." );
+    }
     return hist;
   }
 
@@ -151,7 +157,7 @@ public:
    * @param lowerEdge    The lower edge of the x axis.
    * @param upperEdge    The upper edge of the x axis.
    * @return             The newly created IHistogram1D.
-   *
+   * @throws             std::runtime_error if histogram could not be created.
    */
   IHistogram1D *
   createHistogram1D(const std::string & pathAndTitle,
@@ -178,13 +184,18 @@ public:
    *             is only used to delimit directories within paths.
    * @param hist The IHistogram1D to be copied.
    * @return     The copy of the IHistogram1D.
-   *
+   * @throws     std::runtime_error if histogram could not be created.
    */
   IHistogram1D *
   createCopy(const std::string & path, const IHistogram1D & hist) {
     Histogram1D * h = new Histogram1D(dynamic_cast<const Histogram1D &>(hist));
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( !tree->insert(path, h) ) return 0;
+    if ( !tree->insert(path, h) ) {
+      delete h;
+      h = 0;
+      throw std::runtime_error("LWH ccould not create a copy of histogram '"
+			       + hist.title() + "'." );
+    }
     return h;
   }
 
@@ -386,8 +397,7 @@ public:
    * @param hist1 The first member of the addition.
    * @param hist2 The second member of the addition.
    * @return      The sum of the two IHistogram1D.
-   *              if a directory in the path does not exist, or the path is
-   *              illegal.
+   * @throws      std::runtime_error if histogram could not be created.
    */
   Histogram1D * add(const std::string & path,
 		     const Histogram1D & hist1, const Histogram1D & hist2) {
@@ -407,8 +417,7 @@ public:
    * @param hist1 The first member of the addition.
    * @param hist2 The second member of the addition.
    * @return      The sum of the two IHistogram1D.
-   *              if a directory in the path does not exist, or the path is
-   *              illegal.
+   * @throws      std::runtime_error if histogram could not be created.
    */
   IHistogram1D * add(const std::string & path,
 		     const IHistogram1D & hist1, const IHistogram1D & hist2) {
@@ -425,8 +434,7 @@ public:
    * @param h1    The first member of the subtraction.
    * @param h2    The second member of the subtraction.
    * @return      The difference of the two IHistogram1D.
-   *              if a directory in the path does not exist,
-   *              or the path is illegal.
+   * @throws      std::runtime_error if histogram could not be created.
    */
   Histogram1D * subtract(const std::string & path,
 		    const Histogram1D & h1, const Histogram1D & h2) {
@@ -453,8 +461,7 @@ public:
    * @param hist1 The first member of the subtraction.
    * @param hist2 The second member of the subtraction.
    * @return      The difference of the two IHistogram1D.
-   *              if a directory in the path does not exist,
-   *              or the path is illegal.
+   * @throws      std::runtime_error if histogram could not be created.
    */
   IHistogram1D * subtract(const std::string & path, const IHistogram1D & hist1,
 			  const IHistogram1D & hist2) {
@@ -471,9 +478,7 @@ public:
    * @param h1    The first member of the multiplication.
    * @param h2    The second member of the multiplication.
    * @return      The product of the two IHistogram1D.
-   *              if a directory in the path does not exist,
-   *              or the path is illegal.
-   *
+   * @throws      std::runtime_error if histogram could not be created.
    */
   Histogram1D * multiply(const std::string & path,
 		    const Histogram1D & h1, const Histogram1D & h2) {
@@ -501,9 +506,7 @@ public:
    * @param hist1 The first member of the multiplication.
    * @param hist2 The second member of the multiplication.
    * @return      The product of the two IHistogram1D.
-   *              if a directory in the path does not exist,
-   *              or the path is illegal.
-   *
+   * @throws      std::runtime_error if histogram could not be created.
    */
   IHistogram1D * multiply(const std::string & path, const IHistogram1D & hist1,
 			  const IHistogram1D & hist2) {
@@ -520,8 +523,7 @@ public:
    * @param h1    The first member of the division.
    * @param h2    The second member of the division.
    * @return      The ration of the two IHistogram1D.
-   *              if a directory in the path does not exist,
-   *              or the path is illegal.
+   * @throws      std::runtime_error if histogram could not be created.
    */
   Histogram1D * divide(const std::string & path,
 		  const Histogram1D & h1, const Histogram1D & h2) {
@@ -550,8 +552,7 @@ public:
    * @param hist1 The first member of the division.
    * @param hist2 The second member of the division.
    * @return      The ration of the two IHistogram1D.
-   *              if a directory in the path does not exist,
-   *              or the path is illegal.
+   * @throws      std::runtime_error if histogram could not be created.
    */
   IHistogram1D * divide(const std::string & path, const IHistogram1D & hist1,
 			const IHistogram1D & hist2) {

@@ -51,6 +51,10 @@ inline void FactoryBase::mkdirs(string path) {
   tree().mkdirs(path);
 }
 
+inline void FactoryBase::cd(string path) {
+  tree().cd(path);
+}
+
 inline FactoryBase::tH1DPtr
 FactoryBase::createHistogram1D(string path, int nb, double lo, double up) {
   return histogramFactory().createHistogram1D(path, nb, lo, up);

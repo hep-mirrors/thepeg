@@ -118,6 +118,11 @@ public:
   inline void mkdirs(string);
 
   /**
+   * Set the default working directory for the underlying AIDA tree..
+   */
+  inline void cd(string);
+
+  /**
    * Create and return a AIDA::IHistogram1D object in the underlying
    * AIDA histogram factory. Note that the histogram factory is
    * responsible for deleting this histogram.
