@@ -8,7 +8,11 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#ifndef LWH 
+#define ThePEGLWH
+#endif
 #include "AnalysisFactory.h"
+
 
 using namespace ThePEG;
 
