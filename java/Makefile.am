@@ -9,7 +9,7 @@ JAVASOURCES = SetupThePEG.java ObjectFrame.java \
               Command.java ParVector.java RunSelector.java \
               RunFrame.java
 
-CLEANFILES = ThePEG.jar thepeg
+CLEANFILES = ThePEG.jar thepeg.sh
 
 nodist_pkglib_DATA = ThePEG.jar
 
@@ -17,7 +17,7 @@ dist_noinst_DATA = $(JAVASOURCES) jar-manifest
 
 dist_noinst_SCRIPTS = thepeg.install
 
-nodist_bin_SCRIPTS = thepeg
+nodist_bin_SCRIPTS = thepeg.sh
 
 clean-local:
 	rm -rf ThePEG
@@ -31,8 +31,8 @@ ThePEG.jar: ThePEG $(JAVASOURCES)
 	$(JAVAC) -source 1.4 `for file in $(JAVASOURCES); do echo ThePEG/$$file; done`
 	$(JAR) cmf ThePEG/jar-manifest ThePEG.jar ThePEG/*.class
 
-thepeg: $(srcdir)/thepeg.install Makefile
-	sed -e s:@path@:$(pkglibdir):g -e s:@java@:$(JAVA):g $(srcdir)/thepeg.install > thepeg
+thepeg.sh: $(srcdir)/thepeg.install Makefile
+	sed -e s:@path@:$(pkglibdir):g -e s:@java@:$(JAVA):g $(srcdir)/thepeg.install > thepeg.sh
 
 
 test: ThePEG.jar
@@ -43,5 +43,5 @@ check-local:
 	$(JAVA) -jar ThePEG.jar --classcheck
 
 installcheck-local:
-	$(DESTDIR)$(bindir)/thepeg --classcheck
+	$(DESTDIR)$(bindir)/thepeg.sh --classcheck
 
