@@ -12,7 +12,7 @@
 #include "ThePEG/Repository/CurrentGenerator.fh"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Handlers/EventHandler.fh"
-#include "ThePEG/Analysis/HistogramFactory.fh"
+#include "ThePEG/Analysis/FactoryBase.fh"
 #include <fstream>
 #include "EventGenerator.xh"
 

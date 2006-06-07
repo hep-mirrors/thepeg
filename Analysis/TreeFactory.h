@@ -1,14 +1,14 @@
 // -*- C++ -*-
-#ifndef LWH_DummyTreeFactory_H
-#define LWH_DummyTreeFactory_H
+#ifndef LWH_TreeFactory_H
+#define LWH_TreeFactory_H
 //
-// This is the declaration of the DummyTreeFactory class.
+// This is the declaration of the TreeFactory class.
 //
 
 #include "AITreeFactory.h"
 #include <string>
-#include <set>
-#include "DummyTree.h"
+#include <stdexcept>
+#include "Tree.h"
 
 namespace LWH {
 
@@ -17,12 +17,12 @@ using namespace AIDA;
 /**
  * The creator of trees.
  */
-class DummyTreeFactory: public ITreeFactory {
+class TreeFactory: public ITreeFactory {
 
 public:
 
   /// Destructor.
-  virtual ~DummyTreeFactory() {
+  virtual ~TreeFactory() {
     clear();
   }
 
@@ -30,25 +30,25 @@ public:
    * Creates a new tree that is not associated with a store.
    */
   ITree * create() {
-    DummyTree * tree = new DummyTree;
+    Tree * tree = new Tree;
     trees.insert(tree);
     return tree;
   }
 
   /**
-   * Creates a new DummyTree and associates it with a store.
+   * Creates a new Tree and associates it with a store.
    * The store is assumed to be write-only.
    * The store will be created.
    * @param storeName The name of the store, if empty (""), the tree is
    *                  created in memory and therefore will not be associated
    *                  with a file.
    */
-  DummyTree * createDummyTree(const std::string & storeName) {
-    return new DummyTree(storeName);
+  Tree * createTree(const std::string & storeName) {
+    return new Tree(storeName);
   }
 
   /**
-   * Creates a new DummyTree and associates it with a store.
+   * Creates a new Tree and associates it with a store.
    * The store is assumed to be write-only.
    * The store will be created.
    * @param storeName The name of the store, if empty (""), the tree is
@@ -66,23 +66,23 @@ public:
       throw std::runtime_error("Can only store trees in xml or flat format.");
     if ( readOnly || !createNew )
       throw std::runtime_error("Cannot read in trees.");
-    return new DummyTree(storeName, storeType != "flat");
+    return new Tree(storeName, storeType != "flat");
   }
 
 private:
 
   /** Delete all trees. */
   void clear() {
-    for ( std::set<DummyTree *>::iterator it = trees.begin();
+    for ( std::set<Tree *>::iterator it = trees.begin();
 	  it != trees.end(); ++it ) delete *it;
     trees.clear();
   }
 
   /** The created trees. */
-  std::set<DummyTree *> trees;
+  std::set<Tree *> trees;
 
 };
 
 }
 
-#endif /* LWH_DummyTreeFactory_H */
+#endif /* LWH_TreeFactory_H */

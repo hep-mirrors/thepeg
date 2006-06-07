@@ -1,11 +1,12 @@
 // -*- C++ -*-
-#ifndef LWH_Hist1D_H
-#define LWH_Hist1D_H
+#ifndef LWH_Histogram1D_H
+#define LWH_Histogram1D_H
 //
-// This is the declaration of the Hist1D class.
+// This is the declaration of the Histogram1D class.
 //
 
 #include "AIHistogram1D.h"
+#include "ManagedObject.h"
 #include "Axis.h"
 #include <vector>
 #include <stdexcept>
@@ -17,26 +18,26 @@ using namespace AIDA;
 /**
  * User level interface to 1D Histogram.
  */
-class Hist1D: public IHistogram1D {
+class Histogram1D: public IHistogram1D, public ManagedObject {
 
 public:
 
   /** HistFactory is a friend. */
-  friend class HistFactory;
+  friend class HistogramFactory;
 
 public:
 
   /**
    * Standard constructor.
    */
-  Hist1D(int n, double lo, double up)
+  Histogram1D(int n, double lo, double up)
     : ax(n, lo, up), sum(n + 2), sumw(n + 2), sumw2(n + 2), sumxw(n + 2),
       sumx2w(n + 2) {}
 
   /**
    * Constructor form Axis object.
    */
-  Hist1D(const Axis & a)
+  Histogram1D(const Axis & a)
     : ax(a.bins(), a.lowerEdge(), a.upperEdge()),
       sum(a.bins() + 2), sumw(a.bins() + 2), sumw2(a.bins() + 2),
       sumxw(a.bins() + 2), sumx2w(a.bins() + 2) {}
@@ -44,19 +45,27 @@ public:
   /**
    * Copy constructor.
    */
-  Hist1D(const Hist1D & h)
+  Histogram1D(const Histogram1D & h)
     : ax(h.ax), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2),
       sumxw(h.sumxw), sumx2w(h.sumx2w) {}
 
   /// Destructor.
-  virtual ~Hist1D() {}
+  virtual ~Histogram1D() {}
 
   /**
    * Get the Histogram's title.
    * @return The Histogram's title.
    */
   std::string title() const {
-    return name;
+    return theTitle;
+  }
+
+  /**
+   * Get the Histogram's title.
+   * @return The Histogram's title.
+   */
+  std::string name() const {
+    return theTitle;
   }
 
   /**
@@ -65,7 +74,7 @@ public:
    * @return false If title cannot be changed.
    */
   bool setTitle(const std::string & title) {
-    name = title;
+    theTitle = title;
     return true;
   }
 
@@ -225,7 +234,8 @@ public:
    * @return      The mean of the corresponding bin.
    */
   double binMean(int index) const {
-    return sumw[index] != 0.0? sumxw[index]/sumw[index]:
+    int i = index + 2;
+    return sumw[i] != 0.0? sumxw[i]/sumw[i]:
       0.5*(ax.binUpperEdge(index) + ax.binLowerEdge(index));
   };
 
@@ -235,9 +245,9 @@ public:
    * @return      The RMS of the corresponding bin.
    */
   double binRms(int index) const {
-    return sumw[index] == 0.0? ax.binWidth(index):
-      std::sqrt(std::max(sumw[index]*sumx2w[index] -
-			 sumxw[index]*sumxw[index], 0.0))/sumw[index];
+    int i = index + 2;
+    return sumw[i] == 0.0 || sum[i] < 2? ax.binWidth(index):
+      std::sqrt(std::max(sumw[i]*sumx2w[i] - sumxw[i]*sumxw[i], 0.0))/sumw[i];
   };
 
   /**
@@ -321,11 +331,11 @@ public:
   }
   
   /**
-   * Add to this Hist1D the contents of another IHistogram1D.
-   * @param h The Hist1D to be added to this IHistogram1D.
+   * Add to this Histogram1D the contents of another IHistogram1D.
+   * @param h The Histogram1D to be added to this IHistogram1D.
    * @return false If the IHistogram1Ds binnings are incompatible.
    */
-  bool add(const Hist1D & h) {
+  bool add(const Histogram1D & h) {
     if ( ax.upperEdge() != h.ax.upperEdge() ||
 	 ax.lowerEdge() != h.ax.lowerEdge() ||
 	 ax.bins() != h.ax.bins() ) return false;
@@ -345,7 +355,7 @@ public:
    * @return false If the IHistogram1Ds binnings are incompatible.
    */
   bool add(const IHistogram1D & hist) {
-    return add(dynamic_cast<const Hist1D &>(hist));
+    return add(dynamic_cast<const Histogram1D &>(hist));
   }
 
   /**
@@ -370,10 +380,46 @@ public:
     return 0;
   }
 
+  bool writeXML(std::ostream & os, std::string path, std::string name) {
+    os << "  <histogram1d name=\"" << name
+       << "\"\n    title=\"" << title()
+       << "\" path=\"" << path
+       << "\">\n    <axis max=\"" << ax.upperEdge()
+       << "\" numberOfBins=\"" << ax.bins()
+       << "\" min=\"" << ax.lowerEdge()
+       << "\" direction=\"x\"/>\n"
+       << "    <statistics entries=\"" << entries()
+       << "\">\n      <statistic mean=\"" << mean()
+       << "\" direction=\"x\"\n        rms=\"" << rms()
+       << "\"/>\n    </statistics>\n    <data1d>\n";
+    for ( int i = 2; i < ax.bins() + 2; ++i ) if ( sum[i] )
+      os << "      <bin1d binNum=\"" << i - 2
+	 << "\" entries=\"" << sum[i]
+	 << "\" height=\"" << sumw[i]
+	 << "\"\n        error=\"" << std::sqrt(sumw2[i])
+	 << "\" error2=\"" << sumw2[i]
+	 << "\"\n        weightedMean=\"" << binMean(i - 2)
+	 << "\" weightedRms=\"" << binRms(i - 2)
+	 << "\"/>\n";
+    os << "    </data1d>\n  </histogram1d>" << std::endl;
+    return true;
+  }
+
+
+  bool writeFLAT(std::ostream & os, std::string path, std::string name) {
+    os << "# " << title() << " " << path << " " << name << " " << ax.lowerEdge()
+       << " " << ax.bins() << " " << ax.upperEdge() << std::endl;
+    for ( int i = 2; i < ax.bins() + 2; ++i )
+      os << binMean(i - 2) << " " << sum[i] << " "
+	 << sumw[i] << " " << sqrt(sumw2[i]) << std::endl;
+    os << std::endl;
+    return true;
+  }
+
 private:
 
-  /** The name */
-  std::string name;
+  /** The title */
+  std::string theTitle;
 
   /** The axis. */
   Axis ax;
@@ -401,4 +447,4 @@ private:
 
 }
 
-#endif /* LWH_Hist1D_H */
+#endif /* LWH_Histogram1D_H */

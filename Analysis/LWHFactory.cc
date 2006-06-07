@@ -16,7 +16,7 @@ LWHFactory::~LWHFactory() {}
 
 void LWHFactory::doinitrun() {
   analysisFactory(new LWH::AnalysisFactory);
-  HistogramFactory::doinitrun();
+  FactoryBase::doinitrun();
 }
 
 void LWHFactory::persistentOutput(PersistentOStream & os) const {}

@@ -1,3 +1,10 @@
+2006-06-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/LWHFactory.*, Repository/EventGenerator.*,
+	Handlers/AnalysisHandler.*, Analysis/FactoryBase.*: Changed the
+	name from HistogramFactory to Factory base to avoid name clash
+	with updated LWH.
+
 2006-06-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.*: The constructRemnants() function now

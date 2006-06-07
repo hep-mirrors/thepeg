@@ -5,7 +5,7 @@
 
 #include "HandlerBase.h"
 #include "ThePEG/CLHEPWrap/LorentzRotation.h"
-#include "ThePEG/Analysis/HistogramFactory.h"
+#include "ThePEG/Analysis/FactoryBase.h"
 #include <stdexcept>
 
 namespace ThePEG {
@@ -36,12 +36,12 @@ public:
   /**
    * Convenient typedef for pointer to AIDA::IHistogram1D.
    */
-  typedef HistogramFactory::tH1DPtr tH1DPtr;
+  typedef FactoryBase::tH1DPtr tH1DPtr;
 
   /**
    * Convenient typedef for pointer to AIDA::IHistogram1D.
    */
-  typedef HistogramFactory::tcH1DPtr tcH1DPtr;
+  typedef FactoryBase::tcH1DPtr tcH1DPtr;
 
 public:
 
@@ -114,7 +114,7 @@ public:
   /**
    * Access the HistogramFactory from the EventGenerator.
    */
-  HistogramFactory & histogramFactory();
+  FactoryBase & histogramFactory();
 
   /**
    * Normalize the histogran \a h using the collected statistics from

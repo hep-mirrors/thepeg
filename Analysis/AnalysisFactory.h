@@ -6,8 +6,8 @@
 //
 
 #include "AIAnalysisFactory.h"
-#include "DummyTreeFactory.h"
-#include "HistFactory.h"
+#include "TreeFactory.h"
+#include "HistogramFactory.h"
 #include <set>
 
 /**
@@ -46,33 +46,20 @@ public:
    * @return The ITreeFactory.
    */
   ITreeFactory * createTreeFactory() {
-    return new DummyTreeFactory;
+    return new TreeFactory;
   }
 
   /**
-   * Create an HistFactory.
-   * @param tree The ITree which created histograms will be associated to.
-   * @return     The IHistogramFactory.
-   *
-   */
-  HistFactory * createHistFactory(ITree & tree) {
-    DummyTree & tr = dynamic_cast<DummyTree &>(tree);
-    if ( tr.histfac )
-      throw std::runtime_error("A DummyTree can only be associated "
-			       "to one HistFactory.");
-    HistFactory * hf = new HistFactory;
-    tr.histfac = hf;
-    return hf;
-  }
-
-  /**
-   * Create an HistFactory.
+   * Create an HistogramFactory.
    * @param tree The ITree which created histograms will be associated to.
    * @return     The IHistogramFactory.
    *
    */
   IHistogramFactory * createHistogramFactory(ITree & tree) {
-    return createHistFactory(tree);
+    Tree & tr = dynamic_cast<Tree &>(tree);
+    HistogramFactory * hf = new HistogramFactory(tr);
+    histfacs.insert(hf);
+    return hf;
   }
 
   /**
@@ -122,19 +109,19 @@ private:
 
   /** Delete all produced factories. */
   void clear() {
-    for ( std::set<HistFactory *>::iterator it = histfacs.begin();
+    for ( std::set<HistogramFactory *>::iterator it = histfacs.begin();
 	  it != histfacs.end(); ++it ) delete *it;
-    for ( std::set<DummyTreeFactory *>::iterator it = treefacs.begin();
+    for ( std::set<TreeFactory *>::iterator it = treefacs.begin();
 	  it != treefacs.end(); ++it ) delete *it;
     histfacs.clear();
     treefacs.clear();
   }
 
   /** The histogram factories. */
-  std::set<HistFactory *> histfacs;
+  std::set<HistogramFactory *> histfacs;
 
   /** The tree factories. */
-  std::set<DummyTreeFactory *> treefacs;
+  std::set<TreeFactory *> treefacs;
 
 };
 

@@ -1,0 +1,64 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FactoryBase class.
+//
+
+namespace ThePEG {
+
+inline FactoryBase::FactoryBase()
+  : theFilename(""), theSuffix("aida"), theStoreType("xml"),
+    theAnalysisFactory(0), theTree(0), theHistogramFactory(0) {}
+
+inline FactoryBase::FactoryBase(const FactoryBase & x)
+  : Interfaced(x), theFilename(x.theFilename), theSuffix(x.theSuffix),
+    theStoreType(x.theStoreType), theAnalysisFactory(0), theTree(0),
+    theHistogramFactory(0) {}
+
+inline string FactoryBase::filename() const {
+  return theFilename;
+}
+
+inline string FactoryBase::suffix() const {
+  return theSuffix;
+}
+
+inline string FactoryBase::storeType() const {
+  return theStoreType;
+}
+
+inline AIDA::IAnalysisFactory & FactoryBase::analysisFactory() const {
+  return *theAnalysisFactory;
+}
+
+inline void FactoryBase::analysisFactory(AIDA::IAnalysisFactory * x) {
+  theAnalysisFactory = x;
+}
+
+inline AIDA::ITree & FactoryBase::tree() const {
+  return *theTree;
+}
+
+inline AIDA::IHistogramFactory & FactoryBase::histogramFactory() const {
+  return *theHistogramFactory;
+}
+
+inline void FactoryBase::mkdir(string path) {
+  tree().mkdir(path);
+}
+
+inline void FactoryBase::mkdirs(string path) {
+  tree().mkdirs(path);
+}
+
+inline FactoryBase::tH1DPtr
+FactoryBase::createHistogram1D(string path, int nb, double lo, double up) {
+  return histogramFactory().createHistogram1D(path, nb, lo, up);
+}
+
+inline void FactoryBase::registerClient(tIPtr client) {
+  initrun();
+  clients.insert(client);
+}
+
+}

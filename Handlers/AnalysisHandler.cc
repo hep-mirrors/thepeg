@@ -20,7 +20,7 @@ using namespace ThePEG;
 
 AnalysisHandler::~AnalysisHandler() {}
 
-HistogramFactory & AnalysisHandler::histogramFactory() {
+FactoryBase & AnalysisHandler::histogramFactory() {
   return *(generator()->histogramFactory());
 }
 

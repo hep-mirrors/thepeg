@@ -9,7 +9,7 @@ namespace ThePEG {
 inline LWHFactory::LWHFactory() {}
 
 inline LWHFactory::LWHFactory(const LWHFactory & x)
-  : HistogramFactory(x) {}
+  : FactoryBase(x) {}
 
 inline IBPtr LWHFactory::clone() const {
   return new_ptr(*this);

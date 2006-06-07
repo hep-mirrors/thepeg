@@ -1,299 +1,742 @@
 // -*- C++ -*-
-#ifndef THEPEG_HistogramFactory_H
-#define THEPEG_HistogramFactory_H
+#ifndef LWH_HistogramFactory_H
+#define LWH_HistogramFactory_H
 //
 // This is the declaration of the HistogramFactory class.
 //
 
-#include "ThePEG/Interface/Interfaced.h"
-#include "HistogramFactory.fh"
-#include "AIAnalysisFactory.h"
-#include "AITreeFactory.h"
-#include "AITree.h"
 #include "AIHistogramFactory.h"
-#include "AIHistogram1D.h"
-#include "AIAxis.h"
+#include "Histogram1D.h"
+#include "Tree.h"
+#include <map>
+#include <string>
+#include <stdexcept>
 
-namespace ThePEG {
+namespace LWH {
+
+using namespace AIDA;
 
 /**
- * Here is the documentation of the HistogramFactory class. This
- * abstract class is used to wrap the interface to a particular
- * AIDA-compliant histogram package to be used in
- * <code>AnalysisHandler</code>s in ThePEG. Concrete subclasses must
- * implement the doinitrun() function to create an object of a class
- * inheriting from AIDA::IAnalysisFactory and assign it with the
- * analysisFactory(AIDA::IAnalysisFactory*) function before calling
- * doinitrun() for the HistogramFactory base class.
- *
- * A HistogramFactory object should be assigned to the EventGenerator
- * object controlling a run, and <code>AnalysisHandler</code>s should
- * access it via the Generator with the generator() function.
- *
- * @see \ref HistogramFactoryInterfaces "The interfaces"
- * defined for HistogramFactory.
+ * User level interface for factory classes of Histograms (binned,
+ * unbinned, and profile) The created objects are assumed to be
+ * managed by the tree which is associated to the factory. So far only
+ * one-dimensional histograms are implemented in LWH.
  */
-class HistogramFactory: public Interfaced {
+class HistogramFactory: public IHistogramFactory {
 
 public:
 
   /**
-   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   * Standard constructor.
    */
-  typedef AIDA::IHistogram1D * tH1DPtr;
+  HistogramFactory(Tree & t)
+    : tree(&t) {}
+
+
+  /// Destructor.
+  virtual ~HistogramFactory() {}
 
   /**
-   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   * Destroy an IBaseHistogram object.
+   * @param hist The IBaseHistogram to be destroyed.
+   * @return false If the histogram cannot be destroyed.
    */
-  typedef const AIDA::IHistogram1D * tcH1DPtr;
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * The default constructor.
-   */
-  inline HistogramFactory();
+  bool destroy(IBaseHistogram * hist) {
+    IManagedObject * mo = dynamic_cast<IManagedObject *>(hist);
+    if ( !mo ) return false;
+    return tree->rm(tree->findPath(*mo));
+  }
 
   /**
-   * The copy constructor.
+   * LWH cannot create a ICloud1D, an unbinned 1-dimensional histogram.
    */
-  inline HistogramFactory(const HistogramFactory &);
+  ICloud1D * createCloud1D(const std::string &, const std::string &,
+			   int = -1, const std::string & = "") {
+    return error<ICloud1D>("ICloud1D");
+  }
 
   /**
-   * The destructor.
+   * LWH cannot create a ICloud1D, an unbinned 1-dimensional histogram.
    */
-  virtual ~HistogramFactory();
-  //@}
-
-public:
-
-  /** @name Simple access functions. */
-  //@{
-  /**
-   * Together with suffix(), the name of the file where the resulting
-   * histograms will be stored. If empty, generator()->filename() will
-   * be used instead.
-   */
-  inline string filename() const;
+  ICloud1D * createCloud1D(const std::string &) {
+    return error<ICloud1D>("ICloud1D");
+  }
 
   /**
-   * Together with filename(), the name of the file where the
-   * resulting histograms will be stored.
+   * LWH cannot create a copy of an ICloud1D.
    */
-  inline string suffix() const;
+  ICloud1D * createCopy(const std::string &, const ICloud1D &) {
+    return error<ICloud1D>("ICloud1D");
+  }
 
   /**
-   * The format in which the histograms are stored in the output file.
+   * LWH cannot create a ICloud2D, an unbinned 2-dimensional histogram.
    */
-  inline string storeType() const;
-  //@}
+  ICloud2D * createCloud2D(const std::string &, const std::string &, int = -1,
+			   const std::string & = "") {
+    return error<ICloud2D>("ICloud2D");
+  }
 
-  /** @name Access the underlying AIDA objects. */
-  //@{
-  /**
-   * Access the underlying AIDA::IAnalysisFactory object.
-   */
-  inline AIDA::IAnalysisFactory & analysisFactory() const;
 
   /**
-   * Access the underlying AIDA::ITree object.
+   * LWH cannot create a ICloud2D, an unbinned 2-dimensional histogram.
    */
-  inline AIDA::ITree & tree() const;
+  ICloud2D * createCloud2D(const std::string &) {
+    return error<ICloud2D>("ICloud2D");
+  }
 
   /**
-   * A pointer to the underlying AIDA::IHistogramFactory object.
+   * LWH cannot create a copy of an ICloud2D.
    */
-  inline AIDA::IHistogramFactory & histogramFactory() const;
+  ICloud2D * createCopy(const std::string &, const ICloud2D &) {
+    return error<ICloud2D>("ICloud2D");
+  }
 
   /**
-   * Create a new directory in the underlying AIDA tree.
+   * LWH cannot create a ICloud3D, an unbinned 3-dimensional histogram.
    */
-  inline void mkdir(string);
+  ICloud3D * createCloud3D(const std::string &, const std::string &, int = -1,
+			   const std::string & = "") {
+    return error<ICloud3D>("ICloud3D");
+  }
 
   /**
-   * Create a new directory in the underlying AIDA tree.
+   * LWH cannot create a ICloud3D, an unbinned 3-dimensional histogram.
    */
-  inline void mkdirs(string);
+  ICloud3D * createCloud3D(const std::string &) {
+    return error<ICloud3D>("ICloud3D");
+  }
 
   /**
-   * Create and return a AIDA::IHistogram1D object in the underlying
-   * AIDA histogram factory. Note that the histogram factory is
-   * responsible for deleting this histogram.
-   * @param path the full path of where the histogram should be placed
-   * in the underlying AIDA tree (on the form
-   * "/dir/subdir/histogramname"). Not that the directory part of the
-   * path typically must already exist in the tree. The directories
-   * can be created with mkdir(string) or mkdirs(string).
-   * @param nb the number of bins in the histogram.
-   * @param lo the lower edge of the histogram.
-   * @param up the upper edge of the histogram.
-   * @return a pointer to the created AIDA::IHistogram1D object.
+   * LWH cannot create a copy of an ICloud3D.
    */
-  inline tH1DPtr createHistogram1D(string path, int nb, double lo, double up);
+  ICloud3D * createCopy(const std::string &, const ICloud3D &) {
+    return error<ICloud3D>("ICloud3D");
+  }
 
   /**
-   * Used by a \a client object to indicate that he has required
-   * histograms from this factory. It is guaranteed that the clients
-   * finish() function is called before the underlying AIDA::ITree is
-   * committed and the AIDA::IHistogramFactory is deleted together
-   * with all histograms.
+   * Create a IHistogram1D.
+   * @param path      The path of the created IHistogram. The path must be a
+   *                  full path.  ("/folder1/folder2/dataName" is a valid path).
+   *                  The characther `/` cannot be used in names; it is only
+   *                  used to delimit directories within paths.
+   * @param title     The title of the IHistogram1D.
+   * @param nBins     The number of bins of the x axis.
+   * @param lowerEdge The lower edge of the x axis.
+   * @param upperEdge The upper edge of the x axis.
+   * @param options   The options for the IHistogram1D. The default is "".
+   *                  "type=efficiency" for an efficiency IHistogram1D.
+   * @return          The newly created IHistogram1D ot the null pointer
+   *                  if something went wrong, such as a non existing
+   *                  directrory in the path or that an object with the
+   *                  given path already existed.
    */
-  inline void registerClient(tIPtr client);
-  //@}
-
-protected:
+  IHistogram1D *
+  createHistogram1D(const std::string & path, const std::string & title,
+		    int nBins, double lowerEdge, double upperEdge,
+		    const std::string & options = "") {
+    Histogram1D * hist = new Histogram1D(nBins, lowerEdge, upperEdge);
+    hist->setTitle(title);
+    if ( !tree->insert(path, hist) ) return 0;
+    return hist;
+  }
 
   /**
-   * Set the underlying AIDA::IAnalysisFactory object. Note that this
-   * surrenders the controll of the factory to the HistogramFactory
-   * object which will delete it in the finish() function. Typically
-   * this function should be called by a concrete subclass in the
-   * doinitrun() function before the doinitrun() function of this
-   * class is called.
+   * Create a IHistogram1D.
+   * @param pathAndTitle The path of the created IHistogram. The path must be a
+   *                     full path.  ("/folder1/folder2/dataName" is a valid
+   *                     path). The characther `/` cannot be used in names; it
+   *                     is only used to delimit directories within paths.
+   * @param nBins        The number of bins of the x axis.
+   * @param lowerEdge    The lower edge of the x axis.
+   * @param upperEdge    The upper edge of the x axis.
+   * @return             The newly created IHistogram1D.
+   *
    */
-  inline void analysisFactory(AIDA::IAnalysisFactory *);
+  IHistogram1D *
+  createHistogram1D(const std::string & pathAndTitle,
+		    int nBins, double lowerEdge, double upperEdge) {
+    std::string title = pathAndTitle.substr(pathAndTitle.rfind('/') + 1);
+    return createHistogram1D(pathAndTitle, title, nBins, lowerEdge, upperEdge);
+  }
+
 
   /**
-   * Delete all associated AIDA objects. Note that the tree is not
-   * explicitly committed.
+   * LWH cannot create a IHistogram1D with variable edges.
    */
-  void clear();
-
-
-public:
-
-  /** @name Functions used by the persistent I/O system. */
-  //@{
-  /**
-   * Function used to write out object persistently.
-   * @param os the persistent output stream written to.
-   */
-  void persistentOutput(PersistentOStream & os) const;
+  IHistogram1D *
+  createHistogram1D(const std::string &, const std::string &,
+		    const std::vector<double> &, const std::string & = "") {
+    return error<IHistogram1D>("histograms with custom edges");
+  }
 
   /**
-   * Function used to read in object persistently.
-   * @param is the persistent input stream read from.
-   * @param version the version number of the object when written.
+   * Create a copy of an IHistogram1D.
+   * @param path The path of the created IHistogram. The path must be a
+   *             full path.  ("/folder1/folder2/dataName" is a valid
+   *             path). The characther `/` cannot be used in names; it
+   *             is only used to delimit directories within paths.
+   * @param hist The IHistogram1D to be copied.
+   * @return     The copy of the IHistogram1D.
+   *
    */
-  void persistentInput(PersistentIStream & is, int version);
-  //@}
+  IHistogram1D *
+  createCopy(const std::string & path, const IHistogram1D & hist) {
+    Histogram1D * h = new Histogram1D(dynamic_cast<const Histogram1D &>(hist));
+    h->setTitle(path.substr(path.rfind('/') + 1));
+    if ( !tree->insert(path, h) ) return 0;
+    return h;
+  }
 
   /**
-   * The standard Init function used to initialize the interfaces.
-   * Called exactly once for each class by the class description system
-   * before the main function starts or
-   * when this class is dynamically loaded.
+   * LWH cannot create a IHistogram2D.
    */
-  static void Init();
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  virtual void doinitrun();
+  IHistogram2D * createHistogram2D(const std::string &, const std::string &,
+				   int, double, double, int, double, double,
+				   const std::string & = "") {
+    return error<IHistogram2D>("IHistogram2D");
+  }
 
   /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
+   * LWH cannot create a IHistogram2D.
    */
-  virtual void dofinish();
-  //@}
+  IHistogram2D * createHistogram2D(const std::string &,
+				   int, double, double, int, double, double) {
+    return error<IHistogram2D>("IHistogram2D");
+  }
+
+  /**
+   * LWH cannot create a IHistogram2D.
+   */
+  IHistogram2D * createHistogram2D(const std::string &, const std::string &,
+				   const std::vector<double> &,
+				   const std::vector<double> &,
+				   const std::string & = "") {
+    return error<IHistogram2D>("IHistogram2D");
+  }
+
+  /**
+   * LWH cannot create a copy of an IHistogram2D.
+   */
+  IHistogram2D * createCopy(const std::string &, const IHistogram2D &) {
+    return error<IHistogram2D>("IHistogram2D");
+  }
+
+  /**
+   * LWH cannot create a IHistogram3D.
+   */
+  IHistogram3D * createHistogram3D(const std::string &, const std::string &,
+				   int, double, double, int, double, double,
+				   int, double, double,
+				   const std::string & = "") {
+    return error<IHistogram3D>("IHistogram3D");
+  }
+
+  /**
+   * LWH cannot create a IHistogram3D.
+   */
+  IHistogram3D * createHistogram3D(const std::string &, int, double, double,
+				   int, double, double, int, double, double) {
+    return error<IHistogram3D>("IHistogram3D");
+  }
+
+  /**
+   * LWH cannot create a IHistogram3D.
+   */
+  IHistogram3D * createHistogram3D(const std::string &, const std::string &,
+				   const std::vector<double> &,
+				   const std::vector<double> &,
+				   const std::vector<double> &,
+				   const std::string & = "") {
+    return error<IHistogram3D>("IHistogram3D");
+  }
+
+  /**
+   * LWH cannot create a copy of an IHistogram3D.
+   */
+  IHistogram3D * createCopy(const std::string &, const IHistogram3D &) {
+    return error<IHistogram3D>("IHistogram3D");
+  }
+
+  /**
+   * LWH cannot create a IProfile1D.
+   */
+  IProfile1D * createProfile1D(const std::string &, const std::string &,
+			       int, double, double, const std::string & = "") {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a IProfile1D.
+   */
+  IProfile1D * createProfile1D(const std::string &, const std::string &,
+			       int, double, double, double, double,
+			       const std::string & = "") {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a IProfile1D.
+   */
+  IProfile1D * createProfile1D(const std::string &, const std::string &,
+			       const std::vector<double> &,
+			       const std::string & = "") {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a IProfile1D.
+   */
+  IProfile1D * createProfile1D(const std::string &, const std::string &,
+			       const std::vector<double> &, double, double,
+			       const std::string & = "") {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a IProfile1D.
+   */
+  IProfile1D * createProfile1D(const std::string &, int, double, double) {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a IProfile1D.
+   */
+  IProfile1D * createProfile1D(const std::string &,
+			       int, double, double, double, double) {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a copy of an IProfile1D.
+   */
+  IProfile1D * createCopy(const std::string &, const IProfile1D &) {
+    return error<IProfile1D>("IProfile1D");
+  }
+
+  /**
+   * LWH cannot create a IProfile2D.
+   */
+  IProfile2D * createProfile2D(const std::string &, const std::string &,
+			       int, double, double, int, double, double,
+			       const std::string & = "") {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * LWH cannot create a IProfile2D.
+   */
+  IProfile2D * createProfile2D(const std::string &, const std::string &,
+			       int, double, double, int,
+			       double, double, double, double,
+			       const std::string & = "") {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * LWH cannot create a IProfile2D.
+   */
+  IProfile2D * createProfile2D(const std::string &, const std::string &,
+			       const std::vector<double> &,
+			       const std::vector<double> &,
+			       const std::string & = "") {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * LWH cannot create a IProfile2D.
+   */
+  IProfile2D * createProfile2D(const std::string &, const std::string &,
+			       const std::vector<double> &,
+			       const std::vector<double> &,
+			       double, double, const std::string & = "") {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * LWH cannot create a IProfile2D.
+   */
+  IProfile2D * createProfile2D(const std::string &, int, double, double,
+			       int, double, double) {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * LWH cannot create a IProfile2D.
+   */
+  IProfile2D * createProfile2D(const std::string &, int, double, double,
+			       int, double, double, double, double) {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * LWH cannot create a copy of an IProfile2D.
+   */
+  IProfile2D * createCopy(const std::string &, const IProfile2D &) {
+    return error<IProfile2D>("IProfile2D");
+  }
+
+  /**
+   * Create a Histogram1D by adding two Histogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param hist1 The first member of the addition.
+   * @param hist2 The second member of the addition.
+   * @return      The sum of the two IHistogram1D.
+   *              if a directory in the path does not exist, or the path is
+   *              illegal.
+   */
+  Histogram1D * add(const std::string & path,
+		     const Histogram1D & hist1, const Histogram1D & hist2) {
+    Histogram1D * h = new Histogram1D(hist1);
+    h->setTitle(path.substr(path.rfind('/') + 1));
+    h->add(hist2);
+    if ( !tree->insert(path, h) ) return 0;
+    return h;
+  }
+    
+  /**
+   * Create an IHistogram1D by adding two IHistogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param hist1 The first member of the addition.
+   * @param hist2 The second member of the addition.
+   * @return      The sum of the two IHistogram1D.
+   *              if a directory in the path does not exist, or the path is
+   *              illegal.
+   */
+  IHistogram1D * add(const std::string & path,
+		     const IHistogram1D & hist1, const IHistogram1D & hist2) {
+    return add(path, dynamic_cast<const Histogram1D &>(hist1),
+	       dynamic_cast<const Histogram1D &>(hist2));
+  }
+    
+  /**
+   * Create a Histogram1D by subtracting two Histogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param h1    The first member of the subtraction.
+   * @param h2    The second member of the subtraction.
+   * @return      The difference of the two IHistogram1D.
+   *              if a directory in the path does not exist,
+   *              or the path is illegal.
+   */
+  Histogram1D * subtract(const std::string & path,
+		    const Histogram1D & h1, const Histogram1D & h2) {
+    Histogram1D * h = new Histogram1D(h1);
+    h->setTitle(path.substr(path.rfind('/') + 1));
+    if ( h->ax.upperEdge() != h2.ax.upperEdge() ||
+	 h->ax.lowerEdge() != h2.ax.lowerEdge() ||
+	 h->ax.bins() != h2.ax.bins() ) return 0;
+    for ( int i = 0; i < h->ax.bins() + 2; ++i ) {
+      h->sum[i] += h2.sum[i];
+      h->sumw[i] -= h2.sumw[i];
+      h->sumw2[i] += h2.sumw2[i];
+    }
+    if ( !tree->insert(path, h) ) return 0;
+    return h;
+  }
+
+  /**
+   * Create an IHistogram1D by subtracting two IHistogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param hist1 The first member of the subtraction.
+   * @param hist2 The second member of the subtraction.
+   * @return      The difference of the two IHistogram1D.
+   *              if a directory in the path does not exist,
+   *              or the path is illegal.
+   */
+  IHistogram1D * subtract(const std::string & path, const IHistogram1D & hist1,
+			  const IHistogram1D & hist2) {
+    return subtract(path, dynamic_cast<const Histogram1D &>(hist1),
+		    dynamic_cast<const Histogram1D &>(hist2));
+  }
+
+  /**
+   * Create a Histogram1D by multiplying two Histogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param h1    The first member of the multiplication.
+   * @param h2    The second member of the multiplication.
+   * @return      The product of the two IHistogram1D.
+   *              if a directory in the path does not exist,
+   *              or the path is illegal.
+   *
+   */
+  Histogram1D * multiply(const std::string & path,
+		    const Histogram1D & h1, const Histogram1D & h2) {
+    Histogram1D * h = new Histogram1D(h1);
+    h->setTitle(path.substr(path.rfind('/') + 1));
+    if ( h->ax.upperEdge() != h2.ax.upperEdge() ||
+	 h->ax.lowerEdge() != h2.ax.lowerEdge() ||
+	 h->ax.bins() != h2.ax.bins() ) return 0;
+    for ( int i = 0; i < h->ax.bins() + 2; ++i ) {
+      h->sum[i] *= h2.sum[i];
+      h->sumw[i] *= h2.sumw[i];
+      h->sumw2[i] += h1.sumw[i]*h1.sumw[i]*h2.sumw2[i] +
+	h2.sumw[i]*h2.sumw[i]*h1.sumw2[i];
+    }
+    if ( !tree->insert(path, h) ) return 0;
+    return h;
+  }
+
+  /**
+   * Create an IHistogram1D by multiplying two IHistogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param hist1 The first member of the multiplication.
+   * @param hist2 The second member of the multiplication.
+   * @return      The product of the two IHistogram1D.
+   *              if a directory in the path does not exist,
+   *              or the path is illegal.
+   *
+   */
+  IHistogram1D * multiply(const std::string & path, const IHistogram1D & hist1,
+			  const IHistogram1D & hist2) {
+    return multiply(path, dynamic_cast<const Histogram1D &>(hist1),
+		    dynamic_cast<const Histogram1D &>(hist2));
+  }
+
+  /**
+   * Create n Histogram1D by dividing two Histogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param h1    The first member of the division.
+   * @param h2    The second member of the division.
+   * @return      The ration of the two IHistogram1D.
+   *              if a directory in the path does not exist,
+   *              or the path is illegal.
+   */
+  Histogram1D * divide(const std::string & path,
+		  const Histogram1D & h1, const Histogram1D & h2) {
+    Histogram1D * h = new Histogram1D(h1);
+    h->setTitle(path.substr(path.rfind('/') + 1));
+    if ( h->ax.upperEdge() != h2.ax.upperEdge() ||
+	 h->ax.lowerEdge() != h2.ax.lowerEdge() ||
+	 h->ax.bins() != h2.ax.bins() ) return 0;
+    for ( int i = 0; i < h->ax.bins() + 2; ++i ) {
+      h->sum[i] /= h2.sum[i];
+      h->sumw[i] /= h2.sumw[i];
+      h->sumw2[i] += h1.sumw2[i]/(h2.sumw[i]*h2.sumw[i]) +
+	h1.sumw[i]*h1.sumw[i]*h2.sumw2[i]/
+	           (h2.sumw[i]*h2.sumw[i]*h2.sumw[i]*h2.sumw[i]);
+    }
+    if ( !tree->insert(path, h) ) return 0;
+    return h;
+  }
+
+  /**
+   * Create an IHistogram1D by dividing two IHistogram1D.
+   * @param path  The path of the created IHistogram. The path must be a
+   *              full path.  ("/folder1/folder2/dataName" is a valid
+   *              path). The characther `/` cannot be used in names; it
+   *              is only used to delimit directories within paths.
+   * @param hist1 The first member of the division.
+   * @param hist2 The second member of the division.
+   * @return      The ration of the two IHistogram1D.
+   *              if a directory in the path does not exist,
+   *              or the path is illegal.
+   */
+  IHistogram1D * divide(const std::string & path, const IHistogram1D & hist1,
+			const IHistogram1D & hist2) {
+    return divide(path, dynamic_cast<const Histogram1D &>(hist1),
+		    dynamic_cast<const Histogram1D &>(hist2));
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by adding two IHistogram2D.
+   */
+  IHistogram2D * add(const std::string &,
+		     const IHistogram2D &, const IHistogram2D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by subtracting two IHistogram2D.
+   */
+  IHistogram2D * subtract(const std::string &,
+			  const IHistogram2D &, const IHistogram2D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by multiplying two IHistogram2D.
+   */
+  IHistogram2D * multiply(const std::string &,
+			  const IHistogram2D &, const IHistogram2D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by dividing two IHistogram2D.
+   */
+  IHistogram2D * divide(const std::string &,
+			const IHistogram2D &, const IHistogram2D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram3D by adding two IHistogram3D.
+   */
+  IHistogram3D * add(const std::string &,
+		     const IHistogram3D &, const IHistogram3D &) {
+    return error<IHistogram3D>("3D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram3D by subtracting two IHistogram3D.
+   */
+  IHistogram3D * subtract(const std::string &,
+			  const IHistogram3D &, const IHistogram3D &) {
+    return error<IHistogram3D>("3D histograms");
+  }
+
+  /**
+   *  LWH cannot create an IHistogram3D by multiplying two IHistogram3D.
+   */
+  IHistogram3D * multiply(const std::string &,
+			  const IHistogram3D &, const IHistogram3D &) {
+    return error<IHistogram3D>("3D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram3D by dividing two IHistogram3D.
+   */
+  IHistogram3D * divide(const std::string &,
+			const IHistogram3D &, const IHistogram3D &) {
+    return error<IHistogram3D>("3D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram1D by projecting an IHistogram2D
+   * along its x axis.
+   */
+  IHistogram1D * projectionX(const std::string &, const IHistogram2D &) {
+    return error<IHistogram1D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram1D by projecting an IHistogram2D
+   * along its y axis.
+   */
+  IHistogram1D * projectionY(const std::string &, const IHistogram2D &) {
+    return error<IHistogram1D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram1D by slicing an IHistogram2D
+   * parallel to the y axis at a given bin.
+   */
+  IHistogram1D * sliceX(const std::string &, const IHistogram2D &, int) {
+    return error<IHistogram1D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram1D by slicing an IHistogram2D
+   * parallel to the x axis at a given bin.
+   */
+  IHistogram1D * sliceY(const std::string &, const IHistogram2D &, int) {
+    return error<IHistogram1D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram1D by slicing an IHistogram2D
+   * parallel to the y axis between two bins (inclusive).
+   */
+  IHistogram1D * sliceX(const std::string &, const IHistogram2D &, int, int) {
+    return error<IHistogram1D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram1D by slicing an IHistogram2D
+   * parallel to the x axis between two bins (inclusive).
+   */
+  IHistogram1D * sliceY(const std::string &, const IHistogram2D &, int, int) {
+    return error<IHistogram1D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by projecting an IHistogram3D
+   * on the x-y plane.
+   */
+  IHistogram2D * projectionXY(const std::string &, const IHistogram3D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by projecting an IHistogram3D
+   * on the x-z plane.
+   */
+  IHistogram2D * projectionXZ(const std::string &, const IHistogram3D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by projecting an IHistogram3D
+   * on the y-z plane.
+   */
+  IHistogram2D * projectionYZ(const std::string &, const IHistogram3D &) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by slicing an IHistogram3D
+   * perpendicular to the Z axis, between "index1" and "index2"
+   * (inclusive).
+   */
+  IHistogram2D * sliceXY(const std::string &, const IHistogram3D &, int, int) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   * LWH cannot create an IHistogram2D by slicing an IHistogram3D
+   * perpendicular to the Y axis, between "index1" and "index2"
+   * (inclusive).
+   */
+  IHistogram2D * sliceXZ(const std::string &, const IHistogram3D &, int, int) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
+  /**
+   *  LWH cannot create an IHistogram2D by slicing an IHistogram3D
+   * perpendicular to the X axis, between "index1" and "index2"
+   * (inclusive).
+   */
+  IHistogram2D * sliceYZ(const std::string &, const IHistogram3D &, int, int) {
+    return error<IHistogram2D>("2D histograms");
+  }
+
 
 private:
 
-  /**
-   * Together with theSuffix, the name of the file where the resulting
-   * histograms will be stored. If empty, generator()->filename() will
-   * be used instead.
-   */
-  string theFilename;
+  /** Throw a suitable error. */
+  template <typename T>
+  static T * error(std::string feature) {
+    throw std::runtime_error("LWH cannot handle " + feature + ".");
+    return 0;
+  }
 
-  /**
-   * Together with theFilename, the name of the file where the
-   * resulting histograms will be stored.
-   */
-  string theSuffix;
-
-  /**
-   * The format in which the histograms are stored in the output file.
-   */
-  string theStoreType;
-
-  /**
-   * A pointer to the underlying AIDA::IAnalysisFactory object.
-   */
-  AIDA::IAnalysisFactory * theAnalysisFactory;
-
-  /**
-   * A pointer to the underlying AIDA::ITree object.
-   */
-  AIDA::ITree * theTree;
-
-  /**
-   * A pointer to the underlying AIDA::IHistogramFactory object.
-   */
-  AIDA::IHistogramFactory * theHistogramFactory;
-
-  /**
-   * A set of client objects which have required histograms from this
-   * factory.
-   */
-  set<IPtr> clients;
-
-private:
-
-  /**
-   * The static object used to initialize the description of this class.
-   * Indicates that this is an abstract class with persistent data.
-   */
-  static AbstractClassDescription<HistogramFactory> initHistogramFactory;
-
-  /**
-   * The assignment operator is private and must never be called.
-   * In fact, it should not even be implemented.
-   */
-  HistogramFactory & operator=(const HistogramFactory &);
+  /** The tree where the actual histograms are stored. */
+  Tree * tree;
 
 };
 
 }
 
-#include "ThePEG/Utilities/ClassTraits.h"
-
-namespace ThePEG {
-
-/** @cond TRAITSPECIALIZATIONS */
-
-/** This template specialization informs ThePEG about the
- *  base classes of HistogramFactory. */
-template <>
-struct BaseClassTrait<HistogramFactory,1> {
-  /** Typedef of the first base class of HistogramFactory. */
-  typedef Interfaced NthBase;
-};
-
-/** This template specialization informs ThePEG about the name of
- *  the HistogramFactory class and the shared object where it is defined. */
-template <>
-struct ClassTraits<HistogramFactory>
-  : public ClassTraitsBase<HistogramFactory> {
-  /** Return a platform-independent class name */
-  static string className() { return "ThePEG::HistogramFactory"; }
-};
-
-/** @endcond */
-
-}
-
-#include "HistogramFactory.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HistogramFactory.tcc"
-#endif
-
-#endif /* THEPEG_HistogramFactory_H */
+#endif /* LWH_HistogramFactory_H */

@@ -1,17 +1,17 @@
 // -*- C++ -*-
 //
 // This is the implementation of the non-inlined, non-templated member
-// functions of the HistogramFactory class.
+// functions of the FactoryBase class.
 //
 
-#include "HistogramFactory.h"
+#include "FactoryBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Config/algorithm.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HistogramFactory.tcc"
+// #include "FactoryBase.tcc"
 #endif
 
 #include "ThePEG/Persistency/PersistentOStream.h"
@@ -19,25 +19,25 @@
 
 using namespace ThePEG;
 
-HistogramFactory::~HistogramFactory() {}
+FactoryBase::~FactoryBase() {}
 
-void HistogramFactory::clear() {
-  if ( theHistogramFactory ) delete theHistogramFactory;
-  if ( theTree ) delete theTree;
+void FactoryBase::clear() {
+  //  if ( theHistogramFactory ) delete theHistogramFactory;
+  //  if ( theTree ) delete theTree;
   if ( theAnalysisFactory ) delete theAnalysisFactory;
   theHistogramFactory = 0;
   theTree = 0;
   theAnalysisFactory = 0;
 }
 
-void HistogramFactory::dofinish() {
+void FactoryBase::dofinish() {
   Interfaced::dofinish();
   for_each(clients, mem_fun(&InterfacedBase::finish));
   tree().commit();
   clear();
 }
 
-void HistogramFactory::doinitrun() {
+void FactoryBase::doinitrun() {
   Interfaced::doinitrun();
   string file = filename();
   if ( file == "" ) file = generator()->filename();
@@ -48,45 +48,45 @@ void HistogramFactory::doinitrun() {
   theHistogramFactory = analysisFactory().createHistogramFactory(tree());
 }
 
-void HistogramFactory::persistentOutput(PersistentOStream & os) const {
+void FactoryBase::persistentOutput(PersistentOStream & os) const {
   os << theFilename << theSuffix << theStoreType;
 }
 
-void HistogramFactory::persistentInput(PersistentIStream & is, int) {
+void FactoryBase::persistentInput(PersistentIStream & is, int) {
   clear();
   is >> theFilename >> theSuffix >> theStoreType;
 }
 
-AbstractClassDescription<HistogramFactory>
-HistogramFactory::initHistogramFactory;
+AbstractClassDescription<FactoryBase>
+FactoryBase::initFactoryBase;
 // Definition of the static class description member.
 
-void HistogramFactory::Init() {
+void FactoryBase::Init() {
 
-  static ClassDocumentation<HistogramFactory> documentation
-    ("There is no documentation for the HistogramFactory class");
+  static ClassDocumentation<FactoryBase> documentation
+    ("There is no documentation for the FactoryBase class");
 
 
-  static Parameter<HistogramFactory,string> interfaceFilename
+  static Parameter<FactoryBase,string> interfaceFilename
     ("Filename",
      "Together with <interface>Suffix</interface>, the name of the file "
      "where the resulting histograms will be stored. If empty, the run-name "
      "provided by the current EventGenerator will be used instead.",
-     &HistogramFactory::theFilename, "",
+     &FactoryBase::theFilename, "",
      true, false);
 
-  static Parameter<HistogramFactory,string> interfaceSuffix
+  static Parameter<FactoryBase,string> interfaceSuffix
     ("Suffix",
      "Together with <interface>Filename</interface>, the name of the file "
      "where the resulting histograms will be stored.",
-     &HistogramFactory::theSuffix, "aida",
+     &FactoryBase::theSuffix, "aida",
      true, false);
 
-  static Parameter<HistogramFactory,string> interfaceStoreType
+  static Parameter<FactoryBase,string> interfaceStoreType
     ("StoreType",
      "The format in which the histograms are stored in the output file. "
      "The allowed values depend on the actual AIDA implementation used.",
-     &HistogramFactory::theStoreType, "xml",
+     &FactoryBase::theStoreType, "xml",
      true, false);
 
 }

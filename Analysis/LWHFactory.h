@@ -5,13 +5,13 @@
 // This is the declaration of the LWHFactory class.
 //
 
-#include "ThePEG/Analysis/HistogramFactory.h"
+#include "ThePEG/Analysis/FactoryBase.h"
 
 namespace ThePEG {
 
 /**
  * Here is the documentation of the LWHFactory class. It inherits from
- * the abstract HistogramFactory class and implements the Light-Weight
+ * the abstract FactoryBase class and implements the Light-Weight
  * Histogram package, LWH. This implements the most rudimentary
  * histogramming facilities according to the <a
  * href="http://aida.freehep.org">AIDA</a> interface
@@ -26,7 +26,7 @@ namespace ThePEG {
  * @see \ref LWHFactoryInterfaces "The interfaces"
  * defined for LWHFactory.
  */
-class LWHFactory: public HistogramFactory {
+class LWHFactory: public FactoryBase {
 
 public:
 
@@ -134,7 +134,7 @@ namespace ThePEG {
 template <>
 struct BaseClassTrait<LWHFactory,1> {
   /** Typedef of the first base class of LWHFactory. */
-  typedef HistogramFactory NthBase;
+  typedef FactoryBase NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of
