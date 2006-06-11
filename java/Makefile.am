@@ -17,7 +17,7 @@ dist_noinst_DATA = $(JAVASOURCES) jar-manifest
 
 dist_noinst_SCRIPTS = thepeg.install
 
-nodist_bin_SCRIPTS = thepeg.sh
+nodist_noinst_SCRIPTS = thepeg.sh
 
 clean-local:
 	rm -rf ThePEG
@@ -43,5 +43,7 @@ check-local:
 	$(JAVA) -jar ThePEG.jar --classcheck
 
 installcheck-local:
-	$(DESTDIR)$(bindir)/thepeg.sh --classcheck
+	$(DESTDIR)$(bindir)/thepeg --classcheck
 
+install-data-local:
+	$(INSTALL) thepeg.sh $(DESTDIR)$(bindir)/thepeg

@@ -1,5 +1,9 @@
 2006-06-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* java/Makefile.am: Changed the name 'thepeg.sh' to 'thepeg' for
+	the script which is catually installed, while keeping 'thepeg.sh'
+	as name of the script in the local directory.
+
 	* Repository/EventGenerator.cc: Now correctly includes
 	FactoryBase.h instead of old HistogramFactory.h
 
