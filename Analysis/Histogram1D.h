@@ -392,15 +392,19 @@ public:
        << "\">\n      <statistic mean=\"" << mean()
        << "\" direction=\"x\"\n        rms=\"" << rms()
        << "\"/>\n    </statistics>\n    <data1d>\n";
-    for ( int i = 2; i < ax.bins() + 2; ++i ) if ( sum[i] )
-      os << "      <bin1d binNum=\"" << i - 2
-	 << "\" entries=\"" << sum[i]
+    for ( int i = 0; i < ax.bins() + 2; ++i ) if ( sum[i] ) {
+      os << "      <bin1d binNum=\"";
+      if ( i == 0 ) os << "UNDERFLOW";
+      else if ( i == 1 ) os << "OVERFLOW";
+      else os << i - 2;
+      os << "\" entries=\"" << sum[i]
 	 << "\" height=\"" << sumw[i]
 	 << "\"\n        error=\"" << std::sqrt(sumw2[i])
 	 << "\" error2=\"" << sumw2[i]
 	 << "\"\n        weightedMean=\"" << binMean(i - 2)
 	 << "\" weightedRms=\"" << binRms(i - 2)
 	 << "\"/>\n";
+    }
     os << "    </data1d>\n  </histogram1d>" << std::endl;
     return true;
   }

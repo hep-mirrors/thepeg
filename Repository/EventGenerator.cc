@@ -23,7 +23,7 @@
 #include "ThePEG/Repository/Strategy.h"
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
-#include "ThePEG/Analysis/HistogramFactory.h"
+#include "ThePEG/Analysis/FactoryBase.h"
 #include "ThePEG/Handlers/EventManipulator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/EventRecord/Event.h"

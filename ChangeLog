@@ -1,3 +1,8 @@
+2006-06-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.cc: Now correctly includes
+	FactoryBase.h instead of old HistogramFactory.h
+
 2006-06-07  David  Grellscheid <david.grellscheid@durham.ac.uk>
 
 	* java/Makefile.am: Changed name 'thepeg' to 'thepeg.sh' to avoid
