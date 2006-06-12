@@ -135,8 +135,8 @@ inline LorentzRotation & LorentzRotation::setRotateY (double angle)
 // Specify a rotation by the given angle about the z-axis
 inline LorentzRotation & LorentzRotation::setRotateZ (double angle)
 {
-  _half.setRotateY(angle);
-  _one.set(HepRotationY(angle));
+  _half.setRotateZ(angle);
+  _one.set(HepRotationZ(angle));
   return *this;
 }
 
