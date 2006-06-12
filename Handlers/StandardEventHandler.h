@@ -26,7 +26,7 @@ namespace ThePEG {
  * dofinish() method statistics is written out to the EventGenerators
  * default output file.
  *
- * @see \ref EventHandlerInterfaces "The interfaces"
+ * @see \ref StandardEventHandlerInterfaces "The interfaces"
  * defined for StandardEventHandler.
  * @see EventHandler
  * @see EventGenerator
