@@ -112,6 +112,13 @@ public:
   /** @name Functions to access histograms. */
   //@{
   /**
+   * Check if the associated EventGenerator has been assigned a
+   * histogram factory. If \a warn is true also emit a warning saying
+   * that no histograms will be generated.
+   */
+  bool checkHistogramFactory(bool warn = false) const;
+
+  /**
    * Access the HistogramFactory from the EventGenerator.
    */
   FactoryBase & histogramFactory();
@@ -220,6 +227,11 @@ private:
    */
   AnalysisVector theSlaves;
   //@}
+
+public:
+
+  /** Exception class used if no histogram factory was found. */
+  class NoHistFactory: public InitException {};
 
 private:
 

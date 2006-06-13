@@ -20,6 +20,16 @@ using namespace ThePEG;
 
 AnalysisHandler::~AnalysisHandler() {}
 
+bool AnalysisHandler::checkHistogramFactory(bool warn) const {
+  if ( generator()->histogramFactory() ) return true;
+  if ( warn ) generator()->logWarning(
+    NoHistFactory() << "No histogram factory was assigned to the "
+    << "EventGenerator, hence no histograms will be produced by "
+    << name() << "." << Exception::warning);
+  return false;
+}
+
+
 FactoryBase & AnalysisHandler::histogramFactory() {
   return *(generator()->histogramFactory());
 }

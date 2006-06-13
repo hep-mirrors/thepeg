@@ -60,6 +60,12 @@ FactoryBase::createHistogram1D(string path, int nb, double lo, double up) {
   return histogramFactory().createHistogram1D(path, nb, lo, up);
 }
 
+inline FactoryBase::tH1DPtr
+FactoryBase::
+createHistogram1D(string path, string title, int nb, double lo, double up) {
+  return histogramFactory().createHistogram1D(path, title, nb, lo, up);
+}
+
 inline void FactoryBase::registerClient(tIPtr client) {
   initrun();
   clients.insert(client);

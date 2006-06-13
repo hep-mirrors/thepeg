@@ -131,12 +131,31 @@ public:
    * "/dir/subdir/histogramname"). Not that the directory part of the
    * path typically must already exist in the tree. The directories
    * can be created with mkdir(string) or mkdirs(string).
+   * The title of the histogram will be set to the name part of the path.
    * @param nb the number of bins in the histogram.
    * @param lo the lower edge of the histogram.
    * @param up the upper edge of the histogram.
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
   inline tH1DPtr createHistogram1D(string path, int nb, double lo, double up);
+
+  /**
+   * Create and return a AIDA::IHistogram1D object in the underlying
+   * AIDA histogram factory. Note that the histogram factory is
+   * responsible for deleting this histogram.
+   * @param path the full path of where the histogram should be placed
+   * in the underlying AIDA tree (on the form
+   * "/dir/subdir/histogramname"). Not that the directory part of the
+   * path typically must already exist in the tree. The directories
+   * can be created with mkdir(string) or mkdirs(string).
+   * @param title the title of the histogram.
+   * @param nb the number of bins in the histogram.
+   * @param lo the lower edge of the histogram.
+   * @param up the upper edge of the histogram.
+   * @return a pointer to the created AIDA::IHistogram1D object.
+   */
+  inline tH1DPtr createHistogram1D(string path, string title, int nb,
+				   double lo, double up);
 
   /**
    * Used by a \a client object to indicate that he has required

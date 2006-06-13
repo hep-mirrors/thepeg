@@ -1,3 +1,14 @@
+2006-06-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* include/Makefile.am: All needed subdirectory links are now
+	separate targets.
+
+	* Handlers/AnalysisHandler.*: Added function to check if the
+	EventGenerator has a histogram factory.
+
+	* Analysis/FactoryBase.*: Added member function to create
+	histogram with separate title.
+
 2006-06-12  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* CLHEPWrap/LorentzRotation.icc: fix to setRotateZ which was rotating

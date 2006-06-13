@@ -1,6 +1,6 @@
 BUILT_SOURCES = done-all-links
-CLEANFILES = done-all-links \
-ThePEG/Repository \
+
+LINK_FILES = ThePEG/Repository \
 ThePEG/EventRecord \
 ThePEG/Pointer \
 ThePEG/StandardModel \
@@ -19,30 +19,29 @@ ThePEG/MatrixElement \
 ThePEG/Cuts \
 ThePEG/Analysis  
 
+CLEANFILES = done-all-links $(LINK_FILES)
+
 ## replace ThePEG with $(PACKAGE)
 ## replace find with explicit list of directories
 
-my_directories=Repository EventRecord \
-Pointer StandardModel CLHEPWrap PDT ACDC Interface Handlers \
-LesHouches Config Persistency PDF Helicity Utilities MatrixElement Cuts \
-Analysis
+done-all-links: $(LINK_FILES)
 
-done-all-links:
+$(LINK_FILES):
 @EMPTY@ifdef SHOWCOMMAND
 	mkdir -p ThePEG
 	cd ThePEG; \
-	for i in $(my_directories); \
+	for i in $(LINK_FILES); \
 	do \
-	$(LN_S) -f ../$(top_srcdir)/$$i ; \
+	$(LN_S) -f ../$(top_srcdir)/`basename $$i` ; \
 	done
 	echo "stamp" > done-all-links
 @EMPTY@else
 	@echo "sym-linking header files..."
 	@mkdir -p ThePEG
 	@cd ThePEG; \
-	for i in $(my_directories); \
+	for i in $(LINK_FILES); \
 	do \
-	$(LN_S) -f ../$(top_srcdir)/$$i ; \
+	$(LN_S) -f ../$(top_srcdir)/`basename $$i` ; \
 	done
 	@echo "stamp" > done-all-links
 @EMPTY@endif
