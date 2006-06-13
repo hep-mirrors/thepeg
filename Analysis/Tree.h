@@ -290,7 +290,7 @@ public:
       else
 	o->writeXML(of, path, name);
     }
-    of << "</aida>" << std::endl;
+    if ( !flat ) of << "</aida>" << std::endl;
     return of.good();
   }
 

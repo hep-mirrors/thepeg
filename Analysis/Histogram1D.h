@@ -411,11 +411,12 @@ public:
 
 
   bool writeFLAT(std::ostream & os, std::string path, std::string name) {
-    os << "# " << title() << " " << path << " " << name << " " << ax.lowerEdge()
-       << " " << ax.bins() << " " << ax.upperEdge() << std::endl;
+    os << "# " << path << "/" << name << " " << ax.lowerEdge()
+       << " " << ax.bins() << " " << ax.upperEdge()
+       << " \"" << title() << " \"" << std::endl;
     for ( int i = 2; i < ax.bins() + 2; ++i )
-      os << binMean(i - 2) << " " << sum[i] << " "
-	 << sumw[i] << " " << sqrt(sumw2[i]) << std::endl;
+      os << binMean(i - 2) << " "
+	 << sumw[i] << " " << sqrt(sumw2[i]) << " " << sum[i] << std::endl;
     os << std::endl;
     return true;
   }
