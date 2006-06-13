@@ -1,36 +1,36 @@
 BUILT_SOURCES = done-all-links
 
-LINK_FILES = ThePEG/Repository \
-ThePEG/EventRecord \
-ThePEG/Pointer \
-ThePEG/StandardModel \
-ThePEG/CLHEPWrap \
-ThePEG/PDT \
-ThePEG/ACDC \
-ThePEG/Interface \
-ThePEG/Handlers \
-ThePEG/LesHouches \
-ThePEG/Config \
-ThePEG/Persistency \
-ThePEG/PDF \
-ThePEG/Helicity \
-ThePEG/Utilities \
-ThePEG/MatrixElement \
-ThePEG/Cuts \
-ThePEG/Analysis  
+DIRLINKS = ThePEG/Repository \
+           ThePEG/EventRecord \
+           ThePEG/Pointer \
+           ThePEG/StandardModel \
+           ThePEG/CLHEPWrap \
+           ThePEG/PDT \
+           ThePEG/ACDC \
+           ThePEG/Interface \
+           ThePEG/Handlers \
+           ThePEG/LesHouches \
+           ThePEG/Config \
+           ThePEG/Persistency \
+           ThePEG/PDF \
+           ThePEG/Helicity \
+           ThePEG/Utilities \
+           ThePEG/MatrixElement \
+           ThePEG/Cuts \
+           ThePEG/Analysis  
 
-CLEANFILES = done-all-links $(LINK_FILES)
+CLEANFILES = done-all-links $(DIRLINKS)
 
 ## replace ThePEG with $(PACKAGE)
 ## replace find with explicit list of directories
 
-done-all-links: $(LINK_FILES)
+done-all-links: $(DIRLINKS)
 
-$(LINK_FILES):
+$(DIRLINKS):
 @EMPTY@ifdef SHOWCOMMAND
 	mkdir -p ThePEG
 	cd ThePEG; \
-	for i in $(LINK_FILES); \
+	for i in $(DIRLINKS); \
 	do \
 	$(LN_S) -f ../$(top_srcdir)/`basename $$i` ; \
 	done
@@ -39,7 +39,7 @@ $(LINK_FILES):
 	@echo "sym-linking header files..."
 	@mkdir -p ThePEG
 	@cd ThePEG; \
-	for i in $(LINK_FILES); \
+	for i in $(DIRLINKS); \
 	do \
 	$(LN_S) -f ../$(top_srcdir)/`basename $$i` ; \
 	done
