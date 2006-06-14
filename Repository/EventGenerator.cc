@@ -682,8 +682,8 @@ void EventGenerator::Init() {
 
   static Reference<EventGenerator,FactoryBase> interfaceHistogramFactory
     ("HistogramFactory",
-     "An associated factory objects for handling histograms to be used by "
-     "<interface>AnalysisHandlers</interfaced>.",
+     "An associated factory object for handling histograms to be used by "
+     "<interface>AnalysisHandlers</interface>.",
      &EventGenerator::theHistogramFactory, true, false, true, true, true);
 
   static Reference<EventGenerator,EventManipulator> interfaceEventManip

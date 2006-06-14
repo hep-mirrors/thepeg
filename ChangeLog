@@ -1,3 +1,8 @@
+2006-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.cc, Analysis/Tree.h,
+	Analysis/FactoryBase.h, Analysis/Axis.h: Fixed doxygen comments.
+
 2006-06-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/Tree.h, Analysis/Histogram1D.h: Modified flat output to

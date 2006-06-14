@@ -209,7 +209,7 @@ public:
 
   /**
    * Remove a directory and all the contents underneeth.
-   * @param path The absolute or relative path of the directory to be removed.
+   * @param dir The absolute or relative path of the directory to be removed.
    * @return false If path does not exist or if it is not
    *             a directory or if the directory is not empty.
    */

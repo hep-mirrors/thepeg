@@ -118,7 +118,7 @@ public:
   inline void mkdirs(string);
 
   /**
-   * Set the default working directory for the underlying AIDA tree..
+   * Set the default working directory for the underlying AIDA tree.
    */
   inline void cd(string);
 

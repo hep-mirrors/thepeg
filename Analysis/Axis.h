@@ -101,7 +101,7 @@ public:
    * @return      The width of the corresponding bin.
    *
    */ 
-  double binWidth(int) const {
+  double binWidth(int index) const {
     return (upper - lower)/double(nbins);
   }
 
