@@ -10,14 +10,17 @@ AC_CONFIG_HEADERS([Config/config.h])
 AC_CANONICAL_HOST
 
 case "${host}" in
-  *-darwin[[0156]].*)
+  *-darwin[[0156]].*) 
     AC_MSG_ERROR([ThePEG requires OS X 10.3 or later])
     ;;
-  *-darwin*)
-    if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then
-      AC_MSG_ERROR([Please export the MACOSX_DEPLOYMENT_TARGET variable, set to\
- 10.3])
-    fi
+  *-darwin7.*)
+    MACOSX_DEPLOYMENT_TARGET=10.3
+    AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
+    ;;	
+  *-darwin8.*)
+    MACOSX_DEPLOYMENT_TARGET=10.4
+    AC_SUBST(MACOSX_DEPLOYMENT_TARGET)
+    ;;	
 esac
 
 
