@@ -403,6 +403,12 @@ public:
 protected:
 
   /**
+   * Check if there has been an interrupt signal from the OS.
+   * If that's the case, finalize() is called
+   */
+  void checkSignalState();
+
+  /**
    * Return a reference to the default RandomGenerator object in this
    * run.
    */

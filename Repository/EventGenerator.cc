@@ -34,12 +34,34 @@
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include <cstdlib>
 #include "ThePEG/Repository/Main.h"
+#include <csignal>
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "EventGenerator.tcc"
 #endif
 
 using namespace ThePEG;
+
+namespace {
+  volatile sig_atomic_t THEPEG_SIGNAL_STATE = 0;
+}
+
+// signal handler function
+// very restricted in what it is allowed do
+// without causing undefined behaviour
+extern "C" {
+  void thepegSignalHandler(int id) {
+    THEPEG_SIGNAL_STATE=id;
+    signal(id,SIG_DFL);
+  }
+}
+
+void EventGenerator::checkSignalState() {
+  if (THEPEG_SIGNAL_STATE) {
+    finalize();
+    exit(0);
+  }
+}
 
 EventGenerator::EventGenerator()
   : thePath("."), theNumberOfEvents(1000), theQuickSize(7000), ieve(0),
@@ -143,6 +165,9 @@ void EventGenerator::doinit() throw (InitException) {
 }
 
 void EventGenerator::doinitrun() {
+  signal(SIGHUP, thepegSignalHandler);
+  signal(SIGINT, thepegSignalHandler);
+  signal(SIGTERM,thepegSignalHandler);
 
   Interfaced::doinitrun();
   random().initrun();
@@ -231,6 +256,7 @@ void EventGenerator::go(long next, long maxevent, bool tics) {
 EventPtr EventGenerator::shoot() {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
+  checkSignalState();
   return doShoot();
 }
 
