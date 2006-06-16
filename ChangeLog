@@ -8,6 +8,9 @@
 	
 2006-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* StandardModel/StandardCKM.cc: Fixed wrong member variable in
+	theta_23 interface.
+
 	* Repository/EventGenerator.cc, Analysis/Tree.h,
 	Analysis/FactoryBase.h, Analysis/Axis.h: Fixed doxygen comments.
 

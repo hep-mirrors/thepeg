@@ -89,7 +89,7 @@ void StandardCKM::Init() {
     ("theta_23",
      "The mixing angle between the second and third generation in the standard "
      "parameterization of the CKM matrix",
-     &StandardCKM::theta12, 0.039009, 0.0, twopi, false, false, true);
+     &StandardCKM::theta23, 0.039009, 0.0, twopi, false, false, true);
 
   static Parameter<StandardCKM,double> interfaceDelta
     ("delta",
