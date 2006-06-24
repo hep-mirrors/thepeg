@@ -1,3 +1,8 @@
+2006-06-24  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Repository/EventGenerator.cc: ieve added to copy
+	constructor; undefined value was written into the repository
+
 2006-06-15  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Repository/EventGenerator.{h,cc}: Added signal handling

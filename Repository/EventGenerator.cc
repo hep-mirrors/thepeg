@@ -83,7 +83,7 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theObjectMap(eg.theObjectMap),
     theParticles(eg.theParticles), theQuickParticles(eg.theQuickParticles),
     theQuickSize(eg.theQuickSize), theMatchers(eg.theMatchers),
-    usedObjects(eg.usedObjects), theDebugLevel(eg.theDebugLevel),
+    usedObjects(eg.usedObjects), ieve(eg.ieve), theDebugLevel(eg.theDebugLevel),
     printEvent(eg.printEvent), dumpPeriod(eg.dumpPeriod),
     debugEvent(eg.debugEvent),
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
