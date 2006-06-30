@@ -29,7 +29,8 @@ IBPtr O1AlphaS::fullclone() const {
 }
 
 double O1AlphaS::value(Energy2 scale, const StandardModelBase &) const {
-  return 12.0*pi/((33.0-2.0*Nf(scale))*log(scale/sqr(LambdaQCD(Nf(scale)))));
+  return 12.0*pi/((33.0-2.0*Nf(scale))*
+		  log(max(scale, sqr(Q0))/sqr(LambdaQCD(Nf(scale)))));
 }
 
 vector<Energy2> O1AlphaS::flavourThresholds() const {
@@ -38,35 +39,37 @@ vector<Energy2> O1AlphaS::flavourThresholds() const {
     PDPtr p = getParticleData(f);
     if ( p ) thresholds.push_back(sqr(p->mass() + p->CC()->mass()));
   }
+  std::sort(thresholds.begin(), thresholds.end());
   return thresholds;
 }
 
 vector<Energy> O1AlphaS::LambdaQCDs() const {
-  vector<Energy> lambdas(theMaxFlav);
+  vector<Energy> lambdas(theMaxFlav + 1);
   vector<Energy2> thresholds = flavourThresholds();
-  lambdas[theLambdaFlavour - 1] = theLambdaQCD;
-  for ( unsigned int f = theLambdaFlavour - 1; f > 1; --f ) {
-    lambdas[f-1] =
-      sqrt(thresholds[f]*
-	   exp(-log(thresholds[f]/sqr(lambdas[f]))*
-	       (33.0-2.0*(f+1))/(33.0-2.0*f)));
-  }
-  lambdas[0] = lambdas[1];
-  for ( unsigned int f = theLambdaFlavour; f < theMaxFlav; ++f ) {
+  lambdas[theLambdaFlavour] = theLambdaQCD;
+  for ( int f = theLambdaFlavour - 1; f >= 0; --f ) {
     lambdas[f] =
       sqrt(thresholds[f]*
-	   exp(-log(thresholds[f]/sqr(lambdas[f-1]))*
+	   exp(-log(thresholds[f]/sqr(lambdas[f + 1]))*
+	       (33.0-2.0*(f+1))/(33.0-2.0*f)));
+  }
+  for ( unsigned int f = theLambdaFlavour; f < theMaxFlav; ++f ) {
+    lambdas[f + 1] =
+      sqrt(thresholds[f]*
+	   exp(-log(thresholds[f]/sqr(lambdas[f]))*
 	       (33.0-2.0*f)/(33.0-2.0*(f+1))));
   }
   return lambdas;
 }  
 
 void O1AlphaS::persistentOutput(PersistentOStream & os) const {
-  os << ounit(theLambdaQCD, GeV) << theLambdaFlavour << theMaxFlav;
+  os << ounit(theLambdaQCD, GeV) << theLambdaFlavour << theMaxFlav
+     << ounit(Q0, GeV);
 }
 
 void O1AlphaS::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(theLambdaQCD, GeV) >> theLambdaFlavour >> theMaxFlav;
+  is >> iunit(theLambdaQCD, GeV) >> theLambdaFlavour >> theMaxFlav
+     >> iunit(Q0, GeV);
 }
 
 ClassDescription<O1AlphaS> O1AlphaS::initO1AlphaS;
@@ -74,7 +77,13 @@ ClassDescription<O1AlphaS> O1AlphaS::initO1AlphaS;
 void O1AlphaS::Init() {
 
    static ClassDocumentation<O1AlphaS> documentation
-    ("There is no documentation for the ThePEG::O1AlphaS class");
+    ("O1AlphaS inherits from AlphaSBase and implements the leading order "
+     "running QCD coupling. The value is determined by the "
+     "<interface>LambdaQCD</interface> parameter at a given number of "
+     "flavours, <interface>LambdaFlav</interface>. Optionally the coupling "
+     "can be frozen under some minimum scale, "
+     "<interface>FreezeScale</interface> to avoid divergencies or negative "
+     "couplings.");
 
    static Parameter<O1AlphaS,Energy> interfaceLambdaQCD
      ("LambdaQCD",
@@ -82,8 +91,8 @@ void O1AlphaS::Init() {
       "<interface>LambdaFlav</interface> active "
       "flavours. The value for other numbers of active flavours is derived by "
       "assuming that \\f$\\alpha_S\\f$ is continuous.",
-      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 10.0*GeV,
-      false, false, true);
+      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 0.0*GeV,
+      false, false, Interface::lowerlim);
 
    static Parameter<O1AlphaS,unsigned int> interfaceMaxFlav
      ("MaxFlav",
@@ -100,9 +109,15 @@ void O1AlphaS::Init() {
      false, false, true, (IFN)0, 0, 0,
      &O1AlphaS::getMaxFlav, 0);
 
+  static Parameter<O1AlphaS,Energy> interfaceFreezeScale
+    ("FreezeScale",
+     "The scale in units of GeV below which \\f$\\alpha_S\\f$ is frozen.",
+     &O1AlphaS::Q0, GeV, 0.0*GeV, 0.0*GeV, 0*GeV,
+     true, false, Interface::lowerlim);
+
   interfaceLambdaQCD.rank(10);
   interfaceLambdaFlavour.rank(9);
-  interfaceMaxFlav.rank(8);
+  interfaceFreezeScale.rank(8);
 
 }
 

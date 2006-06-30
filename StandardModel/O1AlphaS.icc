@@ -7,11 +7,11 @@
 namespace ThePEG {
 
 inline O1AlphaS::O1AlphaS()
-: theLambdaQCD(0.25*GeV), theLambdaFlavour(4), theMaxFlav(6) {}
+: theLambdaQCD(0.25*GeV), theLambdaFlavour(4), theMaxFlav(6), Q0(0.0*GeV) {}
 
 inline O1AlphaS::O1AlphaS(const O1AlphaS & x)
   : AlphaSBase(x), theLambdaQCD(x.theLambdaQCD),
-    theLambdaFlavour(x.theLambdaFlavour), theMaxFlav(x.theMaxFlav) {}
+    theLambdaFlavour(x.theLambdaFlavour), theMaxFlav(x.theMaxFlav), Q0(x.Q0) {}
 
 inline unsigned int O1AlphaS::getMaxFlav() const {
   return theMaxFlav;

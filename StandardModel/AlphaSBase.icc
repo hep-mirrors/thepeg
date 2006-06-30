@@ -20,7 +20,7 @@ inline unsigned int AlphaSBase::Nf(Energy2 scale) const {
 }
 
 inline Energy AlphaSBase::LambdaQCD(unsigned int nflav) const {
-  return theLambdaQCDs[nflav-1];
+  return theLambdaQCDs[nflav];
 }
 
 inline void AlphaSBase::doupdate() throw(UpdateException) {

@@ -11,7 +11,10 @@ namespace ThePEG {
 
 /**
  * O1AlphaS inherits from AlphaSBase and implements the leading order
- * running QCD coupling.
+ * running QCD coupling. The value is determined by a
+ * \f$\Lambda_{QCD}\f$ parameter at a given number of
+ * flavours. Optionally the coupling can be frozen under some minimum
+ * scale to avoid divergencies or negative couplings.
  *
  * @see \ref O1AlphaSInterfaces "The interfaces"
  * defined for O1AlphaS.
@@ -92,9 +95,6 @@ public:
 
 protected:
 
-
-protected:
-
   /** @name Clone Methods. */
   //@{
   /**
@@ -172,6 +172,11 @@ private:
    * The maximum number of active flavours.
    */
   unsigned int theMaxFlav;
+
+  /**
+   * The scale below which \f$\alpha_S\f$ is frozen.
+   */
+  Energy Q0;
 
 private:
 
