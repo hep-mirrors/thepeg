@@ -86,6 +86,20 @@ bool ME2to2Base::generateKinematics(const double * r) {
     ctmax = min(ctmax, sqrt(ctm));
   }
 
+  double ymin2 = lastCuts().minYStar(mePartonData()[2]);
+  double ymax2 = lastCuts().maxYStar(mePartonData()[2]);
+  double ymin3 = lastCuts().minYStar(mePartonData()[3]);
+  double ymax3 = lastCuts().maxYStar(mePartonData()[3]);
+  double ytot = lastCuts().Y() + lastCuts().currentYHat();
+  if ( ymin2 + ytot > -0.9*Constants::MaxRapidity )
+    ctmin = max(ctmin, sqrt(sqr(q) +  m22)*tanh(ymin2)/q);
+  if ( ymax2 + ytot < 0.9*Constants::MaxRapidity )
+    ctmax = min(ctmax, sqrt(sqr(q) +  m22)*tanh(ymax2)/q);
+  if ( ymin3 + ytot > -0.9*Constants::MaxRapidity )
+    ctmax = min(ctmax, sqrt(sqr(q) +  m32)*tanh(-ymin3)/q);
+  if ( ymax3 + ytot < 0.9*Constants::MaxRapidity )
+    ctmin = max(ctmin, sqrt(sqr(q) +  m32)*tanh(-ymax3)/q);
+
   if ( ctmin >= ctmax ) return false;
     
   double cth = getCosTheta(ctmin, ctmax, r);

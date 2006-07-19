@@ -24,6 +24,7 @@
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Handlers/CascadeHandler.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/EventRecord/TmpTransform.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "StandardXComb.tcc"
@@ -110,8 +111,8 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   if ( lastSHat()  < cuts()->sHatMin() ) return zero;
 
-  lastY(0.5*(partonBinInstances().first->l() -
-	     partonBinInstances().second->l()));
+  lastY(0.5*(partonBinInstances().second->l() -
+	     partonBinInstances().first->l()));
   if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) return zero;
 
   meMomenta().resize(mePartonData().size());
@@ -223,6 +224,8 @@ tSubProPtr StandardXComb::construct() {
 
   newSubProcess();
 
+  TmpTransform<tSubProPtr>
+    tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
   if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
 
   return subProcess();

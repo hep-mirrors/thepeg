@@ -1,3 +1,14 @@
+2006-07-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StandardXComb.cc: Fixed bug where the rapidity reported
+	to eg. the Cuts object was reversed. Also fixed bug where the
+	"post-cut" checking of the SubProcess was made in the collision
+	frame rather than in the SubProcess cm frame.
+
+	* MatrixElement/ME2to2Base.cc: The phase space generation now
+	takes into account possible rapidity cuts. Compiles and runs but
+	should be tested more.
+
 2006-07-19  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* configure.ac: more automated OS X variable detection didn't
