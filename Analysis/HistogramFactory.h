@@ -141,7 +141,7 @@ public:
     if ( !tree->insert(path, hist) ) {
       delete hist;
       hist = 0;
-      throw std::runtime_error("LWH ccould not create histogram '"
+      throw std::runtime_error("LWH could not create histogram '"
 			       + title + "'." );
     }
     return hist;
@@ -183,13 +183,13 @@ public:
   IHistogram1D *
   createHistogram1D(const std::string & path, const std::string & title,
 		    const std::vector<double> & binEdges,
-		    const std::string & = "") {
+		    const std::string & options = "") {
     Histogram1D * hist = new Histogram1D(binEdges);
     hist->setTitle(title);
     if ( !tree->insert(path, hist) ) {
       delete hist;
       hist = 0;
-      throw std::runtime_error("LWH ccould not create histogram '"
+      throw std::runtime_error("LWH could not create histogram '"
 			       + title + "'." );
     }
     return hist;
@@ -212,7 +212,7 @@ public:
     if ( !tree->insert(path, h) ) {
       delete h;
       h = 0;
-      throw std::runtime_error("LWH ccould not create a copy of histogram '"
+      throw std::runtime_error("LWH could not create a copy of histogram '"
 			       + hist.title() + "'." );
     }
     return h;
