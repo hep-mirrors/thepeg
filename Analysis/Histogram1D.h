@@ -8,6 +8,7 @@
 #include "AIHistogram1D.h"
 #include "ManagedObject.h"
 #include "Axis.h"
+#include "VariAxis.h"
 #include <vector>
 #include <stdexcept>
 
@@ -31,26 +32,36 @@ public:
    * Standard constructor.
    */
   Histogram1D(int n, double lo, double up)
-    : ax(n, lo, up), sum(n + 2), sumw(n + 2), sumw2(n + 2), sumxw(n + 2),
-      sumx2w(n + 2) {}
+    : fax(new Axis(n, lo, up)), vax(0),
+      sum(n + 2), sumw(n + 2), sumw2(n + 2), sumxw(n + 2), sumx2w(n + 2) {
+    ax = fax;
+  }
 
   /**
-   * Constructor form Axis object.
+   * Standard constructor for variable bin width.
    */
-  Histogram1D(const Axis & a)
-    : ax(a.bins(), a.lowerEdge(), a.upperEdge()),
-      sum(a.bins() + 2), sumw(a.bins() + 2), sumw2(a.bins() + 2),
-      sumxw(a.bins() + 2), sumx2w(a.bins() + 2) {}
+  Histogram1D(const std::vector<double> & edges)
+    : fax(0), vax(new VariAxis(edges)),
+      sum(edges.size() + 1), sumw(edges.size() + 1), sumw2(edges.size() + 1),
+      sumxw(edges.size() + 1), sumx2w(edges.size() + 1) {
+    ax = vax;
+  }
 
   /**
    * Copy constructor.
    */
   Histogram1D(const Histogram1D & h)
-    : ax(h.ax), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2),
-      sumxw(h.sumxw), sumx2w(h.sumx2w) {}
+    : fax(0), vax(0), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2),
+      sumxw(h.sumxw), sumx2w(h.sumx2w) {
+    const VariAxis * hvax = dynamic_cast<const VariAxis *>(h.ax);
+    if ( vax ) ax = vax = new VariAxis(*hvax);
+    else ax = fax = new Axis(dynamic_cast<const Axis &>(*h.ax));
+}
 
   /// Destructor.
-  virtual ~Histogram1D() {}
+  virtual ~Histogram1D() {
+    delete ax;
+  }
 
   /**
    * Get the Histogram's title.
@@ -107,11 +118,11 @@ public:
    * @return false If something goes wrong.
    */
   bool reset() {
-    sum = std::vector<int>(ax.bins() + 2);
-    sumw = std::vector<double>(ax.bins() + 2);
-    sumxw = std::vector<double>(ax.bins() + 2);
-    sumx2w = std::vector<double>(ax.bins() + 2);
-    sumw2 = std::vector<double>(ax.bins() + 2);
+    sum = std::vector<int>(ax->bins() + 2);
+    sumw = std::vector<double>(ax->bins() + 2);
+    sumxw = std::vector<double>(ax->bins() + 2);
+    sumx2w = std::vector<double>(ax->bins() + 2);
+    sumw2 = std::vector<double>(ax->bins() + 2);
     return true;
   }
 
@@ -122,7 +133,7 @@ public:
    */ 
   int entries() const {
     int si = 0;
-    for ( int i = 2; i < ax.bins() + 2; ++i ) si += sum[i];
+    for ( int i = 2; i < ax->bins() + 2; ++i ) si += sum[i];
     return si;
   }
 
@@ -153,7 +164,7 @@ public:
   double equivalentBinEntries() const {
     double sw = 0.0;
     double sw2 = 0.0;
-    for ( int i = 2; i < ax.bins() + 2; ++i ) {
+    for ( int i = 2; i < ax->bins() + 2; ++i ) {
       sw += sumw[i];
       sw2 += sumw2[i];
     }
@@ -168,7 +179,7 @@ public:
    */
   double sumBinHeights() const {
     double sw = 0.0;
-    for ( int i = 2; i < ax.bins() + 2; ++i ) sw += sumw[i];
+    for ( int i = 2; i < ax->bins() + 2; ++i ) sw += sumw[i];
     return sw;
   }
     
@@ -196,7 +207,7 @@ public:
    */
   double minBinHeight() const {
     double minw = sumw[2];
-    for ( int i = 3; i < ax.bins() + 2; ++i ) minw = std::min(minw, sumw[i]);
+    for ( int i = 3; i < ax->bins() + 2; ++i ) minw = std::min(minw, sumw[i]);
     return minw;
   }
 
@@ -207,7 +218,7 @@ public:
    */
   double maxBinHeight() const{
     double maxw = sumw[2];
-    for ( int i = 3; i < ax.bins() + 2; ++i ) maxw = std::max(maxw, sumw[i]);
+    for ( int i = 3; i < ax->bins() + 2; ++i ) maxw = std::max(maxw, sumw[i]);
     return maxw;
   }
 
@@ -219,7 +230,7 @@ public:
    * @return false If the weight is <0 or >1 (?).
    */
   bool fill(double x, double weight = 1.) {
-    int i = ax.coordToIndex(x) + 2;
+    int i = ax->coordToIndex(x) + 2;
     ++sum[i];
     sumw[i] += weight;
     sumxw[i] += x*weight;
@@ -236,7 +247,7 @@ public:
   double binMean(int index) const {
     int i = index + 2;
     return sumw[i] != 0.0? sumxw[i]/sumw[i]:
-      0.5*(ax.binUpperEdge(index) + ax.binLowerEdge(index));
+      ( vax? vax->binMidPoint(index): fax->binMidPoint(index) );
   };
 
   /**
@@ -246,7 +257,7 @@ public:
    */
   double binRms(int index) const {
     int i = index + 2;
-    return sumw[i] == 0.0 || sum[i] < 2? ax.binWidth(index):
+    return sumw[i] == 0.0 || sum[i] < 2? ax->binWidth(index):
       std::sqrt(std::max(sumw[i]*sumx2w[i] - sumxw[i]*sumxw[i], 0.0))/sumw[i];
   };
 
@@ -287,7 +298,7 @@ public:
   double mean() const {
     double s = 0.0;
     double sx = 0.0;
-    for ( int i = 2; i < ax.bins() + 2; ++i ) {
+    for ( int i = 2; i < ax->bins() + 2; ++i ) {
       s += sumw[i];
       sx += sumxw[i];
     }
@@ -302,13 +313,13 @@ public:
     double s = 0.0;
     double sx = 0.0;
     double sx2 = 0.0;
-    for ( int i = 2; i < ax.bins() + 2; ++i ) {
+    for ( int i = 2; i < ax->bins() + 2; ++i ) {
       s += sumw[i];
       sx += sumxw[i];
       sx2 += sumx2w[i];
     }
     return s != 0.0? std::sqrt(std::max(s*sx2 - sx*sx, 0.0))/s:
-      ax.upperEdge() - ax.lowerEdge();
+      ax->upperEdge() - ax->lowerEdge();
   }
 
   /**
@@ -316,7 +327,7 @@ public:
    * @return The x coordinate IAxis.
    */
   const IAxis & axis() const {
-    return ax;
+    return *ax;
   }
 
   /**
@@ -327,7 +338,7 @@ public:
    * @return      The corresponding bin number.
    */
   int coordToIndex(double coord) const {
-    return ax.coordToIndex(coord);
+    return ax->coordToIndex(coord);
   }
   
   /**
@@ -336,10 +347,10 @@ public:
    * @return false If the IHistogram1Ds binnings are incompatible.
    */
   bool add(const Histogram1D & h) {
-    if ( ax.upperEdge() != h.ax.upperEdge() ||
-	 ax.lowerEdge() != h.ax.lowerEdge() ||
-	 ax.bins() != h.ax.bins() ) return false;
-    for ( int i = 0; i < ax.bins() + 2; ++i ) {
+    if ( ax->upperEdge() != h.ax->upperEdge() ||
+	 ax->lowerEdge() != h.ax->lowerEdge() ||
+	 ax->bins() != h.ax->bins() ) return false;
+    for ( int i = 0; i < ax->bins() + 2; ++i ) {
       sum[i] += h.sum[i];
       sumw[i] += h.sumw[i];
       sumxw[i] += h.sumxw[i];
@@ -363,7 +374,7 @@ public:
    * @param s the scaling factor to use.
    */
   bool scale(double s) {
-    for ( int i = 0; i < ax.bins() + 2; ++i ) {
+    for ( int i = 0; i < ax->bins() + 2; ++i ) {
       sumw[i] *= s;
       sumxw[i] *= s;
       sumx2w[i] *= s;
@@ -384,15 +395,23 @@ public:
     os << "  <histogram1d name=\"" << name
        << "\"\n    title=\"" << title()
        << "\" path=\"" << path
-       << "\">\n    <axis max=\"" << ax.upperEdge()
-       << "\" numberOfBins=\"" << ax.bins()
-       << "\" min=\"" << ax.lowerEdge()
-       << "\" direction=\"x\"/>\n"
-       << "    <statistics entries=\"" << entries()
+       << "\">\n    <axis max=\"" << ax->upperEdge()
+       << "\" numberOfBins=\"" << ax->bins()
+       << "\" min=\"" << ax->lowerEdge()
+       << "\" direction=\"x\"";
+    if ( vax ) {
+      os << ">\n";
+      for ( int i = 0, N = ax->bins() - 1; i < N; ++i )
+	os << "      <binBorder value=\"" << ax->binUpperEdge(i) << "\"/>\n";
+      os << "    </axis>\n";
+    } else {
+      os << "/>\n";
+    }
+    os << "    <statistics entries=\"" << entries()
        << "\">\n      <statistic mean=\"" << mean()
        << "\" direction=\"x\"\n        rms=\"" << rms()
        << "\"/>\n    </statistics>\n    <data1d>\n";
-    for ( int i = 0; i < ax.bins() + 2; ++i ) if ( sum[i] ) {
+    for ( int i = 0; i < ax->bins() + 2; ++i ) if ( sum[i] ) {
       os << "      <bin1d binNum=\"";
       if ( i == 0 ) os << "UNDERFLOW";
       else if ( i == 1 ) os << "OVERFLOW";
@@ -411,10 +430,10 @@ public:
 
 
   bool writeFLAT(std::ostream & os, std::string path, std::string name) {
-    os << "# " << path << "/" << name << " " << ax.lowerEdge()
-       << " " << ax.bins() << " " << ax.upperEdge()
+    os << "# " << path << "/" << name << " " << ax->lowerEdge()
+       << " " << ax->bins() << " " << ax->upperEdge()
        << " \"" << title() << " \"" << std::endl;
-    for ( int i = 2; i < ax.bins() + 2; ++i )
+    for ( int i = 2; i < ax->bins() + 2; ++i )
       os << binMean(i - 2) << " "
 	 << sumw[i] << " " << sqrt(sumw2[i]) << " " << sum[i] << std::endl;
     os << std::endl;
@@ -427,7 +446,13 @@ private:
   std::string theTitle;
 
   /** The axis. */
-  Axis ax;
+  IAxis * ax;
+
+  /** Pointer (possibly null) to a axis with fixed bin width. */
+  Axis * fax;
+
+  /** Pointer (possibly null) to a axis with fixed bin width. */
+  VariAxis * vax;
 
   /** The counts. */
   std::vector<int> sum;

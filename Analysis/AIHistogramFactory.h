@@ -31,6 +31,9 @@ public:
   virtual IHistogram1D *
   createHistogram1D(const std::string &, int, double, double) = 0;
   virtual IHistogram1D *
+  createHistogram1D(const std::string &, const std::string & ,
+		    const std::vector<double> &, const std::string & = "") = 0;
+  virtual IHistogram1D *
   createCopy(const std::string &, const IHistogram1D &) = 0;
   virtual IHistogram1D * add(const std::string &,
 			     const IHistogram1D &, const IHistogram1D &) = 0;

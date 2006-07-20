@@ -167,13 +167,32 @@ public:
   }
 
 
-  /**
-   * LWH cannot create a IHistogram1D with variable edges.
-   */
+    /**
+     * Create a IHistogram1D.
+
+     * @param path      The path of the created IHistogram. The path can either
+     *                  be a relative or full path.
+     *                  ("/folder1/folder2/dataName" and "../folder/dataName"
+     *                  are valid paths). All the directories in the path must
+     *                  exist. The characther `/` cannot be used in names;
+     *                  it is only used to delimit directories within paths.
+     * @param title     The title of the IHistogram1D.
+     * @param binEdges  The array of the bin edges for the x axis.
+     * @param options   The options for the IHistogram1D. Not used by LWH.
+     */
   IHistogram1D *
-  createHistogram1D(const std::string &, const std::string &,
-		    const std::vector<double> &, const std::string & = "") {
-    return error<IHistogram1D>("histograms with custom edges");
+  createHistogram1D(const std::string & path, const std::string & title,
+		    const std::vector<double> & binEdges,
+		    const std::string & = "") {
+    Histogram1D * hist = new Histogram1D(binEdges);
+    hist->setTitle(title);
+    if ( !tree->insert(path, hist) ) {
+      delete hist;
+      hist = 0;
+      throw std::runtime_error("LWH ccould not create histogram '"
+			       + title + "'." );
+    }
+    return hist;
   }
 
   /**
@@ -440,10 +459,10 @@ public:
 		    const Histogram1D & h1, const Histogram1D & h2) {
     Histogram1D * h = new Histogram1D(h1);
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( h->ax.upperEdge() != h2.ax.upperEdge() ||
-	 h->ax.lowerEdge() != h2.ax.lowerEdge() ||
-	 h->ax.bins() != h2.ax.bins() ) return 0;
-    for ( int i = 0; i < h->ax.bins() + 2; ++i ) {
+    if ( h->ax->upperEdge() != h2.ax->upperEdge() ||
+	 h->ax->lowerEdge() != h2.ax->lowerEdge() ||
+	 h->ax->bins() != h2.ax->bins() ) return 0;
+    for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
       h->sum[i] += h2.sum[i];
       h->sumw[i] -= h2.sumw[i];
       h->sumw2[i] += h2.sumw2[i];
@@ -484,10 +503,10 @@ public:
 		    const Histogram1D & h1, const Histogram1D & h2) {
     Histogram1D * h = new Histogram1D(h1);
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( h->ax.upperEdge() != h2.ax.upperEdge() ||
-	 h->ax.lowerEdge() != h2.ax.lowerEdge() ||
-	 h->ax.bins() != h2.ax.bins() ) return 0;
-    for ( int i = 0; i < h->ax.bins() + 2; ++i ) {
+    if ( h->ax->upperEdge() != h2.ax->upperEdge() ||
+	 h->ax->lowerEdge() != h2.ax->lowerEdge() ||
+	 h->ax->bins() != h2.ax->bins() ) return 0;
+    for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
       h->sum[i] *= h2.sum[i];
       h->sumw[i] *= h2.sumw[i];
       h->sumw2[i] += h1.sumw[i]*h1.sumw[i]*h2.sumw2[i] +
@@ -529,10 +548,10 @@ public:
 		  const Histogram1D & h1, const Histogram1D & h2) {
     Histogram1D * h = new Histogram1D(h1);
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( h->ax.upperEdge() != h2.ax.upperEdge() ||
-	 h->ax.lowerEdge() != h2.ax.lowerEdge() ||
-	 h->ax.bins() != h2.ax.bins() ) return 0;
-    for ( int i = 0; i < h->ax.bins() + 2; ++i ) {
+    if ( h->ax->upperEdge() != h2.ax->upperEdge() ||
+	 h->ax->lowerEdge() != h2.ax->lowerEdge() ||
+	 h->ax->bins() != h2.ax->bins() ) return 0;
+    for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
       h->sum[i] /= h2.sum[i];
       h->sumw[i] /= h2.sumw[i];
       h->sumw2[i] += h1.sumw2[i]/(h2.sumw[i]*h2.sumw[i]) +

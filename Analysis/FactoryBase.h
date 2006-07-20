@@ -158,6 +158,22 @@ public:
 				   double lo, double up);
 
   /**
+   * Create and return a AIDA::IHistogram1D object in the underlying
+   * AIDA histogram factory. Note that the histogram factory is
+   * responsible for deleting this histogram.
+   * @param path the full path of where the histogram should be placed
+   * in the underlying AIDA tree (on the form
+   * "/dir/subdir/histogramname"). Not that the directory part of the
+   * path typically must already exist in the tree. The directories
+   * can be created with mkdir(string) or mkdirs(string).
+   * @param title the title of the histogram.
+   * @param edges A vector of bin edges specifying th bins.
+   * @return a pointer to the created AIDA::IHistogram1D object.
+   */
+  inline tH1DPtr createHistogram1D(string path, string title,
+				   const std::vector<double> & edges);
+
+  /**
    * Used by a \a client object to indicate that he has required
    * histograms from this factory. It is guaranteed that the clients
    * finish() function is called before the underlying AIDA::ITree is

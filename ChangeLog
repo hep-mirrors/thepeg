@@ -1,3 +1,12 @@
+2006-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/VariAxis.h, Analysis/HistogramFactory.h,
+	Analysis/Histogram1D.h, Analysis/FactoryBase.*,
+	Analysis/AIHistogramFactory.h: Added a VarAxis class in LWH to
+	allow Histogram1D to have variable sized bins. This seems to work,
+	although the resulting AIDA XML file is not interpreted properly
+	by JAS3.
+
 2006-07-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.cc: Fixed bug where the rapidity reported
