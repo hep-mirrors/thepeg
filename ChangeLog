@@ -1,3 +1,7 @@
+2006-07-21  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Analysis/Makefile.am: added VariAxis.h to LWHHEADERS
+
 2006-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/VariAxis.h, Analysis/HistogramFactory.h,

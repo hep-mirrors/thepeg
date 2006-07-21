@@ -3,7 +3,8 @@ AIDAWRAPPERS = AIAnalysisFactory.h AIAxis.h AIHistogram1D.h \
                AIManagedObject.h
 
 LWHHEADERS = AnalysisFactory.h Axis.h Tree.h TreeFactory.h \
-             Histogram1D.h HistogramFactory.h ManagedObject.h
+             Histogram1D.h HistogramFactory.h ManagedObject.h \
+             VariAxis.h
 
 mySOURCES = FactoryBase.cc LWHFactory.cc
 
