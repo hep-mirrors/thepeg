@@ -11,11 +11,6 @@ inline PersistentIStream::PersistentIStream(istream & is)
   init();
 }
 
-
-inline PersistentIStream::~PersistentIStream() {
-  if ( allocStream ) delete theIStream;
-}
-
 inline istream & PersistentIStream::is() {
   return *theIStream;
 }

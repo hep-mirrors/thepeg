@@ -45,6 +45,11 @@ void PersistentIStream::init() {
   }
 }
 
+PersistentIStream::~PersistentIStream() {
+  if ( allocStream ) delete theIStream;
+  for ( int i = 0, N = readClasses.size(); i < N; ++i ) delete readClasses[i];
+}
+
 void PersistentIStream::endObject() {
   // We have just read an object, but we may only have acces to a base class
   // of the originally written object. Therefore we must skip everything that

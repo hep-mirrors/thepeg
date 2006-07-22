@@ -69,7 +69,7 @@ public:
   /**
    * The destructor.
    */
-  inline ~PersistentIStream();
+  ~PersistentIStream();
 
   /**
    * Operator for extracting persistent objects from the stream.

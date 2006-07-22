@@ -23,6 +23,11 @@ inline ACDCGen<Rnd,FncPtr>::ACDCGen()
 }
 
 template <typename Rnd, typename FncPtr>
+inline ACDCGen<Rnd,FncPtr>::~ACDCGen() {
+  clear();
+}
+
+template <typename Rnd, typename FncPtr>
 inline void ACDCGen<Rnd,FncPtr>::setRnd(Rnd * r) {
   theRnd = r;
 }
@@ -33,6 +38,8 @@ inline void ACDCGen<Rnd,FncPtr>::clear() {
   theN = 0;
   theFunctions = FncVector(1);
   theDimensions = DimVector(1, 0);
+  for ( int i = 0, N = thePrimaryCells.size(); i < N; ++i )
+    if ( thePrimaryCells[i] ) delete thePrimaryCells[i];
   thePrimaryCells = CellVector(1);
   theSumMaxInts = DVector(1, 0.0);
   theLast = 0;

@@ -72,6 +72,11 @@ public:
   inline ACDCGen();
 
   /**
+   * Destructor.
+   */
+  inline ~ACDCGen();
+
+  /**
    * Add a function of a given dimension, \a dim, according to which
    * points will be generated. Note that each function, \a f, added
    * like this will have its own tree of cells. The \a maxrat argument
