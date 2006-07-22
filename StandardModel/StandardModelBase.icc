@@ -10,6 +10,10 @@ inline unsigned int StandardModelBase::families() const {
   return theFamilies;
 }
 
+inline StandardModelBase::tCKMPtr StandardModelBase::CKM() const {
+  return theCKM;
+}
+
 inline double StandardModelBase::alphaEM() const {
   return theAlphaEM;
 }

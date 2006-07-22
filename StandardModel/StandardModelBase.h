@@ -156,6 +156,11 @@ public:
   inline double ad() const;
 
   /**
+   * Return a pointer to the CKMBase object used.
+   */
+  inline tCKMPtr CKM() const;
+
+  /**
    * Return a square of the element of the Cabibbo-Kobayashi-Maskawa
    * Matrix. The fatrix element for the \a uf up-type family and \a df
    * down-type family.
