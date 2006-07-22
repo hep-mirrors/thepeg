@@ -163,7 +163,7 @@ public class SetupThePEG extends JFrame implements ActionListener {
     if ( args.length <= 0 ) System.exit(1);
     String [] cmdarray = new String[args.length + 1];
     cmdarray[0] = args[0];
-    cmdarray[1] = "-java";
+    cmdarray[1] = "--java";
 
     debug = false;
 

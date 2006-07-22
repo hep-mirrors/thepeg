@@ -224,6 +224,15 @@ protected:
    * The default file name used by save().
    */
   static string & currentFileName();
+
+public:
+
+  /**
+   * If non-zero the setup program will exit with this error code as
+   * soon as an error is encountered.
+   */
+  static int & exitOnError();
+
   //@}
 
 };

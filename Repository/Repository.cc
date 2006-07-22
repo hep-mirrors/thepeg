@@ -54,6 +54,11 @@ string & Repository::currentFileName() {
   return theCurrentFileName;
 }
 
+int & Repository::exitOnError() {
+  static int exitonerror = 0;
+  return exitonerror;
+}
+
 void Repository::Register(IBPtr ip) {
   BaseRepository::Register(ip);
   registerParticle(dynamic_ptr_cast<PDPtr>(ip));
@@ -387,6 +392,8 @@ void Repository::read(istream & is, ostream & os, string prompt) {
     string reply = exec(line, os);
     if ( reply.size() ) os << reply;
     if ( reply.size() && reply[reply.size()-1] != '\n' ) os << endl;
+    if ( exitOnError() && reply.size() >= 7 && reply.substr(0, 7) == "Error: " )
+      exit(exitOnError());
     if ( prompt.size() ) os << prompt;
   }
   if ( prompt.size() ) os << endl;
@@ -563,10 +570,14 @@ string Repository::exec(string command, ostream & os) {
       }
       return "";
     }
+    if ( verb == "EXITONERROR" ) {
+      exitOnError() = 1;
+      return "";
+    }
   }
   catch (const Exception & e) {
     e.handle();
-    return e.message();
+    return "Error: " + e.message();
   }
 
   return BaseRepository::exec(cpcmd, os);

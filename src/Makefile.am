@@ -48,15 +48,15 @@ runThePEG: $(srcdir)/runThePEG.install Makefile
 theENV = ThePEG_INSTALL_PATH=$(top_builddir)/lib
 
 ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in ThePEGParticles.in
-	$(theENV) ./setupThePEG.bin -init -r ThePEGDefaults.rpo ThePEGDefaults.in
+	$(theENV) ./setupThePEG.bin --init --exitonerror -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 
 check-local:
-	$(theENV) ./setupThePEG.bin -r ThePEGDefaults.rpo SimpleLEP.in
+	$(theENV) ./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 	$(theENV) time ./runThePEG.bin -d 0 SimpleLEP.run
 
 SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
-	$(theENV) ./setupThePEG.bin -r ThePEGDefaults.rpo SimpleLEP.in
+	$(theENV) ./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
 	$(theENV) time ./runThePEG.bin -d 0 SimpleLEP.run
@@ -80,5 +80,5 @@ uninstall-local:
 
 installcheck-local:
 	$(mkdir_p) _test_thepeg_installation_
-	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run
+	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run
 	rm -rf _test_thepeg_installation_

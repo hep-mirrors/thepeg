@@ -23,17 +23,18 @@ int main(int argc, char * argv[]) {
       Debug::setDebug(atoi(arg.substr(2).c_str()));
     else if ( arg == "-r" ) repo = argv[++iarg];
     else if ( arg == "-o" ) repout = argv[++iarg];
-    else if ( arg == "-init" ) {
+    else if ( arg == "--init" || arg == "-init" ) {
       init = true;
       Debug::level = 0;
     }
+    else if ( arg == "--exitonerror" ) Repository::exitOnError() = 1;
     else if ( arg == "-l" ) DynamicLoader::appendPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-l" )
       DynamicLoader::appendPath(arg.substr(2));
     else if ( arg == "-L" ) DynamicLoader::prependPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-L" )
       DynamicLoader::prependPath(arg.substr(2));
-    else if ( arg == "-h" ) {
+    else if ( arg == "-h" || arg == "--help" ) {
       cerr << "Usage: " << argv[0]
 	 << " {cmdfile} [-d {debuglevel|-debugitem}] [-r input-repository-file]"
 	 << " [-l load-path] [-L first-load-path]" << endl;
@@ -63,7 +64,7 @@ int main(int argc, char * argv[]) {
       Repository::load(repo);
       breakThePEG();
       if ( file.size() && file != "-" ) {
-	if ( file == "-java" )
+	if ( file == "--java" || file == "-java" )
 	  Repository::read(cin, cout, "-*-ready-*-\n");
 	else {
 	  ifstream is(file.c_str());

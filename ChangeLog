@@ -1,5 +1,21 @@
 2006-07-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/setupThePEG.cc: Added --exitonerror option. Also added
+	'--init' and '--java' options which eventually will replace the
+	'-init' and '-java' arguments.
+
+	* src/Makefile.am: Now uses --exitonerror argument for
+	setupThePEG. And long '--init' argument when initializing the
+	repository.
+
+	* java/SetupThePEG.java: Now uses long '--java' argument when
+	startin setupThePEG.
+
+	* Repository/Repository.*: Added static variable accessible from
+	exitOnError() which, if non-zero, will call exit with an error
+	code if any error was encountered during read(). Also added a
+	command 'EXITONERROR' which sets exitOnError() to one.
+
 	* ACDC/ACDCGen.icc: Fixed bug where allocated primary ACDCGenCell
 	objects were not deleted in destructor.
 
