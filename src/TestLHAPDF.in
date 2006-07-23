@@ -1,0 +1,7 @@
+mkdir tmp
+cd tmp
+create ThePEG::LHAPDF CTEQ6LL
+# set CTEQ6LL:VerboseLevel 1
+# set CTEQ6LL:Member 1
+fulldescribe CTEQ6LL:Member
+do CTEQ6LL:Test 0.01 100 0
