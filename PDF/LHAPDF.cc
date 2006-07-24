@@ -62,11 +62,6 @@ void evolvepdfm_(F77ThePEGInteger &, F77ThePEGDouble &,
   LHAPDF::throwNotInstalled();
 }
 
-void evolvepdfm_(F77ThePEGInteger &, F77ThePEGDouble &,
-		 F77ThePEGDouble &, F77ThePEGDouble *) {
-  LHAPDF::throwNotInstalled();
-}
-
 void evolvepdfpm_(F77ThePEGInteger &, F77ThePEGDouble &,
 		  F77ThePEGDouble &, F77ThePEGDouble &,
 		  F77ThePEGInteger &, F77ThePEGDouble *){
