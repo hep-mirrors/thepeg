@@ -11,10 +11,11 @@ if test -z "FCLIBS"; then
   HAS_LHAPDF="no"
 fi
 
+oldLIB="$LIBS"
+oldLDFLAGS="$LDFLAGS"
+
 if test "$HAS_LHAPDF" == "yes"; then
 dnl Now lets see if the libraries work properly
-  oldLIB="$LIBS"
-  oldLDFLAGS="$LDFLAGS"
   LIBS="$LIBS -lLHAPDF $FCLIBS"
   if test -n "$LHAPDF_LIBDIR"; then
     LDFLAGS="$LDFLAGS -L$LHAPDF_LIBDIR"
@@ -27,6 +28,8 @@ if test "$HAS_LHAPDF" == "yes"; then
   AC_DEFINE(ThePEG_HAS_LHAPDF, [], [Set if LHAPDF is present and working])
   AC_MSG_RESULT([yes])
 else
+  LIBS="$oldLIB"
+  LDFLAGS="$oldLDFLAGS"
   AC_MSG_RESULT([no])
 fi
 ])
