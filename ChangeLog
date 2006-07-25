@@ -1,5 +1,18 @@
 2006-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* CLHEPWrap/HepMCConverter.*, CLHEPWrap/HepMCTraits.h,
+	CLHEPWrap/Makefile.am, src/runEventLoop.cc, src/Makefile.am:
+	Rewrote the GenEventConverter to be completely templated and
+	independent on which HepMC version is used. The new class is
+	called HepMCConverter and uses the HepMCTraits class for all
+	interactions with the HepMC classes. Different flavours of HepMC
+	may need to specialize the HepMCTraits class in different ways. By
+	inheriting from HepMCTraitsBase you will automatically get the
+	interface to the HepMC version in CLHEP. In src/runEventLoop.cc
+	(which is now included in the distribution) there is an example of
+	how to use HepMCConverter. runPartial.cc is no longer included in
+	the distribution.
+
 	* PDF/LHAPDF.*: the interface to the LHAPDF library can now be
 	compiled, set up and run, and seems to give correct results.
 

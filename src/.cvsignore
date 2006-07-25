@@ -37,7 +37,9 @@ file.dat
 gprof.*
 redump
 runEventLoop
+runEventLoop.lo
 runPartial
+runPartial.loT
 runPythia.exe
 runPythia7
 runThePEG

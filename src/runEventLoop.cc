@@ -5,7 +5,17 @@
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
-#include "ThePEG/CLHEPWrap/GenEventConverter.h"
+#include "ThePEG/CLHEPWrap/HepMCConverter.h"
+#include "CLHEP/HepMC/GenEvent.h"
+
+namespace ThePEG {
+
+template<>
+struct HepMCTraits<HepMC::GenEvent>:
+    public HepMCTraitsBase<HepMC::GenEvent,HepMC::GenParticle,
+                           HepMC::GenVertex,HepMC::Polarization> {};
+
+}
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
@@ -84,7 +94,8 @@ int main(int argc, char * argv[]) {
 	EventPtr event = eg->shoot();
 
 	// Convert to a CLHEP::GenEvent
-	CLHEPMC::GenEvent * geneve = GenEventConverter::convert(*event);
+	HepMC::GenEvent * geneve =
+	  HepMCConverter<HepMC::GenEvent>::convert(*event);
 
 	// Do whatever you want with the event here
 	if ( ieve < 10 ) geneve->print(cout);
