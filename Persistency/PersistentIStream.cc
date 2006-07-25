@@ -8,8 +8,6 @@
 #include "PersistentOStream.xh"
 #include "PersistentIStream.xh"
 #include "ThePEG/Utilities/DynamicLoader.h"
-#include "ThePEG/Utilities/sstream.h"
-#include <fstream>
 //#include <pfstream.h>
 
 namespace ThePEG {

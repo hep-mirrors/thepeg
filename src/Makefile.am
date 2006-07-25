@@ -19,13 +19,22 @@ runPartial_SOURCES = runPartial.cc
 runPartial_LDADD = $(myLDADD)
 runPartial_LDFLAGS = $(myLDFLAGS)
 
-dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in ThePEGParticles.in debugItems.txt
+if USELHAPDF
+pkglib_LTLIBRARIES = TestLHAPDF.la
+TestLHAPDF_la_SOURCES = TestLHAPDF.cc TestLHAPDF.h TestLHAPDF.icc
+TestLHAPDF_la_LDFLAGS = -module -version-info 1:0:0
+endif
+
+dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in
 
 nodist_pkglib_DATA = ThePEGDefaults.rpo
 
-CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex ThePEGDefaults.rpo setupThePEG runThePEG done-all-links
+CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex \
+             ThePEGDefaults.rpo setupThePEG runThePEG done-all-links \
+             TestLHAPDF.log TestLHAPDF.out TestLHAPDF.run TestLHAPDF.tex \
+             .runThePEG.timer.TestLHAPDF.run 
 
-INPUTFILES = ThePEGDefaults.in ThePEGParticles.in SimpleLEP.in
+INPUTFILES = ThePEGDefaults.in ThePEGParticles.in SimpleLEP.in TestLHAPDF.in
 
 done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
@@ -54,12 +63,24 @@ ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in ThePEGParti
 check-local:
 	$(theENV) ./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 	$(theENV) time ./runThePEG.bin -d 0 SimpleLEP.run
+if USELHAPDF
+	$(theENV) ./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo TestLHAPDF.in
+	$(theENV) time ./runThePEG.bin -L../lib -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+endif
 
 SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
 	$(theENV) ./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
 	$(theENV) time ./runThePEG.bin -d 0 SimpleLEP.run
+
+if USELHAPDF
+TestLHAPDF.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo TestLHAPDF.in 
+	$(theENV) ./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo TestLHAPDF.in
+
+TestLHAPDF.out: runThePEG.bin TestLHAPDF.run
+	$(theENV) time ./runThePEG.bin -L../lib -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+endif
 
 install-data-local:
 	sed -e s:@:$(DESTDIR)$(pkglibdir):g $(srcdir)/setupThePEG.install > setupThePEG
@@ -81,4 +102,7 @@ uninstall-local:
 installcheck-local:
 	$(mkdir_p) _test_thepeg_installation_
 	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run
+if USELHAPDF
+	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/TestLHAPDF.in; $(DESTDIR)$(bindir)/runThePEG -x $(DESTDIR)$(pkglibdir)/TestLHAPDF.so TestLHAPDF.run
 	rm -rf _test_thepeg_installation_
+endif

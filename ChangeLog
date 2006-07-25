@@ -1,3 +1,24 @@
+2006-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Config/Makefile.am: config.h is no longer included in the
+	distribution.
+
+	* include/Makefile.am: Config directory is no longer linked,
+	instead it is creates a proper directory and links the individual
+	header files. This is because config.h needs to be linked from the
+	build directory while the others are linked from the source
+	directory. This probably need a better solution.
+
+	* Config/std.h: Now includes <sstream> and imports the
+	stringstream classes to the ThePEG namespace.
+
+	* Utilities/sstream.*, Utilities/Timer.cc, Utilities/Makefile.am,
+	Utilities/Exception.h, Utilities/Debug.cc, configure.ac,
+	MatrixElement/ColourLines.cc, Persistency/PersistentIStream.cc:
+	Removed sstream.h wrapper around the old libg++ strstream
+	header. ThePEG now assumes that all supported compilers has a
+	compliant standard library with a standard <sstream> header.
+
 2006-07-25  Peter Richardson <Peter.Richardson@durham.ac.uk>
 
 	* EventRecord/Step.cc (Repository): Added check to prevent
@@ -5,6 +26,24 @@
 	to prevent illegal boosts in CLHEP 
 
 2006-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/TestLHAPDF.*: Added Main class and setup file to test the
+	LHAPDF classes.
+
+	* src/ThePEGDefaults.in: Added /LHAPDF directory with token LHAPDF
+	object to get doxygen output on the interfaces (this should work
+	even if the LHAPDF library is not installed).
+
+	* src/Makefile.am: Added TestLHAPDF test to the check and
+	install-check targets, but made it conditional on USELHAPDF.
+
+	* PDF/LHAPDF.cc: Fixed bugs: xfx() and xfvx() had the wrong
+	signatures and didn't override the base class virtual functions;
+	Forgot to set lastX and lastQ2 to avoid unnecessary calls to the
+	LHAPDF library.
+
+	* configure.ac: Added USELHAPDF flag for automake generation of
+	Makefiles.
 
 	* PDF/LHAPDF.cc: Removed double implementation of dummy function
 	evolvepdfm_().

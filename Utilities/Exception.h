@@ -7,7 +7,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "Exception.fh"
 #include <string>
-#include "ThePEG/Utilities/sstream.h"
 #include <iosfwd>
 
 extern "C" {

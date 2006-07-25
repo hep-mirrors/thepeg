@@ -76,7 +76,8 @@ public:
    * have a virtuality \a particleScale.
    */
   virtual double xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double x, Energy2 particleScale = 0.0*GeV2) const;
+		     double x, double eps = 0.0,
+		     Energy2 particleScale = 0.0*GeV2) const;
 
   /**
    * The valence density. Return the pdf for the given cvalence \a
@@ -86,7 +87,8 @@ public:
    * overidden by a sub class this will return zero.
    */
   virtual double xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double x, Energy2 particleScale = 0.0*GeV2) const;
+		      double x, double eps = 0.0,
+		      Energy2 particleScale = 0.0*GeV2) const;
   //@}
 
 

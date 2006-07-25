@@ -23,6 +23,8 @@ SimpleLEP.pid30420
 SimpleLEP.ps
 SimpleLEP.valgrind
 SimpleLEP_frag.p7
+TestLHAPDF.la
+TestLHAPDF.lo
 ThePEGDefaults.rpo
 W3Jet.dat.gz
 done-all-links

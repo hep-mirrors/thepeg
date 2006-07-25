@@ -49,7 +49,6 @@ AC_DEFINE_ENVDEFAULT(ThePEG_BZ2WRITE_FILE,BZ2WRITE_FILE,[bzip2 -c > ],[The comma
 AC_CHECK_EXPM1
 AC_CHECK_LOG1P
 AC_CHECK_DLOPEN
-AC_CHECK_SSTREAM
 AC_CHECK_FPUCONTROL
 
 
@@ -70,6 +69,7 @@ if test "x$with_javagui" != "xno"; then
 fi
 
 AM_CONDITIONAL([JAVAGUI], [test "x$with_javagui" != "xno"])
+AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
 
 AC_CONFIG_FILES([Helicity/Makefile
 Utilities/Makefile

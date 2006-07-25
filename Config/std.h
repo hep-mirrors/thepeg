@@ -22,6 +22,7 @@
 #include <list>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <iomanip>
 #include <stack>
 #include <utility>
@@ -73,6 +74,8 @@ using std::ostream;
 using std::istream;
 using std::ofstream;
 using std::ifstream;
+using std::ostringstream;
+using std::istringstream;
 using std::cin;
 using std::cout;
 using std::cerr;

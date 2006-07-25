@@ -225,6 +225,9 @@ void LHAPDF::checkUpdate(double x, Energy2 Q2, Energy2 P2) const {
   TmpMaskFpuDenorm fpumask;
   checkInit();
   if ( x == lastX && Q2 == lastQ2 && P2 == lastP2 ) return;
+  lastX = x;
+  lastQ2 = Q2;
+  lastP2 = P2;
   vector<F77ThePEGDouble> res(13);
   F77ThePEGInteger iset = nset + 1;
   F77ThePEGDouble Q = sqrt(Q2/GeV2);
@@ -273,7 +276,7 @@ enum VectorIndices {
 }
 
 double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-                      double x, Energy2 particleScale) const {
+                      double x, double eps, Energy2 particleScale) const {
   // Here we should return the actual density.
   using namespace ThePEG::ParticleID;
   using namespace LHAPDFIndex;
@@ -335,7 +338,7 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 }
 
 double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double x, Energy2 particleScale) const {
+		     double x, double eps, Energy2 particleScale) const {
   // Here we should return the actual valence density. This will only
   // work properly for nucleons
   using namespace ThePEG::ParticleID;

@@ -9,7 +9,6 @@
 #include "ThePEG/EventRecord/ColourLine.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Utilities/StringUtils.h"
-#include "ThePEG/Utilities/sstream.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "ColourLines.tcc"

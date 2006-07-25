@@ -6,7 +6,7 @@ mySOURCES = SimplePhaseSpace.cc Debug.cc DescriptionList.cc Math.cc \
 
 DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            HoldFlag.h Interval.h Math.h Rebinder.h Selector.h \
-           SimplePhaseSpace.h Triplet.h sstream.h Direction.h UtilityBase.h \
+           SimplePhaseSpace.h Triplet.h Direction.h UtilityBase.h \
            TypeInfo.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
            FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h \
@@ -16,7 +16,7 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                ClassDescription.tcc DescriptionList.icc HoldFlag.icc \
                Interval.fh Interval.icc Interval.tcc Math.icc Rebinder.fh \
                Rebinder.icc Selector.icc Selector.tcc SimplePhaseSpace.icc \
-               SimplePhaseSpace.tcc SimplePhaseSpace.xh sstream.icc \
+               SimplePhaseSpace.tcc SimplePhaseSpace.xh \
                Direction.icc Direction.xh UtilityBase.icc UtilityBase.tcc \
                TypeInfo.icc DynamicLoader.icc \
                Timer.icc Debug.icc StringUtils.icc SystemUtils.icc \

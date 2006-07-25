@@ -139,5 +139,11 @@ create ThePEG::Cuts EECuts
 set EECuts:MHatMin 22.36068
 set SimpleLEPGenerator:EventHandler:Cuts EECuts
 
+mkdir /LHAPDF
+cd /LHAPDF
+create ThePEG::LHAPDF CTEQ6ll
+set CTEQ6ll:RemnantHandler /Defaults/Partons/BaryonRemnants
+set CTEQ6ll:PDFName cteq6ll.LHpdf
+
 cd /
 doxygendump ThePEG:: ../Doc/AllInterfaces.h

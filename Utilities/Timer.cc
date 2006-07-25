@@ -7,7 +7,6 @@
 #include "Timer.h"
 #include <fstream>
 #include <iomanip>
-#include "ThePEG/Utilities/sstream.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Timer.tcc"

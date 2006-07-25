@@ -10,21 +10,27 @@ DIRLINKS = ThePEG/Repository \
            ThePEG/Interface \
            ThePEG/Handlers \
            ThePEG/LesHouches \
-           ThePEG/Config \
            ThePEG/Persistency \
            ThePEG/PDF \
            ThePEG/Helicity \
            ThePEG/Utilities \
            ThePEG/MatrixElement \
            ThePEG/Cuts \
-           ThePEG/Analysis  
+           ThePEG/Analysis
 
-CLEANFILES = done-all-links $(DIRLINKS)
+CONFIGHEADERS = ThePEG/Config/Complex.h ThePEG/Config/Constants.h \
+                ThePEG/Config/Containers.h ThePEG/Config/Pointers.h \
+                ThePEG/Config/ThePEG.h ThePEG/Config/Units.h \
+                ThePEG/Config/algorithm.h ThePEG/Config/std.h
+
+CLEANFILES = done-all-links $(DIRLINKS) $(CONFIGHEADERS) \
+             ThePEG/Config/config.h
 
 ## replace ThePEG with $(PACKAGE)
 ## replace find with explicit list of directories
 
-done-all-links: $(DIRLINKS)
+done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
+
 
 $(DIRLINKS):
 @EMPTY@ifdef SHOWCOMMAND
@@ -34,6 +40,13 @@ $(DIRLINKS):
 	do \
 	$(LN_S) -f ../$(top_srcdir)/`basename $$i` ; \
 	done
+	mkdir -p ThePEG/Config
+	cd ThePEG/Config; \
+        for file in $(CONFIGHEADERS); \
+        do \
+          $(LN_S) -f ../../$(top_srcdir)/Config/`basename $$file` . ; \
+	done
+	cd ThePEG/Config; $(LN_S) -f ../../../Config/config.h .
 	echo "stamp" > done-all-links
 @EMPTY@else
 	@echo "sym-linking header files..."
@@ -43,6 +56,13 @@ $(DIRLINKS):
 	do \
 	$(LN_S) -f ../$(top_srcdir)/`basename $$i` ; \
 	done
+	@mkdir -p ThePEG/Config
+	@cd ThePEG/Config; \
+        for file in $(CONFIGHEADERS); \
+        do \
+          $(LN_S) -f ../../$(top_srcdir)/Config/`basename $$file` . ; \
+	done
+	@cd ThePEG/Config; $(LN_S) -f ../../../Config/config.h .
 	@echo "stamp" > done-all-links
 @EMPTY@endif
 
