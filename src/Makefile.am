@@ -1,6 +1,6 @@
 
 pkglib_PROGRAMS = runThePEG.bin setupThePEG.bin
-EXTRA_PROGRAMS = runPartial
+EXTRA_PROGRAMS = runEventLoop
 
 myLDADD = $(top_builddir)/lib/libThePEG.la 
 myLDFLAGS = -export-dynamic
@@ -11,13 +11,13 @@ runThePEG_bin_SOURCES = runThePEG.cc
 runThePEG_bin_LDADD = $(myLDADD)
 runThePEG_bin_LDFLAGS = $(myLDFLAGS)
 
+runEventLoop_SOURCES = runEventLoop.cc
+runEventLoop_LDADD = $(myLDADD)
+runEventLoop_LDFLAGS = $(myLDFLAGS)
+
 setupThePEG_bin_SOURCES = setupThePEG.cc
 setupThePEG_bin_LDADD = $(myLDADD)
 setupThePEG_bin_LDFLAGS = $(myLDFLAGS)
-
-runPartial_SOURCES = runPartial.cc
-runPartial_LDADD = $(myLDADD)
-runPartial_LDFLAGS = $(myLDFLAGS)
 
 if USELHAPDF
 pkglib_LTLIBRARIES = TestLHAPDF.la
