@@ -68,14 +68,21 @@ void Step::addParticle(tPPtr p) {
 }
 
 void Step::addSubProcess(tSubProPtr sp) {
-  if ( !member(allParticles, sp->incoming().first) && collision() &&
-       sp->incoming().first != collision()->incoming().first ) {
-    collision()->incoming().first->
-      rep().theChildren.push_back(sp->incoming().first);
-    sp->incoming().first->rep().theParents.push_back(collision()->incoming().first);
+  if (( !member(allParticles, sp->incoming().first) && collision() &&
+	sp->incoming().first != collision()->incoming().first) &&
+      std::find(sp->incoming().first->parents().begin(),
+		sp->incoming().first->parents().end(),
+		collision()->incoming().first)==
+      sp->incoming().first->parents().end()) {
+      collision()->incoming().first->
+	rep().theChildren.push_back(sp->incoming().first);
+      sp->incoming().first->rep().theParents.push_back(collision()->incoming().first);
   }
-  if ( !member(allParticles, sp->incoming().second) && collision() &&
-       sp->incoming().second != collision()->incoming().second ) {
+  if (( !member(allParticles, sp->incoming().second) && collision() &&
+	sp->incoming().second != collision()->incoming().second) &&
+      std::find(sp->incoming().second->parents().begin(),
+		sp->incoming().second->parents().end(),collision()->incoming().second)==
+      sp->incoming().second->parents().end()) {
     collision()->incoming().second->
       rep().theChildren.push_back(sp->incoming().second);
     sp->incoming().second->rep().theParents.push_back(collision()->incoming().second);

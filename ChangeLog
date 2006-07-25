@@ -1,3 +1,9 @@
+2006-07-25  Peter Richardson <Peter.Richardson@durham.ac.uk>
+
+	* EventRecord/Step.cc (Repository): Added check to prevent
+	double attachment of incoming partons to hadrons and some tests
+	to prevent illegal boosts in CLHEP 
+
 2006-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.cc: Removed double implementation of dummy function

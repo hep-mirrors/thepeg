@@ -286,9 +286,22 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
   LorentzMomentum Pr = Utilities::sumMomentum(pb.remnants());
   transformRemnants(Ph, Pr, k, pb.particle()->momentum());
   pb.parton()->setMomentum(pb.particle()->momentum() - Pr);
-  Utilities::setMomentum(pb.remnants().begin(),
-			 pb.remnants().end(),
-			 static_cast<const LorentzMomentum &>(Pr));
+  try {
+    Utilities::setMomentum(pb.remnants().begin(),
+			   pb.remnants().end(),
+			   static_cast<const LorentzMomentum &>(Pr));
+  }
+  catch ( ThePEG::Exception ) {
+    throw;
+  }
+  catch ( ThePEG::Veto ) {
+    throw;
+  }
+  catch ( std::exception & e ) {
+    throw Exception() << "Caught non-ThePEG exception " << e.what() << "in "
+		      << "PartonExtractor::constructRemnants"
+		      << Exception::eventerror;
+  }
   partonBinInstances[pb.parton()] = &pb;
   if ( !pb.incoming()->incoming() ) return;
 

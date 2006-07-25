@@ -71,6 +71,10 @@ LorentzRotation UtilityBase::boostToCM(Iterator first, Iterator last,
 template <typename LV>
 LorentzRotation UtilityBase::
 transformFromCMS(const LV & p) {
+  if(p.rho()/p.e()>=1.) 
+    throw Exception() << "Boost >=1. in " 
+		      << "UtilityBase::transformFromCMS()"
+		      << Exception::eventerror;
   LorentzRotation r(0.0, 0.0, p.rho()/p.e());
   r.rotateY(p.theta());
   r.rotateZ(p.phi());
@@ -106,7 +110,10 @@ transformToCMS(const LV & p) {
   LorentzRotation r;
   r.rotateZ(-p.phi());
   r.rotateY(-p.theta());
-  r.boost(0.0, 0.0, -p.rho()/p.e());
+  if(p.rho()/p.e()>1.) throw Exception() << "Boost >=1. in "
+					 << "UtilityBase::transformToCMS "
+					 << Exception::eventerror;
+  r.boostZ(-p.rho()/p.e());
   return r;
 }
 
