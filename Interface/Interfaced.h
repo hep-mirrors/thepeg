@@ -45,6 +45,16 @@ public:
    */
 public:
 
+  /**
+   * A sub class can implement this function to implement some default
+   * initialization for this object during the setup phase. A typical
+   * example is if this object need some references to other objects
+   * and if these can be easily created. In this case the objects can
+   * be added to the repository in a sub-directory with the same name
+   * as this object.  
+   * @return false if the initialization failed.
+   */
+  virtual bool defaultInit();
 
   /** @name Functions used during the actual event generation, after
       the setup is complete. */
@@ -76,16 +86,6 @@ public:
    * During the setup phase this returns a null pointer.
    */
   inline tEGPtr generator() const;
-
-  /**
-   * A sub class can implement this function to implement some default
-   * initialization for this object. A typical example is if this
-   * object need some references to other objects and if these can be
-   * easily created. In this case the objects can be added to the
-   * repository in a sub-directory with the same name as this object.
-   * @return false if the initialization failed.
-   */
-  virtual bool defaultInit();
   //@}
 
 public:

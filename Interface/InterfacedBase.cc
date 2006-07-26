@@ -23,6 +23,10 @@ InterfacedBase::~InterfacedBase() {}
 
 void InterfacedBase::readSetup(istream &) throw(SetupException) {}
 
+bool InterfacedBase::preInitialize() const {
+  return false;
+}
+
 void InterfacedBase::persistentOutput(PersistentOStream & os) const {
   os << fullName() << isLocked << isTouched << oenum(initState) << theComment;
 }

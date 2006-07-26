@@ -83,6 +83,9 @@ public:
   /** ParticleData is a friend. */
   friend class ParticleData;
 
+  /** The EventGenerator is a friend. */
+  friend class EventGenerator;
+
 public:
 
   /** A vector of DecayMode pointers. */

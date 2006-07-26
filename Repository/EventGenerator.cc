@@ -64,7 +64,8 @@ void EventGenerator::checkSignalState() {
 }
 
 EventGenerator::EventGenerator()
-  : thePath("."), theNumberOfEvents(1000), theQuickSize(7000), ieve(0),
+  : thePath("."), theNumberOfEvents(1000), theQuickSize(7000),
+    preinitializing(false), ieve(0),
     theDebugLevel(0), printEvent(0), dumpPeriod(0), debugEvent(0),
     maxWarnings(10), maxErrors(10), theCurrentRandom(0),
     theCurrentGenerator(0) {}
@@ -82,7 +83,8 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theNumberOfEvents(eg.theNumberOfEvents), theObjects(eg.theObjects),
     theObjectMap(eg.theObjectMap),
     theParticles(eg.theParticles), theQuickParticles(eg.theQuickParticles),
-    theQuickSize(eg.theQuickSize), theMatchers(eg.theMatchers),
+    theQuickSize(eg.theQuickSize), preinitializing(false),
+    theMatchers(eg.theMatchers),
     usedObjects(eg.usedObjects), ieve(eg.ieve), theDebugLevel(eg.theDebugLevel),
     printEvent(eg.printEvent), dumpPeriod(eg.dumpPeriod),
     debugEvent(eg.debugEvent),
@@ -140,12 +142,31 @@ void EventGenerator::closeOutputFiles() {
 
 void EventGenerator::doinit() throw (InitException) {
 
+  // First initialize base class and random number generator.
   Interfaced::doinit();
   random().init();
 
+  // Make random generator and this available in standard static
+  // classes.
   UseRandom useRandom(theRandom);
   CurrentGenerator currentGenerator(this);
 
+  // First initialize all objects which have requested this by
+  // implementing a InterfacedBase::preInitialize() function which
+  // returns true.
+  while ( true ) {
+    HoldFlag<bool> hold(preinitializing, true);
+    ObjectSet preinits;
+    for ( ObjectSet::iterator it = objects().begin();
+	  it != objects().end(); ++it )
+      if ( (**it).preInitialize() &&
+	   (**it).state() == InterfacedBase::uninitialized )
+	preinits.insert(*it);
+    if ( preinits.empty() ) break;
+    for_each(preinits, mem_fun(&InterfacedBase::init));
+  }
+
+  // Initialize the quick access to particles.
   theQuickParticles.clear();
   theQuickParticles.resize(2*theQuickSize);
   for ( ParticleMap::const_iterator pit = theParticles.begin();
@@ -669,6 +690,209 @@ string EventGenerator::doMakeRun(string runname) {
   if ( runname.empty() ) runname = name();
   Repository::makeRun(this, runname);
   return "";
+}
+
+IPtr EventGenerator::
+preinitCreate(string classname, string fullname, string libraries) {
+  if ( !preinitializing ) throw InitException()
+    << "Tried to create a new object in the initialization of an "
+    << "EventGenerator outside of the pre-initialization face. "
+    << "The preinitCreate() can only be called from a doinit() function "
+    << "in an object for which preInitialize() returns true.";
+  if ( objectMap().find(fullname) != objectMap().end() ) return IPtr();
+  const ClassDescriptionBase * db = DescriptionList::find(classname);
+  while ( !db && libraries.length() ) {
+    string library = StringUtils::car(libraries);
+    libraries = StringUtils::cdr(libraries);
+    DynamicLoader::load(library);
+    db = DescriptionList::find(classname);
+  }
+  if ( !db ) return IPtr();
+  IPtr obj = dynamic_ptr_cast<IPtr>(db->create());
+  if ( !obj ) return IPtr();
+  obj->name(fullname);
+  objectMap()[fullname] = obj;
+  objects().insert(obj);
+  PDPtr pd = dynamic_ptr_cast<PDPtr>(obj);
+  if ( pd ) theParticles[pd->id()] = pd;
+  PMPtr pm = dynamic_ptr_cast<PMPtr>(obj);
+  if ( pm ) theMatchers.insert(pm);
+  return obj;
+
+}
+
+string EventGenerator::
+preinitInterface(IPtr obj, string ifcname, string cmd, string value) {
+  if ( !preinitializing ) throw InitException()
+    << "Tried to manipulate an external object in the initialization of an "
+    << "EventGenerator outside of the pre-initialization face. "
+    << "The preinitSet() can only be called from a doinit() function "
+    << "in an object for which preInitialize() returns true.";
+  if ( !obj ) return "Error: No object found.";
+  const InterfaceBase * ifc = Repository::FindInterface(obj, ifcname);
+  if ( !ifc ) return "Error: No such interface found.";
+  try {
+    return ifc->exec(*obj, cmd, value);
+  }
+  catch ( const InterfaceException & ex) {
+    ex.handle();
+    return "Error: " + ex.message();
+  }
+}
+
+string EventGenerator::
+preinitInterface(IPtr obj, string ifcname, int index,
+		 string cmd, string value) {
+  ostringstream os;
+  os << index;
+  return preinitInterface(obj, ifcname, cmd, os.str() + " " + value);
+}
+
+string EventGenerator::
+preinitInterface(string fullname, string ifcname, string cmd, string value) {
+  return preinitInterface(getObject<Interfaced>(fullname), ifcname, cmd, value);
+}
+
+string EventGenerator::
+preinitInterface(string fullname, string ifcname, int index,
+		 string cmd, string value) {
+  return preinitInterface(getObject<Interfaced>(fullname), ifcname, index,
+			  cmd, value);
+}
+
+tDMPtr EventGenerator::findDecayMode(string tag) const {
+  for ( ObjectSet::const_iterator it = objects().begin();
+	it != objects().end(); ++it ) {
+    tDMPtr dm = dynamic_ptr_cast<tDMPtr>(*it);
+    if ( dm && dm->tag() == tag ) return dm;
+  }
+  return tDMPtr();
+}
+
+tDMPtr EventGenerator::preinitCreateDecayMode(string tag) {
+  return constructDecayMode(tag);
+}
+
+DMPtr EventGenerator::constructDecayMode(string & tag) {
+  DMPtr rdm;
+  DMPtr adm;
+  int level = 0;
+  string::size_type end = 0;
+  while ( end < tag.size() && ( tag[end] != ']' || level ) ) {
+    switch ( tag[end++] ) {
+    case '[':
+      ++level;
+      break;
+    case ']':
+      --level;
+      break;
+    }
+  }
+  rdm = findDecayMode(tag.substr(0,end));
+  if ( rdm ) return rdm;
+
+  string::size_type next = tag.find("->");
+  if ( next == string::npos ) return rdm;
+  if ( tag.find(';') == string::npos ) return rdm;
+  tPDPtr pd = getObject<ParticleData>(tag.substr(0,next));
+  if ( !pd ) pd = findParticle(tag.substr(0,next));
+  if ( !pd ) return rdm;
+  rdm = ptr_new<DMPtr>();
+  rdm->parent(pd);
+  if ( pd->CC() ) {
+    adm = ptr_new<DMPtr>();
+    adm->parent(pd->CC());
+    rdm->theAntiPartner = adm;
+    adm->theAntiPartner = rdm;
+  }
+  bool error = false;
+  tag = tag.substr(next+2);
+  tPDPtr lastprod;
+  bool dolink = false;
+  do {
+    switch ( tag[0] ) {
+    case '[':
+      {
+	tag = tag.substr(1);
+	tDMPtr cdm = constructDecayMode(tag);
+	if ( cdm ) rdm->addCascadeProduct(cdm);
+	else error = true;
+      } break;
+    case '=':
+      dolink = true;
+    case ',':
+    case ']':
+      tag = tag.substr(1);
+      break;
+    case '?':
+      {
+	next = min(tag.find(','), tag.find(';'));
+	tPMPtr pm = findMatcher(tag.substr(1,next-1));
+	if ( pm ) rdm->addProductMatcher(pm);
+	else error = true;
+	tag = tag.substr(next);
+      } break;
+    case '!':
+      {
+	next = min(tag.find(','), tag.find(';'));
+	tPDPtr pd = findParticle(tag.substr(1,next-1));
+	if ( pd ) rdm->addExcluded(pd);
+	else error = true;
+	tag = tag.substr(next);
+      } break;
+    case '*':
+      {
+	next = min(tag.find(','), tag.find(';'));
+	tPMPtr pm = findMatcher(tag.substr(1,next-1));
+	if ( pm ) rdm->setWildMatcher(pm);
+	else error = true;
+	tag = tag.substr(next);
+      } break;
+    default:
+      {
+	next = min(tag.find('='), min(tag.find(','), tag.find(';')));
+	tPDPtr pdp = findParticle(tag.substr(0,next));
+	if ( pdp ) rdm->addProduct(pdp);
+	else error = true;
+	tag = tag.substr(next);
+	if ( dolink && lastprod ) {
+	  rdm->addLink(lastprod, pdp);
+	  dolink = false;
+	}
+	lastprod = pdp;
+      } break;
+    }
+  } while ( tag[0] != ';' && tag.size() );
+  if ( tag[0] != ';' || error ) {
+    return DMPtr();
+  }
+
+  tag = tag.substr(1);
+  
+  DMPtr ndm = findDecayMode(rdm->tag());
+  if ( ndm ) return ndm;
+  pd->addDecayMode(rdm);
+  rdm->name(pd->fullName() + "/" + rdm->tag());
+  objects().insert(rdm);
+  if ( adm ) {
+    adm->name(pd->CC()->fullName() + "/" + adm->tag());
+    objects().insert(adm);
+  }
+  return rdm;
+}
+
+tPDPtr EventGenerator::findParticle(string pdgname) const {
+  for ( ParticleMap::const_iterator it = particles().begin();
+	it != particles().end(); ++it )
+    if ( it->second->PDGName() == pdgname ) return it->second;
+  return tPDPtr();
+}
+
+tPMPtr EventGenerator::findMatcher(string name) const {
+  for ( MatcherSet::const_iterator it = matchers().begin();
+	it != matchers().end(); ++it )
+    if ( (**it).name() == name ) return *it;
+  return tPMPtr();
 }
 
 ClassDescription<EventGenerator> EventGenerator::initEventGenerator;

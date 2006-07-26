@@ -74,6 +74,10 @@ inline void InterfacedBase::finish() {
   dofinish();
 }
 
+inline InterfacedBase::InitState InterfacedBase::state() const {
+  return initState;
+}
+
 inline void InterfacedBase::name(string newName) {
   Named::name(newName);
 }

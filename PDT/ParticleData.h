@@ -32,6 +32,9 @@ public:
   /** The Repository is a friend. */
   friend class Repository;
 
+  /** The EventGenerator is a friend. */
+  friend class EventGenerator;
+
   /** DecayMode is a friend. */
   friend class DecayMode;
 

@@ -520,6 +520,152 @@ private:
 
 public:
 
+  /** @name The following functions may be called by objects belonging
+      to this event generator during the initialization phase (in the
+      doinit() function). It is typically used by objects which need
+      to introduce other Interfaced objects depending the parameters
+      of the StandardModel object used. Note that objects which use
+      these functions <b>MUST</b> override the preInitialize()
+      function to return true, otherwize the whole initialization
+      procedure may be corrupted. */
+  //@{
+  /**
+   * Create a new Interfaced object to be used in the run being
+   * initialized.
+   *
+   * @param classname the class name of the object being created.
+   *
+   * @param fullname the full name including the directory path. Note
+   * that althogh the full path is given the object will not be
+   * inserted in the Repository, but only in this current
+   * EventGenerator.
+   *
+   * @param libraries an optional list of shared libraries to be
+   * loaded to be able to create an object of the specified class.
+   *
+   * @return the created object if the it was successfully
+   * created. Return null if the object could not be created or if
+   * another object of that name already exists.
+   */
+  IPtr preinitCreate(string classname, string fullname,	string libraries = "");
+
+
+  /**
+   * Manipulate an interface of an Interfaced object.
+   *
+   * @param fullname the name including the full path of an object to
+   * be manipulated.
+   *
+   * @param ifcname the name of the interface to be used.
+   *
+   * @param cmd the operation to be performed on the interface (set or
+   * get).
+   *
+   * @param value Optional value to be passed to the interface.
+   *
+   * @return a string containing the result of the operation. If this
+   * string starts with "Error: " then something went wrong.
+   */
+  string preinitInterface(string fullname, string ifcname, string cmd,
+			  string value);
+
+  /**
+   * Manipulate an interface of vector type (RefVector or ParVector)
+   * of an Interfaced object.
+   *
+   * @param fullname the name including the full path of an object to
+   * be manipulated.
+   *
+   * @param ifcname the name of the interface to be used.
+   *
+   * @param index the vector index corresponding to the element to be
+   * manipulated.
+   *
+   * @param cmd the operation to be performed on the interface (set,
+   * get, insert or erase).
+   *
+   * @param value Optional value to be passed to the interface.
+   *
+   * @return a string containing the result of the operation. If this
+   * string starts with "Error: " then something went wrong.
+   */
+  string preinitInterface(string fullname, string ifcname, int index,
+			  string cmd, string value);
+
+  /**
+   * Manipulate an interface of an Interfaced object.
+   *
+   * @param obj the object to be manipulated.
+   *
+   * @param ifcname the name of the interface to be used.
+   *
+   * @param cmd the operation to be performed on the interface (set or
+   * get).
+   *
+   * @param value Optional value to be passed to the interface.
+   *
+   * @return a string containing the result of the operation. If this
+   * string starts with "Error: " then something went wrong.
+   */
+  string preinitInterface(IPtr obj, string ifcname, string cmd, string value);
+
+  /**
+   * Manipulate an interface of vector type (RefVector or ParVector)
+   * of an Interfaced object.
+   *
+   * @param obj the object to be manipulated.
+   *
+   * @param ifcname the name of the interface to be used.
+   *
+   * @param index the vector index corresponding to the element to be
+   * manipulated.
+   *
+   * @param cmd the operation to be performed on the interface (set,
+   * get, insert or erase).
+   *
+   * @param value Optional value to be passed to the interface.
+   *
+   * @return a string containing the result of the operation. If this
+   * string starts with "Error: " then something went wrong.
+   */
+  string preinitInterface(IPtr obj, string ifcname, int index,
+			  string cmd, string value);
+
+  /**
+   * Find a decaymode given a decay \a tag.
+   * @return null if no decay mode was found.
+   */
+  tDMPtr findDecayMode(string tag) const;
+
+  /**
+   * Create a decay mode according to the given tag.
+   * @return null if no decay mode could be created.
+   */
+  tDMPtr preinitCreateDecayMode(string tag);
+
+  /**
+   * Find a particle in this run, using its PDG name.
+   * @return null if no particle is found.
+   */
+  tPDPtr findParticle(string pdgname) const;
+
+  /**
+   * Find a matcher in this run given its \a name.
+   * @return null if no mather is found.
+   */
+  tPMPtr findMatcher(string name) const;
+
+private:
+
+  /**
+   * Used internally by preinitCreateDecayMode();
+   */
+  DMPtr constructDecayMode(string & tag);
+
+  //@}
+
+public:
+
 
   /** @name Functions used by the persistent I/O system. */
   //@{
@@ -718,6 +864,13 @@ private:
    * available in theQuickParticles.
    */
   int theQuickSize;
+
+  /**
+   * A flag to tell if we are in the pre-initialization phase where
+   * objects with preInitialize() functions returning true are
+   * initialized before others.
+   */
+  bool preinitializing;
 
   /**
    * The set of all matchers to be used in this run.

@@ -38,8 +38,13 @@ namespace ThePEG {
  */
 class InterfacedBase: public PersistentBase, public Named {
 
-  /** THe BaseRepository is a close friend. */
+  /** The BaseRepository is a close friend. */
   friend class BaseRepository;
+
+  /** The EventGenerator is a friend. */
+  friend class EventGenerator;
+
+public:
 
   /**
    * Enumeration reflecting the state of an InterfacedBase object.
@@ -218,6 +223,14 @@ public:
   inline void init() throw (InitException);
 
   /**
+   * Return true if this object needs to be initialized before all
+   * other objects (except those for which this function also returns
+   * true).  This default version always returns false, but subclasses
+   * may override it to return true.
+   */
+  virtual bool preInitialize() const;
+
+  /**
    * Calls the doinitrun() function with recursion prevention.
    */
   inline void initrun();
@@ -243,6 +256,11 @@ public:
    * Calls reset() and unTouch().
    */
   inline void clear();
+
+  /**
+   * Return the state of initialization of this object.
+   */
+  inline InitState state() const;
 
   /**
    * Return true if the BaseRepository is not allowed to change the

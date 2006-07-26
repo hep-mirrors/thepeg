@@ -1,3 +1,27 @@
+2006-07-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.h: Changed the behavior of the
+	doinit() function so that objects which returns true from their
+	preInitialize() function are initialized first in a special
+	pre-initialization phase. In this phase the initialized objects
+	may use some special preinit functions to add new objects
+	(using eg. preinitCreate()) to the run, or manipulate the
+	interfaces of the ones which are there (using eg.
+	preinitInterface()). Note that this functionality has not been
+	proprtly tested yet - it does compile though...
+
+	* PDT/ParticleData.h, PDT/DecayMode.h: EventGenerator is now a
+	friend.
+
+	* Interface/InterfacedBase.h: EventGenerator is now a friend.
+	Added member function state() which returns the initialization
+	state of an object. Added virtual member function preInitialize()
+	which by default returns false. If it returns true for an object
+	this will be handled first in the initialization of an Event
+	handler in a special pre-initialization step. In this case the
+	object may use the special 'preinit' functions in the
+	EventGenerator when executing its doinit() function.
+
 2006-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/HepMCConverter.*, CLHEPWrap/HepMCTraits.h,
