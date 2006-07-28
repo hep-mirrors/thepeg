@@ -25,7 +25,7 @@
 
 2006-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* java/RunFrame.java: Now used '--tics' option for runThePEG.
+	* java/RunFrame.java: Now uses '--tics' option for runThePEG.
 
 	* src/runThePEG.cc: Added '--seed' and '--tics' options which
 	eventually will replace the '-seed' and '-tics' ones.
