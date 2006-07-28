@@ -34,6 +34,14 @@ CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex \
              TestLHAPDF.log TestLHAPDF.out TestLHAPDF.run TestLHAPDF.tex \
              .runThePEG.timer.TestLHAPDF.run 
 
+save:
+	mkdir -p save
+	cp *.log *.out *.run *.tex *.rpo save
+
+valgrind:
+	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./setupThePEG.bin -L../lib -r ThePEGDefaults.rpo SimpleLEP.in
+	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./runThePEG.bin SimpleLEP.run > & /tmp/valgrind.out
+
 INPUTFILES = ThePEGDefaults.in ThePEGParticles.in SimpleLEP.in TestLHAPDF.in
 
 done-all-links:

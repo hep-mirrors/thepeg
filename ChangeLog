@@ -1,3 +1,7 @@
+2006-07-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/Makefile.am: Added valgrind target to do memory checks.
+
 2006-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* java/RunFrame.java: Now used '--tics' option for runThePEG.
