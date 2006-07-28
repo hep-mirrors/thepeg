@@ -118,7 +118,19 @@ protected:
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  inline virtual void doinit() throw(InitException);
+  virtual void doinit() throw(InitException);
+
+  /**
+   * Called from doinit() to extract cuts from the event file and add
+   * the corresponding objects to the current Eventgenerator.
+   */
+  CutsPtr initCuts();
+
+  /**
+   * Return true if this object needs to be initialized before all
+   * other objects because it needs to extract cuts from the event file.
+   */
+  virtual bool preInitialize() const;
 
   /**
    * Initialize this object. Called in the run phase just before
@@ -189,6 +201,10 @@ protected:
    */
   map<string,double> cuts;
   
+  /**
+   * If true, cuts may be extracted from the event file during initialization.
+   */
+  bool doInitCuts;
 
 private:
 

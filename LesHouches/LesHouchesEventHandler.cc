@@ -24,6 +24,7 @@
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/CLHEPWrap/RandPoisson.h"
 #include "ThePEG/Repository/UseRandom.h"
+#include "ThePEG/Utilities/Throw.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesEventHandler.tcc"
@@ -96,12 +97,14 @@ void LesHouchesEventHandler::initialize() {
 	ProcessMap::iterator pit = processes.find(reader.heprup.LPRUP[ip]);
 	if ( pit == processes.end() )
 	  processes[reader.heprup.LPRUP[ip]] = readers()[i];
-	else
-	  Repository::clog()
-	    << "Warning: In the LesHouchesEventHandler '"
+	else {
+	  Throw<Exception>()
+	    << "In the LesHouchesEventHandler '"
 	    << name() << "', both the '" << pit->second->name() << "' and '"
 	    << reader.name() << "' contains sub-process number " << pit->first
-	    << ". This process may be double-counted in this run." << endl;
+	    << ". This process may be double-counted in this run."
+	    << Exception::warning;
+	}
       }
     }
     selector().insert(reader.stats.maxXSec(), i);

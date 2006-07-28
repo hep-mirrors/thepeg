@@ -10,7 +10,7 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            TypeInfo.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
            FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h \
-           CFileLineReader.h CompSelector.h XSecStat.h
+           CFileLineReader.h CompSelector.h XSecStat.h Throw.h
 
 INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                ClassDescription.tcc DescriptionList.icc HoldFlag.icc \

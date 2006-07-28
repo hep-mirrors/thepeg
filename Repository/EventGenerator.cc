@@ -536,8 +536,12 @@ void EventGenerator::printException(const Exception & ex) {
     log() << "**** An unknown";
     break;
   }
-  log() << " exception occurred while generating event number "
-	    << ieve << ": " << endl << ex.message() << endl;
+  if ( ieve > 0 )
+    log() << " exception occurred while generating event number "
+	  << ieve << ": " << endl << ex.message() << endl;
+  else
+    log() << " exception occurred in the initialization of "
+	  << name() << ": " << endl << ex.message() << endl;
   if ( ex.severity() == Exception::eventerror )
     log() << "The event will be discarded." << endl;
 }
@@ -692,6 +696,23 @@ string EventGenerator::doMakeRun(string runname) {
   return "";
 }
 
+bool EventGenerator::preinitRegister(IPtr obj, string fullname) {
+  if ( !preinitializing ) throw InitException()
+    << "Tried to register a new object in the initialization of an "
+    << "EventGenerator outside of the pre-initialization face. "
+    << "The preinitRegister() can only be called from a doinit() function "
+    << "in an object for which preInitialize() returns true.";
+  if ( objectMap().find(fullname) != objectMap().end() ) return false;
+  obj->name(fullname);
+  objectMap()[fullname] = obj;
+  objects().insert(obj);
+  PDPtr pd = dynamic_ptr_cast<PDPtr>(obj);
+  if ( pd ) theParticles[pd->id()] = pd;
+  PMPtr pm = dynamic_ptr_cast<PMPtr>(obj);
+  if ( pm ) theMatchers.insert(pm);
+  return true;
+}
+
 IPtr EventGenerator::
 preinitCreate(string classname, string fullname, string libraries) {
   if ( !preinitializing ) throw InitException()
@@ -710,15 +731,8 @@ preinitCreate(string classname, string fullname, string libraries) {
   if ( !db ) return IPtr();
   IPtr obj = dynamic_ptr_cast<IPtr>(db->create());
   if ( !obj ) return IPtr();
-  obj->name(fullname);
-  objectMap()[fullname] = obj;
-  objects().insert(obj);
-  PDPtr pd = dynamic_ptr_cast<PDPtr>(obj);
-  if ( pd ) theParticles[pd->id()] = pd;
-  PMPtr pm = dynamic_ptr_cast<PMPtr>(obj);
-  if ( pm ) theMatchers.insert(pm);
+  if ( !preinitRegister(obj, fullname) ) return IPtr();
   return obj;
-
 }
 
 string EventGenerator::

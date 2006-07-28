@@ -530,13 +530,28 @@ public:
       procedure may be corrupted. */
   //@{
   /**
+   * Register a new object to be included in the run currently being
+   * initialized.
+   *
+   * @param obj (pointer to) the object being registered.
+   *
+   * @param fullname the full name including the directory path. Note
+   * that although the full path is given the object will not be
+   * inserted in the Repository, but only in this current
+   * EventGenerator.
+   *
+   * @return false if another object of that name already exists.
+   */
+  bool preinitRegister(IPtr obj, string fullname);
+
+  /**
    * Create a new Interfaced object to be used in the run being
    * initialized.
    *
    * @param classname the class name of the object being created.
    *
    * @param fullname the full name including the directory path. Note
-   * that althogh the full path is given the object will not be
+   * that although the full path is given the object will not be
    * inserted in the Repository, but only in this current
    * EventGenerator.
    *

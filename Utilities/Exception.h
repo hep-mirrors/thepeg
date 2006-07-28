@@ -169,21 +169,6 @@ private:
 
 };
 
-template <typename Ex>
-struct Throw {
-  Throw(): ex(Ex()) {}
-  template <typename T> Throw & operator<<(const T & t) {
-    ex << t;
-    return *this;
-  }
-  Throw & operator<<(Exception::Severity sev) {
-    ex << sev;
-    throw ex;
-    return *this;
-  }
-  Ex ex;
-};
-
 }
 
 #include "Exception.icc"

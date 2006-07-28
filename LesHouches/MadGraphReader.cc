@@ -8,12 +8,15 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Command.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/LesHouches/MadGraphOneCut.h"
 #include "ThePEG/LesHouches/MadGraphTwoCut.h"
 #include "ThePEG/Cuts/Cuts.h"
+#include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Utilities/Throw.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "MadGraphReader.tcc"
@@ -293,11 +296,109 @@ bool MadGraphReader::doReadEvent() {
 MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
-  os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts;
+  os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts << doInitCuts;
 }
 
 void MadGraphReader::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts;
+  is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts >> doInitCuts;
+}
+
+bool MadGraphReader::preInitialize() const {
+  if ( !doInitCuts ) return false;
+  if ( theCuts ) return false;
+  return true;
+}
+
+void MadGraphReader::doinit() throw(InitException) {
+  LesHouchesFileReader::doinit();
+  if ( preInitialize() ) {
+    theCuts = initCuts();
+    if ( !theCuts ) Throw<Exception>()
+      << "Could not create cuts object in pre-initialization."
+      << Exception::warning;
+    else Throw<Exception>()
+      << "Created cuts object in pre-initialization."
+      << Exception::warning;
+  }
+}
+
+CutsPtr MadGraphReader::initCuts() {
+  CutsPtr newCuts;
+  open();
+  close();
+  if ( cuts.empty() ) return CutsPtr();
+  vector<OneCutPtr> ones;
+  vector<TwoCutPtr> twos;
+  vector<string> onames;
+  vector<string> tnames;
+  for ( map<string,double>::iterator i = cuts.begin(); i != cuts.end(); ++i ) {
+    if ( i->second <= 0.0 ) continue;
+    MadGraphOneCut::CutType t = MadGraphOneCut::PT;
+    char p = 0;
+    if ( i->first.substr(0, 2) == "pt" ) {
+      t = MadGraphOneCut::PT;
+      p = i->first[2];
+    }
+    else if  ( i->first.substr(0, 3) == "eta" ) {
+      t = MadGraphOneCut::ETA;
+      p = i->first[3];
+    }
+    else if  ( i->first.substr(0, 3) == "xpt" ) {
+      t = MadGraphOneCut::XPT;
+      p = i->first[3];
+    }
+    if ( p ) {
+      MadGraphOneCut::PType pt = MadGraphOneCut::JET;
+      switch ( p ) {
+      case 'j':	pt = MadGraphOneCut::JET; break;
+      case 'b':	pt = MadGraphOneCut::BOT; break;
+      case 'a':	pt = MadGraphOneCut::PHO; break;
+      case 'l':	pt = MadGraphOneCut::LEP; break;
+      }
+      ones.push_back(new_ptr(MadGraphOneCut(t, pt, i->second)));
+      onames.push_back(i->first);
+      continue;
+    }
+    if ( i->first.substr(0, 2) == "dr" || i->first.substr(0, 2) == "mm" ) {
+      MadGraphTwoCut::CutType tt = MadGraphTwoCut::DELTAR;
+      if ( i->first.substr(0, 2) == "mm" ) tt = MadGraphTwoCut::INVMASS;
+      MadGraphTwoCut::PPType pp = MadGraphTwoCut::JETJET;
+      if ( i->first.substr(2, 2) == "jj" ) pp = MadGraphTwoCut::JETJET;
+      else if ( i->first.substr(2, 2) == "bb" )	pp = MadGraphTwoCut::BOTBOT;
+      else if ( i->first.substr(2, 2) == "aa" )	pp = MadGraphTwoCut::PHOPHO;
+      else if ( i->first.substr(2, 2) == "ll" )	pp = MadGraphTwoCut::LEPLEP;
+      else if ( i->first.substr(2, 2) == "bj" )	pp = MadGraphTwoCut::BOTJET;
+      else if ( i->first.substr(2, 2) == "aj" )	pp = MadGraphTwoCut::PHOJET;
+      else if ( i->first.substr(2, 2) == "jl" )	pp = MadGraphTwoCut::JETLEP;
+      else if ( i->first.substr(2, 2) == "ab" )	pp = MadGraphTwoCut::PHOBOT;
+      else if ( i->first.substr(2, 2) == "bl" )	pp = MadGraphTwoCut::BOTLEP;
+      else if ( i->first.substr(2, 2) == "al" )	pp = MadGraphTwoCut::PHOLEP;
+      twos.push_back(new_ptr(MadGraphTwoCut(tt, pp, i->second)));
+      tnames.push_back(i->first);
+    }
+  }
+  if ( ones.empty() && twos.empty() ) return CutsPtr();
+
+  newCuts = new_ptr(Cuts());
+  generator()->preinitRegister(newCuts, fullName() + "/ExtractedCuts");
+
+  for ( int i = 0, N = ones.size(); i < N; ++i ) {
+    generator()->preinitRegister(ones[i], fullName() + "/" + onames[i]);
+    generator()->preinitInterface
+      (newCuts, "OneCuts", 0, "insert",  ones[i]->fullName());
+    //    newCuts->add(tOneCutPtr(ones[i]));
+  }
+
+  for ( int i = 0, N = twos.size(); i < N; ++i ) {
+    reporeg(twos[i], tnames[i]);
+    generator()->preinitInterface
+      (newCuts, "TwoCuts", 0, "insert",  twos[i]->fullName());
+    //    newCuts->add(tTwoCutPtr(twos[i]));
+  }
+
+  return newCuts;
+
+
 }
 
 string MadGraphReader::scanCuts(string) {
@@ -421,7 +522,26 @@ void MadGraphReader::Init() {
      "<interface>LesHouchesReader::Cuts</interface> of this reader.",
      &MadGraphReader::scanCuts, true);
 
+  static Switch<MadGraphReader,bool> interfaceInitCuts
+    ("InitCuts",
+     "If no cuts were specified for this reader, try to extract cut "
+     "information from the MadGraph file and assign the relevant cut "
+     "objects when the reader is initialized.",
+     &MadGraphReader::doInitCuts, false, true, false);
+  static SwitchOption interfaceInitCutsYes
+    (interfaceInitCuts,
+     "Yes",
+     "Extract cuts during initialization.",
+     true);
+  static SwitchOption interfaceInitCutsNo
+    (interfaceInitCuts,
+     "No",
+     "Do not extract cuts during initialization.",
+     false);
+
+
   interfaceScanCuts.rank(10.5);
+  interfaceInitCuts.rank(10.6);
 
 }
 
