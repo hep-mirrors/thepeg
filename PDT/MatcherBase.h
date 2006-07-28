@@ -26,6 +26,16 @@ public:
   /** Repository needs to be a friend. */
   friend class Repository;
 
+  /**
+   * Convenient typedef.
+   */
+  typedef set<tPDPtr> tPDSet;
+
+  /**
+   * Convenient typedef.
+   */
+  typedef set<tPMPtr> tPMSet;
+
 public:
 
   /** @name Standard constructors and destructors. */
@@ -43,7 +53,7 @@ public:
   /**
    * Destructor.
    */
-  inline virtual ~MatcherBase();
+  virtual ~MatcherBase();
   //@}
 
 public:
@@ -99,11 +109,11 @@ public:
   /**
    * Access to the set of matching particles.
    */
-  inline const ParticleDataSet & particles() const;
+  inline const tPDSet & particles() const;
   /**
    * Access to the set of matching matchers.
    */
-  inline const MatcherSet & matchers() const;
+  inline const tPMSet & matchers() const;
   //@}
 
   /** @name Access common properties of all matched particles. */
@@ -314,12 +324,12 @@ private:
   /**
    * The set of particle data objects matched by this matcher.
    */
-  ParticleDataSet matchingParticles;
+  tPDSet matchingParticles;
 
   /**
    * A set of matchers which matches a subset of this matcher.
    */
-  MatcherSet matchingMatchers;
+  tPMSet matchingMatchers;
 
   /**
    * The maximum mass of all matching particles.

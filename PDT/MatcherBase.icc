@@ -6,8 +6,6 @@
 
 namespace ThePEG {
 
-inline MatcherBase::~MatcherBase() {}
-
 inline bool MatcherBase::checkp(const Particle & p) const {
   return check(p.data());
 }
@@ -24,11 +22,11 @@ inline bool MatcherBase::matches(const MatcherBase & pm) const {
   return member(matchingMatchers, PMPtr(const_cast<MatcherBase *>(&pm)));
 }
 
-inline const ParticleDataSet & MatcherBase::particles() const {
+inline const MatcherBase::tPDSet & MatcherBase::particles() const {
   return matchingParticles;
 }
 
-inline const MatcherSet & MatcherBase::matchers() const {
+inline const MatcherBase::tPMSet & MatcherBase::matchers() const {
   return matchingMatchers;
 }
 

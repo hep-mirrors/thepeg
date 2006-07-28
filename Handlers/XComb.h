@@ -357,7 +357,7 @@ private:
   /**
    * A pointer to the parton extractor.
    */
-  PExtrPtr thePartonExtractor;
+  tPExtrPtr thePartonExtractor;
 
   /**
    * A pointer to a CascadeHandler to be used for CKKW-reweighting.
@@ -367,7 +367,7 @@ private:
   /**
    * A pointer to the kinematical cuts used.
    */
-  CutsPtr theCuts;
+  tCutsPtr theCuts;
 
   /**
    * The incoming particle types.

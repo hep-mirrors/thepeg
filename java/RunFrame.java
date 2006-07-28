@@ -160,7 +160,7 @@ public class RunFrame extends JFrame
 	args.add("" + i);
       }
     } catch ( NumberFormatException e) {}
-    args.add("-tics");
+    args.add("--tics");
     StringTokenizer st = new StringTokenizer(argfield.getText());
     while ( st.hasMoreTokens() ) args.add(st.nextToken());
 

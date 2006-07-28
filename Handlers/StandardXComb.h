@@ -266,7 +266,7 @@ private:
   /**
    * The corresponding sub-process handler
    */
-  SubHdlPtr theSubProcessHandler;
+  tSubHdlPtr theSubProcessHandler;
 
   /**
    * The matrix element to be used.

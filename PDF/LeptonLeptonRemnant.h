@@ -178,7 +178,7 @@ private:
   /**
    * Easy access to a proton data object.
    */
-  PDPtr photon;
+  tPDPtr photon;
 
 private:
 

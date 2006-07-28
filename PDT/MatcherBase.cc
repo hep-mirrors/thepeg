@@ -32,10 +32,12 @@ MatcherBase::MatcherBase(const MatcherBase & m)
     commonSpin(m.commonSpin), commonColor(m.commonColor),
     commonStable(m.commonStable), theAntiPartner(m.theAntiPartner) {}
 
+MatcherBase::~MatcherBase() {}
+
 void MatcherBase::doupdate() throw(UpdateException) {
   Interfaced::doupdate();
-  ParticleDataSet oldParticles;
-  MatcherSet oldMatchers;
+  tPDSet oldParticles;
+  tPMSet oldMatchers;
   Energy oldMass = commonMass;
   Energy oldWidth = commonWidth;
   Length oldCTau = commonCTau;
@@ -75,7 +77,8 @@ void MatcherBase::clear() {
 
 void MatcherBase::addMIfMatch(tPMPtr pm) {
   if ( member(matchingMatchers, pm) ) return;
-  ParticleDataSet::const_iterator i = pm->matchingParticles.begin();
+  pm->update();
+  tPDSet::const_iterator i = pm->matchingParticles.begin();
   while ( i != pm->matchingParticles.end() )
     if ( !member(matchingParticles, *i++) ) return;
   matchingMatchers.insert(pm);

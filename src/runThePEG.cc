@@ -31,9 +31,9 @@ int main(int argc, char * argv[]) {
       Debug::setDebug(atoi(arg.substr(2).c_str()));
     else if ( arg == "-N" ) N = atoi(argv[++iarg]);
     else if ( arg.substr(0,2) == "-N" ) N = atoi(arg.substr(2).c_str());
-    else if ( arg == "-seed" ) seed = atoi(argv[++iarg]);
-    else if ( arg == "-tics" ) tics = true;
-    else if ( arg == "-h" ) {
+    else if ( arg == "--seed" || arg == "-seed" ) seed = atoi(argv[++iarg]);
+    else if ( arg == "--tics" || arg == "-tics" ) tics = true;
+    else if ( arg == "--help" || arg == "-h" ) {
     cerr << "Usage: " << argv[0] << " [-d {debuglevel|-debugitem}] "
 	 << "[-l load-path] [-L first-load-path] run-file" << endl;
       return 3;
