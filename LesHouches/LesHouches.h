@@ -78,7 +78,7 @@ public:
    * The number of different subprocesses in this file (should
    * typically be just one)
    */
-  int NRUP;
+  int NPRUP;
 
   /**
    * The cross sections for the different subprocesses in pb.

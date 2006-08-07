@@ -1,13 +1,13 @@
 # Search for LHAPDF in and g77 compiler in standard dorectories
 
 AC_DEFUN([AC_SEARCH_LHAPDF],
-[AC_FC_LIBRARY_LDFLAGS
+[AC_F77_LIBRARY_LDFLAGS
 AC_MSG_CHECKING([if LHAPDF is present and works])
 HAS_LHAPDF="yes"
 LHAPDF_LIBDIR=""
 AC_ARG_ENABLE(LHAPDF,[use LHAPDF package (requires g77 compiler) (optional arg=path to where the LHAPDF shared library is located)], [if test -n "$enable_LHAPDF" -a "$enable_LHAPDF" != "yes" -a "$enable_LHAPDF" != "no"; then LHAPDF_LIBDIR="$enable_LHAPDF"; elif test "$enable_LHAPDF" == "no"; then HAS_LHAPDF="no"; fi])
 
-if test -z "FCLIBS"; then
+if test -z "FLIBS"; then
   HAS_LHAPDF="no"
 fi
 
@@ -16,7 +16,7 @@ oldLDFLAGS="$LDFLAGS"
 
 if test "$HAS_LHAPDF" == "yes"; then
 dnl Now lets see if the libraries work properly
-  LIBS="$LIBS -lLHAPDF $FCLIBS"
+  LIBS="$LIBS -lLHAPDF $FLIBS"
   if test -n "$LHAPDF_LIBDIR"; then
     LDFLAGS="$LDFLAGS -L$LHAPDF_LIBDIR"
   fi

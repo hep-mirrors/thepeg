@@ -122,9 +122,16 @@ protected:
 
   /**
    * Called from doinit() to extract cuts from the event file and add
-   * the corresponding objects to the current Eventgenerator.
+   * the corresponding objects to the current EventGenerator.
    */
   CutsPtr initCuts();
+
+  /**
+   * Called from LesHouchesReader::doinit() to extract PDFs from the
+   * event file and add the corresponding objects to the current
+   * EventGenerator.
+   */
+  virtual void initPDFs();
 
   /**
    * Return true if this object needs to be initialized before all

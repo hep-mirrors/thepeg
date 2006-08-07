@@ -35,6 +35,7 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "LesHouchesEventHandler.h"
+#include "ThePEG/Utilities/Throw.h"
 
 using namespace ThePEG;
 
@@ -42,7 +43,7 @@ LesHouchesReader::LesHouchesReader(bool active)
   : theNEvents(0), position(0), reopened(0), theMaxScan(-1),
     isActive(active), isWeighted(false), hasNegativeWeights(false),
     theCacheFileName(""), theCacheFile(NULL), preweight(1.0),
-    reweightPDF(false) {}
+    reweightPDF(false), doInitPDFs(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -56,7 +57,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     stats(x.stats), statmap(x.statmap),
     thePartonBinInstances(x.thePartonBinInstances),
     theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
-    preweight(x.preweight), reweightPDF(x.reweightPDF) {}
+    preweight(x.preweight), reweightPDF(x.reweightPDF),
+    doInitPDFs(x.doInitPDFs) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -71,26 +73,41 @@ void LesHouchesReader::doinitrun() {
   reopened = 0;
 }
 
+bool LesHouchesReader::preInitialize() const {
+  if ( HandlerBase::preInitialize() ) return true;
+  if ( doInitPDFs && ! ( inPDF.first && inPDF.second ) ) return true;
+  return false;
+}
+
 void LesHouchesReader::doinit() throw(InitException) {
   HandlerBase::doinit();
+  if ( doInitPDFs && ! ( inPDF.first && inPDF.second ) ) {
+    initPDFs();
+    if ( ! ( inPDF.first && inPDF.second ) ) Throw<InitException>()
+      << "LesHouchesReader '" << name()
+      << "' could not create PDFBase objects in pre-initialization."
+      << Exception::warning;
+  }
 }
+
+void LesHouchesReader::initPDFs() {}
 
 void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   Energy2 Smax = 0.0*GeV2;
   double Y = 0.0;
   if ( !theCuts ) {
     theCuts = eh.cuts();
+    if ( !theCuts ) throw LesHouchesInitError()
+      << "No Cuts object was assigned to the LesHouchesReader '"
+      << name() << "' nor was one assigned to the controlling "
+      << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
+      << "needs to have a Cuts object." << Exception::warning;
+
     Smax = cuts().SMax();
     Y = cuts().Y();
   }
 
   theCKKW = eh.CKKWHandler();
-
-  if ( !theCuts ) throw LesHouchesInitError()
-    << "No Cuts object was assigned to the LesHouchesReader '"
-    << name() << "' nor was one assigned to the controlling "
-    << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
-    << "needs to have a Cuts object." << Exception::warning;
 
   if ( !partonExtractor() ) thePartonExtractor = eh.partonExtractor();
   if ( !partonExtractor() )  throw LesHouchesInitError()
@@ -142,7 +159,7 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
 
 
 long LesHouchesReader::scan() {
-  heprup.NRUP = 0;
+  heprup.NPRUP = 0;
   heprup.XSECUP.clear();
   heprup.XERRUP.clear();
   heprup.XMAXUP.clear();
@@ -164,7 +181,7 @@ long LesHouchesReader::scan() {
 
   // If the open() has not already gotten information about subprocesses
   // and cross sections we have to scan through the events.
-  if ( !heprup.NRUP || cacheFile() != NULL ) {
+  if ( !heprup.NPRUP || cacheFile() != NULL ) {
     double xlast = 0.0;
     weighted(false);
     negativeWeights(false);
@@ -182,7 +199,7 @@ long LesHouchesReader::scan() {
       vector<int>::iterator idit =
 	find(heprup.LPRUP.begin(), heprup.LPRUP.end(), hepeup.IDPRUP);
       if ( idit == heprup.LPRUP.end() ) {
-	++heprup.NRUP;
+	++heprup.NPRUP;
 	heprup.LPRUP.push_back(hepeup.IDPRUP);
 	heprup.XSECUP.push_back(hepeup.XWGTUP);
 	heprup.XERRUP.push_back(sqr(hepeup.XWGTUP));
@@ -214,11 +231,11 @@ void LesHouchesReader::initStat() {
 
   stats.reset();
   statmap.clear();
-  if ( heprup.NRUP <= 0 ) return;
+  if ( heprup.NPRUP <= 0 ) return;
 
   if ( !weighted() ) {
     double xsec = 0.0;
-    for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
       xsec += heprup.XSECUP[ip];
       statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XSECUP[ip]*picobarn);
     }
@@ -227,11 +244,11 @@ void LesHouchesReader::initStat() {
     heprup.XSECUP.clear();
     heprup.XERRUP.clear();
     double maxx = 0.0;
-    for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
       maxx = max(maxx, heprup.XMAXUP[ip]);
     }
     stats.maxXSec(maxx*picobarn);
-    for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
       statmap[heprup.LPRUP[ip]] = XSecStat(maxx*picobarn);
     }
   }
@@ -685,7 +702,7 @@ bool LesHouchesReader::uncacheEvent() {
 
 void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
   os << heprup.IDBMUP << heprup.EBMUP << heprup.PDFGUP << heprup.PDFSUP
-     << heprup.IDWTUP << heprup.NRUP << heprup.XSECUP << heprup.XERRUP
+     << heprup.IDWTUP << heprup.NPRUP << heprup.XSECUP << heprup.XERRUP
      << heprup.XMAXUP << heprup.LPRUP << hepeup.NUP << hepeup.IDPRUP
      << hepeup.XWGTUP << hepeup.XPDWUP << hepeup.SCALUP << hepeup.AQEDUP
      << hepeup.AQCDUP << hepeup.IDUP << hepeup.ISTUP << hepeup.MOTHUP
@@ -695,13 +712,14 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << reopened << theMaxScan << isActive << isWeighted << hasNegativeWeights
      << theCacheFileName << stats << statmap << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
-     << reweights << preweights << preweight << reweightPDF << theLastXComb;
+     << reweights << preweights << preweight << reweightPDF << doInitPDFs
+     << theLastXComb;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
   if ( cacheFile() ) closeCacheFile();
   is >> heprup.IDBMUP >> heprup.EBMUP >> heprup.PDFGUP >> heprup.PDFSUP
-     >> heprup.IDWTUP >> heprup.NRUP >> heprup.XSECUP >> heprup.XERRUP
+     >> heprup.IDWTUP >> heprup.NPRUP >> heprup.XSECUP >> heprup.XERRUP
      >> heprup.XMAXUP >> heprup.LPRUP >> hepeup.NUP >> hepeup.IDPRUP
      >> hepeup.XWGTUP >> hepeup.XPDWUP >> hepeup.SCALUP >> hepeup.AQEDUP
      >> hepeup.AQCDUP >> hepeup.IDUP >> hepeup.ISTUP >> hepeup.MOTHUP
@@ -711,7 +729,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> reopened >> theMaxScan >> isActive >> isWeighted >> hasNegativeWeights
      >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
-     >> reweights >> preweights >> preweight >> reweightPDF >> theLastXComb;
+     >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
+     >> theLastXComb;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -998,6 +1017,24 @@ void LesHouchesReader::Init() {
      "arguments are given they will be interpreted as remnant handler classes "
      "for beam A and B respectively.",
      &LesHouchesReader::scanPDF, true);
+
+  static Switch<LesHouchesReader,bool> interfaceInitPDFs
+    ("InitPDFs",
+     "If no PDFs were specified in <interface>PDFA</interface> or "
+     "<interface>PDFB</interface>for this reader, try to extract the "
+     "information from the event file and assign the relevant PDFBase"
+     "objects when the reader is initialized.",
+     &LesHouchesReader::doInitPDFs, false, true, false);
+  static SwitchOption interfaceInitPDFsYes
+    (interfaceInitPDFs,
+     "Yes",
+     "Extract PDFs during initialization.",
+     true);
+  static SwitchOption interfaceInitPDFsNo
+    (interfaceInitPDFs,
+     "No",
+     "Do not extract PDFs during initialization.",
+     false);
 
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);

@@ -1,3 +1,36 @@
+2006-08-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PDFBase.xh: PDFRange exception class now inherits from
+	Exception rather than from InterfaceException.  +
+
+	* PDF/LHAPDF.*: It is now possible to set the PDF by number rather
+	than by file name and member. Using the index file it is now also
+	possible to check x and Q2 ranges before calling the LHAPDF
+	library, so that we can use our own strategy.
+
+	* PDF/LHAIndex.txt: Added index file to correlate PDF numbers,
+	members and file names in LHAPDF. Hopefully this will be obsoleted
+	in future versions of LHAPDF.
+
+	* LesHouches/MadGraphReader.*: Modified slightly the creation of
+	cut objects in the intialization.
+
+	* LesHouches/LesHouchesReader.cc: Fixed check if theCuts was set
+	to avoid segmentation fault.
+
+	* LesHouches/LesHouchesReader.*: Started adding functions to
+	create PDFin objects in the initialization (variable doInitPFDs,
+	functions preInitialize() and initPDFs() and doini()).
+
+	* LesHouches/MadGraphReader.cc, LesHouches/LesHouchesReader.cc,
+	LesHouches/LesHouchesEventHandler.cc, LesHouches/LesHouches.*:
+	Fixed typo NRUP -> NPRUP
+
+	* acinclude.m4: Changed AC_FC_LIBRARY_LDFLAGS to
+	AC_F77_LIBRARY_LDFLAGS and FCLIBS to FLIBS since the former had
+	problems with linking the 'main' function several times if
+	gfortran was installed.
+
 2006-07-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.*: Introduced InitCuts Switch. If set

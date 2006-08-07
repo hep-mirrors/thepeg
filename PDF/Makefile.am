@@ -51,3 +51,6 @@ GRV94M_la_SOURCES = GRV94M.cc GRV94M.h GRV94M.icc
 BaryonRemnants_la_LDFLAGS = -module -version-info 1:0:0
 BaryonRemnants_la_SOURCES = BaryonRemnants.cc BaryonRemnants.h \
                             BaryonRemnants.icc 
+
+dist_pkgdata_DATA = LHAIndex.txt
+

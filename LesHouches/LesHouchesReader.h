@@ -526,7 +526,7 @@ protected:
   inline XCombMap & xCombs();
   //@}
 
-  /** @name Standard Interfaced functions. */
+  /** @name Standard (and non-standard) Interfaced functions. */
   //@{
   /**
    * Check sanity of the object during the setup phase.
@@ -569,6 +569,18 @@ protected:
    * @return a vector of pointers.
    */
   inline virtual IVector getReferences();
+
+  /**
+   * Return true if this object needs to be initialized before all
+   * other objects because it needs to extract PDFs from the event file.
+   */
+  virtual bool preInitialize() const;
+
+  /**
+   * Called from doinit() to extract PDFs from the event file and add
+   * the corresponding objects to the current EventGenerator.
+   */
+  virtual void initPDFs();
   //@}
 
 protected:
@@ -747,6 +759,12 @@ protected:
    * Should the event be reweighted by PDFs used by the PartonExtractor?
    */
   bool reweightPDF;
+
+  /**
+   * Should PDFBase objects be constructed from the information in the
+   * event file in the initialization?
+   */
+  bool doInitPDFs;
 
 private:
 

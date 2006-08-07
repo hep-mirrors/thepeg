@@ -174,6 +174,33 @@ protected:
   int getMaxNSet() const;
 
   /**
+   * Try to find a LHAPDF index file, open it in the given file stream.
+   */
+  bool openLHAIndex(ifstream & is);
+
+  /**
+   * Deduce the min/max values of \f$x\f$ and \f$Q^2\f$ for the
+   * selected set.
+   */
+  void setMinMax();
+
+  /**
+   * Used by the interface to select a set and member according to a number.
+   */
+  void setPDFNumber(int n);
+
+  /**
+   * Used by the interface to select a set according to a file name.
+   */
+  void setPDFName(string name);
+
+  /**
+   * Used by the interface to select a member in the current set.
+   */
+  void setPDFMember(int n);
+
+
+  /**
    * Interface for simple tests.
    */
   string doTest(string input);
@@ -280,6 +307,11 @@ private:
   int theMember;
 
   /**
+   * The name of the chosen PDF set and member.
+   */
+  int theNumber;
+
+  /**
    * If this is a photon PDF, this describes the option for how to
    * treat the anomalous component.
    */
@@ -339,6 +371,26 @@ private:
    * THe last mem used in the initialization of a given nset number.
    */
   static vector<int> lastMem;
+
+  /**
+   * The minimum \f$x\f$-value for the current PDF set.
+   */
+  double xMin;
+
+  /**
+   * The maximum \f$x\f$-value for the current PDF set.
+   */
+  double xMax;
+
+  /**
+   * The minimum \f$Q^2\f$-value for the current PDF set.
+   */
+  Energy2 Q2Min;
+
+  /**
+   * The maximum \f$Q^2\f$-value for the current PDF set.
+   */
+  Energy2 Q2Max;
 
 private:
 

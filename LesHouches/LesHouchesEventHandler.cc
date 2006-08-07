@@ -92,7 +92,7 @@ void LesHouchesEventHandler::initialize() {
 
     // Check that we do not have the same process numbers in different
     // readers.
-    for ( int ip = 0; ip < reader.heprup.NRUP; ++ip ) {
+    for ( int ip = 0; ip < reader.heprup.NPRUP; ++ip ) {
       if ( reader.heprup.LPRUP[ip] ) {
 	ProcessMap::iterator pit = processes.find(reader.heprup.LPRUP[ip]);
 	if ( pit == processes.end() )

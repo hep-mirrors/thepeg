@@ -14,6 +14,8 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Utilities/Debug.h"
+#include "ThePEG/Utilities/SystemUtils.h"
+#include "ThePEG/Utilities/Throw.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LHAPDF.tcc"
@@ -209,6 +211,111 @@ void LHAPDF::checkInit() const {
   }
 }
 
+bool LHAPDF::openLHAIndex(ifstream & is) {
+#ifdef ThePEG_HAS_LHAPDF
+  is.close();
+  string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
+  is.open((instpath + "/../../share/lhapdf/LHAIndex.txt").c_str());
+  if ( is ) return true;
+  is.open((instpath + "/../../share/ThePEG/LHAIndex.txt").c_str());
+  if ( is ) return true;
+  is.open("../../ThePEG/PDF/LHAIndex.txt");
+  if ( is ) return true;
+#endif
+  return false;
+}
+
+void LHAPDF::setMinMax() {
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InitException>()
+    << "Could not open the LHAPDF index file so min/max falues of "
+    << "x and Q^2 could not be found." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+
+  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
+    if ( file == thePDFName && mem == theMember ) {
+      xMin = xmin;
+      xMax = xmax;
+      Q2Min = q2min*GeV2;
+      Q2Max = q2max*GeV2;
+      return;
+    }
+  }
+}
+
+void LHAPDF::setPDFNumber(int n) {
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
+    << "Could not open the LHAPDF index file. The PDF set and member is "
+    << "left unchanged." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+
+  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
+    if ( n == set + mem ) {
+      thePDFName = file;
+      theMember = mem;
+      theNumber = n;
+      return;
+    }
+  }
+}
+
+void LHAPDF::setPDFMember(int n) {
+  theMember = n;
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
+    << "Could not open the LHAPDF index file. PDFNumber is left unchanged."
+    << "The actual PDF mamber was changed, however." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+
+  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
+    if ( thePDFName == file && mem == n ) {
+      theNumber = set + mem;
+      return;
+    }
+  }
+}
+
+void LHAPDF::setPDFName(string name) {
+  thePDFName = name;
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
+    << "Could not open the LHAPDF index file. PDFNumber is left unchanged."
+    << "The actual PDF file was changed, however." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+
+  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
+    if ( file == name ) {
+      theNumber = set + theMember;
+      return;
+    }
+  }
+}
+
 string LHAPDF::doTest(string input) {
   double x = 0;
   Energy2 Q2 = 0.0*GeV2;
@@ -229,6 +336,22 @@ void LHAPDF::checkUpdate(double x, Energy2 Q2, Energy2 P2) const {
   lastQ2 = Q2;
   lastP2 = P2;
   vector<F77ThePEGDouble> res(13);
+
+  if ( x < xMin || x > xMax || Q2 < Q2Min || Q2 > Q2Max ) {
+      switch ( rangeException ) {
+      case rangeThrow: Throw<Exception>()
+	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << Q2/GeV2
+	<< " GeV^2) was outside of limits in PDF " << name() << "."
+	<< Exception::eventerror;
+      case rangeZero:
+	lastXF = vector<double>(res.begin(), res.end());
+	return;
+      case rangeFreeze:
+	lastX = x = min(max(x, xMin), xMax);
+	lastQ2 = Q2 = min(max(Q2, Q2Min), Q2Max);
+      }
+  } 
+
   F77ThePEGInteger iset = nset + 1;
   F77ThePEGDouble Q = sqrt(Q2/GeV2);
   F77ThePEGDouble xx = x;
@@ -395,13 +518,13 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
 
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
-  os << oenum(thePType) << thePDFName << theMember << thePhotonOption
-     << theVerboseLevel;
+  os << oenum(thePType) << thePDFName << theMember << theNumber << thePhotonOption
+     << theVerboseLevel << xMin << xMax << Q2Min << Q2Max;
 }
 
 void LHAPDF::persistentInput(PersistentIStream & is, int) {
-  is >> ienum(thePType) >> thePDFName >> theMember >> thePhotonOption
-     >> theVerboseLevel;
+  is >> ienum(thePType) >> thePDFName >> theMember >> theNumber >> thePhotonOption
+     >> theVerboseLevel >> xMin >> xMax >> Q2Min >> Q2Max;
   nset = -1;
   lastReset();
 }
@@ -452,15 +575,25 @@ void LHAPDF::Init() {
     ("PDFName",
      "The name if the PDF set to be used. Should be the full name including "
      "the <code>.LHpdf</code> or <code>.LHgrid</code> suffix.",
-     &LHAPDF::thePDFName, "cteq6ll.LHpdf", true, false);
+     &LHAPDF::thePDFName, "cteq6ll.LHpdf", true, false,
+     &LHAPDF::setPDFName);
 
+
+  static Parameter<LHAPDF,int> interfacePDFNumber
+    ("PDFNumber",
+     "The number of the PDF set and member to be used.",
+     &LHAPDF::theNumber, 10042, 1, 0,
+     true, false, Interface::lowerlim,
+     &LHAPDF::setPDFNumber, (int(LHAPDF::*)()const)(0),
+     (int(LHAPDF::*)()const)(0), (int(LHAPDF::*)()const)(0),
+     (int(LHAPDF::*)()const)(0));
 
   static Parameter<LHAPDF,int> interfaceMember
     ("Member",
      "The chosen member of the selected PDF set.",
      &LHAPDF::theMember, 0, 0, Constants::MaxInt,
      true, false, Interface::limited,
-     (void(LHAPDF::*)(int))(0), (int(LHAPDF::*)()const)(0),
+     &LHAPDF::setPDFMember, (int(LHAPDF::*)()const)(0),
      (int(LHAPDF::*)()const)(0), &LHAPDF::getMaxMember,
      (int(LHAPDF::*)()const)(0));
 

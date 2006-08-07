@@ -28,7 +28,7 @@ struct PDFWrongParticle: public InterfaceException {
 };
 
 /** Exception class used by PDFBase if values were outside limits. */
-struct PDFRange: public InterfaceException {
+struct PDFRange: public Exception {
   /** Standard constructor. */
   PDFRange(string pdf, string var, double val, double lim);
 };

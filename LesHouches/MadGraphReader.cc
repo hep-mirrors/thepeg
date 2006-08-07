@@ -106,7 +106,7 @@ void MadGraphReader::open() {
   if ( neve <= 0 ) return;
 
   // Convert the extracted information to LesHouches format.
-  heprup.NRUP = 1;
+  heprup.NPRUP = 1;
   heprup.LPRUP.push_back(0);
   heprup.XSECUP.push_back(xsec);
   heprup.XERRUP.push_back(0.0);
@@ -174,7 +174,7 @@ void MadGraphReader::open() {
 
 long MadGraphReader::scan() {
   long neve = LesHouchesFileReader::scan();
-  if ( neve > 0 ) for ( int ip = 0; ip < heprup.NRUP; ++ip ) {
+  if ( neve > 0 ) for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
     heprup.XSECUP[ip] *= neve;
     heprup.XERRUP[ip] *= neve;
   }
@@ -296,31 +296,33 @@ bool MadGraphReader::doReadEvent() {
 MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
-  os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts << doInitCuts;
+  os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts
+     << doInitCuts;
 }
 
 void MadGraphReader::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts >> doInitCuts;
+  is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts
+     >> doInitCuts;
 }
 
 bool MadGraphReader::preInitialize() const {
-  if ( !doInitCuts ) return false;
-  if ( theCuts ) return false;
-  return true;
+  if ( LesHouchesFileReader::preInitialize() ) return true;
+  if ( doInitCuts && !theCuts ) return true;
+  return false;
 }
 
 void MadGraphReader::doinit() throw(InitException) {
   LesHouchesFileReader::doinit();
-  if ( preInitialize() ) {
+  if ( doInitCuts && !theCuts ) {
     theCuts = initCuts();
     if ( !theCuts ) Throw<Exception>()
-      << "Could not create cuts object in pre-initialization."
-      << Exception::warning;
-    else Throw<Exception>()
-      << "Created cuts object in pre-initialization."
+      << "MadGraphReader '" << name()
+      << "' could not create cut objects in pre-initialization."
       << Exception::warning;
   }
 }
+
+void MadGraphReader::initPDFs() {}
 
 CutsPtr MadGraphReader::initCuts() {
   CutsPtr newCuts;

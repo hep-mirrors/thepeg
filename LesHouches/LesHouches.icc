@@ -7,12 +7,12 @@
 namespace ThePEG {
 
 inline HEPRUP::HEPRUP()
-  : IDWTUP(0), NRUP(0) {}
+  : IDWTUP(0), NPRUP(0) {}
 
 inline HEPRUP::HEPRUP(const HEPRUP & x)
   : IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
     PDFGUP(x.PDFGUP), PDFSUP(x.PDFSUP), IDWTUP(x.IDWTUP),
-    NRUP(x.NRUP), XSECUP(x.XSECUP), XERRUP(x.XERRUP),
+    NPRUP(x.NPRUP), XSECUP(x.XSECUP), XERRUP(x.XERRUP),
     XMAXUP(x.XMAXUP), LPRUP(x.LPRUP) {}
 
 inline HEPRUP & HEPRUP::operator=(const HEPRUP & x) {
@@ -21,7 +21,7 @@ inline HEPRUP & HEPRUP::operator=(const HEPRUP & x) {
   PDFGUP = x.PDFGUP;
   PDFSUP = x.PDFSUP;
   IDWTUP = x.IDWTUP;
-  NRUP = x.NRUP;
+  NPRUP = x.NPRUP;
   XSECUP = x.XSECUP;
   XERRUP = x.XERRUP;
   XMAXUP = x.XMAXUP;
