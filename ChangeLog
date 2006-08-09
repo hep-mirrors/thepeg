@@ -5,7 +5,7 @@
 
 2006-08-08  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
-	* Cuts/Cuts.cc (Repository): Fix to correctly used the MultiCuts objects
+	* Cuts/Cuts.cc: Fix to correctly used the MultiCuts objects
 	when testing if a phase-space point passes the cuts.
 
 2006-08-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>

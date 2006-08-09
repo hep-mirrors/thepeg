@@ -118,7 +118,7 @@ Energy2 Cuts::minS(const tcPDVector & pv) const {
 }
 
 Energy2 Cuts::maxS(const tcPDVector & pv) const {
-  Energy2 maxs = Constants::MaxEnergy2;
+  Energy2 maxs = SMax();
   for ( int i = 0, N = theMultiCuts.size(); i < N; ++i )
     maxs = min(maxs, theMultiCuts[i]->maxS(pv));
   return maxs;
