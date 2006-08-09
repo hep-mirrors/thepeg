@@ -159,6 +159,7 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
     PMPtr pm = clone(**mit);
     pm->clear();
     trans[*mit] = pm;
+    localMatchers.insert(pm);
     clonedObjects.insert(pm);
     localObjects.insert(*mit);
     addReferences(*mit, localObjects);

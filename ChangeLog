@@ -1,3 +1,7 @@
+2006-08-09  Pete's account  <Peter.Richardson@durham.ac.uk>
+
+	* Repository/Repository.cc (Repository): fix to ensure Matchers correctly setup
+
 2006-08-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/Cuts.cc: Ticket #48: Fixed bug where maxS always returned
