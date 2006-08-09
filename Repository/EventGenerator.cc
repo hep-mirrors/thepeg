@@ -120,6 +120,15 @@ EventGenerator::setup(string newRunName,
 	it != objects().end(); ++it ) theObjectMap[(**it).fullName()] = *it;
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
+
+  // Force update of all objects and then reset.
+  touch();
+  for_each(theObjects, mem_fun(&InterfacedBase::touch));
+  update();
+  for_each(theObjects, mem_fun(&InterfacedBase::update));
+  clear();
+  BaseRepository::clearAll(theObjects);
+
   init();
 
 }

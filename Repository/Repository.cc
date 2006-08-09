@@ -220,18 +220,6 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
   }
 
   if ( ThePEG_DEBUG_ITEM(3) )
-    clog() << "done\nRebind matchers... " << flush;
-
-  for ( MatcherSet::iterator mit = localMatchers.begin();
-	mit != localMatchers.end(); ++mit ) {
-    for ( ParticleMap::iterator pit = localParticles.begin();
-	  pit != localParticles.end(); ++pit ) (**mit).addPIfMatch(pit->second);
-    for ( MatcherSet::iterator it = localMatchers.begin();
-	  it != localMatchers.end(); ++it )
-      if ( *it != *mit ) (**mit).addMIfMatch(*it);
-  }
-
-  if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "done\nRebind references... " << flush;
 
   IVector defaults;
@@ -254,11 +242,6 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "done\nUpdating cloned objects... " << flush;
 
-
-  // Force update of all objects and then reset.
-  for_each(clonedObjects, mem_fun(&InterfacedBase::touch));
-  for_each(clonedObjects, mem_fun(&InterfacedBase::update));
-  BaseRepository::clearAll(clonedObjects);
 
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "done\nInitializing... " << flush;
