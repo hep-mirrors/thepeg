@@ -119,6 +119,7 @@ IBPtr LHAPDF::fullclone() const {
 
 void LHAPDF::doinit() throw(InitException) {
   PDFBase::doinit();
+  setMinMax();
   checkInit();
 }
 
@@ -217,10 +218,13 @@ bool LHAPDF::openLHAIndex(ifstream & is) {
   string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
   is.open((instpath + "/../../share/lhapdf/LHAIndex.txt").c_str());
   if ( is ) return true;
+  is.clear();
   is.open((instpath + "/../../share/ThePEG/LHAIndex.txt").c_str());
   if ( is ) return true;
+  is.clear();
   is.open("../../ThePEG/PDF/LHAIndex.txt");
   if ( is ) return true;
+  is.clear();
 #endif
   return false;
 }
@@ -518,13 +522,15 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
 
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
-  os << oenum(thePType) << thePDFName << theMember << theNumber << thePhotonOption
-     << theVerboseLevel << xMin << xMax << Q2Min << Q2Max;
+  os << oenum(thePType) << thePDFName << theMember << theNumber
+     << thePhotonOption << theVerboseLevel
+     << xMin << xMax << Q2Min << Q2Max;
 }
 
 void LHAPDF::persistentInput(PersistentIStream & is, int) {
-  is >> ienum(thePType) >> thePDFName >> theMember >> theNumber >> thePhotonOption
-     >> theVerboseLevel >> xMin >> xMax >> Q2Min >> Q2Max;
+  is >> ienum(thePType) >> thePDFName >> theMember >> theNumber
+     >> thePhotonOption >> theVerboseLevel
+     >> xMin >> xMax >> Q2Min >> Q2Max;
   nset = -1;
   lastReset();
 }
