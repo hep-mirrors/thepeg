@@ -45,6 +45,7 @@ void FactoryBase::doinitrun() {
   if ( file[0] != '/' ) file = generator()->path() + "/" + file;
   theTree = analysisFactory().createTreeFactory()->create
     (file, storeType(), false, true);
+  theTree->setOverwrite(false);
   theHistogramFactory = analysisFactory().createHistogramFactory(tree());
 }
 

@@ -1,3 +1,9 @@
+2006-08-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/Tree.h, Analysis/FactoryBase.cc: Fixed segfault when
+	creating two histograms with the same path. Now throws an
+	exception instead (should be made cleaner in the future).
+
 2006-08-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.cc: Now calls setMinMax() in the doinit()

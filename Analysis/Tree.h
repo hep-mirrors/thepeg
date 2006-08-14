@@ -128,7 +128,6 @@ public:
 	}
       }
     }
-    delete o;
     return false;
   }
 
