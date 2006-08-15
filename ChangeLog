@@ -1,5 +1,8 @@
 2006-08-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/EventGenerator.cc: Fixed getParticleData() so that it
+	works also if theQuickParticles has not been initialized.
+
 	* Interface/Reference.cc, Interface/RefVector.cc: Changed exec
 	methods so that set and insert now looks for the object to be
 	set/inserted in the current EventGenerator rather than in the

@@ -211,7 +211,8 @@ void EventGenerator::doinitrun() {
 }
 
 PDPtr EventGenerator::getParticleData(long newId) const {
-  if ( abs(newId) < theQuickSize ) return theQuickParticles[newId+theQuickSize];
+  if ( abs(newId) < theQuickSize && theQuickParticles.size() )
+    return theQuickParticles[newId+theQuickSize];
   ParticleMap::const_iterator it = theParticles.find(newId);
   if ( it == theParticles.end() ) return PDPtr();
   return it->second;
