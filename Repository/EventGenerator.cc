@@ -895,12 +895,10 @@ DMPtr EventGenerator::constructDecayMode(string & tag) {
   DMPtr ndm = findDecayMode(rdm->tag());
   if ( ndm ) return ndm;
   pd->addDecayMode(rdm);
-  rdm->name(pd->fullName() + "/" + rdm->tag());
-  objects().insert(rdm);
-  if ( adm ) {
-    adm->name(pd->CC()->fullName() + "/" + adm->tag());
-    objects().insert(adm);
-  }
+  if ( !preinitRegister(rdm, pd->fullName() + "/" + rdm->tag()) )
+    return DMPtr();
+  if ( adm ) preinitRegister(adm, pd->CC()->fullName() + "/" + adm->tag());
+
   return rdm;
 }
 
