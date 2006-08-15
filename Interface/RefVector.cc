@@ -10,6 +10,7 @@
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Repository/BaseRepository.h"
+#include "ThePEG/Repository/EventGenerator.h"
 
 using namespace ThePEG;
 
@@ -51,7 +52,13 @@ string RefVectorBase::exec(InterfacedBase & i, string action,
     string name;
     arg >> name;
     IBPtr ip;
-    if ( name.size() && name != "NULL") ip = BaseRepository::TraceObject(name);
+    if ( name.size() && name != "NULL") {
+      Interfaced * ii = dynamic_cast<Interfaced *>(&i);
+      if ( ii && ii->generator() )
+	ip = ii->generator()->getObject<Interfaced>(name);
+      else
+	ip = BaseRepository::TraceObject(name);
+    }
     if ( action == "set" ) set(i, ip, place);
     else insert(i, ip, place);
   } else
