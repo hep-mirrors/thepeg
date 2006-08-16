@@ -32,6 +32,9 @@ class Interfaced: public InterfacedBase {
   /** Repository is a friend. */
   friend class Repository;
 
+  /** EventGenerator is a friend. */
+  friend class EventGenerator;
+
 public:
 
   /**

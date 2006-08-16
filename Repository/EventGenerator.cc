@@ -716,6 +716,7 @@ bool EventGenerator::preinitRegister(IPtr obj, string fullname) {
   obj->name(fullname);
   objectMap()[fullname] = obj;
   objects().insert(obj);
+  obj->theGenerator = this;
   PDPtr pd = dynamic_ptr_cast<PDPtr>(obj);
   if ( pd ) theParticles[pd->id()] = pd;
   PMPtr pm = dynamic_ptr_cast<PMPtr>(obj);
