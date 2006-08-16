@@ -29,8 +29,8 @@ Energy2 V2LeptonsCut::minS(const tcPDVector & pv) const {
 }
 
 Energy2 V2LeptonsCut::maxS(const tcPDVector & pv) const {
-  if ( pv.size() != 2 ) return 0.0*GeV2;
-  if ( !checkTypes(pv[0]->id(), pv[1]->id()) ) return 0.0*GeV2;
+  if ( pv.size() != 2 ) return Constants::MaxEnergy2;
+  if ( !checkTypes(pv[0]->id(), pv[1]->id()) ) return Constants::MaxEnergy2;
   return sqr(theMaxM);
 }
 

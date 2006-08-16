@@ -1,3 +1,8 @@
+2006-08-16  Peter Richardson <Peter.Richardson@durham.ac.uk>
+
+	* Cuts/V2LeptonsCut.cc (Repository): change so that maxS() returns
+	a large value if not a lepton pair rather than zero
+
 2006-08-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc: Fixed getParticleData() so that it
