@@ -93,7 +93,7 @@ int main(int argc, char * argv[]) {
 	// Generate an event 
 	EventPtr event = eg->shoot();
 
-	// Convert to a CLHEP::GenEvent
+	// Convert to a HepMC::GenEvent
 	HepMC::GenEvent * geneve =
 	  HepMCConverter<HepMC::GenEvent>::convert(*event);
 
