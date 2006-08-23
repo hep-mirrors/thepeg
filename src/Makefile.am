@@ -12,7 +12,7 @@ runThePEG_bin_LDADD = $(myLDADD)
 runThePEG_bin_LDFLAGS = $(myLDFLAGS)
 
 runEventLoop_SOURCES = runEventLoop.cc
-runEventLoop_LDADD = $(myLDADD)
+runEventLoop_LDADD = -lHepMC $(myLDADD)
 runEventLoop_LDFLAGS = $(myLDFLAGS)
 
 setupThePEG_bin_SOURCES = setupThePEG.cc

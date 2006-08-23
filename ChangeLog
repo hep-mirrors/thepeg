@@ -1,3 +1,12 @@
+2006-08-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/runEventLoop.cc, src/Makefile.am, CLHEPWrap/Makefile.am,
+	CLHEPWrap/GenEventConverter.*: The new HepMCConverter class now
+	seems to work both with HepMC in CLHEP and the new stand-alone
+	HepMC version 2. The runEventLoop.cc example now uses the
+	stand-alone HepMC. The old GenEventConverter class is now
+	permanently removed.
+
 2006-08-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc, Interface/Interfaced.h: Fixed

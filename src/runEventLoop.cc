@@ -6,7 +6,7 @@
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/CLHEPWrap/HepMCConverter.h"
-#include "CLHEP/HepMC/GenEvent.h"
+#include "HepMC/GenEvent.h"
 
 namespace ThePEG {
 
@@ -100,7 +100,7 @@ int main(int argc, char * argv[]) {
 	// Do whatever you want with the event here
 	if ( ieve < 10 ) geneve->print(cout);
 
-	// Don't forget to delete the CLHEP::GenEvent (The
+	// Don't forget to delete the HepMC::GenEvent (The
 	// ThePEG::Event is automatically garbage collected)
 	delete geneve;
 
