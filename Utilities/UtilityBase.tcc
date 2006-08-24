@@ -37,8 +37,8 @@ LorentzRotation UtilityBase::getBoostFromCM(const pair<PType,PType> & pp) {
   Vector3 b = (p1 + Traits::momentum(pp.second)).boostVector();
   p1.boost(-b);
   LorentzRotation rot;
-  rot.rotateZ(p1.phi());
   rot.rotateY(p1.theta());
+  rot.rotateZ(p1.phi());
   rot.boost(b);
   return rot;
 }

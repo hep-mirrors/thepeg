@@ -1,3 +1,9 @@
+2006-08-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/UtilityBase.tcc: Fixed bug in getBoostFromCM() where
+	the phi-rotation was erroneously performed before the
+	theta-rotation.
+
 2006-08-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runEventLoop.cc, src/Makefile.am, CLHEPWrap/Makefile.am,
