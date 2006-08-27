@@ -128,47 +128,37 @@ void MadGraphReader::open() {
   if ( heprup.EBMUP.first <= 0.0*GeV ) heprup.EBMUP.first = ebeam1;
   if ( heprup.EBMUP.second <= 0.0*GeV ) heprup.EBMUP.second = ebeam2;
 
-  // Translation into PDFLib codes is not perfect.
-  if ( pdftag.substr(0, 3) == "mrs" )
-    heprup.PDFGUP.first = heprup.PDFGUP.second = 3;
-  else if ( pdftag.substr(0, 4) == "cteq" )
-    heprup.PDFGUP.first = heprup.PDFGUP.second = 4;
-  else heprup.PDFGUP.first = heprup.PDFGUP.second = 0;
-  if ( pdftag == "cteq3_m" ) heprup.PDFSUP.first = heprup.PDFSUP.second = 30;
-  else if ( pdftag == "cteq3_l" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 29;
-  else if ( pdftag == "cteq3_d" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 32;
-  else if ( pdftag == "cteq4_m" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 34;
-  else if ( pdftag == "cteq4_d" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 33;
-  else if ( pdftag == "cteq4_l" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 32;
-  else if ( pdftag == "cteq4a1" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 35;
-  else if ( pdftag == "cteq4a2" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 36;
-  else if ( pdftag == "cteq4a3" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 37;
-  else if ( pdftag == "cteq4a4" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 38;
-  else if ( pdftag == "cteq4a5" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 39;
-  else if ( pdftag == "cteq4hj" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 40;
-  else if ( pdftag == "cteq4lq" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 41;
-  else if ( pdftag == "cteq5l1" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 46;
-  else if ( pdftag.substr(0, 5) == "cteq5" )
-    heprup.PDFSUP.first = heprup.PDFSUP.second = 48;
-  else heprup.PDFSUP.first = heprup.PDFSUP.second = 0;
-
   if ( !cfile )
     throw LesHouchesFileError()
       << "An error occurred while '" << name() << "' was reading the file '"
       << filename() << "'." << Exception::runerror;
+
+  if ( heprup.PDFSUP.first != 0 || heprup.PDFSUP.first != 0 ) return;
+  // If we have an old MadGraph we have to try to figure out which PDF
+  // codes to use.
+  heprup.PDFGUP.first = heprup.PDFGUP.second = 0;
+  if ( pdftag == "mrs02nl" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 20200;
+  else if ( pdftag == "mrs02nn" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 20270;
+  else if ( pdftag == "cteq6_m" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 10050;
+  else if ( pdftag == "cteq6_l" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 10041;
+  else if ( pdftag == "cteq6l1" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 10042;
+  else if ( pdftag == "cteq5_m" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 19050;
+  else if ( pdftag == "cteq5_d" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 19060;
+  else if ( pdftag == "cteq5_l" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 19070;
+  else if ( pdftag == "cteq4_m" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 19150;
+  else if ( pdftag == "cteq4_d" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 19160;
+  else if ( pdftag == "cteq4_l" )
+    heprup.PDFSUP.first = heprup.PDFSUP.second = 19170;
 }
 
 
@@ -322,7 +312,9 @@ void MadGraphReader::doinit() throw(InitException) {
   }
 }
 
-void MadGraphReader::initPDFs() {}
+void MadGraphReader::initPDFs() {
+  LesHouchesFileReader::initPDFs();
+}
 
 CutsPtr MadGraphReader::initCuts() {
   CutsPtr newCuts;

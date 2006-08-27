@@ -230,7 +230,7 @@ protected:
   enum RangeException {
     rangeFreeze, /**> Freeze the value of the PDF outside the limits. */
     rangeZero,   /**> Set the PDF to zero outside the limits. */
-    rangeThrow   /**> THrow an exception if outside the limits. */
+    rangeThrow   /**> Throw an exception if outside the limits. */
   };
 
   /**

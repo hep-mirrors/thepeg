@@ -20,7 +20,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/EventRecord/Particle.h"
-#include "ThePEG/PDF/PDFBase.h"
+#include "ThePEG/PDF/LHAPDF.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/PDF/PartonBin.h"
 #include "ThePEG/PDF/PartonBinInstance.h"
@@ -81,6 +81,19 @@ bool LesHouchesReader::preInitialize() const {
 
 void LesHouchesReader::doinit() throw(InitException) {
   HandlerBase::doinit();
+  open();
+  close();
+  if ( !heprup.IDBMUP.first || !heprup.IDBMUP.second )
+    Throw<LesHouchesInitError>()
+      << "No information about incoming particles were found in "
+      << "LesHouchesReader '" << name() << "'." << Exception::warning;
+  inData = make_pair(getParticleData(heprup.IDBMUP.first),
+		     getParticleData(heprup.IDBMUP.second));
+  if ( heprup.EBMUP.first <= 0.0 || heprup.EBMUP.second <= 0.0 )
+    Throw<LesHouchesInitError>()
+    << "No information about the energy of incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
+  
   if ( doInitPDFs && ! ( inPDF.first && inPDF.second ) ) {
     initPDFs();
     if ( ! ( inPDF.first && inPDF.second ) ) Throw<InitException>()
@@ -88,9 +101,69 @@ void LesHouchesReader::doinit() throw(InitException) {
       << "' could not create PDFBase objects in pre-initialization."
       << Exception::warning;
   }
+  else if ( !inPDF.first || !inPDF.second ) Throw<LesHouchesInitError>()
+    << "No information about the PDFs of incoming particles were found in "
+    << "LesHouchesReader '" << name() << "'." << Exception::warning;
 }
 
-void LesHouchesReader::initPDFs() {}
+void LesHouchesReader::initPDFs() {
+  if ( inPDF.first && inPDF.second ) return;
+
+#ifndef ThePEG_HAS_LHAPDF
+  Throw<InitException>()
+    << "LesHouchesReader '" << name() << "' could not use information about "
+    << "the PDFs used because the LHAPDF library was not properly defined."
+    << Exception::warning;
+#endif
+
+  string remhname;
+  if ( heprup.PDFSUP.first && !inPDF.first) {
+    inPDF.first = new_ptr<LHAPDF>();
+    generator()->preinitRegister(inPDF.first, fullName() + "/PDFA");
+    remhname = fullName() + "/DummyRemH";
+    generator()->preinitCreate("ThePEG::NoRemnants", remhname);
+    generator()->preinitInterface(inPDF.first, "RemnantHandler",
+				  "set", remhname);
+    if ( heprup.PDFGUP.first > 0 && heprup.PDFGUP.first < 10 ) {
+      ostringstream os;
+      os << heprup.PDFGUP.first << " " << heprup.PDFSUP.first;
+      generator()->preinitInterface(inPDF.first, "PDFLIBNumbers",
+				    "set", os.str());
+    } else {
+      ostringstream os;
+      os << heprup.PDFGUP.first*1000 + heprup.PDFSUP.first;
+      generator()->preinitInterface(inPDF.first, "PDFNumber",
+				    "set", os.str());
+    }
+  }
+
+  if ( heprup.PDFSUP.second && !inPDF.second) {
+    inPDF.second = new_ptr<LHAPDF>();
+    generator()->preinitRegister(inPDF.second, fullName() + "/PDFB");
+    if ( remhname == "" ) {
+      remhname = fullName() + "/DummyRemH";
+      generator()->preinitCreate("ThePEG::NoRemnants", remhname);
+    }
+    generator()->preinitInterface(inPDF.second, "RemnantHandler",
+				  "set", remhname);      
+    if ( heprup.PDFGUP.second > 0 && heprup.PDFGUP.second < 10 ) {
+      ostringstream os;
+      os << heprup.PDFGUP.second << " " << heprup.PDFSUP.second;
+      generator()->preinitInterface(inPDF.second, "PDFLIBNumbers",
+				    "set", os.str());
+    } else {
+      ostringstream os;
+      os << heprup.PDFGUP.second*1000 + heprup.PDFSUP.second;
+      generator()->preinitInterface(inPDF.second, "PDFNumber",
+				    "set", os.str());
+    }
+  }
+  
+  if ( ! ( inPDF.first && inPDF.second ) ) Throw<InitException>()
+    << "LesHouchesReader '" << name()
+    << "' could not find information about the PDFs used."
+    << Exception::warning;
+}
 
 void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   Energy2 Smax = 0.0*GeV2;
@@ -117,17 +190,6 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
     << "needs to have a PartonExtractor object." << Exception::warning;
 
   open();
-  if ( !heprup.IDBMUP.first || !heprup.IDBMUP.second )
-    throw LesHouchesInitError()
-    << "No information about incoming particles were found in "
-    << "LesHouchesReader '" << name() << "'." << Exception::warning;
-  if ( heprup.EBMUP.first <= 0.0 || heprup.EBMUP.second <= 0.0 )
-    throw LesHouchesInitError()
-    << "No information about the energy of incoming particles were found in "
-    << "LesHouchesReader '" << name() << "'." << Exception::warning;
-  if ( !inPDF.first || !inPDF.second ) throw LesHouchesInitError()
-    << "No information about the PDFs of incoming particles were found in "
-    << "LesHouchesReader '" << name() << "'." << Exception::warning;
 
   Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
   theCuts->initialize(sqr(emax),
@@ -141,8 +203,6 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
       << "must be assigned different (although possibly identical) Cuts "
       << "objects." << Exception::warning;
 
-  inData = make_pair(getParticleData(heprup.IDBMUP.first),
-		     getParticleData(heprup.IDBMUP.second));
   thePartonBins = partonExtractor()->getPartons(emax, inData, cuts());
   for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
     theXCombs[partonBins()[i]] =

@@ -601,14 +601,14 @@ protected:
   tcPDPair inData;
 
   /**
-   * The PDFBase object used for the first beam particle. Specified in
-   * the interface or derived from PDFGUP and PDFSUP.
+   * The PDFBase objects which has been used for the beam particle
+   * when generating the events being read. Specified in the interface
+   * or derived from PDFGUP and PDFSUP.
    */
   pair<PDFPtr,PDFPtr> inPDF;
 
   /**
-   * The PDFBase object used for the second beam particle. Specified in
-   * the interface or derived from PDFGUP and PDFSUP.
+   * The PDFBase object to be used in the subsequent generation..
    */
   pair<cPDFPtr,cPDFPtr> outPDF;
 

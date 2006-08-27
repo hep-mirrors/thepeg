@@ -174,11 +174,6 @@ protected:
   int getMaxNSet() const;
 
   /**
-   * Try to find a LHAPDF index file, open it in the given file stream.
-   */
-  bool openLHAIndex(ifstream & is);
-
-  /**
    * Deduce the min/max values of \f$x\f$ and \f$Q^2\f$ for the
    * selected set.
    */
@@ -190,6 +185,30 @@ protected:
   void setPDFNumber(int n);
 
   /**
+   * Used by the interface to select a get the index number of the
+   * currently chosen set and member.
+   */
+  int getPDFNumber() const;
+
+  /**
+   * Used by the interface to select a set and member according to the
+   * old PDFLIB numbers.
+   */
+  void setPDFLIBNumbers(int group, int num);
+
+  /**
+   * Used by the interface to select a set and member according to the
+   * old PDFLIB numbers.
+   */
+  string setPDFLIBNumbers(string);
+
+  /**
+   * Used by the interface to select a get the old PDFLIB numbers of the
+   * currently chosen set and member.
+   */
+  pair<int,int> getPDFLIBNumbers() const;
+
+  /**
    * Used by the interface to select a set according to a file name.
    */
   void setPDFName(string name);
@@ -199,6 +218,15 @@ protected:
    */
   void setPDFMember(int n);
 
+  /**
+   * Try to determine the path to where the LHAPDF index file is located.
+   */
+  static std::string getIndexPath();
+
+  /**
+   * Try to find a LHAPDF index file, open it in the given file stream.
+   */
+  static bool openLHAIndex(ifstream & is);
 
   /**
    * Interface for simple tests.
@@ -307,11 +335,6 @@ private:
   int theMember;
 
   /**
-   * The name of the chosen PDF set and member.
-   */
-  int theNumber;
-
-  /**
    * If this is a photon PDF, this describes the option for how to
    * treat the anomalous component.
    */
@@ -368,7 +391,7 @@ private:
   static vector<string> lastNames;
 
   /**
-   * THe last mem used in the initialization of a given nset number.
+   * The last mem used in the initialization of a given nset number.
    */
   static vector<int> lastMem;
 

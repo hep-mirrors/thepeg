@@ -212,13 +212,23 @@ void LHAPDF::checkInit() const {
   }
 }
 
+std::string LHAPDF::getIndexPath() {
+  std::string path;
+  system("lhapdf-config --pdfsets-path > /tmp/lhapdfpath");
+  std::ifstream is("/tmp/lhapdfpath");
+  is >> path;
+  is.close();
+  system("rm -f /tmp/lhapdfpath");
+  return path + "/../LHAIndex.txt";
+}
+
 bool LHAPDF::openLHAIndex(ifstream & is) {
 #ifdef ThePEG_HAS_LHAPDF
   is.close();
-  string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
-  is.open((instpath + "/../../share/lhapdf/LHAIndex.txt").c_str());
+  is.open(getIndexPath().c_str());
   if ( is ) return true;
   is.clear();
+  string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
   is.open((instpath + "/../../share/ThePEG/LHAIndex.txt").c_str());
   if ( is ) return true;
   is.clear();
@@ -241,8 +251,12 @@ void LHAPDF::setMinMax() {
   double xmax = 0.0;
   double q2min = 0.0;
   double q2max = 0.0;
+  int pdftyp = 0;
+  int pdfgup = 0;
+  int pdfsup = 0;
 
-  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
+  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
+	     >> q2min >> q2max >> xmin >> xmax ) {
     if ( file == thePDFName && mem == theMember ) {
       xMin = xmin;
       xMax = xmax;
@@ -265,59 +279,106 @@ void LHAPDF::setPDFNumber(int n) {
   double xmax = 0.0;
   double q2min = 0.0;
   double q2max = 0.0;
+  int pdftyp = 0;
+  int pdfgup = 0;
+  int pdfsup = 0;
 
-  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
+  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
+	     >> q2min >> q2max >> xmin >> xmax ) {
     if ( n == set + mem ) {
       thePDFName = file;
       theMember = mem;
-      theNumber = n;
       return;
     }
   }
+}
+
+int LHAPDF::getPDFNumber() const {
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
+    << "Could not open the LHAPDF index file. The PDF set and member is "
+    << "left unchanged." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+  int pdftyp = 0;
+  int pdfgup = 0;
+  int pdfsup = 0;
+
+  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
+	     >> q2min >> q2max >> xmin >> xmax )
+    if ( thePDFName == file && theMember == mem ) return set + mem;
+  return 0;
+}
+
+void LHAPDF::setPDFLIBNumbers(int group, int num) {
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
+    << "Could not open the LHAPDF index file. The PDF set and member is "
+    << "left unchanged." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+  int pdftyp = 0;
+  int pdfgup = 0;
+  int pdfsup = 0;
+
+  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
+	     >> q2min >> q2max >> xmin >> xmax ) {
+    if ( pdftyp == thePType && pdfgup == group && pdfsup == num ) {
+      thePDFName = file;
+      theMember = mem;
+      return;
+    }
+  }
+}
+
+string LHAPDF::setPDFLIBNumbers(string cmd) {
+  istringstream is(cmd);
+  int pdfgup = 0;
+  int pdfsup = 0;
+  is >> pdfgup >> pdfsup;
+  setPDFLIBNumbers(pdfgup, pdfsup);
+  return "";
+}
+
+pair<int,int> LHAPDF::getPDFLIBNumbers() const {
+  ifstream is;
+  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
+    << "Could not open the LHAPDF index file. The PDF set and member is "
+    << "left unchanged." << Exception::warning;
+  int set = 0;
+  int mem = 0;
+  string file;
+  double xmin = 0.0;
+  double xmax = 0.0;
+  double q2min = 0.0;
+  double q2max = 0.0;
+  int pdftyp = 0;
+  int pdfgup = 0;
+  int pdfsup = 0;
+
+  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
+	     >> q2min >> q2max >> xmin >> xmax )
+    if ( thePDFName == file && theMember == mem )
+      return make_pair(pdfgup, pdfsup);
+  return make_pair(0, 0);
 }
 
 void LHAPDF::setPDFMember(int n) {
   theMember = n;
-  ifstream is;
-  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
-    << "Could not open the LHAPDF index file. PDFNumber is left unchanged."
-    << "The actual PDF mamber was changed, however." << Exception::warning;
-  int set = 0;
-  int mem = 0;
-  string file;
-  double xmin = 0.0;
-  double xmax = 0.0;
-  double q2min = 0.0;
-  double q2max = 0.0;
-
-  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
-    if ( thePDFName == file && mem == n ) {
-      theNumber = set + mem;
-      return;
-    }
-  }
 }
 
 void LHAPDF::setPDFName(string name) {
   thePDFName = name;
-  ifstream is;
-  if ( !openLHAIndex(is) ) Throw<InterfaceException>()
-    << "Could not open the LHAPDF index file. PDFNumber is left unchanged."
-    << "The actual PDF file was changed, however." << Exception::warning;
-  int set = 0;
-  int mem = 0;
-  string file;
-  double xmin = 0.0;
-  double xmax = 0.0;
-  double q2min = 0.0;
-  double q2max = 0.0;
-
-  while ( is >> set >> mem >> file >> q2min >> q2max >> xmin >> xmax ) {
-    if ( file == name ) {
-      theNumber = set + theMember;
-      return;
-    }
-  }
 }
 
 string LHAPDF::doTest(string input) {
@@ -522,13 +583,13 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
 
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
-  os << oenum(thePType) << thePDFName << theMember << theNumber
+  os << oenum(thePType) << thePDFName << theMember
      << thePhotonOption << theVerboseLevel
      << xMin << xMax << Q2Min << Q2Max;
 }
 
 void LHAPDF::persistentInput(PersistentIStream & is, int) {
-  is >> ienum(thePType) >> thePDFName >> theMember >> theNumber
+  is >> ienum(thePType) >> thePDFName >> theMember
      >> thePhotonOption >> theVerboseLevel
      >> xMin >> xMax >> Q2Min >> Q2Max;
   nset = -1;
@@ -588,9 +649,9 @@ void LHAPDF::Init() {
   static Parameter<LHAPDF,int> interfacePDFNumber
     ("PDFNumber",
      "The number of the PDF set and member to be used.",
-     &LHAPDF::theNumber, 10042, 1, 0,
+     0, 10042, 1, 0,
      true, false, Interface::lowerlim,
-     &LHAPDF::setPDFNumber, (int(LHAPDF::*)()const)(0),
+     &LHAPDF::setPDFNumber, &LHAPDF::getPDFNumber,
      (int(LHAPDF::*)()const)(0), (int(LHAPDF::*)()const)(0),
      (int(LHAPDF::*)()const)(0));
 
@@ -602,6 +663,12 @@ void LHAPDF::Init() {
      &LHAPDF::setPDFMember, (int(LHAPDF::*)()const)(0),
      (int(LHAPDF::*)()const)(0), &LHAPDF::getMaxMember,
      (int(LHAPDF::*)()const)(0));
+
+  static Command<LHAPDF> interfacePDFLIBNumbers
+    ("PDFLIBNumbers",
+     "Set the PDF set and member to be used by specifying the old PDFLIB "
+     "group and set number.",
+     &LHAPDF::setPDFLIBNumbers, true);
 
   static Switch<LHAPDF,int> interfacePhotonOption
     ("PhotonOption",

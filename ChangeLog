@@ -1,3 +1,19 @@
+2006-08-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/LHAPDF.*, PDF/LHAIndex.txt: Index file now also includes (a
+	very limited set of) PDFLIB numbers. Added interface to set
+	according to PDFLIB numbers. Also removed the variable giving the
+	LHAGlue number - the corresponding parameter interface now uses
+	set/get methods instead.
+
+	* LesHouches/MadGraphReader.cc: Now uses the LHAGlue numbering to
+	specify the PDFs used. Not all sets are implemented though.
+
+	* LesHouches/LesHouchesReader.*: Changed init procedure. More
+	checks are done in doinit() rather than initialize(). doinit() now
+	optionally rund initPDFs() which created LHAPDF object
+	corresponding to the heprup.PDFSUP and heprup.PDFGUP numbers.
+
 2006-08-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UtilityBase.tcc: Fixed bug in getBoostFromCM() where
