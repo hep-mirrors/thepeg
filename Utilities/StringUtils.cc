@@ -55,3 +55,47 @@ string StringUtils::stripws(string str) {
   return str.substr(0, i + 1);
 }
 
+map<string,string> StringUtils::
+xmlAttributes(string tag, string line, string::size_type curr) {
+
+  map<string,string> ret;
+
+  // First find the beginning and end of the tag
+  pos_t begin = line.find("<" + tag, curr);
+  if ( begin == end ) return ret;
+  curr = begin + tag.length() + 2;
+
+  while ( true ) {
+
+    pos_t close = line.find(">", curr);
+
+    // Now skip some white space to see if we can find an attribute.
+    curr = line.find_first_not_of(" \t\n", curr);
+    if ( curr == end || curr >= close ) return ret;
+
+    pos_t tend = line.find_first_of("= \t\n", curr);
+    if ( tend == end || tend >= close ) return ret;
+
+    string name = line.substr(curr, tend - curr);
+    curr = line.find("=", curr) + 1;
+
+    // OK now find the beginning and end of the atribute.
+    curr = line.find("\"", curr);
+    if ( curr == end || curr >= close ) return ret;
+    pos_t bega = ++curr;
+    curr = line.find("\"", curr);
+    while ( curr != end && line[curr - 1] == '\\' )
+      curr = line.find("\"", curr + 1);
+
+    string value = line.substr(bega, curr == end? end: curr - bega);
+
+    ret[name] = value;
+
+    ++curr;
+
+  }
+
+  return ret;
+
+}
+

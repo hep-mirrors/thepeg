@@ -12,6 +12,10 @@ inline LesHouchesFileReader::LesHouchesFileReader()
 inline LesHouchesFileReader::
 LesHouchesFileReader(const LesHouchesFileReader & x)
   : LesHouchesReader(x), neve(x.neve), ieve(0),
+    LHFVersion(x.LHFVersion), outsideBlock(x.outsideBlock),
+    headerBlock(x.headerBlock), initComments(x.initComments),
+    initAttributes(x.initAttributes), eventComments(x.eventComments),
+    eventAttributes(x.eventAttributes),
     theFile(NULL), theFileName(x.theFileName) {}
 
 inline string LesHouchesFileReader::filename() const {

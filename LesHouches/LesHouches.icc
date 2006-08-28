@@ -31,6 +31,18 @@ inline HEPRUP & HEPRUP::operator=(const HEPRUP & x) {
 
 inline HEPRUP::~HEPRUP() {}
 
+inline void HEPRUP::resize(int nrup) {
+  NPRUP = nrup;
+  resize();
+}
+
+inline void HEPRUP::resize() {
+  XSECUP.resize(NPRUP);
+  XERRUP.resize(NPRUP);
+  XMAXUP.resize(NPRUP);
+  LPRUP.resize(NPRUP);
+}
+
 inline HEPEUP::HEPEUP()
   : NUP(0), IDPRUP(0), XWGTUP(0.0), XPDWUP(0.0, 0.0),
     SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0) {}
@@ -60,5 +72,20 @@ inline HEPEUP & HEPEUP::operator=(const HEPEUP & x) {
 }
 
 inline HEPEUP::~HEPEUP() {}
+
+inline void HEPEUP::resize(int nup) {
+  NUP = nup;
+  resize();
+}
+
+inline void HEPEUP::resize() {
+  IDUP.resize(NUP);
+  ISTUP.resize(NUP);
+  MOTHUP.resize(NUP);
+  ICOLUP.resize(NUP);
+  PUP.resize(NUP, std::vector<double>(5));
+  VTIMUP.resize(NUP);
+  SPINUP.resize(NUP);
+}
 
 }

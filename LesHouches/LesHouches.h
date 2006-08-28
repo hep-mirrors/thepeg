@@ -46,6 +46,20 @@ public:
 public:
 
   /**
+   * Set the NPRUP variable, corresponding to the number of
+   * sub-processes, to \a nrup, and resize all relevant vectors
+   * accordingly.
+   */
+  inline void resize(int nrup);
+
+  /**
+   * Assuming the NPRUP variable, corresponding to the number of
+   * sub-processes, is correctly set, resize the relevant vectors
+   * accordingly.
+   */
+  inline void resize();
+
+  /**
    * PDG id's of beam particles. (first/second is in +/-z direction).
    */
   pair<long,long> IDBMUP;
@@ -139,6 +153,20 @@ public:
   //@}
 
 public:
+
+  /**
+   * Set the NUP variable, corresponding to the number of particles in
+   * the current event, to \a nup, and resize all relevant vectors
+   * accordingly.
+   */
+  inline void resize(int nup);
+
+  /**
+   * Assuming the NUP variable, corresponding to the number of
+   * particles in the current event, is correctly set, resize the
+   * relevant vectors accordingly.
+   */
+  inline void resize();
 
   /**
    * The number of particle entries in the current event.

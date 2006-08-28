@@ -1,3 +1,18 @@
+2006-08-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphReader.cc,
+	LesHouches/LesHouchesFileReader.cc: LesHouchesFileReader now
+	implements open() and doReadEvent() to check if the file is a
+	standard Les Houches event file format in which case it is read
+	accordingly. MadGraphReader is changed accordingly. This is not
+	yet tested.
+
+	* LesHouches/LesHouches.*: Added resize functions.
+
+	* Utilities/StringUtils.*: Added function xmlAttributes to scan a
+	string for attributes of a given tag assuming we have valid XML
+	code in the string.
+
 2006-08-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.*, PDF/LHAIndex.txt: Index file now also includes (a

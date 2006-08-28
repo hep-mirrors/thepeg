@@ -73,6 +73,26 @@ public:
    */
   inline static string suffix(string file);
 
+  /**
+   * Assuming the \a line contains a valid XML \a tag, scan the \a
+   * line for attributes belonging to this \a tag and return a map of
+   * name-value pairs. Oprionally only look from position \a curr in
+   * the \a line.
+   */
+  static map<string,string> xmlAttributes(string tag, string line,
+				       string::size_type curr = 0);
+
+  /**
+   * Convenient typdef.
+   */
+  typedef string::size_type pos_t;
+
+  /**
+   * Convenient alias for npos.
+   */
+  static const pos_t end = string::npos;
+  
+
 };
 
 }

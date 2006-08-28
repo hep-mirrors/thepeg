@@ -63,6 +63,13 @@ public:
    * Close the file from which events have been read.
    */
   virtual void close();
+
+  /**
+   * Read the next event from the file or stream into the
+   * corresponding protected variables. Return false if there is no
+   * more events or if this was not a LHF event file.
+   */
+  virtual bool doReadEvent();
   //@}
 
   /**
@@ -163,6 +170,46 @@ protected:
    * The current event number.
    */
   long ieve;
+
+  /**
+   * If the file is a standard Les Houches formatted file (LHF) this
+   * is its version number. If empty, this is not a Les Houches
+   * formatted file
+   */
+  string LHFVersion;
+
+  /**
+   * If LHF. All lines (since the last open() or readEvent()) outside
+   * the header, init and event tags.
+   */
+  string outsideBlock;
+
+  /**
+   * If LHF. All lines from the header block.
+   */
+  string headerBlock;
+
+  /**
+   * If LHF. Additional comments found in the init block.
+   */
+  string initComments;
+
+  /**
+   * If LHF. Map of attributes (name-value pairs) found in the init
+   * tag.
+   */
+  map<string,string> initAttributes;
+
+  /**
+   * If LHF. Additional comments found with the last read event.
+   */
+  string eventComments;
+
+  /**
+   * If LHF. Map of attributes (name-value pairs) found in the last
+   * event tag.
+   */
+  map<string,string> eventAttributes;
 
 private:
 

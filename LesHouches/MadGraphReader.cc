@@ -36,12 +36,45 @@ void MadGraphReader::open() {
 			     "etaj", "etab", "etaa", "etal",
 			     "drjj", "drbb", "draa", "drll",
 			     "drbj", "draj", "drjl", "drab",
-			     "drbl", "dral", "mmjj", "mbbj", "mmaa", "mmll",
-			     "xptj", "xptb", "xpta", "xptl"};
+			     "drbl", "dral", "mmjj", "mmbb", "mmaa", "mmll",
+			     "xptj", "xptb", "xpta", "xptl", "xetamin"};
+
+  ieve = neve = 0;
+
+  // If we are reading a LHF formatted file things are rather easy.
+
+  if ( LHFVersion.size() ) {
+
+    // Check for number of events in the file.
+    string::size_type pos = outsideBlock.find("##  Number of Events       :");
+    if ( pos != string::npos ) {
+      pos += 28;
+      neve = std::strtol(outsideBlock.c_str() + pos, NULL, 0);
+      NEvents(neve);
+    }
+
+    // Check if we have weighted events or not.
+    pos = outsideBlock.find("##  Unit wgt               :");
+    weighted( pos == string::npos );
+
+    // Scan information about cuts.
+    for ( int itag = 0; itag < 27; ++itag ) {
+      pos = outsideBlock.find(string("= ") + cuttags[itag]);
+      if ( pos != string::npos ) {
+	string::size_type beg = outsideBlock.rfind("#", pos) + 1;
+	string value = outsideBlock.substr(beg, pos - beg);
+	for ( string::size_type i = 0; i < value.length(); ++i )
+	  if ( value[i] == 'd' || value[i] == 'D' ) value[i] = 'e';
+	cuts[cuttags[itag]] = std::strtod(value.c_str(), NULL);
+      }
+    }
+
+    return;
+
+  }
 
   double xsec = -1.0;
   double maxw = -1.0;
-  ieve = neve = 0;
   double ebeam1 = -1.0;
   double ebeam2 = -1.0;
   int lpp1 = 0;
@@ -49,7 +82,9 @@ void MadGraphReader::open() {
   string pdftag;
   bool unweighted = false;
   // First scan banner to extract some information
-  while ( cfile.readline() ) {
+  // (LesHoushesFileReader::open has already read in the first line).
+  cfile.resetline();
+  do {
     if ( !cfile ) break;
     if ( cfile.getc() != '#' ) {
       int test;
@@ -87,7 +122,7 @@ void MadGraphReader::open() {
       cfile >> neve;
       maxw = xsec/double(neve);
     } else {
-      for ( int itag = 0; itag < 26; ++itag ) {
+      for ( int itag = 0; itag < 27; ++itag ) {
 	if ( cfile.find(string("= ") + cuttags[itag]) ) {
 	  
 	  cfile >> cuts[cuttags[itag]];
@@ -100,7 +135,7 @@ void MadGraphReader::open() {
 	}
       }
     }
-  }
+  } while ( cfile.readline() );
 
   // Return here if no comment block was found.
   if ( neve <= 0 ) return;
@@ -172,6 +207,9 @@ long MadGraphReader::scan() {
 }
 
 bool MadGraphReader::doReadEvent() {
+
+  if ( LesHouchesFileReader::doReadEvent() ) return true;
+
   if ( !cfile ) return false;
 
   hepeup.NUP = 0;
