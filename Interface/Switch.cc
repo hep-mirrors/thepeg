@@ -6,13 +6,14 @@
 
 #include "InterfacedBase.h"
 #include "Switch.h"
+#include "ThePEG/Utilities/StringUtils.h"
 
 namespace ThePEG {
 
 string SwitchBase::exec(InterfacedBase & i, string action,
 		    string arguments) const throw(InterfaceException) {
   ostringstream ret;
-  istringstream arg(arguments.c_str());
+  istringstream arg(arguments);
   if ( action == "get" ) {
     long opt = get(i);
     ret << opt;
@@ -34,6 +35,19 @@ string SwitchBase::exec(InterfacedBase & i, string action,
   } else if ( action == "set" ) {
     long val;
     arg >> val;
+    if ( !arg || theOptions.find(val) == theOptions.end() ) {
+      string sval = StringUtils::car(arguments);
+      StringMap::const_iterator sit = theOptionNames.find(sval);
+      if ( sit == theOptionNames.end() ) {
+	if ( sval == "true" && theOptions.find(1) != theOptions.end() )
+	  val = 1;
+	else if ( sval == "false" && theOptions.find(0) != theOptions.end() )
+	  val = 0;
+	else
+	  return "Error: no such option '" + StringUtils::car(arguments) + "'.";
+      } else
+	val = sit->second.value();
+    }
     try {
       set(i, val);
       return ret.str();
