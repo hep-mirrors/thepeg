@@ -18,15 +18,16 @@ using namespace ThePEG;
 
 FixedCMSLuminosity::~FixedCMSLuminosity() {}
 
-void FixedCMSLuminosity::persistentOutput(PersistentOStream & os) const {
-  os << ounit(theEnergy, GeV);
+void FixedCMSLuminosity::setEnergy(Energy e) {
+  beamEMaxA(e*0.5);
+  beamEMaxB(e*0.5);
 }
 
-void FixedCMSLuminosity::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(theEnergy, GeV);
+Energy FixedCMSLuminosity::getEnergy() const {
+  return energy();
 }
 
-ClassDescription<FixedCMSLuminosity>
+NoPIOClassDescription<FixedCMSLuminosity>
 FixedCMSLuminosity::initFixedCMSLuminosity;
 
  void FixedCMSLuminosity::Init() {
@@ -39,10 +40,14 @@ FixedCMSLuminosity::initFixedCMSLuminosity;
   static Parameter<FixedCMSLuminosity,Energy> interfaceEnergy
     ("Energy",
      "The total energy in GeV in the cms of the colliding particles.",
-     &FixedCMSLuminosity::theEnergy, GeV, 91.2*GeV, 0.0*GeV,
-     Constants::MaxEnergy, false, false, true);
+     0, GeV, 91.2*GeV, 0.0*GeV, 0*GeV,
+     true, false, Interface::lowerlim,
+     &FixedCMSLuminosity::setEnergy, &FixedCMSLuminosity::getEnergy,
+     (Energy(FixedCMSLuminosity::*)()const)(0),
+     (Energy(FixedCMSLuminosity::*)()const)(0),
+     (Energy(FixedCMSLuminosity::*)()const)(0));
 
-  interfaceEnergy.rank(10);
+  interfaceEnergy.rank(11);
 
 }
 

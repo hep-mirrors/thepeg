@@ -24,6 +24,9 @@ namespace ThePEG {
  * give easy access to the information of the generated primary
  * sub-process in the selected XComb.
  *
+ * This base class implements simple fixed momentum beams with
+ * energies given by the BeamEMaxA and BeamEMaxB interfaces.
+ *
  * @see \ref LuminosityFunctionInterfaces "The interfaces"
  * defined for LuminosityFunction.
  * @see LuminosityFunction
@@ -61,12 +64,12 @@ public:
    * Return true if this luminosity function can actually handle a
    * given pair of incoming particles.
    */
-  virtual bool canHandle(const cPDPair &) const = 0;
+  virtual bool canHandle(const cPDPair &) const;
 
   /**
    * Return the maximum possible center of mass energy for an event.
    */
-  virtual Energy maximumCMEnergy() const = 0;
+  virtual Energy maximumCMEnergy() const;
 
   /**
    * Return the rotation needed to transform from the collision cm
@@ -109,6 +112,33 @@ public:
 
 public:
 
+  /** @name Simple access functions */
+  //@{
+  /**
+   * The maximum energy of the beam entering along the positive z-axis.
+   */
+  inline Energy beamEMaxA() const;
+
+  /**
+   * The maximum energy of the beam entering along the negative z-axis.
+   */
+  inline Energy beamEMaxB() const;
+  //@}
+
+protected:
+
+  /**
+   * The maximum energy of the beam entering along the positive z-axis.
+   */
+  inline void beamEMaxA(Energy);
+
+  /**
+   * The maximum energy of the beam entering along the negative z-axis.
+   */
+  inline void beamEMaxB(Energy);
+
+public:
+
   /** @name Functions used by the persistent I/O system. */
   //@{
   /**
@@ -134,6 +164,18 @@ public:
    * Set information about the selected XComb.
    */
   void select(tXCombPtr);
+
+private:
+
+  /**
+   * The maximum energy of the beam entering along the positive z-axis.
+   */
+  Energy theBeamEMaxA;
+
+  /**
+   * The maximum energy of the beam entering along the negative z-axis.
+   */
+  Energy theBeamEMaxB;
 
 private:
 

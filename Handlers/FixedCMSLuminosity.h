@@ -14,6 +14,14 @@ namespace ThePEG {
  * particles colliding with precicely defined and opposite momenta. It
  * is derived from the LuminosityFunction base class.
  *
+ * \deprecated As the LuminosityFunction Base class has increased
+ * functionality (exceeding the functionality of this class) the use
+ * of FixedCMSLuminosity is deprecated, and the class will be removed
+ * in a future release. Note also that by setting the individual beam
+ * energies in the beam class, the behavior of this object may be
+ * inconsistent, in that the collision will not, as specified, be in
+ * the center-of-mass system.
+ *
  * @see \ref FixedCMSLuminosityInterfaces "The interfaces"
  * defined for FixedCMSLuminosity.
  */
@@ -41,22 +49,8 @@ public:
 
 public:
 
-  /** @name Virtual functions required by the LuminosityFunction class. */
-  //@{
   /**
-   * Return true if this luminosity function can actually handle a
-   * given pair of incoming particles.
-   */
-  inline virtual bool canHandle(const cPDPair &) const;
-
-  /**
-   * Return the maximum center of mass energy.
-   */
-  inline virtual Energy maximumCMEnergy() const;
-  //@}
-
-  /**
-   * The average total energy in the cms of the incoming particles.
+   * The total energy in the cms of the incoming particles.
    */
   inline Energy energy() const;
 
@@ -100,22 +94,6 @@ public:
   inline virtual IVector getReferences();
   //@}
 
-  /** @name Functions used by the persistent I/O system. */
-  //@{
-  /**
-   * Function used to write out object persistently.
-   * @param os the persistent output stream written to.
-   */
-  void persistentOutput(PersistentOStream & os) const;
-
-  /**
-   * Function used to read in object persistently.
-   * @param is the persistent input stream read from.
-   * @param version the version number of the object when written.
-   */
-  void persistentInput(PersistentIStream & is, int version);
-  //@}
-
   /**
    * Standard Init function used to initialize the interface.
    */
@@ -141,16 +119,21 @@ protected:
 private:
 
   /**
-   * The total energy in the collisons.
+   * Utility function used by the interface.
    */
-  Energy theEnergy;
+  void setEnergy(Energy);
+
+  /**
+   * Utility function used by the interface.
+   */
+  Energy getEnergy() const;
 
 private:
 
   /**
    * Describe a concrete class with persistent data.
    */
-  static ClassDescription<FixedCMSLuminosity> initFixedCMSLuminosity;
+  static NoPIOClassDescription<FixedCMSLuminosity> initFixedCMSLuminosity;
 
   /**
    *  Private and non-existent assignment operator.

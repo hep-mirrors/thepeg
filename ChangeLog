@@ -1,5 +1,12 @@
 2006-08-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/FixedCMSLuminosity.*, Handlers/LuminosityFunction.*: To
+	facilitate the implementation of HEPML steering in RivetGun the
+	base class now handle the setting of individual (maximum) beam
+	energies and is able to produce the corresponing beams. This makes
+	the FixedCMSLuminosity superfluous and will be completely soon
+	removed.
+
 	* Interface/Switch.cc: Fixed "set" method so that giving the name
 	of the switch option works. Also "true" and "false" are allowed as
 	synonyms for 1 and 0.

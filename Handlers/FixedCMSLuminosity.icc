@@ -6,22 +6,13 @@
 
 namespace ThePEG {
 
-inline FixedCMSLuminosity::FixedCMSLuminosity()
-  : theEnergy(91.2*GeV) {}
+inline FixedCMSLuminosity::FixedCMSLuminosity() {}
 
 inline FixedCMSLuminosity::FixedCMSLuminosity(const FixedCMSLuminosity & x)
-  : LuminosityFunction(x), theEnergy(x.theEnergy) {}
-
-inline Energy FixedCMSLuminosity::maximumCMEnergy() const {
-  return energy();
-}
+  : LuminosityFunction(x) {}
 
 inline Energy FixedCMSLuminosity::energy() const {
-  return theEnergy;
-}
-
-inline bool FixedCMSLuminosity::canHandle(const cPDPair &) const {
-  return true;
+  return maximumCMEnergy();
 }
 
 inline IBPtr FixedCMSLuminosity::clone() const {

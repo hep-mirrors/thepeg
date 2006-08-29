@@ -6,4 +6,20 @@
 
 namespace ThePEG {
 
+inline Energy LuminosityFunction::beamEMaxA() const {
+  return theBeamEMaxA;
+}
+
+inline Energy LuminosityFunction::beamEMaxB() const {
+  return theBeamEMaxB;
+}
+
+inline void LuminosityFunction::beamEMaxB(Energy x) {
+  theBeamEMaxB = x;
+}
+
+inline void LuminosityFunction::beamEMaxA(Energy x) {
+  theBeamEMaxA = x;
+}
+
 }
