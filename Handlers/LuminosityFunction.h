@@ -165,6 +165,23 @@ public:
    */
   void select(tXCombPtr);
 
+protected:
+
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr fullclone() const;
+  //@}
+
 private:
 
   /**
@@ -182,8 +199,7 @@ private:
   /**
    * Describe an abstract class with persistent data.
    */
-  static AbstractClassDescription<LuminosityFunction>
-  initLuminosityFunction;
+  static ClassDescription<LuminosityFunction> initLuminosityFunction;
 
   /**
    *  Private and non-existent assignment operator.

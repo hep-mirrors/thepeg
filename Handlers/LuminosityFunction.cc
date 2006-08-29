@@ -72,8 +72,7 @@ void LuminosityFunction::persistentInput(PersistentIStream & is, int) {
   is >> theLastXComb >> iunit(theBeamEMaxA, GeV) >> iunit(theBeamEMaxB, GeV);
 }
 
-AbstractClassDescription<LuminosityFunction> LuminosityFunction::
-initLuminosityFunction;
+ClassDescription<LuminosityFunction> LuminosityFunction::initLuminosityFunction;
 
 void LuminosityFunction::Init() {
 
