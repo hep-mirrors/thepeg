@@ -66,7 +66,7 @@ theENV = ThePEG_INSTALL_PATH=$(top_builddir)/lib
 
 ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in ThePEGParticles.in
 	$(theENV) ./setupThePEG.bin --init --exitonerror -r ThePEGDefaults.rpo ThePEGDefaults.in
-	cd ../lib; $(LN_S) -f ../src/ThePEGDefaults.rpo .
+	cd ../lib; rm -f ThePEGDefaults.rpo; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 
 check-local:
 	$(theENV) ./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
