@@ -1,3 +1,20 @@
+2006-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.cc: When boosting the hard sub-system to
+	transfer a small pt-kick from the remnants, an unphysical
+	theta-rotation in case the hard subsystem had rapidity close to
+	zero. This is due to a problem with the
+	Utilities::transformToMomentum function. PartonExtractor now no
+	longer use the transformToMomentum function. Although
+	transformToMomentum correctly does what it claims to do, it should
+	probably not be used, and it will be removed in the future.
+
+	* Utilities/UtilityBase.tcc: Using the rotations returned from the
+	transform to/from CMS functions could before introduce random
+	phi-rotations when the vector to be rotated to/from the z-axis was
+	already along the z-axis but lack of precision gave a random
+	phi-angle. This has now been fixed.
+
 2006-08-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Make sure the ../lib/ThePEGDefaults.rpo link is

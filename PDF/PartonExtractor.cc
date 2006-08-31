@@ -248,6 +248,7 @@ constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
   LorentzMomentum k2 = pbins.second->parton()->momentum();
   LorentzMomentum Ph = k1 + k2;
   LorentzMomentum Phold = Ph;
+  LorentzRotation Rh = Utilities::getBoostToCM(make_pair(k1, k2));
 
   bool pickside = rndbool();
   if ( pickside && pbins.first->incoming() ) {
@@ -265,11 +266,12 @@ constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
     constructRemnants(*pbins.first, Ph, pbins.second->parton()->momentum());
     construct(*pbins.first, step, false);
   }
-  LorentzRotation rot = Utilities::transformToMomentum(Phold, Ph);
-  Utilities::transform(sub->outgoing(), rot);
-  Utilities::transform(sub->intermediates(), rot);
+  //  LorentzRotation rot = Utilities::transformToMomentum(Phold, Ph);
   k1 = pbins.first->parton()->momentum();
   k2 = pbins.second->parton()->momentum();
+  LorentzRotation rot = Utilities::getBoostFromCM(make_pair(k1, k2));
+  Utilities::transform(sub->outgoing(), rot);
+  Utilities::transform(sub->intermediates(), rot);
   Ph = k1 + k2;
   if ( abs(Ph.m2() - Phold.m2())/Phold.m2() > 0.000001 )
     cerr << Ph.m2()/GeV2 << " was (" << Phold.m2()/GeV2 << ")" << endl;
@@ -330,6 +332,8 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
     P2 = bins.second->particle()->momentum();
     Pr2 = Utilities::sumMomentum(bins.second->remnants());
   }
+
+  LorentzRotation Rh = Utilities::getBoostToCM(make_pair(k1, k2));
   LorentzMomentum Ph = k1 + k2;
   LorentzMomentum Phold = Ph;
 
@@ -352,13 +356,19 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
   Utilities::setMomentum(bins.first->remnants().begin(),
 			 bins.first->remnants().end(),
 			 static_cast<const LorentzMomentum &>(Pr1));
-  bins.second->parton()->setMomentum(k1);
+  bins.first->parton()->setMomentum(k1);
   Utilities::setMomentum(bins.second->remnants().begin(),
 			 bins.second->remnants().end(),
 			 static_cast<const LorentzMomentum &>(Pr2));
   bins.second->parton()->setMomentum(k2);
 
-  return Utilities::transformToMomentum(Phold, Ph);
+  Rh.transform(Utilities::getBoostFromCM(make_pair(k1, k2)));
+
+  LorentzMomentum phh = Rh*Phold;
+
+  return Rh;
+
+  //  return Utilities::transformToMomentum(Phold, Ph);
 
 }
 

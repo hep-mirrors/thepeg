@@ -12,6 +12,7 @@ LorentzRotation UtilityBase::boostToCM(const pair<PType,PType> & pp) {
   LorentzRotation rot;
   rot.rotateZ(-Traits::momentum(pp.first).phi());
   rot.rotateY(-Traits::momentum(pp.first).theta());
+  rot.rotateZ(Traits::momentum(pp.first).phi());
   Traits::transform(pp.first, rot);
   Traits::transform(pp.second, rot);
   return rot*boost;
@@ -27,6 +28,7 @@ LorentzRotation UtilityBase::getBoostToCM(const pair<PType,PType> & pp) {
   LorentzRotation rot(-b);
   rot.rotateZ(-p1.phi());
   rot.rotateY(-p1.theta());
+  rot.rotateZ(p1.phi());
   return rot;
 }
 
@@ -37,6 +39,7 @@ LorentzRotation UtilityBase::getBoostFromCM(const pair<PType,PType> & pp) {
   Vector3 b = (p1 + Traits::momentum(pp.second)).boostVector();
   p1.boost(-b);
   LorentzRotation rot;
+  rot.rotateZ(-p1.phi());
   rot.rotateY(p1.theta());
   rot.rotateZ(p1.phi());
   rot.boost(b);
@@ -56,6 +59,7 @@ LorentzRotation UtilityBase::boostToCM(Iterator first, Iterator last,
     LorentzRotation rot;
     rot.rotateZ(-Traits::momentum(*zAxis).phi());
     rot.rotateY(-Traits::momentum(*zAxis).theta());
+    if ( xzPlane == last ) rot.rotateZ(Traits::momentum(*zAxis).phi());
     transform(first, last, rot);
     boost = rot*boost;
   }    
@@ -65,6 +69,7 @@ LorentzRotation UtilityBase::boostToCM(Iterator first, Iterator last,
     transform(first, last, rot);
     boost = rot*boost;
   }
+
   return boost;
 }
 
@@ -76,6 +81,7 @@ transformFromCMS(const LV & p) {
 		      << "UtilityBase::transformFromCMS()"
 		      << Exception::eventerror;
   LorentzRotation r(0.0, 0.0, p.rho()/p.e());
+  r.rotateZ(-p.phi());
   r.rotateY(p.theta());
   r.rotateZ(p.phi());
   return r;
@@ -87,6 +93,7 @@ transformFromCMS(const LV & sum, LV zAxis) {
   LorentzRotation r;
   Vector3 bz(sum.boostVector());
   zAxis.boost(-bz);
+  r.rotateZ(-zAxis.phi());
   r.rotateY(zAxis.theta());
   r.rotateZ(zAxis.phi());
   r.boost(bz);
@@ -110,6 +117,7 @@ transformToCMS(const LV & p) {
   LorentzRotation r;
   r.rotateZ(-p.phi());
   r.rotateY(-p.theta());
+  r.rotateZ(p.phi());
   if(p.rho()/p.e()>1.) throw Exception() << "Boost >=1. in "
 					 << "UtilityBase::transformToCMS "
 					 << Exception::eventerror;
@@ -124,6 +132,7 @@ transformToCMS(const LV & sum, LV zAxis) {
   zAxis.transform(r);
   r.rotateZ(-zAxis.phi());
   r.rotateY(-zAxis.theta());
+  r.rotateZ(zAxis.phi());
   return r;
 }
 
@@ -183,9 +192,11 @@ setMomentum(Iter first, Iter last, const Momentum3 & q, double eps) {
   LorentzMomentum sum = sumMomentum(first, last);
   r.rotateZ(-sum.phi());
   r.rotateY(-sum.theta());
+  r.rotateZ(sum.phi());
   Energy2 ppo = sqr(sum.rho() + sum.e());
   Energy2 ppn = sqr(q.mag() + sqrt(q.mag2() + sum.m2()));
   r.boost(0.0, 0.0, (ppn - ppo)/(ppn + ppo));
+  r.rotateZ(-q.phi());
   r.rotateY(q.theta());
   r.rotateZ(q.phi());
   transform(first, last, r);
