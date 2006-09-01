@@ -1,5 +1,8 @@
 2006-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/TestLHAPDF.h, Utilities/UtilityBase.h, PDF/LHAPDF.h,
+	LesHouches/LesHouchesReader.h: Fixed some documentation bugs.
+
 	* PDF/PartonExtractor.cc: When boosting the hard sub-system to
 	transfer a small pt-kick from the remnants, an unphysical
 	theta-rotation in case the hard subsystem had rapidity close to

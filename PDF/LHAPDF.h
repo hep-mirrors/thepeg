@@ -283,6 +283,7 @@ public:
   /** Exception class used if the LHAPDF library was not installed. */
   class NotInstalled: public Exception {};
 
+  /** Function to throw a NotInstalled exception. */
   static void throwNotInstalled();
 
   /** @endcond */

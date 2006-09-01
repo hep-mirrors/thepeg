@@ -184,22 +184,27 @@ struct UtilityBase {
 				 Energy2 m2, const Momentum3 & q);
 
   /**
-   * Return the transformation needed to rotate p to the z-axis and
+   * Return the transformation needed to rotate \a p to the z-axis and
    * boost it to its CMS, then boost it along the z-axis and rotate it
-   * so that it ends up with momentum q. The class <code>PType</code>
-   * must have <code>ParticleTraits<PType>::momentum(const
-   * PType&)</code> implemented correctly.
+   * so that it ends up with momentum \a q. The class
+   * <code>PType</code> must have
+   * <code>ParticleTraits<PType>::momentum(const PType&)</code>
+   * implemented correctly. <b>Warning</b> This function only works
+   * properly if \a p has a well defined direction in both polar and
+   * azimuth angles.
    */
   template <typename PType>
   inline static LorentzRotation
   transformToMomentum(const PType & p, const Momentum3 & q);
 
   /**
-   * Return the transformation needed to rotate p to the z-axis and
+   * Return the transformation needed to rotate \a p to the z-axis and
    * boost it to its CMS, then boost it along the z-axis and rotate it
-   * so that it ends up with momentum q. The class <code>PType</code>
+   * so that it ends up with momentum \a q. The class <code>PType</code>
    * must have <code>ParticleTraits<PType>::momentum(const
-   * PType&)</code> implemented correctly.
+   * PType&)</code> implemented correctly. <b>Warning</b> This
+   * function only works properly if \a p has a well defined direction
+   * in both polar and azimuth angles.
    */
   template <typename PType>
   inline static LorentzRotation

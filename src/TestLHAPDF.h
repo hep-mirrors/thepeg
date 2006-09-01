@@ -19,27 +19,47 @@
 
 namespace ThePEG {
 
+/**
+ * Class derived from Main to do simple tests of the LHAPDF class.
+ */
 class TestLHAPDF: public Main {
 
 public:
 
+  /**
+   * The default constructor.
+   */
   inline TestLHAPDF();
+
+  /**
+   * The copy constructor.
+   */
   inline TestLHAPDF(const TestLHAPDF &);
+
+  /**
+   * The destructor.
+   */
   virtual ~TestLHAPDF();
-  // Standard ctors and dtor.
 
 public:
 
+  /**
+   * Standard Init function used to initialize the interfaces. This is
+   * where all the tests are done.
+   */
   static void Init();
-  // Standard Init function used to initialize the interfaces.
 
 private:
 
+  /**
+   * Describe a concrete class without persistent data.
+   */
   static NoPIOClassDescription<TestLHAPDF> initTestLHAPDF;
-  // Describe a concrete class without persistent data.
 
+  /**
+   * Private and non-existent assignment operator.
+   */
   TestLHAPDF & operator=(const TestLHAPDF &);
-  // Private and non-existent assignment operator.
 
 };
 

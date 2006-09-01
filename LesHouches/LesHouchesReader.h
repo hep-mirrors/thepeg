@@ -608,7 +608,7 @@ protected:
   pair<PDFPtr,PDFPtr> inPDF;
 
   /**
-   * The PDFBase object to be used in the subsequent generation..
+   * The PDFBase object to be used in the subsequent generation.
    */
   pair<cPDFPtr,cPDFPtr> outPDF;
 
