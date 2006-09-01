@@ -1,5 +1,8 @@
 2006-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/ThePEGDefaults.in: Added /LesHouches directory with a half
+	built EventGenerator with a LesHouchesEventHandler.
+
 	* src/TestLHAPDF.h, Utilities/UtilityBase.h, PDF/LHAPDF.h,
 	LesHouches/LesHouchesReader.h: Fixed some documentation bugs.
 

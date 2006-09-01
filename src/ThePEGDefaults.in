@@ -145,5 +145,24 @@ create ThePEG::LHAPDF CTEQ6ll
 set CTEQ6ll:RemnantHandler /Defaults/Partons/BaryonRemnants
 set CTEQ6ll:PDFName cteq6ll.LHpdf
 
+mkdir /LesHouches
+cd /LesHouches
+create ThePEG::EventGenerator LesHouchesGenerator
+cp /Defaults/Random StdRandom
+cp /Defaults/StandardModel StandardModel
+cp /Defaults/AlphaS O1AlphaS
+set StandardModel:QCD/RunningAlphaS O1AlphaS
+cp /Defaults/AlphaEM AlphaEM
+set StandardModel:EW/RunningAlphaEM AlphaEM
+cp /Defaults/CKM CKM
+set StandardModel:EW/CKM CKM
+set LesHouchesGenerator:RandomNumberGenerator StdRandom
+set LesHouchesGenerator:StandardModelParameters StandardModel
+create ThePEG::Strategy DefaultStrategy
+set LesHouchesGenerator:Strategy DefaultStrategy
+create ThePEG::LesHouchesEventHandler LesHouchesHandler
+cp /Defaults/Handlers/StandardExtractor QCDExtractor
+set LesHouchesHandler:PartonExtractor QCDExtractor
+set LesHouchesGenerator:EventHandler LesHouchesHandler
 cd /
 doxygendump ThePEG:: ../Doc/AllInterfaces.h
