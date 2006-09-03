@@ -53,10 +53,6 @@ void MadGraphReader::open() {
       NEvents(neve);
     }
 
-    // Check if we have weighted events or not.
-    pos = outsideBlock.find("##  Unit wgt               :");
-    weighted( pos == string::npos );
-
     // Scan information about cuts.
     for ( int itag = 0; itag < 27; ++itag ) {
       pos = outsideBlock.find(string("= ") + cuttags[itag]);
@@ -67,6 +63,24 @@ void MadGraphReader::open() {
 	  if ( value[i] == 'd' || value[i] == 'D' ) value[i] = 'e';
 	cuts[cuttags[itag]] = std::strtod(value.c_str(), NULL);
       }
+    }
+
+    // If we have weighted events we need to scale it up according to
+    // the rate at which they are supposed to be kept to get the
+    // statistics right.
+    if ( weighted() ) {
+      // This really only works if we have only one evet type.
+      if ( heprup.NPRUP != 1 ) {
+	Throw<WeightedExcetion>()
+	<< "The file '" << filename() << "' in the MadGraphReader '" << name()
+	<< "' contains weighted events of several different sub-processes. "
+	<< "These are currently not handled properly and the statistics may "
+	<< "come out wrong." << Exception::warning;
+	return;
+      }
+      wtfac = double(neve);
+      heprup.XMAXUP[0] *= wtfac;
+
     }
 
     return;
@@ -208,7 +222,10 @@ long MadGraphReader::scan() {
 
 bool MadGraphReader::doReadEvent() {
 
-  if ( LesHouchesFileReader::doReadEvent() ) return true;
+  if ( LesHouchesFileReader::doReadEvent() ) {
+    hepeup.XWGTUP *= wtfac;
+    return true;
+  }
 
   if ( !cfile ) return false;
 
@@ -325,12 +342,12 @@ MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
   os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts
-     << doInitCuts;
+     << doInitCuts << wtfac;
 }
 
 void MadGraphReader::persistentInput(PersistentIStream & is, int) {
   is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts
-     >> doInitCuts;
+     >> doInitCuts>> wtfac;
 }
 
 bool MadGraphReader::preInitialize() const {

@@ -269,7 +269,7 @@ constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
   //  LorentzRotation rot = Utilities::transformToMomentum(Phold, Ph);
   k1 = pbins.first->parton()->momentum();
   k2 = pbins.second->parton()->momentum();
-  LorentzRotation rot = Utilities::getBoostFromCM(make_pair(k1, k2));
+  LorentzRotation rot = Utilities::getBoostFromCM(make_pair(k1, k2))*Rh;
   Utilities::transform(sub->outgoing(), rot);
   Utilities::transform(sub->intermediates(), rot);
   Ph = k1 + k2;
@@ -282,7 +282,8 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
 		  const LorentzMomentum & k) const {
   LorentzMomentum P = pb.particle()->momentum();
   DVector r = UseRandom::rndvec(pb.bin()->remDim());
-  pb.remnantHandler()->generate(pb, &r[0], pb.scale(), Ph.m2(), P);
+  pb.parton()->setMomentum(pb.remnantHandler()->
+			   generate(pb, &r[0], pb.scale(), Ph.m2(), P));
   if ( pb.remnantWeight() <= 0.0 ) throw Veto();
   pb.remnantHandler()->boostRemnants(pb);
   LorentzMomentum Pr = Utilities::sumMomentum(pb.remnants());

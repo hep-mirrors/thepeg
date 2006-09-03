@@ -54,3 +54,5 @@ BaryonRemnants_la_SOURCES = BaryonRemnants.cc BaryonRemnants.h \
 
 dist_pkgdata_DATA = LHAIndex.txt
 
+include $(top_srcdir)/Config/Makefile.aminclude
+

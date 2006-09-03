@@ -300,18 +300,23 @@ void LesHouchesReader::initStat() {
       statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XSECUP[ip]*picobarn);
     }
     stats.maxXSec(xsec*picobarn);
-  } else {
-    heprup.XSECUP.clear();
-    heprup.XERRUP.clear();
-    double maxx = 0.0;
-    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-      maxx = max(maxx, heprup.XMAXUP[ip]);
-    }
-    stats.maxXSec(maxx*picobarn);
-    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-      statmap[heprup.LPRUP[ip]] = XSecStat(maxx*picobarn);
-    }
-  }
+   } else {
+     //     heprup.XSECUP.clear();
+     //     heprup.XERRUP.clear();
+     double sumx = 0.0;
+     for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
+       sumx += heprup.XMAXUP[ip];
+       statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XMAXUP[ip]*picobarn);
+     }
+     stats.maxXSec(sumx*picobarn);
+   }
+}
+
+void LesHouchesReader::increaseMaxXSec(CrossSection maxxsec) {
+  for ( int i = 0; i < heprup.NPRUP; ++i )
+    statmap[heprup.LPRUP[i]].maxXSec(statmap[heprup.LPRUP[i]].maxXSec()*
+      maxxsec/stats.maxXSec());
+  stats.maxXSec(maxxsec);
 }
 
 tXCombPtr LesHouchesReader::getXComb() {
@@ -440,6 +445,7 @@ double LesHouchesReader::getEvent() {
 
   return weighted()?
     hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec(): 1.0;
+
 }
 
 void LesHouchesReader::skip(long n) {

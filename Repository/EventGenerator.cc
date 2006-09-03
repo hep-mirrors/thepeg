@@ -436,12 +436,12 @@ void EventGenerator::tic(long currev, long totev) const {
   if ( !totev ) totev = N();
   long i = currev;
   long n = totev;
-  bool skip = currev%(totev/100);
+  bool skip = currev%(max(totev/100, 1L));
   if ( i > n/2 ) i = n-i;
   while ( skip && i >= 10 && !(i%10) ) i /= 10;
   if ( i == 1 || i == 2 || i == 5 ) skip = false;
   if ( skip ) return;
-  cerr << "tic> " << currev << "\t" << totev << "\r";
+  cerr << "tic> " << setw(8) << currev << " " << setw(8) << totev << "\r";
   cerr.flush();
   if ( currev == totev ) cerr << endl;
 }

@@ -25,3 +25,5 @@ MadGraphReader_la_SOURCES = MadGraphReader.cc MadGraphReader.h \
 LesHouches_la_LDFLAGS = -module -version-info 1:0:0
 LesHouches_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
+include $(top_srcdir)/Config/Makefile.aminclude
+

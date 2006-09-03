@@ -96,7 +96,12 @@ void LesHouchesFileReader::open() {
   if ( !cfile ) {
     heprup.NPRUP = -42;
     LHFVersion = "";
-  }    
+    return;
+  }
+
+  weighted( abs(heprup.IDWTUP) <= 2 );
+  negativeWeights( heprup.IDWTUP < 0 );
+
 }
 
 bool LesHouchesFileReader::doReadEvent() {

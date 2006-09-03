@@ -341,7 +341,7 @@ public:
   /**
    * Increase the overestimated cross section for this reader.
    */
-  inline void increaseMaxXSec(CrossSection maxxsec);
+  void increaseMaxXSec(CrossSection maxxsec);
 
   /**
    * The PartonExtractor object used to construct remnants.

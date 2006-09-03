@@ -8,12 +8,12 @@ namespace ThePEG {
 
 inline MadGraphReader::MadGraphReader()
 : fixedScale(91.188*GeV), fixedAEM(0.007546772), fixedAS(0.12),
-  doInitCuts(false) {}
+  doInitCuts(false), wtfac(1.0) {}
 
 inline MadGraphReader::MadGraphReader(const MadGraphReader & x)
   : LesHouchesFileReader(x), fixedScale(x.fixedScale),
     fixedAEM(x.fixedAEM), fixedAS(x.fixedAS), cuts(x.cuts),
-    doInitCuts(x.doInitCuts) {}
+    doInitCuts(x.doInitCuts), wtfac(x.wtfac) {}
 
 inline IBPtr MadGraphReader::clone() const {
   return new_ptr(*this);

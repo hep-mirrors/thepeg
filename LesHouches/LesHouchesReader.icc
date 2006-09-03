@@ -160,11 +160,6 @@ inline void LesHouchesReader::reject() {
   statmap[hepeup.IDPRUP].reject();
 }
 
-inline void LesHouchesReader::increaseMaxXSec(CrossSection maxxsec) {
-  stats.maxXSec(maxxsec);
-  statmap[hepeup.IDPRUP].maxXSec(maxxsec);
-}
-
 inline tPExtrPtr LesHouchesReader::partonExtractor() const {
   return thePartonExtractor;
 }

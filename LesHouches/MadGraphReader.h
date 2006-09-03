@@ -213,6 +213,20 @@ protected:
    */
   bool doInitCuts;
 
+  /**
+   * Factor to multiply the weights to get proper cross section for
+   * weighted events in case of LHF files.
+   */
+  double wtfac;
+
+public:
+
+  /**
+   * Exception class used to inform about inability to work with some
+   * weighted event files.
+   */
+  struct WeightedExcetion: public Exception {};
+
 private:
 
   /**

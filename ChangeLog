@@ -1,3 +1,27 @@
+2006-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.cc: Fixed bug when writing out progrss
+	with tic() function.
+
+	* PDF/PartonExtractor.cc: Fixed bug in constructRemnants()
+	functions introduced when changing the boosts (se 2006-09-01).
+
+	* LesHouches/MadGraphReader.*: I think MadGraph uses XMAXUP and
+	XWGTUP wrongly. Now increase both by a suitable factor to make the
+	cross section add up the way I think it should.
+
+	* LesHouches/LesHouchesReader.*: Modified the setup of statistics
+	in case of several processes in one reader. Consequently also
+	modified the increaseMaxXSec() function. Still not sure this will
+	do exactly the right thing.
+
+	* LesHouches/LesHouchesFileReader.cc: Now sets weighting strategy
+	depending on the standard IDWTUP variable.
+
+	* Config/Makefile.aminclude: Added include file to Makefile.am's
+	to simplify recompiling certain files with debugging, but without
+	optimization.
+
 2006-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGDefaults.in: Added /LesHouches directory with a half
