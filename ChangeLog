@@ -1,3 +1,10 @@
+2006-09-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesFileReader.cc: Fixed setting of XPDWUP to
+	zero for each event.
+
+	* PDF/LHAPDF.cc: Fixed units of Q2Min and Q2Max in persistent I/O.
+
 2006-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc: Fixed bug when writing out progrss

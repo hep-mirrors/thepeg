@@ -585,13 +585,13 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
   os << oenum(thePType) << thePDFName << theMember
      << thePhotonOption << theVerboseLevel
-     << xMin << xMax << Q2Min << Q2Max;
+     << xMin << xMax << ounit(Q2Min, GeV2) << ounit(Q2Max, GeV2);
 }
 
 void LHAPDF::persistentInput(PersistentIStream & is, int) {
   is >> ienum(thePType) >> thePDFName >> theMember
      >> thePhotonOption >> theVerboseLevel
-     >> xMin >> xMax >> Q2Min >> Q2Max;
+     >> xMin >> xMax >> iunit(Q2Min, GeV2) >> iunit(Q2Max, GeV2);
   nset = -1;
   lastReset();
 }

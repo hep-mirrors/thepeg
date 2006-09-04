@@ -111,6 +111,7 @@ bool LesHouchesFileReader::doReadEvent() {
   eventComments = "";
   outsideBlock = "";
   hepeup.NUP = 0;
+  hepeup.XPDWUP.first = hepeup.XPDWUP.second = 0.0;
 
   // Keep reading lines until we hit the next event or the end of
   // the event block. Save any inbetween lines. Exit if we didn't
