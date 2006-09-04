@@ -1,5 +1,12 @@
 2006-09-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesEventHandler.cc: Fixed bug when
+	compensating for underestimated maximum.
+
+	* PDF/LHAPDF.cc: Changing setting of nset so that two LHAPDF
+	objects which use the same set will get the same nset. This avoids
+	unnecessary and time consuming reinitialization.
+
 	* LesHouches/LesHouchesReader.cc: When creating LHAPDF pdf to get
 	the generated pdf values, make sure the values are frozen outside
 	the x,Q2 limits to avoid problems if reweighting is requested..

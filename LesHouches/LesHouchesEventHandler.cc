@@ -349,8 +349,8 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
 
 
 void LesHouchesEventHandler::increaseMaxXSec(CrossSection maxxsec) {
-  stats.maxXSec(maxxsec);
-  histStats.maxXSec(maxxsec);
+  stats.maxXSec(selector().sum());
+  histStats.maxXSec(selector().sum());
   currentReader()->increaseMaxXSec(maxxsec);
 }
 

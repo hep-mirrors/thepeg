@@ -165,6 +165,11 @@ void LHAPDF::setnset() const {
   F77ThePEGInteger i = !theVerboseLevel;
   lhaprint_(i);
   if ( nset < 0 || nset >= MaxNSet) {
+    // First check if any other nset-value is using 'our' pdf set.
+    for ( nset = 0; nset < min(lastNSet, MaxNSet); ++nset )
+      if ( lastMem[nset] == member() && lastNames[nset] == PDFName() )
+	return;
+    // Otherwise book a new nset.
     nset = (lastNSet++)%MaxNSet;
   }
 }
