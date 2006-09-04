@@ -1,5 +1,9 @@
 2006-09-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesReader.cc: When creating LHAPDF pdf to get
+	the generated pdf values, make sure the values are frozen outside
+	the x,Q2 limits to avoid problems if reweighting is requested..
+
 	* LesHouches/LesHouchesFileReader.cc: Fixed setting of XPDWUP to
 	zero for each event.
 

@@ -135,6 +135,8 @@ void LesHouchesReader::initPDFs() {
       generator()->preinitInterface(inPDF.first, "PDFNumber",
 				    "set", os.str());
     }
+    generator()->preinitInterface(inPDF.first, "RangeException",
+				    "set", "Freeze");
   }
 
   if ( heprup.PDFSUP.second && !inPDF.second) {
@@ -157,6 +159,8 @@ void LesHouchesReader::initPDFs() {
       generator()->preinitInterface(inPDF.second, "PDFNumber",
 				    "set", os.str());
     }
+    generator()->preinitInterface(inPDF.second, "RangeException",
+				    "set", "Freeze");
   }
   
   if ( ! ( inPDF.first && inPDF.second ) ) Throw<InitException>()
