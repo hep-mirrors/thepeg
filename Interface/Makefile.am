@@ -18,3 +18,6 @@ INCLUDEFILES = $(DOCFILES) Command.fh Command.icc Command.tcc \
 noinst_LTLIBRARIES = libThePEGInter.la
 
 libThePEGInter_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

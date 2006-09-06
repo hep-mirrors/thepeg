@@ -8,3 +8,6 @@ INCLUDEFILES = $(DOCFILES) InputDescription.icc PersistentIStream.fh \
 
 noinst_LTLIBRARIES = libThePEGPersistency.la
 libThePEGPersistency_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

@@ -13,7 +13,7 @@ pkglib_LTLIBRARIES = LesHouches.la MadGraphReader.la
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-MadGraphReader_la_LDFLAGS = -module -version-info 1:0:0
+MadGraphReader_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 MadGraphReader_la_SOURCES = MadGraphReader.cc MadGraphReader.h \
                             MadGraphReader.icc MadGraphOneCut.cc \
                             MadGraphOneCut.icc MadGraphOneCut.h \
@@ -22,7 +22,7 @@ MadGraphReader_la_SOURCES = MadGraphReader.cc MadGraphReader.h \
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-LesHouches_la_LDFLAGS = -module -version-info 1:0:0
+LesHouches_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 LesHouches_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 include $(top_srcdir)/Config/Makefile.aminclude

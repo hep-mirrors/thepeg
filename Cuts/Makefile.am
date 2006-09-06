@@ -12,15 +12,17 @@ libThePEGCuts_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 pkglib_LTLIBRARIES = SimpleKTCut.la KTClus.la V2LeptonsCut.la SimpleDISCut.la
 
-SimpleKTCut_la_LDFLAGS = -module -version-info 1:0:0
+SimpleKTCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 SimpleKTCut_la_SOURCES = SimpleKTCut.cc SimpleKTCut.h SimpleKTCut.icc
 
-KTClus_la_LDFLAGS = -module -version-info 1:0:0
+KTClus_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 KTClus_la_SOURCES = KTClus.cc KTClus.h KTClus.icc
 
-V2LeptonsCut_la_LDFLAGS = -module -version-info 1:0:0
+V2LeptonsCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 V2LeptonsCut_la_SOURCES = V2LeptonsCut.cc V2LeptonsCut.h V2LeptonsCut.icc
 
-SimpleDISCut_la_LDFLAGS = -module -version-info 1:0:0
+SimpleDISCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 SimpleDISCut_la_SOURCES = SimpleDISCut.cc SimpleDISCut.h SimpleDISCut.icc
+
+include $(top_srcdir)/Config/Makefile.aminclude
 

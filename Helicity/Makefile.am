@@ -23,3 +23,6 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
 noinst_LTLIBRARIES = libThePEGHelicity.la
 
 libThePEGHelicity_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

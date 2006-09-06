@@ -28,3 +28,6 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
 noinst_LTLIBRARIES = libThePEGUtilities.la
 
 libThePEGUtilities_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

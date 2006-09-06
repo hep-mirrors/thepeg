@@ -15,3 +15,6 @@ INCLUDEFILES = $(DOCFILES) Collision.icc Collision.tcc Event.icc \
 
 noinst_LTLIBRARIES = libThePEGEvent.la
 libThePEGEvent_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

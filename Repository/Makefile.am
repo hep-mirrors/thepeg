@@ -22,13 +22,13 @@ libThePEGRepo_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-ThePEGStrategy_la_LDFLAGS = -module -version-info 1:0:0
+ThePEGStrategy_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 ThePEGStrategy_la_SOURCES = ThePEGStrategy.cc  ThePEGStrategy.h ThePEGStrategy.icc 
 
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-MultiEventGenerator_la_LDFLAGS = -module -version-info 1:0:0
+MultiEventGenerator_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 MultiEventGenerator_la_SOURCES = MultiEventGenerator.cc MultiEventGenerator.h MultiEventGenerator.icc 
 
 include $(top_srcdir)/Config/Makefile.aminclude

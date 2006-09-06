@@ -19,3 +19,6 @@ INCLUDEFILES = $(DOCFILES) JamesRandom.fh Lorentz5Vector.fh \
 noinst_LTLIBRARIES = libThePEGCLHEPWrap.la
 
 libThePEGCLHEPWrap_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

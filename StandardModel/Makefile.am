@@ -14,15 +14,18 @@ libThePEGSM_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-O1AlphaS_la_LDFLAGS = -module -version-info 1:0:0
+O1AlphaS_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 O1AlphaS_la_SOURCES = O1AlphaS.cc O1AlphaS.h O1AlphaS.icc 
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-SimpleAlphaEM_la_LDFLAGS = -module -version-info 1:0:0
+SimpleAlphaEM_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 SimpleAlphaEM_la_SOURCES = SimpleAlphaEM.cc SimpleAlphaEM.h SimpleAlphaEM.icc 
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-StandardCKM_la_LDFLAGS = -module -version-info 1:0:0
+StandardCKM_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 StandardCKM_la_SOURCES = StandardCKM.cc StandardCKM.h StandardCKM.icc 
+
+include $(top_srcdir)/Config/Makefile.aminclude
+

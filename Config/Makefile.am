@@ -8,3 +8,5 @@ INCLUDEFILES = $(DOCFILES)
 noinst_LTLIBRARIES = libThePEGConfig.la
 libThePEGConfig_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
+include $(top_srcdir)/Config/Makefile.aminclude
+

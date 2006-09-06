@@ -19,4 +19,5 @@ libThePEGHist_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 LWH.tgz: $(AIDAWRAPPERS) $(LWHHEADERS)
 	tar czf LWH.tgz  $(AIDAWRAPPERS) $(LWHHEADERS)
 
+include $(top_srcdir)/Config/Makefile.aminclude
 
