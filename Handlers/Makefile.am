@@ -4,14 +4,14 @@ mySOURCES = EventHandler.cc SubProcessHandler.cc \
             EventManipulator.cc StepHandler.cc HadronizationHandler.cc \
             HandlerBase.cc \
             FlavourGenerator.cc LuminosityFunction.cc \
-            FixedCMSLuminosity.cc StandardEventHandler.cc  \
+            StandardEventHandler.cc  \
             SamplerBase.cc  ClusterCollapser.cc \
             PtGenerator.cc ZGenerator.cc   \
             StandardXComb.cc
 
 DOCFILES = AnalysisHandler.h CascadeHandler.h \
            DecayHandler.h EventHandler.h EventManipulator.h \
-           FixedCMSLuminosity.h FlavourGenerator.h HadronizationHandler.h \
+           FlavourGenerator.h HadronizationHandler.h \
            HandlerBase.h HandlerGroup.h Hint.h \
            LuminosityFunction.h \
            MultipleInteractionHandler.h StandardEventHandler.h \
@@ -23,7 +23,7 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
 INCLUDEFILES = $(DOCFILES) AnalysisHandler.icc CascadeHandler.icc \
                DecayHandler.icc DecayHandler.xh \
                EventHandler.icc EventManipulator.icc \
-               FixedCMSLuminosity.icc FlavourGenerator.icc \
+               FlavourGenerator.icc \
                HadronizationHandler.icc HandlerBase.icc HandlerGroup.icc \
                HandlerGroup.tcc Hint.icc \
                LuminosityFunction.icc \
