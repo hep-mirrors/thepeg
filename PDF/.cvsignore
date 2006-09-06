@@ -1,3 +1,4 @@
+ .svn Makefile
 *.la
 *.lo
 .deps
@@ -5,5 +6,5 @@
 Makefile
 Makefile.in
 a.out
+done-all-links
 plotfile
- .svn Makefile
