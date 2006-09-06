@@ -32,7 +32,7 @@ using std::fgets;
 void MadGraphReader::open() {
   LesHouchesFileReader::open();
 
-  static char * cuttags[] = {"ptj", "ptb", "pta", "ptl",
+  static const char * cuttags[] = {"ptj", "ptb", "pta", "ptl",
 			     "etaj", "etab", "etaa", "etal",
 			     "drjj", "drbb", "draa", "drll",
 			     "drbj", "draj", "drjl", "drab",

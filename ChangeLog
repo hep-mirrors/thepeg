@@ -1,3 +1,8 @@
+2006-09-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* LesHouches/MadGraphReader.cc, Handlers/SimpleFlavour.h: fixes
+	for compile warnings
+
 2006-09-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4, configure.ac, */Makefile.am,

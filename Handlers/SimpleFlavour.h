@@ -72,6 +72,7 @@ public:
    * generated.
    */
   virtual tcPDPtr getHadron(long iq1, long iq2) const;
+  using FlavourGenerator::getHadron;
 
   /**
    * Return a baryon with the flavour content given by the
@@ -84,6 +85,7 @@ public:
    * generated.
    */
   virtual tcPDPtr getBaryon(long q1, long q2, long q3) const;
+  using FlavourGenerator::getBaryon;
 
   /**
    * Generate a random quark flavour.
