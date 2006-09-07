@@ -255,6 +255,95 @@ struct ParticleTraits<tcPPtr>: public TraitsType {
   }
 };
 
+/** Partial specialization of ParticleTraits for bare pointer to anything. */
+template <typename T>
+struct ParticleTraits<T*>: public TraitsType {
+
+  /**
+   * Return a reference to the particle.
+   */
+  static Particle & ref(T * p) {
+    return *p;
+  }
+
+  /**
+   * Return the momentum of particle \a p.
+   */
+  static const LorentzMomentum & momentum(T * p) {
+    return ParticleTraits<T>::momentum(*p);
+  }
+
+  /**
+   * Return the mass of particle \a p.
+   */
+  static Energy mass(T * p) {
+    return ParticleTraits<T>::mass(*p);
+  }
+
+  /**
+   * Perform a Lorentz transformation on particle \a p.
+   */
+  static void transform(T * p, const LorentzRotation & r) {
+    ParticleTraits<T>::transform(*p, r);
+  }
+
+  /**
+   * Set the momentum and mass of a particle.
+   */
+  static void set5Momentum(T * p, const Lorentz5Momentum & q) {
+    ParticleTraits<T>::set5Momentum(*p, q);
+  }
+
+  /**
+   * Set the 3-momentum of a particle. The energy is rescaled to
+   * preserve invariant mass.
+   */
+  static void set3Momentum(T * p, const Momentum3 & q) {
+    ParticleTraits<T>::set3Momentum(*p, q);
+  }
+
+  /**
+   * Return charge of particle \a p in units of e/3.
+   */
+  static int iCharge(T * p) {
+    return ParticleTraits<T>::iCharge(*p);
+  }
+};  
+
+/** Partial specialization of ParticleTraits for bare pointer to const
+    anything. */
+template <typename T>
+struct ParticleTraits<const T *>: public TraitsType {
+
+  /**
+   * Return a const reference to the particle.
+   */
+  static const Particle & ref(const T * p) {
+    return *p;
+  }
+
+  /**
+   * Return the momentum of particle \a p.
+   */
+  static const LorentzMomentum & momentum(const T * p) {
+    return ParticleTraits<T>::momentum(*p);
+  }
+
+  /**
+   * Return the mass of particle \a p.
+   */
+  static Energy mass(const T * p) {
+    return ParticleTraits<T>::mass(*p);
+  }
+
+  /**
+   * Return charge of particle \a p in units of e/3.
+   */
+  static int iCharge(const T * p) {
+    return ParticleTraits<T>::iCharge(*p);
+  }
+};
+
 /** Specialization of ParticleTraits for LorentzMomentum. In this way
  *  a LorentzMomentum can be used where only the momentum parts of a
  *  Particle is required. */

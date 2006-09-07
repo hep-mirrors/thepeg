@@ -4,6 +4,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/EventRecord/ParticleTraits.h"
+#include "ThePEG/Utilities/Triplet.h"
 // #include "UtilityBase.fh"
 // #include "UtilityBase.xh"
 
@@ -66,6 +67,17 @@ struct UtilityBase {
   static LorentzRotation boostToCM(const pair<PType,PType> & pp);
 
   /**
+   * Boost the three objects in the Triplet to their CM system. Also
+   * rotate so that the first is along the z-axis and the second is in
+   * the x-z plane with positive x. The class <code>PType</code> must
+   * have <code>ParticleTraits<PType>::momentum(const PType&)</code>
+   * and <code>ParticleTraits<PType>::transform(PType&, const
+   * LorentzRotation&)</code> implemented correctly.
+   */
+  template <typename PType>
+  static LorentzRotation boostToCM(const Triplet<PType,PType,PType> & pt);
+
+  /**
    * Obtain the LorentzRotation needed to boost the two objects in the
    * pair to their CM system. Also rotate the LorentzRotation so that
    * the first is along the z-axis. The class <code>PType</code> must
@@ -76,10 +88,27 @@ struct UtilityBase {
   static LorentzRotation getBoostToCM(const pair<PType,PType> & pp);
 
   /**
+   * Obtain the LorentzRotation needed to boost the three objects in
+   * the Triplet to their CM system. Also rotate the LorentzRotation
+   * so that the first is along the z-axis and the secons i in the x-z
+   * plane with positive x. The class <code>PType</code>
+   * must have <code>ParticleTraits<PType>::momentum(const
+   * PType&)</code> implemented correctly.
+   */
+  template <typename PType>
+  static LorentzRotation getBoostToCM(const Triplet<PType,PType,PType> & pt);
+
+  /**
    * Get the inverse boost as compared to getBoostToCM.
    */
   template <typename PType>
   static LorentzRotation getBoostFromCM(const pair<PType,PType> & pp);
+
+  /**
+   * Get the inverse boost as compared to getBoostToCM.
+   */
+  template <typename PType>
+  static LorentzRotation getBoostFromCM(const Triplet<PType,PType,PType> & pt);
 
   /**
    * Boost the entries between fisrt and last into their CM system.

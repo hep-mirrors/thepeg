@@ -19,10 +19,19 @@ LorentzRotation UtilityBase::boostToCM(const pair<PType,PType> & pp) {
 }
 
 template <typename PType>
+LorentzRotation UtilityBase::boostToCM(const Triplet<PType,PType,PType> & pt) {
+  typedef ParticleTraits<PType> Traits;
+  LorentzRotation rot = getBoostToCM(pt);
+  Traits::transform(pt.first, rot);
+  Traits::transform(pt.second, rot);
+  Traits::transform(pt.third, rot);
+  return rot;
+}
+
+template <typename PType>
 LorentzRotation UtilityBase::getBoostToCM(const pair<PType,PType> & pp) {
   typedef ParticleTraits<PType> Traits;
   LorentzMomentum p1 = Traits::momentum(pp.first);
-  LorentzMomentum p2 = Traits::momentum(pp.second);
   Vector3 b = (p1 + Traits::momentum(pp.second)).boostVector();
   p1.boost(-b);
   LorentzRotation rot(-b);
@@ -30,6 +39,28 @@ LorentzRotation UtilityBase::getBoostToCM(const pair<PType,PType> & pp) {
   rot.rotateY(-p1.theta());
   rot.rotateZ(p1.phi());
   return rot;
+}
+
+template <typename PType>
+LorentzRotation UtilityBase::
+getBoostToCM(const Triplet<PType,PType,PType> & pt) {
+  typedef ParticleTraits<PType> Traits;
+  LorentzMomentum p1 = Traits::momentum(pt.first);
+  LorentzMomentum p2 = Traits::momentum(pt.second);
+  Vector3 b = (p1 + p2 + Traits::momentum(pt.third)).boostVector();
+  p1.boost(-b);
+  LorentzRotation rot(-b);
+  rot.rotateZ(-p1.phi());
+  rot.rotateY(-p1.theta());
+  p2.transform(rot);
+  rot.rotateZ(-p2.phi());
+  return rot;
+}
+
+template <typename PType>
+LorentzRotation UtilityBase::
+getBoostFromCM(const Triplet<PType,PType,PType> & pt) {
+  return getBoostToCM(pt).inverse();
 }
 
 template <typename PType>
