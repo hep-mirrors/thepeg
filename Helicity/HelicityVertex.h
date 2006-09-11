@@ -197,13 +197,6 @@ struct ClassTraits<ThePEG::Helicity::HelicityVertex>
    * Return the class name.
    */
   static string className() { return "ThePEG::Helicity::HelicityVertex"; }
-  /**
-   * Return the name of the shared library to be loaded to get access
-   * to the HelicityVertexclass and every other class it uses (except
-   * the base class).
-   */
-  static string library() { return "libThePEGHelicity.so"; }
-
 };
 
 /** @endcond */

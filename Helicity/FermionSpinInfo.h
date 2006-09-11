@@ -180,13 +180,6 @@ struct ClassTraits<ThePEG::Helicity::FermionSpinInfo>
    * Return the class name.
    */
   static string className() { return "ThePEG::Helicity::FermionSpinInfo"; }
-  /**
-   * Return the name of the shared library to be loaded to get access
-   * to the FermionSpinInfo class and every other class it uses
-   * (except the base class).
-   */
-  static string library() { return "libThePEGHelicity.so"; }
-
 };
 
 /** @endcond */

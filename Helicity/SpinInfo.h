@@ -352,13 +352,6 @@ struct ClassTraits<ThePEG::Helicity::SpinInfo>
    * Return the class name.
    */
   static string className() { return "ThePEG::Helicity::SpinInfo"; }
-  /**
-   * Return the name of the shared library to be loaded to get access
-   * to the SpinInfo class and every other class it uses
-   * (except the base class).
-   */
-  static string library() { return "libThePEGHelicity.so"; }
-
 };
 
 /** @endcond */
