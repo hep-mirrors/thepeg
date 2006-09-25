@@ -1,3 +1,8 @@
+2006-09-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/MENCDIS.*: Added MENCDIS class to handle
+	neutral-current DIS matrix elements. Not yet usable.
+
 2006-09-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Helicity/*.h : Removed library() lines for non-module classes

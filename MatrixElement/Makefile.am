@@ -12,7 +12,7 @@ INCLUDEFILES = $(DOCFILES) Amplitude.icc ColourLines.xh ColourLines.icc \
                ReweightBase.icc ME2to2Base.icc ME2to2QCD.icc MEBase.fh
 
 noinst_LTLIBRARIES = libThePEGME.la
-pkglib_LTLIBRARIES = MEQCD.la MEee2gZ2qq.la \
+pkglib_LTLIBRARIES = MEQCD.la MEee2gZ2qq.la MENCDIS.la \
                      ReweightConstant.la ReweightMinPT.la
 
 libThePEGME_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
@@ -41,6 +41,11 @@ ReweightConstant_la_SOURCES = ReweightConstant.cc ReweightConstant.h ReweightCon
 # function is changed
 ReweightMinPT_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 ReweightMinPT_la_SOURCES = ReweightMinPT.cc ReweightMinPT.h ReweightMinPT.icc
+
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+MENCDIS_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+MENCDIS_la_SOURCES = MENCDIS.cc MENCDIS.h
 
 include $(top_srcdir)/Config/Makefile.aminclude
 
