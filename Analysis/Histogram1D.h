@@ -469,7 +469,6 @@ private:
   /** The weighted x-square-values. */
   std::vector<double> sumx2w;
 
-  /** The squared weights. */
   /** dummy pointer to non-existen annotation. */
   IAnnotation * anno;
 
