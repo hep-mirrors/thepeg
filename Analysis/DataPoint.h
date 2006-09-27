@@ -60,7 +60,7 @@ public:
    * of coordinates the point has.
    * @return The dimension.
    */
-  virtual int dimension() const {
+  int dimension() const {
     m.size();
   }
 
@@ -69,7 +69,7 @@ public:
    * @param coord The coordinate.
    * @return      The corresponding IMeasurement.
    */
-  virtual IMeasurement * coordinate(int coord) {
+  IMeasurement * coordinate(int coord) {
     return &(m[coord]);
   }
 
@@ -78,7 +78,7 @@ public:
    * @param coord The coordinate.
    * @return      The corresponding IMeasurement.
    */
-  virtual const IMeasurement * coordinate(int coord) const {
+  const IMeasurement * coordinate(int coord) const {
     return &(m[coord]);
   }
 

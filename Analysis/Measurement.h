@@ -45,7 +45,7 @@ public:
    * Get the value of the Measurement.
    * @return The value of the Measurement.
    */
-  virtual double value() const {
+  double value() const {
     return val;
   }
 
@@ -53,7 +53,7 @@ public:
    * Get the plus error of the IMeasurement.
    * @return The plus error.
    */
-  virtual double errorPlus() const {
+  double errorPlus() const {
     return errp;
   }
 
@@ -61,7 +61,7 @@ public:
    * Get the minus error of the IMeasurement.
    * @return The minus error.
    */
-  virtual double errorMinus() const {
+  double errorMinus() const {
     return errm;
   }
 
@@ -70,7 +70,7 @@ public:
    * @param v The new value of the IMeasurement.
    * @return false If the value cannot be set.
    */
-  virtual bool setValue(double v) {
+  bool setValue(double v) {
     val = v;
     return true;
   }
@@ -80,7 +80,7 @@ public:
    * @param ep The new plus error of the IMeasurement.
    * @return false If the error cannot be set or it is negative.
    */
-  virtual bool setErrorPlus(double ep) {
+  bool setErrorPlus(double ep) {
     errp = ep;
     return rp < 0.0;
   }
@@ -90,7 +90,7 @@ public:
    * @param em The new minus error of the IMeasurement.
    * @return false If the error cannot be set or it is negative.
    */
-  virtual bool setErrorMinus(double em) {
+  bool setErrorMinus(double em) {
     errm = em;
     return em < 0.0;
   }

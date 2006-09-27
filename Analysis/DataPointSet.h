@@ -76,7 +76,7 @@ public:
    * @return The dimension of the IDataPoints storable in the set.
    *
    */
-  virtual int dimension() const {
+  int dimension() const {
     if ( dset.empty() ) return 0;
     return dset[0].dimension();
   }
@@ -85,7 +85,7 @@ public:
    * Remove all the IDataPoints in the set.
    * After this the IDataPointSet is as just created.
    */
-  virtual void clear() {
+  void clear() {
     dset.clear();
   }
 
@@ -94,7 +94,7 @@ public:
    * of IDataPoints contained in the set.
    * @return The size of the IDataPointSet.
    */
-  virtual int size() const {
+  int size() const {
     return dset.size();
   }
 
@@ -103,7 +103,7 @@ public:
    * @param index The IDataPoint index.
    * @return      The corresponding IDataPoint.
    */
-  virtual IDataPoint * point(int index) = {
+  IDataPoint * point(int index) = {
     return &(dset[index]);
   }
 
@@ -121,9 +121,9 @@ public:
    *      a mismatch between the size of the array and the size of the
    *      IDataPointSet.
    */
-  virtual bool setCoordinate(int coord,
-			     const std::vector<double>  & val,
-			     const std::vector<double>  & err) {
+  bool setCoordinate(int coord,
+		     const std::vector<double>  & val,
+		     const std::vector<double>  & err) {
     if ( coord < 0 || coord >= dset.size() ) return false;
     DataPoint & dp = dset[coord];
     if ( dp.dimension() && ( dp.dimension() != val.size() ||
@@ -153,10 +153,10 @@ public:
    *     IDataPointSet.
    *
    */
-  virtual bool setCoordinate(int coord,
-			     const std::vector<double>  & val,
-			     const std::vector<double>  & errp,
-			     const std::vector<double>  & errm) {
+  bool setCoordinate(int coord,
+		     const std::vector<double>  & val,
+		     const std::vector<double>  & errp,
+		     const std::vector<double>  & errm) {
     if ( coord < 0 || coord >= dset.size() ) return false;
     DataPoint & dp = dset[coord];
     if ( dp.dimension() && ( dp.dimension() != val.size() ||
@@ -176,7 +176,7 @@ public:
    * Return the data point at the given index.
    * @return 0 if index is out of range.
    */
-  virtual const IDataPoint * point(int index) const {
+  const IDataPoint * point(int index) const {
     if ( index < 0 || index >= dset.size() ) return 0;
     return &(dset[coord]);
   }
@@ -185,7 +185,7 @@ public:
    * Add a new empty IDataPoint at the end of the set.
    * @return The newly added point.
    */
-  virtual IDataPoint * addPoint() {
+  IDataPoint * addPoint() {
     dset.push_back(DataPoint(0));
     return &(dset.back());
   }
@@ -196,7 +196,7 @@ public:
    * @return false If the point has the wrong dimension or
    *                                       if the point cannot be added.
    */
-  virtual bool addPoint(const IDataPoint & point) {
+  bool addPoint(const IDataPoint & point) {
     if ( dimension() && dimension() != point.dimension() ) return false;
     dset.push_back(DataPoint(point));
     return true;
@@ -207,7 +207,7 @@ public:
    * @param index The index of the IDataPoint to be removed.
    * @return false If the index is < 0 or >= size().
    */
-  virtual bool removePoint(int index) {
+  bool removePoint(int index) {
     if ( index < 0 || index >= dset.size() ) return false;
     dset.erase(dset.begin() + index);
   }
@@ -219,7 +219,7 @@ public:
    *              If coord < 0 or coord >= dimension(), or if the
    *              set is empty NaN is returned.
    */
-  virtual double lowerExtent(int coord) const {
+  double lowerExtent(int coord) const {
     if ( dset.empty() ) return std::numeric_limits<double>::quiet_NaN();
     if ( coord < 0 || coord >= dimension() )
       return std::numeric_limits<double>::quiet_NaN();
@@ -236,7 +236,7 @@ public:
    *              If coord < 0 or coord >= dimension(), or if the set
    *              is empty NaN is returned.
    */
-  virtual double upperExtent(int coord) const {
+  double upperExtent(int coord) const {
     if ( dset.empty() ) return std::numeric_limits<double>::quiet_NaN();
     if ( coord < 0 || coord >= dimension() )
       return std::numeric_limits<double>::quiet_NaN();
@@ -252,7 +252,7 @@ public:
    * @param scale The scale factor.
    * @return false If an illegal scaleFactor is provided.
    */
-  virtual bool scale(double scale) {
+  bool scale(double scale) {
     for ( int i = 0, N = dset.size(); i < N; ++i )
       for ( int j = 0, M = dset[i].dimension(); j < M; ++j ) {
 	IMeasurement * m = dset[i].coordinate(j);
@@ -269,7 +269,7 @@ public:
    * @param scale The scale factor.
    * @return false If an illegal scaleFactor is provided.
    */
-  virtual bool scaleValues(double scale) {
+  bool scaleValues(double scale) {
     for ( int i = 0, N = dset.size(); i < N; ++i )
       for ( int j = 0, M = dset[i].dimension(); j < M; ++j ) {
 	IMeasurement * m = dset[i].coordinate(j);
@@ -284,7 +284,7 @@ public:
    * @param scale The scale factor.
    * @return false If an illegal scaleFactor is provided.
    */
-  virtual bool scaleErrors(double scale) {
+  bool scaleErrors(double scale) {
     for ( int i = 0, N = dset.size(); i < N; ++i )
       for ( int j = 0, M = dset[i].dimension(); j < M; ++j ) {
 	IMeasurement * m = dset[i].coordinate(j);
@@ -300,6 +300,12 @@ public:
    */ 
   void * cast(const std::string & className) const {
     return 0;
+  }
+
+  bool writeXML(std::ostream & os, std::string path, std::string name) {
+  }
+
+  bool writeFLAT(std::ostream & os, std::string path, std::string name) {
   }
 
 private:
