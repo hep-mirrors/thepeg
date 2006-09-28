@@ -1,3 +1,10 @@
+2006-09-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/SimpleFlavour.cc: Fixed bug in meson codes.
+
+	* PDT/QuarksToHadronsDecayer.cc: Fixed bug giving infinite loop in
+	getN() if too little energy available. Instead return minN().
+
 2006-09-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ClusterCollapser.cc: Fixed bug in momentum reshuffling

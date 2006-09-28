@@ -303,7 +303,7 @@ long SimpleFlavour::pseudoScalarId(long iqh, long iql) const {
     else
       return rndbool()? ParticleID::eta: ParticleID::etaprime;
   } else
-    return iqh*100 + iql*10 + 1;
+    return (iqh*100 + iql*10 + 1)*(iqh != iql && iqh%2? -1: 1);
 }
 
 vector< pair<long,double> > SimpleFlavour::
@@ -319,7 +319,8 @@ pseudoScalarIds(long iqh, long iql) const {
       ret.push_back(make_pair(ParticleID::etaprime, 0.5*etaPSup()));
     }
   } else {
-    ret.push_back(make_pair(iqh*100 + iql*10 + 1, 1.0));
+    ret.push_back(make_pair((iqh*100 + iql*10 + 1)*
+			    (iqh != iql && iqh%2? -1: 1), 1.0));
   }
   return ret;
 }
@@ -334,7 +335,7 @@ long SimpleFlavour::vectorId(long iqh, long iql) const {
   if ( iql == iqh && iql <= 2 )
     return rndbool()? ParticleID::rho0: ParticleID::omega;
   else
-    return iqh*100 + iql*10 + 3;
+    return (iqh*100 + iql*10 + 3)*(iqh != iql && iqh%2? -1: 1);
 }
 
 vector< pair<long,double> > SimpleFlavour::vectorIds(long iqh, long iql) const {
@@ -343,7 +344,8 @@ vector< pair<long,double> > SimpleFlavour::vectorIds(long iqh, long iql) const {
     ret.push_back(make_pair(ParticleID::rho0, 0.5));
     ret.push_back(make_pair(ParticleID::omega, 0.5));
   } else {
-    ret.push_back(make_pair(iqh*100 + iql*10 + 3, 1.0));
+    ret.push_back(make_pair((iqh*100 + iql*10 + 3)*
+			    (iqh != iql && iqh%2? -1: 1), 1.0));
   }
   return ret;
 }

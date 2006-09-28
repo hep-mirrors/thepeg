@@ -103,6 +103,7 @@ int QuarksToHadronsDecayer::getN(Energy m0, Energy summq, int Nq) const {
   if ( Nh >= 2 ) return Nh;
 
   double c = c1()*log((m0 - summq)/c2()) + c3();
+  if ( c < 0.0 ) return minN();
   while ( true ) {
     using namespace Constants;
     Nh = int(0.5 + double(Nq)/4.0 + c +
