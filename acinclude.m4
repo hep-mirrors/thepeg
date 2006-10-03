@@ -5,7 +5,9 @@ AC_DEFUN([AC_SEARCH_LHAPDF],
 AC_MSG_CHECKING([if LHAPDF is present and works])
 HAS_LHAPDF="yes"
 LHAPDF_LIBDIR=""
-AC_ARG_ENABLE(LHAPDF,[use LHAPDF package (requires g77 compiler) (optional arg=path to where the LHAPDF shared library is located)], [if test -n "$enable_LHAPDF" -a "$enable_LHAPDF" != "yes" -a "$enable_LHAPDF" != "no"; then LHAPDF_LIBDIR="$enable_LHAPDF"; elif test "$enable_LHAPDF" == "no"; then HAS_LHAPDF="no"; fi])
+AC_ARG_ENABLE(LHAPDF,[  --disable-LHAPDF        do not use LHAPDF package (requires g77 compiler)
+                          (enabled by default --enable-LHAPDF=path to specify
+                          where the LHAPDF shared library is located)], [if test -n "$enable_LHAPDF" -a "$enable_LHAPDF" != "yes" -a "$enable_LHAPDF" != "no"; then LHAPDF_LIBDIR="$enable_LHAPDF"; elif test "$enable_LHAPDF" == "no"; then HAS_LHAPDF="no"; fi])
 
 if test -z "FLIBS"; then
   HAS_LHAPDF="no"

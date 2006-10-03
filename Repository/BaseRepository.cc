@@ -417,7 +417,7 @@ void BaseRepository::readSetup(tIBPtr ip, istream & is) {
   ip->setup(is);
 }
 
-string BaseRepository::exec(string command, ostream & os) {
+string BaseRepository::exec(string command, ostream &) {
   string verb = StringUtils::car(command);
   command = StringUtils::cdr(command);
   if ( verb.empty() || verb[0] == '#' ) return "";

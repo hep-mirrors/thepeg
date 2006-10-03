@@ -30,7 +30,7 @@ int RemnantHandler::nDim(const PartonBin &, bool) const {
 }
 
 void RemnantHandler::
-boostRemnants(PartonBinInstance & pb) const {}
+boostRemnants(PartonBinInstance &) const {}
 
 void RemnantHandler::persistentOutput(PersistentOStream & os) const {
   os << isMultiCapable;
@@ -41,7 +41,7 @@ void RemnantHandler::persistentInput(PersistentIStream & is, int) {
 }
 
 bool RemnantHandler::
-recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
 		 Energy2 scale, const LorentzMomentum & p,
 		 const PVector & prev) const {
   if ( !oldp || !prev.empty() ) return false;
@@ -53,7 +53,7 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
 }  
 
 bool RemnantHandler::
-recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double newl,
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
 		 Energy2 scale, Energy2 shat,
 		 const LorentzMomentum & p, const PVector & prev) const {
   if ( !oldp || !prev.empty() ) return false;

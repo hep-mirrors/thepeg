@@ -17,7 +17,7 @@ using namespace ThePEG;
 
 NoPDF::~NoPDF() {}
 
-bool NoPDF::canHandleParticle(tcPDPtr particle) const {
+bool NoPDF::canHandleParticle(tcPDPtr) const {
   return true;
 }
 
@@ -31,8 +31,8 @@ cPDVector NoPDF::partons(tcPDPtr p) const {
 }
 
 double NoPDF::
-xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
-    Energy2 particleScale) const {
+xfl(tcPDPtr particle, tcPDPtr parton, Energy2, double l,
+    Energy2) const {
   return ( l == 0 && particle == parton )? 1.0: 0.0;
 }
 

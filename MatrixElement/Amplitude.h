@@ -16,12 +16,12 @@ namespace ThePEG {
 /**
  * The Amplitude class is the abstract base class for all the classes
  * representing complex amplitudes associated with either a hard
- * 2\f$\rightarrow\f$N subprocess or a decay 1\f$\rightarrow\f$N
+ * 2\f$\rightarrow\f$ N subprocess or a decay 1\f$\rightarrow\f$ N
  * process.  The returned value should be dimensionless suitable
  * scaled by the total invariant mass squared (shat), which is always
  * computable from the specified momenta of the particles in the
  * vertex.  Notice that the amplitude for splitting
- * 1\f$\rightarrow\f$N processes is instead represented in other
+ * 1\f$\rightarrow\f$ N processes is instead represented in other
  * classes (derived from the SplitFun class).
  *
  * @see \ref AmplitudeInterfaces "The interfaces"

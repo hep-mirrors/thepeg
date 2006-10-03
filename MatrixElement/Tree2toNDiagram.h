@@ -14,10 +14,10 @@ namespace ThePEG {
 /**
  * The Tree2toNDiagram class inherits from DiagramBase and represents
  * a Feynman tree diagram. It is represented by a chain of \f$n\f$
- * space-like propagators, where 0 is one incoming particle and
- * \f$n-1\f$ the other incoming one. For adiagram with in total
+ * space-like propagators, where one incoming particle has index 1 and
+ * other incoming one index \f$n\f$. For adiagram with in total
  * \f$m\f$ propagators the timelike propagators are then numbered
- * \f$n\f$ through \f$m-1\f$. The vector of type of the propagators
+ * \f$n+1\f$ through \f$m\f$. The vector of type of the propagators
  * are accessible from the partons() method, and the parents of
  * propagator \f$i\f$ form the parents(int) method. The parent of a
  * space-like propagator is simply the previous space-like one. The
@@ -34,13 +34,18 @@ namespace ThePEG {
  * parent must have been added before a child is. As an example, the
  * s-channel diagram \f$e \nu_e \rightarrow u \bar{d}\f$ is created
  * thus:<br>
- * <code>Tree2toNDiagram(2),eplus,nue,0,Wplus,1,u,1,dbar</code>.<br>
+ * <code>Tree2toNDiagram(2),eplus,nue,1,Wplus,3,u,3,dbar</code>.<br>
  * Similarly the t-channel diagram \f$e d \rightarrow \nu_e u\f$ is
  * created thus:<br>
- * <code>Tree2toNDiagram(3),eplus,Wplus,d,0,nu,1,u</code>.  Note that
+ * <code>Tree2toNDiagram(3),eplus,Wplus,d,1,nu,2,u</code>.  Note that
  * only two chidren are allowed per propagator. This means that
  * four-propagator vertices are not allowed, but must be represented
  * by two three-propagator ones.
+ *
+ * Please note that for technical reasons, when specifying the
+ * diagrams with the comma operator the numbering of the particles is
+ * \f$1\ldots m\f$, while the internal representation (in the
+ * parent(int) and children(int) function) is using \f$0\ldots m-1\f$
  *
  * @see DiagramBase
  * @see ColourLines

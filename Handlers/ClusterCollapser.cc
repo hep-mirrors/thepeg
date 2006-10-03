@@ -30,8 +30,8 @@ using namespace ThePEG;
 ClusterCollapser::~ClusterCollapser() {}
 
 void ClusterCollapser::
-handle(EventHandler & eh, const tPVector & tagged,
-       const Hint & hint) throw(Veto, Stop, Exception) {
+handle(EventHandler &, const tPVector & tagged,
+       const Hint &) throw(Veto, Stop, Exception) {
   collapse(tagged, newStep());
 }
 
@@ -220,7 +220,7 @@ splitDiQuarkJunction(ColourSinglet & cs, tStepPtr newStep) const {
   newStep->addDecayProduct(diq, qq.first);
   newStep->addDecayProduct(diq, qq.second);
 
-  ret = cs.splitDiQuarkJunction(abs(seli), diq, qq);
+  ret = cs.splitDiQuarkJunction(seli, diq, qq);
 
   return ret;
 

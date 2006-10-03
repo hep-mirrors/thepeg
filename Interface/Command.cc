@@ -9,7 +9,7 @@
 
 using namespace ThePEG;
 
-string CommandBase::exec(InterfacedBase & i, string action,
+string CommandBase::exec(InterfacedBase & i, string,
 			 string arguments) const throw(InterfaceException) {
   return cmd(i, arguments);
 }

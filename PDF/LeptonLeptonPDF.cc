@@ -33,7 +33,7 @@ cPDVector LeptonLeptonPDF::partons(tcPDPtr p) const {
 
 double LeptonLeptonPDF::
 xfl(tcPDPtr particle, tcPDPtr  parton, Energy2 partonScale, double l,
-    Energy2 particleScale) const {
+    Energy2) const {
   using namespace Constants;
   if ( parton != particle || l < 0.0 ) return 0.0;
   static const double gf = 3.0/4.0 - EulerGamma;
@@ -63,7 +63,7 @@ xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 }
 
 double LeptonLeptonPDF::
-flattenL(tcPDPtr particle, tcPDPtr parton,
+flattenL(tcPDPtr particle, tcPDPtr,
 	 const PDFCuts & c, double z, double & jacobian) const {
   using namespace Constants;
   using Math::log1m;

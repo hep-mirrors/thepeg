@@ -3,7 +3,7 @@ pkglib_PROGRAMS = runThePEG.bin setupThePEG.bin
 EXTRA_PROGRAMS = runEventLoop
 
 myLDADD = $(top_builddir)/lib/libThePEG.la 
-myLDFLAGS = -export-dynamic
+myLDFLAGS = -export-dynamic -R$(CLHEPPATH)/lib
 
 dist_noinst_SCRIPTS = runThePEG.install setupThePEG.install
 

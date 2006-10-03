@@ -263,13 +263,13 @@ public:
 
   /**
    * Return 1-lastX1() to highest possible precision for
-   * x\f$\rightarrow\f$1.
+   * x\f$\rightarrow\f$ 1.
    */
   inline double lastE1() const;
 
   /**
    * Return 1-lastX2() to highest possible precision for
-   * x\f$\rightarrow\f$1.
+   * x\f$\rightarrow\f$ 1.
    */
   inline double lastE2() const;
 
@@ -438,7 +438,7 @@ private:
 
   /**
    * 1-lastX1() and 1-lastX2() to highest possible precision for
-   * x\f$\rightarrow\f$1.
+   * x\f$\rightarrow\f$ 1.
    */
   DPair theLastE1E2;
 

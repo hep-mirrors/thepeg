@@ -59,7 +59,7 @@ public:
    * The copy constructor.
    */
   Tree(const Tree & dt)
-    : name(dt.name), flat(dt.flat), dirs(dt.dirs),
+    : ITree(dt), name(dt.name), flat(dt.flat), dirs(dt.dirs),
       objs(dt.objs), cwd(dt.cwd), overwrite(true) {}
 
   /// Destructor.
@@ -368,6 +368,7 @@ protected:
     return pth2str(purgepath(str2pth(d)));
   }
 
+  /** Convert a string containing a path to a Path object. */
   Path str2pth(std::string s) const {
     Path pth;
     std::string::size_type i = s.find_first_not_of("/");
@@ -382,12 +383,14 @@ protected:
     return pth;
   }
 
+  /** Convert a Path object to a corresponding string. */
   std::string pth2str(const Path & pth) const {
     std::string str;
     for ( int i = 0, N = pth.size(); i < N; ++i ) str += "/" + pth[i];
     return str;
   }
 
+  /** Remove '..' and '.' components of the given Path object. */
   Path purgepath(const Path & pth) const {
     Path p;
     for ( int i = 0, N = pth.size(); i < N; ++i ) {

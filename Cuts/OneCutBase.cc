@@ -46,15 +46,15 @@ bool OneCutBase::passCuts(tcCutsPtr parent, tcPPtr p) const {
   return passCuts(parent, p->dataPtr(), p->momentum());
 }
 
-Energy OneCutBase::minKT(tcPDPtr p) const {
+Energy OneCutBase::minKT(tcPDPtr) const {
   return 0.0*GeV;
 }
 
-double OneCutBase::minEta(tcPDPtr p) const {
+double OneCutBase::minEta(tcPDPtr) const {
   return -Constants::MaxRapidity;
 }
 
-double OneCutBase::maxEta(tcPDPtr p) const {
+double OneCutBase::maxEta(tcPDPtr) const {
   return Constants::MaxRapidity;
 }
 

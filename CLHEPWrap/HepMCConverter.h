@@ -36,8 +36,10 @@ public:
    * converted to a GenVertex.
    */
   struct Vertex {
-    /** Particles going in and out of the vertex. */
-    tcParticleSet in, out;
+    /** Particles going in to the vertex. */
+    tcParticleSet in;
+    /** Particles going out of the vertex. */
+    tcParticleSet out;
   };
 
   /** Forward typedefs from Traits class. */

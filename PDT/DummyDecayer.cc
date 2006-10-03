@@ -15,12 +15,12 @@ using namespace ThePEG;
 
 DummyDecayer::~DummyDecayer() {}
 
-bool DummyDecayer::accept(const DecayMode & dm) const {
+bool DummyDecayer::accept(const DecayMode &) const {
   return true;
 }
 
-ParticleVector DummyDecayer::decay(const DecayMode & dm,
-				  const Particle & parent) const {
+ParticleVector DummyDecayer::decay(const DecayMode &,
+				  const Particle &) const {
   throw std::logic_error("Tried to decay with the DummyDecayer class.");
 }
 

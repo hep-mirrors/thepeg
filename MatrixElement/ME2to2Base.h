@@ -13,7 +13,7 @@ namespace ThePEG {
 
 /**
  * ME2to2Base can be used as a base class for any matrix element class
- * implementing 2\f$\rightarrow\f$2 processes. It extends the MEBase
+ * implementing 2\f$\rightarrow\f$ 2 processes. It extends the MEBase
  * base class by implementing the virtual scale() method to return the
  * assumed scale of a given process according to several options. It
  * also caches some useful characteristics of the chosen phase space

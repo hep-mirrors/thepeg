@@ -14,11 +14,11 @@ namespace ThePEG {
  * particles colliding with precicely defined and opposite momenta. It
  * is derived from the LuminosityFunction base class.
  *
- * \deprecated As the LuminosityFunction Base class has increased
+ * \deprecated As the LuminosityFunction base class has increased
  * functionality (exceeding the functionality of this class) the use
  * of FixedCMSLuminosity is deprecated, and the class will be removed
  * in a future release. Note also that by setting the individual beam
- * energies in the beam class, the behavior of this object may be
+ * energies in the base class, the behavior of this object may be
  * inconsistent, in that the collision will not, as specified, be in
  * the center-of-mass system.
  *

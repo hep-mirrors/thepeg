@@ -29,7 +29,7 @@ Energy2 MadGraphTwoCut::minSij(tcPDPtr pi, tcPDPtr pj) const {
   return sqr(theCut*GeV);
 }
 
-Energy2 MadGraphTwoCut::minTij(tcPDPtr pi, tcPDPtr po) const {
+Energy2 MadGraphTwoCut::minTij(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV2;
 }
 
@@ -38,15 +38,15 @@ double MadGraphTwoCut::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
   return theCut;
 }
 
-Energy MadGraphTwoCut::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
+Energy MadGraphTwoCut::minKTClus(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV;
 }
 
-double MadGraphTwoCut::minDurham(tcPDPtr pi, tcPDPtr pj) const {
+double MadGraphTwoCut::minDurham(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 
-bool MadGraphTwoCut::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
+bool MadGraphTwoCut::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
 			      LorentzMomentum pi, LorentzMomentum pj,
 			      bool inci, bool incj) const {
   if ( inci || incj || !checkType(pitype, pjtype) ) return true;

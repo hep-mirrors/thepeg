@@ -323,19 +323,64 @@ private:
   double theSin2ThetaW;
 
   /**
-   * The coupling between fundamental fermions and the photon.
+   * Coupling between a fundamental fermion and the photon.
    */
-  double theEnu, theEe, theEu, theEd;
+  double theEnu;
 
   /**
-   * The vector couplings between fundamental fermions and Z^0.
+   * Coupling between a fundamental fermion and the photon.
    */
-  double theVnu, theVe, theVu, theVd;
+  double theEe;
 
   /**
-   * The axial couplings between fundamental fermions and Z^0.
+   * Coupling between a fundamental fermion and the photon.
    */
-  double theAnu, theAe, theAu, theAd;
+  double theEu;
+
+  /**
+   * Coupling between a fundamental fermion and the photon.
+   */
+  double theEd;
+
+  /**
+   * Vector coupling between a fundamental fermion and Z^0.
+   */
+  double theVnu;
+
+  /**
+   * Vector coupling between a fundamental fermion and Z^0.
+   */
+  double theVe;
+
+  /**
+   * Vector coupling between a fundamental fermion and Z^0.
+   */
+  double theVu;
+
+  /**
+   * Vector coupling between a fundamental fermion and Z^0.
+   */
+  double theVd;
+
+  /**
+   * Axial coupling between a fundamental fermions and Z^0.
+   */
+  double theAnu;
+
+  /**
+   * Axial coupling between a fundamental fermions and Z^0.
+   */
+  double theAe;
+
+  /**
+   * Axial coupling between a fundamental fermions and Z^0.
+   */
+  double theAu;
+
+  /**
+   * Axial coupling between a fundamental fermions and Z^0.
+   */
+  double theAd;
 
   /**
    * If true, the electro-weak couplings are derived from

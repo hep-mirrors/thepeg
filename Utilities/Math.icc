@@ -109,14 +109,14 @@ struct Power<N,true> {
 
 template <>
 struct Power<0,true> {
-  inline static double pow(double x) {
+  inline static double pow(double) {
     return 1.0;
   }
 };
 
 template <>
 struct Power<0,false> {
-  inline static double pow(double x) {
+  inline static double pow(double) {
     return 1.0;
   }
 };

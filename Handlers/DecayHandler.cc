@@ -27,8 +27,8 @@ using namespace ThePEG;
 DecayHandler::~DecayHandler() {}
 
 void DecayHandler::
-handle(EventHandler & eh, const tPVector & tagged,
-       const Hint & hint) ThePEG_THROW_SPEC((Veto, Stop, Exception)) {
+handle(EventHandler &, const tPVector & tagged,
+       const Hint &) ThePEG_THROW_SPEC((Veto, Stop, Exception)) {
   // First go through to see which of the tagged particles should be
   // decayed: Exit if none are found.
   Timer<46> timer("DecayHandler::handle");

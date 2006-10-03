@@ -258,9 +258,14 @@ private:
 private:
 
   /**
-   * pointers to the production and decay vertices for the particle
+   * Pointer to the production vertex for the particle
    */
-  mutable VertexPtr _production,_decay;
+  mutable VertexPtr _production;
+
+  /**
+   * Pointers to the decay vertex for the particle
+   */
+  mutable VertexPtr _decay;
 
   /**
    * Is this is timelike (true) or spacelike (false ) particle?  This
@@ -270,9 +275,14 @@ private:
   bool _timelike;
 
   /**
-   * Location in the hard vertex array at production and decay
+   * Location in the hard vertex array at production.
    */
-  mutable int _prodloc,_decayloc;
+  mutable int _prodloc;
+
+  /**
+   * Location in the hard vertex array at decay.
+   */
+  mutable int _decayloc;
 
   /**
    * Has the particle been decayed?  (I.e. has the rho matrix for the
@@ -320,7 +330,7 @@ private:
    *  A small energy for comparing momenta to check if Lorentz Transformations
    *  should be performed
    */
-  const static Energy _eps;
+  static const Energy _eps;
 };
 
 }

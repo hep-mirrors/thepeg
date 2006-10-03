@@ -54,7 +54,7 @@ canHandle(tcPDPtr particle, const cPDVector & partons) const {
 }
 
 Lorentz5Momentum BaryonRemnants::
-generate(PartonBinInstance & pb, const double * r,
+generate(PartonBinInstance & pb, const double *,
 	 Energy2 scale, const LorentzMomentum & parent) const {
   Timer<16> timer("BaryonRemnants::generate(...)");
   LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
@@ -190,7 +190,7 @@ generate(PartonBinInstance & pb, const double * r,
 }
 
 Lorentz5Momentum BaryonRemnants::
-generate(PartonBinInstance & pb, const double * r, Energy2 scale,
+generate(PartonBinInstance & pb, const double *, Energy2 scale,
 	 Energy2 shat, const LorentzMomentum & parent) const {
   Timer<16> timer("BaryonRemnants::generate(...)");
   LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());

@@ -21,7 +21,7 @@ InterfaceBase::InterfaceBase(string newName,
   BaseRepository::Register(*this, newTypeInfo);
 }
 
-string InterfaceBase::fullDescription(const InterfacedBase & ib) const {
+string InterfaceBase::fullDescription(const InterfacedBase &) const {
   return type() + '\n' + name() + '\n' + description() +
     ( readOnly()? "\n-*-readonly-*-\n": "\n-*-mutable-*-\n" );
 }

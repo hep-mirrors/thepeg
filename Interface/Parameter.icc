@@ -186,12 +186,12 @@ def(const InterfacedBase & i) const throw(InterfaceException) {
 }
 
 inline string ParameterTBase<string>::
-minimum(const InterfacedBase & i) const throw(InterfaceException) {
+minimum(const InterfacedBase &) const throw(InterfaceException) {
   return "";
 }
 
 inline string ParameterTBase<string>::
-maximum(const InterfacedBase & i) const throw(InterfaceException) {
+maximum(const InterfacedBase &) const throw(InterfaceException) {
   return "";
 }
     

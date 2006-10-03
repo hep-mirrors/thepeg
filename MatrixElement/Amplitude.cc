@@ -23,11 +23,11 @@ Amplitude::Amplitude(const Amplitude & x)
 
 Amplitude::~Amplitude() {}
 
-void Amplitude::persistentOutput(PersistentOStream & os) const {
+void Amplitude::persistentOutput(PersistentOStream &) const {
   // os <<;
 }
 
-void Amplitude::persistentInput(PersistentIStream & is, int) {
+void Amplitude::persistentInput(PersistentIStream &, int) {
   // is >> ;
 }
 

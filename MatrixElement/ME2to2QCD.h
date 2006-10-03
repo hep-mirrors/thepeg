@@ -11,7 +11,7 @@ namespace ThePEG {
 
 /**
  * The ME2to2QCD class inherits from the ME2to2Base class and can be
- * used as a sub class for all QCD 2\f$\rightarrow\f$2 processes. It
+ * used as a sub class for all QCD 2\f$\rightarrow\f$ 2 processes. It
  * implements some common functions such as common pre-factors,
  * maximum number of flavours, treatment of interference terms and
  * possibility to enhance certain terms.
@@ -59,7 +59,7 @@ public:
   virtual unsigned int orderInAlphaEW() const;
 
   /**
-   * The common prefactor for all 2\f$\rightarrow\f$2 QCD sub-processes
+   * The common prefactor for all 2\f$\rightarrow\f$ 2 QCD sub-processes
    * ie. \f$\alpha_S^2\f$.
    */
   double comfac() const;

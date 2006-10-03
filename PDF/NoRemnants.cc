@@ -17,8 +17,8 @@ using namespace ThePEG;
 NoRemnants::~NoRemnants() {}
 
 Lorentz5Momentum NoRemnants::
-generate(PartonBinInstance & pb, const double * r,
-	 Energy2 scale, const LorentzMomentum & p) const {
+generate(PartonBinInstance & pb, const double *,
+	 Energy2, const LorentzMomentum & p) const {
   if ( pb.particleData() != pb.partonData() || pb.li() > 0.0 )
     throw RemnantHandlerException
       (pb.particleData()->name(), pb.partonData()->name(), name(),
@@ -27,8 +27,8 @@ generate(PartonBinInstance & pb, const double * r,
 }
 
 Lorentz5Momentum NoRemnants::
-generate(PartonBinInstance & pb, const double * r, Energy2 scale,
-	 Energy2 shat, const LorentzMomentum & p) const {
+generate(PartonBinInstance & pb, const double *, Energy2,
+	 Energy2, const LorentzMomentum & p) const {
   if ( pb.particleData() != pb.partonData() || pb.li() > 0.0 )
     throw RemnantHandlerException
       (pb.particleData()->name(), pb.partonData()->name(), name(),

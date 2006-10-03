@@ -386,10 +386,14 @@ private:
   SetFn theSetFn;
 
   /**
-   * Pointers to member functions to be used by 'get()' and 'def()'
+   * Pointer to member function to be used by get().
    */
-  GetFn theGetFn, theDefFn;  
+  GetFn theGetFn;  
 
+  /**
+   * Pointer to member function to be used by def().
+   */
+  GetFn theDefFn;  
 
 };
 

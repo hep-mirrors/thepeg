@@ -45,7 +45,7 @@ canHandle(tcPDPtr particle, const cPDVector & partons) const {
 }
 
 Lorentz5Momentum LeptonLeptonRemnant::
-generate(PartonBinInstance & pb, const double * r,
+generate(PartonBinInstance & pb, const double *,
 	 Energy2 scale, const LorentzMomentum & parent) const {
   if ( pb.particleData() != pb.partonData() )
     throw RemnantHandlerException
@@ -74,7 +74,7 @@ generate(PartonBinInstance & pb, const double * r,
 }
 
 Lorentz5Momentum LeptonLeptonRemnant::
-generate(PartonBinInstance & pb, const double * r, Energy2 scale, Energy2 shat,
+generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
 	 const LorentzMomentum & parent) const {
   if ( pb.particleData() != pb.partonData() )
     throw RemnantHandlerException

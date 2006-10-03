@@ -34,7 +34,7 @@ public:
    * Copy constructor.
    */
   Axis(const Axis & a)
-    : lower(a.lower), upper(a.upper), nbins(a.nbins) {}
+    : IAxis(a), lower(a.lower), upper(a.upper), nbins(a.nbins) {}
 
   /// Destructor.
   virtual ~Axis() { }
@@ -96,12 +96,12 @@ public:
 
   /**
    * Get the width of the specified bin.
-   * @param index The bin number: 0 to bins()-1) for the in-range bins
+   * The argument gives the bin number: 0 to bins()-1) for the in-range bins
    * or OVERFLOW or UNDERFLOW.
    * @return      The width of the corresponding bin.
    *
    */ 
-  double binWidth(int index) const {
+  double binWidth(int) const {
     return (upper - lower)/double(nbins);
   }
 

@@ -16,28 +16,8 @@
 using namespace ThePEG;
 using namespace Helicity;
 
-HelicityVertex::~HelicityVertex() {}
-
 AbstractNoPIOClassDescription<HelicityVertex>
 HelicityVertex::initHelicityVertex;
 // Definition of the static class description member.
 
 void HelicityVertex::Init() {}
-
-// methods to calculate the rho and D matrices
-// method to get the rho matrix for a given outgoing particle
-RhoDMatrix HelicityVertex::getRhoMatrix(int i)
-{
-  RhoDMatrix temp;
-  return temp;
-}
-
-// method to get the D matrix for an incoming particle
-RhoDMatrix HelicityVertex::getDMatrix(int i)
-{
-  RhoDMatrix temp;
-  return temp;
-}
-
-
-

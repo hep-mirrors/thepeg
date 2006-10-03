@@ -20,23 +20,23 @@ using namespace ThePEG;
 
 TwoCutBase::~TwoCutBase() {}
 
-Energy2 TwoCutBase::minSij(tcPDPtr pi, tcPDPtr pj) const {
+Energy2 TwoCutBase::minSij(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV2;
 }
 
-Energy2 TwoCutBase::minTij(tcPDPtr pi, tcPDPtr po) const {
+Energy2 TwoCutBase::minTij(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV2;
 }
 
-double TwoCutBase::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
+double TwoCutBase::minDeltaR(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 
-Energy TwoCutBase::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
+Energy TwoCutBase::minKTClus(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV;
 }
 
-double TwoCutBase::minDurham(tcPDPtr pi, tcPDPtr pj) const {
+double TwoCutBase::minDurham(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 

@@ -30,23 +30,23 @@ Energy KTClus::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
   return theCut;
 }
 
-Energy2 KTClus::minSij(tcPDPtr pi, tcPDPtr pj) const {
+Energy2 KTClus::minSij(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV2;
 }
 
-Energy2 KTClus::minTij(tcPDPtr pi, tcPDPtr po) const {
+Energy2 KTClus::minTij(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV2;
 }
 
-double KTClus::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
+double KTClus::minDeltaR(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 
-double KTClus::minDurham(tcPDPtr pi, tcPDPtr pj) const {
+double KTClus::minDurham(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 
-bool KTClus::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
+bool KTClus::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
 		      LorentzMomentum pi, LorentzMomentum pj,
 		      bool inci, bool incj) const {
   if ( onlyJets &&

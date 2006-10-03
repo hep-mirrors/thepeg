@@ -34,7 +34,7 @@ Energy2 V2LeptonsCut::maxS(const tcPDVector & pv) const {
   return sqr(theMaxM);
 }
 
-bool V2LeptonsCut::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
+bool V2LeptonsCut::passCuts(tcCutsPtr, const tcPDVector & ptype,
 	      const vector<LorentzMomentum> & p) const {
   for ( int i = 0, N = ptype.size() - 1; i < N; ++i )
     for ( int j = i + 1, M = ptype.size(); j < M; ++j ) {

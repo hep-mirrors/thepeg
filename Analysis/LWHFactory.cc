@@ -23,9 +23,9 @@ void LWHFactory::doinitrun() {
   FactoryBase::doinitrun();
 }
 
-void LWHFactory::persistentOutput(PersistentOStream & os) const {}
+void LWHFactory::persistentOutput(PersistentOStream &) const {}
 
-void LWHFactory::persistentInput(PersistentIStream & is, int) {}
+void LWHFactory::persistentInput(PersistentIStream &, int) {}
 
 ClassDescription<LWHFactory> LWHFactory::initLWHFactory;
 // Definition of the static class description member.

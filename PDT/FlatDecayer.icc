@@ -11,8 +11,8 @@ inline FlatDecayer::FlatDecayer() {}
 inline FlatDecayer::FlatDecayer(const FlatDecayer & x)
   : Decayer(x) {}
 
-inline double FlatDecayer::reweight(const DecayMode &, const Particle & parent,
-				    const ParticleVector & children) const {
+inline double FlatDecayer::reweight(const DecayMode &, const Particle &,
+				    const ParticleVector &) const {
   return 1.0;
 }
 

@@ -47,7 +47,7 @@ IBPtr AnalysisHandler::fullclone() const {
   return new_ptr(*this);
 }
 
-void AnalysisHandler::analyze(tEventPtr event, long ieve, int loop, int state) {
+void AnalysisHandler::analyze(tEventPtr event, long, int loop, int state) {
   if ( loop > 0 || state != 0 || !event ) return;
   transform(event);
   tPVector particles;
@@ -57,7 +57,7 @@ void AnalysisHandler::analyze(tEventPtr event, long ieve, int loop, int state) {
     theSlaves[i]->analyze(particles);
 }
 
-LorentzRotation AnalysisHandler::transform(tEventPtr event) const {
+LorentzRotation AnalysisHandler::transform(tEventPtr) const {
   return LorentzRotation();
 }
 

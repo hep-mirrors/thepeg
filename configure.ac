@@ -54,7 +54,7 @@ AC_CHECK_FPUCONTROL
 
 
 AM_CPPFLAGS="-I\$(top_builddir)/include $CLHEPINCLUDE"
-AM_CXXFLAGS="-ansi -pedantic -Wall"
+AM_CXXFLAGS="-ansi -pedantic -Wall -W"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CXXFLAGS)
 

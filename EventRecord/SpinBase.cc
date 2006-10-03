@@ -22,7 +22,7 @@ DPair SpinBase::polarization() const {
   return DPair();
 }
 
-void SpinBase::transform(const LorentzMomentum &, LorentzRotation r) {}
+void SpinBase::transform(const LorentzMomentum &, LorentzRotation) {}
 
 NoPIOClassDescription<SpinBase> SpinBase::initSpinBase;
 

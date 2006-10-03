@@ -20,7 +20,7 @@ using namespace ThePEG;
 
 SimpleZGenerator::~SimpleZGenerator() {}
 
-double SimpleZGenerator::generate(cPDPtr q1, cPDPtr q2, Energy2 mT2 ) const {
+double SimpleZGenerator::generate(cPDPtr q1, cPDPtr q2, Energy2) const {
   if ( BaryonMatcher::Check(*q1) || DiquarkMatcher::Check(*q1) ) {
     if ( BaryonMatcher::Check(*q2) || DiquarkMatcher::Check(*q2) )
       return rnd();

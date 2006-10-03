@@ -46,9 +46,9 @@ double Tau2HadronsDecayer::reweight(const DecayMode &, const Particle & parent,
   return 0.5*xnu*(3.0 - xnu);
 }
 
-void Tau2HadronsDecayer::persistentOutput(PersistentOStream & os) const {}
+void Tau2HadronsDecayer::persistentOutput(PersistentOStream &) const {}
 
-void Tau2HadronsDecayer::persistentInput(PersistentIStream & is, int) {}
+void Tau2HadronsDecayer::persistentInput(PersistentIStream &, int) {}
 
 ClassDescription<Tau2HadronsDecayer> Tau2HadronsDecayer::initTau2HadronsDecayer;
 // Definition of the static class description member.

@@ -90,9 +90,9 @@ reweight(const Particle & parent, const PVector & children) const {
   return 1.0;
 }
 
-void WeakToHadronsDecayer::persistentOutput(PersistentOStream & os) const {}
+void WeakToHadronsDecayer::persistentOutput(PersistentOStream &) const {}
 
-void WeakToHadronsDecayer::persistentInput(PersistentIStream & is, int) {}
+void WeakToHadronsDecayer::persistentInput(PersistentIStream &, int) {}
 
 ClassDescription<WeakToHadronsDecayer>
 WeakToHadronsDecayer::initWeakToHadronsDecayer;

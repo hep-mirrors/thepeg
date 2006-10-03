@@ -124,8 +124,6 @@ public:
    * @param nBins     The number of bins of the x axis.
    * @param lowerEdge The lower edge of the x axis.
    * @param upperEdge The upper edge of the x axis.
-   * @param options   The options for the IHistogram1D. The default is "".
-   *                  "type=efficiency" for an efficiency IHistogram1D.
    * @return          The newly created IHistogram1D ot the null pointer
    *                  if something went wrong, such as a non existing
    *                  directrory in the path or that an object with the
@@ -135,7 +133,7 @@ public:
   IHistogram1D *
   createHistogram1D(const std::string & path, const std::string & title,
 		    int nBins, double lowerEdge, double upperEdge,
-		    const std::string & options = "") {
+		    const std::string & = "") {
     Histogram1D * hist = new Histogram1D(nBins, lowerEdge, upperEdge);
     hist->setTitle(title);
     if ( !tree->insert(path, hist) ) {
@@ -178,12 +176,11 @@ public:
      *                  it is only used to delimit directories within paths.
      * @param title     The title of the IHistogram1D.
      * @param binEdges  The array of the bin edges for the x axis.
-     * @param options   The options for the IHistogram1D. Not used by LWH.
      */
   IHistogram1D *
   createHistogram1D(const std::string & path, const std::string & title,
 		    const std::vector<double> & binEdges,
-		    const std::string & options = "") {
+		    const std::string & = "") {
     Histogram1D * hist = new Histogram1D(binEdges);
     hist->setTitle(title);
     if ( !tree->insert(path, hist) ) {

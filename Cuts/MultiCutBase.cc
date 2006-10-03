@@ -17,15 +17,15 @@ using namespace ThePEG;
 
 MultiCutBase::~MultiCutBase() {}
 
-Energy2 MultiCutBase::minS(const tcPDVector & pv) const {
+Energy2 MultiCutBase::minS(const tcPDVector &) const {
   return 0.0*GeV2;
 }
 
-Energy2 MultiCutBase::maxS(const tcPDVector & pv) const {
+Energy2 MultiCutBase::maxS(const tcPDVector &) const {
   return Constants::MaxEnergy2;
 }
 
-bool MultiCutBase::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
+bool MultiCutBase::passCuts(tcCutsPtr, const tcPDVector & ptype,
 			    const vector<LorentzMomentum> & p) const {
   long NN = (1 << ptype.size());
   // NN is the number of different combinations that can be made.

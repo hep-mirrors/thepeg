@@ -241,6 +241,8 @@ bool LHAPDF::openLHAIndex(ifstream & is) {
   if ( is ) return true;
   is.clear();
 #endif
+  // to remove compiler warning when HAS_LHAPDF is not set
+  if (true || is)
   return false;
 }
 
@@ -469,7 +471,7 @@ enum VectorIndices {
 }
 
 double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-                      double x, double eps, Energy2 particleScale) const {
+                      double x, double, Energy2 particleScale) const {
   // Here we should return the actual density.
   using namespace ThePEG::ParticleID;
   using namespace LHAPDFIndex;
@@ -531,7 +533,7 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 }
 
 double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double x, double eps, Energy2 particleScale) const {
+		     double x, double, Energy2 particleScale) const {
   // Here we should return the actual valence density. This will only
   // work properly for nucleons
   using namespace ThePEG::ParticleID;

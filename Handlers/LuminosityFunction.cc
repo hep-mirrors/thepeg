@@ -54,13 +54,13 @@ int LuminosityFunction::nDim(const cPDPair &) const {
 }
 
 double LuminosityFunction::
-value(const cPDPair & pdp, double l1, double l2) const {
+value(const cPDPair &, double l1, double l2) const {
   return l1 == 0.0 && l2 == 0.0? 1.0: 0.0;
 }
 
 pair<double,double>
 LuminosityFunction::
-generateLL(const double *, double & jacobian) const {
+generateLL(const double *, double &) const {
   return make_pair(0.0, 0.0);
 }
 

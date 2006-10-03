@@ -872,42 +872,42 @@ public:
   virtual Type tdef() const;
 
   /**
-   * Give a pointer to a member function to be used by 'tset()'.
+   * Give a pointer to a member function to be used by tset().
    */
   inline void setSetFunction(SetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tinsert()'.
+   * Give a pointer to a member function to be used by tinsert().
    */
   inline void setInsertFunction(InsFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tget()'.
+   * Give a pointer to a member function to be used by tget().
    */
   inline void setGetFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'terase()'.
+   * Give a pointer to a member function to be used by terase().
    */
   inline void setEraseFunction(DelFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tdef()'.
+   * Give a pointer to a member function to be used by tdef().
    */
   inline void setDefaultFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tminimum()'.
+   * Give a pointer to a member function to be used by tminimum().
    */
   inline void setMinFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tmaximum()'.
+   * Give a pointer to a member function to be used by tmaximum().
    */
   inline void setMaxFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'get()'.
+   * Give a pointer to a member function to be used by get().
    */
   inline void setStringGetFunction(StringGetFn);
 
@@ -925,39 +925,60 @@ private:
   Member theMember;
 
   /**
-   * Default, minimum and maximum values to be used if no
-   * corresponding member function pointers are given.
+   * Default value to be used if no corresponding member function
+   * pointer is given.
    */
-  Type theDef, theMin, theMax;
+  Type theDef;
 
   /**
-   * A pointer to a member function to be used by 'tset()'.
+   * Minimum value to be used if no corresponding member function
+   * pointer is given.
+   */
+  Type theMin;
+
+  /**
+   * Maximum value to be used if no
+   * corresponding member function pointer is given.
+   */
+  Type theMax;
+
+  /**
+   * A pointer to a member function to be used by tset().
    */
   SetFn theSetFn;
 
   /**
-   * A pointer to a member function to be used by 'tinsert()'.
+   * A pointer to a member function to be used by tinsert().
    */
   InsFn theInsFn;
 
   /**
-   * A pointer to a member function to be used by 'terase()'.
+   * A pointer to a member function to be used by terase().
    */
   DelFn theDelFn;
 
   /**
-   * A pointer to a member function to be used by 'tget()'.
+   * A pointer to a member function to be used by tget().
    */
   GetFn theGetFn;
 
   /**
-   * Pointers to member functions to be used by 'tdef()', 'tminimum()' and
-   * 'tmaximum()'
+   * Pointer to member function to be used by tdef().
    */
-  DefFn theDefFn, theMinFn, theMaxFn;
+  DefFn theDefFn;
 
   /**
-   * A pointer to a member function to be used by 'set()'.
+   * Pointer to member function to be used by tminimum().
+   */
+  DefFn theMinFn;
+
+  /**
+   * Pointer to member function to be used by tmaximum().
+   */
+  DefFn theMaxFn;
+
+  /**
+   * A pointer to a member function to be used by set().
    */
   StringGetFn theStringGetFn;
 

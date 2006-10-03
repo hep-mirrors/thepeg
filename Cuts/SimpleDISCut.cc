@@ -37,7 +37,7 @@ Energy2 SimpleDISCut::minTij(tcPDPtr pi, tcPDPtr po) const {
   return theMinQ2;
 }
   
-bool SimpleDISCut::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
+bool SimpleDISCut::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
 			    LorentzMomentum pi, LorentzMomentum pj,
 			    bool inci, bool incj) const {
   if ( inci ) {
@@ -54,19 +54,19 @@ bool SimpleDISCut::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
   return true;
 }
 
-Energy2 SimpleDISCut::minSij(tcPDPtr pi, tcPDPtr pj) const {
+Energy2 SimpleDISCut::minSij(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV2;
 }
 
-double SimpleDISCut::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
+double SimpleDISCut::minDeltaR(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 
-Energy SimpleDISCut::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
+Energy SimpleDISCut::minKTClus(tcPDPtr, tcPDPtr) const {
   return 0.0*GeV;
 }
 
-double SimpleDISCut::minDurham(tcPDPtr pi, tcPDPtr pj) const {
+double SimpleDISCut::minDurham(tcPDPtr, tcPDPtr) const {
   return 0.0;
 }
 

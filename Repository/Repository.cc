@@ -364,7 +364,7 @@ void Repository::read(istream & is, ostream & os, string prompt) {
   string line;
   if ( prompt.size() ) os << prompt;
   while ( getline(is, line) ) {
-    while ( line[line.size() - 1] == '\\' ) {
+    while ( !line.empty() && line[line.size() - 1] == '\\' ) {
       line[line.size() - 1] = ' ';
       string cont;
       if ( prompt.size() ) os << "> ";

@@ -35,7 +35,7 @@ double MEQQ2qq::me2() const {
 }
 
 Selector<const ColourLines *>
-MEQQ2qq::colourGeometries(tcDiagPtr diag) const {
+MEQQ2qq::colourGeometries(tcDiagPtr) const {
   Selector<const ColourLines *> sel;
 
   static ColourLines csST("1 3 4, -5 -3 -2");

@@ -101,7 +101,7 @@ MEee2gZ2qq::diagrams(const DiagramVector & diags) const {
 }
 
 Selector<const ColourLines *>
-MEee2gZ2qq::colourGeometries(tcDiagPtr diag) const {
+MEee2gZ2qq::colourGeometries(tcDiagPtr) const {
 
   static ColourLines c("-5 4");
 

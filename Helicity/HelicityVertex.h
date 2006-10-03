@@ -44,26 +44,6 @@ public:
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline HelicityVertex();
-
-  /**
-   * Copy-constructor.
-   */
-  inline HelicityVertex(const HelicityVertex &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~HelicityVertex();
-  //@}
-
-public:
-
   /**
    * Standard Init function.
    */
@@ -76,11 +56,6 @@ public:
    * function.
    */
   virtual void rebind(const EventTranslationMap & trans);
-
-  /**
-   * Standard clone method.
-   */
-  inline virtual EIPtr clone() const;
 
 public:
 
@@ -133,12 +108,12 @@ public:
   /**
    * Get the rho matrix for the outgoing particle at position \a loc.
    */
-  virtual RhoDMatrix getRhoMatrix(int loc);
+  virtual RhoDMatrix getRhoMatrix(int loc) = 0;
 
   /**
    * Get the D matrix for the incoming particle at position \a loc.
    */
-  virtual RhoDMatrix getDMatrix(int loc);
+  virtual RhoDMatrix getDMatrix(int loc) = 0;
   //@}
 
 private:

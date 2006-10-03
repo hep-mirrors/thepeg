@@ -639,27 +639,27 @@ public:
     throw(InterfaceException);
 
   /**
-   * Give a pointer to a member function to be used by 'tset()'.
+   * Give a pointer to a member function to be used by tset().
    */
   inline void setSetFunction(SetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tget()'.
+   * Give a pointer to a member function to be used by tget().
    */
   inline void setGetFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tdef()'.
+   * Give a pointer to a member function to be used by tdef().
    */
   inline void setDefaultFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tminimum()'.
+   * Give a pointer to a member function to be used by tminimum().
    */
   inline void setMinFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tmaximum()'.
+   * Give a pointer to a member function to be used by tmaximum().
    */
   inline void setMaxFunction(GetFn);
 
@@ -677,21 +677,47 @@ private:
   Member theMember;
 
   /**
-   * Default, minimum and maximum values to be used if no
-   * corresponding member function pointers are given.
+   * Default value to be used if no corresponding member function
+   * pointer is given.
    */
-  Type theDef, theMin, theMax;
+  Type theDef;
 
   /**
-   * A pointer to a member function to be used by 'tset()'.
+   * Minimum value to be used if no corresponding member function
+   * pointer is given.
+   */
+  Type theMin;
+
+  /**
+   * Maximum value to be used if no corresponding member function
+   * pointer is given.
+   */
+  Type theMax;
+
+  /**
+   * A pointer to a member function to be used by tset().
    */
   SetFn theSetFn;
 
   /**
-   * Pointers to member functions to be used by 'tget()', 'tdef()',
-   * 'tminimum()' and 'tmaximum()'
+   * Pointer to member function to be used by tget().
    */
-  GetFn theGetFn, theDefFn, theMinFn, theMaxFn;
+  GetFn theGetFn;
+
+  /**
+   * Pointer to member function to be used by tdef().
+   */
+  GetFn theDefFn;
+
+  /**
+   * Pointer to member function to be used by tminimum().
+   */
+  GetFn theMinFn;
+
+  /**
+   * Pointer to member function to be used by tmaximum().
+   */
+  GetFn theMaxFn;
 
 };
 
@@ -943,17 +969,17 @@ public:
     throw(InterfaceException);
 
   /**
-   * Give a pointer to a member function to be used by 'tset()'.
+   * Give a pointer to a member function to be used by tset().
    */
   inline void setSetFunction(SetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tget()'.
+   * Give a pointer to a member function to be used by tget().
    */
   inline void setGetFunction(GetFn);
 
   /**
-   * Give a pointer to a member function to be used by 'tdef()'.
+   * Give a pointer to a member function to be used by tdef().
    */
   inline void setDefaultFunction(GetFn);
 
@@ -977,15 +1003,19 @@ private:
   string theDef;
 
   /**
-   * A pointer to a member function to be used by 'tset()'.
+   * A pointer to a member function to be used by tset().
    */
   SetFn theSetFn;
 
   /**
-   * Pointers to member functions to be used by 'tget()', 'tdef()',
-   * 'tminimum()' and 'tmaximum()'
+   * Pointer to member function to be used by tget().
    */
-  GetFn theGetFn, theDefFn;
+  GetFn theGetFn;
+
+  /**
+   * Pointer to member function to be used by tdef().
+   */
+  GetFn theDefFn;
 
 };
 

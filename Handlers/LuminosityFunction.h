@@ -29,7 +29,6 @@ namespace ThePEG {
  *
  * @see \ref LuminosityFunctionInterfaces "The interfaces"
  * defined for LuminosityFunction.
- * @see LuminosityFunction
  * @see XComb
  * 
  */

@@ -90,7 +90,7 @@ void MEBase::setKinematics(tPPair in, const PVector & out) {
 
 }
 
-void MEBase::constructVertex(tSubProPtr sub) {}
+void MEBase::constructVertex(tSubProPtr) {}
 
 void MEBase::setKinematics() {
   theLastSHat = lastSHat();

@@ -27,7 +27,7 @@ double Decayer::brat(const DecayMode &,
 }
 
 ParticleVector Decayer::getChildren(const DecayMode & dm,
-					const Particle & parent) const {
+					const Particle &) const {
   return dm.produceProducts();
 }
 

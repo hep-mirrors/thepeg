@@ -38,7 +38,7 @@ public:
    * Copy constructor.
    */
   VariAxis(const VariAxis & a)
-    : binco(a.binco) {}
+    : IAxis(a), binco(a.binco) {}
 
   /// Destructor.
   virtual ~VariAxis() { }
@@ -163,6 +163,10 @@ public:
 
 private:
 
+  /**
+   * A map relating the lower edge of a bin to the corresponding bin
+   * number.
+   */
   std::map<double,int> binco;
 
 };

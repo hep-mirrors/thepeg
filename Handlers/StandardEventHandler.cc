@@ -46,7 +46,7 @@ StandardEventHandler::StandardEventHandler(const StandardEventHandler & eh)
 
 StandardEventHandler::~StandardEventHandler() {}
 
-void StandardEventHandler::reject(double weight) {
+void StandardEventHandler::reject(double) {
   tStdXCombPtr last = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
   if ( !last ) return;
   last->reject();

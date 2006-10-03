@@ -11,12 +11,6 @@
 namespace ThePEG {
 namespace Helicity {
 
-inline HelicityVertex::HelicityVertex() {}
-
-inline HelicityVertex::HelicityVertex(const HelicityVertex & x)
-  : EventInfoBase(x), _incoming(x._incoming), _outgoing(x._outgoing) {}
-
-
 // access to the incoming particles
 inline HelicityVertex::SpinVector HelicityVertex::incoming() const {
   return _incoming;
@@ -67,8 +61,6 @@ inline void HelicityVertex::output() const
       cout << "the " << ix << " th outgoing particle " << _outgoing[ix] << endl;
     }
 }
-
-inline EIPtr HelicityVertex::clone() const {return new_ptr(*this);}
 
 inline void HelicityVertex::rebind(const EventTranslationMap & trans) {
   EventInfoBase::rebind(trans);

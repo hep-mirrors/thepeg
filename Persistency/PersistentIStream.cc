@@ -137,7 +137,7 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
       << oid << ") was inconsistent." << Exception::runerror;
     const InputDescription * pid = getClass();
     obj = pid->create();
-    readObjects.erase(readObjects.begin()+oid-1, readObjects.end());
+    readObjects.erase(readObjects.begin() + (oid - 1), readObjects.end());
     readObjects.push_back(obj);
     getObjectPart(obj, pid);
     endObject();

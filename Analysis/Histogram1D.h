@@ -51,7 +51,8 @@ public:
    * Copy constructor.
    */
   Histogram1D(const Histogram1D & h)
-    : fax(0), vax(0), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2),
+    : IBaseHistogram(h), IHistogram(h), IHistogram1D(h), ManagedObject(h),
+      fax(0), vax(0), sum(h.sum), sumw(h.sumw), sumw2(h.sumw2),
       sumxw(h.sumxw), sumx2w(h.sumx2w) {
     const VariAxis * hvax = dynamic_cast<const VariAxis *>(h.ax);
     if ( vax ) ax = vax = new VariAxis(*hvax);
@@ -387,7 +388,7 @@ public:
    * Not implemented in LWH.
    * @return null pointer always.
    */ 
-  void * cast(const std::string & className) const {
+  void * cast(const std::string &) const {
     return 0;
   }
 

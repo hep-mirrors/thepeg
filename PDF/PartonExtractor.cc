@@ -187,7 +187,7 @@ generateL(const PBIPair & pbins, const double * r1, const double * r2) {
 }
 
 Energy2 PartonExtractor::
-generateSHat(Energy2 s, const PBIPair & pbins,
+generateSHat(Energy2, const PBIPair & pbins,
 	     const double * r1, const double * r2) {
 
   Direction<0> dir(true);
