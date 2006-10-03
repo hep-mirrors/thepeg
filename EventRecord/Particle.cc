@@ -87,11 +87,6 @@ tParticleSet Particle::siblings() const {
   return theSiblings;
 }
 
-tPPtr Particle::colourNeighbour(bool anti) const {
-  return hasColourInfo() && hasColour(!anti) && birthStep()?
-    birthStep()->colourNeighbour(this, anti): tPPtr();
-}
-
 void Particle::colourNeighbour(tPPtr p, bool anti) {
   tColinePtr line = colourLine(!anti);
   if ( !line ) line = ColourLine::create(this, !anti);
@@ -255,7 +250,11 @@ void writeParticleRanges(ostream & os, const Container & c, char sep, int w) {
 }
 
 ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
-  tStepPtr step = p.birthStep();
+  return p.print(os, p.birthStep());
+}
+
+ostream & Particle::print(ostream & os, tcStepPtr step) const {
+  if ( !step ) step = birthStep();
   tCollPtr coll = step? step->collision(): tCollPtr();
   tEventPtr event = coll? coll->event(): tEventPtr();
   string::const_iterator pos = Particle::outputFormat.begin();
@@ -281,28 +280,28 @@ ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
       bool fullColour = false;
       switch ( *pos ) {
       case 'n':
-	os << setw(getNumber(++pos, 3)) << p.number();
+	os << setw(getNumber(++pos, 3)) << number();
 	break;
       case 'i':
-	os << setw(getNumber(++pos, 8)) << p.id();
+	os << setw(getNumber(++pos, 8)) << id();
 	break;
       case 's':
-	writeStringAdjusted(os, left, getNumber(++pos, 8), p.PDGName());
+	writeStringAdjusted(os, left, getNumber(++pos, 8), PDGName());
 	break;
       case 'x':
-	writePrecision(os, ++pos, 10, 3, p.momentum().x()/GeV);
+	writePrecision(os, ++pos, 10, 3, momentum().x()/GeV);
 	break;
       case 'y':
-	writePrecision(os, ++pos, 10, 3, p.momentum().y()/GeV);
+	writePrecision(os, ++pos, 10, 3, momentum().y()/GeV);
 	break;
       case 'z':
-	writePrecision(os, ++pos, 10, 3, p.momentum().z()/GeV);
+	writePrecision(os, ++pos, 10, 3, momentum().z()/GeV);
 	break;
       case 'e':
-	writePrecision(os, ++pos, 10, 3, p.momentum().e()/GeV);
+	writePrecision(os, ++pos, 10, 3, momentum().e()/GeV);
 	break;
       case 'm':
-	writePrecision(os, ++pos, 10, 3, p.momentum().mass()/GeV);
+	writePrecision(os, ++pos, 10, 3, momentum().mass()/GeV);
 	break;
       case 'P':
 	fullColour = true;
@@ -311,16 +310,16 @@ ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
 	sep = *++pos;
 	close = *++pos;
 	w = getNumber(++pos, 0);
-	if ( p.parents().empty() ) break;
+	if ( parents().empty() ) break;
 	if ( open ) os << open;
-	writeParticleRanges(os, p.parents(), sep, w);
-	if ( fullColour && p.hasColourInfo() &&
-	     ( p.incomingColour() || p.incomingAntiColour() ) ) {
+	writeParticleRanges(os, parents(), sep, w);
+	if ( fullColour && hasColourInfo() &&
+	     ( incomingColour() || incomingAntiColour() ) ) {
 	  if ( close ) os << open;
-	  if ( p.incomingColour() )
-	    os << "+" << p.incomingColour()->number();
-	  if ( p.incomingAntiColour() )
-	    os << "-" << p.incomingAntiColour()->number();
+	  if ( incomingColour() )
+	    os << "+" << incomingColour()->number();
+	  if ( incomingAntiColour() )
+	    os << "-" << incomingAntiColour()->number();
 	  if ( close ) os << close;
 	}
 	if ( close ) os << close;
@@ -330,14 +329,14 @@ ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
 	sep = *++pos;
 	close = *++pos;
 	w = getNumber(++pos, 0);
-	if ( ( !p.colourLine() && !p.antiColourLine() ) || !event) break;
+	if ( ( !colourLine() && !antiColourLine() ) || !event) break;
 	if ( open ) os << open;
-	if ( p.colourLine() ) {
-	  p.colourLine()->write(os, event, false);
-	  if ( p.antiColourLine() && sep ) os << sep;
+	if ( colourLine() ) {
+	  colourLine()->write(os, event, false);
+	  if ( antiColourLine() && sep ) os << sep;
 	}
-	if ( p.antiColourLine() )
-	  p.antiColourLine()->write(os, event, true);
+	if ( antiColourLine() )
+	  antiColourLine()->write(os, event, true);
 	if ( close ) os << close;
 	break;
       case 'C':
@@ -347,16 +346,16 @@ ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
 	sep = *++pos;
 	close = *++pos;
 	w = getNumber(++pos, 0);
-	if ( p.children().empty() ) break;
+	if ( children().empty() ) break;
 	if ( open ) os << open;
-	writeParticleRanges(os, p.children(), sep, w);
-	if ( fullColour && p.hasColourInfo() &&
-	     ( p.outgoingColour() || p.outgoingAntiColour() ) ) {
+	writeParticleRanges(os, children(), sep, w);
+	if ( fullColour && hasColourInfo() &&
+	     ( outgoingColour() || outgoingAntiColour() ) ) {
 	  if ( close ) os << open;
-	  if ( p.outgoingColour() )
-	    os << "+" << p.outgoingColour()->number();
-	  if ( p.outgoingAntiColour() )
-	    os << "-" << p.outgoingAntiColour()->number();
+	  if ( outgoingColour() )
+	    os << "+" << outgoingColour()->number();
+	  if ( outgoingAntiColour() )
+	    os << "-" << outgoingAntiColour()->number();
 	  if ( close ) os << close;
 	}
 	if ( close ) os << close;
@@ -364,15 +363,15 @@ ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
       case '>':
 	mark = *++pos;
 	w = getNumber(++pos, 0);
-	if ( p.hasColourInfo() && p.colourNeighbour() ) {
-	  os << setw(w-1) << p.colourNeighbour()->number() << mark;
+	if ( hasColourInfo() && step && step->colourNeighbour(this) ) {
+	  os << setw(w-1) << step->colourNeighbour(this)->number() << mark;
 	}
 	break;
       case '<':
 	mark = *++pos;
 	w = getNumber(++pos, 0);
-	if ( p.hasColourInfo() && p.antiColourNeighbour() ) {
-	  int n = p.antiColourNeighbour()->number();
+	if ( hasColourInfo() && step && step->antiColourNeighbour(this) ) {
+	  int n = step->antiColourNeighbour(this)->number();
 	  ostringstream oss;
 	  oss << mark << n;
 	  writeStringAdjusted(os, left, w, oss.str());
@@ -381,68 +380,68 @@ ostream & ThePEG::operator<<(ostream & os, const Particle & p) {
       case 'v':
 	mark = *++pos;
 	w = getNumber(++pos, 0);
-	if ( p.next() ) {
+	if ( next() ) {
 	  if ( left && mark ) os << mark;
-	  os << setw(w) << p.next()->number();
+	  os << setw(w) << next()->number();
 	  if ( !left && mark ) os << mark;
 	}
 	break;
       case '^':
 	mark = *++pos;
 	w = getNumber(++pos, 0);
-	if ( p.previous() ) {
+	if ( previous() ) {
 	  if ( left && mark ) os << mark;
-	  os << setw(w) << p.previous()->number();
+	  os << setw(w) << previous()->number();
 	  if ( !left && mark ) os << mark;
 	}
 	break;
       case 'd':
 	switch ( *++pos ) {
 	case 'x':
-	  writePrecision(os, ++pos, 10, 3, p.lifeLength().x()/mm);
+	  writePrecision(os, ++pos, 10, 3, lifeLength().x()/mm);
 	  break;
 	case 'y':
-	  writePrecision(os, ++pos, 10, 3, p.lifeLength().y()/mm);
+	  writePrecision(os, ++pos, 10, 3, lifeLength().y()/mm);
 	  break;
 	case 'z':
-	  writePrecision(os, ++pos, 10, 3, p.lifeLength().z()/mm);
+	  writePrecision(os, ++pos, 10, 3, lifeLength().z()/mm);
 	  break;
 	case 't':
-	  writePrecision(os, ++pos, 10, 3, p.lifeLength().e()/mm);
+	  writePrecision(os, ++pos, 10, 3, lifeLength().e()/mm);
 	  break;
 	case 'T':
-	  writePrecision(os, ++pos, 10, 3, p.lifeLength().tau()/mm);
+	  writePrecision(os, ++pos, 10, 3, lifeLength().tau()/mm);
 	  break;
 	}
 	break;
       case 'V':
 	switch ( *++pos ) {
 	case 'x':
-	  writePrecision(os, ++pos, 10, 3, p.vertex().x()/mm);
+	  writePrecision(os, ++pos, 10, 3, vertex().x()/mm);
 	  break;
 	case 'y':
-	  writePrecision(os, ++pos, 10, 3, p.vertex().y()/mm);
+	  writePrecision(os, ++pos, 10, 3, vertex().y()/mm);
 	  break;
 	case 'z':
-	  writePrecision(os, ++pos, 10, 3, p.vertex().z()/mm);
+	  writePrecision(os, ++pos, 10, 3, vertex().z()/mm);
 	  break;
 	case 't':
-	  writePrecision(os, ++pos, 10, 3, p.vertex().e()/mm);
+	  writePrecision(os, ++pos, 10, 3, vertex().e()/mm);
 	  break;
 	}
       case 'L':
 	switch ( *++pos ) {
 	case 'x':
-	  writePrecision(os, ++pos, 10, 3, p.labVertex().x()/mm);
+	  writePrecision(os, ++pos, 10, 3, labVertex().x()/mm);
 	  break;
 	case 'y':
-	  writePrecision(os, ++pos, 10, 3, p.labVertex().y()/mm);
+	  writePrecision(os, ++pos, 10, 3, labVertex().y()/mm);
 	  break;
 	case 'z':
-	  writePrecision(os, ++pos, 10, 3, p.labVertex().z()/mm);
+	  writePrecision(os, ++pos, 10, 3, labVertex().z()/mm);
 	  break;
 	case 't':
-	  writePrecision(os, ++pos, 10, 3, p.labVertex().e()/mm);
+	  writePrecision(os, ++pos, 10, 3, labVertex().e()/mm);
 	  break;
 	}
 	break;

@@ -256,7 +256,7 @@ getCompensators(Energy mh, const ColourSinglet & cs,
   bool alsoSinglets = false;
   do {
     // Return an empty vector if no particles left.
-    if ( compset.empty() ) return ret;
+    if ( compset.empty() ) break;
 
     // Now find the particle which is closest in phase space to the
     // cluster.
@@ -272,7 +272,7 @@ getCompensators(Energy mh, const ColourSinglet & cs,
     }
 
     if ( sel == compset.end() ) {
-      if ( alsoSinglets ) return ret;
+      if ( alsoSinglets ) break;
       else {
 	alsoSinglets = true;
 	continue;
@@ -290,9 +290,26 @@ getCompensators(Energy mh, const ColourSinglet & cs,
   } while ( (pc + pcomp).m() <= mh + pcomp.m() ||
 	    ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) );
 
+
+  // If this didn't work, let's try to fix it by disregarding the
+  // closest particle.
+  int end = comp.size();
+  while ( (pc + pcomp).m() <= mh + pcomp.m() ||
+	  ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) ) {
+    if ( end == comp.size() ) {
+      if ( comp.size() < 2 ) return ret;
+      comp.erase(comp.begin());
+      end = 1;
+    } else
+      ++end;
+    pcomp = Utilities::sumMomentum(comp.begin(), comp.begin() + end);
+
+  }
+
+
   // Now copy the compensators, add them to the new set and return them.
-  ret.resize(comp.size());
-  for ( int i = 0, N = comp.size(); i < N; ++i )
+  ret.resize(end);
+  for ( int i = 0; i < end; ++i )
     ret[i] = newStep->copyParticle(comp[i]);
   return ret;
 }

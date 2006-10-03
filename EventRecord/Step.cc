@@ -149,10 +149,10 @@ void Step::removeEntry(tPPtr p) {
     allParticles.insert(parent);
   }
   if ( !p->hasColourInfo() ) return;
-  if ( p->colourNeighbour() )
-    p->colourNeighbour()->antiColourNeighbour(p->antiColourNeighbour());
-  if ( p->antiColourNeighbour() )
-    p->antiColourNeighbour()->colourNeighbour(p->colourNeighbour());
+  if ( colourNeighbour(p) )
+    colourNeighbour(p)->antiColourNeighbour(antiColourNeighbour(p));
+  if ( antiColourNeighbour(p) )
+    antiColourNeighbour(p)->colourNeighbour(colourNeighbour(p));
   if ( p->incomingColour() ) p->outgoingColour(tPPtr());
   if ( p->incomingAntiColour() ) p->outgoingAntiColour(tPPtr());
 }
@@ -308,21 +308,21 @@ void Step::fixColourFlow() {
     if ( (**pi).birthStep() == this ) news.push_back(*pi);
   for ( int i = 0, N = news.size(); i < N; ++i ) {
     tPPtr p = news[i];
-    if ( p->hasColour() && !p->antiColourNeighbour() ) {
+    if ( p->hasColour() && !antiColourNeighbour(p) ) {
       tPPtr ng = p;
-      while ( ( ng = ng->incomingColour() ) && !ng->antiColourNeighbour() );
+      while ( ( ng = ng->incomingColour() ) && !antiColourNeighbour(ng) );
       if ( ng ) {
-	ng = ng->antiColourNeighbour();
+	ng = antiColourNeighbour(ng);
 	if ( !ng->outgoingColour() ) ng = copyParticle(ng);
 	while ( ng->outgoingColour() ) ng = ng->outgoingColour();
 	p->antiColourConnect(ng);
       }
     }
-    if ( p->hasAntiColour() && !p->colourNeighbour() ) {
+    if ( p->hasAntiColour() && !colourNeighbour(p) ) {
       tPPtr ng = p;
-      while ( ( ng = ng->incomingAntiColour() ) && !ng->colourNeighbour() );
+      while ( ( ng = ng->incomingAntiColour() ) && !colourNeighbour(ng) );
       if ( ng ) {
-	ng = ng->colourNeighbour();
+	ng = colourNeighbour(ng);
 	if ( !ng->outgoingAntiColour() ) ng = copyParticle(ng);
 	while ( ng->outgoingAntiColour() ) ng = ng->outgoingAntiColour();
 	p->colourConnect(ng);
@@ -341,6 +341,7 @@ tPPtr Step::colourNeighbour(tcPPtr p, bool anti) const {
   if ( !line ) return tPPtr();
   for ( ParticleSet::const_iterator it = particles().begin();
 	it != particles().end(); ++it )
+    //    if ( (**it).colourLine(anti) == line ) return (**it).final();
     if ( (**it).colourLine(anti) == line ) return *it;
   return tPPtr();
 }
@@ -352,13 +353,16 @@ vector<tPVector> Step::getSinglets(tParticleSet & left) {
     left.erase(first);
     if ( !first->hasColourInfo() || !first->coloured() ) continue;
     tPPtr last = first;
-    while ( last->antiColourNeighbour() &&
-	    last->antiColourNeighbour() != first )
-      last = last->antiColourNeighbour();
-    while ( first->colourNeighbour() && first->colourNeighbour() != last )
-      first = first->colourNeighbour();
+    tPPtr test;
+    while ( ( test = last->antiColourNeighbour(left.begin(), left.end()) ) &&
+	    test != first )
+      last = test;
+    while ( ( test = first->colourNeighbour(left.begin(), left.end()) ) &&
+	    test != last )
+      first = test;
     ret.push_back(tPVector());
-    for ( ; first != last; first = first->antiColourNeighbour() ) {
+    for ( ; first != last;
+	  first = first->antiColourNeighbour(left.begin(), left.end()) ) {
       left.erase(first);
       ret.back().push_back(first);
     }
@@ -370,14 +374,13 @@ vector<tPVector> Step::getSinglets(tParticleSet & left) {
 
 ostream & ThePEG::operator<<(ostream & os, const Step & s) {
   if ( !s.intermediates().empty() ) os << "--- intermediates:" << endl;
-  Particle::PrintParticles(os, s.intermediates().begin(),
-			   s.intermediates().end());
+  Particle::PrintParticles(os, s.intermediates(), &s);
   os << "--- final:" << endl;
   LorentzMomentum sum;
   Energy sumx = Energy();
   Energy sumy = Energy();
   Energy sumz = Energy();
-  Particle::PrintParticles(os, s.particles().begin(), s.particles().end());
+  Particle::PrintParticles(os, s.particles(), &s);
   for ( ParticleSet::const_iterator it = s.particles().begin();
 	it != s.particles().end(); ++it ) {
     sum += (**it).momentum();

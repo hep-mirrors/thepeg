@@ -13,10 +13,23 @@ struct ParticleNumLess {
 };
 
 template <typename Iterator>
-void Particle::PrintParticles(ostream & os, Iterator first, Iterator last) {
+void Particle::
+PrintParticles(ostream & os, Iterator first, Iterator last, tcStepPtr step) {
   typedef set<PPtr,ParticleNumLess, Allocator<PPtr> > NumSet;
   NumSet pset(first, last);
-  for ( NumSet::iterator i = pset.begin(); i != pset.end(); ++i ) os << **i;
+  for ( NumSet::iterator i = pset.begin(); i != pset.end(); ++i )
+    (**i).print(os, step);
+}
+
+template <typename Iterator>
+typename std::iterator_traits<Iterator>::value_type Particle::
+colourNeighbour(Iterator first, Iterator last, bool anti) const {
+  if ( !hasColourInfo() || !hasColour(!anti) ) return tPPtr();
+  tColinePtr line = colourLine(!anti);
+  for ( ; first != last; ++first )
+    if ( (**first).hasColourInfo() && (**first).colourLine(anti) == line )
+      return *first;
+  return tPPtr();
 }
 
 }

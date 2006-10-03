@@ -163,8 +163,10 @@ inline tColinePtr Particle::colourLine(bool anti) const {
   return hasColourInfo()? colourInfo()->colourLine(): tColinePtr();
 }
 
-inline tPPtr Particle::antiColourNeighbour() const {
-  return colourNeighbour(true);
+template <typename Iterator>
+inline typename std::iterator_traits<Iterator>::value_type Particle::
+antiColourNeighbour(Iterator first, Iterator last) const {
+   return colourNeighbour(first, last, true);
 }
 
 inline void Particle::antiColourNeighbour(tPPtr p) {
@@ -419,8 +421,9 @@ inline EIVector & Particle::getInfo() {
 }
 
 template <typename Cont>
-inline void Particle::PrintParticles(ostream & os, const Cont & c) {
-  PrintParticles(os, c.begin(), c.end());
+inline void Particle::
+PrintParticles(ostream & os, const Cont & c, tcStepPtr step) {
+  PrintParticles(os, c.begin(), c.end(), step);
 }
 
 }

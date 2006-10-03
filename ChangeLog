@@ -1,5 +1,15 @@
 2006-10-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* EventRecord/Step.cc, EventRecord/Particle.*: Added arguments to
+	the colourNeighbour(bool) and antiColourNeighbour() functions in
+	Particle. They now also require an iterator range in which the
+	(anti-) colour neighbour is searched for. (Previously the neighbor
+	was only searched for in the particles birthStep().
+
+	* Handlers/ClusterCollapser.cc: Don't give up so easily if no
+	compensating particles was found in the standard way. Try several
+	combinations.
+
 	* *** GLOBAL ***: Merged in relevant changes from the
 	RELEASE_BRANCH_1_0.
 

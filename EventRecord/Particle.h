@@ -575,18 +575,22 @@ public:
 
   /**
    * Get a pointer to the colour neighbor. Returns a particle in the
-   * Step where this particle was created which colour is connected to
-   * the same line as this particles anti-colour. If \a anti is true
-   * return antiColourNeighbour().
+   * range \a first to \a last which colour is connected to the same
+   * line as this particles anti-colour. If \a anti is true return
+   * antiColourNeighbour().
    */
-  tPPtr colourNeighbour(bool anti = false) const;
+  template <typename Iterator>
+  typename std::iterator_traits<Iterator>::value_type
+  colourNeighbour(Iterator first, Iterator last, bool anti = false) const;
 
   /**
    * Get a pointer to the anti-colour neighbor. Returns a particle in
-   * the Step where this particle was created which anti-colour is
+   * the range \a first to \a last which anti-colour is
    * connected to the same line as this particles colour.
    */
-  inline tPPtr antiColourNeighbour() const;
+  template <typename Iterator>
+  inline typename std::iterator_traits<Iterator>::value_type
+  antiColourNeighbour(Iterator first, Iterator last) const;
 
   /**
    * Set the colour neighbor. Connects the given particles colour to
@@ -749,16 +753,24 @@ public:
   //@}
 
   /**
+   * Print particle info to a stream \a os. The \a step is used to
+   * access information about colour neighbors and other struff.
+   */
+  ostream & print(ostream & os, tcStepPtr step = tcStepPtr()) const;
+
+  /**
    * Print a range of particles.
    */
   template <typename Iterator>
-  static void PrintParticles(ostream & os, Iterator first, Iterator last);
+  static void PrintParticles(ostream & os, Iterator first, Iterator last,
+			     tcStepPtr step = tcStepPtr());
 
   /**
    * Print a container of particles.
    */
   template <typename Cont>
-  inline static void PrintParticles(ostream & os, const Cont &);
+  inline static void PrintParticles(ostream & os, const Cont &,
+				    tcStepPtr step = tcStepPtr());
    
   /**
    * Standard Init function. @see Base::Init().
