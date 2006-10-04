@@ -57,6 +57,13 @@ class EventHandler: public HandlerBase, public LastXCombInfo<> {
 
 public:
 
+  /** Enumerate the different levels of consistency checking. */
+  enum ConsistencyLevel {
+    clNoCheck,   /**< Do not perform consistency checks. */
+    clCollision, /**< Check every Collision. */
+    clStep       /**< Check every Step. */
+  };
+
   /** A vector of <code>HandlerGroup</code>s. */
   typedef vector<HandlerGroupBase *> GroupVector;
 
@@ -219,6 +226,19 @@ public:
    * <code>.out</code> file.
    */
   inline int statLevel() const;
+
+  /**
+   * Determines how often the event handler should check for charge
+   * and energy-momentum conservation.
+   */
+  inline ConsistencyLevel consistencyLevel() const;
+
+  /**
+   * The maximum fraction of the total invariant mass of a collision
+   * that any of the components of the summed momentum is allowed to
+   * change during the generation.
+   */
+  inline double consistencyEpsilon() const;
   //@}
 
   /** @name Internal functions used by main functions and possibly
@@ -286,6 +306,14 @@ public:
    * Throw away the last generated event before generating a new one.
    */
   virtual void clean();
+
+  /**
+   * Check that the charge and energy-momentum in the last step of the
+   * current collision is consistent with the incoming particles. If
+   * not, a warning will be generated.
+   */
+  virtual void checkConsistency() const;
+
   //@}
 
 public:
@@ -409,6 +437,19 @@ private:
    * the EventGenerators .out file.
    */
   int theStatLevel;
+
+  /**
+   * Determines how often the event handler should check for charge
+   * and energy-momentum conservation.
+   */
+  ConsistencyLevel theConsistencyLevel;
+
+  /**
+   * The maximum fraction of the total invariant mass of a collision
+   * that any of the components of the summed momentum is allowed to
+   * change during the generation.
+   */
+  double theConsistencyEpsilon;
 
   /**
    * Pointer to a luminosity function tobe used by subclasses.
@@ -557,6 +598,12 @@ protected:
    * failed
    */
   struct LumiFuncError: public Exception {};
+
+  /**
+   * Exception class used if inconsistent charge or energy-momentum was found.
+   */
+  struct ConsistencyException: public Exception {};
+
   /** @endcond */
 
 private:

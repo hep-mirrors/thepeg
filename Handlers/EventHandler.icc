@@ -15,6 +15,14 @@ inline int EventHandler::statLevel() const {
   return theStatLevel;
 }
 
+inline EventHandler::ConsistencyLevel EventHandler::consistencyLevel() const {
+  return theConsistencyLevel;
+}
+
+inline double EventHandler::consistencyEpsilon() const {
+  return theConsistencyEpsilon;
+}
+
 inline const LuminosityFunction & EventHandler::lumiFn() const {
   return *theLumiFn;
 }

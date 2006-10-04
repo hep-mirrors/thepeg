@@ -26,6 +26,8 @@
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
+#include "ThePEG/Utilities/Throw.h"
+#include "ThePEG/Utilities/EnumIO.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "EventHandler.tcc"
@@ -34,7 +36,9 @@
 using namespace ThePEG;
 
 EventHandler::EventHandler(bool warnincomplete)
-: theMaxLoop(100000), theStatLevel(2), warnIncomplete(warnincomplete) {
+: theMaxLoop(100000), theStatLevel(2), theConsistencyLevel(clCollision),
+  theConsistencyEpsilon(sqrt(Constants::epsilon)),
+  warnIncomplete(warnincomplete) {
   setupGroups();
 }
 
@@ -42,6 +46,8 @@ EventHandler::
 EventHandler(const EventHandler & x)
   : HandlerBase(x), LastXCombInfo<>(x),
     theMaxLoop(x.theMaxLoop), theStatLevel(x.theStatLevel),
+    theConsistencyLevel(x.theConsistencyLevel),
+    theConsistencyEpsilon(x.theConsistencyEpsilon),
     theLumiFn(x.theLumiFn), theCuts(x.theCuts),
     thePartonExtractor(x.thePartonExtractor),
     theSubprocessGroup(x.theSubprocessGroup),
@@ -125,6 +131,7 @@ tCollPtr EventHandler::continueCollision() {
   Timer<45> timer("EventHandler::continueCollision()");
   generator()->currentEventHandler(this);
   while (1) {
+    if ( consistencyLevel() == clStep ) checkConsistency();
     bool done = true;
     for ( GroupVector::iterator git = groups().begin();
 	  git != groups().end(); ++git ) {
@@ -139,6 +146,7 @@ tCollPtr EventHandler::continueCollision() {
     }
     if ( done ) break;
   }
+  if ( consistencyLevel() == clCollision ) checkConsistency();
   return currentCollision();
 }
 
@@ -240,9 +248,45 @@ CrossSection EventHandler::histogramScale() const {
   return 1.0*picobarn;
 }
 
+void EventHandler::checkConsistency() const {
+  if ( !currentCollision() ) return;
+  const Collision & c = *currentCollision();
+  if ( !c.incoming().first && !c.incoming().second ) return;
+  if ( !c.finalStep() ) return;
+  LorentzMomentum pi;
+  if ( c.incoming().first ) pi = c.incoming().first->momentum();
+  if ( c.incoming().second ) pi += c.incoming().second->momentum();
+  int ci = 0;
+  if ( c.incoming().first ) ci = c.incoming().first->data().iCharge();
+  if ( c.incoming().second ) ci += c.incoming().second->data().iCharge();
+
+  const ParticleSet & fs = c.finalStep()->particles();
+  LorentzMomentum pf;
+  int cf = 0;
+  for ( ParticleSet::const_iterator it = fs.begin(); it != fs.end(); ++it ) {
+    pf += (**it).momentum();
+    cf += (**it).data().iCharge();
+  }
+
+  if ( cf != ci ) Throw<ConsistencyException>()
+    << "Event handler '" << name() << "' found charge non-conservation by "
+    << cf - ci << "/3 units after generating step number " << c.steps().size()
+    << "." << Exception::warning;
+
+  Energy eps = consistencyEpsilon()*pi.m()*sqrt(double(fs.size()));
+  pf -= pi;
+  if ( abs(pf.x()) > eps || abs(pf.y()) > eps || abs(pf.z()) > eps ||
+       abs(pf.e()) > eps ) Throw<ConsistencyException>()
+    << "Event handler '" << name() << "' found energy-momentum non-conservation "
+    << "by (" << pf.x()/GeV << "," << pf.y()/GeV << "," << pf.z()/GeV << ";"
+    << pf.e()/GeV << ") GeV after generating step number " << c.steps().size()
+    << "." << Exception::warning;
+
+}
+
 void EventHandler::persistentOutput(PersistentOStream & os) const {
-  os << theLastXComb << theMaxLoop << theStatLevel << theLumiFn
-     << theCuts << thePartonExtractor
+  os << theLastXComb << theMaxLoop << theStatLevel << oenum(theConsistencyLevel)
+     << theConsistencyEpsilon << theLumiFn << theCuts << thePartonExtractor
      << theSubprocessGroup << theCascadeGroup << theMultiGroup
      << theHadronizationGroup << theDecayGroup << theCurrentEvent
      << theCurrentCollision << theCurrentStep << theCurrentStepHandler
@@ -250,8 +294,8 @@ void EventHandler::persistentOutput(PersistentOStream & os) const {
 }
 
 void EventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theLastXComb >> theMaxLoop >> theStatLevel >> theLumiFn
-     >> theCuts >> thePartonExtractor
+  is >> theLastXComb >> theMaxLoop >> theStatLevel >> ienum(theConsistencyLevel)
+     >> theConsistencyEpsilon >> theLumiFn >> theCuts >> thePartonExtractor
      >> theSubprocessGroup >> theCascadeGroup >> theMultiGroup
      >> theHadronizationGroup >> theDecayGroup >> theCurrentEvent
      >> theCurrentCollision >> theCurrentStep >> theCurrentStepHandler
@@ -351,6 +395,37 @@ void EventHandler::Init() {
      "This EventHandler is either complete or no warning should be emitted "
      "in either case.",
      false);
+
+
+  static Switch<EventHandler,ConsistencyLevel> interfaceConsistencyLevel
+    ("ConsistencyLevel",
+     "Determines how often the event handler should check for charge and "
+     "energy-momentum conservation.",
+     &EventHandler::theConsistencyLevel, clCollision, true, false);
+  static SwitchOption interfaceConsistencyLevelNever
+    (interfaceConsistencyLevel,
+     "Never",
+     "No consistency checks are made.",
+     clNoCheck);
+  static SwitchOption interfaceConsistencyLevelEveryCollision
+    (interfaceConsistencyLevel,
+     "EveryCollision",
+     "Every collision is checked for consistency.",
+     clCollision);
+  static SwitchOption interfaceConsistencyLevelEveryStep
+    (interfaceConsistencyLevel,
+     "EveryStep",
+     "Every step is checked for consistency.",
+     clStep);
+
+  static Parameter<EventHandler,double> interfaceConsistencyEpsilon
+    ("ConsistencyEpsilon",
+     "The maximum fraction of the total invariant mass of a collision that "
+     "any of the components of the summed momentum is allowed to change during "
+     "the generation. Used if <interface>ConsistencyLevel</interface> is "
+     "switched on.",
+     &EventHandler::theConsistencyEpsilon, sqrt(Constants::epsilon), 0.0, 1.0,
+     true, false, Interface::limited);
 
   interfaceLumifn.rank(10);
   interfaceCascadeHandler.rank(9);
