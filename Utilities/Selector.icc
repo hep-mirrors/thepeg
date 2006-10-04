@@ -21,7 +21,7 @@ operator = (const Selector<T,WeightType> & s) {
 
 template <typename T, typename WeightType>
 inline void Selector<T,WeightType>::swap(Selector<T,WeightType> & s) {
-  theMap.swap(theMap);
+  theMap.swap(s.theMap);
   std::swap(theSum, s.theSum);
 }
 
