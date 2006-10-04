@@ -1,6 +1,6 @@
 2006-10-04  Nils Lavesson  <nils@thep.lu.se>
 
-	* Utilities/Selector.tcc: Fixed a bug in swap
+	* Utilities/Selector.icc: Fixed a bug in swap
 
 2006-10-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
