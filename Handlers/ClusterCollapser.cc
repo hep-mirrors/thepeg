@@ -293,7 +293,7 @@ getCompensators(Energy mh, const ColourSinglet & cs,
 
   // If this didn't work, let's try to fix it by disregarding the
   // closest particle.
-  int end = comp.size();
+  tcPVector::size_type end = comp.size();
   while ( (pc + pcomp).m() <= mh + pcomp.m() ||
 	  ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) ) {
     if ( end == comp.size() ) {
@@ -309,7 +309,7 @@ getCompensators(Energy mh, const ColourSinglet & cs,
 
   // Now copy the compensators, add them to the new set and return them.
   ret.resize(end);
-  for ( int i = 0; i < end; ++i )
+  for ( tcPVector::size_type i = 0; i < end; ++i )
     ret[i] = newStep->copyParticle(comp[i]);
   return ret;
 }

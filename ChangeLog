@@ -1,3 +1,10 @@
+2006-10-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* acinclude.m4: Fixed output from AC_SEARCH_CLHEP about which
+	environments were set to avoid confusion.
+
+	* Handlers/ClusterCollapser.cc: fixed signed/unsigned warning.
+
 2006-10-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.cc, EventRecord/Particle.*: Added arguments to

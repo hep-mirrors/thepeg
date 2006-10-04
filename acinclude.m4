@@ -38,12 +38,14 @@ fi
 
 # Search for CLHEP in standard directories using standard CLHEP names
 AC_DEFUN([AC_SEARCH_CLHEP],
-[AC_MSG_CHECKING([if CLHEPPATH, CLHEPLIB and CLHEPINCLUDE are set])
-notset=""
+[AC_MSG_CHECKING([if CLHEPPATH is set])
+notsetp=""
+notsetl=""
 if test -z "$CLHEPPATH"; then
-  notset="true"
+  notsetp="true"
   for dirbase in / /usr $ac_default_prefix $prefix; do
     if test -z "$CLHEPLIB"; then
+      notsetl="true"
       for filename in $dirbase/lib/libCLHEP-?.?.?.?.{so,dylib} $dirbase/lib/libCLHEP.{so,dylib}; do
         if test -f $filename; then
           CLHEPPATH=$dirbase
@@ -59,7 +61,7 @@ if test -z "$CLHEPPATH"; then
   done
 else
   if test -z "$CLHEPLIB"; then
-    notset="true"
+    notsetl="true"
     for filename in $CLHEPPATH/lib/libCLHEP-?.?.?.?.{so,dylib} CLHEPPATH/lib/libCLHEP.{so,dylib}; do
       if test -f $filename; then
         CLHEPLIB=`basename $filename | sed -e 's/^lib/-l/' -e 's/\.\(so\|dylib\)$//'`
@@ -68,15 +70,24 @@ else
   fi
 fi
 
-if test -z"$CLHEPINCLUDE"; then
-  notset="true"
-  CLHEPINCLUDE=-I$CLHEPPATH/include
+if test -z "$notsetp"; then
+  AC_MSG_RESULT([yes ($CLHEPPATH)])
+else
+  AC_MSG_RESULT([no (found $CLHEPPATH)])
+fi
+AC_MSG_CHECKING([if CLHEPLIB is set])
+if test -z "$notsetl"; then
+  AC_MSG_RESULT([yes ($CLHEPLIB)])
+else
+  AC_MSG_RESULT([no (found $CLHEPLIB)])
 fi
 
-if test -z "$notset"; then
-  AC_MSG_RESULT([yes ($CLHEPPATH, $CLHEPLIB and $CLHEPINCLUDE)])
+AC_MSG_CHECKING([if CLHEPINCLUDE is set])
+if test -z "$CLHEPINCLUDE"; then
+  CLHEPINCLUDE=-I$CLHEPPATH/include
+  AC_MSG_RESULT([no (found $CLHEPINCLUDE)])
 else
-  AC_MSG_RESULT([no (found $CLHEPPATH, $CLHEPLIB and $CLHEPINCLUDE)])
+  AC_MSG_RESULT([yes ($CLHEPINCLUDE)])
 fi
 
 dnl Now lets see if the libraries work properly
