@@ -42,9 +42,10 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * Default constructor.
+   * Default constructor. Optionally the maximum energy of beam \a a
+   * and \a b can be given.
    */
-  LuminosityFunction();
+  LuminosityFunction(Energy a = 45.6*GeV, Energy b = 45.6*GeV);
 
   /**
    * Copy-constructor.

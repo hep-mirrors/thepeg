@@ -18,8 +18,8 @@
 
 using namespace ThePEG;
 
-LuminosityFunction::LuminosityFunction()
-  : theBeamEMaxA(45.6*GeV), theBeamEMaxB(45.6*GeV) {}
+LuminosityFunction::LuminosityFunction(Energy a, Energy b)
+  : theBeamEMaxA(a), theBeamEMaxB(b) {}
 
 LuminosityFunction::LuminosityFunction(const LuminosityFunction & x)
   : HandlerBase(x), LastXCombInfo<>(x),

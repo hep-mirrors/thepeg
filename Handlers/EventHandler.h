@@ -417,7 +417,7 @@ protected:
    */
   inline const GroupVector & groups() const;
 
-private:
+protected:
 
   /**
    * Set the luminosity function

@@ -62,6 +62,8 @@ void LesHouchesEventHandler::initialize() {
   typedef map<int,tLesHouchesReaderPtr> ProcessMap;
   ProcessMap processes;
   PDPair incoming;
+  Energy MaxEA = 0.0*GeV;
+  Energy MaxEB = 0.0*GeV;
   
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
@@ -79,6 +81,8 @@ void LesHouchesEventHandler::initialize() {
 	<< "The different LesHouchesReader objects in the "
 	<< "LesHouchesEventHandler '" << name() << "' have different "
 	<< "types of colliding particles." << Exception::warning;
+    MaxEA = max(MaxEA,  reader.heprup.EBMUP.first*GeV);
+    MaxEB = max(MaxEB,  reader.heprup.EBMUP.second*GeV);
 
     // Check that the weighting of the events in the different readers
     // is consistent with the ones requested for this event
@@ -119,6 +123,10 @@ void LesHouchesEventHandler::initialize() {
       << "The sum of the cross sections of the readers in the "
       << "LesHouchesEventHandler '" << name()
       << "' was zero." << Exception::warning;
+
+  // We now create a LuminosityFunction object to inform others about
+  // the energy of the beam.
+  lumiFn(new_ptr(LuminosityFunction(MaxEA, MaxEB)));
 
 }
 
