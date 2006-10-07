@@ -1,0 +1,31 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the RemnantData class.
+//
+
+namespace ThePEG {
+
+inline RemnantData::RemnantData() {}
+
+inline RemnantData::
+RemnantData(const ParticleData & particle, RemDecPtr, tcPDPtr)
+  : ParticleData(particle) {}
+
+inline RemnantData::RemnantData(const RemnantData & x)
+  : ParticleData(x) {}
+
+inline IBPtr RemnantData::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr RemnantData::fullclone() const {
+  return new_ptr(*this);
+}
+
+
+// If needed, insert default implementations of virtual function defined
+// in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
+
+
+}

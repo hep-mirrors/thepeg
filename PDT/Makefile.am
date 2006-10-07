@@ -1,18 +1,21 @@
 mySOURCES = ParticleData.cc DecayMode.cc MatcherBase.cc Matcher.cc Decayer.cc \
           MassGenerator.cc WidthGenerator.cc DummyDecayer.cc \
-          ConstituentParticleData.cc FlatDecayer.cc PDT.cc
+          ConstituentParticleData.cc FlatDecayer.cc PDT.cc RemnantData.cc \
+          RemnantDecayer.cc
 
 DOCFILES = CombinedMatcher.h DecayMode.h WidthGenerator.h Decayer.h \
            EnumParticles.h MassGenerator.h Matcher.h MatcherBase.h PDT.h \
            ParticleData.h StandardMatchers.h DummyDecayer.h \
-           ConstituentParticleData.h FlatDecayer.h 
+           ConstituentParticleData.h FlatDecayer.h RemnantData.h \
+           RemnantDecayer.h
 
 INCLUDEFILES = $(DOCFILES) DecayMode.fh DecayMode.icc \
                DecayMode.xh WidthGenerator.fh WidthGenerator.icc Decayer.fh \
                Decayer.icc MassGenerator.fh MassGenerator.icc Matcher.icc \
                Matcher.tcc MatcherBase.icc PDT.icc \
                DummyDecayer.icc ParticleData.icc ParticleData.tcc \
-               ParticleData.xh ConstituentParticleData.icc FlatDecayer.icc
+               ParticleData.xh ConstituentParticleData.icc FlatDecayer.icc \
+               RemnantData.icc RemnantDecayer.icc RemnantDecayer.fh
 
 noinst_LTLIBRARIES = libThePEGPDT.la
 pkglib_LTLIBRARIES = BreitWignerMass.la OmegaPhi3PiDecayer.la \
