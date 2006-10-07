@@ -16,14 +16,51 @@
 
 using namespace ThePEG;
 
+RemnantData::
+RemnantData(tcPDPtr particle, RemDecPtr)
+  : ParticleData(*particle), parentPD(particle) {}
+
 RemnantData::~RemnantData() {}
 
-void RemnantData::persistentOutput(PersistentOStream &) const {
-  // *** ATTENTION *** os << ; // Add all member variable which should be written persistently here.
+bool RemnantData::extract(tcPDPtr parton) {
+  if ( !parton ) return false;
+  extracted.insert(parton);
+  iCharge(PDT::Charge(iCharge() - parton->iCharge()));
+  return fixColour();
 }
 
-void RemnantData::persistentInput(PersistentIStream &, int) {
-  // *** ATTENTION *** is >> ; // Add all member variable which should be read persistently here.
+bool RemnantData::
+reextract(tcPDPtr oldp, tcPDPtr newp) {
+  multiset<tcPDPtr>::iterator it = extracted.find(oldp);
+  if ( it == extracted.end() ) return false;
+  extracted.erase(it);
+  extracted.insert(newp);
+  iCharge(PDT::Charge(iCharge() + oldp->iCharge() - newp->iCharge()));
+  return fixColour();
+}
+
+bool RemnantData::fixColour() {
+  bool col = parentPD->hasAntiColour();
+  bool acol = parentPD->hasColour();
+  for ( multiset<tcPDPtr>::const_iterator it = extracted.begin();
+	it != extracted.end(); ++it ) {
+    if ( (**it).hasColour() ) col = true;
+    if ( (**it).hasAntiColour() ) acol = true;
+  }
+  if ( col )
+    iColour(acol? PDT::Colour8: PDT::Colour3bar);
+  else
+    iColour(acol? PDT::Colour3: PDT::Colour0);
+
+  return true;
+}
+
+void RemnantData::persistentOutput(PersistentOStream & os) const {
+  os << parentPD << extracted;
+}
+
+void RemnantData::persistentInput(PersistentIStream & is, int) {
+  is >> parentPD >> extracted;
 }
 
 ClassDescription<RemnantData> RemnantData::initRemnantData;

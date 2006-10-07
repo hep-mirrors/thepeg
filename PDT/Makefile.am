@@ -15,7 +15,8 @@ INCLUDEFILES = $(DOCFILES) DecayMode.fh DecayMode.icc \
                Matcher.tcc MatcherBase.icc PDT.icc \
                DummyDecayer.icc ParticleData.icc ParticleData.tcc \
                ParticleData.xh ConstituentParticleData.icc FlatDecayer.icc \
-               RemnantData.icc RemnantDecayer.icc RemnantDecayer.fh
+               RemnantData.icc RemnantData.fh RemnantDecayer.icc \
+               RemnantDecayer.fh
 
 noinst_LTLIBRARIES = libThePEGPDT.la
 pkglib_LTLIBRARIES = BreitWignerMass.la OmegaPhi3PiDecayer.la \

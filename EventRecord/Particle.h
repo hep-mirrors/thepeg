@@ -949,7 +949,7 @@ public:
 
   };
 
-private:
+protected:
 
   /**
    * Private default constructor must only be used by the
@@ -962,6 +962,8 @@ private:
    * use the private default constructor.
    */
   friend class ClassTraits<Particle>;
+
+private:
 
   /**
    * Private and non-existent assignment.
@@ -997,7 +999,7 @@ template <>
 struct ClassTraits<Particle>: public ClassTraitsBase<Particle> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::Particle"; }
-  /** Create a Event object. */
+  /** Create a Particle object. */
   static TPtr create() { return TPtr::Create(Particle()); }
 };
 

@@ -6,6 +6,7 @@
 //
 
 #include "ThePEG/PDT/ParticleData.h"
+#include "ThePEG/PDT/RemnantData.fh"
 #include "ThePEG/PDT/RemnantDecayer.fh"
 
 namespace ThePEG {
@@ -41,18 +42,11 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * The default constructor.
-   */
-  inline RemnantData();
-
-  /**
    * The standard constructor takes as argument the \a particle type
    * for which this is the remnant and a \a decayer capable of
-   * performing the decay. Optionally a \a parton that has been
-   * extracted.
+   * performing the decay.
    */
-  inline RemnantData(const ParticleData & particle, RemDecPtr decayer,
-		     tcPDPtr parton = tcPDPtr());
+  RemnantData(tcPDPtr particle, RemDecPtr decayer);
 
   /**
    * The copy constructor.
@@ -68,8 +62,23 @@ public:
 public:
 
   /**
-   * Modify the 
+   * Modify the properties to reflect that the given \a parton was
+   * extracted.
    */
+  bool extract(tcPDPtr parton);
+
+  /**
+   * Modify the properties to reflect that the previously extracted
+   * parton, \a oldp, was evolved backwards to the the parton \a newp.
+   */
+  bool reextract(tcPDPtr oldp, tcPDPtr newp);
+
+protected:
+  /**
+   * Modify the colour to reflect that the given \a parton was
+   * extracted.
+   */
+  bool fixColour();
 
 public:
 
@@ -122,6 +131,32 @@ protected:
 private:
 
   /**
+   * The particle type of the parent.
+   */
+  tcPDPtr parentPD;
+
+  /**
+   * The set of extracted particle types.
+   */
+  multiset<tcPDPtr> extracted;
+
+protected:
+
+  /**
+   * The default constructor is protected and must only be used by the
+   * PersistentIStream class via the ClassTraits<RemnantData> class.
+   */
+  inline RemnantData();
+
+  /**
+   * The ClassTraits<RemnantData> class must be a friend to be able to
+   * use the private default constructor.
+   */
+  friend class ClassTraits<RemnantData>;
+
+private:
+
+  /**
    * The static object used to initialize the description of this class.
    * Indicates that this is a concrete class with persistent data.
    */
@@ -158,14 +193,8 @@ struct ClassTraits<RemnantData>
   : public ClassTraitsBase<RemnantData> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::RemnantData"; }
-  /**
-   * The name of a file containing the dynamic library where the class
-   * RemnantData is implemented. It may also include several, space-separated,
-   * libraries if the class RemnantData depends on other classes (base classes
-   * excepted). In this case the listed libraries will be dynamically
-   * linked in the order they are specified.
-   */
-  static string library() { return "RemnantData.so"; }
+  /** Create a Particle object. */
+  static TPtr create() { return TPtr::Create(RemnantData()); }
 };
 
 /** @endcond */
