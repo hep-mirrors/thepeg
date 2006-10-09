@@ -27,7 +27,7 @@ colourNeighbour(Iterator first, Iterator last, bool anti) const {
   if ( !hasColourInfo() || !hasColour(!anti) ) return tPPtr();
   tColinePtr line = colourLine(!anti);
   for ( ; first != last; ++first )
-    if ( (**first).hasColourInfo() && (**first).colourLine(anti) == line )
+    if ( (**first).hasColourInfo() && (**first).hasColourLine(line, anti) )
       return *first;
   return tPPtr();
 }

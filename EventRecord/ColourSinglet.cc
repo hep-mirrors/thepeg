@@ -74,8 +74,8 @@ fill(Index s0, bool forward, tcColinePtr cl, tcParticleSet & left) {
     if ( forward ) piece(s0).push_back(p);
     else piece(s0).push_front(p);
 
-    if ( ( cl = p->colourLine(forward) ) == first ) return true;
-    if ( !cl ) return false;
+    if ( p->hasColourLine(first, forward) ) return true;
+    if ( !( cl = p->colourLine(forward) ) ) return false;
   }
 
   // If we get here we have ended up in a colour source or sink.

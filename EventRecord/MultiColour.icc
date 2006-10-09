@@ -1,0 +1,41 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MultiColour class.
+//
+
+namespace ThePEG {
+
+inline MultiColour::MultiColour() {}
+
+inline MultiColour::MultiColour(const MultiColour & x)
+  : ColourBase(x), theColourLines(x.theColourLines),
+    theAntiColourLines(x.theAntiColourLines) {}
+
+inline void MultiColour::addColourLine(tColinePtr line, bool anti) {
+  if ( anti ) addAntiColourLine(line);
+  else {
+    if ( !colourLine() ) colourLine(line);
+    theColourLines.insert(line);
+  }
+}
+
+inline void MultiColour::addAntiColourLine(tColinePtr line) {
+  if ( !antiColourLine() ) antiColourLine(line);
+  theAntiColourLines.insert(line);
+}
+
+inline void MultiColour::removeColourLine(tcColinePtr line, bool anti) {
+  if ( anti ) removeAntiColourLine(line);
+  else {
+    if ( colourLine() == line ) colourLine(tColinePtr());
+    theColourLines.erase(line);
+  }
+}
+
+inline void MultiColour::removeAntiColourLine(tcColinePtr line) {
+  if ( antiColourLine() == line ) antiColourLine(tColinePtr());
+  theAntiColourLines.erase(line);
+}
+
+}

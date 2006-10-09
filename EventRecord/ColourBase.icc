@@ -23,12 +23,17 @@ inline tColinePtr ColourBase::antiColourLine() const {
 inline tColinePtr ColourBase::colourLine() const {
   return theColourLine;
 }
+
 inline void ColourBase::antiColourLine(tColinePtr l) {
   theAntiColourLine = l;
 }
 
 inline void ColourBase::colourLine(tColinePtr l) {
   theColourLine = l;
+}
+
+inline bool ColourBase::hasAntiColourLine(tcColinePtr line) const {
+  return hasColourLine(line, true);
 }
 
 }

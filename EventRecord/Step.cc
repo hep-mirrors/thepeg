@@ -341,8 +341,7 @@ tPPtr Step::colourNeighbour(tcPPtr p, bool anti) const {
   if ( !line ) return tPPtr();
   for ( ParticleSet::const_iterator it = particles().begin();
 	it != particles().end(); ++it )
-    //    if ( (**it).colourLine(anti) == line ) return (**it).final();
-    if ( (**it).colourLine(anti) == line ) return *it;
+    if ( (**it).hasColourLine(line, anti) ) return *it;
   return tPPtr();
 }
 

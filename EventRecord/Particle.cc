@@ -104,7 +104,7 @@ tPPtr Particle::incomingColour(bool anti) const {
   tColinePtr line = colourLine(anti);
   if ( !line ) return tPPtr();
   for ( int i = 0, N = parents().size(); i < N; ++i )
-    if ( parents()[i]->colourLine(anti) == line ) return parents()[i];
+    if ( parents()[i]->hasColourLine(line, anti) ) return parents()[i];
   return tPPtr();
 }
 
@@ -113,7 +113,7 @@ tPPtr Particle::outgoingColour(bool anti) const {
   tColinePtr line = colourLine(anti);
   if ( !line ) return tPPtr();
   for ( int i = 0, N = children().size(); i < N; ++i )
-    if ( children()[i]->colourLine(anti) == line ) return children()[i];
+    if ( children()[i]->hasColourLine(line, anti) ) return children()[i];
   return tPPtr();
 }
 

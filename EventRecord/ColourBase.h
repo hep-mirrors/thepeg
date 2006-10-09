@@ -60,7 +60,19 @@ public:
    */
   inline tColinePtr colourLine() const;
 
-private:
+  /**
+   * Return true if the particle is connected to the given (\a anti-)
+   * colour \a line.
+   */
+  virtual bool hasColourLine(tcColinePtr line, bool anti = false) const;
+
+  /**
+   * Return true if the particle is connected to the given anti-colour
+   * \a line.
+   */
+  inline bool hasAntiColourLine(tcColinePtr line) const;
+
+protected:
 
   /**
    * Set the anti-colour line to which this particle is connected.

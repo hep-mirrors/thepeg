@@ -544,6 +544,18 @@ public:
   inline tColinePtr colourLine(bool anti = false) const;
 
   /**
+   * Return true if the particle is connected to the given (\a anti-)
+   * colour \a line.
+   */
+  inline bool hasColourLine(tcColinePtr line, bool anti = false) const;
+
+  /**
+   * Return true if the particle is connected to the given anti-colour
+   * \a line.
+   */
+  inline bool hasAntiColourLine(tcColinePtr line) const;
+
+  /**
    * True if this particle type is not a colour singlet.
    */
   inline bool coloured() const;

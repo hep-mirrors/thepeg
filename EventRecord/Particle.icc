@@ -163,6 +163,14 @@ inline tColinePtr Particle::colourLine(bool anti) const {
   return hasColourInfo()? colourInfo()->colourLine(): tColinePtr();
 }
 
+inline bool Particle::hasColourLine(tcColinePtr line, bool anti) const {
+  return hasColourInfo()? colourInfo()->hasColourLine(line, anti): false;
+}
+
+inline bool Particle::hasAntiColourLine(tcColinePtr line) const {
+  return hasColourLine(line, true);
+}
+
 template <typename Iterator>
 inline typename std::iterator_traits<Iterator>::value_type Particle::
 antiColourNeighbour(Iterator first, Iterator last) const {

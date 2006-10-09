@@ -60,7 +60,7 @@ ColourLine::
 getColouredParticle(Iterator first, Iterator last, bool anti) const {
   typedef typename std::iterator_traits<Iterator>::value_type ParticlePointer;
   for ( ; first != last; ++first )
-    if ( (**first).coloured() && (**first).colourLine(anti) == this )
+    if ( (**first).coloured() && (**first).hasColourLine(this, anti) )
       return *first;
   return ParticlePointer();
 }

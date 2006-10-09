@@ -18,6 +18,10 @@ using namespace ThePEG;
 
 ColourBase::~ColourBase() {}
 
+bool ColourBase::hasColourLine(tcColinePtr line, bool anti) const {
+  return ( anti? ( antiColourLine() == line ): ( colourLine() == line ) );
+}
+
 void ColourBase::rebind(const EventTranslationMap & trans) {
   theAntiColourLine = trans.translate(theAntiColourLine);
   theColourLine = trans.translate(theColourLine);
