@@ -7,6 +7,7 @@
 #include "RemnantParticle.h"
 #include "ThePEG/PDT/RemnantData.h"
 #include "ThePEG/PDT/RemnantDecayer.h"
+#include "ThePEG/EventRecord/MultiColour.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantParticle.tcc"
@@ -22,6 +23,7 @@ RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr)
   : Particle(new_ptr(RemnantData(particle.dataPtr(), decayer))) {
   remData = const_ptr_cast<tRemPDPtr>(dynamic_ptr_cast<tcRemPDPtr>(dataPtr()));
   set5Momentum(particle.momentum());
+  colourInfo(new_ptr(MultiColour()));
 }
 
 RemnantParticle::~RemnantParticle() {}
@@ -32,6 +34,7 @@ bool RemnantParticle::extract(tPPtr parton) {
   if ( !remData->extract(parton->dataPtr()) ) return false;
   extracted.insert(parton);
   setMomentum(pnew);
+  fixColourLines(parton);
   return true;
 }
 
@@ -45,7 +48,24 @@ bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp) {
   extracted.insert(newp);
   if ( oldp == primary ) primary = newp;
   setMomentum(pnew);
+  if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
+  if ( oldp->antiColourLine() ) oldp->antiColourLine()->removeColoured(this);
+  fixColourLines(newp);
   return true;
+}
+
+void RemnantParticle::fixColourLines(tPPtr parton) {
+  if ( parton->hasColour() ) {
+    if ( parton->colourLine() )
+      parton->colourLine()->addAntiColoured(this);
+    else
+      ColourLine::create(parton, this);
+  } 
+  if ( parton->hasAntiColour() ) {
+    if ( parton->antiColourLine() )
+      parton->antiColourLine()->addColoured(this);
+    else ColourLine::create(this, parton);
+  }
 }
 
 void RemnantParticle::persistentOutput(PersistentOStream & os) const {

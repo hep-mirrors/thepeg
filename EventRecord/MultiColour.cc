@@ -23,6 +23,32 @@ bool MultiColour::hasColourLine(tcColinePtr line, bool anti) const {
 	   ( theColourLines.find(line) != theColourLines.end() ) );
 }
 
+void MultiColour::colourLine(tColinePtr line, bool anti) {
+  if ( anti ) antiColourLine(line);
+  else {
+    if ( !colourLine() ) ColourBase::colourLine(line);
+    theColourLines.insert(line);
+  }
+}
+
+void MultiColour::antiColourLine(tColinePtr line) {
+  if ( !antiColourLine() ) ColourBase::antiColourLine(line);
+  theAntiColourLines.insert(line);
+}
+
+void MultiColour::removeColourLine(tcColinePtr line, bool anti) {
+  if ( anti ) removeAntiColourLine(line);
+  else {
+    ColourBase::removeColourLine(line);
+    theColourLines.erase(line);
+  }
+}
+
+void MultiColour::removeAntiColourLine(tcColinePtr line) {
+  ColourBase::removeAntiColourLine(line);
+  theAntiColourLines.erase(line);
+}
+
 void MultiColour::persistentOutput(PersistentOStream & os) const {
   os << theColourLines << theColourLines;
 }

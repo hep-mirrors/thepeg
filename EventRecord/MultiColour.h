@@ -38,31 +38,34 @@ public:
 
 public:
 
+  using ColourBase::colourLine;
+  using ColourBase::antiColourLine;
+
   /**
    * Add the given (\a anti-) colour \a line to the particle. If the base
    * class has no (anti-) colour line, it will also be set.
    */
-  inline void addColourLine(tColinePtr line, bool anti = false);
+  virtual void colourLine(tColinePtr line, bool anti = false);
 
   /**
    * Add the given anti-colour \a line to the particle. If the base
    * class has no anti-colour line, it will also be set.
    */
-  inline void addAntiColourLine(tColinePtr line);
+  virtual void antiColourLine(tColinePtr line);
 
   /**
    * Remove the given (\a anti-) colour \a line from the particle. If
    * the line is the colourLine() of the base class, it will be
    * removed there as well.
    */
-  inline void removeColourLine(tcColinePtr line, bool anti = false);
+  virtual void removeColourLine(tcColinePtr line, bool anti = false);
 
   /**
    * Remove the given anti-colour \a line from the particle. If the
    * line is the antiColourLine() of the base class, it will be
    * removed there as well.
    */
-  inline void removeAntiColourLine(tcColinePtr line);
+  virtual void removeAntiColourLine(tcColinePtr line);
 
   /**
    * Return true if the particle is connected to the given (\a anti-)

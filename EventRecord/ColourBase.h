@@ -75,14 +75,24 @@ public:
 protected:
 
   /**
-   * Set the anti-colour line to which this particle is connected.
+   * Set the anti-colour \a line to which this particle is connected.
    */
-  inline void antiColourLine(tColinePtr);
+  inline virtual void antiColourLine(tColinePtr line);
 
   /**
-   * Set the colour line to which this particle is connected.
+   * Set the (\a anti-) colour line to which this particle is connected.
    */
-  inline void colourLine(tColinePtr);
+  inline virtual void colourLine(tColinePtr line, bool anti = false);
+
+  /**
+   * Remove the anti-colour \a line to which this particle is connected.
+   */
+  inline virtual void removeAntiColourLine(tcColinePtr line);
+
+  /**
+   * Remove the (\a anti-) colour line to which this particle is connected.
+   */
+  inline virtual void removeColourLine(tcColinePtr line, bool anti = false);
 
 public:
 

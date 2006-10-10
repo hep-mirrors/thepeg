@@ -1,5 +1,12 @@
 2006-10-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* EventRecord/ColourLine.cc: Now uses
+	ColourBase::remove(Anti)ColourLine functions insted of explicitly
+	setting colour lines to null.
+
+	* EventRecord/ColourBase.*: Made setting of (anti)colourLine
+	virtual. Also introduced virtual remove(Anti)ColourLine functions.
+
 	* PDT/ParticleData.h: Made addDecayMode and removeDecayMode
 	protected.
 

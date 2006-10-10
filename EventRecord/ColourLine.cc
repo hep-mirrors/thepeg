@@ -52,7 +52,7 @@ void ColourLine::addColoured(tPPtr p, bool anti) {
 void ColourLine::removeAntiColoured(tPPtr p) {
   tPVector::iterator cp=find(range(theAntiColoured), p);
   if(cp!=theAntiColoured.end()) theAntiColoured.erase(cp);
-  p->colourInfo()->antiColourLine(tColinePtr());
+  p->colourInfo()->removeAntiColourLine(this);
 }
 
 void ColourLine::removeColoured(tPPtr p, bool anti) {
@@ -60,7 +60,7 @@ void ColourLine::removeColoured(tPPtr p, bool anti) {
   else {
     tPVector::iterator cp=find(range(theColoured), p);
     if(cp!=theColoured.end()) theColoured.erase(cp);
-    p->colourInfo()->colourLine(tColinePtr());
+    p->colourInfo()->removeColourLine(this);
   }
 }
 

@@ -28,12 +28,22 @@ inline void ColourBase::antiColourLine(tColinePtr l) {
   theAntiColourLine = l;
 }
 
-inline void ColourBase::colourLine(tColinePtr l) {
-  theColourLine = l;
+inline void ColourBase::colourLine(tColinePtr l, bool anti) {
+  if ( anti ) antiColourLine(l);
+  else theColourLine = l;
 }
 
 inline bool ColourBase::hasAntiColourLine(tcColinePtr line) const {
   return hasColourLine(line, true);
+}
+
+inline void ColourBase::removeAntiColourLine(tcColinePtr line) {
+  if ( antiColourLine() == line ) theAntiColourLine = tColinePtr();
+}
+
+inline void ColourBase::removeColourLine(tcColinePtr line, bool anti) {
+  if ( anti ) removeAntiColourLine(line);
+  else if ( colourLine() == line ) theColourLine = tColinePtr();
 }
 
 }

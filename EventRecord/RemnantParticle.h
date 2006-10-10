@@ -81,6 +81,13 @@ public:
    */
   static void Init();
 
+protected:
+
+  /**
+   * If necessary, colour-connect this remnant to the given \a parton.
+   */
+  void fixColourLines(tPPtr parton);
+
 private:
 
   /**
