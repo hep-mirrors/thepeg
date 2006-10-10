@@ -504,7 +504,7 @@ protected:
   virtual IVector getReferences();
   //@}
 
-private:
+protected:
 
   /**
    * Add a decay mode for this particle.
@@ -515,6 +515,8 @@ private:
    * Remove a decay mode for this particle.
    */
   void removeDecayMode(tDMPtr);
+
+private:
 
   /**
    * Id number according to the STDHEP/PDG standard.

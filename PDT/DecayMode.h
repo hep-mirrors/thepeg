@@ -83,6 +83,9 @@ public:
   /** ParticleData is a friend. */
   friend class ParticleData;
 
+  /** RemnantData is a friend. */
+  friend class RemnantData;
+
   /** The EventGenerator is a friend. */
   friend class EventGenerator;
 

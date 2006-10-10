@@ -43,6 +43,20 @@ public:
 
 public:
 
+  /**
+   * Modify the properties to reflect that the given \a parton was
+   * extracted.
+   */
+  bool extract(tPPtr parton);
+
+  /**
+   * Modify the properties to reflect that the previously extracted
+   * parton, \a oldp, was evolved backwards to the the parton \a newp.
+   */
+  bool reextract(tPPtr oldp, tPPtr newp);
+
+public:
+
   /** @name Functions used by the persistent I/O system. */
   //@{
   /**
@@ -73,6 +87,21 @@ private:
    * The RemnantData object associated to this remnant.
    */
   RemPDPtr remData;
+
+  /**
+   * The parent from which this remnant resulted.
+   */
+  tPPtr parent;
+
+  /**
+   * The set of extracted partons.
+   */
+  ParticleSet extracted;
+
+  /**
+   * The first extracted parton.
+   */
+  tPPtr primary;
 
 protected:
 

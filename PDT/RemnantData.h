@@ -136,6 +136,11 @@ private:
   tcPDPtr parentPD;
 
   /**
+   * The Decayer responsible for for the decay of this remnant.
+   */
+  RemDecPtr decayer;
+
+  /**
    * The set of extracted particle types.
    */
   multiset<tcPDPtr> extracted;

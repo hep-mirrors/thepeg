@@ -23,6 +23,11 @@ bool RemnantDecayer::accept(const DecayMode &) const {
   return false;
 }
 
+bool RemnantDecayer::
+canHandle(tcPDPtr, const multiset<tcPDPtr> &) const {
+  return false;
+}
+
 ParticleVector RemnantDecayer::decay(const DecayMode & dm,
 				  const Particle &) const {
   ParticleVector children = dm.produceProducts();

@@ -1,3 +1,10 @@
+2006-10-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/ParticleData.h: Made addDecayMode and removeDecayMode
+	protected.
+
+	* PDT/DecayMode.h: Temprorarily made RemnantData a friend.
+
 2006-10-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.cc, EventRecord/ColourSinglet.cc,

@@ -59,6 +59,13 @@ public:
   virtual ParticleVector decay(const DecayMode & dm, const Particle & p) const;
   //@}
 
+  /**
+   * Return true if this decayer can handle the extraction of the \a
+   * extracted partons from the given \a particle.
+   */
+  virtual bool canHandle(tcPDPtr parent,
+			 const multiset<tcPDPtr> & extracted) const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */
