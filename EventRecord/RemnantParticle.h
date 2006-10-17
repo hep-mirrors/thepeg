@@ -103,12 +103,7 @@ private:
   /**
    * The set of extracted partons.
    */
-  ParticleSet extracted;
-
-  /**
-   * The first extracted parton.
-   */
-  tPPtr primary;
+  PVector extracted;
 
 protected:
 

@@ -47,6 +47,15 @@ double Decayer::brat(const DecayMode &, const Particle &, double b) const {
   return b;
 }
 
+bool Decayer::needsFullStep() const {
+  return false;
+}
+
+ParticleVector Decayer::
+decay(const DecayMode & dm, const Particle & p, Step &) const {
+  return decay(dm, p);
+}
+
 AbstractNoPIOClassDescription<Decayer> Decayer::initDecayer;
 
 void Decayer::Init() {

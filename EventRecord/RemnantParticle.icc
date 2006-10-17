@@ -9,6 +9,6 @@ namespace ThePEG {
 inline RemnantParticle::RemnantParticle() {}
 
 inline RemnantParticle::RemnantParticle(const RemnantParticle & x)
-  : Particle(x), remData(x.remData) {}
+  : Particle(x), remData(x.remData), parent(x.parent) {}
 
 }

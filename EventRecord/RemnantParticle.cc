@@ -8,6 +8,7 @@
 #include "ThePEG/PDT/RemnantData.h"
 #include "ThePEG/PDT/RemnantDecayer.h"
 #include "ThePEG/EventRecord/MultiColour.h"
+#include "ThePEG/Config/algorithm.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantParticle.tcc"
@@ -32,7 +33,7 @@ bool RemnantParticle::extract(tPPtr parton) {
   LorentzMomentum pnew = momentum() - parton->momentum();
   if ( pnew.e() < 0.0*GeV ) return false;
   if ( !remData->extract(parton->dataPtr()) ) return false;
-  extracted.insert(parton);
+  extracted.push_back(parton);
   setMomentum(pnew);
   fixColourLines(parton);
   return true;
@@ -41,12 +42,10 @@ bool RemnantParticle::extract(tPPtr parton) {
 bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp) {
   LorentzMomentum pnew = momentum() + oldp->momentum() - newp->momentum();
   if ( pnew.e() < 0.0*GeV ) return false;
-  if ( !remData->reextract(oldp->dataPtr(), newp->dataPtr()) ) return false;
-  ParticleSet::iterator it = extracted.find(oldp);
+  PVector::iterator it = find(extracted, oldp);
   if ( it == extracted.end() ) return false;
-  extracted.erase(it);
-  extracted.insert(newp);
-  if ( oldp == primary ) primary = newp;
+  if ( !remData->reextract(oldp->dataPtr(), newp->dataPtr()) ) return false;
+  extracted[it - extracted.begin()] = newp;
   setMomentum(pnew);
   if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
   if ( oldp->antiColourLine() ) oldp->antiColourLine()->removeColoured(this);
@@ -69,11 +68,11 @@ void RemnantParticle::fixColourLines(tPPtr parton) {
 }
 
 void RemnantParticle::persistentOutput(PersistentOStream & os) const {
-  os << remData << parent << extracted << primary;
+  os << remData << parent << extracted;
 }
 
 void RemnantParticle::persistentInput(PersistentIStream & is, int) {
-  is >> remData >> parent >> extracted >> primary;
+  is >> remData >> parent >> extracted;
 }
 
 ClassDescription<RemnantParticle> RemnantParticle::initRemnantParticle;

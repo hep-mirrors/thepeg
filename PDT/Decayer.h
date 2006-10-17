@@ -55,6 +55,15 @@ public:
   virtual bool accept(const DecayMode & dm) const = 0;
 
   /**
+   * Return true if this Decayer need to access the full current step
+   * when a particle is decayed. If true is returned the standard
+   * Decay Handler will call the decay(const DecayMode&,const
+   * Particle&,Step&) function rather than the decay(const
+   * DecayMode&,const Particle&) function.
+   */
+  virtual bool needsFullStep() const;
+
+  /**
    * Perform a decay for a given DecayMode and a given Particle instance.
    * @param dm the DecayMode describing the decay.
    * @param p the Particle instance to be decayed.
@@ -62,6 +71,22 @@ public:
    */
   virtual ParticleVector decay(const DecayMode & dm,
 			       const Particle & p) const = 0;
+
+  /**
+   * Perform a decay for a given DecayMode and a given Particle
+   * instance. This version allows the decaying particle to borrow
+   * energy/momentum from its sublings in the current step. This will
+   * be called by the standard DecayHandler if the needsFullStep()
+   * function returns true.
+   *
+   * @param dm   the DecayMode describing the decay.
+   * @param p    the Particle instance to be decayed.
+   * @param step the current step in which to find possible siblings to
+   *             shuffle energy with.
+   * @return a ParticleVector containing the decay products.
+   */
+  virtual ParticleVector decay(const DecayMode & dm, const Particle & p,
+			       Step & step) const;
 
   /**
    * Calculate branching ratio. If this model has any oppinions on the

@@ -56,7 +56,11 @@ performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
     if ( !dm ) throw DecHdlNoDecayMode(parent->data());
     if ( !dm->decayer() ) throw DecHdlNoDecayer(parent->data(), *dm);
     try {
-      ParticleVector children = dm->decayer()->decay(*dm, *parent);
+      ParticleVector children;
+      if ( dm->decayer()->needsFullStep() )
+	children = dm->decayer()->decay(*dm, *parent, s);
+      else
+	children = dm->decayer()->decay(*dm, *parent);
       if ( !children.empty() ) {
 	parent->decayMode(dm);
 	for ( int i = 0, N = children.size(); i < N; ++i )

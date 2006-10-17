@@ -23,17 +23,26 @@ bool RemnantDecayer::accept(const DecayMode &) const {
   return false;
 }
 
+bool RemnantDecayer::needsFullStep() const {
+  return true;
+}
+
 bool RemnantDecayer::
 canHandle(tcPDPtr, const multiset<tcPDPtr> &) const {
   return false;
 }
 
-ParticleVector RemnantDecayer::decay(const DecayMode & dm,
-				  const Particle &) const {
+ParticleVector RemnantDecayer::
+decay(const DecayMode & dm, const Particle &) const {
   ParticleVector children = dm.produceProducts();
   return children;
 }
 
+ParticleVector RemnantDecayer::
+decay(const DecayMode & dm, const Particle &, Step &) const {
+  ParticleVector children = dm.produceProducts();
+  return children;
+}
 
 void RemnantDecayer::persistentOutput(PersistentOStream & ) const {
   // *** ATTENTION *** os << ; // Add all member variable which should be written persistently here.

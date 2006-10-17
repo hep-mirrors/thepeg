@@ -64,7 +64,7 @@ rrange(Container & c) {
 template <typename Container>
 inline IteratorRange<typename Container::const_reverse_iterator>
 rrange(const Container & c) {
-  return std::make_pair(c.begin(), c.end());
+  return std::make_pair(c.rbegin(), c.rend());
 }
 
 /** The std::for_each function taking an IteratorRange as argument. */
