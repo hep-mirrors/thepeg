@@ -7,6 +7,7 @@
 #include "RemnantDecayer.h"
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/PDT/RemnantData.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantDecayer.tcc"
@@ -39,8 +40,15 @@ decay(const DecayMode & dm, const Particle &) const {
 }
 
 ParticleVector RemnantDecayer::
-decay(const DecayMode & dm, const Particle &, Step &) const {
-  ParticleVector children = dm.produceProducts();
+decay(const DecayMode & dm, const Particle & p, Step &) const {
+  ParticleVector children;
+  tcRemPPtr remnant = dynamic_ptr_cast<tcRemPPtr>(&p);
+  if ( !remnant ) return children;
+  tRemPDPtr rpd = data(remnant);
+  PVector ex = extracted(remnant);
+  tPPtr par = parent(remnant);
+  if ( !par || ex.empty() || !rpd ) return children;
+  children= dm.produceProducts();
   return children;
 }
 

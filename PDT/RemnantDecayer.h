@@ -7,6 +7,8 @@
 
 #include "ThePEG/PDT/Decayer.h"
 #include "RemnantDecayer.fh"
+#include "ThePEG/PDT/RemnantData.fh"
+#include "ThePEG/EventRecord/RemnantParticle.h"
 
 namespace ThePEG {
 
@@ -90,6 +92,23 @@ public:
    */
   virtual bool canHandle(tcPDPtr parent,
 			 const multiset<tcPDPtr> & extracted) const;
+
+protected:
+
+  /**
+   * Access the RemnantData object of a \a remnant.
+   */
+  inline tRemPDPtr data(tcRemPPtr remnant) const;
+
+  /**
+   * Access the parent  of a \a remnant.
+   */
+  inline tPPtr parent(tcRemPPtr remnant) const;
+
+  /**
+   * Access the vector of extracted particles of a \a remnant.
+   */
+  inline const PVector & extracted(tcRemPPtr remnant) const;
 
 public:
 

@@ -167,6 +167,18 @@ public:
   //@}
 
   /**
+   * Join with the given ColourLine. The colour of the given \a line
+   * is joined so that it will flow into this line, ie. the
+   * anti-coloured particle in the end of the \a line will become
+   * connected to the coloured particle in the of this line.  After
+   * the joining the given \a line will not be connected to
+   * anything. Also the anti-coloured particle in the end of this
+   * line, which must be the same as the coloured particle in the end
+   * of the \line, will not be connected to any line afterwards.
+   */
+  bool join(ColinePtr line);
+
+  /**
    * Return the first (anti-)coloured parton among the given range of
    * particles which is on this colour line.
    */

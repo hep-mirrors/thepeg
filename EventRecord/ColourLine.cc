@@ -64,6 +64,26 @@ void ColourLine::removeColoured(tPPtr p, bool anti) {
   }
 }
 
+bool ColourLine::join(ColinePtr line) {
+  if ( !startParticle() || startParticle() != line->endParticle() )
+    return false;
+  removeAntiColoured(startParticle());
+  line->removeColoured(line->endParticle());
+  while ( line->coloured().size() ) {
+    tPPtr p = line->coloured()[0];
+    line->removeColoured(p);
+    theColoured.insert(theColoured.begin(), p);
+    p->colourInfo()->colourLine(this);
+  }
+  while ( line->antiColoured().size() ) {
+    tPPtr p = line->antiColoured()[0];
+    line->removeAntiColoured(p);
+    theAntiColoured.push_back(p);
+    p->colourInfo()->antiColourLine(this);
+  }
+  return true;
+}
+
 void ColourLine::write(ostream & os, tcEventPtr event, bool anti) {
   os << ( anti? '-': '+' );
   int index = event->colourLineIndex(this);

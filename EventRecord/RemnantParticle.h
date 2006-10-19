@@ -19,6 +19,13 @@ class RemnantParticle: public Particle {
 
 public:
 
+  /**
+   * RemnantDecayer is a friend.
+   */
+  friend class RemnantDecayer;
+
+public:
+
   /** @name Standard constructors and destructors. */
   //@{
   /**
