@@ -172,9 +172,7 @@ public:
    * anti-coloured particle in the end of the \a line will become
    * connected to the coloured particle in the of this line.  After
    * the joining the given \a line will not be connected to
-   * anything. Also the anti-coloured particle in the end of this
-   * line, which must be the same as the coloured particle in the end
-   * of the \line, will not be connected to any line afterwards.
+   * anything.
    */
   bool join(ColinePtr line);
 

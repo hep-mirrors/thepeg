@@ -67,8 +67,6 @@ void ColourLine::removeColoured(tPPtr p, bool anti) {
 bool ColourLine::join(ColinePtr line) {
   if ( !startParticle() || startParticle() != line->endParticle() )
     return false;
-  removeAntiColoured(startParticle());
-  line->removeColoured(line->endParticle());
   while ( line->coloured().size() ) {
     tPPtr p = line->coloured()[0];
     line->removeColoured(p);
