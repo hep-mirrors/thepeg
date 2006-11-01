@@ -112,305 +112,271 @@ inline LorentzSpinor & LorentzSpinor::operator = (const LorentzSpinor & in) {
 }
 
 // change the dirac matrix representation
-inline void LorentzSpinor::changeRep(DiracRep newdirac)
-{
+inline void LorentzSpinor::changeRep(DiracRep newdirac) {
   if(newdirac!=_dirac) *this = transformRep(newdirac);
 }
 
 // return the spinor in a different representation
-inline LorentzSpinor LorentzSpinor::transformRep(DiracRep newdirac)
-{
+inline LorentzSpinor LorentzSpinor::transformRep(DiracRep newdirac) const {
   // do nothing if all ready in the correct representation
-  if(newdirac==_dirac){return LorentzSpinor(*this);}
+  if(newdirac==_dirac) return LorentzSpinor(*this);
   double fact=1./sqrt(2.);
   // transform from HELAS representation to Haber one
   Complex output[4];
-  if(newdirac==HELASDRep && _dirac==HaberDRep)
-    {
-      output[0] =-fact*( _spin[0]-_spin[2]);
-      output[1] =-fact*( _spin[1]-_spin[3]);
-      output[2] =-fact*( _spin[0]+_spin[2]);
-      output[3] =-fact*( _spin[1]+_spin[3]);
-    }
+  if(newdirac==HELASDRep && _dirac==HaberDRep) {
+    output[0] =-fact*( _spin[0]-_spin[2]);
+    output[1] =-fact*( _spin[1]-_spin[3]);
+    output[2] =-fact*( _spin[0]+_spin[2]);
+    output[3] =-fact*( _spin[1]+_spin[3]);
+  }
   // transform from Haber representation to HELAS one
-  else if(newdirac==HaberDRep && _dirac==HELASDRep)
-    {
-      output[0] =-fact*( _spin[0]+_spin[2]);
-      output[1] =-fact*( _spin[1]+_spin[3]);
-      output[2] =-fact*(-_spin[0]+_spin[2]);
-      output[3] =-fact*(-_spin[1]+_spin[3]);
-    }
+  else if(newdirac==HaberDRep && _dirac==HELASDRep) {
+    output[0] =-fact*( _spin[0]+_spin[2]);
+    output[1] =-fact*( _spin[1]+_spin[3]);
+    output[2] =-fact*(-_spin[0]+_spin[2]);
+    output[3] =-fact*(-_spin[1]+_spin[3]);
+  }
   // return the answer
   return LorentzSpinor(output[0],output[1],output[2],output[3],_type,newdirac);
 }
 
 // return the representation of the spinor
-inline DiracRep LorentzSpinor::Rep(){return _dirac;}
+inline const DiracRep LorentzSpinor::Rep() const {
+  return _dirac;
+}
 
 // return the type of the spinor
-inline SpinorType LorentzSpinor::Type(){return _type;}
+inline const SpinorType LorentzSpinor::Type() const {
+  return _type;
+}
 
 // calculate the left-handed current
-inline LorentzPolarizationVector LorentzSpinor::leftCurrent(LorentzSpinorBar& fbar)
-{
+inline LorentzPolarizationVector 
+LorentzSpinor::leftCurrent(const LorentzSpinorBar& fb) const {
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fb.Rep()) fbar.changeRep(Rep());
   LorentzPolarizationVector vec;
   Complex ii(0.,1.);
   // Haber representation
-  if(Rep()==HaberDRep)
-    {
-      Complex s2m4(s2()-s4()),sb1p3(fbar.s1()+fbar.s3()),
-	      s1m3(s1()-s3()),sb2p4(fbar.s2()+fbar.s4());
-      Complex p1(sb1p3*s2m4),p2(sb2p4*s1m3);
-      vec[0] =  -0.5*(p1+p2);
-      vec[1] =ii*0.5*(p1-p2);
-      p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
-      vec[2] =  -0.5*(p1-p2);
-      vec[3] =   0.5*(p1+p2);
-    }
+  if(Rep()==HaberDRep) {
+    Complex s2m4(s2()-s4()),sb1p3(fbar.s1()+fbar.s3()),
+            s1m3(s1()-s3()),sb2p4(fbar.s2()+fbar.s4());
+    Complex p1(sb1p3*s2m4),p2(sb2p4*s1m3);
+    vec[0] =  -0.5*(p1+p2);
+    vec[1] =ii*0.5*(p1-p2);
+    p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
+    vec[2] =  -0.5*(p1-p2);
+    vec[3] =   0.5*(p1+p2);
+  }
   // HELAS representation
-  else
-    {
-      Complex p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
-      vec[0] =   -(p1+p2);
-      vec[1] = ii*(p1-p2);
-      p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
-      vec[2] =   -(p1-p2);
-      vec[3] =    (p1+p2);
-    }
+  else {
+    Complex p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
+    vec[0] =   -(p1+p2);
+    vec[1] = ii*(p1-p2);
+    p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
+    vec[2] =   -(p1-p2);
+    vec[3] =    (p1+p2);
+  }
   return vec;
 }
 
 // calculate the left-handed current
-inline LorentzPolarizationVector LorentzSpinor::rightCurrent(LorentzSpinorBar& fbar)
-{
+inline LorentzPolarizationVector 
+LorentzSpinor::rightCurrent(const LorentzSpinorBar& fb) const {
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   LorentzPolarizationVector vec;
   Complex ii(0.,1.);
   // Haber representation
-  if(Rep()==HaberDRep)
-    {
-      Complex s2p4(s2()+s4()),sb1m3(fbar.s1()-fbar.s3()),
-	      s1p3(s1()+s3()),sb2m4(fbar.s2()-fbar.s4());
-      Complex p1(sb1m3*s2p4),p2(sb2m4*s1p3);
-      vec[0] =    +0.5*( p1+p2);
-      vec[1] = +ii*0.5*(-p1+p2);
-      p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
-      vec[2] =    +0.5*(+p1-p2);
-      vec[3] =    +0.5*(+p1+p2);
-    }
+  if(Rep()==HaberDRep) {
+    Complex s2p4(s2()+s4()),sb1m3(fbar.s1()-fbar.s3()),
+            s1p3(s1()+s3()),sb2m4(fbar.s2()-fbar.s4());
+    Complex p1(sb1m3*s2p4),p2(sb2m4*s1p3);
+    vec[0] =    +0.5*( p1+p2);
+    vec[1] = +ii*0.5*(-p1+p2);
+    p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
+    vec[2] =    +0.5*(+p1-p2);
+    vec[3] =    +0.5*(+p1+p2);
+  }
   // HELAS representation
-  else
-    {
-      Complex p1(fbar.s1()*s4()),p2(fbar.s2()*s3());
-      vec[0] =     (p1+p2);
-      vec[1] = -ii*(p1-p2);
-      p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
-      vec[2] =     (p1-p2);
-      vec[3] =     (p1+p2);
-    }
+  else {
+    Complex p1(fbar.s1()*s4()),p2(fbar.s2()*s3());
+    vec[0] =     (p1+p2);
+    vec[1] = -ii*(p1-p2);
+    p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
+    vec[2] =     (p1-p2);
+    vec[3] =     (p1+p2);
+  }
   return vec;
 }
 
 // calculate the vector-handed current
-inline LorentzPolarizationVector LorentzSpinor::vectorCurrent(LorentzSpinorBar& fbar)
-{
+inline LorentzPolarizationVector 
+LorentzSpinor::vectorCurrent(const LorentzSpinorBar& fb) const{
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   LorentzPolarizationVector vec;
   // calculate the current
   Complex ii(0.,1.);
   Complex s1s4(fbar.s1()*s4()),s2s3(fbar.s2()*s3()),
-    s3s2(fbar.s3()*s2()),s4s1(fbar.s4()*s1()),
-    s1s3(fbar.s1()*s3()),s2s4(fbar.s2()*s4()),
-    s3s1(fbar.s3()*s1()),s4s2(fbar.s4()*s2());
-  if(Rep()==HaberDRep)
-    {
-      vec[0] =       s1s4+s2s3-s3s2-s4s1;
-      vec[1] =  -ii*(s1s4-s2s3-s3s2+s4s1);
-      vec[2] =       s1s3-s2s4-s3s1+s4s2;
-      vec[3] = 
-	+fbar.s1()*s1()+fbar.s2()*s2()
-	-fbar.s3()*s3()-fbar.s4()*s4();
-    }
-  else
-    {
-      vec[0] =      s1s4+s2s3-s3s2-s4s1;
-      vec[1] = -ii*(s1s4-s2s3-s3s2+s4s1);
-      vec[2] =      s1s3-s2s4-s3s1+s4s2;
-      vec[3] =      s1s3+s2s4+s3s1+s4s2;
-    }
+          s3s2(fbar.s3()*s2()),s4s1(fbar.s4()*s1()),
+          s1s3(fbar.s1()*s3()),s2s4(fbar.s2()*s4()),
+          s3s1(fbar.s3()*s1()),s4s2(fbar.s4()*s2());
+  if(Rep()==HaberDRep) {
+    vec[0] =       s1s4+s2s3-s3s2-s4s1;
+    vec[1] =  -ii*(s1s4-s2s3-s3s2+s4s1);
+    vec[2] =       s1s3-s2s4-s3s1+s4s2;
+    vec[3] = +fbar.s1()*s1()+fbar.s2()*s2()
+             -fbar.s3()*s3()-fbar.s4()*s4();
+  }
+  else {
+    vec[0] =      s1s4+s2s3-s3s2-s4s1;
+    vec[1] = -ii*(s1s4-s2s3-s3s2+s4s1);
+    vec[2] =      s1s3-s2s4-s3s1+s4s2;
+    vec[3] =      s1s3+s2s4+s3s1+s4s2;
+  }
   return vec;
 }
 
-inline LorentzPolarizationVector LorentzSpinor::generalCurrent(LorentzSpinorBar& fbar,
-							       Complex left,
-							       Complex right)
-{
+inline LorentzPolarizationVector 
+LorentzSpinor::generalCurrent(const LorentzSpinorBar & fb,
+			      Complex left, Complex right) const {
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   LorentzPolarizationVector vec;
   Complex ii(0.,1.);
   // Haber representation
-  if(Rep()==HaberDRep)
-    {
-      // left handed terms
-      Complex s2m4(s2()-s4()),sb1p3(fbar.s1()+fbar.s3()),
-	s1m3(s1()-s3()),sb2p4(fbar.s2()+fbar.s4());
-      Complex p1(sb1p3*s2m4),p2(sb2p4*s1m3);
-      vec[0] =  -0.5*left*(p1+p2);
-      vec[1] =ii*0.5*left*(p1-p2);
-      p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
-      vec[2] =  -0.5*left*(p1-p2);
-      vec[3] =   0.5*left*(p1+p2);
-      // right handed terms
-      Complex s2p4(s2()+s4()),sb1m3(fbar.s1()-fbar.s3()),
-	      s1p3(s1()+s3()),sb2m4(fbar.s2()-fbar.s4());
-      p1=sb1m3*s2p4;p2=sb2m4*s1p3;
-      vec[0] +=    +0.5*right*( p1+p2);
-      vec[1] += +ii*0.5*right*(-p1+p2);
-      p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
-      vec[2] +=    +0.5*right*(+p1-p2);
-      vec[3] +=    +0.5*right*(+p1+p2);
-    }
+  if(Rep()==HaberDRep) {
+    // left handed terms
+    Complex s2m4(s2()-s4()),sb1p3(fbar.s1()+fbar.s3()),
+      s1m3(s1()-s3()),sb2p4(fbar.s2()+fbar.s4());
+    Complex p1(sb1p3*s2m4),p2(sb2p4*s1m3);
+    vec[0] =  -0.5*left*(p1+p2);
+    vec[1] =ii*0.5*left*(p1-p2);
+    p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
+    vec[2] =  -0.5*left*(p1-p2);
+    vec[3] =   0.5*left*(p1+p2);
+    // right handed terms
+    Complex s2p4(s2()+s4()),sb1m3(fbar.s1()-fbar.s3()),
+      s1p3(s1()+s3()),sb2m4(fbar.s2()-fbar.s4());
+    p1=sb1m3*s2p4;p2=sb2m4*s1p3;
+    vec[0] +=    +0.5*right*( p1+p2);
+    vec[1] += +ii*0.5*right*(-p1+p2);
+    p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
+    vec[2] +=    +0.5*right*(+p1-p2);
+    vec[3] +=    +0.5*right*(+p1+p2);
+  }
   // HELAS representation
-  else
-    {
-      Complex p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
-      vec[0] =   -left*(p1+p2);
-      vec[1] = ii*left*(p1-p2);
-      p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
-      vec[2] =   -left*(p1-p2);
-      vec[3] =    left*(p1+p2);
-      p1=fbar.s1()*s4();p2=fbar.s2()*s3();
-      vec[0] +=     right*(p1+p2);
-      vec[1] += -ii*right*(p1-p2);
-      p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
-      vec[2] +=      right*(p1-p2);
-      vec[3] +=      right*(p1+p2);
-    }
+  else {
+    Complex p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
+    vec[0] =   -left*(p1+p2);
+    vec[1] = ii*left*(p1-p2);
+    p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
+    vec[2] =   -left*(p1-p2);
+    vec[3] =    left*(p1+p2);
+    p1=fbar.s1()*s4();p2=fbar.s2()*s3();
+    vec[0] +=     right*(p1+p2);
+    vec[1] += -ii*right*(p1-p2);
+    p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
+    vec[2] +=      right*(p1-p2);
+    vec[3] +=      right*(p1+p2);
+  }
   return vec;
 }
 
-inline Complex LorentzSpinor::leftScalar(LorentzSpinorBar& fbar)
-{
+inline Complex LorentzSpinor::leftScalar(const LorentzSpinorBar& fb) const {
   Complex output;
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy conventions
-  if(Rep()==HaberDRep)
-    {output = 0.5*( (fbar.s1()-fbar.s3())*(s1()-s3())
-		   +(fbar.s2()-fbar.s4())*(s2()-s4()));}
+  if(Rep()==HaberDRep) {
+    output = 0.5*( (fbar.s1()-fbar.s3())*(s1()-s3())
+		  +(fbar.s2()-fbar.s4())*(s2()-s4()));
+  }
   // high energy conventions
-  else
-    {output=fbar.s1()*s1()+fbar.s2()*s2();}
+  else {
+    output=fbar.s1()*s1()+fbar.s2()*s2();
+  }
   return output;
 }
 
-inline Complex LorentzSpinor::rightScalar(LorentzSpinorBar& fbar)
-{
+inline Complex LorentzSpinor::rightScalar(const LorentzSpinorBar& fb) const {
   Complex output;
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy conventions
-  if(Rep()==HaberDRep)
-    {output = 0.5*( (fbar.s1()+fbar.s3())*(s1()+s3())
-		    +(fbar.s2()+fbar.s4())*(s2()+s4()));}
+  if(Rep()==HaberDRep) {
+    output = 0.5*( (fbar.s1()+fbar.s3())*(s1()+s3())
+		  +(fbar.s2()+fbar.s4())*(s2()+s4()));
+  }
   // high energy conventions
-  else
-    {output=fbar.s3()*s3()+fbar.s4()*s4();}
+  else {
+    output=fbar.s3()*s3()+fbar.s4()*s4();
+  }
   return output;
 }
 
-inline Complex LorentzSpinor::generalScalar(LorentzSpinorBar& fbar,Complex left,
-					    Complex right)
-{
+inline Complex LorentzSpinor::generalScalar(const LorentzSpinorBar& fb,Complex left,
+					    Complex right) const {
   Complex output;
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy conventions
-  if(Rep()==HaberDRep)
-    {
-      output = left*( (fbar.s1()-fbar.s3())*(s1()-s3())
-		     +(fbar.s2()-fbar.s4())*(s2()-s4()))
-	     +right*( (fbar.s1()+fbar.s3())*(s1()+s3())
-		     +(fbar.s2()+fbar.s4())*(s2()+s4()));
-      output*=0.5;
-    }
+  if(Rep()==HaberDRep) {
+    output = left*( (fbar.s1()-fbar.s3())*(s1()-s3())
+	           +(fbar.s2()-fbar.s4())*(s2()-s4()))
+           +right*( (fbar.s1()+fbar.s3())*(s1()+s3())
+	           +(fbar.s2()+fbar.s4())*(s2()+s4()));
+    output*=0.5;
+  }
   // high energy conventions
-  else
-    {output=  left*(fbar.s1()*s1()+fbar.s2()*s2())
-	     +right*(fbar.s3()*s3()+fbar.s4()*s4());}
+  else {
+    output=  left*(fbar.s1()*s1()+fbar.s2()*s2())
+           +right*(fbar.s3()*s3()+fbar.s4()*s4());
+  }
   return output;
 }
   
-inline Complex LorentzSpinor::scalar(LorentzSpinorBar& fbar)
-{
+inline Complex LorentzSpinor::scalar(const LorentzSpinorBar& fb) const {
   Complex output;
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy
-  if(Rep()==HaberDRep)
-    {output=fbar.s1()*s1()+fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();}
+  if(Rep()==HaberDRep) {
+    output=fbar.s1()*s1()+fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();
+  }
   // high energy
-  else
-    {output=fbar.s1()*s1()+fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();}
+  else {
+    output=fbar.s1()*s1()+fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();
+  }
   return output;
 }
   
-inline Complex LorentzSpinor::pseudoScalar(LorentzSpinorBar& fbar)
-{
+inline Complex LorentzSpinor::pseudoScalar(const LorentzSpinorBar& fb) const {
   Complex output;
   // ensure both spinors are in the same representation, otherwise change to default
-  if(Rep()!=fbar.Rep())
-    {
-      fbar.changeRep(defaultDRep);
-      changeRep(defaultDRep);
-    }  // low energy
-  if(Rep()==HaberDRep)
-    {output=fbar.s1()*s3()+fbar.s2()*s4()+fbar.s3()*s1()+fbar.s4()*s2();}
+  LorentzSpinorBar fbar(fb);
+  if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
+  // low energy
+  if(Rep()==HaberDRep) {
+    output=fbar.s1()*s3()+fbar.s2()*s4()+fbar.s3()*s1()+fbar.s4()*s2();
+  }
   // high energy
-  else
-    {output=-fbar.s1()*s1()-fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();}
+  else {
+    output=-fbar.s1()*s1()-fbar.s2()*s2()+fbar.s3()*s3()+fbar.s4()*s4();
+  }
   return output;
 }
 
-inline LorentzSpinor & LorentzSpinor::transform(const LorentzRotation & r)
-{
+inline LorentzSpinor & LorentzSpinor::transform(const LorentzRotation & r) {
   SpinHalfLorentzRotation half(r.half());
   transform(half);
   return *this;

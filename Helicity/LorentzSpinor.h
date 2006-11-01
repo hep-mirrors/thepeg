@@ -243,17 +243,17 @@ public:
   /**
    * Return the spinor in a different representation.
    */
-  inline LorentzSpinor transformRep(DiracRep);
+  inline LorentzSpinor transformRep(DiracRep) const;
 
   /**
    * Return the representation of the spinor.
    */
-  inline DiracRep Rep();
+  inline const DiracRep Rep() const;
 
   /**
    * Return the type of the spinor.
    */
-  inline SpinorType Type();
+  inline const SpinorType Type() const;
   //@}
 
 
@@ -263,17 +263,17 @@ public:
    *  Calculate the left-handed current \f$\bar{f}\gamma^\mu P_Lf\f$.
    * @param fbar The barred spinor.
    */
-  inline LorentzPolarizationVector leftCurrent(LorentzSpinorBar& fbar);
+  inline LorentzPolarizationVector leftCurrent(const LorentzSpinorBar& fbar) const;
   /**
    *  Calculate the right-handed current \f$\bar{f}\gamma^\mu P_Rf\f$.
    * @param fbar The barred spinor.
    */
-  inline LorentzPolarizationVector rightCurrent(LorentzSpinorBar& fbar);
+  inline LorentzPolarizationVector rightCurrent(const LorentzSpinorBar& fbar) const;
   /**
    *  Calculate the vector current \f$\bar{f}\gamma^\mu f\f$
    * @param fbar The barred spinor.
    */
-  inline LorentzPolarizationVector vectorCurrent(LorentzSpinorBar& fbar);
+  inline LorentzPolarizationVector vectorCurrent(const LorentzSpinorBar& fbar) const;
 
   /**
    * Calculate a general current with arbitary left and right couplings,
@@ -282,8 +282,8 @@ public:
    * @param left The left coupling, \f$c_L\f$.
    * @param right The right coupling, \f$c_R\f$.
    */
-  inline LorentzPolarizationVector generalCurrent(LorentzSpinorBar& fbar,
-						  Complex left, Complex right);
+  inline LorentzPolarizationVector generalCurrent(const LorentzSpinorBar& fbar,
+						  Complex left, Complex right) const;
   //@}
 
   /** @name Functions to calculate certain scalars. */
@@ -292,24 +292,24 @@ public:
    * Calculate the left-handed scalar \f$\bar{f}P_Lf\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex leftScalar(LorentzSpinorBar& fbar);
+  inline Complex leftScalar(const LorentzSpinorBar& fbar) const;
 
   /**
    * Calculate the right-handed scalar \f$\bar{f}P_Rf\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex rightScalar(LorentzSpinorBar& fbar);
+  inline Complex rightScalar(const LorentzSpinorBar& fbar) const;
 
   /**
    *  Calculate the scalar \f$\bar{f}f\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex scalar(LorentzSpinorBar& fbar);
+  inline Complex scalar(const LorentzSpinorBar& fbar) const;
   /**
    *  Calculate the pseudoscalar \f$\bar{f}\gamma_5f\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex pseudoScalar(LorentzSpinorBar& fbar);
+  inline Complex pseudoScalar(const LorentzSpinorBar& fbar) const;
 
   /**
    * Calculate a general scalar product with arbitary left and right couplings,
@@ -318,7 +318,8 @@ public:
    * @param left The left coupling, \f$c_L\f$.
    * @param right The right coupling, \f$c_R\f$.
    */
-  inline Complex generalScalar(LorentzSpinorBar& fbar,Complex left, Complex right);
+  inline Complex generalScalar(const LorentzSpinorBar& fbar,
+			       Complex left, Complex right) const;
   //@}
 
 private:

@@ -165,17 +165,17 @@ public:
   /**
    * Return the spinor in a different representation.
    */
-  inline LorentzSpinorBar transformRep(DiracRep);
+  inline LorentzSpinorBar transformRep(DiracRep) const;
 
   /**
    * Return the representation of the spinor.
    */
-  inline DiracRep Rep();
+  inline const DiracRep Rep() const;
 
   /**
    * Return the type of the spinor.
    */
-  inline SpinorType Type();
+  inline const SpinorType Type() const;
   //@}
 
 private:
