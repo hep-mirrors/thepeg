@@ -1,7 +1,11 @@
-2006-11-01  Pete's account  <Peter.Richardson@durham.ac.uk>
+2006-11-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* include/Makefile.am : cleaned up include file linking and 
+	installation. This fixes a problem with using parallel make
+
+2006-11-01  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* Helicity/LorentzSpinor.icc : changes to constnesss of various members 
-
 2006-10-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/ColourLine.cc: Added join function to join two
