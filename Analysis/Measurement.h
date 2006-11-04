@@ -20,7 +20,7 @@ using namespace AIDA;
  * with positive and negative errors (to allow for asymmetric errors).
  * "IMeasurement" = "value" + "errorPlus" - "errorMinus"
  */
-class Measurement {
+class Measurement: public IMeasurement {
 
 public: 
 
@@ -34,7 +34,7 @@ public:
    * Copy constructor.
    */
   Measurement(const Measurement & m)
-    :val(m.val), errp(m.errp), errm(m.errm) {}
+    :IMeasurement(m), val(m.val), errp(m.errp), errm(m.errm) {}
 
   /**
    * Destructor.
@@ -82,7 +82,7 @@ public:
    */
   bool setErrorPlus(double ep) {
     errp = ep;
-    return rp < 0.0;
+    return ep < 0.0;
   }
 
   /**

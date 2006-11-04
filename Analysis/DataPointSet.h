@@ -6,11 +6,13 @@
 //
 
 
+#include <vector>
 #include <limits>
 #include <cmath>
 #include <algorithm>
 #include "AIDataPointSet.h"
 #include "ManagedObject.h"
+#include "DataPoint.h"
 
 namespace LWH {
 
@@ -23,11 +25,18 @@ using namespace AIDA;
  */
 class DataPointSet: public IDataPointSet, public ManagedObject {
 
-public: 
+public:
+
+  /**
+   * Standard constructor takes the dimension, \a D, of the data
+   * points as argument.
+   */
+  DataPointSet(int D): dim(D) {}
+
   /**
    * Destructor.
    */
-  virtual ~IDataPointSet() {}
+  virtual ~DataPointSet() {}
 
   /**
    * Not implemented in LWH. will throw an exception.
@@ -46,23 +55,23 @@ public:
   }
 
   /**
-   * Get the Histogram's title.
-   * @return The Histogram's title.
+   * Get the data set's title.
+   * @return The data set's title.
    */
   std::string title() const {
     return theTitle;
   }
 
   /**
-   * Get the Histogram's title.
-   * @return The Histogram's title.
+   * Get the data set's title.
+   * @return The data set's title.
    */
   std::string name() const {
     return theTitle;
   }
 
   /**
-   * Set the histogram title.
+   * Set the data set's title.
    * @param title The title.
    * @return false If title cannot be changed.
    */
@@ -77,8 +86,7 @@ public:
    *
    */
   int dimension() const {
-    if ( dset.empty() ) return 0;
-    return dset[0].dimension();
+    return dim;
   }
 
   /**
@@ -103,7 +111,7 @@ public:
    * @param index The IDataPoint index.
    * @return      The corresponding IDataPoint.
    */
-  IDataPoint * point(int index) = {
+  IDataPoint * point(int index) {
     return &(dset[index]);
   }
 
@@ -116,7 +124,6 @@ public:
    * @param coord The coordinate's index
    * @param val   The array of the values for the given coordinate
    * @param err   The array with the symmetric errors.
-
    * @return false if an illegal coordinate is provided or if there is
    *      a mismatch between the size of the array and the size of the
    *      IDataPointSet.
@@ -124,18 +131,7 @@ public:
   bool setCoordinate(int coord,
 		     const std::vector<double>  & val,
 		     const std::vector<double>  & err) {
-    if ( coord < 0 || coord >= dset.size() ) return false;
-    DataPoint & dp = dset[coord];
-    if ( dp.dimension() && ( dp.dimension() != val.size() ||
-			     dp.dimension() != err.size() ) )
-      return false;
-    dp = DataPoint(val.size());
-    for ( int i = 0, N = val.size(); i < N; ++i ) {
-      dp.coordinate(i)->setValue(val[i]);
-      dp.coordinate(i)->setErrorPlus(err[i]);
-      dp.coordinate(i)->setErrorMinus(err[i]);
-    }
-    return true;
+    return setCoordinate(coord, val, err, err);
   }
 
   /**
@@ -157,17 +153,13 @@ public:
 		     const std::vector<double>  & val,
 		     const std::vector<double>  & errp,
 		     const std::vector<double>  & errm) {
-    if ( coord < 0 || coord >= dset.size() ) return false;
-    DataPoint & dp = dset[coord];
-    if ( dp.dimension() && ( dp.dimension() != val.size() ||
-			     dp.dimension() != errp.size()
-			     dp.dimension() != errm.size() ) )
-      return false;
-    dp = DataPoint(val.size());
+    if ( coord < 0 || coord >= dimension() ) return false;
+    if ( val.size() != dset.size() || errp.size() != dset.size() ||
+	 errm.size() != dset.size() ) return false;
     for ( int i = 0, N = val.size(); i < N; ++i ) {
-      dp.coordinate(i)->setValue(val[i]);
-      dp.coordinate(i)->setErrorPlus(errp[i]);
-      dp.coordinate(i)->setErrorMinus(errm[i]);
+      dset[i].coordinate(coord)->setValue(val[i]);
+      dset[i].coordinate(coord)->setErrorPlus(errp[i]);
+      dset[i].coordinate(coord)->setErrorMinus(errm[i]);
     }
     return true;
   }
@@ -177,8 +169,8 @@ public:
    * @return 0 if index is out of range.
    */
   const IDataPoint * point(int index) const {
-    if ( index < 0 || index >= dset.size() ) return 0;
-    return &(dset[coord]);
+    if ( index < 0 || unsigned(index) >= dset.size() ) return 0;
+    return &(dset[index]);
   }
 
   /**
@@ -208,8 +200,9 @@ public:
    * @return false If the index is < 0 or >= size().
    */
   bool removePoint(int index) {
-    if ( index < 0 || index >= dset.size() ) return false;
+    if ( index < 0 || unsigned(index) >= dset.size() ) return false;
     dset.erase(dset.begin() + index);
+    return true;
   }
 
   /**
@@ -298,22 +291,57 @@ public:
    * Not implemented in LWH.
    * @return null pointer always.
    */ 
-  void * cast(const std::string & className) const {
+  void * cast(const std::string &) const {
     return 0;
   }
 
   bool writeXML(std::ostream & os, std::string path, std::string name) {
+    os << "  <dataPointSet name=\"" << name
+       << "\"\n    title=\"" << title()
+       << "\" path=\"" << path
+       << "\" dimension=\"" << dimension() << "\">\n";
+    for ( int i = 0, N = size(); i < N; ++i ) {
+      os << "    <dataPoint>\n";
+      for ( int j = 0, M = dimension(); j < M; ++j )
+	os << "      <measurement value=\""
+	   << point(i)->coordinate(j)->value()
+	   << "\" errorPlus=\""
+	   << point(i)->coordinate(j)->errorPlus()
+	   << "\" errorMinus=\""
+	   << point(i)->coordinate(j)->errorMinus()
+	   << "\"/>\n";
+      os << "    </dataPoint>\n";
+    }
+    os << "  </dataPointSet>" << std::endl;
+    return true;
   }
 
   bool writeFLAT(std::ostream & os, std::string path, std::string name) {
+    os << "# " << path << "/" << name << " " << size()
+       << " \"" << title() << " \" dimension " << dimension() << std::endl;
+    for ( int i = 0, N = size(); i < N; ++i )
+      for ( int j = 0, M = dimension(); j < M; ++j )
+	os << point(i)->coordinate(j)->value() << " "
+	   << point(i)->coordinate(j)->errorPlus() << " "
+	   << point(i)->coordinate(j)->errorMinus() << std::endl;
+    os << std::endl;
+    return true;
   }
 
 private:
 
+  /** The title */
+  std::string theTitle;
+
   /**
    * The included data points.
    */
-  vector<DataPoint> dset;
+  std::vector<DataPoint> dset;
+
+  /**
+   * The dimension of the points in this set.
+   */
+  unsigned int dim;
 
   /** dummy pointer to non-existen annotation. */
   IAnnotation * anno;

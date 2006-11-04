@@ -1,3 +1,15 @@
+2006-11-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/FactoryBase.*: Added functions to handle
+	IDataPointSetFactory object.
+
+	* Analysis/AnalysisFactory.h, Analysis/Measurement.h,
+	Analysis/HistogramFactory.h, Analysis/DataPointSetFactory.h,
+	Analysis/DataPointSet.h, Analysis/DataPoint.h,
+	Analysis/AIDataPointSetFactory.h, Analysis/AIDataPoint.h: Added
+	classes to implement sets of datapoints according to the AIDA
+	interface.
+
 2006-11-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* include/Makefile.am : cleaned up include file linking and 

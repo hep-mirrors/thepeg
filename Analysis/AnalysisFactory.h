@@ -8,6 +8,7 @@
 #include "AIAnalysisFactory.h"
 #include "TreeFactory.h"
 #include "HistogramFactory.h"
+#include "DataPointSetFactory.h"
 #include <set>
 
 /**
@@ -15,14 +16,14 @@
  * implements the most rudimentary histogramming facilities according
  * to the <a href="http://aida.freehep.org">AIDA</a> interface
  * specifications. Currently the only thing that is supported is
- * simple, equally binned, one dimensional histograms. It is mainly
- * intended to be used in applications where one needs to fill simple
- * histograms and output them. With LWH it is then possible to do this
- * without the overhead of a full AIDA implementation, but still
- * having the option to use a full implementation later on with
- * minimal changes. Note also that since LWH consists only of header
- * files, the installation is trivial - just put the header files
- * where they can be found by your compiler.
+ * simple, equally binned, one dimensional histograms and data
+ * points. It is mainly intended to be used in applications where one
+ * needs to fill simple histograms and output them. With LWH it is
+ * then possible to do this without the overhead of a full AIDA
+ * implementation, but still having the option to use a full
+ * implementation later on with minimal changes. Note also that since
+ * LWH consists only of header files, the installation is trivial -
+ * just put the header files where they can be found by your compiler.
  */
 namespace LWH {
 
@@ -67,8 +68,11 @@ public:
    * @return     null pointer always.
    *
    */
-  IDataPointSetFactory * createDataPointSetFactory(ITree &) {
-    return 0;
+  IDataPointSetFactory * createDataPointSetFactory(ITree & tree) {
+    Tree & tr = dynamic_cast<Tree &>(tree);
+    DataPointSetFactory * df = new DataPointSetFactory(tr);
+    datafacs.insert(df);
+    return df;
   }
 
   /**
@@ -111,14 +115,20 @@ private:
   void clear() {
     for ( std::set<HistogramFactory *>::iterator it = histfacs.begin();
 	  it != histfacs.end(); ++it ) delete *it;
+    for ( std::set<DataPointSetFactory *>::iterator it = datafacs.begin();
+	  it != datafacs.end(); ++it ) delete *it;
     for ( std::set<TreeFactory *>::iterator it = treefacs.begin();
 	  it != treefacs.end(); ++it ) delete *it;
     histfacs.clear();
+    datafacs.clear();
     treefacs.clear();
   }
 
   /** The histogram factories. */
   std::set<HistogramFactory *> histfacs;
+
+  /** The dataset factories. */
+  std::set<DataPointSetFactory *> datafacs;
 
   /** The tree factories. */
   std::set<TreeFactory *> treefacs;

@@ -26,6 +26,7 @@ void FactoryBase::clear() {
   //  if ( theTree ) delete theTree;
   if ( theAnalysisFactory ) delete theAnalysisFactory;
   theHistogramFactory = 0;
+  theDataSetFactory = 0;
   theTree = 0;
   theAnalysisFactory = 0;
 }
@@ -47,6 +48,7 @@ void FactoryBase::doinitrun() {
     (file, storeType(), false, true);
   theTree->setOverwrite(false);
   theHistogramFactory = analysisFactory().createHistogramFactory(tree());
+  theDataSetFactory = analysisFactory().createDataPointSetFactory(tree());
 }
 
 void FactoryBase::persistentOutput(PersistentOStream & os) const {

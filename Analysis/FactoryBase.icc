@@ -8,12 +8,13 @@ namespace ThePEG {
 
 inline FactoryBase::FactoryBase()
   : theFilename(""), theSuffix("aida"), theStoreType("xml"),
-    theAnalysisFactory(0), theTree(0), theHistogramFactory(0) {}
+    theAnalysisFactory(0), theTree(0), theHistogramFactory(0),
+    theDataSetFactory(0) {}
 
 inline FactoryBase::FactoryBase(const FactoryBase & x)
   : Interfaced(x), theFilename(x.theFilename), theSuffix(x.theSuffix),
     theStoreType(x.theStoreType), theAnalysisFactory(0), theTree(0),
-    theHistogramFactory(0) {}
+    theHistogramFactory(0), theDataSetFactory(0) {}
 
 inline string FactoryBase::filename() const {
   return theFilename;
@@ -41,6 +42,10 @@ inline AIDA::ITree & FactoryBase::tree() const {
 
 inline AIDA::IHistogramFactory & FactoryBase::histogramFactory() const {
   return *theHistogramFactory;
+}
+
+inline AIDA::IDataPointSetFactory & FactoryBase::dataSetFactory() const {
+  return *theDataSetFactory;
 }
 
 inline void FactoryBase::mkdir(string path) {

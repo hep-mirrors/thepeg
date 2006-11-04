@@ -8,7 +8,6 @@
 #include "AIHistogramFactory.h"
 #include "Histogram1D.h"
 #include "Tree.h"
-#include <map>
 #include <string>
 #include <stdexcept>
 
@@ -18,7 +17,7 @@ using namespace AIDA;
 
 /**
  * User level interface for factory classes of Histograms (binned,
- * unbinned, and profile) The created objects are assumed to be
+ * unbinned, and profile). The created objects are assumed to be
  * managed by the tree which is associated to the factory. So far only
  * one-dimensional histograms are implemented in LWH.
  */
@@ -32,8 +31,9 @@ public:
   HistogramFactory(Tree & t)
     : tree(&t) {}
 
-
-  /// Destructor.
+  /**
+   * Destructor.
+   */
   virtual ~HistogramFactory() {}
 
   /**

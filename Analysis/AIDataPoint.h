@@ -8,6 +8,8 @@
 
 namespace AIDA {
 
+class IMeasurement;
+
 /**
  * Basic user-level interface class for holding and managing
  * a single set of "measurements".

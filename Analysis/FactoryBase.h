@@ -13,6 +13,8 @@
 #include "AIHistogramFactory.h"
 #include "AIHistogram1D.h"
 #include "AIAxis.h"
+#include "AIDataPointSetFactory.h"
+#include "AIDataPointSet.h"
 
 namespace ThePEG {
 
@@ -43,9 +45,19 @@ public:
   typedef AIDA::IHistogram1D * tH1DPtr;
 
   /**
-   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   * Convenient typedef for pointer to const AIDA::IHistogram1D.
    */
   typedef const AIDA::IHistogram1D * tcH1DPtr;
+
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef AIDA::IDataPointSet * tDSetPtr;
+
+  /**
+   * Convenient typedef for pointer to const AIDA::IHistogram1D.
+   */
+  typedef const AIDA::IDataPointSet * tcDSetPtr;
 
 public:
 
@@ -106,6 +118,11 @@ public:
    * A pointer to the underlying AIDA::IHistogramFactory object.
    */
   inline AIDA::IHistogramFactory & histogramFactory() const;
+
+  /**
+   * A pointer to the underlying AIDA::IDataPointSetFactory object.
+   */
+  inline AIDA::IDataPointSetFactory & dataSetFactory() const;
 
   /**
    * Create a new directory in the underlying AIDA tree.
@@ -279,6 +296,11 @@ private:
    * A pointer to the underlying AIDA::IHistogramFactory object.
    */
   AIDA::IHistogramFactory * theHistogramFactory;
+
+  /**
+   * A pointer to the underlying AIDA::IDataPointSetFactory object.
+   */
+  AIDA::IDataPointSetFactory * theDataSetFactory;
 
   /**
    * A set of client objects which have required histograms from this

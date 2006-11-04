@@ -25,8 +25,6 @@ class DataPoint: public IDataPoint {
 
 public:
 
-public:
-
   /**
    * Construct a data point with a given number of dimensions.
    */
@@ -37,7 +35,7 @@ public:
    * Copy constructor.
    */
   DataPoint(const DataPoint & d)
-    : m(d.m) {}
+    : IDataPoint(d), m(d.m) {}
 
   /**
    * Copy from any IDataPoint.
@@ -61,7 +59,7 @@ public:
    * @return The dimension.
    */
   int dimension() const {
-    m.size();
+    return m.size();
   }
 
   /**
@@ -82,10 +80,12 @@ public:
     return &(m[coord]);
   }
 
+  private:
+
   /**
    * The included measurements.
    */
-  private std::vector<Measurement> m;
+  std::vector<Measurement> m;
 
 };
 
