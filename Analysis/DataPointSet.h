@@ -178,7 +178,7 @@ public:
    * @return The newly added point.
    */
   IDataPoint * addPoint() {
-    dset.push_back(DataPoint(0));
+    dset.push_back(DataPoint(dimension()));
     return &(dset.back());
   }
 

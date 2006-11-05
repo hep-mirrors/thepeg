@@ -15,6 +15,8 @@
 #include "AIAxis.h"
 #include "AIDataPointSetFactory.h"
 #include "AIDataPointSet.h"
+#include "AIDataPoint.h"
+#include "AIMeasurement.h"
 
 namespace ThePEG {
 
@@ -58,6 +60,59 @@ public:
    * Convenient typedef for pointer to const AIDA::IHistogram1D.
    */
   typedef const AIDA::IDataPointSet * tcDSetPtr;
+
+public:
+
+  /**
+   * DataFiller is a helper class to facilitate adding data to a
+   * DataPointSet. For a D-dimensional DataPointSet N*3*D numbers should
+   * be added with the standard &lt;&lt; operator ordered as x-value,
+   * x-upper-error, x-lower-error, y-value, y-upper-error, etc.. Only
+   * when the DataFIller object is detleted will the points be added.
+   */
+  class DataFiller {
+
+  public:
+
+    /**
+     * The standard constructor needs a IDataPointSet as argument.
+     */
+    inline DataFiller(AIDA::IDataPointSet * dps);
+
+    /**
+     * Copy constructor.
+     */
+    inline DataFiller(const DataFiller & df);
+
+    /**
+     * Destructor. Will commit the pints filled to the underlying
+     * IDataPointSet.
+     */
+    inline ~DataFiller();
+
+    /**
+     * Add a number to measurement currently being read.
+     */
+    inline DataFiller & operator<<(double x);
+
+    /**
+     * Automatic conversion to the underlying IDataPointSet.
+     */
+    inline operator AIDA::IDataPointSet * ();
+
+  private:
+
+    /**
+     * The underlying IDataPointSet.
+     */
+    AIDA::IDataPointSet * dset;
+
+    /**
+     * The collected numbers to be committed to the IDataPointSet.
+     */
+    deque<double> v;
+
+  };
 
 public:
 
@@ -189,6 +244,15 @@ public:
    */
   inline tH1DPtr createHistogram1D(string path, string title,
 				   const std::vector<double> & edges);
+
+  /**
+   * Create a IDataPointSet with the given \a path and \a title and
+   * containing points with the given number of dimensions, \a
+   * dim. The returned object is a DataFiller which can be used to
+   * facilitate the addition of data points to the set or be converted
+   * to a pointer to the created IDataPointSet.
+   */
+  inline DataFiller createDataSet(string path, string title, int dim);
 
   /**
    * Used by a \a client object to indicate that he has required

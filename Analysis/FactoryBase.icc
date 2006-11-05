@@ -83,4 +83,39 @@ inline void FactoryBase::registerClient(tIPtr client) {
   clients.insert(client);
 }
 
+inline FactoryBase::DataFiller::DataFiller(AIDA::IDataPointSet * dps)
+  : dset(dps) {}
+
+inline FactoryBase::DataFiller::DataFiller(const DataFiller & df)
+  : dset(df.dset) {}
+
+inline FactoryBase::DataFiller::~DataFiller() {
+  int N = v.size()/(3*dset->dimension());
+  for ( int i = 0; i < N; ++i ) {
+    AIDA::IDataPoint * p = dset->addPoint();
+    for ( int j = 0; j < p->dimension(); ++j ) {
+      p->coordinate(j)->setValue(v.front());
+      v.pop_front();
+      p->coordinate(j)->setErrorPlus(v.front());
+      v.pop_front();
+      p->coordinate(j)->setErrorMinus(v.front());
+      v.pop_front();
+    }
+  }
+}
+
+inline FactoryBase::DataFiller & FactoryBase::DataFiller::operator<<(double x) {
+  v.push_back(x);
+  return *this;
+}
+
+inline FactoryBase::DataFiller::operator AIDA::IDataPointSet * () {
+  return dset;
+}
+
+inline FactoryBase::DataFiller
+FactoryBase::createDataSet(string path, string title, int dim) {
+  return DataFiller(dataSetFactory().create(path, title, dim));
+}
+
 }
