@@ -103,11 +103,11 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
 }
 
 void LeptonLeptonRemnant::persistentOutput(PersistentOStream & os) const {
-  os << photon;
+  os << photon << minX;
 }
 
 void LeptonLeptonRemnant::persistentInput(PersistentIStream & is, int) {
-  is >> photon;
+  is >> photon >> minX;
 }
 
 ClassDescription<LeptonLeptonRemnant>
@@ -116,7 +116,9 @@ LeptonLeptonRemnant::initLeptonLeptonRemnant;
 void LeptonLeptonRemnant::Init() {
 
   static ClassDocumentation<LeptonLeptonRemnant> documentation
-    ("There is no documentation for the ThePEG::LeptonLeptonRemnant class");
+    ("LeptonLeptonRemnant inherits from the RemnantHandler and implements "
+     "the generation of a single collinear photon remnant when a lepton is "
+     "extracted from a lepton.");
 
   static Parameter<LeptonLeptonRemnant,double> interfaceMinX
     ("MinX",

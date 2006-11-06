@@ -42,23 +42,20 @@ RemnantData::~RemnantData() {}
 
 bool RemnantData::extract(tcPDPtr parton) {
   if ( !parton ) return false;
-  multiset<tcPDPtr> newextr = extracted;
-  newextr.insert(parton);
-  if ( !decayer->canHandle(parentPD, extracted) ) return false;
-  extracted.swap(newextr);
+  if ( !extracted.empty() && !decayer->multiCapable() ) return false;
+  if ( !decayer->canHandle(parentPD, parton) ) return false;
+  extracted.insert(parton);
   iCharge(PDT::Charge(iCharge() - parton->iCharge()));
   return fixColour();
 }
 
 bool RemnantData::
 reextract(tcPDPtr oldp, tcPDPtr newp) {
-  multiset<tcPDPtr> newextr = extracted;
-  multiset<tcPDPtr>::iterator it = newextr.find(oldp);
-  if ( it == newextr.end() ) return false;
-  newextr.erase(it);
-  newextr.insert(newp);
-  if ( !decayer->canHandle(parentPD, extracted) ) return false;
-  extracted.swap(newextr);
+  multiset<tcPDPtr>::iterator it = extracted.find(oldp);
+  if ( it == extracted.end() ) return false;
+  if ( !decayer->canHandle(parentPD, newp) ) return false;
+  extracted.erase(it);
+  extracted.insert(newp);
   iCharge(PDT::Charge(iCharge() + oldp->iCharge() - newp->iCharge()));
   return fixColour();
 }

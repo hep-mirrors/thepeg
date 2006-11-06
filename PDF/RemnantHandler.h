@@ -209,7 +209,7 @@ protected:
   inline virtual IVector getReferences();
   //@}
 
-private:
+protected:
 
   /**
    * True if this handler can generate remnants also if several

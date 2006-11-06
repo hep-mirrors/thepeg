@@ -1,11 +1,11 @@
 mySOURCES = PartonExtractor.cc PDFBase.cc RemnantHandler.cc \
             BeamParticleData.cc PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc \
-            PartonBinInstance.cc LHAPDF.cc
+            PartonBinInstance.cc LHAPDF.cc SoftRemnantHandler.cc
 
 DOCFILES = BeamParticleData.h \
            NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
            PartonBin.h PartonExtractor.h RemnantHandler.h \
-           PDF.h PartonBinInstance.h LHAPDF.h
+           PDF.h PartonBinInstance.h LHAPDF.h SoftRemnantHandler.h
 
 INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
                BeamParticleData.xh \
@@ -13,7 +13,8 @@ INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
                NoRemnants.icc PDFBase.icc  PDFBase.xh PDFCuts.icc \
                PartonBin.icc PartonExtractor.fh PartonExtractor.icc \
                PartonExtractor.xh RemnantHandler.icc RemnantHandler.xh \
-               PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh LHAPDF.icc
+               PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh LHAPDF.icc \
+               SoftRemnantHandler.icc
 
 INPUTFILES = LHAIndex.txt
 

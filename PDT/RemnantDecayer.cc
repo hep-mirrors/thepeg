@@ -29,7 +29,11 @@ bool RemnantDecayer::needsFullStep() const {
 }
 
 bool RemnantDecayer::
-canHandle(tcPDPtr, const multiset<tcPDPtr> &) const {
+canHandle(tcPDPtr, tcPDPtr) const {
+  return false;
+}
+
+bool RemnantDecayer::multiCapable() const {
   return false;
 }
 

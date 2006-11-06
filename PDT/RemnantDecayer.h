@@ -88,10 +88,15 @@ public:
 
   /**
    * Return true if this decayer can handle the extraction of the \a
-   * extracted partons from the given \a particle.
+   * extracted parton from the given \a particle.
    */
-  virtual bool canHandle(tcPDPtr parent,
-			 const multiset<tcPDPtr> & extracted) const;
+  virtual bool canHandle(tcPDPtr parent, tcPDPtr extracted) const;
+
+  /**
+   * Return true if this decayed can extract more than one parton from
+   * a particle.
+   */
+  virtual bool multiCapable() const;
 
 protected:
 

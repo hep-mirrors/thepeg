@@ -20,11 +20,12 @@
 using namespace ThePEG;
 
 RemnantParticle::
-RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr)
+RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr parton)
   : Particle(new_ptr(RemnantData(particle.dataPtr(), decayer))) {
   remData = const_ptr_cast<tRemPDPtr>(dynamic_ptr_cast<tcRemPDPtr>(dataPtr()));
   set5Momentum(particle.momentum());
   colourInfo(new_ptr(MultiColour()));
+  extract(parton);
 }
 
 RemnantParticle::~RemnantParticle() {}
