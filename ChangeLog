@@ -1,3 +1,8 @@
+2006-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesReader.cc: Removed conditional compilation
+	depending on ThePEG_HAS_LHAPDF.
+
 2006-11-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/SoftRemnantHandler.*: New remnant handler which will use the

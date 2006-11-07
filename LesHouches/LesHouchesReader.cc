@@ -109,17 +109,17 @@ void LesHouchesReader::doinit() throw(InitException) {
 void LesHouchesReader::initPDFs() {
   if ( inPDF.first && inPDF.second ) return;
 
-#ifndef ThePEG_HAS_LHAPDF
-  Throw<InitException>()
-    << "LesHouchesReader '" << name() << "' could not use information about "
-    << "the PDFs used because the LHAPDF library was not properly defined."
-    << Exception::warning;
-#endif
-
   string remhname;
   if ( heprup.PDFSUP.first && !inPDF.first) {
-    inPDF.first = new_ptr<LHAPDF>();
-    generator()->preinitRegister(inPDF.first, fullName() + "/PDFA");
+    inPDF.first = dynamic_ptr_cast<PDFPtr>
+      (generator()->preinitCreate("ThePEG::LHAPDF", fullName() + "/PDFA"));
+    if ( !inPDF.first ) {
+      Throw<InitException>()
+	<< "LesHouchesReader '" << name() << "' could not use information "
+	<< "about the PDFs used because the LHAPDF library was not properly "
+	"defined." << Exception::warning;
+      return;
+    }
     remhname = fullName() + "/DummyRemH";
     generator()->preinitCreate("ThePEG::NoRemnants", remhname);
     generator()->preinitInterface(inPDF.first, "RemnantHandler",
@@ -140,8 +140,15 @@ void LesHouchesReader::initPDFs() {
   }
 
   if ( heprup.PDFSUP.second && !inPDF.second) {
-    inPDF.second = new_ptr<LHAPDF>();
-    generator()->preinitRegister(inPDF.second, fullName() + "/PDFB");
+    inPDF.second = dynamic_ptr_cast<PDFPtr>
+      (generator()->preinitCreate("ThePEG::LHAPDF", fullName() + "/PDFB"));
+    if ( !inPDF.second ) {
+      Throw<InitException>()
+	<< "LesHouchesReader '" << name() << "' could not use information "
+	<< "about the PDFs used because the LHAPDF library was not properly "
+	"defined." << Exception::warning;
+      return;
+    }
     if ( remhname == "" ) {
       remhname = fullName() + "/DummyRemH";
       generator()->preinitCreate("ThePEG::NoRemnants", remhname);
