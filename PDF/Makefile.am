@@ -1,11 +1,11 @@
 mySOURCES = PartonExtractor.cc PDFBase.cc RemnantHandler.cc \
             BeamParticleData.cc PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc \
-            PartonBinInstance.cc LHAPDF.cc SoftRemnantHandler.cc
+            PartonBinInstance.cc SoftRemnantHandler.cc
 
 DOCFILES = BeamParticleData.h \
            NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
            PartonBin.h PartonExtractor.h RemnantHandler.h \
-           PDF.h PartonBinInstance.h LHAPDF.h SoftRemnantHandler.h
+           PDF.h PartonBinInstance.h SoftRemnantHandler.h
 
 INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
                BeamParticleData.xh \
@@ -13,7 +13,7 @@ INCLUDEFILES = $(DOCFILES) BeamParticleData.icc \
                NoRemnants.icc PDFBase.icc  PDFBase.xh PDFCuts.icc \
                PartonBin.icc PartonExtractor.fh PartonExtractor.icc \
                PartonExtractor.xh RemnantHandler.icc RemnantHandler.xh \
-               PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh LHAPDF.icc \
+               PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh \
                SoftRemnantHandler.icc
 
 INPUTFILES = LHAIndex.txt
@@ -24,7 +24,15 @@ noinst_LTLIBRARIES = libThePEGPDF.la
 pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
           GRVBase.la GRV94L.la GRV94M.la BaryonRemnants.la
 
-libThePEGPDF_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+if USELHAPDF
+LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h LHAPDF.icc
+libThePEGPDF_la_LDFLAGS = $(LHAPDF_LDFLAGS)
+libThePEGPDF_la_LIBADD = $(LHAPDF_LIBS)
+else
+LHAPDF_SOURCES = 
+endif
+
+libThePEGPDF_la_SOURCES = $(mySOURCES) $(INCLUDEFILES) $(LHAPDF_SOURCES)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
