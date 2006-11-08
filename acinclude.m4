@@ -436,13 +436,13 @@ echo "${ECHO_T}yes" 1>&6
 AC_DEFUN([AC_ADD_THEPEG_PATH],
 [if test "$THEPEGBUILD" == "yes"; then
   if test -f "../$2/Config/config.h"; then
-    $1="\$(top_builddir)/../$2"
+    $1="\$(top_builddir)/../$2/lib"
     SETUPTHEPEG="$SETUPTHEPEG -L\$(top_builddir)/../$2/lib"
     RUNTHEPEG="$RUNTHEPEG -L\$(top_builddir)/../$2/lib"
     AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_builddir)/../$2/include"
   fi
 else
-  $1="$THEPEGPATH"
+  $1="$THEPEGLIB"
 fi
 AC_SUBST($1)
 ])
