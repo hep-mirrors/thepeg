@@ -33,8 +33,6 @@ using namespace ThePEG;
 typedef double F77ThePEGDouble;
 typedef int F77ThePEGInteger;
 
-#ifdef ThePEG_HAS_LHAPDF
-
 extern "C" {
 
   void initpdfsetbynamem_(F77ThePEGInteger &, const char *, F77ThePEGInteger);
@@ -48,35 +46,6 @@ extern "C" {
   void getnfm_(F77ThePEGInteger &, F77ThePEGInteger &);
   void lhaprint_(F77ThePEGInteger &);
 }
-
-#else
-
-void initpdfsetbynamem_(F77ThePEGInteger &, const char *, F77ThePEGInteger) {
-  LHAPDF::throwNotInstalled();
-}
-
-void initpdfm_(F77ThePEGInteger &,F77ThePEGInteger  &) {
-  LHAPDF::throwNotInstalled();
-}
-
-void evolvepdfm_(F77ThePEGInteger &, F77ThePEGDouble &,
-		 F77ThePEGDouble &, F77ThePEGDouble *) {
-  LHAPDF::throwNotInstalled();
-}
-
-void evolvepdfpm_(F77ThePEGInteger &, F77ThePEGDouble &,
-		  F77ThePEGDouble &, F77ThePEGDouble &,
-		  F77ThePEGInteger &, F77ThePEGDouble *){
-  LHAPDF::throwNotInstalled();
-}
-
-void numberpdfm_(F77ThePEGInteger &, F77ThePEGInteger &) {}
-
-void getnfm_(F77ThePEGInteger &, F77ThePEGInteger &) {}
-
-void lhaprint_(F77ThePEGInteger &) {}
-
-#endif
 
 struct TmpMaskFpuDenorm {
 #ifdef ThePEG_HAS_FPU_CONTROL_NEVER
@@ -228,7 +197,6 @@ std::string LHAPDF::getIndexPath() {
 }
 
 bool LHAPDF::openLHAIndex(ifstream & is) {
-#ifdef ThePEG_HAS_LHAPDF
   is.close();
   is.open(getIndexPath().c_str());
   if ( is ) return true;
@@ -237,12 +205,12 @@ bool LHAPDF::openLHAIndex(ifstream & is) {
   is.open((instpath + "/../../share/ThePEG/LHAIndex.txt").c_str());
   if ( is ) return true;
   is.clear();
+  is.open("../PDF/LHAIndex.txt");
+  if ( is ) return true;
+  is.clear();
   is.open("../../ThePEG/PDF/LHAIndex.txt");
   if ( is ) return true;
   is.clear();
-#endif
-  // to remove compiler warning when HAS_LHAPDF is not set
-  if (true || is)
   return false;
 }
 
