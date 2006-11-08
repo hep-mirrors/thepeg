@@ -295,6 +295,9 @@ public:
     return 0;
   }
 
+  /**
+   * Write out the data set in the AIDA xml format.
+   */
   bool writeXML(std::ostream & os, std::string path, std::string name) {
     os << "  <dataPointSet name=\"" << name
        << "\"\n    title=\"" << title()
@@ -316,14 +319,23 @@ public:
     return true;
   }
 
+  /**
+   * Write out the data set in a flat text file suitable for
+   * eg. gnuplot to read. The coloums are layed out as 'x1 x2 ... xn
+   * dx1+ dx2+ ... dxn+ dx1- dx2- ... dxn-'.
+   */
   bool writeFLAT(std::ostream & os, std::string path, std::string name) {
     os << "# " << path << "/" << name << " " << size()
        << " \"" << title() << " \" dimension " << dimension() << std::endl;
-    for ( int i = 0, N = size(); i < N; ++i )
+    for ( int i = 0, N = size(); i < N; ++i ) {
       for ( int j = 0, M = dimension(); j < M; ++j )
-	os << point(i)->coordinate(j)->value() << " "
-	   << point(i)->coordinate(j)->errorPlus() << " "
-	   << point(i)->coordinate(j)->errorMinus() << std::endl;
+	os << point(i)->coordinate(j)->value() << " ";
+      for ( int j = 0, M = dimension(); j < M; ++j )
+	os << point(i)->coordinate(j)->errorPlus() << " ";
+      for ( int j = 0, M = dimension(); j < M; ++j )
+	os << point(i)->coordinate(j)->errorMinus() << " ";
+      os << std::endl;
+    }
     os << std::endl;
     return true;
   }

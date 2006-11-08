@@ -392,6 +392,9 @@ public:
     return 0;
   }
 
+  /**
+   * Write out the histogram in the AIDA xml format.
+   */
   bool writeXML(std::ostream & os, std::string path, std::string name) {
     os << "  <histogram1d name=\"" << name
        << "\"\n    title=\"" << title()
@@ -430,6 +433,10 @@ public:
   }
 
 
+  /**
+   * Write out the histogram in a flat text file suitable for
+   * eg. gnuplot to read. The coloums are layed out as 'x w w2 n'.
+   */
   bool writeFLAT(std::ostream & os, std::string path, std::string name) {
     os << "# " << path << "/" << name << " " << ax->lowerEdge()
        << " " << ax->bins() << " " << ax->upperEdge()
