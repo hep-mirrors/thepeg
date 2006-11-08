@@ -1,0 +1,6 @@
+mkdir /LHAPDF
+cd /LHAPDF
+create ThePEG::LHAPDF CTEQ6ll
+set CTEQ6ll:RemnantHandler /Defaults/Partons/BaryonRemnants
+set CTEQ6ll:PDFName cteq6ll.LHpdf
+cd /
