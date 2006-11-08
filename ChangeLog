@@ -1,3 +1,12 @@
+2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/Makefile.am: Removed unnecessary -L options.
+
+	* acinclude.m4: Modified the AC_ADD_THEPEG_PATH to always set the
+	path to the lib directory.
+
+	* Utilities/DynamicLoader.cc: Do not insert default paths
+
 2006-11-08  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* src/Makefile.am: missing -L../lib added, this replaces $(theENV) 
