@@ -1,3 +1,22 @@
+2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/Makefile.am, src/ThePEGDefaults.in, src/LHAPDFDefaults.in:
+	Moved the LHAPDF struff from ThePEGDefaults.in to a separate file
+	which is included in the repository only if LHAPDF is properly
+	installed.
+
+	* PDF/Makefile.am, PDF/LHAPDF.cc: Removed the compilation flag
+	ThePEG_HAS_LHAPDF. Instead the LHAPDF class is simply not included
+	if LHAPDF is not properly installed.
+
+	* configure.ac, acinclude.m4: Removed the fortran chacking from the
+	AC_SEARCH_LHAPDF and made sure LHAPDF is not linked int every
+	object file. Also moved the AC_CONDITIONAL USELHAPDF from
+	configure.ac to the AC_SEARCH_LHAPDF macro.
+
+	* Analysis/Histogram1D.h, Analysis/DataPointSet.h: Fixed bug in
+	the output to flat text files in DataPointSet.
+
 2006-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc: Removed conditional compilation
