@@ -70,7 +70,6 @@ if test "x$with_javagui" != "xno"; then
 fi
 
 AM_CONDITIONAL([JAVAGUI], [test "x$with_javagui" != "xno"])
-AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
 
 AC_CONFIG_FILES([Helicity/Makefile
 Utilities/Makefile

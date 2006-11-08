@@ -1,7 +1,7 @@
-# Search for LHAPDF in and g77 compiler in standard dorectories
+# Search for LHAPDF in and g77 compiler in standard directories
 
 AC_DEFUN([AC_SEARCH_LHAPDF],
-[AC_F77_LIBRARY_LDFLAGS
+[
 AC_MSG_CHECKING([if LHAPDF is present and works])
 HAS_LHAPDF="yes"
 LHAPDF_LIBDIR=""
@@ -9,31 +9,37 @@ AC_ARG_ENABLE(LHAPDF,[  --disable-LHAPDF        do not use LHAPDF package (requi
                           (enabled by default --enable-LHAPDF=path to specify
                           where the LHAPDF shared library is located)], [if test -n "$enable_LHAPDF" -a "$enable_LHAPDF" != "yes" -a "$enable_LHAPDF" != "no"; then LHAPDF_LIBDIR="$enable_LHAPDF"; elif test "$enable_LHAPDF" == "no"; then HAS_LHAPDF="no"; fi])
 
-if test -z "FLIBS"; then
-  HAS_LHAPDF="no"
+
+LHAPDF_LDFLAGS=""
+if test -n "$LHAPDF_LIBDIR"; then
+  LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
 fi
+
+LHAPDF_LIBS="-lLHAPDF"
 
 oldLIB="$LIBS"
 oldLDFLAGS="$LDFLAGS"
 
 if test "$HAS_LHAPDF" == "yes"; then
 dnl Now lets see if the libraries work properly
-  LIBS="$LIBS -lLHAPDF $FLIBS"
-  if test -n "$LHAPDF_LIBDIR"; then
-    LDFLAGS="$LDFLAGS -L$LHAPDF_LIBDIR"
-  fi
+  LIBS="$LIBS $LHAPDF_LIBS"
+  LDFLAGS="$LDFLAGS $LHAPDF_LDFLAGS"
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[extern "C" { void initpdf_(int&); }]],
                                   [[int i = 1; initpdf_(i);]])], ,
                                   HAS_LHAPDF="no")
 fi
+
+LIBS="$oldLIB"
+LDFLAGS="$oldLDFLAGS"
+
 if test "$HAS_LHAPDF" == "yes"; then
-  AC_DEFINE(ThePEG_HAS_LHAPDF, [], [Set if LHAPDF is present and working])
   AC_MSG_RESULT([yes])
 else
-  LIBS="$oldLIB"
-  LDFLAGS="$oldLDFLAGS"
   AC_MSG_RESULT([no])
 fi
+AC_SUBST(LHAPDF_LIBS)
+AC_SUBST(LHAPDF_LDFLAGS)
+AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
 ])
 
 # Search for CLHEP in standard directories using standard CLHEP names
