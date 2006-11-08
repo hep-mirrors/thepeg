@@ -39,8 +39,8 @@ save:
 	cp *.log *.out *.run *.tex *.rpo save
 
 valgrind:
-	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./setupThePEG.bin -L../lib -r ThePEGDefaults.rpo SimpleLEP.in &> /tmp/valgrind.out
-	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./runThePEG.bin -L../lib SimpleLEP.run >> /tmp/valgrind.out 2>&1
+	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./setupThePEG.bin -r ThePEGDefaults.rpo SimpleLEP.in &> /tmp/valgrind.out
+	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./runThePEG.bin SimpleLEP.run >> /tmp/valgrind.out 2>&1
 
 INPUTFILES = ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in \
              SimpleLEP.in TestLHAPDF.in
@@ -67,29 +67,29 @@ ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in LHAPDFDefau
 	./setupThePEG.bin --init --exitonerror -L../lib -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; rm -f ThePEGDefaults.rpo; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 if USELHAPDF
-	./setupThePEG.bin --init --exitonerror -L../lib -r ThePEGDefaults.rpo -o ThePEGDefaults.rpo LHAPDFDefaults.in
+	./setupThePEG.bin --init --exitonerror -r ThePEGDefaults.rpo -o ThePEGDefaults.rpo LHAPDFDefaults.in
 endif
 
 check-local:
-	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo SimpleLEP.in
-	time ./runThePEG.bin -L../lib -d 0 SimpleLEP.run
+	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
+	time ./runThePEG.bin -d 0 SimpleLEP.run
 if USELHAPDF
-	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo TestLHAPDF.in
-	time ./runThePEG.bin -L../lib -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
+	time ./runThePEG.bin -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
 SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
-	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo SimpleLEP.in
+	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
-	time ./runThePEG.bin -L../lib -d 0 SimpleLEP.run
+	time ./runThePEG.bin -d 0 SimpleLEP.run
 
 if USELHAPDF
 TestLHAPDF.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo TestLHAPDF.in 
-	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo TestLHAPDF.in
+	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 
 TestLHAPDF.out: runThePEG.bin TestLHAPDF.run
-	time ./runThePEG.bin -L../lib -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+	time ./runThePEG.bin -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
 install-data-local:
