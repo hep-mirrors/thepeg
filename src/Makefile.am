@@ -64,25 +64,25 @@ runThePEG: $(srcdir)/runThePEG.install Makefile
 	sed -e s:@:$(pkglibdir):g $(srcdir)/runThePEG.install > runThePEG
 
 ThePEGDefaults.rpo: done-all-links setupThePEG.bin ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in
-	./setupThePEG.bin --init --exitonerror -r ThePEGDefaults.rpo ThePEGDefaults.in
+	./setupThePEG.bin --init --exitonerror -L../lib -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; rm -f ThePEGDefaults.rpo; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 if USELHAPDF
-	./setupThePEG.bin --init --exitonerror -r ThePEGDefaults.rpo -o ThePEGDefaults.rpo LHAPDFDefaults.in
+	./setupThePEG.bin --init --exitonerror -L../lib -r ThePEGDefaults.rpo -o ThePEGDefaults.rpo LHAPDFDefaults.in
 endif
 
 check-local:
-	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
-	time ./runThePEG.bin -d 0 SimpleLEP.run
+	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo SimpleLEP.in
+	time ./runThePEG.bin -L../lib -d 0 SimpleLEP.run
 if USELHAPDF
 	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo TestLHAPDF.in
 	time ./runThePEG.bin -L../lib -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
 SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
-	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
+	./setupThePEG.bin --exitonerror -L../lib -r ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
-	time ./runThePEG.bin -d 0 SimpleLEP.run
+	time ./runThePEG.bin -L../lib -d 0 SimpleLEP.run
 
 if USELHAPDF
 TestLHAPDF.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo TestLHAPDF.in 

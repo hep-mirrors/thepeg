@@ -1,3 +1,7 @@
+2006-11-08  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* src/Makefile.am: missing -L../lib added, this replaces $(theENV) 
+
 2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am, src/ThePEGDefaults.in, src/LHAPDFDefaults.in:
@@ -59,6 +63,7 @@
 2006-11-01  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* Helicity/LorentzSpinor.icc : changes to constnesss of various members 
+
 2006-10-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/ColourLine.cc: Added join function to join two
