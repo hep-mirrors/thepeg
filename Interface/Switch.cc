@@ -44,7 +44,8 @@ string SwitchBase::exec(InterfacedBase & i, string action,
 	else if ( sval == "false" && theOptions.find(0) != theOptions.end() )
 	  val = 0;
 	else
-	  return "Error: no such option '" + StringUtils::car(arguments) + "'.";
+	  return "Error: no option '" + StringUtils::car(arguments) +
+	    "' found for switch '" + i.fullName() + ":" +name() + "'.";
       } else
 	val = sit->second.value();
     }
