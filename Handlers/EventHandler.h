@@ -59,9 +59,11 @@ public:
 
   /** Enumerate the different levels of consistency checking. */
   enum ConsistencyLevel {
-    clNoCheck,   /**< Do not perform consistency checks. */
-    clCollision, /**< Check every Collision. */
-    clStep       /**< Check every Step. */
+    clNoCheck,        /**< Do not perform consistency checks. */
+    clCollision,      /**< Check every Collision. */
+    clStep,           /**< Check every Step. */
+    clPrintCollision, /**< Check every Collision. Print event if inconsistent.*/
+    clPrintStep       /**< Check every Step. Print event if inconsistent. */
   };
 
   /** A vector of <code>HandlerGroup</code>s. */

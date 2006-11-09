@@ -131,7 +131,8 @@ tCollPtr EventHandler::continueCollision() {
   Timer<45> timer("EventHandler::continueCollision()");
   generator()->currentEventHandler(this);
   while (1) {
-    if ( consistencyLevel() == clStep ) checkConsistency();
+    if ( consistencyLevel() == clStep || consistencyLevel() == clPrintStep )
+      checkConsistency();
     bool done = true;
     for ( GroupVector::iterator git = groups().begin();
 	  git != groups().end(); ++git ) {
@@ -146,7 +147,8 @@ tCollPtr EventHandler::continueCollision() {
     }
     if ( done ) break;
   }
-  if ( consistencyLevel() == clCollision ) checkConsistency();
+  if ( consistencyLevel() == clCollision ||
+       consistencyLevel() == clPrintCollision ) checkConsistency();
   return currentCollision();
 }
 
@@ -268,19 +270,26 @@ void EventHandler::checkConsistency() const {
     cf += (**it).data().iCharge();
   }
 
-  if ( cf != ci ) Throw<ConsistencyException>()
-    << "Event handler '" << name() << "' found charge non-conservation by "
-    << cf - ci << "/3 units after generating step number " << c.steps().size()
-    << "." << Exception::warning;
+  if ( cf != ci ) {
+    Throw<ConsistencyException>()
+      << "Event handler '" << name() << "' found charge non-conservation by "
+      << cf - ci << "/3 units after generating step number " << c.steps().size()
+      << "." << Exception::warning;
+    generator()->log() << *currentEvent();
+  }
 
   Energy eps = consistencyEpsilon()*pi.m()*sqrt(double(fs.size()));
   pf -= pi;
   if ( abs(pf.x()) > eps || abs(pf.y()) > eps || abs(pf.z()) > eps ||
-       abs(pf.e()) > eps ) Throw<ConsistencyException>()
-    << "Event handler '" << name() << "' found energy-momentum non-conservation "
-    << "by (" << pf.x()/GeV << "," << pf.y()/GeV << "," << pf.z()/GeV << ";"
-    << pf.e()/GeV << ") GeV after generating step number " << c.steps().size()
-    << "." << Exception::warning;
+       abs(pf.e()) > eps ) {
+    Throw<ConsistencyException>()
+      << "Event handler '" << name() << "' found energy-momentum non-"
+      << "conservation by (" << pf.x()/GeV << "," << pf.y()/GeV << ","
+      << pf.z()/GeV << ";" << pf.e()/GeV
+      << ") GeV after generating step number " << c.steps().size()
+      << "." << Exception::warning;
+    generator()->log() << *currentEvent();
+  }
 
 }
 
@@ -417,6 +426,18 @@ void EventHandler::Init() {
      "EveryStep",
      "Every step is checked for consistency.",
      clStep);
+  static SwitchOption interfaceConsistencyLevelPrintEveryCollision
+    (interfaceConsistencyLevel,
+     "PrintEveryCollision",
+     "Every collision is checked for consistency. If an inconsistency is "
+     "found, the event is printed to the log file.",
+     clPrintCollision);
+  static SwitchOption interfaceConsistencyLevelPrintEveryStep
+    (interfaceConsistencyLevel,
+     "PrintEveryStep",
+     "Every step is checked for consistency. If an inconsistency is "
+     "found, the event is printed to the log file.",
+     clPrintStep);
 
   static Parameter<EventHandler,double> interfaceConsistencyEpsilon
     ("ConsistencyEpsilon",
