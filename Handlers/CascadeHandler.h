@@ -89,9 +89,12 @@ public:
    * sub-process to be used in the subsequent cascade. It is however
    * not guaranteed that the reweightCKKW() will have been called for
    * the subprocess handed to the handle() function. This default
-   * implementation of the function simply return one.
+   * implementation of the function simply return one. The current
+   * sub-process is mixed together with other processes with a
+   * multiplicity of outgoing particles between \a minMult and \a
+   * maxMult.
    */
-  virtual double reweightCKKW();
+  virtual double reweightCKKW(int minMult, int maxMult);
 
 public:
 

@@ -180,10 +180,12 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   lastAlphaEM(matrixElement()->alphaEM());
 
   subProcess(SubProPtr());
-  if ( CKKWHandler() ) {
+  if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
+       matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
     newSubProcess();
     CKKWHandler()->setXComb(this);
-    xsec *= CKKWHandler()->reweightCKKW();
+    xsec *= CKKWHandler()->reweightCKKW(matrixElement()->minMultCKKW(),
+					matrixElement()->maxMultCKKW());
   }
 
   return xsec * pExtractor()->fullFn(partonBinInstances(), lastScale()) *

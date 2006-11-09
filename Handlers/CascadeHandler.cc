@@ -45,7 +45,7 @@ handle(EventHandler & eh, const tPVector & tagged,
 
 }
 
-double CascadeHandler::reweightCKKW() {
+double CascadeHandler::reweightCKKW(int, int) {
   return 1.0;
 }
 
