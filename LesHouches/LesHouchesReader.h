@@ -274,6 +274,22 @@ public:
    * process for the current event.
    */
   inline const PVector & intermediates() const;
+
+  /**
+   * If this reader is to be used (possibly together with others) for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  inline int maxMultCKKW() const;
+
+  /**
+   * If this reader is to be used (possibly together with others) for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  inline int minMultCKKW() const;
   //@}
 
   /** @name Other inlined access functions. */
@@ -765,6 +781,22 @@ protected:
    * event file in the initialization?
    */
   bool doInitPDFs;
+
+  /**
+   * If this reader is to be used (possibly together with others) for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  int theMaxMultCKKW;
+
+  /**
+   * If this reader is to be used (possibly together with others) for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  int theMinMultCKKW;
 
 private:
 

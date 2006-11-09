@@ -188,4 +188,12 @@ inline const LesHouchesReader::XCombMap & LesHouchesReader::xCombs() const {
   return theXCombs;
 }
 
+inline int LesHouchesReader::maxMultCKKW() const {
+  return theMaxMultCKKW;
+}
+
+inline int LesHouchesReader::minMultCKKW() const {
+  return theMinMultCKKW;
+}
+
 }
