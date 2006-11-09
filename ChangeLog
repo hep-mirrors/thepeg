@@ -10,8 +10,8 @@
 	sub-process has been decayed (handled by a CascadeHandler) to
 	avoid that the same sub-process is handled twice.
 
-	* Interface/Switch.cc: Made error message more clear when
-	non-existent option is given.
+	* Interface/Switch.cc: Ticket #58. Made error message more clear
+	when non-existent option is given.
 
 2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
