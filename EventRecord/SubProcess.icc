@@ -16,7 +16,8 @@ inline void SubProcess::operator delete(void * p, size_t) {
   FixedAllocator<SubProcess>::deallocate(p);
 }
 
-inline SubProcess::SubProcess() {}
+inline SubProcess::SubProcess()
+  : isDecayed(false) {}
 
 inline SubProcess::~SubProcess() {}
 
@@ -50,6 +51,14 @@ inline double SubProcess::that() const {
 
 inline double SubProcess::uhat() const {
   return (incoming().second->momentum() - outgoing()[0]->momentum()).m2();
+}
+
+inline bool SubProcess::decayed() const {
+  return isDecayed;
+}
+
+inline void SubProcess::decayed(bool x) {
+  isDecayed = x;
 }
 
 }

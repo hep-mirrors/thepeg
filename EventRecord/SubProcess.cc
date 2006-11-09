@@ -22,12 +22,12 @@ SubProcess::
 SubProcess(const PPair & newIncoming,
  	   tCollPtr newCollision, tcEventBasePtr newHandler)
   : theHandler(newHandler), theCollision(newCollision),
-    theIncoming(newIncoming) {}
+    theIncoming(newIncoming), isDecayed(false) {}
 
 SubProcess::SubProcess(const SubProcess & s)
   : Base(s), theHandler(s.theHandler), theCollision(s.theCollision),
     theIncoming(s.theIncoming), theIntermediates(s.theIntermediates),
-    theOutgoing(s.theOutgoing) {}
+    theOutgoing(s.theOutgoing), isDecayed(s.isDecayed) {}
 
 SubProPtr SubProcess::clone() const {
   return ptr_new<SubProPtr>(*this);
@@ -108,12 +108,14 @@ ostream & ThePEG::operator<<(ostream & os, const SubProcess & sp) {
 
 void SubProcess::persistentOutput(PersistentOStream & os) const {
   EventConfig::putHandler(os, theHandler);
-  os << theCollision << theIncoming << theIntermediates << theOutgoing;
+  os << theCollision << theIncoming << theIntermediates << theOutgoing
+     << isDecayed;
 }
 
 void SubProcess::persistentInput(PersistentIStream & is, int) {
   EventConfig::getHandler(is, theHandler);
-  is >> theCollision >> theIncoming >> theIntermediates >> theOutgoing;
+  is >> theCollision >> theIncoming >> theIntermediates >> theOutgoing
+     >> isDecayed;
 }
 
 ClassDescription<SubProcess> SubProcess::initSubProcess;

@@ -124,6 +124,19 @@ public:
    */
   SubProPtr clone() const;
 
+  /**
+   * True if a perturbative cascade has been applied to this sub
+   * process.
+   */
+  inline bool decayed() const;
+
+  /**
+   * Set to true if a perturbative cascade has been applied to this
+   * sub process.
+   */
+  inline void decayed(bool);
+
+
 protected:
 
   /**
@@ -207,6 +220,11 @@ private:
    * The vector of outgoing particles.
    */
   ParticleVector theOutgoing;
+
+  /**
+   * True if a perturbative cascade has been applied to this sub process.
+   */
+  bool isDecayed;
 
 private:
 
