@@ -43,7 +43,8 @@ LesHouchesReader::LesHouchesReader(bool active)
   : theNEvents(0), position(0), reopened(0), theMaxScan(-1),
     isActive(active), isWeighted(false), hasNegativeWeights(false),
     theCacheFileName(""), theCacheFile(NULL), preweight(1.0),
-    reweightPDF(false), doInitPDFs(false) {}
+    reweightPDF(false), doInitPDFs(false),
+    theMaxMultCKKW(0), theMinMultCKKW(0) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -58,7 +59,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     thePartonBinInstances(x.thePartonBinInstances),
     theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
     preweight(x.preweight), reweightPDF(x.reweightPDF),
-    doInitPDFs(x.doInitPDFs) {}
+    doInitPDFs(x.doInitPDFs),
+    theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -477,9 +479,9 @@ double LesHouchesReader::reweight() {
     reweights[i]->setXComb(lastXCombPtr());
     weight *= reweights[i]->weight();
   }
-  if ( CKKWHandler() ) {
+  if ( CKKWHandler() && maxMultCKKW() > 0 && maxMultCKKW() > minMultCKKW() ) {
     CKKWHandler()->setXComb(lastXCombPtr());
-    weight *= CKKWHandler()->reweightCKKW();
+    weight *= CKKWHandler()->reweightCKKW(minMultCKKW(), maxMultCKKW());
   }
   return weight;
 }
@@ -790,7 +792,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << theCacheFileName << stats << statmap << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
-     << theLastXComb;
+     << theLastXComb << theMaxMultCKKW << theMinMultCKKW;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -807,7 +809,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
-     >> theLastXComb;
+     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -1113,6 +1115,25 @@ void LesHouchesReader::Init() {
      "Do not extract PDFs during initialization.",
      false);
 
+  static Parameter<LesHouchesReader,int> interfaceMaxMultCKKW
+    ("MaxMultCKKW",
+     "If this reader is to be used (possibly together with others) for CKKW-"
+     "reweighting and veto, this should give the multiplicity of outgoing "
+     "particles in the highest multiplicity matrix element in the group. "
+     "If set to zero, no CKKW procedure should be applied.",
+     &LesHouchesReader::theMaxMultCKKW, 0, 0, 0,
+     true, false, Interface::lowerlim);
+
+  static Parameter<LesHouchesReader,int> interfaceMinMultCKKW
+    ("MinMultCKKW",
+     "If this reader is to be used (possibly together with others) for CKKW-"
+     "reweighting and veto, this should give the multiplicity of outgoing "
+     "particles in the lowest multiplicity matrix element in the group. If "
+     "larger or equal to <interface>MaxMultCKKW</interface>, no CKKW "
+     "procedure should be applied.",
+     &LesHouchesReader::theMinMultCKKW, 0, 0, 0,
+     true, false, Interface::lowerlim);
+
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);
   interfaceScanPDF.rank(6);
@@ -1120,6 +1141,8 @@ void LesHouchesReader::Init() {
   interfaceBeamB.rank(4);
   interfaceEBeamA.rank(3);
   interfaceEBeamB.rank(2);
+  interfaceMaxMultCKKW.rank(1.5);
+  interfaceMinMultCKKW.rank(1.0);
 
 }
 
