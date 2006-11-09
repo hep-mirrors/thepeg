@@ -1,5 +1,21 @@
 2006-11-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* MatrixElement/MEBase.icc, MatrixElement/MEBase.h,
+	MatrixElement/MEBase.cc, LesHouches/LesHouchesReader.cc,
+	LesHouches/LesHouchesReader.icc, LesHouches/LesHouchesReader.h:
+	Added variables and interfaces for the minimum and maximum
+	multiplicity to be considered in a CKKW reweighting procedure.
+
+	* LesHouches/LesHouchesReader.cc, Handlers/StandardXComb.cc,
+	Handlers/CascadeHandler.h, Handlers/CascadeHandler.cc: Changed
+	signature of reweightCKKW. It now takes arguments giving the
+	minimum and maximum multiplicity to be considered in the CKKW
+	reweighting procedure.
+
+	* Handlers/ClusterCollapser.cc: Fixed bug where no colour-singlet
+	particles were considered for momentum compensation if no coloured
+	particles where present.
+
 	* PDT/Onium3GDecayer.cc, PDT/ColourPairDecayer.cc: Fixed bug where
 	the scale of the produced coloured particles were not set.
 
