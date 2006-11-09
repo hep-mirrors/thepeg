@@ -71,13 +71,18 @@ collapse(tPVector tagged, tStepPtr newstep) {
     }
 
     // Update the tagged vector and remove partons which have already
-    // collapsed.
+    // collapsed and insert their children instead.
     tPVector::iterator it = tagged.begin();
+    set<tPPtr> children;
     while ( it != tagged.end() ) {
       *it = (**it).final();
-      if ( (**it).decayed() ) it = tagged.erase(it);
+      if ( (**it).decayed() ) {
+	children.insert((**it).children().begin(), (**it).children().end());
+	it = tagged.erase(it);
+      }
       else ++it;
     }
+    tagged.insert(tagged.end(), children.begin(), children.end());
 
     // Remove the collapsed cluster.
     clusters.erase(clusters.begin());
@@ -287,7 +292,7 @@ getCompensators(Energy mh, const ColourSinglet & cs,
     // If there was not enough energy, find an additional compensator
     // particle. Also check that compensators have mass to avoid boost
     // problems.
-  } while ( (pc + pcomp).m() <= mh + pcomp.m() ||
+  } while ( comp.empty() || (pc + pcomp).m() <= mh + pcomp.m() ||
 	    ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) );
 
 
