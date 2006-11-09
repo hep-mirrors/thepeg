@@ -1,3 +1,18 @@
+2006-11-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/Onium3GDecayer.cc, PDT/ColourPairDecayer.cc: Fixed bug where
+	the scale of the produced coloured particles were not set.
+
+	* Handlers/EventHandler.*: Added options in ConsistencyLevel
+	switch to print out an event if inconsistencies are found.
+
+	* EventRecord/SubProcess.*: Added flag to determine if a
+	sub-process has been decayed (handled by a CascadeHandler) to
+	avoid that the same sub-process is handled twice.
+
+	* Interface/Switch.cc: Made error message more clear when
+	non-existent option is given.
+
 2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Removed unnecessary -L options.

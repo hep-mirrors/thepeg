@@ -40,9 +40,10 @@ bool ColourPairDecayer::accept(const DecayMode & dm) const {
 }
 
 ParticleVector ColourPairDecayer::getChildren(const DecayMode & dm,
-				  const Particle &) const {
+				  const Particle & parent) const {
   ParticleVector children = dm.produceProducts();
   for ( int i = 0, N = children.size(); i < N; ++i ) {
+    children[i]->scale(sqr(parent.mass()));
     if ( !children[i]->coloured() ) continue;
     if ( children[i]->hasColour() )
       children[i]->antiColourNeighbour(children[i + 1]);

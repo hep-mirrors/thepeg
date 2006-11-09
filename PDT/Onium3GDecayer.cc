@@ -47,8 +47,10 @@ ParticleVector Onium3GDecayer::decay(const DecayMode & dm,
 				     const Particle & parent) const {
   PVector children = FlatDecayer::decay(dm, parent);
   PVector gluons;
-  for ( int i = 0, N = children.size(); i < N; ++i )
+  for ( int i = 0, N = children.size(); i < N; ++i ) {
+    children[i]->scale(sqr(parent.mass()));
     if ( children[i]->id() == ParticleID::g ) gluons.push_back(children[i]);
+  }
   for ( int i = 0, N = gluons.size(); i < N; ++i )
     gluons[i]->colourNeighbour(gluons[(i + 1)%N]);
   HintPtr h = ptr_new<HintPtr>();
