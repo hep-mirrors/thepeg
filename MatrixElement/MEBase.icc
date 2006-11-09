@@ -72,4 +72,12 @@ inline IVector MEBase::getReferences() {
   return ret;
 }
 
+inline int MEBase::maxMultCKKW() const {
+  return theMaxMultCKKW;
+}
+
+inline int MEBase::minMultCKKW() const {
+  return theMinMultCKKW;
+}
+
 }

@@ -293,6 +293,22 @@ public:
    * section to be used later when selecting diagrams and colour flow.
    */
   void meInfo(const DVector & info) const;
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  inline int maxMultCKKW() const;
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  inline int minMultCKKW() const;
   //@}
 
 public:
@@ -422,6 +438,22 @@ private:
    * the call to dSigHatDR.
    */
   double theLastJacobian;
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  int theMaxMultCKKW;
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  int theMinMultCKKW;
 
 private:
 

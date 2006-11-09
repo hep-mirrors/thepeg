@@ -8,6 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/MatrixElement/ReweightBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
@@ -25,7 +26,8 @@
 using namespace ThePEG;
 
 MEBase::MEBase()
-: theLastSHat(-1.0*GeV2), lastPreweight(1.0), theLastJacobian(1.0) {}
+  : theLastSHat(-1.0*GeV2), lastPreweight(1.0), theLastJacobian(1.0),
+    theMaxMultCKKW(0), theMinMultCKKW(0) {}
 
 MEBase::MEBase(const MEBase & x)
   : HandlerBase(x), LastXCombInfo<StandardXComb>(x),
@@ -33,7 +35,8 @@ MEBase::MEBase(const MEBase & x)
     theLastSHat(x.theLastSHat),
     reweights(x.reweights), preweights(x.preweights),
     lastPreweight(x.lastPreweight),
-    theAmplitude(x.theAmplitude), theLastJacobian(x.theLastJacobian) {}
+    theAmplitude(x.theAmplitude), theLastJacobian(x.theLastJacobian),
+    theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW) {}
 
 MEBase::~MEBase() {}
 
@@ -163,12 +166,14 @@ double MEBase::alphaEM() const {
 
 void MEBase::persistentOutput(PersistentOStream & os) const {
   os << theDiagrams << ounit(theLastSHat, GeV) << reweights << preweights
-     << lastPreweight << theAmplitude << theLastXComb << theLastJacobian;
+     << lastPreweight << theAmplitude << theLastXComb << theLastJacobian
+     << theMaxMultCKKW << theMinMultCKKW;
 }
 
 void MEBase::persistentInput(PersistentIStream & is, int) {
   is >> theDiagrams >> iunit(theLastSHat, GeV) >> reweights >> preweights
-     >> lastPreweight >> theAmplitude >> theLastXComb >> theLastJacobian;
+     >> lastPreweight >> theAmplitude >> theLastXComb >> theLastJacobian
+     >> theMaxMultCKKW >> theMinMultCKKW;
 }
 
 AbstractClassDescription<MEBase> MEBase::initMEBase;
@@ -200,6 +205,28 @@ void MEBase::Init() {
     ("Amplitude",
      "The eventual amplitude associated to this matrix element.",
      &MEBase::theAmplitude, false, false, true, true);
+
+  static Parameter<MEBase,int> interfaceMaxMultCKKW
+    ("MaxMultCKKW",
+     "If this matrix element is to be used together with others for CKKW-"
+     "reweighting and veto, this should give the multiplicity of outgoing "
+     "particles in the highest multiplicity matrix element in the group. "
+     "If set to zero, no CKKW procedure should be applied.",
+     &MEBase::theMaxMultCKKW, 0, 0, 0,
+     true, false, Interface::lowerlim);
+
+  static Parameter<MEBase,int> interfaceMinMultCKKW
+    ("MinMultCKKW",
+     "If this matrix element is to be used together with others for CKKW-"
+     "reweighting and veto, this should give the multiplicity of outgoing "
+     "particles in the lowest multiplicity matrix element in the group. If "
+     "larger or equal to <interface>MaxMultCKKW</interface>, no CKKW "
+     "procedure should be applied.",
+     &MEBase::theMinMultCKKW, 0, 0, 0,
+     true, false, Interface::lowerlim);
+
+  interfaceMaxMultCKKW.rank(2.0);
+  interfaceMinMultCKKW.rank(1.0);
 
 }
 
