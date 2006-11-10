@@ -11,14 +11,6 @@ inline RemnantDecayer::RemnantDecayer() {}
 inline RemnantDecayer::RemnantDecayer(const RemnantDecayer & x)
   : Decayer(x) {}
 
-inline IBPtr RemnantDecayer::clone() const {
-  return new_ptr(*this);
-}
-
-inline IBPtr RemnantDecayer::fullclone() const {
-  return new_ptr(*this);
-}
-
 inline tRemPDPtr RemnantDecayer::data(tcRemPPtr remnant) const {
   return remnant->remData;
 }

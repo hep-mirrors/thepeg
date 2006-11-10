@@ -54,11 +54,42 @@ generate(PartonBinInstance & pb, const double *,
   return parent - rem->momentum();
 }
 
+bool SoftRemnantHandler::
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
+		 Energy2, const LorentzMomentum & parent,
+		 const PVector &) const {
+  // First find the old remnant.
+  tRemPPtr rem;
+  for ( int i = 0, N = pb.particle()->children().size(); i < N; ++i )
+    if ( dynamic_ptr_cast<tRemPPtr>(pb.particle()->children()[i]) )
+      rem = dynamic_ptr_cast<tRemPPtr>(pb.particle()->children()[i]);
+  if ( !rem ) return false;
+
+  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+  pb.parton()->setMomentum
+    (lightCone(p.plus()*pb.x(), 0.0*GeV, 0.0*GeV, 0.0*GeV));
+
+  if ( !rem->reextract(oldp, newp) ) return false;
+
+  rem->rotateY(parent.theta());
+  rem->rotateZ(parent.phi());
+  pb.remnants(PVector(1, rem));
+
+  return true;
+}  
+
 Lorentz5Momentum SoftRemnantHandler::
 generate(PartonBinInstance & pb, const double *, Energy2, Energy2,
 	 const LorentzMomentum & parent) const {
   return generate(pb, 0, 0.0*GeV2, parent);
 }
+
+bool SoftRemnantHandler::
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double l,
+		 Energy2 scale, Energy2,
+		 const LorentzMomentum & p, const PVector & prev) const {
+  return recreateRemnants(pb, oldp, newp, l, scale, p, prev);
+}  
 
 void SoftRemnantHandler::persistentOutput(PersistentOStream & os) const {
   os << remdec;

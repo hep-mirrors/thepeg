@@ -1,0 +1,27 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SimpleBaryonRemnantDecayer class.
+//
+
+namespace ThePEG {
+
+inline SimpleBaryonRemnantDecayer::SimpleBaryonRemnantDecayer() {}
+
+inline SimpleBaryonRemnantDecayer::SimpleBaryonRemnantDecayer(const SimpleBaryonRemnantDecayer & x)
+  : RemnantDecayer(x) {}
+
+inline IBPtr SimpleBaryonRemnantDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr SimpleBaryonRemnantDecayer::fullclone() const {
+  return new_ptr(*this);
+}
+
+
+// If needed, insert default implementations of virtual function defined
+// in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
+
+
+}

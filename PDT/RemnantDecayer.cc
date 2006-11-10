@@ -38,9 +38,8 @@ bool RemnantDecayer::multiCapable() const {
 }
 
 ParticleVector RemnantDecayer::
-decay(const DecayMode & dm, const Particle &) const {
-  ParticleVector children = dm.produceProducts();
-  return children;
+decay(const DecayMode &, const Particle &) const {
+  return ParticleVector();
 }
 
 ParticleVector RemnantDecayer::
@@ -56,21 +55,19 @@ decay(const DecayMode & dm, const Particle & p, Step &) const {
   return children;
 }
 
-void RemnantDecayer::persistentOutput(PersistentOStream & ) const {
-  // *** ATTENTION *** os << ; // Add all member variable which should be written persistently here.
-}
+void RemnantDecayer::persistentOutput(PersistentOStream & ) const {}
 
-void RemnantDecayer::persistentInput(PersistentIStream & , int) {
-  // *** ATTENTION *** is >> ; // Add all member variable which should be read persistently here.
-}
+void RemnantDecayer::persistentInput(PersistentIStream & , int) {}
 
-ClassDescription<RemnantDecayer> RemnantDecayer::initRemnantDecayer;
+AbstractClassDescription<RemnantDecayer> RemnantDecayer::initRemnantDecayer;
 // Definition of the static class description member.
 
 void RemnantDecayer::Init() {
 
   static ClassDocumentation<RemnantDecayer> documentation
-    ("There is no documentation for the RemnantDecayer class");
+    ("The RemnantDecayer class is the base class to be used for all "
+     "decayers capable of decaying a RemnantParticle object produced by a "
+     "SoftRemnantHandler object.");
 
 }
 

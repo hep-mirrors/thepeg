@@ -86,6 +86,35 @@ public:
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale, Energy2 shat,
 				    const LorentzMomentum & parent) const;
+
+  /**
+   * Redo the remnant generation for the given particle bin, \a pb. If
+   * \a oldp is non-null it corresponds to the previously extracted
+   * parton which should be replaced by \a newp. If \a oldp is null it
+   * means \a newp should be extracted in addition to the previously
+   * extracted ones available in \a prev. 
+   * @return false if the generation failed.
+   */
+  virtual bool recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp,
+				double newl, Energy2 scale,
+				const LorentzMomentum & p,
+				const PVector & prev = PVector()) const;
+  /**
+   * Redo the remnant generation for the given particle bin, \a pb. If
+   * \a oldp is non-null it corresponds to the previously extracted
+   * parton which should be replaced by \a newp. If \a oldp is null it
+   * means \a newp should be extracted in addition to the previously
+   * extracted ones available in \a prev. In either case \a shat is
+   * the total invariant mass squared of the hard sub-system produced
+   * by the extracted parton and the primary parton entering from the other
+   * side. 
+   *
+   * @return false if the generation failed.
+   */
+  virtual bool recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp,
+				double newl, Energy2 scale,
+				Energy2 shat, const LorentzMomentum & p,
+				const PVector & prev = PVector()) const;
   //@}
 
 public:

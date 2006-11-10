@@ -13,7 +13,12 @@
 namespace ThePEG {
 
 /**
- * Here is the documentation of the RemnantDecayer class.
+ * The RemnantDecayer class is the base class to be used for all
+ * decayers capable of decaying a RemnantParticle object produced by a
+ * SoftRemnantHandler object. A derived class must implement the
+ * decay(const DecayMode &, const Particle &, Step &) function, while
+ * the decay(const DecayMode &, const Particle &) function should
+ * never be called.
  *
  * @see \ref RemnantDecayerInterfaces "The interfaces"
  * defined for RemnantDecayer.
@@ -75,7 +80,7 @@ public:
    * @return a ParticleVector containing the decay products.
    */
   virtual ParticleVector decay(const DecayMode & dm, const Particle & p,
-			       Step & step) const;
+			       Step & step) const = 0;
 
   /**
    * Perform a decay for a given DecayMode and a given Particle instance.
@@ -141,35 +146,13 @@ public:
    */
   static void Init();
 
-protected:
-
-  /** @name Clone Methods. */
-  //@{
-  /**
-   * Make a simple clone of this object.
-   * @return a pointer to the new object.
-   */
-  inline virtual IBPtr clone() const;
-
-  /** Make a clone of this object, possibly modifying the cloned object
-   * to make it sane.
-   * @return a pointer to the new object.
-   */
-  inline virtual IBPtr fullclone() const;
-  //@}
-
-
-// If needed, insert declarations of virtual function defined in the
-// InterfacedBase class here (using ThePEG-interfaced-decl in Emacs).
-
-
 private:
 
   /**
    * The static object used to initialize the description of this class.
    * Indicates that this is a concrete class with persistent data.
    */
-  static ClassDescription<RemnantDecayer> initRemnantDecayer;
+  static AbstractClassDescription<RemnantDecayer> initRemnantDecayer;
 
   /**
    * The assignment operator is private and must never be called.
