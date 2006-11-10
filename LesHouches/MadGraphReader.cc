@@ -47,6 +47,8 @@ void MadGraphReader::open() {
 
     // Check for number of events in the file.
     string::size_type pos = outsideBlock.find("##  Number of Events       :");
+    if ( pos == string::npos )
+      pos = outsideBlock.find("#  Number of Events        :");
     if ( pos != string::npos ) {
       pos += 28;
       neve = std::strtol(outsideBlock.c_str() + pos, NULL, 0);
@@ -57,7 +59,8 @@ void MadGraphReader::open() {
     for ( int itag = 0; itag < 27; ++itag ) {
       pos = outsideBlock.find(string("= ") + cuttags[itag]);
       if ( pos != string::npos ) {
-	string::size_type beg = outsideBlock.rfind("#", pos) + 1;
+	string::size_type beg = max(outsideBlock.rfind("#", pos) + 1,
+				    outsideBlock.rfind("\n", pos) + 1);
 	string value = outsideBlock.substr(beg, pos - beg);
 	for ( string::size_type i = 0; i < value.length(); ++i )
 	  if ( value[i] == 'd' || value[i] == 'D' ) value[i] = 'e';

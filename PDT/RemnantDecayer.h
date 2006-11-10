@@ -120,6 +120,11 @@ protected:
    */
   inline const PVector & extracted(tcRemPPtr remnant) const;
 
+  /**
+   * Find all particles produced from an extracted parton.
+   */
+  void fillChildren(const Particle & p, set<tPPtr> & children) const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

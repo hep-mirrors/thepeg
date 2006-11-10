@@ -55,6 +55,18 @@ decay(const DecayMode & dm, const Particle & p, Step &) const {
   return children;
 }
 
+void RemnantDecayer::
+fillChildren(const Particle & p, set<tPPtr> & children) const {
+  for ( int i = 0, N = p.children().size(); i < N; ++i ) {
+    children.insert(p.children()[i]);
+    fillChildren(*p.children()[i], children);
+  }
+  for ( int i = 0, N = p.parents().size(); i < N; ++i ) {
+    tPPtr parent = p.parents()[i];
+    if ( member(children, parent) ) continue;
+  }
+}
+
 void RemnantDecayer::persistentOutput(PersistentOStream & ) const {}
 
 void RemnantDecayer::persistentInput(PersistentIStream & , int) {}
