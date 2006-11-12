@@ -64,6 +64,12 @@ fillChildren(const Particle & p, set<tPPtr> & children) const {
   for ( int i = 0, N = p.parents().size(); i < N; ++i ) {
     tPPtr parent = p.parents()[i];
     if ( member(children, parent) ) continue;
+    for ( int j = 0, M = p.children().size(); j < M; ++j )
+      if ( dynamic_ptr_cast<tcRemPPtr>(p.children()[j]) ) {
+	parent = tPPtr();
+	break;
+      }
+    if ( parent ) fillChildren(*parent, children);
   }
 }
 
