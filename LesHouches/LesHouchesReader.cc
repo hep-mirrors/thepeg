@@ -36,6 +36,7 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "LesHouchesEventHandler.h"
 #include "ThePEG/Utilities/Throw.h"
+#include "ThePEG/Utilities/HoldFlag.h"
 
 using namespace ThePEG;
 
@@ -44,7 +45,7 @@ LesHouchesReader::LesHouchesReader(bool active)
     isActive(active), isWeighted(false), hasNegativeWeights(false),
     theCacheFileName(""), theCacheFile(NULL), preweight(1.0),
     reweightPDF(false), doInitPDFs(false),
-    theMaxMultCKKW(0), theMinMultCKKW(0) {}
+    theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), skipping(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -60,7 +61,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
     preweight(x.preweight), reweightPDF(x.reweightPDF),
     doInitPDFs(x.doInitPDFs),
-    theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW) {}
+    theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW),
+    lastweight(x.lastweight), skipping(x.skipping) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -403,9 +405,14 @@ void LesHouchesReader::reset() {
 
 bool LesHouchesReader::readEvent() {
   if ( !doReadEvent() ) return false;
+
+  // If we are just skipping event we do not need to reweight or do
+  // anything fancy.
+  if ( skipping ) return true;
+
   // Reweight according to the re- and pre-weights objects in the
   // LesHouchesReader base class.
-  hepeup.XWGTUP *= reweight();
+  hepeup.XWGTUP *= ( lastweight = reweight() );
 
   if ( !reweightPDF ) return true;
   // We should try to reweight the PDFs here.
@@ -423,6 +430,7 @@ bool LesHouchesReader::readEvent() {
     double xf = outPDF.first->xfx(inData.first, incoming().first->dataPtr(),
 				  sqr(hepeup.SCALUP*GeV), x1);
     hepeup.XWGTUP *= xf/hepeup.XPDWUP.first;
+    lastweight *= xf/hepeup.XPDWUP.first;
     hepeup.XPDWUP.first = xf;
   }
 
@@ -438,6 +446,7 @@ bool LesHouchesReader::readEvent() {
       outPDF.second->xfx(inData.second, incoming().second->dataPtr(),
 			 sqr(hepeup.SCALUP*GeV), x2);
     hepeup.XWGTUP *= xf/hepeup.XPDWUP.second;
+    lastweight *= xf/hepeup.XPDWUP.second;
     hepeup.XPDWUP.second = xf;
   }
 
@@ -457,17 +466,20 @@ double LesHouchesReader::getEvent() {
   ++position;
 
   return weighted()?
-    hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec(): 1.0;
+    hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec(): lastweight;
 
 }
 
 void LesHouchesReader::skip(long n) {
+  HoldFlag<> skipflag(skipping);
   while ( n-- ) getEvent();
 }
 
 double LesHouchesReader::reweight() {
   preweight = 1.0;
-  if ( reweights.empty() && preweights.empty() && !CKKWHandler() ) return 1.0;
+  if ( reweights.empty() && preweights.empty() &&
+       !( CKKWHandler() && maxMultCKKW() > 0 && maxMultCKKW() > minMultCKKW() ) )
+    return 1.0;
   fillEvent();
   getSubProcess();
   for ( int i = 0, N = preweights.size(); i < N; ++i ) {
@@ -479,6 +491,10 @@ double LesHouchesReader::reweight() {
     reweights[i]->setXComb(lastXCombPtr());
     weight *= reweights[i]->weight();
   }
+
+  // If we are caching events we do not want to do CKKW reweighting.
+  if ( cacheFile() != NULL ) return weight;
+
   if ( CKKWHandler() && maxMultCKKW() > 0 && maxMultCKKW() > minMultCKKW() ) {
     CKKWHandler()->setXComb(lastXCombPtr());
     weight *= CKKWHandler()->reweightCKKW(minMultCKKW(), maxMultCKKW());
@@ -745,6 +761,7 @@ void LesHouchesReader::cacheEvent() const {
     pos = mwrite(pos, hepeup.PUP[i][0], 5);
   pos = mwrite(pos, hepeup.VTIMUP[0], hepeup.NUP);
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
+  pos = mwrite(pos, lastweight);
   fwrite(&buff[0], buff.size(), 1, cacheFile());
 }
 
@@ -776,6 +793,21 @@ bool LesHouchesReader::uncacheEvent() {
   pos = mread(pos, hepeup.VTIMUP[0], hepeup.NUP);
   hepeup.SPINUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
+  pos = mread(pos, lastweight);
+
+  // If we are skipping, we do not have to do anything else.
+  if ( skipping ) return true;
+
+  if ( CKKWHandler() && maxMultCKKW() > 0 && maxMultCKKW() > minMultCKKW() ) {
+    // The cached event has not been submitted to CKKW reweighting, so
+    // we do that now.
+    fillEvent();
+    getSubProcess();
+    CKKWHandler()->setXComb(lastXCombPtr());
+    double weight = CKKWHandler()->reweightCKKW(minMultCKKW(), maxMultCKKW());
+    hepeup.XWGTUP *= weight;
+    lastweight *= weight;
+  }
   return true;
 }
 
@@ -792,7 +824,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << theCacheFileName << stats << statmap << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
-     << theLastXComb << theMaxMultCKKW << theMinMultCKKW;
+     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -809,7 +841,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
-     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW;
+     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight;
 }
 
 AbstractClassDescription<LesHouchesReader>

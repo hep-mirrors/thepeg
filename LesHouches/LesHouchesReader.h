@@ -798,6 +798,18 @@ protected:
    */
   int theMinMultCKKW;
 
+  /**
+   * The weight multiplying the last read event due to PDF
+   * reweighting, CKKW reweighting or assigned reweight and preweight
+   * objects.
+   */
+  double lastweight;
+
+  /**
+   * Is set to true when getEvent() is called from skip(int).
+   */
+  bool skipping;
+
 private:
 
   /** Access function for the interface. */

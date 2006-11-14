@@ -102,8 +102,9 @@ inline size_t LesHouchesReader::eventSize(int N) {
     (7*N + 4)*sizeof(double) +       // XWGTUP, SCALUP, AQEDUP, AQCDUP, PUP,
                                      // VTIMUP, SPINUP
     N*sizeof(long) +                 // IDUP
-    2*N*sizeof(pair<int,int>)+       // MOTHUP, ICOLUP
-    sizeof(pair<double,double>);     // XPDWUP.
+    2*N*sizeof(pair<int,int>) +      // MOTHUP, ICOLUP
+    sizeof(pair<double,double>) +    // XPDWUP.
+    sizeof(double);                  // lastweight
 }
 
 inline FILE * LesHouchesReader::cacheFile() const {

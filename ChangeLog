@@ -1,3 +1,16 @@
+2006-11-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesReader.*: Added member variable lastweight
+	to be used when a LesHouchesReader produces unweighted events, but
+	these are reweighted. Before all these events reported unit weight
+	even if they were reweighted. The lastweight variable is now added
+	to the cache file together with the standard Les Houches common
+	block. Added member variable skipping to be set when skip() is
+	running to avoid unnecessary reweighting of events which will
+	never be used. When writing an event to a cache file the CKKW
+	reweighting is not performed, instead theis reweighting is done
+	when an event is read in again.
+
 2006-11-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.cc: Trying to keep up with the

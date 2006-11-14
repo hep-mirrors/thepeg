@@ -72,7 +72,7 @@ void MadGraphReader::open() {
     // the rate at which they are supposed to be kept to get the
     // statistics right.
     if ( weighted() ) {
-      // This really only works if we have only one evet type.
+      // This really only works if we have only one event type.
       if ( heprup.NPRUP != 1 ) {
 	Throw<WeightedExcetion>()
 	<< "The file '" << filename() << "' in the MadGraphReader '" << name()

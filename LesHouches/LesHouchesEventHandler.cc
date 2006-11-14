@@ -408,7 +408,8 @@ void LesHouchesEventHandler::Init() {
 
   static Switch<LesHouchesEventHandler,WeightOpt> interfaceWeightOption
     ("WeightOption",
-     "The different ways to weight events in the Les Houches event handler. Whether weighted or not and whether or not negative weights are allowed.",
+     "The different ways to weight events in the Les Houches event handler. "
+     "Whether weighted or not and whether or not negative weights are allowed.",
      &LesHouchesEventHandler::theWeightOption, unitweight, true, false);
   static SwitchOption interfaceWeightOptionUnitWeight
     (interfaceWeightOption,
