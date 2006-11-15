@@ -32,12 +32,15 @@ using std::fgets;
 void MadGraphReader::open() {
   LesHouchesFileReader::open();
 
+  static const int ntags = 33;
   static const char * cuttags[] = {"ptj", "ptb", "pta", "ptl",
-			     "etaj", "etab", "etaa", "etal",
-			     "drjj", "drbb", "draa", "drll",
-			     "drbj", "draj", "drjl", "drab",
-			     "drbl", "dral", "mmjj", "mmbb", "mmaa", "mmll",
-			     "xptj", "xptb", "xpta", "xptl", "xetamin"};
+				   "etaj", "etab", "etaa", "etal",
+				   "drjj", "drbb", "draa", "drll",
+				   "drbj", "draj", "drjl", "drab",
+				   "drbl", "dral", "mmjj", "mmbb",
+				   "mmaa", "mmll", "mmbj", "mmaj",
+				   "mmjl", "mmab", "mmbl", "mmal", 
+				   "xptj", "xptb", "xpta", "xptl", "xetamin"};
 
   ieve = neve = 0;
 
@@ -56,7 +59,7 @@ void MadGraphReader::open() {
     }
 
     // Scan information about cuts.
-    for ( int itag = 0; itag < 27; ++itag ) {
+    for ( int itag = 0; itag < ntags; ++itag ) {
       pos = outsideBlock.find(string("= ") + cuttags[itag]);
       if ( pos != string::npos ) {
 	string::size_type beg = max(outsideBlock.rfind("#", pos) + 1,
@@ -139,7 +142,7 @@ void MadGraphReader::open() {
       cfile >> neve;
       maxw = xsec/double(neve);
     } else {
-      for ( int itag = 0; itag < 27; ++itag ) {
+      for ( int itag = 0; itag < ntags; ++itag ) {
 	if ( cfile.find(string("= ") + cuttags[itag]) ) {
 	  
 	  cfile >> cuts[cuttags[itag]];
