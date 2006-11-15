@@ -1,5 +1,9 @@
 2006-11-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesReader.*: Added member variable maxFactor
+	to keep track of how much the maximum cross section has been
+	increased by increaseMaxXSec().
+
 	* LesHouches/LesHouchesReader.cc: Fixed memory leak where a
 	SubProcess object was created with new instead of new_ptr.
 

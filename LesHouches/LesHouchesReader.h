@@ -806,6 +806,13 @@ protected:
   double lastweight;
 
   /**
+   * If the maximum cross section of this reader has been increased
+   * with increaseMaxXSec(), this is the total factor with which it
+   * has been increased.
+   */
+  double maxFactor;
+
+  /**
    * Is set to true when getEvent() is called from skip(int).
    */
   bool skipping;

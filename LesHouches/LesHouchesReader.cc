@@ -45,7 +45,8 @@ LesHouchesReader::LesHouchesReader(bool active)
     isActive(active), isWeighted(false), hasNegativeWeights(false),
     theCacheFileName(""), theCacheFile(NULL), preweight(1.0),
     reweightPDF(false), doInitPDFs(false),
-    theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), skipping(false) {}
+    theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
+    skipping(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -62,7 +63,7 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     preweight(x.preweight), reweightPDF(x.reweightPDF),
     doInitPDFs(x.doInitPDFs),
     theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW),
-    lastweight(x.lastweight), skipping(x.skipping) {}
+    lastweight(x.lastweight), maxFactor(x.maxFactor), skipping(x.skipping) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -315,22 +316,24 @@ void LesHouchesReader::initStat() {
       statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XSECUP[ip]*picobarn);
     }
     stats.maxXSec(xsec*picobarn);
-   } else {
-     //     heprup.XSECUP.clear();
-     //     heprup.XERRUP.clear();
-     double sumx = 0.0;
-     for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-       sumx += heprup.XMAXUP[ip];
-       statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XMAXUP[ip]*picobarn);
-     }
-     stats.maxXSec(sumx*picobarn);
-   }
+  } else {
+    //     heprup.XSECUP.clear();
+    //     heprup.XERRUP.clear();
+    double sumx = 0.0;
+    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
+      sumx += heprup.XMAXUP[ip];
+      statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XMAXUP[ip]*picobarn);
+    }
+    stats.maxXSec(sumx*picobarn);
+  }
+  maxFactor = 1.0;
 }
 
 void LesHouchesReader::increaseMaxXSec(CrossSection maxxsec) {
   for ( int i = 0; i < heprup.NPRUP; ++i )
     statmap[heprup.LPRUP[i]].maxXSec(statmap[heprup.LPRUP[i]].maxXSec()*
       maxxsec/stats.maxXSec());
+  maxFactor *= maxxsec/stats.maxXSec();
   stats.maxXSec(maxxsec);
 }
 
@@ -466,7 +469,8 @@ double LesHouchesReader::getEvent() {
   ++position;
 
   return weighted()?
-    hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec(): lastweight;
+    hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec():
+    lastweight/maxFactor;
 
 }
 
@@ -824,7 +828,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << theCacheFileName << stats << statmap << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
-     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight;
+     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
+     << maxFactor;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -841,7 +846,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
-     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight;
+     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
+     >> maxFactor;
 }
 
 AbstractClassDescription<LesHouchesReader>
