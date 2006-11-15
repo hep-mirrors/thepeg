@@ -168,6 +168,7 @@ EventPtr LesHouchesEventHandler::generateEvent() {
       if ( !rndbool(abs(weight)) ) continue;
       weight = Math::sign(1.0, weight);
     }
+    else if ( weight == 0.0 ) continue;
 
     accept();
 

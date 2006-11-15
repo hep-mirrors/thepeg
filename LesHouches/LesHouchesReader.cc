@@ -351,7 +351,7 @@ tXCombPtr LesHouchesReader::getXComb() {
 tSubProPtr LesHouchesReader::getSubProcess() {
   getXComb();
   if ( subProcess() ) return subProcess();
-  lastXCombPtr()->subProcess(new SubProcess(lastPartons(), tCollPtr(), this));
+  lastXCombPtr()->subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), this)));
   subProcess()->setOutgoing(outgoing().begin(), outgoing().end());
   subProcess()->setIntermediates(intermediates().begin(),
 				 intermediates().end());

@@ -1,5 +1,11 @@
 2006-11-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesReader.cc: Fixed memory leak where a
+	SubProcess object was created with new instead of new_ptr.
+
+	* LesHouches/LesHouchesEventHandler.cc: If weighted events, do not
+	generate events with weight 0.
+
 	* LesHouches/MadGraphReader.cc: Added tags for mixed minimum mass
 	cuts anticipating a future change in the MadGraph event files.
 
