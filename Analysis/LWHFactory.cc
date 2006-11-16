@@ -8,6 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/EventGenerator.h"
 #ifndef LWH 
 #define ThePEGLWH
 #endif
@@ -21,6 +22,20 @@ LWHFactory::~LWHFactory() {}
 void LWHFactory::doinitrun() {
   analysisFactory(new LWH::AnalysisFactory);
   FactoryBase::doinitrun();
+}
+
+void LWHFactory::nomalizeToXSec(tH1DPtr histogram, CrossSection unit) const {
+  if ( dynamic_cast<LWH::Histogram1D *>(histogram) )
+    dynamic_cast<LWH::Histogram1D *>(histogram)->
+      normalize(generator()->histogramScale()/unit);
+}
+
+void LWHFactory::normalizeToXSecFraction(tH1DPtr) const {
+}
+
+void LWHFactory::normalizeToUnity(tH1DPtr histogram) const {
+  if ( dynamic_cast<LWH::Histogram1D *>(histogram) )
+    dynamic_cast<LWH::Histogram1D *>(histogram)->normalize(1.0);
 }
 
 void LWHFactory::persistentOutput(PersistentOStream &) const {}

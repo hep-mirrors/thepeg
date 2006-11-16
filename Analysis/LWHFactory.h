@@ -50,6 +50,32 @@ public:
 
 public:
 
+  /** @name Manipulate histograms */
+  //@{
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * will give the correct integrated cross section for the observable
+   * in the given \a unit.
+   */
+  virtual void
+  nomalizeToXSec(tH1DPtr histogram, CrossSection unit = picobarn) const;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * gives the fraction of the total cross section generated which is
+   * contained in the bins.
+   */
+  virtual void normalizeToXSecFraction(tH1DPtr histogram) const;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * gives one.
+   */
+  virtual void normalizeToUnity(tH1DPtr histogram) const;
+  //@}
+
+public:
+
   /** @name Functions used by the persistent I/O system. */
   //@{
   /**
