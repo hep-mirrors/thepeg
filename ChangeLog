@@ -1,3 +1,12 @@
+2006-11-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/LWHFactory.h, Analysis/LWHFactory.cc,
+	Analysis/FactoryBase.h: Added abstract normalize* functions to be
+	implemented in subclasses. Implementation in LWHFactory not ready.
+
+	* Analysis/Histogram1D.h: Added normalize function. Not
+	implemented.
+
 2006-11-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.*: Added member variable maxFactor

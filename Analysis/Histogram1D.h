@@ -385,6 +385,14 @@ public:
   }
 
   /**
+   * Scale the given histogram so that the integral over all bins
+   * (including overflow) gives \a intg.
+   */
+  void normalize(double intg) {
+    intg = 0;
+  }
+
+  /**
    * Not implemented in LWH.
    * @return null pointer always.
    */ 
