@@ -86,6 +86,10 @@ inline long EventGenerator::currentEventNumber() const {
   return ieve;
 }
 
+inline double EventGenerator::sumWeights() const {
+  return weightSum;
+}
+
 inline void EventGenerator::N(long n) {
   theNumberOfEvents = n;
 }

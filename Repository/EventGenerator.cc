@@ -65,7 +65,7 @@ void EventGenerator::checkSignalState() {
 
 EventGenerator::EventGenerator()
   : thePath("."), theNumberOfEvents(1000), theQuickSize(7000),
-    preinitializing(false), ieve(0),
+    preinitializing(false), ieve(0), weightSum(0.0),
     theDebugLevel(0), printEvent(0), dumpPeriod(0), debugEvent(0),
     maxWarnings(10), maxErrors(10), theCurrentRandom(0),
     theCurrentGenerator(0) {}
@@ -85,7 +85,8 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theParticles(eg.theParticles), theQuickParticles(eg.theQuickParticles),
     theQuickSize(eg.theQuickSize), preinitializing(false),
     theMatchers(eg.theMatchers),
-    usedObjects(eg.usedObjects), ieve(eg.ieve), theDebugLevel(eg.theDebugLevel),
+    usedObjects(eg.usedObjects), ieve(eg.ieve), weightSum(eg.weightSum),
+    theDebugLevel(eg.theDebugLevel),
     printEvent(eg.printEvent), dumpPeriod(eg.dumpPeriod),
     debugEvent(eg.debugEvent),
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
@@ -104,6 +105,10 @@ tcEventPtr EventGenerator::currentEvent() const {
 
 CrossSection EventGenerator::histogramScale() const {
   return eventHandler()->histogramScale();
+}
+
+CrossSection EventGenerator::integratedXSec() const {
+  return eventHandler()->integratedXSec();
 }
 
 void
@@ -208,6 +213,8 @@ void EventGenerator::doinitrun() {
   if ( strategy() ) strategy()->initrun();
   for_each(objects(), mem_fun(&InterfacedBase::initrun));
 
+  weightSum = 0.0;
+
 }
 
 PDPtr EventGenerator::getParticleData(long newId) const {
@@ -288,7 +295,9 @@ EventPtr EventGenerator::shoot() {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
   checkSignalState();
-  return doShoot();
+  EventPtr event = doShoot();
+  if ( event ) weightSum += event->weight();
+  return event;
 }
 
 EventPtr EventGenerator::doShoot() {
@@ -342,6 +351,7 @@ EventPtr EventGenerator::doShoot() {
       if ( dumpPeriod > 0 && ieve%dumpPeriod == 0 ) dump();
     }
   } while ( !event );
+
   return event;
 }
 
@@ -385,13 +395,17 @@ EventPtr EventGenerator::doGenerateEvent(tStepPtr s) {
 EventPtr EventGenerator::generateEvent(Event & e) {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
-  return doGenerateEvent(tEventPtr(&e));
+  EventPtr event = doGenerateEvent(tEventPtr(&e));
+  if ( event ) weightSum += event->weight();
+  return event;
 }
 
 EventPtr EventGenerator::generateEvent(Step & s) {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
-  return doGenerateEvent(tStepPtr(&s));
+  EventPtr event = doGenerateEvent(tStepPtr(&s));
+  if ( event ) weightSum += event->weight();
+  return event;
 }
 
 Energy EventGenerator::maximumCMEnergy() const {
@@ -619,7 +633,7 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << theHistogramFactory << theEventManipulator << thePath << theRunName
      << theNumberOfEvents << theObjectMap << theParticles
      << theQuickParticles << theQuickSize << match << usedset
-     << ieve << theDebugLevel << printEvent << dumpPeriod << debugEvent
+     << ieve << weightSum << theDebugLevel << printEvent << dumpPeriod << debugEvent
      << maxWarnings << maxErrors << theCurrentEventHandler
      << theCurrentStepHandler;
 }
@@ -630,7 +644,7 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> theHistogramFactory >> theEventManipulator >> thePath >> theRunName
      >> theNumberOfEvents >> theObjectMap >> theParticles
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
-     >> ieve >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
+     >> ieve >> weightSum >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
      >> theCurrentStepHandler;
   theObjects.clear();

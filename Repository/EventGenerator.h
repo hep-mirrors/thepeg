@@ -252,6 +252,17 @@ public:
    * this factor to give the correct cross section.
    */
   CrossSection histogramScale() const;
+
+  /**
+   * The total integrated cross section of the processes generated in
+   * this run.
+   */
+  CrossSection integratedXSec() const;
+
+  /**
+   * The sum of all weight of the events generated so far.
+   */
+  inline double sumWeights() const;
   //@}
 
   /** @name Functions for accessing output files. */
@@ -903,6 +914,11 @@ protected:
    * The current event number;
    */
   long ieve;
+
+  /**
+   * The sum of the weights of the events produced so far.
+   */
+  double weightSum;
 
   /**
    * The debug level.
