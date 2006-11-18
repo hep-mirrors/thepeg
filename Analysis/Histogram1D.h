@@ -386,10 +386,32 @@ public:
 
   /**
    * Scale the given histogram so that the integral over all bins
-   * (including overflow) gives \a intg.
+   * (including overflow) gives \a intg. This function also corrects
+   * for the bin-widths, which means that it should only be run once
+   * for each histogram. Further rescaling must be done with the
+   * scale(double) function.
    */
   void normalize(double intg) {
-    intg = 0;
+    double oldintg = sumAllBinHeights();
+    for ( int i = 0; i < ax->bins() + 2; ++i ) {
+      double fac = intg/oldintg;
+      if ( i >= 2 ) fac /= (ax->binUpperEdge(i - 2) - ax->binLowerEdge(i - 2));
+      sumw[i] *= fac;
+      sumxw[i] *= fac;
+      sumx2w[i] *= fac;
+      sumw2[i] *= fac*fac;
+    }
+  }
+
+  /**
+   * Return the integral over the histogram bins assuming it has been
+   * normalize()d.
+   */
+  double integral() const {
+    double intg = sumw[0] + sumw[1];
+    for ( int i = 2; i < ax->bins() + 2; ++i )
+      intg += sumw[i]*(ax->binUpperEdge(i - 2) - ax->binLowerEdge(i - 2));
+    return intg;
   }
 
   /**
