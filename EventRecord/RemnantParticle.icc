@@ -11,4 +11,12 @@ inline RemnantParticle::RemnantParticle() {}
 inline RemnantParticle::RemnantParticle(const RemnantParticle & x)
   : Particle(x), remData(x.remData), parent(x.parent) {}
 
+inline void * RemnantParticle::operator new(size_t) {
+  return FixedAllocator<RemnantParticle>::allocate();
+}
+
+inline void RemnantParticle::operator delete(void * p, size_t) {
+  FixedAllocator<RemnantParticle>::deallocate(p);
+}
+
 }

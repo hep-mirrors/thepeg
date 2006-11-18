@@ -1,3 +1,33 @@
+2006-11-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/TestRemnants.in, src/Makefile.am: Added test run for new
+	remnant handling.
+
+	* Repository/EventGenerator.icc, Repository/EventGenerator.h,
+	Repository/EventGenerator.cc: Implemented variable and function to
+	return the sumed weights of all generated events. Also added
+	function to return the total cross section.
+
+	* LesHouches/LesHouchesEventHandler.h,
+	LesHouches/LesHouchesEventHandler.cc,
+	Handlers/StandardEventHandler.h, Handlers/StandardEventHandler.cc:
+	Implemented function to return total cross section. Fixed
+	histogramScale function to work properly for weighted events.
+
+	* Handlers/EventHandler.h, Handlers/EventHandler.cc: Added
+	function to return the total Monte-Carlo integrated cross section.
+
+	* Handlers/AnalysisHandler.h, Handlers/AnalysisHandler.cc: Added
+	const access function to histogram factory. Added normalize
+	functions.
+
+	* Analysis/FactoryBase.h, Analysis/LWHFactory.h: Renamed misspelt
+	normalize function.
+
+	* Analysis/LWHFactory.cc: Implemented the normalize* functions.
+
+	* Analysis/Histogram1D.h: Implemented the normalize function.
+
 2006-11-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/LWHFactory.h, Analysis/LWHFactory.cc,

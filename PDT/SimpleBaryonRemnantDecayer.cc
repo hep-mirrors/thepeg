@@ -21,6 +21,10 @@ using namespace ThePEG;
 
 SimpleBaryonRemnantDecayer::~SimpleBaryonRemnantDecayer() {}
 
+bool SimpleBaryonRemnantDecayer::accept(const DecayMode &) const {
+  return true;
+}
+
 bool SimpleBaryonRemnantDecayer::
 canHandle(tcPDPtr particle, tcPDPtr parton) const {
   return BaryonMatcher::Check(*particle) &&

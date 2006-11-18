@@ -47,9 +47,9 @@ generate(PartonBinInstance & pb, const double *,
   LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
   pb.parton()->setMomentum
     (lightCone(p.plus()*pb.x(), 0.0*GeV, 0.0*GeV, 0.0*GeV));
+  pb.parton()->rotateY(parent.theta());
+  pb.parton()->rotateZ(parent.phi());
   PPtr rem = new_ptr(RemnantParticle(*pb.particle(), remdec, pb.parton()));
-  rem->rotateY(parent.theta());
-  rem->rotateZ(parent.phi());
   pb.remnants(PVector(1, rem));
   return parent - rem->momentum();
 }
@@ -100,6 +100,7 @@ void SoftRemnantHandler::persistentInput(PersistentIStream & is, int) {
 }
 
 void SoftRemnantHandler::setDecayer(RemDecPtr rd) {
+  remdec = rd;
   isMultiCapable = rd->multiCapable();
 }
 

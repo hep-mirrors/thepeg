@@ -8,6 +8,7 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/RemnantData.fh"
 #include "ThePEG/PDT/RemnantDecayer.fh"
+#include "ThePEG/PDT/DecayMode.h"
 
 namespace ThePEG {
 
@@ -139,6 +140,11 @@ private:
    * The Decayer responsible for for the decay of this remnant.
    */
   RemDecPtr decayer;
+
+  /**
+   * The only DecayMode available for this remnant.
+   */
+  DMPtr decayMode;
 
   /**
    * The set of extracted particle types.

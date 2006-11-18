@@ -45,6 +45,16 @@ Particle::Particle(const Particle & p)
   if ( p.theRep ) theRep = new ParticleRep(*p.theRep);
 }
 
+Particle::~Particle() {
+  if ( theRep ) {
+    if ( colourLine() ) colourLine()->removeColoured(this);
+    if ( antiColourLine() ) antiColourLine()->removeAntiColoured(this);
+    delete theRep;
+  }
+  theRep = 0;
+  theData = cEventPDPtr();
+}
+
 void Particle::initFull() const {
   if ( theRep ) return;
   theRep = new ParticleRep;

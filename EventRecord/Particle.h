@@ -121,7 +121,7 @@ public:
   /**
    * Destructor.
    */
-  inline ~Particle();
+  ~Particle();
   //@}
 
   /** @name Functions relating to ancestry of particles. */

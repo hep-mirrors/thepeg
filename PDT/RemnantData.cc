@@ -7,7 +7,6 @@
 #include "RemnantData.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/RemnantDecayer.h"
-#include "ThePEG/PDT/DecayMode.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantData.tcc"
@@ -20,7 +19,7 @@ using namespace ThePEG;
 
 RemnantData::
 RemnantData(tcPDPtr particle, RemDecPtr dec)
-  : ParticleData(particle->id(), "Remnant (" + particle->PDGName() + ")"),
+  : ParticleData(particle->id(), "Rem[" + particle->PDGName() + "]"),
     parentPD(particle), decayer(dec) {
   synchronized(false);
   width(0.0*GeV);
@@ -28,19 +27,22 @@ RemnantData(tcPDPtr particle, RemDecPtr dec)
   iCharge(particle->iCharge());
   iSpin(particle->iSpin());
   iColour(particle->iColour());
-  stable(false);
-  DMPtr dm = new_ptr(DecayMode());
-  dm->parent(const_ptr_cast<tPDPtr>(particle));
-  dm->brat();
-  dm->decayer(dec);
-  dm->switchOn();
-  addDecayMode(dm);
+  stable(true);
   fixColour();
 }
 
 RemnantData::~RemnantData() {}
 
 bool RemnantData::extract(tcPDPtr parton) {
+  if ( !decayMode ) {
+    stable(false);
+    decayMode = new_ptr(DecayMode());
+    decayMode->parent(this);
+    decayMode->brat(1.0);
+    decayMode->decayer(decayer);
+    decayMode->switchOn();
+    addDecayMode(decayMode);
+  }
   if ( !parton ) return false;
   if ( !extracted.empty() && !decayer->multiCapable() ) return false;
   if ( !decayer->canHandle(parentPD, parton) ) return false;
@@ -77,11 +79,11 @@ bool RemnantData::fixColour() {
 }
 
 void RemnantData::persistentOutput(PersistentOStream & os) const {
-  os << parentPD << decayer << extracted;
+  os << parentPD << decayer << decayMode << extracted;
 }
 
 void RemnantData::persistentInput(PersistentIStream & is, int) {
-  is >> parentPD >> decayer >> extracted;
+  is >> parentPD >> decayer >> decayMode >> extracted;
 }
 
 ClassDescription<RemnantData> RemnantData::initRemnantData;

@@ -46,6 +46,16 @@ public:
    * The destructor.
    */
   virtual ~RemnantParticle();
+
+  /**
+   * Particle uses the FixedSizeAllocator for (de)allocation.
+   */
+  inline void * operator new(size_t);
+  
+  /**
+   * Particle uses the FixedSizeAllocator for (de)allocation.
+   */
+  inline void operator delete(void *, size_t);
   //@}
 
 public:

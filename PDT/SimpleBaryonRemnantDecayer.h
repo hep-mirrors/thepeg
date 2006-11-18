@@ -45,6 +45,14 @@ public:
   /** @name Virtual functions required by the RemnantDecayer class. */
   //@{
   /**
+   * Check if this decayer can perfom the decay specified by the
+   * given decay mode.
+   * @param dm the DecayMode describing the decay.
+   * @return true if this decayer can handle the given mode, otherwise false.
+   */
+  virtual bool accept(const DecayMode & dm) const;
+
+  /**
    * Perform a decay for a given DecayMode and a given Particle
    * instance. This version allows the decaying particle to borrow
    * energy/momentum from its sublings in the current step. This will
