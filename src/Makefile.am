@@ -116,3 +116,10 @@ if USELHAPDF
 	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/TestLHAPDF.in; $(DESTDIR)$(bindir)/runThePEG -x $(DESTDIR)$(pkglibdir)/TestLHAPDF.so TestLHAPDF.run
 endif
 	rm -rf _test_thepeg_installation_
+
+%.run: %.in done-all-links ThePEGDefaults.rpo
+	./setupThePEG.bin --exitonerror -L .libs -r ../lib/ThePEGDefaults.rpo $<
+
+%.out: %.run
+	time ./runThePEG.bin -d 0 $<
+
