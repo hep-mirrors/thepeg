@@ -34,9 +34,16 @@ FactoryBase & AnalysisHandler::histogramFactory() {
   return *(generator()->histogramFactory());
 }
 
+const FactoryBase & AnalysisHandler::histogramFactory() const {
+  return *(generator()->histogramFactory());
+}
+
 void AnalysisHandler::normalize(tH1DPtr h, CrossSection unit) const {
-  if ( h->axis().isFixedBinning() )
-    h->scale((generator()->histogramScale()/unit)/h->axis().binWidth(0));
+  histogramFactory().normalizeToXSec(h, unit);
+}
+
+void AnalysisHandler::unitNormalize(tH1DPtr h) const {
+  histogramFactory().normalizeToUnity(h);
 }
 
 IBPtr AnalysisHandler::clone() const {

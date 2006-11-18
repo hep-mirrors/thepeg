@@ -124,6 +124,11 @@ public:
   FactoryBase & histogramFactory();
 
   /**
+   * Access the HistogramFactory from the EventGenerator.
+   */
+  const FactoryBase & histogramFactory() const;
+
+  /**
    * Normalize the histogran \a h using the collected statistics from
    * the EventGenerator. If the histogram has been filled with the
    * Event::weight() as weight a plotted function will correspond to a
@@ -132,6 +137,11 @@ public:
    * will be done.
    */
   void normalize(tH1DPtr h, CrossSection unit = picobarn) const;
+
+  /**
+   * Normalize the histogran \a h to unit integral.
+   */
+  void unitNormalize(tH1DPtr h) const;
   //@}
 
 public:
