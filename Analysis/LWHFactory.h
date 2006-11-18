@@ -58,7 +58,7 @@ public:
    * in the given \a unit.
    */
   virtual void
-  nomalizeToXSec(tH1DPtr histogram, CrossSection unit = picobarn) const;
+  normalizeToXSec(tH1DPtr histogram, CrossSection unit = picobarn) const;
 
   /**
    * Rescale the given \a histogram so that the integral over the bins
