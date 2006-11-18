@@ -376,7 +376,11 @@ void LesHouchesEventHandler::reject() {
 }
 
 CrossSection LesHouchesEventHandler::histogramScale() const {
-  return histStats.xSec()/histStats.accepted();
+  return histStats.xSec()/histStats.sumWeights();
+}
+
+CrossSection LesHouchesEventHandler::integratedXSec() const {
+  return histStats.xSec();
 }
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
