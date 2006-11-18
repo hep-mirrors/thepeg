@@ -159,6 +159,12 @@ public:
    * value.
    */
   virtual CrossSection histogramScale() const;
+
+  /**
+   * The total integrated cross section of the processes generated in
+   * this run.
+   */
+  virtual CrossSection integratedXSec() const;
   //@}
 
   /** @name Simple access functions. */

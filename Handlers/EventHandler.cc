@@ -250,6 +250,14 @@ CrossSection EventHandler::histogramScale() const {
   return 1.0*picobarn;
 }
 
+CrossSection EventHandler::integratedXSec() const {
+  generator()->logWarning(
+    EventHandlerHistError()
+    << "The event handler '" << name() << "' was not able give the cross "
+    "section for the generated processes." << Exception::warning);
+  return 1.0*picobarn;
+}
+
 void EventHandler::checkConsistency() const {
   if ( !currentCollision() ) return;
   const Collision & c = *currentCollision();
