@@ -1,5 +1,9 @@
 2006-11-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* EventRecord/Particle.icc, EventRecord/Particle.h,
+	EventRecord/Particle.cc: Made sure that connected ColourLine is
+	informed when a Particle is deleted to avoid dangling pointers.
+
 	* src/TestRemnants.in, src/Makefile.am: Added test run for new
 	remnant handling.
 

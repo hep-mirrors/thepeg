@@ -36,6 +36,7 @@ bool RemnantParticle::extract(tPPtr parton) {
   if ( !remData->extract(parton->dataPtr()) ) return false;
   extracted.push_back(parton);
   setMomentum(pnew);
+  // For now the colour needs to be connected from the outside.
   //  fixColourLines(parton);
   return true;
 }
@@ -50,6 +51,7 @@ bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp) {
   setMomentum(pnew);
   if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
   if ( oldp->antiColourLine() ) oldp->antiColourLine()->removeColoured(this);
+  // For now the colour needs to be connected from the outside.
   //  fixColourLines(newp);
   return true;
 }
