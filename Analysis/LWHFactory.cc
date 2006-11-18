@@ -24,18 +24,21 @@ void LWHFactory::doinitrun() {
   FactoryBase::doinitrun();
 }
 
-void LWHFactory::nomalizeToXSec(tH1DPtr histogram, CrossSection unit) const {
-  if ( dynamic_cast<LWH::Histogram1D *>(histogram) )
-    dynamic_cast<LWH::Histogram1D *>(histogram)->
-      normalize(generator()->histogramScale()/unit);
+void LWHFactory::normalizeToXSec(tH1DPtr histogram, CrossSection unit) const {
+  LWH::Histogram1D * h = dynamic_cast<LWH::Histogram1D *>(histogram);
+  if ( h )
+    h->normalize(h->sumAllBinHeights()*generator()->integratedXSec()/
+		 (generator()->sumWeights()*unit));
 }
 
-void LWHFactory::normalizeToXSecFraction(tH1DPtr) const {
+void LWHFactory::normalizeToXSecFraction(tH1DPtr histogram) const {
+  LWH::Histogram1D * h = dynamic_cast<LWH::Histogram1D *>(histogram);
+  if ( h ) h->normalize(h->sumAllBinHeights()/generator()->sumWeights());
 }
 
 void LWHFactory::normalizeToUnity(tH1DPtr histogram) const {
-  if ( dynamic_cast<LWH::Histogram1D *>(histogram) )
-    dynamic_cast<LWH::Histogram1D *>(histogram)->normalize(1.0);
+  LWH::Histogram1D * h = dynamic_cast<LWH::Histogram1D *>(histogram);
+  if ( h ) h->normalize(1.0);
 }
 
 void LWHFactory::persistentOutput(PersistentOStream &) const {}
