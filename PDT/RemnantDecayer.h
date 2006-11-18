@@ -27,6 +27,18 @@ class RemnantDecayer: public Decayer {
 
 public:
 
+  /**
+   * Enumerate the options for how to distribute recoils in the hard
+   * subsystem when taking energy to produce remnants.
+   */
+  enum RecoilOption {
+    boostAll,   /**< Boost all particles in the hard subsystem. */
+    boostFinal, /**< Boost only final state particles in hard subsystem. */
+    copyFinal   /**< Boost copies of final state particles in hard subsystem. */
+  };
+
+public:
+
   /** @name Standard constructors and destructors. */
   //@{
   /**
@@ -103,6 +115,19 @@ public:
    */
   virtual bool multiCapable() const;
 
+  /**
+   * The option for how to distribute recoils in the hard subsystem
+   * when taking energy to produce remnants.
+   */
+  inline RecoilOption recoilOption() const;
+
+  /**
+   * If true, do not boost a scattered lepton (and possible radiated
+   * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
+   * unmodified.
+   */
+  inline bool respectDISKinematics() const;
+
 protected:
 
   /**
@@ -150,6 +175,21 @@ public:
    * when this class is dynamically loaded.
    */
   static void Init();
+
+private:
+
+  /**
+   * The option for how to distribute recoils in the hard subsystem
+   * when taking energy to produce remnants.
+   */
+  RecoilOption theRecoilOption;
+
+  /**
+   * If true, do not boost a scattered lepton (and possible radiated
+   * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
+   * unmodified.
+   */
+  bool respectDIS;
 
 private:
 

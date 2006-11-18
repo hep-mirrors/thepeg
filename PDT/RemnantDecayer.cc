@@ -7,7 +7,9 @@
 #include "RemnantDecayer.h"
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/PDT/RemnantData.h"
+#include "ThePEG/Utilities/EnumIO.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantDecayer.tcc"
@@ -73,9 +75,13 @@ fillChildren(const Particle & p, set<tPPtr> & children) const {
   }
 }
 
-void RemnantDecayer::persistentOutput(PersistentOStream & ) const {}
+void RemnantDecayer::persistentOutput(PersistentOStream & os) const {
+  os << oenum(theRecoilOption) << respectDIS;
+}
 
-void RemnantDecayer::persistentInput(PersistentIStream & , int) {}
+void RemnantDecayer::persistentInput(PersistentIStream & is, int) {
+  is >> ienum(theRecoilOption) >> respectDIS;
+}
 
 AbstractClassDescription<RemnantDecayer> RemnantDecayer::initRemnantDecayer;
 // Definition of the static class description member.
@@ -86,6 +92,44 @@ void RemnantDecayer::Init() {
     ("The RemnantDecayer class is the base class to be used for all "
      "decayers capable of decaying a RemnantParticle object produced by a "
      "SoftRemnantHandler object.");
+
+  static Switch<RemnantDecayer,RecoilOption> interfaceRecoilOption
+    ("RecoilOption",
+     "Different options for how to distribute recoils in the hard subsystem "
+     "when taking energy to produce remnants.",
+     &RemnantDecayer::theRecoilOption, copyFinal, true, false);
+  static SwitchOption interfaceRecoilOptionCopyFinal
+    (interfaceRecoilOption,
+     "CopyFinal",
+     "Boost copies of final state particles in hard subsystem.",
+     copyFinal);
+  static SwitchOption interfaceRecoilOptionBoostFinal
+    (interfaceRecoilOption,
+     "BoostFinal",
+     "Boost only final state particles in hard subsystem.",
+     boostFinal);
+  static SwitchOption interfaceRecoilOptionBoostAll
+    (interfaceRecoilOption,
+     "BoostAll",
+     "Boost all particles in the hard subsystem.",
+     boostAll);
+
+  static Switch<RemnantDecayer,bool> interfaceRespectDISKinematics
+    ("RespectDISKinematics",
+     "If true, do not boost a scattered lepton (and possible radiated "
+     "photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is "
+     "unmodified.",
+     &RemnantDecayer::respectDIS, true, true, false);
+  static SwitchOption interfaceRespectDISKinematicsYes
+    (interfaceRespectDISKinematics,
+     "Yes",
+     "Do not boost scattered lepton.",
+     true);
+  static SwitchOption interfaceRespectDISKinematicsNo
+    (interfaceRespectDISKinematics,
+     "No",
+     "Boost scattered lepton together with the rest of the hard subsystem.",
+     false);
 
 }
 
