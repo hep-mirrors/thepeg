@@ -59,11 +59,17 @@ decay(const DecayMode & dm, const Particle & p, Step &) const {
 }
 
 void RemnantDecayer::
-fillChildren(tPPtr p, set<tPPtr> & children) const {
+fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
+
+  // If this particle has already been added we're done.
+  if ( member(sub, p) ) return;
+
   if ( respectDISKinematics() && !LeptonMatcher::Check(p->data()) &&
        p->momentum().m2() < 0.0*GeV2 ) {
     // If this particle belongs to an electro-weak scattering vertex
-    // it should be excluded.
+    // it should be excluded. (more specifically part of a vertex
+    // where the other particles are incoming and outgoing leptons
+    // while this is not a lepton and is spece-like)
     if ( p->children().size() == 1 && p->children()[0]->parents().size() == 2 &&
 	 LeptonMatcher::Check(p->children()[0]->data()) &&
 	 ( p->children()[0]->momentum().m2() >= 0.0*GeV2 ||
@@ -81,21 +87,26 @@ fillChildren(tPPtr p, set<tPPtr> & children) const {
 	       p->parents()[0]->children()[1]->children().empty() ) ) ) )
       return;
   }
-  children.insert(p);
-  for ( int i = 0, N = p->children().size(); i < N; ++i ) {
-    fillChildren(p->children()[i], children);
-  }
+
+  sub.insert(p);
+
+  // Fill in children.
+  if ( p->next() ) fillSubSystem(p->next(), sub);
+  for ( int i = 0, N = p->children().size(); i < N; ++i )
+    fillSubSystem(p->children()[i], sub);
+
+  // Fill also parents, but only if this is not an incoming parton
+  // coming from a particle with a soft remnant.
+  if ( p->previous() ) fillSubSystem(p->previous(), sub);
   for ( int i = 0, N = p->parents().size(); i < N; ++i ) {
     tPPtr parent = p->parents()[i];
-    if ( member(children, parent) ) continue;
+    if ( member(sub, parent) ) continue;
     for ( int j = 0, M = p->children().size(); j < M; ++j )
       if ( dynamic_ptr_cast<tcRemPPtr>(p->children()[j]) ) {
 	parent = tPPtr();
 	break;
       }
-    if ( parent ) {
-      fillChildren(parent, children);
-    }
+    if ( parent ) fillSubSystem(parent, sub);
   }
 }
 

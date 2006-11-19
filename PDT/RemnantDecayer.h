@@ -146,9 +146,9 @@ protected:
   inline const PVector & extracted(tcRemPPtr remnant) const;
 
   /**
-   * Find all particles produced from an extracted parton.
+   * Recursively find all particles produced from an extracted parton.
    */
-  void fillChildren(tPPtr p, set<tPPtr> & children) const;
+  virtual void fillSubSystem(tPPtr p, set<tPPtr> & sub) const;
 
 public:
 
