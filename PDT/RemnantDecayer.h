@@ -148,7 +148,7 @@ protected:
   /**
    * Find all particles produced from an extracted parton.
    */
-  void fillChildren(const Particle & p, set<tPPtr> & children) const;
+  void fillChildren(tPPtr p, set<tPPtr> & children) const;
 
 public:
 

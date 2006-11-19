@@ -9,6 +9,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/PDT/RemnantData.h"
+#include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/EnumIO.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -58,22 +59,47 @@ decay(const DecayMode & dm, const Particle & p, Step &) const {
 }
 
 void RemnantDecayer::
-fillChildren(const Particle & p, set<tPPtr> & children) const {
-  for ( int i = 0, N = p.children().size(); i < N; ++i ) {
-    children.insert(p.children()[i]);
-    fillChildren(*p.children()[i], children);
+fillChildren(tPPtr p, set<tPPtr> & children) const {
+  if ( respectDISKinematics() && !LeptonMatcher::Check(p->data()) &&
+       p->momentum().m2() < 0.0*GeV2 ) {
+    // If this particle belongs to an electro-weak scattering vertex
+    // it should be excluded.
+    if ( p->children().size() == 1 && p->children()[0]->parents().size() == 2 &&
+	 LeptonMatcher::Check(p->children()[0]->data()) &&
+	 ( p->children()[0]->momentum().m2() >= 0.0*GeV2 ||
+	   p->children()[0]->children().empty() ) &&
+	 ( LeptonMatcher::Check(p->children()[0]->parents()[0]->data()) ||
+	   LeptonMatcher::Check(p->children()[0]->parents()[1]->data()) ) )
+      return;
+    if ( p->parents().size() == 1 && p->parents()[0]->children().size() == 2 &&
+	 LeptonMatcher::Check(p->parents()[0]->data()) &&
+	 ( ( LeptonMatcher::Check(p->parents()[0]->children()[0]->data()) &&
+	     ( p->parents()[0]->children()[0]->momentum().m2() >= 0.0*GeV2 ||
+	       p->parents()[0]->children()[0]->children().empty() ) ) ||
+	   ( LeptonMatcher::Check(p->parents()[0]->children()[1]->data())  &&
+	     ( p->parents()[0]->children()[1]->momentum().m2() >= 0.0*GeV2 ||
+	       p->parents()[0]->children()[1]->children().empty() ) ) ) )
+      return;
   }
-  for ( int i = 0, N = p.parents().size(); i < N; ++i ) {
-    tPPtr parent = p.parents()[i];
+  children.insert(p);
+  for ( int i = 0, N = p->children().size(); i < N; ++i ) {
+    fillChildren(p->children()[i], children);
+  }
+  for ( int i = 0, N = p->parents().size(); i < N; ++i ) {
+    tPPtr parent = p->parents()[i];
     if ( member(children, parent) ) continue;
-    for ( int j = 0, M = p.children().size(); j < M; ++j )
-      if ( dynamic_ptr_cast<tcRemPPtr>(p.children()[j]) ) {
+    for ( int j = 0, M = p->children().size(); j < M; ++j )
+      if ( dynamic_ptr_cast<tcRemPPtr>(p->children()[j]) ) {
 	parent = tPPtr();
 	break;
       }
-    if ( parent ) fillChildren(*parent, children);
+    if ( parent ) {
+      fillChildren(parent, children);
+    }
   }
 }
+
+
 
 void RemnantDecayer::persistentOutput(PersistentOStream & os) const {
   os << oenum(theRecoilOption) << respectDIS;
