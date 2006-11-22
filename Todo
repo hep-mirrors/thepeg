@@ -1,4 +1,3 @@
-* Change the EventHandler and EventGenerator hierarchies.
+* Add possibility to output warnings and errors to stderr in runThePEG.
 
-* Implement LesHouchesEventHandler and LesHouchesReader classes.
 
