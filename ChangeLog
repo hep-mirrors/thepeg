@@ -1,3 +1,8 @@
+2006-11-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/XSecStat.icc: Fixed bug where the sumWeights2()
+	function returned theSumWeights rather than theSumWeights2.
+
 2006-11-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Particle.icc, EventRecord/Particle.h,

@@ -93,7 +93,7 @@ inline double XSecStat::sumWeights() const {
 }
 
 inline double XSecStat::sumWeights2() const {
-  return theSumWeights;
+  return theSumWeights2;
 }
 
 inline XSecStat operator+(const XSecStat & x1, const XSecStat & x2) {
