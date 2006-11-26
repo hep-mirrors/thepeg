@@ -6,6 +6,8 @@
 //
 
 #include "ThePEG/PDT/RemnantDecayer.h"
+#include "ThePEG/Handlers/ZGenerator.h"
+#include "ThePEG/Handlers/FlavourGenerator.h"
 
 namespace ThePEG {
 
@@ -19,6 +21,13 @@ namespace ThePEG {
  * defined for SimpleBaryonRemnantDecayer.
  */
 class SimpleBaryonRemnantDecayer: public RemnantDecayer {
+
+public:
+
+  /** A pointer to a ZGenerator object. */
+  typedef Ptr<ZGenerator>::pointer ZGPtr;
+  /** A pointer to a FlavourGenerator object. */
+  typedef Ptr<FlavourGenerator>::pointer FlGPtr;
 
 public:
 
@@ -103,6 +112,33 @@ public:
 
 protected:
 
+  /**
+   * Return a reference to the object responsible for generating
+   * momentum fractions in case of more than one remnant.
+   */
+  inline ZGenerator & zGenerator() const;
+
+  /**
+   * Return a reference to the object responsible for handling the
+   * flavour contents of a baryon.
+   */
+  inline FlavourGenerator & flavourGenerator() const;
+
+  /**
+   * Return the energy margin to be added to the sum of the parent and
+   * parton masses to determine if it is possible to construct the
+   * remnants with the given (upper limit of the) virtuality of the
+   * extracted parton.
+   */
+  inline Energy margin() const;
+
+  /**
+   * If true an extracted valens quark will always give a di-quark remnant.
+   */
+  inline bool specialValence() const;
+
+protected:
+
   /** @name Clone Methods. */
   //@{
   /**
@@ -118,6 +154,32 @@ protected:
   inline virtual IBPtr fullclone() const;
   //@}
 
+private:
+
+  /**
+   * The object responsible for generating momentum fractions in case
+   * of more than one remnant.
+   */
+  ZGPtr theZGenerator;
+
+  /**
+   * The object responsible for handling the flavour contents of a
+   * baryon.
+   */
+  FlGPtr theFlavourGenerator;
+
+  /**
+   * The energy margin to be added to the sum of the parent and parton
+   * masses to determine if it is possible to construct the remnants
+   * with the given (upper limit of the) virtuality of the extracted
+   * parton.
+   */
+  Energy theMargin;
+
+  /**
+   * If true an extracted valens quark will always give a di-quark remnant.
+   */
+  bool useSpecialValence;
 
 private:
 

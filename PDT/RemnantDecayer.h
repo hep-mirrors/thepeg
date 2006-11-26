@@ -9,6 +9,7 @@
 #include "RemnantDecayer.fh"
 #include "ThePEG/PDT/RemnantData.fh"
 #include "ThePEG/EventRecord/RemnantParticle.h"
+#include "ThePEG/Handlers/PtGenerator.h"
 
 namespace ThePEG {
 
@@ -24,6 +25,11 @@ namespace ThePEG {
  * defined for RemnantDecayer.
  */
 class RemnantDecayer: public Decayer {
+
+public:
+
+  /** A pointer to a PtGenerator object. */
+  typedef Ptr<PtGenerator>::pointer PtGPtr;
 
 public:
 
@@ -128,6 +134,12 @@ public:
    */
   inline bool respectDISKinematics() const;
 
+  /**
+   * An object capable of generating an intrinsic transverse momentum
+   * of the created remnants.
+   */
+  inline PtGPtr pTGenerator() const;
+
 protected:
 
   /**
@@ -149,6 +161,32 @@ protected:
    * Recursively find all particles produced from an extracted parton.
    */
   virtual void fillSubSystem(tPPtr p, set<tPPtr> & sub) const;
+
+  /**
+   * Return the system of particles from the hard subsystem which may
+   * be used to shuffle momenta to get the remnants on-shell. The
+   * particles are ordered in rapidity with the ones closest to the
+   * remnant direction comes first.
+   */
+  virtual tPVector getSubSystem(tPPtr parent, tPPtr parton) const;
+
+protected:
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Initialize this object after the setup phase before saving an
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  virtual void doinit() throw(InitException);
+
+  /**
+   * Return true if this object needs to be initialized before all
+   * other objects because it needs to extract cuts from the event file.
+   */
+  virtual bool preInitialize() const;
+  //@}
 
 public:
 
@@ -190,6 +228,12 @@ private:
    * unmodified.
    */
   bool respectDIS;
+
+  /**
+   * An object capable of generating an intrinsic transverse momentum
+   * of the created remnants.
+   */
+  PtGPtr thePTGenerator;
 
 private:
 

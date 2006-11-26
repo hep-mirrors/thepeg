@@ -10,7 +10,8 @@ inline RemnantDecayer::RemnantDecayer()
   : theRecoilOption(copyFinal), respectDIS(true) {}
 
 inline RemnantDecayer::RemnantDecayer(const RemnantDecayer & x)
-  : Decayer(x), theRecoilOption(x.theRecoilOption), respectDIS(x.respectDIS) {}
+  : Decayer(x), theRecoilOption(x.theRecoilOption), respectDIS(x.respectDIS),
+    thePTGenerator(x.thePTGenerator) {}
 
 inline tRemPDPtr RemnantDecayer::data(tcRemPPtr remnant) const {
   return remnant->remData;
@@ -32,8 +33,9 @@ inline bool RemnantDecayer::respectDISKinematics() const {
   return respectDIS;
 }
 
-// If needed, insert default implementations of virtual function defined
-// in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
+inline RemnantDecayer::PtGPtr RemnantDecayer::pTGenerator() const {
+  return thePTGenerator;
+}
 
 
 }

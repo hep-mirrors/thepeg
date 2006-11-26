@@ -8,9 +8,11 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/Reference.h"
 #include "ThePEG/PDT/RemnantData.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantDecayer.tcc"
@@ -110,14 +112,37 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
   }
 }
 
+tPVector RemnantDecayer::getSubSystem(tPPtr parent, tPPtr parton) const {
+  tPVector ret;
+  set<tPPtr> sub;
+  fillSubSystem(parton, sub);
+  for ( set<tPPtr>::iterator it = sub.begin(); it != sub.end(); ++it ) {
+    if ( (**it).children().size() || (**it).next() ) continue;
+    ret.push_back(*it);
+  }
 
+  return ret;
+}
+
+
+bool RemnantDecayer::preInitialize() const {
+  return Decayer::preInitialize() || !pTGenerator();
+}
+
+void RemnantDecayer::doinit() throw(InitException) {
+  if ( pTGenerator() ) return;
+  thePTGenerator = dynamic_ptr_cast<PtGPtr>
+    (generator()->preinitCreate("ThePEG::GaussianPtGenerator",
+				fullName() + "/PtGen",
+				"GaussianPtGenerator.so"));
+}
 
 void RemnantDecayer::persistentOutput(PersistentOStream & os) const {
-  os << oenum(theRecoilOption) << respectDIS;
+  os << oenum(theRecoilOption) << respectDIS << thePTGenerator;
 }
 
 void RemnantDecayer::persistentInput(PersistentIStream & is, int) {
-  is >> ienum(theRecoilOption) >> respectDIS;
+  is >> ienum(theRecoilOption) >> respectDIS >> thePTGenerator;
 }
 
 AbstractClassDescription<RemnantDecayer> RemnantDecayer::initRemnantDecayer;
@@ -167,6 +192,15 @@ void RemnantDecayer::Init() {
      "No",
      "Boost scattered lepton together with the rest of the hard subsystem.",
      false);
+
+  static Reference<RemnantDecayer,PtGenerator> interfacePTGenerator
+    ("PTGenerator",
+     "An object capable of generating an intrinsic transverse momentum of "
+     "the created remnants. If not set and the controlling EventGenerator "
+     "has a default PtGenerator object, this will be used. Otherwise a "
+     "GaussianPtGenerator object created with default settings in the "
+     "initialization will be used instead.",
+     &RemnantDecayer::thePTGenerator, true, false, true, true, true);
 
 }
 

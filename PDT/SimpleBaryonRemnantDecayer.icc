@@ -6,10 +6,14 @@
 
 namespace ThePEG {
 
-inline SimpleBaryonRemnantDecayer::SimpleBaryonRemnantDecayer() {}
+inline SimpleBaryonRemnantDecayer::SimpleBaryonRemnantDecayer()
+  : theMargin(1.0*GeV), useSpecialValence(false) {}
 
-inline SimpleBaryonRemnantDecayer::SimpleBaryonRemnantDecayer(const SimpleBaryonRemnantDecayer & x)
-  : RemnantDecayer(x) {}
+inline SimpleBaryonRemnantDecayer::
+SimpleBaryonRemnantDecayer(const SimpleBaryonRemnantDecayer & x)
+  : RemnantDecayer(x), theZGenerator(x.theZGenerator),
+    theFlavourGenerator(x.theFlavourGenerator), theMargin(x.theMargin),
+    useSpecialValence(x.useSpecialValence) {}
 
 inline IBPtr SimpleBaryonRemnantDecayer::clone() const {
   return new_ptr(*this);
@@ -19,6 +23,21 @@ inline IBPtr SimpleBaryonRemnantDecayer::fullclone() const {
   return new_ptr(*this);
 }
 
+inline ZGenerator & SimpleBaryonRemnantDecayer::zGenerator() const {
+  return *theZGenerator;
+}
+
+inline FlavourGenerator & SimpleBaryonRemnantDecayer::flavourGenerator() const {
+  return *theFlavourGenerator;
+}
+
+inline bool SimpleBaryonRemnantDecayer::specialValence() const {
+  return useSpecialValence;
+}
+
+inline Energy SimpleBaryonRemnantDecayer::margin() const {
+  return theMargin;
+}
 
 // If needed, insert default implementations of virtual function defined
 // in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
