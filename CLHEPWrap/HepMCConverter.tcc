@@ -20,13 +20,14 @@ namespace ThePEG {
 
 template <typename HepMCEventT, typename Traits>
 typename HepMCConverter<HepMCEventT,Traits>::GenEvent *
-HepMCConverter<HepMCEventT,Traits>::convert(const Event & ev) {
-  HepMCConverter<HepMCEventT,Traits> converter(ev);
+HepMCConverter<HepMCEventT,Traits>::convert(const Event & ev, bool nocopies) {
+  HepMCConverter<HepMCEventT,Traits> converter(ev, nocopies);
   return converter.geneve;
 }
 
 template <typename HepMCEventT, typename Traits>
-HepMCConverter<HepMCEventT,Traits>::HepMCConverter(const Event & ev) {
+HepMCConverter<HepMCEventT,Traits>::
+HepMCConverter(const Event & ev, bool nocopies) {
 
   geneve = Traits::newEvent(ev.number(), ev.weight());
 
@@ -48,6 +49,7 @@ HepMCConverter<HepMCEventT,Traits>::HepMCConverter(const Event & ev) {
   // Create GenParticle's and map them to the ThePEG particles.
   for ( int i = 0, N = all.size(); i < N; ++i ) {
     tcPPtr p = all[i];
+    if ( nocopies && p->next() ) continue;
     GenParticle * gp = pmap[p] = createParticle(p);
     if ( p->hasColourInfo() ) {
       // Check if the particle is connected to colour lines, in which
@@ -85,12 +87,22 @@ HepMCConverter<HepMCEventT,Traits>::HepMCConverter(const Event & ev) {
   // Now go through the the particles again, and join the vertices.
   for ( int i = 0, N = all.size(); i < N; ++i ) {
     tcPPtr p = all[i];
-    for ( int i = 0, N = p->children().size(); i < N; ++i )
-      join(p, p->children()[i]);
-    if ( p->next() ) join(p, p->next());
-    for ( int i = 0, N = p->parents().size(); i < N; ++i )
-      join(p->parents()[i], p);
-    if ( p->previous() ) join(p->previous(), p);
+    if ( nocopies ) {
+      if ( p->next() ) continue;
+      for ( int i = 0, N = p->children().size(); i < N; ++i )
+	join(p, p->children()[i]->final());
+      tcPPtr pp = p;
+      while ( pp->parents().empty() && pp->previous() ) pp = pp->previous();
+      for ( int i = 0, N = pp->parents().size(); i < N; ++i )
+	join(pp->parents()[i]->final(), p);
+    } else {
+      for ( int i = 0, N = p->children().size(); i < N; ++i )
+	join(p, p->children()[i]);
+      if ( p->next() ) join(p, p->next());
+      for ( int i = 0, N = p->parents().size(); i < N; ++i )
+	join(p->parents()[i], p);
+      if ( p->previous() ) join(p->previous(), p);
+    }
   }
 
   // Time to create the GenVertex's

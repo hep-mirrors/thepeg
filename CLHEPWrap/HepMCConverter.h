@@ -61,9 +61,12 @@ public:
 
   /**
    * Convert a ThePEG::Event to a HepMC::GenEvent. The caller is
-   * responsible for deleting the constructed GenEvent object.
+   * responsible for deleting the constructed GenEvent object. If \a
+   * nocopies is true, only final copies of particles connected with
+   * Particle::previous() and Particle::next() will be entered in the
+   * HepMC::GenEvent.
    */
-  static GenEvent * convert(const Event & ev);
+  static GenEvent * convert(const Event & ev, bool nocopies = false);
 
 private:
 
@@ -71,7 +74,7 @@ private:
    * The only proper constructor is private. The class is only
    * instantiated within the convert method.
    */
-  HepMCConverter(const Event & ev);
+  HepMCConverter(const Event & ev, bool nocopies);
 
   /**
    * Default constructor is unimplemented and private and should never be used.
