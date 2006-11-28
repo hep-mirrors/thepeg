@@ -1,5 +1,4 @@
-# Search for LHAPDF in and g77 compiler in standard directories
-
+# Search for LHAPDF and g77 compiler in standard directories
 AC_DEFUN([AC_SEARCH_LHAPDF],
 [
 AC_MSG_CHECKING([if LHAPDF is present and works])
@@ -40,6 +39,50 @@ fi
 AC_SUBST(LHAPDF_LIBS)
 AC_SUBST(LHAPDF_LDFLAGS)
 AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
+])
+
+# Search for stand-alone HepMC in standard directories
+AC_DEFUN([AC_SEARCH_HEPMC],
+[
+AC_MSG_CHECKING([if stand-alone HepMC is present and works])
+HAS_HEPMC="yes"
+HEPMC_LIBDIR=""
+AC_ARG_ENABLE(HEPMC,[  --disable-HEPMC        do not use stand-alone HepMC package
+                          (enabled by default --enable-HEPMC=path to specify
+                          where the HEPMC shared library is located)], [if test -n "$enable_HEPMC" -a "$enable_HEPMC" != "yes" -a "$enable_HEPMC" != "no"; then HEPMC_LIBDIR="$enable_HEPMC"; elif test "$enable_HEPMC" == "no"; then HAS_HEPMC="no"; fi])
+
+
+HEPMC_LDFLAGS=""
+if test -n "$HEPMC_LIBDIR"; then
+  HEPMC_LDFLAGS="-L$HEPMC_LIBDIR"
+fi
+
+HEPMC_LIBS="-lHepMC"
+
+oldLIB="$LIBS"
+oldLDFLAGS="$LDFLAGS"
+
+if test "$HAS_HEPMC" == "yes"; then
+dnl Now lets see if the libraries work properly
+  LIBS="$LIBS $HEPMC_LIBS"
+  LDFLAGS="$LDFLAGS $HEPMC_LDFLAGS"
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include "HepMC/GenEvent.h"]],
+                                  [[HepMC::GenEvent * eve;]])], ,
+                                  HAS_HEPMC="no")
+fi
+
+LIBS="$oldLIB"
+LDFLAGS="$oldLDFLAGS"
+
+if test "$HAS_HEPMC" == "yes"; then
+  HEPMC_LIBS="-lHepMC -lHepMCfio"
+  AC_MSG_RESULT([yes])
+else
+  AC_MSG_RESULT([no])
+fi
+AC_SUBST(HEPMC_LIBS)
+AC_SUBST(HEPMC_LDFLAGS)
+AM_CONDITIONAL([USEHEPMC], [test "x$HAS_HEPMC" == "xyes"])
 ])
 
 # Search for CLHEP in standard directories using standard CLHEP names
