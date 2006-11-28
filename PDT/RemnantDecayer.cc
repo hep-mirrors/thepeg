@@ -112,7 +112,7 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
   }
 }
 
-tPVector RemnantDecayer::getSubSystem(tPPtr parent, tPPtr parton) const {
+tPVector RemnantDecayer::getSubSystem(tPPtr, tPPtr parton) const {
   tPVector ret;
   set<tPPtr> sub;
   fillSubSystem(parton, sub);
