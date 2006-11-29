@@ -112,14 +112,19 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
   }
 }
 
-tPVector RemnantDecayer::getSubSystem(tPPtr, tPPtr parton) const {
+tPVector RemnantDecayer::getSubSystem(tPPtr parent, tPPtr parton) const {
   tPVector ret;
+  Vector3 dir = parent->momentum()/GeV;
   set<tPPtr> sub;
   fillSubSystem(parton, sub);
+  multimap<double,tPPtr> ordsub;
   for ( set<tPPtr>::iterator it = sub.begin(); it != sub.end(); ++it ) {
     if ( (**it).children().size() || (**it).next() ) continue;
-    ret.push_back(*it);
+    ordsub.insert(make_pair((**it).momentum().rapidity(dir), *it));
   }
+  ret.reserve(ordsub.size());
+  for ( multimap<double,tPPtr>::iterator it = ordsub.begin();
+	it != ordsub.end(); ++it )  ret.push_back(it->second);
 
   return ret;
 }
