@@ -135,6 +135,13 @@ public:
   LorentzSpinor bar();
 
   /**
+   * Return the conjugated spinor \f$u_c=C\bar{u}^T\f$. This operation
+   * transforms u-spinors to v-spinors and vice-versa and is required when
+   * dealing with majorana particles.
+   */
+  LorentzSpinorBar conjugate() const;
+
+  /**
    * Standard Lorentz boost specifying the components of the beta vector.
    */
   LorentzSpinorBar & boost(double,double,double);

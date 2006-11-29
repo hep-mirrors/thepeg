@@ -1,3 +1,9 @@
+2006-11-29  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity/LorentzSpinor(Bar).{h,icc,cc}: Added new method to
+	apply the the charge conjugation matrix to turn u spinors into
+	v spinors for use with Majorana fermions
+
 2006-11-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/HepMCConverter.tcc, CLHEPWrap/HepMCConverter.h: Added

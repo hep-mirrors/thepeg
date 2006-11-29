@@ -127,3 +127,23 @@ LorentzSpinor & LorentzSpinor::transform(const SpinHalfLorentzRotation & r)
     }
   return *this;
 }
+
+// conjugation
+LorentzSpinor LorentzSpinor::conjugate() const {
+  SpinorType new_type;
+  switch(_type) {
+  case u_spinortype:
+    new_type=v_spinortype;
+    break;
+  case v_spinortype:
+    new_type=u_spinortype;
+    break;
+  case unknown_spinortype:
+    new_type=unknown_spinortype;
+    break;
+  }
+  return LorentzSpinor(-conj(_spin[3]), conj(_spin[2]), 
+			conj(_spin[1]),-conj(_spin[0]),_type,_dirac);
+}		         
+		        
+		        
