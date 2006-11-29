@@ -164,9 +164,10 @@ protected:
 
   /**
    * Return the system of particles from the hard subsystem which may
-   * be used to shuffle momenta to get the remnants on-shell. The
-   * particles are ordered in rapidity with the ones closest to the
-   * remnant direction comes first.
+   * be used to shuffle momenta to get the remnants on-shell. In this
+   * version the particles are ordered in rapidity with the ones
+   * closest to the remnant direction comes first. Other orderings can
+   * be enforced by sub-classes.
    */
   virtual tPVector getSubSystem(tPPtr parent, tPPtr parton) const;
 

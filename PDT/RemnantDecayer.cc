@@ -120,7 +120,7 @@ tPVector RemnantDecayer::getSubSystem(tPPtr parent, tPPtr parton) const {
   multimap<double,tPPtr> ordsub;
   for ( set<tPPtr>::iterator it = sub.begin(); it != sub.end(); ++it ) {
     if ( (**it).children().size() || (**it).next() ) continue;
-    ordsub.insert(make_pair((**it).momentum().rapidity(dir), *it));
+    ordsub.insert(make_pair(-(**it).momentum().rapidity(dir), *it));
   }
   ret.reserve(ordsub.size());
   for ( multimap<double,tPPtr>::iterator it = ordsub.begin();

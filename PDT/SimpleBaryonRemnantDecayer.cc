@@ -12,6 +12,9 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/PDT/RemnantData.h"
 #include "ThePEG/PDT/StandardMatchers.h"
+#include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/PDF/BeamParticleData.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "SimpleBaryonRemnantDecayer.tcc"
@@ -35,17 +38,155 @@ canHandle(tcPDPtr particle, tcPDPtr parton) const {
 }
 
 ParticleVector SimpleBaryonRemnantDecayer::
-decay(const DecayMode & dm, const Particle & p, Step &) const {
+decay(const DecayMode &, const Particle & p, Step &) const {
   ParticleVector children;
   tcRemPPtr remnant = dynamic_ptr_cast<tcRemPPtr>(&p);
   if ( !remnant ) return children;
   tRemPDPtr rpd = data(remnant);
   PVector ex = extracted(remnant);
-  tPPtr par = parent(remnant);
-  if ( !par || ex.empty() || !rpd ) return children;
-  children= dm.produceProducts();
+  tPPtr particle = parent(remnant);
+  if ( !particle || ex.empty() || !rpd ) return children;
+
+  // We can't handle multiple extractions (yet)
+  if ( ex.size() != 1 ) return children;
+
+  tPPtr parton = ex[0];
+  tPVector subsys = getSubSystem(particle, parton);
+  tPVector subpart = subsys;
+
+  Energy2 s = 0.0*GeV2;
+  Energy2 shat = 0.0*GeV2;
+  LorentzMomentum subp;
+  Energy minmass = particle->nominalMass() +
+    2.0*parton->nominalMass() + margin();
+
+  while ( !subpart.empty() ) {
+
+    subp = Utilities::sumMomentum(subpart);
+
+    s = (remnant->momentum() + subp).m2();
+    shat = subp.m2();
+
+    if ( sqrt(s) > sqrt(shat) + minmass ) break;
+
+    subpart.pop_back();
+
+  }
+
+  if ( subpart.empty() ) return children;
+
+  const BaryonContent & bi = getBaryonInfo(particle->dataPtr());
+
+  // Check if we are extracting a valence quark
+  int iq = parton->id();
+  vector<int> vflav = bi.flav;
+  vector<int>::iterator v = find(vflav.begin(), vflav.end(), bi.sign*iq);
+  double pval = 0.0;
+  if (  v != vflav.end() ) {
+    vflav.erase(v);
+    tcPDFPtr pdf;
+    const BeamParticleData * beamp =
+      dynamic_cast<const BeamParticleData *>(&*particle->dataPtr());
+    if ( beamp ) pdf = beamp->pdf();
+    if ( pdf && !specialValence() ) {
+      Energy2 scale = abs(parton->scale());
+      double x = shat/s;
+      pval = pdf->xfvx(particle->dataPtr(), parton->dataPtr(), scale, x)/
+	pdf->xfx(particle->dataPtr(), parton->dataPtr(), scale, x);
+    } else {
+      pval = 1;
+    }
+  }
+
+  Energy mr2 = 0.0*GeV2;
+
+  while ( true ) {
+
+    children.clear();
+
+    if ( rndbool(pval) ) {
+
+      // A simple valence remnant.
+      int idqr = 1000*max(vflav[0], vflav[1]) +	100*min(vflav[0], vflav[1]) + 3;
+      if ( vflav[0] != vflav[1] && rndbool(0.25) ) idqr -= 2;
+      children.push_back(getParticleData(bi.sign*idqr)->produceParticle());
+      mr2 = sqr(children[0]->mass());
+
+    } else {
+      // We haven't extracted a valence so we first divide up the baryon
+      // in a quark and a diquark.
+      pair<int,int> r = bi.flavsel.select(UseRandom::current());
+      int iqr = r.first*bi.sign;
+      int idqr = r.second*bi.sign;
+
+      if ( iq == ParticleID::g ) {
+	children.push_back(getParticleData(iqr)->produceParticle());
+	children.push_back(getParticleData(idqr)->produceParticle());
+      } else if ( iq*iqr > 0 ) {
+	children.push_back(getParticleData(idqr)->produceParticle());
+	children.push_back(flavourGenerator().getHadron
+			   (getParticleData(-iq),
+			    getParticleData(iqr))->produceParticle());
+      } else {
+	children.push_back(getParticleData(iqr)->produceParticle());
+	children.push_back(flavourGenerator().getHadron
+			   (getParticleData(-iq),
+			    getParticleData(idqr))->produceParticle());
+      }
+      
+      TransverseMomentum ptr = pTGenerator()->generate();
+      Energy2 mt02 = children[0]->momentum().mass2() + ptr.pt2();
+      Energy2 mt12 = children[1]->momentum().mass2() + ptr.pt2();
+      double z = zGenerator().generate(children[1]->dataPtr(),
+				       children[0]->dataPtr(), mt12);
+      mr2 = mt02/(1.0 - z) + mt12/z;
+
+      Energy mr = sqrt(mr2);
+
+      if ( sqrt(s) <= sqrt(shat) + mr ) continue;
+
+      children[0]->set3Momentum(static_cast<const LorentzMomentum &>
+				(lightCone((1.0 - z)*mr,
+					   mt02/((1.0 - z)*mr), ptr)));
+      children[1]->set3Momentum(static_cast<const LorentzMomentum &>
+				(lightCone(z*mr, mt12/(z*mr), -ptr)));
+    }
+
+
+
+
+
+
+
+  }
+
   return children;
 }
+
+const SimpleBaryonRemnantDecayer::BaryonContent &
+SimpleBaryonRemnantDecayer::getBaryonInfo(tcPDPtr baryon) const {
+  map<tcPDPtr,BaryonContent>::iterator it = baryonmap.find(baryon);
+  if ( it != baryonmap.end() ) return it->second;
+  BaryonContent & bi = baryonmap[baryon];
+  int pid = baryon->id();
+  bi.sign = pid < 0? -1: 1;
+  bi.flav = vector<int>(3);
+  bi.flav[0] = (pid = abs(pid)/10)%10;
+  bi.flav[1] = (pid /= 10)%10;
+  bi.flav[2] = (pid /= 10)%10;
+  bi.flavsel = VSelector< pair<int,int> >();
+  for ( int iq1 = 0; iq1 < 3; ++iq1 ) {
+    int iq2 = (iq1 + 1)%3;
+    int iq3 = (iq2 + 1)%3;
+    int idq = 1000*max(bi.flav[iq2], bi.flav[iq3]) +
+      100*min(bi.flav[iq2], bi.flav[iq3]) + 3;
+    bi.flavsel.insert(3.0, make_pair(bi.flav[iq1], idq));
+    if ( bi.flav[iq2] == bi.flav[iq3] ) continue;
+    bi.flavsel.insert(1.0, make_pair(bi.flav[iq1], idq - 2));
+  }
+  return bi;
+}
+
 
 void SimpleBaryonRemnantDecayer::
 persistentOutput(PersistentOStream & os) const {

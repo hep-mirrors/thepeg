@@ -8,6 +8,7 @@
 #include "ThePEG/PDT/RemnantDecayer.h"
 #include "ThePEG/Handlers/ZGenerator.h"
 #include "ThePEG/Handlers/FlavourGenerator.h"
+#include "ThePEG/Utilities/VSelector.h"
 
 namespace ThePEG {
 
@@ -154,6 +155,27 @@ protected:
   inline virtual IBPtr fullclone() const;
   //@}
 
+protected:
+
+  /**
+   * Simple struct to store info about baryon quark and di-quark
+   * constituents.
+   */
+  struct BaryonContent {
+    /** The valence flavours of the corresponding baryon. */
+    vector<int> flav;
+    /** Different divisions into quark-diquark weighted by their
+	respective probabilities. */
+    VSelector< pair<int,int> > flavsel;
+    /** -1 if the particle is an anti-particle. +1 otherwise. */
+    int sign;
+  };
+
+  /**
+   * Return info about baryon quark and di-quark constituents.
+   */
+  const BaryonContent & getBaryonInfo(tcPDPtr baryon) const;    
+
 private:
 
   /**
@@ -180,6 +202,11 @@ private:
    * If true an extracted valens quark will always give a di-quark remnant.
    */
   bool useSpecialValence;
+
+  /**
+   * A map of info about baryon quark and di-quark constituents.
+   */
+  mutable map<tcPDPtr,BaryonContent> baryonmap;
 
 private:
 
