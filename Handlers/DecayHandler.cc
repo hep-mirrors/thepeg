@@ -116,10 +116,10 @@ DecHdlNoDecayer::DecHdlNoDecayer(const Interfaced & p, const Interfaced & dm) {
 }
 
 DecHdlDecayFailed::DecHdlDecayFailed(const Interfaced & p, long n) {
-  theMessage << "A possibly infinit loop was encountered while tryin to "
+  theMessage << "A possibly infinite loop was encountered while trying to "
 	     << "decay an unstable particle of type '" << p.name()
 	     << "'. No acceptable decay mode found."
-	     << "before reaching the limit of " << n << "iterations.";
+	     << "before reaching the limit of " << n << " iterations.";
   severity(eventerror);
 }
   
