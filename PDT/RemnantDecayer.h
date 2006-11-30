@@ -150,7 +150,7 @@ protected:
   /**
    * Access the parent  of a \a remnant.
    */
-  inline tPPtr parent(tcRemPPtr remnant) const;
+  inline tcPPtr parent(tcRemPPtr remnant) const;
 
   /**
    * Access the vector of extracted particles of a \a remnant.
@@ -169,7 +169,7 @@ protected:
    * closest to the remnant direction comes first. Other orderings can
    * be enforced by sub-classes.
    */
-  virtual tPVector getSubSystem(tPPtr parent, tPPtr parton) const;
+  virtual tPVector getSubSystem(tcPPtr parent, tPPtr parton) const;
 
 protected:
 

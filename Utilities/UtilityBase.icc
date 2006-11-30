@@ -57,4 +57,23 @@ UtilityBase::transformToMomentum(const PType & p, const LorentzMomentum & q) {
   return transformFromCMS(q)*transformToCMS(p);
 }
 
+template <typename PType>
+inline LorentzRotation
+UtilityBase::getTransformToMomentum(const PType & p, const Momentum3 & q,
+				    const LorentzMomentum & k) {
+  typedef ParticleTraits<PType> Traits;
+  LorentzMomentum q4(q, sqrt(q.mag2() + Traits::momentum(p).m2()));
+  return getTransformToMomentum(p, q4, k);
+}
+
+template <typename PType>
+inline LorentzRotation
+UtilityBase::getTransformToMomentum(const PType & p, const LorentzMomentum & q,
+				    const LorentzMomentum & k) {
+  typedef ParticleTraits<PType> Traits;
+  LorentzMomentum k0 = Traits::momentum(p) - k;
+  LorentzMomentum k1 = Traits::momentum(q) - k;
+  return getBoostFromCM(make_pair(k1, k))*getBoostToCM(make_pair(k0, k));
+}
+
 }

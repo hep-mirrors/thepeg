@@ -63,6 +63,7 @@ set StdLHC:BeamA p+
 set StdLHC:BeamB p+
 set StdLHC:Sampler /Defaults/Handlers/ACDCSampler
 set StdLHC:Cuts QCDCuts
+set StdLHC:DecayHandler /Defaults/Handlers/StandardDecayHandler
 
 cp /Defaults/StandardModel StandardModel
 cp /Defaults/AlphaS O1AlphaS

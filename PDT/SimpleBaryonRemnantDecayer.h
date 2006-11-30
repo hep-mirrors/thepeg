@@ -85,6 +85,24 @@ public:
   virtual bool canHandle(tcPDPtr parent, tcPDPtr extracted) const;
   //@}
 
+protected:
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Initialize this object after the setup phase before saving an
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  virtual void doinit() throw(InitException);
+
+  /**
+   * Return true if this object needs to be initialized before all
+   * other objects because it needs to extract cuts from the event file.
+   */
+  virtual bool preInitialize() const;
+  //@}
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

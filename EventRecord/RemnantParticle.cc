@@ -26,6 +26,7 @@ RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr parton)
   set5Momentum(particle.momentum());
   colourInfo(new_ptr(MultiColour()));
   extract(parton);
+  parent = &particle;
 }
 
 RemnantParticle::~RemnantParticle() {}

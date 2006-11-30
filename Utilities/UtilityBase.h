@@ -221,6 +221,7 @@ struct UtilityBase {
    * implemented correctly. <b>Warning</b> This function only works
    * properly if \a p has a well defined direction in both polar and
    * azimuth angles.
+   * \deprecated{Use getTransformToMomentum() instead.}
    */
   template <typename PType>
   inline static LorentzRotation
@@ -234,10 +235,31 @@ struct UtilityBase {
    * PType&)</code> implemented correctly. <b>Warning</b> This
    * function only works properly if \a p has a well defined direction
    * in both polar and azimuth angles.
+   * \deprecated{Use getTransformToMomentum() instead.}
    */
   template <typename PType>
   inline static LorentzRotation
   transformToMomentum(const PType & p, const LorentzMomentum & q);
+
+  /**
+   * Return a transformation appropriate for transforming \a p to have
+   * the momentum \a q. The transformation is done so that the
+   * auxiliary vector \a k is left unchanged.
+   */
+  template <typename PType>
+  inline static LorentzRotation
+  getTransformToMomentum(const PType & p, const LorentzMomentum & q,
+			 const LorentzMomentum & k);
+
+  /**
+   * Return a transformation appropriate for transforming \a p to have
+   * the momentum \a q. The transformation is done so that the
+   * auxiliary vector \a k is left unchanged.
+   */
+  template <typename PType>
+  inline static LorentzRotation
+  getTransformToMomentum(const PType & p, const Momentum3 & q,
+			 const LorentzMomentum & k);
 
   /**
    * Create a rotation corresponding to transforming p to its current

@@ -115,7 +115,7 @@ private:
   /**
    * The parent from which this remnant resulted.
    */
-  tPPtr parent;
+  tcPPtr parent;
 
   /**
    * The set of extracted partons.

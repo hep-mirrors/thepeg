@@ -13,8 +13,11 @@
 #include "ThePEG/PDT/RemnantData.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/PDF/BeamParticleData.h"
 #include "ThePEG/Repository/UseRandom.h"
+#include "ThePEG/EventRecord/Step.h"
+#include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "SimpleBaryonRemnantDecayer.tcc"
@@ -38,13 +41,13 @@ canHandle(tcPDPtr particle, tcPDPtr parton) const {
 }
 
 ParticleVector SimpleBaryonRemnantDecayer::
-decay(const DecayMode &, const Particle & p, Step &) const {
+decay(const DecayMode &, const Particle & p, Step & step) const {
   ParticleVector children;
   tcRemPPtr remnant = dynamic_ptr_cast<tcRemPPtr>(&p);
   if ( !remnant ) return children;
   tRemPDPtr rpd = data(remnant);
   PVector ex = extracted(remnant);
-  tPPtr particle = parent(remnant);
+  tcPPtr particle = parent(remnant);
   if ( !particle || ex.empty() || !rpd ) return children;
 
   // We can't handle multiple extractions (yet)
@@ -56,16 +59,16 @@ decay(const DecayMode &, const Particle & p, Step &) const {
 
   Energy2 s = 0.0*GeV2;
   Energy2 shat = 0.0*GeV2;
-  LorentzMomentum subp;
+  LorentzMomentum psub;
   Energy minmass = particle->nominalMass() +
     2.0*parton->nominalMass() + margin();
 
   while ( !subpart.empty() ) {
 
-    subp = Utilities::sumMomentum(subpart);
+    psub = Utilities::sumMomentum(subpart);
 
-    s = (remnant->momentum() + subp).m2();
-    shat = subp.m2();
+    s = (remnant->momentum() + psub).m2();
+    shat = psub.m2();
 
     if ( sqrt(s) > sqrt(shat) + minmass ) break;
 
@@ -98,7 +101,7 @@ decay(const DecayMode &, const Particle & p, Step &) const {
     }
   }
 
-  Energy mr2 = 0.0*GeV2;
+  Energy mr = 0.0*GeV;
 
   while ( true ) {
 
@@ -110,7 +113,7 @@ decay(const DecayMode &, const Particle & p, Step &) const {
       int idqr = 1000*max(vflav[0], vflav[1]) +	100*min(vflav[0], vflav[1]) + 3;
       if ( vflav[0] != vflav[1] && rndbool(0.25) ) idqr -= 2;
       children.push_back(getParticleData(bi.sign*idqr)->produceParticle());
-      mr2 = sqr(children[0]->mass());
+      mr = children[0]->mass();
 
     } else {
       // We haven't extracted a valence so we first divide up the baryon
@@ -139,9 +142,7 @@ decay(const DecayMode &, const Particle & p, Step &) const {
       Energy2 mt12 = children[1]->momentum().mass2() + ptr.pt2();
       double z = zGenerator().generate(children[1]->dataPtr(),
 				       children[0]->dataPtr(), mt12);
-      mr2 = mt02/(1.0 - z) + mt12/z;
-
-      Energy mr = sqrt(mr2);
+      mr = sqrt(mt02/(1.0 - z) + mt12/z);
 
       if ( sqrt(s) <= sqrt(shat) + mr ) continue;
 
@@ -152,13 +153,52 @@ decay(const DecayMode &, const Particle & p, Step &) const {
 				(lightCone(z*mr, mt12/(z*mr), -ptr)));
     }
 
-
-
-
-
-
+    break;
 
   }
+
+  // Make copies of all final particles in the hard subsystem which
+  // will take recoil.
+  for ( unsigned int i = 0, N = subsys.size(); i < N; ++i ) {
+    subsys[i] = step.copyParticle(subsys[i]);
+    if ( i < subpart.size() ) subpart[i] = subsys[i];
+  }
+
+  // Boost part of the hard subsystem to give energy to the new
+  // remnants.
+  LorentzMomentum pr = remnant->momentum();
+  LorentzRotation R = Utilities::getBoostToCM(make_pair(psub, pr));
+  Energy pz = SimplePhaseSpace::getMagnitude(s, sqrt(shat), mr);
+  LorentzRotation Rr(0.0, 0.0, -pz/sqrt(sqr(pz) + sqr(mr)));
+  LorentzRotation Rs(-(R*psub).boostVector());
+  Rs.boost(0.0, 0.0, pz/sqrt(sqr(pz) + shat));
+  Rs = Rs*R;
+  R.invert();
+  Rs = R*Rs;
+  Rr = R*Rr;
+  Utilities::transform(subpart, Rs);
+  Utilities::transform(children, Rr);
+
+  // Give the remnants a transverse momentum by rotating.
+  LorentzMomentum pr0 = ( pr = Utilities::sumMomentum(children) );
+  LorentzMomentum psub0 = ( psub = Utilities::sumMomentum(subsys) );
+  LorentzMomentum ksub = pr + psub - particle->momentum();
+  LorentzMomentum kr = particle->momentum();
+  R = Utilities::boostToCM(make_pair(&psub, &pr));
+  TransverseMomentum kt;
+  do {
+    kt = pTGenerator()->generate();
+  } while ( kt.pt() >= psub.z() );
+  LorentzRotation Rtot = R;
+  Rtot.rotateY(asin(kt.pt()/psub.z()));
+  Rtot.rotateZ(kt.phi());
+  Rtot = R.inverse()*Rtot;
+  psub = Rtot*psub0;
+  pr = Rtot*pr0;
+  Utilities::transform(children,
+		       Utilities::getTransformToMomentum(pr0, pr, kr));
+  Utilities::transform(subsys,
+		       Utilities::getTransformToMomentum(psub0, psub, ksub));
 
   return children;
 }
@@ -187,6 +227,27 @@ SimpleBaryonRemnantDecayer::getBaryonInfo(tcPDPtr baryon) const {
   return bi;
 }
 
+bool SimpleBaryonRemnantDecayer::preInitialize() const {
+  return RemnantDecayer::preInitialize() ||
+    !theZGenerator || !theFlavourGenerator;
+}
+
+void SimpleBaryonRemnantDecayer::doinit() throw(InitException) {
+  RemnantDecayer::doinit();
+  if ( !theZGenerator ) {
+    theZGenerator = dynamic_ptr_cast<ZGPtr>
+      (generator()->preinitCreate("ThePEG::SimpleZGenerator",
+				  fullName() + "/ZGen",
+				  "SimpleZGenerator.so"));
+  }
+  if ( !theFlavourGenerator ) {
+    theFlavourGenerator = dynamic_ptr_cast<FlGPtr>
+      (generator()->preinitCreate("ThePEG::SimpleFlavour",
+				  fullName() + "/FlavGen",
+				  "SimpleFlavour.so"));
+  }
+}
+
 
 void SimpleBaryonRemnantDecayer::
 persistentOutput(PersistentOStream & os) const {
@@ -212,15 +273,22 @@ void SimpleBaryonRemnantDecayer::Init() {
   static Reference<SimpleBaryonRemnantDecayer,ZGenerator> interfaceZGenerator
     ("ZGenerator",
      "The object responsible for generating momentum fractions in case "
-     "of more than one remnant.",
-     &SimpleBaryonRemnantDecayer::theZGenerator, false, false, true, false, true);
+     "of more than one remnant. If not set and the controlling EventGenerator "
+     "has a default ZGenerator object, this will be used. Otherwise a "
+     "SimpleZGenerator object created with default settings in the "
+     "initialization will be used instead.",
+     &SimpleBaryonRemnantDecayer::theZGenerator, true, false, true, true, true);
 
   static Reference<SimpleBaryonRemnantDecayer,FlavourGenerator>
     interfaceFlavourGenerator
     ("FlavourGenerator",
-     "The object responsible for handling the flavour contents of a baryon.",
+     "The object responsible for handling the flavour contents of a baryon. "
+     "If not set and the controlling EventGenerator "
+     "has a default FlavourGenerator object, this will be used. Otherwise a "
+     "SimpleFlavour object created with default settings in the "
+     "initialization will be used instead.",
      &SimpleBaryonRemnantDecayer::theFlavourGenerator,
-     false, false, true, false, true);
+     true, false, true, true, true);
 
   static Parameter<SimpleBaryonRemnantDecayer,Energy> interfaceMargin
     ("EnergyMargin",

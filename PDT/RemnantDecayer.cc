@@ -54,7 +54,7 @@ decay(const DecayMode & dm, const Particle & p, Step &) const {
   if ( !remnant ) return children;
   tRemPDPtr rpd = data(remnant);
   PVector ex = extracted(remnant);
-  tPPtr par = parent(remnant);
+  tcPPtr par = parent(remnant);
   if ( !par || ex.empty() || !rpd ) return children;
   children= dm.produceProducts();
   return children;
@@ -103,8 +103,8 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
   for ( int i = 0, N = p->parents().size(); i < N; ++i ) {
     tPPtr parent = p->parents()[i];
     if ( member(sub, parent) ) continue;
-    for ( int j = 0, M = p->children().size(); j < M; ++j )
-      if ( dynamic_ptr_cast<tcRemPPtr>(p->children()[j]) ) {
+    for ( int j = 0, M = parent->children().size(); j < M; ++j )
+      if ( dynamic_ptr_cast<tcRemPPtr>(parent->children()[j]) ) {
 	parent = tPPtr();
 	break;
       }
@@ -112,7 +112,7 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
   }
 }
 
-tPVector RemnantDecayer::getSubSystem(tPPtr parent, tPPtr parton) const {
+tPVector RemnantDecayer::getSubSystem(tcPPtr parent, tPPtr parton) const {
   tPVector ret;
   Vector3 dir = parent->momentum()/GeV;
   set<tPPtr> sub;
@@ -135,6 +135,7 @@ bool RemnantDecayer::preInitialize() const {
 }
 
 void RemnantDecayer::doinit() throw(InitException) {
+  Decayer::doinit();
   if ( pTGenerator() ) return;
   thePTGenerator = dynamic_ptr_cast<PtGPtr>
     (generator()->preinitCreate("ThePEG::GaussianPtGenerator",

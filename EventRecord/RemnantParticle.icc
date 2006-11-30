@@ -9,7 +9,7 @@ namespace ThePEG {
 inline RemnantParticle::RemnantParticle() {}
 
 inline RemnantParticle::RemnantParticle(const RemnantParticle & x)
-  : Particle(x), remData(x.remData), parent(x.parent) {}
+  : Particle(x), remData(x.remData), parent(x.parent), extracted(x.extracted) {}
 
 inline void * RemnantParticle::operator new(size_t) {
   return FixedAllocator<RemnantParticle>::allocate();

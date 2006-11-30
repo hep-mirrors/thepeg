@@ -17,7 +17,7 @@ inline tRemPDPtr RemnantDecayer::data(tcRemPPtr remnant) const {
   return remnant->remData;
 }
 
-inline tPPtr RemnantDecayer::parent(tcRemPPtr remnant) const {
+inline tcPPtr RemnantDecayer::parent(tcRemPPtr remnant) const {
   return remnant->parent;
 }
 
