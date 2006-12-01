@@ -69,6 +69,7 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
   pb.parton()->setMomentum
     (lightCone(p.plus()*pb.x(), 0.0*GeV, 0.0*GeV, 0.0*GeV));
 
+  rem = new_ptr(RemnantParticle(*rem));
   if ( !rem->reextract(oldp, newp) ) return false;
 
   rem->rotateY(parent.theta());
