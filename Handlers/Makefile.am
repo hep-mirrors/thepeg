@@ -21,8 +21,7 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
            StandardXComb.h
 
 INCLUDEFILES = $(DOCFILES) AnalysisHandler.icc CascadeHandler.icc \
-               DecayHandler.icc DecayHandler.xh \
-               EventHandler.icc EventManipulator.icc \
+               DecayHandler.icc EventHandler.icc EventManipulator.icc \
                FlavourGenerator.icc \
                HadronizationHandler.icc HandlerBase.icc HandlerGroup.icc \
                HandlerGroup.tcc Hint.icc \

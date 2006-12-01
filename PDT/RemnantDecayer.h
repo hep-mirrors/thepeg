@@ -7,7 +7,7 @@
 
 #include "ThePEG/PDT/Decayer.h"
 #include "RemnantDecayer.fh"
-#include "ThePEG/PDT/RemnantData.fh"
+#include "ThePEG/PDT/RemnantData.h"
 #include "ThePEG/EventRecord/RemnantParticle.h"
 #include "ThePEG/Handlers/PtGenerator.h"
 
@@ -139,6 +139,15 @@ public:
    * of the created remnants.
    */
   inline PtGPtr pTGenerator() const;
+
+  /**
+   * Static function to decay al remnants among the given \a
+   * particles. The decay products are inserted in the \a step
+   * provided.
+   * @return a vector of the non-remnant particles together with the
+   * remnant decay products.
+   */
+  static tPVector decayRemnants(const tPVector & particles, Step & step);
 
 protected:
 

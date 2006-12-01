@@ -13,6 +13,7 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Repository/UseRandom.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantDecayer.tcc"
@@ -139,6 +140,25 @@ getZBoost(const LorentzMomentum & p0, const LorentzMomentum & p) {
     R.setBoostZ((sqr(p0.minus()) - sqr(p.minus()))/
 		(sqr(p0.minus()) + sqr(p.minus())));
   return R;
+}
+
+tPVector RemnantDecayer::
+decayRemnants(const tPVector & particles, Step & step) {
+  tPVector final;
+  tPVector remnants;
+  for ( int i = 0, N= particles.size(); i < N; ++i )
+    if ( dynamic_ptr_cast<tRemPPtr>(particles[i]) )
+      remnants.push_back(particles[i]);
+    else
+      final.push_back(particles[i]);
+
+  while ( !remnants.empty() ) {
+    int i = UseRandom::irnd(remnants.size());
+    ParticleVector children = Decayer::DecayParticle(remnants[i], step);
+    final.insert(final.end(), children.begin(), children.end());
+    remnants.erase(remnants.begin() + i);
+  }
+  return final;
 }
 
 bool RemnantDecayer::preInitialize() const {
