@@ -140,6 +140,21 @@ public:
    */
   inline Ptr<Amplitude>::pointer amplitude() const;
 
+  /**
+   * Static function to administer the decay of a \a particle. The
+   * children are properly added to the particle and to the given \a
+   * step. Maximum \a maxtry attempts to decay the particle is
+   * performed.
+   * @return the produced children.
+   */
+  static ParticleVector
+  DecayParticle(tPPtr parent, Step & step, long maxtry = 1000);
+
+  /**
+   * Exception class used if something goes wrong in DecayParticle().
+   */
+  struct DecayFailure: public Exception {};
+
 public:
 
 

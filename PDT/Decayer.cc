@@ -11,6 +11,10 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/Utilities/Throw.h"
+#include "ThePEG/EventRecord/Step.h"
+#include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/PDT/DecayMode.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Decayer.tcc"
@@ -78,3 +82,42 @@ void Decayer::persistentInput(PersistentIStream & is, int) {
   is >> theAmplitude;
 }
 
+ParticleVector Decayer::DecayParticle(tPPtr parent, Step & s, long maxtry) {
+  ParticleVector children;
+  while ( true ) {
+    if ( !maxtry-- ) Throw<DecayFailure>()
+      << "Could not decay particle " << parent->data().PDGName() << " after "
+      << maxtry << " attempts. Giving up." << Exception::eventerror;
+    tDMPtr dm = parent->data().selectMode(*parent);
+    if ( !dm ) Throw<DecayFailure>()
+      << "Could not decay particle " << parent->data().PDGName() << " since "
+      << " no decay mode was found." << Exception::runerror;
+    if ( !dm->decayer() ) Throw<DecayFailure>()
+      << "Could not perform the decay " << dm->tag()
+      << " since the decay mode was not associated with a decayer."
+      << Exception::runerror;
+    try {
+      if ( dm->decayer()->needsFullStep() )
+	children = dm->decayer()->decay(*dm, *parent, s);
+      else
+	children = dm->decayer()->decay(*dm, *parent);
+      if ( !children.empty() ) {
+	parent->decayMode(dm);
+	for ( int i = 0, N = children.size(); i < N; ++i )
+	  if ( !s.addDecayProduct(parent, children[i]) )Throw<DecayFailure>()
+	    << "An error occurred when tryin to decay an unstable particle "
+	    << "of type " << parent->data().PDGName() << ". One of the "
+	    << "produced children (of type " << children[i]->data().PDGName()
+	    << ") could not be added to the current step."
+	    << Exception::abortnow;
+	parent->scale(0.0*GeV2);
+	return children;
+      }
+    }
+    catch (DecayFailure) {
+      throw;
+    }
+    catch (Veto) {}
+  }
+  return children;
+}
