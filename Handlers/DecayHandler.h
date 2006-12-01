@@ -4,8 +4,6 @@
 // This is the declaration of the DecayHandler class.
 
 #include "StepHandler.h"
-// #include "DecayHandler.fh"
-#include "DecayHandler.xh"
 
 namespace ThePEG {
 
