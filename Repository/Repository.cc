@@ -536,7 +536,13 @@ string Repository::exec(string command, ostream & os) {
 	DynamicLoader::load(library);
 	db = DescriptionList::find(className);
       }
-      if ( !db ) return "Error: " +className+": No such class found.";
+      if ( !db ) {
+	string msg = "Error: " + className + ": No such class found.";
+	if ( !DynamicLoader::lastErrorMessage.empty() )
+	  msg += "\nerror message from dynamic loader:\n" +
+	    DynamicLoader::lastErrorMessage;
+	return msg;
+      }
       IBPtr obj = dynamic_ptr_cast<IBPtr>(db->create());
       if ( !obj ) return "Error: Could not create object of this class class.";
       if ( name.empty() ) return "Error: No name specified.";

@@ -98,7 +98,10 @@ bool DynamicLoader::load(string name) {
       }
     }
   }
-  if ( success || loadcmd(name) ) return true;
+  if ( success || loadcmd(name) ) {
+    lastErrorMessage = "";
+    return true;
+  }
   loaded.erase(name);
   return false;
 }
