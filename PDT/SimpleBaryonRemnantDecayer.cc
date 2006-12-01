@@ -56,6 +56,7 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   tPPtr parton = ex[0];
   tPVector subsys = getSubSystem(particle, parton);
   tPVector subpart = subsys;
+  LorentzMomentum pitot = Utilities::sumMomentum(subsys) + remnant->momentum();
 
   Energy2 s = 0.0*GeV2;
   Energy2 shat = 0.0*GeV2;
@@ -160,7 +161,8 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   // Make copies of all final particles in the hard subsystem which
   // will take recoil.
   for ( unsigned int i = 0, N = subsys.size(); i < N; ++i ) {
-    subsys[i] = step.copyParticle(subsys[i]);
+    if ( subsys[i]->birthStep() != &step )
+      subsys[i] = step.copyParticle(subsys[i]);
     if ( i < subpart.size() ) subpart[i] = subsys[i];
   }
 
@@ -179,11 +181,11 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   Utilities::transform(subpart, Rs);
   Utilities::transform(children, Rr);
 
-  // Give the remnants a transverse momentum by rotating.
+  // Give the remnants and subsystem a transverse momentum by Lorentz
+  // rotations.
   LorentzMomentum pr0 = ( pr = Utilities::sumMomentum(children) );
   LorentzMomentum psub0 = ( psub = Utilities::sumMomentum(subsys) );
   LorentzMomentum ksub = pr + psub - particle->momentum();
-  LorentzMomentum kr = particle->momentum();
   R = Utilities::boostToCM(make_pair(&psub, &pr));
   TransverseMomentum kt;
   do {
@@ -195,10 +197,20 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   Rtot = R.inverse()*Rtot;
   psub = Rtot*psub0;
   pr = Rtot*pr0;
-  Utilities::transform(children,
-		       Utilities::getTransformToMomentum(pr0, pr, kr));
+
+  Utilities::transform(children, Rtot);
   Utilities::transform(subsys,
-		       Utilities::getTransformToMomentum(psub0, psub, ksub));
+ 		       Utilities::getTransformToMomentum(psub0, psub, ksub));
+
+  // Make small z-boosts to correct 
+  Utilities::transform(subsys, getZBoost(Utilities::sumMomentum(subsys), psub));
+
+  LorentzMomentum pftot =
+    Utilities::sumMomentum(subsys) + Utilities::sumMomentum(children);
+
+  R = getZBoost(pftot, pitot);
+  Utilities::transform(subsys, R);
+  Utilities::transform(children, R);
 
   return children;
 }

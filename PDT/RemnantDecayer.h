@@ -171,6 +171,17 @@ protected:
    */
   virtual tPVector getSubSystem(tcPPtr parent, tPPtr parton) const;
 
+  /**
+   * Return a small boost along the z-axis. To cure rounding errors
+   * when making large boosts it is sometimes necessary to correct the
+   * plus (or minus) lightcone component with a small boost along the
+   * z-axis. The resulting boost is constructed so that the momentum
+   * \a p0 would be transformed to have the sam z-value as the
+   * momentum \a p.
+   */
+  static LorentzRotation getZBoost(const LorentzMomentum & p0,
+				   const LorentzMomentum & p);
+
 protected:
 
   /** @name Standard Interfaced functions. */

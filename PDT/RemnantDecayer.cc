@@ -129,6 +129,17 @@ tPVector RemnantDecayer::getSubSystem(tcPPtr parent, tPPtr parton) const {
   return ret;
 }
 
+LorentzRotation RemnantDecayer::
+getZBoost(const LorentzMomentum & p0, const LorentzMomentum & p) {
+  LorentzRotation R;
+  if ( p.z() > 0.0*GeV )
+    R.setBoostZ((sqr(p.plus()) - sqr(p0.plus()))/
+		(sqr(p.plus()) + sqr(p0.plus())));
+  else
+    R.setBoostZ((sqr(p0.minus()) - sqr(p.minus()))/
+		(sqr(p0.minus()) + sqr(p.minus())));
+  return R;
+}
 
 bool RemnantDecayer::preInitialize() const {
   return Decayer::preInitialize() || !pTGenerator();
