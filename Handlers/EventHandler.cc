@@ -278,27 +278,23 @@ void EventHandler::checkConsistency() const {
     cf += (**it).data().iCharge();
   }
 
-  if ( cf != ci ) {
-    Throw<ConsistencyException>()
-      << "Event handler '" << name() << "' found charge non-conservation by "
-      << cf - ci << "/3 units after generating step number " << c.steps().size()
-      << "." << Exception::warning;
-    generator()->log() << *currentEvent();
-  }
+  if ( cf != ci ) Throw<ConsistencyException>()
+    << "Event handler '" << name() << "' found charge non-conservation by "
+    << cf - ci << "/3 units after generating step number " << c.steps().size()
+    << ". Dump of event follows: \n\n" <<  *currentEvent() << "\n"
+    << Exception::warning;
 
   Energy eps = consistencyEpsilon()*pi.m()*sqrt(double(fs.size()));
   pf -= pi;
   if ( abs(pf.x()) > eps || abs(pf.y()) > eps || abs(pf.z()) > eps ||
-       abs(pf.e()) > eps ) {
+       abs(pf.e()) > eps )
     Throw<ConsistencyException>()
       << "Event handler '" << name() << "' found energy-momentum non-"
       << "conservation by (" << pf.x()/GeV << "," << pf.y()/GeV << ","
       << pf.z()/GeV << ";" << pf.e()/GeV
       << ") GeV after generating step number " << c.steps().size()
-      << "." << Exception::warning;
-    generator()->log() << *currentEvent();
-  }
-
+      << ". Dump of event follows: \n\n" <<  *currentEvent() << "\n"
+      << Exception::warning;
 }
 
 void EventHandler::persistentOutput(PersistentOStream & os) const {
