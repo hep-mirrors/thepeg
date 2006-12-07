@@ -121,7 +121,7 @@ public:
    * will be appended.
    */
   template <class Container>
-  inline void getFinalState(Container c) const;
+  inline void getFinalState(Container & c) const;
 
   /**
    * Extract all final state particles in this Event.

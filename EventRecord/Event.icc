@@ -29,7 +29,7 @@ inline void Event::selectFinalState(OutputIterator r) const {
 }
 
 template <class Container>
-inline void Event::getFinalState(Container c) const {
+inline void Event::getFinalState(Container & c) const {
   selectFinalState(inserter(c));
 }
 
