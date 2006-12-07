@@ -19,7 +19,7 @@ using namespace ThePEG;
 
 RemnantData::
 RemnantData(tcPDPtr particle, RemDecPtr dec)
-  : ParticleData(particle->id(), "Rem[" + particle->PDGName() + "]"),
+  : ParticleData(particle->id(), "Rem:" + particle->PDGName()),
     parentPD(particle), decayer(dec) {
   synchronized(false);
   width(0.0*GeV);

@@ -156,6 +156,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   lastY((lastPartons().first->momentum() +
 	 lastPartons().second->momentum()).rapidity());
   if ( !cuts()->yHat(lastY()) ) return zero;
+  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) return zero;
 
   meMomenta()[0] = lastPartons().first->momentum();
   meMomenta()[1] = lastPartons().second->momentum();

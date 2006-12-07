@@ -68,7 +68,7 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
 
   while ( closeskip < subsys.size() ) {
 
-    subpart = tPVector(subsys.begin() + closeskip++, subsys.end());
+    subpart = tPVector(subsys.begin() + closeskip, subsys.end());
 
     while ( !subpart.empty() ) {
 
@@ -84,6 +84,8 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
     }
 
     if ( !subpart.empty() ) break;
+
+    ++closeskip;
 
   }
 
@@ -173,7 +175,8 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   for ( unsigned int i = 0, N = subsys.size(); i < N; ++i ) {
     if ( subsys[i]->birthStep() != &step )
       subsys[i] = step.copyParticle(subsys[i]);
-    if ( i < subpart.size() ) subpart[i] = subsys[i];
+    if ( i >= closeskip && i - closeskip < subpart.size() )
+      subpart[i - closeskip] = subsys[i];
   }
 
   // Boost part of the hard subsystem to give energy to the new
