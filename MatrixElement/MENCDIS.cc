@@ -57,9 +57,44 @@ Energy2 MENCDIS::scale() const {
 }
 
 double MENCDIS::me2() const {
+  double lastG = 0.0;
+  double lastIntr = 0.0;
+  double lastZ = 0.0;
 
-  return 0.0;
+  //pq is a vector in the same direction as the quark with zero mass.
+  Lorentz5Momentum pq = meMomenta()[0];
+  pq.setMass(0.0*GeV);
+  pq.rescaleEnergy();
+  double y = 1.0 - pq.dot(meMomenta()[3]) / pq.dot(meMomenta()[1]);
+  Energy2 F2Coeff = sqr(sHat()) * (1 + sqr(1-y));
+  Energy2 F3Coeff = sqr(sHat()) * (1 - sqr(1-y));
+  if(mePartonData()[0]->id() < 0){
+    F3Coeff = -F3Coeff;
+  }
+  if(mePartonData()[2]->id() < 0){
+    F3Coeff = -F3Coeff;
+  }
+  if( abs(mePartonData()[0]->id())%2 == 0 ){
+    lastG = F2Coeff * sqr(SM().eu()) / sqr(tHat());
+/*    lastIntr = -2*SM().eu()*(F2Coeff*SM().ve()*SM().vu() + 
+      2*F3Coeff*SM().ae()*SM().au()) / (-tHat() * (-tHat() + mZ2));
+    lastZ = ( F2Coeff * (sqr(SM().ae())+sqr(SM().ve())) * 
+      (sqr(SM().au())+sqr(SM().vu())) + 4.0 * F3Coeff*SM().ve()*
+      SM().ae()*SM().au()*SM().vu() ) / sqr(-tHat() + mZ2);*/
+  }
+  else{
+    lastG = F2Coeff * sqr(SM().ed()) / sqr(tHat());
+/*    lastIntr = -2*SM().ed()*(F2Coeff*SM().ve()*SM().vd() +
+      2*F3Coeff*SM().ae()*SM().ad()) / (-tHat() * (-tHat() + mZ2));
+    lastZ = ( F2Coeff * (sqr(SM().ae())+sqr(SM().ve())) * 
+      (sqr(SM().ad())+sqr(SM().vd())) + 4.0 * F3Coeff*SM().ve()*
+      SM().ae()*SM().ad()*SM().vd() ) / sqr(-tHat() + mZ2);*/
+  }
 
+  DVector save;
+  meInfo(save << lastG << lastZ);
+  return (lastG + lastIntr + lastZ) * sqr(SM().alphaEM(scale())) *
+    32.0 * sqr(Constants::pi);
 }
 
 Selector<MENCDIS::DiagramIndex>
@@ -100,6 +135,8 @@ IBPtr MENCDIS::fullclone() const {
 
 void MENCDIS::doinit() throw(InitException) {
   ME2to2QCD::doinit();
+  tcPDPtr Z0 = getParticleData(ParticleID::Z0);
+  mZ2 = sqr(Z0->mass());
 }
 
 void MENCDIS::persistentOutput(PersistentOStream & os) const {
