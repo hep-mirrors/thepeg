@@ -43,12 +43,12 @@ bool SimpleDISCut::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
   if ( inci ) {
     if ( incj ) return true;
     if ( !check(pitype->id(), pjtype->id()) ) return true;
-    Energy2 Q2 = (pi - pj).m2();
+    Energy2 Q2 = -(pi - pj).m2();
     return Q2 > theMinQ2 && Q2 < theMaxQ2;
   }
   else if ( incj ) {
     if ( !check(pjtype->id(), pitype->id()) ) return true;
-    Energy2 Q2 = (pj - pi).m2();
+    Energy2 Q2 = -(pj - pi).m2();
     return Q2 > theMinQ2 && Q2 < theMaxQ2;
   }
   return true;
