@@ -55,7 +55,7 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
 
   tPPtr parton = ex[0];
   tPVector subsys = getSubSystem(particle, parton);
-  tPVector subpart = subsys;
+  tPVector subpart;
   LorentzMomentum pitot = Utilities::sumMomentum(subsys) + remnant->momentum();
 
   Energy2 s = 0.0*GeV2;
@@ -64,16 +64,26 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   Energy minmass = particle->nominalMass() +
     2.0*parton->nominalMass() + margin();
 
-  while ( !subpart.empty() ) {
+  unsigned int closeskip = 0;
 
-    psub = Utilities::sumMomentum(subpart);
+  while ( closeskip < subsys.size() ) {
 
-    s = (remnant->momentum() + psub).m2();
-    shat = psub.m2();
+    subpart = tPVector(subsys.begin() + closeskip++, subsys.end());
 
-    if ( sqrt(s) > sqrt(shat) + minmass ) break;
+    while ( !subpart.empty() ) {
 
-    subpart.pop_back();
+      psub = Utilities::sumMomentum(subpart);
+
+      s = (remnant->momentum() + psub).m2();
+      shat = psub.m2();
+
+      if ( sqrt(s) > sqrt(shat) + minmass ) break;
+
+      subpart.pop_back();
+
+    }
+
+    if ( !subpart.empty() ) break;
 
   }
 
