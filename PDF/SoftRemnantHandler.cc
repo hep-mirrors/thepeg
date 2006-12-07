@@ -51,29 +51,29 @@ generate(PartonBinInstance & pb, const double *,
   pb.parton()->rotateZ(parent.phi());
   PPtr rem = new_ptr(RemnantParticle(*pb.particle(), remdec, pb.parton()));
   pb.remnants(PVector(1, rem));
-  return parent - rem->momentum();
+  return pb.parton()->momentum();
 }
 
 bool SoftRemnantHandler::
 recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
-		 Energy2, const LorentzMomentum & parent,
+		 Energy2, const LorentzMomentum &,
 		 const PVector &) const {
   // First find the old remnant.
-  tRemPPtr rem;
+  RemPPtr rem;
   for ( int i = 0, N = pb.particle()->children().size(); i < N; ++i )
     if ( dynamic_ptr_cast<tRemPPtr>(pb.particle()->children()[i]) )
       rem = dynamic_ptr_cast<tRemPPtr>(pb.particle()->children()[i]);
   if ( !rem ) return false;
 
-  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
-  pb.parton()->setMomentum
-    (lightCone(p.plus()*pb.x(), 0.0*GeV, 0.0*GeV, 0.0*GeV));
+//   LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+//   pb.parton()->setMomentum
+//     (lightCone(p.plus()*pb.x(), 0.0*GeV, 0.0*GeV, 0.0*GeV));
+//   pb.parton()->rotateY(parent.theta());
+//   pb.parton()->rotateZ(parent.phi());
 
-  rem = new_ptr(RemnantParticle(*rem));
+  rem = new_ptr(*rem);
   if ( !rem->reextract(oldp, newp) ) return false;
 
-  rem->rotateY(parent.theta());
-  rem->rotateZ(parent.phi());
   pb.remnants(PVector(1, rem));
 
   return true;

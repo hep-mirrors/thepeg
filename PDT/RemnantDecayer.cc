@@ -158,6 +158,11 @@ decayRemnants(const tPVector & particles, Step & step) {
     final.insert(final.end(), children.begin(), children.end());
     remnants.erase(remnants.begin() + i);
   }
+
+  // The final particles may have received a pt-kick and would then be
+  // copied. Go through and find the final particles.
+  for ( int i = 0, N = final.size(); i < N; ++ i) final[i] = final[i]->final();
+
   return final;
 }
 

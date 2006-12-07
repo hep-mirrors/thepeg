@@ -84,8 +84,9 @@ void Decayer::persistentInput(PersistentIStream & is, int) {
 
 ParticleVector Decayer::DecayParticle(tPPtr parent, Step & s, long maxtry) {
   ParticleVector children;
+  long itry = 0;
   while ( true ) {
-    if ( !maxtry-- ) Throw<DecayFailure>()
+    if ( itry++ >=  maxtry ) Throw<DecayFailure>()
       << "Could not decay particle " << parent->data().PDGName() << " after "
       << maxtry << " attempts. Giving up." << Exception::eventerror;
     tDMPtr dm = parent->data().selectMode(*parent);
