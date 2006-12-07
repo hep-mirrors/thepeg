@@ -63,7 +63,8 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
   for ( int j = 0, M = theMultiCuts.size(); j < M; ++j )
     if ( !theMultiCuts[j]->passCuts(this, ptype, p) ) return false;
   if ( t1 ) {
-    LorentzMomentum p1(0.0*GeV, 0.0*GeV, 0.5*sqrt(currentSHat()));
+    LorentzMomentum p1(0.0*GeV, 0.0*GeV, 0.5*sqrt(currentSHat()),
+		       0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
       for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
 	if ( !theTwoCuts[j]->passCuts(this, t1, ptype[i], p1, p[i],
@@ -71,7 +72,8 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
 	  return false;
   }
   if ( t2 ) {
-    LorentzMomentum p2(0.0*GeV, 0.0*GeV, -0.5*sqrt(currentSHat()));
+    LorentzMomentum p2(0.0*GeV, 0.0*GeV,
+		       -0.5*sqrt(currentSHat()), 0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
       for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
 	if ( !theTwoCuts[j]->passCuts(this, t2, ptype[i], p2, p[i],
