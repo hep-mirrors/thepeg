@@ -130,12 +130,18 @@ bool ME2to2Base::generateKinematics(const double * r) {
 
 double ME2to2Base::getCosTheta(double ctmin, double ctmax, const double * r) {
   double cth = 0.0;
-  double zmin = 0.5*(1.0 - ctmax);
-  double zmax = 0.5*(1.0 - ctmin);
-  if ( zmin <= 0.0 || zmax >= 1.0 ) {
+  if ( ctmin <= -1.0 && ctmax >= 1.0 ) {
     jacobian(ctmax - ctmin);
     cth = ctmin + (*r)*jacobian();
+  } else if ( ctmin <= -1.0 ) {
+    cth = 1.0 - (1.0 - ctmax)*pow((1.0 - ctmin)/(1.0 - ctmax), *r);
+    jacobian((ctmax - ctmin)*(1.0 - cth));
+  } else if ( ctmax >= 1.0 ) {
+    cth = -1.0 + (1.0 + ctmin)*pow((1.0 + ctmax)/(1.0 + ctmin), *r);
+    jacobian((ctmax - ctmin)*(1.0 + cth));
   } else {
+    double zmin = 0.5*(1.0 - ctmax);
+    double zmax = 0.5*(1.0 - ctmin);
     double A1 = (2.0*zmax - 1.0)/(zmax*(1.0-zmax));
     double A0 = (2.0*zmin - 1.0)/(zmin*(1.0-zmin));
     double A = *r*(A1 - A0) + A0;
