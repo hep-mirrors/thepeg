@@ -104,9 +104,7 @@ bool Cuts::passCuts(const Collision & coll) const {
   tSubProPtr sub = coll.primarySubProcess();
   LorentzMomentum phat = sub->incoming().first->momentum() +
     sub->incoming().second->momentum();
-  Energy2 sh = phat.m2();
-  double yh = phat.rapidity() - Y();
-  if ( !initSubProcess(sh, yh) ) return false;
+  if ( !initSubProcess(phat.m2(), phat.rapidity()) ) return false;
   TmpTransform<tSubProPtr> tmp(sub, Utilities::getBoostToCM(sub->incoming()));
   if ( !passCuts(*sub) ) return false;
   return true;
