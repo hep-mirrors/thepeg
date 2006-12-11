@@ -135,10 +135,10 @@ double ME2to2Base::getCosTheta(double ctmin, double ctmax, const double * r) {
     cth = ctmin + (*r)*jacobian();
   } else if ( ctmin <= -1.0 ) {
     cth = 1.0 - (1.0 - ctmax)*pow((1.0 - ctmin)/(1.0 - ctmax), *r);
-    jacobian((ctmax - ctmin)*(1.0 - cth));
+    jacobian(log((1.0 - ctmin)/(1.0 - ctmax))*(1.0 - cth));
   } else if ( ctmax >= 1.0 ) {
     cth = -1.0 + (1.0 + ctmin)*pow((1.0 + ctmax)/(1.0 + ctmin), *r);
-    jacobian((ctmax - ctmin)*(1.0 + cth));
+    jacobian(log((1.0 + ctmax)/(1.0 + ctmin))*(1.0 + cth));
   } else {
     double zmin = 0.5*(1.0 - ctmax);
     double zmax = 0.5*(1.0 - ctmin);
