@@ -77,12 +77,14 @@ set /Defaults/Particles/e+:PDF SimpleLeptonPDF
 library GRVBase.so
 create ThePEG::GRV94L GRV94L GRV94L.so
 create ThePEG::GRV94M GRV94M GRV94M.so
-create ThePEG::BaryonRemnants BaryonRemnants BaryonRemnants.so
-set GRV94L:RemnantHandler BaryonRemnants
-set GRV94M:RemnantHandler BaryonRemnants
-set BaryonRemnants:FlavourGenerator /Defaults/Handlers/Hadronization/SimpleFlavour
-set BaryonRemnants:PtGeneratorQ /Defaults/Handlers/Hadronization/GaussianPt
-set BaryonRemnants:ZGenerator /Defaults/Handlers/Hadronization/ZGenerator
+create ThePEG::SoftRemnantHandler SoftRemnants
+create ThePEG::SimpleBaryonRemnantDecayer BaryonRemnantDecayer
+set BaryonRemnantDecayer:FlavourGenerator /Defaults/Handlers/Hadronization/SimpleFlavour
+set BaryonRemnantDecayer:PTGenerator /Defaults/Handlers/Hadronization/GaussianPt
+set BaryonRemnantDecayer:ZGenerator /Defaults/Handlers/Hadronization/ZGenerator
+set SoftRemnants:RemnantDecayer BaryonRemnantDecayer
+set GRV94L:RemnantHandler SoftRemnants
+set GRV94M:RemnantHandler SoftRemnants
 
 set /Defaults/Particles/g:DefaultSpin 3
 set /Defaults/Particles/g:Spin 3

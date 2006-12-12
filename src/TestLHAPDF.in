@@ -1,6 +1,6 @@
 cd /LHAPDF
-cp /Defaults/Partons/BaryonRemnants BaryonRemnants
-set CTEQ6ll:RemnantHandler BaryonRemnants
+cp /Defaults/Partons/SoftRemnants SoftRemnants
+set CTEQ6ll:RemnantHandler SoftRemnants
 cp /Defaults/Particles/p+ p+
 set p+:PDF CTEQ6ll
 cp /Defaults/Particles/n0 n0
