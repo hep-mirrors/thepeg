@@ -37,8 +37,8 @@ PartonBinInstance::PartonBinInstance(tcPBPtr pb, tPBIPtr pbi)
 }
 
 PartonBinInstance::PartonBinInstance(tPPtr part, tcPBPtr pb, Energy2 scale)
-  : theBin(pb), theJacobian(1.0), theParton(part), theXi(-1.0), theEps(-1.0),
-    theLi(-1.0), theX(-1.0), theL(-1.0), theScale(scale),
+  : theBin(pb), theJacobian(1.0), theParton(part), theXi(1.0), theEps(0.0),
+    theLi(0.0), theX(1.0), theL(0.0), theScale(scale),
     theRemnantWeight(1.0) {
   if ( !pb->incoming() || part->parents().empty() ) return;
   particle(parton()->parents()[0]);
