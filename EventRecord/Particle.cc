@@ -42,7 +42,10 @@ Particle::ParticleRep::ParticleRep(const ParticleRep & p)
 
 Particle::Particle(const Particle & p)
   : Base(p), theData(p.theData), theMomentum(p.theMomentum), theRep(p.theRep) {
-  if ( p.theRep ) theRep = new ParticleRep(*p.theRep);
+  if ( p.theRep ) {
+    theRep = new ParticleRep(*p.theRep);
+    theRep->theParents.clear();
+  }
 }
 
 Particle::~Particle() {
