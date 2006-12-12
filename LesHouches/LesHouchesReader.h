@@ -843,8 +843,6 @@ private:
   void setPDFB(PDFPtr);
   /** Access function for the interface. */
   PDFPtr getPDFB() const;
-  /** Access function for the interface. */
-  string scanPDF(string);
 
 private:
 

@@ -867,144 +867,6 @@ PDFPtr LesHouchesReader::getPDFA() const { return inPDF.first; }
 void LesHouchesReader::setPDFB(PDFPtr pdf) { inPDF.second = pdf; }
 PDFPtr LesHouchesReader::getPDFB() const { return inPDF.second; }
 
-string LesHouchesReader::scanPDF(string args) {
-  if ( inPDF.first && inPDF.second ) return "PDFs already set.";
-  open();
-  close();
-  if ( ( heprup.PDFGUP.first == 0 && heprup.PDFGUP.second == 0 ) ||
-       ( heprup.PDFSUP.first == 0 && heprup.PDFSUP.second == 0 ) )
-    return "No PDF info found.";
-  const ClassDescriptionBase * db = DescriptionList::find("F77ThePEG::PDFLIB");
-  if ( !db ) {
-    DynamicLoader::load("PDFLIB.so");
-    db = DescriptionList::find("F77ThePEG::PDFLIB");
-  }
-  if ( !db ) return "Could not find the class 'F77ThePEG::PDFLIB' which is "
-	       "needed to automatically deduce PDFs. Please make sure you "
-	       "you have the F77ThePEG package installed.";
-  if ( !inPDF.first && heprup.PDFGUP.first != 0 &&
-       heprup.PDFSUP.first != 0 && heprup.IDBMUP.first ) {
-    IBPtr obj = dynamic_ptr_cast<IBPtr>(db->create());
-    if ( !obj ) return "Could not create a F77ThePEG::PDFLIB object.";
-    const InterfaceBase * ifb = Repository::FindInterface(obj, "PType");
-    if ( !ifb )
-      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
-    string result;
-    string remh;
-    if ( BaryonMatcher::Check(heprup.IDBMUP.first) ) {
-      result = ifb->exec(*obj, "set", "1");
-      remh = "ThePEG::BaryonRemnants";
-    }
-    else if ( MesonMatcher::Check(heprup.IDBMUP.first) )
-      result = ifb->exec(*obj, "set", "2");
-    else if ( heprup.IDBMUP.first == ParticleID::gamma )
-      result = ifb->exec(*obj, "set", "3");
-    else
-      return "No matching particle type for the F77ThePEG::PDFLIB object.";
-    if ( result != "" ) return result;
-    ifb = Repository::FindInterface(obj, "Group");
-    if ( !ifb )
-      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
-    ostringstream osg;
-    osg << heprup.PDFGUP.first;
-    result = ifb->exec(*obj, "set", osg.str());
-    if ( result != "" ) return result;
-    ifb = Repository::FindInterface(obj, "Set");
-    if ( !ifb )
-      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
-    ostringstream oss;
-    oss << heprup.PDFSUP.first;
-    result = ifb->exec(*obj, "set", oss.str());
-    if ( result != "" ) return result;
-    inPDF.first = dynamic_ptr_cast<PDFPtr>(obj);
-    reporeg(obj, "PDFA");
-    if ( StringUtils::car(args).length() ) remh = StringUtils::car(args);
-    ifb = Repository::FindInterface(obj, "RemnantHandler");
-    if ( ifb && remh.length() ) {
-      const ClassDescriptionBase * db = DescriptionList::find(remh);
-      if ( db ) {
-	IPtr rh = dynamic_ptr_cast<IPtr>(db->create());
-	if ( rh ) {
-	  reporeg(rh, "RemnantsA");
-	  rh->defaultInit();
-	  result = ifb->exec(*obj, "set", rh->fullName());
-	  if ( result != "" ) return result;
-	}
-      }
-    }
-    if ( !inPDF.first->canHandle
-	 (Repository::defaultParticle(heprup.IDBMUP.first)) )
-      return "The created PDFA object could not handle the incoming "
-	"particle type A.";
-  }
-  if ( !inPDF.second && heprup.PDFGUP.second != 0 &&
-       heprup.PDFSUP.second != 0 && heprup.IDBMUP.second ) {
-    IBPtr obj = dynamic_ptr_cast<IBPtr>(db->create());
-    if ( !obj ) return "Could not create a F77ThePEG::PDFLIB object.";
-    const InterfaceBase * ifb = Repository::FindInterface(obj, "PType");
-    if ( !ifb )
-      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
-    string result;
-    string remh;
-    if ( BaryonMatcher::Check(heprup.IDBMUP.second) ) {
-      result = ifb->exec(*obj, "set", "1");
-      remh = "ThePEG::BaryonRemnants";
-    }
-    else if ( MesonMatcher::Check(heprup.IDBMUP.second) )
-      result = ifb->exec(*obj, "set", "2");
-    else if ( heprup.IDBMUP.second == ParticleID::gamma )
-      result = ifb->exec(*obj, "set", "3");
-    else
-      return "No matching particle type for the F77ThePEG::PDFLIB object.";
-    if ( result != "" ) return result;
-    ifb = Repository::FindInterface(obj, "Group");
-    if ( !ifb )
-      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
-    ostringstream osg;
-    osg << heprup.PDFGUP.second;
-    result = ifb->exec(*obj, "set", osg.str());
-    if ( result != "" ) return result;
-    ifb = Repository::FindInterface(obj, "Set");
-    if ( !ifb )
-      return "Could not find interfaces for the F77ThePEG::PDFLIB object.";
-    ostringstream oss;
-    oss << heprup.PDFSUP.second;
-    result = ifb->exec(*obj, "set", oss.str());
-    if ( result != "" ) return result;
-    inPDF.second = dynamic_ptr_cast<PDFPtr>(obj);
-    reporeg(obj, "PDFB");
-    if ( StringUtils::car(args).length() ) remh = StringUtils::car(args);
-    if ( StringUtils::car(StringUtils::cdr(args)).length())
-      remh = StringUtils::car(StringUtils::cdr(args));
-    ifb = Repository::FindInterface(obj, "RemnantHandler");
-    if ( ifb && remh.length() ) {
-      const ClassDescriptionBase * db = DescriptionList::find(remh);
-      if ( db ) {
-	IPtr rh = dynamic_ptr_cast<IPtr>(db->create());
-	if ( rh ) {
-	  reporeg(rh, "RemnantsB");
-	  rh->defaultInit();
-	  result = ifb->exec(*obj, "set", rh->fullName());
-	  if ( result != "" ) return result;
-	}
-      }
-    }
-    if ( !inPDF.second->canHandle
-	 (Repository::defaultParticle(heprup.IDBMUP.second)) )
-      return "The created PDFB object could not handle the incoming "
-	"particle type B.";
-  }
-
-  if ( !inPDF.first ) return "Could not set PDF for beam A.";
-  if ( !inPDF.second ) return "Could not set PDF for beam B.";
-  if ( !inPDF.first->remnantHandler() )
-    return "Could not set remnant handler for beam A.";
-  if ( !inPDF.second->remnantHandler() )
-    return "Could not set remnant handler for beam B.";
-
-  return "";
-}
-
 void LesHouchesReader::Init() {
   static ClassDocumentation<LesHouchesReader> documentation
     ("ThePEG::LesHouchesReader is an abstract base class to be used "
@@ -1121,20 +983,6 @@ void LesHouchesReader::Init() {
     (interfaceReweightPDF,
      "Yes", "The events are reweighted.", true);
 
-
-  static Command<LesHouchesReader> interfaceScanPDF
-    ("ScanPDF",
-     "If <interface>PDFA</interface> or <interface>PDFB</interface> has not "
-     "been set, the LesHouches common blocks are checked for PDF information. "
-     "If the F77ThePEG::PDFLIB class is available such objects will be created "
-     "in a sub-directory with the same name as this object and assigned as the "
-     "<interface>PDFA</interface> and/or <interface>PDFB</interface> of this "
-     "reader. If an argument is given it will be interpreted as the name of a "
-     "RemnantHandler class which should be assigned to the PDFs. If two "
-     "arguments are given they will be interpreted as remnant handler classes "
-     "for beam A and B respectively.",
-     &LesHouchesReader::scanPDF, true);
-
   static Switch<LesHouchesReader,bool> interfaceInitPDFs
     ("InitPDFs",
      "If no PDFs were specified in <interface>PDFA</interface> or "
@@ -1174,7 +1022,6 @@ void LesHouchesReader::Init() {
 
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);
-  interfaceScanPDF.rank(6);
   interfaceBeamA.rank(5);
   interfaceBeamB.rank(4);
   interfaceEBeamA.rank(3);
