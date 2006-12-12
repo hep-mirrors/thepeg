@@ -18,6 +18,9 @@ namespace ThePEG {
  * model for generation of remnants when a parton is extracted from a
  * baryon.
  *
+ * @deprecated use SoftRemnantHandler with a
+ * SimpleBaryonRemnantDecayer instead.
+ *
  * @see \ref BaryonRemnantsInterfaces "The interfaces"
  * defined for BaryonRemnants.
  */
