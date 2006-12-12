@@ -22,8 +22,7 @@ using namespace ThePEG;
 FactoryBase::~FactoryBase() {}
 
 void FactoryBase::clear() {
-  //  if ( theHistogramFactory ) delete theHistogramFactory;
-  //  if ( theTree ) delete theTree;
+  if ( theTree ) delete theTree;
   if ( theAnalysisFactory ) delete theAnalysisFactory;
   theHistogramFactory = 0;
   theDataSetFactory = 0;
