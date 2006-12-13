@@ -222,9 +222,11 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   pr = Rtot*pr0;
 
   Utilities::transform(children, Rtot);
-  Utilities::transform(subsys,
- 		       Utilities::getTransformToMomentum(psub0, psub, ksub));
-
+  if ( subsys.size() > 1 )
+    Utilities::transform(subsys,
+			 Utilities::getTransformToMomentum(psub0, psub, ksub));
+  else
+    subsys[0]->setMomentum(psub);
   // Make small z-boosts to correct 
   Utilities::transform(subsys, getZBoost(Utilities::sumMomentum(subsys), psub));
 
