@@ -76,6 +76,7 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
 
       s = (remnant->momentum() + psub).m2();
       shat = psub.m2();
+      if ( subpart.size() == 1 ) shat = subpart[0]->momentum().mass2();
 
       if ( sqrt(s) > sqrt(shat) + minmass ) break;
 
@@ -184,14 +185,23 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
   LorentzMomentum pr = remnant->momentum();
   LorentzRotation R = Utilities::getBoostToCM(make_pair(psub, pr));
   Energy pz = SimplePhaseSpace::getMagnitude(s, sqrt(shat), mr);
+  if ( subpart.size() > 1 ) {
+    LorentzRotation Rs(-(R*psub).boostVector());
+    Rs.boost(0.0, 0.0, pz/sqrt(sqr(pz) + shat));
+    Rs = Rs*R;
+    R.invert();
+    Rs = R*Rs;
+    Utilities::transform(subpart, Rs);
+  } else {
+    subpart[0]->set5Momentum(
+      Lorentz5Momentum(0.0*GeV, 0.0*GeV, pz,
+		       sqrt(sqr(pz) + shat), sqrt(shat)));
+    R.invert();
+    Utilities::transform(subpart, R);
+  }
+
   LorentzRotation Rr(0.0, 0.0, -pz/sqrt(sqr(pz) + sqr(mr)));
-  LorentzRotation Rs(-(R*psub).boostVector());
-  Rs.boost(0.0, 0.0, pz/sqrt(sqr(pz) + shat));
-  Rs = Rs*R;
-  R.invert();
-  Rs = R*Rs;
   Rr = R*Rr;
-  Utilities::transform(subpart, Rs);
   Utilities::transform(children, Rr);
 
   // Give the remnants and subsystem a transverse momentum by Lorentz
