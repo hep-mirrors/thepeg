@@ -4,14 +4,18 @@ AC_DEFUN([AC_SEARCH_LHAPDF],
 AC_MSG_CHECKING([if LHAPDF is present and works])
 HAS_LHAPDF="yes"
 LHAPDF_LIBDIR=""
-AC_ARG_ENABLE(LHAPDF,[  --disable-LHAPDF        do not use LHAPDF package (requires g77 compiler)
-                          (enabled by default --enable-LHAPDF=path to specify
-                          where the LHAPDF shared library is located)], [if test -n "$enable_LHAPDF" -a "$enable_LHAPDF" != "yes" -a "$enable_LHAPDF" != "no"; then LHAPDF_LIBDIR="$enable_LHAPDF"; elif test "$enable_LHAPDF" == "no"; then HAS_LHAPDF="no"; fi])
+AC_ARG_WITH(LHAPDF,[  --without-LHAPDF        do not use LHAPDF package (requires g77 compiler)
+                          (included by default --with-LHAPDF=path to specify
+                          where the LHAPDF shared library is located)], [if test -n "$with_LHAPDF" -a "x$with_LHAPDF" != "xyes" -a "x$with_LHAPDF" != "xno"; then LHAPDF_LIBDIR="$with_LHAPDF"; elif test "x$with_LHAPDF" == "xno"; then HAS_LHAPDF="no"; fi])
 
 
 LHAPDF_LDFLAGS=""
 if test -n "$LHAPDF_LIBDIR"; then
-  LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
+  if test -e $LHAPDF_LIBDIR/libLHAPDF.so; then
+    LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
+  else
+    HAS_LHAPDF="no"
+  fi
 fi
 
 LHAPDF_LIBS="-lLHAPDF"
@@ -33,8 +37,10 @@ LDFLAGS="$oldLDFLAGS"
 
 if test "$HAS_LHAPDF" == "yes"; then
   AC_MSG_RESULT([yes])
-else
+elif test "x$with_LHAPDF" == "xno" -o "x$with_LHAPDF" == "x"; then
   AC_MSG_RESULT([no])
+else
+  AC_MSG_ERROR([LHAPDF was requested but the library was not found.])
 fi
 AC_SUBST(LHAPDF_LIBS)
 AC_SUBST(LHAPDF_LDFLAGS)
