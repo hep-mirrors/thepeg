@@ -1,0 +1,32 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the MaxCmp class.
+//
+
+namespace ThePEG {
+
+template <typename T>
+inline MaxCmp<T>::MaxCmp()
+  : init(false), max(T()) {}
+
+template <typename T>
+inline MaxCmp<T>::MaxCmp(const T & t)
+  : init(true), max(t) {}
+
+template <typename T>
+bool MaxCmp<T>::operator()(const T & t) {
+  if ( !init || t > max ) {
+    max = t;
+    init = true;
+    return true;
+  }
+  return false;
+}
+
+template <typename T>
+MaxCmp<T>::operator const T & () const {
+  return max;
+}
+
+}

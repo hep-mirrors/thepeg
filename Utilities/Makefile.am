@@ -10,7 +10,7 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            TypeInfo.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
            FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h \
-           CFileLineReader.h CompSelector.h XSecStat.h Throw.h
+           CFileLineReader.h CompSelector.h XSecStat.h Throw.h MaxCmp.h
 
 INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                ClassDescription.tcc DescriptionList.icc HoldFlag.icc \
@@ -23,7 +23,7 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                Exception.icc Exception.fh Named.icc FixedSizeAllocator.icc \
                VSelector.icc VSelector.tcc LoopGuard.icc ObjectIndexer.icc \
                CFileLineReader.fh CFileLineReader.icc XSecStat.icc \
-               CompSelector.icc
+               CompSelector.icc MaxCmp.icc
 
 noinst_LTLIBRARIES = libThePEGUtilities.la
 
