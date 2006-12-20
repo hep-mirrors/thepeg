@@ -76,8 +76,8 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
 		       -0.5*sqrt(currentSHat()), 0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
       for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
-	if ( !theTwoCuts[j]->passCuts(this, t2, ptype[i], p2, p[i],
-				      true, false) )
+	if ( !theTwoCuts[j]->passCuts(this, ptype[i], t2, p[i], p2,
+				      false, true) )
 	  return false;
   }
   return true;
