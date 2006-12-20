@@ -7,10 +7,12 @@
 namespace ThePEG {
 
 inline SimpleDISCut::SimpleDISCut()
-  : theMinQ2(1.0*GeV2), theMaxQ2(100.0*GeV2), chargedCurrent(true) {}
+  : theMinQ2(1.0*GeV2), theMaxQ2(100.0*GeV2),
+    theMinW2(100.0*GeV2), theMaxW2(1000000.0*GeV2), chargedCurrent(true) {}
 
 inline SimpleDISCut::SimpleDISCut(const SimpleDISCut & x)
   : TwoCutBase(x), theMinQ2(x.theMinQ2), theMaxQ2(x.theMaxQ2),
+    theMinW2(x.theMinW2), theMaxW2(x.theMaxW2),
     chargedCurrent(x.chargedCurrent) {}
 
 inline IBPtr SimpleDISCut::clone() const {

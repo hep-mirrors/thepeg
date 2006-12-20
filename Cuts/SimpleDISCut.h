@@ -206,6 +206,16 @@ private:
    */
   Energy minMaxQ2() const;
 
+  /**
+   * Helper function used by the interface.
+   */
+  Energy maxMinW2() const;
+
+  /**
+   * Helper function used by the interface.
+   */
+  Energy minMaxW2() const;
+
 private:
 
   /**
@@ -217,6 +227,16 @@ private:
    * The maximum \f$Q^2\f$. This is only applied as a post-cut.
    */
   Energy2 theMaxQ2;
+
+  /**
+   * The minimum \f$W^2\f$. This is only applied as a post-cut.
+   */
+  Energy2 theMinW2;
+
+  /**
+   * The maximum \f$W^2\f$. This is only applied as a post-cut.
+   */
+  Energy2 theMaxW2;
 
   /**
    * If true the cut is applied to charged current events, otherwise
