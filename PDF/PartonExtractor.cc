@@ -321,13 +321,15 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
 	 bool side1, bool side2) const {
   if ( !side1 && !side2 ) return LorentzRotation();
 
-  LorentzMomentum P1 = bins.first->parton()->momentum();
+  LorentzMomentum P1 =
+    bins.first? LorentzMomentum(bins.first->parton()->momentum()): k1;
   LorentzMomentum Pr1;
   if ( side1 ) {
     P1 = bins.first->particle()->momentum();
     Pr1 = Utilities::sumMomentum(bins.first->remnants());
   }
-  LorentzMomentum P2 = bins.second->parton()->momentum();
+  LorentzMomentum P2 =
+    bins.second? LorentzMomentum(bins.second->parton()->momentum()): k2;
   LorentzMomentum Pr2;
   if ( side2 ) {
     P2 = bins.second->particle()->momentum();
@@ -354,21 +356,26 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
     transformRemnants(Ph, Pr2, k1, P2);
     k2 = P2 - Pr2;
   }
-  if ( bins.first->remnants().size() == 1 )
-    bins.first->remnants()[0]->setMomentum(Pr1);
-  else
-    Utilities::setMomentum(bins.first->remnants().begin(),
-			   bins.first->remnants().end(),
-			   static_cast<const LorentzMomentum &>(Pr1));
-  bins.first->parton()->setMomentum(k1);
 
-  if ( bins.second->remnants().size() == 1 )
-    bins.second->remnants()[0]->setMomentum(Pr2);
-  else
-    Utilities::setMomentum(bins.second->remnants().begin(),
-			   bins.second->remnants().end(),
-			   static_cast<const LorentzMomentum &>(Pr2));
-  bins.second->parton()->setMomentum(k2);
+  if ( bins.first ) {
+    if ( bins.first->remnants().size() == 1 )
+      bins.first->remnants()[0]->setMomentum(Pr1);
+    else
+      Utilities::setMomentum(bins.first->remnants().begin(),
+			     bins.first->remnants().end(),
+			     static_cast<const LorentzMomentum &>(Pr1));
+    bins.first->parton()->setMomentum(k1);
+  }
+
+  if ( bins.second ) {
+    if ( bins.second->remnants().size() == 1 )
+      bins.second->remnants()[0]->setMomentum(Pr2);
+    else
+      Utilities::setMomentum(bins.second->remnants().begin(),
+			     bins.second->remnants().end(),
+			     static_cast<const LorentzMomentum &>(Pr2));
+    bins.second->parton()->setMomentum(k2);
+  }
 
   Rh.transform(Utilities::getBoostFromCM(make_pair(k1, k2)));
 
