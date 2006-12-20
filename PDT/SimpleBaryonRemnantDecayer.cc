@@ -14,6 +14,8 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
+#include "ThePEG/Utilities/HoldFlag.h"
+#include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/PDF/BeamParticleData.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/EventRecord/Step.h"
@@ -41,7 +43,7 @@ canHandle(tcPDPtr particle, tcPDPtr parton) const {
 }
 
 ParticleVector SimpleBaryonRemnantDecayer::
-decay(const DecayMode &, const Particle & p, Step & step) const {
+decay(const DecayMode & dm, const Particle & p, Step & step) const {
   ParticleVector children;
   tcRemPPtr remnant = dynamic_ptr_cast<tcRemPPtr>(&p);
   if ( !remnant ) return children;
@@ -90,8 +92,25 @@ decay(const DecayMode &, const Particle & p, Step & step) const {
 
   }
 
-  if ( subpart.empty() ) return children;
-
+  if ( subpart.empty() ) {
+    if ( respectDISKinematics() ) {
+      // If we couldn't find any way of shuffling momentum and this may
+      // have been a DIS event, try to include the scattered lepton as
+      // well.
+      HoldFlag<> nodis(respectDIS, false);
+      children = decay(dm, p, step);
+      Throw<NoDISRespect>()
+	<< "The decay of the remnant '" << p.PDGName()
+	<< "' changed the kinematics of a scattered lepton in a DIS event."
+	<< Exception::warning;
+      return children;
+    } else {
+      Throw<DecayFailed>()
+	<< "Could not decay remnant '" << p.PDGName()
+	<< "' since not enough energy-momentum was available."
+	<< Exception::eventerror;
+    }
+  }
   const BaryonContent & bi = getBaryonInfo(particle->dataPtr());
 
   // Check if we are extracting a valence quark

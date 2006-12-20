@@ -129,6 +129,18 @@ public:
    */
   static void Init();
 
+public:
+
+  /**
+   * Warning Exception used when DIS kinematics was not respected.
+   */
+  struct NoDISRespect: public Exception {};
+
+  /**
+   * Exception thrown if the decay of a remnant was impossible.
+   */
+  struct DecayFailed: public Exception {};
+
 protected:
 
   /**
