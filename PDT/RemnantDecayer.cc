@@ -14,6 +14,7 @@
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/UseRandom.h"
+#include "ThePEG/Utilities/Throw.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "RemnantDecayer.tcc"
@@ -99,11 +100,13 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
     fillSubSystem(p->children()[i], sub);
 
   // Fill also parents, but only if this is not an incoming parton
-  // coming from a particle with a soft remnant.
+  // coming from a particle with a soft remnant. Also if this is an
+  // incoming particle (with no parents) is is ignored.
   if ( p->previous() ) fillSubSystem(p->previous(), sub);
   for ( int i = 0, N = p->parents().size(); i < N; ++i ) {
     tPPtr parent = p->parents()[i];
     if ( member(sub, parent) ) continue;
+    if ( parent->parents().empty() ) continue;
     for ( int j = 0, M = parent->children().size(); j < M; ++j )
       if ( dynamic_ptr_cast<tcRemPPtr>(parent->children()[j]) ) {
 	parent = tPPtr();
@@ -121,7 +124,14 @@ tPVector RemnantDecayer::getSubSystem(tcPPtr parent, tPPtr parton) const {
   multimap<double,tPPtr> ordsub;
   for ( set<tPPtr>::iterator it = sub.begin(); it != sub.end(); ++it ) {
     if ( (**it).children().size() || (**it).next() ) continue;
-    ordsub.insert(make_pair(-(**it).momentum().rapidity(dir), *it));
+    try {
+      ordsub.insert(make_pair(-(**it).momentum().rapidity(dir), *it));
+    }
+    catch ( ... ) {
+      Throw<SubSystemFail>()
+	<< "Could not find subsystem for shuffling momenta in RemnantDecayer."
+	<< Exception::eventerror;
+    }
   }
   ret.reserve(ordsub.size());
   for ( multimap<double,tPPtr>::iterator it = ordsub.begin();
