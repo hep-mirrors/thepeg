@@ -7,10 +7,10 @@
 namespace ThePEG {
 
 inline RemnantDecayer::RemnantDecayer()
-  : theRecoilOption(copyFinal), respectDIS(true) {}
+  : respectDIS(true), theRecoilOption(copyFinal) {}
 
 inline RemnantDecayer::RemnantDecayer(const RemnantDecayer & x)
-  : Decayer(x), theRecoilOption(x.theRecoilOption), respectDIS(x.respectDIS),
+  : Decayer(x), respectDIS(x.respectDIS), theRecoilOption(x.theRecoilOption),
     thePTGenerator(x.thePTGenerator) {}
 
 inline tRemPDPtr RemnantDecayer::data(tcRemPPtr remnant) const {

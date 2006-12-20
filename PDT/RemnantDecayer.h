@@ -191,6 +191,13 @@ protected:
   static LorentzRotation getZBoost(const LorentzMomentum & p0,
 				   const LorentzMomentum & p);
 
+public:
+
+  /**
+   * Exception used if getSubSystem fails.
+   */
+  struct SubSystemFail: public Exception {};
+
 protected:
 
   /** @name Standard Interfaced functions. */
@@ -235,6 +242,14 @@ public:
    */
   static void Init();
 
+protected:
+  /**
+   * If true, do not boost a scattered lepton (and possible radiated
+   * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
+   * unmodified.
+   */
+  mutable bool respectDIS;
+
 private:
 
   /**
@@ -242,13 +257,6 @@ private:
    * when taking energy to produce remnants.
    */
   RecoilOption theRecoilOption;
-
-  /**
-   * If true, do not boost a scattered lepton (and possible radiated
-   * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
-   * unmodified.
-   */
-  bool respectDIS;
 
   /**
    * An object capable of generating an intrinsic transverse momentum
