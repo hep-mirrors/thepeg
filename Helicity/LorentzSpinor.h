@@ -210,7 +210,7 @@ public:
   /**
    * Return the barred spinor
    */
-  LorentzSpinorBar bar();
+  LorentzSpinorBar bar() const;
 
   /**
    * Return the conjugated spinor \f$u_c=C\bar{u}^T\f$. This operation

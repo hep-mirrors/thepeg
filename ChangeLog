@@ -1,3 +1,9 @@
+
+2007-01-05  Peter Richardson  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity/LorentzSpinor.cc (Repository): Changes to return correct
+	spinor type after charge conjugation and make bar() method const
+
 2006-12-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/SimpleBaryonRemnantDecayer.h,
@@ -134,6 +140,7 @@
 
 	* Handlers/DecayHandler.cc: Fixed typo in error message.
 
+>>>>>>> 1.337
 2006-11-29  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* Helicity/LorentzSpinor(Bar).{h,icc,cc}: Added new method to

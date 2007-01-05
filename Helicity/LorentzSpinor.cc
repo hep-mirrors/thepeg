@@ -14,7 +14,7 @@ using namespace ThePEG;
 using namespace Helicity;
 
 // return the barred spinor
-LorentzSpinorBar LorentzSpinor::bar()
+LorentzSpinorBar LorentzSpinor::bar() const
 {
   complex<double> output[4];
   switch(_dirac)
@@ -143,7 +143,7 @@ LorentzSpinor LorentzSpinor::conjugate() const {
     break;
   }
   return LorentzSpinor(-conj(_spin[3]), conj(_spin[2]), 
-			conj(_spin[1]),-conj(_spin[0]),_type,_dirac);
+			conj(_spin[1]),-conj(_spin[0]),new_type,_dirac);
 }		         
 		        
 		        
