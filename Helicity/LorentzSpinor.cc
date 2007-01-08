@@ -139,11 +139,12 @@ LorentzSpinor LorentzSpinor::conjugate() const {
     new_type=u_spinortype;
     break;
   case unknown_spinortype:
+  default:
     new_type=unknown_spinortype;
     break;
   }
-  return LorentzSpinor(-conj(_spin[3]), conj(_spin[2]), 
-			conj(_spin[1]),-conj(_spin[0]),new_type,_dirac);
+  return LorentzSpinor( conj(_spin[3]),-conj(_spin[2]), 
+		       -conj(_spin[1]),+conj(_spin[0]),new_type,_dirac);
 }		         
 		        
 		        

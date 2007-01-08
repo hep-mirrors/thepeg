@@ -1,3 +1,7 @@
+2007-01-08  Pete's account  <Peter.Richardson@durham.ac.uk>
+
+	* Helicity/LorentzSpinorBar.cc (Repository): change to give same sign for
+	conjugated spinors as if directly calculated and fix compiler warning1
 
 2007-01-05  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
