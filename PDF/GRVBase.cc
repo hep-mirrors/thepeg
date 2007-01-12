@@ -55,7 +55,6 @@ cPDVector GRVBase::partons(tcPDPtr p) const {
 
 double GRVBase::xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		    double l, Energy2) const {
-  Timer<20> timer("GRVBase::xfl()");
   setup(l, partonScale);
   if ( S() < 0.0 ) return 0.0;
   using namespace ParticleID;
