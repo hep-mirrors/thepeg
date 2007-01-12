@@ -65,10 +65,10 @@ generate(PartonBinInstance & pb, const double *,
     qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
   }
   Energy pl = p.plus()*pb.eps();
-  PPtr rem = 
-    photon->produceParticle(lightCone(pl, qt2/pl, qt), 0.0*GeV);
-  rem->rotateY(parent.theta());
-  rem->rotateZ(parent.phi());
+  LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
+  prem.rotateY(parent.theta());
+  prem.rotateZ(parent.phi());
+  PPtr rem = photon->produceParticle(prem, 0.0*GeV);
   pb.remnants(PVector(1, rem));
   return parent - rem->momentum();
 }
@@ -94,10 +94,10 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
   }
   Energy pl = p.plus()*pb.eps();
-  PPtr rem = 
-    photon->produceParticle(lightCone(pl, qt2/pl, qt), 0.0*GeV);
-  rem->rotateY(parent.theta());
-  rem->rotateZ(parent.phi());
+  LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
+  prem.rotateY(parent.theta());
+  prem.rotateZ(parent.phi());
+  PPtr rem = photon->produceParticle(prem, 0.0*GeV);
   pb.remnants(PVector(1, rem));
   return parent - rem->momentum();
 }

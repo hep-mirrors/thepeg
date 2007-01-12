@@ -27,6 +27,7 @@ TestLHAPDF.la
 TestLHAPDF.lo
 ThePEGDefaults.rpo
 W3Jet.dat.gz
+callgrind.*
 done-all-links
 dummy
 dummy.dat
