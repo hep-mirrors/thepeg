@@ -1,5 +1,8 @@
 2007-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* PDF/SoftRemnantHandler.cc: Rotate the remnant momentum directly
+	rather than going via the particle and a LorentzRotation.
+
 	* PDF/LeptonLeptonRemnant.cc: Rotate the photon momentum directly
 	rather than going via the particle and a LorentzRotation. This
 	saves 10% in execution time, mainly by avoiding the
