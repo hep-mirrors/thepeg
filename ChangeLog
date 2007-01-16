@@ -1,3 +1,8 @@
+2007-01-16  Nils Lavesson  <nils@thep.lu.se>
+
+	* MatrixElement/MENCDIS.cc: Included Z exchange and gamma Z
+	interference in the neutral current DIS matrix element.
+
 2007-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/GRVBase.cc: Remove Timer call.

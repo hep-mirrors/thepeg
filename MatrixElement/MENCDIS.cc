@@ -68,6 +68,7 @@ double MENCDIS::me2() const {
   double y = 1.0 - pq.dot(meMomenta()[3]) / pq.dot(meMomenta()[1]);
   Energy2 F2Coeff = sqr(sHat()) * (1 + sqr(1-y));
   Energy2 F3Coeff = sqr(sHat()) * (1 - sqr(1-y));
+  double C = 16 * SM().sin2ThetaW() * ( 1.0 - SM().sin2ThetaW() );
   if(mePartonData()[0]->id() < 0){
     F3Coeff = -F3Coeff;
   }
@@ -76,19 +77,19 @@ double MENCDIS::me2() const {
   }
   if( abs(mePartonData()[0]->id())%2 == 0 ){
     lastG = F2Coeff * sqr(SM().eu()) / sqr(tHat());
-/*    lastIntr = -2*SM().eu()*(F2Coeff*SM().ve()*SM().vu() + 
-      2*F3Coeff*SM().ae()*SM().au()) / (-tHat() * (-tHat() + mZ2));
+    lastIntr = -2*SM().eu()*(F2Coeff*SM().ve()*SM().vu() + 
+      2*F3Coeff*SM().ae()*SM().au()) / (-tHat() * (-tHat() + mZ2) * C);
     lastZ = ( F2Coeff * (sqr(SM().ae())+sqr(SM().ve())) * 
       (sqr(SM().au())+sqr(SM().vu())) + 4.0 * F3Coeff*SM().ve()*
-      SM().ae()*SM().au()*SM().vu() ) / sqr(-tHat() + mZ2);*/
+      SM().ae()*SM().au()*SM().vu() ) / sqr((-tHat() + mZ2) * C);
   }
   else{
     lastG = F2Coeff * sqr(SM().ed()) / sqr(tHat());
-/*    lastIntr = -2*SM().ed()*(F2Coeff*SM().ve()*SM().vd() +
-      2*F3Coeff*SM().ae()*SM().ad()) / (-tHat() * (-tHat() + mZ2));
+    lastIntr = -2*SM().ed()*(F2Coeff*SM().ve()*SM().vd() +
+      2*F3Coeff*SM().ae()*SM().ad()) / (-tHat() * (-tHat() + mZ2) * C);
     lastZ = ( F2Coeff * (sqr(SM().ae())+sqr(SM().ve())) * 
       (sqr(SM().ad())+sqr(SM().vd())) + 4.0 * F3Coeff*SM().ve()*
-      SM().ae()*SM().ad()*SM().vd() ) / sqr(-tHat() + mZ2);*/
+      SM().ae()*SM().ad()*SM().vd() ) / sqr((-tHat() + mZ2) * C);
   }
 
   DVector save;
