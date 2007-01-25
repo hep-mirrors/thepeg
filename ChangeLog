@@ -1,3 +1,8 @@
+2007-01-25  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Handlers/EventHandler.h: removed default argument of newStep(). 
+	It now explicitly requires a pointer to the responsible handler.
+
 2007-01-16  Nils Lavesson  <nils@thep.lu.se>
 
 	* MatrixElement/MENCDIS.cc: Included Z exchange and gamma Z

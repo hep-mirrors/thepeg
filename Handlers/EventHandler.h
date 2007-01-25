@@ -265,11 +265,11 @@ public:
 	       tStepHdlPtr = tStepHdlPtr(), tHintPtr = tHintPtr());
 
   /**
-   * Create a new step and make it current. Optionally supply a
-   * StepHandler which will be set as the handler for the created
+   * Create a new step and make it current. A StepHandler should be
+   * supplied which will be set as the handler for the created
    * Step.
    */
-  inline tStepPtr newStep(tcStepHdlPtr sh = tcStepHdlPtr());
+  inline tStepPtr newStep(tcStepHdlPtr sh);
 
   /**
    * Remove the last step.
