@@ -72,7 +72,7 @@ double MENCDIS::me2() const {
   if(mePartonData()[0]->id() < 0){
     F3Coeff = -F3Coeff;
   }
-  if(mePartonData()[2]->id() < 0){
+  if(mePartonData()[1]->id() < 0){
     F3Coeff = -F3Coeff;
   }
   if( abs(mePartonData()[0]->id())%2 == 0 ){
