@@ -11,6 +11,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Utilities/UtilityBase.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "AnalysisHandler.tcc"
@@ -56,12 +57,15 @@ IBPtr AnalysisHandler::fullclone() const {
 
 void AnalysisHandler::analyze(tEventPtr event, long, int loop, int state) {
   if ( loop > 0 || state != 0 || !event ) return;
-  transform(event);
+  LorentzRotation r = transform(event);
   tPVector particles;
   event->selectFinalState(back_inserter(particles));
+  Utilities::transform(particles, r);
   analyze(particles);
   for ( int i = 0, N = theSlaves.size(); i < N; ++i )
     theSlaves[i]->analyze(particles);
+  r.invert();
+  Utilities::transform(particles, r);
 }
 
 LorentzRotation AnalysisHandler::transform(tEventPtr) const {

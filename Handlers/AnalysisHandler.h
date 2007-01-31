@@ -68,21 +68,22 @@ public:
   /** @name Virtual functions required by the AnalysisHandler class. */
   //@{
   /**
-   * Analyze a given Event. Note that a fully generated event
-   * may be presented several times, if it has been manipulated in
-   * between. The default version of this function will call transform
-   * to make a lorentz transformation of the whole event, then extract
-   * all final state particles and call analyze(tPVector) of this
+   * Analyze a given Event. Note that a fully generated event may be
+   * presented several times, if it has been manipulated in
+   * between. The default version of this function will extract all
+   * final state particles, temporarily boost them according to the
+   * transform(tEventPtr) function and call analyze(tPVector) of this
    * analysis object and those of all associated analysis objects. The
    * default version will not, however, do anything on events which
    * have not been fully generated, or have been manipulated in any
    * way.
    * @param event pointer to the Event to be analyzed.
-   * @param ieve the event number.
-   * @param loop the number of times this event has been presented.
-   * If negative the event is now fully generated.
-   * @param state a number different from zero if the event has been
-   * manipulated in some way since it was last presented.
+   * @param ieve  the event number.
+   * @param loop  the number of times this event has been presented.
+   *              If negative the event is now fully generated.
+   * @param state a number different from zero if the
+   *              event has been manipulated in some way since it was last
+   *              presented.
    */
   virtual void analyze(tEventPtr event, long ieve, int loop, int state);
 
