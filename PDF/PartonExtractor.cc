@@ -496,13 +496,15 @@ addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step) {
       throw Veto();
   }
   tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
-  step->removeDecayProduct(newpb->particle(), oldpb->remnants().begin(),
-			   oldpb->remnants().end());
   if ( !step->addDecayProduct(newpb->particle(),
-			      rem.begin(), rem.end(), false) )
+ 			      rem.begin(), rem.end(), false) )
     throw Veto();
   colourConnect(newpb->particle(), newpb->parton(), rem);
   partonBinInstances[newpb->parton()] = newpb;
+  if ( !step->addDecayProduct(oldpb->remnants().begin(),
+			      oldpb->remnants().end(),
+ 			      rem.begin(), rem.end()) )
+    throw Veto();
 }
 
 void PartonExtractor::persistentOutput(PersistentOStream & os) const {
