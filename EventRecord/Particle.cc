@@ -232,15 +232,18 @@ void writeStringAdjusted(ostream & os, bool left, int w, string str) {
 }
 
 template <typename Container>
-void writeParticleRanges(ostream & os, const Container & c, char sep, int w) {
+void writeParticleRanges(ostream & os, const Container & co, char sep, int w) {
+  set<int> cnum;
+  for ( typename Container::const_iterator it = co.begin();
+	it != co.end(); ++it) cnum.insert((**it).number());
+
   bool elipsis = false;
   int last = -10;
-  for ( typename Container::const_iterator it = c.begin();
-	it != c.end(); ++it) {
-    int n =  (**it).number();
+  for ( set<int>::iterator it = cnum.begin(); it != cnum.end(); ++it) {
+    int n = *it;
     int next = 0;
-    typename Container::const_iterator itn = it + 1;
-    if ( itn != c.end() ) next = (**itn).number();
+    set<int>::iterator itn = it;
+    if ( ++itn != cnum.end() ) next = *itn;
     bool writeit = true;
     bool writesep = false;
     if ( elipsis && ( n != last + 1 || n != next - 1 ) )
@@ -252,7 +255,7 @@ void writeParticleRanges(ostream & os, const Container & c, char sep, int w) {
     }
     else if ( elipsis && n == last + 1 && n == next -1 )
       writeit = false;
-    else if ( it != c.begin() )
+    else if ( it != cnum.begin() )
       writesep = true;
     if ( writeit ) {
       if ( writesep ) os << sep;
