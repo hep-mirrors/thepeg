@@ -1,3 +1,13 @@
+2007-02-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.cc: In addNewRemnants, fix so that previous
+	remnants are still the children of the incoming particle, but also
+	the parent to the new remnants (the new remnants are also the
+	children of the incoming particle).
+
+	* EventRecord/Particle.cc: In printout, order the parents and
+	children to make it more readable.
+
 2007-01-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/AnalysisHandler.cc, Handlers/AnalysisHandler.h: The
