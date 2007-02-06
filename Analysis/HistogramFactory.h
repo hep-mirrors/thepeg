@@ -417,6 +417,7 @@ public:
    */
   Histogram1D * add(const std::string & path,
 		     const Histogram1D & hist1, const Histogram1D & hist2) {
+    if ( !checkBins(hist1, hist2) ) return 0;
     Histogram1D * h = new Histogram1D(hist1);
     h->setTitle(path.substr(path.rfind('/') + 1));
     h->add(hist2);
@@ -454,11 +455,9 @@ public:
    */
   Histogram1D * subtract(const std::string & path,
 		    const Histogram1D & h1, const Histogram1D & h2) {
+    if ( !checkBins(h1, h2) ) return 0;
     Histogram1D * h = new Histogram1D(h1);
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( h->ax->upperEdge() != h2.ax->upperEdge() ||
-	 h->ax->lowerEdge() != h2.ax->lowerEdge() ||
-	 h->ax->bins() != h2.ax->bins() ) return 0;
     for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
       h->sum[i] += h2.sum[i];
       h->sumw[i] -= h2.sumw[i];
@@ -498,11 +497,9 @@ public:
    */
   Histogram1D * multiply(const std::string & path,
 		    const Histogram1D & h1, const Histogram1D & h2) {
+    if ( !checkBins(h1, h2) ) return 0;
     Histogram1D * h = new Histogram1D(h1);
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( h->ax->upperEdge() != h2.ax->upperEdge() ||
-	 h->ax->lowerEdge() != h2.ax->lowerEdge() ||
-	 h->ax->bins() != h2.ax->bins() ) return 0;
     for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
       h->sum[i] *= h2.sum[i];
       h->sumw[i] *= h2.sumw[i];
@@ -543,17 +540,20 @@ public:
    */
   Histogram1D * divide(const std::string & path,
 		  const Histogram1D & h1, const Histogram1D & h2) {
+    if ( !checkBins(h1, h2) ) return 0;
     Histogram1D * h = new Histogram1D(h1);
     h->setTitle(path.substr(path.rfind('/') + 1));
-    if ( h->ax->upperEdge() != h2.ax->upperEdge() ||
-	 h->ax->lowerEdge() != h2.ax->lowerEdge() ||
-	 h->ax->bins() != h2.ax->bins() ) return 0;
     for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
+      if ( h2.sum[i] == 0 || h2.sumw[i] == 0.0 ) {
+	h->sum[i] = 0;
+	h->sumw[i] = h->sumw2[i] = 0.0;
+	continue;
+      }
       h->sum[i] /= h2.sum[i];
       h->sumw[i] /= h2.sumw[i];
-      h->sumw2[i] += h1.sumw2[i]/(h2.sumw[i]*h2.sumw[i]) +
+      h->sumw2[i] = h1.sumw2[i]/(h2.sumw[i]*h2.sumw[i]) +
 	h1.sumw[i]*h1.sumw[i]*h2.sumw2[i]/
-	           (h2.sumw[i]*h2.sumw[i]*h2.sumw[i]*h2.sumw[i]);
+	(h2.sumw[i]*h2.sumw[i]*h2.sumw[i]*h2.sumw[i]);
     }
     if ( !tree->insert(path, h) ) return 0;
     return h;
@@ -574,6 +574,20 @@ public:
 			const IHistogram1D & hist2) {
     return divide(path, dynamic_cast<const Histogram1D &>(hist1),
 		    dynamic_cast<const Histogram1D &>(hist2));
+  }
+
+  /**
+   * Check if two histograms have the same bins.
+   */
+  bool checkBins(const Histogram1D & h1, const Histogram1D & h2) const {
+    if ( h1.ax->upperEdge() != h2.ax->upperEdge() ||
+	 h1.ax->lowerEdge() != h2.ax->lowerEdge() ||
+	 h1.ax->bins() != h2.ax->bins() ) return false;
+    for ( int i = 0; i < h1.ax->bins(); ++i ) {
+      if ( h1.ax->binUpperEdge(i) != h2.ax->binUpperEdge(i) ||
+	   h1.ax->binLowerEdge(i) != h2.ax->binLowerEdge(i) ) return false;
+    }
+    return true;
   }
 
   /**
