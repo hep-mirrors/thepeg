@@ -99,11 +99,11 @@ inline bool Cuts::x1(double x) const {
 }
 
 inline double Cuts::x2Min() const {
-  return max(theX1Min, (theMHatMin/sqrt(SMax()))/exp(theYHatMax));
+  return max(theX2Min, (theMHatMin/sqrt(SMax()))/exp(theYHatMax));
 }
 
 inline double Cuts::x2Max() const {
-  return min(theX1Max, (theMHatMax/sqrt(SMax()))/exp(theYHatMin));
+  return min(theX2Max, (theMHatMax/sqrt(SMax()))/exp(theYHatMin));
 }
 
 inline bool Cuts::x2(double x) const {
