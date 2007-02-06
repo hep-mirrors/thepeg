@@ -393,6 +393,7 @@ public:
    */
   void normalize(double intg) {
     double oldintg = sumAllBinHeights();
+    if ( oldintg == 0.0 ) return;
     for ( int i = 0; i < ax->bins() + 2; ++i ) {
       double fac = intg/oldintg;
       if ( i >= 2 ) fac /= (ax->binUpperEdge(i - 2) - ax->binLowerEdge(i - 2));
