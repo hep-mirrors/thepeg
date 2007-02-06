@@ -73,8 +73,9 @@ void PartonBinInstance::prepare() {
   li(-1.0);
   l(0.0);
   if ( !incoming() ) return;
-  li(-1.0);
-  l(-1.0);
+  //  li(-1.0);
+  //  l(-1.0);
+  reset(-1.0, 0.0*GeV2);
   incoming()->prepare();
 }
 
