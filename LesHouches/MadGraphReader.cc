@@ -84,7 +84,7 @@ void MadGraphReader::open() {
 	<< "come out wrong." << Exception::warning;
 	return;
       }
-      wtfac = double(neve);
+      wtfac = neve > 0? double(neve): 1.0;
       heprup.XMAXUP[0] *= wtfac;
 
     }
