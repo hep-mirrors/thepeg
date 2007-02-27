@@ -424,7 +424,7 @@ bool LesHouchesReader::readEvent() {
 
   double x1 = incoming().first->momentum().plus()/
     beams().first->momentum().plus();
-  
+
   if ( inPDF.first && outPDF.first && inPDF.first != outPDF.first ) {
     if ( hepeup.XPDWUP.first <= 0.0 )
       hepeup.XPDWUP.first =
@@ -607,11 +607,25 @@ tcPBPair LesHouchesReader::createPartonBinInstances() {
   thePartonBinInstances.first =
     new_ptr(PartonBinInstance(incoming().first, sel.first,
 			      -sqr(hepeup.SCALUP*GeV)));
+  if ( thePartonBinInstances.first->xi() > 1.00001 ) {
+    Throw<LesHouchesInconsistencyError>()
+      << "Found an event with momentum fraction larger than unity (x1="
+      << thePartonBinInstances.first->xi()
+      << "). The event will be skipped." << Exception::warning;
+    throw Veto();
+  }
   dir.reverse();
   thePartonBinInstances.second =
     new_ptr(PartonBinInstance(incoming().second, sel.second,
 			      -sqr(hepeup.SCALUP*GeV)));
 
+  if ( thePartonBinInstances.second->xi() > 1.00001 ) {
+    Throw<LesHouchesInconsistencyError>()
+      << "Found an event with momentum fraction larger than unity (x2="
+      << thePartonBinInstances.second->xi()
+      << "). The event will be skipped." << Exception::warning;
+    throw Veto();
+  }
   return sel;
 
 }
