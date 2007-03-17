@@ -170,6 +170,16 @@ private:
   /**
    * Helper function used by the interface.
    */
+  Energy maxKTMin() const;
+
+  /**
+   * Helper function used by the interface.
+   */
+  Energy minKTMax() const;
+
+  /**
+   * Helper function used by the interface.
+   */
   double maxEtaMin() const;
 
   /**
@@ -184,6 +194,12 @@ private:
    * outgoing parton.
    */
   Energy theMinKT;
+
+  /**
+   * The maximum allowed value of the transverse momentum of an
+   * outgoing parton.
+   */
+  Energy theMaxKT;
 
   /**
    * The minimum allowed pseudo-rapidity of an outgoing parton. The

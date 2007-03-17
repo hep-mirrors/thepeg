@@ -44,6 +44,7 @@ bool SimpleKTCut::passCuts(tcCutsPtr parent,
 			   tcPDPtr ptype, LorentzMomentum p) const {
   if ( theMatcher && !theMatcher->matches(*ptype) ) return true;
   if ( p.perp() <= theMinKT ) return false;
+  if ( p.perp() > theMaxKT ) return false;
   double y = p.rapidity() + parent->Y() + parent->currentYHat();
   if ( p.mt()*sinh(y) <= p.perp()*sinh(theMinEta) ) return false;
   if ( p.mt()*sinh(y) >= p.perp()*sinh(theMaxEta) ) return false;
@@ -51,15 +52,25 @@ bool SimpleKTCut::passCuts(tcCutsPtr parent,
 }
 
 void SimpleKTCut::persistentOutput(PersistentOStream & os) const {
-  os << ounit(theMinKT, GeV) << theMinEta << theMaxEta << theMatcher;
+  os << ounit(theMinKT, GeV) << ounit(theMaxKT, GeV)
+     << theMinEta << theMaxEta << theMatcher;
 }
 
 void SimpleKTCut::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(theMinKT, GeV) >> theMinEta >> theMaxEta >> theMatcher;
+  is >> iunit(theMinKT, GeV) >> iunit(theMaxKT, GeV)
+     >> theMinEta >> theMaxEta >> theMatcher;
 }
 
 ClassDescription<SimpleKTCut> SimpleKTCut::initSimpleKTCut;
 // Definition of the static class description member.
+
+Energy SimpleKTCut::maxKTMin() const {
+  return theMaxKT;
+}
+
+Energy SimpleKTCut::minKTMax() const {
+  return theMinKT;
+}
 
 double SimpleKTCut::maxEtaMin() const {
   return theMaxEta;
@@ -73,6 +84,8 @@ void SimpleKTCut::Init() {
 
   typedef double (ThePEG::SimpleKTCut::*IGFN)() const;
   typedef void (ThePEG::SimpleKTCut::*ISFN)(double);
+  typedef Energy (ThePEG::SimpleKTCut::*IGFNK)() const;
+  typedef void (ThePEG::SimpleKTCut::*ISFNK)(Energy);
 
   static ClassDocumentation<SimpleKTCut> documentation
     ("This is a very simple concrete sub-class of OneCutbase simply "
@@ -85,8 +98,19 @@ void SimpleKTCut::Init() {
     ("MinKT",
      "The minimum allowed value of the transverse momentum of an outgoing "
      "parton.",
-     &SimpleKTCut::theMinKT, GeV, 10.0*GeV, 0.0*GeV, 0*GeV,
-     true, false, Interface::lowerlim);
+     &SimpleKTCut::theMinKT, GeV, 10.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     true, false, Interface::limited,
+     (ISFNK)0, (IGFNK)0, (IGFNK)0, &SimpleKTCut::maxKTMin, (IGFNK)0);
+
+
+  static Parameter<SimpleKTCut,Energy> interfaceMaxKT
+    ("MaxKT",
+     "The maximum allowed value of the transverse momentum of an outgoing "
+     "parton. Note that this cut does not increase the efficiency of the phase "
+     "space generation, but is only applied as a post-cut.",
+     &SimpleKTCut::theMaxKT, GeV, Constants::MaxEnergy, 0.0*GeV, 0*GeV,
+     true, false, Interface::lowerlim,
+     (ISFNK)0, (IGFNK)0,  &SimpleKTCut::minKTMax, (IGFNK)0, (IGFNK)0);
 
 
   static Parameter<SimpleKTCut,double> interfaceMinEta
@@ -114,6 +138,7 @@ void SimpleKTCut::Init() {
      &SimpleKTCut::theMatcher, true, false, true, true, false);
 
   interfaceMinKT.rank(10);
+  interfaceMaxKT.rank(6);
   interfaceMinEta.rank(9);
   interfaceMaxEta.rank(8);
   interfaceMatcher.rank(7);

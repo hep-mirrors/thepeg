@@ -7,12 +7,13 @@
 namespace ThePEG {
 
 inline SimpleKTCut::SimpleKTCut()
-  : theMinKT(10.0*GeV), theMinEta(-Constants::MaxRapidity),
+  : theMinKT(10.0*GeV), theMaxKT(Constants::MaxEnergy),
+    theMinEta(-Constants::MaxRapidity),
     theMaxEta(Constants::MaxRapidity) {}
 
 inline SimpleKTCut::SimpleKTCut(const SimpleKTCut & x)
-  : OneCutBase(x), theMinKT(x.theMinKT), theMinEta(x.theMinEta),
-    theMaxEta(x.theMaxEta), theMatcher(x.theMatcher) {}
+  : OneCutBase(x), theMinKT(x.theMinKT), theMaxKT(x.theMaxKT),
+    theMinEta(x.theMinEta), theMaxEta(x.theMaxEta), theMatcher(x.theMatcher) {}
 
 inline IBPtr SimpleKTCut::clone() const {
   return new_ptr(*this);
