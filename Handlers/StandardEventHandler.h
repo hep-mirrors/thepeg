@@ -154,12 +154,6 @@ public:
   inline bool weighted() const;
 
   /**
-   * Returns true if we are currently in a compensating mode after
-   * encountering a weight larger than 1.
-   */
-  inline bool compensating() const;
-
-  /**
    * The number of phase space dimensions used by the luminosity
    * function.
    */
