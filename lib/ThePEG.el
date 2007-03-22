@@ -944,7 +944,7 @@ public:
     * after this call.
     * @throws Exception if something goes wrong.
     */
-  virtual void handle(EventHandler & eh, const tcPVector & tagged,
+  virtual void handle(EventHandler & eh, const tPVector & tagged,
 		      const Hint & hint) throw(Veto, Stop, Exception);
   //@}
 "))
@@ -952,7 +952,7 @@ public:
 (defun thepeg-StepHandler-implement (class base)
   (concat "
 void " class "::
-handle(EventHandler & eh, const tcPVector & tagged,
+handle(EventHandler & eh, const tPVector & tagged,
        const Hint & hint) throw(Veto, Stop, Exception) {
   // Implement the Handle method here.
   // Note that if the method actually does anything to the current event
