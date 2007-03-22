@@ -449,12 +449,6 @@ private:
   int theLumiDim;
 
   /**
-   * The number of dimensions of the basic phase space to generate
-   * sub-processes in.
-   */
-  int theNDim;
-
-  /**
    * Standard Initialization object.
    */
   static ClassDescription<StandardEventHandler> initStandardEventHandler;

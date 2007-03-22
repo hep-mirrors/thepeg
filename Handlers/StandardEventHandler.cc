@@ -30,7 +30,7 @@ using namespace ThePEG;
 
 StandardEventHandler::StandardEventHandler()
   : EventHandler(false), theBinStrategy(2), weightedEvents(false),
-    theLumiDim(0), theNDim(0) {
+    theLumiDim(0) {
   setupGroups();
 }
 
@@ -42,7 +42,7 @@ StandardEventHandler::StandardEventHandler(const StandardEventHandler & eh)
     theMaxDims(eh.theMaxDims), theCurrentEventBoost(eh.theCurrentEventBoost),
     weightedEvents(eh.weightedEvents),
     theSampler(eh.theSampler),
-    theLumiDim(eh.theLumiDim), theNDim(eh.theNDim) {}
+    theLumiDim(eh.theLumiDim) {}
 
 StandardEventHandler::~StandardEventHandler() {}
 
@@ -618,7 +618,7 @@ void StandardEventHandler::persistentOutput(PersistentOStream & os) const {
      << theXCombs << ounit(theXSecs, nanobarn)
      << theBinStrategy << theMaxDims << theMEXMap
      << weightedEvents
-     << theSampler << theLumiDim << theNDim;
+     << theSampler << theLumiDim;
 }
 
 void StandardEventHandler::persistentInput(PersistentIStream & is, int) {
@@ -626,6 +626,6 @@ void StandardEventHandler::persistentInput(PersistentIStream & is, int) {
      >> theXCombs >> iunit(theXSecs, nanobarn)
      >> theBinStrategy >> theMaxDims>> theMEXMap
      >> weightedEvents
-     >> theSampler >> theLumiDim >> theNDim;
+     >> theSampler >> theLumiDim;
 }
 
