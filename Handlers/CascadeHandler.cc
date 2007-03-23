@@ -39,8 +39,6 @@ handle(EventHandler & eh, const tPVector & tagged,
     thePDFs = make_pair(pdf<PDF>(lastPartons().first),
 			pdf<PDF>(lastPartons().second));
 
-  theEventHandler = &eh;
-
   cascade();
 
 }

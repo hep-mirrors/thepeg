@@ -26,10 +26,6 @@ inline const pair<PDF,PDF> & CascadeHandler::pdfs() const {
   return thePDFs;
 }
 
-inline tEHPtr CascadeHandler::eventHandler() const {
-  return theEventHandler;
-}
-
 inline void CascadeHandler::doupdate() throw(UpdateException) {
   StepHandler::doupdate();
 }

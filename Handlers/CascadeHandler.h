@@ -128,11 +128,6 @@ public:
   inline const pair<PDF,PDF> & pdfs() const;
 
   /**
-   * Return a pointer to the current collision handler.
-   */
-  inline tEHPtr eventHandler() const;
-
-  /**
    * Set the XComb object with information about the sub-process
    * generation.
    */
@@ -208,11 +203,6 @@ private:
    * The pdfs used to extract the incoming partons.
    */
   pair<PDF,PDF> thePDFs;
-
-  /**
-   * The current collision handler.
-   */
-  tEHPtr theEventHandler;
 
 private:
 
