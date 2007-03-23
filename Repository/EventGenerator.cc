@@ -204,6 +204,8 @@ void EventGenerator::doinitrun() {
   signal(SIGINT, thepegSignalHandler);
   signal(SIGTERM,thepegSignalHandler);
 
+  currentEventHandler(eventHandler());
+
   Interfaced::doinitrun();
   random().initrun();
 

@@ -1,5 +1,8 @@
 2007-03-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/EventGenerator.cc: Make sure theCurrentEventHandler
+	is set for the initrun() calls.
+
 	* Handlers/CascadeHandler.*: Removed theEventHandler variable and
 	associated code as this is handled in the StepHandler base class.
 
