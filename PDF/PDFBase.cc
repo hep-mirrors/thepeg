@@ -15,6 +15,7 @@
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/PDT/StandardMatchers.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "PDFBase.tcc"
@@ -52,16 +53,19 @@ xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
 }
 
 double PDFBase::
-xfvx(tcPDPtr, tcPDPtr, Energy2, double,
-     double, Energy2) const {
-  return 0.0;
+xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double x,
+     double eps, Energy2 particleScale) const {
+  if ( !QuarkMatcher::Check(*parton) ) return 0.0;
+  return max(0.0, xfx(particle, parton, partonScale, x, eps, particleScale) -
+	     xfx(particle, parton->CC(), partonScale, x, eps, particleScale));
 }
 
 double PDFBase::
 xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
      Energy2 particleScale) const {
-  using Math::exp1m;
-  return xfvx(particle, parton, partonScale, exp(-l), exp1m(-l), particleScale);
+  if ( !QuarkMatcher::Check(*parton) ) return 0.0;
+  return max(0.0, xfl(particle, parton, partonScale, l, particleScale) -
+	     xfl(particle, parton->CC(), partonScale, l, particleScale));
 }
 
 double PDFBase::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
