@@ -500,6 +500,12 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   return 0.0;
 }
 
+double LHAPDF::xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		     double l, Energy2 particleScale) const {
+  using Math::exp1m;
+  return xfvx(particle, parton, partonScale, exp(-l), exp1m(-l), particleScale);
+}
+
 double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		     double x, double, Energy2 particleScale) const {
   // Here we should return the actual valence density. This will only

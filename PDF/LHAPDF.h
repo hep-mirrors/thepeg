@@ -71,8 +71,8 @@ public:
 
   /**
    * The density. Return the pdf for the given \a parton inside the
-   * given \a particle for the virtuality \a partonScale and
-   * logarithmic momentum fraction \a x. The \a particle is assumed to
+   * given \a particle for the virtuality \a partonScale and momentum
+   * fraction \a x (with x = 1-\a eps). The \a particle is assumed to
    * have a virtuality \a particleScale.
    */
   virtual double xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
@@ -82,9 +82,21 @@ public:
   /**
    * The valence density. Return the pdf for the given cvalence \a
    * parton inside the given \a particle for the virtuality \a
-   * partonScale and logarithmic momentum fraction \a x. The \a
-   * particle is assumed to have a virtuality \a particleScale. If not
-   * overidden by a sub class this will return zero.
+   * partonScale and logarithmic momentum fraction \a l. The \a
+   * particle is assumed to have a virtuality \a particleScale. This
+   * will only work properly for nucleons. All other particles will
+   * have zero valence densities
+   */
+  virtual double xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		      double l, Energy2 particleScale = 0.0*GeV2) const;
+
+  /**
+   * The valence density. Return the pdf for the given cvalence \a
+   * parton inside the given \a particle for the virtuality \a
+   * partonScale and momentum fraction \a x (with x = 1-\a eps). The
+   * \a particle is assumed to have a virtuality \a
+   * particleScale. This will only work properly for nucleons. All
+   * other particles will have zero valence densities
    */
   virtual double xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		      double x, double eps = 0.0,
