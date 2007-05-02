@@ -1,3 +1,9 @@
+2007-05-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphTwoCut.cc, Cuts/TwoCutBase.cc,
+	Cuts/KTClus.cc: Fixed bug in calculating delta-R where the
+	phi-difference was always zero.
+
 2007-04-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/TestLHAPDF.cc: Also test that valens densities works

@@ -61,7 +61,7 @@ bool KTClus::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
   }
   else {
     double deta2 = sqr(pi.eta() - pj.eta());
-    double dphi = abs(pi.phi() - pi.phi());
+    double dphi = abs(pi.phi() - pj.phi());
     if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
     double dr = sqrt(deta2 + sqr(dphi));
     if ( min(pi.perp(), pj.perp())*dr <= theCut ) return false;

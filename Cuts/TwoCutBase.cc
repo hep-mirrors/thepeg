@@ -55,7 +55,7 @@ bool TwoCutBase::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
   else {
     if ( (pi + pj).m2() <= minSij(pitype, pjtype) ) return false;
     double deta2 = sqr(pi.eta() - pj.eta());
-    double dphi = abs(pi.phi() - pi.phi());
+    double dphi = abs(pi.phi() - pj.phi());
     if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
     double dr = sqrt(deta2 + sqr(dphi));
     if ( dr < minDeltaR(pitype, pjtype) ) return false;

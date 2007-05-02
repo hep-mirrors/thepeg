@@ -53,7 +53,7 @@ bool MadGraphTwoCut::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
   if ( cutType == INVMASS ) return (pi + pj).m2() > sqr(theCut*GeV);
   if ( cutType == DELTAR ) {
     double deta2 = sqr(pi.eta() - pj.eta());
-    double dphi = abs(pi.phi() - pi.phi());
+    double dphi = abs(pi.phi() - pj.phi());
     if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
     return sqrt(deta2 + sqr(dphi)) > theCut;
   }
