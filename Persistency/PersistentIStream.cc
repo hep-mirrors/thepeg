@@ -180,15 +180,21 @@ const InputDescription * PersistentIStream::getClass() {
   operator>>(nBase);
   while ( nBase-- ) id->addBaseClass(getClass());
   const ClassDescriptionBase * db = DescriptionList::find(className);
+  string loaderror;
   if ( !db && libraries.length() ) {
     istringstream is(libraries);
     string library;
-    while ( is >> library ) DynamicLoader::load(library);
+    while ( is >> library ) {
+      DynamicLoader::load(library);
+      loaderror += DynamicLoader::lastErrorMessage;
+    }
+    if ( !loaderror.empty() )
+      loaderror = "\nerror message from dynamic loader:\n" + loaderror;
   }
   db = DescriptionList::find(className);
   if ( pedantic() && !db ) throw MissingClass()
     << "PersistentIStream could not find the class '" << className << "'."
-    << Exception::runerror;
+    << loaderror << Exception::runerror;
   id->setDescription(db);
   return id;
 }
