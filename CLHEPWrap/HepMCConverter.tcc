@@ -50,6 +50,7 @@ HepMCConverter(const Event & ev, bool nocopies) {
   for ( int i = 0, N = all.size(); i < N; ++i ) {
     tcPPtr p = all[i];
     if ( nocopies && p->next() ) continue;
+    if ( pmap.find(p) != pmap.end() ) continue;
     GenParticle * gp = pmap[p] = createParticle(p);
     if ( p->hasColourInfo() ) {
       // Check if the particle is connected to colour lines, in which
