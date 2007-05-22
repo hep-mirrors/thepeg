@@ -12,3 +12,5 @@ SUBDIRS = $(MAINDIRS) $(JAVADIR)
 
 pkglib_SCRIPTS = libtool
 
+EXTRA_DIST = GUIDELINES
+
