@@ -317,7 +317,7 @@ void ounitstream(OStream & os, const map<K,T,CMP,A> & m, UT & u) {
   os << m.size();
   for ( typename map<K,T,CMP,A>::const_iterator i = m.begin();
 	i != m.end(); ++i )
-    os << i->first, ounit(i->second, u);
+    os << i->first << ounit(i->second, u);
 }
 
 /**
