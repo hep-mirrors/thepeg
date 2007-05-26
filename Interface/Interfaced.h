@@ -203,14 +203,6 @@ private:
    */
   Interfaced & operator=(const Interfaced &);
 
-public:
-
-  /**
-   * This method may be implemented by derived classes to facilitate
-   * debugging.
-   */
-  virtual void debug() const;
-
 };
 
 /** @cond TRAITSPECIALIZATIONS */

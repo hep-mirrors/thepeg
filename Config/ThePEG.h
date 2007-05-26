@@ -73,6 +73,20 @@ struct Base: public ReferenceCounted {
    * when this class is dynamically loaded.
    */
   static void Init() {}
+
+  /**
+   * Print out debugging information for this object on std::cerr. To
+   * be called from within a debugger. Simply calls the virtual
+   * debugme() function.
+   */
+  void debug() const;
+
+  /**
+   * Print out debugging information for this object on std::cerr. To
+   * be called from within a debugger via the debug() function.
+   */
+  virtual void debugme() const;
+
 };
 
 /**

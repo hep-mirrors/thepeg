@@ -472,6 +472,11 @@ ostream & Particle::print(ostream & os, tcStepPtr step) const {
   return os;
 }
 
+void Particle::debugme() const {
+  cerr << *this;
+  EventRecordBase::debugme();
+}
+
 void Particle::persistentOutput(PersistentOStream & os) const {
   EventConfig::putParticleData(os, theData);
   os << ounit(theMomentum, GeV) << bool( theRep != 0 );

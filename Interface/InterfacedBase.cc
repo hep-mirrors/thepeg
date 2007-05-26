@@ -10,6 +10,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Utilities/StringUtils.h"
+#include "ThePEG/Utilities/DescriptionList.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Command.h"
 
@@ -44,6 +45,12 @@ string InterfacedBase::addComment(string c) {
 }
 
 AbstractClassDescription<InterfacedBase> InterfacedBase::initInterfacedBase;
+
+void InterfacedBase::debugme() const {
+  cerr << name() << " ["
+       << DescriptionList::find(typeid(*this))->name() << "] ";
+  PersistentBase::debugme();
+}
 
 void InterfacedBase::Init() {
 

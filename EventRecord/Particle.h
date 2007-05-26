@@ -961,6 +961,14 @@ public:
 
   };
 
+public:
+
+  /**
+   * Print out debugging information for this object on std::cerr. To
+   * be called from within a debugger via the debug() function.
+   */
+  virtual void debugme() const;
+
 protected:
 
   /**

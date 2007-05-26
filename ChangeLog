@@ -1,3 +1,17 @@
+2007-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Persistency/PersistentIStream.*: The stream now throws an
+	exeption if something goes wrong (if Debug::level != 0).
+	The exceptions messages were somewhat enhanced.
+
+	* Interface/InterfacedBase.*, Interface/Interfaced.*,
+	EventRecord/Particle.*, EventRecord/Event.*: Introduced debugme()
+	functions.
+
+	* Config/Makefile.am, Config/ThePEG.*: Introduced a non-virtual
+	debug() function which calls a virtual debugme() function for any
+	polymorphic object in ThePEG
+
 2007-05-25  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Config/Containers.h: Fixed bad stream output for ounit(std::map<>)

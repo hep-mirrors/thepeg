@@ -82,12 +82,12 @@ void PersistentIStream::endBase(string classname) {
   // base class of the originally written object. Therefore we must
   // skip everything that the unknown derived class may have
   // written. So we check one field at the time...
-  if ( is().peek() != tNext && pedantic() ) throw ReadFailior()
+  if ( is().peek() != tNext && pedantic() ) throw ReadFailure()
     << "PersistentIStream could not read an object of class '" << classname
-    << "' since no such class could be found. The base class was found, "
-    << "however, and if the PersistentIStream is 'setTolerant()' it may "
-    << "still be possible to read the part of the object corresponding to "
-    << "this base class." << Exception::runerror;
+    << "'. The file may be corrupted, or the class could not be found. The "
+    << "base class was found, however, and if the PersistentIStream is "
+    << "'setTolerant()' it may still be possible to read the part of the "
+    << "object corresponding to this base class." << Exception::runerror;
   while ( good() ) {
     switch ( is().peek() ) {
     case tNext:
@@ -105,7 +105,7 @@ void PersistentIStream::endBase(string classname) {
       break;
     case tEnd:
       // OOPS we found the end of an object, something went wrong, let's quit
-      throw ReadFailior()
+      throw ReadFailure()
 	<< "PersistentIStream could not read an object of class '"
 	<< classname << "'. Maybe the file was written with another version "
 	<< "of the class." << Exception::runerror;
@@ -121,6 +121,7 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
   BPtr obj;
   if ( !good() ) return obj;
   ObjectVector::size_type oid;
+  const InputDescription * pid = 0;
   try {
     if ( !beginObject() ) {
       *this >> oid;
@@ -135,12 +136,27 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
     if ( oid > readObjects.size() + 1 ) throw MissingObject()
       << "PersistentIStream could not read in object because its number ("
       << oid << ") was inconsistent." << Exception::runerror;
-    const InputDescription * pid = getClass();
+    pid = getClass();
     obj = pid->create();
     readObjects.erase(readObjects.begin() + (oid - 1), readObjects.end());
     readObjects.push_back(obj);
     getObjectPart(obj, pid);
     endObject();
+    if ( badState && Debug::level ) throw ReadFailure()
+      << "PersistentIStream failed to read in object number " << oid
+      << " of class " << pid->name() << "." << Exception::runerror;
+    return obj;
+  }
+  catch ( Exception & e ) {
+    if ( pedantic() || Debug::level ) {
+      e.handle();
+      string classname = "<UNKNOWN>";
+      if ( pid ) classname = pid->name();
+      throw ReadFailure()
+	<< "While reading object number " << oid << " of class "
+	<< classname << ":\n" << e.message() << Exception::runerror;
+    }
+    setBadState();
     return obj;
   }
   catch (...) {

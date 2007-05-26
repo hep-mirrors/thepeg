@@ -101,7 +101,8 @@ decay(const DecayMode & dm, const Particle & p, Step & step) const {
       children = decay(dm, p, step);
       Throw<NoDISRespect>()
 	<< "The decay of the remnant '" << p.PDGName()
-	<< "' changed the kinematics of a scattered lepton in a DIS event."
+	<< "' changed the kinematics of a scattered lepton in a DIS event.\n"
+	<< step
 	<< Exception::warning;
       return children;
     } else {

@@ -259,7 +259,7 @@ private:
 
   /** @ingroup Persistency Thrown if reading from the stream failed
       for some reason. */
-  struct ReadFailior: public Exception {};
+  struct ReadFailure: public Exception {};
   /** @endcond */
 
   /**
@@ -350,7 +350,7 @@ private:
   bool allocStream;
 
   /**
-   * True if no errors has occurred.
+   * False if no errors has occurred.
    */
   bool badState;
 

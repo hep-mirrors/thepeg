@@ -86,8 +86,3 @@ void Interfaced::Init() {
 
 }
 
-void Interfaced::debug() const {
-  cerr << "Object name: " << name() << " Class name: "
-       << DescriptionList::find(typeid(*this))->name() << endl;
-}
-
