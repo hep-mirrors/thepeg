@@ -158,7 +158,7 @@ int LHAPDF::getMaxFlav() const {
   F77ThePEGInteger iset = nset + 1;
   F77ThePEGInteger maxflav = 1;
   getnfm_(iset, maxflav);
-  return maxflav;
+  return min(maxflav, maxFlav());
 }
 
 void LHAPDF::setMaxNSet(int n) {
@@ -447,17 +447,17 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
   switch ( parton->id() ) {
   case t:
-    return lastXF[top];
+    return maxFlav() < 6? 0.0: lastXF[top];
   case tbar:
-    return lastXF[topb];
+    return maxFlav() < 6? 0.0: lastXF[topb];
   case b:
-    return lastXF[bot];
+    return maxFlav() < 5? 0.0: lastXF[bot];
   case bbar:
-    return lastXF[botb];
+    return maxFlav() < 5? 0.0: lastXF[botb];
   case c:
-    return lastXF[cha];
+    return maxFlav() < 4? 0.0: lastXF[cha];
   case cbar:
-    return lastXF[chab];
+    return maxFlav() < 4? 0.0: lastXF[chab];
   case ParticleID::s:
     return lastXF[str];
   case sbar:
@@ -565,13 +565,13 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
   os << oenum(thePType) << thePDFName << theMember
-     << thePhotonOption << theVerboseLevel
+     << thePhotonOption << theVerboseLevel << theMaxFlav
      << xMin << xMax << ounit(Q2Min, GeV2) << ounit(Q2Max, GeV2);
 }
 
 void LHAPDF::persistentInput(PersistentIStream & is, int) {
   is >> ienum(thePType) >> thePDFName >> theMember
-     >> thePhotonOption >> theVerboseLevel
+     >> thePhotonOption >> theVerboseLevel >> theMaxFlav
      >> xMin >> xMax >> iunit(Q2Min, GeV2) >> iunit(Q2Max, GeV2);
   nset = -1;
   lastReset();
@@ -729,6 +729,15 @@ void LHAPDF::Init() {
      "Normal output from the LHAPDF library "
      "(unfortunately to the standard output).",
      1);
+
+
+  static Parameter<LHAPDF,int> interfaceMaxFlav
+    ("MaxFlav",
+     "The maximum number of flavours for which non-zero densities are "
+     "reported. The actual number of flavours may be less depending on "
+     "the chosen PDF set.",
+     &LHAPDF::theMaxFlav, 5, 3, 0,
+     true, false, Interface::lowerlim);
 
   interfacePType.rank(10);
   interfacePDFName.rank(9);

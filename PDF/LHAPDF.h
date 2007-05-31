@@ -123,6 +123,13 @@ public:
    * The chosen member of the selected PDF set.
    */
   inline int member() const;
+
+  /**
+   * The maximum number of flavours for which non-zero densities are
+   * reported. The actual number of flavours may be less depending on
+   * the chosen PDF set.
+   */
+  inline int maxFlav() const;
   //@}
 
 protected:
@@ -357,6 +364,13 @@ private:
    * The verbosity of the output from the LHAPDF library.
    */
   int theVerboseLevel;
+
+  /**
+   * The maximum number of flavours for which non-zero densities are
+   * reported. The actual number of flavours may be less depending on
+   * the chosen PDF set.
+   */
+  int theMaxFlav;
 
   /**
    * The LHAPDF nset number (minus one) to be used by this object. If

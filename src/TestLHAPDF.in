@@ -11,8 +11,11 @@ cp CTEQ6ll CTEQ5L
 set CTEQ5L:PDFName cteq5l.LHgrid
 cp CTEQ6ll GRV98nlo
 set GRV98nlo:PDFName GRV98nlo.LHgrid
-cp CTEQ6ll MRST2001nlo
+# cp CTEQ6ll MRST2001nlo
+create ThePEG::LHAPDF MRST2001nlo
 set MRST2001nlo:PDFName MRST2001nlo.LHgrid
+# set MRST2001nlo:MaxFlav 6
+set MRST2001nlo:RemnantHandler SoftRemnants
 
 insert /Defaults/Generators/SimpleLEPGenerator:LocalParticles[0] p+
 set n0:PDF CTEQ5L
