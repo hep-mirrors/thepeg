@@ -62,15 +62,18 @@ public:
 
   /**
    * Modify the properties to reflect that the given \a parton was
-   * extracted.
+   * extracted. If \a fixcolour is true a colour line is drawn from
+   * the remnant to the extracted parton.
    */
-  bool extract(tPPtr parton);
+  bool extract(tPPtr parton, bool fixcolour = false);
 
   /**
    * Modify the properties to reflect that the previously extracted
-   * parton, \a oldp, was evolved backwards to the the parton \a newp.
+   * parton, \a oldp, was evolved backwards to the the parton \a
+   * newp. If \a fixcolour is true a colour line is drawn from the
+   * remnant to the extracted parton.
    */
-  bool reextract(tPPtr oldp, tPPtr newp);
+  bool reextract(tPPtr oldp, tPPtr newp, bool fixcolour = false);
 
 public:
 

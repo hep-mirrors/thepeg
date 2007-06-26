@@ -31,19 +31,18 @@ RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr parton)
 
 RemnantParticle::~RemnantParticle() {}
 
-bool RemnantParticle::extract(tPPtr parton) {
+bool RemnantParticle::extract(tPPtr parton, bool fixcolour) {
   LorentzMomentum pnew = momentum() - parton->momentum();
   if ( pnew.e() < 0.0*GeV ) return false;
   if ( !remData->extract(parton->dataPtr()) ) return false;
   extracted.push_back(parton);
   setMomentum(pnew);
   rescaleMass();
-  // For now the colour needs to be connected from the outside.
-  //  fixColourLines(parton);
+  if ( fixcolour ) fixColourLines(parton);
   return true;
 }
 
-bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp) {
+bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp, bool fixcolour) {
   LorentzMomentum pnew = momentum() + oldp->momentum() - newp->momentum();
   if ( pnew.e() < 0.0*GeV ) return false;
   PVector::iterator it = find(extracted, oldp);
@@ -54,8 +53,7 @@ bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp) {
   rescaleMass();
   if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
   if ( oldp->antiColourLine() ) oldp->antiColourLine()->removeColoured(this);
-  // For now the colour needs to be connected from the outside.
-  //  fixColourLines(newp);
+  if ( fixcolour )  fixColourLines(newp);
   return true;
 }
 
