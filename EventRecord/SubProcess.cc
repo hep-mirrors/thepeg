@@ -106,6 +106,11 @@ ostream & ThePEG::operator<<(ostream & os, const SubProcess & sp) {
   return os;
 }
 
+void SubProcess::debugme() const {
+  cerr << *this;
+  EventRecordBase::debugme();
+}
+
 void SubProcess::persistentOutput(PersistentOStream & os) const {
   EventConfig::putHandler(os, theHandler);
   os << theCollision << theIncoming << theIntermediates << theOutgoing

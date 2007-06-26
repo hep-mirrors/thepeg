@@ -400,6 +400,11 @@ ostream & ThePEG::operator<<(ostream & os, const Step & s) {
   return os;
 }
 
+void Step::debugme() const {
+  cerr << *this;
+  EventRecordBase::debugme();
+}
+
 void Step::persistentOutput(PersistentOStream & os) const {
   os << theParticles << theIntermediates << theSubProcesses << allParticles
      << theCollision;
