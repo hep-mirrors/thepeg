@@ -131,7 +131,8 @@ void Step::removeEntry(tPPtr p) {
   if ( it == allParticles.end() ) return;
   allParticles.erase(it);
   it = theParticles.find(p);
-  theParticles.erase(it);
+  if ( it != theParticles.end() ) theParticles.erase(it);
+
   if ( p->previous() ) {
     it = theIntermediates.find(p->previous());
     if ( it != theIntermediates.end() ) theIntermediates.erase(it);
