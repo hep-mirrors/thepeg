@@ -20,6 +20,9 @@ int main(int argc, char * argv[]) {
     string arg = argv[iarg];
     if ( arg == "-r" ) run = argv[++iarg];
     else if ( arg == "-x" ) mainclass = argv[++iarg];
+    else if ( arg == "-s" ) DynamicLoader::load(argv[++iarg]);
+    else if ( arg.substr(0,2) == "-s" )
+      DynamicLoader::load(arg.substr(2));
     else if ( arg == "-l" ) DynamicLoader::appendPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-l" )
       DynamicLoader::appendPath(arg.substr(2));

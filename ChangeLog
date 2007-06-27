@@ -1,5 +1,9 @@
 2007-06-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/setupThePEG.cc, src/runThePEG.cc: Added command line option
+	to dynamically load specified libraries before reading persistent
+	files.
+
 	* EventRecord/Particle.cc: Fixed printout to also report multiple
 	colour lines.
 

@@ -28,6 +28,9 @@ int main(int argc, char * argv[]) {
       Debug::level = 0;
     }
     else if ( arg == "--exitonerror" ) Repository::exitOnError() = 1;
+    else if ( arg == "-s" ) DynamicLoader::load(argv[++iarg]);
+    else if ( arg.substr(0,2) == "-s" )
+      DynamicLoader::load(arg.substr(2));
     else if ( arg == "-l" ) DynamicLoader::appendPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-l" )
       DynamicLoader::appendPath(arg.substr(2));
