@@ -43,12 +43,16 @@ done-all-links:
 	for dir in $(LINKDIRS); do \
 	  for sofile in ../$$dir/.libs/*.so* ../$$dir/.libs/*.la; \
             do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done; done
+	for sofile in .libs/*.so*; \
+            do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done
 	echo "stamp" > done-all-links
 @EMPTY@else
 	@echo "Sym-linking all shared libraries ..."
 	@for dir in $(LINKDIRS); do \
 	  for sofile in ../$$dir/.libs/*.so* ../$$dir/.libs/*.la; \
             do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done; done
+	@for sofile in .libs/*.so*; \
+            do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done
 	@echo "stamp" > done-all-links
 @EMPTY@endif
 
