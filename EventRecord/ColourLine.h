@@ -187,7 +187,7 @@ public:
   /**
    * Write out information about this colour line to the stream.
    */
-  void write(ostream & os, tcEventPtr event, bool anti);
+  void write(ostream & os, tcEventPtr event, bool anti) const;
 
 public:
 

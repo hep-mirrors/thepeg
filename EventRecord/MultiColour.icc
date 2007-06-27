@@ -12,4 +12,8 @@ inline MultiColour::MultiColour(const MultiColour & x)
   : ColourBase(x), theColourLines(x.theColourLines),
     theAntiColourLines(x.theAntiColourLines) {}
 
+inline EIPtr MultiColour::clone() const {
+  return new_ptr(*this);
+}
+
 }

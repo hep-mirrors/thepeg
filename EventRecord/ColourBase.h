@@ -61,6 +61,18 @@ public:
   inline tColinePtr colourLine() const;
 
   /**
+   * Return the anti-colour lines to which this particle is
+   * connected. (Always only one colour line for this base class.)
+   */
+  virtual vector<tcColinePtr> antiColourLines() const;
+
+  /**
+   * Return the colour lines to which this particle is
+   * connected. (Always only one colour line for this base class.)
+   */
+  virtual vector<tcColinePtr> colourLines() const;
+
+  /**
    * Return true if the particle is connected to the given (\a anti-)
    * colour \a line.
    */

@@ -22,6 +22,16 @@ bool ColourBase::hasColourLine(tcColinePtr line, bool anti) const {
   return ( anti? ( antiColourLine() == line ): ( colourLine() == line ) );
 }
 
+vector<tcColinePtr> ColourBase::antiColourLines() const {
+  return antiColourLine()? vector<tcColinePtr>(1, antiColourLine()):
+    vector<tcColinePtr>();
+}
+
+vector<tcColinePtr> ColourBase::colourLines() const {
+  return colourLine()? vector<tcColinePtr>(1, colourLine()):
+    vector<tcColinePtr>();
+}
+
 void ColourBase::rebind(const EventTranslationMap & trans) {
   theAntiColourLine = trans.translate(theAntiColourLine);
   theColourLine = trans.translate(theColourLine);

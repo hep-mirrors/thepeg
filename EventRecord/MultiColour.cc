@@ -18,6 +18,16 @@ using namespace ThePEG;
 
 MultiColour::~MultiColour() {}
 
+vector<tcColinePtr> MultiColour::antiColourLines() const {
+  return vector<tcColinePtr>(theAntiColourLines.begin(),
+			    theAntiColourLines.end());
+}
+
+vector<tcColinePtr> MultiColour::colourLines() const {
+  return vector<tcColinePtr>(theColourLines.begin(),
+			    theColourLines.end());
+}
+
 bool MultiColour::hasColourLine(tcColinePtr line, bool anti) const {
   return ( anti? ( theAntiColourLines.find(line) != theAntiColourLines.end() ):
 	   ( theColourLines.find(line) != theColourLines.end() ) );

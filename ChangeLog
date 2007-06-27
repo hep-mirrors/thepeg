@@ -1,3 +1,16 @@
+2007-06-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/Particle.cc: Fixed printout to also report multiple
+	colour lines.
+
+	* EventRecord/MultiColour.*, EventRecord/ColourBase.*: Added
+	virtual functions to retreive multiple colour lines. Also fixed
+	clone function for MultiColour.
+
+	* EventRecord/Step.cc: Fixed bug in removeEntry where a particle
+	was being erased from theParticles even though it was not in
+	there.
+
 2007-06-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/SubProcess.*, EventRecord/Step.*: Added debugme()

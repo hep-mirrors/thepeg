@@ -42,6 +42,18 @@ public:
   using ColourBase::antiColourLine;
 
   /**
+   * Return the anti-colour lines to which this particle is
+   * connected.
+   */
+  virtual vector<tcColinePtr> antiColourLines() const;
+
+  /**
+   * Return the colour lines to which this particle is
+   * connected.
+   */
+  virtual vector<tcColinePtr> colourLines() const;
+
+  /**
    * Add the given (\a anti-) colour \a line to the particle. If the base
    * class has no (anti-) colour line, it will also be set.
    */
@@ -98,6 +110,11 @@ public:
    * when this class is dynamically loaded.
    */
   static void Init();
+
+  /**
+   * Standard clone method.
+   */
+  inline virtual EIPtr clone() const;
 
 private:
 

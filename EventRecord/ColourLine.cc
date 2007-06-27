@@ -82,7 +82,7 @@ bool ColourLine::join(ColinePtr line) {
   return true;
 }
 
-void ColourLine::write(ostream & os, tcEventPtr event, bool anti) {
+void ColourLine::write(ostream & os, tcEventPtr event, bool anti) const {
   os << ( anti? '-': '+' );
   int index = event->colourLineIndex(this);
   if ( sourceNeighbours().first && sourceNeighbours().second )
