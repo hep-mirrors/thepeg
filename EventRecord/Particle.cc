@@ -345,15 +345,21 @@ ostream & Particle::print(ostream & os, tcStepPtr step) const {
 	sep = *++pos;
 	close = *++pos;
 	w = getNumber(++pos, 0);
-	if ( ( !colourLine() && !antiColourLine() ) || !event) break;
-	if ( open ) os << open;
-	if ( colourLine() ) {
-	  colourLine()->write(os, event, false);
-	  if ( antiColourLine() && sep ) os << sep;
+	if ( hasColourInfo() &&
+	     ( colourLine() || antiColourLine() ) && event) {
+	  if ( open ) os << open;
+	  vector<tcColinePtr> clines = colourInfo()->colourLines();
+	  for ( int i = 0, N = clines.size(); i < N; ++i ) {
+	    if ( i > 0 && sep )  os << sep;
+	    clines[i]->write(os, event, false);
+	  }
+	  vector<tcColinePtr> aclines = colourInfo()->antiColourLines();
+	  for ( int i = 0, N = aclines.size(); i < N; ++i ) {
+	    if ( ( i > 0 || clines.size() ) && sep )  os << sep;
+	    aclines[i]->write(os, event, true);
+	  }
+	  if ( close ) os << close;
 	}
-	if ( antiColourLine() )
-	  antiColourLine()->write(os, event, true);
-	if ( close ) os << close;
 	break;
       case 'C':
 	fullColour = true;
