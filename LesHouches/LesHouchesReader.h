@@ -878,6 +878,8 @@ public:
 
 };
 
+ostream & operator<<(ostream & os, const HEPEUP & h);
+
 }
 
 

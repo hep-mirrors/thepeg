@@ -1,5 +1,8 @@
 2007-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesReader.*: Check that the colour flow in the
+	Les Houches common block is consistent.
+
 	* EventRecord/Event.*: Fixed the numbering of particles. Before
 	the numbering could get screwed up if particles were removed from
 	the event (which did not happen very often).

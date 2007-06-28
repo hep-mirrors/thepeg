@@ -636,6 +636,8 @@ void LesHouchesReader::createParticles() {
   theIncoming = PPair();
   theOutgoing = PVector();
   theIntermediates = PVector();
+  set<int> oklines;
+  oklines.insert(0);
   for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
     if ( !hepeup.IDUP[i] ) continue;
     Lorentz5Momentum mom(hepeup.PUP[i][0]*GeV, hepeup.PUP[i][1]*GeV,
@@ -646,6 +648,41 @@ void LesHouchesReader::createParticles() {
     if ( c ) c->addColoured(p);
     c = colourIndex(hepeup.ICOLUP[i].second);
     if ( c ) c->addAntiColoured(p);
+
+    // Check colour-line consistency.
+    if ( ThePEG_DEBUG_LEVEL && abs(hepeup.ISTUP[i]) == 1 &&
+	 oklines.find(hepeup.ICOLUP[i].first) == oklines.end() ) {
+      bool ends = 0;
+      for ( int j = i + 1; j < N; ++j ) {
+	if ( abs(hepeup.ISTUP[j]) == 1 ) {
+	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].first ) ++ends;
+	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].first ) ends = -N;
+	}
+      }
+      if ( ends != 1 ) Throw<LesHouchesInconsistencyError>()
+	<< "LesHouchesReader '" << name() << "' found inconsistent colour "
+	<< "flow in Les Houches common block structure. See colour line "
+	<< hepeup.ICOLUP[i].first << " in event looking like:\n"
+	<< hepeup << Exception::runerror;
+      oklines.insert(hepeup.ICOLUP[i].first);
+    }
+    if ( ThePEG_DEBUG_LEVEL && abs(hepeup.ISTUP[i]) == 1 &&
+	 oklines.find(hepeup.ICOLUP[i].second) == oklines.end() ) {
+      bool ends = 0;
+      for ( int j = i + 1; j < N; ++j ) {
+	if ( abs(hepeup.ISTUP[j]) == 1 ) {
+	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].second ) ++ends;
+	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].second ) ends = -N;
+	}
+      }
+      if ( ends != 1 ) Throw<LesHouchesInconsistencyError>()
+	<< "LesHouchesReader '" << name() << "' found inconsistent colour "
+	<< "flow in Les Houches common block structure. See colour line "
+	<< hepeup.ICOLUP[i].second << " in event looking like:\n"
+	<< hepeup << Exception::runerror;
+      oklines.insert(hepeup.ICOLUP[i].second);
+    }
+
     particleIndex(i + 1, p);
     switch ( hepeup.ISTUP[i] ) {
     case -9:
@@ -1042,6 +1079,37 @@ void LesHouchesReader::Init() {
   interfaceEBeamB.rank(2);
   interfaceMaxMultCKKW.rank(1.5);
   interfaceMinMultCKKW.rank(1.0);
+
+}
+
+namespace ThePEG {
+
+ostream & operator<<(ostream & os, const HEPEUP & h) {
+  os << "<event>\n"
+     << " " << setw(4) << h.NUP
+     << " " << setw(6) << h.IDPRUP
+     << " " << setw(14) << h.XWGTUP
+     << " " << setw(14) << h.SCALUP
+     << " " << setw(14) << h.AQEDUP
+     << " " << setw(14) << h.AQCDUP << "\n";
+
+  for ( int i = 0; i < h.NUP; ++i )
+    os << " " << setw(8) << h.IDUP[i]
+       << " " << setw(2) << h.ISTUP[i]
+       << " " << setw(4) << h.MOTHUP[i].first
+       << " " << setw(4) << h.MOTHUP[i].second
+       << " " << setw(4) << h.ICOLUP[i].first
+       << " " << setw(4) << h.ICOLUP[i].second
+       << " " << setw(14) << h.PUP[i][0]
+       << " " << setw(14) << h.PUP[i][1]
+       << " " << setw(14) << h.PUP[i][2]
+       << " " << setw(14) << h.PUP[i][3]
+       << " " << setw(14) << h.PUP[i][4]
+       << " " << setw(1) << h.VTIMUP[i]
+       << " " << setw(1) << h.SPINUP[i] << std::endl;
+  os << "</event>" << std::endl;
+  return os;
+}
 
 }
 
