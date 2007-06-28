@@ -259,6 +259,11 @@ protected:
   void addSubProcess(tSubProPtr p);
 
   /**
+   * Remove a SubProcess from this Collision.
+   */
+  void removeSubProcess(tSubProPtr p);
+
+  /**
    * Add a range of particles to this Collision.
    */
   template <class Iterator>

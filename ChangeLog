@@ -1,3 +1,11 @@
+2007-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* EventRecord/Step.*, EventRecord/Event.*,
+	EventRecord/Collision.*: Added removeSubProcess function.
+
+	* PDT/RemnantData.*, EventRecord/RemnantParticle.*: Added remove
+	function.
+
 2007-06-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, src/runThePEG.cc: Added command line option

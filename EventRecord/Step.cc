@@ -99,6 +99,19 @@ void Step::addSubProcess(tSubProPtr sp) {
   if ( collision() ) collision()->addSubProcess(sp);
 }
 
+void Step::removeSubProcess(tSubProPtr sp) {
+  SubProcessVector::iterator sit = ThePEG::find(theSubProcesses, sp);
+  if ( sit == theSubProcesses.end() ) return;
+  for ( int i = 0, N = sp->outgoing().size(); i < N; ++i )
+    removeParticle(sp->outgoing()[i]);
+  for ( int i = 0, N = sp->intermediates().size(); i < N; ++i )
+    removeParticle(sp->intermediates()[i]);
+  removeParticle(sp->incoming().first);
+  removeParticle(sp->incoming().second);
+  theSubProcesses.erase(sit);
+  if ( collision() ) collision()->removeSubProcess(sp);
+}
+
 void Step::addIntermediate(tPPtr p) {
   theIntermediates.insert(p);
   ParticleSet::iterator pit = theParticles.find(p);

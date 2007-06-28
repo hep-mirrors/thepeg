@@ -97,6 +97,13 @@ void Collision::addSubProcess(tSubProPtr p) {
   if ( event() ) event()->addSubProcess(p);
 }
 
+void Collision::removeSubProcess(tSubProPtr p) {
+  SubProcessVector::iterator sit = ThePEG::find(theSubProcesses, p);
+  if ( sit == theSubProcesses.end() ) return;
+  theSubProcesses.erase(sit);
+  if ( event() ) event()->removeSubProcess(p);
+}
+
 void Collision::addParticle(tPPtr p) {
   allParticles.insert(p);
   if ( event() ) event()->addParticle(p);

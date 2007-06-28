@@ -345,6 +345,12 @@ public:
   void addSubProcess(tSubProPtr);
 
   /**
+   * Remove a sub-process. All incoming and outgoing particles are
+   * removed as well.
+   */
+  void removeSubProcess(tSubProPtr);
+
+  /**
    * Remove (recursively) the given Particle from the Step. If
    * this was the last daughter of the mother Particle, the latter is
    * added to the list of final state particles.  

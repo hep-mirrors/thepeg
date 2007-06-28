@@ -251,6 +251,11 @@ protected:
   inline void addSubProcess(tSubProPtr p);
 
   /**
+   * Remove a SubProcess from this Event.
+   */
+  inline void removeSubProcess(tSubProPtr p);
+
+  /**
    * Add a new Step to this Collision. For book keeping purposes
    * only. The steps are accessed from the different Collisions in
    * this Event.

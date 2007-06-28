@@ -65,6 +65,10 @@ inline void Event::addSubProcess(tSubProPtr p) {
   if ( p ) allSubProcesses.insert(p);
 }
 
+inline void Event::removeSubProcess(tSubProPtr p) {
+  allSubProcesses.erase(p);
+}
+
 inline void Event::addStep(tStepPtr s) {
   if ( s ) allSteps.insert(s);
 }
