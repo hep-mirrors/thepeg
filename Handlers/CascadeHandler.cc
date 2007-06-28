@@ -43,6 +43,11 @@ handle(EventHandler & eh, const tPVector & tagged,
 
 }
 
+void CascadeHandler::resetPDFs(const pair<tcPDFPtr,tcPDFPtr> & pdfpair) {
+  thePDFs.first = PDF(pdfpair.first, thePDFs.first.particle());
+  thePDFs.second = PDF(pdfpair.second, thePDFs.second.particle());
+}
+
 double CascadeHandler::reweightCKKW(int, int) {
   return 1.0;
 }

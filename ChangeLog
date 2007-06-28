@@ -1,5 +1,11 @@
 2007-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/CascadeHandler.*: Added possibility to assign new PDF
+	objects instead of those set in handle().
+
+	* PDF/PDF.*: Added constructor and access to the PDFBase and
+	ParticleData objects explicitly.
+
 	* LesHouches/LesHouchesReader.*: Check that the colour flow in the
 	Les Houches common block is consistent.
 
