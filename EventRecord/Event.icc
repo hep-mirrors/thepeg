@@ -17,7 +17,7 @@ inline void Event::operator delete(void * p, size_t) {
 }
 
 inline Event::Event()
-: theNumber(-1), theWeight(1.0) {}
+: theNumber(-1), theWeight(1.0), theParticleNumber(0) {}
 
 inline tcEventBasePtr Event::handler() const {
   return theHandler;

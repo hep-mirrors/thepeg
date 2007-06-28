@@ -22,7 +22,7 @@ using namespace ThePEG;
 Event::Event(const PPair & newIncoming, tcEventBasePtr newHandler,
 	     string newName, long newNumber, double newWeight)
   : Named(newName), theIncoming(newIncoming), theHandler(newHandler),
-    theNumber(newNumber), theWeight(newWeight) {
+    theNumber(newNumber), theWeight(newWeight), theParticleNumber(0) {
   addParticle(incoming().first);
   addParticle(incoming().second);
 }
@@ -32,7 +32,8 @@ Event::Event(const Event & e)
     theIncoming(e.theIncoming), theCollisions(e.theCollisions),
     allSteps(e.allSteps), allSubProcesses(e.allSubProcesses),
     allParticles(e.allParticles), theHandler(e.theHandler),
-    theNumber(e.theNumber), theWeight(e.theWeight) {}
+    theNumber(e.theNumber), theWeight(e.theWeight),
+    theParticleNumber(e.theParticleNumber) {}
 
 Event::~Event() {
   for ( int i = 0, N = theCollisions.size(); i < N; ++i )
@@ -79,7 +80,7 @@ void Event::addParticle(tPPtr p) {
   if ( !p ) return;
   if ( member(allParticles, p) ) return;
   allParticles.insert(p);
-  p->number(allParticles.size());
+  p->number(++theParticleNumber);
 }
 
 void Event::transform(const LorentzRotation & r) {
@@ -201,13 +202,13 @@ void Event::debugme() const {
 
 void Event::persistentOutput(PersistentOStream & os) const {
   os << theIncoming << theCollisions << allSteps << allSubProcesses
-     << allParticles << theNumber;
+     << allParticles << theNumber << theWeight << theParticleNumber;
   EventConfig::putHandler(os, theHandler);
 }
 
 void Event::persistentInput(PersistentIStream & is, int) {
   is >> theIncoming >> theCollisions >> allSteps >> allSubProcesses
-     >> allParticles >> theNumber;
+     >> allParticles >> theNumber >> theWeight >> theParticleNumber;
   EventConfig::getHandler(is, theHandler);
 }
 

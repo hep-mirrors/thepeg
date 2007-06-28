@@ -341,6 +341,11 @@ private:
    */
   double theWeight;
 
+  /**
+   * Counter to keep track of particle numbering.
+   */
+  long theParticleNumber;
+
 public:
 
   /**
