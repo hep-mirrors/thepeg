@@ -17,12 +17,23 @@ inline PDF::PDF(tcPBIPtr pb) {
   theParticle = pb->particleData();
 }
 
+inline PDF::PDF(tcPDFPtr pdf, tcPDPtr pd)
+  : thePDF(pdf), theParticle(pd) {}
+
 inline PDF::~PDF() {}
 
 inline PDF & PDF::operator=(const PDF & pdf) {
   thePDF = pdf.thePDF;
   theParticle = pdf.theParticle;
   return *this;
+}
+
+inline tcPDFPtr PDF::pdf() const {
+  return thePDF;
+}
+
+inline tcPDPtr PDF::particle() const {
+  return theParticle;
 }
 
 inline double PDF::xfl(tcPPtr parton, Energy2 partonScale, double l,

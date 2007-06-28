@@ -36,6 +36,11 @@ public:
   inline PDF(tcPBIPtr);
 
   /**
+   * Constructor from a given PDFBase and ParticleData object.
+   */
+  inline PDF(tcPDFPtr, tcPDPtr);
+
+  /**
    * Destructor.
    */
   inline ~PDF();
@@ -114,6 +119,17 @@ public:
   inline double xfvx(tcPDPtr parton, Energy2 partonScale, double x,
 		     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const;
   //@}
+
+  
+  /**
+   * The parton density object.
+   */
+  inline tcPDFPtr pdf() const;
+
+  /**
+   * The particle for which the parton density is used.
+   */
+  inline tcPDPtr particle() const;
 
 private:
 
