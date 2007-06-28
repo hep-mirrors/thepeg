@@ -75,6 +75,12 @@ public:
    */
   bool reextract(tPPtr oldp, tPPtr newp, bool fixcolour = false);
 
+  /**
+   * Modify the properties to reflect that the given \a parton which
+   * was previously extracted is removed.
+   */
+  bool remove(tPPtr parton);
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

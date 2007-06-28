@@ -45,7 +45,7 @@ bool RemnantData::extract(tcPDPtr parton) {
     addDecayMode(decayMode);
   }
   if ( !parton ) return false;
-  if ( !extracted.empty() && !decayer->multiCapable() ) return false;
+  //  if ( !extracted.empty() && !decayer->multiCapable() ) return false;
   if ( !decayer->canHandle(parentPD, parton) ) return false;
   extracted.insert(parton);
   iCharge(PDT::Charge(iCharge() - parton->iCharge()));
@@ -60,6 +60,15 @@ reextract(tcPDPtr oldp, tcPDPtr newp) {
   extracted.erase(it);
   extracted.insert(newp);
   iCharge(PDT::Charge(iCharge() + oldp->iCharge() - newp->iCharge()));
+  return fixColour();
+}
+
+bool RemnantData::
+remove(tcPDPtr oldp) {
+  multiset<tcPDPtr>::iterator it = extracted.find(oldp);
+  if ( it == extracted.end() ) return false;
+  extracted.erase(it);
+  iCharge(PDT::Charge(iCharge() + oldp->iCharge()));
   return fixColour();
 }
 

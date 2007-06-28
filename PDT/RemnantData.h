@@ -69,6 +69,12 @@ public:
   bool extract(tcPDPtr parton);
 
   /**
+   * Modify the properties to reflect that the given \a parton which was
+   * previously extracted is removed.
+   */
+  bool remove(tcPDPtr parton);
+
+  /**
    * Modify the properties to reflect that the previously extracted
    * parton, \a oldp, was evolved backwards to the the parton \a newp.
    */

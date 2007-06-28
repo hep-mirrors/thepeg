@@ -57,6 +57,19 @@ bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp, bool fixcolour) {
   return true;
 }
 
+bool RemnantParticle::remove(tPPtr oldp) {
+  LorentzMomentum pnew = momentum() + oldp->momentum();
+  PVector::iterator it = find(extracted, oldp);
+  if ( it == extracted.end() ) return false;
+  if ( !remData->remove(oldp->dataPtr()) ) return false;
+  extracted.erase(it);
+  setMomentum(pnew);
+  rescaleMass();
+  if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
+  if ( oldp->antiColourLine() ) oldp->antiColourLine()->removeColoured(this);
+  return true;
+}
+
 void RemnantParticle::fixColourLines(tPPtr parton) {
   if ( parton->hasColour() ) {
     if ( parton->colourLine() )
