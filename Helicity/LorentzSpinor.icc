@@ -12,26 +12,26 @@ namespace ThePEG {
 namespace Helicity {
 
 // default zero constructor
-inline LorentzSpinor::LorentzSpinor(DiracRep d) {
+template <typename Value> inline LorentzSpinor<Value>::LorentzSpinor(DiracRep d) {
   _dirac=d;
   _type=unknown_spinortype;
   for(int ix=0;ix<4;++ix) {
-    _spin[ix]=0.0;
+    _spin[ix]=complex<Value>();
   }
 }
 
-inline LorentzSpinor::LorentzSpinor(SpinorType s,DiracRep d) {
+template <typename Value> inline LorentzSpinor<Value>::LorentzSpinor(SpinorType s,DiracRep d) {
   _dirac=d;
   _type=s;
   for(int ix=0;ix<4;++ix) {
-    _spin[ix]=0.0;
+    _spin[ix]=complex<Value>();
   }
 }
 
 // constructor with complex numbers
 
-inline LorentzSpinor::
-LorentzSpinor(Complex a, Complex b, Complex c, Complex d, DiracRep r) {
+template <typename Value> inline LorentzSpinor<Value>::
+LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Value> d, DiracRep r) {
   _dirac=r;
   _type=unknown_spinortype;
   _spin[0]=a;
@@ -40,8 +40,8 @@ LorentzSpinor(Complex a, Complex b, Complex c, Complex d, DiracRep r) {
   _spin[3]=d;
 }
 
-inline LorentzSpinor::
-LorentzSpinor(Complex a, Complex b, Complex c, Complex d, SpinorType s,DiracRep r) {
+template <typename Value> inline LorentzSpinor<Value>::
+LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Value> d, SpinorType s,DiracRep r) {
   _dirac=r;
   _type=s;
   _spin[0]=a;
@@ -51,7 +51,7 @@ LorentzSpinor(Complex a, Complex b, Complex c, Complex d, SpinorType s,DiracRep 
 }
 
 // subscript operator to return spinor components
-inline Complex LorentzSpinor::operator[](int i) const
+template <typename Value> inline complex<Value> LorentzSpinor<Value>::operator[](int i) const
 {
   if ( i >= 0 && i <= 3 ) return _spin[i];
   throw HelicityLogicalError()
@@ -59,7 +59,7 @@ inline Complex LorentzSpinor::operator[](int i) const
     << Exception::abortnow;
 }
 
-inline Complex LorentzSpinor::operator()(int i) const
+template <typename Value> inline complex<Value> LorentzSpinor<Value>::operator()(int i) const
 {
   if ( i >= 0 && i <= 3 ) return _spin[i];
   throw HelicityLogicalError()
@@ -68,14 +68,14 @@ inline Complex LorentzSpinor::operator()(int i) const
 }
 
 // set components by index
-inline Complex & LorentzSpinor::operator () (int i){
+template <typename Value> inline complex<Value> & LorentzSpinor<Value>::operator () (int i){
   if ( i >= 0 && i <= 3 ) return _spin[i];
   throw HelicityLogicalError()
     << "Invalid index " << i << " called for LorentzSpinor."
     << Exception::abortnow;
 }
 
-inline Complex & LorentzSpinor::operator [] (int i){
+template <typename Value> inline complex<Value> & LorentzSpinor<Value>::operator [] (int i){
   if ( i >= 0 && i <=3 ) return _spin[i];
   throw HelicityLogicalError()
     << "Invalid index " << i << " called for LorentzSpinor."
@@ -83,25 +83,25 @@ inline Complex & LorentzSpinor::operator [] (int i){
 }
 
 // Get components
-inline Complex LorentzSpinor::s1() const {return _spin[0];}
+template <typename Value> inline complex<Value> LorentzSpinor<Value>::s1() const {return _spin[0];}
 
-inline Complex LorentzSpinor::s2() const {return _spin[1];}
+template <typename Value> inline complex<Value> LorentzSpinor<Value>::s2() const {return _spin[1];}
 
-inline Complex LorentzSpinor::s3() const {return _spin[2];}
+template <typename Value> inline complex<Value> LorentzSpinor<Value>::s3() const {return _spin[2];}
 
-inline Complex LorentzSpinor::s4() const {return _spin[3];}
+template <typename Value> inline complex<Value> LorentzSpinor<Value>::s4() const {return _spin[3];}
 
 // Set components
-inline void LorentzSpinor::setS1(Complex in){_spin[0]=in;}
+template <typename Value> inline void LorentzSpinor<Value>::setS1(complex<Value> in){_spin[0]=in;}
 
-inline void LorentzSpinor::setS2(Complex in){_spin[1]=in;}
+template <typename Value> inline void LorentzSpinor<Value>::setS2(complex<Value> in){_spin[1]=in;}
 
-inline void LorentzSpinor::setS3(Complex in){_spin[2]=in;}
+template <typename Value> inline void LorentzSpinor<Value>::setS3(complex<Value> in){_spin[2]=in;}
 
-inline void LorentzSpinor::setS4(Complex in){_spin[3]=in;}
+template <typename Value> inline void LorentzSpinor<Value>::setS4(complex<Value> in){_spin[3]=in;}
 
 // the equals operator
-inline LorentzSpinor & LorentzSpinor::operator = (const LorentzSpinor & in) {
+template <typename Value> inline LorentzSpinor<Value> & LorentzSpinor<Value>::operator = (const LorentzSpinor & in) {
   _dirac=in._dirac;
   _type=in._type;
   _spin[0]=in.s1();
@@ -112,17 +112,21 @@ inline LorentzSpinor & LorentzSpinor::operator = (const LorentzSpinor & in) {
 }
 
 // change the dirac matrix representation
-inline void LorentzSpinor::changeRep(DiracRep newdirac) {
+template <typename Value> inline void LorentzSpinor<Value>::changeRep(DiracRep newdirac)
+{
   if(newdirac!=_dirac) *this = transformRep(newdirac);
 }
 
 // return the spinor in a different representation
-inline LorentzSpinor LorentzSpinor::transformRep(DiracRep newdirac) const {
+template <typename Value> 
+inline LorentzSpinor<Value> 
+LorentzSpinor<Value>::transformRep(DiracRep newdirac) const
+{
   // do nothing if all ready in the correct representation
   if(newdirac==_dirac) return LorentzSpinor(*this);
   double fact=1./sqrt(2.);
   // transform from HELAS representation to Haber one
-  Complex output[4];
+  complex<Value> output[4];
   if(newdirac==HELASDRep && _dirac==HaberDRep) {
     output[0] =-fact*( _spin[0]-_spin[2]);
     output[1] =-fact*( _spin[1]-_spin[3]);
@@ -141,157 +145,190 @@ inline LorentzSpinor LorentzSpinor::transformRep(DiracRep newdirac) const {
 }
 
 // return the representation of the spinor
-inline const DiracRep LorentzSpinor::Rep() const {
+template <typename Value> 
+inline const DiracRep LorentzSpinor<Value>::Rep() const {
   return _dirac;
 }
 
 // return the type of the spinor
-inline const SpinorType LorentzSpinor::Type() const {
+template <typename Value> 
+inline const SpinorType LorentzSpinor<Value>::Type() const {
   return _type;
 }
 
 // calculate the left-handed current
-inline LorentzPolarizationVector 
-LorentzSpinor::leftCurrent(const LorentzSpinorBar& fb) const {
+template <typename Value> 
+template <typename ValueB>
+inline LorentzVector<complex<
+  typename BinaryOpTraits<Value,ValueB>::MulT> >
+LorentzSpinor<Value>::leftCurrent(const LorentzSpinorBar<ValueB>& fb) const
+{
+  typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fb.Rep()) fbar.changeRep(Rep());
-  LorentzPolarizationVector vec;
+  LorentzVector<ResultT> vec;
   Complex ii(0.,1.);
   // Haber representation
-  if(Rep()==HaberDRep) {
-    Complex s2m4(s2()-s4()),sb1p3(fbar.s1()+fbar.s3()),
-            s1m3(s1()-s3()),sb2p4(fbar.s2()+fbar.s4());
-    Complex p1(sb1p3*s2m4),p2(sb2p4*s1m3);
-    vec[0] =  -0.5*(p1+p2);
-    vec[1] =ii*0.5*(p1-p2);
-    p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
-    vec[2] =  -0.5*(p1-p2);
-    vec[3] =   0.5*(p1+p2);
-  }
+  if(Rep()==HaberDRep)
+    {
+      complex<Value> s2m4(s2()-s4()), s1m3(s1()-s3());
+      complex<ValueB> sb1p3(fbar.s1()+fbar.s3()), sb2p4(fbar.s2()+fbar.s4());
+      ResultT p1(sb1p3*s2m4),p2(sb2p4*s1m3);
+      vec.setX( -0.5*(p1+p2) );
+      vec.setY( ii*0.5*(p1-p2) );
+      p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
+      vec.setZ( -0.5*(p1-p2) );
+      vec.setT( 0.5*(p1+p2) );
+    }
   // HELAS representation
-  else {
-    Complex p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
-    vec[0] =   -(p1+p2);
-    vec[1] = ii*(p1-p2);
-    p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
-    vec[2] =   -(p1-p2);
-    vec[3] =    (p1+p2);
-  }
+  else
+    {
+      ResultT p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
+      vec.setX(   -(p1+p2) );
+      vec.setY( ii*(p1-p2) );
+      p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
+      vec.setZ(   -(p1-p2) );
+      vec.setT(    (p1+p2) );
+    }
   return vec;
 }
 
-// calculate the left-handed current
-inline LorentzPolarizationVector 
-LorentzSpinor::rightCurrent(const LorentzSpinorBar& fb) const {
+// calculate the right-handed current
+template <typename Value>   
+template <typename ValueB>
+inline LorentzVector<complex< typename BinaryOpTraits<Value,ValueB>::MulT> >
+LorentzSpinor<Value>::rightCurrent(const LorentzSpinorBar<ValueB>& fb) const
+{
+  typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
-  LorentzPolarizationVector vec;
+  LorentzVector<ResultT> vec;
   Complex ii(0.,1.);
   // Haber representation
-  if(Rep()==HaberDRep) {
-    Complex s2p4(s2()+s4()),sb1m3(fbar.s1()-fbar.s3()),
-            s1p3(s1()+s3()),sb2m4(fbar.s2()-fbar.s4());
-    Complex p1(sb1m3*s2p4),p2(sb2m4*s1p3);
-    vec[0] =    +0.5*( p1+p2);
-    vec[1] = +ii*0.5*(-p1+p2);
-    p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
-    vec[2] =    +0.5*(+p1-p2);
-    vec[3] =    +0.5*(+p1+p2);
-  }
+  if(Rep()==HaberDRep)
+    {
+      complex<Value> s2p4(s2()+s4()),s1p3(s1()+s3());
+      complex<ValueB> sb1m3(fbar.s1()-fbar.s3()),sb2m4(fbar.s2()-fbar.s4());
+      ResultT p1(sb1m3*s2p4),p2(sb2m4*s1p3);
+      vec.setX(    +0.5*( p1+p2));
+      vec.setY( +ii*0.5*(-p1+p2));
+      p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
+      vec.setZ(    +0.5*(+p1-p2));
+      vec.setT(    +0.5*(+p1+p2));
+    }
   // HELAS representation
-  else {
-    Complex p1(fbar.s1()*s4()),p2(fbar.s2()*s3());
-    vec[0] =     (p1+p2);
-    vec[1] = -ii*(p1-p2);
-    p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
-    vec[2] =     (p1-p2);
-    vec[3] =     (p1+p2);
-  }
+  else
+    {
+      ResultT p1(fbar.s1()*s4()),p2(fbar.s2()*s3());
+      vec.setX(     (p1+p2));
+      vec.setY( -ii*(p1-p2));
+      p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
+      vec.setZ(     (p1-p2));
+      vec.setT(     (p1+p2));
+    }
   return vec;
 }
 
 // calculate the vector-handed current
-inline LorentzPolarizationVector 
-LorentzSpinor::vectorCurrent(const LorentzSpinorBar& fb) const{
+template <typename Value> 
+template <typename ValueB>
+inline LorentzVector<complex< typename BinaryOpTraits<Value,ValueB>::MulT> >
+LorentzSpinor<Value>::vectorCurrent(const LorentzSpinorBar<ValueB>& fb) const
+{
+  typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
-  LorentzPolarizationVector vec;
+  LorentzVector<ResultT> vec;
   // calculate the current
   Complex ii(0.,1.);
-  Complex s1s4(fbar.s1()*s4()),s2s3(fbar.s2()*s3()),
-          s3s2(fbar.s3()*s2()),s4s1(fbar.s4()*s1()),
-          s1s3(fbar.s1()*s3()),s2s4(fbar.s2()*s4()),
-          s3s1(fbar.s3()*s1()),s4s2(fbar.s4()*s2());
-  if(Rep()==HaberDRep) {
-    vec[0] =       s1s4+s2s3-s3s2-s4s1;
-    vec[1] =  -ii*(s1s4-s2s3-s3s2+s4s1);
-    vec[2] =       s1s3-s2s4-s3s1+s4s2;
-    vec[3] = +fbar.s1()*s1()+fbar.s2()*s2()
-             -fbar.s3()*s3()-fbar.s4()*s4();
-  }
-  else {
-    vec[0] =      s1s4+s2s3-s3s2-s4s1;
-    vec[1] = -ii*(s1s4-s2s3-s3s2+s4s1);
-    vec[2] =      s1s3-s2s4-s3s1+s4s2;
-    vec[3] =      s1s3+s2s4+s3s1+s4s2;
-  }
+  ResultT s1s4(fbar.s1()*s4()),s2s3(fbar.s2()*s3()),
+    s3s2(fbar.s3()*s2()),s4s1(fbar.s4()*s1()),
+    s1s3(fbar.s1()*s3()),s2s4(fbar.s2()*s4()),
+    s3s1(fbar.s3()*s1()),s4s2(fbar.s4()*s2());
+  if(Rep()==HaberDRep)
+    {
+      vec.setX(       s1s4+s2s3-s3s2-s4s1);
+      vec.setY(  -ii*(s1s4-s2s3-s3s2+s4s1));
+      vec.setZ(       s1s3-s2s4-s3s1+s4s2);
+      vec.setT( 
+	+fbar.s1()*s1()+fbar.s2()*s2()
+	-fbar.s3()*s3()-fbar.s4()*s4());
+    }
+  else
+    {
+      vec.setX(      s1s4+s2s3-s3s2-s4s1);
+      vec.setY( -ii*(s1s4-s2s3-s3s2+s4s1));
+      vec.setZ(      s1s3-s2s4-s3s1+s4s2);
+      vec.setT(      s1s3+s2s4+s3s1+s4s2);
+    }
   return vec;
 }
 
-inline LorentzPolarizationVector 
-LorentzSpinor::generalCurrent(const LorentzSpinorBar & fb,
-			      Complex left, Complex right) const {
+template <typename Value> 
+template <typename ValueB>
+inline LorentzVector<complex< typename BinaryOpTraits<Value,ValueB>::MulT> >
+LorentzSpinor<Value>::generalCurrent(const LorentzSpinorBar<ValueB>& fb,
+				     Complex left,
+				     Complex right) const
+{
+  typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
-  LorentzPolarizationVector vec;
+  LorentzVector<ResultT> vec;
   Complex ii(0.,1.);
   // Haber representation
-  if(Rep()==HaberDRep) {
-    // left handed terms
-    Complex s2m4(s2()-s4()),sb1p3(fbar.s1()+fbar.s3()),
-      s1m3(s1()-s3()),sb2p4(fbar.s2()+fbar.s4());
-    Complex p1(sb1p3*s2m4),p2(sb2p4*s1m3);
-    vec[0] =  -0.5*left*(p1+p2);
-    vec[1] =ii*0.5*left*(p1-p2);
-    p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
-    vec[2] =  -0.5*left*(p1-p2);
-    vec[3] =   0.5*left*(p1+p2);
-    // right handed terms
-    Complex s2p4(s2()+s4()),sb1m3(fbar.s1()-fbar.s3()),
-      s1p3(s1()+s3()),sb2m4(fbar.s2()-fbar.s4());
-    p1=sb1m3*s2p4;p2=sb2m4*s1p3;
-    vec[0] +=    +0.5*right*( p1+p2);
-    vec[1] += +ii*0.5*right*(-p1+p2);
-    p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
-    vec[2] +=    +0.5*right*(+p1-p2);
-    vec[3] +=    +0.5*right*(+p1+p2);
-  }
+  if(Rep()==HaberDRep)
+    {
+      // left handed terms
+      complex<Value>  s2m4(s2()-s4()),s1m3(s1()-s3());
+      complex<ValueB> sb1p3(fbar.s1()+fbar.s3()), sb2p4(fbar.s2()+fbar.s4());
+      ResultT p1(sb1p3*s2m4),p2(sb2p4*s1m3);
+      vec.setX(  -0.5*left*(p1+p2));
+      vec.setY(ii*0.5*left*(p1-p2));
+      p1 = sb1p3*s1m3; p2=sb2p4*s2m4;
+      vec.setZ(  -0.5*left*(p1-p2));
+      vec.setT(   0.5*left*(p1+p2));
+      // right handed terms
+      complex<Value> s2p4(s2()+s4()),s1p3(s1()+s3());
+      complex<ValueB> sb1m3(fbar.s1()-fbar.s3()), sb2m4(fbar.s2()-fbar.s4());
+      p1=sb1m3*s2p4;p2=sb2m4*s1p3;
+      vec.setX(vec.x()+0.5*right*( p1+p2));
+      vec.setY(vec.y()+ii*0.5*right*(-p1+p2));
+      p1 = sb1m3*s1p3; p2=sb2m4*s2p4;
+      vec.setZ(vec.z()+0.5*right*(+p1-p2));
+      vec.setT(vec.t()+0.5*right*(+p1+p2));
+    }
   // HELAS representation
-  else {
-    Complex p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
-    vec[0] =   -left*(p1+p2);
-    vec[1] = ii*left*(p1-p2);
-    p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
-    vec[2] =   -left*(p1-p2);
-    vec[3] =    left*(p1+p2);
-    p1=fbar.s1()*s4();p2=fbar.s2()*s3();
-    vec[0] +=     right*(p1+p2);
-    vec[1] += -ii*right*(p1-p2);
-    p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
-    vec[2] +=      right*(p1-p2);
-    vec[3] +=      right*(p1+p2);
-  }
+  else
+    {
+      ResultT p1(fbar.s3()*s2()),p2(fbar.s4()*s1());
+      vec.setX(   -left*(p1+p2));
+      vec.setY( ii*left*(p1-p2));
+      p1 = fbar.s3()*s1();p2 = fbar.s4()*s2();
+      vec.setZ(   -left*(p1-p2));
+      vec.setT(    left*(p1+p2));
+      p1=fbar.s1()*s4();p2=fbar.s2()*s3();
+      vec.setX(vec.x()+right*(p1+p2));
+      vec.setY(vec.y()-ii*right*(p1-p2));
+      p1 = fbar.s1()*s3();p2 = fbar.s2()*s4();
+      vec.setZ(vec.z()+right*(p1-p2));
+      vec.setT(vec.t()+right*(p1+p2));
+    }
   return vec;
 }
 
-inline Complex LorentzSpinor::leftScalar(const LorentzSpinorBar& fb) const {
-  Complex output;
+template <typename Value> 
+template <typename ValueB>
+inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+LorentzSpinor<Value>::leftScalar(const LorentzSpinorBar<ValueB>& fb) const
+{
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT> output;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy conventions
   if(Rep()==HaberDRep) {
@@ -305,10 +342,14 @@ inline Complex LorentzSpinor::leftScalar(const LorentzSpinorBar& fb) const {
   return output;
 }
 
-inline Complex LorentzSpinor::rightScalar(const LorentzSpinorBar& fb) const {
-  Complex output;
+template <typename Value> 
+template <typename ValueB>
+inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+LorentzSpinor<Value>::rightScalar(const LorentzSpinorBar<ValueB>& fb) const
+{
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT> output;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy conventions
   if(Rep()==HaberDRep) {
@@ -322,20 +363,26 @@ inline Complex LorentzSpinor::rightScalar(const LorentzSpinorBar& fb) const {
   return output;
 }
 
-inline Complex LorentzSpinor::generalScalar(const LorentzSpinorBar& fb,Complex left,
-					    Complex right) const {
-  Complex output;
+template <typename Value> 
+template <typename ValueB>
+inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+LorentzSpinor<Value>::generalScalar(const LorentzSpinorBar<ValueB>& fb,
+				    Complex left,
+				    Complex right) const
+{
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT> output;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy conventions
-  if(Rep()==HaberDRep) {
-    output = left*( (fbar.s1()-fbar.s3())*(s1()-s3())
-	           +(fbar.s2()-fbar.s4())*(s2()-s4()))
-           +right*( (fbar.s1()+fbar.s3())*(s1()+s3())
-	           +(fbar.s2()+fbar.s4())*(s2()+s4()));
-    output*=0.5;
-  }
+  if(Rep()==HaberDRep)
+    {
+      output = left*( (fbar.s1()-fbar.s3())*(s1()-s3())
+		     +(fbar.s2()-fbar.s4())*(s2()-s4()))
+	     +right*( (fbar.s1()+fbar.s3())*(s1()+s3())
+		     +(fbar.s2()+fbar.s4())*(s2()+s4()));
+      output=0.5*output;
+    }
   // high energy conventions
   else {
     output=  left*(fbar.s1()*s1()+fbar.s2()*s2())
@@ -344,10 +391,14 @@ inline Complex LorentzSpinor::generalScalar(const LorentzSpinorBar& fb,Complex l
   return output;
 }
   
-inline Complex LorentzSpinor::scalar(const LorentzSpinorBar& fb) const {
-  Complex output;
+template <typename Value> 
+template <typename ValueB>
+inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+LorentzSpinor<Value>::scalar(const LorentzSpinorBar<ValueB>& fb) const
+{
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT> output;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy
   if(Rep()==HaberDRep) {
@@ -360,10 +411,14 @@ inline Complex LorentzSpinor::scalar(const LorentzSpinorBar& fb) const {
   return output;
 }
   
-inline Complex LorentzSpinor::pseudoScalar(const LorentzSpinorBar& fb) const {
-  Complex output;
+template <typename Value> 
+template <typename ValueB>
+inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+LorentzSpinor<Value>::pseudoScalar(const LorentzSpinorBar<ValueB>& fb) const
+{
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT> output;
   // ensure both spinors are in the same representation, otherwise change to default
-  LorentzSpinorBar fbar(fb);
+  LorentzSpinorBar<ValueB> fbar(fb);
   if(Rep()!=fbar.Rep()) fbar.changeRep(Rep());
   // low energy
   if(Rep()==HaberDRep) {
@@ -376,7 +431,10 @@ inline Complex LorentzSpinor::pseudoScalar(const LorentzSpinorBar& fb) const {
   return output;
 }
 
-inline LorentzSpinor & LorentzSpinor::transform(const LorentzRotation & r) {
+template <typename Value> 
+inline LorentzSpinor<Value> & 
+LorentzSpinor<Value>::transform(const LorentzRotation & r)
+{
   SpinHalfLorentzRotation half(r.half());
   transform(half);
   return *this;

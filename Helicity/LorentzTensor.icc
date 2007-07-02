@@ -13,85 +13,97 @@ namespace Helicity {
 
 // constructors
 // default zero constructor
-inline LorentzTensor::LorentzTensor() {
+template <typename Value> inline LorentzTensor<Value>::LorentzTensor() {
   for(int ix=0;ix<4;++ix) {
     for(int iy=0;iy<4;++iy) {
-      _tensor[ix][iy]=0.;
+      _tensor[ix][iy]=complex<Value>();
     }
   }
 }
 
 // constructor in terms of two polarization vectors
-inline LorentzTensor::
+template <typename Value> inline LorentzTensor<Value>::
 LorentzTensor(LorentzPolarizationVector p, LorentzPolarizationVector q) {
-  for(int ix=0;ix<4;++ix) {
-    for(int iy=0;iy<4;++iy) {
-      _tensor[ix][iy]=p[ix]*q[iy];
-    }
-  }
+  setXX(p.x() * q.x());
+  setYX(p.y() * q.x());
+  setZX(p.z() * q.x());
+  setTX(p.t() * q.x());
+  setXY(p.x() * q.y());
+  setYY(p.y() * q.y());
+  setZY(p.z() * q.y());
+  setTY(p.t() * q.y());
+  setXZ(p.x() * q.z());
+  setYZ(p.y() * q.z());
+  setZZ(p.z() * q.z());
+  setTZ(p.t() * q.z());
+  setXT(p.x() * q.t());
+  setYT(p.y() * q.t());
+  setZT(p.z() * q.t());
+  setTT(p.t() * q.t());
 }
 
-// constructor in terms of two momenta
-inline LorentzTensor::LorentzTensor(LorentzVector p, LorentzVector q) {
-  for(int ix=0;ix<4;++ix) {
-    for(int iy=0;iy<4;++iy) {
-      _tensor[ix][iy]=p[ix]*q[iy];
-    }
-  }
-}
+// // constructor in terms of two momenta
+// template <typename Value> inline LorentzTensor<Value>::LorentzTensor(const LorentzVector<double> & p, 
+// 				    const LorentzVector<double> & q) {
+//   for(int ix=0;ix<4;++ix) {
+//     for(int iy=0;iy<4;++iy) {
+//       _tensor[ix][iy]=p[ix]*q[iy];
+//     }
+//   }
+// }
 
 // constructor specifying all components
-inline LorentzTensor::
-LorentzTensor(Complex xx, Complex xy, Complex xz, Complex xt,
-	      Complex yx, Complex yy, Complex yz, Complex yt,
-	      Complex zx, Complex zy, Complex zz, Complex zt,
-	      Complex tx, Complex ty, Complex tz, Complex tt) {
+template <typename Value> inline LorentzTensor<Value>::
+LorentzTensor(complex<Value> xx, complex<Value> xy, complex<Value> xz, complex<Value> xt,
+	      complex<Value> yx, complex<Value> yy, complex<Value> yz, complex<Value> yt,
+	      complex<Value> zx, complex<Value> zy, complex<Value> zz, complex<Value> zt,
+	      complex<Value> tx, complex<Value> ty, complex<Value> tz, complex<Value> tt) {
   _tensor[0][0]=xx;_tensor[0][1]=xy;_tensor[0][2]=xz;_tensor[0][3]=xt;
   _tensor[1][0]=yx;_tensor[1][1]=yy;_tensor[1][2]=yz;_tensor[1][3]=yt;
   _tensor[2][0]=zx;_tensor[2][1]=zy;_tensor[2][2]=zz;_tensor[2][3]=zt;
   _tensor[3][0]=tx;_tensor[3][1]=ty;_tensor[3][2]=tz;_tensor[3][3]=tt;
 }
 
-inline LorentzTensor::~LorentzTensor() {}
+template <typename Value> inline LorentzTensor<Value>::~LorentzTensor<Value>() {}
 // The destructor
 
-inline Complex LorentzTensor::xx() const {return _tensor[0][0];}
-inline Complex LorentzTensor::yx() const {return _tensor[1][0];}
-inline Complex LorentzTensor::zx() const {return _tensor[2][0];}
-inline Complex LorentzTensor::tx() const {return _tensor[3][0];}
-inline Complex LorentzTensor::xy() const {return _tensor[0][1];}
-inline Complex LorentzTensor::yy() const {return _tensor[1][1];}
-inline Complex LorentzTensor::zy() const {return _tensor[2][1];}
-inline Complex LorentzTensor::ty() const {return _tensor[3][1];}
-inline Complex LorentzTensor::xz() const {return _tensor[0][2];}
-inline Complex LorentzTensor::yz() const {return _tensor[1][2];}
-inline Complex LorentzTensor::zz() const {return _tensor[2][2];}
-inline Complex LorentzTensor::tz() const {return _tensor[3][2];}
-inline Complex LorentzTensor::xt() const {return _tensor[0][3];}
-inline Complex LorentzTensor::yt() const {return _tensor[1][3];}
-inline Complex LorentzTensor::zt() const {return _tensor[2][3];}
-inline Complex LorentzTensor::tt() const {return _tensor[3][3];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::xx() const {return _tensor[0][0];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::yx() const {return _tensor[1][0];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::zx() const {return _tensor[2][0];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::tx() const {return _tensor[3][0];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::xy() const {return _tensor[0][1];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::yy() const {return _tensor[1][1];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::zy() const {return _tensor[2][1];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::ty() const {return _tensor[3][1];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::xz() const {return _tensor[0][2];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::yz() const {return _tensor[1][2];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::zz() const {return _tensor[2][2];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::tz() const {return _tensor[3][2];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::xt() const {return _tensor[0][3];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::yt() const {return _tensor[1][3];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::zt() const {return _tensor[2][3];}
+template <typename Value> inline complex<Value> LorentzTensor<Value>::tt() const {return _tensor[3][3];}
 // Get position and time.
 
-inline void LorentzTensor::setXX(Complex a) {_tensor[0][0]=a;}
-inline void LorentzTensor::setYX(Complex a) {_tensor[1][0]=a;}
-inline void LorentzTensor::setZX(Complex a) {_tensor[2][0]=a;}
-inline void LorentzTensor::setTX(Complex a) {_tensor[3][0]=a;}
-inline void LorentzTensor::setXY(Complex a) {_tensor[0][1]=a;}
-inline void LorentzTensor::setYY(Complex a) {_tensor[1][1]=a;}
-inline void LorentzTensor::setZY(Complex a) {_tensor[2][1]=a;}
-inline void LorentzTensor::setTY(Complex a) {_tensor[3][1]=a;}
-inline void LorentzTensor::setXZ(Complex a) {_tensor[0][2]=a;}
-inline void LorentzTensor::setYZ(Complex a) {_tensor[1][2]=a;}
-inline void LorentzTensor::setZZ(Complex a) {_tensor[2][2]=a;}
-inline void LorentzTensor::setTZ(Complex a) {_tensor[3][2]=a;}
-inline void LorentzTensor::setXT(Complex a) {_tensor[0][3]=a;}
-inline void LorentzTensor::setYT(Complex a) {_tensor[1][3]=a;}
-inline void LorentzTensor::setZT(Complex a) {_tensor[2][3]=a;}
-inline void LorentzTensor::setTT(Complex a) {_tensor[3][3]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setXX(complex<Value> a) {_tensor[0][0]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setYX(complex<Value> a) {_tensor[1][0]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setZX(complex<Value> a) {_tensor[2][0]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setTX(complex<Value> a) {_tensor[3][0]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setXY(complex<Value> a) {_tensor[0][1]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setYY(complex<Value> a) {_tensor[1][1]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setZY(complex<Value> a) {_tensor[2][1]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setTY(complex<Value> a) {_tensor[3][1]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setXZ(complex<Value> a) {_tensor[0][2]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setYZ(complex<Value> a) {_tensor[1][2]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setZZ(complex<Value> a) {_tensor[2][2]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setTZ(complex<Value> a) {_tensor[3][2]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setXT(complex<Value> a) {_tensor[0][3]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setYT(complex<Value> a) {_tensor[1][3]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setZT(complex<Value> a) {_tensor[2][3]=a;}
+template <typename Value> inline void LorentzTensor<Value>::setTT(complex<Value> a) {_tensor[3][3]=a;}
 
 // Set position and time
-inline Complex LorentzTensor::operator () (int i,int j) const
+template <typename Value> inline complex<Value> LorentzTensor<Value>::operator () (int i,int j) const
 {
   if( i>=0 && i<=3 && j>=0 && j<=3) return _tensor[i][j];
   throw HelicityLogicalError()
@@ -100,7 +112,7 @@ inline Complex LorentzTensor::operator () (int i,int j) const
 }
 
 // Get components by index.
-inline Complex & LorentzTensor::operator () (int i,int j)
+template <typename Value> inline complex<Value> & LorentzTensor<Value>::operator () (int i,int j)
 {
   if( i>=0 && i<=3 && j>=0 && j<=3) return _tensor[i][j];
   throw HelicityLogicalError()
@@ -110,7 +122,7 @@ inline Complex & LorentzTensor::operator () (int i,int j)
 
 // Set components by index.
 // Assignment
-inline LorentzTensor & LorentzTensor::operator = (const LorentzTensor & q) {
+template <typename Value> inline LorentzTensor<Value> & LorentzTensor<Value>::operator = (const LorentzTensor<Value> & q) {
   for(int ix=0;ix<4;++ix) {
     for(int iy=0;iy<4;++iy) _tensor[ix][iy]=q(ix,iy);
   }
@@ -118,20 +130,20 @@ inline LorentzTensor & LorentzTensor::operator = (const LorentzTensor & q) {
 }
 
 // boost
-inline LorentzTensor & LorentzTensor::boost(const Hep3Vector & b) {
+template <typename Value> inline LorentzTensor<Value> & LorentzTensor<Value>::boost(const Boost & b) {
   return boost(b.x(), b.y(), b.z());
 }
 
 // general lorentz transform
-inline LorentzTensor & LorentzTensor::transform(const SpinOneLorentzRotation &r)
+template <typename Value> inline LorentzTensor<Value> & LorentzTensor<Value>::transform(const SpinOneLorentzRotation &r)
 {
   unsigned int ix,iy,ixa,iya;
-  LorentzTensor output;
-  Complex temp;
+  LorentzTensor<Value> output;
+  complex<Value> temp;
   for(ix=0;ix<4;++ix)
     {for(iy=0;iy<4;++iy)
 	{
-	  temp=0.;
+	  temp=complex<Value>();
 	  for(ixa=0;ixa<4;++ixa)
 	    {for(iya=0;iya<4;++iya)
 		{temp+=r(ix,ixa)*r(iy,iya)*(*this)(ixa,iya);}
@@ -143,31 +155,27 @@ inline LorentzTensor & LorentzTensor::transform(const SpinOneLorentzRotation &r)
   return *this;
 }
 
-inline LorentzTensor & LorentzTensor::transform(const LorentzRotation &r)
+template <typename Value> inline LorentzTensor<Value> LorentzTensor<Value>::conjugate()
 {
-  SpinOneLorentzRotation one(r.one());
-  transform(one);
-  return *this;
-}
-
-inline LorentzTensor LorentzTensor::conjugate()
-{
-  return LorentzTensor(conj(xx()), conj(xy()), conj(xz()), conj(xt()),
+  return LorentzTensor<Value>(conj(xx()), conj(xy()), conj(xz()), conj(xt()),
 		       conj(yx()), conj(yy()), conj(yz()), conj(yt()),
 		       conj(zx()), conj(zy()), conj(zz()), conj(zt()),
 		       conj(tx()), conj(ty()), conj(tz()), conj(tt()));
 }
 
 // product with another tensor
-inline Complex LorentzTensor::operator * (const LorentzTensor & in) const
+template <typename T, typename U> 
+inline complex<typename BinaryOpTraits<T,U>::MulT> 
+operator*(const LorentzTensor<T> & t, const LorentzTensor<U> & u)
 {
-  Complex output=0.,temp;
+  typedef complex<typename BinaryOpTraits<T,U>::MulT> RetT;
+  RetT output=RetT(),temp;
   for(unsigned int ix=0;ix<4;++ix)
     {
-      temp = _tensor[ix][3]*in._tensor[ix][3];
+      temp = t._tensor[ix][3]*u._tensor[ix][3];
       for(unsigned int iy=0;iy<3;++iy)
 	{
-	  temp+=_tensor[ix][iy]*in._tensor[ix][iy];
+	  temp+= t._tensor[ix][iy]*u._tensor[ix][iy];
 	}
       if(ix<3){output-=temp;}
       else{output+=temp;}
@@ -176,59 +184,71 @@ inline Complex LorentzTensor::operator * (const LorentzTensor & in) const
 }
 
 // scaling with a complex number
-inline LorentzTensor LorentzTensor::operator *= (Complex a)
+template <typename Value> inline LorentzTensor<Value> LorentzTensor<Value>::operator *= (Complex a)
 {
   for(int ix=0;ix<4;++ix){for(int iy=0;iy<4;++iy){_tensor[ix][iy]*=a;}}
   return *this;
 }
 
 // multiplication by a complex number
-inline LorentzTensor operator * (Complex a, const LorentzTensor & t)
+template<typename T, typename U> 
+inline LorentzTensor<typename BinaryOpTraits<T,U>::MulT> 
+operator*(complex<U> a, const LorentzTensor<T> & t)
 {
-  return LorentzTensor(a*t.xx(), a*t.xy(), a*t.xz(), a*t.xt(),
-		       a*t.yx(), a*t.yy(), a*t.yz(), a*t.yt(),
-		       a*t.zx(), a*t.zy(), a*t.zz(), a*t.zt(),
-		       a*t.tx(), a*t.ty(), a*t.tz(), a*t.tt());
+  return LorentzTensor<typename BinaryOpTraits<T,U>::MulT>
+    (a*t.xx(), a*t.xy(), a*t.xz(), a*t.xt(),
+     a*t.yx(), a*t.yy(), a*t.yz(), a*t.yt(),
+     a*t.zx(), a*t.zy(), a*t.zz(), a*t.zt(),
+     a*t.tx(), a*t.ty(), a*t.tz(), a*t.tt());
 }
-inline LorentzTensor LorentzTensor::operator + (const LorentzTensor & in) const
+template <typename Value> inline LorentzTensor<Value> LorentzTensor<Value>::operator + (const LorentzTensor<Value> & in) const
 {
-  return LorentzTensor(xx()+in.xx(),xy()+in.xy(),xz()+in.xz(),xt()+in.xt(),
+  return LorentzTensor<Value>(xx()+in.xx(),xy()+in.xy(),xz()+in.xz(),xt()+in.xt(),
 		       yx()+in.yx(),yy()+in.yy(),yz()+in.yz(),yt()+in.yt(),
 		       zx()+in.zx(),zy()+in.zy(),zz()+in.zz(),zt()+in.zt(),
 		       tx()+in.tx(),ty()+in.ty(),tz()+in.tz(),tt()+in.tt());
 }
-inline LorentzTensor LorentzTensor::operator - (const LorentzTensor & in) const
+template <typename Value> inline LorentzTensor<Value> LorentzTensor<Value>::operator - (const LorentzTensor<Value> & in) const
 {
-  return LorentzTensor(xx()-in.xx(),xy()-in.xy(),xz()-in.xz(),xt()-in.xt(),
+  return LorentzTensor<Value>(xx()-in.xx(),xy()-in.xy(),xz()-in.xz(),xt()-in.xt(),
 		       yx()-in.yx(),yy()-in.yy(),yz()-in.yz(),yt()-in.yt(),
 		       zx()-in.zx(),zy()-in.zy(),zz()-in.zz(),zt()-in.zt(),
 		       tx()-in.tx(),ty()-in.ty(),tz()-in.tz(),tt()-in.tt());
 }
 
-inline LorentzPolarizationVector operator * 
-(const LorentzPolarizationVector & invec, const LorentzTensor & inten)
+template<typename T, typename U> 
+inline LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT>
+operator*(const LorentzVector<U> & invec, const LorentzTensor<T> & inten)
 {
-  LorentzPolarizationVector outvec;
-  for(unsigned int ix=0;ix<4;++ix)
-    {
-      outvec[ix]=invec[3]*inten(3,ix)-invec[0]*inten(0,ix)
-	-invec[1]*inten(1,ix)-invec[2]*inten(2,ix);
-    }
-  return outvec;
-}
-inline LorentzPolarizationVector operator * 
-(const LorentzTensor & inten, const LorentzPolarizationVector & invec)
-{
-  LorentzPolarizationVector outvec;
-  for(unsigned int ix=0;ix<4;++ix)
-    {
-      outvec[ix]=invec[3]*inten(ix,3)-invec[0]*inten(ix,0)
-	-invec[1]*inten(ix,1)-invec[2]*inten(ix,2);
-    }
+  LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT> outvec;
+  outvec.setX(invec.t()*inten(3,0)-invec.x()*inten(0,0)
+	      -invec.y()*inten(1,0)-invec.z()*inten(2,0));
+  outvec.setY(invec.t()*inten(3,1)-invec.x()*inten(0,1)
+	      -invec.y()*inten(1,1)-invec.z()*inten(2,1));
+  outvec.setZ(invec.t()*inten(3,2)-invec.x()*inten(0,2)
+	      -invec.y()*inten(1,2)-invec.z()*inten(2,2));
+  outvec.setT(invec.t()*inten(3,3)-invec.x()*inten(0,3)
+	      -invec.y()*inten(1,3)-invec.z()*inten(2,3));
   return outvec;
 }
 
-inline Complex LorentzTensor::trace()
+template<typename T, typename U> 
+inline LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT>
+operator*(const LorentzTensor<T> & inten, const LorentzVector<U> & invec)
+{
+  LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT> outvec;
+  outvec.setX(invec.t()*inten(0,3)-invec.x()*inten(0,0)
+	      -invec.y()*inten(0,1)-invec.z()*inten(0,2));
+  outvec.setY(invec.t()*inten(1,3)-invec.x()*inten(1,0)
+	      -invec.y()*inten(1,1)-invec.z()*inten(1,2));
+  outvec.setZ(invec.t()*inten(2,3)-invec.x()*inten(2,0)
+	      -invec.y()*inten(2,1)-invec.z()*inten(2,2));
+  outvec.setT(invec.t()*inten(3,3)-invec.x()*inten(3,0)
+	      -invec.y()*inten(3,1)-invec.z()*inten(3,2));
+  return outvec;
+}
+
+template <typename Value> inline complex<Value> LorentzTensor<Value>::trace()
 {return _tensor[3][3]-_tensor[0][0]-_tensor[1][1]-_tensor[2][2];}
 
 }

@@ -1,3 +1,4 @@
+// -*- C++ -*-
 #ifndef ThePEG_Lorentz5Vector_H
 #define ThePEG_Lorentz5Vector_H
 
@@ -12,12 +13,11 @@
 
 namespace ThePEG {
 
-template <typename FloatType>
+template <typename Value>
 /**
  * The Lorentz5Vector inherits from the
- * <code>LorentzVector</code> class of CLHEP. It is templated on the
- * type of the member variables, anticipating a similar strategy in
- * CLHEP in the future. The <code>Lorentz5Vector</code> class is a
+ * <code>LorentzVector</code> class. It is templated on the
+ * type of the member variables. The <code>Lorentz5Vector</code> class is a
  * <code>LorentzVector</code> with an extra member for the invariant
  * length/mass of the vector. Note that an object of the
  * <code>Lorentz5Vector</code> class may be internally inconsistent in
@@ -32,12 +32,18 @@ template <typename FloatType>
  * @see Math
  * 
  */
-class Lorentz5Vector: public LorentzVector {
+class Lorentz5Vector: public LorentzVector<Value> {
 
 public:
 
   /** Template argument typedef. */
-  typedef FloatType FloatType2;
+  typedef typename BinaryOpTraits<Value,Value>::MulT Value2;
+
+public:
+  Value x() const { return LorentzVector<Value>::x(); }
+  Value y() const { return LorentzVector<Value>::y(); }
+  Value z() const { return LorentzVector<Value>::z(); }
+  Value t() const { return LorentzVector<Value>::t(); }
 
 public:
 
@@ -51,45 +57,45 @@ public:
   /**
    * Constructor giving the invariant length.
    */
-  inline Lorentz5Vector(FloatType m);
+  inline Lorentz5Vector(Value m);
 
   /**
    * Constructor giving the components x, y, z, t. The invariant
    * length is set to LorentzVector::mag().
    */
-  inline Lorentz5Vector(FloatType x, FloatType y,
-			FloatType z, FloatType t = FloatType());
+  inline Lorentz5Vector(Value x, Value y,
+			Value z, Value t = Value());
 
   /**
    * Constructor giving the components x, y, z, t and invariant length.
    * May result in an inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector(FloatType x, FloatType y, FloatType z,
-			FloatType t, FloatType tau);
+  inline Lorentz5Vector(Value x, Value y, Value z,
+			Value t, Value tau);
 
   /**
    * Constructor giving a 3-Vector and a time component. The invariant
    * length is set to LorentzVector::mag().
    */
-  inline Lorentz5Vector(const Vector3 &, FloatType);
+  inline Lorentz5Vector(const Vector3<Value> &, Value);
 
   /**
    * Constructor giving an invariant length and a 3-Vector
    * component. The time component is set to the corresponding value.
    */
-  inline Lorentz5Vector(FloatType, const Vector3 &);
+  inline Lorentz5Vector(Value, const Vector3<Value> &);
 
   /**
    * Constructor giving a 3-Vector, a time component and an invariant
    * length. May result in an inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector(const Vector3 &, FloatType t, FloatType tau);
+  inline Lorentz5Vector(const Vector3<Value> &, Value t, Value tau);
 
   /**
    * Constructor giving a LorentzVector and an invariant length.
    * May result in an inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector(const LorentzVector &, FloatType);
+  inline Lorentz5Vector(const LorentzVector<Value> &, Value);
 
   /**
    * Copy constructor.
@@ -100,7 +106,7 @@ public:
    * Copy from HepLorentzVector constructor. The invariant
    * length is set to LorentzVector::mag().
    */
-  inline Lorentz5Vector(const LorentzVector &);
+  inline Lorentz5Vector(const LorentzVector<Value> &);
 
   /**
    * The destructor.
@@ -113,12 +119,12 @@ public:
   /**
    * Set invariant length/mass.
    */
-  inline void setTau(FloatType);
+  inline void setTau(Value);
 
   /**
    * Set invariant length/mass.
    */
-  inline void setMass(FloatType);
+  inline void setMass(Value);
 
   /**
    * Assignment. 
@@ -129,7 +135,7 @@ public:
    * Assignment. The invariant length is kept fixed. May result in an
    * inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector & operator=(const LorentzVector &);
+  inline Lorentz5Vector & operator=(const LorentzVector<Value> &);
   //@}
 
   /** @name Rescale functions to make consistent. */
@@ -158,17 +164,17 @@ public:
   /**
    * Return the relative inconsistency in the mass component.
    */
-  inline FloatType massError() const;
+  inline double massError() const;
 
   /**
    * Return the relative inconsistency in the energy component.
    */
-  inline FloatType energyError() const;
+  inline double energyError() const;
 
   /**
    * Return the relative inconsistency in the spatial components.
    */
-  inline FloatType rhoError() const;
+  inline double rhoError() const;
   //@}
 
   /** @name Access components. */
@@ -177,49 +183,49 @@ public:
    * Get components by index. The invariant length/mass member is
    * accessed with index 5.
    */
-  inline FloatType operator()(int) const;
+  //  inline Value operator()(int) const;
 
   /**
    * Get components by index. The invariant length/mass member is
    * accessed with index 5.
    */
-  inline FloatType operator[](int) const;
+  //  inline Value operator[](int) const;
 
   /**
    * Mass/invariant length component squared. mag2() and m2() gives
    * the same calculated from the LorentzVector
    */
-  inline FloatType2 mass2() const;
+  inline Value2 mass2() const;
 
   /**
    * Mass/invariant length component squared. mag2() and m2() gives
    * the same calculated from the LorentzVector
    */
-  inline FloatType2 tau2() const;
+  inline Value2 tau2() const;
 
   /**
    * Mass/invariant length component. mag() and m() gives the same
    * calculated from the LorentzVector
    */
-  inline FloatType mass() const;
+  inline Value mass() const;
 
   /**
    * Mass/invariant length component. mag() and m() gives the same
    * calculated from the LorentzVector
    */
-  inline FloatType tau() const;
+  inline Value tau() const;
 
   /**
    * Return the positive negative light-cone components (depending on
    * the value of Direction<0>.
    */
-  inline FloatType dirPlus() const;
+  inline Value dirPlus() const;
 
   /**
    * Return the positive negative light-cone components (depending on
    * the value of Direction<0>.
    */
-  inline FloatType dirMinus() const;
+  inline Value dirMinus() const;
   //@}
 
   /**
@@ -230,7 +236,7 @@ public:
 private:
 
   /** The invariant mass/length member. */
-  FloatType mm;
+  Value mm;
 
 };
 
@@ -248,6 +254,103 @@ void iunitstream(IStream & is, Lorentz5Vector<T> & p, UT & u) {
   is >> iunit(x, u) >> iunit(y, u) >> iunit(z, u) >> iunit(e, u)
      >> iunit(mass, u);
   p = Lorentz5Vector<T>(x, y, z, e, mass);
+}
+
+template <typename T, typename U>
+struct BinaryOpTraits;
+
+template <typename T>
+struct BinaryOpTraits<Lorentz5Vector<T>, double> {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef Lorentz5Vector<T> MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  typedef Lorentz5Vector<T> DivT;
+};
+
+template <typename U>
+struct BinaryOpTraits<double, Lorentz5Vector<U> > {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef Lorentz5Vector<U> MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
+};
+
+template <typename T, typename U>
+struct BinaryOpTraits<Lorentz5Vector<T>, std::complex<U> > {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef Lorentz5Vector<std::complex<typename BinaryOpTraits<T,U>::MulT> > MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  typedef Lorentz5Vector<std::complex<typename BinaryOpTraits<T,U>::DivT> > DivT;
+};
+
+template <typename T, typename U>
+struct BinaryOpTraits<std::complex<T>, Lorentz5Vector<U> > {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef Lorentz5Vector<std::complex<typename BinaryOpTraits<T,U>::MulT> > MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
+};
+
+template <typename T, typename U>
+struct BinaryOpTraits<Lorentz5Vector<T>, Lorentz5Vector<U> > {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef typename BinaryOpTraits<T,U>::MulT MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
+};
+
+template <typename T, typename U>
+struct BinaryOpTraits<LorentzVector<T>, Lorentz5Vector<U> > {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef typename BinaryOpTraits<T,U>::MulT MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
+};
+
+template <typename T, typename U>
+struct BinaryOpTraits<Lorentz5Vector<T>, LorentzVector<U> > {
+  /** The type resulting from multiplication of the template type with
+      itself. */
+  typedef typename BinaryOpTraits<T,U>::MulT MulT;
+  /** The type resulting from division of one template type with
+      another. */
+  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
+};
+
+template <typename ValueA, typename ValueB>
+inline typename BinaryOpTraits<ValueA,ValueB>::MulT 
+operator*(const Lorentz5Vector<ValueA> & a, const Lorentz5Vector<ValueB> & b) {
+  return a.dot(b);
+}
+
+template <typename ValueA, typename ValueB>
+inline typename BinaryOpTraits<ValueA,ValueB>::MulT 
+operator*(const LorentzVector<ValueA> & a, const Lorentz5Vector<ValueB> & b) {
+  return a.dot(b);
+}
+
+template <typename ValueA, typename ValueB>
+inline typename BinaryOpTraits<ValueA,ValueB>::MulT 
+operator*(const Lorentz5Vector<ValueA> & a, const LorentzVector<ValueB> & b) {
+  return a.dot(b);
+}
+
+template <typename Value>
+inline typename BinaryOpTraits<Value,Value>::MulT 
+operator*(const Lorentz5Vector<Value> & a, const Lorentz5Vector<Value> & b) {
+  return a.dot(b);
 }
 
 }

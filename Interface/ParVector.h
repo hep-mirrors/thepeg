@@ -324,7 +324,20 @@ public:
    */
   virtual void insert(InterfacedBase & ib, string val, int i) const
     throw(InterfaceException);
+private:
+  inline void setImpl(InterfacedBase & ib, string val, int i, StandardT)
+    const throw(InterfaceException);
 
+  inline void setImpl(InterfacedBase & ib, string val, int i, DimensionT) 
+    const throw(InterfaceException);
+
+  inline void insertImpl(InterfacedBase & ib, string val, int i, StandardT)
+    const throw(InterfaceException);
+
+  inline void insertImpl(InterfacedBase & ib, string val, int i, DimensionT) 
+    const throw(InterfaceException);
+public:
+  
   /**
    * Insert a new object before the \a i'th element of a container of
    * member variables of \a ib and set it to \a val.

@@ -7,7 +7,7 @@
 namespace ThePEG {
 
 inline Hint::Hint()
-  : theScale(0.0), theStopFlag(false) {}
+  : theScale(Energy2()), theStopFlag(false) {}
 
 inline Hint::Hint(const Hint & h)
   : Base(h), theTagged(h.theTagged), theScale(h.theScale),

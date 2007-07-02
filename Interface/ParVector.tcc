@@ -44,35 +44,69 @@ void ParVectorTBase<Type>::setDef(InterfacedBase & i, int place) const
 }
 
 template <typename Type>
-void ParVectorTBase<Type>::
-set(InterfacedBase & i, string newValue, int place) const
-  throw(InterfaceException) {
+inline void ParVectorTBase<Type>::
+setImpl(InterfacedBase & i, string newValue, int place, StandardT) 
+  const throw(InterfaceException) {
   istringstream is(newValue);
   if ( unit() > Type() ) {
     double t;
     is >> t;
     tset(i, Type(t*unit()), place);
   } else {
-    Type t;
+    Type t = Type();
     is >> t;
     tset(i, t, place);
   }
 }
 
 template <typename Type>
-void ParVectorTBase<Type>::
-insert(InterfacedBase & i, string newValue, int place) const
+inline void ParVectorTBase<Type>::
+setImpl(InterfacedBase & i, string newValue, int place, DimensionT) 
+  const throw(InterfaceException) {
+  istringstream is(newValue);
+  double t;
+  is >> t;
+  tset(i, t*unit(), place);
+}
+
+template <typename T>
+void ParVectorTBase<T>::
+set(InterfacedBase & i, string newValue, int place) const 
   throw(InterfaceException) {
+  setImpl(i, newValue, place, typename TypeTraits<T>::DimType());
+}
+
+template <typename Type>
+inline void ParVectorTBase<Type>::
+insertImpl(InterfacedBase & i, string newValue, int place, StandardT) 
+  const throw(InterfaceException) {
   istringstream is(newValue);
   if ( unit() > Type() ) {
     double t;
     is >> t;
     tinsert(i, Type(t*unit()), place);
   } else {
-    Type t;
+    Type t = Type();
     is >> t;
     tinsert(i, t, place);
   }
+}
+
+template <typename Type>
+inline void ParVectorTBase<Type>::
+insertImpl(InterfacedBase & i, string newValue, int place, DimensionT) 
+  const throw(InterfaceException) {
+  istringstream is(newValue);
+  double t;
+  is >> t;
+  tinsert(i, t*unit(), place);
+}
+
+template <typename T>
+void ParVectorTBase<T>::
+insert(InterfacedBase & i, string newValue, int place) const 
+  throw(InterfaceException) {
+  insertImpl(i, newValue, place, typename TypeTraits<T>::DimType());
 }
 
 template <typename Type>
@@ -83,10 +117,7 @@ get(const InterfacedBase & i) const throw(InterfaceException) {
   for ( typename TypeVector::iterator it = tres.begin();
 	it != tres.end(); ++it ) {
     ostringstream os;
-    if ( unit() > Type() )
-      os << *it/unit();
-    else
-      os << *it;
+    putUnit(os, *it);
     res.push_back(os.str());
   }
   return res;
@@ -96,10 +127,7 @@ template <typename Type>
 string ParVectorTBase<Type>::
 minimum(const InterfacedBase & i, int place) const throw(InterfaceException) {
   ostringstream os;
-  if ( unit() > Type() )
-    os << tminimum(i, place)/unit();
-  else
-    os << tminimum(i, place);
+  putUnit(os, tminimum(i,place));
   return os.str();
 }
 
@@ -107,10 +135,7 @@ template <typename Type>
 string ParVectorTBase<Type>::
 maximum(const InterfacedBase & i, int place) const throw(InterfaceException) {
   ostringstream os;
-  if ( unit() > Type() )
-    os << tmaximum(i, place)/unit();
-  else
-    os << tmaximum(i, place);
+  putUnit(os, tmaximum(i, place));
   return os.str();
 }
 
@@ -118,20 +143,14 @@ template <typename Type>
 string ParVectorTBase<Type>::
 def(const InterfacedBase & i, int place) const throw(InterfaceException) {
   ostringstream os;
-  if ( unit() > Type() )
-    os << tdef(i, place)/unit();
-  else
-    os << tdef(i, place);
+  putUnit(os, tdef(i,place));
   return os.str();
 }
 
 template <typename Type>
 string ParVectorTBase<Type>::def() const {
   ostringstream os;
-  if ( unit() > Type() )
-    os << tdef()/unit();
-  else
-    os << tdef();
+  putUnit(os, tdef());
   return os.str();
 }
 
@@ -287,10 +306,26 @@ void ParVector<T,Type>::doxygenDescription(ostream & os) const {
   os << "<br>\n";
 }
 
+namespace {
+  template <typename T>
+  inline
+  void ostreamInsert2(ostream & os, T v, DimensionT) {
+    os << ounit(v,T::baseunit());
+  }
+  
+  template <typename T>
+  inline
+  void ostreamInsert2(ostream & os, T v, StandardT) {
+    os << v;
+  }
+}
+
 template <typename T>
 ParVExLimit::ParVExLimit(const InterfaceBase & i,
 			 const InterfacedBase & o, T v) {
-  theMessage << "Could not set/insert " << v << " in the parameter vector \""
+  theMessage << "Could not set/insert ";
+  ostreamInsert2(theMessage,v,typename TypeTraits<T>::DimType() );
+  theMessage << " in the parameter vector \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because the value is outside the specified limits.";
   severity(warning);
@@ -299,7 +334,9 @@ ParVExLimit::ParVExLimit(const InterfaceBase & i,
 template <typename T>
 ParVExUnknown::ParVExUnknown(const InterfaceBase & i, const InterfacedBase & o,
 			     T v, int j, const char * s) {
-  theMessage << "Could not " << s << " the value " << v << " at position "
+  theMessage << "Could not " << s << " the value ";
+  ostreamInsert2(theMessage,v,typename TypeTraits<T>::DimType() );
+  theMessage << " at position "
 	     << j << " in the parameter vector \"" << i.name()
 	     << "\" for the object \"" << o.name() << "\" because the "
 	     << s << " function threw an unknown exception.";

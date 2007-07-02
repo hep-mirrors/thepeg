@@ -14,7 +14,7 @@
 #endif
 
 using namespace ThePEG;
-using namespace Helicity;
+using namespace ThePEG::Helicity;
 
 AbstractNoPIOClassDescription<HelicityVertex>
 HelicityVertex::initHelicityVertex;

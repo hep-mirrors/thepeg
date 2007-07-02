@@ -69,7 +69,7 @@ void PartonBin::persistentInput(PersistentIStream & is, int) {
   Energy2 smax = 0.0*GeV2;
   is >> theParticle >> theIncomingBin >> theOutgoing >> theParton >> thePDF
      >> theRemnantHandler >> thePDFDim >> theRemDim
-     >> lmin >> lmax >> iunit(scmin, GeV2) >> iunit(scmax, GeV)
+     >> lmin >> lmax >> iunit(scmin, GeV2) >> iunit(scmax, GeV2)
      >> iunit(smax, GeV2);
   theCuts = PDFCuts(Interval<double>(lmin, lmax),
 		    SInterval(scmin, scmax), smax);

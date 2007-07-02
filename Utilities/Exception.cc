@@ -51,7 +51,7 @@ extern "C" {
       sum += (**p).momentum();
       ++p;
     }
-    cerr << sum << '\t' << sum.m() << endl;
+    cerr << ounit(sum,GeV) << "GeV \t" << ounit(sum.m(),GeV) << " GeV\n";
   }
 
 }

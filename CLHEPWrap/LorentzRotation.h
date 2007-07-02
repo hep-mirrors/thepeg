@@ -4,7 +4,7 @@
 //
 // This is the declaration of the LorentzRotation class.
 //
-#include "ThePEG/CLHEPWrap/SpinOneLorentzRotation.h"
+#include "SpinOneLorentzRotation.h"
 #include "SpinHalfLorentzRotation.h"
 #include "LorentzRotation.fh"
 
@@ -51,7 +51,7 @@ public:
    * Constructor giving the vector for a Lorentz boost.
    * @param b The boost vector
    */
-  inline LorentzRotation (const Hep3Vector & b);
+  inline LorentzRotation (const Boost & b);
 
   /**
    * The destructor.
@@ -99,7 +99,7 @@ public:
    * Specify a Lorentz Boost as a vector
    * @param b The boost vector
    */
-  LorentzRotation & setBoost (const Hep3Vector & b);
+  LorentzRotation & setBoost (const Boost & b);
 
   /**
    * Specify a boost by the given factor along the x-axis
@@ -124,7 +124,7 @@ public:
    * @param delta The angle
    * @param axis The axis
    */
-  inline LorentzRotation & setRotate(double delta, const Hep3Vector& axis);
+  inline LorentzRotation & setRotate(double delta, const Axis & axis);
 
   /**
    * Specify a rotation by the given angle about the x-axis
@@ -339,14 +339,16 @@ public:
   /**
    * Product with a LorentzVector simply returns the rotated vector.
    */
-  inline LorentzVector operator*(const LorentzVector & lv) const;
+  template <typename Value>
+  inline LorentzVector<Value>
+  operator*(const LorentzVector<Value> & lv) const;
 
   /**
    * Product with a Lorentz5Vector simply returns the rotated vector.
    */
-  template <typename FloatType>
-  inline Lorentz5Vector<FloatType>
-  operator*(const Lorentz5Vector<FloatType> & lv) const;
+  template <typename Value>
+  inline Lorentz5Vector<Value>
+  operator*(const Lorentz5Vector<Value> & lv) const;
 
   /**
    * Product of two LorentzRotations (this) * lt - matrix multiplication  
@@ -382,7 +384,7 @@ public:
   /**
    *  Rotation around specified vector - LT = Rotation(delta,axis)*LT
    */
-  inline LorentzRotation & rotate(double delta, const Hep3Vector& axis);
+  inline LorentzRotation & rotate(double delta, const Axis & axis);
 
   /**
    * Pure boost along the x-axis; equivalent to LT = BoostX(beta) * LT
@@ -407,7 +409,7 @@ public:
   /**
    *  boost equivalent to LT = Boost(bv) * LT
    */
-  LorentzRotation & boost(const Hep3Vector & bv);
+  LorentzRotation & boost(const Boost & bv);
   //@}
 
 private:

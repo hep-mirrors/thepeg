@@ -102,8 +102,8 @@ namespace Helicity{
  * @author Peter Richardson
  *
  */
+template<typename Value>
 class LorentzSpinor {
-
 public:
 
   /** @name Standard constructors. */
@@ -126,7 +126,7 @@ public:
    * optionally specifying \a t, the type and \a r, the choice of
    * dirac matrix.
    */
-  inline LorentzSpinor(Complex,Complex,Complex,Complex,
+  inline LorentzSpinor(complex<Value>,complex<Value>,complex<Value>,complex<Value>,
 		       SpinorType t = unknown_spinortype,
 		       DiracRep r = defaultDRep);
 
@@ -134,7 +134,7 @@ public:
    * Constructor with complex numbers specifying the components,
    * optionally specifying the choice of dirac matrix
    */
-  inline LorentzSpinor(Complex,Complex,Complex,Complex,DiracRep);
+  inline LorentzSpinor(complex<Value>,complex<Value>,complex<Value>,complex<Value>,DiracRep);
   //@}
 
   /** @name Access the components. */
@@ -142,62 +142,62 @@ public:
   /**
    * Subscript operator to return spinor components
    */
-  inline Complex operator[](int) const;
+  inline complex<Value> operator[](int) const;
 
   /**
    * Subscript operator to return spinor components
    */
-  inline Complex operator()(int) const;
+  inline complex<Value> operator()(int) const;
 
   /**
    * Set components by index.
    */
-  inline Complex & operator()(int);
+  inline complex<Value> & operator()(int);
 
   /**
    * Set components by index.
    */
-  inline Complex & operator[](int);
+  inline complex<Value> & operator[](int);
 
   /**
    * Get first component.
    */
-  inline Complex s1() const;
+  inline complex<Value> s1() const;
 
   /**
    * Get second component.
    */
-  inline Complex s2() const;
+  inline complex<Value> s2() const;
 
   /**
    * Get third component.
    */
-  inline Complex s3() const;
+  inline complex<Value> s3() const;
 
   /**
    * Get fourth component.
    */
-  inline Complex s4() const;
+  inline complex<Value> s4() const;
 
   /**
    * Set first component.
    */
-  inline void setS1(Complex);
+  inline void setS1(complex<Value>);
 
   /**
    * Set second component.
    */
-  inline void setS2(Complex);
+  inline void setS2(complex<Value>);
 
   /**
    * Set third component.
    */
-  inline void setS3(Complex);
+  inline void setS3(complex<Value>);
 
   /**
    * Set fourth component.
    */
-  inline void setS4(Complex);
+  inline void setS4(complex<Value>);
   //@}
 
   /**
@@ -210,7 +210,7 @@ public:
   /**
    * Return the barred spinor
    */
-  LorentzSpinorBar bar() const;
+  LorentzSpinorBar<Value> bar() const;
 
   /**
    * Return the conjugated spinor \f$u_c=C\bar{u}^T\f$. This operation
@@ -227,7 +227,7 @@ public:
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  LorentzSpinor & boost(const Hep3Vector &);
+  LorentzSpinor & boost(const Boost &);
 
   /**
    * General Lorentz transformation
@@ -270,17 +270,23 @@ public:
    *  Calculate the left-handed current \f$\bar{f}\gamma^\mu P_Lf\f$.
    * @param fbar The barred spinor.
    */
-  inline LorentzPolarizationVector leftCurrent(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  leftCurrent(const LorentzSpinorBar<ValueB>& fbar) const;
   /**
    *  Calculate the right-handed current \f$\bar{f}\gamma^\mu P_Rf\f$.
    * @param fbar The barred spinor.
    */
-  inline LorentzPolarizationVector rightCurrent(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  rightCurrent(const LorentzSpinorBar<ValueB>& fbar) const;
   /**
    *  Calculate the vector current \f$\bar{f}\gamma^\mu f\f$
    * @param fbar The barred spinor.
    */
-  inline LorentzPolarizationVector vectorCurrent(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  vectorCurrent(const LorentzSpinorBar<ValueB>& fbar) const;
 
   /**
    * Calculate a general current with arbitary left and right couplings,
@@ -289,8 +295,10 @@ public:
    * @param left The left coupling, \f$c_L\f$.
    * @param right The right coupling, \f$c_R\f$.
    */
-  inline LorentzPolarizationVector generalCurrent(const LorentzSpinorBar& fbar,
-						  Complex left, Complex right) const;
+  template<typename ValueB>
+  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  generalCurrent(const LorentzSpinorBar<ValueB>& fbar,
+		 Complex left, Complex right) const;
   //@}
 
   /** @name Functions to calculate certain scalars. */
@@ -299,24 +307,32 @@ public:
    * Calculate the left-handed scalar \f$\bar{f}P_Lf\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex leftScalar(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  leftScalar(const LorentzSpinorBar<ValueB>& fbar) const;
 
   /**
    * Calculate the right-handed scalar \f$\bar{f}P_Rf\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex rightScalar(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  rightScalar(const LorentzSpinorBar<ValueB>& fbar) const;
 
   /**
    *  Calculate the scalar \f$\bar{f}f\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex scalar(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  scalar(const LorentzSpinorBar<ValueB>& fbar) const;
   /**
    *  Calculate the pseudoscalar \f$\bar{f}\gamma_5f\f$.
    * @param fbar The barred spinor.
    */
-  inline Complex pseudoScalar(const LorentzSpinorBar& fbar) const;
+  template<typename ValueB>
+  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  pseudoScalar(const LorentzSpinorBar<ValueB>& fbar) const;
 
   /**
    * Calculate a general scalar product with arbitary left and right couplings,
@@ -325,8 +341,10 @@ public:
    * @param left The left coupling, \f$c_L\f$.
    * @param right The right coupling, \f$c_R\f$.
    */
-  inline Complex generalScalar(const LorentzSpinorBar& fbar,
-			       Complex left, Complex right) const;
+  template<typename ValueB>
+  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  generalScalar(const LorentzSpinorBar<ValueB>& fbar,
+		Complex left, Complex right) const;
   //@}
 
 private:
@@ -334,7 +352,7 @@ private:
   /**
    * Storage of the components.
    */
-  Complex _spin[4];
+  complex<Value> _spin[4];
 
   /**
    * Definition of the Dirac matrices used.
@@ -352,6 +370,9 @@ private:
 }
 
 #include "LorentzSpinor.icc"
+#ifndef ThePEG_TEMPLATES_IN_CC_FILE
+#include "LorentzSpinor.tcc"
+#endif 
 
 #endif
 

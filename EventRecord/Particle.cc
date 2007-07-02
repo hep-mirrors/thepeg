@@ -62,13 +62,14 @@ void Particle::initFull() const {
   if ( theRep ) return;
   theRep = new ParticleRep;
 
-  double width = data().generateWidth(mass());
-  double lifetime = data().generateLifeTime(mass(), width);
+  Energy width = data().generateWidth(mass());
+  Time lifetime = data().generateLifeTime(mass(), width);
 
   theRep->theLifeLength.setTau(lifetime);
 
-  theRep->theLifeLength.setVect(static_cast<const LorentzMomentum &>
-    (momentum()*(lifetime/max(mass(), Constants::epsilon*GeV))));
+  theRep->theLifeLength.
+    setVect((momentum()*(lifetime /
+			 max(mass(), Constants::epsilon*GeV))));
 
   theRep->theLifeLength.rescaleEnergy();
 }
@@ -194,13 +195,13 @@ void Particle::deepRotateZ(double a) {
   deepTransform(r);
 }
 
-void Particle::rotate(double a, const Vector3 & axis) {
+void Particle::rotate(double a, const Axis & axis) {
   LorentzRotation r;
   r.rotate(a, axis);
   transform(r);
 }
 
-void Particle::deepRotate(double a, const Vector3 & axis) {
+void Particle::deepRotate(double a, const Axis & axis) {
   LorentzRotation r;
   r.rotate(a, axis);
   deepTransform(r);

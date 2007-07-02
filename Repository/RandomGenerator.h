@@ -7,7 +7,6 @@
 // #include "RandomGenerator.fh"
 // #include "RandomGenerator.xh"
 #include "ThePEG/Interface/Interfaced.h"
-#include "ThePEG/CLHEPWrap/RandomEngine.fh"
 
 namespace ThePEG {
 
@@ -59,18 +58,10 @@ public:
   virtual ~RandomGenerator();
   //@}
 
-  /** @name Access the underlying random engine. */
-  //@{
-  /**
-   * Return a reference to the underlying CLHEP:RandomEngine.
-   */
-  virtual RandomEngine & randomGenerator() = 0;
-
   /**
    * Reset the underlying CLHEP random engine with the given \a seed.
    */
   virtual void setSeed(long seed) = 0;
-  //@}
 
   /** @name Functions to return random numbers. */
   //@{
@@ -79,6 +70,20 @@ public:
    * \f$]0,1[\f$.
    */
   inline double rnd();
+
+  /**
+   * Return a flat random number in the interval
+   * \f$]0,b[\f$.
+   */
+  template <typename Unit>
+  inline Unit rnd(Unit b);
+
+  /**
+   * Return a flat random number in the interval
+   * \f$]a,b[\f$.
+   */
+  template <typename Unit>
+  inline Unit rnd(Unit a, Unit b);
 
   /**
    * Return \a n flat random number in the interval
@@ -133,6 +138,74 @@ public:
    * p1+\a p2+\a p3). Uses rnd().
    */
   int rnd4(double p0, double p1, double p2, double p3);
+
+  /**
+   * Return a number between zero and infinity, distributed according
+   * to \f$e^-x\f$.
+   */
+  inline double rndExp();
+
+  /**
+   * Return a number between zero and infinity, distributed according
+   * to \f$e^-{x/\mu}\f$ where \f$\mu\f$ is the \a mean value.
+   */
+  template <typename Unit>
+  inline Unit rndExp(Unit mean);
+
+  /**
+   * Return a number distributed according to a Gaussian distribution
+   * with zero mean and unit variance.
+   */
+  inline double rndGauss();
+
+  /**
+   * Return a number distributed according to a Gaussian distribution
+   * with a given standard deviation, \a sigma, and a given \a mean.
+   */
+  template <typename Unit>
+  inline Unit rndGauss(Unit sigma, Unit mean = Unit());
+
+  /**
+   * Return a positive number distributed according to a
+   * non-relativistic Breit-Wigner with a given width, \a gamma, and a
+   * given \a mean.
+   */
+  template <typename Unit>
+  inline Unit rndBW(Unit mean, Unit gamma);
+
+  /**
+   * Return a positive number distributed according to a
+   * non-relativistic Breit-Wigner with a given width, \a gamma, and a
+   * given \a mean. The distribution is cut-off so that the number is
+   * between \a mean - \a cut and \a mean + \a cut
+   */
+  template <typename Unit>
+  inline Unit rndBW(Unit mean, Unit gamma, Unit cut);
+
+  /**
+   * Return a positive number distributed according to a relativistic
+   * Breit-Wigner with a given width, \a gamma, and a given \a mean.
+   */
+  template <typename Unit>
+  inline Unit rndRelBW(Unit mean, Unit gamma);
+
+  /**
+   * Return a positive number distributed according to a relativistic
+   * Breit-Wigner with a given width, \a gamma, and a given \a
+   * mean. The distribution is cut-off so that the number is between
+   * \a mean - \a cut and \a mean + \a cut
+   */
+  template <typename Unit>
+  inline Unit rndRelBW(Unit mean, Unit gamma, Unit cut);
+
+  /**
+   * Return a non-negative number generated according to a Poissonian
+   * distribution with a given \a mean. Warning: the method
+   * implemented is very slow for large mean and large return
+   * values. For this reason the maximum return value is given by \a
+   * nmax.
+   */
+  inline long rndPoisson(double mean, long nmax = 10000);
   //@}
 
   /** @name Access the cached random numbers from the underlying engine. */
@@ -205,7 +278,7 @@ public:
    */
   static void Init();
 
-private:
+protected:
 
   /**
    * Utility function for the interface.
@@ -215,7 +288,7 @@ private:
   /**
    * Fill the cache with random numbers.
    */
-  virtual void getFlatNumbers();
+  virtual void fill() = 0;
 
   /**
    * A vector of cached numbers.
@@ -236,6 +309,16 @@ private:
    * The seed to initialize the random generator with.
    */
   long theSeed;
+
+  /**
+   * A saved Gaussian random number.
+   */
+  mutable double savedGauss;
+
+  /**
+   * Indicate the precense of a saved Gaussian random number.
+   */
+  mutable bool gaussSaved;
 
 private:
 

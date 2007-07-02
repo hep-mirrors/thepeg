@@ -16,7 +16,7 @@ CLEANFILES = Makefile.dist Makefile.common
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-libThePEG_la_LDFLAGS = $(LIBTOOLVERSIONINFO) -export-dynamic -L$(CLHEPPATH)/lib
+libThePEG_la_LDFLAGS = $(LIBTOOLVERSIONINFO) -export-dynamic
 libThePEG_la_SOURCES =
 libThePEG_la_LIBADD = \
 	$(top_builddir)/Utilities/libThePEGUtilities.la \
@@ -34,7 +34,7 @@ libThePEG_la_LIBADD = \
 	$(top_builddir)/Helicity/libThePEGHelicity.la \
 	$(top_builddir)/Cuts/libThePEGCuts.la \
 	$(top_builddir)/Analysis/libThePEGHist.la \
-	$(CLHEPLIB) -ldl 
+	-ldl 
 
 all-local: done-all-links
 

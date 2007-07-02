@@ -75,7 +75,7 @@ inline double pXGenerate(double e, double xl, double dx, double rnd) {
 
 template <typename FloatType>
 inline double relativeError(FloatType x, FloatType y) {
-  return ( x == y? 0.0: (x - y)/(abs(x) + abs(y)) );
+  return ( x == y ? 0.0 : double((x - y)/(abs(x) + abs(y))) );
 }
 
 template <typename T>
@@ -90,7 +90,7 @@ inline T absmax(const T & x, const T & y) {
 
 template <typename T, typename U>
 inline T sign(T x, U y) {
-  return y > 0? abs(x): -abs(x);
+  return y > U()? abs(x): -abs(x);
 }
 
 template <int N>

@@ -76,12 +76,27 @@ inline void ParameterTBase<Type>::unit(Type u) {
   theUnit = u;
 }
 
-template <typename Type>
-inline void ParameterTBase<Type>::putUnit(ostream & os, Type val) const {
-  if ( unit() > Type() )
-    os << val/unit();
-  else
-    os << val;
+namespace {
+  template <typename T>
+  inline
+  void putUnitImpl(ostream & os, T v, T u, DimensionT) {
+    os << v/u;
+  }
+  
+  template <typename T>
+  inline
+  void putUnitImpl(ostream & os, T v, T u, StandardT) {
+    if ( u > T() )
+      os << v/u;
+    else
+      os << v;
+  }
+}
+
+template <typename T>
+inline 
+void ParameterTBase<T>::putUnit(ostream & os, T val) const {
+  putUnitImpl(os, val, unit(), typename TypeTraits<T>::DimType());
 }
 
 // template <typename T, typename Type>

@@ -6,6 +6,7 @@
 //
 #include "ThePEG/Config/Complex.h"
 #include "ThePEG/Helicity/HelicityDefinitions.h"
+#include "ThreeVector.h"
 
 namespace ThePEG {
 
@@ -59,7 +60,7 @@ public:
    * Constructor giving the vector for a Lorentz boost.
    * @param b The boost vector
    */
-  inline SpinHalfLorentzRotation (const Hep3Vector & b);
+  inline SpinHalfLorentzRotation (const Boost & b);
 
   /**
    * The destructor.
@@ -107,7 +108,7 @@ public:
    * Specify a Lorentz Boost as a vector
    * @param b The boost vector
    */
-  SpinHalfLorentzRotation & setBoost (const Hep3Vector & b);
+  SpinHalfLorentzRotation & setBoost (const Boost & b);
 
   /**
    * Specify a boost by the given factor along the x-axis
@@ -132,7 +133,7 @@ public:
    * @param delta The angle
    * @param axis The axis
    */
-  inline SpinHalfLorentzRotation & setRotate(double delta, const Hep3Vector& axis);
+  inline SpinHalfLorentzRotation & setRotate(double delta, const Axis & axis);
 
   /**
    * Specify a rotation by the given angle about the x-axis
@@ -281,7 +282,7 @@ public:
   /**
    *  Rotation around specified vector - LT = Rotation(delta,axis)*LT
    */
-  inline SpinHalfLorentzRotation & rotate(double delta, const Hep3Vector& axis);
+  inline SpinHalfLorentzRotation & rotate(double delta, const Axis & axis);
 
   /**
    * Pure boost along the x-axis; equivalent to LT = BoostX(beta) * LT
@@ -306,7 +307,7 @@ public:
   /**
    * General boost equivalent to LT = Boost(bv) * LT
    */
-  SpinHalfLorentzRotation & boost(const Hep3Vector & bv);
+  SpinHalfLorentzRotation & boost(const Boost & bv);
   //@}
 
 protected:

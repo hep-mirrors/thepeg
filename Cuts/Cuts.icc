@@ -11,7 +11,7 @@ inline Cuts::Cuts()
     theCurrentYHat(0), theMHatMin(2.0*GeV), theMHatMax(Constants::MaxEnergy),
     theYHatMin(-Constants::MaxRapidity), theYHatMax(Constants::MaxRapidity),
     theX1Min(0.0), theX1Max(1.0), theX2Min(0.0), theX2Max(1.0),
-    theScaleMin(0.0*GeV), theScaleMax(Constants::MaxEnergy2) {}
+    theScaleMin(0.0*GeV2), theScaleMax(Constants::MaxEnergy2) {}
 
 inline Cuts::Cuts(const Cuts & x)
   : Interfaced(x), theSMax(x.theSMax), theY(x.theY),
@@ -52,11 +52,11 @@ inline bool Cuts::sHat(Energy2 sh) const {
   return sh > sHatMin() && sh <= sHatMax();
 }
 
-inline Energy2 Cuts::mHatMin() const {
+inline Energy Cuts::mHatMin() const {
   return max(theMHatMin, sqrt(theX1Min*theX2Min*SMax()));
 }
 
-inline Energy2 Cuts::mHatMax() const {
+inline Energy Cuts::mHatMax() const {
   return min(theMHatMax, sqrt(theX1Max*theX2Max*SMax()));
 }
 

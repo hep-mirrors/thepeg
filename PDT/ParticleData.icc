@@ -40,9 +40,9 @@ inline Energy ParticleData::constituentMass() const {
 }
 
 inline Energy ParticleData::width() const {
-  return theWidth >= 0.0? theWidth:
-    ( theCTau > 0.0? hbarc/theCTau:
-      ( theCTau == 0.0? FLT_MAX: 0.0 ) );
+  return theWidth >= Energy() ? theWidth :
+    ( theCTau > Length() ? hbarc/theCTau :
+      ( theCTau == Length() ? Constants::MaxEnergy : Energy() ) );
 }
 
 inline Energy ParticleData::widthCut(Energy wci) {
@@ -63,9 +63,9 @@ inline Energy ParticleData::widthLoCut() const {
 }
 
 inline Length ParticleData::cTau() const {
-  return theCTau >= 0.0? theCTau:
-    ( theWidth > 0.0? hbarc/theWidth:
-      ( theWidth == 0.0? FLT_MAX: 0.0 ) );
+  return theCTau >= Length() ? theCTau :
+    ( theWidth > Energy() ? hbarc/theWidth :
+      ( theWidth == Energy() ? Constants::MaxLength : Length() ) );
 }
 
 inline Charge ParticleData::charge() const {

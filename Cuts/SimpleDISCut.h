@@ -199,22 +199,22 @@ private:
   /**
    * Helper function used by the interface.
    */
-  Energy maxMinQ2() const;
+  Energy2 maxMinQ2() const;
 
   /**
    * Helper function used by the interface.
    */
-  Energy minMaxQ2() const;
+  Energy2 minMaxQ2() const;
 
   /**
    * Helper function used by the interface.
    */
-  Energy maxMinW2() const;
+  Energy2 maxMinW2() const;
 
   /**
    * Helper function used by the interface.
    */
-  Energy minMaxW2() const;
+  Energy2 minMaxW2() const;
 
 private:
 

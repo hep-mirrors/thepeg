@@ -134,7 +134,7 @@ protected:
    * Setup the \a l\f$=\log{1/x}\f$ and \a scale \f$Q^2\f$ to be used
    * in the following call to uv(), dv)=, etc.
    */
-  void setup(double l, Energy2 scale, Energy mu2, Energy2 lam2) const;
+  void setup(double l, Energy2 scale, Energy2 mu2, Energy2 lam2) const;
 
   /**
    * The form of the valens density functions.

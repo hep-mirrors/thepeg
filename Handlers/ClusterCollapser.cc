@@ -356,7 +356,7 @@ collapse(tStepPtr newStep, const ColourSinglet & cs,
 				       pnew, sqrt(sqr(pnew) + sqr(mh)), mh));
 
     comp.pop_back();
-    R = R*LorentzRotation(0.0, 0.0, -(pcomp.e()*pcomp.pz() +
+    R = R*LorentzRotation(0.0, 0.0, -(pcomp.e()*pcomp.z() +
 				      sqrt(sqr(pnew) + pcomp.m2())*pnew)/
 			             (sqr(pnew) + sqr(pcomp.e())));
     Utilities::transform(comp, R);
@@ -384,7 +384,7 @@ collapse2(tStepPtr newStep, const ColourSinglet & cs) const {
   // was not enough energy.
   LorentzMomentum pc = cs.momentum();
   Energy2 s = pc.m2();
-  if ( h[0]->mass() + h[1]->mass() >= sqrt(s) ) return false;
+  if ( h[0]->mass() + h[1]->mass() >= Energy(sqrt(s)) ) return false;
 
   // Now set the momenta of the hadrons (distributed isotropically in
   // the cluster cm system).

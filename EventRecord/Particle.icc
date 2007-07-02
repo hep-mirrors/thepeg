@@ -324,22 +324,22 @@ inline void Particle::setLifeLength(const Lorentz5Distance & d) {
 }
 
 inline Time Particle::lifeTime() const {
-  return lifeLength().m();
+  return lifeLength().mag();
 }
 
 inline void Particle::boost(double bx, double by, double bz) {
-  transform(LorentzRotation(Vector3(bx, by, bz)));
+  transform(LorentzRotation(Boost(bx, by, bz)));
 }
 
 inline void Particle::deepBoost(double bx, double by, double bz) {
-  deepTransform(LorentzRotation(Vector3(bx, by, bz)));
+  deepTransform(LorentzRotation(Boost(bx, by, bz)));
 }
 
-inline void Particle::boost(const Vector3 & p) {
+inline void Particle::boost(const Boost & p) {
   transform(LorentzRotation(p));
 }
 
-inline void Particle::deepBoost(const Vector3 & p) {
+inline void Particle::deepBoost(const Boost & p) {
   deepTransform(LorentzRotation(p));
 }
 
@@ -355,15 +355,15 @@ inline void Particle::number(int newNumber) {
   rep().theNumber = newNumber;
 }
 
-inline Energy Particle::massError() const {
+inline double Particle::massError() const {
   return theMomentum.massError();
 }
 
-inline Energy Particle::energyError() const {
+inline double Particle::energyError() const {
   return theMomentum.energyError();
 }
 
-inline Energy Particle::rhoError() const {
+inline double Particle::rhoError() const {
   return theMomentum.rhoError();
 }
 

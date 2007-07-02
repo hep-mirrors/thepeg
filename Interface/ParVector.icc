@@ -68,12 +68,27 @@ inline void ParVectorTBase<Type>::unit(Type u) {
   theUnit = u;
 }
 
+namespace {
+  template <typename T>
+  inline
+  void putUnitImpl2(ostream & os, T v, T u, DimensionT) {
+    os << v/u;
+  }
+  
+  template <typename T>
+  inline
+  void putUnitImpl2(ostream & os, T v, T u, StandardT) {
+    if ( u > T() )
+      os << v/u;
+    else
+      os << v;
+  }
+}
+
+
 template <typename Type>
 inline void ParVectorTBase<Type>::putUnit(ostream & os, Type val) const {
-  if ( unit() > Type() )
-    os << val/unit();
-  else
-    os << val;
+  putUnitImpl2(os, val, unit(), typename TypeTraits<Type>::DimType());
 }
 
 // template <typename T, typename Type>

@@ -83,7 +83,7 @@ double MEee2gZ2qq::me2() const {
   DVector save;
   meInfo(save << lastCont << lastBW);
   return (lastCont + intr + lastBW)*sqr(SM().alphaEM(scale()))*
-    (1.0 + alphaS/pi + (1.986-0.115*Nf)*sqr(alphaS/pi));
+    (1.0 + alphaS/Constants::pi + (1.986-0.115*Nf)*sqr(alphaS/Constants::pi));
 }
 
 Selector<MEee2gZ2qq::DiagramIndex>

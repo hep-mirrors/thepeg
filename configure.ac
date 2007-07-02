@@ -35,8 +35,7 @@ AC_LIBTOOL_DLOPEN
 
 AC_PROG_LIBTOOL
 
-AC_SEARCH_CLHEP
-
+AC_UNIT_CHECKING
 AC_SEARCH_LHAPDF
 
 AC_DEFINE_ENVDEFAULT(ThePEG_GZREAD_FILE,GZREAD_FILE,gunzip -c,[The command which, taking the name of a gzipped file as argument, unzips it and prints it to stdout. Default is "gunzip -c"])
@@ -53,7 +52,7 @@ AC_CHECK_DLOPEN
 AC_CHECK_FPUCONTROL
 
 
-AM_CPPFLAGS="-I\$(top_builddir)/include $CLHEPINCLUDE"
+AM_CPPFLAGS="-I\$(top_builddir)/include"
 AM_CXXFLAGS="-ansi -pedantic -Wall -W"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CXXFLAGS)

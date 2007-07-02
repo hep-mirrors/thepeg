@@ -28,11 +28,11 @@ double ReweightMinPT::weight() const {
 }
 
 void ReweightMinPT::persistentOutput(PersistentOStream & os) const {
-  os << power << scale;
+  os << power << ounit(scale,GeV);
 }
 
 void ReweightMinPT::persistentInput(PersistentIStream & is, int) {
-  is >> power >> scale;
+  is >> power >> iunit(scale,GeV);
 }
 
 ClassDescription<ReweightMinPT> ReweightMinPT::initReweightMinPT;

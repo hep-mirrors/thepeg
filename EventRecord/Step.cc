@@ -390,9 +390,9 @@ ostream & ThePEG::operator<<(ostream & os, const Step & s) {
   Particle::PrintParticles(os, s.intermediates(), &s);
   os << "--- final:" << endl;
   LorentzMomentum sum;
-  Energy sumx = Energy();
-  Energy sumy = Energy();
-  Energy sumz = Energy();
+  Energy2 sumx = Energy2();
+  Energy2 sumy = Energy2();
+  Energy2 sumz = Energy2();
   Particle::PrintParticles(os, s.particles(), &s);
   for ( ParticleSet::const_iterator it = s.particles().begin();
 	it != s.particles().end(); ++it ) {
@@ -405,11 +405,17 @@ ostream & ThePEG::operator<<(ostream & os, const Step & s) {
      << "---------------------------------------" << endl
      << "     Sum of momenta:        ";
   int oldprecision = os.precision();
-  sumx = ( abs(sum.x()) > sqrt(Constants::epsilon*sumx) ? sum.x(): Energy() );
-  sumy = ( abs(sum.y()) > sqrt(Constants::epsilon*sumy) ? sum.y(): Energy() );
-  sumz = ( abs(sum.z()) > sqrt(Constants::epsilon*sumz) ? sum.z(): Energy() );
-  os << setprecision(3) << setw(10) << sumx/GeV << setw(10) << sumy/GeV
-     << setw(10) << sumz/GeV << setw(10) << sum.e()/GeV
+  Energy sumx1
+    = ( sqr(sum.x()) > Constants::epsilon*sumx ? 
+	sum.x(): Energy() );
+  Energy sumy1
+    = ( sqr(sum.y()) > Constants::epsilon*sumy ? 
+	sum.y(): Energy() );
+  Energy sumz1
+    = ( sqr(sum.z()) > Constants::epsilon*sumz ? 
+	sum.z(): Energy() );
+  os << setprecision(3) << setw(10) << sumx1/GeV << setw(10) << sumy1/GeV
+     << setw(10) << sumz1/GeV << setw(10) << sum.e()/GeV
      << setw(10) << sum.m()/GeV << endl << setprecision(oldprecision);
   return os;
 }

@@ -223,6 +223,17 @@ public:
    */
   virtual string type() const;
 
+private:
+  inline void setImpl (InterfacedBase & i, 
+		       string newValue, StandardT) 
+    const throw(InterfaceException);
+
+  inline void setImpl (InterfacedBase & i, 
+		       string newValue, DimensionT) 
+    const throw(InterfaceException);
+
+public:
+
   /**
    * Set the member variables of \a ib to \a val. Uses a stringstream
    * to read the \a val into a Type object and then calls

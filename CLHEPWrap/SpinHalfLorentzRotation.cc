@@ -67,7 +67,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (double bx, double b
 }
 
 // specify a boost vector
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (const Hep3Vector & b)
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (const Boost & b)
 {
   // work out beta and chi
   static double eps=1e-10;
@@ -307,7 +307,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, d
 }
 
 // General boost equivalent to LT = Boost(bv) * LT
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Hep3Vector & b)
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b)
 {
   // work out beta and chi
   static double eps=1e-10;

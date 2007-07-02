@@ -5,10 +5,8 @@
 // Forward declaration of the <!id>Lorentz5Vector<!!id> class.
 
 namespace ThePEG {
-
-template <typename FloatType>
+template <typename Value>
 class Lorentz5Vector;
-
 }
 
 #endif /* ThePEG_Lorentz5Vector_FH */

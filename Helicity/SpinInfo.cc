@@ -9,7 +9,7 @@
 
 
 using namespace ThePEG;
-using namespace Helicity;
+using namespace ThePEG::Helicity;
 
 SpinInfo::~SpinInfo() {}
 
@@ -21,4 +21,4 @@ void SpinInfo::Init() {}
 void SpinInfo::transform(const LorentzMomentum &, LorentzRotation r)
 {_currentmomentum.transform(r);}
 
-const Energy SpinInfo::_eps=1e-10*MeV;
+const double SpinInfo::_eps=1e-10;

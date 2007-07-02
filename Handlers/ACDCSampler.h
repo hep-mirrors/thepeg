@@ -9,6 +9,7 @@
 #include "ThePEG/Repository/RandomGenerator.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.xh"
+
 // #include "ACDCSampler.fh"
 // #include "ACDCSampler.xh"
 
@@ -290,7 +291,7 @@ struct ACDCFncTraits<ThePEG::tStdEHPtr>: public ACDCTraitsType {
   static inline double value(const tStdEHPtr & eh, const DVector & x) {
     using namespace ThePEG::Units;
     try {
-      return eh->dSigDR(x)*ThePEG::sqr(hbarc)/nanobarn;
+      return eh->dSigDR(x)/nanobarn;
     }
     catch ( ThePEG::ImpossibleKinematics & v ) {
       breakThePEG();

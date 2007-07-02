@@ -5,8 +5,8 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDT/PDT.h"
-#include "ThePEG/CLHEPWrap/PhysicalConstants.h"
 #include "ThePEG/CLHEPWrap/LorentzVector.h"
+#include "ThePEG/CLHEPWrap/ThreeVector.h"
 #include "ThePEG/Interface/Interfaced.h"
 #include "ThePEG/Utilities/Selector.h"
 #include "ThePEG/PDT/WidthGenerator.fh"

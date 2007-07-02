@@ -13,14 +13,14 @@ void SimplePhaseSpace::CMS(PType & p1, PType & p2, Energy2 s)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
   typedef ParticleTraits<PType> Traits;
   Energy z = getMagnitude(s, Traits::mass(p1), Traits::mass(p2));
-  Traits::set3Momentum(p1, Momentum3(0, 0, z));
-  Traits::set3Momentum(p2, Momentum3(0, 0, -z));
+  Traits::set3Momentum(p1, Momentum3(0*GeV, 0*GeV, z));
+  Traits::set3Momentum(p2, Momentum3(0*GeV, 0*GeV, -z));
 }
 
 template <typename PType>
 void SimplePhaseSpace::CMS(Energy2 s, PType & p1, PType & p2)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
-  CMS(p1, p2, s, 2.0*UseRandom::rnd() - 1.0, twopi*UseRandom::rnd());
+  CMS(p1, p2, s, 2.0*UseRandom::rnd() - 1.0, Constants::twopi*UseRandom::rnd());
 }
 
 template <typename PType>
@@ -41,8 +41,8 @@ CMS(PType & p1, PType & p2, PType & p3,
     Energy2 s, double x1, double x3)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
   CMS(p1, p2, p3, s, x1, x3,
-      twopi*UseRandom::rnd(), acos(2.0*UseRandom::rnd() - 1.0),
-      twopi*UseRandom::rnd());
+      Constants::twopi*UseRandom::rnd(), acos(2.0*UseRandom::rnd() - 1.0),
+      Constants::twopi*UseRandom::rnd());
 }
 
 template <typename PType>

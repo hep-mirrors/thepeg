@@ -40,9 +40,11 @@
 #include "ThePEG/Interface/InterfaceBase.fh"
 #include "ThePEG/Persistency/PersistentOStream.fh"
 #include "ThePEG/Persistency/PersistentIStream.fh"
-#include "Units.h"
+#include "TemplateTools.h"
+#include "Unitsystem.h"
 #include "Constants.h"
 #include "std.h"
+
 
 /**
  * This is the main namespace within which all identifiers in ThePEG
@@ -123,7 +125,7 @@ struct Stop {};
  * standard C++ library.
  */
 template <typename T>
-inline typename MultiplicationTraits<T>::ResultType sqr(const T& x) {
+inline typename BinaryOpTraits<T,T>::MulT sqr(const T& x) {
   return x*x;
 }
 

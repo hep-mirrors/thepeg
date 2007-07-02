@@ -220,7 +220,8 @@ generateL(PartonBinInstance & pb, const double * r) {
   pb.scale(-1.0*GeV2);
   if ( pb.bin()->pdfDim() > 1 )
     pb.scale(pb.pdf()->flattenScale(pb.particleData(), pb.partonData(),
-				    pb.bin()->cuts(), pb.li(), *r++, jac));
+				    pb.bin()->cuts(), pb.li(), *r++, jac)
+	     *pb.bin()->cuts().scaleMaxL(pb.li()));
   pb.jacobian(jac);
   pb.l(pb.incoming()->l() + pb.li());
 }

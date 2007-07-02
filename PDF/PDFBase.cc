@@ -70,20 +70,20 @@ xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
 
 double PDFBase::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
 			 double z, double & jacobian) const {
-  jacobian = c.lMax() - c.lMin();
+  jacobian *= c.lMax() - c.lMin();
   return c.lMin() + z*jacobian;
 }
 
-Energy2 PDFBase::
+double PDFBase::
 flattenScale(tcPDPtr, tcPDPtr, const PDFCuts & c,
-	     double l, double z, Energy2 & jacobian) const {
-  if ( c.scaleMin()  > 0.0*GeV ) {
+	     double l, double z, double & jacobian) const {
+  if ( c.scaleMin()  > 0.0*GeV2 ) {
     double r = c.scaleMaxL(l)/c.scaleMin();
-    jacobian = c.scaleMin()*log(r)*pow(r, z);
-    return c.scaleMin()*pow(r, z);
+    double ret = pow(r, z - 1.0);
+    jacobian *= log(r)*ret;
+    return ret;
   } else {
-    jacobian = c.scaleMaxL(l);
-    return z*jacobian;
+    return z;
   }
 }
 

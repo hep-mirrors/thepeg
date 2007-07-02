@@ -51,7 +51,7 @@ void ACDCSampler::rejectLast() {
 }
 
 CrossSection ACDCSampler::integratedXSec() const {
-  return theSampler.integral()*nanobarn/sqr(hbarc);
+  return theSampler.integral()*nanobarn;
 }
 
 int ACDCSampler::lastBin() const {

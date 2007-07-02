@@ -59,8 +59,8 @@ ParticleVector DalitzDecayer::decay(const DecayMode & dm,
   Energy2 mee2 = 0.0*GeV2;
   Energy2 me2 = ep->mass()*em->mass();
   Energy2 mm2 = sqr(parent.mass());
-  Energy2 mr2 = rho->mass();
-  Energy2 gr2 = rho->width();
+  Energy2 mr2 = sqr(rho->mass());
+  Energy2 gr2 = sqr(rho->width());
   Energy2 mee2min = 4.0*me2;
   do {
     mee2 = mee2min*pow(mm2/mee2min, rnd());
@@ -68,7 +68,7 @@ ParticleVector DalitzDecayer::decay(const DecayMode & dm,
 	    pow(1.0 - mee2/mm2, 3)*
 	    (1.0 + gr2/mr2)/(sqr(1.0 - mee2/mr2) + gr2/mr2) );
 
-  LorentzVector pee, p0, pp, pm;
+  LorentzMomentum pee, p0, pp, pm;
   do {
     SimplePhaseSpace::CMS(mee2, ep, em);
     pee = ep->momentum() + em->momentum();

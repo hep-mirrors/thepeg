@@ -56,7 +56,7 @@ generate(PartonBinInstance & pb, const double *,
     pb.remnants(PVector());
     return parent;
   }
-  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+  LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
   TransverseMomentum qt;
   Energy2 qt2 = 0.0*GeV2;
   if ( scale >= 0.0*GeV2 ) {
@@ -85,7 +85,7 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     pb.remnants(PVector());
     return parent;
   }
-  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+  LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
   TransverseMomentum qt;
   Energy2 qt2 = 0.0*GeV2;
   if ( scale >= 0.0*GeV2 ) {

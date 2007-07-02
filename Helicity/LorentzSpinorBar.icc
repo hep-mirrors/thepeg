@@ -11,26 +11,26 @@ namespace Helicity {
 
 // inlined function of the LorentzSpinorBar class
 // default zero constructor
-inline LorentzSpinorBar::LorentzSpinorBar(DiracRep dirac) {
+template <typename Value> inline LorentzSpinorBar<Value>::LorentzSpinorBar(DiracRep dirac) {
   _dirac=dirac;
   _type=unknown_spinortype;
   for(int ix=0;ix<4;++ix){
-    _spin[ix]=0.;
+    _spin[ix]=complex<Value>();
   }
 }
 
-inline LorentzSpinorBar::LorentzSpinorBar(SpinorType type, DiracRep dirac) {
+template <typename Value> inline LorentzSpinorBar<Value>::LorentzSpinorBar(SpinorType type, DiracRep dirac) {
   _dirac=dirac;
   _type=type;
   for(int ix=0;ix<4;++ix){
-    _spin[ix]=0.;
+    _spin[ix]=complex<Value>();
   }
 }
 
 // constructor with complex numbers
 
-inline LorentzSpinorBar::
-LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d,DiracRep dirac) {
+template <typename Value> inline LorentzSpinorBar<Value>::
+LorentzSpinorBar(complex<Value> a,complex<Value> b, complex<Value> c,complex<Value> d,DiracRep dirac) {
   _dirac=dirac;
   _type=unknown_spinortype;
   _spin[0]=a;
@@ -39,8 +39,8 @@ LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d,DiracRep dirac) {
   _spin[3]=d;
 }
 
-inline LorentzSpinorBar::
-LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d,SpinorType type,
+template <typename Value> inline LorentzSpinorBar<Value>::
+LorentzSpinorBar(complex<Value> a,complex<Value> b, complex<Value> c,complex<Value> d,SpinorType type,
 		 DiracRep dirac) {
   _dirac=dirac;
   _type=type;
@@ -51,7 +51,8 @@ LorentzSpinorBar(Complex a,Complex b, Complex c,Complex d,SpinorType type,
 }
 
 // subscript operator to return spinor components
-inline Complex LorentzSpinorBar::operator[](int i) const
+template <typename Value> 
+inline complex<Value> LorentzSpinorBar<Value>::operator[](int i) const
 {
   if ( i >= 0 && i <= 3 ) return _spin[i];
   else throw HelicityLogicalError()
@@ -59,7 +60,7 @@ inline Complex LorentzSpinorBar::operator[](int i) const
     << Exception::abortnow;
 }
 
-inline Complex LorentzSpinorBar::operator()(int i) const
+template <typename Value> inline complex<Value> LorentzSpinorBar<Value>::operator()(int i) const
 {
   if ( i >= 0 && i <= 3 ) return _spin[i];
   else throw HelicityLogicalError()
@@ -68,14 +69,14 @@ inline Complex LorentzSpinorBar::operator()(int i) const
 }
 
 // set components by index
-inline Complex & LorentzSpinorBar::operator () (int i){
+template <typename Value> inline complex<Value> & LorentzSpinorBar<Value>::operator () (int i){
   if ( i>= 0 && i <= 3 ) return _spin[i];
   throw HelicityLogicalError()
     << "Invalid index " << i << " called for LorentzSpinorBar."
     << Exception::abortnow;
 }
 
-inline Complex & LorentzSpinorBar::operator [] (int i){
+template <typename Value> inline complex<Value> & LorentzSpinorBar<Value>::operator [] (int i){
   if ( i >= 0 && i <=3 ) return _spin[i];
   throw HelicityLogicalError()
     << "Invalid index " << i << " called for LorentzSpinorBar."
@@ -83,19 +84,22 @@ inline Complex & LorentzSpinorBar::operator [] (int i){
 }
 
 // Get components
-inline Complex LorentzSpinorBar::s1() const {return _spin[0];}
-inline Complex LorentzSpinorBar::s2() const {return _spin[1];}
-inline Complex LorentzSpinorBar::s3() const {return _spin[2];}
-inline Complex LorentzSpinorBar::s4() const {return _spin[3];}
+template <typename Value> inline complex<Value> LorentzSpinorBar<Value>::s1() const {return _spin[0];}
+template <typename Value> inline complex<Value> LorentzSpinorBar<Value>::s2() const {return _spin[1];}
+template <typename Value> inline complex<Value> LorentzSpinorBar<Value>::s3() const {return _spin[2];}
+template <typename Value> inline complex<Value> LorentzSpinorBar<Value>::s4() const {return _spin[3];}
 
 // Set components
-inline void LorentzSpinorBar::setS1(Complex in){_spin[0]=in;}
-inline void LorentzSpinorBar::setS2(Complex in){_spin[1]=in;}
-inline void LorentzSpinorBar::setS3(Complex in){_spin[2]=in;}
-inline void LorentzSpinorBar::setS4(Complex in){_spin[3]=in;}
+template <typename Value> inline void LorentzSpinorBar<Value>::setS1(complex<Value> in){_spin[0]=in;}
+template <typename Value> inline void LorentzSpinorBar<Value>::setS2(complex<Value> in){_spin[1]=in;}
+template <typename Value> inline void LorentzSpinorBar<Value>::setS3(complex<Value> in){_spin[2]=in;}
+template <typename Value> inline void LorentzSpinorBar<Value>::setS4(complex<Value> in){_spin[3]=in;}
 
 // the assignment operator
-inline LorentzSpinorBar & LorentzSpinorBar::operator = (const LorentzSpinorBar & in) {
+template <typename Value> 
+inline LorentzSpinorBar<Value> & 
+LorentzSpinorBar<Value>::operator = (const LorentzSpinorBar & in)
+{
   _dirac=in._dirac;
   _type=in._type;
   _spin[0]=in.s1();
@@ -106,17 +110,22 @@ inline LorentzSpinorBar & LorentzSpinorBar::operator = (const LorentzSpinorBar &
 }
 
 // change the dirac matrix representation
-inline void LorentzSpinorBar::changeRep(DiracRep newdirac) {
+template <typename Value> 
+inline void LorentzSpinorBar<Value>::changeRep(DiracRep newdirac)
+{
   if(newdirac!=_dirac) *this = transformRep(newdirac);
 }
 
 // return the spinor in a different representation
-inline LorentzSpinorBar LorentzSpinorBar::transformRep(DiracRep newdirac) const {
+template <typename Value> 
+inline LorentzSpinorBar<Value> 
+LorentzSpinorBar<Value>::transformRep(DiracRep newdirac) const
+{
   // do nothing if all ready in the correct representation
   if(newdirac==_dirac){return *this;}
   double fact=1./sqrt(2.);
   // transform from HELAS representation to Haber one
-  Complex output[4];
+  complex<Value> output[4];
   if(newdirac==HELASDRep && _dirac==HaberDRep) {
     output[0] = fact*( _spin[0]-_spin[2]);
     output[1] = fact*( _spin[1]-_spin[3]);
@@ -135,16 +144,21 @@ inline LorentzSpinorBar LorentzSpinorBar::transformRep(DiracRep newdirac) const 
 }
 
 // return the representation of the spinor
-inline const DiracRep LorentzSpinorBar::Rep() const {
+template <typename Value> inline const DiracRep 
+LorentzSpinorBar<Value>::Rep() const {
   return _dirac;
 }
 
 // return thetype of the spinor
-inline const SpinorType LorentzSpinorBar::Type() const {
+template <typename Value> 
+inline const SpinorType LorentzSpinorBar<Value>::Type() const {
   return _type;
 }
 
-inline LorentzSpinorBar & LorentzSpinorBar::transform(const LorentzRotation & r) {
+template <typename Value> 
+inline LorentzSpinorBar<Value> & 
+LorentzSpinorBar<Value>::transform(const LorentzRotation & r)
+{
   SpinHalfLorentzRotation half(r.half());
   transform(half);
   return *this;

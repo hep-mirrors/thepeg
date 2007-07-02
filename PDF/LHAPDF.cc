@@ -380,7 +380,7 @@ void LHAPDF::checkUpdate(double x, Energy2 Q2, Energy2 P2) const {
   if ( x < xMin || x > xMax || Q2 < Q2Min || Q2 > Q2Max ) {
       switch ( rangeException ) {
       case rangeThrow: Throw<Exception>()
-	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << Q2/GeV2
+	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << double(Q2/GeV2)
 	<< " GeV^2) was outside of limits in PDF " << name() << "."
 	<< Exception::eventerror;
       case rangeZero:

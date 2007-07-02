@@ -52,7 +52,7 @@ void MEBase::addPreweighter(tReweightPtr rw) {
 }
 
 void MEBase::setKinematics(tPPair in, const PVector & out) {
-  theLastSHat = -1.0*GeV;
+  theLastSHat = -1.0*GeV2;
   theLastXComb = tStdXCombPtr();
   for ( int i = 0, N = diagrams().size(); i < N; ++i ) {
     tPVector parts;
@@ -100,7 +100,7 @@ void MEBase::setKinematics() {
 }
 
 void MEBase::clearKinematics() {
-  theLastSHat = -1.0*GeV;
+  theLastSHat = -1.0*GeV2;
   theLastXComb = tStdXCombPtr();
 }
 
@@ -165,13 +165,13 @@ double MEBase::alphaEM() const {
 }
 
 void MEBase::persistentOutput(PersistentOStream & os) const {
-  os << theDiagrams << ounit(theLastSHat, GeV) << reweights << preweights
+  os << theDiagrams << ounit(theLastSHat, GeV2) << reweights << preweights
      << lastPreweight << theAmplitude << theLastXComb << theLastJacobian
      << theMaxMultCKKW << theMinMultCKKW;
 }
 
 void MEBase::persistentInput(PersistentIStream & is, int) {
-  is >> theDiagrams >> iunit(theLastSHat, GeV) >> reweights >> preweights
+  is >> theDiagrams >> iunit(theLastSHat, GeV2) >> reweights >> preweights
      >> lastPreweight >> theAmplitude >> theLastXComb >> theLastJacobian
      >> theMaxMultCKKW >> theMinMultCKKW;
 }

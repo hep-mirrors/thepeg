@@ -330,7 +330,7 @@ private:
    *  A small energy for comparing momenta to check if Lorentz Transformations
    *  should be performed
    */
-  static const Energy _eps;
+  static const double _eps;
 };
 
 }

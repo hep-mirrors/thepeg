@@ -132,7 +132,7 @@ Energy2 Cuts::minSij(tcPDPtr pi, tcPDPtr pj) const {
   mins = sqr(pi->massMin() + pj->massMin());
   mins = max(mins, sqr(minKTClus(pi, pj))/4.0);
   mins = max(mins, minDurham(pi, pj)*currentSHat()/2.0);
-  mins = max(mins, sqr(minKT(pi)*minKT(pj)*minDeltaR(pi, pj))/4.0);
+  mins = max(mins, minKT(pi)*minKT(pj)*minDeltaR(pi, pj)/4.0);
   return mins;
 }
 
@@ -160,7 +160,7 @@ Energy Cuts::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
 }
 
 double Cuts::minDurham(tcPDPtr pi, tcPDPtr pj) const {
-  Energy y = 0.0*GeV;
+  double y = 0.0;
   for ( int i = 0, N = theTwoCuts.size(); i < N; ++i )
     y = max(y, theTwoCuts[i]->minDurham(pi, pj));
   return y;

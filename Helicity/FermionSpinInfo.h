@@ -49,11 +49,6 @@ public:
   inline FermionSpinInfo(const Lorentz5Momentum & p, bool time);
 
   /**
-   * Copy-constructor.
-   */
-  inline FermionSpinInfo(const FermionSpinInfo &);
-
-  /**
    * Destructor.
    */
   virtual ~FermionSpinInfo();
@@ -68,26 +63,26 @@ public:
    * @param hel the helicity (0 or 1 as described above.)
    * @param in the LorentzSpinor for the given helicity.
    */
-  inline void setBasisState(unsigned int hel, LorentzSpinor in) const;
+  inline void setBasisState(unsigned int hel, LorentzSpinor<SqrtEnergy> in) const;
 
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0 or 1 as described above.)
    * @param in the LorentzSpinor for the given helicity.
    */
-  inline void setDecayState(unsigned int hel, LorentzSpinor in) const;
+  inline void setDecayState(unsigned int hel, LorentzSpinor<SqrtEnergy> in) const;
 
   /**
    * Get the basis state for the production for the given helicity, \a
    * hel (which is 0 or 1 as described above.)
    */
-  inline LorentzSpinor getProductionBasisState(unsigned int hel) const;
+  inline LorentzSpinor<SqrtEnergy> getProductionBasisState(unsigned int hel) const;
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (which is 0 or 1 as described above.)
    */
-  inline LorentzSpinor getDecayBasisState(unsigned int hel) const;
+  inline LorentzSpinor<SqrtEnergy> getDecayBasisState(unsigned int hel) const;
   //@}
 
   /**
@@ -132,17 +127,17 @@ private:
   /**
    * basis states in the frame in which the particle was produced
    */
-  mutable vector<LorentzSpinor> _productionstates;
-
-  /**
-   * basis states in the frame in which the particle decays
-   */
-  mutable vector<LorentzSpinor> _decaystates;
+  mutable vector<LorentzSpinor<SqrtEnergy> > _productionstates;
 
   /**
    * basis states in the current frame of the particle
    */
-  mutable vector<LorentzSpinor> _currentstates;
+  mutable vector<LorentzSpinor<SqrtEnergy> > _currentstates;
+
+  /**
+   * basis states in the frame in which the particle decays
+   */
+  mutable vector<LorentzSpinor<SqrtEnergy> > _decaystates;
 
   /**
    * True if the decay state has been set.

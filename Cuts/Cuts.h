@@ -351,12 +351,12 @@ public:
   /**
    * The minimum allowed value of \f$\sqrt{\hat{s}}\f$.
    */
-  inline Energy2 mHatMin() const;
+  inline Energy mHatMin() const;
 
   /**
    * The maximum allowed value of \f$\sqrt{\hat{s}}\f$.
    */
-  inline Energy2 mHatMax() const;
+  inline Energy mHatMax() const;
 
   /**
    * The minimum value of the rapidity of the hard sub-process

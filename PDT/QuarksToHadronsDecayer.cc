@@ -154,11 +154,11 @@ reweight(const Particle &, const PVector &) const {
 }
 
 void QuarksToHadronsDecayer::persistentOutput(PersistentOStream & os) const {
-  os << theFixedN << theMinN << theC1 << theC2 << theC3 << theFlavourGenerator;
+  os << theFixedN << theMinN << theC1 << ounit(theC2,GeV) << theC3 << theFlavourGenerator;
 }
 
 void QuarksToHadronsDecayer::persistentInput(PersistentIStream & is, int) {
-  is >> theFixedN >> theMinN >> theC1 >> theC2 >> theC3 >> theFlavourGenerator;
+  is >> theFixedN >> theMinN >> theC1 >> iunit(theC2,GeV) >> theC3 >> theFlavourGenerator;
 }
 
 ClassDescription<QuarksToHadronsDecayer> QuarksToHadronsDecayer::initQuarksToHadronsDecayer;

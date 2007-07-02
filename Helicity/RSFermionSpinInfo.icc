@@ -11,9 +11,9 @@ namespace Helicity {
 
 inline RSFermionSpinInfo::RSFermionSpinInfo() 
 {
-  _productionstates.resize(4,LorentzRSSpinor());
-  _currentstates.resize(4,LorentzRSSpinor());
-  _decaystates.resize(4,LorentzRSSpinor());
+  _productionstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
+  _currentstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
+  _decaystates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
   iSpin(PDT::Spin3Half);
   _decaycalc=false;
 }
@@ -25,9 +25,9 @@ inline RSFermionSpinInfo::RSFermionSpinInfo(const RSFermionSpinInfo & x)
 
 inline RSFermionSpinInfo::RSFermionSpinInfo(const Lorentz5Momentum & in,bool intime)
 {
-  _productionstates.resize(4,LorentzRSSpinor());
-  _currentstates.resize(4,LorentzRSSpinor());
-  _decaystates.resize(4,LorentzRSSpinor());
+  _productionstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
+  _currentstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
+  _decaystates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
   iSpin(PDT::Spin3Half);
   setProductionMomentum(in);
   _decaycalc=false;
@@ -47,7 +47,7 @@ inline void RSFermionSpinInfo::rebind(const EventTranslationMap & trans) {
 // set and get methods for the basis states
 // set the basis state, this is production state
 inline void RSFermionSpinInfo::setBasisState(unsigned int ihel,
-					     LorentzRSSpinor in) const
+					     LorentzRSSpinor<SqrtEnergy>  in) const
 {
   if(ihel<4)
     {
@@ -61,7 +61,7 @@ inline void RSFermionSpinInfo::setBasisState(unsigned int ihel,
 }
 
 inline void RSFermionSpinInfo::setDecayState(unsigned int ihel,
-					     LorentzRSSpinor in) const
+					     LorentzRSSpinor<SqrtEnergy>  in) const
 {
   if(ihel<4){
     _decaycalc=true;
@@ -72,7 +72,7 @@ inline void RSFermionSpinInfo::setDecayState(unsigned int ihel,
 }
 
 // get the basis state for the production
-inline LorentzRSSpinor RSFermionSpinInfo::
+inline LorentzRSSpinor<SqrtEnergy>  RSFermionSpinInfo::
 getProductionBasisState(unsigned int ihel) const
 {
   if (ihel>3) throw HelicityLogicalError()
@@ -82,7 +82,7 @@ getProductionBasisState(unsigned int ihel) const
 }
 
 // get the bassis state for the decay
-inline LorentzRSSpinor RSFermionSpinInfo::getDecayBasisState(unsigned int ihel) const
+inline LorentzRSSpinor<SqrtEnergy>  RSFermionSpinInfo::getDecayBasisState(unsigned int ihel) const
 {
   if (ihel>3)
     throw HelicityLogicalError()

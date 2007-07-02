@@ -5,7 +5,6 @@
 //
 
 #include "RandomGenerator.h"
-#include "ThePEG/CLHEPWrap/RandomEngine.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
@@ -15,13 +14,15 @@
 using namespace ThePEG;
 
 RandomGenerator::RandomGenerator()
-  : theNumbers(1000), theSize(1000), theSeed(0) {
+  : theNumbers(1000), theSize(1000), theSeed(0),
+    savedGauss(0.0), gaussSaved(false) {
   nextNumber = theNumbers.end();
 }
 
 RandomGenerator::RandomGenerator(const RandomGenerator & rg)
   : Interfaced(rg), theNumbers(rg.theNumbers), theSize(rg.theSize),
-    theSeed(rg.theSeed)  {
+    theSeed(rg.theSeed), savedGauss(rg.savedGauss),
+    gaussSaved(rg.gaussSaved)  {
   nextNumber = theNumbers.begin() +
     ( RndVector::const_iterator(rg.nextNumber) - rg.theNumbers.begin() );
 }
@@ -33,11 +34,11 @@ void RandomGenerator::doinit() throw (InitException) {
   flush();
 }
 
-void RandomGenerator::getFlatNumbers() {
-  Timer<1> timer("RandomGenerator::getFlatNumbers()");
-  nextNumber = theNumbers.begin();
-  randomGenerator().flatArray(theSize, &(theNumbers.front()));
-}
+// void RandomGenerator::getFlatNumbers() {
+//   Timer<1> timer("RandomGenerator::getFlatNumbers()");
+//   nextNumber = theNumbers.begin();
+//   randomGenerator().flatArray(theSize, &(theNumbers.front()));
+// }
 
 void RandomGenerator::setSize(size_type newSize) {
   RndVector newNumbers(newSize);
@@ -99,12 +100,12 @@ int RandomGenerator::rnd4(double p0, double p1, double p2, double p3) {
 void RandomGenerator::persistentOutput(PersistentOStream & os) const {
   os << theNumbers
      << RndVector::const_iterator(nextNumber) - theNumbers.begin() << theSize
-     << theSeed;
+     << theSeed << savedGauss << gaussSaved;
 }
 
 void RandomGenerator::persistentInput(PersistentIStream & is, int) {
   RndVector::difference_type pos;
-  is >> theNumbers >> pos >> theSize >> theSeed;
+  is >> theNumbers >> pos >> theSize >> theSeed >> savedGauss >> gaussSaved;
   nextNumber = theNumbers.begin() + pos;
 }
 

@@ -7,8 +7,18 @@
 namespace ThePEG {
 
 inline double RandomGenerator::rnd() {
-  if ( nextNumber == theNumbers.end() ) getFlatNumbers();
+  if ( nextNumber == theNumbers.end() ) fill();
   return *nextNumber++;
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rnd(Unit b) {
+  return b*rnd();
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rnd(Unit a, Unit b) {
+  return a + rnd(b - a);
 }
 
 inline RandomGenerator::RndVector RandomGenerator::rndvec(int n) {
@@ -53,6 +63,71 @@ inline int RandomGenerator::rnd2(double p0, double p1) {
 
 inline int RandomGenerator::rnd3(double p0, double p1, double p2) {
   return 1 + rndsign(p0, p1, p2);
+}
+
+inline double RandomGenerator::rndExp() {
+  return -log(rnd());
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rndExp(Unit mean) {
+  return mean*rndExp();
+}
+
+inline double RandomGenerator::rndGauss() {
+  if ( gaussSaved ) {
+    gaussSaved = false;
+    return savedGauss;
+  }
+  double r = sqrt(-2.0*log(rnd()));
+  double phi = rnd()*2.0*Constants::pi;
+  savedGauss = r*cos(phi);
+  gaussSaved = true;
+  return r*sin(phi);
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rndGauss(Unit sigma, Unit mean) {
+  return mean + sigma*rndGauss();
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rndBW(Unit mean, Unit gamma) {
+  if ( gamma <= Unit() ) return mean;
+  return mean + 0.5*gamma*tan(rnd(atan(-2.0*mean/gamma), Constants::pi/2));
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rndBW(Unit mean, Unit gamma, Unit cut) {
+  if ( gamma <= Unit() || cut <= Unit() ) return mean;
+  return mean + 0.5*gamma*tan(rnd(atan(-2.0*min(mean,cut)/gamma),
+				  atan(2.0*cut/gamma)));
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rndRelBW(Unit mean, Unit gamma) {
+  if ( gamma <= Unit() ) return mean;
+  return sqrt(sqr(mean) + mean*gamma*tan(rnd(atan(-mean/gamma),
+					     Constants::pi/2)));
+}
+
+template <typename Unit>
+inline Unit RandomGenerator::rndRelBW(Unit mean, Unit gamma, Unit cut) {
+  if ( gamma <= Unit() || cut <= Unit() ) return mean;
+  double minarg = cut > mean? -mean/gamma:
+    (sqr(mean - cut) - sqr(mean))/(gamma*mean);
+  double maxarg = (sqr(mean + cut) - sqr(mean))/(mean*gamma);
+  return sqrt(sqr(mean) + mean*gamma*tan(rnd(atan(minarg), atan(maxarg))));
+}
+
+inline long RandomGenerator::rndPoisson(double mean, long nmax) {
+  long n = 0;
+  long nfac = 1;
+  double x = exp(mean)*rnd();
+  double sum = 1.0;
+  double mpow = 1.0;
+  while ( x >= sum && n <= nmax ) sum += (mpow *= mean)/(nfac *= ++n);
+  return n;
 }
 
 }

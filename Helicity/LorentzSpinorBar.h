@@ -24,8 +24,9 @@ namespace Helicity {
  *
  * @author Peter Richardson
  */
-class LorentzSpinorBar {
 
+template<typename Value>
+class LorentzSpinorBar {
 public:
 
   /** @name Standard constructors. */
@@ -48,7 +49,7 @@ public:
    * optionally specifying \a t, the type and \a r, the choice of
    * dirac matrix.
    */
-  inline LorentzSpinorBar(Complex,Complex,Complex,Complex,
+  inline LorentzSpinorBar(complex<Value>,complex<Value>,complex<Value>,complex<Value>,
 			  SpinorType t = unknown_spinortype,
 			  DiracRep r = defaultDRep);
 
@@ -56,7 +57,7 @@ public:
    * Constructor with complex numbers specifying the components,
    * optionally specifying the choice of dirac matrix
    */
-  LorentzSpinorBar(Complex,Complex,Complex,Complex,DiracRep);
+  LorentzSpinorBar(complex<Value>,complex<Value>,complex<Value>,complex<Value>,DiracRep);
   //@}
 
   /** @name Access the components. */
@@ -64,62 +65,62 @@ public:
   /**
    * Subscript operator to return spinor components
    */
-  inline Complex operator[](int) const;
+  inline complex<Value> operator[](int) const;
 
   /**
    * Subscript operator to return spinor components
    */
-  inline Complex operator()(int) const;
+  inline complex<Value> operator()(int) const;
 
   /**
    * Set components by index.
    */
-  inline Complex & operator()(int);
+  inline complex<Value> & operator()(int);
 
   /**
    * Set components by index.
    */
-  inline Complex & operator[](int);
+  inline complex<Value> & operator[](int);
 
   /**
    * Get first component.
    */
-  inline Complex s1() const;
+  inline complex<Value> s1() const;
 
   /**
    * Get second component.
    */
-  inline Complex s2() const;
+  inline complex<Value> s2() const;
 
   /**
    * Get third component.
    */
-  inline Complex s3() const;
+  inline complex<Value> s3() const;
 
   /**
    * Get fourth component.
    */
-  inline Complex s4() const;
+  inline complex<Value> s4() const;
 
   /**
    * Set first component.
    */
-  inline void setS1(Complex);
+  inline void setS1(complex<Value>);
 
   /**
    * Set second component.
    */
-  inline void setS2(Complex);
+  inline void setS2(complex<Value>);
 
   /**
    * Set third component.
    */
-  inline void setS3(Complex);
+  inline void setS3(complex<Value>);
 
   /**
    * Set fourth component.
    */
-  inline void setS4(Complex);
+  inline void setS4(complex<Value>);
   //@}
 
   /**
@@ -132,7 +133,7 @@ public:
   /**
    * Return the barred spinor
    */
-  LorentzSpinor bar() const;
+  LorentzSpinor<Value> bar() const;
 
   /**
    * Return the conjugated spinor \f$u_c=C\bar{u}^T\f$. This operation
@@ -149,7 +150,7 @@ public:
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  LorentzSpinorBar & boost(const Hep3Vector &);
+  LorentzSpinorBar & boost(const Boost &);
 
   /**
    * General Lorentz transformation
@@ -190,7 +191,7 @@ private:
   /**
    * Storage of the components.
    */
-  Complex _spin[4];
+  complex<Value> _spin[4];
 
   /**
    * Definition of the Dirac matrices used.
@@ -208,5 +209,8 @@ private:
 }
 
 #include "LorentzSpinorBar.icc"
+#ifndef ThePEG_TEMPLATES_IN_CC_FILE
+#include "LorentzSpinorBar.tcc"
+#endif 
 
 #endif

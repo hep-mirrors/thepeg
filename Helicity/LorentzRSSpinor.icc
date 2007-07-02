@@ -11,25 +11,25 @@ namespace ThePEG {
 namespace Helicity {
 
 // default zero constructor
-inline LorentzRSSpinor::LorentzRSSpinor(DiracRep d) {
+template <typename Value> inline LorentzRSSpinor<Value>::LorentzRSSpinor(DiracRep d) {
   _dirac=d;
   _type=unknown_spinortype;
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_spin[ix][iy]=0.0;}}
+  for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_spin[ix][iy]=complex<Value>();}}
 }
 
-inline LorentzRSSpinor::LorentzRSSpinor(SpinorType s,DiracRep d) {
+template <typename Value> inline LorentzRSSpinor<Value>::LorentzRSSpinor(SpinorType s,DiracRep d) {
   _dirac=d;
   _type=s;
-  for(int ix=0;ix<4;++ix){for(int iy=0;iy<4;++iy){_spin[ix][iy]=0.0;}}
+  for(int ix=0;ix<4;++ix){for(int iy=0;iy<4;++iy){_spin[ix][iy]==complex<Value>();}}
 }
 
 // constructor with complex numbers
-inline LorentzRSSpinor::
-LorentzRSSpinor(Complex a1, Complex b1, Complex c1, Complex d1,
-		Complex a2, Complex b2, Complex c2, Complex d2,
-		Complex a3, Complex b3, Complex c3, Complex d3,
-		Complex a4, Complex b4, Complex c4, Complex d4, DiracRep r) {
+template <typename Value> inline LorentzRSSpinor<Value>::
+LorentzRSSpinor(complex<Value> a1, complex<Value> b1, complex<Value> c1, complex<Value> d1,
+		complex<Value> a2, complex<Value> b2, complex<Value> c2, complex<Value> d2,
+		complex<Value> a3, complex<Value> b3, complex<Value> c3, complex<Value> d3,
+		complex<Value> a4, complex<Value> b4, complex<Value> c4, complex<Value> d4, DiracRep r) {
   _dirac=r;
   _type=unknown_spinortype;
   _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
@@ -38,11 +38,11 @@ LorentzRSSpinor(Complex a1, Complex b1, Complex c1, Complex d1,
   _spin[0][3]=d1;_spin[1][3]=d2;_spin[2][3]=d3;_spin[3][3]=d4;
 }
 
-inline LorentzRSSpinor::
-LorentzRSSpinor(Complex a1, Complex b1, Complex c1, Complex d1,
-		Complex a2, Complex b2, Complex c2, Complex d2,
-		Complex a3, Complex b3, Complex c3, Complex d3,
-		Complex a4, Complex b4, Complex c4, Complex d4, 
+template <typename Value> inline LorentzRSSpinor<Value>::
+LorentzRSSpinor(complex<Value> a1, complex<Value> b1, complex<Value> c1, complex<Value> d1,
+		complex<Value> a2, complex<Value> b2, complex<Value> c2, complex<Value> d2,
+		complex<Value> a3, complex<Value> b3, complex<Value> c3, complex<Value> d3,
+		complex<Value> a4, complex<Value> b4, complex<Value> c4, complex<Value> d4, 
 		SpinorType s,DiracRep r) {
   _dirac=r;
   _type=s;
@@ -53,7 +53,7 @@ LorentzRSSpinor(Complex a1, Complex b1, Complex c1, Complex d1,
 }
 
 // subscript operator to return spinor components
-inline Complex LorentzRSSpinor::operator()(int i,int j) const
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::operator()(int i,int j) const
 {
   if ( i >= 0 && i <= 3 && j>=0 && j<=3) return _spin[i][j];
   throw HelicityLogicalError()
@@ -62,7 +62,7 @@ inline Complex LorentzRSSpinor::operator()(int i,int j) const
 }
 
 // set components by index
-inline Complex & LorentzRSSpinor::operator () (int i,int j){
+template <typename Value> inline complex<Value> & LorentzRSSpinor<Value>::operator () (int i,int j){
   if ( i >= 0 && i <= 3 && j>=0 && j<=3) return _spin[i][j];
   throw HelicityLogicalError()
     << "Invalid index " << i << " " << j << " called for LorentzRSSpinor."
@@ -70,43 +70,43 @@ inline Complex & LorentzRSSpinor::operator () (int i,int j){
 }
 
 // Get components
-inline Complex LorentzRSSpinor::xs1() const {return _spin[0][0];}
-inline Complex LorentzRSSpinor::xs2() const {return _spin[0][1];}
-inline Complex LorentzRSSpinor::xs3() const {return _spin[0][2];}
-inline Complex LorentzRSSpinor::xs4() const {return _spin[0][3];}
-inline Complex LorentzRSSpinor::ys1() const {return _spin[1][0];}
-inline Complex LorentzRSSpinor::ys2() const {return _spin[1][1];}
-inline Complex LorentzRSSpinor::ys3() const {return _spin[1][2];}
-inline Complex LorentzRSSpinor::ys4() const {return _spin[1][3];}
-inline Complex LorentzRSSpinor::zs1() const {return _spin[2][0];}
-inline Complex LorentzRSSpinor::zs2() const {return _spin[2][1];}
-inline Complex LorentzRSSpinor::zs3() const {return _spin[2][2];}
-inline Complex LorentzRSSpinor::zs4() const {return _spin[2][3];}
-inline Complex LorentzRSSpinor::ts1() const {return _spin[3][0];}
-inline Complex LorentzRSSpinor::ts2() const {return _spin[3][1];}
-inline Complex LorentzRSSpinor::ts3() const {return _spin[3][2];}
-inline Complex LorentzRSSpinor::ts4() const {return _spin[3][3];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::xs1() const {return _spin[0][0];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::xs2() const {return _spin[0][1];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::xs3() const {return _spin[0][2];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::xs4() const {return _spin[0][3];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ys1() const {return _spin[1][0];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ys2() const {return _spin[1][1];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ys3() const {return _spin[1][2];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ys4() const {return _spin[1][3];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::zs1() const {return _spin[2][0];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::zs2() const {return _spin[2][1];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::zs3() const {return _spin[2][2];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::zs4() const {return _spin[2][3];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ts1() const {return _spin[3][0];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ts2() const {return _spin[3][1];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ts3() const {return _spin[3][2];}
+template <typename Value> inline complex<Value> LorentzRSSpinor<Value>::ts4() const {return _spin[3][3];}
 
 // Set components
-inline void LorentzRSSpinor::setXS1(Complex in){_spin[0][0]=in;}
-inline void LorentzRSSpinor::setXS2(Complex in){_spin[0][1]=in;}
-inline void LorentzRSSpinor::setXS3(Complex in){_spin[0][2]=in;}
-inline void LorentzRSSpinor::setXS4(Complex in){_spin[0][3]=in;}
-inline void LorentzRSSpinor::setYS1(Complex in){_spin[1][0]=in;}
-inline void LorentzRSSpinor::setYS2(Complex in){_spin[1][1]=in;}
-inline void LorentzRSSpinor::setYS3(Complex in){_spin[1][2]=in;}
-inline void LorentzRSSpinor::setYS4(Complex in){_spin[1][3]=in;}
-inline void LorentzRSSpinor::setZS1(Complex in){_spin[2][0]=in;}
-inline void LorentzRSSpinor::setZS2(Complex in){_spin[2][1]=in;}
-inline void LorentzRSSpinor::setZS3(Complex in){_spin[2][2]=in;}
-inline void LorentzRSSpinor::setZS4(Complex in){_spin[2][3]=in;}
-inline void LorentzRSSpinor::setTS1(Complex in){_spin[3][0]=in;}
-inline void LorentzRSSpinor::setTS2(Complex in){_spin[3][1]=in;}
-inline void LorentzRSSpinor::setTS3(Complex in){_spin[3][2]=in;}
-inline void LorentzRSSpinor::setTS4(Complex in){_spin[3][3]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setXS1(complex<Value> in){_spin[0][0]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setXS2(complex<Value> in){_spin[0][1]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setXS3(complex<Value> in){_spin[0][2]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setXS4(complex<Value> in){_spin[0][3]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setYS1(complex<Value> in){_spin[1][0]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setYS2(complex<Value> in){_spin[1][1]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setYS3(complex<Value> in){_spin[1][2]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setYS4(complex<Value> in){_spin[1][3]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setZS1(complex<Value> in){_spin[2][0]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setZS2(complex<Value> in){_spin[2][1]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setZS3(complex<Value> in){_spin[2][2]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setZS4(complex<Value> in){_spin[2][3]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setTS1(complex<Value> in){_spin[3][0]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setTS2(complex<Value> in){_spin[3][1]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setTS3(complex<Value> in){_spin[3][2]=in;}
+template <typename Value> inline void LorentzRSSpinor<Value>::setTS4(complex<Value> in){_spin[3][3]=in;}
 
 // the equals operator
-inline LorentzRSSpinor & LorentzRSSpinor::operator = (const LorentzRSSpinor & in) {
+template <typename Value> inline LorentzRSSpinor<Value> & LorentzRSSpinor<Value>::operator = (const LorentzRSSpinor<Value> & in) {
   _dirac=in._dirac;
   _type=in._type;
   unsigned int ix,iy;
@@ -121,23 +121,23 @@ inline LorentzRSSpinor & LorentzRSSpinor::operator = (const LorentzRSSpinor & in
 }
 
 // change the dirac matrix representation
-inline void LorentzRSSpinor::changeRep(DiracRep newdirac)
+template <typename Value> inline void LorentzRSSpinor<Value>::changeRep(DiracRep newdirac)
 {if(newdirac!=_dirac) *this = transformRep(newdirac);}
 
 // return the representation of the spinor
-inline DiracRep LorentzRSSpinor::Rep(){return _dirac;}
+template <typename Value> inline DiracRep LorentzRSSpinor<Value>::Rep(){return _dirac;}
 
 // return the type of the spinor
-inline SpinorType LorentzRSSpinor::Type(){return _type;}
+template <typename Value> inline SpinorType LorentzRSSpinor<Value>::Type(){return _type;}
 
 // return the spinor in a different representation
-inline LorentzRSSpinor LorentzRSSpinor::transformRep(DiracRep newdirac) const
+template <typename Value> inline LorentzRSSpinor<Value> LorentzRSSpinor<Value>::transformRep(DiracRep newdirac) const
 {
   // do nothing if all ready in the correct representation
-  if(newdirac==_dirac){return LorentzRSSpinor(*this);}
+  if(newdirac==_dirac){return LorentzRSSpinor<Value>(*this);}
   double fact(1./sqrt(2.));
   // transform from HELAS representation to Haber one
-  Complex out[4][4];unsigned int ix;
+  complex<Value> out[4][4];unsigned int ix;
   if(newdirac==HELASDRep && _dirac==HaberDRep)
     {
       for(ix=0;ix<4;++ix)
@@ -160,45 +160,53 @@ inline LorentzRSSpinor LorentzRSSpinor::transformRep(DiracRep newdirac) const
 	}
     }
   // return the answer
-  return LorentzRSSpinor(out[0][0],out[0][1],out[0][2],out[0][3],
+  return LorentzRSSpinor<Value>(out[0][0],out[0][1],out[0][2],out[0][3],
 			 out[1][0],out[1][1],out[1][2],out[1][3],
 			 out[2][0],out[2][1],out[2][2],out[2][3],
 			 out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
 }
 
 // dot product with a 4-vector or polarization vector
-inline LorentzSpinor LorentzRSSpinor::dot(const LorentzPolarizationVector & vec) const
+template <typename Value> inline LorentzSpinor<Value> LorentzRSSpinor<Value>::dot(const LorentzPolarizationVector & vec) const
 {
-  LorentzSpinor output(_type,_dirac);
+  LorentzSpinor<Value> output(_type,_dirac);
   Complex temp;
-  unsigned int ix,iy;
+  unsigned int ix;
   for(ix=0;ix<4;++ix)
     {
-      temp=_spin[3][ix]*vec[3];
-      for(iy=0;iy<3;++iy){temp-=_spin[iy][ix]*vec[iy];}
+      temp=_spin[3][ix]*vec.t();
+      temp-=_spin[0][ix]*vec.x();
+      temp-=_spin[1][ix]*vec.y();
+      temp-=_spin[2][ix]*vec.z();
       output[ix]=temp;
     }
   return output;
 }
   
-inline LorentzSpinor LorentzRSSpinor::dot(const LorentzVector & vec) const
+template <typename Value> 
+inline LorentzSpinor<Value> 
+LorentzRSSpinor<Value>::dot(const LorentzMomentum & invec) const
 {
-  LorentzSpinor output(_type,_dirac);
-  Complex temp;
-  unsigned int ix,iy;
+  LorentzSpinor<Value> output(_type,_dirac);
+  complex<Value> temp;
+  LorentzVector<double> vec = UnitRemoval::InvE * invec;
+  unsigned int ix;
   for(ix=0;ix<4;++ix)
     {
-      temp=_spin[3][ix]*vec[3];
-      for(iy=0;iy<3;++iy){temp-=_spin[iy][ix]*vec[iy];}
+      temp  = - ( _spin[0][ix]*vec.x() + _spin[1][ix]*vec.y()
+		  + _spin[2][ix]*vec.z() ) +  _spin[3][ix]*vec.t();
       output[ix]=temp;
     }
   return output;
 }
 
-inline Complex LorentzRSSpinor::generalScalar(LorentzRSSpinorBar& fbar,Complex left,
-					      Complex right)
+template <typename Value> 
+template <typename ValueB>
+inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+LorentzRSSpinor<Value>::generalScalar(LorentzRSSpinorBar<ValueB>& fbar,
+				      Complex left, Complex right)
 {
-  Complex output; 
+  complex<typename BinaryOpTraits<Value,ValueB>::ResultType> output; 
   unsigned int iz;
   // ensure both spinors are in the same representation, otherwise change to default
   if(Rep()!=fbar.Rep())
@@ -236,11 +244,16 @@ inline Complex LorentzRSSpinor::generalScalar(LorentzRSSpinorBar& fbar,Complex l
   return output;
 }
 
-inline LorentzPolarizationVector LorentzRSSpinor::generalCurrent(LorentzSpinorBar& fbar,
-								 Complex left,
-								 Complex right)
+template <typename Value> 
+template <typename ValueB>
+inline LorentzVector<complex<
+  typename BinaryOpTraits<Value,ValueB>::MulT> >
+LorentzRSSpinor<Value>::generalCurrent(LorentzSpinorBar<ValueB>& fbar,
+				       Complex left,
+				       Complex right)
 {
-  LorentzPolarizationVector output;
+  typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
+  ResultT output[4];
   // ensure both spinors are in the same representation, otherwise change to default
   if(Rep()!=fbar.Rep())
     {
@@ -263,7 +276,7 @@ inline LorentzPolarizationVector LorentzRSSpinor::generalCurrent(LorentzSpinorBa
     {for(iz=0;iz<4;++iz)
 	{output[iz]= left*(fbar.s1()*_spin[iz][0]+fbar.s2()*_spin[iz][1])
 	    +right*(fbar.s3()*_spin[iz][2]+fbar.s4()*_spin[iz][3]);}}
-  return output;
+  return LorentzVector<ResultT>(output[0],output[1],output[2],output[3]);
 }
 }
 }

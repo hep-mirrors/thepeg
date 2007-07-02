@@ -57,7 +57,7 @@ Lorentz5Momentum BaryonRemnants::
 generate(PartonBinInstance & pb, const double *,
 	 Energy2 scale, const LorentzMomentum & parent) const {
   Timer<16> timer("BaryonRemnants::generate(...)");
-  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+  LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
 
   double x = pb.xi();
   double eps = pb.eps();
@@ -193,7 +193,7 @@ Lorentz5Momentum BaryonRemnants::
 generate(PartonBinInstance & pb, const double *, Energy2 scale,
 	 Energy2 shat, const LorentzMomentum & parent) const {
   Timer<16> timer("BaryonRemnants::generate(...)");
-  LorentzMomentum p(0.0, 0.0, parent.rho(), parent.e());
+  LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
 
   double x = pb.xi();
   double eps = pb.eps();
@@ -356,12 +356,12 @@ bool BaryonRemnants::defaultInit() {
 
 void BaryonRemnants::persistentOutput(PersistentOStream & os) const {
   os << thePtGeneratorQ << thePtGeneratorR << theZGenerator
-     << theFlavourGenerator << theMargin << useSpecialValence;
+     << theFlavourGenerator << ounit(theMargin,GeV) << useSpecialValence;
 }
 
 void BaryonRemnants::persistentInput(PersistentIStream & is, int) {
   is >> thePtGeneratorQ >> thePtGeneratorR >> theZGenerator
-     >> theFlavourGenerator >> theMargin >> useSpecialValence;
+     >> theFlavourGenerator >> iunit(theMargin,GeV) >> useSpecialValence;
 }
 
 ClassDescription<BaryonRemnants>

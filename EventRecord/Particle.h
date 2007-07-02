@@ -418,7 +418,7 @@ public:
    * Do Lorentz transformations on this particle. \a b is the boost
    * vector.
    */
-  inline void boost(const Vector3 & b);
+  inline void boost(const Boost & b);
 
   /**
    * Rotate around the x-axis.
@@ -438,7 +438,7 @@ public:
   /**
    * Rotate around the given \a axis.
    */
-  void rotate(double a, const Vector3 & axis);
+  void rotate(double a, const Axis & axis);
 
   /**
    * Mirror in the xy-plane.
@@ -461,7 +461,7 @@ public:
    * Do Lorentz transformations on this particle and its
    * decendants. \a b is the boost vector.
    */
-  inline void deepBoost(const Vector3 & b);
+  inline void deepBoost(const Boost & b);
 
   /**
    * Rotate this particle and its decendants around the x-axis.
@@ -481,7 +481,7 @@ public:
   /**
    * Rotate this particle and its decendants around the given \a axis.
    */
-  void deepRotate(double a, const Vector3 & axis);
+  void deepRotate(double a, const Axis & axis);
 
   //@}
 
@@ -490,17 +490,17 @@ public:
   /**
    * Return the relative inconsistency in the mass component.
    */
-  inline Energy massError() const;
+  inline double massError() const;
 
   /**
    * Return the relative inconsistency in the energy component.
    */
-  inline Energy energyError() const;
+  inline double energyError() const;
 
   /**
    * Return the relative inconsistency in the spatial components.
    */
-  inline Energy rhoError() const;
+  inline double rhoError() const;
 
   /**
    * Rescale energy, so that the invariant length/mass of the

@@ -106,9 +106,9 @@ bool ME2to2Base::generateKinematics(const double * r) {
 
   Energy pt = q*sqrt(1.0-sqr(cth));
   theLastPhi = rnd(2.0*Constants::pi);
-  meMomenta()[2].setV(Momentum3(pt*sin(phi()), pt*cos(phi()), q*cth));
+  meMomenta()[2].setVect(Momentum3( pt*sin(phi()),  pt*cos(phi()),  q*cth));
 
-  meMomenta()[3].setV(Momentum3(-pt*sin(phi()),	-pt*cos(phi()), -q*cth));
+  meMomenta()[3].setVect(Momentum3(-pt*sin(phi()), -pt*cos(phi()), -q*cth));
 
   meMomenta()[2].rescaleEnergy();
   meMomenta()[3].rescaleEnergy();
@@ -154,7 +154,7 @@ double ME2to2Base::getCosTheta(double ctmin, double ctmax, const double * r) {
 }  
 
 CrossSection ME2to2Base::dSigHatDR() const {
-  return me2()*jacobian()/(16.0*sqr(Constants::pi)*sHat());
+  return me2()*jacobian()/(16.0*sqr(Constants::pi)*sHat())*sqr(hbarc);
 }
 
 void ME2to2Base::persistentOutput(PersistentOStream & os) const {

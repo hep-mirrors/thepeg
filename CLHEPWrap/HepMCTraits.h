@@ -77,7 +77,8 @@ struct HepMCTraitsBase {
 				 long id, int status) {
     // Note that according to the documentation the momentum is stored in a
     // HepLorentzVector in GeV (event though the CLHEP standard is MeV).
-    ParticleT * genp = new ParticleT(p/GeV, id, status);
+    LorentzVector<double> p_GeV = p/GeV;
+    ParticleT * genp = new ParticleT(p_GeV, id, status);
     genp->setGeneratedMass(p.mass()/GeV);
     return genp;
   }
@@ -112,7 +113,8 @@ struct HepMCTraitsBase {
   /** Set the position \a p for the vertex, \a v. */
   static void setPosition(VertexT & v, const LorentzPoint & p) {
     // We assume that the position is measured in millimeters.
-    v.set_position(p/mm);
+    LorentzVector<double> p_mm = p/mm;
+    v.set_position(p_mm);
   }
 
 };

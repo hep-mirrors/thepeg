@@ -118,7 +118,7 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
 
 tPVector RemnantDecayer::getSubSystem(tcPPtr parent, tPPtr parton) const {
   tPVector ret;
-  Vector3 dir = parent->momentum()/GeV;
+  Axis dir = parent->momentum()/GeV;
   set<tPPtr> sub;
   fillSubSystem(parton, sub);
   multimap<double,tPPtr> ordsub;

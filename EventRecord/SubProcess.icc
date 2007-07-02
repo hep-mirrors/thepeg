@@ -41,15 +41,15 @@ inline const ParticleVector & SubProcess::outgoing() const {
   return theOutgoing;
 }
 
-inline double SubProcess::shat() const {
+inline Energy2 SubProcess::shat() const {
   return (incoming().first->momentum() + incoming().second->momentum()).m2();
 }
 
-inline double SubProcess::that() const {
+inline Energy2 SubProcess::that() const {
   return (incoming().first->momentum() - outgoing()[0]->momentum()).m2();
 }
 
-inline double SubProcess::uhat() const {
+inline Energy2 SubProcess::uhat() const {
   return (incoming().second->momentum() - outgoing()[0]->momentum()).m2();
 }
 

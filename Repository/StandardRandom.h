@@ -4,7 +4,6 @@
 // This is the declaration of the StandardRandom class.
 
 #include "RandomGenerator.h"
-#include "ThePEG/CLHEPWrap/JamesRandom.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 // #include "StandardRandom.fh"
@@ -42,62 +41,19 @@ public:
   //@}
 
 
-protected:
-
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this
-   * object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
-
 public:
 
   /**
-   * return a reference to the HepJamesRandom engine.
-   */
-  virtual RandomEngine & randomGenerator();
-
-  /**
-   * Reset the underlying CLHEP random engine with the given seed.
+   * Reset the underlying random algorithm with the given seed.
    */
   virtual void setSeed(long seed);
+
+protected:
+
+  /**
+   * Fill the cache with random numbers.
+   */
+  virtual void fill();
 
 public:
 
@@ -125,9 +81,6 @@ public:
 
 protected:
 
-
-protected:
-
   /** @name Clone Methods. */
   //@{
   /**
@@ -146,9 +99,34 @@ protected:
 private:
 
   /**
-   * The underlying random engine.
+   * The internal state vector.
    */
-  JamesRandom theRandomGenerator;
+  vector<double> u;
+
+  /**
+   * Parameter for the internal state.
+   */
+  double c;
+
+  /**
+   * Parameter for the internal state.
+   */
+  double cd;
+
+  /**
+   * Parameter for the internal state.
+   */
+  double cm;
+
+  /**
+   * Index for the internal state.
+   */
+  int i97;
+
+  /**
+   * Index for the internal state.
+   */
+  int j97;
 
 private:
 

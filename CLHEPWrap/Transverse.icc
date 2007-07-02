@@ -6,126 +6,126 @@
 
 namespace ThePEG {
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse()
-  : BasePair(FloatType(), FloatType()) {}
+template <typename Value>
+inline Transverse<Value>::Transverse()
+  : BasePair(Value(), Value()) {}
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse(const Transverse & pt)
+template <typename Value>
+inline Transverse<Value>::Transverse(const Transverse & pt)
   : BasePair(pt) {}
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse(const BasePair & p)
+template <typename Value>
+inline Transverse<Value>::Transverse(const BasePair & p)
   : BasePair(p) {}
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse(FloatType xx, FloatType yy)
+template <typename Value>
+inline Transverse<Value>::Transverse(Value xx, Value yy)
   : BasePair(xx, yy) {}
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse(const Vector3 & p)
+template <typename Value>
+inline Transverse<Value>::Transverse(const Vector3<Value> & p)
   : BasePair(p.x(), p.y()) {}
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse(const LorentzVector & p)
+template <typename Value>
+inline Transverse<Value>::Transverse(const LorentzVector<Value> & p)
   : BasePair(p.x(), p.y()) {}
 
-template <typename FloatType>
-inline Transverse<FloatType>::Transverse(const Lorentz5Vector<FloatType> & p)
+template <typename Value>
+inline Transverse<Value>::Transverse(const Lorentz5Vector<Value> & p)
   : BasePair(p.x(), p.y()) {}
 
-template <typename FloatType>
-inline const Transverse<FloatType> & Transverse<FloatType>::
+template <typename Value>
+inline const Transverse<Value> & Transverse<Value>::
 operator=(const Transverse & pt) {
   BasePair::operator=(pt);
   return *this;
 }
 
-template <typename FloatType>
-inline const Transverse<FloatType> & Transverse<FloatType>::
+template <typename Value>
+inline const Transverse<Value> & Transverse<Value>::
 operator=(const BasePair & p) {
   BasePair::operator=(p);
   return *this;
 }
 
-template <typename FloatType>
-inline const Transverse<FloatType> & Transverse<FloatType>::
-operator=(const Vector3 & p) {
+template <typename Value>
+inline const Transverse<Value> & Transverse<Value>::
+operator=(const Vector3<Value> & p) {
   BasePair::operator=(BasePair(p.x(), p.y()));
   return *this;
 }
 
-template <typename FloatType>
-inline const Transverse<FloatType> & Transverse<FloatType>::
-operator=(const LorentzVector & p) {
+template <typename Value>
+inline const Transverse<Value> & Transverse<Value>::
+operator=(const LorentzVector<Value> & p) {
   BasePair::operator=(BasePair(p.x(), p.y()));
   return *this;
 }
 
-template <typename FloatType>
-inline const Transverse<FloatType> & Transverse<FloatType>::
-operator=(const Lorentz5Vector<FloatType> & p) {
+template <typename Value>
+inline const Transverse<Value> & Transverse<Value>::
+operator=(const Lorentz5Vector<Value> & p) {
   BasePair::operator=(BasePair(p.x(), p.y()));
   return *this;
 }
 
-template <typename FloatType>
-inline FloatType Transverse<FloatType>::x() const {
+template <typename Value>
+inline Value Transverse<Value>::x() const {
   return BasePair::first;
 }
 
-template <typename FloatType>
-inline FloatType Transverse<FloatType>::y() const {
+template <typename Value>
+inline Value Transverse<Value>::y() const {
   return BasePair::second;
 }
 
-template <typename FloatType>
-inline Transverse<FloatType> Transverse<FloatType>::operator-() const {
+template <typename Value>
+inline Transverse<Value> Transverse<Value>::operator-() const {
   return Transverse(-x(), -y());
 }
 
-template <typename FloatType>
-inline Transverse<FloatType> Transverse<FloatType>::
+template <typename Value>
+inline Transverse<Value> Transverse<Value>::
 operator-(const Transverse & pt) const {
   return Transverse(x() - pt.x(), y() - pt.y());
 }
 
-template <typename FloatType>
-inline Transverse<FloatType> & Transverse<FloatType>::
+template <typename Value>
+inline Transverse<Value> & Transverse<Value>::
 operator-=(const Transverse & pt) {
   BasePair::first -= pt.x();
   BasePair::second -= pt.y();
   return *this;
 }
 
-template <typename FloatType>
-inline Transverse<FloatType> Transverse<FloatType>::
+template <typename Value>
+inline Transverse<Value> Transverse<Value>::
 operator+(const Transverse & pt) const {
   return Transverse(x() + pt.x(), y() + pt.y());
 }
 
-template <typename FloatType>
-inline Transverse<FloatType> & Transverse<FloatType>::
+template <typename Value>
+inline Transverse<Value> & Transverse<Value>::
 operator+=(const Transverse & pt) {
   BasePair::first += pt.x();
   BasePair::second += pt.y();
   return *this;
 }
 
-template <typename FloatType>
-inline typename Transverse<FloatType>::FloatType2
-Transverse<FloatType>::pt2() const {
+template <typename Value>
+inline typename Transverse<Value>::Value2
+Transverse<Value>::pt2() const {
   return sqr(x()) + sqr(y());
 }
 
-template <typename FloatType>
-inline FloatType Transverse<FloatType>::pt() const {
+template <typename Value>
+inline Value Transverse<Value>::pt() const {
   return sqrt(pt2());
 }
 
-template <typename FloatType>
-inline double Transverse<FloatType>::phi() const {
-  return atan2(y()/FloatType(1.0), x()/FloatType(1.0));
+template <typename Value>
+inline double Transverse<Value>::phi() const {
+  return atan2(y(), x());
 }
 
 }

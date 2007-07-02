@@ -191,8 +191,9 @@ inline void SpinInfo::update() const
     }
 }
 
-inline bool SpinInfo::isNear(const Lorentz5Momentum & p)
-{return currentMomentum().isNear(p,_eps);}
+inline bool SpinInfo::isNear(const Lorentz5Momentum & p) {
+  return currentMomentum().isNear(p,_eps);
+}
 
 }
 

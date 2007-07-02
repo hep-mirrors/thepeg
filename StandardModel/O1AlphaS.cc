@@ -5,7 +5,6 @@
 //
 
 #include "O1AlphaS.h"
-#include "ThePEG/CLHEPWrap/PhysicalConstants.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/ParticleData.h"
@@ -29,7 +28,7 @@ IBPtr O1AlphaS::fullclone() const {
 }
 
 double O1AlphaS::value(Energy2 scale, const StandardModelBase &) const {
-  return 12.0*pi/((33.0-2.0*Nf(scale))*
+  return 12.0*Constants::pi/((33.0-2.0*Nf(scale))*
 		  log(max(scale, sqr(Q0))/sqr(LambdaQCD(Nf(scale)))));
 }
 

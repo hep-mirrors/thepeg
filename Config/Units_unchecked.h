@@ -6,9 +6,6 @@
 #include "ThePEG/CLHEPWrap/LorentzVector.fh"
 #include "ThePEG/CLHEPWrap/ThreeVector.fh"
 #include "ThePEG/CLHEPWrap/Transverse.fh"
-#include "ThePEG/CLHEPWrap/SystemOfUnits.h"
-#include "ThePEG/Utilities/UnitIO.h"
-#include <vector>
 
 namespace ThePEG {
 
@@ -25,25 +22,28 @@ namespace ThePEG {
 */
 namespace Units {
 
-using namespace CLHEP;
-
 /** Mass will everywhere be assumed to bave the same unit as Energy. */
-typedef double Mass;
-
-/** Energy. */
 typedef double Energy;
 
+/** Energy. */
+typedef Energy Mass;
+
 /** Time will everywhere be assumed to bave the same unit as Length. */
-typedef double Time;
+typedef double Length;
 
 /** Length. */
-typedef double Length;
+typedef Length Time;
+
+typedef double Velocity;
 
 /** Charge. */
 typedef double Charge;
 
 /** Angular momentum. */
 typedef double AngularMomentum;
+
+/** Tension */
+typedef double Tension;
 
 /** Area will be assumed to be Length\f$^2\f$. */
 typedef double Area;
@@ -53,9 +53,21 @@ typedef Area CrossSection;
 
 /** Energy\f$^2\f$. */
 typedef double Energy2;
+typedef double Energy3;
 
 /** Energy\f$^4\f$. */
 typedef double Energy4;
+typedef double Energy5;
+typedef double Energy6;
+typedef double Energy7;
+typedef double Energy8;
+typedef double Energy9;
+typedef double Energy10;
+typedef double Energy11;
+typedef double Energy12;
+
+typedef double SqrtEnergy;
+typedef double InvSqrtEnergy;
 
 /** CrossSection*Energy2. */
 typedef double Energy2XSec;
@@ -73,34 +85,49 @@ typedef double InvEnergy;
 
 /** 1/Energy<sup>2</sup>. */
 typedef double InvEnergy2;
+typedef double InvEnergy3;
 
 /** 1/Energy<sup>4</sup>. */
 typedef double InvEnergy4;
+typedef double InvEnergy5;
+typedef double InvEnergy6;
+typedef double InvEnergy7;
+typedef double InvEnergy8;
+typedef double InvEnergy9;
+typedef double InvEnergy10;
+typedef double InvEnergy11;
+typedef double InvEnergy12;
 
 /** Scale is the same as a squared energy. */
 typedef Energy2 Scale;
 
 /** A point in normal three-dimensional space. */
-typedef Vector3 Point;
+typedef Vector3<Length> Point;
 
 /** A distance in normal three-dimensional space. */
-typedef Vector3 Distance;
+typedef Vector3<Length> Distance;
+
+/** A direction in normal three-dimensional space. */
+typedef Vector3<double> Axis;
 
 /** A momentum in normal three-dimensional space. */
-typedef Vector3 Momentum3;
+typedef Vector3<Energy> Momentum3;
+
+/** A three-dimensional boost vector. */
+typedef Vector3<double> Boost;
 
 /** A distance in four-dimensional space-time. */
-typedef LorentzVector LorentzDistance;
+typedef LorentzVector<Length> LorentzDistance;
 
 /** A distance in four-dimensional space-time with an explicit
  *  invariant time component. */
 typedef Lorentz5Vector<Length> Lorentz5Distance;
 
 /** A point in four-dimensional space-time. */
-typedef LorentzVector LorentzPoint;
+typedef LorentzVector<Length> LorentzPoint;
 
 /** A momentum in four-dimensional space-time. */
-typedef LorentzVector LorentzMomentum;
+typedef LorentzVector<Energy> LorentzMomentum;
 
 /** A momentum in four-dimensional space-time with an explicit
  *  invariant mass component. */
@@ -109,46 +136,43 @@ typedef Lorentz5Vector<Energy> Lorentz5Momentum;
 /** Transverse components of a momentum. */
 typedef Transverse<Energy> TransverseMomentum;
 
-/** A useful unit for squared energy (scale) */
-static const Energy2 GeV2 = GeV*GeV;
+const Energy MeV = 1.0;
+const Energy2 MeV2 = MeV * MeV;
+
+const Energy GeV = 1.0e3 * MeV;
+const Energy2 GeV2 = GeV * GeV;
+
+const InvEnergy InvGeV = 1/GeV;
+
+const Charge eplus = 1.0;
+
+const Length mm = 1.0;
+const Length meter = 1.0e3 * mm;
+
+const Area picobarn = 1.0e-40 * meter * meter;
+const Area nanobarn = 1.0e3 * picobarn;
+
+// PDG 2006 value 197.326968(17) MeV fm
+const double hbarc = 197.326968e-15 * MeV * meter;
+const double hbar_Planck = hbarc / 1.0;
 
 }
 
+// Used for temporary removal of unit checking in Herwig Helicity code
+namespace UnitRemoval {
+  const Units::Energy E = Units::MeV;
 
-/**
- * A traits class to be used for defining return types for
- * templated functions involving multiplication.
- */
-template <typename T>
-struct MultiplicationTraits {
-  /** The type resulting from multiplication of the template type with itself. */
-  typedef T ResultType;
-};
+  const Units::Energy2 E2 = E*E;
+  const Units::Energy3 E3 = E*E2;
+  const Units::Energy4 E4 = E2*E2;
+  const Units::InvEnergy InvE = 1.0/E;
+  const Units::InvEnergy2 InvE2 = 1.0/E2;
+  const Units::InvEnergy3 InvE3 = 1.0/E3;
+  const Units::InvEnergy4 InvE4 = 1.0/E4;
 
-/** @cond TRAITSPECIALIZATIONS */
-
-/** Specialization of MultiplicationTraits for Lorentz5Vector. */
-template <typename T>
-struct MultiplicationTraits< Lorentz5Vector<T> > {
-  /** The type resulting from multiplication of the template type with itself. */
-  typedef T ResultType;
-};
-
-/** Specialization of MultiplicationTraits for LorentzVector. */
-template <>
-struct MultiplicationTraits< LorentzVector > {
-  /** The type resulting from multiplication of the template type with itself. */
-  typedef double ResultType;
-};
-
-/** Specialization of MultiplicationTraits for Vector3. */
-template <>
-struct MultiplicationTraits< Vector3 > {
-  /** The type resulting from multiplication of the template type with itself. */
-  typedef double ResultType;
-};
-
-/** @endcond */
+  const Units::SqrtEnergy SqrtE = sqrt(E);
+  const Units::InvSqrtEnergy InvSqrtE = 1.0/sqrt(E);
+}
 
 }
 

@@ -91,19 +91,19 @@ void SimpleDISCut::persistentInput(PersistentIStream & is, int) {
 ClassDescription<SimpleDISCut> SimpleDISCut::initSimpleDISCut;
 // Definition of the static class description member.
 
-Energy SimpleDISCut::maxMinQ2() const {
+Energy2 SimpleDISCut::maxMinQ2() const {
   return theMaxQ2;
 }
 
-Energy SimpleDISCut::minMaxQ2() const {
+Energy2 SimpleDISCut::minMaxQ2() const {
   return theMinQ2;
 }
 
-Energy SimpleDISCut::maxMinW2() const {
+Energy2 SimpleDISCut::maxMinW2() const {
   return theMaxW2;
 }
 
-Energy SimpleDISCut::minMaxW2() const {
+Energy2 SimpleDISCut::minMaxW2() const {
   return theMinW2;
 }
 

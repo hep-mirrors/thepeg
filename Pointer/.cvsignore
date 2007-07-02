@@ -1,8 +1,0 @@
-*.rpo
-Makefile
-Makefile.in
-a.out
-test
-testptr.cc
-testptr.i
- .svn Makefile

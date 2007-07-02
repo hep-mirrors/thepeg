@@ -78,11 +78,11 @@ double Onium3GDecayer::reweight(const DecayMode &, const Particle & parent,
 }
 
 void Onium3GDecayer::persistentOutput(PersistentOStream & os) const {
-  os << doShower << theMinGGMass;
+  os << doShower << ounit(theMinGGMass,GeV);
 }
 
 void Onium3GDecayer::persistentInput(PersistentIStream & is, int) {
-  is >> doShower >> theMinGGMass;
+  is >> doShower >> iunit(theMinGGMass,GeV);
 }
 
 ClassDescription<Onium3GDecayer> Onium3GDecayer::initOnium3GDecayer;

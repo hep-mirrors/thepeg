@@ -2,25 +2,9 @@
 #ifndef ThePEG_LorentzVector_FH
 #define ThePEG_LorentzVector_FH
 
-// This is the forward declaration of the <!id>HepLorentzVector<!!id>
-// class from CLHEP, placing it in the <!id>CLHEP<!!id> namespace as
-// <!id>LorentzVector<!!id> and making it available in the
-// <!id>ThePEG<!!id> namespace.
-
-#include "CLHEP.h"
-#include "CLHEP/Vector/LorentzVector.h"
-
-namespace CLHEP {
-
-/** Typedef in the CLHEP namespace to get rid of Hep prefix. */
-typedef HepLorentzVector LorentzVector;
-
-}
-
 namespace ThePEG {
-
-using CLHEP::LorentzVector;
-
+  template <typename Value>
+  class LorentzVector; 
 }
 
 #endif /* ThePEG_LorentzVector_FH */

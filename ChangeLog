@@ -80,10 +80,29 @@
 	* CLHEPWrap/HepMCConverter.tcc: Fixed memory leak, where several
 	GenParticle's were created for the same ThePEG::Particle instance.
 
+2007-05-18  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Config/*: introduced configure switch to turn off template
+	unit checking. Currently needs full rebuild of code by hand
+	whenever this configure flag is changed.
+
+	* (various files): removed obsolete CLHEP references
+	
 2007-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentIStream.cc: Added error information from
 	dynamic loader if creating an object fails.
+
+2007-05-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/UseRandom.*, Repository/StandardRandom.*,
+	Repository/RandomGenerator.*: Modified to no longer use
+	CLHEP::RandomEngine. StandardRandom now directly implements the
+	JamesRandom engine.
+
+	* PDT/WidthGenerator.cc, PDT/ParticleData.cc,
+	PDT/BreitWignerMass.cc, LesHouches/LesHouchesEventHandler.cc:
+	Fixed to use new RandomGenerator.
 
 2007-05-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
@@ -344,7 +363,6 @@
 
 	* Handlers/DecayHandler.cc: Fixed typo in error message.
 
->>>>>>> 1.337
 2006-11-29  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	* Helicity/LorentzSpinor(Bar).{h,icc,cc}: Added new method to
@@ -543,6 +561,30 @@
 	classes to implement sets of datapoints according to the AIDA
 	interface.
 
+2006-11-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Config/Units.h: Removed MultiplicationTraits and renamed
+	BinaryMultiplicationTraits to BinaryOpTraits with typedefs for
+	MulT and DivT. Simplified the specializations for complex.
+
+	* Utilities/Math.icc: Make the sign function compare to T()
+	instead of 0.
+
+	* Config/ThePEG.h, Helicity/LorentzSpinor.*,
+	Helicity/LorentzRSSpinorBar.*, Helicity/LorentzRSSpinor.*,
+	CLHEPWrap/Transverse.h, CLHEPWrap/Lorentz5Vector.h,
+	CLHEPWrap/ThreeVector.h: Removed MultiplicationTraits and changed
+	to BinaryOpTraits.
+
+	* CLHEPWrap/LorentzVector.h: Removed MultiplicationTraits and
+	changed to BinaryOpTraits. Added assignment from other, but
+	equivalent, classes. Changed +=, -=, + and - operators to allow
+	for different but equivalent classes. Changed lightCone functions
+	to allow for different but equivalent classes.
+
+	* Config/PhysicalQty.h: Changed -= and comparison operators to
+	allow different, but equivalent, classes on either side.
+
 2006-11-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* include/Makefile.am : cleaned up include file linking and 
@@ -567,6 +609,13 @@
 	* PDT/Decayer.cc: Added virtual needsFullStep and new decay
 	functions to be used by remnant decayers and others which need
 	access to the current step for the decay.
+
+2006-10-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.cc, PDF/PartonBinInstance.cc, PDF/PDFBase.*:
+	Changed the unit of PDFBase::flattenScale and its jacobian
+	argument from Energy to double. Fixed related bug in
+	PDFBase::flattenScale.
 
 2006-10-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

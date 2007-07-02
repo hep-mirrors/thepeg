@@ -308,12 +308,14 @@ void SimpleBaryonRemnantDecayer::doinit() throw(InitException) {
 
 void SimpleBaryonRemnantDecayer::
 persistentOutput(PersistentOStream & os) const {
-  os << theZGenerator << theFlavourGenerator << theMargin << useSpecialValence;
+  os << theZGenerator << theFlavourGenerator << ounit(theMargin,GeV)
+     << useSpecialValence;
 }
 
 void SimpleBaryonRemnantDecayer::
 persistentInput(PersistentIStream & is, int) {
-  is >> theZGenerator >> theFlavourGenerator >> theMargin >> useSpecialValence;
+  is >> theZGenerator >> theFlavourGenerator >> iunit(theMargin,GeV)
+     >> useSpecialValence;
 }
 
 ClassDescription<SimpleBaryonRemnantDecayer> SimpleBaryonRemnantDecayer::initSimpleBaryonRemnantDecayer;

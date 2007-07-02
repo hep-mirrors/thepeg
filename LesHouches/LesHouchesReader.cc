@@ -210,7 +210,7 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
   theCuts->initialize(sqr(emax),
 		      0.5*log(heprup.EBMUP.first/heprup.EBMUP.second));
-  if ( Smax > 0.0*GeV && ( Smax != cuts().SMax() || Y != cuts().Y() ) )
+  if ( Smax > 0.0*GeV2 && ( Smax != cuts().SMax() || Y != cuts().Y() ) )
     throw LesHouchesInitError()
       << "The LesHouchesReader '" << name() << "' uses the same Cuts object "
       << "as another LesHouchesReader which has not got the same energies of "
@@ -469,9 +469,8 @@ double LesHouchesReader::getEvent() {
   ++position;
 
   return weighted()?
-    hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec():
+    double(hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec()):
     lastweight/maxFactor;
-
 }
 
 void LesHouchesReader::skip(long n) {

@@ -5,7 +5,6 @@
 //
 
 #include "SimpleAlphaEM.h"
-#include "ThePEG/CLHEPWrap/PhysicalConstants.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
 
@@ -28,7 +27,7 @@ IBPtr SimpleAlphaEM::fullclone() const {
 double SimpleAlphaEM::value(Energy2 scale, const StandardModelBase & sm) const {
   useMe();
   double alem = sm.alphaEM();
-  double alem3pi = alem/(3.0*pi);
+  double alem3pi = alem/(3.0*Constants::pi);
   double rpigg;
   double Q2 = scale/GeV2;
   if(Q2<=2e-6)

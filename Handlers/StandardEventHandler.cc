@@ -293,7 +293,7 @@ struct Stat {
   Stat() : attempted(0), accepted(0), sumw(0.0), maxXSec(CrossSection()),
     totsum(0.0) {}
   Stat(long att, long acc, double w, CrossSection x, double sumw)
-    : attempted(att), accepted(acc), sumw(w), maxXSec(x*sqr(hbarc)),
+    : attempted(att), accepted(acc), sumw(w), maxXSec(x),
       totsum(sumw) {}
 
   inline CrossSection xSec() const {
@@ -395,7 +395,7 @@ void StandardEventHandler::statistics(ostream & os) const {
   if ( statLevel() == 3 ) return;
 
   os << "Detailed breakdown:\n";
-  double xsectot = sampler()->integratedXSec()*sqr(hbarc)/
+  double xsectot = sampler()->integratedXSec()/
     (sampler()->sumWeights()*nanobarn);
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
@@ -448,7 +448,7 @@ void StandardEventHandler::doinitrun() {
     xCombs()[i]->reset();
 }
 
-double StandardEventHandler::dSigDR(const vector<double> & r) {
+CrossSection StandardEventHandler::dSigDR(const vector<double> & r) {
   double jac = 1.0;
   pair<double,double> ll = lumiFn().generateLL(&r[0], jac);
   Energy2 maxS = sqr(lumiFn().maximumCMEnergy())/exp(ll.first + ll.second);

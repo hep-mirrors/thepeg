@@ -132,19 +132,20 @@ public:
 			  double z, double & jacobian) const;
 
   /**
-   * Generate scale. If the PDF contains strange peaks which can be
-   * difficult to handle, this function may be overwritten to return
-   * an appropriate scale \f$Q^2\f$ for a \a z uniformly distributed
-   * in ]0,1[. Also the jacobobian of the \f$Q^2\rightarrow z\f$
-   * variable transformation must multiply the \a jacobian
-   * argument. The default version will simply use the function \f$Q^2
-   * = Q^2_{\min}(Q^2_{\max}/Q^2_{\min})^z\f$ or, if \f$Q^2_{\min}\f$
-   * is zero, \f$Q^2 = z Q^2_{\max}\f$ (where the limits are set by \a
-   * cut).
+   * Generate scale (as a fraction of the maximum scale). If the PDF
+   * contains strange peaks which can be difficult to handle, this
+   * function may be overwritten to return an appropriate scale
+   * \f$Q^2/Q^2_{\max}\f$ for a \a z uniformly distributed in
+   * ]0,1[. Also the jacobobian of the \f$Q^2/Q^2_{\max}\rightarrow
+   * z\f$ variable transformation must multiply the \a jacobian
+   * argument. The default version will simply use the function
+   * \f$Q^2/Q^2_{\max} = (Q^2_{\max}/Q^2_{\min})^(z-1)\f$ or, if
+   * \f$Q^2_{\min}\f$ is zero, \f$Q^2/Q^2_{\max} = z\f$ (where the
+   * limits are set by \a cut).
    */
-  virtual Energy2 flattenScale(tcPDPtr particle, tcPDPtr parton,
+  virtual double flattenScale(tcPDPtr particle, tcPDPtr parton,
 			       const PDFCuts & cut, double l, double z,
-			       Energy2 & jacobian) const;
+			       double & jacobian) const;
   //@}
 
   /**

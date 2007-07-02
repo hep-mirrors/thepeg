@@ -1,20 +1,15 @@
-mySOURCES = LorentzRotation.cc SpinHalfLorentzRotation.cc
+mySOURCES = LorentzRotation.cc SpinHalfLorentzRotation.cc SpinOneLorentzRotation.cc
 
-DOCFILES = JamesRandom.h Lorentz5Vector.h LorentzRotation.h LorentzVector.h \
-           PhysicalConstants.h RandomEngine.h Rotation.h SystemOfUnits.h \
-           ThreeVector.h Transverse.h CLHEP.h \
-           RandExponential.h RandBreitWigner.h Matrix.h RandPoisson.h \
-           SpinOneLorentzRotation.h LorentzRotation.h \
+DOCFILES = Lorentz5Vector.h LorentzRotation.h LorentzVector.h \
+           ThreeVector.h Transverse.h SpinOneLorentzRotation.h \
            SpinHalfLorentzRotation.h HepMCTraits.h HepMCConverter.h
 
-INCLUDEFILES = $(DOCFILES) JamesRandom.fh Lorentz5Vector.fh \
+INCLUDEFILES = $(DOCFILES) Lorentz5Vector.fh \
                Lorentz5Vector.icc LorentzRotation.fh LorentzVector.fh \
-               RandomEngine.fh Rotation.fh ThreeVector.fh Transverse.icc \
-               Transverse.fh RandExponential.fh \
-               RandBreitWigner.fh Matrix.fh RandPoisson.fh \
+               ThreeVector.fh Transverse.icc Transverse.fh \
                SpinOneLorentzRotation.fh LorentzRotation.icc \
                SpinHalfLorentzRotation.icc HepMCConverter.icc \
-               HepMCConverter.tcc
+               HepMCConverter.tcc SpinOneLorentzRotation.icc
 
 noinst_LTLIBRARIES = libThePEGCLHEPWrap.la
 

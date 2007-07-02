@@ -7,34 +7,13 @@
 namespace ThePEG {
 
 inline StandardRandom::StandardRandom()
-: theRandomGenerator(19780503) {}
+  : u(97) {
+  setSeed(theSeed);
+}
 
 inline StandardRandom::StandardRandom(const StandardRandom & x)
-  : RandomGenerator(x), theRandomGenerator(x.theRandomGenerator) {}
-
-inline void StandardRandom::doupdate() throw(UpdateException) {
-  RandomGenerator::doupdate();
-}
-
-inline void StandardRandom::doinit() throw(InitException) {
-  RandomGenerator::doinit();
-}
-
-inline void StandardRandom::dofinish() {
-  RandomGenerator::dofinish();
-}
-
-inline IVector StandardRandom::getReferences() {
-  IVector ret = RandomGenerator::getReferences();
-  // ret.push_back(dummy);
-  return ret;
-}
-
-inline void StandardRandom::
-rebind(const TranslationMap & trans) throw(RebindException) {
-  // dummy = trans.translate(dummy);
-  RandomGenerator::rebind(trans);
-}
+  : RandomGenerator(x), u(x.u), c(x.c), cd(x.cd), cm(x.cm),
+    i97(x.i97), j97(x.j97) {}
 
 }
 

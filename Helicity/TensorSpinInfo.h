@@ -70,26 +70,26 @@ public:
    * @param hel the helicity (0,1,2,3,4 as described above.)
    * @param in the LorentzTensor for the given helicity.
    */
-  inline void setBasisState(unsigned int hel, LorentzTensor in) const;
+  inline void setBasisState(unsigned int hel, LorentzTensor<double> in) const;
 
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0,1,2,3,4 as described above.)
    * @param in the LorentzTensor for the given helicity.
    */
-  inline void setDecayState(unsigned int hel, LorentzTensor in) const;
+  inline void setDecayState(unsigned int hel, LorentzTensor<double> in) const;
 
   /**
    * Get the basis state for the production for the given helicity, \a
    * hel  (0,1,2,3,4 as described above.)
    */
-  inline LorentzTensor getProductionBasisState(unsigned int hel) const;
+  inline LorentzTensor<double> getProductionBasisState(unsigned int hel) const;
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (0,1,2,3,4 as described above.)
    */
-  inline LorentzTensor getDecayBasisState(unsigned int hel) const;
+  inline LorentzTensor<double> getDecayBasisState(unsigned int hel) const;
   //@}
 
   /**
@@ -134,17 +134,17 @@ private:
   /**
    * Basis states in the frame in which the particle was produced.
    */
-  mutable vector<LorentzTensor> _productionstates;
+  mutable vector<LorentzTensor<double> > _productionstates;
 
   /**
    * Basis states in the frame in which the particle decays.
    */
-  mutable vector<LorentzTensor> _decaystates;
+  mutable vector<LorentzTensor<double> > _decaystates;
 
   /**
    * Basis states in the current frame of the particle
    */
-  mutable vector<LorentzTensor> _currentstates;
+  mutable vector<LorentzTensor<double> > _currentstates;
 
   /**
    * True if the decay state has been set.

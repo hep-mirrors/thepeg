@@ -10,8 +10,6 @@
 // #include "WidthGenerator.tcc"
 #endif
 
-#include "ThePEG/CLHEPWrap/RandExponential.h"
-#include "ThePEG/CLHEPWrap/PhysicalConstants.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
@@ -22,7 +20,8 @@ using namespace ThePEG;
 WidthGenerator::~WidthGenerator() {}
 
 Length WidthGenerator::lifeTime(const ParticleData &, Energy, Energy w) const {
-  return RandExponential::shoot(UseRandom::currentEngine(), hbarc/w/mm)*mm;
+  //  return RandExponential::shoot(UseRandom::currentEngine(), hbarc/w/mm)*mm;
+  return UseRandom::rndExp(hbarc/w);
 }
 
 WidthGenerator::DecayMap WidthGenerator::rate(const Particle & p) {

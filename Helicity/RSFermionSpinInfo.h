@@ -70,26 +70,26 @@ public:
    * @param hel the helicity (0,1,2,3 as described above.)
    * @param in the LorentzRSSpinor for the given helicity.
    */
-  inline void setBasisState(unsigned int hel,LorentzRSSpinor in) const;
+  inline void setBasisState(unsigned int hel,LorentzRSSpinor<SqrtEnergy>  in) const;
 
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0,1,2,3 as described above.)
    * @param in the LorentzRSSpinor for the given helicity.
    */
-  inline void setDecayState(unsigned int hel,LorentzRSSpinor in) const;
+  inline void setDecayState(unsigned int hel,LorentzRSSpinor<SqrtEnergy>  in) const;
 
   /**
    * Get the basis state for the production for the given helicity, \a
    * hel (0,1,2,3 as described above.)
    */
-  inline LorentzRSSpinor getProductionBasisState(unsigned int hel) const;
+  inline LorentzRSSpinor<SqrtEnergy> getProductionBasisState(unsigned int hel) const;
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (0,1,2,3 as described above.)
    */
-  inline LorentzRSSpinor getDecayBasisState(unsigned int hel) const;
+  inline LorentzRSSpinor<SqrtEnergy> getDecayBasisState(unsigned int hel) const;
 
   /**
    * Perform a lorentz rotation of the spin information
@@ -134,17 +134,17 @@ private:
   /**
    * Basis states in the frame in which the particle was produced.
    */
-  mutable vector<LorentzRSSpinor> _productionstates;
+  mutable vector<LorentzRSSpinor<SqrtEnergy> > _productionstates;
 
   /**
    * Basis states in the frame in which the particle decays.
    */
-  mutable vector<LorentzRSSpinor> _decaystates;
+  mutable vector<LorentzRSSpinor<SqrtEnergy> > _decaystates;
 
   /**
    * Basis states in the current frame of the particle
    */
-  mutable vector<LorentzRSSpinor> _currentstates;
+  mutable vector<LorentzRSSpinor<SqrtEnergy> > _currentstates;
 
   /**
    * True if the decay state has been set.

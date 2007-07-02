@@ -13,22 +13,22 @@ namespace ThePEG {
 /**
  * Transverse represents the transverse components of a
  * LorentzVector. It inherits from
- * <code>std::pair<FloatType,FloatType></code> and can be used
+ * <code>std::pair<Value,Value></code> and can be used
  * anywhere such a pair is called for. It can also be created directly
  * from a <code>Vector3</code>, <code>LorentzVector</code> and
  * <code>Lorentz5Momentum</code>.
  *
  * @see Lorentz5Vector
  */
-template <typename FloatType>
-class Transverse: public pair<FloatType,FloatType> {
+template <typename Value>
+class Transverse: public pair<Value,Value> {
 
 public:
 
   /** Template argument typedef. */
-  typedef FloatType FloatType2;
+  typedef typename BinaryOpTraits<Value,Value>::MulT Value2;
   /** Template argument typedef. */
-  typedef pair<FloatType,FloatType> BasePair;
+  typedef pair<Value,Value> BasePair;
 
 public:
 
@@ -52,22 +52,22 @@ public:
   /**
    * Constructor from x and y components.
    */
-  inline Transverse(FloatType x, FloatType y);
+  inline Transverse(Value x, Value y);
 
   /**
    * Constructor taking the transverse parts of a Vector3.
    */
-  inline Transverse(const Vector3 &);
+  inline Transverse(const Vector3<Value> &);
 
   /**
    * Constructor taking the transverse parts of a LorentzVector.
    */
-  inline Transverse(const LorentzVector &);
+  inline Transverse(const LorentzVector<Value> &);
 
   /**
    * Constructor taking the transverse parts of a Lorentz5Vector.
    */
-  inline Transverse(const Lorentz5Vector<FloatType> &);
+  inline Transverse(const Lorentz5Vector<Value> &);
   //@}
 
   /** @name Assignment operators. */
@@ -85,17 +85,17 @@ public:
   /**
    * Assignment taking the transverse parts of a Vector3.
    */
-  inline const Transverse & operator=(const Vector3 &);
+  inline const Transverse & operator=(const Vector3<Value> &);
 
   /**
    * Assignment taking the transverse parts of a LorentzVector.
    */
-  inline const Transverse & operator=(const LorentzVector &);
+  inline const Transverse & operator=(const LorentzVector<Value> &);
 
   /**
    * Assignment taking the transverse parts of a Lorentz5Vector.
    */
-  inline const Transverse & operator=(const Lorentz5Vector<FloatType> &);
+  inline const Transverse & operator=(const Lorentz5Vector<Value> &);
   //@}
 
   /** @name Arithmetric operations */
@@ -131,22 +131,22 @@ public:
   /**
    * The x-component.
    */
-  inline FloatType x() const;
+  inline Value x() const;
 
   /**
    * The y-component.
    */
-  inline FloatType y() const;
+  inline Value y() const;
 
   /**
    * The magnitude squared.
    */
-  inline FloatType2 pt2() const;
+  inline Value2 pt2() const;
 
   /**
    * The magnitude.
    */
-  inline FloatType pt() const;
+  inline Value pt() const;
 
   /**
    * The azimuth angle.

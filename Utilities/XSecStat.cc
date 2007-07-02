@@ -29,12 +29,12 @@ PersistentIStream & operator>>(PersistentIStream & is, XSecStat & x) {
 using namespace ThePEG;
 
 void XSecStat::output(PersistentOStream & os) const {
-  os << theMaxXSec << theAttempts << theAccepted
+  os << ounit(theMaxXSec,picobarn) << theAttempts << theAccepted
      << theSumWeights << theSumWeights2;
 }
 
 void XSecStat::input(PersistentIStream & is) {
-  is >> theMaxXSec >> theAttempts >> theAttempts
+  is >> iunit(theMaxXSec,picobarn) >> theAttempts >> theAttempts
      >> theSumWeights >> theSumWeights2;
   lastWeight = 0.0;
 }

@@ -1,0 +1,252 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the LorentzRotation class.
+//
+
+namespace ThePEG {
+inline SpinOneLorentzRotation::SpinOneLorentzRotation() 
+  : matrix_(0.0,16) {
+  xx_() = yy_() = zz_() = tt_() = 1.0;
+}
+
+inline SpinOneLorentzRotation::SpinOneLorentzRotation(double bx, double by, double bz) 
+  : matrix_(0.0,16) {
+  setBoost(bx,by,bz);
+}
+
+inline SpinOneLorentzRotation::SpinOneLorentzRotation(const Boost & b) 
+  : matrix_(0.0,16) {
+  setBoost(b.x(), b.y(), b.z());
+}
+
+inline SpinOneLorentzRotation::
+SpinOneLorentzRotation(double xx, double xy, double xz, double xt,
+		       double yx, double yy, double yz, double yt,
+		       double zx, double zy, double zz, double zt,
+		       double tx, double ty, double tz, double tt)
+  : matrix_(0.0,16) {
+  xx_() = xx; xy_() = xy; xz_() = xz; xt_() = xt;
+  yx_() = yx; yy_() = yy; yz_() = yz; yt_() = yt;
+  zx_() = zx; zy_() = zy; zz_() = zz; zt_() = zt;
+  tx_() = tx; ty_() = ty; tz_() = tz; tt_() = tt;
+}
+
+inline bool SpinOneLorentzRotation::isIdentity() const {
+  return 
+       1.0 == xx() && 0.0 == xy() && 0.0 == xz() && 0.0 == xt()
+    && 0.0 == yx() && 1.0 == yy() && 0.0 == yz() && 0.0 == yt()
+    && 0.0 == zx() && 0.0 == zy() && 1.0 == zz() && 0.0 == zt()
+    && 0.0 == tx() && 0.0 == ty() && 0.0 == tz() && 1.0 == tt();
+}
+
+inline SpinOneLorentzRotation SpinOneLorentzRotation::inverse() const {
+  return SpinOneLorentzRotation( xx(), yx(), zx(),-tx(),
+				 xy(), yy(), zy(),-ty(), 
+				 xz(), yz(), zz(),-tz(),
+				-xt(),-yt(),-zt(), tt());
+}
+
+inline SpinOneLorentzRotation & SpinOneLorentzRotation::invert() {
+  return *this = inverse();
+}
+
+inline SpinOneLorentzRotation & SpinOneLorentzRotation::setBoost (const Boost & b) { 
+  return setBoost(b.x(), b.y(), b.z()); 
+}
+
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::setRotate(double delta, const Axis & axis) {
+
+  double sinDelta = sin(delta), cosDelta = cos(delta);
+  double oneMinusCosDelta = 1.0 - cosDelta;
+
+  Axis u = unitVector(axis);
+
+  double uX = u.x();
+  double uY = u.y();
+  double uZ = u.z();
+
+  double rxx = oneMinusCosDelta * uX * uX  +  cosDelta;
+  double rxy = oneMinusCosDelta * uX * uY  -  sinDelta * uZ;
+  double rxz = oneMinusCosDelta * uX * uZ  +  sinDelta * uY;
+
+  double ryx = oneMinusCosDelta * uY * uX  +  sinDelta * uZ;
+  double ryy = oneMinusCosDelta * uY * uY  +  cosDelta;
+  double ryz = oneMinusCosDelta * uY * uZ  -  sinDelta * uX;
+
+  double rzx = oneMinusCosDelta * uZ * uX  -  sinDelta * uY;
+  double rzy = oneMinusCosDelta * uZ * uY  +  sinDelta * uX;
+  double rzz = oneMinusCosDelta * uZ * uZ  +  cosDelta;
+
+  xx_() = rxx; xy_() = rxy; xz_() = rxz; xt_() = 0.0;
+  yx_() = ryx; yy_() = ryy; yz_() = ryz; yt_() = 0.0;
+  zx_() = rzx; zy_() = rzy; zz_() = rzz; zt_() = 0.0;
+  tx_() = 0.0; ty_() = 0.0; tz_() = 0.0; tt_() = 1.0;
+
+  return  *this;
+}
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::setRotateX(double delta) {
+  double sinDelta = sin(delta), cosDelta = cos(delta);
+
+  double ryy = cosDelta, ryz = -sinDelta;
+  double rzy = sinDelta, rzz =  cosDelta;
+
+  xx_() = 1.0; xy_() = 0.0; xz_() = 0.0; xt_() = 0.0;
+  yx_() = 0.0; yy_() = ryy; yz_() = ryz; yt_() = 0.0;
+  zx_() = 0.0; zy_() = rzy; zz_() = rzz; zt_() = 0.0;
+  tx_() = 0.0; ty_() = 0.0; tz_() = 0.0; tt_() = 1.0;
+  return  *this;
+}
+
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::setRotateY(double delta) {
+  double sinDelta = sin(delta), cosDelta = cos(delta);
+
+  double rxx =  cosDelta, rxz =  sinDelta;
+  double rzx = -sinDelta, rzz =  cosDelta;
+
+  xx_() = rxx; xy_() = 0.0; xz_() = rxz; xt_() = 0.0;
+  yx_() = 0.0; yy_() = 1.0; yz_() = 0.0; yt_() = 0.0;
+  zx_() = rzx; zy_() = 0.0; zz_() = rzz; zt_() = 0.0;
+  tx_() = 0.0; ty_() = 0.0; tz_() = 0.0; tt_() = 1.0;
+  return  *this;
+}
+
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::setRotateZ(double delta) {
+  double sinDelta = sin(delta), cosDelta = cos(delta);
+
+  double rxx = cosDelta, rxy = -sinDelta;
+  double ryx = sinDelta, ryy =  cosDelta;
+
+  xx_() = rxx; xy_() = rxy; xz_() = 0.0; xt_() = 0.0;
+  yx_() = ryx; yy_() = ryy; yz_() = 0.0; yt_() = 0.0;
+  zx_() = 0.0; zy_() = 0.0; zz_() = 1.0; zt_() = 0.0;
+  tx_() = 0.0; ty_() = 0.0; tz_() = 0.0; tt_() = 1.0;
+  return  *this;
+}
+
+inline double SpinOneLorentzRotation::xx() const { return matrix_[ 0]; }
+inline double SpinOneLorentzRotation::xy() const { return matrix_[ 1]; }
+inline double SpinOneLorentzRotation::xz() const { return matrix_[ 2]; }
+inline double SpinOneLorentzRotation::xt() const { return matrix_[ 3]; }
+
+inline double SpinOneLorentzRotation::yx() const { return matrix_[ 4]; }
+inline double SpinOneLorentzRotation::yy() const { return matrix_[ 5]; }
+inline double SpinOneLorentzRotation::yz() const { return matrix_[ 6]; }
+inline double SpinOneLorentzRotation::yt() const { return matrix_[ 7]; }
+
+inline double SpinOneLorentzRotation::zx() const { return matrix_[ 8]; }
+inline double SpinOneLorentzRotation::zy() const { return matrix_[ 9]; }
+inline double SpinOneLorentzRotation::zz() const { return matrix_[10]; }
+inline double SpinOneLorentzRotation::zt() const { return matrix_[11]; }
+
+inline double SpinOneLorentzRotation::tx() const { return matrix_[12]; }
+inline double SpinOneLorentzRotation::ty() const { return matrix_[13]; }
+inline double SpinOneLorentzRotation::tz() const { return matrix_[14]; }
+inline double SpinOneLorentzRotation::tt() const { return matrix_[15]; }
+
+template <typename Value>
+inline LorentzVector<Value>
+SpinOneLorentzRotation::operator*(const LorentzVector<Value> & v) const {
+  return LorentzVector<Value>
+    (xx()*v.x() + xy()*v.y() + xz()*v.z() + xt()*v.t(),
+     yx()*v.x() + yy()*v.y() + yz()*v.z() + yt()*v.t(),
+     zx()*v.x() + zy()*v.y() + zz()*v.z() + zt()*v.t(),
+     tx()*v.x() + ty()*v.y() + tz()*v.z() + tt()*v.t());
+}
+
+template <typename Value>
+inline Lorentz5Vector<Value>
+SpinOneLorentzRotation::operator*(const Lorentz5Vector<Value> & v) const {
+  return Lorentz5Vector<Value>
+    (xx()*v.x() + xy()*v.y() + xz()*v.z() + xt()*v.t(),
+     yx()*v.x() + yy()*v.y() + yz()*v.z() + yt()*v.t(),
+     zx()*v.x() + zy()*v.y() + zz()*v.z() + zt()*v.t(),
+     tx()*v.x() + ty()*v.y() + tz()*v.z() + tt()*v.t());
+}
+
+inline SpinOneLorentzRotation 
+SpinOneLorentzRotation::operator*(const SpinOneLorentzRotation & b) const {
+  return SpinOneLorentzRotation
+    (xx()*b.xx() + xy()*b.yx() + xz()*b.zx() + xt()*b.tx(),
+     xx()*b.xy() + xy()*b.yy() + xz()*b.zy() + xt()*b.ty(),
+     xx()*b.xz() + xy()*b.yz() + xz()*b.zz() + xt()*b.tz(),
+     xx()*b.xt() + xy()*b.yt() + xz()*b.zt() + xt()*b.tt(),
+     
+     yx()*b.xx() + yy()*b.yx() + yz()*b.zx() + yt()*b.tx(),
+     yx()*b.xy() + yy()*b.yy() + yz()*b.zy() + yt()*b.ty(),
+     yx()*b.xz() + yy()*b.yz() + yz()*b.zz() + yt()*b.tz(),
+     yx()*b.xt() + yy()*b.yt() + yz()*b.zt() + yt()*b.tt(),
+     
+     zx()*b.xx() + zy()*b.yx() + zz()*b.zx() + zt()*b.tx(),
+     zx()*b.xy() + zy()*b.yy() + zz()*b.zy() + zt()*b.ty(),
+     zx()*b.xz() + zy()*b.yz() + zz()*b.zz() + zt()*b.tz(),
+     zx()*b.xt() + zy()*b.yt() + zz()*b.zt() + zt()*b.tt(),
+
+     tx()*b.xx() + ty()*b.yx() + tz()*b.zx() + tt()*b.tx(),
+     tx()*b.xy() + ty()*b.yy() + tz()*b.zy() + tt()*b.ty(),
+     tx()*b.xz() + ty()*b.yz() + tz()*b.zz() + tt()*b.tz(),		
+     tx()*b.xt() + ty()*b.yt() + tz()*b.zt() + tt()*b.tt());
+}
+
+inline SpinOneLorentzRotation &
+SpinOneLorentzRotation::operator*=(const SpinOneLorentzRotation & lt) {
+  return *this = *this * lt;
+}
+
+inline  SpinOneLorentzRotation & 
+SpinOneLorentzRotation::transform(const SpinOneLorentzRotation & lt) {
+  return *this = lt * *this;
+}
+
+inline SpinOneLorentzRotation & SpinOneLorentzRotation::rotateX(double delta) {
+  SpinOneLorentzRotation tmp;
+  tmp.setRotateX(delta);
+  return *this = tmp * *this;
+}
+
+inline SpinOneLorentzRotation & SpinOneLorentzRotation::rotateY(double delta) {
+  SpinOneLorentzRotation tmp;
+  tmp.setRotateY(delta);
+  return *this = tmp * *this;
+}
+
+inline SpinOneLorentzRotation & SpinOneLorentzRotation::rotateZ(double delta) {
+  SpinOneLorentzRotation tmp;
+  tmp.setRotateZ(delta);
+  return *this = tmp * *this;
+}
+
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::rotate(double delta, const Axis & axis) {
+  SpinOneLorentzRotation tmp;
+  tmp.setRotate(delta, axis);
+  return *this = tmp * *this;
+}
+
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::boostX(double beta) {
+  return *this = SpinOneLorentzRotation(beta,0,0) * *this;
+}
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::boostY(double beta) {
+  return *this = SpinOneLorentzRotation(0,beta,0) * *this;
+}
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::boostZ(double beta) {
+  return *this = SpinOneLorentzRotation(0,0,beta) * *this;
+}
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::boost(double bx, double by, double bz) {
+  return *this = SpinOneLorentzRotation(bx,by,bz) * *this;
+}
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::boost(const Boost & b) {
+  return *this = SpinOneLorentzRotation(b.x(),b.y(),b.z()) * *this;
+}
+
+
+}

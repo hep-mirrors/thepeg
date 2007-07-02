@@ -8,6 +8,7 @@
 namespace ThePEG {
 namespace Helicity {
 
+template<typename>
 class LorentzSpinorBar;
 
 }

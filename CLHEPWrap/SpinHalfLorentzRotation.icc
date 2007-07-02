@@ -32,7 +32,7 @@ inline SpinHalfLorentzRotation::SpinHalfLorentzRotation(double bx, double by, do
 {setBoost (bx,by,bz);}
 
 // constructor with boost vector
-inline SpinHalfLorentzRotation::SpinHalfLorentzRotation (const Hep3Vector & b)
+inline SpinHalfLorentzRotation::SpinHalfLorentzRotation (const Boost & b)
 {setBoost(b);}
 
 // protected set all elements constructor
@@ -80,7 +80,7 @@ inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::invert() {
 }
 
 // general rotation
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotate(double phi, const Hep3Vector& axis)
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotate(double phi, const Axis & axis)
 {
   double cp(cos(0.5*phi));
   // get the normalised components of the vector
@@ -263,7 +263,7 @@ inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateZ(double phi)
 }
 
 // Rotation around specified vector - LT = Rotation(delta,axis)*LT
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotate(double phi, const Hep3Vector& axis)
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotate(double phi, const Axis & axis)
 {
   double cp(cos(0.5*phi)),amag(axis.mag()),ax(axis.x()/amag),ay(axis.y()/amag),az(axis.z()/amag);
   Complex ii(0.,1.),nxminy(ax-ii*ay),nxplny(ax+ii*ay),isp(0.,sin(0.5*phi)),temp[4][4];

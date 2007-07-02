@@ -1,7 +1,6 @@
 if JAVAGUI
   JAVADIR = java
 endif
-
 MAINDIRS = include Config Utilities Helicity Interface LesHouches CLHEPWrap \
           PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
           StandardModel Repository EventRecord Cuts Analysis lib Doc src

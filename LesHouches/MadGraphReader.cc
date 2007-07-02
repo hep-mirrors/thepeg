@@ -149,7 +149,7 @@ void MadGraphReader::open() {
 	  if ( cfile.getc() == 'd' ) {
 	    long x = 0;
 	    cfile >> x;
-	    cuts[cuttags[itag]] *= pow(10.0, x);
+	    cuts[cuttags[itag]] *= pow(10.0, double(x));
 	  }
 	  break;
 	}
@@ -180,8 +180,8 @@ void MadGraphReader::open() {
     else if ( lpp2 == -1 ) heprup.IDBMUP.second = ParticleID::pbarminus;
   }
 
-  if ( heprup.EBMUP.first <= 0.0*GeV ) heprup.EBMUP.first = ebeam1;
-  if ( heprup.EBMUP.second <= 0.0*GeV ) heprup.EBMUP.second = ebeam2;
+  if ( heprup.EBMUP.first <= 0.0 ) heprup.EBMUP.first = ebeam1;
+  if ( heprup.EBMUP.second <= 0.0 ) heprup.EBMUP.second = ebeam2;
 
   if ( !cfile )
     throw LesHouchesFileError()

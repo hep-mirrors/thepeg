@@ -32,7 +32,7 @@ template <typename PType>
 LorentzRotation UtilityBase::getBoostToCM(const pair<PType,PType> & pp) {
   typedef ParticleTraits<PType> Traits;
   LorentzMomentum p1 = Traits::momentum(pp.first);
-  Vector3 b = (p1 + Traits::momentum(pp.second)).boostVector();
+  Boost b = (p1 + Traits::momentum(pp.second)).boostVector();
   p1.boost(-b);
   LorentzRotation rot(-b);
   rot.rotateZ(-p1.phi());
@@ -47,7 +47,7 @@ getBoostToCM(const Triplet<PType,PType,PType> & pt) {
   typedef ParticleTraits<PType> Traits;
   LorentzMomentum p1 = Traits::momentum(pt.first);
   LorentzMomentum p2 = Traits::momentum(pt.second);
-  Vector3 b = (p1 + p2 + Traits::momentum(pt.third)).boostVector();
+  Boost b = (p1 + p2 + Traits::momentum(pt.third)).boostVector();
   p1.boost(-b);
   LorentzRotation rot(-b);
   rot.rotateZ(-p1.phi());
@@ -67,7 +67,7 @@ template <typename PType>
 LorentzRotation UtilityBase::getBoostFromCM(const pair<PType,PType> & pp) {
   typedef ParticleTraits<PType> Traits;
   LorentzMomentum p1 = Traits::momentum(pp.first);
-  Vector3 b = (p1 + Traits::momentum(pp.second)).boostVector();
+  Boost b = (p1 + Traits::momentum(pp.second)).boostVector();
   p1.boost(-b);
   LorentzRotation rot;
   rot.rotateZ(-p1.phi());
@@ -122,7 +122,7 @@ template <typename LV>
 LorentzRotation UtilityBase::
 transformFromCMS(const LV & sum, LV zAxis) {
   LorentzRotation r;
-  Vector3 bz(sum.boostVector());
+  Boost bz(sum.boostVector());
   zAxis.boost(-bz);
   r.rotateZ(-zAxis.phi());
   r.rotateY(zAxis.theta());

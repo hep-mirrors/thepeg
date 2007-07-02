@@ -5,7 +5,7 @@ namespace ThePEG {
 template <typename T, typename WeightType>
 WeightType Selector<T,WeightType>::erase(const T & t) {
   Selector<T,WeightType> newSelector;
-  WeightType oldsum = 0.0;
+  WeightType oldsum = WeightType();
   for ( iterator it = theMap.begin();
 	it != theMap.end(); ++it ) {
     WeightType r = it->first - oldsum;
@@ -61,9 +61,9 @@ select(double rnd, double * remainder) throw(range_error) {
 template <typename T, typename WeightType>
 template <typename OStream>
 void Selector<T,WeightType>::output(OStream & os) const {
-  os << theSum << size();
+  os << ounit(theSum,TypeTraits<WeightType>::baseunit) << size();
   for ( const_iterator it = theMap.begin(); it != theMap.end(); ++it )
-    os << it->first << it->second;
+    os << ounit(it->first,TypeTraits<WeightType>::baseunit) << it->second;
 }
 
 template <typename T, typename WeightType>
@@ -74,9 +74,9 @@ void Selector<T,WeightType>::input(IStream & is) {
   T t;
   WeightType weightsum;
   long n;
-  is >> theSum >> n;
+  is >> iunit(theSum,TypeTraits<WeightType>::baseunit) >> n;
   while ( n-- ) {
-    is >> weightsum >> t;
+    is >> iunit(weightsum,TypeTraits<WeightType>::baseunit) >> t;
     theMap.insert(theMap.end(), value_type(weightsum, t));
   }
 }

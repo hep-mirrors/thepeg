@@ -23,8 +23,10 @@ string ParameterTBase<Type>::doxygenType() const {
 }
 
 template <typename Type>
-void ParameterTBase<Type>::
-set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
+inline void 
+ParameterTBase<Type>::setImpl(InterfacedBase & i, 
+			      string newValue, StandardT) 
+  const throw(InterfaceException) {
   istringstream is(newValue);
   if ( unit() > Type() ) {
     double t;
@@ -35,6 +37,23 @@ set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
     is >> t;
     tset(i, t);
   }
+}
+
+template <typename Type>
+inline void 
+ParameterTBase<Type>::setImpl(InterfacedBase & i, 
+			      string newValue, DimensionT) 
+  const throw(InterfaceException) {
+  istringstream is(newValue);
+  double t;
+  is >> t;
+  tset(i, t*unit());
+}
+
+template <typename T>
+void ParameterTBase<T>::
+set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
+  setImpl(i, newValue, typename TypeTraits<T>::DimType());
 }
 
 template <typename Type>
@@ -215,12 +234,27 @@ void Parameter<T,string>::doxygenDescription(ostream & os) const {
   os << "<br>\n";
 }
 
+namespace {
+  template <typename T>
+  inline
+  void ostreamInsert(ostream & os, T v, DimensionT) {
+    os << ounit(v,T::baseunit());
+  }
+  
+  template <typename T>
+  inline
+  void ostreamInsert(ostream & os, T v, StandardT) {
+    os << v;
+  }
+}
+
 template <typename T>
 ParExSetLimit::ParExSetLimit(const InterfaceBase & i,
 			     const InterfacedBase & o, T v) {
   theMessage << "Could not set the parameter \"" << i.name()
-	     << "\" for the object \"" << o.name() << "\" to " << v
-	     << " because the value is outside the specified limits.";
+	     << "\" for the object \"" << o.name() << "\" to ";
+  ostreamInsert(theMessage,v,typename TypeTraits<T>::DimType() );
+  theMessage << " because the value is outside the specified limits.";
   severity(warning);
 }
 
@@ -228,8 +262,9 @@ template <typename T>
 ParExSetUnknown::ParExSetUnknown(const InterfaceBase & i,
 				 const InterfacedBase & o, T v) {
   theMessage << "Could not set the parameter \"" << i.name()
-	     << "\" for the object \"" << o.name() << "\" to " << v
-	     << " because the set function threw an unknown exception.";
+	     << "\" for the object \"" << o.name() << "\" to ";
+  ostreamInsert(theMessage,v,typename TypeTraits<T>::DimType() );
+  theMessage << " because the set function threw an unknown exception.";
   severity(maybeabort);
 }
 

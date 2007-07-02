@@ -11,6 +11,13 @@
 namespace ThePEG {
 namespace Helicity {
 
+// compiler magic needs these pre-declarations to make friend templates work
+template<typename Value> class LorentzTensor;
+template <typename T, typename U>
+complex<typename BinaryOpTraits<T,U>::MulT> 
+operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);
+
+
 /**
  *  The LorentzTensor class is designed to implement the storage of a
  *  complex tensor to be used to representation the wavefunction of a
@@ -23,9 +30,11 @@ namespace Helicity {
  * @author Peter Richardson
  *
  */
+
+template<typename Value> 
 class LorentzTensor{
 
-    public:
+public:
 
   /** @name Standard constructors and destructors. */
   //@{
@@ -37,20 +46,21 @@ class LorentzTensor{
   /**
    * Constructor specifyign all components.
    */
-  LorentzTensor(Complex, Complex, Complex, Complex,
-		Complex, Complex, Complex, Complex,
-		Complex, Complex, Complex, Complex,
-		Complex, Complex, Complex, Complex);
+  LorentzTensor(complex<Value>, complex<Value>, complex<Value>, complex<Value>,
+		complex<Value>, complex<Value>, complex<Value>, complex<Value>,
+		complex<Value>, complex<Value>, complex<Value>, complex<Value>,
+		complex<Value>, complex<Value>, complex<Value>, complex<Value>);
 
   /**
    * Constructor in terms of two polarization vectors.
    */
   inline LorentzTensor(LorentzPolarizationVector, LorentzPolarizationVector);
 
-  /**
-   * Constructor in terms of two LorentzVectors
-   */
-  inline LorentzTensor(LorentzVector p, LorentzVector q);
+//   /**
+//    * Constructor in terms of two LorentzVectors
+//    */
+//   inline LorentzTensor(const LorentzVector<double> & p,
+// 		       const LorentzVector<double> & q);
 
   /**
    * The destructor
@@ -63,171 +73,171 @@ class LorentzTensor{
   /**
    * Get x,x component.
    */
-  inline Complex xx() const;
+  inline complex<Value> xx() const;
 
   /**
    * Get y,x component.
    */
-  inline Complex yx() const;
+  inline complex<Value> yx() const;
   /**
    * Get z,x component.
    */
-  inline Complex zx() const;
+  inline complex<Value> zx() const;
 
   /**
    * Get t,x component.
    */
-  inline Complex tx() const;
+  inline complex<Value> tx() const;
 
   /**
    * Get x,y component.
    */
-  inline Complex xy() const;
+  inline complex<Value> xy() const;
 
   /**
    * Get y,y component.
    */
-  inline Complex yy() const;
+  inline complex<Value> yy() const;
 
   /**
    * Get z,y component.
    */
-  inline Complex zy() const;
+  inline complex<Value> zy() const;
 
   /**
    * Get t,y component.
    */
-  inline Complex ty() const;
+  inline complex<Value> ty() const;
 
   /**
    * Get x,z component.
    */
-  inline Complex xz() const;
+  inline complex<Value> xz() const;
 
   /**
    * Get y,z component.
    */
-  inline Complex yz() const;
+  inline complex<Value> yz() const;
 
   /**
    * Get z,z component.
    */
-  inline Complex zz() const;
+  inline complex<Value> zz() const;
 
   /**
    * Get t,z component.
    */
-  inline Complex tz() const;
+  inline complex<Value> tz() const;
 
   /**
    * Get x,t component.
    */
-  inline Complex xt() const;
+  inline complex<Value> xt() const;
 
   /**
    * Get y,t component.
    */
-  inline Complex yt() const;
+  inline complex<Value> yt() const;
 
   /**
    * Get z,t component.
    */
-  inline Complex zt() const;
+  inline complex<Value> zt() const;
 
   /**
    * Get t,t component.
    */
-  inline Complex tt() const;
+  inline complex<Value> tt() const;
 
   /**
    * Set x,x component.
    */
-  inline void setXX(Complex);
+  inline void setXX(complex<Value>);
 
   /**
    * Set y,x component.
    */
-  inline void setYX(Complex);
+  inline void setYX(complex<Value>);
 
   /**
    * Set z,x component.
    */
-  inline void setZX(Complex);
+  inline void setZX(complex<Value>);
 
   /**
    * Set t,x component.
    */
-  inline void setTX(Complex);
+  inline void setTX(complex<Value>);
 
   /**
    * Set x,y component.
    */
-  inline void setXY(Complex);
+  inline void setXY(complex<Value>);
 
   /**
    * Set y,y component.
    */
-  inline void setYY(Complex);
+  inline void setYY(complex<Value>);
 
   /**
    * Set z,y component.
    */
-  inline void setZY(Complex);
+  inline void setZY(complex<Value>);
 
   /**
    * Set t,y component.
    */
-  inline void setTY(Complex);
+  inline void setTY(complex<Value>);
 
   /**
    * Set x,z component.
    */
-  inline void setXZ(Complex);
+  inline void setXZ(complex<Value>);
 
   /**
    * Set y,z component.
    */
-  inline void setYZ(Complex);
+  inline void setYZ(complex<Value>);
 
   /**
    * Set z,z component.
    */
-  inline void setZZ(Complex);
+  inline void setZZ(complex<Value>);
 
   /**
    * Set t,z component.
    */
-  inline void setTZ(Complex);
+  inline void setTZ(complex<Value>);
 
   /**
    * Set x,t component.
    */
-  inline void setXT(Complex);
+  inline void setXT(complex<Value>);
 
   /**
    * Set y,t component.
    */
-  inline void setYT(Complex);
+  inline void setYT(complex<Value>);
 
   /**
    * Set z,t component.
    */
-  inline void setZT(Complex);
+  inline void setZT(complex<Value>);
 
   /**
    * Set t,t component.
    */
-  inline void setTT(Complex);
+  inline void setTT(complex<Value>);
 
   /**
    * Get components by indices.
    */
-  inline Complex operator () (int,int) const;
+  inline complex<Value> operator () (int,int) const;
 
   /**
    * Set components by indices.
    */
-  inline Complex & operator () (int,int);
+  inline complex<Value> & operator () (int,int);
   //@}
 
   /** @name Transformations. */
@@ -240,17 +250,12 @@ class LorentzTensor{
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzTensor & boost(const Hep3Vector &);
+  inline LorentzTensor & boost(const Boost &);
 
   /**
    * General Lorentz transformation
    */
   inline LorentzTensor & transform(const SpinOneLorentzRotation &);
-
-  /**
-   * General Lorentz transformation
-   */
-  inline LorentzTensor & transform(const LorentzRotation &);
 
   /**
    * Return the complex conjugate.
@@ -266,14 +271,16 @@ class LorentzTensor{
   inline LorentzTensor & operator=(const LorentzTensor &);
 
   /**
-   * Scalar product with other tensor
-   */
-  inline Complex operator*(const LorentzTensor &) const;
-
-  /**
    * Scaling with a complex number
    */
   inline LorentzTensor operator*=(Complex);
+
+  /**
+   * Scalar product with other tensor
+   */
+  template <typename T, typename U>
+  friend complex<typename BinaryOpTraits<T,U>::MulT> 
+  operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);
 
   /**
    * Addition.
@@ -288,7 +295,7 @@ class LorentzTensor{
   /**
    * Trace
    */
-  inline Complex trace();
+  inline complex<Value> trace();
   //@}
 
 private:
@@ -296,30 +303,37 @@ private:
   /**
    * The components.
    */
-  Complex _tensor[4][4];
+  complex<Value> _tensor[4][4];
 
 };
 
 /**
  * Multiplication by a complex number.
  */
-inline LorentzTensor operator*(Complex a,const LorentzTensor &);
+template<typename T, typename U> 
+inline LorentzTensor<typename BinaryOpTraits<T,U>::MulT> 
+operator*(complex<U>, const LorentzTensor<T> &);
 
 /**
- * Multiply a LorentzPolarizationVector by a LorentzTensor.
+ * Multiply a LorentzVector by a LorentzTensor.
  */
-inline LorentzPolarizationVector
-operator*(const LorentzPolarizationVector &, const LorentzTensor &);
+template<typename T, typename U> 
+inline LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT>
+operator*(const LorentzVector<U> &, const LorentzTensor<T> &);
 
 /**
- * Multiply a LorentzTensor by a LorentzPolarizationVector.
+ * Multiply a LorentzTensor by a LorentzVector.
  */
-inline LorentzPolarizationVector
-operator*(const LorentzTensor &,const LorentzPolarizationVector &);
+template<typename T, typename U> 
+inline LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT>
+operator*(const LorentzTensor<T> &, const LorentzVector<U> &);
 
 }
 }
 
 #include "LorentzTensor.icc"
+#ifndef ThePEG_TEMPLATES_IN_CC_FILE
+#include "LorentzTensor.tcc"
+#endif 
 
 #endif

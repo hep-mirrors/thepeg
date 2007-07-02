@@ -22,7 +22,6 @@
 #include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Utilities/Math.h"
-#include "ThePEG/CLHEPWrap/RandPoisson.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/Throw.h"
 
@@ -158,7 +157,8 @@ EventPtr LesHouchesEventHandler::generateEvent() {
 
     if ( weightOption() == unitweight || weightOption() == unitnegweight ) {
       CrossSection newmax = selector().reweight(weight);
-      if ( newmax > 0 )	increaseMaxXSec(newmax);
+      if ( newmax > CrossSection() )
+	increaseMaxXSec(newmax);
     }
 
     select(weight/currentReader()->preweight);
@@ -215,14 +215,15 @@ void LesHouchesEventHandler::skipEvents() {
 
   // Estimate the number of times we need to go through the events for
   // the currentReader(), and how many events on average we need to
-  // skip for each attempted event to gor through the file an integer
+  // skip for each attempted event to go through the file an integer
   // number of times.
   double nscan = ceil(xscan);
   double meanskip = nscan/xscan - 1.0;
 
   // Skip an average numer of steps with a Poissonian distribution.
-  long nskip = RandPoisson::shoot(UseRandom::currentEngine(), meanskip);
-  currentReader()->skip(nskip);
+  //  long nskip = RandPoisson::shoot(UseRandom::currentEngine(), meanskip);
+  currentReader()->
+    skip(UseRandom::rndPoisson(meanskip, currentReader()->NEvents()));
 }
 
 void LesHouchesEventHandler::select(double weight) {

@@ -61,7 +61,7 @@ public:
   /**
    * Return a pointer to the currently chosen RandomGenerator object.
    */
-  inline static RandomEngine * currentEngine();
+//  inline static RandomEngine * currentEngine();
 
   /**
    * Return a simple flat random number (from the current
@@ -79,13 +79,15 @@ public:
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]0,\a xu[.
    */
-  inline static double rnd(double xu);
+  template <typename Unit>
+  inline static Unit rnd(Unit xu);
 
   /**
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]\a xl,\a xu[.
    */
-  inline static double rnd(double xl, double xu);
+  template <typename Unit>
+  inline static Unit rnd(Unit xl, Unit xu);
   
   /**
    * Return a true with probability 0.5.
@@ -136,6 +138,73 @@ public:
    */
   inline static long irnd(long xl, long xu);
   
+  /**
+   * Return a number between zero and infinity, distributed according
+   * to \f$e^-x\f$.
+   */
+  inline static double rndExp();
+
+  /**
+   * Return a number between zero and infinity, distributed according
+   * to \f$e^-{x/\mu}\f$ where \f$\mu\f$ is the \a mean value.
+   */
+  template <typename Unit>
+  inline static Unit rndExp(Unit mean);
+
+  /**
+   * Return a number distributed according to a Gaussian distribution
+   * with zero mean and unit variance.
+   */
+  inline static double rndGauss();
+
+  /**
+   * Return a number distributed according to a Gaussian distribution
+   * with a given standard deviation, \a sigma, and a given \a mean.
+   */
+  template <typename Unit>
+  inline static Unit rndGauss(Unit sigma, Unit mean = Unit());
+
+  /**
+   * Return a positive number distributed according to a
+   * non-relativistic Breit-Wigner with a given width, \a gamma, and a
+   * given \a mean.
+   */
+  template <typename Unit>
+  inline static Unit rndBW(Unit mean, Unit gamma);
+
+  /**
+   * Return a positive number distributed according to a
+   * non-relativistic Breit-Wigner with a given width, \a gamma, and a
+   * given \a mean. The distribution is cut-off so that the number is
+   * between \a mean - \a cut and \a mean + \a cut
+   */
+  template <typename Unit>
+  inline static Unit rndBW(Unit mean, Unit gamma, Unit cut);
+
+  /**
+   * Return a positive number distributed according to a relativistic
+   * Breit-Wigner with a given width, \a gamma, and a given \a mean.
+   */
+  template <typename Unit>
+  inline static Unit rndRelBW(Unit mean, Unit gamma);
+
+  /**
+   * Return a positive number distributed according to a relativistic
+   * Breit-Wigner with a given width, \a gamma, and a given \a
+   * mean. The distribution is cut-off so that the number is between
+   * \a mean - \a cut and \a mean + \a cut
+   */
+  template <typename Unit>
+  inline static Unit rndRelBW(Unit mean, Unit gamma, Unit cut);
+
+  /**
+   * Return a non-negative number generated according to a Poissonian
+   * distribution with a given \a mean. Warning: the method
+   * implemented is very slow for large mean and large return
+   * values. For this reason the maximum return value is given by \a
+   * nmax.
+   */
+  inline static long rndPoisson(double mean, long nmax = 10000);
 
 private:
 

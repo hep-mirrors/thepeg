@@ -23,8 +23,11 @@ CONFIGHEADERS = $(top_srcdir)/Config/Complex.h \
                 $(top_srcdir)/Config/Containers.h \
 		$(top_srcdir)/Config/Pointers.h \
                 $(top_srcdir)/Config/ThePEG.h \
-		$(top_srcdir)/Config/Units.h \
                 $(top_srcdir)/Config/algorithm.h \
+		$(top_srcdir)/Config/PhysicalQty.h \
+		$(top_srcdir)/Config/PhysicalQtyComplex.h \
+		$(top_srcdir)/Config/PhysicalQtyOps.h \
+		$(top_srcdir)/Config/TemplateTools.h \
 		$(top_srcdir)/Config/std.h
 
 CLEANFILES = done-all-links 
@@ -35,6 +38,7 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
 	$(LN_S) -f ../../../Config/config.h ThePEG/Config
+	$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
 	touch done-all-links
 @EMPTY@else
 	@echo "sym-linking header files..."
@@ -42,6 +46,7 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	@$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	@$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
 	@$(LN_S) -f ../../../Config/config.h ThePEG/Config
+	@$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
 	@touch done-all-links
 @EMPTY@endif
 

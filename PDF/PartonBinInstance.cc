@@ -92,7 +92,8 @@ void PartonBinInstance::generate(const double * r) {
 		       *r++, theJacobian));
   if ( bin()->pdfDim() > 1 )
     scale(pdf()->flattenScale(particleData(), partonData(), bin()->cuts(),
-			      li(), *r++, theJacobian));
+			      li(), *r++, theJacobian)
+	  *bin()->cuts().scaleMaxL(li()));
   incoming()->generate(r);
   l(li() + incoming()->l());
 }

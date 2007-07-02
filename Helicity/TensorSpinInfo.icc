@@ -46,7 +46,7 @@ inline void TensorSpinInfo::rebind(const EventTranslationMap & trans) {
 
 // set and get methods for the basis states
 // set the basis state, this is production state
-inline void TensorSpinInfo::setBasisState(unsigned int ihel, LorentzTensor in) const
+inline void TensorSpinInfo::setBasisState(unsigned int ihel, LorentzTensor<double> in) const
 {
   if (ihel<5)
     {
@@ -59,7 +59,7 @@ inline void TensorSpinInfo::setBasisState(unsigned int ihel, LorentzTensor in) c
 }
 
 inline void TensorSpinInfo::setDecayState(unsigned int ihel,
-					  LorentzTensor in) const
+					  LorentzTensor<double> in) const
 {
   if(ihel<5) {
     _decaycalc=true;
@@ -70,7 +70,7 @@ inline void TensorSpinInfo::setDecayState(unsigned int ihel,
 }
 
 // get the basis state for the production
-inline LorentzTensor TensorSpinInfo::getProductionBasisState(unsigned int ihel) const
+inline LorentzTensor<double> TensorSpinInfo::getProductionBasisState(unsigned int ihel) const
 {
   if (ihel>4) throw HelicityLogicalError()
     << "Tried to get invalid tensor basis state in TensorSpinInfo."
@@ -80,7 +80,7 @@ inline LorentzTensor TensorSpinInfo::getProductionBasisState(unsigned int ihel) 
 
 
 // get the bassis state for the decay
-inline LorentzTensor TensorSpinInfo::getDecayBasisState(unsigned int ihel) const
+inline LorentzTensor<double> TensorSpinInfo::getDecayBasisState(unsigned int ihel) const
 {
   // check this is a valid helicity
   if (ihel>4) throw HelicityLogicalError()

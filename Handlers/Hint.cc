@@ -36,7 +36,7 @@ void Hint::persistentOutput(PersistentOStream & os) const {
 }
 
 void Hint::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(theScale, GeV) >> theStopFlag >> theTagged;
+  is >> iunit(theScale, GeV2) >> theStopFlag >> theTagged;
 }
 
 ClassDescription<Hint> Hint::initHint;

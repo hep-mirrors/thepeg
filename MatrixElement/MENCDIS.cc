@@ -66,8 +66,8 @@ double MENCDIS::me2() const {
   pq.setMass(0.0*GeV);
   pq.rescaleEnergy();
   double y = 1.0 - pq.dot(meMomenta()[3]) / pq.dot(meMomenta()[1]);
-  Energy2 F2Coeff = sqr(sHat()) * (1 + sqr(1-y));
-  Energy2 F3Coeff = sqr(sHat()) * (1 - sqr(1-y));
+  Energy4 F2Coeff = sqr(sHat()) * (1 + sqr(1-y));
+  Energy4 F3Coeff = sqr(sHat()) * (1 - sqr(1-y));
   double C = 16 * SM().sin2ThetaW() * ( 1.0 - SM().sin2ThetaW() );
   if(mePartonData()[0]->id() < 0){
     F3Coeff = -F3Coeff;

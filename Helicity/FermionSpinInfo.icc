@@ -10,28 +10,23 @@ namespace ThePEG {
 namespace Helicity {
 
 inline FermionSpinInfo::FermionSpinInfo()
+  : _productionstates(2),
+    _currentstates(2),
+    _decaystates(2),
+    _decaycalc(false)
 {
-  _productionstates.resize(2,LorentzSpinor());
-  _currentstates.resize(2,LorentzSpinor());
-  _decaystates.resize(2,LorentzSpinor());
   iSpin(PDT::Spin1Half);
-  _decaycalc=false;
 }
-
-inline FermionSpinInfo::FermionSpinInfo(const FermionSpinInfo & x)
-  : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _currentstates(x._currentstates),
-    _decaycalc(x._decaycalc) {}
 
 inline FermionSpinInfo::
 FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
+  : _productionstates(2),
+    _currentstates(2),
+    _decaystates(2),
+    _decaycalc(false)
 {
-  _productionstates.resize(2,LorentzSpinor());
-  _currentstates.resize(2,LorentzSpinor());
-  _decaystates.resize(2,LorentzSpinor());
-  iSpin(PDT::Spin1Half);
   setProductionMomentum(in);
-  _decaycalc=false;
+  iSpin(PDT::Spin1Half);
   setTimelike(intime);
 }
 
@@ -47,7 +42,7 @@ inline void FermionSpinInfo::rebind(const EventTranslationMap & trans) {
 
 // set and get methods for the basis states
 // set the basis state, this is production state
-inline void FermionSpinInfo::setBasisState(unsigned int ihel,LorentzSpinor in) const
+inline void FermionSpinInfo::setBasisState(unsigned int ihel,LorentzSpinor<SqrtEnergy> in) const
 {
   if(ihel<=1)
     {
@@ -60,7 +55,7 @@ inline void FermionSpinInfo::setBasisState(unsigned int ihel,LorentzSpinor in) c
 
 }
 
-inline void FermionSpinInfo::setDecayState(unsigned int ihel,LorentzSpinor in) const
+inline void FermionSpinInfo::setDecayState(unsigned int ihel,LorentzSpinor<SqrtEnergy> in) const
 {
   if(ihel<=1){
     _decaycalc=true;
@@ -71,7 +66,7 @@ inline void FermionSpinInfo::setDecayState(unsigned int ihel,LorentzSpinor in) c
 }
 
 // get the basis state for the production
-inline LorentzSpinor FermionSpinInfo::getProductionBasisState(unsigned int ihel) const
+inline LorentzSpinor<SqrtEnergy> FermionSpinInfo::getProductionBasisState(unsigned int ihel) const
 {
   if(ihel>1) throw HelicityLogicalError()
     << "Tried to get invalid fermion basis state in FermionSpinInfo class."
@@ -80,7 +75,7 @@ inline LorentzSpinor FermionSpinInfo::getProductionBasisState(unsigned int ihel)
 }
 
 // get the basis state for the decay
-inline LorentzSpinor FermionSpinInfo::getDecayBasisState(unsigned int ihel) const
+inline LorentzSpinor<SqrtEnergy> FermionSpinInfo::getDecayBasisState(unsigned int ihel) const
 {
   // check this is a valid helicity
   if (ihel>1)

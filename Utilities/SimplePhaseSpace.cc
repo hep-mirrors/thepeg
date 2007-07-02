@@ -12,7 +12,7 @@ Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
   if ( m1 >= 0.0*GeV && m2 >= 0.0*GeV ) {
     Energy2 aa = s - sqr(m1+m2);
-    if ( aa < 0.0 ) throw ImpossibleKinematics();
+    if ( aa < Energy2() ) throw ImpossibleKinematics();
     return 0.5*sqrt(aa*(s-sqr(m1-m2))/s);
   }
   Energy2 m12 = m1 < 0.0*GeV? -sqr(m1): sqr(m1);
@@ -73,7 +73,7 @@ CMSn(Energy m0, const vector<Energy> & m)
       if ( i == Np -2 ) {
 	ret[Np - 1] = LorentzMomentum(p3, sqrt(sqr(m[Np - 1]) + p3.mag2()));
       } else {
-	Vector3 bv = p3*(1.0/sqrt(sqr(p[i]) + sqr(sm[i + 1])));
+	Boost bv = p3*(1.0/sqrt(sqr(p[i]) + sqr(sm[i + 1])));
 	if ( bv.mag2() >= 1.0 ) throw ImpossibleKinematics();
 	LorentzRotation r(bv);
 	for ( int j = i + 1; j < Np; ++j ) ret[j]*=r.one();

@@ -28,6 +28,7 @@ namespace Helicity {
  * \author Peter Richardson
  *
  */
+template <typename Value>
 class LorentzRSSpinorBar {
 
 public:
@@ -52,20 +53,20 @@ public:
    * optionally specifying \a t, the type and \a r, the choice of
    * dirac matrix.
    */
-  LorentzRSSpinorBar(Complex,Complex,Complex,Complex,
-		     Complex,Complex,Complex,Complex,
-		     Complex,Complex,Complex,Complex,
-		     Complex,Complex,Complex,Complex,
+  LorentzRSSpinorBar(complex<Value>,complex<Value>,complex<Value>,complex<Value>,
+		     complex<Value>,complex<Value>,complex<Value>,complex<Value>,
+		     complex<Value>,complex<Value>,complex<Value>,complex<Value>,
+		     complex<Value>,complex<Value>,complex<Value>,complex<Value>,
 		     SpinorType t=unknown_spinortype, DiracRep r=defaultDRep);
   
   /**
    * Constructor with complex numbers specifying the components,
    * optionally specifying the choice of dirac matrix
    */
-  LorentzRSSpinorBar(Complex,Complex,Complex,Complex,
-		     Complex,Complex,Complex,Complex,
-		     Complex,Complex,Complex,Complex,
-		     Complex,Complex,Complex,Complex,DiracRep);
+  LorentzRSSpinorBar(complex<Value>,complex<Value>,complex<Value>,complex<Value>,
+		     complex<Value>,complex<Value>,complex<Value>,complex<Value>,
+		     complex<Value>,complex<Value>,complex<Value>,complex<Value>,
+		     complex<Value>,complex<Value>,complex<Value>,complex<Value>,DiracRep);
   //@}
 
   /** @name Access the components. */
@@ -73,172 +74,172 @@ public:
   /**
    * Subscript operator to return spinor components
    */
-  inline Complex operator()(int,int) const;
+  inline complex<Value> operator()(int,int) const;
 
   /**
    * Set components by index
    */
-  inline Complex & operator () (int,int);
+  inline complex<Value> & operator () (int,int);
 
   /**
    * Get first spinor component for the x vector
    */
-  inline Complex xs1() const;
+  inline complex<Value> xs1() const;
 
   /**
    * Get second spinor component for the x vector
    */
-  inline Complex xs2() const;
+  inline complex<Value> xs2() const;
 
   /**
    * Get third  spinor component for the x vector
    */
-  inline Complex xs3() const;
+  inline complex<Value> xs3() const;
 
   /**
    * Get fourth  spinor component for the x vector
    */
-  inline Complex xs4() const;
+  inline complex<Value> xs4() const;
 
   /**
    * Get first spinor component for the y vector
    */
-  inline Complex ys1() const;
+  inline complex<Value> ys1() const;
 
   /**
    * Get second spinor component for the y vector
    */
-  inline Complex ys2() const;
+  inline complex<Value> ys2() const;
   
   /**
    * Get third spinor component for the y vector
    */
-  inline Complex ys3() const;
+  inline complex<Value> ys3() const;
   
   /**
    * Get fourth spinor component for the y vector
    */
-  inline Complex ys4() const;
+  inline complex<Value> ys4() const;
   
   /**
    * Get first spinor component for the z vector
    */
-  inline Complex zs1() const;
+  inline complex<Value> zs1() const;
   
   /**
    * Get second spinor component for the z vector
    */
-  inline Complex zs2() const;
+  inline complex<Value> zs2() const;
   
   /**
    * Get third spinor component for the z vector
    */
-  inline Complex zs3() const;
+  inline complex<Value> zs3() const;
   
   /**
    * Get fourth spinor component for the z vector
    */
-  inline Complex zs4() const;
+  inline complex<Value> zs4() const;
   
   /**
    * Get first spinor component for the t vector
    */
-  inline Complex ts1() const;
+  inline complex<Value> ts1() const;
   
   /**
    * Get second spinor component for the t vector
    */
-  inline Complex ts2() const;
+  inline complex<Value> ts2() const;
   
   /**
    * Get third spinor component for the t vector
    */
-  inline Complex ts3() const;
+  inline complex<Value> ts3() const;
   
   /**
    * Get fourth spinor component for the t vector
    */
-  inline Complex ts4() const;
+  inline complex<Value> ts4() const;
   
   /**
    * Set first spinor component for the x vector
    */
-  inline void setXS1(Complex);
+  inline void setXS1(complex<Value>);
   
   /**
    * Set second spinor component for the x vector
    */
-  inline void setXS2(Complex);
+  inline void setXS2(complex<Value>);
   
   /**
    * Set third spinor component for the x vector
    */
-  inline void setXS3(Complex);
+  inline void setXS3(complex<Value>);
   
   /**
    * Set fourth spinor component for the x vector
    */
-  inline void setXS4(Complex);
+  inline void setXS4(complex<Value>);
   
   /**
    * Set first spinor component for the y vector
    */
-  inline void setYS1(Complex);
+  inline void setYS1(complex<Value>);
   
   /**
    * Set second spinor component for the y vector
    */
-  inline void setYS2(Complex);
+  inline void setYS2(complex<Value>);
   
   /**
    * Set third spinor component for the y vector
    */
-  inline void setYS3(Complex);
+  inline void setYS3(complex<Value>);
   
   /**
    * Set fourth spinor component for the y vector
    */
-  inline void setYS4(Complex);
+  inline void setYS4(complex<Value>);
   
   /**
    * Set first spinor component for the z vector
    */
-  inline void setZS1(Complex);
+  inline void setZS1(complex<Value>);
   
   /**
    * Set second spinor component for the z vector
    */
-  inline void setZS2(Complex);
+  inline void setZS2(complex<Value>);
   
   /**
    * Set third spinor component for the z vector
    */
-  inline void setZS3(Complex);
+  inline void setZS3(complex<Value>);
   
   /**
    * Set fourth spinor component for the z vector
    */
-  inline void setZS4(Complex);
+  inline void setZS4(complex<Value>);
   
   /**
    * Set first spinor component for the t vector
    */
-  inline void setTS1(Complex);
+  inline void setTS1(complex<Value>);
   
   /**
    * Set second spinor component for the t vector
    */
-  inline void setTS2(Complex);
+  inline void setTS2(complex<Value>);
   
   /**
    * Set third spinor component for the t vector
    */
-  inline void setTS3(Complex);
+  inline void setTS3(complex<Value>);
   
   /**
    * Set fourth spinor component for the t vector
    */
-  inline void setTS4(Complex);
+  inline void setTS4(complex<Value>);
   //@}
 
   /** @name Assignment and arithmetic operators. */
@@ -251,12 +252,12 @@ public:
   /**
    * dot product with a polarization vector
    */
-  inline LorentzSpinorBar dot(const LorentzPolarizationVector &) const;
+  inline LorentzSpinorBar<Value> dot(const LorentzPolarizationVector &) const;
 
   /**
-   * dot product with a 4-vector
+   * dot product with a 4-momentum
    */
-  inline LorentzSpinorBar dot(const LorentzVector &) const;
+  inline LorentzSpinorBar<Value> dot(const LorentzMomentum &) const;
   //@}
 
   /** @name Transformations. */
@@ -264,7 +265,7 @@ public:
   /**
    * return the barred spinor
    */
-  LorentzRSSpinor bar();
+  LorentzRSSpinor<Value> bar();
 
   /**
    * Standard Lorentz boost specifying the components of the beta vector.
@@ -274,7 +275,7 @@ public:
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  LorentzRSSpinorBar & boost(const Hep3Vector &);
+  LorentzRSSpinorBar & boost(const Boost &);
 
   /**
    * General transform
@@ -311,14 +312,16 @@ public:
    * @param left The left-handed coupling, \f$c_L\f$.
    * @param right The right-handed coupling, \f$c_R\f$.
    */
-  inline LorentzPolarizationVector generalCurrent(LorentzSpinor& f,Complex left,
-						  Complex right);
+  template <typename ValueB>
+  inline LorentzVector<complex<
+    typename BinaryOpTraits<Value,ValueB>::MulT> >
+  generalCurrent(LorentzSpinor<ValueB>& f, Complex left, Complex right);
 private:
 
   /**
    * Storage of the components.
    */
-  Complex _spin[4][4];
+  complex<Value> _spin[4][4];
 
   /**
    * Definition of the Dirac matrices used.
@@ -334,5 +337,8 @@ private:
 }
 }
 #include "LorentzRSSpinorBar.icc"
+#ifndef ThePEG_TEMPLATES_IN_CC_FILE
+#include "LorentzRSSpinorBar.tcc"
+#endif 
 
 #endif
