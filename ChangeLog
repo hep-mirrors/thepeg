@@ -1,3 +1,11 @@
+2007-07-02  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* *** GLOBAL ***: Merged in relevant changes from the
+	STRICT_UNITS_BRANCH. Dimensionful quantities need to have correct
+	types, CLHEP dependencies have been removed completely.
+	Unit checking can be disabled with --disable-unitchecks, note that
+	the code will NOT be backwards compatible either way!
+
 2007-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/CascadeHandler.*: Added possibility to assign new PDF
