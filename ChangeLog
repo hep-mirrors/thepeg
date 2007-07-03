@@ -1,3 +1,8 @@
+2007-07-03  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Config/std.h, Config/Units_unchecked.h: Fixed ambiguous 
+	overload problem which shows up with g++-3.4.3
+
 2007-07-02  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* *** GLOBAL ***: Merged in relevant changes from the

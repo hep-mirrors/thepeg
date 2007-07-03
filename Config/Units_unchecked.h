@@ -9,6 +9,12 @@
 
 namespace ThePEG {
 
+// pow<P,R>(double) --- required for consistency
+template<int P, int R>
+double pow(double q) {
+  return std::pow(q,double(P)/double(R));
+}
+
 /**
  * The Units namespace contains the declaration of a number of classes
  * for variables with dimension. Currently they are all typedefs of

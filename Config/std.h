@@ -28,6 +28,7 @@
 #include <utility>
 #include <typeinfo>
 #include <stdexcept>
+#include <cmath>
 
 namespace std {
 
@@ -90,12 +91,6 @@ using std::mem_fun;
 using std::sqrt;
 using std::pow;
 using std::atan2;
-
-// pow<P,R>(double)
-template<int P, int R, typename T>
-T pow(T q) {
-  return std::pow(q,double(P)/double(R));
-}
 
 /** Check if a given object is a part of a container. */
 template <typename Container, typename Key>
