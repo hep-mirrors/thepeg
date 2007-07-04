@@ -167,10 +167,12 @@ template <typename Value> inline LorentzRSSpinor<Value> LorentzRSSpinor<Value>::
 }
 
 // dot product with a 4-vector or polarization vector
-template <typename Value> inline LorentzSpinor<Value> LorentzRSSpinor<Value>::dot(const LorentzPolarizationVector & vec) const
+template <typename Value> 
+inline LorentzSpinor<Value> 
+LorentzRSSpinor<Value>::dot(const LorentzPolarizationVector & vec) const
 {
   LorentzSpinor<Value> output(_type,_dirac);
-  Complex temp;
+  complex<Value> temp;
   unsigned int ix;
   for(ix=0;ix<4;++ix)
     {
