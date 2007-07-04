@@ -6,6 +6,7 @@
 #include "ThePEG/CLHEPWrap/LorentzVector.fh"
 #include "ThePEG/CLHEPWrap/ThreeVector.fh"
 #include "ThePEG/CLHEPWrap/Transverse.fh"
+#include <cmath>
 
 namespace ThePEG {
 
@@ -176,8 +177,8 @@ namespace UnitRemoval {
   const Units::InvEnergy3 InvE3 = 1.0/E3;
   const Units::InvEnergy4 InvE4 = 1.0/E4;
 
-  const Units::SqrtEnergy SqrtE = sqrt(E);
-  const Units::InvSqrtEnergy InvSqrtE = 1.0/sqrt(E);
+  const Units::SqrtEnergy SqrtE = std::sqrt(E);
+  const Units::InvSqrtEnergy InvSqrtE = 1.0/std::sqrt(E);
 }
 
 }
