@@ -206,7 +206,7 @@ inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
 LorentzRSSpinor<Value>::generalScalar(LorentzRSSpinorBar<ValueB>& fbar,
 				      Complex left, Complex right)
 {
-  complex<typename BinaryOpTraits<Value,ValueB>::ResultType> output; 
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT> output; 
   unsigned int iz;
   // ensure both spinors are in the same representation, otherwise change to default
   if(Rep()!=fbar.Rep())
