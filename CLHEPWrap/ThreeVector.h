@@ -164,10 +164,9 @@ public:
   Vector3<typename BinaryOpTraits<Value,U>::MulT>
   cross(const Vector3<U> & a) const {
     typedef Vector3<typename BinaryOpTraits<Value,U>::MulT> ResultT;
-    return ResultT( x()*a.y()-y()*a.x(),
+    return ResultT( y()*a.z()-z()*a.y(),
 		   -x()*a.z()+z()*a.x(),
-		    y()*a.z()-z()*a.y()
-		    );
+		    x()*a.y()-y()*a.x());
   }
   
 public:  
