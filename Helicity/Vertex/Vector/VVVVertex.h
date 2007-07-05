@@ -6,6 +6,7 @@
 
 #include "ThePEG/Helicity/Vertex/VertexBase.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
+#include "VVVVertex.fh"
 
 namespace ThePEG {
 namespace Helicity{
