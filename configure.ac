@@ -80,7 +80,7 @@ Utilities/Makefile
 include/Makefile
 Interface/Makefile
 LesHouches/Makefile
-CLHEPWrap/Makefile
+Vectors/Makefile
 PDT/Makefile
 PDF/Makefile
 Persistency/Makefile

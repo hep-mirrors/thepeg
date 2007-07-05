@@ -22,8 +22,8 @@
 
 #ifndef ThePEG_ALTERNATIVE_EVENT_RECORD
 
-#include "ThePEG/CLHEPWrap/Lorentz5Vector.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/Lorentz5Vector.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 
 namespace ThePEG {
 

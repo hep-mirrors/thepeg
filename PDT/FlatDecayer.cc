@@ -9,7 +9,7 @@
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/EventRecord/Particle.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/Timer.h"
 

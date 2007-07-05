@@ -19,7 +19,7 @@
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/EventRecord/SubProcess.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/MatrixElement/ColourLines.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"

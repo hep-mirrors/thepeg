@@ -5,8 +5,8 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
-#include "ThePEG/CLHEPWrap/ThreeVector.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
+#include "ThePEG/Vectors/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzSpinor.fh"
 #include "LorentzSpinorBar.fh"

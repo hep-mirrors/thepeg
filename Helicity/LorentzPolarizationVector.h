@@ -5,7 +5,7 @@
 
 #include "ThePEG/Config/Unitsystem.h"
 #include "ThePEG/Config/Complex.h"
-#include "ThePEG/CLHEPWrap/LorentzVector.h"
+#include "ThePEG/Vectors/LorentzVector.h"
 
 namespace ThePEG {
   namespace Helicity {

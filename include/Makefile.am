@@ -4,7 +4,7 @@ DIRLINKS = $(top_srcdir)/Repository \
            $(top_srcdir)/EventRecord \
            $(top_srcdir)/Pointer \
            $(top_srcdir)/StandardModel \
-           $(top_srcdir)/CLHEPWrap \
+           $(top_srcdir)/Vectors \
            $(top_srcdir)/PDT \
            $(top_srcdir)/ACDC \
            $(top_srcdir)/Interface \

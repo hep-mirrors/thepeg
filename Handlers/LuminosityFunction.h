@@ -5,7 +5,7 @@
 
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.fh"
+#include "ThePEG/Vectors/LorentzRotation.fh"
 #include "ThePEG/Utilities/Interval.h"
 
 // #include "LuminosityFunction.fh"

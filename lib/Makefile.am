@@ -2,7 +2,7 @@
 LINK = $(LIBTOOL) --tag=CXX --mode=link $(CXX) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 
-LINKDIRS = Config Utilities Helicity Interface LesHouches CLHEPWrap \
+LINKDIRS = Config Utilities Helicity Interface LesHouches Vectors \
            PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
            StandardModel Repository EventRecord Cuts
 
@@ -20,7 +20,7 @@ libThePEG_la_LDFLAGS = $(LIBTOOLVERSIONINFO) -export-dynamic
 libThePEG_la_SOURCES =
 libThePEG_la_LIBADD = \
 	$(top_builddir)/Utilities/libThePEGUtilities.la \
-	$(top_builddir)/CLHEPWrap/libThePEGCLHEPWrap.la \
+	$(top_builddir)/Vectors/libThePEGVectors.la \
 	$(top_builddir)/Persistency/libThePEGPersistency.la \
 	$(top_builddir)/Config/libThePEGConfig.la \
 	$(top_builddir)/PDF/libThePEGPDF.la \

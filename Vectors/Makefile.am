@@ -11,9 +11,9 @@ INCLUDEFILES = $(DOCFILES) Lorentz5Vector.fh \
                SpinHalfLorentzRotation.icc HepMCConverter.icc \
                HepMCConverter.tcc SpinOneLorentzRotation.icc
 
-noinst_LTLIBRARIES = libThePEGCLHEPWrap.la
+noinst_LTLIBRARIES = libThePEGVectors.la
 
-libThePEGCLHEPWrap_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+libThePEGVectors_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 include $(top_srcdir)/Config/Makefile.aminclude
 

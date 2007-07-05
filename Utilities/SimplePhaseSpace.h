@@ -5,8 +5,8 @@
 #include "ThePEG/Config/ThePEG.h"
 // #include "SimplePhaseSpace.fh"
 
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/EventRecord/ParticleTraits.h"
 #include "ThePEG/Repository/UseRandom.h"

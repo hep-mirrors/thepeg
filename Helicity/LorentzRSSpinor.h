@@ -4,7 +4,7 @@
 // This is the declaration of the LorentzRSSpinor class.
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Config/Complex.h"
-#include "ThePEG/CLHEPWrap/ThreeVector.h"
+#include "ThePEG/Vectors/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzRSSpinor.fh"
 #include "LorentzRSSpinorBar.h"

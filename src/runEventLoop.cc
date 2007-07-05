@@ -5,7 +5,7 @@
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
-#include "ThePEG/CLHEPWrap/HepMCConverter.h"
+#include "ThePEG/Vectors/HepMCConverter.h"
 #include "HepMC/GenEvent.h"
 
 namespace ThePEG {

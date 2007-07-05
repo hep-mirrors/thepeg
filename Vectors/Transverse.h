@@ -4,7 +4,7 @@
 // This is the declaration of the Transverse class.
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/CLHEPWrap/Lorentz5Vector.h"
+#include "ThePEG/Vectors/Lorentz5Vector.h"
 #include "Transverse.fh"
 // #include "Transverse.xh"
 

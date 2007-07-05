@@ -8,7 +8,7 @@
 #include "ThePEG/Utilities/Math.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/PDF/PDFCuts.h"
-#include "ThePEG/CLHEPWrap/Transverse.h"
+#include "ThePEG/Vectors/Transverse.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "PartonBin.fh"
 

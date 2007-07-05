@@ -4,7 +4,7 @@
 // This is the declaration of the AnalysisHandler class.
 
 #include "HandlerBase.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Analysis/FactoryBase.h"
 #include <stdexcept>
 

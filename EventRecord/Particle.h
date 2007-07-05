@@ -4,8 +4,8 @@
 // This is the decalaration of the Particle class.
 
 #include "EventConfig.h"
-#include "ThePEG/CLHEPWrap/Lorentz5Vector.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/Lorentz5Vector.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/FixedSizeAllocator.h"
 #include "ThePEG/EventRecord/ColourBase.h"

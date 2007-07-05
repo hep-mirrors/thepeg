@@ -6,7 +6,7 @@
 
 #include "LuminosityFunction.h"
 #include "ThePEG/Handlers/XComb.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/ClassDocumentation.h"

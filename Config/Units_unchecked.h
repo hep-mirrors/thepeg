@@ -2,10 +2,10 @@
 #ifndef ThePEG_Units_H
 #define ThePEG_Units_H
 
-#include "ThePEG/CLHEPWrap/Lorentz5Vector.fh"
-#include "ThePEG/CLHEPWrap/LorentzVector.fh"
-#include "ThePEG/CLHEPWrap/ThreeVector.fh"
-#include "ThePEG/CLHEPWrap/Transverse.fh"
+#include "ThePEG/Vectors/Lorentz5Vector.fh"
+#include "ThePEG/Vectors/LorentzVector.fh"
+#include "ThePEG/Vectors/ThreeVector.fh"
+#include "ThePEG/Vectors/Transverse.fh"
 #include <cmath>
 
 namespace ThePEG {

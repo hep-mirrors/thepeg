@@ -6,8 +6,8 @@
 #include "ThePEG/EventRecord/EventConfig.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "StandardSelectors.h"
-#include "ThePEG/CLHEPWrap/LorentzVector.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.h"
+#include "ThePEG/Vectors/LorentzVector.h"
+#include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Utilities/FixedSizeAllocator.h"
 
 namespace ThePEG {

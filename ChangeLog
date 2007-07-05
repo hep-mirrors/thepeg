@@ -1,5 +1,7 @@
 2007-07-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* CLHEPWrap/*, Vectors/*: Renamed CLHEPWrap to Vectors
+
 	* Helicity/*: Migrated WaveFunctions and Scalar/Vector/Tensor
 	vertices from Herwig++.
 

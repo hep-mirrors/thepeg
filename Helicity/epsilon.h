@@ -4,7 +4,7 @@
 //
 // This is the declaration of the epsilon class.
 
-#include "ThePEG/CLHEPWrap/LorentzVector.h"
+#include "ThePEG/Vectors/LorentzVector.h"
 
 namespace ThePEG {
 namespace Helicity {

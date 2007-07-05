@@ -4,7 +4,7 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
-#include "ThePEG/CLHEPWrap/GenEventConverter.h"
+#include "ThePEG/Vectors/GenEventConverter.h"
 
 int main(int argc, char * argv[]) {
 

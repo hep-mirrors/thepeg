@@ -5,7 +5,7 @@
 //
 
 #include "NoRemnants.h"
-#include "ThePEG/CLHEPWrap/LorentzVector.h"
+#include "ThePEG/Vectors/LorentzVector.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/EventRecord/Particle.h"
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE

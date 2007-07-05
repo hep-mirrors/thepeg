@@ -7,7 +7,7 @@
 #include "GaussianPtGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
-#include "ThePEG/CLHEPWrap/Transverse.h"
+#include "ThePEG/Vectors/Transverse.h"
 #include "ThePEG/Repository/EventGenerator.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE

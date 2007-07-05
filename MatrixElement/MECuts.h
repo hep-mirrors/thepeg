@@ -4,7 +4,7 @@
 // This is the declaration of the MECuts class.
 
 #include "ThePEG/Interface/Interfaced.h"
-#include "ThePEG/CLHEPWrap/LorentzRotation.fh"
+#include "ThePEG/Vectors/LorentzRotation.fh"
 #include "ThePEG/Utilities/Triplet.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 // #include "MECuts.fh"

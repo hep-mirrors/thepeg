@@ -6,7 +6,7 @@
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/PDF/PartonBin.h"
 #include "ThePEG/PDF/PartonBinInstance.h"
-#include "ThePEG/CLHEPWrap/Transverse.h"
+#include "ThePEG/Vectors/Transverse.h"
 // #include "RemnantHandler.fh"
 #include "RemnantHandler.xh"
 
