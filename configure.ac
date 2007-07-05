@@ -71,6 +71,11 @@ fi
 AM_CONDITIONAL([JAVAGUI], [test "x$with_javagui" != "xno"])
 
 AC_CONFIG_FILES([Helicity/Makefile
+Helicity/WaveFunction/Makefile
+Helicity/Vertex/Makefile
+Helicity/Vertex/Scalar/Makefile
+Helicity/Vertex/Vector/Makefile
+Helicity/Vertex/Tensor/Makefile
 Utilities/Makefile
 include/Makefile
 Interface/Makefile

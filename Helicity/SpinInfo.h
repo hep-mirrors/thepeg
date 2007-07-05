@@ -15,7 +15,7 @@ namespace Helicity {
 
 /**
  *   The SpinInfo is the base class for the spin information for the
- *   Herwig++ spin correlation algorithm. It inherits from ThePEG
+ *   spin correlation algorithm. It inherits from ThePEG
  *   SpinBase class and in turn the implementations for different spin
  *   states inherit from this.
  *

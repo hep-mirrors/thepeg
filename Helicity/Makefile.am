@@ -1,3 +1,5 @@
+SUBDIRS = WaveFunction Vertex
+
 mySOURCES = HelicityVertex.cc LorentzSpinor.cc \
           LorentzSpinorBar.cc LorentzTensor.cc RhoDMatrix.cc SpinInfo.cc \
           FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc TensorSpinInfo.cc \
@@ -6,9 +8,10 @@ mySOURCES = HelicityVertex.cc LorentzSpinor.cc \
 DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
            LorentzSpinorBar.h LorentzTensor.h RhoDMatrix.h SpinInfo.h \
            FermionSpinInfo.h VectorSpinInfo.h ScalarSpinInfo.h TensorSpinInfo.h \
-           LorentzRSSpinor.h LorentzRSSpinorBar.h RSFermionSpinInfo.h	
+           LorentzRSSpinor.h LorentzRSSpinorBar.h RSFermionSpinInfo.h \
+	   epsilon.h
 
-INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
+INCLUDEFILES = $(DOCFILES) epsilon.icc HelicityVertex.fh HelicityVertex.icc \
                LorentzSpinor.fh LorentzSpinor.tcc LorentzSpinorBar.tcc \
                LorentzSpinor.icc LorentzSpinorBar.fh LorentzSpinorBar.icc \
                LorentzTensor.icc FermionSpinInfo.fh RhoDMatrix.icc \
@@ -23,6 +26,8 @@ INCLUDEFILES = $(DOCFILES) HelicityVertex.fh HelicityVertex.icc \
 noinst_LTLIBRARIES = libThePEGHelicity.la
 
 libThePEGHelicity_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+libThePEGHelicity_la_LIBADD = Vertex/libThePEGVertex.la \
+			      WaveFunction/libThePEGWaveFunction.la
 
 include $(top_srcdir)/Config/Makefile.aminclude
 

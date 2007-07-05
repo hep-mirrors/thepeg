@@ -1,0 +1,18 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the VVVTVertex class.
+//
+namespace ThePEG {
+namespace Helicity {
+inline VVVTVertex::VVVTVertex() 
+{
+  // number of particles
+  setNpoint(4);
+  // spins
+  setSpin(3,3,3,5);
+  setName(VVVT);
+}
+
+}
+}

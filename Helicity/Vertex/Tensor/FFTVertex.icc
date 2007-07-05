@@ -1,0 +1,19 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the FFTVertex class.
+//
+namespace ThePEG {
+namespace Helicity {
+
+inline FFTVertex::FFTVertex() 
+{
+  // number of particles
+  setNpoint(3);
+  // spins
+  setSpin(2,2,5);
+  setName(FFT);
+}
+  
+}
+}

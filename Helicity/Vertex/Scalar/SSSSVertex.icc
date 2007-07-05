@@ -1,0 +1,19 @@
+// -*- C++ -*-
+//
+// This is the implementation of the inlined member functions of
+// the SSSSVertex class.
+//
+namespace ThePEG {
+namespace Helicity {
+
+inline SSSSVertex::SSSSVertex() 
+{
+  // number of external particles
+  setNpoint(4);
+  // spins
+  setSpin(1,1,1,1);
+  setName(SSSS);
+}
+
+}
+}
