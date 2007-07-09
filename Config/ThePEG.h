@@ -41,6 +41,7 @@
 #include "ThePEG/Persistency/PersistentOStream.fh"
 #include "ThePEG/Persistency/PersistentIStream.fh"
 #include "TemplateTools.h"
+#include "Complex.h"
 #include "Unitsystem.h"
 #include "Constants.h"
 #include "std.h"

@@ -3,7 +3,6 @@
 #define ThePEG_SpinOneLorentzRotation_H
 
 /** @file SpinOneLorentzRotation.h is... */
-#include "ThePEG/Config/Complex.h"
 #include "ThePEG/Helicity/HelicityDefinitions.h"
 #include "ThePEG/Helicity/LorentzTensor.fh"
 #include "ThePEG/Helicity/LorentzRSSpinor.fh"

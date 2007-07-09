@@ -4,7 +4,6 @@
 // This is the declaration of the PersistentOStream class.
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/Config/Complex.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "PersistentOStream.fh"

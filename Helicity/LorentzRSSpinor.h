@@ -1,9 +1,8 @@
 // -*- C++ -*-
 #ifndef ThePEG_LorentzRSSpinor_H
 #define ThePEG_LorentzRSSpinor_H
-// This is the declaration of the LorentzRSSpinor class.
+
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/Config/Complex.h"
 #include "ThePEG/Vectors/ThreeVector.h"
 #include "HelicityDefinitions.h"
 #include "LorentzRSSpinor.fh"

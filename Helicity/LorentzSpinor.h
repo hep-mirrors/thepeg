@@ -3,7 +3,6 @@
 #define ThePEG_LorentzSpinor_H
 // This is the declaration of the LorentzSpinor class.
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/Config/Complex.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Vectors/ThreeVector.h"
 #include "HelicityDefinitions.h"

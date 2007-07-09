@@ -4,7 +4,6 @@
 //
 // This is the declaration of the SpinHalfLorentzRotation class.
 //
-#include "ThePEG/Config/Complex.h"
 #include "ThePEG/Helicity/HelicityDefinitions.h"
 #include "ThreeVector.h"
 

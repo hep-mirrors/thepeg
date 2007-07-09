@@ -5,9 +5,6 @@
 
 
 #include "ThePEG/Handlers/HandlerBase.h"
-#include "ThePEG/Config/Complex.h"
-// #include "Amplitude.fh"
-// #include "Amplitude.xh"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/EventRecord/Particle.h"
 

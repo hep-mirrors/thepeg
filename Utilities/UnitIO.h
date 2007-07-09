@@ -5,6 +5,7 @@
 // associated templated functions.
 
 #include "ThePEG/Config/ThePEG.h"
+#include <complex>
 // #include "UnitIO.fh"
 // #include "UnitIO.xh"
 
@@ -95,6 +96,15 @@ void ounitstream(OStream & os, const T & t, UT & u) {
 template <typename IStream, typename T, typename UT>
 void iunitstream(IStream & is, T & t, UT & u) {
   double d;
+  is >> d;
+  t = d*u;;
+}
+
+/** Helper function reading a complex object with a given unit from an
+ *  input stream. */
+template <typename IStream, typename T, typename UT>
+void iunitstream(IStream & is, std::complex<T> & t, UT & u) {
+  std::complex<double> d;
   is >> d;
   t = d*u;;
 }

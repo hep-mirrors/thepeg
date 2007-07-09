@@ -6,9 +6,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDT/PDT.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-#include "ThePEG/Config/Complex.h"
-// #include "RhoDMatrix.fh"
-// #include "RhoDMatrix.xh"
 
 namespace ThePEG {
 namespace Helicity {

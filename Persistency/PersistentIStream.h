@@ -4,7 +4,6 @@
 // This is the declaration of the PersistentIStream class.
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/Config/Complex.h"
 #include "InputDescription.h"
 #include "PersistentIStream.fh"
 #include "ThePEG/Utilities/Exception.h"

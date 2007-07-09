@@ -4,7 +4,6 @@
 //
 // This is the declaration of the VertexBase class.
 
-#include <ThePEG/Config/Complex.h>
 #include <ThePEG/Interface/Interfaced.h>
 #include <ThePEG/PDT/ParticleData.h>
 #include <ThePEG/PDT/WidthGenerator.h>

@@ -5,7 +5,6 @@
 
 
 #include "ThePEG/Config/ThePEG.h"
-#include "ThePEG/Config/Complex.h"
 #include "LorentzPolarizationVector.h"
 
 namespace ThePEG {
