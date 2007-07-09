@@ -19,9 +19,10 @@ namespace std {
 
     double real() const { return rawValue_.real(); }
     double imag() const { return rawValue_.imag(); }
-    
-    double & real() { return rawValue_.real(); }
-    double & imag() { return rawValue_.imag(); }
+
+//     gcc-3.3 has a problem with these
+//     double & real() { return rawValue_.real(); }
+//     double & imag() { return rawValue_.imag(); }
     
     operator complex<double>() const {
       return rawValue_;

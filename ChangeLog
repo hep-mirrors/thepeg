@@ -1,5 +1,10 @@
 2007-07-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Vectors/ThreeVector.h: fixed inline specifier
+
+	* Vectors/LorentzVector.h, Config/PhysicalQtyComplex.h:
+	workarounds for g++-3.3 bugs 
+
 	* Utilities/UnitIO.h: Fixed iunitstream for complex dimensioned
 	quantities. 
 

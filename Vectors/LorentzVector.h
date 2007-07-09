@@ -483,19 +483,22 @@ inline Vector3<Value> dirBoostVector(const LorentzVector<Value> & p) {
 
 /** Create a LorentzVector giving its light-cone and transverse
  *  components. */
-template <typename ValueA, typename ValueB, typename ValueC, typename ValueD>
-inline LorentzVector<ValueA>
-lightCone(ValueA plus, ValueB minus, ValueC x, ValueD y) {
-  LorentzVector<ValueA> r(x, y, 0.5*(plus-minus), 0.5*(plus+minus));
+template <typename Value>
+inline LorentzVector<Value>
+lightCone(Value plus, Value minus, Value x, Value y) {
+  LorentzVector<Value> r(x, y, 0.5*(plus-minus), 0.5*(plus+minus));
   return r;
 }
 
 /** Create a LorentzVector giving its light-cone components. */
-template <typename ValueA, typename ValueB>
-inline LorentzVector<ValueA>
-lightCone(ValueA plus, ValueB minus) {
-  LorentzVector<ValueA> r(ValueA(), ValueA(),
-			  0.5*(plus-minus), 0.5*(plus+minus));
+template <typename Value>
+inline LorentzVector<Value>
+lightCone(Value plus, Value minus) {
+  // g++-3.3 has a problem with using Value() directly
+  // gcc-bug c++/3650, fixed in 3.4
+  static const Value zero = Value();
+  LorentzVector<Value> r(zero, zero,
+			 0.5*(plus-minus), 0.5*(plus+minus));
   return r;
 }
 

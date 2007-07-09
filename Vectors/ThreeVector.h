@@ -233,16 +233,16 @@ operator<< (ostream & os, const Vector3<double> & v)
 }
 
 template <typename Value>
-Vector3<Value>
-inline operator+(Vector3<Value> a, 
+inline Vector3<Value>
+operator+(Vector3<Value> a, 
 	  const Vector3<Value> & b)
 {
   return a += b;
 }
 
 template <typename Value>
-Vector3<Value>
-inline operator-(Vector3<Value> a, 
+inline Vector3<Value>
+operator-(Vector3<Value> a, 
 	  const Vector3<Value> & b)
 {
   return a -= b;
