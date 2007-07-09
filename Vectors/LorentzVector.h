@@ -35,7 +35,7 @@ public:
   template <typename ValueB>
   LorentzVector<Value> & operator=(const LorentzVector<ValueB> & b) {
     setX(b.x());
-    setY(b.t());
+    setY(b.y());
     setZ(b.z());
     setT(b.t());
     return *this;
