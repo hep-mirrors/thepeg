@@ -34,7 +34,7 @@ inline double exp1m(double x);
 inline double log1m(double);
 
 /** Return x rased to the integer power p, using recursion. */
-inline double powi(double x, int p);
+double powi(double x, int p);
 
 /** Return the integral of \f$x^p dx\f$ between xl and xu. */
 inline double pIntegrate(double p, double xl, double xu);

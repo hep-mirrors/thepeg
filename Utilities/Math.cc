@@ -5,6 +5,18 @@
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Math.tcc"
 #endif
+double ThePEG::Math::powi(double x, int i) {
+  switch ( i ) {
+  case 0: return 1.0;
+  case -1: return 1/x;
+  case -2: return 1/x/x;
+  case -3: return 1/x/x/x;
+  case 1: return x;
+  case 2: return x*x;
+  case 3: return x*x*x;
+  default: return i > 0? powi(x, i - 1)*x: powi(x, i + 1)/x;
+  }
+}
 
 double ThePEG::Math::gamma(double x) {
   static const double b[8] =

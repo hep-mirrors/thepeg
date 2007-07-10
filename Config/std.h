@@ -92,6 +92,10 @@ using std::sqrt;
 using std::pow;
 using std::atan2;
 
+inline double sqrt(int x) {
+  return std::sqrt(double(x));
+}
+
 /** Check if a given object is a part of a container. */
 template <typename Container, typename Key>
 inline bool member(const Container & c, const Key & k) {
