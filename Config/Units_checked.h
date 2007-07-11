@@ -139,21 +139,32 @@ typedef Lorentz5Vector<Energy> Lorentz5Momentum;
 /** Transverse components of a momentum. */
 typedef Transverse<Energy> TransverseMomentum;
 
+
+const Length millimeter = Length::baseunit();
 const Energy MeV = Energy::baseunit();
-const Energy2 MeV2 = MeV * MeV;
-
-const Energy GeV = 1.0e3 * MeV;
-const Energy2 GeV2 = GeV * GeV;
-
-const InvEnergy InvGeV = 1/GeV;
-
 const Charge eplus = Charge::baseunit();
 
-const Length mm = Length::baseunit();
-const Length meter = 1.0e3 * mm;
+const Energy keV = 1.0e-3 * MeV;
+const Energy GeV = 1.0e3  * MeV;
+const Energy TeV = 1.0e6  * MeV;
 
-const Area picobarn = 1.0e-40 * meter * meter;
-const Area nanobarn = 1.0e3 * picobarn;
+const Energy2 MeV2 = MeV * MeV;
+const Energy2 GeV2 = GeV * GeV;
+const InvEnergy InvGeV = 1/GeV;
+
+const Length meter = 1.0e3 * millimeter;
+const Length mm = millimeter;
+const Length micrometer = 1.0e-3  * millimeter;
+const Length nanometer  = 1.0e-6  * millimeter;
+const Length picometer  = 1.0e-9  * millimeter;
+const Length femtometer = 1.0e-12 * millimeter;
+ 
+const Area picobarn  = 1.0e-40 * meter * meter;
+const Area nanobarn  = 1.0e3  * picobarn;
+const Area microbarn = 1.0e6  * picobarn;
+const Area millibarn = 1.0e9  * picobarn;
+const Area barn      = 1.0e12 * picobarn; 
+const Area femtobarn = 1.0e-3 * picobarn;
 
 // PDG 2006 value 197.326968(17) MeV fm
 const Qty<1,1,0> hbarc = 197.326968e-15 * MeV * meter;

@@ -1,5 +1,8 @@
 2007-07-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Config/Units_*checked.h: Added more predefined units, renamed mm
+	to millimeter, to avoid clash with common variable name.
+
 	* Config/ThePEG.h, PDF/LHAPDF.cc, Utilities/Math.h,
 	Utilities/DynamicLoader.cc, Utilities/CFileLineReader.cc,
 	Utilities/Math.cc, Utilities/Debug.cc, Utilities/Math.icc,
