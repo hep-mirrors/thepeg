@@ -11,6 +11,7 @@
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Command.h"
+#include "config.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesReader.tcc"
@@ -767,6 +768,19 @@ void LesHouchesReader::connectMothers() {
     if ( pi(hepeup.MOTHUP[i].second) && hepeup.MOTHUP[i].second != hepeup.MOTHUP[i].first) 
       pi(hepeup.MOTHUP[i].second)->addChild(pi(i + 1));
   }
+}
+
+bool LesHouchesReader::compressedCache() const {
+#ifdef ThePEG_GZREAD_FILE
+#ifdef ThePEG_GZWRITE_FILE
+  return cacheFileName().length() > 3 &&
+    cacheFileName().substr(cacheFileName().length()-3,3) == ".gz";
+#else
+  return false;
+#endif
+#else
+  return false;
+#endif
 }
 
 void LesHouchesReader::openReadCacheFile() {

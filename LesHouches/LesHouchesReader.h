@@ -423,7 +423,7 @@ protected:
   /**
    * Returns true if the cache file is compressed.
    */
-  inline bool compressedCache() const;
+  bool compressedCache() const;
 
   /**
    * Write the current event to the cache file.

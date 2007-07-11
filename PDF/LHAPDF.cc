@@ -16,6 +16,7 @@
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/SystemUtils.h"
 #include "ThePEG/Utilities/Throw.h"
+#include "config.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LHAPDF.tcc"

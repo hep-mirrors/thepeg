@@ -3,35 +3,6 @@
 namespace ThePEG {
 
 namespace Math {
-
-inline double exp1m(double x) {
-  using namespace std;
-#ifndef ThePEG_HAS_EXPM1
-  return 2.0*std::exp(x/2.0)*std::sinh(-x/2.0);
-#else
-  return -expm1(x);
-#endif
-}
-
-inline double log1m(double x) {
-  using namespace std;
-#ifndef ThePEG_HAS_LOG1P
-#ifndef ThePEG_HAS_ATANH
-  volatile double y = 1.0 - x;
-  return log(y) - ((y - 1.0) + x)/y ; /* cancels errors with IEEE arithmetic */
-#else
-  return 2.0*atanh(x/(x-2.0));
-#endif
-#else
-  return log1p(-x);
-#endif
-}
-
-#ifndef ThePEG_HAS_ATANH
-inline double atanh(double x) {
-  return 0.5*(log1m(-x) - log1m(x));
-}
-#endif
  
 inline double pIntegrate(double p, double xl, double xu) {
   return p == -1.0? log(xu/xl): (pow(xu, p + 1.0) - pow(xl, p + 1.0))/(p + 1.0);

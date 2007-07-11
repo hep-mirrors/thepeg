@@ -8,6 +8,7 @@
 #include "ThePEG/Utilities/StringUtils.h"
 #include "ThePEG/Utilities/SystemUtils.h"
 #include "ThePEG/Config/algorithm.h"
+#include "config.h"
 
 #ifdef ThePEG_HAS_DLOPEN
 #include <dlfcn.h>

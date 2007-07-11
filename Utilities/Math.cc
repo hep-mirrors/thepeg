@@ -1,10 +1,43 @@
 // -*- C++ -*-
 
 #include "Math.h"
+#include "config.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Math.tcc"
 #endif
+
+double ThePEG::Math::atanh(double x) {
+#ifndef ThePEG_HAS_ATANH
+  return 0.5*(ThePEG::Math::log1m(-x) - ThePEG::Math::log1m(x));
+#else
+  return std::atanh(x);
+#endif
+}
+
+double ThePEG::Math::exp1m(double x) {
+  using namespace std;
+#ifndef ThePEG_HAS_EXPM1
+  return 2.0*std::exp(x/2.0)*std::sinh(-x/2.0);
+#else
+  return -expm1(x);
+#endif
+}
+
+double ThePEG::Math::log1m(double x) {
+  using namespace std;
+#ifndef ThePEG_HAS_LOG1P
+#ifndef ThePEG_HAS_ATANH
+  volatile double y = 1.0 - x;
+  return log(y) - ((y - 1.0) + x)/y ; /* cancels errors with IEEE arithmetic */
+#else
+  return 2.0*atanh(x/(x-2.0));
+#endif
+#else
+  return log1p(-x);
+#endif
+}
+
 double ThePEG::Math::powi(double x, int i) {
   switch ( i ) {
   case 0: return 1.0;

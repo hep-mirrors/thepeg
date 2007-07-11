@@ -37,7 +37,6 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	mkdir -p ThePEG/Config
 	$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
-	$(LN_S) -f ../../../Config/config.h ThePEG/Config
 	$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
 	touch done-all-links
 @EMPTY@else
@@ -45,7 +44,6 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	@mkdir -p ThePEG/Config
 	@$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	@$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
-	@$(LN_S) -f ../../../Config/config.h ThePEG/Config
 	@$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
 	@touch done-all-links
 @EMPTY@endif

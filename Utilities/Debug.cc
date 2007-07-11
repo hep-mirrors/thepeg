@@ -5,6 +5,7 @@
 //
 
 #include "Debug.h"
+#include "config.h"
 #ifdef ThePEG_HAS_FPU_CONTROL
 #include <fpu_control.h>
 #endif

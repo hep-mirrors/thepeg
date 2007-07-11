@@ -4,9 +4,6 @@
 
 #include <cmath>
 
-// #include "Math.fh"
-// #include "Math.xh"
-
 namespace ThePEG {
 
 /** The Math namespace includes the declaration of some useful
@@ -25,13 +22,16 @@ double gamma(double);
 /** The log of the gamma function */
 double lngamma(double);
 
+/** Return \f$\atanh(x)\f$ */
+double atanh(double);
+
 /** Return \f$1-e^x\f$, with highest possible precision for
  *  \f$x\rightarrow 0\f$. */
-inline double exp1m(double x);
+double exp1m(double x);
 
 /** Return \f$1\log(1-x)\f$, with highest possible precision for
  *  \f$x\rightarrow 0\f$. */
-inline double log1m(double);
+double log1m(double);
 
 /** Return x rased to the integer power p, using recursion. */
 double powi(double x, int p);

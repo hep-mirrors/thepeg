@@ -111,19 +111,6 @@ inline FILE * LesHouchesReader::cacheFile() const {
   return theCacheFile;
 }
 
-inline bool LesHouchesReader::compressedCache() const {
-#ifdef ThePEG_GZREAD_FILE
-#ifdef ThePEG_GZWRITE_FILE
-  return cacheFileName().length() > 3 &&
-    cacheFileName().substr(cacheFileName().length()-3,3) == ".gz";
-#else
-  return false;
-#endif
-#else
-  return false;
-#endif
-}
-
 template <typename T>
 char * LesHouchesReader::mwrite(char * pos, const T & t, size_t n) {
   memcpy(pos, &t, n*sizeof(T));

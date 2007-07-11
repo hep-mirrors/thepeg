@@ -1,3 +1,14 @@
+2007-07-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Config/ThePEG.h, PDF/LHAPDF.cc, Utilities/Math.h,
+	Utilities/DynamicLoader.cc, Utilities/CFileLineReader.cc,
+	Utilities/Math.cc, Utilities/Debug.cc, Utilities/Math.icc,
+	include/Makefile.am, LesHouches/LesHouchesReader.icc,
+	LesHouches/LesHouchesReader.cc, LesHouches/LesHouchesReader.h:
+	Removed dependecy of installed headers on config.h, to avoid
+	conflicts with other Autotools code. config.h is no longer
+	installed. 
+
 2007-07-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Vectors/ThreeVector.h: fixed inline specifier
