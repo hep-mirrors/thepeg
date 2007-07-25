@@ -208,7 +208,7 @@ inline TensorWaveFunction  & TensorWaveFunction::operator =
 }
 
 // return wavefunction as polarization vector
-inline LorentzTensor<double> TensorWaveFunction::wave() const{return _wf;}
+inline const LorentzTensor<double> & TensorWaveFunction::wave() const{return _wf;}
 
 // Get components
 inline Complex TensorWaveFunction::xx() const{return _wf.xx();}

@@ -330,7 +330,7 @@ public:
   /**
    * Return wavefunction as LorentzSpinor.
    */
-  inline LorentzSpinorBar<double> wave() const;
+  inline const LorentzSpinorBar<double> & wave() const;
   inline LorentzSpinorBar<SqrtEnergy> dimensionedWave() const;
 
   /**

@@ -232,7 +232,7 @@ inline SpinorWaveFunction & SpinorWaveFunction::operator = (const SpinorWaveFunc
 }
 
 // return the wavefunction as a LorentzSpinor
-inline LorentzSpinor<double> SpinorWaveFunction::wave() const{return _wf;}
+inline const LorentzSpinor<double> & SpinorWaveFunction::wave() const{return _wf;}
 inline LorentzSpinor<SqrtEnergy> SpinorWaveFunction::dimensionedWave() const {
   return dimensionedWf();
 }
