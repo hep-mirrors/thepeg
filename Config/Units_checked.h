@@ -25,18 +25,22 @@ namespace ThePEG {
 */
 namespace Units {
 
-/** Mass will everywhere be assumed to bave the same unit as Energy. */
+/** Energy. */
 typedef Qty<0,1,0> Energy;
 
-/** Energy. */
+/** Mass has the same unit as Energy <=> c == 1 */
 typedef Energy Mass;
 
-/** Time will everywhere be assumed to bave the same unit as Length. */
+/** Length. */
 typedef Qty<1,0,0> Length;
 
-/** Length. */
+/** Time has the same unit as Length. <=> c == 1*/
 typedef Length Time;
 
+/** Inverse Length. */
+typedef Qty<-1,0,0> InvLength;
+
+/** Velocities are dimensionless fractions of c */
 typedef double Velocity;
 
 /** Charge. */
@@ -50,6 +54,9 @@ typedef Qty<-1,1,0> Tension;
 
 /** Area will be assumed to be Length\f$^2\f$. */
 typedef Qty<2,0,0> Area;
+
+/** Inverse Area */
+typedef Qty<-2,0,0> InvArea;
 
 /** Cross section is an area. */
 typedef Area CrossSection;

@@ -1,3 +1,17 @@
+2007-07-25  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Helicity/Vertex/Scalar/GeneralSVVVertex.*: cherstn added
+	evaluate member turning two vector wave functions into scalar wave
+	function 
+
+	* Helicity/Vertex/VertexBase.icc: cherstn added additional option
+	for propagator 
+
+	* Helicity/WaveFunction/*WaveFunction.*: efficiency fix: wave()
+	now returns a const reference instead of copying
+
+	* Config/Units_*checked.h: Added InvArea and InvLength
+
 2007-07-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Config/Units_*checked.h: Added more predefined units, renamed mm

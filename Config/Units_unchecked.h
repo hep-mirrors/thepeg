@@ -29,18 +29,22 @@ double pow(double q) {
 */
 namespace Units {
 
-/** Mass will everywhere be assumed to bave the same unit as Energy. */
+/** Energy. */
 typedef double Energy;
 
-/** Energy. */
+/** Mass has the same unit as Energy <=> c == 1 */
 typedef Energy Mass;
 
-/** Time will everywhere be assumed to bave the same unit as Length. */
+/** Length. */
 typedef double Length;
 
-/** Length. */
+/** Time has the same unit as Length. <=> c == 1*/
 typedef Length Time;
 
+/** Inverse Length. */
+typedef double InvLength;
+
+/** Velocities are dimensionless fractions of c */
 typedef double Velocity;
 
 /** Charge. */
@@ -54,6 +58,9 @@ typedef double Tension;
 
 /** Area will be assumed to be Length\f$^2\f$. */
 typedef double Area;
+
+/** Inverse Area */
+typedef double InvArea;
 
 /** Cross section is an area. */
 typedef Area CrossSection;
