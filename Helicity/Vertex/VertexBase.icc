@@ -148,28 +148,42 @@ inline const Complex & VertexBase::getNorm() {
 
 // calculate the propagator for a diagram
 inline Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part) {
-  Energy mass=part->mass();
-  Energy2 mass2=mass*mass;
+  const Energy mass = part->mass();
+  const Energy2 mass2 = sqr(mass);
+  const Energy p = sqrt(p2);
+
+  const tcWidthGeneratorPtr widthgen = part->widthGenerator();
+  const Energy width = widthgen ? widthgen->width(*part,p) : part->width();
+  const Complex ii(0.,1.);
+
   complex<Energy2> masswidth;
-  if(p2<Energy2())
-    masswidth=Energy2();
-  else if(iopt==1)
-    masswidth=Complex(0.,1.)*mass*part->width();
-  else if(iopt==2) {
-    Energy p=sqrt(p2);
-    masswidth=Complex(0.,1.)*mass*
-      ((part->widthGenerator())->width(*part,p));
+
+  if(p2 < 0.*MeV2)
+    masswidth = 0.*MeV2;
+  else {
+    switch (iopt) {
+    case 1: 
+      masswidth = ii * mass * part->width(); 
+      break;
+    case 2: 
+      masswidth = ii * mass * width;         
+      break;
+    case 3: 
+      masswidth = 0.*MeV2;                    
+      break;
+    case 4: 
+      return 1.0;
+    case 5: 
+      return Complex(UnitRemoval::E2/p2);
+    case 6: 
+      masswidth = ii * mass2 * width / p;
+      return Complex(UnitRemoval::E2 * (mass2/p2) / (p2-mass2+masswidth));
+    default:
+      throw HelicityConsistencyError() << "Unknown option in VertexBase::Propagator" 
+				       << Exception::abortnow;
+    }
   }
-  else if(iopt==3)
-    masswidth=Energy2();
-  else if(iopt==4)
-    return 1.;
-  else if(iopt==5)
-    return double(sqr(UnitRemoval::E)/p2);
-  else
-    throw HelicityConsistencyError() << "Unknown option in VertexBase::Propagator" 
-				     << Exception::abortnow;
-  return complex<Energy2>(sqr(UnitRemoval::E))/(p2-mass2+masswidth);
+  return Complex(UnitRemoval::E2/(p2-mass2+masswidth));
 }
 
 // propagator times coupling for a diagram

@@ -52,7 +52,19 @@ public:
   Complex evaluate(Energy2 q2, const ScalarWaveFunction & sca,
 		   const VectorWaveFunction & vec1,
 		   const VectorWaveFunction & vec2);
-  
+
+  /**
+   * Evaluate the off-shell scalar coming from the vertex.
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param iopt Option of the shape of the Breit-Wigner for the off-shell scalar.
+   * @param out The ParticleData pointer for the off-shell scalar.
+   * @param vec1 The wavefunction for the first  vector.
+   * @param vec2 The wavefunction for the second vector.
+   */
+  ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
+                              const VectorWaveFunction & vec1,
+                              const VectorWaveFunction & vec2);
+
   /**
    * Calculate coupling.
    * @param q2 Scale at which to evaluate couplings
@@ -97,6 +109,11 @@ public:
    * Access coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   inline Complex aEp() const;
+      
+  /**
+   *  Access coefficient _b
+   */
+  inline Complex b() const;
     
   /**
    * Set tensor coefficient of \f$g^{\mu\nu}\f$
@@ -122,11 +139,16 @@ public:
    * Set tensor coefficient of \f$p_2^\mu p_2^\nu\f$
    */ 
   inline void a22(const Complex & val);
-
+      
   /**
    * Set tensor coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   inline void aEp(const Complex & val);
+      
+  /**
+   * Set coefficient _b
+   */
+  inline void b(const Complex & val);
   //@}
 
 private:
@@ -176,6 +198,11 @@ private:
    * Coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   Complex _aEp;
+
+  /**
+   * Coefficient of loop coupling 
+   */
+  Complex _b;
   //@}
 };
 }
