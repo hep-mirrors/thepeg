@@ -1,11 +1,11 @@
 
-mySOURCES = SimplePhaseSpace.cc Debug.cc DescriptionList.cc Math.cc \
+mySOURCES = SimplePhaseSpace.cc Debug.cc DescriptionList.cc Maths.cc \
           Direction.cc DynamicLoader.cc Timer.cc StringUtils.cc \
           SystemUtils.cc Exception.cc ClassDescription.cc CFileLineReader.cc \
           XSecStat.cc
 
 DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
-           HoldFlag.h Interval.h Math.h Rebinder.h Selector.h \
+           HoldFlag.h Interval.h Maths.h Rebinder.h Selector.h \
            SimplePhaseSpace.h Triplet.h Direction.h UtilityBase.h \
            TypeInfo.h DynamicLoader.h Timer.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
@@ -14,7 +14,7 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
 
 INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                ClassDescription.tcc DescriptionList.icc HoldFlag.icc \
-               Interval.fh Interval.icc Interval.tcc Math.icc Rebinder.fh \
+               Interval.fh Interval.icc Interval.tcc Maths.icc Rebinder.fh \
                Rebinder.icc Selector.icc Selector.tcc SimplePhaseSpace.icc \
                SimplePhaseSpace.tcc SimplePhaseSpace.xh \
                Direction.icc Direction.xh UtilityBase.icc UtilityBase.tcc \

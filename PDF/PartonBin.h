@@ -5,7 +5,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/PDF/PDFCuts.h"
 #include "ThePEG/Vectors/Transverse.h"

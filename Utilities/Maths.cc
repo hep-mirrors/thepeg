@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
-#include "Math.h"
-#include "config.h"
+#include <config.h>
+#include "Maths.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Math.tcc"

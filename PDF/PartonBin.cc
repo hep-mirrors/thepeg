@@ -13,7 +13,7 @@
 #include "ThePEG/PDF/RemnantHandler.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Utilities/UtilityBase.h"
-#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/Utilities/Timer.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE

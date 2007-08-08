@@ -8,7 +8,7 @@
 #include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/Utilities/VSelector.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Handlers/EventHandler.fh"
 #include "ThePEG/Cuts/Cuts.fh"

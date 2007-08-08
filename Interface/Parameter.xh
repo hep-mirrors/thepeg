@@ -18,10 +18,6 @@ struct ParExSetLimit: public InterfaceException {
   template <typename T>
   ParExSetLimit(const InterfaceBase & i, 
 		const InterfacedBase & o, T v);
-
-//   template <int L, int E, int Q, int DL, int DE, int DQ>
-//   ParExSetLimit(const InterfaceBase & i,
-// 		const InterfacedBase & o, Qty<L,E,Q,DL,DE,DQ> v);
 };
 
 /** Exception class used by Parameter if an unkown error
@@ -31,11 +27,6 @@ struct ParExSetUnknown: public InterfaceException {
   template <typename T>
   ParExSetUnknown(const InterfaceBase & i,
 		  const InterfacedBase & o, T val);
-  
-//   template <int L, int E, int Q, int DL, int DE, int DQ>
-//   ParExSetUnknown(const InterfaceBase & i,
-// 		  const InterfacedBase & o, Qty<L,E,Q,DL,DE,DQ> v);
-
 };
 
 /** Exception class used by Parameter if an unkown error

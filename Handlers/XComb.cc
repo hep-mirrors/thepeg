@@ -10,7 +10,7 @@
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/Debug.h"
-#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Persistency/PersistentOStream.h"

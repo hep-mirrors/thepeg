@@ -21,7 +21,7 @@
 #include "ThePEG/EventRecord/Step.h"
 #include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/Utilities/EnumIO.h"
-#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/Throw.h"
 

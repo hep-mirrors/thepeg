@@ -6,7 +6,7 @@
 
 #include "LorentzVector.h"
 #include "Lorentz5Vector.fh"
-#include "ThePEG/Utilities/Math.h"
+#include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/UnitIO.h"
 #include "LorentzRotation.h"

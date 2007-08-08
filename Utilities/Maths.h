@@ -183,7 +183,7 @@ struct FracPowX: public MathType {
 
 }
 
-#include "Math.icc"
+#include "Maths.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Math.tcc"
 #endif
