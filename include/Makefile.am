@@ -38,6 +38,7 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
 	$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
+	$(LN_S) -f ../../../Config/ThePEG_Qty.h ThePEG/Config
 	touch done-all-links
 @EMPTY@else
 	@echo "sym-linking header files..."
@@ -45,6 +46,7 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	@$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	@$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
 	@$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
+	@$(LN_S) -f ../../../Config/ThePEG_Qty.h ThePEG/Config
 	@touch done-all-links
 @EMPTY@endif
 

@@ -435,7 +435,8 @@ construct(PartonBinInstance & pb, tStepPtr step, bool boost) const {
   if ( !pb.incoming() ) return;
   if ( boost ) pb.remnantHandler()->boostRemnants(pb);
   tPVector rem(pb.remnants().begin(), pb.remnants().end());
-  if ( !step->addDecayProduct(pb.particle(), rem.begin(), rem.end(), false) );
+  if ( !step->addDecayProduct(pb.particle(), rem.begin(), rem.end(), false) )
+    {}
   colourConnect(pb.particle(), pb.parton(), rem);
   if ( pb.incoming()->incoming() ) step->addIntermediate(pb.particle());
   construct(*pb.incoming(), step);
