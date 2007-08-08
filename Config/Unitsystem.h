@@ -6,9 +6,7 @@
 #include "ThePEG/Vectors/LorentzVector.fh"
 #include "ThePEG/Vectors/ThreeVector.fh"
 #include "ThePEG/Vectors/Transverse.fh"
-#include "PhysicalQty.h"
-#include "PhysicalQtyOps.h"
-#include "PhysicalQtyComplex.h"
+#include "ThePEG_Qty.h"
 
 namespace ThePEG {
 
@@ -26,87 +24,87 @@ namespace ThePEG {
 namespace Units {
 
 /** Energy. */
-typedef Qty<0,1,0> Energy;
+typedef QTY<0,1,0>::Type Energy;
 
 /** Mass has the same unit as Energy <=> c == 1 */
 typedef Energy Mass;
 
 /** Length. */
-typedef Qty<1,0,0> Length;
+typedef QTY<1,0,0>::Type Length;
 
 /** Time has the same unit as Length. <=> c == 1*/
 typedef Length Time;
 
 /** Inverse Length. */
-typedef Qty<-1,0,0> InvLength;
+typedef QTY<-1,0,0>::Type InvLength;
 
 /** Velocities are dimensionless fractions of c */
 typedef double Velocity;
 
 /** Charge. */
-typedef Qty<0,0,1> Charge;
+typedef QTY<0,0,1>::Type Charge;
 
 /** Angular momentum. */
-typedef Qty<1,1,0> AngularMomentum;
+typedef QTY<1,1,0>::Type AngularMomentum;
 
 /** Tension */
-typedef Qty<-1,1,0> Tension;
+typedef QTY<-1,1,0>::Type Tension;
 
 /** Area will be assumed to be Length\f$^2\f$. */
-typedef Qty<2,0,0> Area;
+typedef QTY<2,0,0>::Type Area;
 
 /** Inverse Area */
-typedef Qty<-2,0,0> InvArea;
+typedef QTY<-2,0,0>::Type InvArea;
 
 /** Cross section is an area. */
 typedef Area CrossSection;
 
 /** Energy\f$^2\f$. */
-typedef Qty<0,2,0> Energy2;
-typedef Qty<0,3,0> Energy3;
+typedef QTY<0,2,0>::Type Energy2;
+typedef QTY<0,3,0>::Type Energy3;
 
 /** Energy\f$^4\f$. */
-typedef Qty<0,4,0> Energy4;
-typedef Qty<0,5,0> Energy5;
-typedef Qty<0,6,0> Energy6;
-typedef Qty<0,7,0> Energy7;
-typedef Qty<0,8,0> Energy8;
-typedef Qty<0,9,0> Energy9;
-typedef Qty<0,10,0> Energy10;
-typedef Qty<0,11,0> Energy11;
-typedef Qty<0,12,0> Energy12;
+typedef QTY<0,4,0>::Type Energy4;
+typedef QTY<0,5,0>::Type Energy5;
+typedef QTY<0,6,0>::Type Energy6;
+typedef QTY<0,7,0>::Type Energy7;
+typedef QTY<0,8,0>::Type Energy8;
+typedef QTY<0,9,0>::Type Energy9;
+typedef QTY<0,10,0>::Type Energy10;
+typedef QTY<0,11,0>::Type Energy11;
+typedef QTY<0,12,0>::Type Energy12;
 
-typedef Qty<0,1,0,1,2,1> SqrtEnergy;
-typedef Qty<0,-1,0,1,2,1> InvSqrtEnergy;
+typedef QTY<0,1,0,1,2,1>::Type SqrtEnergy;
+typedef QTY<0,-1,0,1,2,1>::Type InvSqrtEnergy;
 
 /** CrossSection*Energy2. */
-typedef Qty<2,2,0> Energy2XSec;
+typedef QTY<2,2,0>::Type Energy2XSec;
 /** CrossSection/Energy2. */
-typedef Qty<2,-2,0> DiffXSec;
+typedef QTY<2,-2,0>::Type DiffXSec;
 
 /** CrossSection/Energy2/Energy2. */
-typedef Qty<2,-4,0> Diff2XSec;
+typedef QTY<2,-4,0>::Type Diff2XSec;
 
 /** CrossSection/Energy2/Energy2/Energy2 */
-typedef Qty<2,-6,0> Diff3XSec;
+typedef QTY<2,-6,0>::Type Diff3XSec;
 
 /** 1/Energy. */
-typedef Qty<0,-1,0> InvEnergy;
+typedef QTY<0,-1,0>::Type InvEnergy;
 
 /** 1/Energy<sup>2</sup>. */
-typedef Qty<0,-2,0> InvEnergy2;
-typedef Qty<0,-3,0> InvEnergy3;
+typedef QTY<0,-2,0>::Type InvEnergy2;
+typedef QTY<0,-3,0>::Type InvEnergy3;
 
 /** 1/Energy<sup>4</sup>. */
-typedef Qty<0,-4,0> InvEnergy4;
-typedef Qty<0,-5,0> InvEnergy5;
-typedef Qty<0,-6,0> InvEnergy6;
-typedef Qty<0,-7,0> InvEnergy7;
-typedef Qty<0,-8,0> InvEnergy8;
-typedef Qty<0,-9,0> InvEnergy9;
-typedef Qty<0,-10,0> InvEnergy10;
-typedef Qty<0,-11,0> InvEnergy11;
-typedef Qty<0,-12,0> InvEnergy12;
+typedef QTY<0,-4,0>::Type InvEnergy4;
+typedef QTY<0,-5,0>::Type InvEnergy5;
+typedef QTY<0,-6,0>::Type InvEnergy6;
+typedef QTY<0,-7,0>::Type InvEnergy7;
+typedef QTY<0,-8,0>::Type InvEnergy8;
+typedef QTY<0,-9,0>::Type InvEnergy9;
+typedef QTY<0,-10,0>::Type InvEnergy10;
+typedef QTY<0,-11,0>::Type InvEnergy11;
+typedef QTY<0,-12,0>::Type InvEnergy12;
 
 /** Scale is the same as a squared energy. */
 typedef Energy2 Scale;
@@ -147,9 +145,9 @@ typedef Lorentz5Vector<Energy> Lorentz5Momentum;
 typedef Transverse<Energy> TransverseMomentum;
 
 
-const Length millimeter = Length::baseunit();
-const Energy MeV = Energy::baseunit();
-const Charge eplus = Charge::baseunit();
+const Length millimeter = TypeTraits<Length>::baseunit;
+const Energy MeV = TypeTraits<Energy>::baseunit;
+const Charge eplus = TypeTraits<Charge>::baseunit;
 
 const Energy keV = 1.0e-3 * MeV;
 const Energy GeV = 1.0e3  * MeV;
@@ -174,8 +172,8 @@ const Area barn      = 1.0e12 * picobarn;
 const Area femtobarn = 1.0e-3 * picobarn;
 
 // PDG 2006 value 197.326968(17) MeV fm
-const Qty<1,1,0> hbarc = 197.326968e-15 * MeV * meter;
-const Qty<1,1,0> hbar_Planck = hbarc / 1.0;
+const QTY<1,1,0>::Type hbarc = 197.326968e-15 * MeV * meter;
+const QTY<1,1,0>::Type hbar_Planck = hbarc / 1.0;
 
 }
 
@@ -183,7 +181,7 @@ const Qty<1,1,0> hbar_Planck = hbarc / 1.0;
 namespace UnitRemoval {
   const Units::Energy E = Units::MeV;
 
-  const Units::Energy2 E2 = sqr(E);
+  const Units::Energy2 E2 = E*E;
   const Units::Energy3 E3 = E*E2;
   const Units::Energy4 E4 = E2*E2;
   const Units::InvEnergy InvE = 1.0/E;

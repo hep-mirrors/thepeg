@@ -530,15 +530,12 @@ AC_DEFUN([AC_UNIT_CHECKING],
 [
 AC_MSG_CHECKING([whether to include dimension checking])
 AC_ARG_ENABLE(unitchecks,
-        AC_HELP_STRING([--disable-unitchecks],[turn off dimension checking of physical units. Needs complete rebuild when changed!]),
+        AC_HELP_STRING([--enable-unitchecks],[turns on dimension checking for physical quantities.]),
         [],
-        [enable_unitchecks=yes]
+        [enable_unitchecks=no]
         )
 AC_MSG_RESULT([$enable_unitchecks])
-THEPEG_UNITCHECKING="checked"
-if test "x$enable_unitchecks" = "xno"; then
-  THEPEG_UNITCHECKING="unchecked"
+if test "x$enable_unitchecks" = "xyes"; then
+   AC_DEFINE([ThePEG_HAS_UNITS_CHECKING],[1],[define if units should be checked])
 fi
-
-AC_CONFIG_LINKS([Config/Unitsystem.h:Config/Units_$THEPEG_UNITCHECKING.h])
 ])

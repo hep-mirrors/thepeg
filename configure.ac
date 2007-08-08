@@ -6,7 +6,7 @@ AC_CONFIG_AUX_DIR([Config])
 AC_LIBTOOL_VERSION_INFO(1,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
-AC_CONFIG_HEADERS([Config/config.h])
+AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
 
 AC_CANONICAL_HOST
 
