@@ -28,6 +28,7 @@ CONFIGHEADERS = $(top_srcdir)/Config/Complex.h \
 		$(top_srcdir)/Config/PhysicalQtyComplex.h \
 		$(top_srcdir)/Config/PhysicalQtyOps.h \
 		$(top_srcdir)/Config/TemplateTools.h \
+		$(top_srcdir)/Config/Unitsystem.h \
 		$(top_srcdir)/Config/std.h
 
 CLEANFILES = done-all-links 
@@ -37,7 +38,6 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	mkdir -p ThePEG/Config
 	$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
-	$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
 	$(LN_S) -f ../../../Config/ThePEG_Qty.h ThePEG/Config
 	touch done-all-links
 @EMPTY@else
@@ -45,7 +45,6 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	@mkdir -p ThePEG/Config
 	@$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	@$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
-	@$(LN_S) -f ../../../Config/Unitsystem.h ThePEG/Config
 	@$(LN_S) -f ../../../Config/ThePEG_Qty.h ThePEG/Config
 	@touch done-all-links
 @EMPTY@endif
