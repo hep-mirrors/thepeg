@@ -491,7 +491,11 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
     }
   }
   rdm = Repository::findDecayMode(tag.substr(0,end));
-  if ( rdm ) return rdm;
+  if ( rdm ) {
+    string::size_type next = tag.find("]");
+    if(next!=string::npos) tag = tag.substr(next,tag.size());
+    return rdm;
+  }
 
   string::size_type next = tag.find("->");
   if ( next == string::npos ) return rdm;
