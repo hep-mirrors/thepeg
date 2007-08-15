@@ -39,36 +39,34 @@ SpinHalfLorentzRotation SpinHalfLorentzRotation::inverse() const {
 }
 
 // specify the components of a lorentz boost
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (double bx, double by, double bz)
-{
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::
+setBoost (double bx, double by, double bz, double) {
   // work out beta and chi
   static double eps=1e-10;
   double beta(sqrt(bx*bx+by*by+bz*bz)),chi(atanh(beta)),chc(cosh(0.5*chi)),shc(0.5);
   if(beta>eps){shc=sinh(0.5*chi)/beta;}
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by);
-  switch(defaultDRep)
-    {
-      // haber low energy
-    case HaberDRep:
-      _mx[0][0]= chc       ;_mx[0][1]= 0.        ;_mx[0][2]= shc*bz    ;_mx[0][3]= shc*nxminy;
-      _mx[1][0]= 0.        ;_mx[1][1]= chc       ;_mx[1][2]= shc*nxplny;_mx[1][3]=-shc*bz    ;
-      _mx[2][0]= shc*bz    ;_mx[2][1]= shc*nxminy;_mx[2][2]= chc       ;_mx[2][3]= 0.        ;
-      _mx[3][0]= shc*nxplny;_mx[3][1]= shc*bz    ;_mx[3][2]= 0.        ;_mx[3][3]= chc       ;
-      break;
-      // helas
-    case HELASDRep:
-      _mx[0][0]= chc-shc*bz;_mx[0][1]=-shc*nxminy;_mx[0][2]= 0.        ;_mx[0][3]= 0.        ;
-      _mx[1][0]=-shc*nxplny;_mx[1][1]= chc+shc*bz;_mx[1][2]= 0.        ;_mx[1][3]= 0.        ;
-      _mx[2][0]= 0.        ;_mx[2][1]= 0.        ;_mx[2][2]= chc+shc*bz;_mx[2][3]=+shc*nxminy;
-      _mx[3][0]= 0.        ;_mx[3][1]= 0.        ;_mx[3][2]=+shc*nxplny;_mx[3][3]= chc-shc*bz;
-      break;
-    }
+  switch(defaultDRep) {
+    // haber low energy
+  case HaberDRep:
+    _mx[0][0]= chc       ;_mx[0][1]= 0.        ;_mx[0][2]= shc*bz    ;_mx[0][3]= shc*nxminy;
+    _mx[1][0]= 0.        ;_mx[1][1]= chc       ;_mx[1][2]= shc*nxplny;_mx[1][3]=-shc*bz    ;
+    _mx[2][0]= shc*bz    ;_mx[2][1]= shc*nxminy;_mx[2][2]= chc       ;_mx[2][3]= 0.        ;
+    _mx[3][0]= shc*nxplny;_mx[3][1]= shc*bz    ;_mx[3][2]= 0.        ;_mx[3][3]= chc       ;
+    break;
+    // helas
+  case HELASDRep:
+    _mx[0][0]= chc-shc*bz;_mx[0][1]=-shc*nxminy;_mx[0][2]= 0.        ;_mx[0][3]= 0.        ;
+    _mx[1][0]=-shc*nxplny;_mx[1][1]= chc+shc*bz;_mx[1][2]= 0.        ;_mx[1][3]= 0.        ;
+    _mx[2][0]= 0.        ;_mx[2][1]= 0.        ;_mx[2][2]= chc+shc*bz;_mx[2][3]=+shc*nxminy;
+    _mx[3][0]= 0.        ;_mx[3][1]= 0.        ;_mx[3][2]=+shc*nxplny;_mx[3][3]= chc-shc*bz;
+    break;
+  }
   return *this;
 }
 
 // specify a boost vector
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (const Boost & b)
-{
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (const Boost & b,double) {
   // work out beta and chi
   static double eps=1e-10;
   double bx(b.x()),by(b.y()),bz(b.z()),beta(b.mag()),chi(atanh(beta)),
@@ -96,8 +94,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoost (const Boost & b)
 }
 
 // lorentz boost in x direction
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoostX (double & bx)
-{
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::setBoostX (double & bx) {
   // work out beta and chi
   double chi(atanh(bx)),shc(sinh(0.5*chi)),chc(cosh(0.5*chi));
   switch(defaultDRep)
@@ -271,7 +268,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boostZ(double bz)
 }
 
 // General boost equivalent to LT = Boost(bx,by,bz) * LT
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, double bz)
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, double bz, double)
 {
   // work out beta and chi
   static double eps=1e-10;
@@ -307,8 +304,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, d
 }
 
 // General boost equivalent to LT = Boost(bv) * LT
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b)
-{
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b, double) {
   // work out beta and chi
   static double eps=1e-10;
   double bx(b.x()),by(b.y()),bz(b.z());

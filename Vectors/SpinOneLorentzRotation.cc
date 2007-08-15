@@ -9,8 +9,7 @@
 using namespace ThePEG;
 
 // output operator
-std::ostream & SpinOneLorentzRotation::print( std::ostream &  os) const
-{  
+std::ostream & SpinOneLorentzRotation::print( std::ostream &  os) const {  
   os << "\n   [ ( " <<
     std::setw(14) << std::setprecision(6) << xx() << "   " <<
     std::setw(14) << std::setprecision(6) << xy() << "   " <<
@@ -34,14 +33,15 @@ std::ostream & SpinOneLorentzRotation::print( std::ostream &  os) const
   return os;
 }
 
-SpinOneLorentzRotation & SpinOneLorentzRotation::setBoost (double bx, double by, double bz) {
+SpinOneLorentzRotation & SpinOneLorentzRotation::
+setBoost (double bx, double by, double bz, double gamma) {
   double beta2 = sqr(bx) + sqr(by) + sqr(bz);
   if (beta2 >= 1.0) {
     throw Exception() << "Invalid boost (" << bx << ',' << by << ',' << bz 
 		      << ") in SpinOneLorentzRotatio::setBoost" << Exception::eventerror;
   }
-  double gamma = 1.0 / sqrt(1.0 - beta2);
-  double bgamma = gamma * gamma / (1.0 + gamma);
+  if(gamma<0.) gamma = 1.0 / sqrt((1.-bz)*(1.+bz)-sqr(bx)-sqr(by));
+  double bgamma = sqr(gamma) / (1.0 + gamma);
   xx_() = 1.0 + bgamma * bx * bx;
   yy_() = 1.0 + bgamma * by * by;
   zz_() = 1.0 + bgamma * bz * bz;

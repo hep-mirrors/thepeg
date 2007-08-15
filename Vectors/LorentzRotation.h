@@ -44,14 +44,16 @@ public:
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline LorentzRotation (double bx, double by, double bz);
+  inline LorentzRotation (double bx, double by, double bz, double gamma=-1.);
 
   /**
    * Constructor giving the vector for a Lorentz boost.
-   * @param b The boost vector
+   * @param b The boost vector 
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline LorentzRotation (const Boost & b);
+  inline LorentzRotation (const Boost & b, double gamma=-1.);
 
   /**
    * The destructor.
@@ -93,13 +95,14 @@ public:
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
    */
-  LorentzRotation & setBoost (double bx, double by, double bz);
+  LorentzRotation & setBoost (double bx, double by, double bz, double gamma=-1.);
 
   /**
    * Specify a Lorentz Boost as a vector
    * @param b The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & setBoost (const Boost & b);
+  LorentzRotation & setBoost (const Boost & b, double gamma=-1.);
 
   /**
    * Specify a boost by the given factor along the x-axis
@@ -403,13 +406,19 @@ public:
 
   /**
    *  boost equivalent to LT = Boost(bx,by,bz) * LT
+   * @param bx The x-component of the boost
+   * @param by The y-component of the boost
+   * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & boost(double bx, double by, double bz);
+  LorentzRotation & boost(double bx, double by, double bz, double gamma=-1.);
 
   /**
    *  boost equivalent to LT = Boost(bv) * LT
+   * @param bv The boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & boost(const Boost & bv);
+  LorentzRotation & boost(const Boost & bv, double gamma=-1.);
   //@}
 
 private:
@@ -441,9 +450,6 @@ inline std::ostream & operator<< ( std::ostream & os,
 }
 
 #include "LorentzRotation.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LorentzRotation.tcc"
-#endif
 
 #endif /* THEPEG_LorentzRotation_H */
 

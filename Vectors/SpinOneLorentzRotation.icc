@@ -10,14 +10,15 @@ inline SpinOneLorentzRotation::SpinOneLorentzRotation()
   xx_() = yy_() = zz_() = tt_() = 1.0;
 }
 
-inline SpinOneLorentzRotation::SpinOneLorentzRotation(double bx, double by, double bz) 
+inline SpinOneLorentzRotation::
+SpinOneLorentzRotation(double bx, double by, double bz,double gamma) 
   : matrix_(0.0,16) {
-  setBoost(bx,by,bz);
+  setBoost(bx,by,bz,gamma);
 }
 
-inline SpinOneLorentzRotation::SpinOneLorentzRotation(const Boost & b) 
+inline SpinOneLorentzRotation::SpinOneLorentzRotation(const Boost & b,double gamma) 
   : matrix_(0.0,16) {
-  setBoost(b.x(), b.y(), b.z());
+  setBoost(b.x(), b.y(), b.z(),gamma);
 }
 
 inline SpinOneLorentzRotation::
@@ -51,8 +52,9 @@ inline SpinOneLorentzRotation & SpinOneLorentzRotation::invert() {
   return *this = inverse();
 }
 
-inline SpinOneLorentzRotation & SpinOneLorentzRotation::setBoost (const Boost & b) { 
-  return setBoost(b.x(), b.y(), b.z()); 
+inline SpinOneLorentzRotation & 
+SpinOneLorentzRotation::setBoost (const Boost & b,double gamma) { 
+  return setBoost(b.x(), b.y(), b.z(),gamma); 
 }
 
 inline SpinOneLorentzRotation & 
@@ -240,12 +242,12 @@ SpinOneLorentzRotation::boostZ(double beta) {
   return *this = SpinOneLorentzRotation(0,0,beta) * *this;
 }
 inline SpinOneLorentzRotation & 
-SpinOneLorentzRotation::boost(double bx, double by, double bz) {
-  return *this = SpinOneLorentzRotation(bx,by,bz) * *this;
+SpinOneLorentzRotation::boost(double bx, double by, double bz,double gamma) {
+  return *this = SpinOneLorentzRotation(bx,by,bz,gamma) * *this;
 }
 inline SpinOneLorentzRotation & 
-SpinOneLorentzRotation::boost(const Boost & b) {
-  return *this = SpinOneLorentzRotation(b.x(),b.y(),b.z()) * *this;
+SpinOneLorentzRotation::boost(const Boost & b,double gamma) {
+  return *this = SpinOneLorentzRotation(b.x(),b.y(),b.z(),gamma) * *this;
 }
 
 

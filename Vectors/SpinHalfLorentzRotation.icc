@@ -7,41 +7,41 @@
 namespace ThePEG {
 
 // default constructor
-inline SpinHalfLorentzRotation::SpinHalfLorentzRotation() 
-{
+inline SpinHalfLorentzRotation::SpinHalfLorentzRotation() {
   unsigned ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      for(iy=0;iy<4;++iy){_mx[ix][iy]=0.0;}
-      _mx[ix][ix]=1.0;
-    }
-  
+  for(ix=0;ix<4;++ix) {
+    for(iy=0;iy<4;++iy) _mx[ix][iy]=0.0;
+    _mx[ix][ix]=1.0;
+  }
 }
 
 // copy constructor
 inline
-SpinHalfLorentzRotation::SpinHalfLorentzRotation(const SpinHalfLorentzRotation & r) 
-{
+SpinHalfLorentzRotation::SpinHalfLorentzRotation(const SpinHalfLorentzRotation & r) {
   unsigned ix,iy;
-  for(ix=0;ix<4;++ix)
-    {for(iy=0;iy<4;++iy){_mx[ix][iy]=r._mx[ix][iy];}}
+  for(ix=0;ix<4;++ix) {
+    for(iy=0;iy<4;++iy) _mx[ix][iy]=r._mx[ix][iy];
+  }
 }
 
 // constructor giving the components of a Lorentz boost
-inline SpinHalfLorentzRotation::SpinHalfLorentzRotation(double bx, double by, double bz)
-{setBoost (bx,by,bz);}
+inline SpinHalfLorentzRotation::
+SpinHalfLorentzRotation(double bx, double by, double bz, double gamma) {
+  setBoost (bx,by,bz,gamma);
+}
 
 // constructor with boost vector
-inline SpinHalfLorentzRotation::SpinHalfLorentzRotation (const Boost & b)
-{setBoost(b);}
+inline SpinHalfLorentzRotation::
+SpinHalfLorentzRotation (const Boost & b, double gamma) {
+  setBoost(b,gamma);
+}
 
 // protected set all elements constructor
 inline SpinHalfLorentzRotation::
 SpinHalfLorentzRotation(Complex c1c1,Complex c1c2,Complex c1c3,Complex c1c4,
 			Complex c2c1,Complex c2c2,Complex c2c3,Complex c2c4,
 			Complex c3c1,Complex c3c2,Complex c3c3,Complex c3c4,
-			Complex c4c1,Complex c4c2,Complex c4c3,Complex c4c4)
-{
+			Complex c4c1,Complex c4c2,Complex c4c3,Complex c4c4) {
   _mx[0][0]=c1c1;_mx[1][0]=c2c1;_mx[2][0]=c3c1;_mx[3][0]=c4c1;
   _mx[0][1]=c1c2;_mx[1][1]=c2c2;_mx[2][1]=c3c2;_mx[3][1]=c4c2;
   _mx[0][2]=c1c3;_mx[1][2]=c2c3;_mx[2][2]=c3c3;_mx[3][2]=c4c3;
@@ -53,12 +53,11 @@ inline SpinHalfLorentzRotation::~SpinHalfLorentzRotation(){}
 
 // assignment
 inline SpinHalfLorentzRotation & 
-SpinHalfLorentzRotation::operator = (const SpinHalfLorentzRotation & in)
-{
+SpinHalfLorentzRotation::operator = (const SpinHalfLorentzRotation & in) {
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {for(iy=0;iy<4;++iy)
-      {_mx[ix][iy]=in._mx[ix][iy];}}
+  for(ix=0;ix<4;++ix) {
+    for(iy=0;iy<4;++iy) _mx[ix][iy]=in._mx[ix][iy];
+  }
   return *this;
 }
 
@@ -71,8 +70,9 @@ inline bool SpinHalfLorentzRotation::isIdentity() const {
 }
 
 // Global method to get the inverse
-inline SpinHalfLorentzRotation inverseOf ( const SpinHalfLorentzRotation & lt )
-{return lt.inverse();}
+inline SpinHalfLorentzRotation inverseOf ( const SpinHalfLorentzRotation & lt ) {
+  return lt.inverse();
+}
 
 // invert the matrix
 inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::invert() {
@@ -80,8 +80,8 @@ inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::invert() {
 }
 
 // general rotation
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotate(double phi, const Axis & axis)
-{
+inline SpinHalfLorentzRotation & 
+SpinHalfLorentzRotation::setRotate(double phi, const Axis & axis) {
   double cp(cos(0.5*phi));
   // get the normalised components of the vector
   double amag(axis.mag()),ax(axis.x()/amag),ay(axis.y()/amag),az(axis.z()/amag);
@@ -95,8 +95,7 @@ inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotate(double phi, 
 }
 
 // rotation about x
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotateX(double& phi)
-{
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotateX(double& phi) {
   double cp(cos(0.5*phi));
   Complex isp(0.,sin(0.5*phi));
   // rotatation matrix is the same in both conventions
@@ -108,8 +107,7 @@ inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotateX(double& phi
 }
 
 // rotation about y
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotateY(double& phi)
-{
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::setRotateY(double& phi) {
   double cp(cos(0.5*phi)),sp(sin(0.5*phi));
   // rotatation matrix is the same in both conventions
   _mx[0][0]= cp;_mx[0][1]=-sp;_mx[0][2]= 0.;_mx[0][3]= 0.;
@@ -151,7 +149,8 @@ inline Complex SpinHalfLorentzRotation::s4s3() const {return _mx[3][2];}
 inline Complex SpinHalfLorentzRotation::s4s4() const {return _mx[3][3];}
 
 // subscript operator
-inline Complex SpinHalfLorentzRotation::operator () (unsigned int i,unsigned int j) const {
+inline Complex SpinHalfLorentzRotation::
+operator () (unsigned int i,unsigned int j) const {
   if(i<=3 && j<=3){return _mx[i][j];}
   else{throw Exception() << "SpinHalfLorentzRotation subscripting: bad indeces "
 			 << "(" << i << "," << j << ")\n" << Exception::warning;}
@@ -159,18 +158,16 @@ inline Complex SpinHalfLorentzRotation::operator () (unsigned int i,unsigned int
 } 
 
 // product
-inline SpinHalfLorentzRotation SpinHalfLorentzRotation::operator * (const SpinHalfLorentzRotation & lt) const
-{
+inline SpinHalfLorentzRotation 
+SpinHalfLorentzRotation::operator * (const SpinHalfLorentzRotation & lt) const {
   Complex output[4][4];
   unsigned int ix,iy,iz;
-  for(ix=0;ix<4;++ix)
-    {
-      for(iy=0;iy<4;++iy)
-	{
-	  output[ix][iy]=0.;
-	  for(iz=0;iz<4;++iz){output[ix][iy]+=_mx[ix][iz]*lt._mx[iz][iy];}
-	}
+  for(ix=0;ix<4;++ix) {
+    for(iy=0;iy<4;++iy) {
+      output[ix][iy]=0.;
+      for(iz=0;iz<4;++iz){output[ix][iy]+=_mx[ix][iz]*lt._mx[iz][iy];}
     }
+  }
   return SpinHalfLorentzRotation(output[0][0],output[0][1],output[0][2],output[0][3],
 				 output[1][0],output[1][1],output[1][2],output[1][3],
 				 output[2][0],output[2][1],output[2][2],output[2][3],
@@ -178,103 +175,93 @@ inline SpinHalfLorentzRotation SpinHalfLorentzRotation::operator * (const SpinHa
 }
 
 // multiply and assign
-inline  SpinHalfLorentzRotation & SpinHalfLorentzRotation::operator *= (const SpinHalfLorentzRotation & lt)
-{
+inline  SpinHalfLorentzRotation & 
+SpinHalfLorentzRotation::operator *= (const SpinHalfLorentzRotation & lt) {
   Complex output[4][4];
   unsigned int ix,iy,iz;
-  for(ix=0;ix<4;++ix)
-    {
-      for(iy=0;iy<4;++iy)
-	{
-	  output[ix][iy]=0.;
-	  for(iz=0;iz<4;++iz){output[ix][iy]+=_mx[ix][iz]*lt._mx[iz][iy];}
-	}
-    }
+  for(ix=0;ix<4;++ix) {
+      for(iy=0;iy<4;++iy) {
+	output[ix][iy]=0.;
+	for(iz=0;iz<4;++iz){output[ix][iy]+=_mx[ix][iz]*lt._mx[iz][iy];}
+      }
+  }
   for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_mx[ix][iy]=output[ix][iy];}}
   return *this;
 }
 
 // transform method
-inline  SpinHalfLorentzRotation & SpinHalfLorentzRotation::transform(const SpinHalfLorentzRotation & lt)
-{
+inline  SpinHalfLorentzRotation & 
+SpinHalfLorentzRotation::transform(const SpinHalfLorentzRotation & lt) {
   Complex output[4][4];
   unsigned int ix,iy,iz;
-  for(ix=0;ix<4;++ix)
-    {
-      for(iy=0;iy<4;++iy)
-	{
-	  output[ix][iy]=0.;
-	  for(iz=0;iz<4;++iz){output[ix][iy]+=lt._mx[ix][iz]*_mx[iz][iy];}
-	}
+  for(ix=0;ix<4;++ix) {
+    for(iy=0;iy<4;++iy) {
+      output[ix][iy]=0.;
+      for(iz=0;iz<4;++iz){output[ix][iy]+=lt._mx[ix][iz]*_mx[iz][iy];}
     }
+  }
   for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_mx[ix][iy]=output[ix][iy];}}
   return *this;
 }
 
 // Rotation around the x-axis; equivalent to LT = RotationX(delta) * LT
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateX(double phi)
-{
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateX(double phi) {
   double cp(cos(0.5*phi));
   Complex isp(0.,sin(0.5*phi)),temp[4][4];
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      temp[0][ix]=  cp*_mx[0][ix]-isp*_mx[1][ix];
-      temp[1][ix]=-isp*_mx[0][ix]+ cp*_mx[1][ix];
-      temp[2][ix]=  cp*_mx[2][ix]-isp*_mx[3][ix];
-      temp[3][ix]=-isp*_mx[2][ix]+ cp*_mx[3][ix];
-    }
+  for(ix=0;ix<4;++ix) {
+    temp[0][ix]=  cp*_mx[0][ix]-isp*_mx[1][ix];
+    temp[1][ix]=-isp*_mx[0][ix]+ cp*_mx[1][ix];
+    temp[2][ix]=  cp*_mx[2][ix]-isp*_mx[3][ix];
+    temp[3][ix]=-isp*_mx[2][ix]+ cp*_mx[3][ix];
+  }
   for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_mx[ix][iy]=temp[ix][iy];}}
   return *this;
 }
 
 // Rotation around the y-axis; equivalent to LT = RotationY(delta) * LT
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateY(double phi)
-{
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateY(double phi) {
   double cp(cos(0.5*phi)),sp(sin(0.5*phi));
   Complex temp[4][4];
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      temp[0][ix]= cp*_mx[0][ix]-sp*_mx[1][ix];
-      temp[1][ix]= sp*_mx[0][ix]+cp*_mx[1][ix];
-      temp[2][ix]= cp*_mx[2][ix]-sp*_mx[3][ix];
-      temp[3][ix]= sp*_mx[2][ix]+cp*_mx[3][ix];
-    }
+  for(ix=0;ix<4;++ix) {
+    temp[0][ix]= cp*_mx[0][ix]-sp*_mx[1][ix];
+    temp[1][ix]= sp*_mx[0][ix]+cp*_mx[1][ix];
+    temp[2][ix]= cp*_mx[2][ix]-sp*_mx[3][ix];
+    temp[3][ix]= sp*_mx[2][ix]+cp*_mx[3][ix];
+  }
   for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_mx[ix][iy]=temp[ix][iy];}}
   return *this;
 }
 
 // Rotation around the z-axis; equivalent to LT = RotationZ(delta) * LT
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateZ(double phi)
-{
+inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotateZ(double phi) {
   double cp(cos(0.5*phi));
   Complex isp(0.,sin(0.5*phi)),temp[4][4];
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      temp[0][ix]= (cp-isp)*_mx[0][ix];
-      temp[1][ix]= (cp+isp)*_mx[1][ix];
-      temp[2][ix]= (cp-isp)*_mx[2][ix];
-      temp[3][ix]= (cp+isp)*_mx[3][ix];
-    }
+  for(ix=0;ix<4;++ix) {
+    temp[0][ix]= (cp-isp)*_mx[0][ix];
+    temp[1][ix]= (cp+isp)*_mx[1][ix];
+    temp[2][ix]= (cp-isp)*_mx[2][ix];
+    temp[3][ix]= (cp+isp)*_mx[3][ix];
+  }
   for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_mx[ix][iy]=temp[ix][iy];}}
   return *this;
 }
 
 // Rotation around specified vector - LT = Rotation(delta,axis)*LT
-inline SpinHalfLorentzRotation & SpinHalfLorentzRotation::rotate(double phi, const Axis & axis)
-{
-  double cp(cos(0.5*phi)),amag(axis.mag()),ax(axis.x()/amag),ay(axis.y()/amag),az(axis.z()/amag);
+inline SpinHalfLorentzRotation & 
+SpinHalfLorentzRotation::rotate(double phi, const Axis & axis) {
+  double cp(cos(0.5*phi)),amag(axis.mag()),
+    ax(axis.x()/amag),ay(axis.y()/amag),az(axis.z()/amag);
   Complex ii(0.,1.),nxminy(ax-ii*ay),nxplny(ax+ii*ay),isp(0.,sin(0.5*phi)),temp[4][4];
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      temp[0][ix]= (cp-isp*az)*_mx[0][ix]-isp*nxminy *_mx[1][ix];
-      temp[1][ix]=-isp*nxplny *_mx[0][ix]+(cp+isp*az)*_mx[1][ix];
-      temp[2][ix]= (cp-isp*az)*_mx[2][ix]-isp*nxminy *_mx[3][ix];
-      temp[3][ix]=-isp*nxplny *_mx[2][ix]+(cp+isp*az)*_mx[3][ix];
-    }
+  for(ix=0;ix<4;++ix) {
+    temp[0][ix]= (cp-isp*az)*_mx[0][ix]-isp*nxminy *_mx[1][ix];
+    temp[1][ix]=-isp*nxplny *_mx[0][ix]+(cp+isp*az)*_mx[1][ix];
+    temp[2][ix]= (cp-isp*az)*_mx[2][ix]-isp*nxminy *_mx[3][ix];
+    temp[3][ix]=-isp*nxplny *_mx[2][ix]+(cp+isp*az)*_mx[3][ix];
+  }
   for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_mx[ix][iy]=temp[ix][iy];}}
   return *this;
 }

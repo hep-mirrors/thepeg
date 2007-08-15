@@ -7,8 +7,7 @@
 namespace ThePEG {
 
 // default contructor
-inline LorentzRotation::LorentzRotation() 
-{
+inline LorentzRotation::LorentzRotation() {
   _half=SpinHalfLorentzRotation();
   _one =SpinOneLorentzRotation();
 }
@@ -18,35 +17,32 @@ inline LorentzRotation::LorentzRotation(const LorentzRotation & x)
   : _half(x._half), _one(x._one) {}
 
 // constructor with general boost  
-inline LorentzRotation::LorentzRotation(double bx, double by, double bz)
-{
-  _half=SpinHalfLorentzRotation(bx,by,bz);
-  _one=SpinOneLorentzRotation(bx,by,bz);
+inline LorentzRotation::LorentzRotation(double bx, double by, double bz, double gamma) {
+  _half=SpinHalfLorentzRotation(bx,by,bz,gamma);
+  _one=SpinOneLorentzRotation(bx,by,bz,gamma);
 }
 
 // constructor with general boost
-inline LorentzRotation::LorentzRotation(const Boost & b)
-{
-  _half=SpinHalfLorentzRotation(b);
-  _one=SpinOneLorentzRotation(b);
+  inline LorentzRotation::LorentzRotation(const Boost & b,double gamma) {
+    _half=SpinHalfLorentzRotation(b,gamma);
+    _one=SpinOneLorentzRotation(b,gamma);
 }
 
 //  Assignment operator
 inline LorentzRotation & 
-LorentzRotation::operator = (const LorentzRotation & lt)
-{
+LorentzRotation::operator = (const LorentzRotation & lt) {
   _half=lt._half;
   _one=lt._one;
   return *this;
 }
 
 // Returns true if the Identity matrix.
-inline bool LorentzRotation::isIdentity() const
-{return _half.isIdentity()&&_one.isIdentity();}
+inline bool LorentzRotation::isIdentity() const {
+  return _half.isIdentity()&&_one.isIdentity();
+}
 
 // Return the inverse.
-inline LorentzRotation LorentzRotation::inverse() const
-{
+inline LorentzRotation LorentzRotation::inverse() const {
   LorentzRotation output;
   output._half=_half.inverse();
   output._one = _one.inverse();
@@ -54,36 +50,35 @@ inline LorentzRotation LorentzRotation::inverse() const
 }
 
 // inverts the matrix  
-inline LorentzRotation & LorentzRotation::invert()
-{return *this=inverse();}
+inline LorentzRotation & LorentzRotation::invert() {
+  return *this=inverse();
+}
 
 
 // Global method to get the inverse
-inline LorentzRotation inverseOf ( const LorentzRotation & lt )
-{return lt.inverse();}
+inline LorentzRotation inverseOf ( const LorentzRotation & lt ) {
+  return lt.inverse();
+}
 
 // Specify the components of a Lorentz Boost
 inline LorentzRotation & 
-LorentzRotation::setBoost (double bx, double by, double bz)
-{
-  _half.setBoost(bx,by,bz);
-  _one.setBoost(bx,by,bz);
+LorentzRotation::setBoost (double bx, double by, double bz,double gamma) {
+  _half.setBoost(bx,by,bz,gamma);
+  _one.setBoost(bx,by,bz,gamma);
   return *this;
 }
 
 // Specify a Lorentz Boost as a vector
 inline LorentzRotation & 
-LorentzRotation::setBoost (const Boost & b)
-{
-  _half.setBoost(b);
-  _one.setBoost(b);
+LorentzRotation::setBoost (const Boost & b,double gamma) {
+  _half.setBoost(b,gamma);
+  _one.setBoost(b,gamma);
   return *this;
 }
 
 // Specify a boost by the given factor along the x-axis
 inline LorentzRotation & 
-LorentzRotation::setBoostX (double boost)
-{
+LorentzRotation::setBoostX (double boost) {
   _half.setBoostX(boost);
   _one.setBoost(boost,0,0);
   return *this;
@@ -91,8 +86,7 @@ LorentzRotation::setBoostX (double boost)
 
 // Specify a boost by the given factor along the y-axis
 inline LorentzRotation & 
-LorentzRotation::setBoostY (double boost)
-{
+LorentzRotation::setBoostY (double boost) {
   _half.setBoostY(boost);
   _one.setBoost(0,boost,0);
   return *this;
@@ -100,8 +94,7 @@ LorentzRotation::setBoostY (double boost)
 
 // Specify a boost by the given factor along the z-axis
 inline LorentzRotation & 
-LorentzRotation::setBoostZ (double boost)
-{
+LorentzRotation::setBoostZ (double boost) {
   _half.setBoostZ(boost);
   _one.setBoost(0,0,boost);
   return *this;
@@ -109,32 +102,28 @@ LorentzRotation::setBoostZ (double boost)
 
 // Specify a rotation about a general axis by the angle given.
 inline LorentzRotation & 
-LorentzRotation::setRotate(double delta, const Axis & axis)
-{
+LorentzRotation::setRotate(double delta, const Axis & axis) {
   _half.setRotate(delta,axis);
   _one.setRotate(delta,axis);
   return *this;
 }
 
 // Specify a rotation by the given angle about the x-axis
-inline LorentzRotation & LorentzRotation::setRotateX (double angle)
-{
+inline LorentzRotation & LorentzRotation::setRotateX (double angle) {
   _half.setRotateX(angle);
   _one.setRotateX(angle);
   return *this;
 }
 
 // Specify a rotation by the given angle about the y-axis
-inline LorentzRotation & LorentzRotation::setRotateY (double angle)
-{
+inline LorentzRotation & LorentzRotation::setRotateY (double angle) {
   _half.setRotateY(angle);
   _one.setRotateY(angle);
   return *this;
 }
 
 // Specify a rotation by the given angle about the z-axis
-inline LorentzRotation & LorentzRotation::setRotateZ (double angle)
-{
+inline LorentzRotation & LorentzRotation::setRotateZ (double angle) {
   _half.setRotateZ(angle);
   _one.setRotateZ(angle);
   return *this;
@@ -206,8 +195,7 @@ LorentzRotation::operator*(const Lorentz5Vector<Value> & lv) const {
 
 // Product of two LorentzRotations (this) * lt - matrix multiplication  
 inline LorentzRotation 
-LorentzRotation::operator * (const LorentzRotation & lt) const
-{
+LorentzRotation::operator * (const LorentzRotation & lt) const {
   LorentzRotation output;
   output._half = _half*lt._half;
   output._one  = _one*lt._one; 
@@ -216,8 +204,7 @@ LorentzRotation::operator * (const LorentzRotation & lt) const
 
 // Multiply by and assign a*=b becomes a= a*b
 inline  LorentzRotation & 
-LorentzRotation::operator *= (const LorentzRotation & lt)
-{
+LorentzRotation::operator *= (const LorentzRotation & lt) {
   _one *=lt._one;
   _half*=lt._half;
   return *this;
@@ -225,32 +212,28 @@ LorentzRotation::operator *= (const LorentzRotation & lt)
 
 //  Transform  (similar to *= but a.transform(b) becomes a = b*a
 inline  LorentzRotation & 
-LorentzRotation::transform   (const LorentzRotation & lt)
-{
+LorentzRotation::transform   (const LorentzRotation & lt) {
   _half.transform(lt._half);
   _one.transform(lt._one);
   return *this;
 }
 
 // Rotation around the x-axis; equivalent to LT = RotationX(delta) * LT
-inline LorentzRotation & LorentzRotation::rotateX(double delta)
-{
+inline LorentzRotation & LorentzRotation::rotateX(double delta) {
   _half.rotateX(delta);
   _one.rotateX(delta);
   return *this;
 }
 
 // Rotation around the y-axis; equivalent to LT = RotationY(delta) * LT
-inline LorentzRotation & LorentzRotation::rotateY(double delta)
-{
+inline LorentzRotation & LorentzRotation::rotateY(double delta) {
   _half.rotateY(delta);
   _one.rotateY(delta);
   return *this;
 }
 
 // Rotation around the z-axis; equivalent to LT = RotationZ(delta) * LT
-inline LorentzRotation & LorentzRotation::rotateZ(double delta)
-{
+inline LorentzRotation & LorentzRotation::rotateZ(double delta) {
   _half.rotateZ(delta);
   _one.rotateZ(delta);
   return *this;
@@ -258,32 +241,28 @@ inline LorentzRotation & LorentzRotation::rotateZ(double delta)
 
 //  Rotation around specified vector - LT = Rotation(delta,axis)*LT
 inline LorentzRotation & 
-LorentzRotation::rotate(double delta, const Axis & axis)
-{
+LorentzRotation::rotate(double delta, const Axis & axis) {
   _half.rotate(delta,axis);
   _one.rotate(delta,axis);
   return *this;
 }
 
 // Pure boost along the x-axis; equivalent to LT = BoostX(beta) * LT
-inline LorentzRotation & LorentzRotation::boostX(double beta)
-{
+inline LorentzRotation & LorentzRotation::boostX(double beta) {
   _half.boostX(beta);
   _one.boostX(beta);
   return *this;
 }
 
 // Pure boost along the y-axis; equivalent to LT = BoostX(beta) * LT
-inline LorentzRotation & LorentzRotation::boostY(double beta)
-{
+inline LorentzRotation & LorentzRotation::boostY(double beta) {
   _half.boostY(beta);
   _one.boostY(beta);
   return *this;
 }
 
 // Pure boost along the z-axis; equivalent to LT = BoostX(beta) * LT
-inline LorentzRotation & LorentzRotation::boostZ(double beta)
-{
+inline LorentzRotation & LorentzRotation::boostZ(double beta) {
   _half.boostZ(beta);
   _one.boostZ(beta);
   return *this;
@@ -291,18 +270,16 @@ inline LorentzRotation & LorentzRotation::boostZ(double beta)
 
 //  boost equivalent to LT = Boost(bx,by,bz) * LT
 inline LorentzRotation & 
-LorentzRotation::boost(double bx, double by, double bz)
-{
-  _half.boost(bx,by,bz);
-  _one.boost(bx,by,bz);
+LorentzRotation::boost(double bx, double by, double bz, double gamma) {
+  _half.boost(bx,by,bz,gamma);
+  _one.boost(bx,by,bz,gamma);
   return *this;
 }
 
 //  boost equivalent to LT = Boost(bv) * LT
-inline LorentzRotation & LorentzRotation::boost(const Boost & bv)
-{
-  _half.boost(bv);
-  _one.boost(bv);
+inline LorentzRotation & LorentzRotation::boost(const Boost & bv,double gamma) {
+  _half.boost(bv,gamma);
+  _one.boost(bv,gamma);
   return *this;
 }
 

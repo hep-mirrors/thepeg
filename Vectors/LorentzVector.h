@@ -74,7 +74,7 @@ public:
     return LorentzVector<Value>(conj(x()),conj(y()),conj(z()),conj(t()));
   }
 
-  Value2 mag2() const { return sqr(t()) - ( sqr(x()) + sqr(y()) + sqr(z()) ); }
+  Value2 mag2() const { return (t()-z())*(t()+z()) - sqr(x()) -sqr(y()); }
   Value  mag() const {
     Value2 tmp = mag2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
@@ -83,7 +83,7 @@ public:
   Value  m()     const { return mag(); }
   Value2 m2()    const { return mag2(); }
   
-  Value2 mt2()   const { return sqr(t()) - sqr(z()); }
+  Value2 mt2()   const { return (t()-z())*(t()+z()); }
   Value  mt()  const { 
     Value2 tmp = mt2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
@@ -247,9 +247,9 @@ public:
 public:
 
   LorentzVector<Value> & 
-  boost(double bx, double by, double bz) {
+  boost(double bx, double by, double bz,double gamma=-1.) {
     double b2 = bx*bx + by*by + bz*bz;
-    double gamma = 1.0 / sqrt(1.0 - b2);
+    if(gamma<0.) gamma = 1.0 / sqrt(1.0 - b2);
     Value bp = bx*x() + by*y() + bz*z();
     double gamma2 = b2 > 0 ? (gamma - 1.0)/b2 : 0.0;
     
@@ -260,8 +260,8 @@ public:
     return *this;
   }
   
-  LorentzVector<Value> &  boost(Boost b) {
-    return boost(b.x(), b.y(), b.z());
+  LorentzVector<Value> &  boost(Boost b,double gamma=-1.) {
+    return boost(b.x(), b.y(), b.z(),gamma);
   }
 
   LorentzVector<Value> & rotateX (double phi) {

@@ -35,14 +35,16 @@ public:
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation (double bx, double by, double bz);
+  inline SpinOneLorentzRotation (double bx, double by, double bz, double gamma=-1.);
 
   /**
    * Constructor giving the vector for a Lorentz boost.
    * @param b The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline explicit SpinOneLorentzRotation (const Boost & b);
+  inline explicit SpinOneLorentzRotation (const Boost & b, double gamma=-1.);
   //@}
 
   /**
@@ -73,14 +75,16 @@ public:
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  SpinOneLorentzRotation & setBoost (double bx, double by, double bz);
+  SpinOneLorentzRotation & setBoost (double bx, double by, double bz, double gamma=-1.);
 
   /**
    * Specify a Lorentz Boost as a vector
    * @param b The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation & setBoost (const Boost & b);
+  inline SpinOneLorentzRotation & setBoost (const Boost & b, double gamma=-1.);
 
   /**
    * Specify a rotation about a general axis by the angle given.
@@ -263,13 +267,20 @@ public:
 
   /**
    *  boost equivalent to LT = Boost(bx,by,bz) * LT
+   * @param bx The x-component of the boost
+   * @param by The y-component of the boost
+   * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation & boost(double bx, double by, double bz);
+  inline SpinOneLorentzRotation & boost(double bx, double by, double bz,
+					double gamma=-1.);
 
   /**
    *  boost equivalent to LT = Boost(bv) * LT
+   * @param bv The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation & boost(const Boost & bv);
+  inline SpinOneLorentzRotation & boost(const Boost & bv, double gamma=-1.);
   //@}
 
 private:

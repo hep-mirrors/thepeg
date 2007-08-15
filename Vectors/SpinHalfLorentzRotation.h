@@ -52,14 +52,16 @@ public:
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinHalfLorentzRotation (double bx, double by, double bz);
+  inline SpinHalfLorentzRotation (double bx, double by, double bz, double gamma=-1.);
 
   /**
    * Constructor giving the vector for a Lorentz boost.
    * @param b The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinHalfLorentzRotation (const Boost & b);
+  inline SpinHalfLorentzRotation (const Boost & b,double gamma=-1.);
 
   /**
    * The destructor.
@@ -100,14 +102,16 @@ public:
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  SpinHalfLorentzRotation & setBoost (double bx, double by, double bz);
+  SpinHalfLorentzRotation & setBoost (double bx, double by, double bz,double gamma=-1.);
 
   /**
    * Specify a Lorentz Boost as a vector
    * @param b The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  SpinHalfLorentzRotation & setBoost (const Boost & b);
+  SpinHalfLorentzRotation & setBoost (const Boost & b,double gamma=-1.);
 
   /**
    * Specify a boost by the given factor along the x-axis
@@ -300,13 +304,19 @@ public:
 
   /**
    * General boost equivalent to LT = Boost(bx,by,bz) * LT
+   * @param bx The x-component of the boost
+   * @param by The y-component of the boost
+   * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  SpinHalfLorentzRotation & boost(double bx, double by, double bz);
+  SpinHalfLorentzRotation & boost(double bx, double by, double bz, double gamma=-1.);
 
   /**
    * General boost equivalent to LT = Boost(bv) * LT
+   * @param bv The boost vector
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  SpinHalfLorentzRotation & boost(const Boost & bv);
+  SpinHalfLorentzRotation & boost(const Boost & bv, double gamma=-1.);
   //@}
 
 protected:
@@ -344,8 +354,5 @@ inline std::ostream & operator<< ( std::ostream & os,
 }
 
 #include "SpinHalfLorentzRotation.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SpinHalfLorentzRotation.tcc"
-#endif
 
 #endif /* THEPEG_SpinHalfLorentzRotation_H */
