@@ -6,14 +6,14 @@
 
 namespace ThePEG {
 namespace Helicity {
-    
+
 inline GeneralSVVVertex::GeneralSVVVertex() {
   setNpoint(3);
   setSpin(1,3,3);
   _a00 = 1.;_a11 = 0.;
   _a12 = 0.;_a21 = 0.;
   _a22 = 0.;_aEp = 0.;
-  _b = 0.;
+  _representation = 1;
   setName(GeneralSVV);
 }
 
@@ -24,8 +24,7 @@ inline Complex GeneralSVVVertex::a12() const {return _a12;}
 inline Complex GeneralSVVVertex::a21() const {return _a21;}
 inline Complex GeneralSVVVertex::a22() const {return _a22;}
 inline Complex GeneralSVVVertex::aEp() const {return _aEp;}
-inline Complex GeneralSVVVertex::b() const {return _b;}
-    
+
 //Set tensor coefficients
 inline void GeneralSVVVertex::a00(const Complex & val) {_a00 = val;}
 inline void GeneralSVVVertex::a11(const Complex & val) {_a11 = val;}
@@ -33,7 +32,10 @@ inline void GeneralSVVVertex::a12(const Complex & val) {_a12 = val;}
 inline void GeneralSVVVertex::a21(const Complex & val) {_a21 = val;}
 inline void GeneralSVVVertex::a22(const Complex & val) {_a22 = val;}
 inline void GeneralSVVVertex::aEp(const Complex & val) {_aEp = val;}
-inline void GeneralSVVVertex::b(const Complex & val) {_b = val;}
- 
+
+inline void GeneralSVVVertex::setCoefScheme(unsigned int representation) {
+  _representation = representation;
+}
+
 }
 }

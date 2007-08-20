@@ -50,8 +50,8 @@ public:
    * @param vec2 Wavefunction of second vector particle
    */
   Complex evaluate(Energy2 q2, const ScalarWaveFunction & sca,
-		   const VectorWaveFunction & vec1,
-		   const VectorWaveFunction & vec2);
+                   const VectorWaveFunction & vec1,
+                   const VectorWaveFunction & vec2);
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -73,7 +73,7 @@ public:
    * @param part3 ParticleDataPointer to third particle 
    */
   virtual void setCoupling(Energy2 q2,tcPDPtr part1, tcPDPtr part2,
-			   tcPDPtr part3)=0;
+                           tcPDPtr part3)=0;
   //@}
 
 public:
@@ -111,11 +111,6 @@ public:
   inline Complex aEp() const;
       
   /**
-   *  Access coefficient _b
-   */
-  inline Complex b() const;
-    
-  /**
    * Set tensor coefficient of \f$g^{\mu\nu}\f$
    */
   inline void a00(const Complex & val);
@@ -144,11 +139,10 @@ public:
    * Set tensor coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   inline void aEp(const Complex & val);
-      
+
   /**
-   * Set coefficient _b
    */
-  inline void b(const Complex & val);
+  inline void setCoefScheme(unsigned int representation);
   //@}
 
 private:
@@ -198,11 +192,14 @@ private:
    * Coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   Complex _aEp;
+  //@}
 
   /**
-   * Coefficient of loop coupling 
+   * Switch between two representations of coefficients (_a00,_a11,_a12,_a21,_a22,_aEp):
+    suitable for the simplified H-g-g and H-gamma-gamma vertices and 
+    suitable for the Passarino-Veltman tensor reduction scheme
    */
-  Complex _b;
+  unsigned int _representation;
   //@}
 };
 }
@@ -236,6 +233,5 @@ struct ClassTraits<ThePEG::Helicity::GeneralSVVVertex>
 /** @endcond */
 
 }
-
 
 #endif /* ThePEG_GeneralSVVVertex_H */
