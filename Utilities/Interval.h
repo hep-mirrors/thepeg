@@ -32,16 +32,6 @@ public:
   inline Interval(T dn, T up);
 
   /**
-   * Copy constructor.
-   */
-  inline Interval(const Interval & i);
-
-  /**
-   * Assignment.
-   */
-  inline const Interval & operator=(const Interval & i);
-
-  /**
    * Test for equality.
    */
   inline bool operator==(const Interval & i) const;

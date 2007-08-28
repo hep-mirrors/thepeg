@@ -7,21 +7,6 @@
 namespace ThePEG {
 
 template <typename T>
-inline HandlerBaseT<T>::HandlerBaseT() {}
-
-template <typename T>
-inline HandlerBaseT<T>::HandlerBaseT(const HandlerBaseT<T> & x)
-  : Interfaced(x) {}
-
-template <typename T>
-HandlerBaseT<T>::~HandlerBaseT() {}
-
-inline HandlerBase::HandlerBase() {}
-
-inline HandlerBase::HandlerBase(const HandlerBase & x)
-  : HandlerBaseT<UseRandom>(x) {}
-
-template <typename T>
 inline double HandlerBaseT<T>::rnd() const {
   return T::rnd();
 }

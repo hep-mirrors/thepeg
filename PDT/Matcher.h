@@ -24,16 +24,6 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * Default constructor.
-   */
-  inline Matcher();
-
-  /**
-   * Copy-constructor.
-   */
-  inline Matcher(const Matcher<T> &);
-
-  /**
    * Destructor.
    */
   virtual ~Matcher();
@@ -76,14 +66,14 @@ protected:
    * Virtual function overriding the one in MatcherBase. Simply calls
    * Check().
    */
-  inline virtual bool check(const ParticleData & pd) const;
+  virtual bool check(const ParticleData & pd) const { return T::Check(pd); }
 
   /**
    * Static check function. Return true if a given particle type, \a
    * pd, is matched by this Matcher, ie. if the T::Check() function of
    * the template argument returns true.
    */
-  inline static bool Check(const ParticleData & pd);
+  static bool Check(const ParticleData & pd) { return T::Check(pd); }
   //@}
 
 protected:
@@ -91,7 +81,7 @@ protected:
   /**
    * Set antipartner.
    */
-  inline void setCC(tPMPtr, tPMPtr) const;
+  void setCC(tPMPtr pm, tPMPtr apm) const { MatcherBase::setCC(pm,apm); }
 
 private:
 
@@ -134,7 +124,6 @@ struct ClassTraits< Matcher<T> >: public ClassTraitsBase< Matcher<T> > {
 
 }
 
-#include "Matcher.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Matcher.tcc"
 #endif

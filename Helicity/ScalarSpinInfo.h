@@ -5,7 +5,6 @@
 
 #include "SpinInfo.h"
 #include "ScalarSpinInfo.fh"
-// #include "ScalarSpinInfo.xh"
 
 namespace ThePEG {
 namespace Helicity {
@@ -27,24 +26,19 @@ public:
   /**
    * Default constructor.
    */
-  inline ScalarSpinInfo();
+  ScalarSpinInfo() { iSpin(PDT::Spin0); }
 
   /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  inline ScalarSpinInfo(const Lorentz5Momentum & p, bool time);
-
-  /**
-   * Copy-constructor.
-   */
-  inline ScalarSpinInfo(const ScalarSpinInfo &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~ScalarSpinInfo();
+  ScalarSpinInfo(const Lorentz5Momentum & p, bool time)
+  {
+    iSpin(PDT::Spin0);
+    setProductionMomentum(p);
+    setTimelike(time);
+  }
   //@}
 
 public:
@@ -57,15 +51,11 @@ public:
   /**
    * Standard clone methods.
    */
-  inline virtual EIPtr clone() const;
-
-  /**
-   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
-   * with a whole Event and this has pointers to other event record
-   * objects, these should be rebound to their clones in this
-   * function.
-   */
-  inline virtual void rebind(const EventTranslationMap & trans);
+  virtual EIPtr clone() const
+  {
+    tcSpinPtr temp = this;
+    return const_ptr_cast<SpinPtr>(temp);
+  }
   
   /**
    * Perform a lorentz rotation of the spin information
@@ -121,11 +111,5 @@ struct ClassTraits<ThePEG::Helicity::ScalarSpinInfo>
 /** @endcond */
 
 }
-
-#include "ScalarSpinInfo.icc"
-
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ScalarSpinInfo.tcc"
-#endif
 
 #endif /* ThePEG_ScalarSpinInfo_H */

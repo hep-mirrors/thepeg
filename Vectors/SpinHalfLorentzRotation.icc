@@ -7,32 +7,26 @@
 namespace ThePEG {
 
 // default constructor
-inline SpinHalfLorentzRotation::SpinHalfLorentzRotation() {
-  unsigned ix,iy;
+inline SpinHalfLorentzRotation::SpinHalfLorentzRotation() 
+  : _mx(4,vector<Complex>(4)) {
+  unsigned ix;
   for(ix=0;ix<4;++ix) {
-    for(iy=0;iy<4;++iy) _mx[ix][iy]=0.0;
     _mx[ix][ix]=1.0;
-  }
-}
-
-// copy constructor
-inline
-SpinHalfLorentzRotation::SpinHalfLorentzRotation(const SpinHalfLorentzRotation & r) {
-  unsigned ix,iy;
-  for(ix=0;ix<4;++ix) {
-    for(iy=0;iy<4;++iy) _mx[ix][iy]=r._mx[ix][iy];
   }
 }
 
 // constructor giving the components of a Lorentz boost
 inline SpinHalfLorentzRotation::
-SpinHalfLorentzRotation(double bx, double by, double bz, double gamma) {
+SpinHalfLorentzRotation(double bx, double by, double bz, double gamma) 
+  : _mx(4,vector<Complex>(4)) 
+{
   setBoost (bx,by,bz,gamma);
 }
 
 // constructor with boost vector
 inline SpinHalfLorentzRotation::
-SpinHalfLorentzRotation (const Boost & b, double gamma) {
+SpinHalfLorentzRotation (const Boost & b, double gamma) 
+: _mx(4,vector<Complex>(4)) {
   setBoost(b,gamma);
 }
 
@@ -41,24 +35,12 @@ inline SpinHalfLorentzRotation::
 SpinHalfLorentzRotation(Complex c1c1,Complex c1c2,Complex c1c3,Complex c1c4,
 			Complex c2c1,Complex c2c2,Complex c2c3,Complex c2c4,
 			Complex c3c1,Complex c3c2,Complex c3c3,Complex c3c4,
-			Complex c4c1,Complex c4c2,Complex c4c3,Complex c4c4) {
+			Complex c4c1,Complex c4c2,Complex c4c3,Complex c4c4) 
+: _mx(4,vector<Complex>(4)) {
   _mx[0][0]=c1c1;_mx[1][0]=c2c1;_mx[2][0]=c3c1;_mx[3][0]=c4c1;
   _mx[0][1]=c1c2;_mx[1][1]=c2c2;_mx[2][1]=c3c2;_mx[3][1]=c4c2;
   _mx[0][2]=c1c3;_mx[1][2]=c2c3;_mx[2][2]=c3c3;_mx[3][2]=c4c3;
   _mx[0][3]=c1c4;_mx[1][3]=c2c4;_mx[2][3]=c3c4;_mx[3][3]=c4c4;
-}
-
-// destructor
-inline SpinHalfLorentzRotation::~SpinHalfLorentzRotation(){}
-
-// assignment
-inline SpinHalfLorentzRotation & 
-SpinHalfLorentzRotation::operator = (const SpinHalfLorentzRotation & in) {
-  unsigned int ix,iy;
-  for(ix=0;ix<4;++ix) {
-    for(iy=0;iy<4;++iy) _mx[ix][iy]=in._mx[ix][iy];
-  }
-  return *this;
 }
 
 // check for identity matrix

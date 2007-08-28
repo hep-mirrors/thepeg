@@ -63,14 +63,10 @@ public:
    * @param depSafe set to true if calls to this interface for one
    * object does not influence other objects.
    */
-  inline CommandBase(string newName, string newDescription,
-		     string newClassName,
-		     const type_info & newTypeInfo, bool depSafe);
-
-  /**
-   * The destructor.
-   */
-  inline virtual ~CommandBase();
+  CommandBase(string newName, string newDescription, string newClassName,
+		     const type_info & newTypeInfo, bool depSafe)
+    : InterfaceBase(newName, newDescription, newClassName, 
+		    newTypeInfo, depSafe, false) {}
 
   /**
    * The general interface method overriding the one in
@@ -164,12 +160,10 @@ public:
    * object does not influence other objects.
    */
   Command(string newName, string newDescription,
-	  ExeFn newExeFn, bool depSafe = false);
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~Command();
+	  ExeFn newExeFn, bool depSafe = false)
+    : CommandBase(newName, newDescription, 
+		  ClassTraits<T>::className(), typeid(T), depSafe), 
+      theExeFn(newExeFn) {}
 
   /**
    * Execute the member function. For the object \a ib execute the
@@ -190,7 +184,6 @@ private:
 
 }
 
-#include "Command.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Command.tcc"
 #endif

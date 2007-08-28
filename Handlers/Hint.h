@@ -47,17 +47,7 @@ public:
   /**
    * Default constructor.
    */
-  inline Hint();
-
-  /**
-   * Copy-constructor.
-   */
-  inline Hint(const Hint &);
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~Hint();
+  Hint() : theScale(Energy2()), theStopFlag(false) {}
   //@}
 
 public:
@@ -65,7 +55,7 @@ public:
   /**
    * Return true if there are tagged particles in the hint.
    */
-  inline bool tagged() const;
+  bool tagged() const { return !theTagged.empty(); }
 
   /**
    * Return a list of pointers to particles to be handled. A handler
@@ -79,36 +69,43 @@ public:
    * Add a range of particles to the list of tagged particles.
    */
   template <typename InputIterator>
-  inline void tag(InputIterator first, InputIterator last);
+  void tag(InputIterator first, InputIterator last) 
+  { 
+    theTagged.insert(theTagged.end(), first, last); 
+  }
 
   /**
    * Add a particle to the list of tagged particles.
    */
-  inline void tag(tPPtr);
+  void tag(tPPtr p) { if (p) theTagged.push_back(p); }
 
   /**
    * Set the stop hint.
    */
-  inline void stop(bool);
+  void stop(bool newStopFlag) 
+  {
+    theStopFlag = newStopFlag;
+    if ( theStopFlag ) theTagged.clear(); 
+  }
 
   /**
    * Get the stop hint.
    */
-  inline bool stop() const;
+  bool stop() const { return theStopFlag; }
 
   /**
    * Set the scale.
    */
-  inline void scale(const Scale &);
+  void scale(const Scale & newScale) { theScale = newScale; }
   /**
    * Get the scale.
    */
-  inline const Scale & scale() const;
+  const Scale & scale() const { return theScale; }
 
   /**
    * Return a pointer to the default hint.
    */
-  inline static tHintPtr Default();
+  static tHintPtr Default() { return tHintPtr(&theDefaultHint); }
 
 public:
 
@@ -165,7 +162,7 @@ private:
   /**
    * Assignment is private and non-existing.
    */
-  inline const Hint & operator=(const Hint & h);
+  Hint & operator=(const Hint & h);
 
 };
 
@@ -196,7 +193,5 @@ struct ClassTraits<Hint>:
 /** @endcond */
 
 }
-
-#include "Hint.icc"
 
 #endif /* ThePEG_Hint_H */

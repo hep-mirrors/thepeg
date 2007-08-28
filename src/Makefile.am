@@ -21,7 +21,7 @@ setupThePEG_bin_LDFLAGS = $(myLDFLAGS)
 
 if USELHAPDF
 pkglib_LTLIBRARIES = TestLHAPDF.la
-TestLHAPDF_la_SOURCES = TestLHAPDF.cc TestLHAPDF.h TestLHAPDF.icc
+TestLHAPDF_la_SOURCES = TestLHAPDF.cc TestLHAPDF.h
 TestLHAPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 endif
 

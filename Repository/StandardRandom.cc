@@ -7,13 +7,7 @@
 #include "StandardRandom.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StandardRandom.tcc"
-#endif
-
 using namespace ThePEG;
-
-StandardRandom::~StandardRandom() {}
 
 IBPtr StandardRandom::clone() const {
   return new_ptr(*this);

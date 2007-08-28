@@ -60,11 +60,6 @@ public:
   PartonBin();
 
   /**
-   * Copy-constructor.
-   */
-  PartonBin(const PartonBin &);
-
-  /**
    * Destructor.
    */
   virtual ~PartonBin();
@@ -77,41 +72,41 @@ public:
   /**
    * The incoming particle type.
    */
-  inline tcPDPtr particle() const;
+  tcPDPtr particle() const { return theParticle; }
 
   /**
    * In the case the incoming particle in turn is extracted from
    * another particle, return the PartonBin for that extraction.
    */
-  inline tPBPtr incoming() const;
+  tPBPtr incoming() const { return theIncomingBin; }
 
   /**
    * The parton bins corresponding to the extracted parton if it in
    * turn can be extracted from.
    */
-  inline const PBVector & outgoing() const;
+  const PBVector & outgoing() const { return theOutgoing; }
 
   /**
    * Add a parton bin corresponding to the extracted parton if it in
    * turn can be extracted from.
    */
-  inline void addOutgoing(tPBPtr);
+  void addOutgoing(tPBPtr pb) { theOutgoing.push_back(pb); }
 
   /**
    * The extracted parton type.
    */
-  inline tcPDPtr parton() const;
+  tcPDPtr parton() const { return theParton; }
 
   /**
    * The PDFBase object describing the momentum distribution of the
    * parton within the particle in this PartonBin.
    */
-  inline tcPDFPtr pdf() const;
+  tcPDFPtr pdf() const { return thePDF; }
 
   /**
    * The remnant handler associated with the pdf().
    */
-  inline tcRemHPtr remnantHandler() const;
+  tcRemHPtr remnantHandler() const { return theRemnantHandler; }
 
   /**
    * Detemine the number of degrees of freedom needed to generate the
@@ -125,13 +120,13 @@ public:
    * Return the number of degrees of freedom used by the parton
    * density and remnant handler.
    */
-  inline int pdfDim() const;
+  int pdfDim() const { return thePDFDim; }
 
   /**
    * Return the number of degrees of freedom used by the parton
    * density and remnant handler.
    */
-  inline int remDim() const;
+  int remDim() const { return theRemDim; }
   //@}
 
   /** @name Functions used in the generation. */
@@ -139,7 +134,7 @@ public:
   /**
    * Return the cuts specified for this bin.
    */
-  inline const PDFCuts & cuts() const;
+  const PDFCuts & cuts() const { return theCuts; }
 
   /**
    * Return the parton density for this and parent particles. If the
@@ -263,10 +258,5 @@ struct ClassTraits<PartonBin>: public ClassTraitsBase<PartonBin> {
 /** @endcond */
 
 }
-
-#include "PartonBin.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PartonBin.tcc"
-#endif
 
 #endif /* ThePEG_PartonBin_H */

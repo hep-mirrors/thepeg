@@ -28,13 +28,20 @@ public:
    * The contructor will call the transform(const LorentzRotation &)
    * of an object pointed to by \a p with \a r as argument.
    */
-  inline TmpTransform(Ptr p, const LorentzRotation & r);
+  TmpTransform(Ptr p, const LorentzRotation & r) : ptr(p), rot(r)
+  {
+    ptr->transform(rot);
+  }
 
   /**
    * The destructor performs the inverse of the transformation done in
    * the constructor.
    */
-  inline ~TmpTransform();
+  ~TmpTransform()
+  {
+    rot.invert();
+    ptr->transform(rot);
+  }
 
 private:
 
@@ -71,7 +78,5 @@ private:
 };
 
 }
-
-#include "TmpTransform.icc"
 
 #endif /* THEPEG_TmpTransform_H */

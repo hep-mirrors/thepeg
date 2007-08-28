@@ -38,17 +38,23 @@ protected:
   /**
    * Default constructor.
    */
-  inline ReferenceCounted();
+  ReferenceCounted() 
+    : theReferenceCounter(CounterType(1)) {}
 
   /**
    * Copy-constructor.
    */
-  inline ReferenceCounted(const ReferenceCounted &);
+  ReferenceCounted(const ReferenceCounted &)
+    : theReferenceCounter(CounterType(1)) {}
 
   /**
    * Assignment.
    */
-  inline ReferenceCounted & operator=(const ReferenceCounted &);
+  ReferenceCounted & operator=(const ReferenceCounted &)
+  {
+    return *this;
+  }
+    
   //@}
 
 public:
@@ -56,19 +62,28 @@ public:
   /**
    * Return the reference count.
    */
-  inline CounterType referenceCount() const;
+  CounterType referenceCount() const 
+  { 
+    return theReferenceCounter; 
+  }
 
 private:
 
   /**
    * Increment the reference count.
    */
-  inline void incrementReferenceCount() const;
+  void incrementReferenceCount() const 
+  { 
+    ++theReferenceCounter; 
+  }
 
   /**
    * Decrement with the reference count.
    */
-  inline bool decrementReferenceCount() const;
+  bool decrementReferenceCount() const 
+  {
+    return !--theReferenceCounter;
+  }
 
 private:
 
@@ -82,11 +97,6 @@ private:
 
 }
 }
-
-#include "ReferenceCounted.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ReferenceCounted.tcc"
-#endif
 
 #endif /* ThePEG_ReferenceCounted_H */
 

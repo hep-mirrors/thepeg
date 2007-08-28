@@ -49,11 +49,6 @@ public:
   inline XSecStat(const XSecStat &);
 
   /**
-   * The (empty) destructor.
-   */
-  inline ~XSecStat();
-
-  /**
    * The assignment operator.
    */
   inline XSecStat & operator=(const XSecStat &);

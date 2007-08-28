@@ -13,16 +13,24 @@ struct TypeInfo {
 
   /** Return the name of the class of the given object. */
   template <typename T>
-  static inline string name(const T &);
+  static string name(const T &)
+  {
+    const ClassDescriptionBase * cd = DescriptionList::find(typeid(T));
+    if ( cd ) return cd->name();
+    return "**** CLASS NOT REGISTERED ****";
+  }
 
   /** Return the version number of the class of the given object. */
   template <typename T>
-  static inline int version(const T &);
+  static int version(const T &)
+  {
+    const ClassDescriptionBase * cd = DescriptionList::find(typeid(T));
+    if ( cd ) return cd->version();
+    return -1;
+  }
 
 };
 
 }
-
-#include "TypeInfo.icc"
 
 #endif /* ThePEG_TypeInfo_H */

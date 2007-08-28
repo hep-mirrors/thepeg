@@ -10,14 +10,7 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Utilities/StringUtils.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourLines.tcc"
-#endif
-
-
 using namespace ThePEG;
-
-ColourLines::~ColourLines() {}
 
 ColourLines::ColourLines(string s) {
   while ( true ) {

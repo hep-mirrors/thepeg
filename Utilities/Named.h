@@ -19,50 +19,51 @@ class Named {
 public:
 
   /**
-   * Empty constructor.
-   */
-  inline Named();
-
-  /**
    * Constructor with name.
    */
-  inline Named(const string & newName);
-
-  /**
-   * Copy constructor.
-   */
-  inline Named(const Named &);
-
-  /**
-   * Empty Destructor.
-   */
-  inline ~Named();
+  Named(const string & newName = string()) 
+    : theName(newName) {}
 
   /**
    * Return name.
    */
-  inline const string & name() const;
+  const string & name() const { return theName; }
 
   /**
    * Test for equality.
    */
-  inline bool operator == (const Named &) const;
+  bool operator == (const Named & other) const 
+  { 
+    return theName == other.name(); 
+  }
+
   /**
    * Lexicographical comparison.
    */
-  inline bool operator < (const Named &) const;
+  bool operator < (const Named & other) const 
+  { 
+    return theName < other.name(); 
+  }
 
 protected:
 
   /**
    * Assignment.
    */
-  inline const Named & operator = (const Named &);
+  inline const Named & operator = (const Named & other) 
+  { 
+    if (this != &other)
+      theName = other.name(); 
+    return *this; 
+  }
 
   /**
    * Set new name.
    */
-  inline const string & name(const string & newName);
+  inline const string & name(const string & newName) 
+  { 
+    return theName = newName; 
+  } 
 
 private:
 
@@ -74,7 +75,5 @@ private:
 };
 
 }
-
-#include "Named.icc"
 
 #endif /* ThePEG_Named_H */

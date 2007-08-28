@@ -288,17 +288,7 @@ public:
    * Default constructor
    */
   inline RSSpinorBarWaveFunction(DiracRep=defaultDRep);
-  
-  /**
-   * Destructor 
-   */
-  inline ~RSSpinorBarWaveFunction();
   //@}
-  
-  /**
-   * Assignment. 
-   */
-  inline RSSpinorBarWaveFunction & operator = (const RSSpinorBarWaveFunction &);
 
   /**
    *  Access to the wavefunction and its components.

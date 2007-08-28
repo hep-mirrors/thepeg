@@ -48,19 +48,9 @@ public:
 		      string newDescription, long newValue);
 
   /**
-   * Default constrictor.
+   * Default constructor.
    */
   inline SwitchOption();
-
-  /**
-   * Copy constructors.
-   */
-  inline SwitchOption(const SwitchOption & o);
-
-  /**
-   * Standard assignment.
-   */
-  inline const SwitchOption & operator=(const SwitchOption & o);
 
   /**
    * The description of this option
@@ -71,6 +61,7 @@ public:
    * The value of this option.
    */
   inline long value() const;
+
   /**
    * The value of this option.
    */
@@ -153,11 +144,6 @@ public:
   inline SwitchBase(string newName, string newDescription,
 		    string newClassName, const type_info & newTypeInfo,
 		    bool depSafe, bool readonly);
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~SwitchBase();
 
   /**
    * The general interface method overriding the one in
@@ -315,21 +301,15 @@ public:
    * @param newDefFn optional pointer to the member function for the
    * 'def' action.
    */
-  inline Switch(string newName, string newDescription,
-		Member newMember, Int newDef, bool depSafe = false,
-		bool readonly = false, SetFn newSetFn = 0, GetFn newGetFn = 0,
-		GetFn newDefFn = 0)
-  : SwitchBase(newName, newDescription, ClassTraits<T>::className(),
-	       typeid(T), depSafe, readonly),
-    theMember(newMember), theDef(newDef), theSetFn(newSetFn),
-    theGetFn(newGetFn), theDefFn(newDefFn) {}
-
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~Switch();
-
+  Switch(string newName, string newDescription,
+	 Member newMember, Int newDef, bool depSafe = false,
+	 bool readonly = false, SetFn newSetFn = 0, GetFn newGetFn = 0,
+	 GetFn newDefFn = 0)
+    : SwitchBase(newName, newDescription, ClassTraits<T>::className(),
+		 typeid(T), depSafe, readonly),
+      theMember(newMember), theDef(newDef), theSetFn(newSetFn),
+      theGetFn(newGetFn), theDefFn(newDefFn) {}
+  
   /**
    * Set the member variable of \a ib to \a val.
    */

@@ -4,8 +4,6 @@
 // This is the declaration of the MEQQ2qq class.
 
 #include "ThePEG/MatrixElement/ME2to2QCD.h"
-// #include "MEQQ2qq.fh"
-// #include "MEQQ2qq.xh"
 
 namespace ThePEG {
 
@@ -18,26 +16,6 @@ namespace ThePEG {
  * @see ME2to2QCD
  */
 class MEQQ2qq: public ME2to2QCD {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline MEQQ2qq();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MEQQ2qq(const MEQQ2qq &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MEQQ2qq();
-  //@}
 
 public:
 
@@ -87,7 +65,10 @@ protected:
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colA() const;
+  double colA() const
+  {
+    return (sqr(uHat()) + sqr(tHat()))/sqr(sHat());
+  }
   //@}
 
 public:
@@ -105,13 +86,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const { return new_ptr(*this); }
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const { return new_ptr(*this); }
   //@}
 
 private:
@@ -158,10 +139,5 @@ struct ClassTraits<MEQQ2qq>: public ClassTraitsBase<MEQQ2qq> {
 /** @endcond */
 
 }
-
-#include "MEQQ2qq2.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEQQ2qq.tcc"
-#endif
 
 #endif /* ThePEG_MEQQ2qq_H */

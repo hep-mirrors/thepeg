@@ -7,13 +7,7 @@
 #include "AlphaEMBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "AlphaEMBase.tcc"
-#endif
-
 using namespace ThePEG;
-
-AlphaEMBase::~AlphaEMBase() {}
 
 AbstractNoPIOClassDescription<AlphaEMBase> AlphaEMBase::initAlphaEMBase;
 

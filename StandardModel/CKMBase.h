@@ -5,8 +5,6 @@
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "StandardModelBase.fh"
-// #include "CKMBase.fh"
-// #include "CKMBase.xh"
 
 namespace ThePEG {
 
@@ -20,26 +18,6 @@ namespace ThePEG {
  * @see StandardModelBase
  */
 class CKMBase: public Interfaced {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline CKMBase();
-
-  /**
-   * Copy-constructor.
-   */
-  inline CKMBase(const CKMBase &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~CKMBase();
-  //@}
 
 public:
 
@@ -92,10 +70,5 @@ struct ClassTraits<CKMBase>: public ClassTraitsBase<CKMBase> {
 /** @endcond */
 
 }
-
-#include "CKMBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "CKMBase.tcc"
-#endif
 
 #endif /* ThePEG_CKMBase_H */

@@ -37,7 +37,7 @@ public:
   /**
    * Default constructor.
    */
-  inline FFTVertex();
+  FFTVertex() { setNpoint(3); setSpin(2,2,5); setName(FFT); }
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -127,11 +127,6 @@ private:
 };
 
 }
-}
-
-#include "FFTVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
 

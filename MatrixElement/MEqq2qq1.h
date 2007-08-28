@@ -4,8 +4,6 @@
 // This is the declaration of the MEqq2qq class.
 
 #include "ThePEG/MatrixElement/ME2to2QCD.h"
-// #include "MEqq2qq.fh"
-// #include "MEqq2qq.xh"
 
 namespace ThePEG {
 
@@ -18,26 +16,6 @@ namespace ThePEG {
  * @see ME2to2QCD
  */
 class MEqq2qq: public ME2to2QCD {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline MEqq2qq();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MEqq2qq(const MEqq2qq &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MEqq2qq();
-  //@}
 
 public:
 
@@ -87,13 +65,21 @@ protected:
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colA() const;
+  double colA() const 
+  {
+    return (sqr(tHat()) + sqr(uHat()))/sqr(sHat()) +
+      interference()? -double(sqr(uHat())/(3.0*sHat()*tHat())): 0.0;
+  }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colB() const;
+  double colB() const
+  {
+    return (sqr(uHat()) + sqr(sHat()))/sqr(tHat()) +
+      interference()? -double(sqr(uHat())/(3.0*sHat()*tHat())): 0.0;
+  }
   //@}
 
 public:
@@ -111,13 +97,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -164,10 +150,5 @@ struct ClassTraits<MEqq2qq>: public ClassTraitsBase<MEqq2qq> {
 /** @endcond */
 
 }
-
-#include "MEqq2qq1.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEqq2qq.tcc"
-#endif
 
 #endif /* ThePEG_MEqq2qq_H */

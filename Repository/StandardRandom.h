@@ -6,8 +6,6 @@
 #include "RandomGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-// #include "StandardRandom.fh"
-// #include "StandardRandom.xh"
 
 namespace ThePEG {
 
@@ -27,19 +25,8 @@ public:
   /**
    * Default constructor.
    */
-  inline StandardRandom();
-
-  /**
-   * Copy-constructor.
-   */
-  inline StandardRandom(const StandardRandom &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~StandardRandom();
+  StandardRandom() : u(97) { setSeed(theSeed); }
   //@}
-
 
 public:
 
@@ -163,10 +150,5 @@ struct ClassTraits<StandardRandom>: public ClassTraitsBase<StandardRandom> {
 /** @endcond */
 
 }
-
-#include "StandardRandom.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StandardRandom.tcc"
-#endif
 
 #endif /* ThePEG_StandardRandom_H */

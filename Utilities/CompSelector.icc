@@ -11,25 +11,6 @@ inline CompSelector<T,WeightType>::CompSelector(double m)
   : N(0), last(T()), theMargin(m) {}
 
 template <typename T, typename WeightType>
-inline CompSelector<T,WeightType>::CompSelector(const CompSelector & x)
-  : selector(x.selector), N(x.N), last(x.last),
-    theMargin(x.theMargin), levels(x.levels) {}
-
-template <typename T, typename WeightType>
-inline CompSelector<T,WeightType>::~CompSelector() {}
-
-template <typename T, typename WeightType>
-inline CompSelector<T,WeightType> & CompSelector<T,WeightType>::
-operator=(const CompSelector<T,WeightType> & x) {
-  selector = x.selector;
-  N = x.N;
-  last = x.last;
-  theMargin = x.theMargin;
-  levels = x.levels;
-  return *this;
-}
-
-template <typename T, typename WeightType>
 inline WeightType CompSelector<T,WeightType>::
 insert(WeightType d, const T & t) {
   reset();

@@ -12,8 +12,7 @@ mySOURCES = FactoryBase.cc LWHFactory.cc
 
 DOCFILES = $(AIDAWRAPPERS) $(LWHHEADERS) FactoryBase.h LWHFactory.h
 
-INCLUDEFILES = $(DOCFILES) FactoryBase.fh FactoryBase.icc \
-               LWHFactory.icc
+INCLUDEFILES = $(DOCFILES) FactoryBase.fh FactoryBase.icc
 
 noinst_LTLIBRARIES = libThePEGHist.la
 libThePEGHist_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)

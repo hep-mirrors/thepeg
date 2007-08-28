@@ -7,20 +7,6 @@
 namespace ThePEG {
 
 template <typename XC>
-inline LastXCombInfo<XC>::LastXCombInfo() {}
-
-template <typename XC>
-inline LastXCombInfo<XC>::LastXCombInfo(const LastXCombInfo & x)
-  : theLastXComb(x.theLastXComb) {}
-
-template <typename XC>
-inline LastXCombInfo<XC> &
-LastXCombInfo<XC>::operator=(const LastXCombInfo<XC> & x) {
-  theLastXComb = x.theLastXComb;
-  return *this;
-}
-
-template <typename XC>
 inline const XC & LastXCombInfo<XC>::lastXComb() const {
   return *theLastXComb;
 }

@@ -8,9 +8,6 @@
 #include "ThePEG/Vectors/LorentzRotation.fh"
 #include "ThePEG/Utilities/Interval.h"
 
-// #include "LuminosityFunction.fh"
-// #include "LuminosityFunction.xh"
-
 namespace ThePEG {
 
 /**
@@ -46,16 +43,6 @@ public:
    * and \a b can be given.
    */
   LuminosityFunction(Energy a = 45.6*GeV, Energy b = 45.6*GeV);
-
-  /**
-   * Copy-constructor.
-   */
-  LuminosityFunction(const LuminosityFunction &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~LuminosityFunction();
   //@}
 
   /** @name Virtual functions to be overridden by sub-classes. */
@@ -117,12 +104,12 @@ public:
   /**
    * The maximum energy of the beam entering along the positive z-axis.
    */
-  inline Energy beamEMaxA() const;
+  Energy beamEMaxA() const { return theBeamEMaxA; }
 
   /**
    * The maximum energy of the beam entering along the negative z-axis.
    */
-  inline Energy beamEMaxB() const;
+  Energy beamEMaxB() const { return theBeamEMaxB; }
   //@}
 
 protected:
@@ -130,12 +117,12 @@ protected:
   /**
    * The maximum energy of the beam entering along the positive z-axis.
    */
-  inline void beamEMaxA(Energy);
+  void beamEMaxA(Energy x) { theBeamEMaxA = x; }
 
   /**
    * The maximum energy of the beam entering along the negative z-axis.
    */
-  inline void beamEMaxB(Energy);
+  void beamEMaxB(Energy x) { theBeamEMaxB = x; }
 
 public:
 
@@ -173,13 +160,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -234,10 +221,5 @@ struct ClassTraits<LuminosityFunction>:
 /** @endcond */
 
 }
-
-#include "LuminosityFunction.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LuminosityFunction.tcc"
-#endif
 
 #endif /* ThePEG_LuminosityFunction_H */

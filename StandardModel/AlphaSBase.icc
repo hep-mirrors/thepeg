@@ -6,12 +6,6 @@
 
 namespace ThePEG {
 
-inline AlphaSBase::AlphaSBase() {}
-
-inline AlphaSBase::AlphaSBase(const AlphaSBase & x)
-  : Interfaced(x), theFlavourThresholds(x.theFlavourThresholds),
-    theLambdaQCDs(x.theLambdaQCDs) {}
-
 inline unsigned int AlphaSBase::Nf(Energy2 scale) const {
   unsigned int i = 0;
   while ( i < theFlavourThresholds.size() &&
@@ -21,14 +15,6 @@ inline unsigned int AlphaSBase::Nf(Energy2 scale) const {
 
 inline Energy AlphaSBase::LambdaQCD(unsigned int nflav) const {
   return theLambdaQCDs[nflav];
-}
-
-inline void AlphaSBase::doupdate() throw(UpdateException) {
-  Interfaced::doupdate();
-}
-
-inline void AlphaSBase::dofinish() {
-  Interfaced::dofinish();
 }
 
 }

@@ -4,8 +4,6 @@
 // This is the declaration of the PtGenerator class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "PtGenerator.fh"
-// #include "PtGenerator.xh"
 #include "ThePEG/Handlers/HandlerBase.h"
 
 namespace ThePEG {
@@ -22,26 +20,6 @@ namespace ThePEG {
  * @see EventGenerator
  */
 class PtGenerator: public HandlerBase {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline PtGenerator();
-
-  /**
-   * Copy-constructor.
-   */
-  inline PtGenerator(const PtGenerator &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~PtGenerator();
-  //@}
 
 public:
 
@@ -102,10 +80,5 @@ struct ClassTraits<PtGenerator>: public ClassTraitsBase<PtGenerator> {
 /** @endcond */
 
 }
-
-#include "PtGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PtGenerator.tcc"
-#endif
 
 #endif /* ThePEG_PtGenerator_H */

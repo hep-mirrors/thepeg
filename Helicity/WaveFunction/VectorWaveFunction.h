@@ -301,33 +301,12 @@ public:
    * Default constructor.
    */
   inline VectorWaveFunction();
-
-  /**
-   * Destructor.
-   */
-  inline ~VectorWaveFunction();
   //@}
-
-
-  /**
-   * Assignment. 
-   */
-  inline VectorWaveFunction & operator = (const VectorWaveFunction &);
 
   /**
    *  Access to the wavefunction and its components.
    */
   //@{
- //  /**
-//    * Subscript operator for the wavefunction.
-//    */
-//   inline Complex operator ()(int ) const;
-
-//   /**
-//    * Set components by index.
-//    */
-//   inline Complex & operator () (int);
-
   /**
    * Return wavefunction as polarization vector. 
    */

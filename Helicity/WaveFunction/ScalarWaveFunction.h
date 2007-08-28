@@ -208,11 +208,6 @@ public:
   inline Complex & operator () (int);
 
   /**
-   * Assignment. 
-   */
-  inline ScalarWaveFunction & operator = (const ScalarWaveFunction &);
-
-  /**
    * Return the wavefunction.
    */
   inline const Complex & wave() const;

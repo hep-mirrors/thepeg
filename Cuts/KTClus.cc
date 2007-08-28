@@ -11,16 +11,18 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Cuts/Cuts.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "KTClus.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-KTClus::~KTClus() {}
+IBPtr KTClus::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr KTClus::fullclone() const {
+  return new_ptr(*this);
+}
 
 Energy KTClus::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
   if ( onlyJets &&

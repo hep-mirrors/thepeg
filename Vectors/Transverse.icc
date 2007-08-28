@@ -11,10 +11,6 @@ inline Transverse<Value>::Transverse()
   : BasePair(Value(), Value()) {}
 
 template <typename Value>
-inline Transverse<Value>::Transverse(const Transverse & pt)
-  : BasePair(pt) {}
-
-template <typename Value>
 inline Transverse<Value>::Transverse(const BasePair & p)
   : BasePair(p) {}
 
@@ -33,13 +29,6 @@ inline Transverse<Value>::Transverse(const LorentzVector<Value> & p)
 template <typename Value>
 inline Transverse<Value>::Transverse(const Lorentz5Vector<Value> & p)
   : BasePair(p.x(), p.y()) {}
-
-template <typename Value>
-inline const Transverse<Value> & Transverse<Value>::
-operator=(const Transverse & pt) {
-  BasePair::operator=(pt);
-  return *this;
-}
 
 template <typename Value>
 inline const Transverse<Value> & Transverse<Value>::

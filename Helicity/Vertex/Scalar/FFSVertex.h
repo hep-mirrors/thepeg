@@ -38,7 +38,7 @@ public:
   /**
    * Default constructor.
    */
-  inline FFSVertex();
+  FFSVertex() { setNpoint(3); setSpin(2,2,1); setName(FFS); }
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -123,12 +123,12 @@ public:
   /**
    * Get the left coupling.
    */
-  inline Complex getLeft();
+  Complex getLeft() { return _left; }
   
   /**
    * Get the right coupling.
    */
-  inline Complex getRight();
+  Complex getRight() { return _right; }
   
 protected:
 
@@ -139,12 +139,12 @@ protected:
   /**
    * Set the left coupling.
    */
-  inline void setLeft(Complex);
+  void setLeft(Complex in) { _left = in; }
 
   /**
    * Set the right coupling.
    */
-  inline void setRight(Complex);
+  void setRight(Complex in) { _right = in; }
   //@}
   
 private:
@@ -173,11 +173,6 @@ private:
 
 };
 }
-}
-
-#include "FFSVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
 

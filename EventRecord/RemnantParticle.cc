@@ -10,10 +10,6 @@
 #include "ThePEG/EventRecord/MultiColour.h"
 #include "ThePEG/Config/algorithm.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantParticle.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -28,8 +24,6 @@ RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr parton)
   extract(parton);
   parent = &particle;
 }
-
-RemnantParticle::~RemnantParticle() {}
 
 bool RemnantParticle::extract(tPPtr parton, bool fixcolour) {
   LorentzMomentum pnew = momentum() - parton->momentum();

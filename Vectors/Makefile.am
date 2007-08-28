@@ -8,7 +8,7 @@ INCLUDEFILES = $(DOCFILES) Lorentz5Vector.fh \
                Lorentz5Vector.icc LorentzRotation.fh LorentzVector.fh \
                ThreeVector.fh Transverse.icc Transverse.fh \
                SpinOneLorentzRotation.fh LorentzRotation.icc \
-               SpinHalfLorentzRotation.icc HepMCConverter.icc \
+               SpinHalfLorentzRotation.icc \
                HepMCConverter.tcc SpinOneLorentzRotation.icc
 
 noinst_LTLIBRARIES = libThePEGVectors.la

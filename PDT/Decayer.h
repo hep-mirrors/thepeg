@@ -5,7 +5,6 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "Decayer.fh"
-// #include "Decayer.xh"
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/MatrixElement/Amplitude.h"
 
@@ -21,26 +20,6 @@ namespace ThePEG {
  * @see DecayMode
  */
 class Decayer: public HandlerBase {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline Decayer();
-
-  /**
-   * Copy-constructor.
-   */
-  inline Decayer(const Decayer &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~Decayer();
-  //@}
 
 public:
 
@@ -138,7 +117,7 @@ public:
    * Return an amplitude associated with this decay matrix
    * element. May return null.
    */
-  inline Ptr<Amplitude>::pointer amplitude() const;
+  Ptr<Amplitude>::pointer amplitude() const { return theAmplitude; }
 
   /**
    * Static function to administer the decay of a \a particle. The
@@ -221,10 +200,5 @@ struct ClassTraits<Decayer>: public ClassTraitsBase<Decayer> {
 /** @endcond */
 
 }
-
-#include "Decayer.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Decayer.tcc"
-#endif
 
 #endif /* ThePEG_Decayer_H */

@@ -11,17 +11,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PtGenerator.tcc"
-#endif
-
 using namespace ThePEG;
-
-PtGenerator::~PtGenerator() {}
-
-
-
 
 // *** Standard Interfaced functions ***
 
@@ -34,11 +24,3 @@ void PtGenerator::Init() {
      "transverse momenta distributions in hadrons.");
 
 }
-
-
-
-
-
-
-
-

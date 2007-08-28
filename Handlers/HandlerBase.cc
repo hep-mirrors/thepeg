@@ -6,13 +6,7 @@
 
 #include "HandlerBase.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HandlerBase.tcc"
-#endif
-
 using namespace ThePEG;
-
-HandlerBase::~HandlerBase() {}
 
 AbstractNoPIOClassDescription<HandlerBase> HandlerBase::initHandlerBase;
 

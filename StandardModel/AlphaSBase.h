@@ -5,8 +5,6 @@
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "StandardModelBase.fh"
-// #include "AlphaSBase.fh"
-// #include "AlphaSBase.xh"
 
 namespace ThePEG {
 
@@ -22,26 +20,6 @@ namespace ThePEG {
  * @see StandardModelBase
  */
 class AlphaSBase: public Interfaced {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline AlphaSBase();
-
-  /**
-   * Copy-constructor.
-   */
-  inline AlphaSBase(const AlphaSBase &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~AlphaSBase();
-  //@}
 
 public:
 
@@ -113,10 +91,6 @@ protected:
 
   /** @name Standard Interfaced functions. */
   //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
 
   /**
    * Initialize this object after the setup phase before saving an
@@ -125,11 +99,6 @@ protected:
    */
   virtual void doinit() throw(InitException);
 
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
   //@}
 
 private:
@@ -184,8 +153,5 @@ struct ClassTraits<AlphaSBase>: public ClassTraitsBase<AlphaSBase> {
 }
 
 #include "AlphaSBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "AlphaSBase.tcc"
-#endif
 
 #endif /* ThePEG_AlphaSBase_H */

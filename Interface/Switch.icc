@@ -12,18 +12,7 @@ inline SwitchOption::SwitchOption(SwitchBase & theSwitch, string newName,
   theSwitch.registerOption(*this);
 }
 
-inline SwitchOption::SwitchOption(const SwitchOption & o)
-  : Named(o), theDescription(o.theDescription),
-    theValue(o.theValue) {}
-
-inline SwitchOption::SwitchOption() {}
-
-inline const SwitchOption & SwitchOption::operator=(const SwitchOption & o) {
-  name(o.name());
-  theDescription = o.theDescription;
-  theValue = o.theValue;
-  return *this;
-}
+inline SwitchOption::SwitchOption() : theValue(-999) {}
 
 inline string SwitchOption::description() const {
   return theDescription;
@@ -40,8 +29,6 @@ inline SwitchBase::SwitchBase(string newName,
 			      bool depSafe, bool readonly)
   : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
 		  readonly) {}
-
-inline SwitchBase::~SwitchBase() {}
 
 inline void SwitchBase::setDef(InterfacedBase & i) const
   throw(InterfaceException) {
@@ -60,19 +47,6 @@ inline void SwitchBase::registerOption(const SwitchOption & o) {
 inline const SwitchBase::OptionMap & SwitchBase::options() const {
   return theOptions;
 }
-
-//  template <typename T, typename Int>
-//  inline Switch<T,Int>::Switch(string newName, string newDescription,
-//  			     Member newMember, Int newDef, bool depSafe,
-//  			     bool readonly, SetFn newSetFn, GetFn newGetFn,
-//  			     GetFn newDefFn)
-//    : SwitchBase(newName, newDescription, ClassTraits<T>::className(),
-//  	       typeid(T), depSafe, readonly),
-//      theMember(newMember), theDef(newDef), theSetFn(newSetFn),
-//      theGetFn(newGetFn), theDefFn(newDefFn) {} 
-
-template <typename T, typename Int>
-inline Switch<T,Int>::~Switch() {}
 
 template <typename T, typename Int>
 inline void Switch<T,Int>::setSetFunction(SetFn sf) {

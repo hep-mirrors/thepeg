@@ -1,7 +1,7 @@
 SUBDIRS = WaveFunction Vertex
 
 mySOURCES = HelicityVertex.cc LorentzSpinor.cc \
-          LorentzSpinorBar.cc LorentzTensor.cc RhoDMatrix.cc SpinInfo.cc \
+          LorentzSpinorBar.cc LorentzTensor.cc SpinInfo.cc \
           FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc TensorSpinInfo.cc \
           LorentzRSSpinor.cc LorentzRSSpinorBar.cc RSFermionSpinInfo.cc
 
@@ -17,7 +17,7 @@ INCLUDEFILES = $(DOCFILES) epsilon.icc HelicityVertex.fh HelicityVertex.icc \
                LorentzTensor.icc FermionSpinInfo.fh RhoDMatrix.icc \
                SpinInfo.fh SpinInfo.icc LorentzTensor.fh \
                FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
-               ScalarSpinInfo.fh ScalarSpinInfo.icc \
+               ScalarSpinInfo.fh \
                TensorSpinInfo.fh TensorSpinInfo.icc LorentzTensor.tcc \
                HelicityDefinitions.h LorentzRSSpinor.icc LorentzRSSpinorBar.icc \
                LorentzRSSpinor.fh LorentzRSSpinorBar.fh RSFermionSpinInfo.fh \

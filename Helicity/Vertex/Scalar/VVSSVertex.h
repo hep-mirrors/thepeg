@@ -32,7 +32,7 @@ public:
   /**
    * Default constructor.
    */
-  inline VVSSVertex();
+  VVSSVertex() { setNpoint(4); setSpin(3,3,1,1); setName(VVSS); }
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -114,11 +114,6 @@ private:
 };
 
 }
-}
-
-#include "VVSSVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
   

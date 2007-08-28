@@ -8,13 +8,15 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/EnumParticles.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEGG2GG.tcc"
-#endif
-
 using namespace ThePEG;
 
-MEGG2GG::~MEGG2GG() {}
+IBPtr MEGG2GG::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr MEGG2GG::fullclone() const {
+  return new_ptr(*this);
+}
 
 void MEGG2GG::getDiagrams() const {
   tcPDPtr g = getParticleData(ParticleID::g);

@@ -4,8 +4,6 @@
 // This is the declaration of the SimpleAlphaEM class.
 
 #include "AlphaEMBase.h"
-// #include "SimpleAlphaEM.fh"
-// #include "SimpleAlphaEM.xh"
 
 namespace ThePEG {
 
@@ -18,26 +16,6 @@ namespace ThePEG {
  * defined for SimpleAlphaEM.
  */
 class SimpleAlphaEM: public AlphaEMBase {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline SimpleAlphaEM();
-
-  /**
-   * Copy-constructor.
-   */
-  inline SimpleAlphaEM(const SimpleAlphaEM &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~SimpleAlphaEM();
-  //@}
 
 public:
 
@@ -69,27 +47,6 @@ protected:
    * @return a pointer to the new object.
    */
   virtual IBPtr fullclone() const;
-  //@}
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
   //@}
 
 private:
@@ -132,10 +89,5 @@ struct ClassTraits<SimpleAlphaEM>: public ClassTraitsBase<SimpleAlphaEM> {
 /** @endcond */
 
 }
-
-#include "SimpleAlphaEM.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleAlphaEM.tcc"
-#endif
 
 #endif /* ThePEG_SimpleAlphaEM_H */

@@ -98,20 +98,10 @@ public:
   inline Lorentz5Vector(const LorentzVector<Value> &, Value);
 
   /**
-   * Copy constructor.
-   */
-  inline Lorentz5Vector(const Lorentz5Vector &);
-
-  /**
    * Copy from HepLorentzVector constructor. The invariant
    * length is set to LorentzVector::mag().
    */
   inline Lorentz5Vector(const LorentzVector<Value> &);
-
-  /**
-   * The destructor.
-   */
-  inline ~Lorentz5Vector();
   //@}
 
   /** @name Assignment and set functions. */
@@ -125,11 +115,6 @@ public:
    * Set invariant length/mass.
    */
   inline void setMass(Value);
-
-  /**
-   * Assignment. 
-   */
-  inline Lorentz5Vector & operator=(const Lorentz5Vector &);
 
   /**
    * Assignment. The invariant length is kept fixed. May result in an
@@ -179,18 +164,6 @@ public:
 
   /** @name Access components. */
   //@{
-  /**
-   * Get components by index. The invariant length/mass member is
-   * accessed with index 5.
-   */
-  //  inline Value operator()(int) const;
-
-  /**
-   * Get components by index. The invariant length/mass member is
-   * accessed with index 5.
-   */
-  //  inline Value operator[](int) const;
-
   /**
    * Mass/invariant length component squared. mag2() and m2() gives
    * the same calculated from the LorentzVector

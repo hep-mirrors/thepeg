@@ -13,13 +13,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "AnalysisHandler.tcc"
-#endif
-
 using namespace ThePEG;
-
-AnalysisHandler::~AnalysisHandler() {}
 
 bool AnalysisHandler::checkHistogramFactory(bool warn) const {
   if ( generator()->histogramFactory() ) return true;

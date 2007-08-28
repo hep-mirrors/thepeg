@@ -49,30 +49,10 @@ class WaveFunctionBase{
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline WaveFunctionBase();
-
-  /**
-   * Destructor.
-   */
-  ~WaveFunctionBase();
-  //@}
-
   /**
    * Access to the momentum components and mass
    */
   //@{
-  /**
-   * Subscript operator to access momentum.
-   * @param iloc The required component 0,1,2 is \f$p_x\f$, \f$p_y\f$, \f$p_z\f$,
-   * 3 is \f$E\f$ and 4 is the mass.
-   */
-  //inline Energy operator [](int iloc) const;
-
   /**
    * Get the x component of the momentum.
    */

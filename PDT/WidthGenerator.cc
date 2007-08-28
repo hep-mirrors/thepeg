@@ -5,19 +5,12 @@
 //
 
 #include "WidthGenerator.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "WidthGenerator.tcc"
-#endif
-
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Repository/UseRandom.h"
 
 using namespace ThePEG;
-
-WidthGenerator::~WidthGenerator() {}
 
 Length WidthGenerator::lifeTime(const ParticleData &, Energy, Energy w) const {
   //  return RandExponential::shoot(UseRandom::currentEngine(), hbarc/w/mm)*mm;

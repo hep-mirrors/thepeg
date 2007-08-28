@@ -40,11 +40,6 @@ public:
   inline Transverse();
 
   /**
-   * Copy constructor.
-   */
-  inline Transverse(const Transverse &);
-
-  /**
    * Constructor from underlying representation.
    */
   inline Transverse(const BasePair &);
@@ -72,11 +67,6 @@ public:
 
   /** @name Assignment operators. */
   //@{
-  /**
-   * Assignment.
-   */
-  inline const Transverse & operator=(const Transverse &);
-
   /**
    * Assignment from underlying representation.
    */

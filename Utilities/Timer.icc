@@ -9,21 +9,6 @@ namespace ThePEG {
 inline TimeCounter::TimeCounter(string newName)
   : Named(newName), theNCalls(0), startClock(0), totTime(0), loop(0) {}
 
-inline TimeCounter::TimeCounter(const TimeCounter & tc)
-: Named(tc), theNCalls(tc.theNCalls), startClock(tc.startClock),
-  totTime(tc.totTime), loop(tc.loop) {}
-
-inline TimeCounter::~TimeCounter() {}
-
-inline TimeCounter & TimeCounter::operator=(const TimeCounter & tc) {
-  Named::operator=(tc);
-  theNCalls = tc.theNCalls;
-  startClock = tc.startClock;
-  totTime = tc.totTime;
-  loop = tc.loop;
-  return *this;
-}
-
 inline void TimeCounter::enter() {
   ++theNCalls;
   start();

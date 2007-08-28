@@ -4,8 +4,6 @@
 // This is the declaration of the Level class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "Level.fh"
-// #include "Level.xh"
 
 namespace ThePEG {
 
@@ -25,10 +23,10 @@ public:
 
   /** Constructor taking an integer variable which is incremented. A
    *  reference to the variable will be stored. */
-  inline Level(T & newLevel);
+  inline Level(T & newLevel) : theLevel(++newLevel) {}
 
   /** Destructor decrementing the associated integer variable. */
-  inline ~Level();
+  inline ~Level() { --theLevel; }
 
 private:
 
@@ -54,10 +52,5 @@ private:
 };
 
 }
-
-#include "Level.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Level.tcc"
-#endif
 
 #endif /* ThePEG_Level_H */

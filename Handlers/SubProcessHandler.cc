@@ -23,6 +23,8 @@
 
 using namespace ThePEG;
 
+SubProcessHandler::~SubProcessHandler() {}
+
 SubProcessHandler::SubProcessHandler() {
   setupGroups();
 }
@@ -37,8 +39,6 @@ SubProcessHandler::SubProcessHandler(const SubProcessHandler & sph)
     reweights(sph.reweights), preweights(sph.preweights) {
   setupGroups();
 }
-
-SubProcessHandler::~SubProcessHandler() {}
 
 void SubProcessHandler::setupGroups() {
   theGroups.clear();

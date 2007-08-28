@@ -296,17 +296,7 @@ public:
    * Default constructor.
    */
   inline SpinorWaveFunction(DiracRep=defaultDRep);
-
-  /**
-   * Destructor.
-   */
-  inline ~SpinorWaveFunction();
   //@}
-
-  /**
-   * Assignment. 
-   */
-  inline SpinorWaveFunction & operator = (const SpinorWaveFunction &);
 
   /**
    *  Access to the wavefunction and its components.

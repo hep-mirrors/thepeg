@@ -4,8 +4,6 @@
 // This is the declaration of the DynamicLoader class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "DynamicLoader.fh"
-// #include "DynamicLoader.xh"
 
 namespace ThePEG {
 
@@ -118,10 +116,5 @@ private:
 };
 
 }
-
-#include "DynamicLoader.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DynamicLoader.tcc"
-#endif
 
 #endif /* ThePEG_DynamicLoader_H */

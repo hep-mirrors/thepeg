@@ -31,16 +31,6 @@ public:
   inline PDFCuts();
 
   /**
-   * Copy-constructor.
-   */
-  inline PDFCuts(const PDFCuts &);
-
-  /**
-   * Destructor.
-   */
-  inline ~PDFCuts();
-
-  /**
    * Construction from members.
    */
   inline PDFCuts(const Interval<double> & newL,
@@ -58,11 +48,6 @@ public:
    * the first incoming parton (or not).
    */
   PDFCuts(const Cuts &, bool first, Energy maxEnergy);
-
-  /**
-   * Assignment operator.
-   */
-  inline PDFCuts & operator=(const PDFCuts &);
   //@}
 
 public:

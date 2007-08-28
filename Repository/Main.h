@@ -5,8 +5,6 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Repository/EventGenerator.h"
-// #include "Main.fh"
-// #include "Main.xh"
 
 namespace ThePEG {
 
@@ -31,63 +29,46 @@ class Main: public Base {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline Main();
-
-  /**
-   * Copy-constructor.
-   */
-  inline Main(const Main &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~Main();
-  //@}
-
-public:
-
   /**
    * Set the global event generator.
    */
-  static inline void eventGenerator(tEGPtr);
+  static void eventGenerator(tEGPtr eg) { theEventGenerator = eg; }
 
   /**
    * Get the global event generator.
    */
-  static inline tEGPtr eventGenerator();
+  static tEGPtr eventGenerator() { return theEventGenerator; }
 
   /**
    * Set the number of events requested.
    */
-  static inline void N(long); 
+  static void N(long n) { theN = n; }
 
   /**
    * Get the number of events requested.
    */
-  static inline long N(); 
+  static long N() { return theN; } 
 
 
   /**
    * Set the command-line arguments.
    */
-  static inline void arguments(const vector<string> &);
+  static void arguments(const vector<string> & args) 
+  {
+    theArguments = args;
+  }
 
   /**
    * Get the command-line arguments.
    */
-  static inline const vector<string> & arguments();
+  static const vector<string> & arguments() { return theArguments; }
 
 public:
 
   /**
    * Standard Init function used to initialize the interfaces.
    */
-  static void Init();
+  static void Init() {}
 
 private:
 
@@ -147,10 +128,5 @@ struct ClassTraits<Main>: public ClassTraitsBase<Main> {
 /** @endcond */
 
 }
-
-#include "Main.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Main.tcc"
-#endif
 
 #endif /* THEPEG_Main_H */

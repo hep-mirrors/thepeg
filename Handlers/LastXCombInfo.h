@@ -5,8 +5,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Cuts/Cuts.fh"
-// #include "LastXCombInfo.fh"
-// #include "LastXCombInfo.xh"
+#include "XComb.h"
 
 namespace ThePEG {
 
@@ -31,31 +30,13 @@ public:
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline LastXCombInfo();
-
-  /**
-   * Copy-constructor.
-   */
-  inline LastXCombInfo(const LastXCombInfo<XC> &);
-
-  /**
-   * Destructor.
-   */
-  inline LastXCombInfo & operator=(const LastXCombInfo<XC> &);
-  //@}
-
   /** @name Acces to the actual XComb object. */
   //@{
   /**
    * Return a reference to the last selected XComb.
    */
-
   inline const XC & lastXComb() const;
+
   /**
    * Return a pointer to the last selected XComb.
    */
@@ -233,8 +214,5 @@ protected:
 }
 
 #include "LastXCombInfo.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LastXCombInfo.tcc"
-#endif
 
 #endif /* ThePEG_LastXCombInfo_H */

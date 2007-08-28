@@ -9,13 +9,15 @@
 #include "ThePEG/PDF/RemnantHandler.h"
 #include "ThePEG/PDT/ParticleData.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "NoPDF.tcc"
-#endif
-
 using namespace ThePEG;
 
-NoPDF::~NoPDF() {}
+IBPtr NoPDF::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr NoPDF::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool NoPDF::canHandleParticle(tcPDPtr) const {
   return true;

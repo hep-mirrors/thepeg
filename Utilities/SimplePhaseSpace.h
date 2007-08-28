@@ -3,7 +3,6 @@
 #define ThePEG_SimplePhaseSpace_H
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "SimplePhaseSpace.fh"
 
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
@@ -107,8 +106,11 @@ struct SimplePhaseSpace {
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
   template <typename PPairType>
-  inline static void CMS(const PPairType & p, Energy2 s)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+  static void CMS(const PPairType & p, Energy2 s)
+    ThePEG_THROW_SPEC((ImpossibleKinematics))
+  {
+    CMS(*p.first, *p.second, s);
+  }
 
   /**
    * Set three momenta in their center of mass system. Their total
@@ -180,7 +182,12 @@ struct SimplePhaseSpace {
    * @param costheta the cosine of the polar angle.
    * @param phi the azimuth angle.
    */
-  inline static Momentum3 polar3Vector(Energy p, double costheta, double phi);
+  static Momentum3 polar3Vector(Energy p, double costheta, double phi)
+  {
+    return Momentum3(p*sqrt(1.0 - sqr(costheta))*sin(phi),
+		     p*sqrt(1.0 - sqr(costheta))*cos(phi),
+		     p*costheta);
+  }
 
   /**
    * Get a number of randomly distributed momenta.
@@ -220,7 +227,6 @@ struct SimplePhaseSpace {
 
 }
 
-#include "SimplePhaseSpace.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "SimplePhaseSpace.tcc"
 #endif

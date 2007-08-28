@@ -8,12 +8,6 @@
 
 namespace ThePEG {
 namespace Helicity {
-
-// default constructor
-inline WaveFunctionBase::WaveFunctionBase()
-{_momentum=Lorentz5Momentum();}
-// subscript operator to access momentum
-//inline Energy WaveFunctionBase::operator [](int i) const {return _momentum[i];}
 // Get components of the momentum
 // get the x component of the momentum
 inline Energy WaveFunctionBase::px() const{return _momentum.x();}
@@ -105,8 +99,6 @@ inline PDT::Spin WaveFunctionBase::iSpin() {return _particle->iSpin();}
 // get the particle pointer
 inline const tcPDPtr & WaveFunctionBase::getParticle() const {return _particle;}
 inline void WaveFunctionBase::checkParticle(const tcPDPtr & in){setParticle(in);}
-// destructor
-inline WaveFunctionBase::~WaveFunctionBase(){;}
 // direction of particle
 inline Direction WaveFunctionBase::direction() const {return _dir;}
 inline void WaveFunctionBase::direction(Direction in){_dir=in;}

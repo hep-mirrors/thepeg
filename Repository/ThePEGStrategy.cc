@@ -6,14 +6,17 @@
 
 #include "ThePEGStrategy.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ThePEGStrategy.tcc"
-#endif
+#include "ThePEG/PDT/ParticleData.h"
 
 using namespace ThePEG;
 
-ThePEGStrategy::~ThePEGStrategy() {}
+IBPtr ThePEGStrategy::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ThePEGStrategy::fullclone() const {
+  return new_ptr(*this);
+}
 
 NoPIOClassDescription<ThePEGStrategy> ThePEGStrategy::initThePEGStrategy;
 

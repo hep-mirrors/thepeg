@@ -7,13 +7,7 @@
 #include "MultipleInteractionHandler.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MultipleInteractionHandler.tcc"
-#endif
-
 using namespace ThePEG;
-
-MultipleInteractionHandler::~MultipleInteractionHandler() {}
 
 AbstractNoPIOClassDescription<MultipleInteractionHandler>
 MultipleInteractionHandler::initMultipleInteractionHandler;

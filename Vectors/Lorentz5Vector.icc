@@ -53,14 +53,6 @@ Lorentz5Vector(const LorentzVector<Value> & p, Value m)
   : LorentzVector<Value>(p), mm(m) {}
 
 template <typename Value>
-inline Lorentz5Vector<Value>::
-Lorentz5Vector(const Lorentz5Vector<Value> & p)
-  : LorentzVector<Value>(p), mm(p.mm) {}
-
-template <typename Value>
-inline Lorentz5Vector<Value>::~Lorentz5Vector() {}
-
-template <typename Value>
 inline void Lorentz5Vector<Value>::rescaleEnergy() {
   LorentzVector<Value>::
     setT(sqrt(LorentzVector<Value>::vect().mag2() + mass2()));
@@ -86,28 +78,10 @@ inline void Lorentz5Vector<Value>::setMass(Value a) {
   setTau(a);
 }
 
-// template <typename Value>
-// inline Value Lorentz5Vector<Value>::operator()(int i) const {
-//   return i == 5? mm: LorentzVector<Value>::operator()(i);
-// }
-
-// template <typename Value>
-// inline Value Lorentz5Vector<Value>::operator[](int i) const {
-//   return operator()(i);
-// }
-
 template <typename Value>
 inline Lorentz5Vector<Value> &
 Lorentz5Vector<Value>::operator=(const LorentzVector<Value> & q) {
   LorentzVector<Value>::operator=(q);
-  return *this;
-}
-
-template <typename Value>
-inline Lorentz5Vector<Value> &
-Lorentz5Vector<Value>::operator=(const Lorentz5Vector<Value> & q) {
-  LorentzVector<Value>::operator=(q);
-  mm = q.mm;
   return *this;
 }
 

@@ -152,8 +152,6 @@ private:
 
 }
 
-
-#include "HepMCConverter.icc"
 #include "HepMCConverter.tcc"
 
 #endif /* ThePEG_HepMCConverter_H */

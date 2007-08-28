@@ -7,16 +7,10 @@
 #include "MultiColour.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MultiColour.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
-
-MultiColour::~MultiColour() {}
 
 vector<tcColinePtr> MultiColour::antiColourLines() const {
   return vector<tcColinePtr>(theAntiColourLines.begin(),

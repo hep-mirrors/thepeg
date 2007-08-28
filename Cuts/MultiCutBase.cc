@@ -8,14 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Particle.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MultiCutBase.tcc"
-#endif
-
-
 using namespace ThePEG;
-
-MultiCutBase::~MultiCutBase() {}
 
 Energy2 MultiCutBase::minS(const tcPDVector &) const {
   return 0.0*GeV2;

@@ -17,10 +17,6 @@
 #include "ThePEG/Utilities/StringUtils.h"
 #include "ThePEG/Utilities/SystemUtils.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-#include "Repository.tcc"
-#endif
-
 using namespace ThePEG;
 
 ParticleMap & Repository::defaultParticles() {

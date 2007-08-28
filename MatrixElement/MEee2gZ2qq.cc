@@ -12,10 +12,6 @@
 #include "ThePEG/StandardModel/StandardModelBase.h"
 #include "ThePEG/Handlers/StandardXComb.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEee2gZ2qq.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -23,12 +19,6 @@ using namespace ThePEG;
 
 MEee2gZ2qq::MEee2gZ2qq()
   : coefs(20), mZ2(0.0*GeV2), GZ2(0.0*GeV2), lastCont(0.0), lastBW(0.0) {}
-
-MEee2gZ2qq::MEee2gZ2qq(const MEee2gZ2qq & x)
-  : ME2to2QCD(x), coefs(x.coefs), mZ2(x.mZ2), GZ2(x.GZ2),
-    lastCont(x.lastCont), lastBW(x.lastBW) {}
-
-MEee2gZ2qq::~MEee2gZ2qq() {}
 
 unsigned int MEee2gZ2qq::orderInAlphaS() const {
   return 0;

@@ -16,13 +16,9 @@
 #include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/Utilities/Timer.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PartonBin.tcc"
-#endif
-
 using namespace ThePEG;
 
-PartonBin::PartonBin() {}
+PartonBin::PartonBin() : thePDFDim(), theRemDim() {}
 
 PartonBin::
 PartonBin(tcPDPtr p, tPBPtr inc, tcPDPtr pi,
@@ -31,13 +27,6 @@ PartonBin(tcPDPtr p, tPBPtr inc, tcPDPtr pi,
     thePDFDim(0), theRemDim(0), theCuts(newCuts) {
   if ( pdf ) theRemnantHandler = pdf->remnantHandler();
 }
-
-PartonBin::PartonBin(const PartonBin & x)
-  : Base(x), theParticle(x.theParticle), theIncomingBin(x.theIncomingBin),
-    theOutgoing(x.theOutgoing), theParton(x.theParton), thePDF(x.thePDF),
-    theRemnantHandler(x.theRemnantHandler),
-    thePDFDim(x.thePDFDim), theRemDim(x.theRemDim),
-    theCuts(x.theCuts) {}
 
 PartonBin::~PartonBin() {}
 

@@ -5,8 +5,6 @@
 
 #include "ThePEG/EventRecord/EventConfig.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-// #include "EventInfoBase.fh"
-// #include "EventInfoBase.xh"
 
 namespace ThePEG {
 
@@ -24,39 +22,22 @@ class EventInfoBase: public EventRecordBase {
 public:
 
   /**
-   * Default constructor.
-   */
-  inline EventInfoBase();
-
-  /**
-   * Copy constructor.
-   */
-  inline EventInfoBase(const EventInfoBase &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~EventInfoBase();
-
-public:
-
-  /**
    * Rebind to cloned objects. If an EventInfoBase is cloned together
    * with a whole Event and this has pointers to other event record
    * objects, these should be rebound to their clones in this
    * function.
    */
-  virtual void rebind(const EventTranslationMap & trans);
+  virtual void rebind(const EventTranslationMap & ) {}
 
   /**
    * Standard Init function. @see Base::Init().
    */
-  static void Init();
+  static void Init() {}
 
   /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const { return new_ptr(*this); }
 
 private:
 
@@ -78,10 +59,5 @@ ThePEG_DECLARE_CLASS_TRAITS(EventInfoBase,EventRecordBase);
 /** @endcond */
 
 }
-
-#include "EventInfoBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "EventInfoBase.tcc"
-#endif
 
 #endif /* ThePEG_EventInfoBase_H */

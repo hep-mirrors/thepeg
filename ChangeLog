@@ -1,3 +1,9 @@
+2007-08-28  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* ***GLOBAL***: General cleanup: removed most .icc files smaller
+	than 1kB, cleaned up definitions of redundant copy constructors,
+	destructors, doinit, etc.
+
 2007-07-25  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Helicity/Vertex/Scalar/GeneralSVVVertex.*: cherstn added

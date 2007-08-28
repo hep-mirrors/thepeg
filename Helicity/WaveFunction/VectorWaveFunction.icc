@@ -173,45 +173,6 @@ inline VectorWaveFunction::VectorWaveFunction()
   zeroWaveFunction();
 }
 
-// descructor
-inline VectorWaveFunction::~VectorWaveFunction(){;}
-
-// // subscript operator
-// inline Complex VectorWaveFunction::operator ()(int i) const
-// {
-//   if(i<0 || i>3)
-//     {
-//       ThePEG::Helicity::HelicityConsistencyError()
-// 	<< "VectorWaveFunction requested for invalid index" << Exception::abortnow;
-//       return 0.;
-//     }
-//   return _wf[i];
-// }
-
-// // Set components by index.
-// inline Complex & VectorWaveFunction::operator () (int i)
-// {
-//   static Complex dummy;
-//   if(i>=0 &&i<=3)
-//     {return _wf(i);}
-//   else
-//     {
-//       ThePEG::Helicity::HelicityConsistencyError() 
-// 	<< "Invalid index " << i << " called for VectorWaveFunction" 
-// 	<< Exception::abortnow;
-//     return dummy;}
-// }
-
-// Assignment. 
-inline VectorWaveFunction & VectorWaveFunction::operator = (const VectorWaveFunction & w)
-{
-  setPx(w.px());setPy(w.py());setPz(w.pz());setE(w.e());setMass(w.mass());
-  _wf=w._wf;
-  setParticle(w.getParticle());
-  direction(w.direction());
-  return *this;
-}
-
 // return wavefunction as polarization vector
 inline const LorentzPolarizationVector & VectorWaveFunction::wave() const{return _wf;}
 

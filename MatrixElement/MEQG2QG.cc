@@ -9,13 +9,15 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/Utilities/Exception.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEQG2QG.tcc"
-#endif
-
 using namespace ThePEG;
 
-MEQG2QG::~MEQG2QG() {}
+IBPtr MEQG2QG::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr MEQG2QG::fullclone() const {
+  return new_ptr(*this);
+}
 
 void MEQG2QG::getDiagrams() const {
   tcPDPtr g = getParticleData(ParticleID::g);

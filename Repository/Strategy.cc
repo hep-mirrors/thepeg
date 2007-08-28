@@ -11,21 +11,13 @@
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Strategy.tcc"
-#endif
-
 using namespace ThePEG;
 
-Strategy::Strategy() {}
-
-Strategy::Strategy(const Strategy & s)
-  : Interfaced(s), theParticles(s.theParticles),
-    theDefaultObjects(s.theDefaultObjects) {}
-
-Strategy::~Strategy() {}
-
 IBPtr Strategy::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr Strategy::fullclone() const {
   return new_ptr(*this);
 }
 

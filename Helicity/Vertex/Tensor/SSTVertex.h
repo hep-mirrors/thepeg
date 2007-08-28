@@ -38,7 +38,7 @@ public:
   /**
    * Default constructor.
    */
-  inline SSTVertex();
+  SSTVertex() { setNpoint(3); setSpin(1,1,5); setName(SST); }
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -112,11 +112,6 @@ private:
 };
 
 }
-}
-
-#include "SSTVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
   

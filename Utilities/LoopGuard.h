@@ -27,13 +27,17 @@ public:
    * ExceptionT, constructed with 'mess' as argument, if the maximum
    * number of iterations is exceeded.
    */
-  inline LoopGuard(const MessageT & mess, long maxc = 1000000 );
+  LoopGuard(const MessageT & mess, long maxc = 1000000 )
+    : count(0), maxCount(maxc), message(mess) {}
 
   /**
    * Increase the iteration count and throw an ExceptionT if the
    * maximum number of iterations is exceeded.
    */
-  void operator()() throw (ExceptionT);
+  void operator()() throw (ExceptionT)
+  {
+    if ( ++count > maxCount ) throw ExceptionT(message);
+  }
 
 private:
 
@@ -58,20 +62,15 @@ private:
   /**
    * Default constructor is private and not implemented.
    */
-  LoopGuard() {}
+  LoopGuard();
 
   /**
    * Copy constructor is private and not implemented.
    */
-  LoopGuard(const LoopGuard &) {}
+  LoopGuard(const LoopGuard &);
 
 };
 
 }
-
-#include "LoopGuard.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LoopGuard.tcc"
-#endif
 
 #endif /* ThePEG_LoopGuard_H */

@@ -32,7 +32,7 @@ public:
   /**
    * Default constructor.
    */
-  inline SSSVertex();
+  SSSVertex() { setNpoint(3); setSpin(1,1,1); setName(SSS); }
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -94,11 +94,6 @@ private:
 };
 
 }
-}
-
-#include "SSSVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
 

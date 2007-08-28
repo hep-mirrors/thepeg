@@ -11,19 +11,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ZGenerator.tcc"
-#endif
-
 using namespace ThePEG;
-
-ZGenerator::~ZGenerator() {}
-
-
-// *** Standard Interfaced Functions ***
-//void ZGenerator::persistentOutput(PersistentOStream & os) const {}
-//void ZGenerator::persistentInput(PersistentIStream & is, int) { }
-//void ZGenerator::Init() {}
 
 AbstractClassDescription<ZGenerator> ZGenerator::initZGenerator;
 

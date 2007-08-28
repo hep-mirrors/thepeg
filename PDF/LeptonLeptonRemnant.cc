@@ -17,19 +17,18 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LeptonLeptonRemnant.tcc"
-#endif
-
 using namespace ThePEG;
+
+IBPtr LeptonLeptonRemnant::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr LeptonLeptonRemnant::fullclone() const {
+  return new_ptr(*this);
+}
 
 LeptonLeptonRemnant::LeptonLeptonRemnant()
   : minX(1.0e-10) {}
-
-LeptonLeptonRemnant::LeptonLeptonRemnant(const LeptonLeptonRemnant & x)
-  : RemnantHandler(x), minX(x.minX), photon(x.photon) {}
-
-LeptonLeptonRemnant::~LeptonLeptonRemnant() {}
 
 void LeptonLeptonRemnant::doinit() throw(InitException) {
   photon = getParticleData(ParticleID::gamma);

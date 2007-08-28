@@ -49,21 +49,6 @@ public:
    * entering compensation mode.
    */
   inline CompSelector(double newMargin = 1.1);
-
-  /**
-   * The copy constructor.
-   */
-  inline CompSelector(const CompSelector &);
-
-  /**
-   * The destructor.
-   */
-  inline ~CompSelector();
-
-  /**
-   * The assignment operator.
-   */
-  inline CompSelector & operator=(const CompSelector &);
   //@}
 
 public:

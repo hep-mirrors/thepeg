@@ -8,9 +8,6 @@ namespace ThePEG {
 
 inline PDF::PDF() {}
 
-inline PDF::PDF(const PDF & x)
-  : thePDF(x.thePDF), theParticle(x.theParticle) {}
-
 inline PDF::PDF(tcPBIPtr pb) {
   if ( !pb ) return;
   thePDF = pb->pdf();
@@ -19,14 +16,6 @@ inline PDF::PDF(tcPBIPtr pb) {
 
 inline PDF::PDF(tcPDFPtr pdf, tcPDPtr pd)
   : thePDF(pdf), theParticle(pd) {}
-
-inline PDF::~PDF() {}
-
-inline PDF & PDF::operator=(const PDF & pdf) {
-  thePDF = pdf.thePDF;
-  theParticle = pdf.theParticle;
-  return *this;
-}
 
 inline tcPDFPtr PDF::pdf() const {
   return thePDF;

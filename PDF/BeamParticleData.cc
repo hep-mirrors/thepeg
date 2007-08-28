@@ -10,15 +10,10 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "BeamParticleData.tcc"
-#endif
-
 using namespace ThePEG;
 
 BeamParticleData::BeamParticleData(long newId, string newPDGName)
   : ParticleData(newId, newPDGName) {}
-
 
 PDPtr BeamParticleData::
 Create(long newId, string newPDGName) {
@@ -33,8 +28,6 @@ Create(long newId, string newPDGName, string newAntiPDGName) {
   antiSetup(pap);
   return pap;
 }
-
-BeamParticleData::~BeamParticleData() {}
 
 PDPtr BeamParticleData::pdclone() const {
   return new_ptr(*this);

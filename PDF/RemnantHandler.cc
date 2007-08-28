@@ -11,19 +11,10 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantHandler.tcc"
-#endif
-
 using namespace ThePEG;
 
 RemnantHandler::RemnantHandler(bool multi)
   : isMultiCapable(multi) {}
-
-RemnantHandler::RemnantHandler(const RemnantHandler & x)
-  : HandlerBase(x), isMultiCapable(x.isMultiCapable) {}
-
-RemnantHandler::~RemnantHandler() {}
 
 int RemnantHandler::nDim(const PartonBin &, bool) const {
   return 0;

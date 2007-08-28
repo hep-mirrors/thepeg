@@ -158,16 +158,6 @@ inline void ScalarWaveFunction::checkParticle(const tcPDPtr & in) {
 	<< iSpin() << " " << in->PDGName() << Exception::abortnow;}
 }
 
-// Assignment. 
-inline ScalarWaveFunction & ScalarWaveFunction::operator = (const ScalarWaveFunction & w)
-{
-  setPx(w.px());setPy(w.py());setPz(w.pz());setE(w.e());setMass(w.mass());
-  _wf=w.wave();
-  setParticle(w.getParticle());
-  direction(w.direction());
-  return *this;
-}
-
 // subscript operator
 inline Complex ScalarWaveFunction::operator ()(int i) const {
   if(i!=0)

@@ -61,10 +61,6 @@ public:
 //   inline LorentzTensor(const LorentzVector<double> & p,
 // 		       const LorentzVector<double> & q);
 
-  /**
-   * The destructor
-   */
-  inline ~LorentzTensor();
   //@}
 
   /** @name Access individual components. */
@@ -262,13 +258,8 @@ public:
   inline LorentzTensor conjugate();
   //@}
 
-  /** @name Assignment and arithmetic operators. */
+  /** @name Arithmetic operators. */
   //@{
-  /**
-   * Assignment operator.
-   */
-  inline LorentzTensor & operator=(const LorentzTensor &);
-
   /**
    * Scaling with a complex number
    */
@@ -302,7 +293,7 @@ private:
   /**
    * The components.
    */
-  complex<Value> _tensor[4][4];
+  vector<vector<complex<Value> > > _tensor;
 
 };
 

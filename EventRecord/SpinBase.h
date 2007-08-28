@@ -4,8 +4,6 @@
 // This is the declaration of the SpinBase class.
 
 #include "ThePEG/EventRecord/EventInfoBase.h"
-// #include "SpinBase.fh"
-// #include "SpinBase.xh"
 
 namespace ThePEG {
 
@@ -28,27 +26,10 @@ class SpinBase: public EventInfoBase {
 public:
 
   /**
-   * Default constructor.
-   */
-  inline SpinBase();
-
-  /**
-   * Copy constructor.
-   */
-  inline SpinBase(const SpinBase &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~SpinBase();
-
-public:
-
-  /**
    * Returns true if the polarization() has been implemented in a
    * subclass. This default version returns false.
    */
-  virtual bool hasPolarization() const;
+  virtual bool hasPolarization() const { return false; }
 
   /**
    * Return the angles of the polarization vector as a pair of
@@ -58,34 +39,26 @@ public:
    * function it should also implement 'hasPolarization()' to return
    * true.
    */
-  virtual DPair polarization() const;
+  virtual DPair polarization() const { return DPair(); }
 
   /**
    * Perform a lorentz rotation of the spin information assuming the
    * particle has the given momentum before the boost. This default
    * method does nothing.
    */
-  virtual void transform(const LorentzMomentum &, LorentzRotation r);
+  virtual void transform(const LorentzMomentum &, LorentzRotation) {}
 
 public:
 
   /**
-   * Rebind to cloned objects. If a SpinBase is cloned together
-   * with a whole Event and this has pointers to other event record
-   * objects, these should be rebound to their clones in this
-   * function.
-   */
-  virtual void rebind(const EventTranslationMap & trans);
-
-  /**
    * Standard Init function used to initialize the interface.
    */
-  static void Init();
+  static void Init() {}
 
   /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const { return new_ptr(*this); }
 
 private:
 
@@ -107,10 +80,5 @@ ThePEG_DECLARE_CLASS_TRAITS(SpinBase,EventInfoBase);
 /** @endcond */
 
 }
-
-#include "SpinBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SpinBase.tcc"
-#endif
 
 #endif /* ThePEG_SpinBase_H */

@@ -1,5 +1,5 @@
 noinst_LTLIBRARIES = libThePEGVVertex.la
 libThePEGVVertex_la_SOURCES = \
-FFVVertex.cc  FFVVertex.h  FFVVertex.icc  FFVVertex.fh \
-VVVVertex.cc  VVVVertex.h  VVVVertex.icc  VVVVertex.fh \
-VVVVVertex.cc VVVVVertex.h VVVVVertex.icc VVVVVertex.fh
+FFVVertex.cc  FFVVertex.h FFVVertex.fh \
+VVVVertex.cc  VVVVertex.h VVVVertex.fh \
+VVVVVertex.cc VVVVVertex.h VVVVVertex.fh VVVVVertex.icc

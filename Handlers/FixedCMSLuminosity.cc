@@ -10,10 +10,6 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FixedCMSLuminosity.tcc"
-#endif
-
 using namespace ThePEG;
 
 FixedCMSLuminosity::~FixedCMSLuminosity() {}

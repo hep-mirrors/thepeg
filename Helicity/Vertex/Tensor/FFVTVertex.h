@@ -40,7 +40,7 @@ public:
   /**
    * Default constructor.
    */
-  inline FFVTVertex();
+  FFVTVertex() { setNpoint(4); setSpin(2,2,3,5); setName(FFVT); }
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -149,11 +149,6 @@ private:
   
 };
 }
-}
-
-#include "FFVTVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
   

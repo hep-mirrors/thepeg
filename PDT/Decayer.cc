@@ -16,13 +16,7 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/PDT/DecayMode.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Decayer.tcc"
-#endif
-
 using namespace ThePEG;
-
-Decayer::~Decayer() {}
 
 double Decayer::brat(const DecayMode &,
 		     const ParticleData &, double b) const {

@@ -14,10 +14,7 @@
 #endif
 #include "AnalysisFactory.h"
 
-
 using namespace ThePEG;
-
-LWHFactory::~LWHFactory() {}
 
 void LWHFactory::doinitrun() {
   analysisFactory(new LWH::AnalysisFactory);

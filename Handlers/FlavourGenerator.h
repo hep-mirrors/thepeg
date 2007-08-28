@@ -4,8 +4,6 @@
 // This is the declaration of the FlavourGenerator class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "FlavourGenerator.fh"
-// #include "FlavourGenerator.xh"
 #include "ThePEG/Handlers/HandlerBase.h"
 
 namespace ThePEG {
@@ -32,26 +30,6 @@ namespace ThePEG {
  * @see HandlerBase
  */
 class FlavourGenerator: public HandlerBase {
-   
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline FlavourGenerator();
-
-  /**
-   * Copy-constructor.
-   */
-  inline FlavourGenerator(const FlavourGenerator &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~FlavourGenerator();
-  //@}
 
 public:
 
@@ -234,10 +212,5 @@ struct ClassTraits<FlavourGenerator>:
 /** @endcond */
 
 }
-
-// #include "FlavourGenerator.tcc"
-#include "FlavourGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#endif
 
 #endif /* ThePEG_FlavourGenerator_H */

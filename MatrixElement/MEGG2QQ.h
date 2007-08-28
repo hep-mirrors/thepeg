@@ -4,8 +4,6 @@
 // This is the declaration of the MEGG2QQ class.
 
 #include "ThePEG/MatrixElement/ME2to2QCD.h"
-// #include "MEGG2QQ.fh"
-// #include "MEGG2QQ.xh"
 
 namespace ThePEG {
 
@@ -18,26 +16,6 @@ namespace ThePEG {
  * @see ME2to2QCD
  */
 class MEGG2QQ: public ME2to2QCD {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline MEGG2QQ();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MEGG2QQ(const MEGG2QQ &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MEGG2QQ();
-  //@}
 
 public:
 
@@ -87,13 +65,19 @@ protected:
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colA() const;
+  double colA() const
+  {
+    return uHat()/tHat() - 2.0*sqr(uHat()/sHat());
+  }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colB() const;
+  double colB() const
+  {
+    return tHat()/uHat() - 2.0*sqr(tHat()/sHat());
+  }
   //@}
 
 public:
@@ -111,13 +95,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -164,10 +148,5 @@ struct ClassTraits<MEGG2QQ>: public ClassTraitsBase<MEGG2QQ> {
 /** @endcond */
 
 }
-
-#include "MEGG2QQ.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEGG2QQ.tcc"
-#endif
 
 #endif /* ThePEG_MEGG2QQ_H */

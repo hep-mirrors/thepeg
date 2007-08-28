@@ -12,22 +12,15 @@ namespace ThePEG {
 namespace Helicity {
 
 inline RhoDMatrix::RhoDMatrix(PDT::Spin inspin)
-  :  _spin(inspin)
+  :  _spin(inspin), _ispin(), _matrix(5,vector<Complex>(5))
 {
   if(inspin<1||inspin>5) throw HelicityLogicalError()
     << "Invalid spin for a RhoDMatrix " << inspin <<  Exception::abortnow;
   _ispin=abs(int(inspin));
 }
 
-inline RhoDMatrix::RhoDMatrix() {}
-
-inline RhoDMatrix::RhoDMatrix(const RhoDMatrix & x)
-  :   _spin(x._spin), _ispin(x._ispin)
-{
-  unsigned int ix,iy;
-  for(ix=0;ix<_ispin&&ix<5;++ix)
-    {for(iy=0;iy<_ispin&&iy<5;++iy){_matrix[ix][iy]=x._matrix[ix][iy];}}
-}
+inline RhoDMatrix::RhoDMatrix()
+  : _spin(), _ispin(), _matrix(5,vector<Complex>(5)) {}
 
 inline Complex RhoDMatrix::operator () (unsigned int ix,unsigned int iy) const
   // operator to return an element of the matrix
@@ -75,17 +68,6 @@ inline void RhoDMatrix::average()
       for(iy=0;iy<_ispin;++iy){_matrix[ix][iy]=0.;}
       _matrix[ix][ix]=1./_ispin;
     }
-}
-
-// assignment operator.
-inline RhoDMatrix & RhoDMatrix::operator=(const RhoDMatrix & in)
-{
-  _spin=in._spin;
-  _ispin=in._ispin;
-  unsigned int ix,iy;
-  for(ix=0;ix<_ispin&&ix<5;++ix)
-    {for(iy=0;iy<_ispin&&iy<5;++iy){_matrix[ix][iy]=in._matrix[ix][iy];}}
-  return *this;
 }
 
 inline void RhoDMatrix::normalize()

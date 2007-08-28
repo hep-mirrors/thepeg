@@ -1,29 +1,5 @@
+// -*- C++ -*-
 namespace ThePEG {
-
-template <typename T, typename WeightType>
-inline Selector<T,WeightType>::Selector()
-  : theSum(WeightType()) {}
-
-template <typename T, typename WeightType>
-inline Selector<T,WeightType>::Selector(const Selector<T,WeightType> & s)
-  : theMap(s.theMap), theSum(s.theSum) {}
-
-template <typename T, typename WeightType>
-inline Selector<T,WeightType>::~Selector() {}
-
-template <typename T, typename WeightType>
-inline const Selector<T,WeightType> & Selector<T,WeightType>::
-operator = (const Selector<T,WeightType> & s) {
-  theMap = s.theMap;
-  theSum = s.theSum;
-  return *this;
-}
-
-template <typename T, typename WeightType>
-inline void Selector<T,WeightType>::swap(Selector<T,WeightType> & s) {
-  theMap.swap(s.theMap);
-  std::swap(theSum, s.theSum);
-}
 
 template <typename T, typename WeightType>
 inline WeightType Selector<T,WeightType>::insert(WeightType d, const T & t) {
@@ -35,26 +11,9 @@ inline WeightType Selector<T,WeightType>::insert(WeightType d, const T & t) {
 }
 
 template <typename T, typename WeightType>
-inline WeightType Selector<T,WeightType>::reweight(WeightType d, const T & t) {
-  erase(t);
-  return insert(d, t);
-}
-
-template <typename T, typename WeightType>
 void Selector<T,WeightType>::replace(const T & oldObject, const T & newObject) {
   for ( iterator it = theMap.begin(); it != theMap.end(); ++it )
     if ( it->second == oldObject ) it->second = newObject;
-}
-
-template <typename T, typename WeightType>
-inline const T & Selector<T,WeightType>::
-operator[](double rnd) const throw(range_error) {
-  return select(rnd);
-}
-
-template <typename T, typename WeightType>
-inline T & Selector<T,WeightType>::operator[](double rnd) throw(range_error) {
-  return select(rnd);
 }
 
 template <typename T, typename WeightType>
@@ -74,52 +33,6 @@ inline const T & Selector<T,WeightType>::select(RNDGEN & rnd)
   const T & t = select(rnd(), &rem);
   rnd.push_back(rem);
   return t;
-}
-
-template <typename T, typename WeightType>
-inline typename Selector<T,WeightType>::const_iterator Selector<T,WeightType>::
-begin() const {
-  return theMap.begin();
-}
-
-template <typename T, typename WeightType>
-inline typename Selector<T,WeightType>::const_iterator Selector<T,WeightType>::
-end() const {
-  return theMap.end();
-}
-
-template <typename T, typename WeightType>
-inline bool Selector<T,WeightType>::empty() const {
-  return theMap.empty();
-}
-
-template <typename T, typename WeightType>
-inline typename Selector<T,WeightType>::size_type
-Selector<T,WeightType>::size() const {
-  return theMap.size();
-}
-
-template <typename T, typename WeightType>
-inline void Selector<T,WeightType>::clear() {
-  theMap.clear();
-  theSum = WeightType();
-}
-
-template <typename T, typename WeightType>
-inline WeightType Selector<T,WeightType>::sum() const {
-  return theSum;
-}
-
-template <typename OStream, typename T, typename WeightType>
-OStream & operator<<(OStream & os, const Selector<T,WeightType> & s) {
-  s.output(os);
-  return os;
-}
-
-template <typename IStream, typename T, typename WeightType>
-IStream & operator>>(IStream & is, Selector<T,WeightType> & s) {
-  s.input(is);
-  return is;
 }
 
 }

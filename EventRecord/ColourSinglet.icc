@@ -8,20 +8,6 @@ namespace ThePEG {
 
 inline ColourSinglet::ColourSinglet() {}
 
-inline ColourSinglet::ColourSinglet(const ColourSinglet & x)
-  : thePartons(x.thePartons), thePieces(x.thePieces),
-    theSources(x.theSources), theSinks(x.theSinks) {}
-
-inline ColourSinglet::~ColourSinglet() {}
-
-inline ColourSinglet & ColourSinglet::operator=(const ColourSinglet & x) {
-  thePartons = x.thePartons;
-  thePieces = x.thePieces;
-  theSources = x.theSources;
-  theSinks = x.theSinks;
-  return *this;
-}
-
 inline ColourSinglet::Index ColourSinglet::nPieces() const {
   return thePieces.size();
 }

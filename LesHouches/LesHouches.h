@@ -26,21 +26,6 @@ public:
    * Default constructor.
    */
   inline HEPRUP();
-
-  /**
-   * Copy-constructor.
-   */
-  inline HEPRUP(const HEPRUP &);
-
-  /**
-   * Assignment operator.
-   */
-  inline HEPRUP & operator=(const HEPRUP &);
-
-  /**
-   * Destructor.
-   */
-  inline ~HEPRUP();
   //@}
 
 public:
@@ -135,21 +120,6 @@ public:
    * Default constructor.
    */
   inline HEPEUP();
-
-  /**
-   * Copy-constructor.
-   */
-  inline HEPEUP(const HEPEUP &);
-
-  /**
-   * Assignment operator.
-   */
-  inline HEPEUP & operator=(const HEPEUP &);
-
-  /**
-   * Destructor.
-   */
-  inline ~HEPEUP();
   //@}
 
 public:

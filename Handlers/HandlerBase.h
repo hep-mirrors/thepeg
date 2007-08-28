@@ -44,17 +44,19 @@ private:
   /**
    * Default constructor.
    */
-  inline HandlerBaseT();
+  inline HandlerBaseT() {}
 
   /**
    * Copy-constructor.
    */
-  inline HandlerBaseT(const HandlerBaseT &);
+  inline HandlerBaseT(const HandlerBaseT & x) 
+    : Interfaced(x) {}
 
+public:
   /**
    * Destructor.
    */
-  virtual ~HandlerBaseT();
+  virtual ~HandlerBaseT() {}
   //@}
 
 public:
@@ -148,26 +150,6 @@ public:
  * 
  */
 class HandlerBase: public HandlerBaseT<UseRandom> {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline HandlerBase();
-
-  /**
-   * Copy-constructor.
-   */
-  inline HandlerBase(const HandlerBase &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~HandlerBase();
-  //@}
 
 public:
 

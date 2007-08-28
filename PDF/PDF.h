@@ -26,11 +26,6 @@ public:
   inline PDF();
 
   /**
-   * Copy-constructor.
-   */
-  inline PDF(const PDF &);
-
-  /**
    * Constructor from a given PartonBinInstance.
    */
   inline PDF(tcPBIPtr);
@@ -39,16 +34,6 @@ public:
    * Constructor from a given PDFBase and ParticleData object.
    */
   inline PDF(tcPDFPtr, tcPDPtr);
-
-  /**
-   * Destructor.
-   */
-  inline ~PDF();
-
-  /**
-   * Assignment operator.
-   */
-  inline PDF & operator=(const PDF &);
   //@}
 
 public:

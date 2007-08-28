@@ -11,7 +11,6 @@
 #include "ThePEG/Cuts/Cuts.fh"
 #include "SubProcessHandler.fh"
 
-
 namespace ThePEG {
 
 /**
@@ -65,7 +64,7 @@ public:
   SubProcessHandler(const SubProcessHandler &);
 
   /**
-   * Destructor.
+   * Default destructor.
    */
   virtual ~SubProcessHandler();
   //@}
@@ -77,17 +76,17 @@ public:
   /**
    * Return a pointer to the parton extractor used.
    */
-  inline tPExtrPtr pExtractor() const;
+  tPExtrPtr pExtractor() const { return thePartonExtractor; }
 
   /**
    * Return a reference to the vector of parton matrix elements used.
    */
-  inline const MEVector & MEs() const;
+  const MEVector & MEs() const { return theMEs; }
 
   /**
    * Return a pointer to the kinematical cuts used.
    */
-  inline tCutsPtr cuts() const;
+  tCutsPtr cuts() const { return theCuts; }
 
   /**
    * Return a pointer (possibly null) to the assigned main
@@ -103,12 +102,12 @@ public:
   /**
    * Access the step handler groups.
    */
-  inline const GroupVector & groups() const;
+  const GroupVector & groups() const { return theGroups; }
 
   /**
    * Return a reference to the vector of parton matrix elements used.
    */
-  inline MEVector & MEs();
+  MEVector & MEs() { return theMEs; }
   //@}
 
 public:
@@ -153,10 +152,6 @@ protected:
 
   /** @name Standard Interfaced functions. */
   //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
 
   /**
    * Initialize this object after the setup phase before saving an
@@ -164,12 +159,6 @@ protected:
    * @throws InitException if object could not be initialized properly.
    */
   virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
   //@}
 
 private:
@@ -281,7 +270,5 @@ struct ClassTraits<SubProcessHandler>:
 /** @endcond */
 
 }
-
-#include "SubProcessHandler.icc"
 
 #endif /* ThePEG_SubProcessHandler_H */

@@ -43,25 +43,10 @@ public:
   inline ColourSinglet();
 
   /**
-   * Copy Constructor.
-   */
-  inline ColourSinglet(const ColourSinglet &);
-
-  /**
    * Constructor taking an initial colour line and a set of partons to
    * select from.
    */
   ColourSinglet(tcColinePtr cl, tcParticleSet & left);
-
-  /**
-   * Destructor.
-   */
-  inline ~ColourSinglet();
-
-  /**
-   * Assignment operator.
-   */
-  inline ColourSinglet & operator=(const ColourSinglet &);
 
 protected:
 

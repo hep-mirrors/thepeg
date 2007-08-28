@@ -21,26 +21,6 @@ class MEQQ2QQ: public ME2to2QCD {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline MEQQ2QQ();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MEQQ2QQ(const MEQQ2QQ &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MEQQ2QQ();
-  //@}
-
-public:
-
   /** @name Virtual functions required by the MEBase class. */
   //@{
   /**
@@ -87,13 +67,20 @@ protected:
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colA() const;
+  double colA() const
+  {
+    return (sqr(uHat()) + sqr(sHat()))/sqr(tHat());
+  }
+
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colB() const;
+  double colB() const
+  {
+    return (sqr(tHat()) + sqr(sHat()))/sqr(uHat());
+  }
   //@}
 
 public:
@@ -164,10 +151,5 @@ struct ClassTraits<MEQQ2QQ>: public ClassTraitsBase<MEQQ2QQ> {
 /** @endcond */
 
 }
-
-#include "MEQQ2QQ3.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEQQ2QQ.tcc"
-#endif
 
 #endif /* ThePEG_MEQQ2QQ_H */

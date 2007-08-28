@@ -4,8 +4,6 @@
 // This is the declaration of the ColourLines class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "ColourLines.fh"
-// #include "ColourLines.xh"
 
 namespace ThePEG {
 
@@ -35,12 +33,7 @@ public:
   /**
    * Default constructor.
    */
-  inline ColourLines();
-
-  /**
-   * Copy-constructor.
-   */
-  inline ColourLines(const ColourLines &);
+  inline ColourLines() {}
 
   /**
    * The standard constructor. The string \a s should contain a
@@ -52,11 +45,6 @@ public:
    * is 2 and the internal and outgoing are numbered 3 and upwards.
    */
   ColourLines(string s);
-
-  /**
-   * Destructor.
-   */
-  virtual ~ColourLines();
   //@}
 
 public:
@@ -78,10 +66,5 @@ private:
 };
 
 }
-
-#include "ColourLines.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourLines.tcc"
-#endif
 
 #endif /* ThePEG_ColourLines_H */

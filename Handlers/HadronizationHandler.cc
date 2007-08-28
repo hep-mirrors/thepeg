@@ -7,13 +7,7 @@
 #include "HadronizationHandler.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HadronizationHandler.tcc"
-#endif
-
 using namespace ThePEG;
-
-HadronizationHandler::~HadronizationHandler() {}
 
 AbstractNoPIOClassDescription<HadronizationHandler>
 HadronizationHandler::initHadronizationHandler;

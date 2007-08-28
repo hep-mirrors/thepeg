@@ -6,7 +6,7 @@ myQCDSOURCES =
 DOCFILES = Amplitude.h ColourLines.h DiagramBase.h Tree2toNDiagram.h MEBase.h \
            ReweightBase.h ME2to2Base.h ME2to2QCD.h
 
-INCLUDEFILES = $(DOCFILES) Amplitude.icc ColourLines.xh ColourLines.icc \
+INCLUDEFILES = $(DOCFILES) Amplitude.icc ColourLines.xh \
                DiagramBase.icc DiagramBase.xh DiagramBase.fh \
                Tree2toNDiagram.icc Tree2toNDiagram.xh MEBase.icc \
                ReweightBase.icc ME2to2Base.icc ME2to2QCD.icc MEBase.fh
@@ -23,14 +23,12 @@ MEQCD_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 MEQCD_la_SOURCES = MEGG2GG.cc MEQG2QG.cc MEQQ2QQ3.cc MEQq2Qq4.cc MEGG2QQ.cc \
                    MEQQ2GG.cc MEQQ2qq2.cc MEqq2qq1.cc MEGG2GG.h MEQG2QG.h \
                    MEQQ2QQ3.h MEQq2Qq4.h MEGG2QQ.h MEQQ2GG.h MEQQ2qq2.h \
-                   MEqq2qq1.h MEGG2GG.icc MEQG2QG.icc MEQQ2QQ3.icc \
-                   MEQq2Qq4.icc MEGG2QQ.icc MEQQ2GG.icc MEQQ2qq2.icc \
-                   MEqq2qq1.icc
+                   MEqq2qq1.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 MEee2gZ2qq_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-MEee2gZ2qq_la_SOURCES = MEee2gZ2qq.cc MEee2gZ2qq.h MEee2gZ2qq.icc
+MEee2gZ2qq_la_SOURCES = MEee2gZ2qq.cc MEee2gZ2qq.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

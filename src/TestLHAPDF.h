@@ -15,7 +15,6 @@
 // 
 
 #include "ThePEG/Repository/Main.h"
-// #include "TestLHAPDF.fh"
 
 namespace ThePEG {
 
@@ -23,23 +22,6 @@ namespace ThePEG {
  * Class derived from Main to do simple tests of the LHAPDF class.
  */
 class TestLHAPDF: public Main {
-
-public:
-
-  /**
-   * The default constructor.
-   */
-  inline TestLHAPDF();
-
-  /**
-   * The copy constructor.
-   */
-  inline TestLHAPDF(const TestLHAPDF &);
-
-  /**
-   * The destructor.
-   */
-  virtual ~TestLHAPDF();
 
 public:
 
@@ -96,10 +78,5 @@ struct ClassTraits<ThePEG::TestLHAPDF>
 /** @endcond */
 
 }
-
-#include "TestLHAPDF.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "TestLHAPDF.tcc"
-#endif
 
 #endif /* ThePEG_TestLHAPDF_H */

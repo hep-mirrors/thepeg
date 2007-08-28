@@ -13,17 +13,13 @@ namespace Helicity {
 
 // constructors
 // default zero constructor
-template <typename Value> inline LorentzTensor<Value>::LorentzTensor() {
-  for(int ix=0;ix<4;++ix) {
-    for(int iy=0;iy<4;++iy) {
-      _tensor[ix][iy]=complex<Value>();
-    }
-  }
-}
+template <typename Value> inline LorentzTensor<Value>::LorentzTensor() 
+  : _tensor(4,vector<complex<Value> >(4)) {}
 
 // constructor in terms of two polarization vectors
 template <typename Value> inline LorentzTensor<Value>::
-LorentzTensor(LorentzPolarizationVector p, LorentzPolarizationVector q) {
+LorentzTensor(LorentzPolarizationVector p, LorentzPolarizationVector q) 
+  : _tensor(4,vector<complex<Value> >(4)) {
   setXX(p.x() * q.x());
   setYX(p.y() * q.x());
   setZX(p.z() * q.x());
@@ -57,15 +53,13 @@ template <typename Value> inline LorentzTensor<Value>::
 LorentzTensor(complex<Value> xx, complex<Value> xy, complex<Value> xz, complex<Value> xt,
 	      complex<Value> yx, complex<Value> yy, complex<Value> yz, complex<Value> yt,
 	      complex<Value> zx, complex<Value> zy, complex<Value> zz, complex<Value> zt,
-	      complex<Value> tx, complex<Value> ty, complex<Value> tz, complex<Value> tt) {
+	      complex<Value> tx, complex<Value> ty, complex<Value> tz, complex<Value> tt) 
+  : _tensor(4,vector<complex<Value> >(4)) {
   _tensor[0][0]=xx;_tensor[0][1]=xy;_tensor[0][2]=xz;_tensor[0][3]=xt;
   _tensor[1][0]=yx;_tensor[1][1]=yy;_tensor[1][2]=yz;_tensor[1][3]=yt;
   _tensor[2][0]=zx;_tensor[2][1]=zy;_tensor[2][2]=zz;_tensor[2][3]=zt;
   _tensor[3][0]=tx;_tensor[3][1]=ty;_tensor[3][2]=tz;_tensor[3][3]=tt;
 }
-
-template <typename Value> inline LorentzTensor<Value>::~LorentzTensor<Value>() {}
-// The destructor
 
 template <typename Value> inline complex<Value> LorentzTensor<Value>::xx() const {return _tensor[0][0];}
 template <typename Value> inline complex<Value> LorentzTensor<Value>::yx() const {return _tensor[1][0];}
@@ -121,13 +115,6 @@ template <typename Value> inline complex<Value> & LorentzTensor<Value>::operator
 }
 
 // Set components by index.
-// Assignment
-template <typename Value> inline LorentzTensor<Value> & LorentzTensor<Value>::operator = (const LorentzTensor<Value> & q) {
-  for(int ix=0;ix<4;++ix) {
-    for(int iy=0;iy<4;++iy) _tensor[ix][iy]=q(ix,iy);
-  }
-  return *this;
-}
 
 // boost
 template <typename Value> inline LorentzTensor<Value> & LorentzTensor<Value>::boost(const Boost & b) {

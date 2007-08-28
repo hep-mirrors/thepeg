@@ -38,24 +38,20 @@ public:
 		  tPPtr parton = tPPtr());
 
   /**
-   * The copy constructor.
-   */
-  inline RemnantParticle(const RemnantParticle &);
-
-  /**
-   * The destructor.
-   */
-  virtual ~RemnantParticle();
-
-  /**
    * Particle uses the FixedSizeAllocator for (de)allocation.
    */
-  inline void * operator new(size_t);
+  void * operator new(size_t)
+  {
+    return FixedAllocator<RemnantParticle>::allocate();
+  }
   
   /**
    * Particle uses the FixedSizeAllocator for (de)allocation.
    */
-  inline void operator delete(void *, size_t);
+  void operator delete(void * p, size_t)
+  {
+    FixedAllocator<RemnantParticle>::deallocate(p);
+  }
   //@}
 
 public:
@@ -137,7 +133,7 @@ protected:
    * Private default constructor must only be used by the
    * PersistentIStream class via the ClassTraits<RemnantParticle> class.
    */
-  inline RemnantParticle();
+  RemnantParticle() {}
 
   /**
    * The ClassTraits<RemnantParticle> class must be a friend to be able to
@@ -191,10 +187,5 @@ struct ClassTraits<RemnantParticle>
 /** @endcond */
 
 }
-
-#include "RemnantParticle.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantParticle.tcc"
-#endif
 
 #endif /* THEPEG_RemnantParticle_H */

@@ -11,17 +11,6 @@ inline Interval<T,CMP>::Interval(T dn, T up)
   : theLimits(pair<T,T>(dn, up)) {}
 
 template <typename T, typename CMP>
-inline Interval<T,CMP>::Interval(const Interval & i)
-  : theLimits(i.theLimits) {}
-
-template <typename T, typename CMP>
-inline const Interval<T,CMP> & Interval<T,CMP>::operator=(const Interval & i) {
-  lower(i.lower());
-  upper(i.upper());
-  return *this;
-}
-
-template <typename T, typename CMP>
 inline bool Interval<T,CMP>::operator==(const Interval & i) const {
   return lower() == i.lower() && upper() == i.upper();
 }

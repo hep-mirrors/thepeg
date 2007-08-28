@@ -4,7 +4,6 @@
 // This is the declaration of the BaseRepository class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "BaseRepository.fh"
 #include "BaseRepository.xh"
 #include "ThePEG/Interface/InterfaceBase.fh"
 #include "ThePEG/Interface/ClassDocumentation.fh"
@@ -325,14 +324,20 @@ public:
    * given container.
    */
   template<typename Cont>
-  inline static void clearAll(const Cont &);
+  static void clearAll(const Cont & c) 
+  {  
+    for_each(c, mem_fun(&InterfacedBase::clear));
+  }
 
   /**
    * Set the status of all objects in the given container to
    * InterfacedBase::uninitialized.
    */
   template<typename Cont>
-  inline static void resetAll(const Cont &);
+  static void resetAll(const Cont & c) 
+  {  
+    for_each(c, mem_fun(&InterfacedBase::reset));
+  }
 
   /**
    * Setup an object. Execute the InterfacedBase::readSetup() method
@@ -344,13 +349,13 @@ public:
    * Lock the given object. Locked objects cannot be
    * changed through an interface.
    */
-  inline static void lock(tIBPtr);
+  static void lock(tIBPtr ip) { ip->lock(); }
 
   /**
    * Unlock the given object. Locked objects cannot be changed through
    * an interface.
    */
-  inline static void unlock(tIBPtr);
+  static void unlock(tIBPtr ip) { ip->unlock(); }
   //@}
 
   /** @name Access the documentation of objects. */
@@ -378,32 +383,32 @@ public:
   /**
    * Set the standard output stream
    */
-  inline static void cout(ostream &);
+  static void cout(ostream & os) { coutp() = &os; }
 
   /**
    * Get the standard output stream
    */
-  inline static ostream & cout();
+  static ostream & cout() { return *coutp(); }
 
   /**
    * Set the standard error stream
    */
-  inline static void cerr(ostream &);
+  static void cerr(ostream & os) { cerrp() = &os; }
 
   /**
    * Get the standard error stream
    */
-  inline static ostream & cerr();
+  static ostream & cerr() { return *cerrp(); }
 
   /**
    * Set the standard log stream
    */
-  inline static void clog(ostream &);
+  static void clog(ostream & os) { clogp() = &os; }
 
   /**
    * Get the standard log stream
    */
-  inline static ostream & clog();
+  static ostream & clog() { return *clogp(); }
   //@}
 
 protected:
@@ -506,7 +511,6 @@ protected:
 
 }
 
-#include "BaseRepository.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "BaseRepository.tcc"
 #endif

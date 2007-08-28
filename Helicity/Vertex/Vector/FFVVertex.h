@@ -36,7 +36,7 @@ public:
   /**
    * Default constructor.
    */
-  inline FFVVertex();
+  FFVVertex() { setNpoint(3); setSpin(2,2,3); setName(FFV); }
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -116,12 +116,12 @@ public:
   /**
    * Get the left coupling.
    */
-  inline const Complex & getLeft();
+  const Complex & getLeft() { return _left; }
 
   /**
    * Get the right coupling.
    */
-  inline const Complex & getRight();
+  const Complex & getRight() { return _right; }
   //@}
 
 protected:
@@ -133,12 +133,12 @@ protected:
   /**
    * Set the left coupling.
    */
-  inline void setLeft(const Complex &);
+  void setLeft(const Complex & in) { _left = in; }
 
   /**
    * Set the right coupling.
    */
-  inline void setRight(const Complex &);
+  void setRight(const Complex & in) { _right = in; }
   //@}
 
 private:
@@ -167,11 +167,6 @@ private:
   
 };
 }
-}
-
-#include "FFVVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
 

@@ -10,12 +10,12 @@ DOCFILES = CombinedMatcher.h DecayMode.h WidthGenerator.h Decayer.h \
            RemnantDecayer.h SimpleBaryonRemnantDecayer.h
 
 INCLUDEFILES = $(DOCFILES) DecayMode.fh DecayMode.icc \
-               DecayMode.xh WidthGenerator.fh WidthGenerator.icc Decayer.fh \
-               Decayer.icc MassGenerator.fh MassGenerator.icc Matcher.icc \
+               DecayMode.xh WidthGenerator.fh Decayer.fh \
+               MassGenerator.fh \
                Matcher.tcc MatcherBase.icc PDT.icc \
                DummyDecayer.icc ParticleData.icc ParticleData.tcc \
                ParticleData.xh ConstituentParticleData.icc FlatDecayer.icc \
-               RemnantData.icc RemnantData.fh RemnantDecayer.icc \
+               RemnantData.fh RemnantDecayer.icc \
                RemnantDecayer.fh SimpleBaryonRemnantDecayer.icc 
 
 noinst_LTLIBRARIES = libThePEGPDT.la

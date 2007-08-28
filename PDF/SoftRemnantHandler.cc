@@ -22,15 +22,12 @@
 
 using namespace ThePEG;
 
-SoftRemnantHandler::SoftRemnantHandler() {}
+IBPtr SoftRemnantHandler::clone() const {
+  return new_ptr(*this);
+}
 
-SoftRemnantHandler::SoftRemnantHandler(const SoftRemnantHandler & x)
-  : RemnantHandler(x), remdec(x.remdec) {}
-
-SoftRemnantHandler::~SoftRemnantHandler() {}
-
-void SoftRemnantHandler::doinit() throw(InitException) {
-  RemnantHandler::doinit();
+IBPtr SoftRemnantHandler::fullclone() const {
+  return new_ptr(*this);
 }
 
 bool SoftRemnantHandler::

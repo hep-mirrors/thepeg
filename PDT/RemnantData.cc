@@ -8,10 +8,6 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/RemnantDecayer.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantData.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -32,7 +28,13 @@ RemnantData(tcPDPtr particle, RemDecPtr dec)
   fixColour();
 }
 
-RemnantData::~RemnantData() {}
+IBPtr RemnantData::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr RemnantData::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool RemnantData::extract(tcPDPtr parton) {
   if ( !decayMode ) {

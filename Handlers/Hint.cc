@@ -10,10 +10,6 @@
 #include "ThePEG/EventRecord/Step.h"
 #include "ThePEG/EventRecord/Particle.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Hint.tcc"
-#endif
-
 using namespace ThePEG;
 
 tPVector Hint::tagged(const Step & s) const {

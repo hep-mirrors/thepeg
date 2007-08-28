@@ -17,10 +17,6 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PDFBase.tcc"
-#endif
-
 using namespace ThePEG;
 
 PDFBase::PDFBase()

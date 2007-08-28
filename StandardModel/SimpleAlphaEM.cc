@@ -8,13 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleAlphaEM.tcc"
-#endif
-
 using namespace ThePEG;
-
-SimpleAlphaEM::~SimpleAlphaEM() {}
 
 IBPtr SimpleAlphaEM::clone() const {
   return new_ptr(*this);

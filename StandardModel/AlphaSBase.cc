@@ -9,13 +9,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "AlphaSBase.tcc"
-#endif
-
 using namespace ThePEG;
-
-AlphaSBase::~AlphaSBase() {}
 
 void AlphaSBase::doinit() throw(InitException) {
   theFlavourThresholds = flavourThresholds();

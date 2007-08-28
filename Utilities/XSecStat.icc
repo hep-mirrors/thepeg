@@ -19,8 +19,6 @@ inline XSecStat::XSecStat(CrossSection xsecmax)
   : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0),
     theSumWeights(0.0), theSumWeights2(0.0), lastWeight(0.0) {}
 
-inline XSecStat::~XSecStat() {}
-
 inline XSecStat & XSecStat::operator=(const XSecStat & x) {
   theMaxXSec = x.theMaxXSec;
   theAttempts = x.theAttempts;

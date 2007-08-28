@@ -9,13 +9,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "CKMBase.tcc"
-#endif
-
 using namespace ThePEG;
-
-CKMBase::~CKMBase() {}
 
 AbstractNoPIOClassDescription<CKMBase> CKMBase::initCKMBase;
 

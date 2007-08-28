@@ -10,13 +10,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StandardCKM.tcc"
-#endif
-
 using namespace ThePEG;
-
-StandardCKM::~StandardCKM() {}
 
 IBPtr StandardCKM::clone() const {
   return new_ptr(*this);

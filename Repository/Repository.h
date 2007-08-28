@@ -89,12 +89,12 @@ public:
   /**
    * Return the set of all particles in the repository.
    */
-  inline static const ParticleDataSet & allParticles();
+  static const ParticleDataSet & allParticles() { return particles(); }
 
   /**
    * Return the set of all matchers in the repository.
    */
-  inline static const MatcherSet & allMatchers();
+  static const MatcherSet & allMatchers() { return matchers(); }
 
   /**
    * Find a matcher or decay mode with a given generic name
@@ -144,7 +144,7 @@ public:
   /**
    * Save the repository to the default file.
    */
-  inline static void save();
+  static void save() { save(currentFileName()); }
 
   /**
    * Write some statistics about the repository to the standard output.
@@ -238,10 +238,5 @@ public:
 };
 
 }
-
-#include "Repository.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#include "Repository.tcc"
-#endif
 
 #endif /* ThePEG_Repository_H */

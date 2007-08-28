@@ -7,34 +7,15 @@
 namespace ThePEG {
 
 // default contructor
-inline LorentzRotation::LorentzRotation() {
-  _half=SpinHalfLorentzRotation();
-  _one =SpinOneLorentzRotation();
-}
-
-// copy constructor
-inline LorentzRotation::LorentzRotation(const LorentzRotation & x)
-  : _half(x._half), _one(x._one) {}
+inline LorentzRotation::LorentzRotation() : _half(), _one() {}
 
 // constructor with general boost  
-inline LorentzRotation::LorentzRotation(double bx, double by, double bz, double gamma) {
-  _half=SpinHalfLorentzRotation(bx,by,bz,gamma);
-  _one=SpinOneLorentzRotation(bx,by,bz,gamma);
-}
+inline LorentzRotation::LorentzRotation(double bx, double by, double bz, double gamma) 
+  : _half(bx,by,bz,gamma), _one(bx,by,bz,gamma) {}
 
 // constructor with general boost
-  inline LorentzRotation::LorentzRotation(const Boost & b,double gamma) {
-    _half=SpinHalfLorentzRotation(b,gamma);
-    _one=SpinOneLorentzRotation(b,gamma);
-}
-
-//  Assignment operator
-inline LorentzRotation & 
-LorentzRotation::operator = (const LorentzRotation & lt) {
-  _half=lt._half;
-  _one=lt._one;
-  return *this;
-}
+inline LorentzRotation::LorentzRotation(const Boost & b,double gamma) 
+  : _half(b,gamma), _one(b,gamma) {}
 
 // Returns true if the Identity matrix.
 inline bool LorentzRotation::isIdentity() const {

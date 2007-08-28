@@ -25,21 +25,6 @@ public:
    */
   inline TimeCounter(string newName = "");
 
-  /**
-   * Copy constructor.
-   */
-  inline TimeCounter(const TimeCounter &);
-
-  /**
-   * Destructor.
-   */
-  inline ~TimeCounter();
-
-  /**
-   * Assignment.
-   */
-  inline TimeCounter & operator=(const TimeCounter &);
-
 public:
 
   /**

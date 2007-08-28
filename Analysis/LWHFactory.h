@@ -30,26 +30,6 @@ class LWHFactory: public FactoryBase {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * The default constructor.
-   */
-  inline LWHFactory();
-
-  /**
-   * The copy constructor.
-   */
-  inline LWHFactory(const LWHFactory &);
-
-  /**
-   * The destructor.
-   */
-  virtual ~LWHFactory();
-  //@}
-
-public:
-
   /** @name Manipulate histograms */
   //@{
   /**
@@ -108,13 +88,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const { return new_ptr(*this); }
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const { return new_ptr(*this); }
   //@}
 
 
@@ -175,10 +155,5 @@ struct ClassTraits<LWHFactory>
 /** @endcond */
 
 }
-
-#include "LWHFactory.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LWHFactory.tcc"
-#endif
 
 #endif /* THEPEG_LWHFactory_H */

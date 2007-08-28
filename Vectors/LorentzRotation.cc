@@ -13,9 +13,6 @@
 
 using namespace ThePEG;
 
-// destructor
-LorentzRotation::~LorentzRotation() {}
-
 // output operator
 std::ostream & LorentzRotation::print( std::ostream & os ) const
 {

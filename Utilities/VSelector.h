@@ -66,21 +66,6 @@ public:
   inline VSelector(size_type reserved = 0);
 
   /**
-   * Copy constructor.
-   */
-  inline VSelector(const VSelector &);
-
-  /**
-   * Destructor.
-   */
-  inline ~VSelector();
-
-  /**
-   * Assignment.
-   */
-  inline const VSelector & operator = (const VSelector &);
-
-  /**
    * Swap the underlying representation with the argument.
    */
   inline void swap(VSelector &);

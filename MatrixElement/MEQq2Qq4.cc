@@ -8,13 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/EnumParticles.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEQq2Qq.tcc"
-#endif
-
 using namespace ThePEG;
-
-MEQq2Qq::~MEQq2Qq() {}
 
 void MEQq2Qq::getDiagrams() const {
   tcPDPtr g = getParticleData(ParticleID::g);

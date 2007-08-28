@@ -6,9 +6,7 @@
 // PDFBase class.
 //
 
-// #include "PDFBase.fh"
 #include "ThePEG/Interface/InterfaceBase.xh"
-
 
 namespace ThePEG {
 

@@ -4,8 +4,6 @@
 // This is the declaration of the ZGenerator class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "ZGenerator.fh"
-// #include "ZGenerator.xh"
 #include "ThePEG/Handlers/HandlerBase.h"
 
 namespace ThePEG {
@@ -25,26 +23,6 @@ namespace ThePEG {
  * @see EventGenerator
  */
 class ZGenerator: public HandlerBase {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline ZGenerator();
-
-  /**
-   * Copy-constructor.
-   */
-  inline ZGenerator(const ZGenerator &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~ZGenerator();
-  //@}
 
 public:
 
@@ -102,10 +80,5 @@ struct ClassTraits<ZGenerator>: public ClassTraitsBase<ZGenerator> {
 /** @endcond */
 
 }
-
-#include "ZGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ZGenerator.tcc"
-#endif
 
 #endif /* ThePEG_ZGenerator_H */

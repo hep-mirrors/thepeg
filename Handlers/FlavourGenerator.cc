@@ -8,13 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FlavourGenerator.tcc"
-#endif
-
 using namespace ThePEG;
-
-FlavourGenerator::~FlavourGenerator() {}
 
 tcPDPair FlavourGenerator::alwaysGenerateHadron(tcPDPtr q) const {
   tcPDPair hq = generateHadron(q);

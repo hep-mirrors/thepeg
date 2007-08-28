@@ -4,8 +4,6 @@
 // This is the declaration of the FixedCMSLuminosity class.
 
 #include "LuminosityFunction.h"
-// #include "FixedCMSLuminosity.fh"
-// #include "FixedCMSLuminosity.xh"
 
 namespace ThePEG {
 

@@ -4,8 +4,6 @@
 // This is the declaration of the MEGG2GG class.
 
 #include "ThePEG/MatrixElement/ME2to2QCD.h"
-// #include "MEGG2GG.fh"
-// #include "MEGG2GG.xh"
 
 namespace ThePEG {
 
@@ -18,26 +16,6 @@ namespace ThePEG {
  * @see ME2to2QCD
  */
 class MEGG2GG: public ME2to2QCD {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline MEGG2GG();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MEGG2GG(const MEGG2GG &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MEGG2GG();
-  //@}
 
 public:
 
@@ -87,37 +65,37 @@ protected:
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colA1() const;
+  double colA1() const { return sqr(1.0 + sHat()/tHat()) + 0.5; }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colB1() const;
+  double colB1() const { return sqr(1.0 + uHat()/sHat()) + 0.5; }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colC1() const;
+  double colC1() const { return sqr(1.0 + tHat()/uHat()) + 0.5; }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colA2() const;
+  double colA2() const { return 0.5 + sqr(1.0 + tHat()/sHat()); }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colB2() const;
+  double colB2() const { return 0.5 + sqr(1.0 + sHat()/uHat()); }
 
   /**
    * Return the matrix element squared (without common pre-factors)
    * for the specific colour configuration.
    */
-  inline double colC2() const;
+  double colC2() const { return 0.5 + sqr(1.0 + uHat()/tHat()); }
   //@}
 
 public:
@@ -135,13 +113,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -188,10 +166,5 @@ struct ClassTraits<MEGG2GG>: public ClassTraitsBase<MEGG2GG> {
 /** @endcond */
 
 }
-
-#include "MEGG2GG.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEGG2GG.tcc"
-#endif
 
 #endif /* ThePEG_MEGG2GG_H */

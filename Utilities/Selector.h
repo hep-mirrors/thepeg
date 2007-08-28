@@ -58,27 +58,16 @@ public:
   /**
    * Default constructor.
    */
-  inline Selector();
-
-  /**
-   * Copy constructor.
-   */
-  inline Selector(const Selector &);
-
-  /**
-   * Destructor.
-   */
-  inline ~Selector();
-
-  /**
-   * Assignment.
-   */
-  inline const Selector & operator = (const Selector &);
+  Selector() : theSum(WeightType()) {}
 
   /**
    * Swap the underlying representation with the argument.
    */
-  inline void swap(Selector &);
+  void swap(Selector & s) 
+  {
+    theMap.swap(s.theMap);
+    std::swap(theSum, s.theSum);
+  }
 
   /**
    * Insert an object given a probability for this object. If the
@@ -93,7 +82,11 @@ public:
    * weight. Semantically <code>reweight(w,o);</code> is equivalent to
    * <code>erase(o); insert(w,o);</code>
    */
-  inline WeightType reweight(WeightType, const T &);
+  WeightType reweight(WeightType d, const T & t)
+  {
+    erase(t);
+    return insert(d, t);
+  }
 
   /**
    * Erase an object, previously inserted. If the object had not been
@@ -129,7 +122,7 @@ public:
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
    * range_error will be thrown.
    */
-  inline T & operator[](double rnd) throw(range_error);
+  T & operator[](double rnd) throw(range_error) { return select(rnd); }
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -151,7 +144,7 @@ public:
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
    * range_error will be thrown.
    */
-  inline const T & operator[](double rnd) const throw(range_error);
+  const T & operator[](double rnd) const throw(range_error) { return select(rnd); } 
 
   /**
    * Selct an object randomly. Given a random number generator which
@@ -189,7 +182,7 @@ public:
    * rescaled with this number to give unit probability for
    * 'select()'.
    */
-  inline WeightType sum() const;
+  WeightType sum() const { return theSum; }
 
   /**
    * Access to the <code>begin()</code> iterator of the underlying
@@ -197,28 +190,28 @@ public:
    * 'first' is the sum of all probabilities up to this one, and
    * 'second' is the object inserted.
    */
-  inline const_iterator begin() const;
+  const_iterator begin() const { return theMap.begin(); }
 
   /**
    * Access to the <code>end()</code> iterator in the underlying
    * map.
    */
-  inline const_iterator end() const;
+  const_iterator end() const { return theMap.end(); }
 
   /**
    * Returns true if the Selector is empty.
    */
-  inline bool empty() const;
+  bool empty() const { return theMap.empty(); }
 
   /**
    * Returns the number of objects in the selector.
    */
-  inline size_type size() const;
+  size_type size() const { return theMap.size(); }
 
   /**
    * Erases all objects.
    */
-  inline void clear();
+  void clear() { theMap.clear(); theSum = WeightType(); }
 
   /**
    * Output to a stream.
@@ -250,13 +243,21 @@ private:
  * Output a Selector to a stream.
  */
 template <typename OStream, typename T, typename WeightType>
-inline OStream & operator<<(OStream &, const Selector<T,WeightType> &);
+inline OStream & operator<<(OStream & os, const Selector<T,WeightType> & s)
+{
+  s.output(os);
+  return os;
+}
 
 /**
  * Input a Selector from a stream.
  */
 template <typename IStream, typename T, typename WeightType>
-inline IStream & operator>>(IStream &, Selector<T,WeightType> &);
+inline IStream & operator>>(IStream & is, Selector<T,WeightType> & s)
+{
+  s.input(is);
+  return is;
+}
 
 
 }

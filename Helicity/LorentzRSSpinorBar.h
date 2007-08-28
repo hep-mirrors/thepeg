@@ -241,13 +241,8 @@ public:
   inline void setTS4(complex<Value>);
   //@}
 
-  /** @name Assignment and arithmetic operators. */
+  /** @name Arithmetic operators. */
   //@{
-  /**
-   * The assignment operator
-   */
-  inline LorentzRSSpinorBar & operator = (const LorentzRSSpinorBar &);
-
   /**
    * dot product with a polarization vector
    */
@@ -316,12 +311,6 @@ public:
     typename BinaryOpTraits<Value,ValueB>::MulT> >
   generalCurrent(LorentzSpinor<ValueB>& f, Complex left, Complex right);
 private:
-
-  /**
-   * Storage of the components.
-   */
-  complex<Value> _spin[4][4];
-
   /**
    * Definition of the Dirac matrices used.
    */
@@ -332,6 +321,10 @@ private:
    */
   SpinorType _type;
 
+  /**
+   * Storage of the components.
+   */
+  vector<vector<complex<Value> > > _spin;
 };
 }
 }

@@ -12,28 +12,17 @@ namespace ThePEG {
 namespace Helicity {
 
 // default zero constructor
-template <typename Value> inline LorentzSpinor<Value>::LorentzSpinor(DiracRep d) {
-  _dirac=d;
-  _type=unknown_spinortype;
-  for(int ix=0;ix<4;++ix) {
-    _spin[ix]=complex<Value>();
-  }
-}
+template <typename Value> inline LorentzSpinor<Value>::LorentzSpinor(DiracRep d) 
+  : _dirac(d), _type(unknown_spinortype), _spin(4) {}
 
-template <typename Value> inline LorentzSpinor<Value>::LorentzSpinor(SpinorType s,DiracRep d) {
-  _dirac=d;
-  _type=s;
-  for(int ix=0;ix<4;++ix) {
-    _spin[ix]=complex<Value>();
-  }
-}
+template <typename Value> inline LorentzSpinor<Value>::LorentzSpinor(SpinorType s,DiracRep d) 
+  : _dirac(d), _type(s), _spin(4) {}
 
 // constructor with complex numbers
 
 template <typename Value> inline LorentzSpinor<Value>::
-LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Value> d, DiracRep r) {
-  _dirac=r;
-  _type=unknown_spinortype;
+LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Value> d, DiracRep r) 
+  : _dirac(r), _type(unknown_spinortype), _spin(4) {
   _spin[0]=a;
   _spin[1]=b;
   _spin[2]=c;
@@ -41,9 +30,8 @@ LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Valu
 }
 
 template <typename Value> inline LorentzSpinor<Value>::
-LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Value> d, SpinorType s,DiracRep r) {
-  _dirac=r;
-  _type=s;
+LorentzSpinor(complex<Value> a, complex<Value> b, complex<Value> c, complex<Value> d, SpinorType s,DiracRep r) 
+  : _dirac(r), _type(s), _spin(4) {
   _spin[0]=a;
   _spin[1]=b;
   _spin[2]=c;
@@ -99,17 +87,6 @@ template <typename Value> inline void LorentzSpinor<Value>::setS2(complex<Value>
 template <typename Value> inline void LorentzSpinor<Value>::setS3(complex<Value> in){_spin[2]=in;}
 
 template <typename Value> inline void LorentzSpinor<Value>::setS4(complex<Value> in){_spin[3]=in;}
-
-// the equals operator
-template <typename Value> inline LorentzSpinor<Value> & LorentzSpinor<Value>::operator = (const LorentzSpinor & in) {
-  _dirac=in._dirac;
-  _type=in._type;
-  _spin[0]=in.s1();
-  _spin[1]=in.s2();
-  _spin[2]=in.s3();
-  _spin[3]=in.s4();
-  return *this;
-}
 
 // change the dirac matrix representation
 template <typename Value> inline void LorentzSpinor<Value>::changeRep(DiracRep newdirac)

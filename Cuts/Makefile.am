@@ -3,7 +3,7 @@ mySOURCES = Cuts.cc OneCutBase.cc TwoCutBase.cc MultiCutBase.cc
 DOCFILES = Cuts.h OneCutBase.h TwoCutBase.h MultiCutBase.h
 
 INCLUDEFILES = $(DOCFILES) Cuts.icc Cuts.fh OneCutBase.icc OneCutBase.fh \
-                TwoCutBase.icc TwoCutBase.fh MultiCutBase.icc MultiCutBase.fh
+                TwoCutBase.icc TwoCutBase.fh MultiCutBase.fh
 
 noinst_LTLIBRARIES = libThePEGCuts.la
 # pkglib_LTLIBRARIES = JetKTClusCuts.la
@@ -16,7 +16,7 @@ SimpleKTCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 SimpleKTCut_la_SOURCES = SimpleKTCut.cc SimpleKTCut.h SimpleKTCut.icc
 
 KTClus_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-KTClus_la_SOURCES = KTClus.cc KTClus.h KTClus.icc
+KTClus_la_SOURCES = KTClus.cc KTClus.h
 
 V2LeptonsCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 V2LeptonsCut_la_SOURCES = V2LeptonsCut.cc V2LeptonsCut.h V2LeptonsCut.icc

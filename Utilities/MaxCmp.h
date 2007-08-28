@@ -23,12 +23,12 @@ public:
   /**
    * The default constructor.
    */
-  inline MaxCmp();
+  inline MaxCmp() : init(false), max(T()) {}
 
   /**
    * Constructor specifying an initial maximum value, \a t.
    */
-  inline MaxCmp(const T & t);
+  inline MaxCmp(const T & t) : init(true), max(t) {}
 
 public:
 
@@ -36,12 +36,20 @@ public:
    * If \a t is the largest value sen so far return true. Otherwise
    * return false.
    */
-  bool operator()(const T & t);
+  bool operator()(const T & t)
+  {
+    if ( !init || t > max ) {
+      max = t;
+      init = true;
+      return true;
+    }
+    return false;
+  }
 
   /**
    * Return the largest value so far.
    */
-  operator const T & () const;
+  operator const T & () const { return max; }
 
 private:
 
@@ -58,7 +66,5 @@ private:
 };
 
 }
-
-#include "MaxCmp.icc"
 
 #endif /* THEPEG_MaxCmp_H */

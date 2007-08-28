@@ -18,14 +18,16 @@
 
 using namespace ThePEG;
 
+IBPtr LuminosityFunction::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr LuminosityFunction::fullclone() const {
+  return new_ptr(*this);
+}
+
 LuminosityFunction::LuminosityFunction(Energy a, Energy b)
   : theBeamEMaxA(a), theBeamEMaxB(b) {}
-
-LuminosityFunction::LuminosityFunction(const LuminosityFunction & x)
-  : HandlerBase(x), LastXCombInfo<>(x),
-    theBeamEMaxA(x.theBeamEMaxA), theBeamEMaxB(x.theBeamEMaxB) {}
-
-LuminosityFunction::~LuminosityFunction() {}
 
 void LuminosityFunction::select(tXCombPtr xcomb) {
   theLastXComb = xcomb;

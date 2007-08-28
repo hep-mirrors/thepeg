@@ -17,24 +17,19 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
            MultipleInteractionHandler.h StandardEventHandler.h \
            StepHandler.h SubProcessHandler.h XComb.h LastXCombInfo.h \
            SamplerBase.h  ClusterCollapser.h \
-           PtGenerator.h ZGenerator.h   \
-           StandardXComb.h
+           PtGenerator.h ZGenerator.h StandardXComb.h
 
-INCLUDEFILES = $(DOCFILES) AnalysisHandler.icc CascadeHandler.icc \
-               DecayHandler.icc EventHandler.icc EventManipulator.icc \
-               FlavourGenerator.icc \
-               HadronizationHandler.icc HandlerBase.icc HandlerGroup.icc \
-               HandlerGroup.tcc Hint.icc \
-               LuminosityFunction.icc \
-               MultipleInteractionHandler.icc StandardEventHandler.icc \
+INCLUDEFILES = $(DOCFILES) CascadeHandler.icc \
+               DecayHandler.icc EventHandler.icc \
+               HandlerBase.icc HandlerGroup.icc \
+               HandlerGroup.tcc \
+               StandardEventHandler.icc \
                StandardEventHandler.fh StepHandler.icc \
-               SubProcessHandler.fh SubProcessHandler.icc XComb.icc \
+               SubProcessHandler.fh XComb.icc \
                EventHandler.fh  \
                LastXCombInfo.icc SamplerBase.icc SamplerBase.fh \
-                ClusterCollapser.fh ClusterCollapser.icc \
-               PtGenerator.icc ZGenerator.icc  \
-                StandardXComb.fh \
-               StandardXComb.icc
+               ClusterCollapser.fh ClusterCollapser.icc \
+               StandardXComb.fh StandardXComb.icc
 
 
 noinst_LTLIBRARIES = libThePEGHandlers.la

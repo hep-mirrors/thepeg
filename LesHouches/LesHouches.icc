@@ -9,28 +9,6 @@ namespace ThePEG {
 inline HEPRUP::HEPRUP()
   : IDWTUP(0), NPRUP(0) {}
 
-inline HEPRUP::HEPRUP(const HEPRUP & x)
-  : IDBMUP(x.IDBMUP), EBMUP(x.EBMUP),
-    PDFGUP(x.PDFGUP), PDFSUP(x.PDFSUP), IDWTUP(x.IDWTUP),
-    NPRUP(x.NPRUP), XSECUP(x.XSECUP), XERRUP(x.XERRUP),
-    XMAXUP(x.XMAXUP), LPRUP(x.LPRUP) {}
-
-inline HEPRUP & HEPRUP::operator=(const HEPRUP & x) {
-  IDBMUP = x.IDBMUP;
-  EBMUP = x.EBMUP;
-  PDFGUP = x.PDFGUP;
-  PDFSUP = x.PDFSUP;
-  IDWTUP = x.IDWTUP;
-  NPRUP = x.NPRUP;
-  XSECUP = x.XSECUP;
-  XERRUP = x.XERRUP;
-  XMAXUP = x.XMAXUP;
-  LPRUP = x.LPRUP;
-  return *this;
-}
-
-inline HEPRUP::~HEPRUP() {}
-
 inline void HEPRUP::resize(int nrup) {
   NPRUP = nrup;
   resize();
@@ -46,32 +24,6 @@ inline void HEPRUP::resize() {
 inline HEPEUP::HEPEUP()
   : NUP(0), IDPRUP(0), XWGTUP(0.0), XPDWUP(0.0, 0.0),
     SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0) {}
-
-inline HEPEUP::HEPEUP(const HEPEUP & x)
-  : NUP(x.NUP), IDPRUP(x.IDPRUP), XWGTUP(x.XWGTUP), XPDWUP(x.XPDWUP),
-    SCALUP(x.SCALUP), AQEDUP(x.AQEDUP), AQCDUP(x.AQCDUP), IDUP(x.IDUP),
-    ISTUP(x.ISTUP), MOTHUP(x.MOTHUP), ICOLUP(x.ICOLUP),
-    PUP(x.PUP), VTIMUP(x.VTIMUP), SPINUP(x.SPINUP) {}
-
-inline HEPEUP & HEPEUP::operator=(const HEPEUP & x) {
-  NUP = x.NUP;
-  IDPRUP = x.IDPRUP;
-  XWGTUP = x.XWGTUP;
-  XPDWUP = x.XPDWUP;
-  SCALUP = x.SCALUP;
-  AQEDUP = x.AQEDUP;
-  AQCDUP = x.AQCDUP;
-  IDUP = x.IDUP;
-  ISTUP = x.ISTUP;
-  MOTHUP = x.MOTHUP;
-  ICOLUP = x.ICOLUP;
-  PUP = x.PUP;
-  VTIMUP = x.VTIMUP;
-  SPINUP = x.SPINUP;
-  return *this;
-}
-
-inline HEPEUP::~HEPEUP() {}
 
 inline void HEPEUP::resize(int nup) {
   NUP = nup;

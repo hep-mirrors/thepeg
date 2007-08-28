@@ -7,13 +7,15 @@
 #include "GRV94M.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "GRV94M.tcc"
-#endif
-
 using namespace ThePEG;
 
-GRV94M::~GRV94M() {}
+IBPtr GRV94M::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr GRV94M::fullclone() const {
+  return new_ptr(*this);
+}
 
 void GRV94M::setup(double l, Energy2 scale) const {
   GRVBase::setup(l, scale, mu2(), lam2());

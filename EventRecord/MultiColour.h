@@ -18,26 +18,6 @@ class MultiColour: public ColourBase {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * The default constructor.
-   */
-  inline MultiColour();
-
-  /**
-   * The copy constructor.
-   */
-  inline MultiColour(const MultiColour &);
-
-  /**
-   * The destructor.
-   */
-  virtual ~MultiColour();
-  //@}
-
-public:
-
   using ColourBase::colourLine;
   using ColourBase::antiColourLine;
 
@@ -114,7 +94,7 @@ public:
   /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const { return new_ptr(*this); }
 
 private:
 
@@ -180,10 +160,5 @@ struct ClassTraits<MultiColour>
 /** @endcond */
 
 }
-
-#include "MultiColour.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MultiColour.tcc"
-#endif
 
 #endif /* THEPEG_MultiColour_H */

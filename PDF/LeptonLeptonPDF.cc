@@ -13,13 +13,15 @@
 #include "ThePEG/StandardModel/StandardModelBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LeptonLeptonPDF.tcc"
-#endif
-
 using namespace ThePEG;
 
-LeptonLeptonPDF::~LeptonLeptonPDF() {}
+IBPtr LeptonLeptonPDF::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr LeptonLeptonPDF::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool LeptonLeptonPDF::canHandleParticle(tcPDPtr particle) const {
   return ( abs(particle->id()) < 20 || abs(particle->id()) > 10 );

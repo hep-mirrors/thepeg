@@ -5,7 +5,6 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ClassDocumentation.fh"
-// #include "ClassDocumentation.xh"
 
 namespace ThePEG {
 
@@ -64,24 +63,24 @@ public:
   /**
    * The destructor.
    */
-  inline virtual ~ClassDocumentationBase();
+  virtual ~ClassDocumentationBase() {}
 
 public:
 
   /**
    * Return the brief <i>documentation</i> of the corresponding class.
    */
-  inline string documentation() const;
+  string documentation() const { return theDocumentation; }
 
   /**
    * Return the <i>model description</i> of the corresponding class.
    */
-  inline string modelDescription() const;
+  string modelDescription() const { return theModelDescription; }
 
   /**
    * Return the <i>model references</i> of the corresponding class.
    */
-  inline string modelReferences() const;
+  string modelReferences() const { return theModelReferences; }
 
 private:
 
@@ -164,14 +163,11 @@ public:
    * @param newModelReferences the <i>model references</i> of the
    * corresponding class..
    */
-  inline ClassDocumentation(string newDocumentation,
-			    string newModelDescription = "",
-			    string newModelReferences = "");
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~ClassDocumentation();
+  ClassDocumentation(string newDocumentation,
+		     string newModelDescription = "",
+		     string newModelReferences = "")
+    : ClassDocumentationBase(newDocumentation, newModelDescription,
+			     newModelReferences, typeid(T)) {}
 
 private:
 
@@ -193,10 +189,5 @@ private:
 };
 
 }
-
-#include "ClassDocumentation.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ClassDocumentation.tcc"
-#endif
 
 #endif /* ThePEG_ClassDocumentation_H */

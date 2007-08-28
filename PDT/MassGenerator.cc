@@ -7,13 +7,7 @@
 #include "MassGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MassGenerator.tcc"
-#endif
-
 using namespace ThePEG;
-
-MassGenerator::~MassGenerator() {}
 
 AbstractNoPIOClassDescription<MassGenerator> MassGenerator::initMassGenerator;
 

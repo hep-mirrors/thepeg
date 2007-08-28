@@ -4,8 +4,6 @@
 // This is the declaration of the MEee2gZ2qq class.
 
 #include "ThePEG/MatrixElement/ME2to2QCD.h"
-// #include "MEee2gZ2qq.fh"
-// #include "MEee2gZ2qq.xh"
 
 namespace ThePEG {
 
@@ -31,16 +29,6 @@ public:
    * Default constructor.
    */
   MEee2gZ2qq();
-
-  /**
-   * Copy-constructor.
-   */
-  MEee2gZ2qq(const MEee2gZ2qq &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MEee2gZ2qq();
   //@}
 
 public:
@@ -216,10 +204,5 @@ struct ClassTraits<MEee2gZ2qq>: public ClassTraitsBase<MEee2gZ2qq> {
 /** @endcond */
 
 }
-
-#include "MEee2gZ2qq.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEee2gZ2qq.tcc"
-#endif
 
 #endif /* ThePEG_MEee2gZ2qq_H */

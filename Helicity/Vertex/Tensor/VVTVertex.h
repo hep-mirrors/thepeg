@@ -43,7 +43,7 @@ public:
   /**
    * Default constructor.
    */
-  inline VVTVertex();
+  VVTVertex() { setNpoint(3); setSpin(3,3,5); setName(VVT); }
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -117,11 +117,6 @@ private:
 };
 
 }
-}
-
-#include "VVTVertex.icc"
-
-namespace ThePEG {
 
 /** @cond TRAITSPECIALIZATIONS */
   

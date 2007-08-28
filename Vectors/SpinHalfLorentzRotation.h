@@ -43,11 +43,6 @@ public:
   inline SpinHalfLorentzRotation();
 
   /**
-   *  Copy constructor
-   */
-  inline SpinHalfLorentzRotation(const SpinHalfLorentzRotation &);
-
-  /**
    * Constructor giving the components of a Lorentz boost.
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
@@ -62,17 +57,7 @@ public:
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
   inline SpinHalfLorentzRotation (const Boost & b,double gamma=-1.);
-
-  /**
-   * The destructor.
-   */
-  ~SpinHalfLorentzRotation();
   //@}
-
-  /**
-   *  Assignment operator
-   */
-  inline SpinHalfLorentzRotation & operator = (const SpinHalfLorentzRotation & );
 
   /**
    * Returns true if the Identity matrix.
@@ -336,7 +321,7 @@ private:
   /**
    * The members of the transformation matrix.
    */
-  Complex _mx[4][4];
+  vector<vector<Complex> > _mx;
 };
 
 /**

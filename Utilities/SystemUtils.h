@@ -4,8 +4,6 @@
 // This is the declaration of the SystemUtils class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "SystemUtils.fh"
-// #include "SystemUtils.xh"
 
 namespace ThePEG {
 
@@ -22,15 +20,14 @@ public:
    * Non-existent environment variables will result in a zero-length
    * string.
    */
-  inline static string getenv(string);
+  static string getenv(string e)
+  {
+    const char * cp = std::getenv(e.c_str());
+    return cp? cp: "";
+  }
 
 };
 
 }
-
-#include "SystemUtils.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SystemUtils.tcc"
-#endif
 
 #endif /* ThePEG_SystemUtils_H */

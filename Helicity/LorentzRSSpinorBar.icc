@@ -12,36 +12,21 @@ namespace Helicity {
 
 // inlined function of the LorentzRSSpinorBar class
 // default zero constructor
-template <typename Value> inline LorentzRSSpinorBar<Value>::LorentzRSSpinorBar(DiracRep dirac) {
-  _dirac=dirac;
-  _type=unknown_spinortype;
-  unsigned int ix,iy;
-  for(ix=0;ix<4;++ix) {
-    for(iy=0;iy<4;++iy){
-      _spin[ix][iy]=complex<Value>();
-    }
-  }
-}
+template <typename Value> inline LorentzRSSpinorBar<Value>::LorentzRSSpinorBar(DiracRep dirac) 
+  : _dirac(dirac), _type(unknown_spinortype), _spin(4,vector<complex<Value> >(4))
+{}
 
-template <typename Value> inline LorentzRSSpinorBar<Value>::LorentzRSSpinorBar(SpinorType type, DiracRep dirac) {
-  _dirac=dirac;
-  _type=type;
-  unsigned int ix,iy;
-  for(ix=0;ix<4;++ix) {
-    for(iy=0;iy<4;++iy) {
-      _spin[ix][iy]=complex<Value>();
-    }
-  }
-}
+template <typename Value> inline LorentzRSSpinorBar<Value>::LorentzRSSpinorBar(SpinorType type, DiracRep dirac) 
+  : _dirac(dirac), _type(type), _spin(4,vector<complex<Value> >(4))
+{}
 
 // constructor with complex numbers
 template <typename Value> inline LorentzRSSpinorBar<Value>::
 LorentzRSSpinorBar(complex<Value> a1,complex<Value> b1, complex<Value> c1,complex<Value> d1,
 		   complex<Value> a2,complex<Value> b2, complex<Value> c2,complex<Value> d2,
 		   complex<Value> a3,complex<Value> b3, complex<Value> c3,complex<Value> d3,
-		   complex<Value> a4,complex<Value> b4, complex<Value> c4,complex<Value> d4,DiracRep dirac) {
-  _dirac=dirac;
-  _type=unknown_spinortype;
+		   complex<Value> a4,complex<Value> b4, complex<Value> c4,complex<Value> d4,DiracRep dirac) 
+  : _dirac(dirac), _type(unknown_spinortype), _spin(4,vector<complex<Value> >(4)) {
   _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
   _spin[0][1]=b1;_spin[1][1]=b2;_spin[2][1]=b3;_spin[3][1]=b4;
   _spin[0][2]=c1;_spin[1][2]=c2;_spin[2][2]=c3;_spin[3][2]=c4;
@@ -53,9 +38,8 @@ LorentzRSSpinorBar(complex<Value> a1,complex<Value> b1, complex<Value> c1,comple
 		   complex<Value> a2,complex<Value> b2, complex<Value> c2,complex<Value> d2,
 		   complex<Value> a3,complex<Value> b3, complex<Value> c3,complex<Value> d3,
 		   complex<Value> a4,complex<Value> b4, complex<Value> c4,complex<Value> d4,SpinorType type,
-		   DiracRep dirac) {
-  _dirac=dirac;
-  _type=type;
+		   DiracRep dirac) 
+  : _dirac(dirac), _type(type), _spin(4,vector<complex<Value> >(4)) {
   _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
   _spin[0][1]=b1;_spin[1][1]=b2;_spin[2][1]=b3;_spin[3][1]=b4;
   _spin[0][2]=c1;_spin[1][2]=c2;_spin[2][2]=c3;_spin[3][2]=c4;
@@ -113,16 +97,6 @@ template <typename Value> inline void LorentzRSSpinorBar<Value>::setTS1(complex<
 template <typename Value> inline void LorentzRSSpinorBar<Value>::setTS2(complex<Value> in){_spin[3][1]=in;}
 template <typename Value> inline void LorentzRSSpinorBar<Value>::setTS3(complex<Value> in){_spin[3][2]=in;}
 template <typename Value> inline void LorentzRSSpinorBar<Value>::setTS4(complex<Value> in){_spin[3][3]=in;}
-
-// the assignment operator
-template <typename Value> inline LorentzRSSpinorBar<Value> & LorentzRSSpinorBar<Value>::
-operator = (const LorentzRSSpinorBar & in) {
-  _dirac=in._dirac;
-  _type=in._type;
-  unsigned int ix,iy;
-  for(ix=0;ix<4;++ix){for(iy=0;iy<4;++iy){_spin[ix][iy]=in._spin[ix][iy];}}
-  return *this;
-}
 
 // return the representation of the spinor
 template <typename Value> inline DiracRep LorentzRSSpinorBar<Value>::Rep(){return _dirac;}

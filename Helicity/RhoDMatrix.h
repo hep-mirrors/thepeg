@@ -33,16 +33,6 @@ public:
    * Standard constructor giving the spin as 2s+1.
    */
   inline RhoDMatrix(PDT::Spin);
-
-  /**
-   * Copy constructor.
-   */
-  inline RhoDMatrix(const RhoDMatrix &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~RhoDMatrix();
   //@}
 
 public:
@@ -90,11 +80,6 @@ public:
   //@}
 
   /**
-   * Assignment operator.
-   */
-  inline RhoDMatrix & operator=(const RhoDMatrix &);
-
-  /**
    * Output the spin density matrix for debugging purposes.
    */
   inline void output();
@@ -114,7 +99,7 @@ private:
   /**
    * Storage for the matrix allowing up to spin 2 particles
    */
-  Complex _matrix[5][5];
+  vector<vector<Complex> > _matrix;
 
 };
 

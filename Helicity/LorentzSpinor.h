@@ -199,11 +199,6 @@ public:
   inline void setS4(complex<Value>);
   //@}
 
-  /**
-   * The assignment operator.
-   */
-  inline LorentzSpinor & operator = (const LorentzSpinor &);
-
   /** @name Transformations. */
   //@{
   /**
@@ -347,12 +342,6 @@ public:
   //@}
 
 private:
-
-  /**
-   * Storage of the components.
-   */
-  complex<Value> _spin[4];
-
   /**
    * Definition of the Dirac matrices used.
    */
@@ -363,6 +352,10 @@ private:
    */
   SpinorType _type;
 
+  /**
+   * Storage of the components.
+   */
+  vector<complex<Value> > _spin;
 };
 
 }

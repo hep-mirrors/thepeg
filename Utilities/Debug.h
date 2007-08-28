@@ -54,7 +54,13 @@ public:
    * Check if a given item should be debugged. If no such item is
    * present false is returned.
    */
-  inline static bool debugItem(int item);
+  static bool debugItem(int item)
+  {
+    if ( level == noDebug ) return false;
+    if ( level == full ) return true;
+    return ( item < 0 || size_t(item) >= debugItems.size() )? false:
+      debugItems[item];
+  }
 
   /** @name Functions for manipulating floating point (FPU) signals
    * (requires the existence of <code>fpu_controll.h</code> on the
@@ -113,10 +119,5 @@ public:
 };
 
 }
-
-#include "Debug.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Debug.tcc"
-#endif
 
 #endif /* ThePEG_Debug_H */

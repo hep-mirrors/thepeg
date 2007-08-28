@@ -5,8 +5,6 @@
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "StandardModelBase.fh"
-// #include "AlphaEMBase.fh"
-// #include "AlphaEMBase.xh"
 
 namespace ThePEG {
 
@@ -21,26 +19,6 @@ namespace ThePEG {
  * @see StandardModelBase
  */
 class AlphaEMBase: public Interfaced {
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline AlphaEMBase();
-
-  /**
-   * Copy-constructor.
-   */
-  inline AlphaEMBase(const AlphaEMBase &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~AlphaEMBase();
-  //@}
 
 public:
 
@@ -93,10 +71,5 @@ struct ClassTraits<AlphaEMBase>: public ClassTraitsBase<AlphaEMBase> {
 /** @endcond */
 
 }
-
-#include "AlphaEMBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "AlphaEMBase.tcc"
-#endif
 
 #endif /* ThePEG_AlphaEMBase_H */

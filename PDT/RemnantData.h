@@ -48,16 +48,6 @@ public:
    * performing the decay.
    */
   RemnantData(tcPDPtr particle, RemDecPtr decayer);
-
-  /**
-   * The copy constructor.
-   */
-  inline RemnantData(const RemnantData &);
-
-  /**
-   * The destructor.
-   */
-  virtual ~RemnantData();
   //@}
 
 public:
@@ -121,13 +111,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 
@@ -163,7 +153,7 @@ protected:
    * The default constructor is protected and must only be used by the
    * PersistentIStream class via the ClassTraits<RemnantData> class.
    */
-  inline RemnantData();
+  inline RemnantData() {}
 
   /**
    * The ClassTraits<RemnantData> class must be a friend to be able to
@@ -217,10 +207,5 @@ struct ClassTraits<RemnantData>
 /** @endcond */
 
 }
-
-#include "RemnantData.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantData.tcc"
-#endif
 
 #endif /* THEPEG_RemnantData_H */

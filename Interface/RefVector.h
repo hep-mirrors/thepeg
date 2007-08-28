@@ -78,11 +78,6 @@ public:
 		bool readonly, bool norebind, bool nullable, bool defnull);
 
   /**
-   * Destructor.
-   */
-  inline virtual ~RefVectorBase();
-
-  /**
    * The general interface method overriding the one in
    * InterfaceBase. For this class, \a action can be any of "set",
    * "get", "erase" and "insert" and \a argument should be a something
@@ -161,19 +156,19 @@ public:
    * Get the size of the container being interfaced. If the size() is
    * less than 0, the size is allowed to vary.
    */
-  inline int size() const;
+  int size() const { return theSize; }
 
   /**
    * Set the size of the container being interfaced. If the size is
    * less than 0, the size is allowed to vary.
    */
-  inline void setSize(int);
+  void setSize(int sz) { theSize = sz; }
 
   /**
    * Set the size of the container being interfaced to -1, i.e. the
    * size is allowed to vary.
    */
-  inline void setVariableSize();
+  void setVariableSize() { theSize = 0; }
 
 private:
 
@@ -367,27 +362,27 @@ public:
   /**
    * Give a pointer to a member function to be used by 'set()'.
    */
-  inline void setSetFunction(SetFn);
+  void setSetFunction(SetFn sf) { theSetFn = sf; }
 
   /**
    * Give a pointer to a member function to be used by 'insert()'.
    */
-  inline void setInsertFunction(InsFn);
+  void setInsertFunction(InsFn ifn) { theInsFn = ifn; }
 
   /**
    * Give a pointer to a member function to be used by 'get()'.
    */
-  inline void setGetFunction(GetFn);
+  void setGetFunction(GetFn gf) { theGetFn = gf; }
 
   /**
    * Give a pointer to a member function to be used by 'erase()'.
    */
-  inline void setEraseFunction(DelFn);
+  void setEraseFunction(DelFn df) { theDelFn = df; }
 
   /**
    * Give a pointer to a member function to be used by 'check()'.
    */
-  inline void setCheckFunction(CheckFn);
+  void setCheckFunction(CheckFn cf) { theCheckFn = cf; }
 
 private:
 
@@ -425,7 +420,6 @@ private:
 
 }
 
-#include "RefVector.icc"
 #include "RefVector.tcc"
 
 #endif /* ThePEG_RefVector_H */

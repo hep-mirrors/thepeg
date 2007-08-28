@@ -74,11 +74,6 @@ public:
 		bool readonly, bool norebind, bool nullable, bool defnull);
 
   /**
-   * Destructor.
-   */
-  inline virtual ~ReferenceBase();
-
-  /**
    * The general interface method overriding the one in
    * InterfaceBase. For this class, \a action can be any of "set" and
    * "get" and \a argument should correspond to the name of an
@@ -294,17 +289,17 @@ public:
   /**
    * Give a pointer to a member function to be used by 'set()'.
    */
-  inline void setSetFunction(SetFn);
+  void setSetFunction(SetFn sf) { theSetFn = sf; }
 
   /**
    * Give a pointer to a member function to be used by 'get()'.
    */
-  inline void setGetFunction(GetFn);
+  void setGetFunction(GetFn gf) { theGetFn = gf; }
 
   /**
    * Give a pointer to a member function to be used by 'check()'.
    */
-  inline void setCheckFunction(CheckFn);
+  void setCheckFunction(CheckFn cf) { theCheckFn = cf; }
 
 private:
 
@@ -333,7 +328,6 @@ private:
 
 }
 
-#include "Reference.icc"
 #include "Reference.tcc"
 
 #endif /* ThePEG_Reference_H */

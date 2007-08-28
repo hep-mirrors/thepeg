@@ -35,11 +35,6 @@ public:
   inline LorentzRotation();
 
   /**
-   *  Copy constructor
-   */
-  inline LorentzRotation(const LorentzRotation &);
-
-  /**
    * Constructor giving the components of a Lorentz boost.
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
@@ -54,17 +49,7 @@ public:
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
   inline LorentzRotation (const Boost & b, double gamma=-1.);
-
-  /**
-   * The destructor.
-   */
-  ~LorentzRotation();
   //@}
-
-  /**
-   *  Assignment operator
-   */
-  inline LorentzRotation & operator = (const LorentzRotation & );
 
   /**
    * Returns true if the Identity matrix.
@@ -445,7 +430,9 @@ inline LorentzRotation inverseOf ( const LorentzRotation & lt );
  */
 inline std::ostream & operator<< ( std::ostream & os,
 				   const  LorentzRotation& lt ) 
-{return lt.print(os);}
+{
+  return lt.print(os);
+}
 
 }
 

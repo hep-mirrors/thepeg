@@ -1,27 +1,11 @@
+// -*- C++ -*-
+
 namespace ThePEG {
 
 template <typename T, typename WeightType>
 inline VSelector<T,WeightType>::VSelector(size_type reserved)
   : theSum(WeightType()) {
   reserve(reserved);
-}
-
-template <typename T, typename WeightType>
-inline VSelector<T,WeightType>::VSelector(const VSelector<T,WeightType> & s)
-  : theSums(s.theSums), theWeights(s.theWeights), theObjects(s.theObjects),
-    theSum(s.theSum) {}
-
-template <typename T, typename WeightType>
-inline VSelector<T,WeightType>::~VSelector() {}
-
-template <typename T, typename WeightType>
-inline const VSelector<T,WeightType> & VSelector<T,WeightType>::
-operator = (const VSelector<T,WeightType> & s) {
-  theSums = s.theSums;
-  theWeights = s.theWeights;
-  theObjects = s.theObjects;
-  theSum = s.theSum;
-  return *this;
 }
 
 template <typename T, typename WeightType>

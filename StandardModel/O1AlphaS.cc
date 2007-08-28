@@ -11,13 +11,7 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "O1AlphaS.tcc"
-#endif
-
 using namespace ThePEG;
-
-O1AlphaS::~O1AlphaS() {}
 
 IBPtr O1AlphaS::clone() const {
   return new_ptr(*this);

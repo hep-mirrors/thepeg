@@ -5,7 +5,6 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "Strategy.fh"
-// #include "Strategy.xh"
 #include "ThePEG/Interface/Interfaced.h"
 
 namespace ThePEG {
@@ -36,37 +35,17 @@ class Strategy: public Interfaced {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  Strategy();
-
-  /**
-   * Copy-constructor.
-   */
-  Strategy(const Strategy &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~Strategy();
-  //@}
-
-public:
-
   /** @name Access the special objects in this Strategy. */
   //@{
   /**
    * Return the map of local particles indexed by their PDG id number.
    */
-  inline const ParticleMap & particles() const;
+  const ParticleMap & particles() const { return theParticles; }
 
   /**
    * Return the vector of default objects.
    */
-  inline const vector<IPtr> & defaultObjects() const;
+  const vector<IPtr> & defaultObjects() const { return theDefaultObjects; }
   //@}
 
 public:
@@ -110,31 +89,7 @@ protected:
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
-  //@}
-
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -142,7 +97,7 @@ private:
   /**
    * Return the map of local particles.
    */
-  inline ParticleMap & particles();
+  ParticleMap & particles() { return theParticles; }
 
 private:
 
@@ -213,10 +168,5 @@ struct ClassTraits<Strategy>: public ClassTraitsBase<Strategy> {
 /** @endcond */
 
 }
-
-#include "Strategy.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Strategy.tcc"
-#endif
 
 #endif /* ThePEG_Strategy_H */

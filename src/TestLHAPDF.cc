@@ -9,14 +9,7 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/PDF/PDFBase.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "TestLHAPDF.tcc"
-#endif
-
-
 using namespace ThePEG;
-
-TestLHAPDF::~TestLHAPDF() {}
 
 NoPIOClassDescription<TestLHAPDF> TestLHAPDF::initTestLHAPDF;
 // Definition of the static class description member.

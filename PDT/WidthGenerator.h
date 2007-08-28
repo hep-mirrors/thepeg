@@ -6,7 +6,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "WidthGenerator.fh"
 #include "ThePEG/Interface/Interfaced.h"
-// #include "WidthGenerator.xh"
 #include "ThePEG/Utilities/Selector.h"
 #include "ThePEG/PDT/DecayMode.fh"
 
@@ -29,26 +28,6 @@ public:
   /** A selector of <code>DecayModes</code>s weighted by their
    *  branching ratios. */
   typedef Selector<tDMPtr> DecayMap;
-
-public:
-
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline WidthGenerator();
-
-  /**
-   * Copy-constructor.
-   */
-  inline WidthGenerator(const WidthGenerator &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~WidthGenerator();
-  //@}
 
 public:
 
@@ -131,10 +110,5 @@ struct ClassTraits<WidthGenerator>: public ClassTraitsBase<WidthGenerator> {
 /** @endcond */
 
 }
-
-#include "WidthGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "WidthGenerator.tcc"
-#endif
 
 #endif /* ThePEG_WidthGenerator_H */
