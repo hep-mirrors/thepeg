@@ -1,3 +1,8 @@
+2007-08-30  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Vectors/SpinOneLorentzRotation.h, .icc: Fixed self-assignment
+	problem with valarray.
+
 2007-08-28  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* ***GLOBAL***: General cleanup: removed most .icc files smaller

@@ -8,7 +8,7 @@
 #include "ThePEG/Helicity/LorentzRSSpinor.fh"
 #include "ThePEG/Helicity/LorentzRSSpinorBar.fh"
 #include "ThreeVector.h"
-#include <valarray>
+#include <vector>
 
 namespace ThePEG {
 
@@ -289,7 +289,7 @@ private:
   template<typename Value> friend class Helicity::LorentzRSSpinor;
   template<typename Value> friend class Helicity::LorentzRSSpinorBar;
 
-  std::valarray<double> matrix_;
+  vector<double> matrix_;
 
   inline SpinOneLorentzRotation (double xx, double xy, double xz, double xt,
 				 double yx, double yy, double yz, double yt,
