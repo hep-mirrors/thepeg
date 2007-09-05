@@ -858,5 +858,17 @@ ParticleChargeCommand(const ParticleData & pd, string arg) {
   severity(warning);
 }
 
+void ParticleData::doinit() throw(InitException) {
+  Interfaced::doinit();
+  if( theMassGenerator )  theMassGenerator->init();
+  if( theWidthGenerator ) theWidthGenerator->init();
+}
+
+void ParticleData::doinitrun() {
+  Interfaced::doinitrun();
+  if( theMassGenerator )  theMassGenerator->initrun();
+  if( theWidthGenerator ) theWidthGenerator->initrun();
+}
+
 }
 

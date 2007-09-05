@@ -145,13 +145,5 @@ inline tWidthGeneratorPtr ParticleData::widthGenerator() const {
   return theWidthGenerator;
 }
 
-inline void ParticleData::doinit() throw(InitException) {
-  Interfaced::doinit();
-}
-
-inline void ParticleData::dofinish() {
-  Interfaced::dofinish();
-}
-
 }
 

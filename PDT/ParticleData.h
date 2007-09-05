@@ -476,13 +476,7 @@ protected:
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
+  virtual void doinit() throw(InitException);
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -502,6 +496,12 @@ protected:
    * @return a vector of pointers.
    */
   virtual IVector getReferences();
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  virtual void doinitrun();
   //@}
 
 protected:

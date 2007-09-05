@@ -192,6 +192,11 @@ void EventGenerator::doinit() throw (InitException) {
   // standard model and the strategy.
   standardModel()->init();
   if ( strategy() ) strategy()->init();
+  
+  // initialize particles first
+  for(ParticleMap::const_iterator pit = particles().begin();
+      pit != particles().end(); ++pit) pit->second->init();
+  
   for_each(objects(), mem_fun(&InterfacedBase::init));
 
   // Then initialize the Event Handler calculating initial cross
@@ -213,6 +218,11 @@ void EventGenerator::doinitrun() {
   // standard model and the strategy.
   standardModel()->initrun();
   if ( strategy() ) strategy()->initrun();
+
+  // initialize particles first
+  for(ParticleMap::const_iterator pit = particles().begin();
+      pit != particles().end(); ++pit) pit->second->initrun();
+  
   for_each(objects(), mem_fun(&InterfacedBase::initrun));
 
   weightSum = 0.0;
