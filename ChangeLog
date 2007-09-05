@@ -1,3 +1,12 @@
+2007-09-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Handlers/StandardEventHandler.cc: In select(), clean up
+	theLastXComb before switching to a different one. This fixes
+	Herwig bug #89, where stale XComb objects still contained
+	information about past events that had long been cleared. 
+
+	* Handlers/XComb.cc: Reset PartonBinInstances as part of clean().
+
 2007-08-30  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Vectors/SpinOneLorentzRotation.h, .icc: Fixed self-assignment

@@ -272,6 +272,8 @@ tStdXCombPtr StandardEventHandler::select(int bin, double weight) {
     lastXC = xCombs()[bin];
     break;
   }
+  // clean up the old XComb object before switching to a new one
+  if ( theLastXComb ) theLastXComb->clean();
   theLastXComb = lastXC;
   lastXC->select(weight);
   lastXC->accept();

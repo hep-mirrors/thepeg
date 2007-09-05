@@ -87,6 +87,7 @@ void XComb::clean() {
   theLastY = 0.0;
   theLastP1P2 = theLastL1L2 = theLastX1X2 = theLastE1E2 = DPair(0.0, 0.0);
   theSub = SubProPtr();
+  createPartonBinInstances();
 }
 
 void XComb::prepare(const PPair & inc) {
