@@ -125,6 +125,7 @@ void LesHouchesEventHandler::initialize() {
 
   // We now create a LuminosityFunction object to inform others about
   // the energy of the beam.
+  theIncoming = incoming;
   lumiFn(new_ptr(LuminosityFunction(MaxEA, MaxEB)));
 
 }
