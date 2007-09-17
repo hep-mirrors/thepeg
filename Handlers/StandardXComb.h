@@ -63,7 +63,7 @@ public:
    * Standard constructor.
    */
   StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
-		tStdEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+		tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
 		tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
 		const PBPair & newPartonBins, tCutsPtr newCuts, tMEPtr newME,
 		const DiagramVector & newDiagrams, bool mir);
