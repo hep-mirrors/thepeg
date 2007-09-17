@@ -123,18 +123,19 @@ public:
 
     const double sa = sin(angle), ca = cos(angle);
     const double dx = axis.x()/ll, dy = axis.y()/ll, dz = axis.z()/ll;
+    const double xx  = x(), yy = y(), zz = z(); 
 
-    setX((ca+(1-ca)*dx*dx)     * x()
-	 +((1-ca)*dx*dy-sa*dz) * y()
-	 +((1-ca)*dx*dz+sa*dy) * z()
+    setX((ca+(1-ca)*dx*dx)     * xx
+	 +((1-ca)*dx*dy-sa*dz) * yy
+	 +((1-ca)*dx*dz+sa*dy) * zz
 	 );
-    setY(((1-ca)*dy*dx+sa*dz)  * x()
-	 +(ca+(1-ca)*dy*dy)    * y()
-	 +((1-ca)*dy*dz-sa*dx) * z()
+    setY(((1-ca)*dy*dx+sa*dz)  * xx
+	 +(ca+(1-ca)*dy*dy)    * yy
+	 +((1-ca)*dy*dz-sa*dx) * zz
 	 );
-    setZ(((1-ca)*dz*dx-sa*dy)  * x()
-	 +((1-ca)*dz*dy+sa*dx) * y()
-	 +(ca+(1-ca)*dz*dz)    * z()
+    setZ(((1-ca)*dz*dx-sa*dy)  * xx
+	 +((1-ca)*dz*dy+sa*dx) * yy
+	 +(ca+(1-ca)*dz*dz)    * zz
 	 );
     return *this;
   }
