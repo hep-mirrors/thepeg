@@ -5,6 +5,7 @@
 #include "ACDCGenConfig.h"
 #include "ACDCTraits.h"
 #include "ACDCGenCell.h"
+#include "ThePEG/Utilities/Exception.h"
 
 namespace ACDCGenerator {
 
@@ -454,6 +455,7 @@ private:
    * The root of the cell tree for the functions in theFunctions.
    */
   CellVector thePrimaryCells;
+
   /**
    * The accumulated sum of overestimated integrals of the functions
    * in theFunctions.

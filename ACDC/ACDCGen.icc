@@ -133,6 +133,13 @@ inline void ACDCGen<Rnd,FncPtr>::chooseCell(DVector & lo, DVector & up) {
     theLast = upper_bound(sumMaxInts().begin(), sumMaxInts().end(),
 			  rnd()*sumMaxInts().back())
       - sumMaxInts().begin();
+    if(theLast>=sumMaxInts().size()) {
+      throw ThePEG::Exception() << "Selected a function outside the allowed range"
+				<< " in ACDCGen::chooseCell(). This is usually due"
+				<< " to a floating point error (nan or inf) in the"
+				<< " calculation of the weight"
+				<< ThePEG::Exception::abortnow;
+    }
     up = DVector(lastDimension(), 1.0);
     lo = DVector(lastDimension(), 0.0);
     theLastCell = lastPrimary();
@@ -156,7 +163,7 @@ ACDCGen<Rnd,FncPtr>::generate() {
     if ( ++itry > maxTry() ) return FncPtrType();
     ++theN;
 
-    // First choose a a function and a cell to generate in.
+    // First choose a function and a cell to generate in.
     DVector up;
     DVector lo;
     chooseCell(lo, up);
