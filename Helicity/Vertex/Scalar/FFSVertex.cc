@@ -36,14 +36,14 @@ Complex FFSVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
   int iint(0);
   if(sp.direction() == Helicity::incoming || 
      sp.direction() == Helicity::intermediate) iint = 1;
-  else if(sca.direction() == Helicity::incoming ||
-	  sca.direction() == Helicity::intermediate) iint = 2;
   else if(sbar.direction() == Helicity::incoming ||
-	  sbar.direction() == Helicity::intermediate) iint = 3;
+	  sbar.direction() == Helicity::intermediate) iint = 2;
+  else if(sca.direction() == Helicity::incoming ||
+	  sca.direction() == Helicity::intermediate) iint = 3;
   else 
     throw HelicityLogicalError() << "There is no incoming particle in "
 				 << fullName() << Exception::runerror;
-  setCoupling(q2,Psp,Psca,Psbar,iint);
+  setCoupling(q2,Psp,Psbar,Psca,iint);
   Complex norm=getNorm();
   Complex ii(0.,1.);
   Complex vertex(0.);
