@@ -22,7 +22,7 @@ double gamma(double);
 /** The log of the gamma function */
 double lngamma(double);
 
-/** Return \f$\atanh(x)\f$ */
+/** Return \f${\rm atanh}(x)\f$ */
 double atanh(double);
 
 /** Return \f$1-e^x\f$, with highest possible precision for
