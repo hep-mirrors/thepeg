@@ -1,3 +1,9 @@
+2007-10-18  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* src/ThePEGDefaults.in, Doc/refman.conf.in, Doc/Makefile.am,
+	Doc/MakeDocs.in, Makefile.am: AllInterfaces.h now generated from its
+	own input file.
+
 2007-09-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc: Remember to set
@@ -13,7 +19,7 @@
 	* Handlers/StandardEventHandler.cc: In select(), clean up
 	theLastXComb before switching to a different one. This fixes
 	Herwig bug #89, where stale XComb objects still contained
-	information about past events that had long been cleared. 
+	information about past events that had long been cleared.
 
 	* Handlers/XComb.cc: Reset PartonBinInstances as part of clean().
 

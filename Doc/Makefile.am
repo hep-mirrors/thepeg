@@ -2,7 +2,7 @@ CLEANFILES = AllInterfaces.h
 
 docdir = $(pkgdatadir)/Doc
 
-doc_DATA = refman.conf refman.h
+doc_DATA = refman.conf refman.h MakeDocs.in
 
 dist_doc_DATA = repository.hlp
 
@@ -18,7 +18,10 @@ html-local: refman-html
 pdf-local: refman-html
 	if test -d refman-latex; then cd refman-latex; make refman.pdf; fi
 
-refman-html: refman.conf refman.h
+AllInterfaces.h: MakeDocs.in
+	$(top_builddir)/src/setupThePEG.bin --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
+
+refman-html: refman.conf refman.h AllInterfaces.h
 	$(srcdir)/fixinterfaces.pl AllInterfaces.h
 	doxygen $<
 

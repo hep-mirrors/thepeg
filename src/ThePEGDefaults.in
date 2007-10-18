@@ -160,5 +160,3 @@ create ThePEG::LesHouchesEventHandler LesHouchesHandler
 cp /Defaults/Handlers/StandardExtractor QCDExtractor
 set LesHouchesHandler:PartonExtractor QCDExtractor
 set LesHouchesGenerator:EventHandler LesHouchesHandler
-cd /
-doxygendump ThePEG:: ../Doc/AllInterfaces.h
