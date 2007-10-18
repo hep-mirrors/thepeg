@@ -12,6 +12,8 @@ namespace Helicity {
 
 // compiler magic needs these pre-declarations to make friend templates work
 template<typename Value> class LorentzTensor;
+
+/// Scalar product with another tensor
 template <typename T, typename U>
 complex<typename BinaryOpTraits<T,U>::MulT> 
 operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);

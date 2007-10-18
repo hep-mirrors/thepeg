@@ -2,7 +2,12 @@
 #ifndef ThePEG_LorentzVector_H
 #define ThePEG_LorentzVector_H
 
-/** @file LorentzVector.h is a... */
+/** 
+ * @file LorentzVector.h contains the LorentzVector class.  Lorentz
+ * vectors can be created with any unit type as template parameter.
+ * All basic mathematical operations are supported, as well as a
+ * subset of the CLHEP LorentzVector functionality.
+ */
 
 #include "LorentzVector.fh"
 #include "Transverse.h"
@@ -15,23 +20,44 @@ namespace ThePEG {
 
 template <typename Value> class LorentzVector; 
 
-template <typename Value>
-class LorentzVector 
+/** 
+ * A 4-component Lorentz vector. It can be created with any unit type
+ * as template parameter.  All basic mathematical operations are
+ * supported, as well as a subset of the CLHEP LorentzVector
+ * functionality.
+ */
+template <typename Value> class LorentzVector 
 {
-typedef typename BinaryOpTraits<Value,Value>::MulT Value2;
+private:
+  /// Value squared
+  typedef typename BinaryOpTraits<Value,Value>::MulT Value2;
+
+  /// Error handling.
+  void errorIf(bool condition, string message) const {
+#ifndef NDEBUG
+    if (condition)
+      throw Exception() << message << Exception::eventerror;
+#endif
+  }
 
 public:
+  /** @name Constructors. */
+  //@{
   LorentzVector() 
     : theX(), theY(), theZ(), theT() {}
+
   LorentzVector(Value x, Value y, Value z, Value t)
     : theX(x), theY(y), theZ(z), theT(t) {}
+
   LorentzVector(const Vector3<Value> & v, Value t)
     : theX(v.x()), theY(v.y()), theZ(v.z()), theT(t) {}
 
   template<typename U>
   LorentzVector(const LorentzVector<U> & v)
     : theX(v.x()), theY(v.y()), theZ(v.z()), theT(v.t()) {}
+  //@}
 
+  /// Assignment operator
   template <typename ValueB>
   LorentzVector<Value> & operator=(const LorentzVector<ValueB> & b) {
     setX(b.x());
@@ -42,26 +68,34 @@ public:
   }
 
 public:
+  /// @name Component access methods.
+  //@{
   Value x() const { return theX; }
   Value y() const { return theY; }
   Value z() const { return theZ; }
   Value t() const { return theT; }
+  Value e() const { return t();  }
+  //@}
 
+  /// @name Component set methods.
+  //@{
   void setX(Value x)  {  theX = x; }
   void setY(Value y)  {  theY = y; }
   void setZ(Value z)  {  theZ = z; }
   void setT(Value t)  {  theT = t; }
-
-  Value e() const     { return t(); }
-  void setE(Value e)  {  setT(e);   }
+  void setE(Value e)  {  setT(e);  }
+  //@}
 
 public:
+  /// Access to the 3-component part.
   Vector3<Value> vect() const {
     return Vector3<Value>(x(),y(),z());
   }
 
+  /// Cast to the 3-component part.
   operator Vector3<Value>() const { return vect(); }
   
+  /// Set the 3-component part.
   void setVect(const Vector3<Value> & p) {
     theX = p.x();
     theY = p.y();
@@ -69,187 +103,264 @@ public:
   } 
 
 public:
-
-  LorentzVector<Value> conjugate() const {
+  /// The complex conjugate vector.
+  LorentzVector<Value> conjugate() const 
+  {
     return LorentzVector<Value>(conj(x()),conj(y()),conj(z()),conj(t()));
   }
 
-  Value2 mag2() const { return (t()-z())*(t()+z()) - sqr(x()) -sqr(y()); }
-  Value  mag() const {
+  /// Squared magnitude \f$x^\mu\,x_\mu=t^2 - \vec{x}^2\f$.
+  Value2 mag2() const 
+  { 
+    return (t()-z())*(t()+z()) - sqr(x()) - sqr(y()); 
+  }
+
+  /// Squared magnitude \f$x^\mu\,x_\mu=t^2 - \vec{x}^2\f$.
+  Value2 m2() const { return mag2(); }
+
+  /// Magnitude (signed) \f$\pm\sqrt{|t^2 - \vec{x}^2|}\f$.
+  Value  mag() const 
+  {
     Value2 tmp = mag2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
   }
 
-  Value  m()     const { return mag(); }
-  Value2 m2()    const { return mag2(); }
-  
-  Value2 mt2()   const { return (t()-z())*(t()+z()); }
-  Value  mt()  const { 
+  /// Magnitude (signed) \f$\pm\sqrt{|t^2 - \vec{x}^2|}\f$.
+  Value m() const { return mag(); }
+
+  /// Transverse mass squared \f$t^2-z^2\f$.
+  Value2 mt2()  const { return (t()-z())*(t()+z()); }
+
+  /// Transverse mass (signed) \f$\pm\sqrt{|t^2 - z^2|}\f$.
+  Value  mt()  const 
+  { 
     Value2 tmp = mt2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
   }
 
+  /// Squared transverse component of the spatial vector \f$x^2+y^2\f$.
   Value2 perp2() const { return sqr(x()) + sqr(y()); }
+
+  /// Transverse component of the spatial vector \f$\pm\sqrt{x^2 + y^2}\f$.
   Value  perp()  const { return sqrt(perp2()); }
 
+  /**
+   * Squared transverse component of the spatial vector with respect to the
+   * given axis.
+   */
   template <typename U>
-  Value2 perp2(const Vector3<U> & p) const {
+  Value2 perp2(const Vector3<U> & p) const 
+  {
     return vect().perp2(p);
   }
 
+  /**
+   * Transverse component of the spatial vector with respect to the
+   * given axis.
+   */
   template <typename U>
-  Value perp(const Vector3<U> & p) const {
+  Value perp(const Vector3<U> & p) const 
+  {
     return vect().perp(p);
   }
 
-
-  Value2 et2() const {
+  /// Transverse energy squared.
+  Value2 et2() const 
+  {
     Value2 pt2 = vect().perp2();
     return pt2 == Value2() ? Value2() : e()*e() * pt2/(pt2+z()*z());
   }
 
-  Value et() const {
+  /// Transverse energy (signed).
+  Value et() const 
+  {
     Value2 etet = et2();
     return e() < Value() ? -sqrt(etet) : sqrt(etet);
   }
 
-  Value2 et2(const Vector3<double> & v) const {
+  /// Transverse energy squared with respect to the given axis.
+  Value2 et2(const Vector3<double> & v) const 
+  {
     Value2 pt2 = vect().perp2(v);
     Value pv = vect().dot(v.unit());
     return pt2 == Value2() ? Value2() : e()*e() * pt2/(pt2+pv*pv);
   }
 
-  Value et(const Vector3<double> & v) const {
+  /// Transverse energy with respect to the given axis (signed).
+  Value et(const Vector3<double> & v) const 
+  {
     Value2 etet = et2(v);
     return e() < Value() ? -sqrt(etet) : sqrt(etet);
   }
 
+  /// @name Spherical coordinates for the spatial part.
+  //@{
+  /// Radius squared.
   Value2 rho2()  const { return sqr(x()) + sqr(y()) + sqr(z()); }
+
+  /// Radius.
   Value  rho()   const { return sqrt(rho2()); }
 
-  double eta()   const { 
-    Value m = rho();
-    if ( m ==  Value() ) return  0.0;
-    if ( m ==  z() ) return  1.0E72;
-    if ( m == -z() ) return -1.0E72;
-    return 0.5*log( (m+z())/(m-z()) );
-  }
-
-  double theta() const {
-    return x() == Value() && y() == Value() 
-      && z() == Value() ? 0.0 : atan2(perp(),z());
-  }
-
-  double cosTheta() const {
-    Value ptot = rho();
-    return ptot == Value() ? 1.0 : double(z()/ptot);
-  }
-
-  double phi()   const {
-    return x() == Value() && y() == Value() ? 0.0 : atan2(y(),x()) ;
-  }
-
-  double angle(const LorentzVector<Value> & w) const {
-    return vect().angle(w.vect());
-  }
-
-  double rapidity() const {
-    if (abs(t()) == abs(z())) {
-      throw Exception() << "rapidity for 4-vector with |E| = |Pz| -- infinite result" 
-			<< Exception::eventerror;
-    }
-    if (abs(t()) < abs(z())) {
-      throw Exception() << "rapidity for spacelike 4-vector with |E| < |Pz| -- undefined" 
-			<< Exception::eventerror;
-    }
-    double q = (t() + z()) / (t() - z());
-    return 0.5 * log(q);
-  }
-
-  double rapidity(const Axis & ref) const {
-    double r = ref.mag2();
-    if (r == 0) {
-      throw Exception() << "A zero vector used as reference to LorentzVector rapidity"
-			<< Exception::eventerror;
-    }
-    Value vdotu = vect().dot(ref)/sqrt(r);
-    if (abs(t()) == abs(vdotu)) {
-      throw Exception() <<  "rapidity for 4-vector with |E| = |Pu| -- infinite result" 
-			<< Exception::eventerror;
-    }
-    if (abs(t()) < abs(vdotu)) {
-      throw Exception() <<  "rapidity for spacelike 4-vector with |E|<|P*ref| undefined"
-			<< Exception::eventerror;;
-    }
-    double q = (t() + vdotu) / (t() - vdotu);
-    return 0.5 * log(q);
-  }
-
-
-  void setRho(Value newRho) { 
+  /// Set new radius.
+  void setRho(Value newRho) 
+  { 
     Value oldRho = rho();
-    if (oldRho == Value()) return;
-    // LorentzVector::setMag : zero vector can't be stretched
+    if (oldRho == Value()) 
+      return;
     double factor = newRho / oldRho;
     setX(x()*factor);
     setY(y()*factor);
     setZ(z()*factor);
   }
 
-  Boost boostVector() const {
+  /// Polar angle.
+  double theta() const 
+  {
+    return x() == Value() && y() == Value() 
+      && z() == Value() ? 0.0 : atan2(perp(),z());
+  }
+
+  /// Cosine of the polar angle.
+  double cosTheta() const 
+  {
+    Value ptot = rho();
+    return ptot == Value() ? 1.0 : double(z()/ptot);
+  }
+
+  /// Azimuthal angle.
+  double phi()   const 
+  {
+    return x() == Value() && y() == Value() ? 0.0 : atan2(y(),x()) ;
+  }
+  //@}
+
+  /// Pseudorapidity of spatial part.
+  double eta() const 
+  { 
+    Value m = rho();
+    if ( m ==  Value() ) return  0.0;
+    errorIf(m == z() || m == -z(),
+	    "Pseudorapidity for 3-vector along z-axis undefined.");
+    return 0.5 * log( (m+z()) / (m-z()) );
+  }
+
+  /// Spatial angle with another vector.
+  double angle(const LorentzVector<Value> & w) const 
+  {
+    return vect().angle(w.vect());
+  }
+
+  /// Rapidity \f$\frac{1}{2}\ln\frac{t+z}{t-z} \f$
+  double rapidity() const 
+  {
+    errorIf(abs(t()) == abs(z()),
+	    "rapidity for 4-vector with |E| = |Pz| -- infinite result");
+    errorIf(abs(t()) < abs(z()),
+	    "rapidity for spacelike 4-vector with |E| < |Pz| -- undefined");
+    double q = (t() + z()) / (t() - z());
+    return 0.5 * log(q);
+  }
+
+  /// Rapidity with respect to another vector
+  double rapidity(const Axis & ref) const 
+  {
+    double r = ref.mag2();
+    errorIf(r == 0,
+	    "A zero vector used as reference to LorentzVector rapidity");
+    Value vdotu = vect().dot(ref)/sqrt(r);
+    errorIf(abs(t()) == abs(vdotu),
+	    "rapidity for 4-vector with |E| = |Pu| -- infinite result");
+    errorIf(abs(t()) < abs(vdotu),
+	    "rapidity for spacelike 4-vector with |E|<|P*ref| undefined");
+    double q = (t() + vdotu) / (t() - vdotu);
+    return 0.5 * log(q);
+  }
+
+  /**
+   * Boost from reference frame into this vector's rest
+   * frame: \f$\frac{\vec{x}}{t}\f$.
+   */
+  Boost boostVector() const 
+  {
     if (t() == Value()) {
-      if (rho2() == Value2()) {
+      if (rho2() == Value2()) 
 	return Boost();
-      } else {
-	throw Exception() << "boostVector computed for LorentzVector with t=0 -- infinite result" << Exception::eventerror;
-	return vect() * (1./t());
-      }
+      else 
+	errorIf(true,
+		"boostVector computed for LorentzVector with t=0"
+		" -- infinite result");
     }
-    if (m2() <= Value2()) {
-      throw Exception() << "boostVector computed for a non-timelike LorentzVector " << Exception::eventerror;
-      // result will make analytic sense but is physically meaningless
-    }
+    // result will make analytic sense but is physically meaningless
+    errorIf(m2() <= Value2(),
+	  "boostVector computed for a non-timelike LorentzVector");
     return vect() * (1./t());
   }
   
-  Boost findBoostToCM() const {
+  /**
+   * Boost from reference frame into this vector's rest
+   * frame: \f$-\frac{\vec{x}}{t}\f$.
+   */
+  Boost findBoostToCM() const 
+  {
     return -boostVector();
   }
 
+  /// Returns the positive light-cone component \f$t + z\f$.
   Value plus()  const { return t() + z(); }
+  /// Returns the negative light-cone component \f$t - z\f$.
   Value minus() const { return t() - z(); }
 
-
-  bool isNear(const LorentzVector<Value> & w, double epsilon) const {
+  /// Are two vectors nearby, using Euclidean measure \f$t^2 + |\vec{x}|^2\f$?
+  bool isNear(const LorentzVector<Value> & w, double epsilon) const 
+  {
     Value2 limit = abs(vect().dot(w.vect()));
-    limit += 0.25 * sqr(t()+w.t());
+    limit += 0.25 * sqr( t() + w.t() );
     limit *= sqr(epsilon);
     Value2 delta = (vect() - w.vect()).mag2();
-    delta +=  sqr(t()-w.t());
-    return (delta <= limit );
+    delta +=  sqr( t() - w.t() );
+    return (delta <= limit);
   }
   
-  LorentzVector<Value> & transform(const SpinOneLorentzRotation & m) {
+  /// Rotate the vector. Resets \f$x^\mu\rightarrow\mathsf{M}^\mu_\nu x^\nu\f$.
+  LorentzVector<Value> & transform(const SpinOneLorentzRotation & m) 
+  {
     return *this = m.operator*(*this);
   }
-  
-  LorentzVector<Value> & operator*=(const SpinOneLorentzRotation & m) {
+
+  /// Rotate the vector. Resets \f$x^\mu\rightarrow\mathsf{M}^\mu_\nu x^\nu\f$.
+  LorentzVector<Value> & operator*=(const SpinOneLorentzRotation & m) 
+  {
     return transform(m);
   }
 
+  /// Dot product with metric \f$(+,-,-,-)\f$
   template <typename U>
   typename BinaryOpTraits<Value,U>::MulT
-  dot(const LorentzVector<U> & a) const {
+  dot(const LorentzVector<U> & a) const 
+  {
     return t() * a.t() - ( x() * a.x() + y() * a.y() + z() * a.z() );
   }
 
 
 public:
 
+  /**
+   * Apply boost.  
+   *
+   * @param bx Component x of the boost.
+   * @param by Component y of the boost.
+   * @param bz Component z of the boost.
+   * @param gamma Optional gamma parameter for higher numerical
+   * accuracy. The user has to ensure consistency. If not given, it
+   * will be calculated as \f$\gamma=1/\sqrt{1-\beta^2}\f$.
+   *
+   */
   LorentzVector<Value> & 
-  boost(double bx, double by, double bz,double gamma=-1.) {
+  boost(double bx, double by, double bz, double gamma=-1.) 
+  {
     double b2 = bx*bx + by*by + bz*bz;
-    if(gamma<0.) gamma = 1.0 / sqrt(1.0 - b2);
+    if(gamma < 0.) 
+      gamma = 1.0 / sqrt(1.0 - b2);
     Value bp = bx*x() + by*y() + bz*z();
     double gamma2 = b2 > 0 ? (gamma - 1.0)/b2 : 0.0;
     
@@ -260,10 +371,25 @@ public:
     return *this;
   }
   
-  LorentzVector<Value> &  boost(Boost b,double gamma=-1.) {
+  /**
+   * Apply boost.  
+   *
+   * @param b Three-vector giving the boost.
+   *
+   * @param gamma Optional gamma parameter for higher numerical
+   * accuracy. The user has to ensure consistency. If not given, it
+   * will be calculated as \f$\gamma=1/\sqrt{1-\beta^2}\f$.
+   *
+   */
+  LorentzVector<Value> &  boost(Boost b, double gamma=-1.) {
     return boost(b.x(), b.y(), b.z(),gamma);
   }
 
+  /**
+   * Apply rotation around the x-axis.
+   *
+   * @param phi Angle in radians.
+   */
   LorentzVector<Value> & rotateX (double phi) {
     double sinphi = sin(phi);
     double cosphi = cos(phi);
@@ -273,6 +399,11 @@ public:
     return *this;
   }
   
+  /**
+   * Apply rotation around the y-axis.
+   *
+   * @param phi Angle in radians.
+   */
   LorentzVector<Value> & rotateY (double phi) {
     double sinphi = sin(phi);
     double cosphi = cos(phi);
@@ -282,6 +413,11 @@ public:
     return *this;
   }
   
+  /**
+   * Apply rotation around the z-axis.
+   *
+   * @param phi Angle in radians.
+   */
   LorentzVector<Value> & rotateZ (double phi) {
     double sinphi = sin(phi);
     double cosphi = cos(phi);
@@ -291,11 +427,14 @@ public:
     return *this;
   }
   
+  /**
+   * Rotate the reference frame to a new z-axis.
+   */
   LorentzVector<Value> & rotateUz (const Axis & axis) {
-    // axis must be normalized !
-    double u1 = axis.x();
-    double u2 = axis.y();
-    double u3 = axis.z();
+    Axis ax = axis.unit();
+    double u1 = ax.x();
+    double u2 = ax.y();
+    double u3 = ax.z();
     double up = u1*u1 + u2*u2;
     if (up>0) {
       up = sqrt(up);
@@ -313,7 +452,8 @@ public:
   }
   
 public:
-
+  /// @name Mathematical assignment operators.
+  //@{
   template <typename ValueB>
   LorentzVector<Value> & operator+=(const LorentzVector<ValueB> & a) {
     theX += a.x();
@@ -322,7 +462,7 @@ public:
     theT += a.t();
     return *this;
   }
-
+  
   template <typename ValueB>
   LorentzVector<Value> & operator-=(const LorentzVector<ValueB> & a) {
     theX -= a.x();
@@ -347,14 +487,20 @@ public:
     theT /= a;
     return *this;
   }
+  //@}
 
 private:
+  /// @name Vector components
+  //@{
   Value theX;
   Value theY;
   Value theZ;
   Value theT;
+  //@}
 };
 
+/// @name Basic mathematical operations
+//@{
 template <typename Value>
 inline LorentzVector<double>
 operator/(const LorentzVector<Value> & v, Value a) {
@@ -391,18 +537,6 @@ operator*(double b, LorentzVector<Value> a) {
 }
 
 template <typename ValueA, typename ValueB>
-inline typename BinaryOpTraits<ValueA,ValueB>::MulT 
-operator*(const LorentzVector<ValueA> & a, const LorentzVector<ValueB> & b) {
-  return a.dot(b);
-}
-
-template <typename Value>
-inline typename BinaryOpTraits<Value,Value>::MulT 
-operator*(const LorentzVector<Value> & a, const LorentzVector<Value> & b) {
-  return a.dot(b);
-}
-
-template <typename ValueA, typename ValueB>
 inline
 LorentzVector<typename BinaryOpTraits<ValueA,ValueB>::MulT> 
 operator*(ValueB a, const LorentzVector<ValueA> & v) {
@@ -424,14 +558,31 @@ operator/(const LorentzVector<ValueA> & v, ValueB b) {
   typedef typename BinaryOpTraits<ValueA,ValueB>::DivT ResultT;
   return LorentzVector<ResultT>(v.x()/b, v.y()/b, v.z()/b, v.t()/b);
 }
+//@}
 
+/// @name Scalar product with metric \f$(+,-,-,-)\f$
+//@{
+template <typename ValueA, typename ValueB>
+inline typename BinaryOpTraits<ValueA,ValueB>::MulT 
+operator*(const LorentzVector<ValueA> & a, const LorentzVector<ValueB> & b) {
+  return a.dot(b);
+}
+
+template <typename Value>
+inline typename BinaryOpTraits<Value,Value>::MulT 
+operator*(const LorentzVector<Value> & a, const LorentzVector<Value> & b) {
+  return a.dot(b);
+}
+//@}
+
+/// Equality
 template <typename Value>
 inline bool
 operator==(const LorentzVector<Value> & a, const LorentzVector<Value> & b) {
   return a.x() == b.x() && a.y() == b.y() && a.z() == b.z() && a.t() == b.t();
 }
 
-//template <typename Value>
+/// Stream output. Format \f$(x,y,z;t)\f$.
 inline ostream & operator<< (ostream & os, const LorentzVector<double> & v) {
   return os << "(" << v.x() << "," << v.y() << "," << v.z()
 	    << ";" << v.t() << ")";
@@ -551,7 +702,8 @@ void iunitstream(IStream & is, LorentzVector<Value> & p, UnitT & u) {
 }
 
 
-
+/// @name Traits for binary operations
+//@{
 template <typename T, typename U>
 struct BinaryOpTraits;
 
@@ -570,11 +722,8 @@ struct BinaryOpTraits<T, LorentzVector<U> > {
   /** The type resulting from multiplication of the template type with
       itself. */
   typedef LorentzVector<typename BinaryOpTraits<T,U>::MulT> MulT;
-  /** The type resulting from division of one template type with
-      another. */
-  //typedef LorentzVector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
-
+//@}
 
 }
 

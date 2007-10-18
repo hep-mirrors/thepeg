@@ -92,6 +92,7 @@ using std::sqrt;
 using std::pow;
 using std::atan2;
 
+/** Square root of an integer. */
 inline double sqrt(int x) {
   return std::sqrt(double(x));
 }

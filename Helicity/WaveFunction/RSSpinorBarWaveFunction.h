@@ -574,7 +574,7 @@ public:
    */
   LorentzRSSpinorBar<double> _wf;
 
-  
+  /// Return wavefunction as LorentzRSSpinorBar<SqrtEnergy>
   LorentzRSSpinorBar<SqrtEnergy> dimensionedWf() {
     LorentzRSSpinorBar<SqrtEnergy> temp(_wf.Type(),_wf.Rep());
     for (unsigned int i=0; i<4; ++i)

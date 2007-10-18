@@ -8,15 +8,8 @@
 #include "ThePEG/Config/Pointers.h"
 
 namespace ThePEG {
-
 class FactoryBase;
-
-}
-
-namespace ThePEG {
-
 ThePEG_DECLARE_POINTERS(ThePEG::FactoryBase,HistFacPtr);
-
 }
 
 #endif

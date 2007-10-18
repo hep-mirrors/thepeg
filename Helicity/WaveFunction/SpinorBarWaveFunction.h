@@ -328,9 +328,11 @@ public:
   inline complex<double> & operator () (int);
 
   /**
-   * Return wavefunction as LorentzSpinor.
+   * Return wavefunction as LorentzSpinorBar<double>.
    */
   inline const LorentzSpinorBar<double> & wave() const;
+
+  /// Return wavefunction as LorentzSpinorBar<SqrtEnergy>
   inline LorentzSpinorBar<SqrtEnergy> dimensionedWave() const;
 
   /**
@@ -518,7 +520,8 @@ private:
    * Storage of the Lorentz SpinorBar wavefunction.
    */
   LorentzSpinorBar<double> _wf;
-  
+
+  /// Return wavefunction as LorentzSpinorBar<SqrtEnergy>
   LorentzSpinorBar<SqrtEnergy> dimensionedWf() const {
     LorentzSpinorBar<SqrtEnergy> temp(_wf.Type(),_wf.Rep());
     for (unsigned int i=0; i<4; ++i)

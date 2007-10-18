@@ -229,9 +229,7 @@ private:
 
 };
 
-/** @cond TRAITSPECIALIZATIONS */
 ThePEG_DECLARE_CLASS_TRAITS(PDFBase,HandlerBase);
-/** @endcond */
 
 }
 

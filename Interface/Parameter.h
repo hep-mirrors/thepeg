@@ -224,10 +224,13 @@ public:
   virtual string type() const;
 
 private:
+
+  /// Implementation of set() for standard types.
   inline void setImpl (InterfacedBase & i, 
 		       string newValue, StandardT) 
     const throw(InterfaceException);
 
+  /// Implementation of set() for dimensioned types.
   inline void setImpl (InterfacedBase & i, 
 		       string newValue, DimensionT) 
     const throw(InterfaceException);

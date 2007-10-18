@@ -474,9 +474,9 @@ public:
    * @param x            The array of the x values
    * @param y            The array of the y values
    * @param z            The array of the z values
-   * @param exp          The array with the symmetric errors on x
-   * @param eyp          The array with the symmetric errors on y
-   * @param ezp          The array with the symmetric errors on z
+   * @param ex           The array with the symmetric errors on x
+   * @param ey           The array with the symmetric errors on y
+   * @param ez           The array with the symmetric errors on z
    * @return             The created IDataPointSet.
    */
   virtual IDataPointSet *

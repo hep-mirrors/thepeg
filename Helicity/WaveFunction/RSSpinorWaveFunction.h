@@ -570,7 +570,8 @@ private:
    * storage of the Lorentz RSSpinor
    */
   LorentzRSSpinor<double> _wf;
-  
+
+  /// Return wavefunction as LorentzRSSpinor<SqrtEnergy>
   LorentzRSSpinor<SqrtEnergy> dimensionedWf() {
     LorentzRSSpinor<SqrtEnergy> temp(_wf.Type(),_wf.Rep());
     for (unsigned int i=0; i<4; ++i)

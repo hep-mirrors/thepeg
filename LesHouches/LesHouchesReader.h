@@ -878,6 +878,7 @@ public:
 
 };
 
+/// Stream output for HEPEUP
 ostream & operator<<(ostream & os, const HEPEUP & h);
 
 }

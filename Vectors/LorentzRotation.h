@@ -79,6 +79,7 @@ public:
    * @param bx The x-component of the boost
    * @param by The y-component of the boost
    * @param bz The z-component of the boost
+   * @param gamma The \f$\gamma\f$ factor (optional)
    */
   LorentzRotation & setBoost (double bx, double by, double bz, double gamma=-1.);
 

@@ -289,36 +289,42 @@ private:
   template<typename Value> friend class Helicity::LorentzRSSpinor;
   template<typename Value> friend class Helicity::LorentzRSSpinorBar;
 
+  /// Matrix components, order: \f$(xx, xy, \ldots, tz, tt)\f$.
   vector<double> matrix_;
 
-  inline SpinOneLorentzRotation (double xx, double xy, double xz, double xt,
-				 double yx, double yy, double yz, double yt,
-				 double zx, double zy, double zz, double zt,
-				 double tx, double ty, double tz, double tt);
+  /// Constructor from doubles.
+  SpinOneLorentzRotation (double xx, double xy, double xz, double xt,
+			  double yx, double yy, double yz, double yt,
+			  double zx, double zy, double zz, double zt,
+			  double tx, double ty, double tz, double tt);
 
-  inline double operator()(unsigned int i, unsigned int j) const {
+  /// Component access by index: x=0, t=3.
+  double operator()(unsigned int i, unsigned int j) const {
     return matrix_[4*i + j];
   }
 
-  inline double & xx_() { return matrix_[ 0]; }
-  inline double & xy_() { return matrix_[ 1]; }
-  inline double & xz_() { return matrix_[ 2]; }
-  inline double & xt_() { return matrix_[ 3]; }
+  /// @name Component access.
+  //@{
+  double & xx_() { return matrix_[ 0]; }
+  double & xy_() { return matrix_[ 1]; }
+  double & xz_() { return matrix_[ 2]; }
+  double & xt_() { return matrix_[ 3]; }
 
-  inline double & yx_() { return matrix_[ 4]; }
-  inline double & yy_() { return matrix_[ 5]; }
-  inline double & yz_() { return matrix_[ 6]; }
-  inline double & yt_() { return matrix_[ 7]; }
+  double & yx_() { return matrix_[ 4]; }
+  double & yy_() { return matrix_[ 5]; }
+  double & yz_() { return matrix_[ 6]; }
+  double & yt_() { return matrix_[ 7]; }
 
-  inline double & zx_() { return matrix_[ 8]; }
-  inline double & zy_() { return matrix_[ 9]; }
-  inline double & zz_() { return matrix_[10]; }
-  inline double & zt_() { return matrix_[11]; }
+  double & zx_() { return matrix_[ 8]; }
+  double & zy_() { return matrix_[ 9]; }
+  double & zz_() { return matrix_[10]; }
+  double & zt_() { return matrix_[11]; }
 
-  inline double & tx_() { return matrix_[12]; }
-  inline double & ty_() { return matrix_[13]; }
-  inline double & tz_() { return matrix_[14]; }
-  inline double & tt_() { return matrix_[15]; }
+  double & tx_() { return matrix_[12]; }
+  double & ty_() { return matrix_[13]; }
+  double & tz_() { return matrix_[14]; }
+  double & tt_() { return matrix_[15]; }
+  //@}
 };
 
 

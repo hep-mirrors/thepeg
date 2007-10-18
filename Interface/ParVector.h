@@ -324,18 +324,24 @@ public:
    */
   virtual void insert(InterfacedBase & ib, string val, int i) const
     throw(InterfaceException);
+
 private:
+  /// Implementation of set() for standard types.
   inline void setImpl(InterfacedBase & ib, string val, int i, StandardT)
     const throw(InterfaceException);
 
+  /// Implementation of set() for dimensioned types.
   inline void setImpl(InterfacedBase & ib, string val, int i, DimensionT) 
     const throw(InterfaceException);
 
+  /// Implementation of insert() for standard types.
   inline void insertImpl(InterfacedBase & ib, string val, int i, StandardT)
     const throw(InterfaceException);
 
+  /// Implementation of insert() for dimensioned types.
   inline void insertImpl(InterfacedBase & ib, string val, int i, DimensionT) 
     const throw(InterfaceException);
+
 public:
   
   /**

@@ -9,7 +9,9 @@
 
 namespace ThePEG {
   namespace Helicity {
+    /// Convenience typedef.
     typedef LorentzVector<complex<double> > LorentzPolarizationVector;
+    /// Convenience typedef.
     typedef LorentzVector<complex<Energy> > LorentzPolarizationVectorE;
   }
 }

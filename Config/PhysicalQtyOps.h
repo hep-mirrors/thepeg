@@ -3,8 +3,13 @@
 #define Physical_Qty_Ops_H
 #include <cmath>
 
-namespace ThePEG {
+/** @file PhysicalQtyOps.h 
+ * Overloads for mathematical operations on physical quantities.
+ */
 
+namespace ThePEG {
+/// @name Overloads for mathematical operations on physical quantities.
+//@{
 // qty = qty * qty
 template<int L1, int L2, int E1, int E2, int Q1, int Q2,
   int DL1, int DL2, int DE1, int DE2, int DQ1, int DQ2>
@@ -249,7 +254,7 @@ min(Qty<0,0,0,DL,DE,DQ> q1,
     double q2) { 
   return q1.rawValue() < q2 ? double(q1) : q2;
 }
-
+//@}
 }
 
 #endif

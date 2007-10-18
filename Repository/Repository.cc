@@ -50,6 +50,11 @@ string & Repository::currentFileName() {
   return theCurrentFileName;
 }
 
+string & Repository::currentReadDir() {
+  static string theCurrentReadDir;
+  return theCurrentReadDir;
+}
+
 int & Repository::exitOnError() {
   static int exitonerror = 0;
   return exitonerror;
@@ -356,6 +361,16 @@ void Repository::stats(ostream & os) {
      << decayModes().size() << endl;
 }
 
+void Repository::read(string filename, ostream & os) {
+  currentReadDir() = StringUtils::dirname(filename);
+  ifstream is(filename.c_str());
+  if ( !is ) {
+    cerr() << "Error: Could not find input file '" << filename << "'" << endl;
+    return;
+  }
+  Repository::read(is, os);
+}
+
 void Repository::read(istream & is, ostream & os, string prompt) {
   string line;
   if ( prompt.size() ) os << prompt;
@@ -451,6 +466,9 @@ string Repository::exec(string command, ostream & os) {
     }
     if ( verb == "read" ) {
       string file = StringUtils::car(command);
+      string dir = currentReadDir();
+      if (dir != "")
+ 	file = dir + '/' + file;
       ifstream input(file.c_str());
       if (!input) return "Error: Could not access file " + file;
       read(input, os);

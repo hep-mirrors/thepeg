@@ -40,10 +40,13 @@ public:
   typedef typename BinaryOpTraits<Value,Value>::MulT Value2;
 
 public:
+  /// Component access.
+  //@{
   Value x() const { return LorentzVector<Value>::x(); }
   Value y() const { return LorentzVector<Value>::y(); }
   Value z() const { return LorentzVector<Value>::z(); }
   Value t() const { return LorentzVector<Value>::t(); }
+  //@}
 
 public:
 
@@ -247,9 +250,6 @@ struct BinaryOpTraits<double, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
       itself. */
   typedef Lorentz5Vector<U> MulT;
-  /** The type resulting from division of one template type with
-      another. */
-  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
 
 template <typename T, typename U>
@@ -267,9 +267,6 @@ struct BinaryOpTraits<std::complex<T>, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
       itself. */
   typedef Lorentz5Vector<std::complex<typename BinaryOpTraits<T,U>::MulT> > MulT;
-  /** The type resulting from division of one template type with
-      another. */
-  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
 
 template <typename T, typename U>
@@ -277,9 +274,6 @@ struct BinaryOpTraits<Lorentz5Vector<T>, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
       itself. */
   typedef typename BinaryOpTraits<T,U>::MulT MulT;
-  /** The type resulting from division of one template type with
-      another. */
-  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
 
 template <typename T, typename U>
@@ -287,9 +281,6 @@ struct BinaryOpTraits<LorentzVector<T>, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
       itself. */
   typedef typename BinaryOpTraits<T,U>::MulT MulT;
-  /** The type resulting from division of one template type with
-      another. */
-  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
 
 template <typename T, typename U>
@@ -297,11 +288,10 @@ struct BinaryOpTraits<Lorentz5Vector<T>, LorentzVector<U> > {
   /** The type resulting from multiplication of the template type with
       itself. */
   typedef typename BinaryOpTraits<T,U>::MulT MulT;
-  /** The type resulting from division of one template type with
-      another. */
-  //typedef Lorentz5Vector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
 
+/// @name Dot product overloads.
+//@{
 template <typename ValueA, typename ValueB>
 inline typename BinaryOpTraits<ValueA,ValueB>::MulT 
 operator*(const Lorentz5Vector<ValueA> & a, const Lorentz5Vector<ValueB> & b) {
@@ -325,7 +315,7 @@ inline typename BinaryOpTraits<Value,Value>::MulT
 operator*(const Lorentz5Vector<Value> & a, const Lorentz5Vector<Value> & b) {
   return a.dot(b);
 }
-
+//@}
 }
 
 #include "Lorentz5Vector.icc"

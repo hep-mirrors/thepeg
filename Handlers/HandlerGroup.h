@@ -448,6 +448,7 @@ inline PersistentIStream & operator>>(PersistentIStream &,
 
 }
 
+/** Macro for declaring a prepost group */
 #define ThePEG_DECLARE_PREPOST_GROUP(HandlerClass,prepost)                    \
 /** Utility function for the interface. */                                    \
 void interfaceSet##prepost##HandlerClass(StepHdlPtr, int);                    \
@@ -458,6 +459,7 @@ void interfaceErase##prepost##HandlerClass(int);                              \
 /** Utility function for the interface. */                                    \
 vector<StepHdlPtr> interfaceGet##prepost##HandlerClass() const
 
+/** Macro for declaring a group interface */
 #define ThePEG_DECLARE_GROUPINTERFACE(HandlerClass,ptr)                       \
 ThePEG_DECLARE_PREPOST_GROUP(HandlerClass,Pre);                               \
 /** Utility function for the interface. */                                    \
@@ -466,6 +468,7 @@ void interfaceSet##HandlerClass(ptr);                                         \
 ptr interfaceGet##HandlerClass() const;                                       \
 ThePEG_DECLARE_PREPOST_GROUP(HandlerClass,Post)
 
+/** Macro for implementing a prepost group. */
 #define ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,pp)      \
 void ThisClass::interfaceSet##pp##HandlerClass(StepHdlPtr p , int i) {     \
   member.interfaceSet##pp##handler(p,i);                                     \
@@ -480,6 +483,7 @@ vector<StepHdlPtr> ThisClass::interfaceGet##pp##HandlerClass() const {     \
   return member.interfaceGet##pp##handlers();                                  \
 }
 
+/** Macro for implementing a group interface. */
 #define ThePEG_IMPLEMENT_GROUPINTERFACE(ThisClass,HandlerClass,member,ptr)     \
 ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,Pre)              \
 void ThisClass::interfaceSet##HandlerClass(ptr p) {                            \
@@ -490,6 +494,7 @@ ptr ThisClass::interfaceGet##HandlerClass() const {                            \
 }                                                                              \
 ThePEG_IMPLEMENT_PREPOST_GROUP(ThisClass,HandlerClass,member,Post)             \
 
+/** Macro for declaring prepost objects. */
 #define ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,pp,ba)           \
 static RefVector<ThisClass,StepHandler> interface##pp##HandlerClass            \
 (#pp #HandlerClass "s",                                                        \
@@ -503,7 +508,7 @@ static RefVector<ThisClass,StepHandler> interface##pp##HandlerClass            \
  &ThisClass::interfaceErase##pp##HandlerClass,                                 \
  &ThisClass::interfaceGet##pp##HandlerClass)
 
- 
+/** Macro for declaring group interface objects. */
 #define ThePEG_DECLARE_GROUPINTERFACE_OBJECTS(ThisClass,HandlerClass)          \
 ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Pre, before);            \
 static Reference<ThisClass,HandlerClass> interface ## HandlerClass             \

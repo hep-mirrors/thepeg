@@ -3,112 +3,185 @@
 #define Physical_Qty_H
 #include "TemplateTools.h"
 
+/** @file 
+ *
+ * The PhysicalQty class allows compile-time checking of dimensional
+ * correctness. Mathematical operations that are inconsistent are
+ * flagged as type errors.
+ *
+ * Do not use the classes directly in ThePEG, use the wrappers defined
+ * in Units.h or Phys_Qty.h instead.
+ */
+
 namespace ThePEG {
 
+/// Helper classes to extend or shorten fractions
+//@{
 template <int M, int II>
-struct QtyHelper {
+struct QtyHelper 
+{
+  /// The numerator, indicating failure.
   static const int I = -999999;
 };
 
 template <int II>
-struct QtyHelper<0,II> {
+struct QtyHelper<0,II> 
+{
+  /// The new numerator.
   static const int I = II;
 };
 
 template <int II, int DI, int DI2>
-struct QtyInt {
+struct QtyInt 
+{
+  /// The new numerator.
   static const int I = QtyHelper<(DI2*II)%DI,(DI2*II)/DI>::I;
 };
+//@}
 
-
+/**
+ * This template class allows the compiler to check calculations with
+ * physical quantities for dimensional correctness. A quantity can be
+ * composed of arbitrary fractional powers of length L, energy E and
+ * charge Q. Commonly used quantities should be typedef'ed (see Units.h).
+ *
+ * Some member functions can break dimensional consistency if the user
+ * is not careful; these are marked explicitly.
+ *
+ * Do not use this class directly in ThePEG, use the pre-defined quantities
+ * from Units.h or the wrapper in Phys_Qty.h instead.
+ */
 template<int L, int E, int Q, int DL = 1, int DE = 1, int DQ = 1>
 class Qty
 {
 private:
-
+  /// Constructor from raw values. Breaks consistency.
   Qty(double val) : rawValue_(val) {}
 
 public:
-
+  /// The squared type.
   typedef Qty<2*L,2*E,2*Q,DL,DE,DQ> Squared;
 
-  static Qty<L,E,Q,DL,DE,DQ> baseunit() {
+  /// Basic unit of this quantity.
+  static Qty<L,E,Q,DL,DE,DQ> baseunit() 
+  {
     return Qty<L,E,Q,DL,DE,DQ>(1.0);
   }
 
-  // default constructor to 0
+  /// Default constructor to 0.
   Qty() : rawValue_(0.0) {}
 
+  /// Constructor from a compatible quantity
   template <int DL2, int DE2, int DQ2>
-  Qty(const Qty<QtyInt<L,DL,DL2>::I,QtyInt<E,DE,DE2>::I,QtyInt<Q,DQ,DQ2>::I,
+  Qty(const Qty<QtyInt<L,DL,DL2>::I,
+                QtyInt<E,DE,DE2>::I,
+                QtyInt<Q,DQ,DQ2>::I,
                 DL2,DE2,DQ2> & q)
     : rawValue_(q.rawValue()) {}
 
+  /// Access to the raw value. Breaks consistency.
   double rawValue() const { return rawValue_; }
 
+  /// Assignment multiplication by dimensionless number.
   Qty<L,E,Q,DL,DE,DQ> & operator*=(double x) { rawValue_ *= x; return *this; }
+
+  /// Assignment division by dimensionless number.
   Qty<L,E,Q,DL,DE,DQ> & operator/=(double x) { rawValue_ /= x; return *this; }
 
+  /// Assignment addition with compatible quantity.
   template <int DL2, int DE2, int DQ2>
   Qty<L,E,Q,DL,DE,DQ> & 
   operator+=(const Qty<QtyInt<L,DL,DL2>::I,
 	               QtyInt<E,DE,DE2>::I,
 	               QtyInt<Q,DQ,DQ2>::I,
-	     DL2,DE2,DQ2> x) { 
+	               DL2,DE2,DQ2> x) 
+  { 
     rawValue_ += x.rawValue(); 
     return *this; 
   }
 
+  /// Assignment subtraction with compatible quantity.
   template <int DL2, int DE2, int DQ2>
   Qty<L,E,Q,DL,DE,DQ> & 
   operator-=(const Qty<QtyInt<L,DL,DL2>::I,
 	               QtyInt<E,DE,DE2>::I,
 	               QtyInt<Q,DQ,DQ2>::I,
-	     DL2,DE2,DQ2> x) { 
+  	               DL2,DE2,DQ2> x) 
+  { 
     rawValue_ -= x.rawValue(); 
     return *this; 
   }
 
 private:
+  /// The raw value in units of Qty::baseunit().
   double rawValue_;
 };
 
-// specialization for <0,0,0> with conversions to double
+/// Specialization of Qty for <0,0,0> with conversions to double.
 template<int DL, int DE, int DQ>
 class Qty<0,0,0,DL,DE,DQ>
 {
 public:
+  /// The squared type.
   typedef Qty<0,0,0,DL,DE,DQ> Squared;
 
-  static Qty<0,0,0,DL,DE,DQ> baseunit() {
-    return Qty<0,0,0,DL,DE,DQ>(1.0);
+  /// Basic unit of this quantity.
+  static double baseunit() {
+    return 1.0;
   }
 
-  // default constructor to 0, can take doubles, too
+  /// Default constructor form a double.
   Qty(double x = 0.0) : rawValue_(x) {}
 
+  /// Constructor from a compatible quantity
   template <int DL2, int DE2, int DQ2>
   Qty(const Qty<0,0,0,DL2,DE2,DQ2> & q) : rawValue_(q.rawValue()) {}
 
+  /// Access to the raw value.
   double rawValue() const { return rawValue_; }
+
+  /// Cast to double.
   operator double() const { return rawValue_; }
 
+  /// Assignment multiplication by dimensionless number.
   Qty<0,0,0,DL,DE,DQ> & operator*=(double x) { rawValue_ *= x; return *this; }
+
+  /// Assignment division by dimensionless number.
   Qty<0,0,0,DL,DE,DQ> & operator/=(double x) { rawValue_ /= x; return *this; }
 
-  Qty<0,0,0,DL,DE,DQ> & operator+=(const Qty<0,0,0,DL,DE,DQ> x) { 
+  /// Assignment addition with compatible quantity.
+  template <int DL2, int DE2, int DQ2>
+  Qty<0,0,0,DL,DE,DQ> & operator+=(const Qty<0,0,0,DL2,DE2,DQ2> x) { 
     rawValue_ += x.rawValue(); 
     return *this; 
   }
-  Qty<0,0,0,DL,DE,DQ> & operator-=(const Qty<0,0,0,DL,DE,DQ> x) { 
+
+  /// Assignment subtraction with compatible quantity.
+  template <int DL2, int DE2, int DQ2>
+  Qty<0,0,0,DL,DE,DQ> & operator-=(const Qty<0,0,0,DL2,DE2,DQ2> x) { 
     rawValue_ -= x.rawValue(); 
     return *this; 
   }
 
+  /// Assignment addition with double.
+  Qty<0,0,0,DL,DE,DQ> & operator+=(double x) { 
+    rawValue_ += x; 
+    return *this; 
+  }
+
+  /// Assignment subtraction with double.
+  Qty<0,0,0,DL,DE,DQ> & operator-=(double x) { 
+    rawValue_ -= x; 
+    return *this; 
+  }
+
 private:
+  /// The raw value.
   double rawValue_;
 };
 
+/// @name Result types for binary operations.
+//@{
 template <typename T, typename U> 
 struct BinaryOpTraits;
 
@@ -164,54 +237,15 @@ struct BinaryOpTraits<Qty<L1,E1,Q1,DL1,DE1,DQ1>,
   typedef Qty<L1,E1,Q1,
               DL1,DE1,DQ1> DivT;
 };
+//@}
 
-// template <typename T>
-// class TypeTraits
-// {
-// private:
-//   template <typename U> 
-//   struct DimensionTraits 
-//   {
-//     enum { result = false };
-//     typedef StandardT Type;
-//     static const U baseunit() {
-//       return 1;
-//     }
-//   };
-  
-//   template <int L, int E, int Q, int DL, int DE, int DQ> 
-//   struct DimensionTraits<Qty<L,E,Q,DL,DE,DQ> > 
-//   {
-//     enum { result = true };
-//     typedef DimensionT Type;
-//     static const Qty<L,E,Q,DL,DE,DQ> baseunit() {
-//       return Qty<L,E,Q,DL,DE,DQ>::baseunit();
-//     }
-//   };
-
-//   template <int DL, int DE, int DQ> 
-//   struct DimensionTraits<Qty<0,0,0,DL,DE,DQ> > 
-//   {
-//     enum { result = false };
-//     typedef StandardT Type;
-//     static const Qty<0,0,0,DL,DE,DQ> baseunit() {
-//       return 1.0;
-//     }
-//   };
-  
-// public:
-//   enum { hasDimension = DimensionTraits<T>::result };
-//   typedef typename DimensionTraits<T>::Type DimType;
-//   static const T baseunit;
-// };
-
-// template<typename T>
-// const T TypeTraits<T>::baseunit = DimensionTraits<T>::baseunit();
-
+/// @name Type traits for alternative code generation.
+//@{
 template <int L, int E, int Q, int DL, int DE, int DQ> 
 struct TypeTraits<Qty<L,E,Q,DL,DE,DQ> >
 {
   enum { hasDimension = true };
+  /// Type switch set to dimensioned type.
   typedef DimensionT DimType;
   static const Qty<L,E,Q,DL,DE,DQ> baseunit;
 };
@@ -225,6 +259,7 @@ template <int DL, int DE, int DQ>
 struct TypeTraits<Qty<0,0,0,DL,DE,DQ> >
 {
   enum { hasDimension = false };
+  /// Type switch set to standard type.
   typedef StandardT DimType;
   static const double baseunit;
 };
@@ -232,7 +267,7 @@ struct TypeTraits<Qty<0,0,0,DL,DE,DQ> >
 template <int DL, int DE, int DQ> 
 const double 
 TypeTraits<Qty<0,0,0,DL,DE,DQ> >::baseunit = 1.0;
-
+//@}
 
 }
 

@@ -3,37 +3,52 @@
 #define Physical_Qty_Complex_H
 #include <complex>
 
+/** @file PhysicalQtyComplex.h 
+ * Overloads for operations on complex physical quantities.
+ */
+
 namespace std {
-  // specialization for complex<Qty<0,0,0>> with conversions to complex<double>
+  /**
+   *  Template specialization for std::complex<Qty<0,0,0> > 
+   *  with conversions to complex<double>
+   */
   template<int DL, int DE, int DQ>
   class complex<ThePEG::Qty<0,0,0,DL,DE,DQ> >
   {
   public:
+    /// Default constructor
     complex(double r=0.0, double i=0.0) 
       : rawValue_(r,i) {}
 
+    /// Constructor from complex<double>
     complex(complex<double> C)
       : rawValue_(C) {}
 
+    /**
+     * The internal representation of the dimensionful quantity.
+     * Using this will break dimension-consistency.
+     */ 
     complex<double> rawValue() const { return rawValue_; }
 
+    /// Real part
     double real() const { return rawValue_.real(); }
-    double imag() const { return rawValue_.imag(); }
 
-//     gcc-3.3 has a problem with these
-//     double & real() { return rawValue_.real(); }
-//     double & imag() { return rawValue_.imag(); }
-    
+    /// Imaginary part
+    double imag() const { return rawValue_.imag(); }
+   
+    /// Cast to complex<double>
     operator complex<double>() const {
       return rawValue_;
     }
     
+    /// Addition-assignment
     complex<ThePEG::Qty<0,0,0,DL,DE,DQ> > & 
     operator+=(const complex<ThePEG::Qty<0,0,0,DL,DE,DQ> > x) { 
       rawValue_ += x.rawValue(); 
       return *this; 
     }
     
+    /// Subtraction-assignment
     complex<ThePEG::Qty<0,0,0,DL,DE,DQ> > & 
     operator-=(const complex<ThePEG::Qty<0,0,0,DL,DE,DQ> > x) { 
       rawValue_ -= x.rawValue(); 
@@ -41,6 +56,7 @@ namespace std {
     }
 
   private:
+    /// Internal value of the dimensioned quantity
     complex<double> rawValue_;
   };
 }
@@ -48,6 +64,8 @@ namespace std {
 
 namespace ThePEG {
 
+/// @name Overloads for mathematical operations
+//@{
 // complex qty = complex qty * complex qty
 template<int L1, int L2, int E1, int E2, int Q1, int Q2,
   int DL1, int DL2, int DE1, int DE2, int DQ1, int DQ2>
@@ -299,7 +317,7 @@ operator/=(std::complex<Qty<L,E,Q,DL,DE,DQ> > & q1,
   q1 = q1 / q2;
   return q1;
 }
-
+//@}
 }
 
 #endif

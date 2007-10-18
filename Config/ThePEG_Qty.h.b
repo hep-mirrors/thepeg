@@ -13,7 +13,7 @@ namespace ThePEG {
 #include <cmath>
 namespace ThePEG {
 
-// pow<P,R>(double) --- required for consistency
+/// Fractional powers of a double.
 template<int P, int R>
 double pow(double q) {
   return std::pow(q,double(P)/double(R));
@@ -24,8 +24,10 @@ double pow(double q) {
 template <int L, int E, int Q, int DL = 1, int DE = 1, int DQ = 1>
 struct QTY {
 #ifdef ThePEG_HAS_UNITS_CHECKING
+  /// The QTY type is dimensioned.
   typedef Qty<L,E,Q,DL,DE,DQ> Type;
 #else
+  /// The QTY type is double.
   typedef double	      Type;
 #endif
 };

@@ -26,19 +26,19 @@ namespace Units {
 /** Energy. */
 typedef QTY<0,1,0>::Type Energy;
 
-/** Mass has the same unit as Energy <=> c == 1 */
+/** Mass has the same unit as Energy <=> c == 1. */
 typedef Energy Mass;
 
 /** Length. */
 typedef QTY<1,0,0>::Type Length;
 
-/** Time has the same unit as Length. <=> c == 1*/
+/** Time has the same unit as Length. <=> c == 1. */
 typedef Length Time;
 
 /** Inverse Length. */
 typedef QTY<-1,0,0>::Type InvLength;
 
-/** Velocities are dimensionless fractions of c */
+/** Velocities are dimensionless fractions of c. */
 typedef double Velocity;
 
 /** Charge. */
@@ -47,78 +47,77 @@ typedef QTY<0,0,1>::Type Charge;
 /** Angular momentum. */
 typedef QTY<1,1,0>::Type AngularMomentum;
 
-/** Tension */
+/** Tension. */
 typedef QTY<-1,1,0>::Type Tension;
 
 /** Area will be assumed to be Length\f$^2\f$. */
 typedef QTY<2,0,0>::Type Area;
 
-/** Inverse Area */
+/** Inverse Area. */
 typedef QTY<-2,0,0>::Type InvArea;
 
 /** Cross section is an area. */
 typedef Area CrossSection;
 
-/** Energy\f$^2\f$. */
-typedef QTY<0,2,0>::Type Energy2;
-typedef QTY<0,3,0>::Type Energy3;
+/**
+ * @name Higher powers of energy.
+ * Even higher powers can be created with similar typedefs.
+ */
+//@{
+typedef QTY<0, 2, 0>::Type Energy2;
+typedef QTY<0, 3, 0>::Type Energy3;
+typedef QTY<0, 4, 0>::Type Energy4;
+typedef QTY<0, 5, 0>::Type Energy5;
+typedef QTY<0, 6, 0>::Type Energy6;
+typedef QTY<0, 7, 0>::Type Energy7;
+typedef QTY<0, 8, 0>::Type Energy8;
+typedef QTY<0, 9, 0>::Type Energy9;
+typedef QTY<0,10, 0>::Type Energy10;
+typedef QTY<0,11, 0>::Type Energy11;
+typedef QTY<0,12, 0>::Type Energy12;
 
-/** Energy\f$^4\f$. */
-typedef QTY<0,4,0>::Type Energy4;
-typedef QTY<0,5,0>::Type Energy5;
-typedef QTY<0,6,0>::Type Energy6;
-typedef QTY<0,7,0>::Type Energy7;
-typedef QTY<0,8,0>::Type Energy8;
-typedef QTY<0,9,0>::Type Energy9;
-typedef QTY<0,10,0>::Type Energy10;
-typedef QTY<0,11,0>::Type Energy11;
-typedef QTY<0,12,0>::Type Energy12;
+typedef QTY<0, 1,0, 1,2,1>::Type SqrtEnergy;
+typedef QTY<0,-1,0, 1,2,1>::Type InvSqrtEnergy;
 
-typedef QTY<0,1,0,1,2,1>::Type SqrtEnergy;
-typedef QTY<0,-1,0,1,2,1>::Type InvSqrtEnergy;
+typedef QTY<0, -1, 0>::Type InvEnergy;
+typedef QTY<0, -2, 0>::Type InvEnergy2;
+typedef QTY<0, -3, 0>::Type InvEnergy3;
+typedef QTY<0, -4, 0>::Type InvEnergy4;
+typedef QTY<0, -5, 0>::Type InvEnergy5;
+typedef QTY<0, -6, 0>::Type InvEnergy6;
+typedef QTY<0, -7, 0>::Type InvEnergy7;
+typedef QTY<0, -8, 0>::Type InvEnergy8;
+typedef QTY<0, -9, 0>::Type InvEnergy9;
+typedef QTY<0,-10, 0>::Type InvEnergy10;
+typedef QTY<0,-11, 0>::Type InvEnergy11;
+typedef QTY<0,-12, 0>::Type InvEnergy12;
+//@}
 
 /** CrossSection*Energy2. */
 typedef QTY<2,2,0>::Type Energy2XSec;
+
 /** CrossSection/Energy2. */
 typedef QTY<2,-2,0>::Type DiffXSec;
 
-/** CrossSection/Energy2/Energy2. */
+/** CrossSection/Energy4. */
 typedef QTY<2,-4,0>::Type Diff2XSec;
 
-/** CrossSection/Energy2/Energy2/Energy2 */
+/** CrossSection/Energy6 */
 typedef QTY<2,-6,0>::Type Diff3XSec;
-
-/** 1/Energy. */
-typedef QTY<0,-1,0>::Type InvEnergy;
-
-/** 1/Energy<sup>2</sup>. */
-typedef QTY<0,-2,0>::Type InvEnergy2;
-typedef QTY<0,-3,0>::Type InvEnergy3;
-
-/** 1/Energy<sup>4</sup>. */
-typedef QTY<0,-4,0>::Type InvEnergy4;
-typedef QTY<0,-5,0>::Type InvEnergy5;
-typedef QTY<0,-6,0>::Type InvEnergy6;
-typedef QTY<0,-7,0>::Type InvEnergy7;
-typedef QTY<0,-8,0>::Type InvEnergy8;
-typedef QTY<0,-9,0>::Type InvEnergy9;
-typedef QTY<0,-10,0>::Type InvEnergy10;
-typedef QTY<0,-11,0>::Type InvEnergy11;
-typedef QTY<0,-12,0>::Type InvEnergy12;
 
 /** Scale is the same as a squared energy. */
 typedef Energy2 Scale;
 
-/** A point in normal three-dimensional space. */
+/** A point in three-dimensional euclidean space. */
 typedef Vector3<Length> Point;
 
-/** A distance in normal three-dimensional space. */
+/** A distance in three-dimensional euclidean space. */
 typedef Vector3<Length> Distance;
 
-/** A direction in normal three-dimensional space. */
+/** A direction in three-dimensional euclidean space. */
 typedef Vector3<double> Axis;
 
-/** A momentum in normal three-dimensional space. */
+/** A momentum in three-dimensional euclidean space. */
 typedef Vector3<Energy> Momentum3;
 
 /** A three-dimensional boost vector. */
@@ -144,7 +143,8 @@ typedef Lorentz5Vector<Energy> Lorentz5Momentum;
 /** Transverse components of a momentum. */
 typedef Transverse<Energy> TransverseMomentum;
 
-
+/// @name Pre-defined basic units.
+//@{
 const Length millimeter = TypeTraits<Length>::baseunit;
 const Energy MeV = TypeTraits<Energy>::baseunit;
 const Charge eplus = TypeTraits<Charge>::baseunit;
@@ -170,20 +170,27 @@ const Area microbarn = 1.0e6  * picobarn;
 const Area millibarn = 1.0e9  * picobarn;
 const Area barn      = 1.0e12 * picobarn; 
 const Area femtobarn = 1.0e-3 * picobarn;
+//@}
 
-// PDG 2006 value 197.326968(17) MeV fm
+/// Planck's constant times c (PDG 2006 value 197.326968(17) MeV fm)
 const QTY<1,1,0>::Type hbarc = 197.326968e-15 * MeV * meter;
+/// Planck's constant (PDG 2006 value 197.326968(17) MeV fm)
 const QTY<1,1,0>::Type hbar_Planck = hbarc / 1.0;
-
 }
 
-// Used for temporary removal of unit checking in Herwig Helicity code
+/** 
+ * Use symbols from this namespace to make forced breaks of unit
+ * consistency explicit.
+ */
 namespace UnitRemoval {
+  /// @name Helper units to make breaks of unit consistency explicit.
+  //@{
   const Units::Energy E = Units::MeV;
 
   const Units::Energy2 E2 = E*E;
   const Units::Energy3 E3 = E*E2;
   const Units::Energy4 E4 = E2*E2;
+
   const Units::InvEnergy InvE = 1.0/E;
   const Units::InvEnergy2 InvE2 = 1.0/E2;
   const Units::InvEnergy3 InvE3 = 1.0/E3;
@@ -191,6 +198,7 @@ namespace UnitRemoval {
 
   const Units::SqrtEnergy SqrtE = sqrt(E);
   const Units::InvSqrtEnergy InvSqrtE = 1.0/sqrt(E);
+  //@}
 }
 
 }

@@ -165,6 +165,17 @@ public:
   static void read(istream & is, ostream & os, string prompt = "");
 
   /**
+   * Read commands from a file and send them one by one to exec().
+   *
+   * Passes the call through to read(istream, ostream), but also sets
+   * currentReadDir() correctly.
+   *
+   * @param filename the file from which to read commands.
+   * @param os the stream where output is written.
+   */
+  static void read(string filename, ostream & os);
+
+  /**
    * Interpret the command in \a cmd and return possible
    * messages. This is the main function for the command-line
    * interface. The syntax is described elsewhere. The ostream
@@ -224,6 +235,11 @@ protected:
    * The default file name used by save().
    */
   static string & currentFileName();
+
+  /**
+   * The current directory for "read" commands
+   */
+  static string & currentReadDir();
 
 public:
 
