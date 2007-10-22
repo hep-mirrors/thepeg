@@ -8,11 +8,6 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Repository/EventGenerator.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ACDCSampler.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -39,9 +34,10 @@ void ACDCSampler::initialize() {
 
 double ACDCSampler::generate() {
   if ( !theSampler.generate() ) throw EventLoopException()
-    << "The maximum number of attempts per event (" << eventHandler()->maxLoop()
-    << ") in event handler '" << eventHandler()->name() << "' was exceeded."
-    << Exception::maybeabort;
+    << "The maximum number of attempts (" << eventHandler()->maxLoop()
+    << ") to generate the kinematics in the ACDCSampler was exceeded. For "
+    << "the event handler '" << eventHandler()->name() << "'."
+    << Exception::eventerror;
   lastPoint() = theSampler.lastPoint();
   return 1.0;
 }
