@@ -137,6 +137,14 @@ protected:
   /** @name Internal helper functions. */
   //@{
   /**
+   * Read a line from the index file
+   */
+  bool indexLine(istream & is, int & set, int & mem, string & file,
+		 int & pdftyp, int & pdfgup, int & pdfsup,
+		 double & xmin, double & xmax,
+		 double & q2min, double & q2max) const;
+
+  /**
    * Call the Fortran InitPDFSetM function.
    */
   void initpdfsetm() const;

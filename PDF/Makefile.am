@@ -13,7 +13,7 @@ INCLUDEFILES = $(DOCFILES) BeamParticleData.xh \
                PartonExtractor.xh RemnantHandler.xh \
                PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh
 
-INPUTFILES = LHAIndex.txt
+INPUTFILES = PDFsets.index
 
 CLEANFILES = done-all-links
 
@@ -62,7 +62,7 @@ BaryonRemnants_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 BaryonRemnants_la_SOURCES = BaryonRemnants.cc BaryonRemnants.h \
                             BaryonRemnants.icc 
 
-dist_pkgdata_DATA = LHAIndex.txt
+dist_pkgdata_DATA = PDFsets.index
 
 all-local: done-all-links
 

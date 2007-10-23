@@ -194,7 +194,7 @@ std::string LHAPDF::getIndexPath() {
   is >> path;
   is.close();
   system("rm -f /tmp/lhapdfpath");
-  return path + "/../LHAIndex.txt";
+  return path + ".index";
 }
 
 bool LHAPDF::openLHAIndex(ifstream & is) {
@@ -203,16 +203,26 @@ bool LHAPDF::openLHAIndex(ifstream & is) {
   if ( is ) return true;
   is.clear();
   string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
-  is.open((instpath + "/../../share/ThePEG/LHAIndex.txt").c_str());
+  is.open((instpath + "/../../share/ThePEG/PDFsets.index").c_str());
   if ( is ) return true;
   is.clear();
-  is.open("../PDF/LHAIndex.txt");
+  is.open("../PDF/PDFsets.index");
   if ( is ) return true;
   is.clear();
-  is.open("../../ThePEG/PDF/LHAIndex.txt");
+  is.open("../../ThePEG/PDF/PDFsets.index");
   if ( is ) return true;
   is.clear();
   return false;
+}
+
+bool LHAPDF::indexLine(istream & is, int & set, int & mem, string & file,
+		       int & pdftyp, int & pdfgup, int & pdfsup,
+		       double & xmin, double & xmax,
+		       double & q2min, double & q2max) const {
+  string dummy;
+  is >> set >> pdftyp >> pdfgup >> pdfsup >> file >> mem
+     >> q2min >> q2max >> xmin >> xmax;
+  return getline(is,dummy);
 }
 
 void LHAPDF::setMinMax() {
@@ -231,9 +241,9 @@ void LHAPDF::setMinMax() {
   int pdfgup = 0;
   int pdfsup = 0;
 
-  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
-	     >> q2min >> q2max >> xmin >> xmax ) {
-    if ( file == thePDFName && mem == theMember ) {
+  while ( indexLine(is, set, mem, file, pdftyp, pdfgup, pdfsup,
+		    xmin, xmax, q2min, q2max) ) {
+    if ( file == thePDFName && mem >= theMember ) {
       xMin = xmin;
       xMax = xmax;
       Q2Min = q2min*GeV2;
@@ -259,9 +269,9 @@ void LHAPDF::setPDFNumber(int n) {
   int pdfgup = 0;
   int pdfsup = 0;
 
-  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
-	     >> q2min >> q2max >> xmin >> xmax ) {
-    if ( n == set + mem ) {
+  while ( indexLine(is, set, mem, file, pdftyp, pdfgup, pdfsup,
+		    xmin, xmax, q2min, q2max) ) {
+    if ( n == set ) {
       thePDFName = file;
       theMember = mem;
       return;
@@ -285,9 +295,9 @@ int LHAPDF::getPDFNumber() const {
   int pdfgup = 0;
   int pdfsup = 0;
 
-  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
-	     >> q2min >> q2max >> xmin >> xmax )
-    if ( thePDFName == file && theMember == mem ) return set + mem;
+  while ( indexLine(is, set, mem, file, pdftyp, pdfgup, pdfsup,
+		    xmin, xmax, q2min, q2max) )
+    if ( thePDFName == file && theMember >= mem ) return set;
   return 0;
 }
 
@@ -307,8 +317,8 @@ void LHAPDF::setPDFLIBNumbers(int group, int num) {
   int pdfgup = 0;
   int pdfsup = 0;
 
-  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
-	     >> q2min >> q2max >> xmin >> xmax ) {
+  while ( indexLine(is, set, mem, file, pdftyp, pdfgup, pdfsup,
+		    xmin, xmax, q2min, q2max) ) {
     if ( pdftyp == thePType && pdfgup == group && pdfsup == num ) {
       thePDFName = file;
       theMember = mem;
@@ -342,9 +352,9 @@ pair<int,int> LHAPDF::getPDFLIBNumbers() const {
   int pdfgup = 0;
   int pdfsup = 0;
 
-  while ( is >> set >> mem >> pdftyp >> pdfgup >> pdfsup >> file
-	     >> q2min >> q2max >> xmin >> xmax )
-    if ( thePDFName == file && theMember == mem )
+  while ( indexLine(is, set, mem, file, pdftyp, pdfgup, pdfsup,
+		    xmin, xmax, q2min, q2max) )
+    if ( thePDFName == file && theMember >= mem )
       return make_pair(pdfgup, pdfsup);
   return make_pair(0, 0);
 }
