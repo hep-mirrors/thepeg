@@ -2,9 +2,9 @@ CLEANFILES = AllInterfaces.h
 
 docdir = $(pkgdatadir)/Doc
 
-doc_DATA = refman.conf refman.h MakeDocs.in
+doc_DATA = refman.conf refman.h
 
-dist_doc_DATA = repository.hlp
+dist_doc_DATA = repository.hlp MakeDocs.in
 
 doc_SCRIPTS = fixinterfaces.pl
 
