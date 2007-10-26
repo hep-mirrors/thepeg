@@ -43,9 +43,14 @@ string SwitchBase::exec(InterfacedBase & i, string action,
 	  val = 1;
 	else if ( sval == "false" && theOptions.find(0) != theOptions.end() )
 	  val = 0;
-	else
-	  return "Error: no option '" + StringUtils::car(arguments) +
-	    "' found for switch '" + i.fullName() + ":" +name() + "'.";
+	else {
+	  string errortext = "Error: no option '" + StringUtils::car(arguments) +
+	    "' found for switch\n'" + i.fullName() + ":" +name() + "'\nValid options are: ";
+	  for (StringMap::const_iterator it = theOptionNames.begin();
+	       it != theOptionNames.end(); ++it )
+	    errortext += it->first + ' ';
+	  return errortext + '\n';
+	}
       } else
 	val = sit->second.value();
     }
