@@ -157,9 +157,12 @@ inline Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part) {
   const Complex ii(0.,1.);
 
   complex<Energy2> masswidth;
-
-  if(p2 < 0.*MeV2)
+  if(iopt==5) {
+    return Complex(UnitRemoval::E2/p2);
+  }
+  else if(p2 < 0.*MeV2) {
     masswidth = 0.*MeV2;
+  }
   else {
     switch (iopt) {
     case 1: 
@@ -173,8 +176,6 @@ inline Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part) {
       break;
     case 4: 
       return 1.0;
-    case 5: 
-      return Complex(UnitRemoval::E2/p2);
     case 6: 
       masswidth = ii * mass2 * width / p;
       return Complex(UnitRemoval::E2 * (mass2/p2) / (p2-mass2+masswidth));
@@ -185,7 +186,7 @@ inline Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part) {
   }
   return Complex(UnitRemoval::E2/(p2-mass2+masswidth));
 }
-
+  
 // propagator times coupling for a diagram
 inline Complex VertexBase::normPropagator(int iopt, Energy2 p2,tcPDPtr part) {
   return _norm*propagator(iopt,p2,part);

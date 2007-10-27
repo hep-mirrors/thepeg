@@ -28,8 +28,7 @@ void FFVVertex::Init() {
 Complex FFVVertex::evaluate(Energy2 q2,
 			    const SpinorWaveFunction & sp, 
 			    const SpinorBarWaveFunction & sbar,
-			    const VectorWaveFunction & vec)
-{
+			    const VectorWaveFunction & vec) {
   // extract the pointers to the particle data objects
   tcPDPtr  Psp=sp.getParticle();
   tcPDPtr  Pvec=vec.getParticle();
@@ -121,8 +120,7 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   Complex e1p2=vec.x()+ii*vec.y();
   Complex e1m2=vec.x()-ii*vec.y();
   // momentum components
-  Energy mass  = out->mass();
-  if(iopt==5) mass=Energy();
+  Energy mass  = iopt==5 ? Energy() : out->mass();
   complex<Energy> p1p2=pout.x()+ii*pout.y();
   complex<Energy> p1m2=pout.x()-ii*pout.y();
   // complex nos for for the spinor
@@ -133,60 +131,54 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   // ensure the spinor is in the correct dirac representation
   LorentzSpinor<double>    spt  =sp  .wave().transformRep(dirac);
   // low energy Dirac matrix defn
-  if(dirac==HaberDRep)
-    {   
-      // first step compute the polarization vector combined with the spinor
-      Complex st[4]={0.,0.,0.,0.};
-      // first the left piece as this is virtually always needed
-      if(_left!=0.)
-	{
-	  st[0] +=_left*( e0p3*(spt.s1()-spt.s3())+e1m2*(spt.s2()-spt.s4()));
-	  st[1] +=_left*( e1p2*(spt.s1()-spt.s3())+e0m3*(spt.s2()-spt.s4()));
-	  st[2] +=_left*( e0p3*(spt.s1()-spt.s3())+e1m2*(spt.s2()-spt.s4()));
-	  st[3] +=_left*( e1p2*(spt.s1()-spt.s3())+e0m3*(spt.s2()-spt.s4()));
-	}
-      // then the right piece (often not needed eg W vertex)
-      if(_right!=0.)
-	{
-	  st[0] +=_right*( e0m3*(spt.s1()+spt.s3())-e1m2*(spt.s2()+spt.s4()));
-	      st[1] +=_right*(-e1p2*(spt.s1()+spt.s3())+e0p3*(spt.s2()+spt.s4()));
-	      st[2] +=_right*(-e0m3*(spt.s1()+spt.s3())+e1m2*(spt.s2()+spt.s4()));
-	      st[3] +=_right*( e1p2*(spt.s1()+spt.s3())-e0p3*(spt.s2()+spt.s4()));
-	}
-      // then combine this with pslash+m
-      Energy p0pm=pout.e()+mass;
-      Energy p0mm=pout.z()*(pout.z()/p0pm);
-      fact *= 0.5;
-      s1 =UnitRemoval::InvE * fact*( p0pm*st[0]-pout.z()*st[2]-    p1m2*st[3]);
-      s2 =UnitRemoval::InvE * fact*( p0pm*st[1]-    p1p2*st[2]+pout.z()*st[3]);
-      s3 =UnitRemoval::InvE * fact*(-p0mm*st[2]+pout.z()*st[0]+    p1m2*st[1]);
-      s4 =UnitRemoval::InvE * fact*(-p0mm*st[3]+    p1p2*st[0]-pout.z()*st[1]);
+  if(dirac==HaberDRep) {   
+    // first step compute the polarization vector combined with the spinor
+    Complex st[4]={0.,0.,0.,0.};
+    // first the left piece as this is virtually always needed
+    if(_left!=0.) {
+      st[0] +=_left*( e0p3*(spt.s1()-spt.s3())+e1m2*(spt.s2()-spt.s4()));
+      st[1] +=_left*( e1p2*(spt.s1()-spt.s3())+e0m3*(spt.s2()-spt.s4()));
+      st[2] +=_left*( e0p3*(spt.s1()-spt.s3())+e1m2*(spt.s2()-spt.s4()));
+      st[3] +=_left*( e1p2*(spt.s1()-spt.s3())+e0m3*(spt.s2()-spt.s4()));
+    }
+    // then the right piece (often not needed eg W vertex)
+    if(_right!=0.) {
+      st[0] +=_right*( e0m3*(spt.s1()+spt.s3())-e1m2*(spt.s2()+spt.s4()));
+      st[1] +=_right*(-e1p2*(spt.s1()+spt.s3())+e0p3*(spt.s2()+spt.s4()));
+      st[2] +=_right*(-e0m3*(spt.s1()+spt.s3())+e1m2*(spt.s2()+spt.s4()));
+      st[3] +=_right*( e1p2*(spt.s1()+spt.s3())-e0p3*(spt.s2()+spt.s4()));
+    }
+    // then combine this with pslash+m
+    Energy p0pm=pout.e()+mass;
+    Energy p0mm=pout.z()*(pout.z()/p0pm);
+    fact *= 0.5;
+    s1 =UnitRemoval::InvE * fact*( p0pm*st[0]-pout.z()*st[2]-    p1m2*st[3]);
+    s2 =UnitRemoval::InvE * fact*( p0pm*st[1]-    p1p2*st[2]+pout.z()*st[3]);
+    s3 =UnitRemoval::InvE * fact*(-p0mm*st[2]+pout.z()*st[0]+    p1m2*st[1]);
+    s4 =UnitRemoval::InvE * fact*(-p0mm*st[3]+    p1p2*st[0]-pout.z()*st[1]);
   }
   // high energy Dirac matrix defn
-  else if(dirac==HELASDRep)
-    { 
-      complex<Energy> p0p3=pout.e() +   pout.z();
-      complex<Energy> p0m3=pout.e() -   pout.z();
-      // left piece
-      if(_left!=0.)
-	{
-	  Complex a3=_left*fact*( spt.s1()*e0p3+spt.s2()*e1m2);
-	  Complex a4=_left*fact*( spt.s1()*e1p2+spt.s2()*e0m3);
-	  s1 +=UnitRemoval::InvE * (p0m3*a3-p1m2*a4);
-	  s2 +=UnitRemoval::InvE * (-p1p2*a3+p0p3*a4);
-	  s3 +=UnitRemoval::InvE * a3*mass;
-	  s4 +=UnitRemoval::InvE * a4*mass;
-	}
-      // right piece
-      if(_right!=0.)
-	{
-	  Complex a1=_right*fact*( spt.s3()*e0m3-spt.s4()*e1m2);
-	  Complex a2=_right*fact*(-spt.s3()*e1p2+spt.s4()*e0p3);
-	  s1 +=UnitRemoval::InvE * a1*mass;
-	  s2 +=UnitRemoval::InvE * a2*mass;
-	  s3 +=UnitRemoval::InvE * (p0p3*a1+p1m2*a2);
-	  s4 +=UnitRemoval::InvE * (p1p2*a1+p0m3*a2);
-	}
+  else if(dirac==HELASDRep) { 
+    complex<Energy> p0p3=pout.e() +   pout.z();
+    complex<Energy> p0m3=pout.e() -   pout.z();
+    // left piece
+    if(_left!=0.) {
+      Complex a3=_left*fact*( spt.s1()*e0p3+spt.s2()*e1m2);
+      Complex a4=_left*fact*( spt.s1()*e1p2+spt.s2()*e0m3);
+      s1 +=UnitRemoval::InvE * (p0m3*a3-p1m2*a4);
+      s2 +=UnitRemoval::InvE * (-p1p2*a3+p0p3*a4);
+      s3 +=UnitRemoval::InvE * a3*mass;
+      s4 +=UnitRemoval::InvE * a4*mass;
+    }
+    // right piece
+    if(_right!=0.) {
+      Complex a1=_right*fact*( spt.s3()*e0m3-spt.s4()*e1m2);
+      Complex a2=_right*fact*(-spt.s3()*e1p2+spt.s4()*e0p3);
+      s1 +=UnitRemoval::InvE * a1*mass;
+      s2 +=UnitRemoval::InvE * a2*mass;
+      s3 +=UnitRemoval::InvE * (p0p3*a1+p1m2*a2);
+      s4 +=UnitRemoval::InvE * (p1p2*a1+p0m3*a2);
+    }
   }
   // return the wavefunction
   return SpinorWaveFunction(pout,out,s1,s2,s3,s4,dirac);
