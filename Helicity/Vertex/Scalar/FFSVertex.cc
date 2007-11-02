@@ -84,8 +84,8 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   tcPDPtr Psp=sp.getParticle();
   int iint(0);
   if(sp.direction() == Helicity::incoming) iint = 1;
-  else if(sbar.direction() == Helicity::incoming) iint = 3;
-  else iint = 2;
+  else if(sbar.direction() == Helicity::incoming) iint = 2;
+  else iint = 3;
   // first calculate the couplings
   setCoupling(q2,Psp,Psbar,out,iint);
   Energy2 p2 = pout.m2();
@@ -128,8 +128,8 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   tcPDPtr Psp=sp.getParticle();
   int iint(0);
   if(sp.direction() == Helicity::incoming) iint = 1;
-  else if(sca.direction() == Helicity::incoming) iint = 2;
-  else iint = 3;
+  else if(sca.direction() == Helicity::incoming) iint = 3;
+  else iint = 2;
   // first calculate the couplings
   setCoupling(q2,Psp,out,Psca, iint);
   Energy2 p2 = pout.m2();
@@ -193,8 +193,8 @@ SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   tcPDPtr  Psbar=sbar.getParticle();
   tcPDPtr  Psca =sca.getParticle();
   int iint(0);
-  if(sca.direction() == Helicity::incoming) iint = 2;
-  else if(sbar.direction() == Helicity::incoming) iint = 3;
+  if(sca.direction() == Helicity::incoming) iint = 3;
+  else if(sbar.direction() == Helicity::incoming) iint = 2;
   else iint = 1;
   // first calculate the couplings
   setCoupling(q2,out,Psbar,Psca, iint);
