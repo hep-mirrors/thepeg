@@ -1,3 +1,15 @@
+2007-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/XSecStat.icc: xSec() and xSecErr() now returns
+	maxXSec() if no attempts have been made.
+
+	* Handlers/StandardEventHandler.cc: integratedXSec() now returns
+	the overestimated cross section if no events have been generated.
+
+	* Utilities/XSecStat.h, LesHouches/LesHouchesEventHandler.h,
+	Handlers/StandardEventHandler.h, Handlers/EventHandler.h: Changed
+	documentation.
+
 2007-10-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.h, PDF/LHAPDF.cc, PDF/PDFsets.index, PDF/Makefile.am,

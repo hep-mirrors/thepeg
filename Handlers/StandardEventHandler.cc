@@ -299,7 +299,7 @@ struct Stat {
       totsum(sumw) {}
 
   inline CrossSection xSec() const {
-    return maxXSec*sumw/totsum;
+    return totsum >0.0? maxXSec*sumw/totsum: maxXSec;
   }
 
   long attempted;

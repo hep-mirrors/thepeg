@@ -63,11 +63,11 @@ inline void XSecStat::reset() {
 }
 
 inline CrossSection XSecStat::xSec() const {
-  return attempts()? maxXSec()*sumWeights()/attempts(): 0.0*picobarn;
+  return attempts()? maxXSec()*sumWeights()/attempts(): maxXSec();
 }
 
 inline CrossSection XSecStat::xSecErr() const {
-  return attempts()? maxXSec()*sqrt(sumWeights2())/attempts(): 0.0*picobarn;
+  return attempts()? maxXSec()*sqrt(sumWeights2())/attempts(): maxXSec();
 }
 
 inline CrossSection XSecStat::maxXSec() const {

@@ -95,8 +95,9 @@ public:
   virtual CrossSection histogramScale() const;
 
   /**
-   * The total integrated cross section of the processes generated in
-   * this run.
+   * The estimated total integrated cross section of the processes
+   * generated in this run.
+   * @return 0 if no integrated cross section could be estimated.
    */
   virtual CrossSection integratedXSec() const;
 

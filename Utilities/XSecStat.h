@@ -90,13 +90,15 @@ public:
 
   /**
    * The current estimate of the cross section for the corresponding
-   * class of events.
+   * class of events. If no events have been generated, maxXSec() will
+   * be returned.
    */
   inline CrossSection xSec() const;
 
   /**
    * The current estimate of the error in the cross section for the
-   * corresponding class of events.
+   * corresponding class of events. If no events have been generated,
+   * maxXSec() will be returned.
    */
   inline CrossSection xSecErr() const;
 
