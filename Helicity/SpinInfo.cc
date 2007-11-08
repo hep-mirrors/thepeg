@@ -21,4 +21,4 @@ void SpinInfo::Init() {}
 void SpinInfo::transform(const LorentzMomentum &, LorentzRotation r)
 {_currentmomentum.transform(r);}
 
-const double SpinInfo::_eps=1e-10;
+const double SpinInfo::_eps=1e-6;

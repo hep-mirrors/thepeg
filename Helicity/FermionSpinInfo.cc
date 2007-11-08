@@ -7,10 +7,7 @@
 //
 
 #include "FermionSpinInfo.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FermionSpinInfo.tcc"
-#endif
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
@@ -22,11 +19,9 @@ NoPIOClassDescription<FermionSpinInfo> FermionSpinInfo::initFermionSpinInfo;
 
 void FermionSpinInfo::Init() {}
 
-void FermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
-{
-  if(isNear(m))
-    {
-      for(unsigned int ix=0;ix<2;++ix){_currentstates[ix].transform(r);}
-      SpinInfo::transform(m,r);
-    }
+void FermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+  if(isNear(m)) {
+    for(unsigned int ix=0;ix<2;++ix){_currentstates[ix].transform(r);}
+    SpinInfo::transform(m,r);
+  }
 }

@@ -13,8 +13,7 @@ inline FermionSpinInfo::FermionSpinInfo()
   : _productionstates(2),
     _currentstates(2),
     _decaystates(2),
-    _decaycalc(false)
-{
+    _decaycalc(false) {
   iSpin(PDT::Spin1Half);
 }
 
@@ -72,6 +71,15 @@ inline LorentzSpinor<SqrtEnergy> FermionSpinInfo::getProductionBasisState(unsign
     << "Tried to get invalid fermion basis state in FermionSpinInfo class."
     << Exception::abortnow;
   return _productionstates[ihel];
+}
+
+// get the current basis state
+inline LorentzSpinor<SqrtEnergy> FermionSpinInfo::getCurrentBasisState(unsigned int ihel) const
+{
+  if(ihel>1) throw HelicityLogicalError()
+    << "Tried to get invalid fermion basis state in FermionSpinInfo class."
+    << Exception::abortnow;
+  return _currentstates[ihel];
 }
 
 // get the basis state for the decay

@@ -79,6 +79,12 @@ public:
   inline LorentzSpinor<SqrtEnergy> getProductionBasisState(unsigned int hel) const;
 
   /**
+   * Get the current basis state for the given helicity, \a
+   * hel (which is 0 or 1 as described above.)
+   */
+  inline LorentzSpinor<SqrtEnergy> getCurrentBasisState(unsigned int hel) const;
+
+  /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (which is 0 or 1 as described above.)
    */
