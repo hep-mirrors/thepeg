@@ -16,6 +16,18 @@
 #include "LorentzRotation.h"
 #include "ThreeVector.h"
 
+namespace {
+  /// Debug helper function
+#ifdef NDEBUG
+  inline void errorIf(bool, std::string) {}
+#else
+  inline void errorIf(bool condition, std::string message) {
+    if ( condition )
+      throw ThePEG::Exception(message, ThePEG::Exception::eventerror);
+  }
+#endif
+}
+
 namespace ThePEG {
 
 template <typename Value> class LorentzVector; 
@@ -31,14 +43,6 @@ template <typename Value> class LorentzVector
 private:
   /// Value squared
   typedef typename BinaryOpTraits<Value,Value>::MulT Value2;
-
-  /// Error handling.
-  void errorIf(bool condition, string message) const {
-#ifndef NDEBUG
-    if (condition)
-      throw Exception() << message << Exception::eventerror;
-#endif
-  }
 
 public:
   /** @name Constructors. */
