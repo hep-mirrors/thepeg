@@ -183,7 +183,7 @@ protected:
 
   /** Exception class used by ACDCSampler if a StandardEventHandler
       was not able to produce a non-zero cross section. */
-  struct EventInitNoXSec: public Exception {};
+  struct EventInitNoXSec: public InitException {};
 
   /** Exception class used if ACDCSampler was not able to produce a
       phase space point within the maximum allowed number of

@@ -10,6 +10,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Utilities/Throw.h"
 
 using namespace ThePEG;
 
@@ -22,10 +23,10 @@ void ACDCSampler::initialize() {
   theSampler.nTry(2);
   theSampler.maxTry(eventHandler()->maxLoop());
   bool nozero = false;
-  for ( int i = 0, N = eventHandler()->nBins(); i < N; ++i )
-    if ( theSampler.addFunction(eventHandler()->nDim(i), eventHandler()) )
-      nozero = true;
-  if ( !nozero ) throw EventInitNoXSec()
+  for ( int i = 0, N = eventHandler()->nBins(); i < N; ++i ) {
+    nozero |= theSampler.addFunction(eventHandler()->nDim(i), eventHandler());
+  }
+  if ( !nozero ) Throw<EventInitNoXSec>()
     << "The event handler '" << eventHandler()->name()
     << "' cannot be initialized because the cross-section for the selected "
     << "sub-processes was zero." << Exception::maybeabort;
