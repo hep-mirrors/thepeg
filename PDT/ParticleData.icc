@@ -145,5 +145,9 @@ inline tWidthGeneratorPtr ParticleData::widthGenerator() const {
   return theWidthGenerator;
 }
 
+inline const DecaySet & ParticleData::decayModes() const {
+  return theDecayModes;
+}
+
 }
 

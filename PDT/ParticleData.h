@@ -166,6 +166,12 @@ public:
    * WidthGenerator or the respective Decayers.
    */
   tDMPtr selectMode(Particle & p) const;
+
+  /**
+   * Access all the decay modes, including those which are
+   * switched off, or have zero branching ratio
+   */
+  inline const DecaySet & decayModes() const;
   //@}
 
   /**
