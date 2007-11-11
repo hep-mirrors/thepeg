@@ -230,6 +230,11 @@ public:
    */
   void synchronize();
 
+  /**
+   *  Check whether this decay mode is switched on
+   */
+  inline bool on() const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

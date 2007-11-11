@@ -97,5 +97,9 @@ inline void DecayMode::dofinish() {
   Interfaced::dofinish();
 }
 
+inline bool DecayMode::on() const {
+  return isOn;
+}
+
 }
 
