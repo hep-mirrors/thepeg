@@ -1,3 +1,12 @@
+2007-11-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDF/PartonExtractor.cc: Disable flatSHatY strategy for
+	generating phase space if PDFs has poles in x=1. Fixes ticket #115
+
+	* PDF/PartonBinInstance.* PDF/PDFBase.* PDF/NoPDF.*
+	PDF/LeptonLeptonPDF.*: Introduced hasPoleIn1() functions to check
+	if a given PDF or parton bin has a pole at x=1. Fixes ticket #115
+
 2007-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.icc: xSec() and xSecErr() now returns

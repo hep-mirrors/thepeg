@@ -162,7 +162,8 @@ generateL(const PBIPair & pbins, const double * r1, const double * r2) {
   generateL(*pbins.first, r1);
   dir.reverse();
   generateL(*pbins.second, r2);
-  if ( !flatSHatY ) return true;
+  if ( !flatSHatY || pbins.first->hasPoleIn1() || pbins.second->hasPoleIn1() )
+    return true;
 
   Energy2 shmax = lastCuts().sHatMax();
   Energy2 shmin = lastCuts().sHatMin();
@@ -547,8 +548,9 @@ void PartonExtractor::Init() {
 
   static Switch<PartonExtractor,bool> interfaceFlatSHatY
     ("FlatSHatY",
-     "The possibility to override the l-generation in the "
-     "PDFs and generate a flat distribution in log(sHat) and y.",
+     "The possibility to override the l-generation in the PDFs and generate "
+     "a flat distribution in \\f$\\log(\\hat{s})\\f$ and \\f$y\\f$. This only "
+     "applies if the parton densities do not have poles in \\f$x=1\\f$.",
      &PartonExtractor::flatSHatY, false, false, false);
 
   static SwitchOption interfaceFlatSHatY0

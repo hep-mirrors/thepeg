@@ -27,6 +27,10 @@ bool LeptonLeptonPDF::canHandleParticle(tcPDPtr particle) const {
   return ( abs(particle->id()) < 20 || abs(particle->id()) > 10 );
 }
 
+bool LeptonLeptonPDF::hasPoleIn1(tcPDPtr particle, tcPDPtr parton) const {
+  return particle == parton;
+}
+
 cPDVector LeptonLeptonPDF::partons(tcPDPtr p) const {
   cPDVector ret;
   if ( canHandleParticle(p) ) ret.push_back(p);

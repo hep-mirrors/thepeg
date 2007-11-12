@@ -28,6 +28,13 @@ public:
   virtual bool canHandleParticle(tcPDPtr particle) const;
 
   /**
+   * Return true if this PDF has a pole at $x=1$ for the given \a
+   * particle and \a parton. Returns true if \a parton and \a particle
+   * are the same.
+   */
+  virtual bool hasPoleIn1(tcPDPtr particle, tcPDPtr parton) const;
+
+  /**
    * Return a vector of partons handled by this PDF (always the same
    * lepton as the incoming particle).
    */

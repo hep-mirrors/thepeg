@@ -33,6 +33,10 @@ bool PDFBase::canHandle(tcPDPtr particle) const {
     remnantHandler()->canHandle(particle, partons(particle));
 }
 
+bool PDFBase::hasPoleIn1(tcPDPtr, tcPDPtr) const {
+  return false;
+}
+
 double PDFBase::
 xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double x,
     double eps, Energy2 particleScale) const {

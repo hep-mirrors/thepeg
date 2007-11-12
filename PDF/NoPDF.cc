@@ -28,6 +28,10 @@ bool NoPDF::canHandle(tcPDPtr particle) const {
     remnantHandler()->canHandle(particle, cPDVector());
 }
 
+bool NoPDF::hasPoleIn1(tcPDPtr particle, tcPDPtr parton) const {
+  return particle == parton;
+}
+
 cPDVector NoPDF::partons(tcPDPtr p) const {
   return cPDVector(1, p);
 }

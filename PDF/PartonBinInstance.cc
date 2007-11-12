@@ -79,6 +79,11 @@ void PartonBinInstance::prepare() {
   incoming()->prepare();
 }
 
+bool PartonBinInstance::hasPoleIn1() const {
+  return ( !incoming() || incoming()->hasPoleIn1()) &&
+    (!pdf() || pdf()->hasPoleIn1(particleData(), partonData()) );
+}
+
 // TAKE AWAY ?
 void PartonBinInstance::generate(const double * r) {
   scale(0.0*GeV2);

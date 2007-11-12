@@ -116,6 +116,12 @@ public:
    * The remnant handler associated with the pdf().
    */
   inline tcRemHPtr remnantHandler() const;
+
+  /**
+   * Return true if the corresponding PDFs has a pole at $x=1$ for the
+   * current particle/parton combination.
+   */
+  bool hasPoleIn1() const;
   //@}
 
   /** @name Functions used for the generation. */

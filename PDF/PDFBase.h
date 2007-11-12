@@ -67,6 +67,13 @@ public:
   virtual bool canHandle(tcPDPtr particle) const;
 
   /**
+   * Return true if this PDF has a pole at $x=1$ for the given \a
+   * particle and \a parton. This default version of the function
+   * returns false.
+   */
+  virtual bool hasPoleIn1(tcPDPtr particle, tcPDPtr parton) const;
+
+  /**
    * Return the partons which this PDF may extract from the given
    * \a particle.
    */
