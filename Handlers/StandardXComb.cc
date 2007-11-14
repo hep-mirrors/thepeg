@@ -126,8 +126,8 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     meMomenta()[2] = Lorentz5Momentum(sqrt(lastSHat()));
   else {
     for ( int i = 2, N = meMomenta().size(); i < N; ++i ) {
-      meMomenta()[i] = Lorentz5Momentum(mePartonData()[i]->generateMass());
-      summ += meMomenta()[i].mass();
+      meMomenta()[i] = Lorentz5Momentum(mePartonData()[i]->mass());
+      summ += mePartonData()[i]->massMin();
     }
     if ( sqr(summ) >= lastSHat() ) return zero;
   }

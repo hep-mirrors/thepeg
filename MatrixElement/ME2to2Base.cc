@@ -44,6 +44,11 @@ void ME2to2Base::setKinematics() {
 }
 
 bool ME2to2Base::generateKinematics(const double * r) {
+  // generate the masses of the particles
+  for ( int i = 2, N = meMomenta().size(); i < N; ++i ) {
+    meMomenta()[i] = Lorentz5Momentum(mePartonData()[i]->generateMass());
+  }
+
   double ctmin = -1.0;
   double ctmax = 1.0;
 
