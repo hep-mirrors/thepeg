@@ -48,6 +48,7 @@ void DecayMode::readSetup(istream & is) throw(SetupException) {
   string decnam;
   is >> theBrat >> ienum(isOn) >> decnam;
   if ( decnam.empty() ) return;
+  BaseRepository::DirectoryAppend(decnam);
   setDecayer(BaseRepository::GetObject<tDecayerPtr>(decnam));	       
 }
 
