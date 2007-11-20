@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ThePEG],[1.0],[http://www.thep.lu.se/ThePEG/],[ThePEG])
+AC_INIT([ThePEG],[1.1.0],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
-AC_LIBTOOL_VERSION_INFO(1,0,0)
+THEPEG_LIBTOOL_VERSION_INFO(3,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
 AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
@@ -35,21 +35,21 @@ AC_LIBTOOL_DLOPEN
 
 AC_PROG_LIBTOOL
 
-AC_UNIT_CHECKING
-AC_SEARCH_LHAPDF
+THEPEG_UNIT_CHECKING
+THEPEG_SEARCH_LHAPDF
 
-AC_DEFINE_ENVDEFAULT(ThePEG_GZREAD_FILE,GZREAD_FILE,gunzip -c,[The command which, taking the name of a gzipped file as argument, unzips it and prints it to stdout. Default is "gunzip -c"])
+THEPEG_DEFINE_ENVDEFAULT(ThePEG_GZREAD_FILE,GZREAD_FILE,gunzip -c,[The command which, taking the name of a gzipped file as argument, unzips it and prints it to stdout. Default is "gunzip -c"])
 
-AC_DEFINE_ENVDEFAULT(ThePEG_GZWRITE_FILE,GZWRITE_FILE,[gzip -c > ],[The command which, taking the name of a gzipped file as argument, reads stdin, zips it and writes it to the file. Default is "gzip -c > ".])
+THEPEG_DEFINE_ENVDEFAULT(ThePEG_GZWRITE_FILE,GZWRITE_FILE,[gzip -c > ],[The command which, taking the name of a gzipped file as argument, reads stdin, zips it and writes it to the file. Default is "gzip -c > ".])
 
-AC_DEFINE_ENVDEFAULT(ThePEG_BZ2READ_FILE,BZ2READ_FILE,bunzip2 -c,[The command which, taking the name of a bzipped file as argument, unzips it and prints it to stdout. Default is "bunzip2 -c".])
+THEPEG_DEFINE_ENVDEFAULT(ThePEG_BZ2READ_FILE,BZ2READ_FILE,bunzip2 -c,[The command which, taking the name of a bzipped file as argument, unzips it and prints it to stdout. Default is "bunzip2 -c".])
 
-AC_DEFINE_ENVDEFAULT(ThePEG_BZ2WRITE_FILE,BZ2WRITE_FILE,[bzip2 -c > ],[The command which, taking the name of a bzipped file as argument, reads stdin, zips it and writes it to the file. Default is "bzip2 -c > ".])
+THEPEG_DEFINE_ENVDEFAULT(ThePEG_BZ2WRITE_FILE,BZ2WRITE_FILE,[bzip2 -c > ],[The command which, taking the name of a bzipped file as argument, reads stdin, zips it and writes it to the file. Default is "bzip2 -c > ".])
 
-AC_CHECK_EXPM1
-AC_CHECK_LOG1P
-AC_CHECK_DLOPEN
-AC_CHECK_FPUCONTROL
+THEPEG_CHECK_EXPM1
+THEPEG_CHECK_LOG1P
+THEPEG_CHECK_DLOPEN
+THEPEG_CHECK_FPUCONTROL
 
 
 AM_CPPFLAGS="-I\$(top_builddir)/include"
@@ -57,7 +57,7 @@ AM_CXXFLAGS="-ansi -pedantic -Wall -W"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CXXFLAGS)
 
-AC_EMPTY_SUBST
+THEPEG_EMPTY_SUBST
 
 AC_PATH_PROG(PERL, perl)
 
@@ -65,7 +65,7 @@ AC_ARG_WITH(javagui,
             [  --with-javagui          Compile and install the java-based GUI.])
 
 if test "x$with_javagui" != "xno"; then
-  AC_HAS_JAVA([1.4], [], [with_javagui=no; AC_MSG_NOTICE([Java GUI disabled])])
+  THEPEG_HAS_JAVA([1.4], [], [with_javagui=no; AC_MSG_NOTICE([Java GUI disabled])])
 fi
 
 AM_CONDITIONAL([JAVAGUI], [test "x$with_javagui" != "xno"])

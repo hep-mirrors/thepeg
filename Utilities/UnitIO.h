@@ -1,4 +1,11 @@
 // -*- C++ -*-
+//
+// UnitIO.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
 #ifndef ThePEG_UnitIO_H
 #define ThePEG_UnitIO_H
 // This is the declaration of the IUnit and OUnit classes and

@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// StandardEventHandler.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the StandardEventHandler class.
 //
@@ -15,7 +22,6 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
-#include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Utilities/LoopGuard.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/MatrixElement/MEBase.h"
@@ -129,7 +135,6 @@ void StandardEventHandler::initGroups() {
 }
 
 tCollPtr StandardEventHandler::performCollision() {
-  Timer<6> timer1("StandardEventHandler::performCollision()");
   tStdXCombPtr lastXC = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
   if ( CKKWHandler() ) CKKWHandler()->setXComb(lastXCombPtr());
   lastExtractor()->select(lastXC);
@@ -138,10 +143,8 @@ tCollPtr StandardEventHandler::performCollision() {
   currentStep(new_ptr(Step(currentCollision())));
   currentCollision()->addStep(currentStep());
 
-  Timer<36> timer2("StandardEventHandler::performCollision():2");
   currentStep()->addSubProcess(lastXC->construct());
 
-  Timer<37> timer3("StandardEventHandler::performCollision():3");
   lastExtractor()->construct(lastXC->partonBinInstances(), currentStep());
   if ( !lastCuts().passCuts(*currentCollision()) ) throw Veto();
   initGroups();

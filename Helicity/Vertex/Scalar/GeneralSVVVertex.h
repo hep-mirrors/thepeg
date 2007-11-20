@@ -1,4 +1,11 @@
 // -*- C++ -*-
+//
+// GeneralSVVVertex.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 2003-2007 Peter Richardson, Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
 #ifndef ThePEG_GeneralSVVVertex_H
 #define ThePEG_GeneralSVVVertex_H
 //

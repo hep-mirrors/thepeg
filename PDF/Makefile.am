@@ -19,7 +19,7 @@ CLEANFILES = done-all-links
 
 noinst_LTLIBRARIES = libThePEGPDF.la
 pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
-          GRVBase.la GRV94L.la GRV94M.la BaryonRemnants.la
+          GRVBase.la GRV94L.la GRV94M.la
 
 if USELHAPDF
 LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h LHAPDF.icc
@@ -55,12 +55,6 @@ GRV94L_la_SOURCES = GRV94L.cc GRV94L.h
 # function is changed
 GRV94M_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 GRV94M_la_SOURCES = GRV94M.cc GRV94M.h
-
-# Version info should be updated if any interface or persistent I/O
-# function is changed
-BaryonRemnants_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-BaryonRemnants_la_SOURCES = BaryonRemnants.cc BaryonRemnants.h \
-                            BaryonRemnants.icc 
 
 dist_pkgdata_DATA = PDFsets.index
 

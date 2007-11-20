@@ -1,5 +1,5 @@
 # Search for LHAPDF and g77 compiler in standard directories
-AC_DEFUN([AC_SEARCH_LHAPDF],
+AC_DEFUN([THEPEG_SEARCH_LHAPDF],
 [
 AC_MSG_CHECKING([if LHAPDF is present and works])
 HAS_LHAPDF="yes"
@@ -48,7 +48,7 @@ AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
 ])
 
 # Search for stand-alone HepMC in standard directories
-AC_DEFUN([AC_SEARCH_HEPMC],
+AC_DEFUN([THEPEG_SEARCH_HEPMC],
 [
 AC_MSG_CHECKING([if stand-alone HepMC is present and works])
 HAS_HEPMC="yes"
@@ -92,7 +92,7 @@ AM_CONDITIONAL([USEHEPMC], [test "x$HAS_HEPMC" == "xyes"])
 ])
 
 # Search for CLHEP in standard directories using standard CLHEP names
-AC_DEFUN([AC_SEARCH_CLHEP],
+AC_DEFUN([THEPEG_SEARCH_CLHEP],
 [AC_MSG_CHECKING([if CLHEPPATH is set])
 notsetp=""
 notsetl=""
@@ -177,7 +177,7 @@ AC_ARG_VAR(CLHEPINCLUDE,[The argument used when compiling source files which use
 
 
 # Check for CLHEP.
-AC_DEFUN([AC_CHECK_CLHEP],
+AC_DEFUN([THEPEG_CHECK_CLHEP],
 [AC_MSG_CHECKING([if CLHEPPATH is set])
 if test -z "$CLHEPPATH"; then
   if test "x$prefix" == "xNONE"; then
@@ -237,7 +237,7 @@ CPPFLAGS="$oldCPPFLAGS"
 ])
 
 # Check for ThePEG.
-AC_DEFUN([AC_CHECK_THEPEG],
+AC_DEFUN([THEPEG_CHECK_THEPEG],
 [THEPEGBUILD="no"
 
 AC_MSG_CHECKING([if THEPEGPATH is set])
@@ -291,7 +291,7 @@ AC_SUBST(AM_CPPFLAGS)
 ])
 
 # Search for ThePEG in standard places.
-AC_DEFUN([AC_SEARCH_THEPEG],
+AC_DEFUN([THEPEG_SEARCH_THEPEG],
 [THEPEGBUILD="no"
 
 AC_MSG_CHECKING([if THEPEGPATH is set])
@@ -349,12 +349,12 @@ AC_SUBST(RUNTHEPEG)
 AC_SUBST(AM_CPPFLAGS)
 ])
 
-AC_DEFUN([AC_EMPTY_SUBST],
+AC_DEFUN([THEPEG_EMPTY_SUBST],
 [EMPTY=""
 AC_SUBST(EMPTY)
 ])
 
-AC_DEFUN([AC_SEARCH_PREFIXDIR_FILES],
+AC_DEFUN([THEPEG_SEARCH_PREFIXDIR_FILES],
 [AC_MSG_CHECKING([if $1 and $2 is set])
 if test -z "$$1"; then
   for dirbase in / /usr $ac_default_prefix $prefix; do
@@ -396,7 +396,7 @@ AC_ARG_VAR($1,$5)
 AC_ARG_VAR($2,$6)
 ])
 
-AC_DEFUN([AC_CHECK_PREFIXDIR],
+AC_DEFUN([THEPEG_CHECK_PREFIXDIR],
 [AC_MSG_CHECKING([if $1 is set])
 if test -z "$$1"; then
    if test -d $prefix/$2; then
@@ -418,7 +418,7 @@ AC_ARG_VAR($1,$3)
 ])
 
 
-AC_DEFUN([AC_CHECK_ENVDEFAULT],
+AC_DEFUN([THEPEG_CHECK_ENVDEFAULT],
 [AC_MSG_CHECKING([if $1 is set])
 if test -z "$$1"; then
   $1="$2"
@@ -429,7 +429,7 @@ fi
 AC_ARG_VAR($1,$3)
 ])
 
-AC_DEFUN([AC_DEFINE_ENVDEFAULT],
+AC_DEFUN([THEPEG_DEFINE_ENVDEFAULT],
 [AC_MSG_CHECKING([if $2 is set])
 if test -z "$$2"; then
   $2="$3"
@@ -441,7 +441,7 @@ AC_ARG_VAR($2,$4)
 AC_DEFINE_UNQUOTED($1,"$$2",[$4])
 ])
 
-AC_DEFUN([AC_CHECK_EXPM1],
+AC_DEFUN([THEPEG_CHECK_EXPM1],
 [echo $ECHO_N "checking for expm1... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cmath>
 ]], [[expm1(1.0);
@@ -449,7 +449,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cmath>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([AC_CHECK_LOG1P],
+AC_DEFUN([THEPEG_CHECK_LOG1P],
 [echo $ECHO_N "checking for log1p... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cmath>
 ]], [[log1p(1.0);
@@ -457,7 +457,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cmath>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([AC_CHECK_DLOPEN],
+AC_DEFUN([THEPEG_CHECK_DLOPEN],
 [echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
 # do this with libtool!
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <dlfcn.h>
@@ -466,7 +466,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <dlfcn.h>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([AC_CHECK_SSTREAM],
+AC_DEFUN([THEPEG_CHECK_SSTREAM],
 [echo $ECHO_N "checking for <sstream>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sstream>
 ]], [[std::ostringstream os;
@@ -474,7 +474,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sstream>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([AC_CHECK_FPUCONTROL],
+AC_DEFUN([THEPEG_CHECK_FPUCONTROL],
 [echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fpu_control.h>
 ]], [[fpu_control_t cw; _FPU_GETCW(cw); cw &= ~(_FPU_MASK_IM|_FPU_MASK_DM|_FPU_MASK_ZM|_FPU_MASK_OM); _FPU_SETCW(cw);
@@ -482,7 +482,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fpu_control.h>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([AC_ADD_THEPEG_PATH],
+AC_DEFUN([THEPEG_ADD_THEPEG_PATH],
 [if test "$THEPEGBUILD" == "yes"; then
   if test -f "../$2/Config/config.h"; then
     $1="\$(top_builddir)/../$2/lib"
@@ -496,7 +496,7 @@ fi
 AC_SUBST($1)
 ])
 
-AC_DEFUN([AC_HAS_JAVA],
+AC_DEFUN([THEPEG_HAS_JAVA],
 [  hasjava=yes
    AC_PATH_PROG(JAVAC, javac)
    AC_PATH_PROG(JAVA, java)
@@ -522,11 +522,11 @@ AC_DEFUN([AC_HAS_JAVA],
    fi
 ])
 
-AC_DEFUN([AC_LIBTOOL_VERSION_INFO],
+AC_DEFUN([THEPEG_LIBTOOL_VERSION_INFO],
 [  LIBTOOLVERSIONINFO="-version-info $1:$2:$3"
    AC_SUBST(LIBTOOLVERSIONINFO)])
 
-AC_DEFUN([AC_UNIT_CHECKING],
+AC_DEFUN([THEPEG_UNIT_CHECKING],
 [
 AC_MSG_CHECKING([whether to include dimension checking])
 AC_ARG_ENABLE(unitchecks,

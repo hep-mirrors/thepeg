@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// EventHandler.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the EventHandler class.
 //
@@ -23,7 +30,6 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Utilities/Debug.h"
-#include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Utilities/Throw.h"
@@ -128,7 +134,6 @@ tEventPtr EventHandler::generateEvent(tEventPtr e) {
 }
 
 tCollPtr EventHandler::continueCollision() {
-  Timer<45> timer("EventHandler::continueCollision()");
   generator()->currentEventHandler(this);
   while (1) {
     if ( consistencyLevel() == clStep || consistencyLevel() == clPrintStep )

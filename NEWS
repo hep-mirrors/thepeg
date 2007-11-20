@@ -1,1 +1,68 @@
-        -*- outline -*-
+ThePEG News	-*- outline -*-
+===============================
+
+Numbered bugs can be found at
+ http://hepforge.cedar.ac.uk/herwig/bugtrack/ticket/NN
+where NN is the bug number.
+
+The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
+
+* ThePEG-1.1.0 release: 2007-11-XX
+** New vector classes
+   ThePEG now uses its own internal Vector classes, making it
+   independent of CLHEP.
+
+** New dimension checking mechanism
+   Optionally, any physical expression is checked for dimensional
+   correctness at compile time.
+
+** Extended Helicity classes
+   A full set of helicity amplitude classes has been transferred from
+   Herwig++. 
+
+** unlisted
+  Many other improvements and small bug fixes, see ChangeLog.
+
+* ThePEG-1.0.1 release: 2006-11-22
+
+** unlisted:
+   Fixed memory leak in LesHouchesReader.
+
+** Bug #58
+   maximumCMEnergy() member of the EventGenerator returns zero. See
+   ChangeLog entry 2006-10-06
+
+** Bug #62
+   fixed 'const' behaviour in Lorentz spinor classes
+
+** Bug #68
+   Improved error message for switch options
+
+** unlisted
+   Improved compile-time LHAPDF library and include file handling.
+
+** unlisted
+   Bug in IteratorRange::rrange(const Container &).
+
+** unlisted
+   fixed Selector::swap()
+
+** unlisted
+   Bug in ClusterCollapser where no colour-singlet particles were
+   considered for momentum compensation if no coloured particles were
+   present. 
+
+** unlisted
+   Bug in LeptonLeptonRemnant: minX variable not persistent
+
+** unlisted
+   scale of the produced coloured particles was not set in
+   Onium3GDecayer and ColourPairDecayer
+
+** unlisted
+   unused default path removed from DynamicLoader
+
+
+
+
+* ThePEG-1.0 release: 2006-09-27

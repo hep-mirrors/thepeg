@@ -1,4 +1,11 @@
 // -*- C++ -*-
+//
+// SimplePhaseSpace.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
 
 #include "SimplePhaseSpace.h"
 
@@ -35,10 +42,6 @@ CMSn(Energy m0, const vector<Energy> & m)
   if ( summ >= m0 ) throw ImpossibleKinematics();
 
   while ( true ) {
-
-    Timer<51> timer("SimplePhaseSpace::CMSn");
-    
-
     // First get an ordered list of random numbers.
     vector<double> rndv(Np);
     rndv[0] = 1.0;

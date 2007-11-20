@@ -1,8 +1,15 @@
+// -*- C++ -*-
+//
+// runThePEG.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/Debug.h"
-#include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Repository/Main.h"
@@ -62,7 +69,6 @@ int main(int argc, char * argv[]) {
       PersistentIStream is(run);
       is >> eg;
     }
-    MainTimer timer(".runThePEG.timer." + run);
 
     breakThePEG();
 

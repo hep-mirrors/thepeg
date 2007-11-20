@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// DecayHandler.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the DecayHandler class.
 //
@@ -16,7 +23,6 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-#include "ThePEG/Utilities/Timer.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "DecayHandler.tcc"
@@ -31,7 +37,6 @@ handle(EventHandler &, const tPVector & tagged,
        const Hint &) ThePEG_THROW_SPEC((Veto, Stop, Exception)) {
   // First go through to see which of the tagged particles should be
   // decayed: Exit if none are found.
-  Timer<46> timer("DecayHandler::handle");
   tPVector parents;
   for ( int i = 0, N = tagged.size(); i < N; ++i )
     if ( tagged[i] && !tagged[i]->data().stable() )
@@ -47,12 +52,9 @@ handle(EventHandler &, const tPVector & tagged,
 
 void DecayHandler::
 performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
-  Timer<47> timer("DecayHandler::performDecay");
-
   ParticleVector children = Decayer::DecayParticle(parent, s, maxLoop());
   for ( int i = 0, N = children.size(); i < N; ++i )
     if ( !children[i]->data().stable() ) performDecay(children[i], s);
-
 }
 
 void DecayHandler::persistentOutput(PersistentOStream & os) const {

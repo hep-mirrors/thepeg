@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// GRVBase.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the GRVBase class.
 //
@@ -11,12 +18,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Utilities/Maths.h"
-#include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "GRVBase.tcc"
-#endif
 
 using namespace ThePEG;
 
@@ -90,7 +92,6 @@ double GRVBase::xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
 double GRVBase::xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		     double l, Energy2) const {
-  Timer<21> timer("GRVBase::xfvl()");
   setup(l, partonScale);
   if ( S() < 0.0 ) return 0.0;
   using namespace ParticleID;

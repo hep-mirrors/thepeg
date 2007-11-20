@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// MECuts.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the MECuts class.
 //
@@ -13,11 +20,6 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-// #include "ThePEG/Utilities/Timer.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MECuts.tcc"
-#endif
 
 using namespace ThePEG;
 
@@ -46,7 +48,6 @@ void MECuts::newcut(const SubProcess &) const
 
 void MECuts::cut(const SubProcess & sp) const
   ThePEG_THROW_SPEC((Veto)) {
-  //  Timer<34> timer("MECuts::cut(SubProcess)");
   newcut(sp);
   const ParticleVector & out = sp.outgoing();
   int N = out.size();

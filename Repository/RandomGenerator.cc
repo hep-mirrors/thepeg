@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// RandomGenerator.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the RandomGenerator class.
 //
@@ -9,7 +16,6 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-#include "ThePEG/Utilities/Timer.h"
 
 using namespace ThePEG;
 
@@ -33,12 +39,6 @@ void RandomGenerator::doinit() throw (InitException) {
   if ( theSeed > 0 ) setSeed(theSeed);
   flush();
 }
-
-// void RandomGenerator::getFlatNumbers() {
-//   Timer<1> timer("RandomGenerator::getFlatNumbers()");
-//   nextNumber = theNumbers.begin();
-//   randomGenerator().flatArray(theSize, &(theNumbers.front()));
-// }
 
 void RandomGenerator::setSize(size_type newSize) {
   RndVector newNumbers(newSize);

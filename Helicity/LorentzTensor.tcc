@@ -1,8 +1,13 @@
-// non-inlined members of the LorentzTensor class
-#include "LorentzTensor.h"
-
-using namespace ThePEG;
-using namespace ThePEG::Helicity;
+// -*- C++ -*-
+//
+// LorentzTensor.tcc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 2003-2007 Peter Richardson, Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+namespace ThePEG {
+namespace Helicity {
 
 // general boost
 template <typename Value> 
@@ -42,3 +47,5 @@ LorentzTensor<Value> & LorentzTensor<Value>::boost(double bx, double by, double 
   return *this;
 }
 
+}
+}

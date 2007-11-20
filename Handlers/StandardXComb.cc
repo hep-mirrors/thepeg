@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// StandardXComb.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the StandardXComb class.
 //
@@ -11,7 +18,6 @@
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Maths.h"
-#include "ThePEG/Utilities/Timer.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
@@ -90,7 +96,6 @@ bool StandardXComb::checkInit() {
 
 CrossSection StandardXComb::
 dSigDR(const pair<double,double> ll, int nr, const double * r) {
-  Timer<7> timera("StandardXComb::dSigDR()");
   CrossSection zero = 0.0*nanobarn;
   //  attempt();
 
@@ -99,7 +104,6 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   lastP1P2(ll);
   lastS(sqr(maxEnergy())/exp(lastP1() + lastP2()));
 
-  Timer<22> timerb("StandardXComb::dSigDR():generateL");
   if ( !pExtractor()->generateL(partonBinInstances(),
 				r, r + nr - partonDims.second) )
     return zero;
@@ -132,13 +136,11 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     if ( sqr(summ) >= lastSHat() ) return zero;
   }
   
-  Timer<23> timerc("StandardXComb::dSigDR():generateKinematics-1");
   matrixElement()->setXComb(this);
   //  if ( !matrixElement()->generateKinematics(r + partonDims.first) ) return zero;
   // lastScale(matrixElement()->scale());
   lastScale(max(lastSHat()/4.0, cuts()->scaleMin()));
 
-  Timer<24> timerd("StandardXComb::dSigDR():generateSHat");
   lastSHat(pExtractor()->generateSHat(lastS(), partonBinInstances(),
 				      r, r + nr - partonDims.second));
 
@@ -170,9 +172,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   }
 
   matrixElement()->setXComb(this);
-  Timer<25> timere("StandardXComb::dSigDR():generateKinematics-2");
   if ( !matrixElement()->generateKinematics(r) ) return zero;
-  Timer<26> timerf("StandardXComb::dSigDR():dSigHatDR");
   CrossSection xsec = matrixElement()->dSigHatDR();
   lastScale(matrixElement()->scale());
   if ( !cuts()->scale(lastScale()) ) return zero;
@@ -217,7 +217,6 @@ void StandardXComb::newSubProcess() {
 }
 
 tSubProPtr StandardXComb::construct() {
-  Timer<27> timera("StandardXComb::construct()");
 
   matrixElement()->setXComb(this);
   if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();

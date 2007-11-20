@@ -1,4 +1,11 @@
 // -*- C++ -*-
+//
+// TensorSpinInfo.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 2003-2007 Peter Richardson, Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
 #ifndef THEPEG_TensorSpinInfo_H
 #define THEPEG_TensorSpinInfo_H
 // This is the declaration of the TensorSpinInfo class.

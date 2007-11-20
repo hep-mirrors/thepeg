@@ -1,5 +1,12 @@
 // -*- C++ -*-
 //
+// FlatDecayer.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+//
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// Please respect the MCnet academic guidelines, see GUIDELINES for details.
+//
+//
 // This is the implementation of the non-inlined, non-templated member
 // functions of the FlatDecayer class.
 //
@@ -11,12 +18,6 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-#include "ThePEG/Utilities/Timer.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FlatDecayer.tcc"
-#endif
-
 
 using namespace ThePEG;
 
@@ -34,7 +35,6 @@ bool FlatDecayer::accept(const DecayMode & dm) const {
 
 ParticleVector FlatDecayer::decay(const DecayMode & dm,
 				  const Particle & parent) const {
-  Timer<48> timer("FlatDecayer::decay");
   ParticleVector children = getChildren(dm, parent);
   try {
     do {
@@ -44,7 +44,6 @@ ParticleVector FlatDecayer::decay(const DecayMode & dm,
 	return children;
       }
       else {
-	Timer<50> timern("FlatDecayer::decay::CMSn");
 	SimplePhaseSpace::CMSn(children, parent.mass());
       }
     } while ( reweight(dm, parent, children) < UseRandom::rnd() );

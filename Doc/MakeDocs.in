@@ -1,5 +1,4 @@
 library ACDCSampler.so
-library BaryonRemnants.so
 library BreitWignerMass.so
 library ColourPairDecayer.so
 library DalitzDecayer.so
