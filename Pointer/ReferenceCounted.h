@@ -46,13 +46,15 @@ protected:
    * Default constructor.
    */
   ReferenceCounted() 
-    : theReferenceCounter(CounterType(1)) {}
+    : uniqueId(++objectCounter), 
+      theReferenceCounter(CounterType(1)) {}
 
   /**
    * Copy-constructor.
    */
   ReferenceCounted(const ReferenceCounted &)
-    : theReferenceCounter(CounterType(1)) {}
+    : uniqueId(++objectCounter), 
+      theReferenceCounter(CounterType(1)) {}
 
   /**
    * Assignment.
@@ -92,7 +94,20 @@ private:
     return !--theReferenceCounter;
   }
 
+public:
+
+  /**
+   * The unique ID. Can be used as sorting criterion, e.g. for set<> and map<>.
+   */
+  const unsigned long uniqueId;
+
 private:
+
+  /** 
+   * A counter for issuing unique IDs. It will overflow back to 0 eventually,
+   * but it is very unlikely that two identical IDs show up in the same event.
+   */
+  static unsigned long objectCounter;
 
   /**
    * The reference count.

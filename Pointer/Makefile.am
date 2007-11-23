@@ -1,6 +1,10 @@
+mySOURCES = ReferenceCounted.cc
+
 DOCFILES = Ptr.h PtrTraits.h RCPtr.h ReferenceCounted.h
 
 INCLUDEFILES = $(DOCFILES) RCPtr.fh RCPtr.icc
 
-## all headers are put into 'include' through ThePEG/include/Makefile.am 
-noinst_HEADERS = $(INCLUDEFILES)
+noinst_LTLIBRARIES = libThePEGReferenceCounted.la
+libThePEGReferenceCounted_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+
+include $(top_srcdir)/Config/Makefile.aminclude

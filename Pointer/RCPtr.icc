@@ -165,7 +165,8 @@ inline bool RCPtr<T>::operator!=(const UPtr & u) const {
 
 template <typename T>
 inline bool RCPtr<T>::operator<(const RCPtr & p) const {
-  return ptr < p.ptr;
+  return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+    ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
 }
 
 template <typename T>
@@ -308,7 +309,8 @@ inline bool ConstRCPtr<T>::operator!=(const UPtr & u) const {
 
 template <typename T>
 inline bool ConstRCPtr<T>::operator<(const ConstRCPtr & p) const {
-  return ptr < p.ptr;
+  return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+    ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
 }
 
 template <typename T>
@@ -441,7 +443,8 @@ inline bool TransientRCPtr<T>::operator!=(const UPtr & u) const {
 
 template <typename T>
 inline bool TransientRCPtr<T>::operator<(const TransientRCPtr & p) const {
-  return ptr < p.ptr;
+  return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+    ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
 }
 
 template <typename T>
@@ -555,7 +558,8 @@ inline bool TransientConstRCPtr<T>::operator!=(const UPtr & u) const {
 template <typename T>
 inline bool TransientConstRCPtr<T>::
 operator<(const TransientConstRCPtr & p) const {
-  return ptr < p.ptr;
+  return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+    ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
 }
 
 template <typename T>

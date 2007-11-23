@@ -1,3 +1,9 @@
+2007-11-23  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Pointer/ReferenceCounted.*, Pointer/RCPtr.icc: Added uniqueId to
+	all reference-counted objects, to be able to sort RCPtrs in a
+	platform-independent manner. Fixes Herwig ticket #46.
+
 2007-11-14  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* PDT/DecayMode.cc: Fixed directory handling in 'decaymode'

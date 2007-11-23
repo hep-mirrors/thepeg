@@ -22,6 +22,7 @@ libThePEG_la_LIBADD = \
 	$(top_builddir)/Utilities/libThePEGUtilities.la \
 	$(top_builddir)/Vectors/libThePEGVectors.la \
 	$(top_builddir)/Persistency/libThePEGPersistency.la \
+	$(top_builddir)/Pointer/libThePEGReferenceCounted.la \
 	$(top_builddir)/Config/libThePEGConfig.la \
 	$(top_builddir)/PDF/libThePEGPDF.la \
 	$(top_builddir)/MatrixElement/libThePEGME.la \
