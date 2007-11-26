@@ -1,6 +1,9 @@
 2007-11-26  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
-       * configure.ac, acinclude.m4: Detection and workaround for gcc abs bug.
+	* configure.ac, acinclude.m4: Detection and workaround for gcc abs bug.
+
+	* Analysis/LWHFactory.h, Analysis/Makefile.am: Factored out
+	LWHFactory into its own dynamic library.
 
 2007-11-23  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 

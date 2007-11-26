@@ -12,6 +12,10 @@ The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
    http://gcc.gnu.org/bugzilla/show_bug.cgi?id=34130
    configure now checks for and works around the gcc abs() bug.
 
+** Separate LWHFactory library
+   Fixed problem in Rivet interaction by factoring out LWHFactory into
+   its own dynamic library.
+
 * ThePEG-1.1.0 release: 2007-11-20
 ** New vector classes
    ThePEG now uses its own internal Vector classes, making it

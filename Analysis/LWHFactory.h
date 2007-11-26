@@ -157,6 +157,11 @@ struct ClassTraits<LWHFactory>
   : public ClassTraitsBase<LWHFactory> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::LWHFactory"; }
+
+  /** Return the name of the shared library be loaded to get access to
+   *  the LWHFactory class and every other class it uses
+   *  (except the base class). */
+  static string library() { return "LWHFactory.so"; }
 };
 
 /** @endcond */

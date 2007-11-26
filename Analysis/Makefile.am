@@ -8,14 +8,19 @@ LWHHEADERS = AnalysisFactory.h Axis.h Tree.h TreeFactory.h \
              VariAxis.h DataPoint.h DataPointSet.h DataPointSetFactory.h \
              Measurement.h
 
-mySOURCES = FactoryBase.cc LWHFactory.cc
+mySOURCES = LWHFactory.cc
 
-DOCFILES = $(AIDAWRAPPERS) $(LWHHEADERS) FactoryBase.h LWHFactory.h
+DOCFILES = $(AIDAWRAPPERS) $(LWHHEADERS) LWHFactory.h
 
-INCLUDEFILES = $(DOCFILES) FactoryBase.fh FactoryBase.icc
+INCLUDEFILES = $(DOCFILES) 
+
+pkglib_LTLIBRARIES = LWHFactory.la
+LWHFactory_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+LWHFactory_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 noinst_LTLIBRARIES = libThePEGHist.la
-libThePEGHist_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
+libThePEGHist_la_SOURCES = FactoryBase.cc FactoryBase.fh \
+			FactoryBase.icc FactoryBase.h 
 
 LWH.tgz: $(AIDAWRAPPERS) $(LWHHEADERS)
 	tar czf LWH.tgz  $(AIDAWRAPPERS) $(LWHHEADERS)
