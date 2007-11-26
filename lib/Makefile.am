@@ -4,7 +4,7 @@ LINK = $(LIBTOOL) --tag=CXX --mode=link $(CXX) $(AM_CXXFLAGS) \
 
 LINKDIRS = Config Utilities Helicity Interface LesHouches Vectors \
            PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
-           StandardModel Repository EventRecord Cuts
+           StandardModel Repository EventRecord Cuts Analysis
 
 EXTRA_DIST = Makefile.dist.install
 
