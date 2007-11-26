@@ -7,7 +7,12 @@ where NN is the bug number.
 
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 
-* ThePEG-1.1.0 release: 2007-11-XX
+* ThePEG-1.1.1 release: 2007-mm-dd
+** Detection of gcc abs bug
+   http://gcc.gnu.org/bugzilla/show_bug.cgi?id=34130
+   configure now checks for and works around the gcc abs() bug.
+
+* ThePEG-1.1.0 release: 2007-11-20
 ** New vector classes
    ThePEG now uses its own internal Vector classes, making it
    independent of CLHEP.

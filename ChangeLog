@@ -1,3 +1,7 @@
+2007-11-26  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+       * configure.ac, acinclude.m4: Detection and workaround for gcc abs bug.
+
 2007-11-23  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Pointer/ReferenceCounted.*, Pointer/RCPtr.icc: Added uniqueId to
