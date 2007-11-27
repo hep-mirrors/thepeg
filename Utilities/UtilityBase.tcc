@@ -228,9 +228,11 @@ setMomentum(Iter first, Iter last, const Momentum3 & q, double eps) {
   if ( ++second == last ) return setMomentum(Traits::ref(*first), q);
   LorentzRotation r;
   LorentzMomentum sum = sumMomentum(first, last);
-  r.rotateZ(-sum.phi());
-  r.rotateY(-sum.theta());
-  r.rotateZ(sum.phi());
+  if ( sum.rho2() > 1.0e-25*MeV2 ) {
+    r.rotateZ(-sum.phi());
+    r.rotateY(-sum.theta());
+    r.rotateZ(sum.phi());
+  }
   Energy2 ppo = sqr(sum.rho() + sum.e());
   Energy2 ppn = sqr(q.mag() + sqrt(q.mag2() + sum.m2()));
   r.boost(0.0, 0.0, (ppn - ppo)/(ppn + ppo));
