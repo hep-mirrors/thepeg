@@ -1,3 +1,8 @@
+2007-11-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Pointer/RCPtr.icc: For consistency also pointer comparison with
+	bare pointer uses uniqueId.
+
 2007-11-27  David Grellscheid  <dgrell@mac1.phyip3.dur.ac.uk>
 
 	* Utilities/UtilityBase.tcc: Avoid rotation around a zero vector.
