@@ -228,7 +228,7 @@ setMomentum(Iter first, Iter last, const Momentum3 & q, double eps) {
   if ( ++second == last ) return setMomentum(Traits::ref(*first), q);
   LorentzRotation r;
   LorentzMomentum sum = sumMomentum(first, last);
-  if ( sum.rho2() > 1.0e-20*MeV2 ) {
+  if ( sum.rho2() > 1.0e-12*MeV2 ) {
     r.rotateZ(-sum.phi());
     r.rotateY(-sum.theta());
     r.rotateZ(sum.phi());
