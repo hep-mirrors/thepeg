@@ -166,7 +166,7 @@ int LHAPDF::getMaxFlav() const {
   F77ThePEGInteger iset = nset + 1;
   F77ThePEGInteger maxflav = 1;
   getnfm_(iset, maxflav);
-  return min(maxflav, maxFlav());
+  return maxflav>=0 ? min(maxflav, maxFlav()) : maxFlav();
 }
 
 void LHAPDF::setMaxNSet(int n) {
