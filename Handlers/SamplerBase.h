@@ -102,6 +102,11 @@ public:
   virtual CrossSection integratedXSec() const = 0;
 
   /**
+   * Return the overestimated integrated cross section.
+   */
+  virtual CrossSection maxXSec() const = 0;
+
+  /**
    * Return the sum of the weights returned by generate() so far (of
    * the events that were not rejeted).
    */

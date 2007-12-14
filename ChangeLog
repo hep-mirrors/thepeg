@@ -1,3 +1,13 @@
+2007-12-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StandardEventHandler.cc: Fixed integratedXSec() so that
+	it really returns the overestimated xsec if no events have been
+	generated.
+
+	* Handlers/ACDCSampler.cc, Handlers/ACDCSampler.h,
+	Handlers/SamplerBase.h: Added access function to get overestimated
+	cross section.
+
 2007-11-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Pointer/RCPtr.icc: For consistency also pointer comparison with
