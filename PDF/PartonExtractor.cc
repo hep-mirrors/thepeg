@@ -224,7 +224,7 @@ generateL(PartonBinInstance & pb, const double * r) {
   double jac = 1.0;
   if ( pb.bin()->pdfDim() )
     pb.li(pb.pdf()->flattenL(pb.particleData(), pb.partonData(),
-				       pb.bin()->cuts(), *r++, jac));
+			     pb.bin()->cuts(), *r++, jac));
   pb.scale(-1.0*GeV2);
   if ( pb.bin()->pdfDim() > 1 )
     pb.scale(pb.pdf()->flattenScale(pb.particleData(), pb.partonData(),
@@ -432,6 +432,22 @@ double PartonExtractor::fullFn(const PartonBinInstance & pb) {
 
 void PartonExtractor::
 construct(const PBIPair & pbins, tStepPtr step) const {
+  // if a long chain we need to break some mother/child relationships
+  if(pbins.first->incoming()->incoming()) {
+    if(!pbins.first->parton()->parents().empty()) {
+      tParticleVector parents=pbins.first->parton()->parents();
+      tPPtr parton = pbins.first->parton();
+      for(unsigned int ix=0;ix<parents.size();++ix) parents[ix]->abandonChild(parton);
+    }
+  }
+  if(pbins.second->incoming()->incoming()) {
+    if(!pbins.second->parton()->parents().empty()) {
+      tParticleVector parents=pbins.second->parton()->parents();
+      tPPtr parton = pbins.second->parton();
+      for(unsigned int ix=0;ix<parents.size();++ix) parents[ix]->abandonChild(parton);
+    }
+  }
+
   Direction<0> dir(true);
   construct(*pbins.first, step);
   dir.reverse();
@@ -442,11 +458,13 @@ void PartonExtractor::
 construct(PartonBinInstance & pb, tStepPtr step, bool boost) const {
   if ( !pb.incoming() ) return;
   if ( boost ) pb.remnantHandler()->boostRemnants(pb);
+  if ( pb.incoming()->incoming() ) {
+    step->insertIntermediate(pb.particle(),pb.incoming()->particle(),pb.parton());
+  }
   tPVector rem(pb.remnants().begin(), pb.remnants().end());
   if ( !step->addDecayProduct(pb.particle(), rem.begin(), rem.end(), false) )
     {}
   colourConnect(pb.particle(), pb.parton(), rem);
-  if ( pb.incoming()->incoming() ) step->addIntermediate(pb.particle());
   construct(*pb.incoming(), step);
 }
 
