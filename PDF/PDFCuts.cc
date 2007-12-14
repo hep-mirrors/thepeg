@@ -28,16 +28,21 @@ PDFCuts(const Cuts & kc, bool first, const SInterval & S,
   double xmin = sqrt(sHat.lower()/S.upper());
   double xmax = sqrt(sHat.upper()/S.lower());
   theScale = SInterval(kc.scaleMin(), kc.scaleMax());
-  double x1max = min(xmax*exp(kc.yHatMax()), kc.x1Max());
-  double x2max = min(xmax*exp(-kc.yHatMin()), kc.x2Max());
+  double x1max = min(xmax*exp( 2.*kc.yHatMax()), kc.x1Max());
+  double x2max = min(xmax*exp(-2.*kc.yHatMin()), kc.x2Max());
+  x1max = min(xmax,x1max);
+  x2max = min(xmax,x2max);
   if ( first ) {
-    double x1min = max(xmin*exp(kc.yHatMin()), kc.x1Min());
+    double x1min = max(xmin*exp(2.*kc.yHatMin()), kc.x1Min());
+    x1min = max(xmin,x1min);
     theSMax = x2max*S.upper();
     theL = Interval<double>(log(1.0/x1max), log(1.0/x1min));
-  } else {
-    double x2min = max(xmin*exp(-kc.yHatMax()), kc.x2Min());
+  } 
+  else {
+    double x2min = max(xmin*exp(-2.*kc.yHatMax()), kc.x2Min());
+    x2min = max(xmin,x2min);
     theSMax = x1max*S.upper();
-    theL = Interval<double>(log(1.0/x2max), log(1.0/x2min));
+    theL = Interval<double>(-log(x2max), -log(x2min));
   }
 }
 
@@ -47,14 +52,19 @@ PDFCuts(const Cuts & kc, bool first, Energy maxEnergy) {
   double xmin = sqrt(sHat.lower())/maxEnergy;
   double xmax = 1.0;
   theScale = SInterval(kc.scaleMin(), kc.scaleMax());
-  double x1max = min(xmax*exp(kc.yHatMax()), kc.x1Max());
-  double x2max = min(xmax*exp(-kc.yHatMin()), kc.x2Max());
+  double x1max = min(xmax*exp( 2.*kc.yHatMax()), kc.x1Max());
+  double x2max = min(xmax*exp(-2.*kc.yHatMin()), kc.x2Max());
+  x1max = min(xmax,x1max);
+  x2max = min(xmax,x2max);
   if ( first ) {
-    double x1min = max(xmin*exp(kc.yHatMin()), kc.x1Min());
+    double x1min = max(xmin*exp(2.*kc.yHatMin()), kc.x1Min());
+    x1min = max(xmin,x1min);
     theSMax = x2max*sqr(maxEnergy);
     theL = Interval<double>(-log(x1max), -log(x1min));
-  } else {
-    double x2min = max(xmin*exp(-kc.yHatMax()), kc.x2Min());
+  } 
+  else {
+    double x2min = max(xmin*exp(-2.*kc.yHatMax()), kc.x2Min());
+    x2min = max(xmin,x2min);
     theSMax = x1max*sqr(maxEnergy);
     theL = Interval<double>(-log(x2max), -log(x2min));
   }
