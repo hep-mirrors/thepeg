@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ThePEG],[1.1.0],[http://www.thep.lu.se/ThePEG/],[ThePEG])
+AC_INIT([ThePEG],[SVN],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
-THEPEG_LIBTOOL_VERSION_INFO(3,0,0)
+THEPEG_LIBTOOL_VERSION_INFO(4,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
 AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])

@@ -2,12 +2,18 @@ ThePEG News	-*- outline -*-
 ===============================
 
 Numbered bugs can be found at
- http://hepforge.cedar.ac.uk/herwig/bugtrack/ticket/NN
+ http://projects.hepforge.org/herwig/trac/ticket/NN
 where NN is the bug number.
 
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
+or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.1.1 release: 2007-mm-dd
+* ThePEG-1.1.1 release: 2007-12-07
+** Bug #46: Reproducibility
+   Fixed a problem where runs were not identical for a given random
+   number seed. You now _must_ reset the seed if you need independent
+   event generator runs.  
+
 ** Detection of gcc abs bug
    http://gcc.gnu.org/bugzilla/show_bug.cgi?id=34130
    configure now checks for and works around the gcc abs() bug.
