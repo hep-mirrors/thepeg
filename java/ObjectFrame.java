@@ -183,6 +183,8 @@ public class ObjectFrame extends JFrame
       case 'C':
 	commands.add(name);
 	break;
+      case 'D':
+	continue;
       case 'R':
 	name = line.substring(line.lastIndexOf('>') + 2);
 	references.add(name);
