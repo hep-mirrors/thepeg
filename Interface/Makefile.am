@@ -1,6 +1,6 @@
 mySOURCES = InterfaceBase.cc InterfacedBase.cc Interfaced.cc ParVector.cc \
           Parameter.cc RefVector.cc Reference.cc Switch.cc Command.cc \
-          ClassDocumentation.cc
+          ClassDocumentation.cc Deleted.cc
 
 DOCFILES = Command.h InterfaceBase.h Interfaced.h InterfacedBase.h ParVector.h \
            Parameter.h RefVector.h Reference.h Switch.h ClassDocumentation.h \
@@ -13,7 +13,7 @@ INCLUDEFILES = $(DOCFILES) Command.fh Command.tcc \
             Parameter.icc Parameter.tcc Parameter.xh RefVector.fh \
             RefVector.tcc RefVector.xh Reference.fh \
             Reference.tcc Reference.xh Switch.fh Switch.icc \
-            Switch.tcc Switch.xh ClassDocumentation.fh
+            Switch.tcc Switch.xh ClassDocumentation.fh Deleted.h
 
 noinst_LTLIBRARIES = libThePEGInter.la
 

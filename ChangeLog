@@ -1,3 +1,10 @@
+2007-12-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Interface/Deleted.*, Interface/Makefile.am: Introduced new
+	Interface class to be used when an interface is removed to provide
+	a user-friendly message indicating why it was removed and possibly
+	which interface should be used instead. (ticket #124)
+
 2007-12-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc: Fixed integratedXSec() so that
