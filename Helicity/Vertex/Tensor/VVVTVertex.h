@@ -55,7 +55,7 @@ public:
   /**
    * Default constructor.
    */
-  inline VVVTVertex();
+  VVVTVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
