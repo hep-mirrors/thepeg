@@ -21,6 +21,11 @@ namespace ThePEG {
 
 namespace Helicity {
 
+/**
+ *  Forward declaration of the SpinorWaveFunction class
+ */
+class SpinorWaveFunction;
+
 /** \ingroup Helicity
  *  \author Peter Richardson
  *
@@ -389,6 +394,11 @@ public:
    * dealing with majorana particles.
    */
   void conjugate();
+
+  /**
+   * Return the barred spinor
+   */
+  SpinorWaveFunction bar();
 
   /**
    * Reset functions.

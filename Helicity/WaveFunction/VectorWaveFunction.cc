@@ -19,8 +19,7 @@ namespace ThePEG {
 namespace Helicity {
 
 // calculate the Wavefunction
-void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vphase)
-{
+void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vphase) {
   Direction dir=direction();
   if(dir==intermediate)
     {throw ThePEG::Helicity::HelicityConsistencyError() 
