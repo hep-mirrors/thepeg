@@ -1,0 +1,24 @@
+// -*- C++ -*-
+//
+// This is the forward declaration of the AbstractVVSSVertex class.
+//
+#ifndef HELICITY_AbstractVVSSVertex_FH
+#define HELICITY_AbstractVVSSVertex_FH
+
+#include "ThePEG/Config/Pointers.h"
+
+namespace ThePEG {
+namespace Helicity {
+
+class AbstractVVSSVertex;
+
+}
+}
+
+namespace ThePEG {
+
+ThePEG_DECLARE_POINTERS(Helicity::AbstractVVSSVertex,AbstractVVSSVertexPtr);
+
+}
+
+#endif

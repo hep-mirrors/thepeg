@@ -1,0 +1,24 @@
+// -*- C++ -*-
+//
+// This is the forward declaration of the AbstractFFVVertex class.
+//
+#ifndef HELICITY_AbstractFFVVertex_FH
+#define HELICITY_AbstractFFVVertex_FH
+
+#include "ThePEG/Config/Pointers.h"
+
+namespace ThePEG {
+namespace Helicity {
+
+class AbstractFFVVertex;
+
+}
+}
+
+namespace ThePEG {
+
+ThePEG_DECLARE_POINTERS(Helicity::AbstractFFVVertex,AbstractFFVVertexPtr);
+
+}
+
+#endif

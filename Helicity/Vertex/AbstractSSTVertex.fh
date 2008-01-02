@@ -1,0 +1,24 @@
+// -*- C++ -*-
+//
+// This is the forward declaration of the AbstractSSTVertex class.
+//
+#ifndef HELICITY_AbstractSSTVertex_FH
+#define HELICITY_AbstractSSTVertex_FH
+
+#include "ThePEG/Config/Pointers.h"
+
+namespace ThePEG {
+namespace Helicity {
+
+class AbstractSSTVertex;
+
+}
+}
+
+namespace ThePEG {
+
+ThePEG_DECLARE_POINTERS(Helicity::AbstractSSTVertex,AbstractSSTVertexPtr);
+
+}
+
+#endif
