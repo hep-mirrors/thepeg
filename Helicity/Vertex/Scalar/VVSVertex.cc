@@ -17,10 +17,15 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Reference.h"
 
+using namespace ThePEG;
+using namespace Helicity;
+   
+VVSVertex::VVSVertex() {
+  setNpoint(3);
+  setSpin(3,3,1);
+  setName(VVS);
+}
 
-namespace ThePEG {
-namespace Helicity {
-  
 AbstractNoPIOClassDescription<VVSVertex> VVSVertex::initVVSVertex;
 // Definition of the static class description member.
     
@@ -36,84 +41,52 @@ void VVSVertex::Init() {
 // evaluate the vertex
 Complex VVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 			    const VectorWaveFunction & vec2, 
-			    const ScalarWaveFunction & sca)
-{
-  // pointer to the particle data objects
-  tcPDPtr Pvec1 = vec1.getParticle();
-  tcPDPtr Pvec2 = vec2.getParticle();
-  tcPDPtr Psca  = sca.getParticle();
+			    const ScalarWaveFunction & sca) {
   // calculate the coupling
-  setCoupling(q2,Pvec1,Pvec2,Psca);
-  Complex norm=getNorm();
-  Complex ii(0.,1.);
+  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),sca.getParticle());
   // evaluate the vertex
-  Complex vertex = ii*norm*sca.wave()*
-    (vec1.t()*vec2.t()-vec1.x()*vec2.x()-vec1.y()*vec2.y()-vec1.z()*vec2.z());
-  return vertex;
+  return Complex(0.,1.)*getNorm()*sca.wave()*vec1.wave().dot(vec2.wave());
 }
 
 // evaluate an off-shell vector
 VectorWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const VectorWaveFunction & vec,
-				       const ScalarWaveFunction & sca)
-{
-  // pointer to the particle data objects
-  tcPDPtr Pvec = vec.getParticle();
-  tcPDPtr Psca = sca.getParticle();
+				       const ScalarWaveFunction & sca) {
   // outgoing momentum 
-  Lorentz5Momentum pout = Lorentz5Momentum(vec.px()+sca.px(),vec.py()+sca.py(),
-					   vec.pz()+sca.pz(),vec.e() +sca.e()); 
+  Lorentz5Momentum pout = vec.getMomentum()+sca.getMomentum();
   // calculate the coupling
-  setCoupling(q2,out,Pvec,Psca);
+  setCoupling(q2,out,vec.getParticle(),sca.getParticle());
   // prefactor
-  Energy2 p2=pout.m2();
-  Energy mass = out->mass();
-  Energy2 mass2=mass*mass;
-  Complex fact=getNorm()*sca.wave()*propagator(iopt,p2,out);
+  Energy2 p2    = pout.m2();
+  Energy mass   = out->mass();
+  Energy2 mass2 = sqr(mass);
+  Complex fact  = getNorm()*sca.wave()*propagator(iopt,p2,out);
   // evaluate the wavefunction
-  Complex vect[4];
+  LorentzPolarizationVector vect;
   // massless case
-  if(mass==Energy())
-    {
-      vect[0] = fact*vec.x();
-      vect[1] = fact*vec.y();
-      vect[2] = fact*vec.z();
-      vect[3] = fact*vec.t();
-    }
+  if(mass==Energy()) {
+    vect = fact*vec.wave();
+  }
   // massive case
-  else
-    {
-      complex<InvEnergy> dot = ( vec.t()*pout.e()-vec.x()*pout.x()
-				-vec.y()*pout.y()-vec.z()*pout.z())/mass2;
-      vect[0] = fact*(vec.x()-dot*pout.x());
-      vect[1] = fact*(vec.y()-dot*pout.y());
-      vect[2] = fact*(vec.z()-dot*pout.z());
-      vect[3] = fact*(vec.t()-dot*pout.e());
-    }
-  return VectorWaveFunction(pout,out,vect[0],vect[1],vect[2],vect[3]);
+  else {
+    complex<InvEnergy> dot = vec.wave().dot(pout)/mass2;
+    vect = fact*(vec.wave()-dot*pout);
+  }
+  return VectorWaveFunction(pout,out,vect);
 }
 
 // off-shell scalar
 ScalarWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out, 
 				       const VectorWaveFunction & vec1,
 				       const VectorWaveFunction & vec2) {
-  // pointer to the particle data objects
-  tcPDPtr Pvec1 = vec1.getParticle();
-  tcPDPtr Pvec2 = vec2.getParticle();
   // outgoing momentum 
-  Lorentz5Momentum pout = Lorentz5Momentum(vec1.px()+vec2.px(),vec1.py()+vec2.py(),
-					   vec1.pz()+vec2.pz(),vec1.e() +vec2.e()); 
+  Lorentz5Momentum pout = vec1.getMomentum()+vec2.getMomentum();
   // calculate the coupling
-  setCoupling(q2,Pvec1,Pvec2,out);
+  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),out);
   // prefactor
-  Energy2 p2=pout.m2();
-  Complex fact=-getNorm()*propagator(iopt,p2,out);
+  Energy2 p2   =  pout.m2();
+  Complex fact = -getNorm()*propagator(iopt,p2,out);
   // evaluate the wavefunction
-  Complex output = fact* 
-    (vec1.t()*vec2.t()-vec1.x()*vec2.x()-vec1.y()*vec2.y()-vec1.z()*vec2.z());
+  Complex output = fact*vec1.wave().dot(vec2.wave());
   return ScalarWaveFunction(pout,out,output);
 }
-
-}
-}
-

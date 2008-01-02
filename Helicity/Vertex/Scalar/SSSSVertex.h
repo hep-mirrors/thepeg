@@ -11,7 +11,7 @@
 //
 // This is the declaration of the SSSSVertex class.
 //
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractSSSVertex.h"
 #include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "SSSSVertex.fh"
 
@@ -21,7 +21,7 @@ namespace Helicity {
 /** \ingroup Helicity
  * 
  *  The SSSSVertex class is the implementation of the interaction of
- *  four scalars. It inherits from the VertexBase class for the storage 
+ *  four scalars. It inherits from the AbstractSSSVertex class for the storage 
  *  of the particles interacting at the vertex and implements the 
  *  helicity calculations.
  *
@@ -31,16 +31,16 @@ namespace Helicity {
  *  The form of the vertex is
  * \f[ic\phi_1\phi_2\phi_3\phi_4\f]
  *
- *  @see VertexBase
+ *  @see AbstractSSSVertex
  */
-class SSSSVertex: public VertexBase {
+class SSSSVertex: public AbstractSSSVertex {
   
 public:
   
   /**
    * Default constructor.
    */
-  SSSSVertex() { setNpoint(4); setSpin(1,1,1,1); setName(SSSS); }
+  SSSSVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -117,7 +117,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::SSSSVertex,1> {
   /** Typedef of the base class of SSSSVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractSSSVertex NthBase;
 };
 
 /**

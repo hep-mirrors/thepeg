@@ -11,7 +11,7 @@
 //
 // This is the declaration of the FFSVertex class.
 
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractFFSVertex.h"
 #include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h"
@@ -24,7 +24,7 @@ namespace Helicity{
 /** \ingroup Helicity
  *
  *  The FFSVertex class is the implementation of the interact of a
- *  scalar boson and a fermion-antifermion pair. It inherits from the VertexBase
+ *  scalar boson and a fermion-antifermion pair. It inherits from the AbstractFFSVertex
  *  class for storage of the particles interacting at the vertex and implements
  *  the helicity calculations.
  *
@@ -36,16 +36,16 @@ namespace Helicity{
  *  where \f$a^\pm\f$ are the right and left couplings and \f$P_\pm=(1\pm\gamma_5)\f$
  *  are the chirality projection operators.
  *
- *  @see VertexBase
+ *  @see AbstractFFSVertex
  */
-class FFSVertex: public VertexBase {
+class FFSVertex: public AbstractFFSVertex {
       
 public:
 
   /**
    * Default constructor.
    */
-  FFSVertex() { setNpoint(3); setSpin(2,2,1); setName(FFS); }
+  FFSVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -136,6 +136,7 @@ public:
    * Get the right coupling.
    */
   Complex getRight() { return _right; }
+  //@}
   
 protected:
 
@@ -190,7 +191,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::FFSVertex,1> {
   /** Typedef of the base class of FFSVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractFFSVertex NthBase;
 };
 
 /** 

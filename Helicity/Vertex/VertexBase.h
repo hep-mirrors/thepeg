@@ -24,7 +24,7 @@ namespace Helicity {
 /**
  * Enumeration for naming of vertices
  */
-enum VertexType {FFS,VSS,VVSS,VVS,SSS,SSSS,GeneralSVV,
+enum VertexType {FFS,VSS,VVSS,VVS,SSS,SSSS,GeneralVVS,
 		 FFV,VVV,VVVV,FFT,FFVT,SST,VVT,VVVT};
 
 /** \ingroup Helicity

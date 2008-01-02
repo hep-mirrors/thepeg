@@ -1,28 +1,23 @@
 // -*- C++ -*-
+#ifndef HELICITY_GeneralVVSVertex_H
+#define HELICITY_GeneralVVSVertex_H
 //
-// GeneralSVVVertex.h is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 2003-2007 Peter Richardson, Leif Lonnblad
-//
-// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
-// Please respect the MCnet academic guidelines, see GUIDELINES for details.
-//
-#ifndef ThePEG_GeneralSVVVertex_H
-#define ThePEG_GeneralSVVVertex_H
-//
-// This is the declaration of the GeneralSVVVertex class.
+// This is the declaration of the GeneralVVSVertex class.
 //
 
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractVVSVertex.h"
 #include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
-#include "GeneralSVVVertex.fh"
+#include "GeneralVVSVertex.fh"
 
 namespace ThePEG {
 namespace Helicity {
-    
+
+using namespace ThePEG;
+
 /**
- * The GeneralSVVVertex class implements a
- * general Scalar-Vector-Vector vertex allowing for decay modes 
+ * The GeneralVVSVertex class implements a
+ * general Vector-Vector-Scalar vertex allowing for decay modes 
  * that only enter at the one-loop level
  * 
  * The loop integral is calculated by Passarino-Veltman reduction 
@@ -30,15 +25,15 @@ namespace Helicity {
  * in the inheriting class along with implementation of the
  * setCoupling member.
  */
-class GeneralSVVVertex: public VertexBase {
-  
+class GeneralVVSVertex: public AbstractVVSVertex {
+
 public:
 
   /**
    * The default constructor.
    */
-  inline GeneralSVVVertex();
-  
+  inline GeneralVVSVertex();
+
   /**
    * The standard Init function used to initialize the interfaces.
    * Called exactly once for each class by the class description system
@@ -46,19 +41,36 @@ public:
    * when this class is dynamically loaded.
    */
   static void Init();
+
+public:
   
-  /** @name Member functions to calculate helicity amplitudes for vertices */
+  /**
+   * Members to calculate the helicity amplitude expressions for vertices
+   * and off-shell particles.
+   */
   //@{
   /**
-   * Evaluate the vertex
-   * @param q2 Scale at which to evaluate the coupling
-   * @param sca Scalar wavefunction 
-   * @param vec1 Wavefunction of first vector particle
-   * @param vec2 Wavefunction of second vector particle
+   * Evaluate the vertex.
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param vec1 The wavefunction for the first  vector.
+   * @param vec2 The wavefunction for the second vector.
+   * @param sca3 The wavefunction for the scalar.
    */
-  Complex evaluate(Energy2 q2, const ScalarWaveFunction & sca,
-                   const VectorWaveFunction & vec1,
-                   const VectorWaveFunction & vec2);
+  virtual Complex evaluate(Energy2 q2,const VectorWaveFunction & vec1,
+			   const VectorWaveFunction & vec2,
+			   const ScalarWaveFunction & sca3);
+
+  /**
+   * Evaluate the off-shell vector coming from the vertex.
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param iopt Option of the shape of the Breit-Wigner for the off-shell vector.
+   * @param out The ParticleData pointer for the off-shell vector.
+   * @param vec2 The wavefunction for the vector.
+   * @param sca3 The wavefunction for the scalar.
+   */
+  virtual VectorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
+				      const VectorWaveFunction & vec2,
+				      const ScalarWaveFunction & sca3);
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -68,9 +80,10 @@ public:
    * @param vec1 The wavefunction for the first  vector.
    * @param vec2 The wavefunction for the second vector.
    */
-  ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
-                              const VectorWaveFunction & vec1,
-                              const VectorWaveFunction & vec2);
+  virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
+				      const VectorWaveFunction & vec1,
+				      const VectorWaveFunction & vec2);
+  //@}
 
   /**
    * Calculate coupling.
@@ -81,7 +94,6 @@ public:
    */
   virtual void setCoupling(Energy2 q2,tcPDPtr part1, tcPDPtr part2,
                            tcPDPtr part3)=0;
-  //@}
 
 public:
 
@@ -153,18 +165,19 @@ public:
   //@}
 
 private:
-      
+
   /**
    * The static object used to initialize the description of this class.
-   * Indicates that this is an abstract class with persistent data.
+   * Indicates that this is an abstract class without persistent data.
    */
-  static AbstractNoPIOClassDescription<GeneralSVVVertex> initGeneralSVVVertex;
+  static AbstractNoPIOClassDescription<GeneralVVSVertex> initGeneralVVSVertex;
 
   /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  GeneralSVVVertex & operator=(const GeneralSVVVertex &);
+  GeneralVVSVertex & operator=(const GeneralVVSVertex &);
+
       
 private:
   
@@ -209,10 +222,9 @@ private:
   unsigned int _representation;
   //@}
 };
-}
-}
 
-#include "GeneralSVVVertex.icc"
+}
+}
 
 #include "ThePEG/Utilities/ClassTraits.h"
 
@@ -221,24 +233,26 @@ namespace ThePEG {
 /** @cond TRAITSPECIALIZATIONS */
 
 /** This template specialization informs ThePEG about the
- *  base classes of GeneralSVVVertex. */
+ *  base classes of GeneralVVSVertex. */
 template <>
-struct BaseClassTrait<ThePEG::Helicity::GeneralSVVVertex,1> {
-  /** Typedef of the first base class of GeneralSVVVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+struct BaseClassTrait<Helicity::GeneralVVSVertex,1> {
+  /** Typedef of the first base class of GeneralVVSVertex. */
+  typedef Helicity::AbstractVVSVertex NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of
- *  the GeneralSVVVertex class and the shared object where it is defined. */
+ *  the GeneralVVSVertex class and the shared object where it is defined. */
 template <>
-struct ClassTraits<ThePEG::Helicity::GeneralSVVVertex>
-  : public ClassTraitsBase<ThePEG::Helicity::GeneralSVVVertex> {
+struct ClassTraits<Helicity::GeneralVVSVertex>
+  : public ClassTraitsBase<Helicity::GeneralVVSVertex> {
   /** Return a platform-independent class name */
-  static string className() { return "ThePEG::GeneralSVVVertex"; }
+  static string className() { return "Helicity::GeneralVVSVertex"; }
 };
 
 /** @endcond */
 
 }
 
-#endif /* ThePEG_GeneralSVVVertex_H */
+#include "GeneralVVSVertex.icc"
+
+#endif /* HELICITY_GeneralVVSVertex_H */

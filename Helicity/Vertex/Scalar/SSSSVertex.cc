@@ -16,9 +16,15 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
-namespace ThePEG {
-namespace Helicity {
-    
+using namespace ThePEG;
+using namespace Helicity;
+     
+SSSSVertex::SSSSVertex() {
+  setNpoint(4);
+  setSpin(1,1,1,1);
+  setName(SSSS);
+}
+
 AbstractNoPIOClassDescription<SSSSVertex> SSSSVertex::initSSSSVertex;
 // Definition of the static class description member.
 
@@ -34,43 +40,26 @@ void SSSSVertex::Init() {
 Complex SSSSVertex::evaluate(Energy2 q2, const ScalarWaveFunction & sca1,
 			     const ScalarWaveFunction & sca2, 
 			     const ScalarWaveFunction & sca3, 
-			     const ScalarWaveFunction & sca4)
-{
-  tcPDPtr Psca1 = sca1.getParticle();
-  tcPDPtr Psca2 = sca2.getParticle();
-  tcPDPtr Psca3 = sca3.getParticle();
-  tcPDPtr Psca4 = sca4.getParticle();
+			     const ScalarWaveFunction & sca4) {
   // calculate the coupling
-  setCoupling(q2,Psca1,Psca2,Psca3,Psca4);
-  Complex norm=getNorm();
-  Complex ii(0.,1.);
+  setCoupling(q2,sca1.getParticle(),sca2.getParticle(),
+	      sca3.getParticle(),sca4.getParticle());
   // return the answer
-  return ii*norm*sca1.wave()*sca2.wave()*sca3.wave()*sca4.wave();
+  return Complex(0.,1.)*getNorm()*sca1.wave()*sca2.wave()*sca3.wave()*sca4.wave();
 }
 
 // off-shell scalar
 ScalarWaveFunction SSSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 					const ScalarWaveFunction & sca1,
 					const ScalarWaveFunction & sca2,
-					const ScalarWaveFunction & sca3)
-{
-  tcPDPtr Psca1 = sca1.getParticle();
-  tcPDPtr Psca2 = sca2.getParticle();
-  tcPDPtr Psca3 = sca3.getParticle();
+					const ScalarWaveFunction & sca3) {
   // outgoing momentum 
-  Lorentz5Momentum pout = Lorentz5Momentum(sca1.px()+sca2.px()+sca3.px(),
-					   sca1.py()+sca2.py()+sca3.py(),
-					   sca1.pz()+sca2.pz()+sca3.pz(),
-					   sca1.e() +sca2.e() +sca3.e()); 
+  Lorentz5Momentum pout = sca1.getMomentum()+sca2.getMomentum()+sca3.getMomentum();
   // calculate the coupling
-  setCoupling(q2,Psca1,Psca2,Psca3,out);
+  setCoupling(q2,sca1.getParticle(),sca2.getParticle(),sca3.getParticle(),out);
   // wavefunction
-  Energy2 p2=pout.m2();
-  Complex fact=-getNorm()*sca1.wave()*sca2.wave()*sca3.wave()*
+  Energy2 p2   = pout.m2();
+  Complex fact = -getNorm()*sca1.wave()*sca2.wave()*sca3.wave()*
     propagator(iopt,p2,out);
   return ScalarWaveFunction(pout,out,fact);
 }
-
-}
-}
-

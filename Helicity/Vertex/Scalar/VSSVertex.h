@@ -11,7 +11,7 @@
 //
 // This is the declaration of the VSSVertex class.
 //
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractVSSVertex.h"
 #include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
 #include "VSSVertex.fh"
@@ -22,7 +22,7 @@ namespace Helicity {
 /** \ingroup Helicity
  *
  *  The VSSVertex class is the implementation of the vector-scalar-scalar
- *  vertex. It inherits from the VertexBase class for storage of the particles 
+ *  vertex. It inherits from the AbstractVSSVertex class for storage of the particles 
  *  and implements the helicity calculations.
  *
  *  All such vertices should inherit from this class and implement the virtual
@@ -31,16 +31,16 @@ namespace Helicity {
  *  The form of the vertex is
  * \f[-ic\left(p_2-p_3\right)\cdot\epsilon_1\phi_2\phi_3\f]
  *
- *  @see VertexBase
+ *  @see AbstractVSSVertex
  */
-class VSSVertex: public VertexBase {
+class VSSVertex: public AbstractVSSVertex {
     
 public:
   
   /**
    * Default constructor.
    */
-  VSSVertex() { setNpoint(3); setSpin(3,1,1); setName(VSS); }
+  VSSVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -124,7 +124,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::VSSVertex,1> {
   /** Typedef of the base class of VSSVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractVSSVertex NthBase;
 };
   
 /**

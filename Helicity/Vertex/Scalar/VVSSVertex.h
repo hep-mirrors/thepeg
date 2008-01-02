@@ -11,7 +11,7 @@
 //
 // This is the declaration of the VVSSVertex class.
 //
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractVVSSVertex.h"
 #include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
 #include "VVSSVertex.fh"
@@ -22,7 +22,7 @@ namespace Helicity {
 /** \ingroup Helicity
  *
  *  The VVSSVertex class is the implementation of the coupling of two
- *  vectors and two scalars. It inherits from the VertexBase class for the 
+ *  vectors and two scalars. It inherits from the AbstractVVSSVertex class for the 
  *  storage of the particles and implements the helicity calculations.
  *
  *  All classes implementing the vertex should inherit from it and implement the
@@ -30,16 +30,16 @@ namespace Helicity {
  *
  *  The form of the vertex is \f[icg^{\mu\nu}\epsilon_{1\mu}\epsilon_{2\nu}\f]
  *
- *  @see VertexBase
+ *  @see AbstractVVSSVertex
  */
-class VVSSVertex: public VertexBase {
+class VVSSVertex: public AbstractVVSSVertex {
   
 public:
   
   /**
    * Default constructor.
    */
-  VVSSVertex() { setNpoint(4); setSpin(3,3,1,1); setName(VVSS); }
+  VVSSVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -131,7 +131,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::VVSSVertex,1> {
   /** Typedef of the base class of VVSSVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractVVSSVertex NthBase;
 };
   
 /**

@@ -11,7 +11,7 @@
 //
 // This is the declaration of the SSTVertex class.
 //
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractSSTVertex.h"
 #include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/TensorWaveFunction.h"
 #include "SSTVertex.fh"
@@ -23,7 +23,7 @@ namespace Helicity {
  *
  *  The VVTVertexclass is the implementation of the 
  *  scalar-scalar-tensor vertex. 
- *  It inherits from the VertexBase class for the storage of the particles
+ *  It inherits from the AbstractSSTVertex class for the storage of the particles
  *  interacting at the vertex and implements the helicity amplitude calculations.
  *
  *  All implementations of this vertex should inherit from it and implement the
@@ -36,16 +36,16 @@ namespace Helicity {
  *  
  *  \f]
  *
- *  @see VertexBase
+ *  @see AbstractSSTVertex
  */
-class SSTVertex: public VertexBase {
+class SSTVertex: public AbstractSSTVertex {
   
 public:
   
   /**
    * Default constructor.
    */
-  SSTVertex() { setNpoint(3); setSpin(1,1,5); setName(SST); }
+  SSTVertex();
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -129,7 +129,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::SSTVertex,1> {
   /** Typedef of the base class of SSTVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractSSTVertex NthBase;
 };
   
 /**

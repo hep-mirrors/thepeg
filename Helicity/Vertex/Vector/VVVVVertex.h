@@ -11,7 +11,7 @@
 //
 // This is the declaration of the VVVVVertex class.
 
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractVVVVVertex.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
 #include "VVVVVertex.fh"
 
@@ -21,7 +21,7 @@ namespace Helicity{
 /** \ingroup Helicity
  *
  * This is the implementation of the four vector vertex. 
- * It is based on the VertexBase class for the storage of particles 
+ * It is based on the AbstractVVVVVertex class for the storage of particles 
  * which are allowed to interact at the vertex.
  * Classes implementation a specific vertex should inherit from this 
  * one and implement the virtual setCoupling member.
@@ -34,9 +34,9 @@ namespace Helicity{
  * \right]\f]
  *  optional the additional diagrams from the three point vertices can be included.
  *
- * @see VertexBase
+ * @see AbstractVVVVVertex
  */
-class VVVVVertex: public VertexBase {
+class VVVVVertex: public AbstractVVVVVertex {
   
 public:
 
@@ -161,7 +161,7 @@ namespace ThePEG {
 template <>
 struct BaseClassTrait<ThePEG::Helicity::VVVVVertex,1> {
   /** Typedef of the base class of VVVVVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractVVVVVertex NthBase;
 };
 
 /**

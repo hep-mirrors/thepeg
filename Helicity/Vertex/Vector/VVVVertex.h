@@ -11,7 +11,7 @@
 //
 // This is the declaration of the VVVVertex class.
 
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractVVVVertex.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
 #include "VVVVertex.fh"
 
@@ -22,7 +22,7 @@ namespace Helicity{
  *
  *  The VVVVertex class is the base class for triple vector vertices
  *  using the perturbative form. 
- *  It inherits from the VertexBase class for the storage of the 
+ *  It inherits from the AbstractVVVVertex class for the storage of the 
  *  particles allowed at the vertex.
  *
  *  Classes which implement a specific vertex should inherit from this and
@@ -34,16 +34,16 @@ namespace Helicity{
  *              +(p_3-p_1)^\beta  g^{\alpha\gamma}
  *   \right]\epsilon_{1\alpha}\epsilon_{2\beta}\epsilon_{3\gamma}\f]
  *
- *  @see VertexBase
+ *  @see AbstractVVVVertex
  */
-class VVVVertex: public VertexBase {
+class VVVVertex: public AbstractVVVVertex {
     
 public:
   
   /**
    * Default constructor.
    */
-  VVVVertex() { setNpoint(3); setSpin(3,3,3); setName(VVV); }
+  VVVVertex();
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -115,7 +115,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::VVVVertex,1> {
   /** Typedef of the base class of VVVVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractVVVVertex NthBase;
 };
 
 /**

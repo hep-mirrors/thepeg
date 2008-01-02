@@ -16,9 +16,15 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
-namespace ThePEG {
-namespace Helicity {
-    
+using namespace ThePEG;
+using namespace Helicity;
+     
+FFTVertex::FFTVertex() {
+  setNpoint(3);
+  setSpin(2,2,5);
+  setName(FFT);
+}
+
 // Definition of the static class description member
 AbstractNoPIOClassDescription<FFTVertex> FFTVertex::initFFTVertex;
     
@@ -36,12 +42,8 @@ void FFTVertex::Init() {
 Complex FFTVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
 				    const SpinorBarWaveFunction & sbar,
 				    const TensorWaveFunction & ten) {
-  // pointers to the particles
-  tcPDPtr Psp = sp.getParticle();
-  tcPDPtr Psbar = sbar.getParticle();
-  tcPDPtr Pten = ten.getParticle();
   // set the couplings
-  setCoupling(q2,Psp,Psbar,Pten);
+  setCoupling(q2,sp.getParticle(),sbar.getParticle(),ten.getParticle());
   Complex norm=getNorm();
   // first calculate the spinor vector 
   // low energy convention
@@ -95,7 +97,7 @@ Complex FFTVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
 				       -aspin[1]*dot[1]
 				       -aspin[2]*dot[2]
 				       +4.0*
-				       (Psp->mass())*trace*ffbar);
+				       (sp.getParticle()->mass())*trace*ffbar);
   return vertex;
 }
 
@@ -104,14 +106,10 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const SpinorWaveFunction & sp,
 				       const TensorWaveFunction & ten,
 				       DiracRep dirac) {
-  // pointers to the particle data objects
-  tcPDPtr Psp=sp.getParticle();
-  tcPDPtr Pten = ten.getParticle();
   // momentum of the outgoing fermion
-  Lorentz5Momentum pout = Lorentz5Momentum(ten.px()+sp.px(),ten.py()+sp.py(),
-					   ten.pz()+sp.pz(),ten.e() +sp.e());   
+  Lorentz5Momentum pout = ten.getMomentum()+sp.getMomentum();
   // set the couplings
-  setCoupling(q2,Psp,out,Pten);
+  setCoupling(q2,sp.getParticle(),out,ten.getParticle());
   Complex ii(0.,1.);
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
@@ -122,14 +120,13 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   Complex fact = 0.125*getNorm()*propagator(iopt,p2,out);
   // compute the vector we need
   complex<Energy> dot[4];
-  for(int ix=0;ix<4;++ix)
-    {
-      // evaluate the products we need
-      dot[ix] =(ten(ix,3)+ten(3,ix))*(pout.e()+sp.e());
-      dot[ix]-=(ten(ix,0)+ten(0,ix))*(pout.x()+sp.px());
-      dot[ix]-=(ten(ix,1)+ten(1,ix))*(pout.y()+sp.py());
-      dot[ix]-=(ten(ix,2)+ten(2,ix))*(pout.z()+sp.pz());
-    }
+  for(int ix=0;ix<4;++ix) {
+    // evaluate the products we need
+    dot[ix] =(ten(ix,3)+ten(3,ix))*(pout.e()+sp.e());
+    dot[ix]-=(ten(ix,0)+ten(0,ix))*(pout.x()+sp.px());
+    dot[ix]-=(ten(ix,1)+ten(1,ix))*(pout.y()+sp.py());
+    dot[ix]-=(ten(ix,2)+ten(2,ix))*(pout.z()+sp.pz());
+  }
   LorentzVector<complex<Energy> > vec(dot[0],dot[1],dot[2],dot[3]);
   vec -= 2.0 * trace * (pout + sp.getMomentum());
   // combinations of the vector
@@ -139,65 +136,59 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   LorentzSpinor<double>    spt  =sp  .wave().transformRep(dirac);
   // now compute the first stage of the spinor wavefunction
   // low energy
-  if(dirac==HaberDRep)
-    {
-      complex<Energy> a0=vec.t();
-      complex<Energy> a3=vec.z();
-      vec.setX( a0*spt.s1()-a3*spt.s3()-a1m2*spt.s4()); 
-      vec.setY( a0*spt.s2()+a3*spt.s4()-a1p2*spt.s3());
-      vec.setZ(-a0*spt.s3()+a3*spt.s1()+a1m2*spt.s2());
-      vec.setT(-a0*spt.s4()-a3*spt.s2()+a1p2*spt.s1());
-    }
-  else if(dirac==HELASDRep)
-    // high energy
-    {
-      complex<Energy> a0p3=vec.t()+vec.z();
-      complex<Energy> a0m3=vec.t()-vec.z();
-      vec.setX(a0m3*spt.s3()-a1m2*spt.s4()); 
-      vec.setY(a0p3*spt.s4()-a1p2*spt.s3());
-      vec.setZ(a0p3*spt.s1()+a1m2*spt.s2());
-      vec.setT(a0m3*spt.s2()+a1p2*spt.s1());
-    }
-  if(mass!=Energy())
-    {
-      complex<Energy> dot = 4.*mass*trace;
-      vec.setX(vec.x() + dot*spt.s1()); 
-      vec.setY(vec.y() + dot*spt.s2());
-      vec.setZ(vec.z() + dot*spt.s3());
-      vec.setT(vec.t() + dot*spt.s4());
-    }
+  if(dirac==HaberDRep) {
+    complex<Energy> a0=vec.t();
+    complex<Energy> a3=vec.z();
+    vec.setX( a0*spt.s1()-a3*spt.s3()-a1m2*spt.s4()); 
+    vec.setY( a0*spt.s2()+a3*spt.s4()-a1p2*spt.s3());
+    vec.setZ(-a0*spt.s3()+a3*spt.s1()+a1m2*spt.s2());
+    vec.setT(-a0*spt.s4()-a3*spt.s2()+a1p2*spt.s1());
+  }
+  // high energy
+  else if(dirac==HELASDRep) {
+    complex<Energy> a0p3=vec.t()+vec.z();
+    complex<Energy> a0m3=vec.t()-vec.z();
+    vec.setX(a0m3*spt.s3()-a1m2*spt.s4()); 
+    vec.setY(a0p3*spt.s4()-a1p2*spt.s3());
+    vec.setZ(a0p3*spt.s1()+a1m2*spt.s2());
+    vec.setT(a0m3*spt.s2()+a1p2*spt.s1());
+  }
+  if(mass!=Energy()) {
+    complex<Energy> dot = 4.*mass*trace;
+    vec.setX(vec.x() + dot*spt.s1()); 
+    vec.setY(vec.y() + dot*spt.s2());
+    vec.setZ(vec.z() + dot*spt.s3());
+    vec.setT(vec.t() + dot*spt.s4());
+  }
   // combinations of the momentum
   complex<Energy> p1p2=pout.x()+ii*pout.y();
   complex<Energy> p1m2=pout.x()-ii*pout.y();
   // finally put everything together as the spinor
   Complex ferm[4];
   // low energy
-  if(dirac==HaberDRep)
-    {
-      Energy p0 = pout.e();
-      Energy p3 = pout.z();
-      ferm[0] = UnitRemoval::InvE2 * fact*( p0*vec.x()-  p3*vec.z()-p1m2*vec.t());
-      ferm[1] = UnitRemoval::InvE2 * fact*( p0*vec.y()-p1p2*vec.z()+  p3*vec.t());
-      ferm[2] = UnitRemoval::InvE2 * fact*(-p0*vec.z()+  p3*vec.x()+p1m2*vec.y());
-      ferm[3] = UnitRemoval::InvE2 * fact*(-p0*vec.t()+p1p2*vec.x()-  p3*vec.y());
-    }
+  if(dirac==HaberDRep) {
+    Energy p0 = pout.e();
+    Energy p3 = pout.z();
+    ferm[0] = UnitRemoval::InvE2 * fact*( p0*vec.x()-  p3*vec.z()-p1m2*vec.t());
+    ferm[1] = UnitRemoval::InvE2 * fact*( p0*vec.y()-p1p2*vec.z()+  p3*vec.t());
+    ferm[2] = UnitRemoval::InvE2 * fact*(-p0*vec.z()+  p3*vec.x()+p1m2*vec.y());
+    ferm[3] = UnitRemoval::InvE2 * fact*(-p0*vec.t()+p1p2*vec.x()-  p3*vec.y());
+  }
   // high energy
-  else if(dirac==HELASDRep)
-    {
-      complex<Energy> p0p3=pout.e() +   pout.z();
-      complex<Energy> p0m3=pout.e() -   pout.z();
-      ferm[0] = UnitRemoval::InvE2 * fact*( p0m3*vec.z()-p1m2*vec.t());
-      ferm[1] = UnitRemoval::InvE2 * fact*(-p1p2*vec.z()+p0p3*vec.t());
-      ferm[2] = UnitRemoval::InvE2 * fact*( p0p3*vec.x()+p1m2*vec.y());
-      ferm[3] = UnitRemoval::InvE2 * fact*( p1p2*vec.x()+p0m3*vec.y());
-    }
-  if(mass!=Energy())
-    {
-      ferm[0] += UnitRemoval::InvE2 * fact*(mass*vec.x());
-      ferm[1] += UnitRemoval::InvE2 * fact*(mass*vec.y());
-      ferm[2] += UnitRemoval::InvE2 * fact*(mass*vec.z());
-      ferm[3] += UnitRemoval::InvE2 * fact*(mass*vec.t());
-    }
+  else if(dirac==HELASDRep) {
+    complex<Energy> p0p3=pout.e() +   pout.z();
+    complex<Energy> p0m3=pout.e() -   pout.z();
+    ferm[0] = UnitRemoval::InvE2 * fact*( p0m3*vec.z()-p1m2*vec.t());
+    ferm[1] = UnitRemoval::InvE2 * fact*(-p1p2*vec.z()+p0p3*vec.t());
+    ferm[2] = UnitRemoval::InvE2 * fact*( p0p3*vec.x()+p1m2*vec.y());
+    ferm[3] = UnitRemoval::InvE2 * fact*( p1p2*vec.x()+p0m3*vec.y());
+  }
+  if(mass!=Energy()) {
+    ferm[0] += UnitRemoval::InvE2 * fact*(mass*vec.x());
+    ferm[1] += UnitRemoval::InvE2 * fact*(mass*vec.y());
+    ferm[2] += UnitRemoval::InvE2 * fact*(mass*vec.z());
+    ferm[3] += UnitRemoval::InvE2 * fact*(mass*vec.t());
+  }
   // return the wavefunction
   return SpinorWaveFunction(pout,out,ferm[0],ferm[1],ferm[2],ferm[3],dirac);
 }
@@ -208,14 +199,10 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 					  const SpinorBarWaveFunction & sbar,
 					  const TensorWaveFunction & ten,
 					  DiracRep dirac) {
-  // pointers to the particle data objects
-  tcPDPtr Pten = ten.getParticle();
-  tcPDPtr Psbar= sbar.getParticle();
   // momentum of the outgoing fermion
-  Lorentz5Momentum pout = Lorentz5Momentum(ten.px()+sbar.px(),ten.py()+sbar.py(),
-					   ten.pz()+sbar.pz(),ten.e() +sbar.e());   
+  Lorentz5Momentum pout = ten.getMomentum()+sbar.getMomentum();
   // set the couplings
-  setCoupling(q2,out,Psbar,Pten);
+  setCoupling(q2,out,sbar.getParticle(),ten.getParticle());
   Complex ii(0.,1.);
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
@@ -227,12 +214,12 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // vector
   complex<Energy> dot[4];
   for(int ix=0;ix<4;++ix) {
-      // evaluate the products we need
-      dot[ix] =-(ten(ix,3)+ten(3,ix))*(pout.e()+sbar.e());
-      dot[ix]+= (ten(ix,0)+ten(0,ix))*(pout.x()+sbar.px());
-      dot[ix]+= (ten(ix,1)+ten(1,ix))*(pout.y()+sbar.py());
-      dot[ix]+= (ten(ix,2)+ten(2,ix))*(pout.z()+sbar.pz());
-    }
+    // evaluate the products we need
+    dot[ix] =-(ten(ix,3)+ten(3,ix))*(pout.e()+sbar.e());
+    dot[ix]+= (ten(ix,0)+ten(0,ix))*(pout.x()+sbar.px());
+    dot[ix]+= (ten(ix,1)+ten(1,ix))*(pout.y()+sbar.py());
+    dot[ix]+= (ten(ix,2)+ten(2,ix))*(pout.z()+sbar.pz());
+  }
   LorentzVector<complex<Energy> > vec(dot[0],dot[1],dot[2],dot[3]);
   vec += 2.*trace*(pout+sbar.getMomentum());
   // combinations of the vector
@@ -242,65 +229,59 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   LorentzSpinorBar<double> sbart=sbar.wave().transformRep(HELASDRep);
   // now compute the first stage of the spinorbar wavefunction
   // low energy
-  if(dirac==HaberDRep)
-    {
-      complex<Energy> a0=vec.t();
-      complex<Energy> a3 = vec.z();
-      vec.setX( a0*sbart.s1()+a3*sbart.s3()+a1p2*sbart.s4()); 
-      vec.setY( a0*sbart.s2()-a3*sbart.s4()+a1m2*sbart.s3());
-      vec.setZ(-a0*sbart.s3()-a3*sbart.s1()-a1p2*sbart.s2());
-      vec.setT(-a0*sbart.s4()+a3*sbart.s2()-a1m2*sbart.s1());
-    }
+  if(dirac==HaberDRep) {
+    complex<Energy> a0=vec.t();
+    complex<Energy> a3 = vec.z();
+    vec.setX( a0*sbart.s1()+a3*sbart.s3()+a1p2*sbart.s4()); 
+    vec.setY( a0*sbart.s2()-a3*sbart.s4()+a1m2*sbart.s3());
+    vec.setZ(-a0*sbart.s3()-a3*sbart.s1()-a1p2*sbart.s2());
+    vec.setT(-a0*sbart.s4()+a3*sbart.s2()-a1m2*sbart.s1());
+  }
   // high energy
-  else if(dirac==HELASDRep)
-    {
-      complex<Energy> a0p3=vec.t()+vec.z();
-      complex<Energy> a0m3=vec.t()-vec.z();
-      vec.setX(a0p3*sbart.s3()+a1p2*sbart.s4()); 
-      vec.setY(a0m3*sbart.s4()+a1m2*sbart.s3());
-      vec.setZ(a0m3*sbart.s1()-a1p2*sbart.s2());
-      vec.setT(a0p3*sbart.s2()-a1m2*sbart.s1());
-    }
-  if(mass!=Energy())
-    {
-      complex<Energy> dot = 4.*mass*trace;
-      vec.setX(vec.x() + dot*sbart.s1()); 
-      vec.setY(vec.y() + dot*sbart.s2());
-      vec.setZ(vec.z() + dot*sbart.s3());
-      vec.setT(vec.t() + dot*sbart.s4());
-    }
+  else if(dirac==HELASDRep) {
+    complex<Energy> a0p3=vec.t()+vec.z();
+    complex<Energy> a0m3=vec.t()-vec.z();
+    vec.setX(a0p3*sbart.s3()+a1p2*sbart.s4()); 
+    vec.setY(a0m3*sbart.s4()+a1m2*sbart.s3());
+    vec.setZ(a0m3*sbart.s1()-a1p2*sbart.s2());
+    vec.setT(a0p3*sbart.s2()-a1m2*sbart.s1());
+  }
+  if(mass!=Energy()) {
+    complex<Energy> dot = 4.*mass*trace;
+    vec.setX(vec.x() + dot*sbart.s1()); 
+    vec.setY(vec.y() + dot*sbart.s2());
+    vec.setZ(vec.z() + dot*sbart.s3());
+    vec.setT(vec.t() + dot*sbart.s4());
+  }
   // combinations of the momentum
   complex<Energy>  p1p2=pout.x()+ii*pout.y();
   complex<Energy>  p1m2=pout.x()-ii*pout.y();
   // finally put everything together as the spinor
   Complex ferm[4];
   // low energy
-  if(dirac==HaberDRep)
-    {
-      Energy p3=pout.z();
-      Energy p0=pout.e();
-      ferm[0] = UnitRemoval::InvE2 * fact*(-p0*vec.x()-  p3*vec.z()-p1p2*vec.t());
-      ferm[1] = UnitRemoval::InvE2 * fact*(-p0*vec.y()-p1m2*vec.z()+  p3*vec.t());
-      ferm[2] = UnitRemoval::InvE2 * fact*( p0*vec.z()+  p3*vec.x()+p1p2*vec.y());
-      ferm[3] = UnitRemoval::InvE2 * fact*( p0*vec.t()+p1m2*vec.x()-  p3*vec.y());
-    }
+  if(dirac==HaberDRep) {
+    Energy p3=pout.z();
+    Energy p0=pout.e();
+    ferm[0] = UnitRemoval::InvE2 * fact*(-p0*vec.x()-  p3*vec.z()-p1p2*vec.t());
+    ferm[1] = UnitRemoval::InvE2 * fact*(-p0*vec.y()-p1m2*vec.z()+  p3*vec.t());
+    ferm[2] = UnitRemoval::InvE2 * fact*( p0*vec.z()+  p3*vec.x()+p1p2*vec.y());
+    ferm[3] = UnitRemoval::InvE2 * fact*( p0*vec.t()+p1m2*vec.x()-  p3*vec.y());
+  }
   // high energy
-  else if(dirac==HELASDRep)
-    {
-      complex<Energy> p0p3=pout.e() +   pout.z();
-      complex<Energy> p0m3=pout.e() -   pout.z();
-      ferm[0] = UnitRemoval::InvE2 * fact*(-p0p3*vec.z()-p1p2*vec.t());
-      ferm[1] = UnitRemoval::InvE2 * fact*(-p1m2*vec.z()-p0m3*vec.t());
-      ferm[2] = UnitRemoval::InvE2 * fact*(-p0m3*vec.x()+p1p2*vec.y());
-      ferm[3] = UnitRemoval::InvE2 * fact*( p1m2*vec.x()-p0p3*vec.y());
-    }
-  if(mass!=Energy())
-    {
-      ferm[0] += UnitRemoval::InvE2 * fact*mass*vec.x();
-      ferm[1] += UnitRemoval::InvE2 * fact*mass*vec.y();
-      ferm[2] += UnitRemoval::InvE2 * fact*mass*vec.z();
-      ferm[3] += UnitRemoval::InvE2 * fact*mass*vec.t();
-    }
+  else if(dirac==HELASDRep) {
+    complex<Energy> p0p3=pout.e() +   pout.z();
+    complex<Energy> p0m3=pout.e() -   pout.z();
+    ferm[0] = UnitRemoval::InvE2 * fact*(-p0p3*vec.z()-p1p2*vec.t());
+    ferm[1] = UnitRemoval::InvE2 * fact*(-p1m2*vec.z()-p0m3*vec.t());
+    ferm[2] = UnitRemoval::InvE2 * fact*(-p0m3*vec.x()+p1p2*vec.y());
+    ferm[3] = UnitRemoval::InvE2 * fact*( p1m2*vec.x()-p0p3*vec.y());
+  }
+  if(mass!=Energy()) {
+    ferm[0] += UnitRemoval::InvE2 * fact*mass*vec.x();
+    ferm[1] += UnitRemoval::InvE2 * fact*mass*vec.y();
+    ferm[2] += UnitRemoval::InvE2 * fact*mass*vec.z();
+    ferm[3] += UnitRemoval::InvE2 * fact*mass*vec.t();
+  }
   // return the wavefunction
   return SpinorBarWaveFunction(pout,out,ferm[0],ferm[1],ferm[2],ferm[3],dirac);
 }
@@ -308,23 +289,18 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 // member function to evaluate an off-shell tensor
 TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const SpinorWaveFunction & sp,
-				       const SpinorBarWaveFunction & sbar)
-{
-  // pointers to the particle data objects
-  tcPDPtr Psp = sp.getParticle();
-  tcPDPtr Psbar = sbar.getParticle();
+				       const SpinorBarWaveFunction & sbar) {
   // calculating the couplings
-  setCoupling(q2,Psp,Psbar,out);
+  setCoupling(q2,sp.getParticle(),sbar.getParticle(),out);
   Complex norm=getNorm();
   Complex ii(0.,1.);
   // momentum of the outgoing tensor
-  Lorentz5Momentum pout = Lorentz5Momentum(sp.px()+sbar.px(),sp.py()+sbar.py(),
-					   sp.pz()+sbar.pz(),sp.e() +sbar.e());   
+  Lorentz5Momentum pout = sp.getMomentum()+sbar.getMomentum();
   // calculate the prefactor
-  Energy2 p2=pout.m2();
-  Complex fact=0.125*norm*propagator(iopt,p2,out);
-  Energy mass = out->mass();
-  Energy2 mass2=mass*mass;
+  Energy2 p2   = pout.m2();
+  Complex fact = 0.125*norm*propagator(iopt,p2,out);
+  Energy mass  = out->mass();
+  Energy2 mass2 = sqr(mass);
   // spinor vector
   Complex aspin[4];
   LorentzSpinorBar<double> sbart=sbar.wave();
@@ -342,8 +318,8 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     sbart.changeRep(HELASDRep);
     spt.changeRep(HELASDRep);
     aspin[3] = sbart.s1()*spt.s3()+sbart.s2()*spt.s4()
-	      +sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
-    }
+              +sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
+  }
   // spatial components are the same in both conventions
   aspin[0] =     +sbart.s1()*spt.s4()+sbart.s2()*spt.s3()
                  -sbart.s3()*spt.s2()-sbart.s4()*spt.s1();
@@ -353,15 +329,13 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
                  -sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
   // mass dependent term
   Complex ffbar;
-  if(Psp->mass()!=Energy())
-    {
-      ffbar = UnitRemoval::InvE * (Psp->mass())*
-	(sp.s1()*sbar.s1()+sp.s2()*sbar.s2()+sp.s3()*sbar.s3()+sp.s4()*sbar.s4());
-    }
-  else
-    {
-      ffbar = 0.;
-    }
+  if(sp.getParticle()->mass()!=Energy()) {
+    ffbar = UnitRemoval::InvE * (sp.getParticle()->mass())*
+      (sp.s1()*sbar.s1()+sp.s2()*sbar.s2()+sp.s3()*sbar.s3()+sp.s4()*sbar.s4());
+  }
+  else {
+    ffbar = 0.;
+  }
   // dot products for the calculation
   complex<Energy> dotka = 
     +aspin[3]*pout.e()-aspin[0]*pout.x()
@@ -399,14 +373,12 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   const complex<Energy> pout_tmp[4] 
     = {pout.x(), pout.y(), pout.z(), pout.e()};
 
-  for(int ix=0;ix<4;++ix)
-    {
-      for(int iy=0;iy<4;++iy)
-	{
-	  Complex temp = coeff2*pout_tmp[ix]*pout_tmp[iy]*UnitRemoval::InvE2;
-	  ten[ix][iy] = 2.*(veca[ix]*vecb[iy]+veca[iy]*vecb[ix]) + temp;
-	}
+  for(int ix=0;ix<4;++ix) {
+    for(int iy=0;iy<4;++iy) {
+      Complex temp = coeff2*pout_tmp[ix]*pout_tmp[iy]*UnitRemoval::InvE2;
+      ten[ix][iy] = 2.*(veca[ix]*vecb[iy]+veca[iy]*vecb[ix]) + temp;
     }
+  }
   
   ten[0][0]=ten[0][0]-coeff1;
   ten[1][1]=ten[1][1]-coeff1;
@@ -425,7 +397,3 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 			    ten[2][0],ten[2][1],ten[2][2],ten[2][3],
 			    ten[3][0],ten[3][1],ten[3][2],ten[3][3]);
 }
-    
-}
-}
-

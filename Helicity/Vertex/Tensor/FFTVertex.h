@@ -11,7 +11,7 @@
 //
 // This is the declaration of the FFTVertex class.
 //
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractFFTVertex.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/TensorWaveFunction.h"
@@ -23,7 +23,7 @@ namespace Helicity {
 /** \ingroup Helicity
  *
  *  The FFTVertex class is the implementation of the fermion-fermion-tensor
- *  vertex. It inherits from the VertexBase class for the storage of the particles
+ *  vertex. It inherits from the AbstractFFTVertex class for the storage of the particles
  *  interacting at the vertex and implements the helicity amplitude calculations.
  *
  *  All implementations of this vertex should inherit from it and implement the
@@ -35,16 +35,16 @@ namespace Helicity {
  * -2g_{\mu\nu}(k\!\!\!\!\!\not\,\,\,_1-k\!\!\!\!\!\not\,\,\,_2)+4g_{\mu\nu}m_{f}
  * \right]f_1\epsilon^{\mu\nu}_3\f] 
  *
- *  @see VertexBase
+ *  @see AbstractFFTVertex
  */
-class FFTVertex: public VertexBase {
+class FFTVertex: public AbstractFFTVertex {
       
 public:
     
   /**
    * Default constructor.
    */
-  FFTVertex() { setNpoint(3); setSpin(2,2,5); setName(FFT); }
+  FFTVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -144,7 +144,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::FFTVertex,1> {
   /** Typedef of the base class of FFTVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractFFTVertex NthBase;
 };
 
 /**

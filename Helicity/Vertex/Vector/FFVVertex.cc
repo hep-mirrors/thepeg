@@ -16,9 +16,15 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
-namespace ThePEG {
-namespace Helicity{
-   
+using namespace ThePEG;
+using namespace Helicity;
+    
+FFVVertex::FFVVertex() {
+  setNpoint(3);
+  setSpin(2,2,3);
+  setName(FFV); 
+}
+
 // Definition of the static class description member
 AbstractNoPIOClassDescription<FFVVertex> FFVVertex::initFFVVertex;
     
@@ -36,12 +42,8 @@ Complex FFVVertex::evaluate(Energy2 q2,
 			    const SpinorWaveFunction & sp, 
 			    const SpinorBarWaveFunction & sbar,
 			    const VectorWaveFunction & vec) {
-  // extract the pointers to the particle data objects
-  tcPDPtr  Psp=sp.getParticle();
-  tcPDPtr  Pvec=vec.getParticle();
-  tcPDPtr  Psbar=sbar.getParticle();
   // first calculate the couplings
-  setCoupling(q2,Psp,Psbar,Pvec);
+  setCoupling(q2,sp.getParticle(),sbar.getParticle(),vec.getParticle());
   Complex ii(0.,1.);
   Complex vertex(0.);
   // useful combinations of the polarization vector components
@@ -118,18 +120,17 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   setCoupling(q2,Psp,out,Pvec);
   Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
-  Lorentz5Momentum pout = Lorentz5Momentum(sp.px()+vec.px(),sp.py()+vec.py(),
-					   sp.pz()+vec.pz(),sp.e() +vec.e() ); 
+  Lorentz5Momentum pout = sp.getMomentum()+vec.getMomentum(); 
   // now evaluate the contribution
   // polarization components
-  Complex e0p3=vec.t() +  vec.z();
-  Complex e0m3=vec.t() -  vec.z();
-  Complex e1p2=vec.x()+ii*vec.y();
-  Complex e1m2=vec.x()-ii*vec.y();
+  Complex e0p3 = vec.t() +  vec.z();
+  Complex e0m3 = vec.t() -  vec.z();
+  Complex e1p2 = vec.x()+ii*vec.y();
+  Complex e1m2 = vec.x()-ii*vec.y();
   // momentum components
   Energy mass  = iopt==5 ? Energy() : out->mass();
-  complex<Energy> p1p2=pout.x()+ii*pout.y();
-  complex<Energy> p1m2=pout.x()-ii*pout.y();
+  complex<Energy> p1p2 = pout.x()+ii*pout.y();
+  complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex nos for for the spinor
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
   // overall factor
@@ -196,15 +197,11 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 					  const SpinorBarWaveFunction & sbar,
 					  const VectorWaveFunction & vec,
 					  DiracRep dirac) {
-  // extract the pointers to the particle data objects
-  tcPDPtr  Psbar=sbar.getParticle();
-  tcPDPtr  Pvec=vec.getParticle();
   // first calculate the couplings
-  setCoupling(q2,out,Psbar,Pvec);
+  setCoupling(q2,out,sbar.getParticle(),vec.getParticle());
   Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
-  Lorentz5Momentum pout = Lorentz5Momentum(sbar.px()+vec.px(),sbar.py()+vec.py(),
-					   sbar.pz()+vec.pz(),sbar.e() +vec.e()); 
+  Lorentz5Momentum pout = sbar.getMomentum()+vec.getMomentum();
   // now evaluate the contribution
   // polarization components
   Complex e0p3=vec.t() +  vec.z();
@@ -212,8 +209,7 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Complex e1p2=vec.x()+ii*vec.y();
   Complex e1m2=vec.x()-ii*vec.y();
   // momentum components
-  Energy mass  = out->mass();
-  if(iopt==5) mass=Energy();
+  Energy mass  = (iopt==5) ? Energy() : out->mass();
   complex<Energy> p1p2=pout.x()+ii*pout.y();
   complex<Energy> p1m2=pout.x()-ii*pout.y();
   // complex numbers for the spinor
@@ -224,26 +220,23 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   // ensure the spinorbar is in the correct dirac representation
   LorentzSpinorBar<double> sbart=sbar.wave().transformRep(dirac);
   // low energy convention
-  if(dirac==HaberDRep)
-    {
-      // first step compute the polarization vector combined with the spinorbar
-      Complex st[4]={0.,0.,0.,0.};
-      // first the left piece as this is virtually always needed
-      if(_left!=0.)
-	{
-	  st[0] += _left*( e0p3*(sbart.s1()+sbart.s3())+e1p2*(sbart.s2()+sbart.s4()));
-	  st[1] += _left*( e1m2*(sbart.s1()+sbart.s3())+e0m3*(sbart.s2()+sbart.s4()));
-	  st[2] += _left*(-e0p3*(sbart.s1()+sbart.s3())-e1p2*(sbart.s2()+sbart.s4()));
-	  st[3] += _left*(-e1m2*(sbart.s1()+sbart.s3())-e0m3*(sbart.s2()+sbart.s4()));
-	}
+  if(dirac==HaberDRep) {
+    // first step compute the polarization vector combined with the spinorbar
+    Complex st[4]={0.,0.,0.,0.};
+    // first the left piece as this is virtually always needed
+      if(_left!=0.) {
+	st[0] += _left*( e0p3*(sbart.s1()+sbart.s3())+e1p2*(sbart.s2()+sbart.s4()));
+	st[1] += _left*( e1m2*(sbart.s1()+sbart.s3())+e0m3*(sbart.s2()+sbart.s4()));
+	st[2] += _left*(-e0p3*(sbart.s1()+sbart.s3())-e1p2*(sbart.s2()+sbart.s4()));
+	st[3] += _left*(-e1m2*(sbart.s1()+sbart.s3())-e0m3*(sbart.s2()+sbart.s4()));
+      }
       // then the right piece (often not needed eg W vertex)
-      if(_right!=0.)
-	{
-	  st[0] +=_right*( e0m3*(sbart.s1()-sbart.s3())-e1p2*(sbart.s2()-sbart.s4()));
-	  st[1] +=_right*(-e1m2*(sbart.s1()-sbart.s3())+e0p3*(sbart.s2()-sbart.s4()));
-	  st[2] +=_right*(-e0m3*(sbart.s1()-sbart.s3())-e1p2*(sbart.s2()-sbart.s4()));
-	  st[3] +=_right*( e1m2*(sbart.s1()-sbart.s3())+e0p3*(sbart.s2()-sbart.s4()));
-	}
+      if(_right!=0.) {
+	st[0] +=_right*( e0m3*(sbart.s1()-sbart.s3())-e1p2*(sbart.s2()-sbart.s4()));
+	st[1] +=_right*(-e1m2*(sbart.s1()-sbart.s3())+e0p3*(sbart.s2()-sbart.s4()));
+	st[2] +=_right*(-e0m3*(sbart.s1()-sbart.s3())-e1p2*(sbart.s2()-sbart.s4()));
+	st[3] +=_right*( e1m2*(sbart.s1()-sbart.s3())+e0p3*(sbart.s2()-sbart.s4()));
+      }
       // then combine this with -pslash+m 
       Energy p0pm=pout.e()+mass;
       Energy p0mm=pout.z()*(pout.z()/p0pm);
@@ -254,30 +247,27 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
       s4 =UnitRemoval::InvE*fact*( p0pm*st[3]+    p1m2*st[0]-pout.z()*st[1]);
   }
   // high energy convention
-  else if(dirac==HELASDRep)
-    {
-      Energy p0p3=pout.e() +   pout.z();
-      Energy p0m3=pout.e() -   pout.z();
-      // left piece
-      if(_left!=0.)
-	{
-	  Complex a1 =  _left*fact*( sbart.s3()*e0p3+sbart.s4()*e1p2);
-	  Complex a2 =  _left*fact*( sbart.s3()*e1m2+sbart.s4()*e0m3);
-	  s1 += UnitRemoval::InvE*a1*mass;
-	  s2 += UnitRemoval::InvE*a2*mass;
-	  s3 += UnitRemoval::InvE*(-p0m3*a1+p1p2*a2);
-	  s4 += UnitRemoval::InvE*(+p1m2*a1-p0p3*a2);
-	}
-      // right piece
-      if(_right!=0.)
-	{
-	  Complex a3 = _right*fact*( sbart.s1()*e0m3-sbart.s2()*e1p2);
-	  Complex a4 = _right*fact*(-sbart.s1()*e1m2+sbart.s2()*e0p3);
-	  s1 += UnitRemoval::InvE*(-p0p3*a3-p1p2*a4);
-	  s2 += UnitRemoval::InvE*(-p1m2*a3-p0m3*a4);
-	  s3 += UnitRemoval::InvE*a3*mass;
-	  s4 += UnitRemoval::InvE*a4*mass;
-	}
+  else if(dirac==HELASDRep) {
+    Energy p0p3=pout.e() +   pout.z();
+    Energy p0m3=pout.e() -   pout.z();
+    // left piece
+    if(_left!=0.) {
+      Complex a1 =  _left*fact*( sbart.s3()*e0p3+sbart.s4()*e1p2);
+      Complex a2 =  _left*fact*( sbart.s3()*e1m2+sbart.s4()*e0m3);
+      s1 += UnitRemoval::InvE*a1*mass;
+      s2 += UnitRemoval::InvE*a2*mass;
+      s3 += UnitRemoval::InvE*(-p0m3*a1+p1p2*a2);
+      s4 += UnitRemoval::InvE*(+p1m2*a1-p0p3*a2);
+    }
+    // right piece
+    if(_right!=0.) {
+      Complex a3 = _right*fact*( sbart.s1()*e0m3-sbart.s2()*e1p2);
+      Complex a4 = _right*fact*(-sbart.s1()*e1m2+sbart.s2()*e0p3);
+      s1 += UnitRemoval::InvE*(-p0p3*a3-p1p2*a4);
+      s2 += UnitRemoval::InvE*(-p1m2*a3-p0m3*a4);
+      s3 += UnitRemoval::InvE*a3*mass;
+      s4 += UnitRemoval::InvE*a4*mass;
+    }
   }
   return SpinorBarWaveFunction(pout,out,s1,s2,s3,s4,dirac);
 }
@@ -286,18 +276,13 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 				       const SpinorWaveFunction & sp,
 				       const SpinorBarWaveFunction & sbar) {
-  // extract the pointers to the particle data objects
-  tcPDPtr  Psbar=sbar.getParticle();
-  tcPDPtr  Psp=sp.getParticle();
   // first calculate the couplings
-  setCoupling(q2,Psp,Psbar,out);
+  setCoupling(q2,sp.getParticle(),sbar.getParticle(),out);
   Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
-  Lorentz5Momentum pout = Lorentz5Momentum(sbar.px()+sp.px(),sbar.py()+sp.py(),
-					   sbar.pz()+sp.pz(),sbar.e() +sp.e()); 
+  Lorentz5Momentum pout = sbar.getMomentum()+sp.getMomentum();
   // momentum components
-  Energy mass  = out->mass();
-  if(iopt==5) mass=Energy();
+  Energy mass  = (iopt==5) ? Energy() : out->mass();
   Energy2 mass2=mass*mass;
   // overall factor
   Energy2 p2 = pout.m2();
@@ -368,24 +353,19 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   // prefactor
   Complex fact = normPropagator(iopt,p2,out);
   // massless boson
-  if(mass==Energy())
-    {
-      for(int ix=0;ix<4;++ix){vec[ix]*=fact;}
-    }
+  if(mass==Energy()) {
+    for(int ix=0;ix<4;++ix){vec[ix]*=fact;}
+  }
   // massive boson
-  else
-    {
-      complex<InvEnergy> dot = ( pout.e() *vec[3]
-				 -pout.x()*vec[0]
-				 -pout.y()*vec[1]
-				 -pout.z()*vec[2])/mass2;
-      vec[0]=fact*(vec[0]-dot*pout.x());
-      vec[1]=fact*(vec[1]-dot*pout.y());
-      vec[2]=fact*(vec[2]-dot*pout.z());
-      vec[3]=fact*(vec[3]-dot*pout.e());
-    }
+  else {
+    complex<InvEnergy> dot = ( pout.e() *vec[3]
+			       -pout.x()*vec[0]
+			       -pout.y()*vec[1]
+			       -pout.z()*vec[2])/mass2;
+    vec[0]=fact*(vec[0]-dot*pout.x());
+    vec[1]=fact*(vec[1]-dot*pout.y());
+    vec[2]=fact*(vec[2]-dot*pout.z());
+    vec[3]=fact*(vec[3]-dot*pout.e());
+  }
   return VectorWaveFunction(pout,out,vec[0],vec[1],vec[2],vec[3]);
-}
-
-}
 }

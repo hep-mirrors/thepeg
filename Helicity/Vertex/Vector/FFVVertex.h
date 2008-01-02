@@ -11,7 +11,7 @@
 //
 // This is the declaration of the FFVVertex class.
 
-#include <ThePEG/Helicity/Vertex/VertexBase.h>
+#include <ThePEG/Helicity/Vertex/AbstractFFVVertex.h>
 #include <ThePEG/Helicity/WaveFunction/VectorWaveFunction.h>
 #include <ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h>
 #include <ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h>
@@ -28,22 +28,22 @@ namespace Helicity{
  *  fermion-fermion-vector vertex. 
  *
  *  Any such vertices should inherit from this class and implement the virtual
- *  setcoupling member function. The base VertexBase class is used to store the
+ *  setcoupling member function. The base AbstractFFVVertex class is used to store the
  *  particles allowed to interact at the vertex.
  *
  *  The form of the vertex is
  *  \f[ic\bar{f_2}\gamma^\mu a^\lambda P_\lambda f_1\epsilon_{3\mu}\f]
  *
- *  @see VertexBase
+ *  @see AbstractFFVVertex
  */
-class FFVVertex: public VertexBase {
+class FFVVertex: public AbstractFFVVertex {
   
 public:
   
   /**
    * Default constructor.
    */
-  FFVVertex() { setNpoint(3); setSpin(2,2,3); setName(FFV); }
+  FFVVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -184,7 +184,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::FFVVertex,1> {
   /** Typedef of the base class of FFVVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractFFVVertex NthBase;
 };
 
 /**

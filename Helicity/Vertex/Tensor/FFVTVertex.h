@@ -11,7 +11,7 @@
 //
 // This is the declaration of the FFVTVertex class.
 //
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractFFVTVertex.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
@@ -25,7 +25,7 @@ namespace Helicity {
  *  
  *  The FFVTVertex class is the implementation of the 
  *  fermion-fermion--vector-tensor vertex. 
- *  It inherits from the VertexBase class for the storage of the particles
+ *  It inherits from the AbstractFFVTVertex class for the storage of the particles
  *  interacting at the vertex and implements the helicity amplitude calculations.
  *
  *  All implementations of this vertex should inherit from it and implement the
@@ -38,16 +38,16 @@ namespace Helicity {
  *  -\f$C_{\mu\nu,\rho\sigma}=g_{\mu\rho}g_{\nu\sigma}+g_{\mu\sigma}g_{\nu\rho}
  *         -g_{\mu\nu}g_{\rho\sigma}\f$.
  *
- *  @see VertexBase
+ *  @see AbstractFFVTVertex
  */
-class FFVTVertex: public VertexBase {
+class FFVTVertex: public AbstractFFVTVertex {
       
 public:
   
   /**
    * Default constructor.
    */
-  FFVTVertex() { setNpoint(4); setSpin(2,2,3,5); setName(FFVT); }
+  FFVTVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -166,7 +166,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::FFVTVertex,1> {
   /** Typedef of the base class of FFVTVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractFFVTVertex NthBase;
 };
   
 /**

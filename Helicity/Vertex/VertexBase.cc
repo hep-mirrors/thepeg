@@ -152,9 +152,8 @@ vector<PDPtr> VertexBase::search(unsigned int iloc,int idd) {
     throw HelicityConsistencyError() << "VertexBase::search Invalid _particle "
 				     << "index for ilist search" 
 				     << Exception::abortnow;
-  bool found;
   for(unsigned int ix=0;ix<_particles.size();++ix) {
-    found=_particles[ix][iloc]->id()==idd;
+    bool found=_particles[ix][iloc]->id()==idd;
     if(found) {
       for(unsigned int iy=0;iy<_particles[ix].size();++iy) {
 	out.push_back(_particles[ix][iy]);
@@ -220,19 +219,19 @@ bool VertexBase::allowed(int ida, int idb, int idc, int idd, int ide) {
 // output the information
 ostream & ThePEG::Helicity::operator<<(ostream & os, const VertexBase & in) {
   os << "Information on Vertex" << endl;
-  os << "This is an " << in._npoint << " vertex" << endl;
-  if(in._calckinematics){os << "The kinematic invariants are calculated" << endl;}
-  else{os << "The kinematics invariants are not calculated" << endl;}
-  os << " Particles allowed for this Vertex" << endl;
+  os << "This is an " << in._npoint << " vertex\n";
+  os << string( in._calckinematics ? 
+		"The kinematic invariants are calculated" : 
+		"The kinematics invariants are not calculated" ) << "\n";
+  os << " Particles allowed for this Vertex\n";
   for(unsigned int ix=0;ix<in._particles.size();++ix) {
     for(unsigned int iy=0;iy<in._particles[ix].size();++iy) {
-      os << in._particles[ix][iy]->id() << "   ";
+      os << in._particles[ix][iy]->PDGName() << "   ";
     }
     os << "\n";
   }
   return os;
 }
-
 
 // add particle to the list for a three point vertex
 void VertexBase::add(int ia ,int ib ,int ic) {

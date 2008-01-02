@@ -16,8 +16,14 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
-namespace ThePEG {
-namespace Helicity {
+using namespace ThePEG;
+using namespace Helicity;
+ 
+VVVTVertex::VVVTVertex() {
+  setNpoint(4);
+  setSpin(3,3,3,5);
+  setName(VVVT);
+}
 
 AbstractNoPIOClassDescription<VVVTVertex> VVVTVertex::initVVVTVertex;
 // Definition of the static class description member.
@@ -34,37 +40,20 @@ void VVVTVertex::Init() {
 Complex VVVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
     				 const VectorWaveFunction & vec2,
     				 const VectorWaveFunction & vec3,
-    				 const TensorWaveFunction & ten)
-{
-  // pointers to the particles
-  tcPDPtr Pvec1 = vec1.getParticle();
-  tcPDPtr Pvec2 = vec2.getParticle();
-  tcPDPtr Pvec3 = vec3.getParticle();
-  tcPDPtr Pten  =  ten.getParticle();
+    				 const TensorWaveFunction & ten) {
   // set the couplings
-  setCoupling(q2,Pvec1,Pvec2,Pvec3,Pten);
+  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),
+	      vec3.getParticle(),ten.getParticle());
   Complex norm=getNorm();
   Complex ii(0.,1.);
   // dot products of the wavefunctions
-  Complex dotv1v2 = 
-    +vec1.t()*vec2.t()-vec1.x()*vec2.x()
-    -vec1.y()*vec2.y()-vec1.z()*vec2.z();
-  Complex dotv1v3 = 
-    +vec1.t()*vec3.t()-vec1.x()*vec3.x()
-    -vec1.y()*vec3.y()-vec1.z()*vec3.z();
-  Complex dotv2v3 = 
-    +vec2.t()*vec3.t()-vec2.x()*vec3.x()
-    -vec2.y()*vec3.y()-vec2.z()*vec3.z();
+  Complex dotv1v2 = vec1.wave().dot(vec2.wave());
+  Complex dotv1v3 = vec1.wave().dot(vec3.wave());
+  Complex dotv2v3 = vec2.wave().dot(vec3.wave());
   // dot product of wavefunctions and momenta
-  complex<Energy> dotv1k23 = 
-    +vec1.t()*(vec2.e() -vec3.e() )-vec1.x()*(vec2.px()-vec3.px())
-    -vec1.y()*(vec2.py()-vec3.py())-vec1.z()*(vec2.pz()-vec3.pz());
-  complex<Energy> dotv2k31 = 
-    +vec2.t()*(vec3.e() -vec1.e() )-vec2.x()*(vec3.px()-vec1.px())
-    -vec2.y()*(vec3.py()-vec1.py())-vec2.z()*(vec3.pz()-vec1.pz());
-  complex<Energy> dotv3k12 = 
-    +vec3.t()*(vec1.e() -vec2.e() )-vec3.x()*(vec1.px()-vec2.px())
-    -vec3.y()*(vec1.py()-vec2.py())-vec3.z()*(vec1.pz()-vec2.pz());
+  complex<Energy> dotv1k23 = vec1.wave().dot(vec2.getMomentum()-vec3.getMomentum());
+  complex<Energy> dotv2k31 = vec2.wave().dot(vec3.getMomentum()-vec1.getMomentum());
+  complex<Energy> dotv3k12 = vec3.wave().dot(vec1.getMomentum()-vec2.getMomentum());
   // components of the tensor
   Complex tentx = ten.tx()+ten.xt();
   Complex tenty = ten.ty()+ten.yt();
@@ -147,6 +136,22 @@ Complex VVVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   return vertex;
 }
 
-}
+TensorWaveFunction VVVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
+					const VectorWaveFunction & ,
+					const VectorWaveFunction & ,
+					const VectorWaveFunction & ) {
+  throw Exception() << "VVVTVertex::evaluate() only implemented for the "
+		    << "member which returns the amplitude, "
+		    << "not the off-shell wavefunctions"
+		    << Exception::runerror;
 }
 
+VectorWaveFunction VVVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
+					const VectorWaveFunction & ,
+					const VectorWaveFunction & ,
+					const TensorWaveFunction & ) {
+  throw Exception() << "VVVTVertex::evaluate() only implemented for the "
+		    << "member which returns the amplitude, "
+		    << "not the off-shell wavefunctions"
+		    << Exception::runerror;
+}

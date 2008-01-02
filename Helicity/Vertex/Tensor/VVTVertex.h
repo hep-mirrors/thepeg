@@ -11,7 +11,7 @@
 //
 // This is the declaration of the VVTVertex class.
 
-#include "ThePEG/Helicity/Vertex/VertexBase.h"
+#include "ThePEG/Helicity/Vertex/AbstractVVTVertex.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/TensorWaveFunction.h"
 #include "VVTVertex.fh"
@@ -23,7 +23,7 @@ namespace Helicity {
  *
  *  The VVTVertex class is the implementation of the 
  *  vector-vector-tensor vertex. 
- *  It inherits from the VertexBase class for the storage of the particles
+ *  It inherits from the AbstractVVTVertex class for the storage of the particles
  *  interacting at the vertex and implements the helicity amplitude calculations.
  *
  *  All implementations of this vertex should inherit from it and implement the
@@ -41,16 +41,16 @@ namespace Helicity {
  *    g_{\mu\nu}k_{1\sigma}k_{2\rho}-\left[g_{\mu\sigma}k_{1\nu}k_{2\rho}+g_{\mu\rho}k_{1\sigma}k_{2\nu}-g_{\rho\sigma}k_{1\mu}k_{2\nu}+(\mu\leftrightarrow\nu)\right]
  *   \f$
  *
- *  @see VertexBase
+ *  @see AbstractVVTVertex
  */
-class VVTVertex: public VertexBase {
+class VVTVertex: public AbstractVVTVertex {
   
 public:
   
   /**
    * Default constructor.
    */
-  VVTVertex() { setNpoint(3); setSpin(3,3,5); setName(VVT); }
+  VVTVertex();
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -134,7 +134,7 @@ private:
 template <>
 struct BaseClassTrait<ThePEG::Helicity::VVTVertex,1> {
   /** Typedef of the base class of VVTVertex. */
-  typedef ThePEG::Helicity::VertexBase NthBase;
+  typedef ThePEG::Helicity::AbstractVVTVertex NthBase;
 };
   
 /**
