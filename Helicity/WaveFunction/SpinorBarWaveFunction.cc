@@ -343,6 +343,8 @@ void SpinorBarWaveFunction::conjugate() {
 }
 
 SpinorWaveFunction SpinorBarWaveFunction::bar() {
-  return SpinorWaveFunction(getMomentum(),getParticle(),_wf.bar(),direction());
+  Lorentz5Momentum p = getMomentum();
+  if(direction()==outgoing) p *= -1.;
+  return SpinorWaveFunction(p,getParticle(),_wf.bar(),direction());
 }	  
 
