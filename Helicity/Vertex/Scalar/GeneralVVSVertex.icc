@@ -13,7 +13,7 @@ inline GeneralVVSVertex::GeneralVVSVertex() {
   _a12 = 0.;_a21 = 0.;
   _a22 = 0.;_aEp = 0.;
   _representation = 1;
-  setName(GeneralVVS);
+  setName(VVS);
 }
 
 //Access tensor Coefficients
