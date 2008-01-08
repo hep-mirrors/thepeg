@@ -16,7 +16,9 @@ namespace Helicity{
 
 // constructors for three point vertices
 inline VertexBase::VertexBase(int isa, int isb, int isc,vector<int> ida,
-			      vector<int> idb,vector<int> idc,bool kine){
+			      vector<int> idb,vector<int> idc,bool kine) 
+  : _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+    _sw(sqrt(0.232)) {
   // number of external particles
   _npoint = 3;
   // initialise the spins
@@ -29,7 +31,9 @@ inline VertexBase::VertexBase(int isa, int isb, int isc,vector<int> ida,
 // constructors for four  point vertices
 inline VertexBase::VertexBase(int isa,int isb, int isc, int isd,
 			      vector<int> ida, vector<int> idb,
-			      vector<int> idc, vector<int> idd, bool kine) {
+			      vector<int> idc, vector<int> idd, bool kine) 
+  : _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+    _sw(sqrt(0.232)) {
   // number of external particles
   _npoint = 4;
   // initialise the spins
@@ -43,7 +47,9 @@ inline VertexBase::VertexBase(int isa,int isb, int isc, int isd,
 inline VertexBase::VertexBase(int ia, int ib, int ic, int id , int ie,
 			      vector<int> ida,vector<int> idb,
 			      vector<int> idc,vector<int> idd,
-			      vector<int> ide,bool kine) {
+			      vector<int> ide,bool kine) 
+  : _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+    _sw(sqrt(0.232)) {
   // number of external particles
   _npoint = 5;
   // initialise the spins
@@ -54,8 +60,10 @@ inline VertexBase::VertexBase(int ia, int ib, int ic, int id , int ie,
 }
 
 // default constructor
-inline VertexBase::VertexBase(unsigned int nin, bool kine) : _npoint(nin), 
-							     _calckinematics(kine)
+inline VertexBase::VertexBase(unsigned int nin, bool kine) 
+  : _npoint(nin), _calckinematics(kine),
+    _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+    _sw(sqrt(0.232)) 
 {}
 
 // setup the spins
@@ -296,6 +304,44 @@ inline unsigned int VertexBase::orderInGem() const {
 
 inline unsigned int VertexBase::orderInGs() const {
   return _ordergS;
+}
+
+inline double VertexBase::strongCoupling(Energy2 q2) {
+  if(_coupopt==0) {
+    return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaS(q2));
+  }
+  else if(_coupopt==1) {
+    return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaS());
+  }
+  else {
+    return _gs;
+  }
+}
+
+inline double VertexBase::electroMagneticCoupling(Energy2 q2) {
+  if(_coupopt==0) {
+    return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM(q2));
+  }
+  else if(_coupopt==1) {
+    return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM());
+  }
+  else {
+    return _gs;
+  }
+}
+
+inline double VertexBase::weakCoupling(Energy2 q2) {
+  if(_coupopt==0) {
+    return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM(q2)/
+		generator()->standardModel()->sin2ThetaW());
+  }
+  else if(_coupopt==1) {
+    return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM()/
+		generator()->standardModel()->sin2ThetaW());
+  }
+  else {
+    return _ee/_sw;
+  }
 }
 
 }

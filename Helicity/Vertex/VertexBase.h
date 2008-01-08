@@ -16,6 +16,7 @@
 #include <ThePEG/PDT/WidthGenerator.h>
 #include <ThePEG/Helicity/HelicityDefinitions.h>
 #include <ThePEG/Repository/EventGenerator.h>
+#include "ThePEG/StandardModel/StandardModelBase.h"
 #include "VertexBase.fh"
 
 namespace ThePEG {
@@ -252,6 +253,28 @@ public:
    * Get the order in \f$g_s\f$
    */
   inline unsigned int orderInGs() const;
+  //@}
+
+protected:
+
+  /**
+   * @name Calculation of the strong, electromagnetic and weak couplings
+   */
+  //@{
+  /**
+   *  Strong coupling
+   */
+  inline double strongCoupling(Energy2);
+
+  /**
+   *  Electromagentic coupling
+   */
+  inline double electroMagneticCoupling(Energy2);
+
+  /**
+   *  Weak coupling
+   */
+  inline double weakCoupling(Energy2);
   //@}
 
 protected:
@@ -544,6 +567,26 @@ private:
    * Order of vertex in \f$g_s\f$
    */
   unsigned int _ordergS;
+
+  /**
+   *  option for the coupling
+   */
+  unsigned int _coupopt;
+
+  /**
+   *  Fixed value of strong coupling to use
+   */
+  double _gs;
+
+  /**
+   *  Fixed value of the electromagentic coupling to use
+   */
+  double _ee;
+
+  /**
+   *  Fixed value of \f$\sin\theta_W\f$ to use
+   */
+  double _sw;
 };
   
 /**

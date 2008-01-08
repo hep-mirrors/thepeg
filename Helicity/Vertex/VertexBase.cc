@@ -68,13 +68,15 @@ void VertexBase::doinit() throw(InitException) {
 void VertexBase::persistentOutput(PersistentOStream & os) const {
   os << _npoint << _nsize << _ispin << _inpart << _iinpart << _outpart << _ioutpart 
      << _iparticlea << _iparticleb << _iparticlec << _iparticled << _iparticlee
-     << _particles << _calckinematics;
+     << _particles << _calckinematics
+     << _coupopt << _gs << _ee << _sw;
 }
 
 void VertexBase::persistentInput(PersistentIStream & is, int) {
   is >> _npoint >> _nsize >> _ispin >> _inpart >> _iinpart >> _outpart >> _ioutpart 
      >> _iparticlea >> _iparticleb >> _iparticlec >> _iparticled >> _iparticlee
-     >> _particles >> _calckinematics;
+     >> _particles >> _calckinematics
+     >> _coupopt >> _gs >> _ee >> _sw;
 }
     
 AbstractClassDescription<VertexBase> VertexBase::initVertexBase;
@@ -142,6 +144,44 @@ void VertexBase::Init() {
   static ClassDocumentation<VertexBase> documentation
     ("The VertexBase class is designed to be the base class"
      "of all vertices.");
+
+  static Switch<VertexBase,unsigned int> interfaceCoupling
+    ("Coupling",
+     "Treatment of the running couplings",
+     &VertexBase::_coupopt, 0, false, false);
+  static SwitchOption interfaceCouplingRunning
+    (interfaceCoupling,
+     "Running",
+     "Use the running couplings from the StandardModel object",
+     0);
+  static SwitchOption interfaceCouplingFixedSM
+    (interfaceCoupling,
+     "FixedSM",
+     "Use the fixed values from the StandardModel object",
+     1);
+  static SwitchOption interfaceCouplingFixedLocal
+    (interfaceCoupling,
+     "FixedLocal",
+     "Use the local fixed values",
+     2);
+
+  static Parameter<VertexBase,double> interfaceStrongCoupling
+    ("StrongCoupling",
+     "The fixed value of the strong coupling to use",
+     &VertexBase::_gs, sqrt(4.*Constants::pi*0.3), 0.0, 10.0,
+     false, false, Interface::limited);
+
+  static Parameter<VertexBase,double> interfaceElectroMagneticCoupling
+    ("ElectroMagneticCoupling",
+     "The fixed value of the electromagnetic coupling to use",
+     &VertexBase::_ee, sqrt(4.*Constants::pi/137.04), 0.0, 10.0,
+     false, false, Interface::limited);
+
+  static Parameter<VertexBase,double> interfaceSinThetaW
+    ("SinThetaW",
+     "The fixed value of sin theta_W to use",
+     &VertexBase::_sw, sqrt(0.232), 0.0, 10.0,
+     false, false, Interface::limited);
 
 }
 
