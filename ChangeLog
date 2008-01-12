@@ -1,3 +1,9 @@
+2008-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Persistency/PersistentIStream.cc,
+	Persistency/PersistentOStream.*: Added possibility to specify
+	shared libraries to be loaded before of persistent objects.
+
 2007-12-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Interface/Deleted.*, Interface/Makefile.am: Introduced new

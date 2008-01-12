@@ -48,6 +48,21 @@ void PersistentIStream::init() {
     for ( int i = 0, N = paths.size(); i < N; ++i )
       DynamicLoader::prependPath(paths[i]);
   }
+  if ( version > 0 || subVersion > 1 ) {
+    vector<string> libs;
+    *this >> libs;
+    string loaderror;
+    for ( int i = 0, N = libs.size(); i < N; ++i ) {
+      istringstream is(libs[i]);
+      string library;
+      while ( is >> library ) {
+	DynamicLoader::load(library);
+	loaderror += DynamicLoader::lastErrorMessage;
+      }
+    }
+    if ( !loaderror.empty() )
+      loaderror = "\nerror message from dynamic loader:\n" + loaderror;
+  }
 }
 
 PersistentIStream::~PersistentIStream() {

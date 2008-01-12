@@ -64,17 +64,21 @@ public:
 public:
 
   /**
-   * Constuctor giving an output stream.
+   * Constuctor giving an output stream. Optionally a vector of
+   * libraries to be loaded before the resulting file can be read in
+   * again can be given in \a libs.
    */
-  PersistentOStream(ostream &);
+  PersistentOStream(ostream &, const vector<string> & libs = vector<string>());
 
   /**
    * Constuctor giving a file name to read. If the first
    * character in the string is a '|', the corresponding program is
    * run and its standard input is used instead. If the filename ends
-   * in ".gz" the file is compressed with gzip.
+   * in ".gz" the file is compressed with gzip. Optionally a vector of
+   * libraries to be loaded before the resulting file can be read in
+   * again can be given in \a libs.
    */
-  PersistentOStream(string);
+  PersistentOStream(string, const vector<string> & libs = vector<string>());
 
   /**
    * The destructor
@@ -255,7 +259,7 @@ private:
   /**
    * The subversion of this PersistentOStream implementation.
    */
-  static const int subVersion = 1;
+  static const int subVersion = 2;
 
   /** @name Special marker characters */
   //@{
@@ -369,7 +373,7 @@ private:
   /**
    * Write out initial metainfo on the stream.
    */
-  void init();
+  void init(const vector<string> & libs);
 
   /**
    * List of written objects.

@@ -18,12 +18,12 @@
 
 namespace ThePEG {
 
-PersistentOStream::PersistentOStream(ostream & os)
+PersistentOStream::PersistentOStream(ostream & os, const vector<string> & libs)
 : theOStream(&os), badState(false), allocStream(false) {
-  init();
+  init(libs);
 }
 
-PersistentOStream::PersistentOStream(string file)
+PersistentOStream::PersistentOStream(string file, const vector<string> & libs)
   : badState(false), allocStream(true) {
 //    if ( file[0] == '|' )
 //      theOStream = new opfstream(file.substr(1).c_str());
@@ -32,17 +32,18 @@ PersistentOStream::PersistentOStream(string file)
 //    else
     theOStream = new ofstream(file.c_str());
   if ( theOStream )
-    init();
+    init(libs);
   else
     setBadState();
 }
 
-void PersistentOStream::init() {
+void PersistentOStream::init(const vector<string> & libs) {
   operator<<(string("ThePEG version 1 Database"));
   operator<<(version);
   operator<<(subVersion);
   *this << DynamicLoader::appendedPaths();
   *this << DynamicLoader::prependedPaths();
+  *this << libs;
 }
 
 PersistentOStream::~PersistentOStream() {
