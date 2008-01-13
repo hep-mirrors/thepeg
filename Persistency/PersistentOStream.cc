@@ -43,7 +43,10 @@ void PersistentOStream::init(const vector<string> & libs) {
   operator<<(subVersion);
   *this << DynamicLoader::appendedPaths();
   *this << DynamicLoader::prependedPaths();
-  *this << libs;
+  vector<string> libraries;
+  for ( int i = 0, N = libs.size(); i < N; ++i )
+    libraries.push_back(DynamicLoader::dlnameversion(libs[i]));
+  *this << libraries;
 }
 
 PersistentOStream::~PersistentOStream() {
