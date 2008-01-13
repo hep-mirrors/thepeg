@@ -415,6 +415,9 @@ void LesHouchesReader::reset() {
 }
 
 bool LesHouchesReader::readEvent() {
+
+  reset();
+
   if ( !doReadEvent() ) return false;
 
   // If we are just skipping event we do not need to reweight or do
