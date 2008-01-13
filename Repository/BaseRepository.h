@@ -193,6 +193,11 @@ public:
    * directory which is on top of the popped directory stack.
    */
   static void PopDirectory();
+
+  /**
+   * A list of all globally loaded libraries.
+   */
+  static vector<string> & globalLibraries();
   //@}
 
   /** @name Access objects in the repository. */

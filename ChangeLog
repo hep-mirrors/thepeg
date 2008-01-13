@@ -1,5 +1,9 @@
 2008-01-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* src/setupThePEG.cc, Repository/Repository.cc
+	Repository/BaseRepository.*: Added commands to specify global
+	libraries.
+
 	* Persistency/PersistentOStream.cc: global libraries are now
 	outputted with main version number.
 

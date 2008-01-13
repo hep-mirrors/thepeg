@@ -76,6 +76,11 @@ BaseRepository::DirectorySet & BaseRepository::directories() {
   return theDirectories;
 }
 
+vector<string> & BaseRepository::globalLibraries() {
+  static vector<string> theGlobalLibraries;
+  return theGlobalLibraries;
+}
+
 BaseRepository::StringVector & BaseRepository::directoryStack() {
   static StringVector theDirectoryStack(1, "/");
   return theDirectoryStack;
@@ -519,6 +524,25 @@ string BaseRepository::exec(string command, ostream &) {
       if ( !DynamicLoader::load(library) )
 	return "Error: Could not load library " + library +
 	  "\n - " + DynamicLoader::lastErrorMessage;
+      return "";
+    }
+
+    if ( verb == "globallibrary" ) {
+      string library = StringUtils::car(command);
+      if ( library.empty() ) return "Error: No library specified.";
+      if ( !DynamicLoader::load(library) )
+	return "Error: Could not load library " + library +
+	  "\n - " + DynamicLoader::lastErrorMessage;
+      globalLibraries().push_back(library);
+      return "";
+    }
+
+    if ( verb == "rmgloballibrary" ) {
+      string library = StringUtils::car(command);
+      if ( library.empty() ) return "Error: No library specified.";
+      vector<string>::iterator it;
+      while ( (it = find(globalLibraries(), library)) != globalLibraries().end() )
+	globalLibraries().erase(it);
       return "";
     }
 

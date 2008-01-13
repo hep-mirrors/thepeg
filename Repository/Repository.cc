@@ -132,7 +132,7 @@ tDMPtr Repository::findDecayMode(string name) {
 void Repository::saveRun(string EGname, string name, string filename) {
   EGPtr eg = BaseRepository::GetObject<EGPtr>(EGname);
   EGPtr run = makeRun(eg, name);
-  PersistentOStream os(filename);
+  PersistentOStream os(filename, globalLibraries());
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "Saving event generator '" << name << "'... " << flush;
   os << run;
@@ -309,7 +309,7 @@ struct InterfaceOrdering {
 void Repository::save(string filename) {
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "saving '" << filename << "'... " << flush;
-  PersistentOStream os(filename);
+  PersistentOStream os(filename, globalLibraries());
   set<tcPDPtr,ParticleOrdering>
     part(particles().begin(), particles().end());
   set<tcPMPtr,MatcherOrdering>  match(matchers().begin(), matchers().end());
@@ -319,7 +319,7 @@ void Repository::save(string filename) {
   for ( ObjectMap::iterator it = objects().begin();
 	it != objects().end(); ++it ) os << it->second;
   os << defaultParticles() << part << match << modes << generators()
-     << directories() << directoryStack();
+     << directories() << directoryStack() << globalLibraries();
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "(" << objects().size() << " objects in " << directories().size()
 	   << " directories) done" << endl;
@@ -342,7 +342,7 @@ void Repository::load(string filename) {
   }
   *is >> allObjects() >> defaultParticles()
       >> particles() >> matchers() >> decayModes() >> generators()
-      >> directories() >> directoryStack();
+      >> directories() >> directoryStack() >> globalLibraries();
   delete is;
   objects().clear();
   for ( ObjectSet::iterator it = allObjects().begin();
@@ -525,12 +525,12 @@ string Repository::exec(string command, ostream & os) {
 	eg->go();
       else if ( verb == "saverunfile" ) {
 	string file = generator;
-	PersistentOStream os(file);
+	PersistentOStream os(file, globalLibraries());
 	os << eg;
 	if ( !os ) return "Save failed! (I/O error)";
       } else {
 	string file = eg->path() + "/" + eg->filename() + ".run";
-	PersistentOStream os(file);
+	PersistentOStream os(file, globalLibraries());
 	os << eg;
 	if ( !os ) return "Save failed! (I/O error)";
       }
