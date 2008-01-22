@@ -326,7 +326,7 @@ inline double VertexBase::electroMagneticCoupling(Energy2 q2) {
     return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM());
   }
   else {
-    return _gs;
+    return _ee;
   }
 }
 
