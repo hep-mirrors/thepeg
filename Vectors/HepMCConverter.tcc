@@ -27,14 +27,16 @@ namespace ThePEG {
 
 template <typename HepMCEventT, typename Traits>
 typename HepMCConverter<HepMCEventT,Traits>::GenEvent *
-HepMCConverter<HepMCEventT,Traits>::convert(const Event & ev, bool nocopies) {
-  HepMCConverter<HepMCEventT,Traits> converter(ev, nocopies);
+HepMCConverter<HepMCEventT,Traits>::
+convert(const Event & ev, bool nocopies, Energy eunit, Length lunit) {
+  HepMCConverter<HepMCEventT,Traits> converter(ev, nocopies, eunit, lunit);
   return converter.geneve;
 }
 
 template <typename HepMCEventT, typename Traits>
 HepMCConverter<HepMCEventT,Traits>::
-HepMCConverter(const Event & ev, bool nocopies) {
+HepMCConverter(const Event & ev, bool nocopies, Energy eunit, Length lunit)
+  : energyUnit(eunit), lengthUnit(lunit) {
 
   geneve = Traits::newEvent(ev.number(), ev.weight());
 
@@ -44,8 +46,8 @@ HepMCConverter(const Event & ev, bool nocopies) {
 
     // Get general event info if present.
     Traits::setScaleAndAlphas(*geneve, eh->lastScale(),
-			     eh->SM().alphaS(eh->lastScale()),
-			     eh->SM().alphaEM(eh->lastScale()));
+			      eh->SM().alphaS(eh->lastScale()),
+			      eh->SM().alphaEM(eh->lastScale()), energyUnit);
   }
 
   // Extract all particles.
@@ -143,7 +145,8 @@ typename HepMCConverter<HepMCEventT,Traits>::GenParticle *
 HepMCConverter<HepMCEventT,Traits>::createParticle(tcPPtr p) const {
   int status = 1;
   if ( !p->children().empty() || p->next() ) status = 2;
-  GenParticle * gp = Traits::newParticle(p->momentum(), p->id(), status);
+  GenParticle * gp =
+    Traits::newParticle(p->momentum(), p->id(), status, energyUnit);
 
   if ( p->spinInfo() && p->spinInfo()->hasPolarization() ) {
     DPair pol = p->spinInfo()->polarization();
@@ -199,7 +202,7 @@ HepMCConverter<HepMCEventT,Traits>::createVertex(Vertex * v) {
   }
 
   p /= double(v->in.size() + v->out.size());
-  Traits::setPosition(*gv, p);
+  Traits::setPosition(*gv, p, lengthUnit);
 
   return gv;
 }

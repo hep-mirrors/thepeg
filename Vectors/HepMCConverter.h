@@ -71,9 +71,12 @@ public:
    * responsible for deleting the constructed GenEvent object. If \a
    * nocopies is true, only final copies of particles connected with
    * Particle::previous() and Particle::next() will be entered in the
-   * HepMC::GenEvent.
+   * HepMC::GenEvent. In the GenEvent object, the energy/momentum
+   * variables will be in units of \a eunit and lengths variables in
+   * units of \a lunit.
    */
-  static GenEvent * convert(const Event & ev, bool nocopies = false);
+  static GenEvent * convert(const Event & ev, bool nocopies = false,
+			    Energy eunit = GeV, Length lunit = millimeter);
 
 private:
 
@@ -81,7 +84,7 @@ private:
    * The only proper constructor is private. The class is only
    * instantiated within the convert method.
    */
-  HepMCConverter(const Event & ev, bool nocopies);
+  HepMCConverter(const Event & ev, bool nocopies, Energy eunit, Length lunit);
 
   /**
    * Default constructor is unimplemented and private and should never be used.
@@ -154,6 +157,16 @@ private:
    * The mapping between temporary vertices and the created GenVertex Objects.
    */
   GenVertexMap vmap;
+
+  /**
+   * The energy unit to be used in the GenEvent.
+   */
+  Energy energyUnit;
+
+  /**
+   * The length unit to be used in the GenEvent.
+   */
+  Length lengthUnit;
 
 };
 

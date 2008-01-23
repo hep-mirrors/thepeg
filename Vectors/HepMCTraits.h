@@ -60,10 +60,11 @@ struct HepMCTraitsBase {
   }
 
   /** Set the \a scale, \f$\alpha_S\f$ (\a aS) and \f$\alpha_{EM}\f$
-      (\a aEM) for the event \a e. */
+      (\a aEM) for the event \a e. The scale will be scaled with \a
+      unit before given to the GenEvent. */
   static void setScaleAndAlphas(EventT & e, Energy2 scale,
-				double aS,  double aEM) {
-    e.set_event_scale(sqrt(scale)/GeV);
+				double aS,  double aEM, Energy unit) {
+    e.set_event_scale(sqrt(scale)/unit);
     e.set_alphaQCD(aS);
     e.set_alphaQED(aEM);
   }
@@ -79,14 +80,16 @@ struct HepMCTraitsBase {
   }
 
   /** Create a new particle object with momentum \a p, PDG number \a
-      id and status code \a status. */
+      id and status code \a status. The momentum will be scaled with
+      \a unit which according to the HepMC documentation should be
+      GeV. */
   static ParticleT * newParticle(const Lorentz5Momentum & p,
-				 long id, int status) {
+				 long id, int status, Energy unit) {
     // Note that according to the documentation the momentum is stored in a
     // HepLorentzVector in GeV (event though the CLHEP standard is MeV).
-    LorentzVector<double> p_GeV = p/GeV;
-    ParticleT * genp = new ParticleT(p_GeV, id, status);
-    genp->setGeneratedMass(p.mass()/GeV);
+    LorentzVector<double> p_scalar = p/unit;
+    ParticleT * genp = new ParticleT(p_scalar, id, status);
+    genp->setGeneratedMass(p.mass()/unit);
     return genp;
   }
 
@@ -117,11 +120,11 @@ struct HepMCTraitsBase {
     v.add_particle_out(p);
   }
 
-  /** Set the position \a p for the vertex, \a v. */
-  static void setPosition(VertexT & v, const LorentzPoint & p) {
-    // We assume that the position is measured in millimeters.
-    LorentzVector<double> p_mm = p/mm;
-    v.set_position(p_mm);
+  /** Set the position \a p for the vertex, \a v. The length will be
+      scaled with \a unit which normally should be millimeters. */
+  static void setPosition(VertexT & v, const LorentzPoint & p, Length unit) {
+    LorentzVector<double> p_scaled = p/unit;
+    v.set_position(p_scaled);
   }
 
 };

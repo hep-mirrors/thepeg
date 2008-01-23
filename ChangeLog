@@ -1,3 +1,9 @@
+2008-01-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.tcc,
+	Vectors/HepMCConverter.h: Added possibility to choose in which
+	units lengths and energies should be stored in GenEvent.
+
 2008-01-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, Repository/Repository.cc
