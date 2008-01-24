@@ -433,21 +433,24 @@ double PartonExtractor::fullFn(const PartonBinInstance & pb) {
 void PartonExtractor::
 construct(const PBIPair & pbins, tStepPtr step) const {
   // if a long chain we need to break some mother/child relationships
-  if(pbins.first->incoming()->incoming()) {
-    if(!pbins.first->parton()->parents().empty()) {
-      tParticleVector parents=pbins.first->parton()->parents();
-      tPPtr parton = pbins.first->parton();
-      for(unsigned int ix=0;ix<parents.size();++ix) parents[ix]->abandonChild(parton);
+  if(pbins.first->incoming()) {
+    if(pbins.first->incoming()->incoming()) {
+      if(!pbins.first->parton()->parents().empty()) {
+	tParticleVector parents=pbins.first->parton()->parents();
+	tPPtr parton = pbins.first->parton();
+	for(unsigned int ix=0;ix<parents.size();++ix) parents[ix]->abandonChild(parton);
+      }
     }
   }
-  if(pbins.second->incoming()->incoming()) {
-    if(!pbins.second->parton()->parents().empty()) {
-      tParticleVector parents=pbins.second->parton()->parents();
-      tPPtr parton = pbins.second->parton();
-      for(unsigned int ix=0;ix<parents.size();++ix) parents[ix]->abandonChild(parton);
+  if(pbins.second->incoming()) {
+    if(pbins.second->incoming()->incoming()) {
+      if(!pbins.second->parton()->parents().empty()) {
+	tParticleVector parents=pbins.second->parton()->parents();
+	tPPtr parton = pbins.second->parton();
+	for(unsigned int ix=0;ix<parents.size();++ix) parents[ix]->abandonChild(parton);
+      }
     }
   }
-
   Direction<0> dir(true);
   construct(*pbins.first, step);
   dir.reverse();
