@@ -1,3 +1,9 @@
+2008-01-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StandardXComb.cc (dSigDR): Moved call to
+	MEBase::dSigHatDR to after call to PDFs and made it contitional to
+	PDFs being non zero. This fixes ticket:herwig:136
+
 2008-01-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.tcc,

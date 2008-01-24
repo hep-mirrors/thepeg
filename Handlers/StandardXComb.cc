@@ -173,9 +173,12 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   matrixElement()->setXComb(this);
   if ( !matrixElement()->generateKinematics(r) ) return zero;
-  CrossSection xsec = matrixElement()->dSigHatDR();
   lastScale(matrixElement()->scale());
   if ( !cuts()->scale(lastScale()) ) return zero;
+
+  double pdf = pExtractor()->fullFn(partonBinInstances(), lastScale());
+  if ( pdf == 0.0 ) return zero;
+  CrossSection xsec = matrixElement()->dSigHatDR() * pdf;
 
   lastAlphaS(matrixElement()->alphaS());
   lastAlphaEM(matrixElement()->alphaEM());
@@ -189,8 +192,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 					matrixElement()->maxMultCKKW());
   }
 
-  return xsec * pExtractor()->fullFn(partonBinInstances(), lastScale()) *
-    matrixElement()->reWeight() * matrixElement()->preWeight();
+  return xsec * matrixElement()->reWeight() * matrixElement()->preWeight();
 }
 
 void StandardXComb::newSubProcess() {
