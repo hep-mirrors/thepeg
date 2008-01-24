@@ -2,7 +2,7 @@
 
 	* Handlers/StandardXComb.cc (dSigDR): Moved call to
 	MEBase::dSigHatDR to after call to PDFs and made it contitional to
-	PDFs being non zero. This fixes ticket:herwig:136
+	PDFs being non zero. This fixes herwig:ticket:136
 
 2008-01-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
