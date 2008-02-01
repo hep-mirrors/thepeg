@@ -350,7 +350,11 @@ tXCombPtr LesHouchesReader::getXComb() {
   fillEvent();
   connectMothers();
   tcPBPair sel = createPartonBinInstances();
-  theLastXComb = xCombs()[sel];
+  tXCombPtr lastXC = xCombs()[sel];
+  // clean up the old XComb object before switching to a new one
+  if ( theLastXComb && theLastXComb != lastXC ) 
+    theLastXComb->clean();
+  theLastXComb = lastXC;
   lastXCombPtr()->subProcess(SubProPtr());
   lastXCombPtr()->setPartonBinInstances(partonBinInstances(),
 					sqr(hepeup.SCALUP)*GeV2);
@@ -411,6 +415,7 @@ void LesHouchesReader::reopen() {
 void LesHouchesReader::reset() {
   particleIndex.clear();
   colourIndex.clear();
+  if ( theLastXComb ) theLastXComb->clean();
   theLastXComb = tXCombPtr();
 }
 
