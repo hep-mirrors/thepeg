@@ -290,8 +290,8 @@ void PartonExtractor::
 constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
 		  const LorentzMomentum & k) const {
   LorentzMomentum P = pb.particle()->momentum();
-  assert(pb.bin()->remDim() > 0);
   DVector r = UseRandom::rndvec(pb.bin()->remDim());
+  if ( r.empty() ) r.push_back(0.0);
   pb.parton()->setMomentum(pb.remnantHandler()->
 			   generate(pb, &r[0], pb.scale(), Ph.m2(), P));
   if ( pb.remnantWeight() <= 0.0 ) throw Veto();
