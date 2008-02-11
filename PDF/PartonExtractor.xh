@@ -7,12 +7,11 @@
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 #ifndef ThePEG_PartonExtractor_XH
-#define ThePEG_PartonExtractor_XH//
+#define ThePEG_PartonExtractor_XH
+//
 // This is the declarations of the exception classes used by the
 // PartonExtractor class.
 //
-
-// #include "PartonExtractor.fh"
 
 #include "ThePEG/Utilities/Exception.h"
 

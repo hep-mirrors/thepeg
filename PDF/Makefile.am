@@ -9,7 +9,7 @@ DOCFILES = BeamParticleData.h \
 
 INCLUDEFILES = $(DOCFILES) BeamParticleData.xh \
                NoRemnants.icc PDFBase.xh PDFCuts.icc \
-               PartonExtractor.fh PartonExtractor.icc \
+               PartonExtractor.fh \
                PartonExtractor.xh RemnantHandler.xh \
                PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh
 

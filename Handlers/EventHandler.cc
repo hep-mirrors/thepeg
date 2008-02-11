@@ -189,7 +189,7 @@ performStep(tStepHdlPtr handler, tHintPtr hint) {
   }
 
   while ( currentStep()->nullStep() ) popStep();
-      
+
   if ( ThePEG_DEBUG_ITEM(2) && oldStep != currentStep() )
     generator()->logfile() << *currentStep();
 }

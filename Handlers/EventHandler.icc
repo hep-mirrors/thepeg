@@ -141,6 +141,9 @@ inline void EventHandler::doinit() throw(InitException) {
 }
 
 inline void EventHandler::dofinish() {
+  currentEvent(tEventPtr());
+  currentCollision(tCollPtr());
+  currentStep(tStepPtr());
   HandlerBase::dofinish();
 }
 

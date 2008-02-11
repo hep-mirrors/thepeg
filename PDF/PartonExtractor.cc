@@ -31,26 +31,19 @@
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PartonExtractor.tcc"
-#endif
-
 using namespace ThePEG;
 
 PartonExtractor::PartonExtractor()
   : theMaxTries(100), flatSHatY(false) {}
 
-PartonExtractor::PartonExtractor(const PartonExtractor & x)
-  : HandlerBase(x), LastXCombInfo<>(x),
-    partonBinInstances(x.partonBinInstances),
-    theSpecialDensities(x.theSpecialDensities), theNoPDF(x.theNoPDF),
-    theMaxTries(x.theMaxTries), flatSHatY(x.flatSHatY) {}
-
-
 PartonExtractor::~PartonExtractor() {}
 
-void PartonExtractor::doinit() throw(InitException) {
-  HandlerBase::doinit();
+IBPtr PartonExtractor::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr PartonExtractor::fullclone() const {
+  return new_ptr(*this);
 }
 
 PartonPairVec PartonExtractor::
@@ -107,8 +100,7 @@ tcPDFPtr PartonExtractor::getPDF(tcPDPtr particle) const {
   return p->pdf();
 }
 
-void PartonExtractor::
-select(tXCombPtr newXComb) {
+void PartonExtractor::select(tXCombPtr newXComb) {
   theLastXComb = newXComb;
 }
 
@@ -598,3 +590,7 @@ RemColException::RemColException(const PartonExtractor & pe) {
   severity(maybeabort);
 }
   
+void PartonExtractor::dofinish() {
+  partonBinInstances.clear();
+  HandlerBase::dofinish();
+}

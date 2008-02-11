@@ -16,7 +16,6 @@
 #include "ThePEG/PDF/PartonBinInstance.h"
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/PDT/ParticleData.h"
-// #include "PartonExtractor.fh"
 #include "PartonExtractor.xh"
 
 namespace ThePEG {
@@ -62,11 +61,6 @@ public:
   PartonExtractor();
 
   /**
-   * Copy-constructor.
-   */
-  PartonExtractor(const PartonExtractor &);
-
-  /**
    * Destructor.
    */
   virtual ~PartonExtractor();
@@ -80,7 +74,7 @@ public:
    * Return true if this parton extractor can handle the given types
    * of incoming particles.
    */
-  inline virtual bool canHandle(const cPDPair &);
+  virtual bool canHandle(const cPDPair &) { return true; }
 
   /**
    * Return a vector of possible pairs of parton bins which can be
@@ -194,7 +188,7 @@ public:
    * The maximum number of attempts allowed when trying to generate
    * remnants.
    */
-  inline int maxTries() const;
+  int maxTries() const { return theMaxTries; }
 
   /**
    * Return the PDFBase object to be used for the incoming particle
@@ -323,15 +317,24 @@ protected:
   /**
    * The NoPDF object.
    */
-  inline tcPDFPtr noPDF() const;
+  tcPDFPtr noPDF() const { return theNoPDF; }
 
   /**
    * Connect the first (\a anti) coloured particle in the given range
    * (not equal to \a parton) and connect it to the colour \a line.
    */
   template <typename Iterator>
-  inline void findConnect(tColinePtr line, tPPtr parton, bool anti,
-			  Iterator first, Iterator last) const;
+  void findConnect(tColinePtr line, tPPtr parton, bool anti,
+		   Iterator first, Iterator last) const {
+    for ( ; first != last; ++first ) {
+      if ( *first != parton &&  (**first).hasColour(anti) &&
+	   !(**first).colourLine(anti) ) {
+	line->addColoured(*first, anti);
+	return;
+      }
+    }
+    throw RemColException(*this);
+  }
 
 protected:
 
@@ -341,53 +344,23 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
   /** @name Standard Interfaced functions. */
   //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  virtual void doinit() throw(InitException);
 
   /**
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this
-   * object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual void dofinish();
   //@}
 
 private:
@@ -455,10 +428,5 @@ struct ClassTraits<PartonExtractor>: public ClassTraitsBase<PartonExtractor> {
 /** @endcond */
 
 }
-
-#include "PartonExtractor.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PartonExtractor.tcc"
-#endif
 
 #endif /* ThePEG_PartonExtractor_H */

@@ -534,6 +534,7 @@ EventPtr StandardEventHandler::continueEvent() {
 }
 
 void StandardEventHandler::dofinish() {
+  if ( theLastXComb ) theLastXComb->clean();
   EventHandler::dofinish();
 }
 
