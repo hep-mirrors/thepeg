@@ -17,17 +17,10 @@
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Cuts/Cuts.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleDISCut.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
-
-SimpleDISCut::~SimpleDISCut() {}
 
 bool SimpleDISCut::check(long idi, long ido) const {
   if ( abs(idi) <= 10 || abs(idi) > 16 ) return false;

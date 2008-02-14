@@ -15,12 +15,7 @@ namespace ThePEG {
 
 inline SimpleDISCut::SimpleDISCut()
   : theMinQ2(1.0*GeV2), theMaxQ2(100.0*GeV2),
-    theMinW2(100.0*GeV2), theMaxW2(1000000.0*GeV2), chargedCurrent(true) {}
-
-inline SimpleDISCut::SimpleDISCut(const SimpleDISCut & x)
-  : TwoCutBase(x), theMinQ2(x.theMinQ2), theMaxQ2(x.theMaxQ2),
-    theMinW2(x.theMinW2), theMaxW2(x.theMaxW2),
-    chargedCurrent(x.chargedCurrent) {}
+    theMinW2(100.0*GeV2), theMaxW2(1000000.0*GeV2), chargedCurrent(false) {}
 
 inline IBPtr SimpleDISCut::clone() const {
   return new_ptr(*this);
@@ -28,32 +23,6 @@ inline IBPtr SimpleDISCut::clone() const {
 
 inline IBPtr SimpleDISCut::fullclone() const {
   return new_ptr(*this);
-}
-
-inline void SimpleDISCut::doupdate() throw(UpdateException) {
-  TwoCutBase::doupdate();
-}
-
-inline void SimpleDISCut::doinit() throw(InitException) {
-  TwoCutBase::doinit();
-}
-
-inline void SimpleDISCut::dofinish() {
-  TwoCutBase::dofinish();
-}
-
-inline void SimpleDISCut::doinitrun() {
-  TwoCutBase::doinitrun();
-}
-
-inline void SimpleDISCut::rebind(const TranslationMap & trans)
-  throw(RebindException) {
-  TwoCutBase::rebind(trans);
-}
-
-inline IVector SimpleDISCut::getReferences() {
-  IVector ret = TwoCutBase::getReferences();
-  return ret;
 }
 
 }
