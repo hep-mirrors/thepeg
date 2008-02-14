@@ -1,3 +1,9 @@
+2008-02-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/XComb.cc (XComb::clean): Do not create new
+	partonBinInstances, just set the pointers to NULL. Instead create
+	new partonBinInstances in prepare().
+
 2008-01-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.cc (dSigDR): Moved call to
