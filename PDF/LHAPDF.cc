@@ -24,11 +24,6 @@
 #include "ThePEG/Utilities/SystemUtils.h"
 #include "ThePEG/Utilities/Throw.h"
 #include "config.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LHAPDF.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -80,11 +75,8 @@ struct TmpMaskFpuDenorm {
 #endif
 };
 
-
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/EnumParticles.h"
-
-LHAPDF::~LHAPDF() {}
 
 IBPtr LHAPDF::clone() const {
   return new_ptr(*this);
@@ -446,6 +438,9 @@ cPDVector LHAPDF::partons(tcPDPtr particle) const {
       ret.push_back(getParticleData(i));
       ret.push_back(getParticleData(-i));
     }
+    // special if needed add photon
+    if(enablePartonicGamma) 
+      ret.push_back(getParticleData(ParticleID::gamma));
   }
   return ret;
 }
@@ -453,7 +448,7 @@ cPDVector LHAPDF::partons(tcPDPtr particle) const {
 namespace LHAPDFIndex {
 enum VectorIndices {
   topb = 0, botb = 1, chab = 2, strb = 3, upb = 4, dowb = 5, glu = 6, dow = 7,
-  up = 8, str = 9, cha = 10, bot = 11, top = 12 };
+  up = 8, str = 9, cha = 10, bot = 11, top = 12, gamma = 13 };
 }
 
 double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
@@ -514,6 +509,8 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
     }
   case ParticleID::g:
     return lastXF[glu];
+  case ParticleID::gamma:
+    return enablePartonicGamma ? lastXF[gamma] : 0.;
   }
   return 0.0;
 }
@@ -541,6 +538,7 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   case cbar:
   case ParticleID::s:
   case sbar:
+  case ParticleID::gamma:
     return 0.0;
   case u:
     switch ( particle->id() ) {
@@ -582,14 +580,14 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 
 
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
-  os << oenum(thePType) << thePDFName << theMember
-     << thePhotonOption << theVerboseLevel << theMaxFlav
+  os << oenum(thePType) << thePDFName << theMember << thePhotonOption 
+     << enablePartonicGamma << theVerboseLevel << theMaxFlav
      << xMin << xMax << ounit(Q2Min, GeV2) << ounit(Q2Max, GeV2);
 }
 
 void LHAPDF::persistentInput(PersistentIStream & is, int) {
-  is >> ienum(thePType) >> thePDFName >> theMember
-     >> thePhotonOption >> theVerboseLevel >> theMaxFlav
+  is >> ienum(thePType) >> thePDFName >> theMember >> thePhotonOption 
+     >> enablePartonicGamma >> theVerboseLevel >> theMaxFlav
      >> xMin >> xMax >> iunit(Q2Min, GeV2) >> iunit(Q2Max, GeV2);
   nset = -1;
   lastReset();
@@ -668,6 +666,21 @@ void LHAPDF::Init() {
      "Set the PDF set and member to be used by specifying the old PDFLIB "
      "group and set number.",
      &LHAPDF::setPDFLIBNumbers, true);
+
+  static Switch<LHAPDF,bool> interfaceEnablePartonicGamma
+    ("EnablePartonicGamma",
+     "Enable the option of having photons as partons inside a hadron",
+     &LHAPDF::enablePartonicGamma, false, false, false);
+  static SwitchOption interfaceEnablePartonicGammaYes
+    (interfaceEnablePartonicGamma,
+     "Yes",
+     "Include partonic photons",
+     true);
+  static SwitchOption interfaceEnablePartonicGammaNo
+    (interfaceEnablePartonicGamma,
+     "No",
+     "Don't include them",
+     false);
 
   static Switch<LHAPDF,int> interfacePhotonOption
     ("PhotonOption",

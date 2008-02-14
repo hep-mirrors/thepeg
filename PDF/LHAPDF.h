@@ -53,11 +53,6 @@ public:
    * The copy constructor.
    */
   inline LHAPDF(const LHAPDF &);
-
-  /**
-   * The destructor.
-   */
-  virtual ~LHAPDF();
   //@}
 
 public:
@@ -376,6 +371,11 @@ private:
   int thePhotonOption;
 
   /**
+   * If this PDF allows partonic photons inside a hadron, enable this
+   */
+  bool enablePartonicGamma;
+
+  /**
    * The verbosity of the output from the LHAPDF library.
    */
   int theVerboseLevel;
@@ -503,8 +503,5 @@ struct ClassTraits<LHAPDF>
 }
 
 #include "LHAPDF.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LHAPDF.tcc"
-#endif
 
 #endif /* THEPEG_LHAPDF_H */
