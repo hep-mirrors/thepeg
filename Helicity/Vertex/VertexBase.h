@@ -382,16 +382,22 @@ protected:
    * @param iopt The option for the Breit-Wigner shape
    * @param q2 The scale
    * @param part The ParticleData pointer for the off-shell particle.
+   * @param mass The mass if not to be taken from the ParticleData object
+   * @param width The width if not to be taken from the ParticleData object
    */
-  inline Complex propagator(int iopt, Energy2 q2,tcPDPtr part);
+  inline Complex propagator(int iopt, Energy2 q2,tcPDPtr part,
+			    Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Calculate propagator multiplied by coupling.
    * @param iopt The option for the Breit-Wigner shape
    * @param q2 The scale
    * @param part The ParticleData pointer for the off-shell particle.
+   * @param mass The mass if not to be taken from the ParticleData object
+   * @param width The width if not to be taken from the ParticleData object
    */
-  inline Complex normPropagator(int iopt, Energy2 q2,tcPDPtr part);
+  inline Complex normPropagator(int iopt, Energy2 q2,tcPDPtr part,
+				Energy mass=-GeV, Energy width=-GeV);
   //@}    
 
 public:

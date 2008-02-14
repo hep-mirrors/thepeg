@@ -74,11 +74,16 @@ public:
    * @param out The ParticleData pointer for the off-shell barred spinor.
    * @param sbar2 The wavefunction for the antifermion.
    * @param vec3  The wavefunction for the vector.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    * @param drep The Dirac matrix representation
    */
   SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				 const SpinorBarWaveFunction & sbar2,
 				 const VectorWaveFunction & vec3,
+				 Energy mass=-GeV, Energy width=-GeV,
 				 DiracRep drep=defaultDRep);
 
   /**
@@ -88,10 +93,15 @@ public:
    * @param out The ParticleData pointer for the off-shell vector.
    * @param sp1   The wavefunction for the ferimon.
    * @param sbar2 The wavefunction for the antifermion.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   VectorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
-			      const SpinorBarWaveFunction & sbar2);
+			      const SpinorBarWaveFunction & sbar2,
+			      Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Evaluate the off-shell spinor coming from the vertex.
@@ -100,11 +110,16 @@ public:
    * @param out The ParticleData pointer for the off-shell spinor.
    * @param sp1   The wavefunction for the ferimon.
    * @param vec3  The wavefunction for the vector.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    * @param drep The Dirac matrix representation
    */
   SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
-			      const VectorWaveFunction & vec3,DiracRep drep=defaultDRep);
+			      const VectorWaveFunction & vec3,
+			      Energy mass=-GeV, Energy width=-GeV,DiracRep drep=defaultDRep);
   //@}
 
   /**

@@ -112,6 +112,7 @@ Complex FFVVertex::evaluate(Energy2 q2,
 SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
 				       const SpinorWaveFunction & sp,
 				       const VectorWaveFunction &vec,
+				       Energy mass, Energy width,
 				       DiracRep dirac) {
   // extract the pointers to the particle data objects
   tcPDPtr  Psp=sp.getParticle();
@@ -127,15 +128,15 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   Complex e0m3 = vec.t() -  vec.z();
   Complex e1p2 = vec.x()+ii*vec.y();
   Complex e1m2 = vec.x()-ii*vec.y();
+  // overall factor
+  Energy2 p2 = pout.m2();
+  Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  Energy mass  = iopt==5 ? Energy() : out->mass();
+  if(mass<0.*GeV) mass  = iopt==5 ? Energy() : out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex nos for for the spinor
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
-  // overall factor
-  Energy2 p2 = pout.m2();
-  Complex fact=-normPropagator(iopt,p2,out);
   // ensure the spinor is in the correct dirac representation
   LorentzSpinor<double>    spt  =sp  .wave().transformRep(dirac);
   // low energy Dirac matrix defn
@@ -196,6 +197,7 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
 SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 					  const SpinorBarWaveFunction & sbar,
 					  const VectorWaveFunction & vec,
+					  Energy mass, Energy width,
 					  DiracRep dirac) {
   // first calculate the couplings
   setCoupling(q2,out,sbar.getParticle(),vec.getParticle());
@@ -208,15 +210,15 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Complex e0m3=vec.t() -  vec.z();
   Complex e1p2=vec.x()+ii*vec.y();
   Complex e1m2=vec.x()-ii*vec.y();
+  // overall factor
+  Energy2 p2 = pout.m2();
+  Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  Energy mass  = (iopt==5) ? Energy() : out->mass();
+  if(mass<0.*GeV) mass  = (iopt==5) ? Energy() : out->mass();
   complex<Energy> p1p2=pout.x()+ii*pout.y();
   complex<Energy> p1m2=pout.x()-ii*pout.y();
   // complex numbers for the spinor
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
-  // overall factor
-  Energy2 p2 = pout.m2();
-  Complex fact=-normPropagator(iopt,p2,out);
   // ensure the spinorbar is in the correct dirac representation
   LorentzSpinorBar<double> sbart=sbar.wave().transformRep(dirac);
   // low energy convention
@@ -275,17 +277,19 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 // off-shell vector
 VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 				       const SpinorWaveFunction & sp,
-				       const SpinorBarWaveFunction & sbar) {
+				       const SpinorBarWaveFunction & sbar,
+				       Energy mass, Energy width) {
   // first calculate the couplings
   setCoupling(q2,sp.getParticle(),sbar.getParticle(),out);
   Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.getMomentum()+sp.getMomentum();
-  // momentum components
-  Energy mass  = (iopt==5) ? Energy() : out->mass();
-  Energy2 mass2=mass*mass;
   // overall factor
   Energy2 p2 = pout.m2();
+  Complex fact = normPropagator(iopt,p2,out,mass,width);
+  // momentum components
+  if(mass<0.*GeV) mass  = (iopt==5) ? Energy() : out->mass();
+  Energy2 mass2 = sqr(mass);
   // the vector for the fermion-antifermion
   Complex vec[4];
   if(sp.wave().Rep()==HaberDRep&&sbar.wave().Rep()==HaberDRep) {
@@ -350,8 +354,6 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
       vec[3] +=    +_right*(sbart.s1()*spt.s3()+sbart.s2()*spt.s4());
     }
   }
-  // prefactor
-  Complex fact = normPropagator(iopt,p2,out);
   // massless boson
   if(mass==Energy()) {
     for(int ix=0;ix<4;++ix){vec[ix]*=fact;}

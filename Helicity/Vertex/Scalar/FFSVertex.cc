@@ -84,7 +84,8 @@ Complex FFSVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
 // off-shell scalar
 ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out, 
 				       const SpinorWaveFunction & sp,
-				       const SpinorBarWaveFunction & sbar) {
+				       const SpinorBarWaveFunction & sbar,
+				       Energy mass, Energy width) {
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.getMomentum()+sp.getMomentum();
   // first calculate the couplings
@@ -94,7 +95,7 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   else                                             iint = 3;
   setCoupling(q2,sp.getParticle(),sbar.getParticle(),out,iint);
   Energy2 p2   = pout.m2();
-  Complex fact = getNorm()*propagator(iopt,p2,out);
+  Complex fact = getNorm()*propagator(iopt,p2,out,mass,width);
   Complex output;
   // low energy conventions
   if(sp.wave().Rep()==HaberDRep&&sbar.wave().Rep()==HaberDRep) {
@@ -124,6 +125,7 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const SpinorWaveFunction & sp,
 				       const ScalarWaveFunction & sca,
+				       Energy mass, Energy width,
 				       DiracRep dirac) {
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sp.getMomentum()+sca.getMomentum();
@@ -134,10 +136,10 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   else                                             iint = 2;
   setCoupling(q2,sp.getParticle(),out,sca.getParticle(), iint);
   Energy2 p2   = pout.m2();
-  Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out);
+  Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // useful combinations of the momenta
-  Energy  mass  = out->mass();
+  if(mass<0.*GeV) mass  = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
@@ -184,6 +186,7 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
 					  const SpinorBarWaveFunction & sbar,
 					  const ScalarWaveFunction & sca,
+					  Energy mass, Energy width,
 					  DiracRep dirac) {
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.getMomentum()+sca.getMomentum();
@@ -194,10 +197,10 @@ SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   else                                              iint = 1;
   setCoupling(q2,out,sbar.getParticle(),sca.getParticle(), iint);
   Energy2 p2   = pout.m2();
-  Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out);
+  Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // momentum components
-  Energy mass = out->mass();
+  if(mass<0.*GeV) mass = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex numbers for the spinor
