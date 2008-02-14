@@ -594,4 +594,16 @@ string Repository::exec(string command, ostream & os) {
   return BaseRepository::exec(cpcmd, os);
 }
 
-    
+Repository::Repository() {
+  ++ninstances;
+}
+
+Repository::~Repository() {
+  --ninstances;
+  if ( ninstances <= 0 ) {
+    generators().clear();
+  }
+}
+
+int Repository::ninstances = 0;
+

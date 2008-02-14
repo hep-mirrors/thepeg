@@ -24,6 +24,8 @@ int main(int argc, char * argv[]) {
   string file;
   bool init = false;
 
+  Repository repository;
+
   for ( int iarg = 1; iarg < argc; ++iarg ) {
     string arg = argv[iarg];
     if ( arg == "-d" ) Debug::setDebug(atoi(argv[++iarg]));
@@ -35,14 +37,14 @@ int main(int argc, char * argv[]) {
       init = true;
       Debug::level = 0;
     }
-    else if ( arg == "--exitonerror" ) Repository::exitOnError() = 1;
+    else if ( arg == "--exitonerror" ) repository.exitOnError() = 1;
     else if ( arg == "-s" ) {
       DynamicLoader::load(argv[++iarg]);
-      Repository::globalLibraries().push_back(argv[iarg]);
+      repository.globalLibraries().push_back(argv[iarg]);
     }
     else if ( arg.substr(0,2) == "-s" ) {
       DynamicLoader::load(arg.substr(2));
-      Repository::globalLibraries().push_back(arg.substr(2));
+      repository.globalLibraries().push_back(arg.substr(2));
     }
     else if ( arg == "-l" ) DynamicLoader::appendPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-l" )
@@ -67,27 +69,27 @@ int main(int argc, char * argv[]) {
     if ( init ) {
       breakThePEG();
       if ( repout.empty() ) repout = repo;
-      else Repository::load(repo);
+      else repository.load(repo);
       {
 	HoldFlag<> setup(InterfaceBase::NoReadOnly);
 	if ( file.empty() ) file = "ThePEGDefaults.in";
 	ifstream is(file.c_str());
-	Repository::read(is, cout);
-	Repository::update();
+	repository.read(is, cout);
+	repository.update();
       }
-      Repository::save(repout);
+      repository.save(repout);
     } else {
-      Repository::load(repo);
+      repository.load(repo);
       breakThePEG();
       if ( file.size() && file != "-" ) {
 	if ( file == "--java" || file == "-java" )
-	  Repository::read(cin, cout, "-*-ready-*-\n");
+	  repository.read(cin, cout, "-*-ready-*-\n");
 	else {
 	  ifstream is(file.c_str());
-	  Repository::read(is, cout);
+	  repository.read(is, cout);
 	}
       } else {
-	Repository::read(cin, cout, "ThePEG> ");
+	repository.read(cin, cout, "ThePEG> ");
       }
     }
   }

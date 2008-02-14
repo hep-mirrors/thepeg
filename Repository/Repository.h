@@ -55,6 +55,21 @@ public:
 
 public:
 
+  /** @name Standsrd constructors and destructors */
+  //@{
+  /**
+   * The default constructor is the only one that should be used.
+   */
+  Repository();
+
+  /**
+   * The destructor will do some clean-up when the last Repository is
+   * deleted.
+   */
+  ~Repository();
+
+public:
+
   /** @name Functions for register objects in the Repository. */
   //@{
   /**
@@ -257,6 +272,26 @@ public:
   static int & exitOnError();
 
   //@}
+
+private:
+
+  /**
+   * It makes no sense to copy a Repository, so this constructor is
+   * not implemented
+   */
+  Repository(const Repository &);
+
+  /**
+   * It makes no sense to copy a Repository, so this assignment is
+   * not implemented
+   */
+  Repository & operator=(const Repository &);
+
+  /**
+   * Count the number of repositorys instantiated.
+   */
+  static int ninstances;
+  
 
 };
 

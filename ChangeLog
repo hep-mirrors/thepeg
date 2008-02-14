@@ -1,5 +1,10 @@
 2008-02-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/Repository.*, src/setupThePEG.cc: Introduce
+	constructor and destructor in the Repository to allow for
+	cleanup. Create a Repository object in setupThePEG to allow for
+	cleanup.
+
 	* Handlers/XComb.cc (XComb::clean): Do not create new
 	partonBinInstances, just set the pointers to NULL. Instead create
 	new partonBinInstances in prepare().
