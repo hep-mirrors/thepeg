@@ -78,13 +78,38 @@ public:
   static GenEvent * convert(const Event & ev, bool nocopies = false,
 			    Energy eunit = GeV, Length lunit = millimeter);
 
+  /**
+   * Convert a ThePEG::Event to a HepMC::GenEvent. The caller supplies
+   * a GenEvent object, \a gev, which will be filled. If \a nocopies
+   * is true, only final copies of particles connected with
+   * Particle::previous() and Particle::next() will be entered in the
+   * HepMC::GenEvent. In the GenEvent object, the energy/momentum
+   * variables will be in units of \a eunit and lengths variables in
+   * units of \a lunit.
+   */
+  static void
+  convert(const Event & ev, GenEvent & gev, bool nocopies = false,
+	  Energy eunit = GeV, Length lunit = millimeter);
+
 private:
 
   /**
-   * The only proper constructor is private. The class is only
+   * The proper constructors are private. The class is only
    * instantiated within the convert method.
    */
   HepMCConverter(const Event & ev, bool nocopies, Energy eunit, Length lunit);
+
+  /**
+   * The proper constructors are private. The class is only
+   * instantiated within the convert method.
+   */
+  HepMCConverter(const Event & ev, GenEvent & gev, bool nocopies,
+		 Energy eunit, Length lunit);
+
+  /**
+   * Common init function used by the constructors.
+   */
+  void init(const Event & ev, bool nocopies);
 
   /**
    * Default constructor is unimplemented and private and should never be used.

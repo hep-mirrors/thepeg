@@ -34,11 +34,37 @@ convert(const Event & ev, bool nocopies, Energy eunit, Length lunit) {
 }
 
 template <typename HepMCEventT, typename Traits>
+void HepMCConverter<HepMCEventT,Traits>::
+convert(const Event & ev, GenEvent & gev, bool nocopies,
+	Energy eunit, Length lunit) {
+  HepMCConverter<HepMCEventT,Traits> converter(ev, gev, nocopies, eunit, lunit);
+}
+
+template <typename HepMCEventT, typename Traits>
 HepMCConverter<HepMCEventT,Traits>::
 HepMCConverter(const Event & ev, bool nocopies, Energy eunit, Length lunit)
   : energyUnit(eunit), lengthUnit(lunit) {
 
   geneve = Traits::newEvent(ev.number(), ev.weight());
+
+  init(ev, nocopies);
+
+}
+
+template <typename HepMCEventT, typename Traits>
+HepMCConverter<HepMCEventT,Traits>::
+HepMCConverter(const Event & ev, GenEvent & gev, bool nocopies,
+	       Energy eunit, Length lunit)
+  : energyUnit(eunit), lengthUnit(lunit) {
+
+  geneve = &gev;
+
+  init(ev, nocopies);
+
+}
+
+template <typename HepMCEventT, typename Traits>
+void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
 
   tcEHPtr eh;
   if ( ev.primaryCollision() && ( eh =
