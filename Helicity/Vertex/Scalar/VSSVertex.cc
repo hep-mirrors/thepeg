@@ -54,17 +54,18 @@ Complex VSSVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec,
 // off-shell vector
 VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca1,
-				       const ScalarWaveFunction & sca2) {
+				       const ScalarWaveFunction & sca2,
+				       Energy mass, Energy width) {
   // outgoing momentum 
   Lorentz5Momentum pout(sca1.getMomentum()+sca2.getMomentum());
   // calculate the coupling
   setCoupling(q2,out,sca1.getParticle(),sca2.getParticle());
   // mass and width
-  Energy mass   = out->mass();
+  if(mass<0.*GeV) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   // calculate the prefactor
   Energy2 p2    = pout.m2();
-  Complex fact = getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out);
+  Complex fact = getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   // compute the vector
   LorentzPolarizationVector vec;
   // massive outgoing vector
@@ -84,14 +85,15 @@ VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 // return an off-shell scalar
 ScalarWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const VectorWaveFunction & vec,
-				       const ScalarWaveFunction & sca ) {
+				       const ScalarWaveFunction & sca,
+				       Energy mass, Energy width ) {
   // momentum of the particle
   Lorentz5Momentum pout = sca.getMomentum()+vec.getMomentum(); 
   // calculate the coupling
   setCoupling(q2,vec.getParticle(),sca.getParticle(),out);
   // calculate the prefactor
   Energy2 p2   = pout.m2();
-  Complex fact = getNorm()*sca.wave()*propagator(iopt,p2,out);
+  Complex fact = getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // compute the wavefunction
   fact = UnitRemoval::InvE * fact*vec.wave().dot(sca.getMomentum()+pout);
   return ScalarWaveFunction(pout,out,fact);

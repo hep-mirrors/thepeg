@@ -74,10 +74,15 @@ public:
    * @param out The ParticleData pointer for the off-shell vector.
    * @param vec2 The wavefunction for the second vector.
    * @param vec3 The wavefunction for the third  vector.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   VectorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const VectorWaveFunction & vec2,
-			      const VectorWaveFunction & vec3);
+			      const VectorWaveFunction & vec3,
+			      Energy mass=-GeV, Energy width=-GeV);
   //@}
 
   /**

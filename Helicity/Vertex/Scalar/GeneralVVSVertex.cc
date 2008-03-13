@@ -63,7 +63,8 @@ Complex GeneralVVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 
 ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 					      const VectorWaveFunction & vec1,
-					      const VectorWaveFunction & vec2) {
+					      const VectorWaveFunction & vec2,
+					      Energy mass, Energy width) {
   // pointers to the particle data objects
   tcPDPtr Pvec1(vec1.getParticle());
   tcPDPtr Pvec2(vec2.getParticle());
@@ -78,7 +79,7 @@ ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // norm factor
   Complex norm = -getNorm();
   // propagator
-  Complex prop = propagator(iopt,q2,out);
+  Complex prop = propagator(iopt,q2,out,mass,width);
   // lorentz part
   Complex e1e2(vec1.wave().dot(vec2.wave()));
   complex<Energy> e1p1(vec1.wave().dot(pvec1));
@@ -105,7 +106,8 @@ ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 
 VectorWaveFunction GeneralVVSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					      const VectorWaveFunction & ,
-					      const ScalarWaveFunction & ) {
+					      const ScalarWaveFunction & ,
+					      Energy, Energy) {
   throw Exception() << "GeneralVVSVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "and off-shell scalar not the off-shell vector"

@@ -86,15 +86,16 @@ Complex VVVVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
 // off-shell vector
 VectorWaveFunction VVVVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const VectorWaveFunction & vec1,
-				       const VectorWaveFunction & vec2) {
+				       const VectorWaveFunction & vec2,
+				       Energy mass, Energy width) {
   // output momenta
   Lorentz5Momentum pout =vec1.getMomentum()+vec2.getMomentum();
   // calculate the coupling
   setCoupling(q2,out,vec1.getParticle(),vec2.getParticle());
   // prefactor
   Energy2 p2    = pout.m2();
-  Complex fact  = getNorm()*propagator(iopt,p2,out);
-  Energy mass   = out->mass();
+  Complex fact  = getNorm()*propagator(iopt,p2,out,mass,width);
+  if(mass<0.*GeV) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   // dot products we need
   Complex dot12 = vec1.wave().dot(vec2.wave());

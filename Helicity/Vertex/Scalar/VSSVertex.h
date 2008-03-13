@@ -71,10 +71,15 @@ public:
    * @param out The ParticleData pointer for the off-shell vector.
    * @param sca2 The wavefunction for the first  scalar.
    * @param sca3 The wavefunction for the second scalar.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   VectorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const ScalarWaveFunction & sca2,
-			      const ScalarWaveFunction & sca3);
+			      const ScalarWaveFunction & sca3,
+			      Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -83,10 +88,15 @@ public:
    * @param out The ParticleData pointer for the off-shell scalar.
    * @param vec1 The wavefunction for the vector.
    * @param sca2 The wavefunction for the scalar.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const VectorWaveFunction & vec1,
-			      const ScalarWaveFunction & sca2);
+			      const ScalarWaveFunction & sca2,
+			      Energy mass=-GeV, Energy width=-GeV);
   //@}
 
   /**

@@ -81,10 +81,15 @@ public:
    * @param out The ParticleData pointer for the off-shell tensor.
    * @param vec1  The wavefunction for the first  vector.
    * @param vec2  The wavefunction for the second vector.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   TensorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const VectorWaveFunction & vec1,
-			      const VectorWaveFunction & vec2);
+			      const VectorWaveFunction & vec2,
+			      Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Evaluate the off-shell vector coming from the vertex.
@@ -93,10 +98,15 @@ public:
    * @param out The ParticleData pointer for the off-shell vector.
    * @param vec1  The wavefunction for the first vector.
    * @param ten3  The wavefunction for the tensor.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   VectorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const VectorWaveFunction & vec1,
-			      const TensorWaveFunction & ten3);
+			      const TensorWaveFunction & ten3,
+			      Energy mass=-GeV, Energy width=-GeV);
   //@}
 
   /**

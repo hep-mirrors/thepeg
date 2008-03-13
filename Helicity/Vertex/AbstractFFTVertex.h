@@ -44,10 +44,15 @@ public:
    * @param out The ParticleData pointer for the off-shell tensor.
    * @param sp1   The wavefunction for the ferimon.
    * @param sbar2 The wavefunction for the antifermion.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   virtual TensorWaveFunction evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				      const SpinorWaveFunction & sp1,
-				      const SpinorBarWaveFunction & sbar2) = 0;
+				      const SpinorBarWaveFunction & sbar2,
+				      Energy mass=-GeV, Energy width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell spinor coming from the vertex.
@@ -56,11 +61,16 @@ public:
    * @param out The ParticleData pointer for the off-shell spinor.
    * @param sp1   The wavefunction for the ferimon.
    * @param ten3  The wavefunction for the tensor.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    * @param drep The Dirac matrix representation
    */
   virtual SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const SpinorWaveFunction & sp1,
 				      const TensorWaveFunction & ten3,
+				      Energy mass=-GeV, Energy width=-GeV,
 				      DiracRep drep=defaultDRep) = 0;
 
   /**
@@ -70,11 +80,16 @@ public:
    * @param out The ParticleData pointer for the off-shell barred spinor.
    * @param sbar2 The wavefunction for the antifermion.
    * @param ten3  The wavefunction for the tensor.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    * @param drep The Dirac matrix representation
    */
   virtual SpinorBarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 					 const SpinorBarWaveFunction & sbar2,
 					 const TensorWaveFunction& ten3,
+					 Energy mass=-GeV, Energy width=-GeV,
 					 DiracRep drep=defaultDRep) = 0;
   //@}
 

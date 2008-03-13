@@ -43,10 +43,15 @@ public:
    * @param out The ParticleData pointer for the off-shell scalar.
    * @param sca1 The wavefunction for the first  scalar.
    * @param sca2 The wavefunction for the second scalar.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out, 
 				      const ScalarWaveFunction & sca1,
-				      const ScalarWaveFunction & sca2) = 0;
+				      const ScalarWaveFunction & sca2,
+				      Energy mass=-GeV, Energy width=-GeV) = 0;
   //@}
 
 public:

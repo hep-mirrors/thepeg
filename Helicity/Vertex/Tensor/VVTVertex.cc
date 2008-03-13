@@ -111,17 +111,18 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
 }
 // evaluate an off-shell vector
 VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
-    				   const VectorWaveFunction & vec,
-    				   const TensorWaveFunction & ten) {
+				       const VectorWaveFunction & vec,
+				       const TensorWaveFunction & ten,
+				       Energy mass, Energy width) {
   // evaluate the couplings
   setCoupling(q2,vec.getParticle(),out,ten.getParticle());
   // outgoing momentum
   Lorentz5Momentum pout = ten.getMomentum()+vec.getMomentum();
   // normalisation factor
-  Energy mass   = out->mass();
+  if(mass<0.*GeV) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = -0.5*getNorm()*propagator(iopt,p2,out);
+  Complex fact  = -0.5*getNorm()*propagator(iopt,p2,out,mass,width);
   // dot product of wavefunctions and momenta
   complex<Energy2> dotk1k2 = vec.getMomentum()*pout;
   complex<Energy> dotk2v1  = vec.wave()       *pout;
@@ -208,20 +209,21 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 }
 // offs-shell tensor
 TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
-    				   const VectorWaveFunction & vec1,
-    				   const VectorWaveFunction & vec2) {
+				       const VectorWaveFunction & vec1,
+				       const VectorWaveFunction & vec2,
+				       Energy tmass, Energy width) {
   // coupling
   setCoupling(q2,vec1.getParticle(),vec2.getParticle(),out);
   // momenta of the outgoing tensor
   // outgoing momentum
   Lorentz5Momentum pout= vec1.getMomentum()+vec2.getMomentum();
   // overall normalisation
-  Energy tmass   = out->mass();
+  if(tmass<0.*GeV) tmass   = out->mass();
   Energy2 tmass2 = sqr(tmass);
   Energy vmass   = vec1.getParticle()->mass();
   Energy2 vmass2 = sqr(vmass);
   Energy2 p2     = pout.m2();
-  Complex fact   = 0.5*getNorm()*propagator(iopt,p2,out);
+  Complex fact   = 0.5*getNorm()*propagator(iopt,p2,out,tmass,width);
   // dot products we need to construct the tensor
   complex<Energy2> dotk1k2 = vec1.getMomentum()*vec2.getMomentum();
   complex<Energy> dotv1k2  = vec1.wave()*vec2.getMomentum();

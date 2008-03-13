@@ -49,13 +49,14 @@ Complex SSSVertex::evaluate(Energy2 q2,
 // off-shell scalar
 ScalarWaveFunction SSSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out, 
 				       const ScalarWaveFunction & sca1,
-				       const ScalarWaveFunction & sca2) {
+				       const ScalarWaveFunction & sca2,
+				       Energy mass, Energy width) {
   // outgoing momentum 
   Lorentz5Momentum pout = sca1.getMomentum()-sca2.getMomentum(); 
   // calculate the coupling
   setCoupling(q2,sca1.getParticle(),sca2.getParticle(),out);
   // wavefunction
   Energy2 p2=pout.m2();
-  Complex fact=-getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out);
+  Complex fact=-getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   return ScalarWaveFunction(pout,out,fact);
 }

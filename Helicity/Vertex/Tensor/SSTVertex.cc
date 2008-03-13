@@ -66,8 +66,9 @@ Complex SSTVertex::evaluate(Energy2 q2, const ScalarWaveFunction & sca1,
 }
 // off-shell tensor
 TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
-    				   const ScalarWaveFunction & sca1,
-    				   const ScalarWaveFunction & sca2) {
+				       const ScalarWaveFunction & sca1,
+				       const ScalarWaveFunction & sca2,
+				       Energy mass, Energy width) {
   // obtain the coupling
   setCoupling(q2,sca1.getParticle(),sca2.getParticle(),out);
   // array for the tensor
@@ -75,10 +76,11 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the outgoing momentum
   Lorentz5Momentum pout = sca1.getMomentum()+sca2.getMomentum();
   // prefactor
-  Energy mass   = out->mass();
+  if(mass<0.*GeV) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = 0.5*getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out);
+  Complex fact  = 0.5*getNorm()*sca1.wave()*sca2.wave()*
+    propagator(iopt,p2,out,mass,width);
   // dot products we need
   Energy2 dot12 = sca1.getMomentum()*sca2.getMomentum();
   Energy2 dot1  = sca1.getMomentum()*pout;
@@ -129,17 +131,18 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 }
 // off-shell scalar
 ScalarWaveFunction SSTVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
-    				   const ScalarWaveFunction & sca,
-    				   const TensorWaveFunction & ten) {
+				       const ScalarWaveFunction & sca,
+				       const TensorWaveFunction & ten,
+				       Energy mass, Energy width) {
   // obtain the coupling
   setCoupling(q2,sca.getParticle(),out,ten.getParticle());
   // calculate the outgoing momentum
   Lorentz5Momentum pout = sca.getMomentum()+ten.getMomentum();
   // prefactors
-  Energy mass   = out->mass();
+  if(mass<0.*GeV) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = 0.5*getNorm()*sca.wave()*propagator(iopt,p2,out);
+  Complex fact  = 0.5*getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // trace of the tensor
   Complex trace1 = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // dot product of the two momenta
