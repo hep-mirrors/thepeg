@@ -14,6 +14,7 @@
 #include "LesHouchesFileReader.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Utilities/Throw.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesFileReader.tcc"
@@ -25,6 +26,15 @@
 using namespace ThePEG;
 
 LesHouchesFileReader::~LesHouchesFileReader() {}
+
+void LesHouchesFileReader::initialize(LesHouchesEventHandler & eh) {
+  LesHouchesReader::initialize(eh);
+  if ( LHFVersion.empty() )
+    Throw<LesHouchesFileError>()
+      << "The file associated with '" << name() << "' does not contain a "
+      << "proper formatted Les Houches event file. The events may not be "
+      << "properly sampled." << Exception::warning;
+}
 
 void LesHouchesFileReader::open() {
   cfile.open(filename());
@@ -106,9 +116,6 @@ void LesHouchesFileReader::open() {
     return;
   }
 
-  weighted( abs(heprup.IDWTUP) <= 2 );
-  negativeWeights( heprup.IDWTUP < 0 );
-
 }
 
 bool LesHouchesFileReader::doReadEvent() {
@@ -173,16 +180,17 @@ void LesHouchesFileReader::persistentInput(PersistentIStream & is, int) {
   ieve = 0;
 }
 
-AbstractClassDescription<LesHouchesFileReader>
+ClassDescription<LesHouchesFileReader>
 LesHouchesFileReader::initLesHouchesFileReader;
 // Definition of the static class description member.
 
 void LesHouchesFileReader::Init() {
 
   static ClassDocumentation<LesHouchesFileReader> documentation
-    ("ThePEG::LesHouchesFileReader is an abstract base class to be "
-      "used for objects which reads event files from matrix element "
-     "generators.");
+    ("ThePEG::LesHouchesFileReader is an base class to be used for objects "
+     "which reads event files from matrix element generators. This class is "
+     "able to read plain event files conforming to the Les Houches Event File "
+     "accord.");
 
   static Parameter<LesHouchesFileReader,string> interfaceFileName
     ("FileName",

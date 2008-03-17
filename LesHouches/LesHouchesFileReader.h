@@ -18,14 +18,15 @@
 namespace ThePEG {
 
 /**
- * LesHouchesFileReader is an abstract base class to be used for
- * objects which reads event files from matrix element generators. It
- * inherits from LesHouchesReader and extends it by defining a file
- * handle to be read from, which is opened and closed by the open()
- * and close() functions. Note that the file handle is a standard C
- * filehandle and not a C++ stream. This is because there is no
- * standard way in C++ to connect a pipe to a stream for reading
- * eg. gzipped files.
+ * LesHouchesFileReader is an base class to be used for objects which
+ * reads event files from matrix element generators. It inherits from
+ * LesHouchesReader and extends it by defining a file handle to be
+ * read from, which is opened and closed by the open() and close()
+ * functions. Note that the file handle is a standard C filehandle and
+ * not a C++ stream. This is because there is no standard way in C++
+ * to connect a pipe to a stream for reading eg. gzipped files. This
+ * class is able to read plain event files conforming to the Les
+ * Houches Event File accord.
  *
  * @see \ref LesHouchesFileReaderInterfaces "The interfaces"
  * defined for LesHouchesFileReader.
@@ -59,6 +60,12 @@ public:
 
   /** @name Virtual functions specified by the LesHouchesReader base class. */
   //@{
+  /**
+   * Initialize. This function is called by the LesHouchesEventHandler
+   * to which this object is assigned.
+   */
+  virtual void initialize(LesHouchesEventHandler & eh);
+
   /**
    * Open a file with events. Derived classes should overwrite it and
    * first calling it before reading in the run information into the
@@ -111,6 +118,23 @@ public:
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
+
+protected:
+
+  /** @name Clone Methods. */
+  //@{
+  /**
+   * Make a simple clone of this object.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr clone() const;
+
+  /** Make a clone of this object, possibly modifying the cloned object
+   * to make it sane.
+   * @return a pointer to the new object.
+   */
+  inline virtual IBPtr fullclone() const;
+  //@}
 
 protected:
 
@@ -235,8 +259,7 @@ private:
   /**
    * Describe an abstract base class with persistent data.
    */
-  static AbstractClassDescription<LesHouchesFileReader>
-  initLesHouchesFileReader;
+  static ClassDescription<LesHouchesFileReader> initLesHouchesFileReader;
 
   /**
    * Private and non-existent assignment operator.

@@ -107,8 +107,8 @@ void LesHouchesEventHandler::initialize() {
 	ProcessMap::iterator pit = processes.find(reader.heprup.LPRUP[ip]);
 	if ( pit == processes.end() )
 	  processes[reader.heprup.LPRUP[ip]] = readers()[i];
-	else {
-	  Throw<Exception>()
+	else if ( warnPNum ) {
+	  Throw<LesHouchesPNumException>()
 	    << "In the LesHouchesEventHandler '"
 	    << name() << "', both the '" << pit->second->name() << "' and '"
 	    << reader.name() << "' contains sub-process number " << pit->first
@@ -195,12 +195,12 @@ EventPtr LesHouchesEventHandler::generateEvent() {
       return currentEvent();
     }
     catch (Veto) {
-      reject();
+      reject(weight);
     }
     catch (Stop) {
     }
     catch (Exception & ex) {
-      reject();
+      reject(weight);
       throw;
     }
   }
@@ -268,12 +268,12 @@ EventPtr LesHouchesEventHandler::continueEvent() {
     continueCollision();
   }
   catch (Veto) {
-    reject();
+    reject(currentEvent()->weight());
   }
   catch (Stop) {
   }
   catch (Exception & ex) {
-    reject();
+    reject(currentEvent()->weight());
     throw;
   }
   return currentEvent(); 
@@ -378,10 +378,10 @@ void LesHouchesEventHandler::accept() {
   currentReader()->accept();
 }
 
-void LesHouchesEventHandler::reject() {
-  stats.reject();
-  histStats.reject();
-  currentReader()->reject();
+void LesHouchesEventHandler::reject(double w) {
+  stats.reject(w);
+  histStats.reject(w);
+  currentReader()->reject(w);
 }
 
 CrossSection LesHouchesEventHandler::histogramScale() const {
@@ -394,12 +394,12 @@ CrossSection LesHouchesEventHandler::integratedXSec() const {
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
   os << stats << histStats << theReaders << theSelector
-     << oenum(theWeightOption) << theCurrentReader;
+     << oenum(theWeightOption) << theCurrentReader << warnPNum;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
   is >> stats >> histStats >> theReaders >> theSelector
-     >> ienum(theWeightOption) >> theCurrentReader;
+     >> ienum(theWeightOption) >> theCurrentReader >> warnPNum;
 }
 
 ClassDescription<LesHouchesEventHandler>
@@ -445,6 +445,22 @@ void LesHouchesEventHandler::Init() {
      "VarNegWeight",
      "Events may have varying weights, both positive and negative.",
      varnegweight);
+
+  static Switch<LesHouchesEventHandler,bool> interfaceWarnPNum
+    ("WarnPNum",
+     "Warn if the same process number is used in more than one "
+     "LesHouchesReader.",
+     &LesHouchesEventHandler::warnPNum, true, true, false);
+  static SwitchOption interfaceWarnPNumWarning
+    (interfaceWarnPNum,
+     "Warning",
+     "Give a warning message.",
+     true);
+  static SwitchOption interfaceWarnPNumNoWarning
+    (interfaceWarnPNum,
+     "NoWarning",
+     "Don't give a warning message.",
+     false);
 
   interfaceLesHouchesReaders.rank(10);
   interfaceWeightOption.rank(9);

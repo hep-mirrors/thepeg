@@ -127,14 +127,4 @@ inline Unit RandomGenerator::rndRelBW(Unit mean, Unit gamma, Unit cut) {
   return sqrt(sqr(mean) + mean*gamma*tan(rnd(atan(minarg), atan(maxarg))));
 }
 
-inline long RandomGenerator::rndPoisson(double mean, long nmax) {
-  long n = 0;
-  long nfac = 1;
-  double x = exp(mean)*rnd();
-  double sum = 1.0;
-  double mpow = 1.0;
-  while ( x >= sum && n <= nmax ) sum += (mpow *= mean)/(nfac *= ++n);
-  return n;
-}
-
 }

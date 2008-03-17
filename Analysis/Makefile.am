@@ -14,9 +14,12 @@ DOCFILES = $(AIDAWRAPPERS) $(LWHHEADERS) LWHFactory.h
 
 INCLUDEFILES = $(DOCFILES) 
 
-pkglib_LTLIBRARIES = LWHFactory.la
+pkglib_LTLIBRARIES = LWHFactory.la XSecCheck.la
 LWHFactory_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 LWHFactory_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+
+XSecCheck_la_SOURCES = XSecCheck.cc XSecCheck.h XSecCheck.icc
+XSecCheck_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 noinst_LTLIBRARIES = libThePEGHist.la
 libThePEGHist_la_SOURCES = FactoryBase.cc FactoryBase.fh \

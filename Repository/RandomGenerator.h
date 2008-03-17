@@ -212,7 +212,7 @@ public:
    * values. For this reason the maximum return value is given by \a
    * nmax.
    */
-  inline long rndPoisson(double mean, long nmax = 10000);
+  long rndPoisson(double mean, long nmax = 10000);
   //@}
 
   /** @name Access the cached random numbers from the underlying engine. */

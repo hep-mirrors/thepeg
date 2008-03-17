@@ -39,6 +39,8 @@ using std::fgets;
 void MadGraphReader::open() {
   LesHouchesFileReader::open();
 
+  heprup.IDWTUP = 1;
+
   static const int ntags = 33;
   static const char * cuttags[] = {"ptj", "ptb", "pta", "ptl",
 				   "etaj", "etab", "etaa", "etal",
@@ -65,6 +67,11 @@ void MadGraphReader::open() {
       NEvents(neve);
     }
 
+    // MadEvent has gives wrong values for XMAXUP and XWGTUP, they
+    // need to be multiplied by the number of events to be LHEF
+    // compliant.
+    weightScale = neve*picobarn;
+
     // Scan information about cuts.
     for ( int itag = 0; itag < ntags; ++itag ) {
       pos = outsideBlock.find(string("= ") + cuttags[itag]);
@@ -78,24 +85,6 @@ void MadGraphReader::open() {
       }
     }
 
-    // If we have weighted events we need to scale it up according to
-    // the rate at which they are supposed to be kept to get the
-    // statistics right.
-    if ( weighted() ) {
-      // This really only works if we have only one event type.
-      if ( heprup.NPRUP != 1 ) {
-	Throw<WeightedExcetion>()
-	<< "The file '" << filename() << "' in the MadGraphReader '" << name()
-	<< "' contains weighted events of several different sub-processes. "
-	<< "These are currently not handled properly and the statistics may "
-	<< "come out wrong." << Exception::warning;
-	return;
-      }
-      wtfac = neve > 0? double(neve): 1.0;
-      heprup.XMAXUP[0] *= wtfac;
-
-    }
-
     return;
 
   }
@@ -107,7 +96,6 @@ void MadGraphReader::open() {
   int lpp1 = 0;
   int lpp2 = 0;
   string pdftag;
-  bool unweighted = false;
   // First scan banner to extract some information
   // (LesHoushesFileReader::open has already read in the first line).
   cfile.resetline();
@@ -142,8 +130,6 @@ void MadGraphReader::open() {
       cfile.skip('\'');
       cfile >> pdftag;
       pdftag = pdftag.substr(0, 7);
-    } else if ( cfile.find("Unweighting Statistics") ) {
-      unweighted = true;      
     } else if ( cfile.find("Number of Events Written ") ) {
       cfile.skip(':');
       cfile >> neve;
@@ -173,10 +159,11 @@ void MadGraphReader::open() {
   heprup.XSECUP.push_back(xsec);
   heprup.XERRUP.push_back(0.0);
   heprup.XMAXUP.push_back(maxw);
-  weighted(true);
-  if ( unweighted ) weighted(false);
   NEvents(neve);
-  negativeWeights(false);
+  // MadEvent has gives wrong values for XMAXUP and XWGTUP, they
+  // need to be multiplied by the number of events to be LHEF
+  // compliant.
+  weightScale = neve*picobarn;
 
   if ( !heprup.IDBMUP.first ) {
     if ( lpp1 == 1 ) heprup.IDBMUP.first = ParticleID::pplus;
@@ -225,20 +212,21 @@ void MadGraphReader::open() {
 
 
 long MadGraphReader::scan() {
+  bool fixscale = !NEvents();
   long neve = LesHouchesFileReader::scan();
-  if ( neve > 0 ) for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-    heprup.XSECUP[ip] *= neve;
-    heprup.XERRUP[ip] *= neve;
+  if ( fixscale ) {
+    // MadEvent has gives wrong values for XMAXUP and XWGTUP, they
+    // need to be multiplied by the number of events to be LHEF
+    // compliant.
+    weightScale = neve*picobarn;
+    if ( heprup.NPRUP > 1 ) weightScale /= heprup.NPRUP;
   }
   return neve;
 }
 
 bool MadGraphReader::doReadEvent() {
 
-  if ( LesHouchesFileReader::doReadEvent() ) {
-    hepeup.XWGTUP *= wtfac;
-    return true;
-  }
+  if ( LesHouchesFileReader::doReadEvent() )  return true;
 
   if ( !cfile ) return false;
 
@@ -355,12 +343,12 @@ MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
   os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts
-     << doInitCuts << wtfac;
+     << doInitCuts;
 }
 
 void MadGraphReader::persistentInput(PersistentIStream & is, int) {
   is >> iunit(fixedScale, GeV) >> fixedAEM >> fixedAS >> cuts
-     >> doInitCuts>> wtfac;
+     >> doInitCuts;
 }
 
 bool MadGraphReader::preInitialize() const {

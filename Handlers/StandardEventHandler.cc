@@ -52,10 +52,10 @@ StandardEventHandler::StandardEventHandler(const StandardEventHandler & eh)
 
 StandardEventHandler::~StandardEventHandler() {}
 
-void StandardEventHandler::reject(double) {
+void StandardEventHandler::reject(double w) {
   tStdXCombPtr last = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
   if ( !last ) return;
-  last->reject();
+  last->reject(w);
 }
 
 void StandardEventHandler::doupdate() throw(UpdateException) {

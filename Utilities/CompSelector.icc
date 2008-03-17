@@ -38,21 +38,21 @@ inline WeightType CompSelector<T,WeightType>::reweight(double & weight) {
   if ( abs(weight) > 1.0 ) {
     // Retrieve the old overestimate of the object by seing how much
     // the summed weights are decreased when removing the object.
-    WeightType oldmax = selector.sum();
-    oldmax -= selector.erase(last);
+    WeightType oldtot = selector.sum();
+    WeightType oldmax = oldtot - selector.erase(last);
     WeightType newmax = oldmax*abs(weight)*margin();
-    selector.insert(newmax, last);
+    WeightType newtot = selector.insert(newmax, last);
     double rat = newmax/oldmax;
 
     // Setup the new compensation level.
     Level level;
     level.weight = 1.0/rat;
-    level.lastN = long(N*rat);
+    level.lastN = long(N*newtot/oldtot);
 
     // If we are already compensating, reweight the previous
     // compensation levels.
     for ( int i = 0, M = levels.size(); i < M; ++i ) {
-      levels[i].lastN = long(levels[i].lastN*rat);
+      levels[i].lastN = long(levels[i].lastN*newtot/oldtot);
       levels[i].weight /= rat;
     }
     levels.push_back(level);

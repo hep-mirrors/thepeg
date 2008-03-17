@@ -14,13 +14,14 @@
 namespace ThePEG {
 
 inline LesHouchesEventHandler::LesHouchesEventHandler()
-  : theWeightOption(unitweight) {}
+  : theWeightOption(unitweight), warnPNum(true) {}
 
 inline LesHouchesEventHandler::
 LesHouchesEventHandler(const LesHouchesEventHandler & x)
   : EventHandler(x), stats(x.stats), histStats(x.histStats),
     theReaders(x.theReaders), theSelector(x.theSelector),
-    theWeightOption(x.theWeightOption), theCurrentReader(x.theCurrentReader) {}
+    theWeightOption(x.theWeightOption), theCurrentReader(x.theCurrentReader),
+    warnPNum(x.warnPNum) {}
 
 inline IBPtr LesHouchesEventHandler::clone() const {
   return new_ptr(*this);

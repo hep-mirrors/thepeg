@@ -97,6 +97,15 @@ int RandomGenerator::rnd4(double p0, double p1, double p2, double p3) {
   }
 }
 
+long RandomGenerator::rndPoisson(double mean, long nmax) {
+  long n = 0;
+  double x = exp(mean)*rnd();
+  double sum = 1.0;
+  double mpow = 1.0;
+  while ( x >= sum && n <= nmax ) sum += (mpow *= mean/(++n));
+  return n;
+}
+
 void RandomGenerator::persistentOutput(PersistentOStream & os) const {
   os << theNumbers
      << RndVector::const_iterator(nextNumber) - theNumbers.begin() << theSize

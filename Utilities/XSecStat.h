@@ -91,9 +91,13 @@ public:
 
   /**
    * Reject the event which was last accepted with accept() or
-   * selected with select(double).
+   * selected with select(double). The \a weight should be set to the
+   * value, \f$w\f$, used in the previous call to select(double),
+   * except if the event has been accepted with the probability
+   * \f$w\f$, in which case \a weight should be set to \f$sign(1,
+   * w)\f$.
    */
-  inline void reject();
+  inline void reject(double weight = 1.0);
 
   /**
    * The current estimate of the cross section for the corresponding
@@ -181,11 +185,6 @@ private:
    * The sum of the squared weights so far.
    */
   double theSumWeights2;
-
-  /**
-   * The weight given in the last call to select(double).
-   */
-  double lastWeight;
 
 };
 

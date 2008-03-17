@@ -220,12 +220,6 @@ protected:
    */
   bool doInitCuts;
 
-  /**
-   * Factor to multiply the weights to get proper cross section for
-   * weighted events in case of LHF files.
-   */
-  double wtfac;
-
 public:
 
   /**

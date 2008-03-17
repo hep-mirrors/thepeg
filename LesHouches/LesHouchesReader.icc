@@ -48,6 +48,10 @@ inline IVector LesHouchesReader::getReferences() {
   return ret;
 }
 
+inline double LesHouchesReader::eventWeight() const {
+  return hepeup.XWGTUP*lastweight;
+}
+
 inline long LesHouchesReader::NEvents() const {
   return theNEvents;
 }
@@ -80,24 +84,12 @@ inline bool LesHouchesReader::active() const {
   return isActive;
 }
 
-inline bool LesHouchesReader::weighted() const {
-  return isWeighted;
-}
-
-inline void LesHouchesReader::weighted(bool x) {
-  isWeighted = x;
-}
-
 inline void LesHouchesReader::NEvents(long x) {
   theNEvents = x;
 }
 
 inline bool LesHouchesReader::negativeWeights() const {
-  return hasNegativeWeights;
-}
-
-inline void LesHouchesReader::negativeWeights(bool x) {
-  hasNegativeWeights = x;
+  return heprup.IDWTUP < 0;
 }
 
 inline string LesHouchesReader::cacheFileName() const {
@@ -111,7 +103,7 @@ inline size_t LesHouchesReader::eventSize(int N) {
     N*sizeof(long) +                 // IDUP
     2*N*sizeof(pair<int,int>) +      // MOTHUP, ICOLUP
     sizeof(pair<double,double>) +    // XPDWUP.
-    sizeof(double);                  // lastweight
+    2*sizeof(double);                // lastweight and preweight
 }
 
 inline FILE * LesHouchesReader::cacheFile() const {
@@ -150,9 +142,9 @@ inline void LesHouchesReader::accept() {
   statmap[hepeup.IDPRUP].accept();
 }
 
-inline void LesHouchesReader::reject() {
-  stats.reject();
-  statmap[hepeup.IDPRUP].reject();
+inline void LesHouchesReader::reject(double w) {
+  stats.reject(w);
+  statmap[hepeup.IDPRUP].reject(w);
 }
 
 inline tPExtrPtr LesHouchesReader::partonExtractor() const {
@@ -189,6 +181,10 @@ inline int LesHouchesReader::maxMultCKKW() const {
 
 inline int LesHouchesReader::minMultCKKW() const {
   return theMinMultCKKW;
+}
+
+inline bool LesHouchesReader::cutEarly() const {
+  return doCutEarly;
 }
 
 }

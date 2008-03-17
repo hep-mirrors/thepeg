@@ -33,6 +33,14 @@ inline FILE * LesHouchesFileReader::file() {
   return theFile;
 }
 
+inline IBPtr LesHouchesFileReader::clone() const {
+  return new_ptr(*this);
+}
+
+inline IBPtr LesHouchesFileReader::fullclone() const {
+  return new_ptr(*this);
+}
+
 inline void LesHouchesFileReader::doupdate() throw(UpdateException) {
   LesHouchesReader::doupdate();
   // First update base class.

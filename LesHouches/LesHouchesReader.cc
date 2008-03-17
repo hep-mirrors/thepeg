@@ -49,12 +49,11 @@
 using namespace ThePEG;
 
 LesHouchesReader::LesHouchesReader(bool active)
-  : theNEvents(0), position(0), reopened(0), theMaxScan(-1),
-    isActive(active), isWeighted(false), hasNegativeWeights(false),
-    theCacheFileName(""), theCacheFile(NULL), preweight(1.0),
-    reweightPDF(false), doInitPDFs(false),
+  : theNEvents(0), position(0), reopened(0), theMaxScan(-1), scanning(false),
+    isActive(active), theCacheFileName(""), doCutEarly(true), theCacheFile(NULL),
+    preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
-    skipping(false) {}
+    weightScale(1.0*picobarn), skipping(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -62,16 +61,18 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     thePartonExtractor(x.thePartonExtractor), thePartonBins(x.thePartonBins),
     theXCombs(x.theXCombs), theCuts(x.theCuts),
     theNEvents(x.theNEvents), position(x.position), reopened(x.reopened),
-    theMaxScan(x.theMaxScan), isActive(x.isActive), isWeighted(x.isWeighted),
-    hasNegativeWeights(x.hasNegativeWeights),
-    theCacheFileName(x.theCacheFileName),
+    theMaxScan(x.theMaxScan), scanning(false),
+    isActive(x.isActive),
+    theCacheFileName(x.theCacheFileName), doCutEarly(x.doCutEarly),
     stats(x.stats), statmap(x.statmap),
     thePartonBinInstances(x.thePartonBinInstances),
     theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
     preweight(x.preweight), reweightPDF(x.reweightPDF),
     doInitPDFs(x.doInitPDFs),
     theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW),
-    lastweight(x.lastweight), maxFactor(x.maxFactor), skipping(x.skipping) {}
+    lastweight(x.lastweight), maxFactor(x.maxFactor),
+    weightScale(x.weightScale), xSecWeights(x.xSecWeights),
+    maxWeights(x.maxWeights), skipping(x.skipping) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -236,18 +237,30 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   }
   outPDF = make_pair(partonExtractor()->getPDF(inData.first),
 		     partonExtractor()->getPDF(inData.second));
+
   close();
+
+  if ( !heprup.IDWTUP )
+    Throw<LesHouchesInitError>()
+      << "No information about the weighting scheme was found. The events "
+      << "produced by LesHouchesReader " << name()
+      << " may not be sampled correctly." << Exception::warning;
+
+  if ( abs(heprup.IDWTUP) > 1 )
+    Throw<LesHouchesInitError>()
+      << "LesHouchesReader " << name() << " has the IDWTUP flag set to "
+      << heprup.IDWTUP << " which is not supported by this reader, the "
+      << "produced events may not be sampled correctly. It is up to "
+      << "sub-classes of LesHouchesReader to correctly convert to match IDWTUP "
+      << "+/- 1. Will try to make intelligent guesses to get correct statistics."
+      << Exception::warning;
+
   scan();
   initStat();
 }
 
 
 long LesHouchesReader::scan() {
-  heprup.NPRUP = 0;
-  heprup.XSECUP.clear();
-  heprup.XERRUP.clear();
-  heprup.XMAXUP.clear();
-  heprup.LPRUP.clear();
   
   open();
 
@@ -256,60 +269,102 @@ long LesHouchesReader::scan() {
   // randomized.
   if ( cacheFileName().length() ) openWriteCacheFile();
 
-  // Use posi to remember the positions of the cached events on the
-  // temporary stream (if present).
-  vector<long> posi;
-
   // Keep track of the number of events scanned.
   long neve = 0;
+  long cuteve = 0;
+  bool negw = false;
 
   // If the open() has not already gotten information about subprocesses
   // and cross sections we have to scan through the events.
-  if ( !heprup.NPRUP || cacheFile() != NULL ) {
+  if ( !heprup.NPRUP || cacheFile() != NULL || abs(heprup.IDWTUP) != 1 ) {
+
+    HoldFlag<> isScanning(scanning);
+
     double xlast = 0.0;
-    weighted(false);
-    negativeWeights(false);
+    double oldsum = 0.0;
+    vector<int> lprup;
+    vector<double> newmax;
+    vector<long> oldeve;
+    vector<long> neweve;
     for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
-      if ( !checkPartonBin() ) throw LesHouchesInitError()
+      if ( !checkPartonBin() ) Throw<LesHouchesInitError>()
 	<< "Found event in LesHouchesReader '" << name()
 	<< "' which cannot be handeled by the assigned PartonExtractor '"
 	<< partonExtractor()->name() << "'." << Exception::runerror;
-      if ( cacheFile() != NULL ) {
-	// We are caching events. Remember where they were written in
-	// case we want to randomize
-	cacheEvent();
+      vector<int>::iterator idit =
+	find(lprup.begin(), lprup.end(), hepeup.IDPRUP);
+      int id = lprup.size();
+      if ( idit == lprup.end() ) {
+	lprup.push_back(hepeup.IDPRUP);
+	newmax.push_back(0.0);
+	neweve.push_back(0);
+	oldeve.push_back(0);
+      } else {
+	id = idit - lprup.begin();
       }
       ++neve;
-      vector<int>::iterator idit =
-	find(heprup.LPRUP.begin(), heprup.LPRUP.end(), hepeup.IDPRUP);
-      if ( idit == heprup.LPRUP.end() ) {
-	++heprup.NPRUP;
-	heprup.LPRUP.push_back(hepeup.IDPRUP);
-	heprup.XSECUP.push_back(hepeup.XWGTUP);
-	heprup.XERRUP.push_back(sqr(hepeup.XWGTUP));
-	heprup.XMAXUP.push_back(abs(hepeup.XWGTUP));
-      } else {
-	int id = idit - heprup.LPRUP.begin();
-	heprup.XSECUP[id] += hepeup.XWGTUP;
-	heprup.XERRUP[id] += sqr(hepeup.XWGTUP);
-	heprup.XMAXUP[id] = max(heprup.XMAXUP[id], abs(hepeup.XWGTUP));
+      ++oldeve[id];
+      oldsum += hepeup.XWGTUP;
+      if ( cacheFile() != NULL ) {
+ 	if ( eventWeight() == 0.0 ) {
+ 	  ++cuteve;
+	  continue;
+ 	}
+	cacheEvent();
       }
-      if ( i == 0 ) xlast = hepeup.XWGTUP;
-      if ( xlast != hepeup.XWGTUP ) weighted(true);
-      if ( hepeup.XWGTUP < 0.0 ) negativeWeights(true);
+      ++neweve[id];
+      newmax[id] = max(newmax[id], abs(eventWeight()));
+      if ( i == 0 ) xlast = eventWeight();
+      if ( eventWeight() < 0.0 ) negw = true;
     }
-    if ( maxScan() < 0 || neve > NEvents() ) NEvents(neve);
-    for ( int id = 0, N = heprup.LPRUP.size(); id < N; ++id ) {
-      heprup.XSECUP[id] /= neve;
-      heprup.XERRUP[id] = weighted()? sqrt(heprup.XERRUP[id])/neve: 0.0;
+
+    xSecWeights.resize(oldeve.size(), 1.0);
+    for ( int i = 0, N = oldeve.size(); i < N; ++i )
+      if ( oldeve[i] ) xSecWeights[i] = double(neweve[i])/double(oldeve[i]);
+
+    if ( maxScan() < 0 || neve > NEvents() ) NEvents(neve - cuteve);
+
+    if ( lprup.size() == heprup.LPRUP.size() ) {
+      for ( int id = 0, N = lprup.size(); id < N; ++id ) {
+	vector<int>::iterator idit =
+	  find(heprup.LPRUP.begin(), heprup.LPRUP.end(), hepeup.IDPRUP);
+	if ( idit == heprup.LPRUP.end() ) {
+	  Throw<LesHouchesInitError>()
+	    << "When scanning events, the LesHouschesReader '" << name()
+	    << "' found undeclared processes."  << Exception::warning;
+	  heprup.NPRUP = 0;
+	  break;
+	}
+	int idh = idit - heprup.LPRUP.begin();
+	heprup.XMAXUP[idh] = newmax[id];
+      }	
+    }
+    if ( heprup.NPRUP == 0 ) {
+      // No heprup block was supplied or somethingwent wrong.
+      heprup.NPRUP = lprup.size();
+      heprup.LPRUP.resize(lprup.size());
+      heprup.XMAXUP.resize(lprup.size());
+      for ( int id = 0, N = lprup.size(); id < N; ++id ) {
+	heprup.LPRUP[id] = lprup[id];
+	heprup.XMAXUP[id] = newmax[id];
+      }
+    } else if ( abs(heprup.IDWTUP) != 1 ) {
+      // Try to fix things if abs(heprup.IDWTUP) != 1.
+      double sumxsec = 0.0;
+      for ( int id = 0; id < heprup.NPRUP; ++id ) sumxsec += heprup.XSECUP[id];
+      weightScale = picobarn*neve*sumxsec/oldsum;
     }
   }
 
   if ( cacheFile() != NULL ) closeCacheFile();
 
+  if ( negw ) heprup.IDWTUP = min(-abs(heprup.IDWTUP), -1);
+
   return neve;
 
 }
+
+void LesHouchesReader::setWeightScale(long) {}
 
 void LesHouchesReader::initStat() {
 
@@ -317,23 +372,16 @@ void LesHouchesReader::initStat() {
   statmap.clear();
   if ( heprup.NPRUP <= 0 ) return;
 
-  if ( !weighted() ) {
-    double xsec = 0.0;
-    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-      xsec += heprup.XSECUP[ip];
-      statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XSECUP[ip]*picobarn);
-    }
-    stats.maxXSec(xsec*picobarn);
-  } else {
-    //     heprup.XSECUP.clear();
-    //     heprup.XERRUP.clear();
-    double sumx = 0.0;
-    for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-      sumx += heprup.XMAXUP[ip];
-      statmap[heprup.LPRUP[ip]] = XSecStat(heprup.XMAXUP[ip]*picobarn);
-    }
-    stats.maxXSec(sumx*picobarn);
+  double sumx = 0.0;
+  xSecWeights.resize(heprup.NPRUP, 1.0);
+  maxWeights.clear();
+  for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
+    sumx += heprup.XMAXUP[ip]*xSecWeights[ip];
+    statmap[heprup.LPRUP[ip]] =
+      XSecStat(heprup.XMAXUP[ip]*weightScale*xSecWeights[ip]);
+    maxWeights[heprup.LPRUP[ip]] = heprup.XMAXUP[ip];
   }
+  stats.maxXSec(sumx*weightScale);
   maxFactor = 1.0;
 }
 
@@ -429,26 +477,28 @@ bool LesHouchesReader::readEvent() {
   // anything fancy.
   if ( skipping ) return true;
 
+  if ( cacheFile() != NULL && !scanning ) return true;
+
   // Reweight according to the re- and pre-weights objects in the
   // LesHouchesReader base class.
-  hepeup.XWGTUP *= ( lastweight = reweight() );
+  lastweight = reweight();
 
-  if ( !reweightPDF ) return true;
-  // We should try to reweight the PDFs here.
+  if ( !reweightPDF && !cutEarly() ) return true;
+  // We should try to reweight the PDFs or make early cuts here.
 
   fillEvent();
 
   double x1 = incoming().first->momentum().plus()/
     beams().first->momentum().plus();
 
-  if ( inPDF.first && outPDF.first && inPDF.first != outPDF.first ) {
+  if ( reweightPDF &&
+       inPDF.first && outPDF.first && inPDF.first != outPDF.first ) {
     if ( hepeup.XPDWUP.first <= 0.0 )
       hepeup.XPDWUP.first =
 	inPDF.first->xfx(inData.first, incoming().first->dataPtr(),
 			 sqr(hepeup.SCALUP*GeV), x1);
     double xf = outPDF.first->xfx(inData.first, incoming().first->dataPtr(),
 				  sqr(hepeup.SCALUP*GeV), x1);
-    hepeup.XWGTUP *= xf/hepeup.XPDWUP.first;
     lastweight *= xf/hepeup.XPDWUP.first;
     hepeup.XPDWUP.first = xf;
   }
@@ -456,7 +506,8 @@ bool LesHouchesReader::readEvent() {
   double x2 = incoming().second->momentum().minus()/
     beams().second->momentum().minus();
 
-  if ( inPDF.second && outPDF.second && inPDF.second != outPDF.second ) {
+  if ( reweightPDF &&
+       inPDF.second && outPDF.second && inPDF.second != outPDF.second ) {
     if ( hepeup.XPDWUP.second <= 0.0 )
       hepeup.XPDWUP.second =
 	inPDF.second->xfx(inData.second, incoming().second->dataPtr(),
@@ -464,14 +515,16 @@ bool LesHouchesReader::readEvent() {
     double xf =
       outPDF.second->xfx(inData.second, incoming().second->dataPtr(),
 			 sqr(hepeup.SCALUP*GeV), x2);
-    hepeup.XWGTUP *= xf/hepeup.XPDWUP.second;
     lastweight *= xf/hepeup.XPDWUP.second;
     hepeup.XPDWUP.second = xf;
   }
 
-  if ( !cuts().initSubProcess((incoming().first->momentum() +
-			       incoming().second->momentum()).m2(),
-			      0.5*log(x1/x2)) ) return false;
+  if ( cutEarly() ) {
+    if ( !cuts().initSubProcess((incoming().first->momentum() +
+				 incoming().second->momentum()).m2(),
+				0.5*log(x1/x2)) ) lastweight = 0.0;
+    if ( !cuts().passCuts(*getSubProcess()) ) lastweight = 0.0;
+  }
 
   return true;
 }
@@ -484,9 +537,9 @@ double LesHouchesReader::getEvent() {
   }
   ++position;
 
-  return weighted()?
-    double(hepeup.XWGTUP*picobarn/statmap[hepeup.IDPRUP].maxXSec()):
-    lastweight/maxFactor;
+  double max = maxWeights[hepeup.IDPRUP]*maxFactor;
+  return max != 0.0? eventWeight()/max: 0.0;
+
 }
 
 void LesHouchesReader::skip(long n) {
@@ -845,10 +898,12 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.VTIMUP[0], hepeup.NUP);
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mwrite(pos, lastweight);
+  pos = mwrite(pos, preweight);
   fwrite(&buff[0], buff.size(), 1, cacheFile());
 }
 
 bool LesHouchesReader::uncacheEvent() {
+  reset();
   static vector<char> buff;
   if ( fread(&hepeup.NUP, sizeof(hepeup.NUP), 1, cacheFile()) != 1 )
     return false;
@@ -877,6 +932,7 @@ bool LesHouchesReader::uncacheEvent() {
   hepeup.SPINUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mread(pos, lastweight);
+  pos = mread(pos, preweight);
 
   // If we are skipping, we do not have to do anything else.
   if ( skipping ) return true;
@@ -887,9 +943,7 @@ bool LesHouchesReader::uncacheEvent() {
     fillEvent();
     getSubProcess();
     CKKWHandler()->setXComb(lastXCombPtr());
-    double weight = CKKWHandler()->reweightCKKW(minMultCKKW(), maxMultCKKW());
-    hepeup.XWGTUP *= weight;
-    lastweight *= weight;
+    lastweight *= CKKWHandler()->reweightCKKW(minMultCKKW(), maxMultCKKW());
   }
   return true;
 }
@@ -903,12 +957,13 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << hepeup.ICOLUP << hepeup.PUP << hepeup.VTIMUP << hepeup.SPINUP
      << inData << inPDF << outPDF << thePartonExtractor << theCKKW
      << thePartonBins << theXCombs << theCuts << theNEvents << position
-     << reopened << theMaxScan << isActive << isWeighted << hasNegativeWeights
-     << theCacheFileName << stats << statmap << thePartonBinInstances
+     << reopened << theMaxScan << isActive
+     << theCacheFileName << doCutEarly << stats << statmap
+     << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
      << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
-     << maxFactor;
+     << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -921,12 +976,13 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> hepeup.ICOLUP >> hepeup.PUP >> hepeup.VTIMUP >> hepeup.SPINUP
      >> inData >> inPDF >> outPDF >> thePartonExtractor >> theCKKW
      >> thePartonBins >> theXCombs >> theCuts >> theNEvents >> position
-     >> reopened >> theMaxScan >> isActive >> isWeighted >> hasNegativeWeights
-     >> theCacheFileName >> stats >> statmap >> thePartonBinInstances
+     >> reopened >> theMaxScan >> isActive
+     >> theCacheFileName >> doCutEarly >> stats >> statmap
+     >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
      >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
-     >> maxFactor;
+     >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -1013,7 +1069,6 @@ void LesHouchesReader::Init() {
      &LesHouchesReader::theMaxScan, -1, 0, 0,
      true, false, false);
 
-
   static Parameter<LesHouchesReader,string> interfaceCacheFileName
     ("CacheFileName",
      "Name of file used to cache the events form the reader in a fast-readable "
@@ -1021,6 +1076,22 @@ void LesHouchesReader::Init() {
      &LesHouchesReader::theCacheFileName, "",
      true, false);
   interfaceCacheFileName.fileType();
+
+  static Switch<LesHouchesReader,bool> interfaceCutEarly
+    ("CutEarly",
+     "Determines whether to apply cuts to events before converting to "
+     "ThePEG format.",
+     &LesHouchesReader::doCutEarly, true, true, false);
+  static SwitchOption interfaceCutEarlyYes
+    (interfaceCutEarly,
+     "Yes",
+     "Event are cut before converted.",
+     true);
+  static SwitchOption interfaceCutEarlyNo
+    (interfaceCutEarly,
+     "No",
+     "Events are not cut before converted.",
+     false);
 
   static Reference<LesHouchesReader,PartonExtractor> interfacePartonExtractor
     ("PartonExtractor",

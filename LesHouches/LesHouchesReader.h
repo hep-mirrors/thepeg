@@ -44,17 +44,11 @@ namespace ThePEG {
  * In the initialization the virtual open() and scan() functions are
  * called. Here the derived class must provide the information about
  * the processes in the variables corresponding to the HEPRUP common
- * block. Note that the IDWTUP variable is not explicitly
- * used. Instead the derived class must specify whether the generated
- * events are weighted with or without negative weights using the
- * weighted(bool) and negativeWeights(bool) functions. If the events
- * are not weighted, the XSECUP vector should be filled with the
- * correct cross sections (in pb) for the corresponding subprocesses
- * and the getEvent() function should always return 1. Otherwise, the
- * XMAXUP vector should be filled with the overestimated cross
- * sections (in pb) for the corresponding subprocesses and the
- * getEvent() function should return a probability with which the
- * event should be accepted.
+ * block. Note that the IDWTUP is required to be +/- 1, and sub
+ * classes are required to change the information accordingly to
+ * ensure the correct corss section sampling. Note also that the
+ * controlling LesHouchesEventHandler may choose to generate weighted
+ * events even if IDWTUP is 1.
  *
  * Note that the information given per process in e.g. the XSECUP and
  * XMAXUP vectors is not used by the LesHouchesEventHandler and by
@@ -158,7 +152,7 @@ public:
   /** @name Other important function which may be overridden in
    *  sub-classes which wants to bypass the basic HEPRUP or HEPEUP
    *  variables or otherwise facilitate the conversion to ThePEG
-   *  objects.. */
+   *  objects. */
   //@{
   /**
    * Initialize. This function is called by the LesHouchesEventHandler
@@ -241,6 +235,15 @@ public:
    */
   void reset();
 
+  /**
+   * Possibility for subclasses to recover from non-conformant
+   * settings of XMAXUP when an event file has been scanned with \a
+   * neve events. Should set weightScale so that the average XMAXUP
+   * times weightScale gives the cross section for a process. (This is
+   * needed for MadEvent).
+   */
+  virtual void setWeightScale(long neve);
+
   //@}
 
   /** @name Access information about the current event. */
@@ -252,6 +255,14 @@ public:
    * number is taken from NUP.
    */
   inline static size_t eventSize(int N);
+
+  /**
+   * The current event weight given by XWGTUP times possible
+   * reweighting. Note that this is not necessarily the same as what
+   * is returned by getEvent(), which is scaled with the maximum
+   * weight.
+   */
+  inline double eventWeight() const;
 
   /**
    * The pair of PartonBinInstance objects describing the current
@@ -326,11 +337,6 @@ public:
   inline bool active() const;
 
   /**
-   * Return true if this reader produces weighted events.
-   */
-  inline bool weighted() const;
-
-  /**
    * True if negative weights may be produced.
    */
   inline bool negativeWeights() const;
@@ -359,12 +365,12 @@ public:
   /**
    * Reject the current event assuming it was previously accepted.
    */
-  inline void reject();
+  inline void reject(double weight);
 
   /**
    * Increase the overestimated cross section for this reader.
    */
-  void increaseMaxXSec(CrossSection maxxsec);
+  virtual void increaseMaxXSec(CrossSection maxxsec);
 
   /**
    * The PartonExtractor object used to construct remnants.
@@ -406,6 +412,12 @@ protected:
    * fast-readable form. If empty, no cache file will be generated.
    */
   inline string cacheFileName() const;
+
+  /**
+   * Determines whether to apply cuts to events converting them to
+   * ThePEG format.
+   */
+  inline bool cutEarly() const;
 
   /**
    * File stream for the cache.
@@ -527,20 +539,10 @@ protected:
   /** @name Set functions for some variables not in the Les Houches accord. */
   //@{
   /**
-   * Set true if this reader produces weighted events.
-   */
-  inline void weighted(bool);
-
-  /**
    * The number of events in this reader. If less than zero the number
    * of events is unlimited.
    */
   inline void NEvents(long);
-
-  /**
-   * Set true if negative weights may be produced.
-   */
-  inline void negativeWeights(bool);
 
   /**
    * The map of XComb objects indexed by the corresponding PartonBin
@@ -619,7 +621,7 @@ protected:
   HEPEUP hepeup;
 
   /**
-   * The ParticleData objcest corresponding to the incoming particles.
+   * The ParticleData objects corresponding to the incoming particles.
    */
   tcPDPair inData;
 
@@ -687,25 +689,26 @@ protected:
   long theMaxScan;
 
   /**
+   * Flag to tell whether we are in the process of scanning.
+   */
+  bool scanning;
+
+  /**
    * True if this is an active reader.
    */
   bool isActive;
-
-  /**
-   * True if this reader produces weighted events.
-   */
-  bool isWeighted;
-
-  /**
-   * True if negative weights may be produced.
-   */
-  bool hasNegativeWeights;
 
   /**
    * Name of file used to cache the events form the reader in a
    * fast-readable form. If empty, no cache file will be generated.
    */
   string theCacheFileName;
+
+  /**
+   * Determines whether to apply cuts to events before converting them
+   * to ThePEG format.
+   */
+  bool doCutEarly;
 
   /**
    * Collect statistics for this reader.
@@ -818,6 +821,23 @@ protected:
    * has been increased.
    */
   double maxFactor;
+
+  /**
+   * The (reweighted) XWGTUP value should be scaled with this cross
+   * section when compared to the overestimated cross section.
+   */
+  CrossSection weightScale;
+
+  /**
+   * Individual scales for different sub-processes if reweighted.
+   */
+  vector<double> xSecWeights;
+
+  /**
+   * Individual maximum weights for individual (possibly reweighted)
+   * processes.
+   */
+  map<int,double> maxWeights;
 
   /**
    * Is set to true when getEvent() is called from skip(int).

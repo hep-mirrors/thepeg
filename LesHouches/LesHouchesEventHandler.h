@@ -152,7 +152,7 @@ public:
    * Reject the current event, taking care of the statistics
    * collection of the corresponding reader objects.
    */
-  void reject();
+  void reject(double weight);
 
   /**
    * Increase the overestimated cross section for the selected reader.
@@ -334,6 +334,12 @@ private:
    */
   tLesHouchesReaderPtr theCurrentReader;
 
+  /**
+   * Warn if the same process number is used in more than one
+   * LesHouchesReader.
+   */
+  bool warnPNum;
+
 public:
 
   /** @cond EXCEPTIONCLASSES */
@@ -341,6 +347,12 @@ public:
    * Exception class used if no readers were assigned.
    */
   class LesHouchesInitError: public InitException {};
+
+  /**
+   * Exception class used if the same process number is used by more
+   * than ne reader.
+   */
+  class LesHouchesPNumException: public InitException {};
   /** @endcond */
 
 private:

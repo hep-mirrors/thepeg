@@ -1,13 +1,47 @@
 2008-03-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* *** GLOBAL ***: Merged in changes from LHEF-rewrite branch
+	including a major rewrite of the LesHouches interface and some
+	bug-fixes and improvements.
+
+2008-03-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
 	* Repository/Repository.cc: Fixed missing return statements in
 	copyParticle error messages.
+
+2008-03-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/XSecCheck.cc: Fixed to work also on weighted events.
+
+2008-03-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/RandomGenerator.* (RandomGenerator::rndPoisson): Made
+	rndPoisson non-inlined and improved behavior for large averages.
+
+	* Utilities/CompSelector.icc: Fixed bug in compensating for
+	weights larger than unity.
+
+2008-03-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/XSecCheck.*: Added simple analysis which emits an error
+	if the cross section was not what was expected.
+
+2008-03-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/XSecStat.*, Handlers/StandardXComb.*,
+	Handlers/StandardEventHandler.*, LesHouches/*: Fixed bug in
+	previous fix of XSecStat affecting generation of weighted events.
 
 2008-03-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCConverter.*: Added convert function which fills a
 	given GenEvent rather than creating one internally. This fixes
 	herwig:ticket:160.
+
+2008-03-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/XSecStat.*: Fixed bug in reject function which could
+	give incorrect statistics.
 
 2008-02-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
@@ -31,6 +65,10 @@
 	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.tcc,
 	Vectors/HepMCConverter.h: Added possibility to choose in which
 	units lengths and energies should be stored in GenEvent.
+
+2008-01-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesFileReader.*: Made class concrete.
 
 2008-01-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

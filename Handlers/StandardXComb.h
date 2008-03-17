@@ -156,9 +156,11 @@ public:
   inline void accept();
 
   /**
-   * Reject the current event assuming it was previously accepted.
+   * Reject the current event assuming it was previously accepted. If
+   * weighted events are produced, the \a weight should be the same as
+   * the previous call to select(double).
    */
-  inline void reject();
+  inline void reject(double weight = 1.0);
 
   /**
    * Reset statistics.
