@@ -408,10 +408,10 @@ string Repository::copyParticle(tPDPtr p, string newname) {
   newname =newname.substr(newname.rfind('/')+1);
   if ( newname.empty() ) newname = p->name();
   if ( GetPointer(newdir + newname) )
-    "Error: Cannot create particle " + newdir + newname +
+    return "Error: Cannot create particle " + newdir + newname +
       ". Object already exists.";
   if ( p->CC() && GetPointer(newdir + p->CC()->name()) )
-    "Error: Cannot create anti-particle " + newdir + newname +
+    return "Error: Cannot create anti-particle " + newdir + newname +
       ". Object already exists.";
   PDPtr pd = p->pdclone();
   Register(pd, newdir + newname);
