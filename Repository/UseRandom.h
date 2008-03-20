@@ -206,12 +206,9 @@ public:
 
   /**
    * Return a non-negative number generated according to a Poissonian
-   * distribution with a given \a mean. Warning: the method
-   * implemented is very slow for large mean and large return
-   * values. For this reason the maximum return value is given by \a
-   * nmax.
+   * distribution with a given \a mean.
    */
-  inline static long rndPoisson(double mean, long nmax = 10000);
+  inline static long rndPoisson(double mean);
 
 private:
 

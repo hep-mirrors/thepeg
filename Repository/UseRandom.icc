@@ -131,8 +131,8 @@ inline Unit UseRandom::rndRelBW(Unit mean, Unit gamma, Unit cut) {
   return current().rndRelBW(mean, gamma, cut);
 }
 
-inline long UseRandom::rndPoisson(double mean, long nmax) {
-  return current().rndPoisson(mean, nmax);
+inline long UseRandom::rndPoisson(double mean) {
+  return current().rndPoisson(mean);
 }
 
 }

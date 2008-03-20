@@ -127,4 +127,8 @@ inline Unit RandomGenerator::rndRelBW(Unit mean, Unit gamma, Unit cut) {
   return sqrt(sqr(mean) + mean*gamma*tan(rnd(atan(minarg), atan(maxarg))));
 }
 
+inline gsl_rng * RandomGenerator::getGslInterface() {
+  return gsl;
+}
+
 }

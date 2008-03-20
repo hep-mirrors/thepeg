@@ -16,13 +16,43 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "gsl/gsl_randist.h"
 
+extern "C" {
+  typedef struct
+  {
+    ThePEG::RandomGenerator * r;
+  }
+  thepeg_random_state_t;
+
+  void thepeg_random_set(void *, unsigned long int) {}
+  double thepeg_random_get_double(void * s) {
+  return static_cast<thepeg_random_state_t *>(s)->r->rnd();
+  }
+  unsigned long int thepeg_random_get(void * s) {
+    return std::numeric_limits<unsigned>::max()*thepeg_random_get_double(s);
+  }
+
+  static const gsl_rng_type thepeg_random_type =
+  {"thepeg_random",
+   (unsigned long int)std::numeric_limits<unsigned>::max(),
+   0,
+   sizeof(thepeg_random_state_t),
+   &thepeg_random_set,
+   &thepeg_random_get,
+   &thepeg_random_get_double};
+   
+  const gsl_rng_type *gsl_rng_thepeg_random = &thepeg_random_type;
+
+}
 using namespace ThePEG;
 
 RandomGenerator::RandomGenerator()
   : theNumbers(1000), theSize(1000), theSeed(0),
     savedGauss(0.0), gaussSaved(false) {
   nextNumber = theNumbers.end();
+  gsl = gsl_rng_alloc(gsl_rng_thepeg_random);
+  static_cast<thepeg_random_state_t *>(gsl->state)->r = this;
 }
 
 RandomGenerator::RandomGenerator(const RandomGenerator & rg)
@@ -31,9 +61,13 @@ RandomGenerator::RandomGenerator(const RandomGenerator & rg)
     gaussSaved(rg.gaussSaved)  {
   nextNumber = theNumbers.begin() +
     ( RndVector::const_iterator(rg.nextNumber) - rg.theNumbers.begin() );
+  gsl = gsl_rng_alloc(gsl_rng_thepeg_random);
+  static_cast<thepeg_random_state_t *>(gsl->state)->r = this;
 }
 
-RandomGenerator::~RandomGenerator() {}
+RandomGenerator::~RandomGenerator() {
+  gsl_rng_free(gsl);
+}
 
 void RandomGenerator::doinit() throw (InitException) {
   if ( theSeed > 0 ) setSeed(theSeed);
@@ -97,13 +131,8 @@ int RandomGenerator::rnd4(double p0, double p1, double p2, double p3) {
   }
 }
 
-long RandomGenerator::rndPoisson(double mean, long nmax) {
-  long n = 0;
-  double x = exp(mean)*rnd();
-  double sum = 1.0;
-  double mpow = 1.0;
-  while ( x >= sum && n <= nmax ) sum += (mpow *= mean/(++n));
-  return n;
+long RandomGenerator::rndPoisson(double mean) {
+  return gsl_ran_poisson(gsl, mean);
 }
 
 void RandomGenerator::persistentOutput(PersistentOStream & os) const {

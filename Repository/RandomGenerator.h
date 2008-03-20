@@ -14,6 +14,7 @@
 // #include "RandomGenerator.fh"
 // #include "RandomGenerator.xh"
 #include "ThePEG/Interface/Interfaced.h"
+#include "gsl/gsl_rng.h"
 
 namespace ThePEG {
 
@@ -66,7 +67,7 @@ public:
   //@}
 
   /**
-   * Reset the underlying CLHEP random engine with the given \a seed.
+   * Reset the underlying random engine with the given \a seed.
    */
   virtual void setSeed(long seed) = 0;
 
@@ -212,7 +213,7 @@ public:
    * values. For this reason the maximum return value is given by \a
    * nmax.
    */
-  long rndPoisson(double mean, long nmax = 10000);
+  long rndPoisson(double mean);
   //@}
 
   /** @name Access the cached random numbers from the underlying engine. */
@@ -285,6 +286,11 @@ public:
    */
   static void Init();
 
+  /**
+   * Return a gsl_rng interface to this random generator.
+   */
+  inline gsl_rng * getGslInterface();
+
 protected:
 
   /**
@@ -326,6 +332,11 @@ protected:
    * Indicate the precense of a saved Gaussian random number.
    */
   mutable bool gaussSaved;
+
+  /**
+   * A pinter to a gsl_rng interface to this generator.
+   */
+  gsl_rng * gsl;
 
 private:
 

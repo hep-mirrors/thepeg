@@ -1,3 +1,16 @@
+2008-03-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesEventHandler.cc: Changed call to rndPoisson
+	to match new implementation.
+
+	* Repository/UseRandom.*, Repository/RandomGenerator.*:
+	RandomGenerator can now be used with gsl random number
+	distributions. In particular rndPoisson now uses gsl_ran_poisson,
+	and no longer need the maximum argument.
+
+	* src/Makefile.am, configure.ac, acinclude.m4: Included check for
+	gsl, on which ThePEG now depends.
+
 2008-03-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Merged in changes from LHEF-rewrite branch
