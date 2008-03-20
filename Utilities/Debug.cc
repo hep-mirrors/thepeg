@@ -37,7 +37,7 @@ void Debug::setDebug(int ilev) {
 void Debug::unmaskFpuErrors() {
   unmaskFpuOverflow();
   unmaskFpuDivZero();
-  unmaskFpuDenorm();
+  //  unmaskFpuDenorm();
   unmaskFpuInvalid();
 }
 

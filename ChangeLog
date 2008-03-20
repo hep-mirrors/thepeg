@@ -1,5 +1,9 @@
 2008-03-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Utilities/Debug.cc (Debug::unmaskFpuErrors): Removed the
+	unmasking of denormalization exceptions, as these are not really
+	errors.
+
 	* LesHouches/LesHouchesEventHandler.cc: Changed call to rndPoisson
 	to match new implementation.
 
