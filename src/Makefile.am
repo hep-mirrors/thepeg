@@ -8,15 +8,15 @@ myLDFLAGS = -export-dynamic
 dist_noinst_SCRIPTS = runThePEG.install setupThePEG.install
 
 runThePEG_bin_SOURCES = runThePEG.cc
-runThePEG_bin_LDADD = $(myLDADD)
+runThePEG_bin_LDADD = $(myLDADD) $(GSLLIBS)
 runThePEG_bin_LDFLAGS = $(myLDFLAGS)
 
 runEventLoop_SOURCES = runEventLoop.cc
-runEventLoop_LDADD = -lHepMC $(myLDADD)
+runEventLoop_LDADD = -lHepMC $(myLDADD) $(GSLLIBS)
 runEventLoop_LDFLAGS = $(myLDFLAGS)
 
 setupThePEG_bin_SOURCES = setupThePEG.cc
-setupThePEG_bin_LDADD = $(myLDADD)
+setupThePEG_bin_LDADD = $(myLDADD) $(GSLLIBS)
 setupThePEG_bin_LDFLAGS = $(myLDFLAGS)
 
 if USELHAPDF

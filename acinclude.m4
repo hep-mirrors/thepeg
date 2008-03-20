@@ -588,3 +588,42 @@ if test "x$enable_unitchecks" = "xyes"; then
    AC_DEFINE([ThePEG_HAS_UNITS_CHECKING],[1],[define if units should be checked])
 fi
 ])
+
+AC_DEFUN([THEPEG_CHECK_GSL],
+[
+AC_MSG_CHECKING([for gsl location])
+GSLINCLUDE=""
+GSLLIBS=""
+
+AC_ARG_WITH(gsl,
+        AC_HELP_STRING([--with-gsl=path],[location of gsl installation. Default: system lib]),
+        [],
+	[with_gsl=no])
+
+if test "x$with_gsl" = "xno"; then
+	AC_MSG_RESULT([in system libraries])
+	oldlibs="$LIBS"
+	AC_CHECK_LIB(m,main)
+	AC_CHECK_LIB(gslcblas,main)
+	AC_CHECK_LIB(gsl,main,[],
+			[
+			AC_MSG_ERROR([Cannot find libgsl. Please install the GNU scientific library.])
+			]
+		     )
+	GSLLIBS="$LIBS"
+	LIBS=$oldlibs
+else
+	if test -e "$with_gsl/lib/libgsl.a" -a -d "$with_gsl/include/gsl"; then
+		AC_MSG_RESULT([found in $with_gsl])
+		GSLLIBS="-L$with_gsl/lib -R$with_gsl/lib -lgslcblas -lgsl"
+		GSLINCLUDE="-I$with_gsl/include"
+	else
+		AC_MSG_RESULT([not found])
+		AC_MSG_ERROR([Can't find $with_gsl/lib/libgsl.a or the headers in $with_gsl/include])
+	fi
+fi
+
+dnl AM_CONDITIONAL(HAVE_GSL,[test "x$with_HepMC" != "xno"])
+AC_SUBST(GSLINCLUDE)
+AC_SUBST(GSLLIBS)
+])
