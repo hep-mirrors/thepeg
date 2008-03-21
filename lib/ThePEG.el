@@ -1457,19 +1457,25 @@ ParticleVector " class "::decay(const DecayMode & dm,
   (setq buf (get-buffer "*ThePEG-scratch*"))
   (setq win (cond (buf (get-buffer-window buf 'visible))
 		  (t nil)))
+  (setq getdesc (replace-regexp-in-string "^The" "Get the" desc t))
+  (setq setdesc (replace-regexp-in-string "^The" "Set the" desc t))
   (cond (win (select-window win))
 	(t (switch-to-buffer-other-window "*ThePEG-scratch*")))
   (c++-mode)
   (beginning-of-buffer)
-  (insert-string (concat "
-
-  /**
+  (insert-string (concat "  /**
    * " desc "
    */
   " type " " theName ";
 
+  /**
+   * " getdesc "
+   */
   inline " type " " name "() const;
 
+  /**
+   * " setdesc "
+   */
   inline void " name "(" type ");
 
 inline " type " " class "::" name "() const {
@@ -1480,11 +1486,9 @@ inline void " class "::" name "(" type " x) {
   " theName " = x;
 }
 
-" class "::" class "()
-  : Base(), " theName "(" def ") {}
+" class "::" class "() : Base(), " theName "(" def ") {}
 
-" class "::" class "(const " class " & x)
-  : Base(x), " theName "(x." theName ") {}
+" class "::" class "(const " class " & x) : Base(x), " theName "(x." theName ") {}
 
 void " class "::persistentOutput(PersistentOStream & os) const {
   os << " outname ";
