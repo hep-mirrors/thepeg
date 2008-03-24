@@ -16,6 +16,15 @@ class ClassDescriptionBase;
 template <typename T>
 class ClassDescription;
 
+template <typename T>
+class AbstractClassDescription;
+
+template <typename T>
+class NoPIOClassDescription;
+
+template <typename T>
+class AbstractNoPIOClassDescription;
+
 }
 
 #endif /* ThePEG_ClassDescription_FH */
