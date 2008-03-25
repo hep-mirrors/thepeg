@@ -35,7 +35,8 @@ libThePEG_la_LIBADD = \
 	$(top_builddir)/Helicity/libThePEGHelicity.la \
 	$(top_builddir)/Cuts/libThePEGCuts.la \
 	$(top_builddir)/Analysis/libThePEGHist.la \
-	-ldl 
+	-ldl \
+	$(GSLLIBS)
 
 all-local: done-all-links
 
