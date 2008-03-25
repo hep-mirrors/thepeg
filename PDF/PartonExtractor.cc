@@ -520,9 +520,6 @@ addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step) {
       throw Veto();
   }
   tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
-  if ( !step->addDecayProduct(newpb->particle(),
- 			      rem.begin(), rem.end(), false) )
-    throw Veto();
   colourConnect(newpb->particle(), newpb->parton(), rem);
   partonBinInstances[newpb->parton()] = newpb;
   if ( !step->addDecayProduct(oldpb->remnants().begin(),
