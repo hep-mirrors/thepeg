@@ -41,7 +41,7 @@ void XSecStat::output(PersistentOStream & os) const {
 }
 
 void XSecStat::input(PersistentIStream & is) {
-  is >> iunit(theMaxXSec,picobarn) >> theAttempts >> theAttempts
+  is >> iunit(theMaxXSec,picobarn) >> theAttempts >> theAccepted
      >> theSumWeights >> theSumWeights2;
 }
 
