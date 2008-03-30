@@ -1,3 +1,24 @@
+2008-03-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/SimpleLEP.in, src/Makefile.am: Include a test that the run
+	inside setupThePEG gives exactly the same result as the runs in
+	runThePEG, both when run from the beginning and when resumed.
+
+	* src/runThePEG.cc, Repository/EventGenerator.*,
+	Repository/MultiEventGenerator.* ((Multi)EventGenerator::doShoot):
+	Enable the possibility to resume the execution from an
+	interrupted (and possibly dumped) run.
+
+	* Pointer/ReferenceCounted.h, Persistency/PersistentOStream.*,
+	Persistency/PersistentIStream.*: The uniqueId used to sort
+	pointers in the ReferenceCounted class is written to the file and
+	can optionally be read back in. For this reason the
+	PersistentIStream was made a friend of ReferenceCounted.
+
+	* Persistency/PersistentOStream.icc: Increased the number of
+	significant digits when writing out floating point numbers to
+	avoid divergent random number sequences.
+
 2008-03-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.cc: Fixed bug in input function.

@@ -32,7 +32,7 @@ nodist_pkglib_DATA = ThePEGDefaults.rpo
 CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex \
              ThePEGDefaults.rpo setupThePEG runThePEG done-all-links \
              TestLHAPDF.log TestLHAPDF.out TestLHAPDF.run TestLHAPDF.tex \
-             .runThePEG.timer.TestLHAPDF.run 
+             .runThePEG.timer.TestLHAPDF.run SimpleLEP.dump 
 
 save:
 	mkdir -p save
@@ -72,7 +72,13 @@ endif
 
 check-local:
 	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
+	mv SimpleLEP.out SimpleLEP.cmp
 	time ./runThePEG.bin -d 0 SimpleLEP.run
+	diff SimpleLEP.out SimpleLEP.cmp
+	mv SimpleLEP.out SimpleLEP.cmp
+	time ./runThePEG.bin --resume -d 0 SimpleLEP.dump
+	diff SimpleLEP.out SimpleLEP.cmp
+	rm SimpleLEP.cmp
 if USELHAPDF
 	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 	time ./runThePEG.bin -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
@@ -111,7 +117,7 @@ uninstall-local:
 
 installcheck-local:
 	$(mkdir_p) _test_thepeg_installation_
-	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run
+	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; mv SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run; diff SimpleLEP.out SimpleLEP.cmp; mv SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/runThePEG --resume SimpleLEP.dump; diff SimpleLEP.out SimpleLEP.cmp;  
 if USELHAPDF
 	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/TestLHAPDF.in; $(DESTDIR)$(bindir)/runThePEG -x $(DESTDIR)$(pkglibdir)/TestLHAPDF.so TestLHAPDF.run
 endif
