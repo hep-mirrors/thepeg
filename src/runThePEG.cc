@@ -22,6 +22,8 @@ int main(int argc, char * argv[]) {
   long seed = 0;
   string mainclass;
   bool tics = false;
+  bool resume = false;
+  bool keepid = false;
 
   for ( int iarg = 1; iarg < argc; ++iarg ) {
     string arg = argv[iarg];
@@ -43,6 +45,8 @@ int main(int argc, char * argv[]) {
     else if ( arg.substr(0,2) == "-N" ) N = atoi(arg.substr(2).c_str());
     else if ( arg == "--seed" || arg == "-seed" ) seed = atoi(argv[++iarg]);
     else if ( arg == "--tics" || arg == "-tics" ) tics = true;
+    else if ( arg == "--resume" ) resume = true;
+    else if ( arg == "--keepid" ) keepid = true;
     else if ( arg == "--help" || arg == "-h" ) {
     cerr << "Usage: " << argv[0] << " [-d {debuglevel|-debugitem}] "
 	 << "[-l load-path] [-L first-load-path] run-file" << endl;
@@ -63,10 +67,10 @@ int main(int argc, char * argv[]) {
 
     EGPtr eg;
     if ( run == "-" ) {
-      PersistentIStream is(cin);
+      PersistentIStream is(cin, keepid);
       is >> eg;
     } else {
-      PersistentIStream is(run);
+      PersistentIStream is(run, keepid);
       is >> eg;
     }
 
@@ -84,7 +88,7 @@ int main(int argc, char * argv[]) {
       if ( !eg->loadMain(mainclass) )
 	std::cout << "Main class file '" << mainclass << "' not found." << endl;
     } else {
-      eg->go(1, N, tics);
+      eg->go(resume? -1: 1, N, tics);
     }
   }
   catch ( Exception & e ) {

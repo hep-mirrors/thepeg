@@ -61,7 +61,7 @@ protected:
   //@{
   /**
    * Run this EventGenerator session. Is called from
-   * EventGenerator::go(long,long).
+   * EventGenerator::go(long,long,bool).
    */
   virtual void doGo(long next, long maxevent, bool tics);
   //@}

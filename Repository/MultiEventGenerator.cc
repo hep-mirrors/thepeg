@@ -97,7 +97,7 @@ string MultiEventGenerator::addInterface(string cmd) {
 
 void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
 
-  if ( theObjects.empty() ) {
+  if ( theObjects.empty() || next < 0 ) {
     EventGenerator::doGo(next, maxevent, tics);
     return;
   }

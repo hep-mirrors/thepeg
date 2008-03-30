@@ -166,8 +166,10 @@ public:
   /**
    * Run this EventGenerator session. Calls the virtual method doGo().
    *
-   * @param next the number of the firts event to be
-   * generated. Default is 1.
+   * @param next the number of the firts event to be generated. If
+   * negative it is assumed that this generator was previously
+   * interrupted (or dumped to a file) and the execution will resume
+   * from where it started. Default is 1.
    * @param maxevent the maximum number of events to be generated. If negative
    * the N() is used instead. Default is -1.
    * @param tics if true information the number of events generated
@@ -443,7 +445,7 @@ protected:
   /** @name Main virtual functions to be overridden by sub-classes. */
   //@{
   /**
-   * Run this EventGenerator session. Is called from go(long,long).
+   * Run this EventGenerator session. Is called from go(long,long,bool).
    */
   virtual void doGo(long next, long maxevent, bool tics);
 

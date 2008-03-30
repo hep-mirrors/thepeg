@@ -445,9 +445,12 @@ void EventGenerator::doGo(long next, long maxevent, bool tics) {
 
   if ( maxevent >= 0 ) N(maxevent);
 
-  initialize();
-
-  ieve = next-1;
+  if ( next >= 0 ) {
+    initialize();
+    ieve = next-1;
+  } else {
+    openOutputFiles();
+  }
 
   if ( tics ) tic();
   try {
