@@ -19,8 +19,9 @@
 
 namespace ThePEG {
 
-PersistentIStream::PersistentIStream(string file) 
-: theIStream(0), isPedantic(true), allocStream(true), badState(false) {
+PersistentIStream::PersistentIStream(string file, bool keepid) 
+  : theIStream(0), isPedantic(true), allocStream(true), badState(false),
+    keepId(keepid) {
 //    if ( file[0] == '|' )
 //      theIStream = new ipfstream(file.substr(1).c_str());
 //    else if ( file.substr(file.length()-3, file.length()) == ".gz" )
@@ -159,7 +160,12 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
       << "PersistentIStream could not read in object because its number ("
       << oid << ") was inconsistent." << Exception::runerror;
     pid = getClass();
+    unsigned long uid = ReferenceCounted::objectCounter + 1;
+    if ( version > 0 || subversion >= 3 ) *this >> uid;
+    unsigned long saveid = ReferenceCounted::objectCounter;
+    if ( keepId ) ReferenceCounted::objectCounter = uid - 1;
     obj = pid->create();
+    if ( keepId ) ReferenceCounted::objectCounter = max(saveid, uid);
     readObjects.erase(readObjects.begin() + (oid - 1), readObjects.end());
     readObjects.push_back(obj);
     getObjectPart(obj, pid);

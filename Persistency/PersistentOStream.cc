@@ -88,6 +88,7 @@ PersistentOStream::outputPointer(tcBPtr obj) {
     writtenObjects[obj] = oid;
     *this << oid;
     const ClassDescriptionBase * desc = writeClassId(obj);
+    *this << obj->uniqueId;
     putObjectPart(obj, desc);
     endObject();
   }

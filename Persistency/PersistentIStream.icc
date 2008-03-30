@@ -13,8 +13,9 @@
 
 namespace ThePEG {
 
-inline PersistentIStream::PersistentIStream(istream & is)
-: theIStream(&is), isPedantic(true), allocStream(false), badState(false) {
+inline PersistentIStream::PersistentIStream(istream & is, bool keepid)
+  : theIStream(&is), isPedantic(true), allocStream(false), badState(false),
+    keepId(keepid) {
   init();
 }
 
