@@ -165,14 +165,14 @@ PersistentOStream::operator<<(unsigned short i) {
 
 inline PersistentOStream &
 PersistentOStream::operator<<(float f) {
-  os() << setprecision(8) << f;
+  os() << setprecision(9) << f;
   put(tSep);
   return *this;
 }
 
 inline PersistentOStream &
 PersistentOStream::operator<<(double d) {
-  os() << setprecision(16) << d;
+  os() << setprecision(18) << d;
   put(tSep);
   return *this;
 }
