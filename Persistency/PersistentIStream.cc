@@ -161,7 +161,7 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
       << oid << ") was inconsistent." << Exception::runerror;
     pid = getClass();
     unsigned long uid = ReferenceCounted::objectCounter + 1;
-    if ( version > 0 || subversion >= 3 ) *this >> uid;
+    if ( version > 0 || subVersion >= 3 ) *this >> uid;
     unsigned long saveid = ReferenceCounted::objectCounter;
     if ( keepId ) ReferenceCounted::objectCounter = uid - 1;
     obj = pid->create();
