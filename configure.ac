@@ -52,7 +52,7 @@ THEPEG_CHECK_DLOPEN
 THEPEG_CHECK_FPUCONTROL
 THEPEG_CHECK_GSL
 
-AM_CPPFLAGS="-I\$(top_builddir)/include"
+AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
 AM_CXXFLAGS="-ansi -pedantic -Wall -W"
 
 THEPEG_CHECK_ABS_BUG

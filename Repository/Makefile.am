@@ -17,7 +17,6 @@ noinst_LTLIBRARIES = libThePEGRepo.la
 pkglib_LTLIBRARIES = ThePEGStrategy.la MultiEventGenerator.la
 
 libThePEGRepo_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
-libThePEGRepo_la_CPPFLAGS = $(AM_CPPFLAGS) $(GSLINCLUDE)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
