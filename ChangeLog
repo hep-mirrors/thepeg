@@ -1,3 +1,9 @@
+2008-04-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/BaseRepository.cc: Fixed bug where error message from
+	remove() was not checked in "rrmdir" command. ("rrmdir" still
+	unecessesarily slow.)
+
 2008-03-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/SimpleLEP.in, src/Makefile.am: Include a test that the run

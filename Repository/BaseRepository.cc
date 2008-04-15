@@ -306,7 +306,7 @@ string BaseRepository::remove(const ObjectSet & rmset) {
     return "";
   }
   string ret = "Error: cannot remove the objects because the following "
-    "objects refers to them:\n";
+    "objects refers to some of them:\n";
   for ( ObjectSet::iterator oi = refset.begin(); oi != refset.end(); ++oi )
     ret += (**oi).fullName() + "\n";
   return ret;
@@ -622,7 +622,8 @@ string BaseRepository::exec(string command, ostream &) {
 	return "Error: Cannot remove a non-empty directory. "
 	  "(Use rrmdir do remove all object and subdirectories.)";
       ObjectSet rmset(ov.begin(), ov.end());
-      remove(rmset);
+      string ret = remove(rmset);
+      if ( !ret.empty() ) return ret;
       StringVector dirs(directories().begin(), directories().end());
       for ( int i = 0, N = dirs.size(); i < N; ++ i )
 	if ( dirs[i].substr(0, dir.size()) == dir )
