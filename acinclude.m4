@@ -60,7 +60,8 @@ AC_ARG_WITH(LHAPDF,[  --without-LHAPDF        do not use LHAPDF package (require
 
 LHAPDF_LDFLAGS=""
 if test -n "$LHAPDF_LIBDIR"; then
-  if test -e $LHAPDF_LIBDIR/libLHAPDF.so; then
+  if test -e $LHAPDF_LIBDIR/libLHAPDF.so -o -e $LHAPDF_LIBDIR/libLHAPDF.dylib
+  then
     LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
   else
     HAS_LHAPDF="no"

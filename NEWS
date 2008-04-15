@@ -8,6 +8,28 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.1.2 release: 2008-02-25
+** Bug #136: dSigHatDR
+   Efficiency improvement for zero PDF.
+
+** Bug #137: HepMC conversion
+   The HepMC converter now takes a unit argument to specify which
+   energy and length units should be used in the HepMC event.
+
+** Bug #140 / #141: Crash on shutdown
+   This fixes a bug introduced in 1.1.1. External code interfaces
+   should now work again. 
+
+** Bug #151: Loop in Remnant record
+   The loop between remnants in the event record has been removed.
+
+** PDF improvements
+   Fix to handling of maximum flavour from LHAPDF. Fix for xmin
+   calculation. 
+
+
+
+
 * ThePEG-1.1.1 release: 2007-12-07
 ** Bug #46: Reproducibility
    Fixed a problem where runs were not identical for a given random
@@ -21,6 +43,9 @@ or at http:///projects.hepforge.org/herwig/versions
 ** Separate LWHFactory library
    Fixed problem in Rivet interaction by factoring out LWHFactory into
    its own dynamic library.
+
+
+
 
 * ThePEG-1.1.0 release: 2007-11-20
 ** New vector classes
@@ -37,6 +62,9 @@ or at http:///projects.hepforge.org/herwig/versions
 
 ** unlisted
   Many other improvements and small bug fixes, see ChangeLog.
+
+
+
 
 * ThePEG-1.0.1 release: 2006-11-22
 
