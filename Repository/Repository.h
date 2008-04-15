@@ -177,6 +177,20 @@ public:
   /** @name Command-line interface functions. */
   //@{
   /**
+   * Remove the given object from the repository. If the object was
+   * not present nothing will happen.
+   */
+  static void remove(tIBPtr);
+
+  /**
+   * Remove objects. Remove the objects in \a rmset if there are no
+   * other objects in the repository referring to them, otherwise
+   * return an error message and the names of the objects refering to
+   * them separated by new-line characters.
+   */
+  static string remove(const ObjectSet & rmset);
+
+  /**
    * Read commands from a stream and send them one by one to exec().
    *
    * @param is the stream from which to read commands.

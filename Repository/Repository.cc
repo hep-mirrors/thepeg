@@ -434,11 +434,84 @@ string Repository::copyParticle(tPDPtr p, string newname) {
   return "";
 }
 
+void Repository::remove(tIBPtr ip) {
+  ObjectMap::iterator it = objects().find(ip->fullName());
+  if ( it == objects().end() || ip != it->second ) return;
+  objects().erase(it);
+  allObjects().erase(ip);
+  if ( dynamic_ptr_cast<tPDPtr>(ip) ) {
+    particles().erase(dynamic_ptr_cast<tPDPtr>(ip));
+    defaultParticles().erase(dynamic_ptr_cast<tPDPtr>(ip)->id());
+  }
+  if ( dynamic_ptr_cast<tPMPtr>(ip) )
+    matchers().erase(dynamic_ptr_cast<tPMPtr>(ip));
+  if ( dynamic_ptr_cast<tDMPtr>(ip) )
+    decayModes().erase(dynamic_ptr_cast<tDMPtr>(ip));
+}
+
+string Repository::remove(const ObjectSet & rmset) {
+  ObjectSet refset;
+  for ( ObjectMap::const_iterator i = objects().begin();
+	i != objects().end(); ++i ) {
+    if ( member(rmset, i->second) ) continue;
+    IVector ov = DirectReferences(i->second);
+    for ( int j = 0, M = ov.size(); j < M; ++j )
+      if ( member(rmset, ov[j]) ) {
+	refset.insert(i->second);
+	break;
+      }
+  }
+  if ( refset.empty() ) {
+    for ( ObjectSet::iterator oi = rmset.begin(); oi != rmset.end(); ++oi )
+      remove(*oi);
+    return "";
+  }
+  string ret = "Error: cannot remove the objects because the following "
+    "objects refers to some of them:\n";
+  for ( ObjectSet::iterator oi = refset.begin(); oi != refset.end(); ++oi )
+    ret += (**oi).fullName() + "\n";
+  return ret;
+}
+   
 string Repository::exec(string command, ostream & os) {
   string cpcmd = command;
   try {
     string verb = StringUtils::car(command);
     command = StringUtils::cdr(command);
+    if ( verb == "rm" ) {
+      ObjectSet rmset;
+      while ( !command.empty() ) {
+	string name = StringUtils::car(command);
+	DirectoryAppend(name);
+	IBPtr obj = GetPointer(name);
+	if ( !obj ) return "Error: Could not find object named " + name;
+	rmset.insert(obj);
+	command = StringUtils::cdr(command);
+      }
+      return remove(rmset);
+    }
+    if ( verb == "rmdir" || verb == "rrmdir" ) {
+      string dir = StringUtils::car(command);
+      DirectoryAppend(dir);
+      if ( dir[dir.size() - 1] != '/' ) dir += '/';
+      if ( !member(directories(), dir) )
+	return verb == "rmdir"? "Error: No such directory.": "";
+      IVector ov = SearchDirectory(dir);
+      if ( ov.size() && verb == "rmdir" )
+	return "Error: Cannot remove a non-empty directory. "
+	  "(Use rrmdir do remove all object and subdirectories.)";
+      ObjectSet rmset(ov.begin(), ov.end());
+      string ret = remove(rmset);
+      if ( !ret.empty() ) return ret;
+      StringVector dirs(directories().begin(), directories().end());
+      for ( int i = 0, N = dirs.size(); i < N; ++ i )
+	if ( dirs[i].substr(0, dir.size()) == dir )
+	  directories().erase(dirs[i]);
+      for ( int i = 0, N = directoryStack().size(); i < N; ++i )
+	if ( directoryStack()[i].substr(0, dir.size()) == dir )
+	  directoryStack()[i] = '/';
+      return "";
+    }
     if ( verb == "cp" ) {
       string name = StringUtils::car(command);
       DirectoryAppend(name);

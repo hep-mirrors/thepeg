@@ -1,5 +1,11 @@
 2008-04-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/Repository.cc (Repository::exec): Implemented "rm",
+	"rmdir" and "rrmdir" commands to override the ones in
+	BaseRepository This fixed the bug that particles and decay modes
+	were not properly removed and that rrmdir was absurdly slow when
+	removing large directories.
+
 	* Repository/BaseRepository.cc: Fixed bug where error message from
 	remove() was not checked in "rrmdir" command. ("rrmdir" still
 	unecessesarily slow.)
