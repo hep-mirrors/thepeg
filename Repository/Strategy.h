@@ -55,8 +55,13 @@ public:
   const vector<IPtr> & defaultObjects() const { return theDefaultObjects; }
   //@}
 
-public:
+  /**
+   * Return a freeform version string. Client code should not rely on the 
+   * string's format. It can be used e.g. to annotate plots.
+   */
+  virtual const string versionstring() const { return ""; }
 
+public:
 
   /** @name Functions used by the persistent I/O system. */
   //@{

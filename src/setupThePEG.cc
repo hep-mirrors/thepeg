@@ -12,7 +12,6 @@
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/SystemUtils.h"
-#include <fstream>
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
@@ -73,8 +72,7 @@ int main(int argc, char * argv[]) {
       {
 	HoldFlag<> setup(InterfaceBase::NoReadOnly);
 	if ( file.empty() ) file = "ThePEGDefaults.in";
-	ifstream is(file.c_str());
-	repository.read(is, cout);
+	repository.read(file, cout);
 	repository.update();
       }
       repository.save(repout);
@@ -85,8 +83,7 @@ int main(int argc, char * argv[]) {
 	if ( file == "--java" || file == "-java" )
 	  repository.read(cin, cout, "-*-ready-*-\n");
 	else {
-	  ifstream is(file.c_str());
-	  repository.read(is, cout);
+	  repository.read(file, cout);
 	}
       } else {
 	repository.read(cin, cout, "ThePEG> ");

@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ $# -gt 1 ]; then
-  if [ "$1" == "-cat" ]; then
+  if [ "$1" = "-cat" ]; then
     FILE="$2"
     shift 2
     exec cat $FILE | $0 $* -
@@ -8,14 +8,14 @@ if [ $# -gt 1 ]; then
   fi
 fi
 if [ $# -gt 1 ]; then
-  if [ "$1" == "-host" ]; then
+  if [ "$1" = "-host" ]; then
     HOST="$2"
     shift 2
     exec ssh $HOST `basename $0` $*
   fi
 fi
 if [ $# -gt 1 ]; then
-  if [ "$1" == "-dir" ]; then
+  if [ "$1" = "-dir" ]; then
     cd $2
     shift 2
   fi
@@ -23,7 +23,7 @@ fi
 export ThePEG_INSTALL_PATH=@
 VERSION=""
 if [ $# -gt 1 ]; then
-  if [ "$1" == "-v" ]; then
+  if [ "$1" = "-v" ]; then
     VERSION="-$2"
     shift 2
   fi

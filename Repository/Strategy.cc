@@ -93,4 +93,3 @@ void Strategy::Init() {
   interfaceDefaultObjects.rank(9);
 
 }
-

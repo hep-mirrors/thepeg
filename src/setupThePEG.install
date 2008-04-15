@@ -2,7 +2,7 @@
 export ThePEG_INSTALL_PATH=@
 VERSION=""
 if [ $# -gt 1 ]; then
-  if [ "$1" == "-v" ]; then
+  if [ "$1" = "-v" ]; then
     VERSION="-$2"
     shift 2
   fi
