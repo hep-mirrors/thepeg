@@ -227,7 +227,7 @@ bool LHAPDF::indexLine(istream & is, int & set, int & mem, string & file,
 void LHAPDF::setMinMax() {
   ifstream is;
   if ( !openLHAIndex(is) ) Throw<InitException>()
-    << "Could not open the LHAPDF index file so min/max falues of "
+    << "Could not open the LHAPDF index file so min/max values of "
     << "x and Q^2 could not be found." << Exception::warning;
   int set = 0;
   int mem = 0;
