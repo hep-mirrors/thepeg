@@ -32,7 +32,7 @@ public:
   ThePEG_DECLARE_TEMPLATE_POINTERS(T,TPtr);
 
   /** Map associating pairs of objects. */
-  typedef map<cTPtr,TPtr> MapType;
+  typedef std::map<cTPtr,TPtr> MapType;
 
   /** The iterator of the underlying map. */
   typedef typename MapType::const_iterator const_iterator;

@@ -331,7 +331,7 @@ void Step::fixColourFlow() {
     tPPtr p = news[i];
     if ( p->hasColour() && !antiColourNeighbour(p) ) {
       tPPtr ng = p;
-      while ( ( ng = ng->incomingColour() ) && !antiColourNeighbour(ng) );
+      while ( ( ng = ng->incomingColour() ) && !antiColourNeighbour(ng) ) {}
       if ( ng ) {
 	ng = antiColourNeighbour(ng);
 	if ( !ng->outgoingColour() ) ng = copyParticle(ng);
@@ -341,7 +341,7 @@ void Step::fixColourFlow() {
     }
     if ( p->hasAntiColour() && !colourNeighbour(p) ) {
       tPPtr ng = p;
-      while ( ( ng = ng->incomingAntiColour() ) && !colourNeighbour(ng) );
+      while ( ( ng = ng->incomingAntiColour() ) && !colourNeighbour(ng) ) {}
       if ( ng ) {
 	ng = colourNeighbour(ng);
 	if ( !ng->outgoingAntiColour() ) ng = copyParticle(ng);

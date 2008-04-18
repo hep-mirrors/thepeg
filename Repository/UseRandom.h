@@ -115,7 +115,7 @@ public:
    * Return -1, 0, or 1 with relative probabilities \a p1, \a p2, \a
    * p3.
    */
-  inline static int rndsign(double p1, double p2, double p2);
+  inline static int rndsign(double p1, double p2, double p3);
 
   /**
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a

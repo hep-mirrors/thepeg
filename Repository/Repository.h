@@ -285,6 +285,13 @@ public:
    */
   static int & exitOnError();
 
+  /**
+   * Call this function to clean up the repository at the end of your
+   * program if you are using the static functions directly without
+   * going through a Repository object. There, the destructor would do
+   * the job.
+   */
+  static void cleanup();
   //@}
 
 private:

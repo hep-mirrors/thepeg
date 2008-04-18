@@ -256,12 +256,12 @@ public:
   /**
    * Return the representation of the spinor.
    */
-  inline const DiracRep Rep() const;
+  inline DiracRep Rep() const;
 
   /**
    * Return the type of the spinor.
    */
-  inline const SpinorType Type() const;
+  inline SpinorType Type() const;
   //@}
 
 

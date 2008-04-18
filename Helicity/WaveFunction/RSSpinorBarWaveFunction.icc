@@ -235,7 +235,7 @@ inline complex<double> RSSpinorBarWaveFunction::operator ()(int i,int j) const
 inline complex<double> & RSSpinorBarWaveFunction::operator () (int i, int j)
 {
   static complex<double> dummy = complex<double>();
-  if(i>=0 &&i<=3|| j<0 || j>3)
+  if( ( i>=0 && i<=3 ) || j<0 || j>3 )
     {return _wf(i,j);}
   else
     {ThePEG::Helicity::HelicityConsistencyError()

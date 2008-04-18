@@ -8,6 +8,55 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.2.0 release: 2008-04-18
+** ThePEG uses GSL 
+   The GNU Scientific Library and its headers are now required for
+   building ThePEG. RandomGenerator partially uses GSL now.
+
+** Ticket #160: HepMC converter 
+   Optionally, the HepMC converter can fill an external GenEvent object,
+   instead of newing one internally.
+
+** 'globallibrary' command
+   The 'globallibrary' command can be used to register libraries which
+   are useful for the whole run. They do not need to be listed in each
+   class's library() function.
+
+** Resume from dump files (also solves #149)
+   The --resume command line flag instructs runThePEG to resume the
+   run from a previous dump file. 'set Generator:DumpPeriod 1000'
+   writes such a checkpoint every 1000 events.
+
+** New Repository interface (also solves #141)
+   The repository now provides a Repository::cleanup() method, to be
+   called at the end of a run. Alternatively, a Repository object can
+   be created and its member functions called. 
+
+** Les Houches interface improvements.
+   LesHouchesReader had had a major overhaul.
+
+** XSecCheck analysis
+   Issues a warning if a target cross section is not met in the run.
+
+** Weighted events
+   Handling of weighted events was improved.
+
+** Ticket #124: 'Deleted' interface option 
+   Interfaces can be declared obsolete, a warning will be issued when
+   they're used. 
+
+** LHAPDF interface 
+   The interface now allows photons as partons inside a hadron.
+
+** gcc 4.3.0
+   ThePEG compiles cleanly with the new gcc 4.3 series.
+
+** Bug #138
+   Lepton NoPDF now works.
+
+
+
+
 * ThePEG-1.1.2 release: 2008-02-25
 ** Bug #136: dSigHatDR
    Efficiency improvement for zero PDF.

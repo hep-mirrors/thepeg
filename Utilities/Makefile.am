@@ -22,7 +22,7 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                StringUtils.icc \
                Exception.icc Exception.fh FixedSizeAllocator.icc \
                VSelector.icc VSelector.tcc ObjectIndexer.icc \
-               CFileLineReader.fh CFileLineReader.icc XSecStat.icc \
+               CFileLineReader.fh XSecStat.icc \
                CompSelector.icc
 
 noinst_LTLIBRARIES = libThePEGUtilities.la

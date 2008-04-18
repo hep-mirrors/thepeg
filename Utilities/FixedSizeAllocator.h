@@ -183,6 +183,11 @@ public:
   /** Destroy an object to be deallocated by deallocate(). */
   void destroy(pointer p) { fallback.destroy(p); }
 
+  /** Not-equals operator. For gcc-4.3.0 */
+  bool operator!=(const Allocator & x) const { 
+    return fallback != x.fallback; 
+  }
+
 public:
 
   /** The fallback allocator used for allocation of arrays. */

@@ -11,6 +11,7 @@
 // This is the declaration of the SystemUtils class.
 
 #include "ThePEG/Config/ThePEG.h"
+#include <cstdlib>
 
 namespace ThePEG {
 

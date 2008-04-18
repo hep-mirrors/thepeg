@@ -67,6 +67,10 @@ int & Repository::exitOnError() {
   return exitonerror;
 }
 
+void Repository::cleanup() {
+  generators().clear();
+}
+
 void Repository::Register(IBPtr ip) {
   BaseRepository::Register(ip);
   registerParticle(dynamic_ptr_cast<PDPtr>(ip));

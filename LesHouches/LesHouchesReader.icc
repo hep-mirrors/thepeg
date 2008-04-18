@@ -112,13 +112,13 @@ inline FILE * LesHouchesReader::cacheFile() const {
 
 template <typename T>
 char * LesHouchesReader::mwrite(char * pos, const T & t, size_t n) {
-  memcpy(pos, &t, n*sizeof(T));
+  std::memcpy(pos, &t, n*sizeof(T));
   return pos + n*sizeof(T);
 }
 
 template <typename T>
 const char * LesHouchesReader::mread(const char * pos, T & t, size_t n) {
-  memcpy(&t, pos, n*sizeof(T));
+  std::memcpy(&t, pos, n*sizeof(T));
   return pos + n*sizeof(T);
 }
 

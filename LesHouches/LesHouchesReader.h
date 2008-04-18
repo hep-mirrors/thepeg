@@ -21,6 +21,7 @@
 #include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
 #include <cstdio>
+#include <cstring>
 
 namespace ThePEG {
 

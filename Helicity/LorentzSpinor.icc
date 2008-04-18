@@ -130,13 +130,13 @@ LorentzSpinor<Value>::transformRep(DiracRep newdirac) const
 
 // return the representation of the spinor
 template <typename Value> 
-inline const DiracRep LorentzSpinor<Value>::Rep() const {
+inline DiracRep LorentzSpinor<Value>::Rep() const {
   return _dirac;
 }
 
 // return the type of the spinor
 template <typename Value> 
-inline const SpinorType LorentzSpinor<Value>::Type() const {
+inline SpinorType LorentzSpinor<Value>::Type() const {
   return _type;
 }
 

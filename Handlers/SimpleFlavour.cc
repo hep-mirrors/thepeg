@@ -380,9 +380,10 @@ vector< pair<long,double> > SimpleFlavour::
 baryonOctetIds(long iqa, long iqb, long iqc, long iq, bool dqs1) const {
   vector< pair<long,double> > ret;
   double lambda = 0.0;
-  if ( iqa > iqb && iqb > iqc )
+  if ( iqa > iqb && iqb > iqc ) {
     if ( dqs1 && iqa == iq ) lambda = 0.25;
     else if ( !dqs1 && iqa != iq ) lambda = 0.75;
+  }
   ret.push_back(make_pair(1000*iqa + 100*iqb + 10*iqc + 2, 1.0 - lambda));
   if ( lambda > 0.0 )
     ret.push_back(make_pair(1000*iqa + 100*iqc + 10*iqb + 2, lambda));
