@@ -56,16 +56,10 @@ void MadGraphReader::open() {
   // If we are reading a LHF formatted file things are rather easy.
 
   if ( LHFVersion.size() ) {
-
-    // Check for number of events in the file.
-    string::size_type pos = outsideBlock.find("##  Number of Events       :");
-    if ( pos == string::npos )
-      pos = outsideBlock.find("#  Number of Events        :");
-    if ( pos != string::npos ) {
-      pos += 28;
-      neve = std::strtol(outsideBlock.c_str() + pos, NULL, 0);
-      NEvents(neve);
-    }
+    // extract the number of events
+    neve = numberOfEvents(outsideBlock);
+    if ( neve == 0 ) neve = numberOfEvents(headerBlock);
+    if ( neve != 0 ) NEvents(neve);
 
     // MadEvent has gives wrong values for XMAXUP and XWGTUP, they
     // need to be multiplied by the number of events to be LHEF
@@ -74,7 +68,7 @@ void MadGraphReader::open() {
 
     // Scan information about cuts.
     for ( int itag = 0; itag < ntags; ++itag ) {
-      pos = outsideBlock.find(string("= ") + cuttags[itag]);
+     string::size_type pos = outsideBlock.find(string("= ") + cuttags[itag]);
       if ( pos != string::npos ) {
 	string::size_type beg = max(outsideBlock.rfind("#", pos) + 1,
 				    outsideBlock.rfind("\n", pos) + 1);
@@ -595,3 +589,15 @@ void MadGraphReader::Init() {
 
 }
 
+long MadGraphReader::numberOfEvents(string block) {
+  long output(0);
+  // Check for number of events in the file.
+  string::size_type pos = block.find("##  Number of Events       :");
+  if ( pos == string::npos )
+    pos = block.find("#  Number of Events        :");
+  if ( pos != string::npos ) {
+    pos += 28;
+    output = std::strtol(block.c_str() + pos, NULL, 0);
+  }
+  return output;
+}
