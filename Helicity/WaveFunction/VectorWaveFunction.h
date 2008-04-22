@@ -415,10 +415,10 @@ public:
    * @param phase The phase choice.
    * @param vertex Whether or not to create the VectorSpinInfo object 
    */
-  inline void constructSpinInfo(vector<LorentzPolarizationVector>& wave,tPPtr part,
-				bool time, bool massless,
-				VectorPhase phase=default_vector_phase,bool vertex=true);
-
+  void constructSpinInfo(vector<LorentzPolarizationVector>& wave,tPPtr part,
+			 bool time, bool massless,
+			 VectorPhase phase=default_vector_phase,bool vertex=true);
+  
   /**
    * Calculate the polarization vectors, as LorentzPolarizationVector objects,
    * for all helicities, create and set up the SpinInfo object
@@ -430,10 +430,10 @@ public:
    * @param phase The phase choice.
    * @param vertex Whether or not to create the VectorSpinInfo object 
    */
-  inline void constructSpinInfo(vector<LorentzPolarizationVector>& wave,RhoDMatrix& rho,
-				tPPtr part,bool time, bool massless,
-				VectorPhase phase=default_vector_phase,bool vertex=true);
-
+  void constructSpinInfo(vector<LorentzPolarizationVector>& wave,RhoDMatrix& rho,
+			 tPPtr part,bool time, bool massless,
+			 VectorPhase phase=default_vector_phase,bool vertex=true);
+  
   /**
    * Calculate the polarization vectors, as VectorWaveFunction objects,
    * for all helicities, create and set up the SpinInfo object
@@ -444,10 +444,10 @@ public:
    * @param phase The phase choice.
    * @param vertex Whether or not to create the VectorSpinInfo object 
    */
-  inline void constructSpinInfo(vector<VectorWaveFunction>& wave,tPPtr part,
-				bool time, bool massless,
-				VectorPhase phase=default_vector_phase,bool vertex=true);
-
+  void constructSpinInfo(vector<VectorWaveFunction>& wave,tPPtr part,
+			 bool time, bool massless,
+			 VectorPhase phase=default_vector_phase,bool vertex=true);
+  
   /**
    * Calculate the polarization vectors, as VectorWaveFunction objects,
    * for all helicities, create and set up the SpinInfo object
@@ -459,9 +459,9 @@ public:
    * @param phase The phase choice.
    * @param vertex Whether or not to create the VectorSpinInfo object 
    */
-  inline void constructSpinInfo(vector<VectorWaveFunction>& wave,RhoDMatrix& rho,
-				tPPtr part,bool time, bool massless,
-				VectorPhase phase=default_vector_phase,bool vertex=true);
+  void constructSpinInfo(vector<VectorWaveFunction>& wave,RhoDMatrix& rho,
+			 tPPtr part,bool time, bool massless,
+			 VectorPhase phase=default_vector_phase,bool vertex=true);
 
 private:
 
@@ -494,9 +494,9 @@ private:
    * @param phase The phase choice.
    * @param vertex Whether or not to set up the VectorSpinInfo object 
    */
-  inline void constructSpinInfo(vector<LorentzPolarizationVector>& wave,
-				tVectorSpinPtr spin, bool massless,
-				VectorPhase phase=default_vector_phase,bool vertex=true);
+  void constructSpinInfo(vector<LorentzPolarizationVector>& wave,
+			 tVectorSpinPtr spin, bool massless,
+			 VectorPhase phase=default_vector_phase,bool vertex=true);
 
   /**
    * Calculate the polarization vectors, as VectorWaveFunction objects,
@@ -507,9 +507,9 @@ private:
    * @param phase The phase choice.
    * @param vertex Whether or not to set up the VectorSpinInfo object 
    */
-  inline void constructSpinInfo(vector<VectorWaveFunction>& wave,
-				tVectorSpinPtr spin, bool massless,
-				VectorPhase phase=default_vector_phase,bool vertex=true);
+  void constructSpinInfo(vector<VectorWaveFunction>& wave,
+			 tVectorSpinPtr spin, bool massless,
+			 VectorPhase phase=default_vector_phase,bool vertex=true);
 
 private:
   
