@@ -718,7 +718,7 @@ void LesHouchesReader::createParticles() {
     // Check colour-line consistency.
     if ( ThePEG_DEBUG_LEVEL && abs(hepeup.ISTUP[i]) == 1 &&
 	 oklines.find(hepeup.ICOLUP[i].first) == oklines.end() ) {
-      bool ends = 0;
+      int ends = 0;
       for ( int j = i + 1; j < N; ++j ) {
 	if ( abs(hepeup.ISTUP[j]) == 1 ) {
 	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].first ) ++ends;
@@ -734,7 +734,7 @@ void LesHouchesReader::createParticles() {
     }
     if ( ThePEG_DEBUG_LEVEL && abs(hepeup.ISTUP[i]) == 1 &&
 	 oklines.find(hepeup.ICOLUP[i].second) == oklines.end() ) {
-      bool ends = 0;
+      int ends = 0;
       for ( int j = i + 1; j < N; ++j ) {
 	if ( abs(hepeup.ISTUP[j]) == 1 ) {
 	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].second ) ++ends;

@@ -50,7 +50,6 @@ public:
    */
   IAnnotation & annotation() {
     throw std::runtime_error("LWH cannot handle annotations");
-    return *anno;
   }
 
   /**
@@ -58,7 +57,6 @@ public:
    */
   const IAnnotation & annotation() const {
     throw std::runtime_error("LWH cannot handle annotations");
-    return *anno;
   }
 
   /**

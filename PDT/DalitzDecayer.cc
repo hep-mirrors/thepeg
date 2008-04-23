@@ -72,7 +72,7 @@ ParticleVector DalitzDecayer::decay(const DecayMode & dm,
   do {
     mee2 = mee2min*pow(mm2/mee2min, rnd());
   } while ( rnd() > (1.0 - 2.0*me2/mee2)*sqrt(max(0.0, 1.0 - mee2min/mee2))*
-	    pow(1.0 - mee2/mm2, 3)*
+	    pow(1.0 - mee2/mm2, 3.0)*
 	    (1.0 + gr2/mr2)/(sqr(1.0 - mee2/mr2) + gr2/mr2) );
 
   LorentzMomentum pee, p0, pp, pm;

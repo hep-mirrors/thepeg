@@ -33,7 +33,8 @@ CascadeHandler::~CascadeHandler() {}
 
 void CascadeHandler::
 handle(EventHandler & eh, const tPVector & tagged,
-       const Hint & hint) {
+       const Hint & hint) ThePEG_THROW_SPEC((Veto, Stop, Exception))
+{
   static tPVector notags;
   theLastXComb = eh.lastXCombPtr();
   theHint = &hint;

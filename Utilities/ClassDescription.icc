@@ -101,7 +101,6 @@ inline AbstractClassDescription<T>::AbstractClassDescription()
 template <typename T>
 inline BPtr AbstractClassDescription<T>::create() const {
   throw std::logic_error("Tried to instantiate virtual class " + Named::name());
-  return BPtr();
 }
 
 template <typename T>
@@ -143,7 +142,6 @@ template <typename T>
 inline BPtr
 AbstractNoPIOClassDescription<T>::create() const {
   throw std::logic_error("Tried to instantiate virtual class " + Named::name());
-  return BPtr();
 }
 
 template <typename T>

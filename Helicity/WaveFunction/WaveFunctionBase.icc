@@ -75,14 +75,15 @@ inline void WaveFunctionBase::setMomentum(Energy m)
 // set 4 momentum and mass
 inline void WaveFunctionBase::setMomentum(LorentzMomentum p,Energy m)
 {
-  if(_dir==1){_momentum=Lorentz5Momentum(-p,m);}
-  else if(_dir==-1||_dir==0){_momentum=Lorentz5Momentum(p,m);}
+  if(_dir==1) 
+    _momentum=Lorentz5Momentum(-p,m);
+  else if(_dir==-1||_dir==0) 
+    _momentum=Lorentz5Momentum(p,m);
   else
     {
       throw ThePEG::Helicity::HelicityConsistencyError()
-       << "WaveFunction must be either incoming(-1) or outgoing(1)" 
-       << Exception::warning;
-      _momentum=Lorentz5Momentum();
+	<< "WaveFunction must be either incoming(-1) or outgoing(1)" 
+	<< Exception::warning;
     }
 }
 // zero the momentum

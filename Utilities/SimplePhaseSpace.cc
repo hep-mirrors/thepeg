@@ -84,6 +84,5 @@ CMSn(Energy m0, const vector<Energy> & m)
     }
     return ret;
   }
-  return vector<LorentzMomentum>();
 }
 

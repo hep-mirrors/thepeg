@@ -508,7 +508,6 @@ newRemnants(tPBIPtr oldpb, tPPtr newp, const LorentzMomentum & k) {
       return newpb;
     }
   throw Veto();
-  return PBIPtr();
 }
 
 void PartonExtractor::

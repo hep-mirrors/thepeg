@@ -36,7 +36,6 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
       throw HelicityConsistencyError() 
 	<< "Invalid Helicity = " << ihel 
 	<< " requested for RSSpinor" << Exception::abortnow;
-      for(iy=0;iy<4;++iy){for(ix=0;ix<4;++ix){_wf(ix,iy)=complex<double>();}}
     }
   else
     {
@@ -109,7 +108,6 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
 		<< "Invalid choice of Dirac representation in "
 		<< "RSSpinorWaveFunction::calculateWaveFunction() " 
 		<< Exception::abortnow; 
-	      break;
 	    }
 	  // now construct the spinors
 	  complex<SqrtEnergy> spinor[4][2];

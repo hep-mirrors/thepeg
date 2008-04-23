@@ -104,7 +104,6 @@ EventPtr EventHandler::generateEvent() {
     << "The function generateEvent() was called for the EventHandler '" << name()
     << "' which is not capable of generating complete events."
     << Exception::runerror;
-  return EventPtr();
 }
 
 tEventPtr EventHandler::generateEvent(tStepPtr s) {

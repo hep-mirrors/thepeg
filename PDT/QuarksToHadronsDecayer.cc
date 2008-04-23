@@ -117,7 +117,6 @@ int QuarksToHadronsDecayer::getN(Energy m0, Energy summq, int Nq) const {
 	     sqrt(-2.0*c*log(max(1.0e-10, rnd())))*sin(2.0*pi*rnd()));
     if ( Nh >= minN() ) return Nh;
   }
-  return 0;
 }
 
 PVector QuarksToHadronsDecayer::

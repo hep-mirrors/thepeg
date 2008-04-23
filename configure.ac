@@ -53,7 +53,9 @@ THEPEG_CHECK_FPUCONTROL
 THEPEG_CHECK_GSL
 
 AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
-AM_CXXFLAGS="-ansi -pedantic -Wall -W"
+if test "$GCC" = "yes"; then
+   AM_CXXFLAGS="-ansi -pedantic -Wall -W"
+fi
 
 THEPEG_CHECK_ABS_BUG
 

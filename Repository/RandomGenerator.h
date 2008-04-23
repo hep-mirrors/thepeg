@@ -376,7 +376,6 @@ struct ClassTraits<RandomGenerator>:
   static TPtr create() {
     throw std::logic_error("Tried to instantiate abstract class"
 			   "'Pythis7::RandomGenerator'");
-    return TPtr();
   }
 };
 

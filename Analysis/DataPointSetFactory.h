@@ -660,7 +660,6 @@ private:
   template <typename T>
   static T * error(std::string feature) {
     throw std::runtime_error("LWH cannot handle " + feature + ".");
-    return 0;
   }
 
   /** The tree where the actual data sets are stored. */

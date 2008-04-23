@@ -208,7 +208,6 @@ bool VertexBase::allowed(int ida, int idb, int idc) {
   if(_npoint!=3) {
     throw HelicityConsistencyError() << "VertexBase::allowed Not allowed as not"
 				     << " a three point Vertex" << Exception::warning;
-    return false;
   }
   vector<PDPtr> out = search(0,ida);
   if(out.size()==0) return false;
@@ -225,7 +224,6 @@ bool VertexBase::allowed(int ida, int idb, int idc, int idd) {
   if(_npoint!=4) {
     throw HelicityConsistencyError() << "VertexBase::allowed Not allowed as not"
 				     << " a four point Vertex" << Exception::warning;
-    return false;
   }
   vector<PDPtr> out = search(0,ida);
   if(out.size()==0) return false;
@@ -242,7 +240,6 @@ bool VertexBase::allowed(int ida, int idb, int idc, int idd, int ide) {
   if(_npoint!=5) {
     throw HelicityConsistencyError() << "VertexBase::allowed Not allowed as not"
 				     << " a five point Vertex" << Exception::warning;
-    return false;
   }
   vector<PDPtr> out = search(0,ida);
   if(out.size()==0) return false;

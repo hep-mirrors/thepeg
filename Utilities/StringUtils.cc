@@ -101,8 +101,5 @@ xmlAttributes(string tag, string line, string::size_type curr) {
     ++curr;
 
   }
-
-  return ret;
-
 }
 

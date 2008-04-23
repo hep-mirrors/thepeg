@@ -204,7 +204,6 @@ EventPtr LesHouchesEventHandler::generateEvent() {
       throw;
     }
   }
-  return currentEvent();
 }
 
 void LesHouchesEventHandler::skipEvents() {

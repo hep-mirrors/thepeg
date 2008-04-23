@@ -206,7 +206,6 @@ inline complex<double> SpinorWaveFunction::operator ()(int i) const
     {
       throw ThePEG::Helicity::HelicityConsistencyError() 
 	<< "SpinorWaveFunction requested for invalid index" << Exception::abortnow;
-      return complex<double>();
     }
   return _wf[i];
 }
@@ -221,7 +220,6 @@ inline complex<double> & SpinorWaveFunction::operator () (int i)
       throw ThePEG::Helicity::HelicityConsistencyError() 
 	<< "Invalid index " << i << " called for SpinorWaveFunction" 
 	<< Exception::abortnow;
-      return dummy;
     }
 }
 

@@ -75,8 +75,8 @@ void Particle::initFull() const {
   theRep->theLifeLength.setTau(lifetime);
 
   theRep->theLifeLength.
-    setVect((momentum()*(lifetime /
-			 max(mass(), Constants::epsilon*GeV))));
+    setVect((momentum().vect()*(lifetime /
+				max(mass(), Constants::epsilon*GeV))));
 
   theRep->theLifeLength.rescaleEnergy();
 }
