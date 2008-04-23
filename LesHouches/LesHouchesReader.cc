@@ -280,7 +280,6 @@ long LesHouchesReader::scan() {
 
     HoldFlag<> isScanning(scanning);
 
-    double xlast = 0.0;
     double oldsum = 0.0;
     vector<int> lprup;
     vector<double> newmax;
@@ -314,7 +313,6 @@ long LesHouchesReader::scan() {
       }
       ++neweve[id];
       newmax[id] = max(newmax[id], abs(eventWeight()));
-      if ( i == 0 ) xlast = eventWeight();
       if ( eventWeight() < 0.0 ) negw = true;
     }
 

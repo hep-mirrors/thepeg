@@ -1,3 +1,8 @@
+2008-04-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesReader.cc (LesHouchesReader::scan): Removed
+	unused variable 'xlast'.
+
 2008-04-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.cc: Fixed spelling in error message.
