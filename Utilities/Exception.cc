@@ -104,6 +104,7 @@ void Exception::writeMessage(ostream & os) const {
   case warning:
     os << "Warning: ";
     break;
+  case setuperror:
   case eventerror:
   case runerror:
   case maybeabort:
@@ -126,6 +127,7 @@ void Exception::writeMessage(ostream & os) const {
   case unknown:
   case info:
   case warning:
+  case setuperror:
     break;
   }
 }

@@ -1,5 +1,8 @@
 2008-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Utilities/Exception.*: Added new severity level 'setuperror' to
+	be used during the setup phase.
+
 	* LesHouches/LesHouchesReader.cc (LesHouchesReader::createParticles):
 	Fixed bug in checking for colour-line consistency.
 

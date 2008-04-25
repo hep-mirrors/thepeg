@@ -49,20 +49,22 @@ public:
    * The levels of severity.
    */
   enum Severity {
-    unknown,    /**< Unknown severity */
-    info,       /**< Not severe (but the user should be
-		 *  informed). */
-    warning,    /**< Possibly severe, (the user should be
-		 *  warned). */
-    eventerror, /**< Possibly severe, (the event being
-		 *  generated should be discarded). */
-    runerror,   /**< Severe error, (the run should be
-		 *  terminated). */
-    maybeabort, /**< Severe error, (the run should be
-		 *  terminated, possibly dumping core). */
-    abortnow    /**< Severe error, (the run is aborted
-		 *  immediately, before the exception is
-		 *  thrown). */
+    unknown,      /**< Unknown severity */
+    info,         /**< Not severe (but the user should be
+		   *   informed). */
+    warning,      /**< Possibly severe, (the user should be
+		   *   warned). */
+    setuperror,   /**< Command failed during setup phase,
+		   *   execution is continued. */
+    eventerror,   /**< Possibly severe, (the event being
+		   *   generated should be discarded). */
+    runerror,     /**< Severe error, (the run should be
+		   *   terminated). */
+    maybeabort,   /**< Severe error, (the run should be
+		   *   terminated, possibly dumping core). */
+    abortnow      /**< Severe error, (the run is aborted
+		   *   immediately, before the exception is
+		   *   thrown). */
   };
 
 public:
