@@ -16,9 +16,34 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Repository/Repository.h"
+#include "ThePEG/Utilities/Throw.h"
 
 using namespace ThePEG;
+
+string Strategy::localParticlesDir() const {
+  return theLocalParticlesDir;
+}
+
+void Strategy::setLocalParticlesDir(string x) {
+  if ( x[0] != '/' )
+    Throw<InterfaceException>()
+      << "LocalParticlesDir directory name must start with a '/'."
+      << Exception::setuperror;
+  if ( x[x.length() - 1] != '/' ) x += '/';
+  try {
+    Repository::CheckObjectDirectory(x);
+  }
+  catch ( Exception & e ) {
+    e.handle();
+    Throw<InterfaceException>()
+      << "No directory named " << x << " in the repository."
+      << Exception::setuperror;
+  }
+  theLocalParticlesDir = x;
+}
 
 IBPtr Strategy::clone() const {
   return new_ptr(*this);
@@ -29,11 +54,11 @@ IBPtr Strategy::fullclone() const {
 }
 
 void Strategy::persistentOutput(PersistentOStream & os) const {
-  os << theParticles << theDefaultObjects;
+  os << theParticles << theLocalParticlesDir << theDefaultObjects;
 }
 
 void Strategy::persistentInput(PersistentIStream & is, int) {
-  is >> theParticles >> theDefaultObjects;
+  is >> theParticles >> theLocalParticlesDir >> theDefaultObjects;
 }
 
 ClassDescription<Strategy> Strategy::initStrategy;
@@ -89,7 +114,20 @@ void Strategy::Init() {
      "ThePEG::EventGenerator are gone through first and are given precedence.",
      &Strategy::theDefaultObjects, 0, true, false, true, false, false);
 
+  static Parameter<Strategy,string> interfaceLocalParticlesDir
+    ("LocalParticlesDir",
+     "A directory in the repository which will be scanned for particles "
+     "which will be included as default particles in a run. These particles "
+     "will be overridden by particles specified in "
+     "<interface>LocalParticles</interface> and default particles "
+     "specified directly in the EventGenerator.",
+     &Strategy::theLocalParticlesDir, "",
+     true, false,
+     &Strategy::setLocalParticlesDir, (string(Strategy::*)()const)(0),
+     (string(Strategy::*)()const)(0));
+
   interfaceLocalParticles.rank(10);
+  interfaceLocalParticlesDir.rank(11);
   interfaceDefaultObjects.rank(9);
 
 }

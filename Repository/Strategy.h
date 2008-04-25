@@ -50,6 +50,15 @@ public:
   const ParticleMap & particles() const { return theParticles; }
 
   /**
+   * A directory in the repository which will be scanned for particles
+   * which will be included as default particles in a run. These
+   * particles will be overridden by particles specified in
+   * <interface>LocalParticles</interface> and default particles
+   * specified directly in the EventGenerator.
+   */
+  string localParticlesDir() const;
+
+  /**
    * Return the vector of default objects.
    */
   const vector<IPtr> & defaultObjects() const { return theDefaultObjects; }
@@ -119,6 +128,15 @@ private:
   ParticleMap theParticles;
 
   /**
+   * A directory in the repository which will be scanned for particles
+   * which will be included as default particles in a run. These
+   * particles will be overridden by particles specified in
+   * <interface>LocalParticles</interface> and default particles
+   * specified directly in the EventGenerator.
+   */
+  string theLocalParticlesDir;
+
+  /**
    * A vector of default objects.
    */
   vector<IPtr> theDefaultObjects;
@@ -144,6 +162,15 @@ private:
    * Utility function used by the interface.
    */
   vector<PDPtr> getLocalParticles() const;
+
+  /**
+   * A directory in the repository which will be scanned for particles
+   * which will be included as default particles in a run. These
+   * particles will be overridden by particles specified in
+   * <interface>LocalParticles</interface> and default particles
+   * specified directly in the EventGenerator.
+   */
+  void setLocalParticlesDir(string);
 
 private:
 
