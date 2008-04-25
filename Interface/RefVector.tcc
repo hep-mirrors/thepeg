@@ -51,7 +51,7 @@ set(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
   IVector oldVector = get(i);
   if ( theSetFn && ( chk || !theMember ) ) {
     try { (t->*theSetFn)(r, place); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw RefVExSetUnknown(*this, i, r, place, "set"); }
   } else {
     if ( !theMember ) throw RefVExNoSet(*this, i);
@@ -76,7 +76,7 @@ insert(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
   IVector oldVector = get(i);
   if ( theInsFn && ( chk || !theMember ) ) {
     try { (t->*theInsFn)(r, place); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw RefVExSetUnknown(*this, i, r, place, "insert"); }
   } else {
     if ( !theMember ) throw RefVExNoIns(*this, i);
@@ -97,7 +97,7 @@ void RefVector<T,R>::erase(InterfacedBase & i, int place) const
   IVector oldVector = get(i);
   if ( theDelFn ) {
     try { (t->*theDelFn)(place); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw RefVExDelUnknown(*this, i, place); }
   } else {
     if ( !theMember ) throw RefVExNoDel(*this, i);
@@ -118,7 +118,7 @@ IVector RefVector<T,R>::get(const InterfacedBase & i) const
       vector<RefPtr> ret = (t->*theGetFn)();
       return IVector(ret.begin(), ret.end());
     }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw RefVExGetUnknown(*this, i); }
   }
   if ( theMember ) return IVector((t->*theMember).begin(),

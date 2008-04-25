@@ -76,14 +76,14 @@ ParVExIndex::ParVExIndex(const InterfaceBase & i, const InterfacedBase & o,
 	     << " of the parameter vector \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the index was outside of the allowed range.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 ParVExFixed::ParVExFixed(const InterfaceBase & i, const InterfacedBase & o) {
   theMessage << "Cannot insert or delete in the parameter vector \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" since the vector is of fixed size.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 ParVExDelUnknown::ParVExDelUnknown(const InterfaceBase & i,
@@ -92,7 +92,7 @@ ParVExDelUnknown::ParVExDelUnknown(const InterfaceBase & i,
 	     << " from the parameter vector \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the delete function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 ParVExGetUnknown::ParVExGetUnknown(const InterfaceBase & i,
@@ -101,7 +101,7 @@ ParVExGetUnknown::ParVExGetUnknown(const InterfaceBase & i,
 	     << " values from the parameter vector\"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the get function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 }

@@ -104,7 +104,7 @@ SwExSetOpt::SwExSetOpt(const InterfaceBase & i,
   theMessage << "Could not set the switch \"" << i.name()
 	     << "\" for the object \"" << o.name() << "\" to " << v
 	     << "because it is not a registered option.";
-  severity(warning);
+  severity(setuperror);
 }
 
 SwExSetUnknown::SwExSetUnknown(const InterfaceBase & i,
@@ -112,7 +112,7 @@ SwExSetUnknown::SwExSetUnknown(const InterfaceBase & i,
   theMessage << "Could not set the switch \"" << i.name()
 	     << "\" for the object \"" << o.name() << "\" to " << v
 	     << " because the set function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 SwExGetUnknown::SwExGetUnknown(const InterfaceBase & i,
@@ -120,7 +120,7 @@ SwExGetUnknown::SwExGetUnknown(const InterfaceBase & i,
   theMessage << "Could not get the " << s << " value of switch \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the get function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 }

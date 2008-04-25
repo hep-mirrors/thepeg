@@ -178,7 +178,7 @@ void ParVector<T,Type>::tset(InterfacedBase & i, Type newValue, int place) const
   TypeVector oldVector = tget(i);
   if ( theSetFn ) {
     try { (t->*theSetFn)(newValue, place); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParVExUnknown(*this, i, newValue, place, "set"); }
   } else {
     if ( !theMember ) throw InterExSetup(*this, i);
@@ -203,7 +203,7 @@ tinsert(InterfacedBase & i, Type newValue, int place) const
   TypeVector oldVector = tget(i);
   if ( theInsFn ) {
     try { (t->*theInsFn)(newValue, place); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParVExUnknown(*this, i, newValue, place, "insert"); }
   } else {
     if ( !theMember ) throw InterExSetup(*this, i);
@@ -224,7 +224,7 @@ erase(InterfacedBase & i, int place) const throw(InterfaceException) {
   TypeVector oldVector = tget(i);
   if ( theDelFn ) {
     try { (t->*theDelFn)(place); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) {  throw ParVExDelUnknown(*this, i, place); }
   } else {
     if ( !theMember ) throw InterExSetup(*this, i);
@@ -242,7 +242,7 @@ tget(const InterfacedBase & i) const throw(InterfaceException) {
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
     try { return (t->*theGetFn)(); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParVExGetUnknown(*this, i, "current"); }
   }
   if ( theMember ) return t->*theMember;
@@ -256,7 +256,7 @@ get(const InterfacedBase & i) const throw(InterfaceException) {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   try { return (t->*theStringGetFn)(); }
-  catch (InterfaceException) { throw; }
+  catch (InterfaceException & e) { throw e; }
   catch ( ... ) { throw ParVExGetUnknown(*this, i, "current"); }
 }
 
@@ -268,7 +268,7 @@ Type ParVector<T,Type>::tdef(const InterfacedBase & i, int place) const
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   try { return (t->*theDefFn)(place); }
-  catch (InterfaceException) { throw; }
+  catch (InterfaceException & e) { throw e; }
   catch ( ... ) { throw ParVExGetUnknown(*this, i, "default"); }
 }
 
@@ -279,7 +279,7 @@ Type ParVector<T,Type>::tminimum(const InterfacedBase & i, int place) const
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   try { return (t->*theMinFn)(place); }
-  catch (InterfaceException) { throw; }
+  catch (InterfaceException & e) { throw e; }
   catch ( ... ) { throw ParVExGetUnknown(*this, i, "minimum"); }
 }
 
@@ -290,7 +290,7 @@ Type ParVector<T,Type>::tmaximum(const InterfacedBase & i, int place) const
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   try { return (t->*theMaxFn)(place); }
-  catch (InterfaceException) { throw; }
+  catch (InterfaceException & e) { throw e; }
   catch ( ... ) { throw ParVExGetUnknown(*this, i, "maximum"); }
 }
 
@@ -335,7 +335,7 @@ ParVExLimit::ParVExLimit(const InterfaceBase & i,
   theMessage << " in the parameter vector \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because the value is outside the specified limits.";
-  severity(warning);
+  severity(setuperror);
 }
 
 template <typename T>
@@ -347,7 +347,7 @@ ParVExUnknown::ParVExUnknown(const InterfaceBase & i, const InterfacedBase & o,
 	     << j << " in the parameter vector \"" << i.name()
 	     << "\" for the object \"" << o.name() << "\" because the "
 	     << s << " function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 }

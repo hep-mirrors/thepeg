@@ -115,7 +115,7 @@ RefExSetRefClass::RefExSetRefClass(const RefInterfaceBase & i,
 	     << (r? r->name().c_str(): "<NULL>")
 	     << "\" because it is not of the required class ("
 	     << i.refClassName() << ").";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefExSetUnknown::RefExSetUnknown(const InterfaceBase & i,
@@ -124,7 +124,7 @@ RefExSetUnknown::RefExSetUnknown(const InterfaceBase & i,
 	     << "\" for the object \"" << o.name() << "\" to the object \""
 	     << (r? r->name().c_str(): "<NULL>")
 	     << "\" because the set function threw an  unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefExGetUnknown::RefExGetUnknown(const InterfaceBase & i,
@@ -132,7 +132,7 @@ RefExGetUnknown::RefExGetUnknown(const InterfaceBase & i,
   theMessage << "Could not get the reference \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the get function threw an  unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefExSetNoobj::RefExSetNoobj(const InterfaceBase & i, const InterfacedBase & o,
@@ -141,7 +141,7 @@ RefExSetNoobj::RefExSetNoobj(const InterfaceBase & i, const InterfacedBase & o,
 	     << "\" for the object \"" << o.name()
 	     << "\" because the specified object \""
 	     << n << "\" does not exist.";
-  severity(warning);
+  severity(setuperror);
 }
 
 RefExSetMessage::
@@ -150,6 +150,6 @@ RefExSetMessage(string ref, const InterfacedBase & o,
   theMessage << "Could not set the reference \"" << ref
 	     << "\" for the object \"" << o.name()
 	     << "\" to \"" << o2.name() << "\"." << m;
-  severity(warning);
+  severity(setuperror);
 }
 

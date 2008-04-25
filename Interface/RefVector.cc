@@ -149,7 +149,7 @@ RefVExRefClass::RefVExRefClass(const RefInterfaceBase & i,
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because it is not of the required class ("
 	     << i.refClassName() << ").";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExSetUnknown::RefVExSetUnknown(const RefInterfaceBase & i,
@@ -161,7 +161,7 @@ RefVExSetUnknown::RefVExSetUnknown(const RefInterfaceBase & i,
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because the " << s
 	     << " function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExSetUnfound::RefVExSetUnfound(const InterfaceBase & i,
@@ -172,7 +172,7 @@ RefVExSetUnfound::RefVExSetUnfound(const InterfaceBase & i,
 	     << " in the reference vector \""
 	     << i.name() << "\" of \"" << o.name()
 	     << "\"because the object was not found.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExIndex::RefVExIndex(const InterfaceBase & i,
@@ -181,14 +181,14 @@ RefVExIndex::RefVExIndex(const InterfaceBase & i,
 	     << " of the reference vector \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the index was outside of the allowed range.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExFixed::RefVExFixed(const InterfaceBase & i, const InterfacedBase & o) {
   theMessage << "Cannot insert or delete in the reference vector \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" since the vector is of fixed size.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExDelUnknown::RefVExDelUnknown(const InterfaceBase & i,
@@ -197,7 +197,7 @@ RefVExDelUnknown::RefVExDelUnknown(const InterfaceBase & i,
 	     << " from the reference vector \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the delete function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExGetUnknown::RefVExGetUnknown(const InterfaceBase & i,
@@ -205,14 +205,14 @@ RefVExGetUnknown::RefVExGetUnknown(const InterfaceBase & i,
   theMessage << "Could not get the reference vector \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" because the get function threw an  unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 RefVExNoSet::RefVExNoSet(const InterfaceBase & i,  const InterfacedBase & o) {
   theMessage << "Could not set an object in the reference vector \"" << i.name()
 	     << "\" for the object \"" << o.name() 
 	     << "\" because no set function has been specified.";
-  severity(warning);
+  severity(setuperror);
 }
 
 
@@ -220,7 +220,7 @@ RefVExNoIns::RefVExNoIns(const InterfaceBase & i,  const InterfacedBase & o) {
   theMessage << "Could not insert an object in the reference vector \""
 	     << i.name() << "\" for the object \"" << o.name() 
 	     << "\" because no insert function has been specified.";
-  severity(warning);
+  severity(setuperror);
 }
 
 
@@ -228,6 +228,6 @@ RefVExNoDel::RefVExNoDel(const InterfaceBase & i,  const InterfacedBase & o) {
   theMessage << "Could not erase an object in the reference vector \""
 	     << i.name() << "\" for the object \"" << o.name() 
 	     << "\" because no erase function has been specified.";
-  severity(warning);
+  severity(setuperror);
 }
 

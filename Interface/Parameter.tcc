@@ -107,7 +107,7 @@ void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
   Type oldValue = tget(i);
   if ( theSetFn ) {
     try { (t->*theSetFn)(newValue); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExSetUnknown(*this, i, newValue); }
   } else {
     if ( theMember ) t->*theMember = newValue;
@@ -125,7 +125,7 @@ void Parameter<T,string>::tset(InterfacedBase & i, string newValue) const
   string oldValue = tget(i);
   if ( theSetFn ) {
     try { (t->*theSetFn)(newValue); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExSetUnknown(*this, i, newValue); }
   } else {
     if ( theMember ) t->*theMember = newValue;
@@ -141,7 +141,7 @@ Type Parameter<T,Type>::tget(const InterfacedBase & i) const
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
     try { return (t->*theGetFn)(); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExGetUnknown(*this, i, "current"); }
   }
   if ( theMember ) return t->*theMember;
@@ -155,7 +155,7 @@ string Parameter<T,string>::tget(const InterfacedBase & i) const
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
     try { return (t->*theGetFn)(); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExGetUnknown(*this, i, "current"); }
   }
   if ( theMember ) return t->*theMember;
@@ -169,7 +169,7 @@ Type Parameter<T,Type>::tminimum(const InterfacedBase & i) const
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
     try { return max(theMin, (t->*theMinFn)()); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExGetUnknown(*this, i, "minimum"); }
   }
   return theMin;
@@ -182,7 +182,7 @@ Type Parameter<T,Type>::tmaximum(const InterfacedBase & i) const
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
     try { return min(theMax, (t->*theMaxFn)()); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExGetUnknown(*this, i, "maximum"); }
   }
   return theMax;
@@ -195,7 +195,7 @@ Type Parameter<T,Type>::tdef(const InterfacedBase & i) const
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
     try { return (t->*theDefFn)(); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExGetUnknown(*this, i, "default"); }
   }
   return theDef;
@@ -208,7 +208,7 @@ string Parameter<T,string>::tdef(const InterfacedBase & i) const
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
     try { return (t->*theDefFn)(); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw ParExGetUnknown(*this, i, "default"); }
   }
   return theDef;
@@ -262,7 +262,7 @@ ParExSetLimit::ParExSetLimit(const InterfaceBase & i,
 	     << "\" for the object \"" << o.name() << "\" to ";
   ostreamInsert(theMessage,v,typename TypeTraits<T>::DimType() );
   theMessage << " because the value is outside the specified limits.";
-  severity(warning);
+  severity(setuperror);
 }
 
 template <typename T>
@@ -272,7 +272,7 @@ ParExSetUnknown::ParExSetUnknown(const InterfaceBase & i,
 	     << "\" for the object \"" << o.name() << "\" to ";
   ostreamInsert(theMessage,v,typename TypeTraits<T>::DimType() );
   theMessage << " because the set function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 }

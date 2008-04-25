@@ -24,7 +24,7 @@ string Command<T>::cmd(InterfacedBase & i, string arg) const
       if ( r != "" ) i.touch();
       return r;
     }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw CmdExUnknown(*this, i, arg); }
   } else throw InterExSetup(*this, i);
 }

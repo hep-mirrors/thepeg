@@ -1,5 +1,9 @@
 2008-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Interface/*: Now uses 'setuperror' severity in exceptions. Also
+	catches InterfacedException's by reference to avoid duplicated
+	output.
+
 	* Utilities/Exception.*: Added new severity level 'setuperror' to
 	be used during the setup phase.
 

@@ -53,7 +53,7 @@ ParExGetUnknown::ParExGetUnknown(const InterfaceBase & i,
   theMessage << "Could not get the " << s << " value of parameter \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because the get function threw an unknown exception.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 }

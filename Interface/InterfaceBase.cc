@@ -53,14 +53,14 @@ InterExClass::InterExClass(const InterfaceBase & i, const InterfacedBase & o) {
   theMessage << "Could not access the interface \"" << i.name()
 	     << "\" of the object \"" << o.name() << "\" because the object "
 	     << "is not of the required class (" << i.className() << ").";
-  severity(abortnow);
+  severity(setuperror);
 }
 
 InterExSetup::InterExSetup(const InterfaceBase & i, const InterfacedBase & o) {
   theMessage << "Could not access the interface \"" << i.name()
 	     << "\" for the object \"" << o.name()
 	     << "\" since no get/set member function or variable was found.";
-  severity(abortnow);
+  severity(setuperror);
 }
 
 InterExUnknown::InterExUnknown(const InterfaceBase & i,
@@ -68,7 +68,7 @@ InterExUnknown::InterExUnknown(const InterfaceBase & i,
   theMessage << "Could not perform action on the interface  \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because the requested action was not recognized";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 InterExReadOnly::InterExReadOnly(const InterfaceBase & i,
@@ -76,7 +76,7 @@ InterExReadOnly::InterExReadOnly(const InterfaceBase & i,
   theMessage << "Could not perform action on the interface  \""
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" because this interface is read-only.";
-  severity(maybeabort);
+  severity(setuperror);
 }
 
 InterExNoNull::InterExNoNull(const InterfaceBase & i,
@@ -85,7 +85,7 @@ InterExNoNull::InterExNoNull(const InterfaceBase & i,
 	     << i.name() << "\" for the object \"" << o.name()
 	     << "\" to <Null> because null pointers are explicitly "
 	     << "disallowed.";
-  severity(warning);
+  severity(setuperror);
 }
 
 

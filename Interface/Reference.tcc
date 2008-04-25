@@ -25,7 +25,7 @@ void Reference<T,R>::set(InterfacedBase & i, IBPtr newRef, bool chk) const
   RefPtr oldRef = dynamic_ptr_cast<RefPtr>(get(i));
   if ( theSetFn && ( chk || !theMember ) ) {
     try { (t->*theSetFn)(r); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw RefExSetUnknown(*this, i, r); }
   } else {
     if ( theMember ) t->*theMember = r;
@@ -41,7 +41,7 @@ IBPtr Reference<T,R>::get(const InterfacedBase & i) const
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
     try { return (t->*theGetFn)(); }
-    catch (InterfaceException) { throw; }
+    catch (InterfaceException & e) { throw e; }
     catch ( ... ) { throw RefExGetUnknown(*this, i); }
   }
   if ( theMember ) return t->*theMember;
