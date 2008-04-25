@@ -568,6 +568,9 @@ void EventGenerator::printException(const Exception & ex) {
   case Exception::warning:
     log() << "* A warning";
     break;
+  case Exception::setuperror:
+    log() << "** A setup";
+    break;
   case Exception::eventerror:
     log() << "** An event";
     break;
