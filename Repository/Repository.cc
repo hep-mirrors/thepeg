@@ -192,6 +192,13 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
     for ( ParticleMap::const_iterator pit = strat->particles().begin();
  	  pit != strat->particles().end(); ++pit )
       allParticles.push_back(pit->second);
+    if ( eg->strategy()->localParticlesDir().length() ) {
+      string dir = eg->strategy()->localParticlesDir();
+      for ( ParticleDataSet::iterator pit = particles().begin();
+	    pit != particles().end(); ++pit )
+	if ( (**pit).fullName().substr(0, dir.length()) == dir )
+	  allParticles.push_back(*pit);
+    }
   }
   for ( ParticleMap::iterator pit = defaultParticles().begin();
 	pit != defaultParticles().end(); ++pit )

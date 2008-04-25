@@ -1,5 +1,9 @@
 2008-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/Repository.cc (Repository::makeRun): Use the
+	LocalParticlesDir in the Strategy object to find default
+	particles.
+
 	* Repository/Strategy.* (Strategy::setLocalParticlesDir): Added
 	interface to specify a directory which is scanned for particles
 	which are treated as default particles for the given strategy.
