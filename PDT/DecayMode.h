@@ -107,9 +107,11 @@ public:
 
   /**
    * Create a decay mode from a given tag. This function is used
-   * directly by the Repository.
+   * directly by the Repository. If pd is non-null it should
+   * correspond to the decaying particle and the created mode will be
+   * added to this particle.
    */
-  static DMPtr constructDecayMode(string & tag);
+  static DMPtr constructDecayMode(string & tag, tPDPtr pd = tPDPtr());
 
   /** @name Standard constructors and destructors. */
   //@{

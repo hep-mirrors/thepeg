@@ -1,5 +1,12 @@
 2008-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/Repository.cc,
+	PDT/DecayMode.* (DecayMode::constructDecayMode): If "decaymode"
+	specifies an object name which is in a subdirectory of a particle,
+	the created decay mode will be added to the corresponding
+	particle. If only a decay tag is specified the decay mode will be
+	added to the corresponding default particle (the old behavior).
+
 	* Repository/Repository.cc (Repository::makeRun): Use the
 	LocalParticlesDir in the Strategy object to find default
 	particles.

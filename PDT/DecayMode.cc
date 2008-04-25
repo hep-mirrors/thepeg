@@ -483,7 +483,8 @@ void DecayMode::decayer(tDecayerPtr dec) {
   theDecayer = dec;
 }
 
-DMPtr DecayMode::constructDecayMode(string & tag) {
+DMPtr DecayMode::constructDecayMode(string & tag, tPDPtr pd) {
+  bool autodef = !pd;
   DMPtr rdm;
   DMPtr adm;
   int level = 0;
@@ -499,7 +500,7 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
     }
   }
   rdm = Repository::findDecayMode(tag.substr(0,end));
-  if ( rdm ) {
+  if ( rdm && ( autodef || pd == rdm->parent() ) ) {
     string::size_type next = tag.find("]");
     if(next!=string::npos) tag = tag.substr(next,tag.size());
     return rdm;
@@ -508,8 +509,8 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
   string::size_type next = tag.find("->");
   if ( next == string::npos ) return rdm;
   if ( tag.find(';') == string::npos ) return rdm;
-  tPDPtr pd = Repository::GetPtr<tPDPtr>(tag.substr(0,next));
   if ( !pd ) pd = Repository::findParticle(tag.substr(0,next));
+  if ( !pd ) pd = Repository::GetPtr<tPDPtr>(tag.substr(0,next));
   if ( !pd ) return rdm;
   rdm = ptr_new<DMPtr>();
   rdm->parent(pd);
@@ -584,7 +585,7 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
   tag = tag.substr(1);
   
   DMPtr ndm = Repository::findDecayMode(rdm->tag());
-  if ( ndm ) return ndm;
+  if ( ndm && ( autodef || pd == ndm->parent() ) ) return ndm;
   pd->addDecayMode(rdm);
   Repository::Register(rdm, pd->fullName() + "/" + rdm->tag());
   if ( adm ) Repository::Register(adm, pd->CC()->fullName() + "/" + adm->tag());

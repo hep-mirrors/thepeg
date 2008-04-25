@@ -532,7 +532,17 @@ string Repository::exec(string command, ostream & os) {
     }
     if ( verb == "decaymode" ) {
       string tag = StringUtils::car(command);
-      DMPtr dm = DecayMode::constructDecayMode(tag);
+      tPDPtr pd;
+      string::size_type pos = tag.rfind('/');
+      if ( pos != string::npos ) {
+	string pobj = tag.substr(0,pos);
+	DirectoryAppend(pobj);
+	pd = dynamic_ptr_cast<tPDPtr>(GetPointer(pobj));
+	if ( !pd ) return "Error: cannot add decay mode to '"
+		     + pobj + "'. No such particle";
+	tag = tag.substr(pos + 1);
+      }
+      DMPtr dm = DecayMode::constructDecayMode(tag, pd);
       if ( !dm ) return "Error: Could not create decay mode from the tag " +
 		   StringUtils::car(command);
       istringstream is(StringUtils::cdr(command));
