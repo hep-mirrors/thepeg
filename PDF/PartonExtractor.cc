@@ -296,8 +296,8 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
 			   pb.remnants().end(),
 			   static_cast<const LorentzMomentum &>(Pr));
   }
-  catch ( ThePEG::Exception ) {
-    throw;
+  catch ( ThePEG::Exception & e) {
+    throw e;
   }
   catch ( ThePEG::Veto ) {
     throw;

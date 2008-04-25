@@ -116,8 +116,8 @@ ParticleVector Decayer::DecayParticle(tPPtr parent, Step & s, long maxtry) {
 	return children;
       }
     }
-    catch (DecayFailure) {
-      throw;
+    catch (DecayFailure & e) {
+      throw e;
     }
     catch (Veto) {}
   }
