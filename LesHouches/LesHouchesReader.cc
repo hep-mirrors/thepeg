@@ -720,9 +720,12 @@ void LesHouchesReader::createParticles() {
 	 oklines.find(hepeup.ICOLUP[i].first) == oklines.end() ) {
       int ends = 0;
       for ( int j = i + 1; j < N; ++j ) {
-	if ( abs(hepeup.ISTUP[j]) == 1 ) {
+	if ( hepeup.ISTUP[j] == -hepeup.ISTUP[i] ) {
 	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].first ) ++ends;
 	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].first ) ends = -N;
+	} else if ( hepeup.ISTUP[j] == hepeup.ISTUP[i] ) {
+	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].first ) ++ends;
+	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].first ) ends = -N;
 	}
       }
       if ( ends != 1 ) Throw<LesHouchesInconsistencyError>()
@@ -736,9 +739,12 @@ void LesHouchesReader::createParticles() {
 	 oklines.find(hepeup.ICOLUP[i].second) == oklines.end() ) {
       int ends = 0;
       for ( int j = i + 1; j < N; ++j ) {
-	if ( abs(hepeup.ISTUP[j]) == 1 ) {
+	if ( hepeup.ISTUP[j] == -hepeup.ISTUP[i] ) {
 	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].second ) ++ends;
 	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].second ) ends = -N;
+	} else if ( hepeup.ISTUP[j] == hepeup.ISTUP[i] ) {
+	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].second ) ++ends;
+	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].second ) ends = -N;
 	}
       }
       if ( ends != 1 ) Throw<LesHouchesInconsistencyError>()
