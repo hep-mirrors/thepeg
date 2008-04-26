@@ -102,11 +102,21 @@ public:
    * generic name.
    */
   static PDPtr defaultParticle(long id);
+
   /**
    * Get a pointer to the default particle of the given type or
    * generic name.
    */
   static tPDPtr findParticle(string name);
+
+  /**
+   * Get a pointer to a particle based on the given path or name. The
+   * argument is first treated as a path to an object. If no such
+   * particle object is find, the argument is treated as a generic
+   * particle name and is searched for among the default set of
+   * particles.
+   */
+  static tPDPtr findParticleByPath(string name);
 
   /**
    * Return the set of all particles in the repository.

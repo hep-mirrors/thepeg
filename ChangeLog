@@ -1,3 +1,17 @@
+2008-04-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Repository.cc (Repository::findParticleByPath): Added
+	function to first seach a particle according path, before
+	resorting to finding default particle. The behavior of the
+	"decaymode" command uses the new DecayMode::constructDecayMode
+	behavior.
+
+	* PDT/DecayMode.* (DecayMode::constructDecayMode): Redesigned
+	recent changes. If the decaying particle is a valid path to a
+	particle object the decay mode will be added to that
+	particle. Otherwise the decay mode will be added to the
+	corresponding default particle.
+
 2008-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (Repository::exec): Changed the

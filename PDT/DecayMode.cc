@@ -483,8 +483,7 @@ void DecayMode::decayer(tDecayerPtr dec) {
   theDecayer = dec;
 }
 
-DMPtr DecayMode::constructDecayMode(string & tag, tPDPtr pd) {
-  bool autodef = !pd;
+DMPtr DecayMode::constructDecayMode(string & tag) {
   DMPtr rdm;
   DMPtr adm;
   int level = 0;
@@ -499,19 +498,12 @@ DMPtr DecayMode::constructDecayMode(string & tag, tPDPtr pd) {
       break;
     }
   }
-  rdm = Repository::findDecayMode(tag.substr(0,end));
-  if ( rdm && ( autodef || pd == rdm->parent() ) ) {
-    string::size_type next = tag.find("]");
-    if(next!=string::npos) tag = tag.substr(next,tag.size());
-    return rdm;
-  }
-
   string::size_type next = tag.find("->");
   if ( next == string::npos ) return rdm;
   if ( tag.find(';') == string::npos ) return rdm;
-  if ( !pd ) pd = Repository::findParticle(tag.substr(0,next));
-  if ( !pd ) pd = Repository::GetPtr<tPDPtr>(tag.substr(0,next));
+  tPDPtr pd = Repository::findParticleByPath(tag.substr(0,next));
   if ( !pd ) return rdm;
+
   rdm = ptr_new<DMPtr>();
   rdm->parent(pd);
   if ( pd->CC() ) {
@@ -550,7 +542,7 @@ DMPtr DecayMode::constructDecayMode(string & tag, tPDPtr pd) {
     case '!':
       {
 	next = min(tag.find(','), tag.find(';'));
-	tPDPtr pd = Repository::findParticle(tag.substr(1,next-1));
+	tPDPtr pd = Repository::findParticleByPath(tag.substr(1,next-1));
 	if ( pd ) rdm->addExcluded(pd);
 	else error = true;
 	tag = tag.substr(next);
@@ -566,7 +558,7 @@ DMPtr DecayMode::constructDecayMode(string & tag, tPDPtr pd) {
     default:
       {
 	next = min(tag.find('='), min(tag.find(','), tag.find(';')));
-	tPDPtr pdp = Repository::findParticle(tag.substr(0,next));
+	tPDPtr pdp = Repository::findParticleByPath(tag.substr(0,next));
 	if ( pdp ) rdm->addProduct(pdp);
 	else error = true;
 	tag = tag.substr(next);
@@ -584,8 +576,10 @@ DMPtr DecayMode::constructDecayMode(string & tag, tPDPtr pd) {
 
   tag = tag.substr(1);
   
-  DMPtr ndm = Repository::findDecayMode(rdm->tag());
-  if ( ndm && ( autodef || pd == ndm->parent() ) ) return ndm;
+  for ( DecaySet::const_iterator dit = pd->decayModes().begin();
+	dit != pd->decayModes().end(); ++dit )
+    if ( (**dit).tag() == rdm->tag() ) return *dit;
+
   pd->addDecayMode(rdm);
   Repository::Register(rdm, pd->fullName() + "/" + rdm->tag());
   if ( adm ) Repository::Register(adm, pd->CC()->fullName() + "/" + adm->tag());
