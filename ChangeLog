@@ -1,3 +1,11 @@
+2008-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Repository.cc (Repository::exec): Changed the
+	behavior of "decaymode" again. Now, if what preceedes the "->" in
+	the decay mode tag corresponds to a valid path to a particle, the
+	decay mode will be added to that particle, otherwise the previous
+	behavior is maintained.
+
 2008-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc,
