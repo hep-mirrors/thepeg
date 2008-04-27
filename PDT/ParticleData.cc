@@ -98,6 +98,7 @@ void ParticleData::readSetup(istream & is) throw(SetupException) {
   theCharge = theDefCharge;
   theColor = theDefColour;
   theSpin = theDefSpin;
+  if ( !Repository::defaultParticle(id()) ) Repository::defaultParticle(this);
   return;
 }
   
