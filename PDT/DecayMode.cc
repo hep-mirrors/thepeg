@@ -501,7 +501,7 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
   string::size_type next = tag.find("->");
   if ( next == string::npos ) return rdm;
   if ( tag.find(';') == string::npos ) return rdm;
-  tPDPtr pd = Repository::findParticleByPath(tag.substr(0,next));
+  tPDPtr pd = Repository::findParticle(tag.substr(0,next));
   if ( !pd ) return rdm;
 
   rdm = ptr_new<DMPtr>();
@@ -542,7 +542,7 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
     case '!':
       {
 	next = min(tag.find(','), tag.find(';'));
-	tPDPtr pd = Repository::findParticleByPath(tag.substr(1,next-1));
+	tPDPtr pd = Repository::findParticle(tag.substr(1,next-1));
 	if ( pd ) rdm->addExcluded(pd);
 	else error = true;
 	tag = tag.substr(next);
@@ -558,7 +558,7 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
     default:
       {
 	next = min(tag.find('='), min(tag.find(','), tag.find(';')));
-	tPDPtr pdp = Repository::findParticleByPath(tag.substr(0,next));
+	tPDPtr pdp = Repository::findParticle(tag.substr(0,next));
 	if ( pdp ) rdm->addProduct(pdp);
 	else error = true;
 	tag = tag.substr(next);

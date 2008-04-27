@@ -42,11 +42,6 @@ MatcherSet & Repository::matchers() {
   return theSet;
 }
 
-DecayModeSet & Repository::decayModes() {
-  static DecayModeSet theSet;
-  return theSet;
-}
-
 Repository::GeneratorMap & Repository::generators() {
   static GeneratorMap theMap;;
   return theMap;
@@ -75,7 +70,6 @@ void Repository::Register(IBPtr ip) {
   BaseRepository::Register(ip);
   registerParticle(dynamic_ptr_cast<PDPtr>(ip));
   registerMatcher(dynamic_ptr_cast<PMPtr>(ip));
-  registerDecayMode(dynamic_ptr_cast<DMPtr>(ip));
 }
 
 void Repository::Register(IBPtr ip, string newName) {
@@ -83,7 +77,6 @@ void Repository::Register(IBPtr ip, string newName) {
   BaseRepository::Register(ip, newName);
   registerParticle(dynamic_ptr_cast<PDPtr>(ip));
   registerMatcher(dynamic_ptr_cast<PMPtr>(ip));
-  registerDecayMode(dynamic_ptr_cast<DMPtr>(ip));
 }
 
 void Repository::registerParticle(tPDPtr pd) {
@@ -107,24 +100,16 @@ void Repository::registerMatcher(tPMPtr pm) {
   matchers().insert(pm);
 }
 
-void Repository::registerDecayMode(tDMPtr dm) {
-  if ( !dm || member(decayModes(), dm) ) return;
-  decayModes().insert(dm);
-}
-
 tPDPtr Repository::findParticle(string name) {
-  for ( ParticleMap::iterator pit = defaultParticles().begin();
-	pit != defaultParticles().end(); ++pit )
-    if ( pit->second->PDGName() == name ) return pit->second;
-  return tPDPtr();
-}
-
-tPDPtr Repository::findParticleByPath(string name) {
   tPDPtr pd;
   string path = name;
   DirectoryAppend(path);
   pd = dynamic_ptr_cast<tPDPtr>(GetPointer(path));
-  return pd? pd: findParticle(name);
+  if ( pd ) return pd;
+  for ( ParticleMap::iterator pit = defaultParticles().begin();
+	pit != defaultParticles().end(); ++pit )
+    if ( pit->second->PDGName() == name ) return pit->second;
+  return pd;
 }
 
 tPMPtr Repository::findMatcher(string name) {
@@ -132,13 +117,6 @@ tPMPtr Repository::findMatcher(string name) {
 	mit != matchers().end(); ++mit )
     if ( name == (**mit).name() ) return *mit;
   return tPMPtr();
-}
-
-tDMPtr Repository::findDecayMode(string name) {
-  for ( DecayModeSet::iterator dit = decayModes().begin();
-	dit != decayModes().end(); ++dit )
-    if ( name == (**dit).tag() ) return *dit;
-  return tDMPtr();
 }
 
 void Repository::saveRun(string EGname, string name, string filename) {
@@ -302,16 +280,6 @@ struct ParticleOrdering {
   }
 };
 
-struct ModeOrdering {
-  bool operator()(tcDMPtr d1, tcDMPtr d2) {
-    ParticleOrdering ord;
-    return ord(d1->parent(), d2->parent()) ||
-      ( !ord(d2->parent(), d1->parent()) &&
-	( d1->tag() < d2->tag() ||
-	  ( d1->tag() == d2->tag() && d1->fullName() < d2->fullName() ) ) );
-  }
-};
-
 struct MatcherOrdering {
   bool operator()(tcPMPtr m1, tcPMPtr m2) {
     return m1->name() < m2->name() ||
@@ -332,12 +300,11 @@ void Repository::save(string filename) {
   set<tcPDPtr,ParticleOrdering>
     part(particles().begin(), particles().end());
   set<tcPMPtr,MatcherOrdering>  match(matchers().begin(), matchers().end());
-  set<tcDMPtr,ModeOrdering> modes(decayModes().begin(), decayModes().end());
 
   os << objects().size();
   for ( ObjectMap::iterator it = objects().begin();
 	it != objects().end(); ++it ) os << it->second;
-  os << defaultParticles() << part << match << modes << generators()
+  os << defaultParticles() << part << match << generators()
      << directories() << directoryStack() << globalLibraries();
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "(" << objects().size() << " objects in " << directories().size()
@@ -360,7 +327,7 @@ void Repository::load(string filename) {
     }
   }
   *is >> allObjects() >> defaultParticles()
-      >> particles() >> matchers() >> decayModes() >> generators()
+      >> particles() >> matchers() >> generators()
       >> directories() >> directoryStack() >> globalLibraries();
   delete is;
   objects().clear();
@@ -383,8 +350,6 @@ void Repository::stats(ostream & os) {
   os << "number of objects (all):  " << setw(6) << allObjects().size() << endl;
   os << "number of particles:        " << setw(6) << particles().size() << endl;
   os << "number of matchers:         " << setw(6) << matchers().size() << endl;
-  os << "number of decay modes:      " << setw(6)
-     << decayModes().size() << endl;
 }
 
 void Repository::read(string filename, ostream & os) {
@@ -464,8 +429,6 @@ void Repository::remove(tIBPtr ip) {
   }
   if ( dynamic_ptr_cast<tPMPtr>(ip) )
     matchers().erase(dynamic_ptr_cast<tPMPtr>(ip));
-  if ( dynamic_ptr_cast<tDMPtr>(ip) )
-    decayModes().erase(dynamic_ptr_cast<tDMPtr>(ip));
 }
 
 string Repository::remove(const ObjectSet & rmset) {

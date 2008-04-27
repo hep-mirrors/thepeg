@@ -15,7 +15,6 @@
 #include "EventGenerator.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/MatcherBase.h"
-#include "ThePEG/PDT/DecayMode.h"
 
 namespace ThePEG {
 
@@ -24,7 +23,7 @@ namespace ThePEG {
  * BaseRepository is fairly general and could in principle be used for
  * any program where sets of InterfacedBase objects are managed, the
  * Repository is ThePEG specific in that it deals with ParticleData,
- * ParticleMatchers, DecayModes, and EventGenerators.
+ * ParticleMatchers and EventGenerators.
  *
  * One main function is to write an EventGenerator to disk using
  * saveRun(). Here all objects needed for the run, including the
@@ -33,16 +32,15 @@ namespace ThePEG {
  * before they are all persistently written out to disk.
  *
  * The Register() function simply pass the objects to the corresonding
- * method in BaseRepository, but if the object is a ParticleData,
- * ParticleMatcher or a DecayMode, they are stored separately. In
- * addition, if a ParticleData with a given PDG id number was not yet
- * added to the list of default particles, this one will be.
+ * method in BaseRepository, but if the object is a ParticleData or a
+ * ParticleMatcher, they are stored separately. In addition, if a
+ * ParticleData with a given PDG id number was not yet added to the
+ * list of default particles, this one will be.
  *
  * @see BaseRepository
  * @see InterfacedBase
  * @see ParticleData
  * @see ParticleMatcher
- * @see DecayMode
  * @see EventGenerator
  * 
  */
@@ -74,21 +72,21 @@ public:
   //@{
   /**
    * Register an object with BaseRepository::Register() and add it to
-   * the list of particles, decay modes or matchers if of any of those
+   * the list of particles or matchers if of any of those
    * types.
    */
   static void Register(IBPtr);
 
   /**
    * Register an object with BaseRepository::Register() and add it to
-   * the list of particles, decay modes or matchers if of any of those
+   * the list of particles or matchers if of any of those
    * types.
    */
   static void Register(IBPtr, string newName);
   //@}
 
-  /** @name Access ParticleData, MatcherBase and DecayMode objects in
-      the Repository. */
+  /** @name Access ParticleData and MatcherBase objects in the
+      Repository. */
   //@{
   /**
    * Add a particle to the list of default ones. If one of the same
@@ -104,19 +102,13 @@ public:
   static PDPtr defaultParticle(long id);
 
   /**
-   * Get a pointer to the default particle of the given type or
-   * generic name.
-   */
-  static tPDPtr findParticle(string name);
-
-  /**
    * Get a pointer to a particle based on the given path or name. The
    * argument is first treated as a path to an object. If no such
-   * particle object is find, the argument is treated as a generic
+   * particle object is found, the argument is treated as a generic
    * particle name and is searched for among the default set of
    * particles.
    */
-  static tPDPtr findParticleByPath(string name);
+  static tPDPtr findParticle(string name);
 
   /**
    * Return the set of all particles in the repository.
@@ -129,13 +121,9 @@ public:
   static const MatcherSet & allMatchers() { return matchers(); }
 
   /**
-   * Find a matcher or decay mode with a given generic name
+   * Find a matcher with a given generic name
    */
   static tPMPtr findMatcher(string name);
-  /**
-   * Find a matcher or decay mode with a given generic name
-   */
-  static tDMPtr findDecayMode(string name);
 
   /**
    * Special function for copying particles. Also corresponding
@@ -242,11 +230,6 @@ private:
    */
   static void registerMatcher(tPMPtr);
 
-  /**
-   * Used by Register.
-   */
-  static void registerDecayMode(tDMPtr);
-
 protected:
 
   /** @name Functions containing the static instances of objects used
@@ -266,11 +249,6 @@ protected:
    * The set of all matchers.
    */
   static MatcherSet & matchers();
-
-  /**
-   * The set of all decay modes.
-   */
-  static DecayModeSet & decayModes();
 
   /**
    * All isolated generators mapped to their run name.
