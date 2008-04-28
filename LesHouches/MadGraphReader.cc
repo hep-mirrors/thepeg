@@ -58,7 +58,11 @@ void MadGraphReader::open() {
   if ( LHFVersion.size() ) {
     // extract the number of events
     neve = numberOfEvents(outsideBlock);
-    if ( neve == 0 ) neve = numberOfEvents(headerBlock);
+    string madheader = outsideBlock;
+    if ( neve == 0 ) {
+      neve = numberOfEvents(headerBlock);
+      madheader = headerBlock;
+    }
     if ( neve != 0 ) NEvents(neve);
 
     // MadEvent has gives wrong values for XMAXUP and XWGTUP, they
@@ -68,11 +72,11 @@ void MadGraphReader::open() {
 
     // Scan information about cuts.
     for ( int itag = 0; itag < ntags; ++itag ) {
-     string::size_type pos = outsideBlock.find(string("= ") + cuttags[itag]);
+     string::size_type pos = madheader.find(string("= ") + cuttags[itag]);
       if ( pos != string::npos ) {
-	string::size_type beg = max(outsideBlock.rfind("#", pos) + 1,
-				    outsideBlock.rfind("\n", pos) + 1);
-	string value = outsideBlock.substr(beg, pos - beg);
+	string::size_type beg = max(madheader.rfind("#", pos) + 1,
+				    madheader.rfind("\n", pos) + 1);
+	string value = madheader.substr(beg, pos - beg);
 	for ( string::size_type i = 0; i < value.length(); ++i )
 	  if ( value[i] == 'd' || value[i] == 'D' ) value[i] = 'e';
 	cuts[cuttags[itag]] = std::strtod(value.c_str(), NULL);
