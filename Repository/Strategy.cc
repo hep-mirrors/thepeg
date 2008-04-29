@@ -28,6 +28,10 @@ string Strategy::localParticlesDir() const {
 }
 
 void Strategy::setLocalParticlesDir(string x) {
+  if ( x == "" ) {
+    theLocalParticlesDir = x;
+    return;
+  }
   if ( x[0] != '/' )
     Throw<InterfaceException>()
       << "LocalParticlesDir directory name must start with a '/'."
