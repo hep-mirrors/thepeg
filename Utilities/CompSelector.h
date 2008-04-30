@@ -55,7 +55,7 @@ public:
    * used to get a new overestimated probability for an object when
    * entering compensation mode.
    */
-  inline CompSelector(double newMargin = 1.1);
+  inline CompSelector(double newMargin = 1.1, double newTolerance = 1.0e-6);
   //@}
 
 public:
@@ -112,6 +112,12 @@ public:
    * object when entering compensation mode.
    */
   inline void margin(double);
+
+  /**
+   * Set the tolerance for how much a weight is allowed to be
+   * larger than unity before starting the compensation.
+   */
+  inline void tolerance(double);
   //@}
 
 
@@ -141,6 +147,12 @@ public:
    * object when entering compensation mode.
    */
   inline double margin() const;
+
+  /**
+   * Return the tolerance for how much a weight is allowed to be
+   * larger than unity before starting the compensation.
+   */
+  inline double tolerance() const;
   //@}
 
   /** @name I/O functions. */
@@ -200,6 +212,12 @@ private:
    * object when entering compensation mode.
    */
   double theMargin;
+
+  /**
+   * Set the tolerance for how much a weight is allowed to be
+   * larger than unity before starting the compensation.
+   */
+  double theTolerance;
 
   /**
    * The currently active compensation levels.

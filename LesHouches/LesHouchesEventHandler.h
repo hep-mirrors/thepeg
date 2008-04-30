@@ -175,6 +175,12 @@ public:
   inline WeightOpt weightOption() const;
 
   /**
+   * If the weight option is set to unit weight, do not start
+   * compensating unless the weight is this much larger than unity.
+   */
+  inline double unitTolerance() const;
+
+  /**
    * Access the list of readers.
    */
   inline const ReaderVector & readers() const;
@@ -301,6 +307,11 @@ protected:
   inline ReaderSelector & selector();
 
   /**
+   * Helper function for the interface;
+   */
+  void setUnitTolerance(double);
+
+  /**
    * Collect statistics for this event handler.
    */
   XSecStat stats;
@@ -328,6 +339,12 @@ private:
    * The way weights are to be treated.
    */
   WeightOpt theWeightOption;
+
+  /**
+   * If the weight option is set to unit weight, do not start
+   * compensating unless the weight is this much larger than unity.
+   */
+  double theUnitTolerance;
 
   /**
    * The currently selected reader object.

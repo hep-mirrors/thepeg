@@ -16,6 +16,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Handlers/XComb.h"
@@ -392,17 +393,22 @@ CrossSection LesHouchesEventHandler::integratedXSec() const {
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
   os << stats << histStats << theReaders << theSelector
-     << oenum(theWeightOption) << theCurrentReader << warnPNum;
+     << oenum(theWeightOption) << theUnitTolerance << theCurrentReader << warnPNum;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
   is >> stats >> histStats >> theReaders >> theSelector
-     >> ienum(theWeightOption) >> theCurrentReader >> warnPNum;
+     >> ienum(theWeightOption) >> theUnitTolerance >> theCurrentReader >> warnPNum;
 }
 
 ClassDescription<LesHouchesEventHandler>
 LesHouchesEventHandler::initLesHouchesEventHandler;
 // Definition of the static class description member.
+
+void LesHouchesEventHandler::setUnitTolerance(double x) {
+  theUnitTolerance = x;
+  selector().tolerance(unitTolerance());
+}
 
 void LesHouchesEventHandler::Init() {
 
@@ -459,6 +465,17 @@ void LesHouchesEventHandler::Init() {
      "NoWarning",
      "Don't give a warning message.",
      false);
+
+  static Parameter<LesHouchesEventHandler,double> interfaceUnitTolerance
+    ("UnitTolerance",
+     "If the <interface>WeightOption</interface> is set to unit weight, do not start compensating unless the a weight is found to be this much larger than unity.",
+     &LesHouchesEventHandler::theUnitTolerance, 1.0e-6, 0.0, 0,
+     true, false, Interface::lowerlim,
+     &LesHouchesEventHandler::setUnitTolerance,
+     (double(LesHouchesEventHandler::*)()const)(0),
+     (double(LesHouchesEventHandler::*)()const)(0),
+     (double(LesHouchesEventHandler::*)()const)(0),
+     (double(LesHouchesEventHandler::*)()const)(0));
 
   interfaceLesHouchesReaders.rank(10);
   interfaceWeightOption.rank(9);

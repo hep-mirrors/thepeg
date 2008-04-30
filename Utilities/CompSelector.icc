@@ -14,8 +14,8 @@
 namespace ThePEG {
 
 template <typename T, typename WeightType>
-inline CompSelector<T,WeightType>::CompSelector(double m)
-  : N(0), last(T()), theMargin(m) {}
+inline CompSelector<T,WeightType>::CompSelector(double m, double t)
+  : N(0), last(T()), theMargin(m), theTolerance(t) {}
 
 template <typename T, typename WeightType>
 inline WeightType CompSelector<T,WeightType>::
@@ -35,7 +35,7 @@ select(RNDGEN & rnd) throw(range_error) {
 
 template <typename T, typename WeightType>
 inline WeightType CompSelector<T,WeightType>::reweight(double & weight) {
-  if ( abs(weight) > 1.0 ) {
+  if ( abs(weight) > 1.0 + tolerance() ) {
     // Retrieve the old overestimate of the object by seing how much
     // the summed weights are decreased when removing the object.
     WeightType oldtot = selector.sum();
@@ -91,6 +91,11 @@ inline void CompSelector<T,WeightType>::margin(double m) {
 }
 
 template <typename T, typename WeightType>
+inline void CompSelector<T,WeightType>::tolerance(double t) {
+  theTolerance = t;
+}
+
+template <typename T, typename WeightType>
 inline bool CompSelector<T,WeightType>::compensating() {
   // Leave all levels which has reached there 'expiry date'.
   while ( levels.size() && levels.back().lastN < N ) levels.pop_back();
@@ -108,9 +113,14 @@ inline double CompSelector<T,WeightType>::margin() const {
 }
 
 template <typename T, typename WeightType>
+inline double CompSelector<T,WeightType>::tolerance() const {
+  return theTolerance;
+}
+
+template <typename T, typename WeightType>
 template <typename OStream>
 void CompSelector<T,WeightType>::output(OStream & os) const {
-  os << selector << N << last << theMargin << levels.size();
+  os << selector << N << last << theMargin << theTolerance << levels.size();
   for ( int i = 0, M = levels.size(); i < M; ++i )
     os << levels[i].lastN << levels[i].weight;
 }
@@ -119,7 +129,7 @@ template <typename T, typename WeightType>
 template <typename IStream>
 inline void CompSelector<T,WeightType>::input(IStream & is) {
   long M;
-  is >> selector >> N >> last >> theMargin >> M;
+  is >> selector >> N >> last >> theMargin >> theTolerance >> M;
   levels.resize(M);
   for ( int i = 0; i < M; ++i ) is >> levels[i].lastN >> levels[i].weight;
 }
