@@ -99,7 +99,6 @@ void ParticleData::readSetup(istream & is) throw(SetupException) {
   theColor = theDefColour;
   theSpin = theDefSpin;
   if ( PDGName() == "-" ) thePDGName = name();
-  if ( !Repository::defaultParticle(id()) ) Repository::defaultParticle(this);
   return;
 }
   

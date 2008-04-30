@@ -80,9 +80,12 @@ void Repository::Register(IBPtr ip, string newName) {
 }
 
 void Repository::registerParticle(tPDPtr pd) {
-  if ( !pd || member(particles(), pd) ) return;
-  particles().insert(pd);
-  CreateDirectory(pd->fullName());
+  if ( !pd ) return;
+  if ( !member(particles(), pd) ) {
+    particles().insert(pd);
+    CreateDirectory(pd->fullName());
+  }
+  if ( pd->id() == 0 ) return;
   if ( !member(defaultParticles(), pd->id()) )
     defaultParticles()[pd->id()] = pd;
   for ( MatcherSet::iterator it = matchers().begin();
@@ -500,6 +503,17 @@ string Repository::exec(string command, ostream & os) {
       tPDPtr p = dynamic_ptr_cast<tPDPtr>(GetPointer(name));
       if ( p ) return copyParticle(p, StringUtils::cdr(command));
       return BaseRepository::exec(cpcmd, os);
+    }
+    if ( verb == "setup" ) {
+      string name = StringUtils::car(command);
+      DirectoryAppend(name);
+      IBPtr obj = GetPointer(name);
+      if ( !obj ) return "Error: Could not find object named " + name;
+      istringstream is(StringUtils::cdr(command));
+      readSetup(obj, is);
+      // A particle may have been registered before but under the wrong id().
+      registerParticle(dynamic_ptr_cast<PDPtr>(obj));
+      return "";
     }
     if ( verb == "decaymode" ) {
       string tag = StringUtils::car(command);

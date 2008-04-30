@@ -1,5 +1,11 @@
 2008-04-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* PDT/ParticleData.cc,
+	Repository/Repository.cc (Repository::exec): After "setup" a
+	particle is now added to default particles and also to matchers by
+	the Repository ranter than in the ParticleData::readSetup
+	function.
+
 	* PDT/ParticleData.cc: Changed readSetup() so that if '-' is given
 	as the PDGName the object name will be used instead.
 
