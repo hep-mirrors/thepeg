@@ -33,9 +33,7 @@ namespace ThePEG {
  *
  * The Register() function simply pass the objects to the corresonding
  * method in BaseRepository, but if the object is a ParticleData or a
- * ParticleMatcher, they are stored separately. In addition, if a
- * ParticleData with a given PDG id number was not yet added to the
- * list of default particles, this one will be.
+ * ParticleMatcher, they are stored separately.
  *
  * @see BaseRepository
  * @see InterfacedBase
@@ -105,7 +103,7 @@ public:
    * Get a pointer to a particle based on the given path or name. The
    * argument is first treated as a path to an object. If no such
    * particle object is found, the argument is treated as a generic
-   * particle name and is searched for among the default set of
+   * particle PDGName and is searched for among the default set of
    * particles.
    */
   static tPDPtr findParticle(string name);

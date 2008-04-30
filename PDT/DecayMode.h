@@ -37,14 +37,14 @@ ThePEG_DECLARE_MULTISET(tDMPtr,ModeMSet);
  * the form
  * <code>{decaying-particle-name}->{decay-product-specifier}[,{decay-product-specifier},...];</code>
  * where no spaces are allowed anywhere. The decaying-particle-name
- * should be PDG-standardized particle name (see
- * ParticleData::PDGName()) and the decay-product-specifier can be one
- * of the following:
+ * should be a path to a particle in the Repository or a
+ * PDG-standardized particle name (see ParticleData::PDGName()) and
+ * the decay-product-specifier can be one of the following:
  *
  * <ul>
  *
- * <li> a PDG-standardized particle name if it is a specific decay
- * product,
+ * <li> a path to a particle in the Repository or a PDG-standardized
+ * particle name if it is a specific decay product,
  *
  * <li> a question mark followed by the name of a particle matcher
  * object in the Repository if representing one of several different
@@ -59,13 +59,14 @@ ThePEG_DECLARE_MULTISET(tDMPtr,ModeMSet);
  * <li> a whole decay mode string enclosed in square brackets if
  * representing a resonance decay product with a specified decay mode,
  *
- * <li> an exclamation mark followed by a PDG-standardized particle
- * name representing the exclusion of an intermediate resonance
- * decaying into the other specified decay products.
+ * <li> an exclamation mark followed by a path to a particle in the
+ * Repository or a PDG-standardized particle name representing the
+ * exclusion of an intermediate resonance decaying into the other
+ * specified decay products.
  *
- * <li> two PDG-standardized particle names with an equal sign
- * between, indicating two coloured particles which are in a
- * colour-singlet state.
+ * <li> two paths to particles in the Repository or PDG-standardized
+ * particle names with an equal sign between, indicating two coloured
+ * particles which are in a colour-singlet state.
  *
  * </ul>
  *
@@ -402,7 +403,10 @@ protected:
   DMPtr dmclone() const;
 
   /**
-   * Read setup info from a standard stream used by the Repository.
+   * Read setup info from a standard stream used by the
+   * Repository. The following information must be supplied in a
+   * white-space separated list: the branching ratio, on or off (true
+   * or false), and the name of a Decayer.
    */
   virtual void readSetup(istream & is) throw(SetupException);
 

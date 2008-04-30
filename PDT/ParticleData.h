@@ -464,7 +464,13 @@ protected:
   ParticleData(long newId, string newPDGName);
 
   /**
-   * Read setup info from a standard stream.
+   * Read setup info from a standard stream. The following information
+   * must be supplied in a white-space separated list: PDG number,
+   * generic name, default mass (GeV), default width (GeV), width cut
+   * (GeV), the lifetime ctau (mm), the charge, the colour, the spin,
+   * stable (true) or not (false). Note that if a minus sign is given
+   * instead of a generic name, the name of the object will be used
+   * instead.
    */
   virtual void readSetup(istream & is) throw(SetupException);
 

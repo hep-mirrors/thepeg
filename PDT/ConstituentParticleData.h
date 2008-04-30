@@ -100,7 +100,9 @@ protected:
   ConstituentParticleData(long newId, string newPDGName);
 
   /**
-   * Read setup info from a standard stream.
+   * Read setup info from a standard stream. The information that must
+   * be supplied is the same as for ParticleData::readSetup with an
+   * additional constituent mass (in GeV) added in the end.
    */
   virtual void readSetup(istream & is) throw(SetupException);
 
