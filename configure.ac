@@ -14,7 +14,7 @@ case "${host}" in
   *-darwin[[0156]].*) 
     AC_MSG_ERROR([ThePEG requires OS X 10.3 or later])
     ;;
-  *-darwin*) 
+  *-darwin7.*) 
     if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then 
        AC_MSG_ERROR(
        [Please export the MACOSX_DEPLOYMENT_TARGET variable, set to 10.3]) 
