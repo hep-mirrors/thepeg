@@ -114,10 +114,16 @@ public:
    * sub-class overriding this function must make sure the base-class
    * function is called. This function is called before the generation
    * of a new sub-process, after the incoming partons have been
-   * generated. Returns false if the given values were outside of the
-   * cuts.
+   * generated. If \a mirror is true any questions regarding cuts on
+   * the sub-process in the functions minYStar(tcPDPtr),
+   * maxYStar(tcPDPtr p), passCuts(const tcPDVector &, const
+   * vector<LorentzMomentum> &, tcPDPtr, tcPDPtr) and passCuts(const
+   * tcPVector &, tcPDPtr t1, tcPDPtr) will assume that the z-axis is
+   * reversed in the sub-process rest frame. Returns false if the
+   * given values were outside of the cuts.
    */
-  virtual bool initSubProcess(Energy2 shat, double yhat) const;
+  virtual bool
+  initSubProcess(Energy2 shat, double yhat, bool mirror = false) const;
   //@}
 
   /** @name Check functions to see if a state has passed the cuts or not. */
@@ -432,6 +438,12 @@ public:
    * Check if the given scale is within the cuts.
    */
   inline bool scale(Energy2 Q2) const;
+
+  /**
+   * Set true if a matrix element is should be using this cut and is
+   * mirrored along the z-axis .
+   */
+  inline bool subMirror() const;
   //@}
 
 public:
@@ -679,6 +691,12 @@ private:
    * hard sub-process.
    */
   MultiCutVector theMultiCuts;
+
+  /**
+   * Set to true if a matrix element is should be using this cut and is
+   * mirrored along the z-axis .
+   */
+  mutable bool theSubMirror;
 
 private:
 

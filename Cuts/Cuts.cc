@@ -21,6 +21,7 @@
 #include "ThePEG/EventRecord/Collision.h"
 #include "ThePEG/EventRecord/TmpTransform.h"
 #include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/Utilities/HoldFlag.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "Cuts.tcc"
@@ -37,14 +38,17 @@ void Cuts::initialize(Energy2 smax, double Y) {
   theSMax = smax;
   theMHatMax = min(theMHatMax, sqrt(smax));
   theY = Y;
+  theSubMirror = false;
 }
 
 void Cuts::initEvent() {
   theCurrentSHat = -1.0*GeV2;
   theCurrentYHat = 0.0;
+  theSubMirror = false;
 }
 
-bool Cuts::initSubProcess(Energy2 shat, double yhat) const {
+bool Cuts::initSubProcess(Energy2 shat, double yhat, bool mirror) const {
+  theSubMirror = mirror;
   theCurrentSHat = shat;
   theCurrentYHat = yhat;
   if ( shat <= sHatMin() || shat > sHatMax() ) return false;
@@ -58,6 +62,12 @@ bool Cuts::initSubProcess(Energy2 shat, double yhat) const {
 
 bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
 		    tcPDPtr t1, tcPDPtr t2) const {
+  if ( subMirror() ) {
+    vector<LorentzMomentum> pmir = p;
+    for ( int i = 0, N = pmir.size(); i < N; ++i ) pmir[i].setZ(-pmir[i].z());
+    HoldFlag<> nomir(theSubMirror, false);
+  }
+
   for ( int i = 0, N = p.size(); i < N; ++i )
     for ( int j = 0, M = theOneCuts.size(); j < M; ++j )
       if ( !theOneCuts[j]->passCuts(this, ptype[i], p[i]) ) return false;
@@ -198,6 +208,10 @@ double Cuts::maxEta(tcPDPtr p) const {
 
 double Cuts::minYStar(tcPDPtr p) const {
   if ( currentSHat() < 0.0*GeV2 ) return -Constants::MaxRapidity;
+  if ( subMirror() ) {
+    HoldFlag<>  nomir(theSubMirror, false);
+    return -maxYStar(p);
+  }
   double etamin = minEta(p);
   double ytot = Y() + currentYHat();
   if ( etamin > 0.0 ) {
@@ -211,6 +225,10 @@ double Cuts::minYStar(tcPDPtr p) const {
 
 double Cuts::maxYStar(tcPDPtr p) const {
   if ( currentSHat() < 0.0*GeV2 ) return Constants::MaxRapidity;
+  if ( subMirror() ) {
+    HoldFlag<>  nomir(theSubMirror, false);
+    return -minYStar(p);
+  }
   double etamax = maxEta(p);
   double ytot = Y() + currentYHat();
   if ( etamax > 0.0 ) {
@@ -239,7 +257,8 @@ void Cuts::persistentOutput(PersistentOStream & os) const {
      << theCurrentYHat << ounit(theMHatMin, GeV) << ounit(theMHatMax, GeV)
      << theYHatMin << theYHatMax
      << theX1Min << theX1Max << theX2Min << theX2Max << ounit(theScaleMin, GeV2)
-     << ounit(theScaleMax, GeV2) << theOneCuts << theTwoCuts << theMultiCuts;
+     << ounit(theScaleMax, GeV2) << theOneCuts << theTwoCuts << theMultiCuts
+     << theSubMirror;
 }
 
 void Cuts::persistentInput(PersistentIStream & is, int) {
@@ -247,7 +266,8 @@ void Cuts::persistentInput(PersistentIStream & is, int) {
      >> theCurrentYHat >> iunit(theMHatMin, GeV) >> iunit(theMHatMax, GeV)
      >> theYHatMin >> theYHatMax
      >> theX1Min >> theX1Max >> theX2Min >> theX2Max >> iunit(theScaleMin, GeV2)
-     >> iunit(theScaleMax, GeV2) >> theOneCuts >> theTwoCuts >> theMultiCuts;
+     >> iunit(theScaleMax, GeV2) >> theOneCuts >> theTwoCuts >> theMultiCuts
+     >> theSubMirror;
 }
 
 ClassDescription<Cuts> Cuts::initCuts;

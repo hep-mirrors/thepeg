@@ -117,7 +117,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   lastY(0.5*(partonBinInstances().second->l() -
 	     partonBinInstances().first->l()));
-  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) return zero;
+  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) return zero;
 
   meMomenta().resize(mePartonData().size());
   meMomenta()[0] = lastPartons().first->momentum();
@@ -158,7 +158,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   lastY((lastPartons().first->momentum() +
 	 lastPartons().second->momentum()).rapidity());
   if ( !cuts()->yHat(lastY()) ) return zero;
-  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) return zero;
+  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) return zero;
 
   meMomenta()[0] = lastPartons().first->momentum();
   meMomenta()[1] = lastPartons().second->momentum();
