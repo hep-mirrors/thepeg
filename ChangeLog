@@ -1,9 +1,12 @@
 2008-05-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Cuts/Cuts.cc (Cuts::passCuts): Stupid bug fixed, and
+	herwig:ticket:172 seems now to be solved.
+
 	* Handlers/StandardXComb.cc, Cuts/Cuts.* (Cuts::initSubProcess):
 	Make Cuts aware that a matrix element may be generating
 	sub-processes which are mirrored along the z-axis. This will
-	hopefully fix fix herwig:ticket:172.
+	hopefully fix herwig:ticket:172.
 
 2008-04-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 

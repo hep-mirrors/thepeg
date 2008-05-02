@@ -66,6 +66,7 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
     vector<LorentzMomentum> pmir = p;
     for ( int i = 0, N = pmir.size(); i < N; ++i ) pmir[i].setZ(-pmir[i].z());
     HoldFlag<> nomir(theSubMirror, false);
+    return passCuts(ptype, pmir, t1, t2);
   }
 
   for ( int i = 0, N = p.size(); i < N; ++i )
