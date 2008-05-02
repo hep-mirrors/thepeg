@@ -295,19 +295,24 @@ int StandardEventHandler::nBins() const {
 
 struct Stat {
 
-  Stat() : attempted(0), accepted(0), sumw(0.0), maxXSec(CrossSection()),
-    totsum(0.0) {}
-  Stat(long att, long acc, double w, CrossSection x, double sumw)
-    : attempted(att), accepted(acc), sumw(w), maxXSec(x),
+  Stat() : attempted(0), accepted(0), sumw(0.0), sumw2(),
+	   maxXSec(CrossSection()), totsum(0.0) {}
+  Stat(long att, long acc, double w, double w2, CrossSection x, double sumw)
+    : attempted(att), accepted(acc), sumw(w), sumw2(w2), maxXSec(x),
       totsum(sumw) {}
 
   inline CrossSection xSec() const {
     return totsum >0.0? maxXSec*sumw/totsum: maxXSec;
   }
 
+  inline CrossSection xSecErr() const {
+    return totsum >0.0? maxXSec*sqrt(sumw2)/totsum: maxXSec;
+  }
+
   long attempted;
   long accepted;
   double sumw;
+  double sumw2;
   CrossSection maxXSec;
   double totsum;
 
@@ -315,6 +320,7 @@ struct Stat {
     attempted += s.attempted;
     accepted += s.accepted;
     sumw += s.sumw;
+    sumw2 += s.sumw2;
     totsum = max(totsum, s.totsum);
     if ( totsum > 0.0 )
       maxXSec = max(maxXSec, s.maxXSec);
@@ -336,8 +342,8 @@ void StandardEventHandler::statistics(ostream & os) const {
     const StandardXComb & x = *xCombs()[i];
     Stat s;
     s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), sampler()->integratedXSec(),
-	     sampler()->sumWeights());
+	     x.stats().sumWeights(), x.stats().sumWeights2(),
+	     sampler()->integratedXSec(), sampler()->sumWeights());
     partonMap[x.partons()] += s;
     meMap[x.matrixElement()] += s;
     extractMap[x.pExtractor()] += s;
@@ -424,8 +430,8 @@ CrossSection StandardEventHandler::histogramScale() const {
     const StandardXComb & x = *xCombs()[i];
     Stat s;
     s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), sampler()->integratedXSec(),
-	     sampler()->sumWeights());
+	     x.stats().sumWeights(), x.stats().sumWeights2(),
+	     sampler()->integratedXSec(), sampler()->sumWeights());
     tot += s;
   }
 
@@ -441,8 +447,8 @@ CrossSection StandardEventHandler::integratedXSec() const {
     const StandardXComb & x = *xCombs()[i];
     Stat s;
     s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), sampler()->integratedXSec(),
-	     sampler()->sumWeights());
+	     x.stats().sumWeights(), x.stats().sumWeights2(),
+	     sampler()->integratedXSec(), sampler()->sumWeights());
     tot += s;
   }
 
