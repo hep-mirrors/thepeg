@@ -1,3 +1,9 @@
+2008-05-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/ME2to2Base.cc (ME2to2Base::getCosTheta): Fixed
+	precision problem according to Peters suggestions in
+	herwig:ticket:172.
+
 2008-05-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc: Preparing for having errors on
@@ -21,7 +27,7 @@
 	* PDT/ParticleData.cc,
 	Repository/Repository.cc (Repository::exec): After "setup" a
 	particle is now added to default particles and also to matchers by
-	the Repository ranter than in the ParticleData::readSetup
+	the Repository rather than in the ParticleData::readSetup
 	function.
 
 	* PDT/ParticleData.cc: Changed readSetup() so that if '-' is given
