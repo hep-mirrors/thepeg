@@ -11,6 +11,9 @@ SUBDIRS = $(MAINDIRS) $(JAVADIR)
 
 pkglib_SCRIPTS = libtool
 
-EXTRA_DIST = GUIDELINES
+EXTRA_DIST = GUIDELINES debian
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks
+
+dist-hook:
+	rm -rf `find $(distdir)/debian -name '.svn'`

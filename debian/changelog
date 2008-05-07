@@ -1,0 +1,12 @@
+thepeg (1.2.0-2) hardy; urgency=low
+
+  * Fixed 'unstable' to 'hardy' to upload to PPA.
+
+ -- David Grellscheid <david.grellscheid@durham.ac.uk>  Wed, 07 May 2008 13:58:52 +0100
+
+thepeg (1.2.0-1) unstable; urgency=low
+
+  * Initial test release of ThePEG. Very experimental.
+
+ -- David Grellscheid <david.grellscheid@durham.ac.uk>  Wed, 07 May 2008 09:55:44 +0100
+
