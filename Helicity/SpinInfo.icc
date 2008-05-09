@@ -31,50 +31,47 @@ inline SpinInfo::SpinInfo(const SpinInfo & x)
     _Dmatrix(x._Dmatrix),_spin(x._spin),
     _productionmomentum(x._productionmomentum),
     _decaymomentum(x._decaymomentum),
-    _currentmomentum(x._currentmomentum)
-{
+    _currentmomentum(x._currentmomentum) {
   x._production=VertexPtr();
   x._decay=VertexPtr();
   // set the vertex so it now points to the copy
-  // for timelike
-  if(_production)
-    {
-      if(_timelike){_production->resetOutgoing(this,_prodloc);}
-      // for spacelike
-      else{_production->resetIncoming(this,_prodloc);}
-    }
+  if(_production) {
+    // for timelike
+    if(_timelike) _production->resetOutgoing(this,_prodloc); 
+    // for spacelike
+    else          _production->resetIncoming(this,_prodloc);
+  }
 }
 
-inline EIPtr SpinInfo::clone() const
-{
+inline EIPtr SpinInfo::clone() const {
   tcSpinPtr temp=this;
   return const_ptr_cast<SpinPtr>(temp);
 }
 
 inline void SpinInfo::rebind(const EventTranslationMap & trans) {
-  if(_production){_production=trans.translate(_production);}
-  if(_decay){_decay=trans.translate(_decay);}
+  if(_production) _production = trans.translate(_production);
+  if(_decay)      _decay      = trans.translate(_decay);
   SpinBase::rebind(trans);
 }
 
 // set and get methods for the vertex
-inline void SpinInfo::setProductionVertex(VertexPtr in) const
-{
+inline void SpinInfo::setProductionVertex(VertexPtr in) const {
   _production=in;
   // add to the list of outgoing if timelike
   int temp;
-  if(_timelike){in->addOutgoing(this,temp);}
+  if(_timelike) in->addOutgoing(this,temp); 
   // or incoming if spacelike
-  else{in->addIncoming(this,temp);}
+  else          in->addIncoming(this,temp);
   _prodloc=temp;
 }
 
 // set the vertex at which the particle was produced
-inline tcVertexPtr SpinInfo::getProductionVertex() const{return _production;}
+inline tcVertexPtr SpinInfo::getProductionVertex() const {
+  return _production;
+}
 
 // get the vertex at which the particle was produced
-inline void SpinInfo::setDecayVertex(VertexPtr in) const
-{
+inline void SpinInfo::setDecayVertex(VertexPtr in) const {
   _decay=in;
   int temp;
   in->addIncoming(this,temp);
@@ -83,120 +80,103 @@ inline void SpinInfo::setDecayVertex(VertexPtr in) const
 }
 
 // get the vertex at which the particle decayed or branched
-inline tcVertexPtr SpinInfo::getDecayVertex() const {return _decay;}
-// set and get methods for the stage variables
+inline tcVertexPtr SpinInfo::getDecayVertex() const {
+  return _decay;
+}
 
-inline bool SpinInfo::decayed() const {return _decayed;}
 // get decay for particle
+inline bool SpinInfo::decayed() const {
+  return _decayed;
+}
 
-inline bool SpinInfo::developed() const {return _developed;}
 // get developed for the particle
+inline bool SpinInfo::developed() const {
+  return _developed;
+}
 
 inline void SpinInfo::decay() const {
   // if the particle has already been decayed do nothing
   if(_decayed) return;
   // otherwise we need to obtain the correct rho matrix
   _decayed=true;
-  _rhomatrix = _production ? _production->getRhoMatrix(_prodloc)
-    : RhoDMatrix(iSpin());
-  if(!_production) _rhomatrix.average();
+  if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc);
   _decaymomentum = _currentmomentum;
 }
 
-inline void SpinInfo::develop() const
-{
+inline void SpinInfo::develop() const {
   // if the particle has already been developed do nothing
-  if(_developed){return;}
+  if(_developed) return; 
   // otherwise we need to obtain the correct D matrix
   _developed=true;
-  if(_decay)
-    {_Dmatrix= _decay->getDMatrix(_decayloc);}
-  else
-    {
-      _Dmatrix=RhoDMatrix(iSpin());
-      _Dmatrix.average();
-    }
+  if(_decay) _Dmatrix= _decay->getDMatrix(_decayloc);
+  else {
+    _Dmatrix=RhoDMatrix(iSpin());
+    _Dmatrix.average();
+  }
 }
 
 // set the decayed variable for the particle
-inline void SpinInfo::setDeveloped(bool in) const {_developed=in;}
+inline void SpinInfo::setDeveloped(bool in) const {
+  _developed=in;
+}
 
 // get the developed variable for the particle
 // access to the rho matrix
-inline RhoDMatrix SpinInfo::rhoMatrix() const {return _rhomatrix;}
-inline RhoDMatrix & SpinInfo::rhoMatrix() {return _rhomatrix;}
+inline RhoDMatrix SpinInfo::rhoMatrix() const {
+  return _rhomatrix;
+}
+
+inline RhoDMatrix & SpinInfo::rhoMatrix() {
+  return _rhomatrix;
+}
 
 // access to the D matrix
-inline RhoDMatrix SpinInfo::DMatrix() const {return _Dmatrix;}
-inline RhoDMatrix & SpinInfo::DMatrix() {return _Dmatrix;}
+inline RhoDMatrix SpinInfo::DMatrix() const {
+  return _Dmatrix;
+}
+
+inline RhoDMatrix & SpinInfo::DMatrix() {
+  return _Dmatrix;
+}
 
 // return 2s+1 for the particle
-inline PDT::Spin SpinInfo::iSpin() const {return _spin;}
-
-// set the spin of the particle
-  inline PDT::Spin SpinInfo::iSpin(PDT::Spin in)
-{
-  _spin=in;
-  _rhomatrix.iSpin(_spin);_rhomatrix.average();
-  _Dmatrix.iSpin(_spin);_Dmatrix.average();
+inline PDT::Spin SpinInfo::iSpin() const {
   return _spin;
 }
 
-inline const Lorentz5Momentum & SpinInfo::productionMomentum() const
-{return _productionmomentum;}
- 
-inline const Lorentz5Momentum & SpinInfo::currentMomentum() const
-{return _currentmomentum;}
+// set the spin of the particle
+  inline PDT::Spin SpinInfo::iSpin(PDT::Spin in) {
+  _spin=in;
+  _rhomatrix.iSpin(_spin);
+  _rhomatrix.average();
+  _Dmatrix.iSpin(_spin);
+  _Dmatrix.average();
+  return _spin;
+}
 
-inline void SpinInfo::setProductionMomentum(const Lorentz5Momentum & in)
-{
+inline const Lorentz5Momentum & SpinInfo::productionMomentum() const {
+  return _productionmomentum;
+}
+ 
+inline const Lorentz5Momentum & SpinInfo::currentMomentum() const {
+  return _currentmomentum;
+}
+
+inline void SpinInfo::setProductionMomentum(const Lorentz5Momentum & in) {
   _productionmomentum=in;
   _currentmomentum=in;
 }
 
-inline void SpinInfo::setTimelike(bool in){_timelike=in;}
+inline void SpinInfo::setTimelike(bool in) {
+  _timelike=in;
+}
 
-inline bool SpinInfo::timelike(){return _timelike;}
+inline bool SpinInfo::timelike() {
+  return _timelike;
+}
 
-inline void SpinInfo::decayed(bool in) const{_decayed=in;}
-
-inline void SpinInfo::update() const
-{
-  // number of instances fo this object
-  int nref=referenceCount();
-  if(nref<2||nref>3){return;}
-  // work out the number of references there should be
-  int nmin=0;
-  // check the production pointers
-  if(_production)
-    {
-      if(_timelike){if(_production->outgoing()[_prodloc]==this){++nmin;}}
-      else{if(_production->incoming()[_prodloc]==this){++nmin;}}
-    }
-  // check the decay pointers
-  if(_decay)
-    {if(_decay->incoming()[_decayloc]==this){++nmin;}}
-  // delete the pointers
-  SpinPtr temp;
-  if(nmin+1==nref)
-    {
-      // delete the production pointers
-      if(_production)
-	{
-	  if(_timelike)
-	    {if(_production->outgoing()[_prodloc]==this)
-	      {_production->resetOutgoing(SpinPtr(),_prodloc);}}
-	  else
-	    {if(_production->incoming()[_prodloc]==this)
-	      {_production->resetIncoming(SpinPtr(),_prodloc);}}
-	}
-      // delete the decay pointers
-      if(_decay)
-	{
-	  if(_decay->incoming()[_decayloc]==this)
-	    {_decay->resetIncoming(SpinPtr(),_decayloc);}
-	}
-    }
+inline void SpinInfo::decayed(bool in) const {
+  _decayed=in;
 }
 
 inline bool SpinInfo::isNear(const Lorentz5Momentum & p) {

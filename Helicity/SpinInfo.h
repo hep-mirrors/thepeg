@@ -81,11 +81,6 @@ public:
    * Copy-constructor.
    */
   inline SpinInfo(const SpinInfo &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~SpinInfo();
   //@}
 
 public:
@@ -111,7 +106,7 @@ public:
   /**
    * Method to handle the delelation
    */
-  inline void update() const;
+  void update() const;
 
   /**
    * Perform a lorentz rotation of the spin information
