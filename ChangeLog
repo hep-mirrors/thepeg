@@ -1,3 +1,24 @@
+2008-05-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/LesHouchesEventHandler.cc
+	(LesHouchesEventHandler::statistics): Now writes out cross
+	sections with statistical error estimates. In response to
+	herwig:ticket:174.
+ 
+	* Handlers/StandardEventHandler.cc (StandardEventHandler::statistics):
+	Now writes out cross sections with statistical error estimates.
+	In response to herwig:ticket:174.
+
+	* Utilities/UnitIO.h: Introduced OUnitErr and ouniterr to nicely
+	write out (unitful) numbers with error estimates.
+
+	* Handlers/ACDCSampler.*, Handlers/SamplerBase.h: Also keeps track
+	of the statistical error.
+
+	* ACDC/ACDCGen.* (ACDCGenerator): ACDCGen now gives a better
+	estimate of the integral and in addition estimates the statistical
+	error.
+
 2008-05-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2Base.cc (ME2to2Base::getCosTheta): Fixed

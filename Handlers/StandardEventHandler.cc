@@ -31,6 +31,8 @@
 #include "ThePEG/Handlers/CascadeHandler.h"
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Config/algorithm.h"
+#include <iomanip>
+#include <sstream>
 
 using namespace ThePEG;
 
@@ -330,7 +332,6 @@ struct Stat {
   }
 };
  
-
 void StandardEventHandler::statistics(ostream & os) const {
   if ( statLevel() == 0 ) return;
   map<cPDPair, Stat> partonMap;
@@ -365,8 +366,11 @@ void StandardEventHandler::statistics(ostream & os) const {
      << "                                       "
      << "   events     attempts             (nb)\n";
 
+  CrossSection errtot = sampler()->integratedXSecErr();
+  if ( tot.accepted != tot.attempted ) errtot = tot.xSecErr();
+
   os << line << "Total:" << setw(42) << tot.accepted << setw(13)
-     << tot.attempted << setw(17) << tot.xSec()/nanobarn << endl
+     << tot.attempted << setw(17) << ouniterr(tot.xSec(), errtot, nanobarn) << endl
      << line;
 
   if ( statLevel() == 1 ) return;
@@ -377,7 +381,9 @@ void StandardEventHandler::statistics(ostream & os) const {
     string n = i->first->name();
     n.resize(37, ' ');
     os << n << setw(11) << i->second.accepted << setw(13)
-       << i->second.attempted << setw(17) << i->second.xSec()/nanobarn << endl;
+       << i->second.attempted << setw(17)
+       << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn)
+       << endl;
   }
   os << line;
 
@@ -389,7 +395,9 @@ void StandardEventHandler::statistics(ostream & os) const {
     string n = i->first->name();
     n.resize(37, ' ');
     os << n << setw(11) << i->second.accepted << setw(13)
-       << i->second.attempted << setw(17) << i->second.xSec()/nanobarn << endl;
+       << i->second.attempted << setw(17)
+       << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn)
+       << endl;
   }
   os << line;
 
@@ -399,15 +407,17 @@ void StandardEventHandler::statistics(ostream & os) const {
     string n = i->first.first->PDGName() + " " + i->first.second->PDGName();
     n.resize(37, ' ');
     os << n << setw(11) << i->second.accepted << setw(13)
-       << i->second.attempted << setw(17) << i->second.xSec()/nanobarn << endl;
+       << i->second.attempted << setw(17)
+       << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn)
+       << endl;
   }
   os << line;
 
   if ( statLevel() == 3 ) return;
 
   os << "Detailed breakdown:\n";
-  double xsectot = sampler()->integratedXSec()/
-    (sampler()->sumWeights()*nanobarn);
+  CrossSection xsectot = sampler()->integratedXSec()/sampler()->sumWeights();
+
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
     os << "(" << x.pExtractor()->name() << ") "
@@ -417,7 +427,9 @@ void StandardEventHandler::statistics(ostream & os) const {
        << " (" << x.matrixElement()->name() << " "
        << x.lastDiagram()->getTag() << ") " << endl
        << setw(48) << x.stats().accepted() << setw(13) << x.stats().attempts()
-       << setw(17) << x.stats().sumWeights()*xsectot << endl;
+       << setw(17)
+       << ouniterr(x.stats().sumWeights()*xsectot,
+		   sqrt(x.stats().sumWeights2())*xsectot, nanobarn) << endl;
   }
 
   os << line;

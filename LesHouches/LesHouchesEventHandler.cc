@@ -306,7 +306,8 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
      << "   events     attempts             (nb)\n";
 
   os << line << "Total:" << setw(42) << stats.accepted() << setw(13)
-     << stats.attempts() << setw(17) << stats.xSec()/nanobarn << endl
+     << stats.attempts() << setw(17)
+     << ouniterr(stats.xSec(), stats.xSecErr(), nanobarn) << endl
      << line;
 
   if ( statLevel() == 1 ) return;
@@ -321,7 +322,8 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
       n.resize(37, ' ');
       os << n << setw(11) << reader.stats.accepted() << setw(13)
 	 << reader.stats.attempts() << setw(17)
-	 << reader.stats.xSec()/nanobarn << endl;
+	 << ouniterr(reader.stats.xSec(), reader.stats.xSecErr(), nanobarn)
+	 << endl;
     }
     os << line;
   } else {
@@ -334,7 +336,8 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
       n.resize(37, ' ');
       os << n << setw(11) << reader.stats.accepted() << setw(13)
 	 << reader.stats.attempts() << setw(17)
-	 << reader.stats.xSec()/nanobarn << endl;
+	 << ouniterr(reader.stats.xSec(), reader.stats.xSecErr(), nanobarn)
+	 << endl;
       typedef LesHouchesReader::StatMap::const_iterator const_iterator;
       for ( const_iterator i = reader.statmap.begin();
 	    i != reader.statmap.end(); ++i ) {
@@ -344,7 +347,7 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
 	n.resize(37, ' ');
 	os << n << setw(11) << i->second.accepted() << setw(13)
 	   << i->second.attempts() << setw(17)
-	   << i->second.xSec()/nanobarn << endl;
+	   << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn) << endl;
       }
       os << line;
     }

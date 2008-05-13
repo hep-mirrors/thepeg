@@ -11,7 +11,8 @@ namespace ACDCGenerator {
 
 template <typename Rnd, typename FncPtr>
 inline ACDCGen<Rnd,FncPtr>::ACDCGen(Rnd * r)
-  : theRnd(r), theNAcc(0), theN(0),
+  : theRnd(r), theNAcc(0), theN(0), theNI(1, 0),
+    theSumW(1, 0.0), theSumW2(1, 0.0),
     theEps(100*std::numeric_limits<double>::epsilon()), theMargin(1.1),
     theNTry(100), theMaxTry(10000), useCheapRandom(false), theFunctions(1),
     theDimensions(1, 0), thePrimaryCells(1), theSumMaxInts(1, 0.0), theLast(0),
@@ -21,7 +22,8 @@ inline ACDCGen<Rnd,FncPtr>::ACDCGen(Rnd * r)
 
 template <typename Rnd, typename FncPtr>
 inline ACDCGen<Rnd,FncPtr>::ACDCGen()
-  : theRnd(0), theNAcc(0), theN(0),
+  : theRnd(0), theNAcc(0), theN(0), theNI(1, 0),
+    theSumW(1, 0.0), theSumW2(1, 0.0),
     theEps(100*std::numeric_limits<double>::epsilon()), theMargin(1.1),
     theNTry(100), theMaxTry(10000), useCheapRandom(false), theFunctions(1),
     theDimensions(1, 0), thePrimaryCells(1), theSumMaxInts(1, 0.0), theLast(0),
@@ -43,6 +45,9 @@ template <typename Rnd, typename FncPtr>
 inline void ACDCGen<Rnd,FncPtr>::clear() {
   theNAcc = 0;
   theN = 0;
+  theNI = vector<long>(1, 0);
+  theSumW = DVector(1, 0.0);
+  theSumW2 = DVector(1, 0.0);
   theFunctions = FncVector(1);
   theDimensions = DimVector(1, 0);
   for ( int i = 0, N = thePrimaryCells.size(); i < N; ++i )
@@ -63,6 +68,9 @@ addFunction(DimType dim, FncPtrType fnc, double maxrat) {
   typedef map<double,DVector> PointMap;
   theLast = theFunctions.size();
   theFunctions.push_back(fnc);
+  theNI.push_back(0);
+  theSumW.push_back(0.0);
+  theSumW2.push_back(0.0);
   theDimensions.push_back(dim);
 
   // Generate nTry() points with non-zero function value
@@ -199,6 +207,9 @@ ACDCGen<Rnd,FncPtr>::generate() {
 
     // Accept the point according to the ratio of the true and
     // overestimated function value.
+    theSumW[last()] += w;
+    theSumW2[last()] += w*w;
+    ++theNI[last()];
     if ( w > rnd() ) {
       ++theNAcc;
       return lastFunction();
@@ -208,6 +219,8 @@ ACDCGen<Rnd,FncPtr>::generate() {
 
 template <typename Rnd, typename FncPtr>
 inline void ACDCGen<Rnd,FncPtr>::reject() {
+  theSumW[last()] -= 1.0;
+  theSumW2[last()] -= 1.0;
   --theNAcc;
 }
 
@@ -344,8 +357,21 @@ inline double ACDCGen<Rnd,FncPtr>::efficiency() const {
 }
 
 template <typename Rnd, typename FncPtr>
-inline double ACDCGen<Rnd,FncPtr>::integral() const {
-  return maxInt()*efficiency();
+inline double ACDCGen<Rnd,FncPtr>::integral(FncPtrType f) const {
+  if ( N() <= 0 ) return maxInt();
+  double sumw = 0.0;
+  for ( size_type i = 1; i < functions().size(); ++i )
+    if ( functions()[i] == f || !f ) sumw += theSumW[i];
+  return maxInt()*sumw/N();
+}
+
+template <typename Rnd, typename FncPtr>
+inline double ACDCGen<Rnd,FncPtr>::integralErr(FncPtrType f) const {
+  if ( N() <= 0 ) return maxInt();
+  double sumw2 = 0.0;
+  for ( size_type i = 1; i < functions().size(); ++i )
+    if ( functions()[i] == f || !f ) sumw2 += theSumW2[i];
+  return maxInt()*sqrt(sumw2)/N();
 }
 
 template <typename Rnd, typename FncPtr>
@@ -749,7 +775,7 @@ void ACDCGen<Rnd,FncPtr>::output(POStream & os) const {
      << theFunctions.size() << levels.size();
   for ( int i = 1, N = theFunctions.size(); i < N; ++i )
     os << theFunctions[i] << theDimensions [i] << theSumMaxInts[i]
-       << *thePrimaryCells[i];
+       << *thePrimaryCells[i] << theNI[i] << theSumW[i] << theSumW2[i];
   os << thePrimaryCells[theLast]->getIndex(theLastCell);
   for ( int i = 0, N = levels.size(); i < N; ++i )
     os << levels[i].lastN << levels[i].g << levels[i].index
@@ -769,9 +795,13 @@ void ACDCGen<Rnd,FncPtr>::input(PIStream & is) {
     theFunctions.push_back(FncPtrType());
     theDimensions.push_back(DimType());
     theSumMaxInts.push_back(0.0);
+    theNI.push_back(0);
+    theSumW.push_back(0.0);
+    theSumW2.push_back(0.0);
     thePrimaryCells.push_back(new ACDCGenCell(0.0));
     is >> theFunctions.back() >> theDimensions.back() >> theSumMaxInts.back()
-       >> *thePrimaryCells.back();
+       >> *thePrimaryCells.back() >> theNI.back()
+       >> theSumW.back() >> theSumW2.back();
   }
   long index = -1;
   is >> index;

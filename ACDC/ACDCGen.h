@@ -173,9 +173,16 @@ public:
   //@{
   /**
    * Return the current Monte Carlo estimate of the integral of the
-   * specified functions over the unit volume.
+   * specified function (or all functions if NULL) over the unit volume. 
    */
-  inline double integral() const;
+  inline double integral(FncPtrType f = FncPtrType()) const;
+
+  /**
+   * Return the error on the current Monte Carlo estimate of the
+   * integral of the specified function (or all functions if NULL)
+   * over the unit volume.
+   */
+  inline double integralErr(FncPtrType f = FncPtrType()) const;
 
   /**
    * The number of accepted points so far.
@@ -419,6 +426,21 @@ private:
    * The number of attempted points so far.
    */
   long theN;
+
+  /**
+   * The number of attempts per function so far.
+   */
+  vector<long> theNI;
+
+  /**
+   * The summed weights per function so far.
+   */
+  DVector theSumW;
+
+  /**
+   * The summed squared weights per function so far.
+   */
+  DVector theSumW2;
 
   /**
    * The smallest possible division allowed.

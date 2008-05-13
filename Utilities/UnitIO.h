@@ -13,6 +13,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include <complex>
+#include <iomanip>
 // #include "UnitIO.fh"
 // #include "UnitIO.xh"
 
@@ -128,6 +129,90 @@ template <typename IStream, typename T, typename UT>
 IStream & operator>>(IStream & is, const IUnit<T,UT> & u) {
   iunitstream(is, u.theX, u.theUnit);
   return is;
+}
+
+/**
+ * OUnitErr is used to write out unitful numbers with an error
+ * estimate on a standard ostream. using the helper function ouniterr
+ * an energy <code>e</code> with an error estimate <code>de<code> can
+ * be written out as eg. <code>cout << ouniterr(e, de,
+ * GeV);</code>. The result will be presented in scientific format
+ * (with the exponent divisible by three) with the relevant number of
+ * significant digits with a single digit in parenthesis indicating
+ * the error in the least significant digit,
+ * eg. <code>1.23(2)e+03</code>.
+ */
+template <typename T, typename UT>
+struct OUnitErr {
+
+  /** Constructor given an object to be written assuming the given
+   *  unit. */
+  OUnitErr(const T & t, const T & dt, const UT & u): x(t/u), dx(dt/u) {}
+
+  /** The number to be written. */
+  double x;
+
+  /** The estimated error of the number to be written. */
+  double dx;
+  
+};
+
+/** Helper function creating a OUnitErr object. */
+template <typename T, typename UT>
+inline OUnitErr<T,UT> ouniterr(const T & t, const T & dt, const UT & ut) {
+  return OUnitErr<T,UT>(t, dt, ut);
+}
+
+/** Output an OUnitErr object to a stream. */
+template <typename OStream, typename T, typename UT>
+OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
+  double dx = min(u.dx, abs(u.x));
+  if ( dx <= 0.0 ) return os << u.x;
+  ostringstream osse;
+  osse << std::scientific << setprecision(0) << dx;
+  string sse = osse.str();
+  string::size_type ee = sse.find('e');
+  long m = round(abs(u.x)/exp10(atoi(sse.substr(ee + 1).c_str())));
+  int powx = m <= 0? os.precision(): int(log10(double(m)));
+  if ( m <= 0 || powx > os.precision() ) sse[0]='0';  
+  ostringstream oss;
+  oss << std::scientific << setprecision(powx) << u.x;
+  string ss = oss.str();
+  string::size_type e = ss.find('e');
+  ostringstream out;
+  int pp = atoi(ss.substr(e + 1).c_str());
+  if ( pp%3 == 0 )
+    out << ss.substr(0, e) << "(" << sse[0] << ")" << ss.substr(e);
+  else if ( (pp - 1)%3 == 0 ) {
+    ostringstream oss;
+    oss << std::scientific << setprecision(powx) << u.x/10.0;
+    string ss = oss.str();
+    string::size_type e = ss.find('e');
+    if ( powx == 0 )
+      out << ss.substr(0, e) << "0(" << sse[0] << "0)" << ss.substr(e);
+    else if ( powx == 1 )
+      out << ss.substr(0, ss.find('.'))
+	  << ss.substr(ss.find('.') + 1, e - ss.find('.') - 1)
+	  << "(" << sse[0] << ")" << ss.substr(e);
+    else {
+      swap(ss[ss.find('.')], ss[ss.find('.') + 1]);
+      out << ss.substr(0, e) << "(" << sse[0] << ")" << ss.substr(e);
+    }
+  }
+  else {
+    ostringstream oss;
+    oss << std::scientific << setprecision(powx) << u.x*10.0;
+    string ss = oss.str();
+    string::size_type e = ss.find('e');
+    if ( powx == 0 )
+      out << "0." << ss.substr(0, e) << "(" << sse[0] << ")" << ss.substr(e);
+    else {
+      swap(ss[ss.find('.')], ss[ss.find('.') - 1]);
+      out << ss.substr(0, ss.find('.')) << "0" << ss.substr(ss.find('.'), e)
+	  << "(" << sse[0] << ")" << ss.substr(e);
+    }
+  }
+  return os << out.str();
 }
 
 }

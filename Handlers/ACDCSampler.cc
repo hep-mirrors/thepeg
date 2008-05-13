@@ -58,6 +58,10 @@ CrossSection ACDCSampler::integratedXSec() const {
   return theSampler.integral()*nanobarn;
 }
 
+CrossSection ACDCSampler::integratedXSecErr() const {
+  return theSampler.integralErr()*nanobarn;
+}
+
 CrossSection ACDCSampler::maxXSec() const {
   return theSampler.maxInt()*nanobarn;
 }
@@ -79,10 +83,12 @@ void ACDCSampler::dofinish() {
   else if ( eventHandler() && eventHandler()->statLevel() > 1 )
     generator()->log()
       << "Statistics for the ACDC sampler '" << name() << "':" << endl
-      << "Number of samplers:" << setw(10) << theSampler.size() << endl
-      << "Number of bins:    " << setw(10) << theSampler.nBins() << endl
-      << "Depth of bins:     " << setw(10) << theSampler.depth() << endl
-      << "efficiency:        " << setw(10) << theSampler.efficiency() << endl;
+      << "Number of samplers:    " << setw(14) << theSampler.size() << endl
+      << "Number of bins:        " << setw(14) << theSampler.nBins() << endl
+      << "Depth of bins:         " << setw(14) << theSampler.depth() << endl
+      << "efficiency:            " << setw(14) << theSampler.efficiency() << endl
+      << "Total integrated xsec: " << setw(14) << theSampler.integral() << endl
+      << "        error in xsec: " << setw(14) << theSampler.integralErr() << endl;
   if ( theSampler.compensating() )
     generator()->logWarning(
       ACDCStillCompensating()
