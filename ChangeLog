@@ -1,3 +1,9 @@
+2008-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Repository.cc (Repository::exec): Fixed bug in
+	creating decay modes for non-synchronized
+	particles (herwig:ticket:182).
+
 2008-05-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc

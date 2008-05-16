@@ -523,9 +523,15 @@ string Repository::exec(string command, ostream & os) {
       istringstream is(StringUtils::cdr(command));
       readSetup(dm, is);
       if ( !dm->CC() ) return "";
-      is.clear();
-      is.seekg(0);
-      readSetup(dm->CC(), is);
+
+      if ( dm->CC()->parent()->synchronized() ) {
+	dm->CC()->synchronize();
+	return "";
+      }
+
+      if ( !dm->CC()->decayer() )
+	return FindInterface(dm, "Decayer")->
+	  exec(*dm->CC(), "set", dm->decayer()->fullName());
       return "";
     }
     if ( verb == "makeanti" ) {
