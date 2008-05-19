@@ -369,9 +369,14 @@ template <typename Rnd, typename FncPtr>
 inline double ACDCGen<Rnd,FncPtr>::integralErr(FncPtrType f) const {
   if ( N() <= 0 ) return maxInt();
   double sumw2 = 0.0;
+  double sumw = 0.0;
   for ( size_type i = 1; i < functions().size(); ++i )
-    if ( functions()[i] == f || !f ) sumw2 += theSumW2[i];
-  return maxInt()*sqrt(sumw2)/N();
+    if ( functions()[i] == f || !f ) {
+      sumw2 += theSumW2[i];
+      sumw += theSumW[i];
+    }
+  if ( f ) return maxInt()*sqrt(sumw2)/N();
+  return maxInt()*sqrt(sumw2 - sumw*sumw/N())/N();
 }
 
 template <typename Rnd, typename FncPtr>

@@ -1,3 +1,15 @@
+2008-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* ACDC/ACDCGen.icc: Fixed? bug in calculating the statistical
+	error. (herwig:ticket:174).
+
+2008-05-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/UnitIO.h: Introduced IUnitErr and iuniterr to read in
+	numbers with error estimates written out by OUnitErr. Also
+	introduced specializations of ouniterr and iuniterr for double
+	without unit argument. In response to herwig:ticket:174.
+
 2008-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (Repository::exec): Fixed bug in

@@ -11,13 +11,13 @@
 // This is the declaration of the IUnit and OUnit classes and
 // associated templated functions.
 
-#include "ThePEG/Config/ThePEG.h"
 #include <complex>
 #include <iomanip>
-// #include "UnitIO.fh"
-// #include "UnitIO.xh"
+#include <sstream>
 
 namespace ThePEG {
+
+using namespace std;
 
 /**
  * The OUnit< class is used to
@@ -163,6 +163,11 @@ inline OUnitErr<T,UT> ouniterr(const T & t, const T & dt, const UT & ut) {
   return OUnitErr<T,UT>(t, dt, ut);
 }
 
+/** Helper function creating a OUnitErr object. */
+inline OUnitErr<double,double> ouniterr(double t, double dt) {
+  return OUnitErr<double,double>(t, dt, 1.0);
+}
+
 /** Output an OUnitErr object to a stream. */
 template <typename OStream, typename T, typename UT>
 OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
@@ -213,6 +218,70 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
     }
   }
   return os << out.str();
+}
+
+/**
+ * The IUnitErr class is used to facilitate input of unitful numbers
+ * with error estimates written out using the OUnitErr class.
+ * 
+ */
+template <typename T, typename UT>
+struct IUnitErr {
+
+  /** Constructor given an object to be read assuming the given
+   *  unit. */
+  IUnitErr(T & t, T & dt, const UT & u): x(t), dx(dt), ut(u) {}
+
+  /** Reference to the object to be read. */
+  T & x;
+
+  /** The estimated error of the number to be read. */
+  T & dx;
+  
+  /** The unit assumed when reading the object. */
+  UT ut;
+
+};
+
+/** Helper function creating a IUnitErr object. */
+template <typename T, typename UT>
+inline IUnitErr<T,UT> iuniterr(T & t, T & dt, const UT & ut) {
+  return IUnitErr<T,UT>(t, dt, ut);
+}
+
+/** Helper function creating a OUnitErr object. */
+inline IUnitErr<double,double> iuniterr(double & t, double & dt) {
+  return IUnitErr<double,double>(t, dt, 1.0);
+}
+
+/** Input an IUnit object from a stream. */
+template <typename IStream, typename T, typename UT>
+IStream & operator>>(IStream & is, const IUnitErr<T,UT> & u) {
+  string s;
+  double x = 0.0;
+  double dx = 0.0;
+  double ex = 1.0;
+  is >> s;
+  string::size_type open = s.find('(');
+  string::size_type close = s.find(')');
+  string se = "0";
+  string sp = "1";
+  double pe = 1.0;
+  if ( open != string::npos && close != string::npos ) {
+    se = s.substr(open + 1);
+    sp += s.substr(close + 1);
+    string::size_type dot = s.find('.');
+    if ( dot != string::npos && dot < open ) pe = exp10(1.0 - (open - dot));
+  }
+
+  istringstream(s) >> x;
+  istringstream(se) >> dx;
+  istringstream(sp) >> ex;
+
+  u.x = x*ex*u.ut;
+  u.dx = dx*ex*pe*u.ut;
+
+  return is;
 }
 
 }
