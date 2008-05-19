@@ -366,12 +366,13 @@ void StandardEventHandler::statistics(ostream & os) const {
      << "                                       "
      << "   events     attempts             (nb)\n";
 
-  CrossSection errtot = sampler()->integratedXSecErr();
-  if ( tot.accepted != tot.attempted ) errtot = tot.xSecErr();
+  CrossSection errtot = sampler()->integratedXSec()*
+    sqrt(sqr(sampler()->integratedXSecErr()/sampler()->integratedXSec()) + 
+	 tot.sumw2/sqr(tot.sumw) - 1.0/tot.attempted);
 
   os << line << "Total:" << setw(42) << tot.accepted << setw(13)
-     << tot.attempted << setw(17) << ouniterr(tot.xSec(), errtot, nanobarn) << endl
-     << line;
+     << tot.attempted << setw(17) << ouniterr(tot.xSec(), errtot, nanobarn)
+     << endl << line;
 
   if ( statLevel() == 1 ) return;
 

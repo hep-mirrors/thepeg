@@ -1,5 +1,9 @@
 2008-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/StandardEventHandler.cc (StandardEventHandler::statistics):
+	Fixed so that the statistical error on the total cross section is
+	still well approximated if some events are vetoed. (herwig:ticket:174)
+
 	* ACDC/ACDCGen.icc: Fixed? bug in calculating the statistical
 	error. (herwig:ticket:174).
 
