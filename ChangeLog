@@ -1,5 +1,10 @@
 2008-05-20  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Utilities/FixedSizeAllocator.*, EventRecord/{Collision,Particle,
+	Event,Step,RemnantParticle,SubProcess,EventConfig}.{h,icc}:
+	Removed FixedSizeAllocator. Timing 10000 default Herwig++ LHC
+	events shows a speedup of 5%: 720 s now vs. 756 s before.
+
 	* m4/, src/Makefile.am, configure.ac, Config/ltmain.sh,
 	include/Makefile.am, Makefile.am: Included libtool 2.2.4 in the
 	tarball. Moved acinclude into m4/thepeg.m4.

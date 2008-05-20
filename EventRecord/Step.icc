@@ -15,14 +15,6 @@
 
 namespace ThePEG {
 
-inline void * Step::operator new(size_t) {
-  return FixedAllocator<Step>::allocate();
-}
-
-inline void Step::operator delete(void * p, size_t) {
-  FixedAllocator<Step>::deallocate(p);
-}
-
 inline tcEventBasePtr Step::handler() const {
   return theHandler;
 }

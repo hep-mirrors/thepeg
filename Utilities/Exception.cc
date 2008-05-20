@@ -17,6 +17,7 @@
 #include "ThePEG/Interface/Interfaced.h"
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/EventRecord/Event.h"
+#include "ThePEG/Utilities/Debug.h"
 
 void breakThePEG() {
   return;

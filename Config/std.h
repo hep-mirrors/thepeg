@@ -144,18 +144,17 @@ inline ostream& right(ostream& os) {
 /** Macro for declaring a set. */
 #define ThePEG_DECLARE_SET(VALTYPE,NAME)                               \
   /** A set of VALTYPE. */                                             \
-  typedef set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > NAME
+  typedef set<VALTYPE, less<VALTYPE> > NAME
 
 /** Macro for declaring a multiset. */
 #define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                          \
   /** A multiset of VALTYPE. */                                        \
-  typedef multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > NAME
+  typedef multiset<VALTYPE, less<VALTYPE> > NAME
 
 /** Macro for declaring a map. */
 #define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                       \
   /** A map of VALTYPE indexed by KEYTYPE. */                          \
-  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>,                         \
-              Allocator<std::pair<KEYTYPE const,VALTYPE> > > NAME
+  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE> > NAME
 
 /** Macro for implementing a set. */
 #define ThePEG_IMPLEMENT_SET(VALTYPE,NAME)
@@ -170,9 +169,9 @@ inline ostream& right(ostream& os) {
 
 /** Macro for declaring a set. */
 #define ThePEG_DECLARE_SET(VALTYPE,NAME)                                \
-class NAME : public set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > {  \
+class NAME : public set<VALTYPE, less<VALTYPE> > {  \
 public:                                                                 \
-  typedef set<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > SETTYPE;     \
+  typedef set<VALTYPE, less<VALTYPE> > SETTYPE;     \
   NAME();                                                               \
   explicit NAME(const key_compare & c,                                  \
 		const allocator_type & a = allocator_type());           \
@@ -209,9 +208,9 @@ public:                                                                 \
 /** Macro for declaring a multiset. */
 #define ThePEG_DECLARE_MULTISET(VALTYPE,NAME)                           \
 class NAME :                                                            \
- public multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > {         \
+ public multiset<VALTYPE, less<VALTYPE> > {         \
 public:                                                                 \
-  typedef multiset<VALTYPE, less<VALTYPE>, Allocator<VALTYPE> > SETTYPE;\
+  typedef multiset<VALTYPE, less<VALTYPE> > SETTYPE;\
   NAME();                                                               \
   explicit NAME(const key_compare & c,                                  \
 		const allocator_type & a = allocator_type());           \
@@ -248,12 +247,9 @@ public:                                                                 \
 /** Macro for declaring a map. */
 #define ThePEG_DECLARE_MAP(KEYTYPE,VALTYPE,NAME)                        \
 class NAME :                                                            \
-  public map<KEYTYPE, VALTYPE, less<KEYTYPE>,                           \
-             Allocator<std::pair<KEYTYPE const,VALTYPE> > > {           \
+  public map<KEYTYPE, VALTYPE, less<KEYTYPE> > {                        \
 public:                                                                 \
-  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE>,                          \
-             Allocator<std::pair<KEYTYPE const,VALTYPE> > >             \
-    MAPTYPE;                                                            \
+  typedef map<KEYTYPE, VALTYPE, less<KEYTYPE> > MAPTYPE;		\
   NAME();                                                               \
   explicit NAME(const key_compare & c,                                  \
 		const allocator_type & a = allocator_type());           \

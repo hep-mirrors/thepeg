@@ -48,8 +48,7 @@ class Selector {
 public:
 
   /** Map doubles to objects. */
-  typedef map<WeightType, T, less<WeightType>,
-    Allocator<std::pair<WeightType const, T> > > MapType;
+  typedef map<WeightType, T, less<WeightType> > MapType;
 
   /** Iterator corresponding to the underlying map. */
   typedef typename MapType::const_iterator const_iterator;

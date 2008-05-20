@@ -22,7 +22,6 @@
  * using the macro ThePEG_ALTERNATE_CONFIG.
  */
 
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 #include "ThePEG/Utilities/UnitIO.h"
 
 namespace ThePEG {

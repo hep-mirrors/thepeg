@@ -15,7 +15,6 @@
 #include "StandardSelectors.h"
 #include "ThePEG/Vectors/LorentzVector.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 
 namespace ThePEG {
 
@@ -44,18 +43,6 @@ public:
   friend class Event;
   /** Most of the Event classes are friends with each other. */
   friend class Step;
-
-public:
-
-  /**
-   * Collision uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void * operator new(size_t);
-
-  /**
-   * Collision uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void operator delete(void *, size_t);
 
 public:
 

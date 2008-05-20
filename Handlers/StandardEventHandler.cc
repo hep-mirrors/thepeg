@@ -23,6 +23,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Utilities/LoopGuard.h"
+#include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/Repository/EventGenerator.h"

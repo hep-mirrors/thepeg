@@ -23,7 +23,6 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/Rebinder.fh"
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 #include "ThePEG/Persistency/PersistentOStream.fh"
 #include "ThePEG/Persistency/PersistentIStream.fh"
 
@@ -74,11 +73,11 @@ typedef vector<tPPtr> tParticleVector;
 /** A vector of pointers to Particle. */
 typedef vector<PPtr> ParticleVector;
 /** A set of pointers to Particle. */
-typedef set<PPtr, less<PPtr>, Allocator<PPtr> > ParticleSet;
+typedef set<PPtr, less<PPtr> > ParticleSet;
 /** A set of transient pointers to Particle. */
-typedef set<tPPtr, less<tPPtr>, Allocator<tPPtr> > tParticleSet;
+typedef set<tPPtr, less<tPPtr> > tParticleSet;
 /** A set of transient pointers to const Particle. */
-typedef set<tcPPtr, less<tcPPtr>, Allocator<tcPPtr> > tcParticleSet;
+typedef set<tcPPtr, less<tcPPtr> > tcParticleSet;
 /** A vector of pointers to Step. */
 typedef vector<StepPtr> StepVector;
 /** A vector of pointers to SubProcess. */
@@ -88,9 +87,9 @@ typedef vector<tSubProPtr> tSubProcessVector;
 /** A vector of pointers to Collision. */
 typedef vector<CollPtr> CollisionVector;
 /** A set of pointers to Step. */
-typedef set<StepPtr, less<StepPtr>, Allocator<StepPtr> > StepSet;
+typedef set<StepPtr, less<StepPtr> > StepSet;
 /** A set of pointers to SubProcess. */
-typedef set<SubProPtr, less<SubProPtr>, Allocator<SubProPtr> > SubProcessSet;
+typedef set<SubProPtr, less<SubProPtr> > SubProcessSet;
 
 /** A helper class to facilitate persistent input and output. */
 struct EventConfig {

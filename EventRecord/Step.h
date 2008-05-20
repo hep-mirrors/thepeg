@@ -12,7 +12,6 @@
 
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/EventRecord/StandardSelectors.h"
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 
 namespace ThePEG {
 
@@ -40,18 +39,6 @@ public:
   friend class Collision;
   /** Most of the Event classes are friends with each other. */
   friend class Event;
-
-public:
-
-  /**
-   * Step uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void * operator new(size_t);
-
-  /**
-   * Step uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void operator delete(void *, size_t);
 
 public:
 

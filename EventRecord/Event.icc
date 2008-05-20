@@ -15,14 +15,6 @@
 
 namespace ThePEG {
 
-inline void * Event::operator new(size_t) {
-  return FixedAllocator<Event>::allocate();
-}
-
-inline void Event::operator delete(void * p, size_t) {
-  FixedAllocator<Event>::deallocate(p);
-}
-
 inline Event::Event()
 : theNumber(-1), theWeight(1.0), theParticleNumber(0) {}
 

@@ -22,14 +22,6 @@
 
 namespace ThePEG {
 
-inline void * SubProcess::operator new(size_t) {
-  return FixedAllocator<SubProcess>::allocate();
-}
-
-inline void SubProcess::operator delete(void * p, size_t) {
-  FixedAllocator<SubProcess>::deallocate(p);
-}
-
 inline SubProcess::SubProcess()
   : isDecayed(false) {}
 

@@ -16,14 +16,6 @@
 
 namespace ThePEG {
 
-inline void * Collision::operator new(size_t) {
-  return FixedAllocator<Collision>::allocate();
-}
-
-inline void Collision::operator delete(void * p, size_t) {
-  FixedAllocator<Collision>::deallocate(p);
-}
-
 inline Collision::Collision() {}
 
 inline tcEventBasePtr Collision::handler() const {

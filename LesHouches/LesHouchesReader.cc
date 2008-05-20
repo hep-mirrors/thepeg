@@ -33,6 +33,7 @@
 #include "LesHouchesEventHandler.h"
 #include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/Utilities/HoldFlag.h"
+#include "ThePEG/Utilities/Debug.h"
 
 using namespace ThePEG;
 

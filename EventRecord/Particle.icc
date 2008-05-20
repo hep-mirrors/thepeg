@@ -15,22 +15,6 @@
 
 namespace ThePEG {
 
-inline void * Particle::operator new(size_t) {
-  return FixedAllocator<Particle>::allocate();
-}
-
-inline void Particle::operator delete(void * p, size_t) {
-  FixedAllocator<Particle>::deallocate(p);
-}
-
-inline void * Particle::ParticleRep::operator new(size_t) {
-  return FixedAllocator<Particle::ParticleRep>::allocate();
-}
-
-inline void Particle::ParticleRep::operator delete(void * p, size_t) {
-  FixedAllocator<Particle::ParticleRep>::deallocate(p);
-}
-
 inline Particle::Particle()
   : theRep(0) {}
 

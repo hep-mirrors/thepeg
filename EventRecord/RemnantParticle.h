@@ -44,23 +44,6 @@ public:
   RemnantParticle(const Particle & particle, RemDecPtr decayer,
 		  tPPtr parton = tPPtr());
 
-  /**
-   * Particle uses the FixedSizeAllocator for (de)allocation.
-   */
-  void * operator new(size_t)
-  {
-    return FixedAllocator<RemnantParticle>::allocate();
-  }
-  
-  /**
-   * Particle uses the FixedSizeAllocator for (de)allocation.
-   */
-  void operator delete(void * p, size_t)
-  {
-    FixedAllocator<RemnantParticle>::deallocate(p);
-  }
-  //@}
-
 public:
 
   /**

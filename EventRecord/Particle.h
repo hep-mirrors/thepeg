@@ -14,7 +14,6 @@
 #include "ThePEG/Vectors/Lorentz5Vector.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 #include "ThePEG/EventRecord/ColourBase.h"
 #include "ThePEG/EventRecord/SpinBase.h"
 
@@ -96,20 +95,6 @@ public:
   friend class ParticleData;
 
   struct ParticleRep;
-
-public:
-
-  /** @name Construction and descruction functions. */
-  //@{
-  /**
-   * Particle uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void * operator new(size_t);
- 
-  /**
-   * Particle uses the FixedSizeAllocator for (de)allocation.
-   */
- inline void operator delete(void *, size_t);
 
 public:
 
@@ -879,16 +864,6 @@ public:
    * temporarily creating particles.
    */
   struct ParticleRep {
-
-    /**
-     * ParticleRep uses the FixedSizeAllocator for (de)allocation.
-     */
-    inline void * operator new(size_t);
- 
-    /**
-     * ParticleRep uses the FixedSizeAllocator for (de)allocation.
-     */
-    inline void operator delete(void *, size_t);
 
     /**
      * Default constructor.

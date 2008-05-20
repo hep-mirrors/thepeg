@@ -15,6 +15,7 @@
 #include "PersistentOStream.xh"
 #include "PersistentIStream.xh"
 #include "ThePEG/Utilities/DynamicLoader.h"
+#include "ThePEG/Utilities/Debug.h"
 //#include <pfstream.h>
 
 namespace ThePEG {

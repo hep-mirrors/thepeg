@@ -13,7 +13,6 @@
 
 #include <vector>
 #include "ThePEG/EventRecord/Particle.h"
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 
 namespace ThePEG {
 
@@ -35,18 +34,6 @@ public:
   friend class Step;
   /** Most of the Event classes are friends with each other. */
   friend class Collision;
- 
-public:
-
-  /**
-   * SubProcess uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void * operator new(size_t);
-
-  /**
-   * SubProcess uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void operator delete(void *, size_t);
 
 public:
 

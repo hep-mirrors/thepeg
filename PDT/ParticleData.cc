@@ -558,7 +558,7 @@ struct ModeOrdering {
 };
 
 void ParticleData::persistentOutput(PersistentOStream & os) const {
-  multiset<tcDMPtr,ModeOrdering,Allocator<tcDMPtr> >
+  multiset<tcDMPtr,ModeOrdering>
     modes(theDecayModes.begin(), theDecayModes.end());
   os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
      << ounit(theWidthUpCut, GeV) << ounit(theWidthLoCut, GeV)

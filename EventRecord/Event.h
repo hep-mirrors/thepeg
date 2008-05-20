@@ -13,7 +13,6 @@
 #include "Particle.h"
 #include "StandardSelectors.h"
 #include "ThePEG/Utilities/Named.h"
-#include "ThePEG/Utilities/FixedSizeAllocator.h"
 
 namespace ThePEG {
 
@@ -46,18 +45,6 @@ public:
 
   /** Map colour lines to indices. */
   typedef map<tcColinePtr, int> ColourLineMap;
-
-public:
-
-  /**
-   * Event uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void * operator new(size_t);
-
-  /**
-   * Event uses the FixedSizeAllocator for (de)allocation.
-   */
-  inline void operator delete(void *, size_t);
 
 public:
 

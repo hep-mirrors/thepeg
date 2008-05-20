@@ -9,7 +9,7 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            SimplePhaseSpace.h Triplet.h Direction.h UtilityBase.h \
            TypeInfo.h DynamicLoader.h UnitIO.h EnumIO.h \
            DIterator.h StringUtils.h SystemUtils.h Exception.h Named.h \
-           FixedSizeAllocator.h VSelector.h LoopGuard.h ObjectIndexer.h \
+           VSelector.h LoopGuard.h ObjectIndexer.h \
            CFileLineReader.h CompSelector.h XSecStat.h Throw.h MaxCmp.h \
 	   Level.h
 
@@ -20,7 +20,7 @@ INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
                SimplePhaseSpace.tcc SimplePhaseSpace.xh \
                Direction.icc Direction.xh UtilityBase.icc UtilityBase.tcc \
                StringUtils.icc \
-               Exception.icc Exception.fh FixedSizeAllocator.icc \
+               Exception.icc Exception.fh \
                VSelector.icc VSelector.tcc ObjectIndexer.icc \
                CFileLineReader.fh XSecStat.icc \
                CompSelector.icc

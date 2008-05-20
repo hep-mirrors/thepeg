@@ -32,6 +32,7 @@
 #include "ThePEG/Utilities/Maths.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/Throw.h"
+#include "ThePEG/Utilities/Debug.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 // #include "LesHouchesEventHandler.tcc"
