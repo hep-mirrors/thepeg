@@ -14,3 +14,5 @@ pkglib_SCRIPTS = libtool
 EXTRA_DIST = GUIDELINES
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks
+
+ACLOCAL_AMFLAGS = -I m4

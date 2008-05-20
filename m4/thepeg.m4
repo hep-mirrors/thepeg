@@ -604,9 +604,9 @@ AC_ARG_WITH(gsl,
 if test "x$with_gsl" = "xno"; then
 	AC_MSG_RESULT([in system libraries])
 	oldlibs="$LIBS"
-	AC_CHECK_LIB(m,sqrt)
-	AC_CHECK_LIB(gslcblas,cblas_srot)
-	AC_CHECK_LIB(gsl,gsl_ran_poisson,[],
+	AC_CHECK_LIB(m,main)
+	AC_CHECK_LIB(gslcblas,main)
+	AC_CHECK_LIB(gsl,main,[],
 			[
 			AC_MSG_ERROR([Cannot find libgsl. Please install the GNU scientific library.])
 			]

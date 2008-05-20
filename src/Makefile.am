@@ -1,3 +1,4 @@
+AUTOMAKE_OPTIONS = -Wno-portability
 
 pkglib_PROGRAMS = runThePEG.bin setupThePEG.bin
 EXTRA_PROGRAMS = runEventLoop

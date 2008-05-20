@@ -1,3 +1,9 @@
+2008-05-20  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* m4/, src/Makefile.am, configure.ac, Config/ltmain.sh,
+	include/Makefile.am, Makefile.am: Included libtool 2.2.4 in the
+	tarball. Moved acinclude into m4/thepeg.m4.
+
 2008-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc (StandardEventHandler::statistics):

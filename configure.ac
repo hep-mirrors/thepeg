@@ -1,8 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.59)
+AC_PREREQ([2.59])
 AC_INIT([ThePEG],[SVN],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
+AC_CONFIG_MACRO_DIR([m4])
+
 THEPEG_LIBTOOL_VERSION_INFO(5,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
@@ -23,17 +25,17 @@ case "${host}" in
 esac
 
 AC_LANG(C++)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 -Wall]) 
+dnl also include std-options once --version and --help exist
 
 dnl Checks for programs.
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
-AC_DISABLE_STATIC
-AC_LIBTOOL_DLOPEN
 
-AC_PROG_LIBTOOL
+LT_PREREQ([2.2])
+LT_INIT([disable-static dlopen pic-only])
 
 THEPEG_UNIT_CHECKING
 THEPEG_SEARCH_LHAPDF

@@ -1,5 +1,7 @@
 BUILT_SOURCES = done-all-links
 
+AUTOMAKE_OPTIONS = -Wno-portability
+
 DIRLINKS = $(top_srcdir)/Repository \
            $(top_srcdir)/EventRecord \
            $(top_srcdir)/Pointer \
