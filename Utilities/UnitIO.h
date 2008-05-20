@@ -14,6 +14,7 @@
 #include <complex>
 #include <iomanip>
 #include <sstream>
+#include <cstdlib>
 
 namespace ThePEG {
 
@@ -177,7 +178,7 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
   osse << std::scientific << setprecision(0) << dx;
   string sse = osse.str();
   string::size_type ee = sse.find('e');
-  long m = round(abs(u.x)/exp10(atoi(sse.substr(ee + 1).c_str())));
+  long m = round(abs(u.x)/exp10(std::atoi(sse.substr(ee + 1).c_str())));
   int powx = m <= 0? os.precision(): int(log10(double(m)));
   if ( m <= 0 || powx > os.precision() ) sse[0]='0';  
   ostringstream oss;
@@ -185,7 +186,7 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
   string ss = oss.str();
   string::size_type e = ss.find('e');
   ostringstream out;
-  int pp = atoi(ss.substr(e + 1).c_str());
+  int pp = std::atoi(ss.substr(e + 1).c_str());
   if ( pp%3 == 0 )
     out << ss.substr(0, e) << "(" << sse[0] << ")" << ss.substr(e);
   else if ( (pp - 1)%3 == 0 ) {
