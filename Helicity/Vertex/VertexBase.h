@@ -385,8 +385,8 @@ protected:
    * @param mass The mass if not to be taken from the ParticleData object
    * @param width The width if not to be taken from the ParticleData object
    */
-  inline Complex propagator(int iopt, Energy2 q2,tcPDPtr part,
-			    Energy mass=-GeV, Energy width=-GeV);
+  virtual Complex propagator(int iopt, Energy2 q2,tcPDPtr part,Energy mass=-GeV,
+			     Energy width=-GeV);
 
   /**
    * Calculate propagator multiplied by coupling.

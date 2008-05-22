@@ -160,47 +160,6 @@ inline void VertexBase::setNorm(const Complex & in) {
 inline const Complex & VertexBase::getNorm() {
   return _norm;
 }
-
-// calculate the propagator for a diagram
-inline Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
-				      Energy mass, Energy width) {
-  if(mass<0.*GeV) mass = part->mass();
-  const Energy2 mass2 = sqr(mass);
-  const Energy p = sqrt(p2);
-  if(width<0.*GeV) {
-    const tcWidthGeneratorPtr widthgen = part->widthGenerator();
-    width = widthgen && (iopt==2 || iopt==6 ) ? 
-      widthgen->width(*part,p) : part->width();
-  }
-  const Complex ii(0.,1.);
-
-  complex<Energy2> masswidth;
-  if(iopt==5) {
-    return Complex(UnitRemoval::E2/p2);
-  }
-  else if(p2 < 0.*MeV2) {
-    masswidth = 0.*MeV2;
-  }
-  else {
-    switch (iopt) {
-    case 1: case 2:
-      masswidth = ii * mass * width;         
-      break;
-    case 3: 
-      masswidth = 0.*MeV2;                    
-      break;
-    case 4: 
-      return 1.0;
-    case 6: 
-      masswidth = ii * mass2 * width / p;
-      return Complex(UnitRemoval::E2 * (mass2/p2) / (p2-mass2+masswidth));
-    default:
-      throw HelicityConsistencyError() << "Unknown option in VertexBase::Propagator" 
-				       << Exception::abortnow;
-    }
-  }
-  return Complex(UnitRemoval::E2/(p2-mass2+masswidth));
-}
   
 // propagator times coupling for a diagram
 inline Complex VertexBase::normPropagator(int iopt, Energy2 p2,tcPDPtr part,
