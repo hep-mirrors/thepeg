@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.61])
+AC_PREREQ([2.59])
 AC_INIT([ThePEG],[SVN],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
@@ -25,7 +25,7 @@ case "${host}" in
 esac
 
 AC_LANG(C++)
-AM_INIT_AUTOMAKE([1.10 gnu dist-bzip2 -Wall]) 
+AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 -Wall]) 
 dnl also include std-options once --version and --help exist
 
 dnl Checks for programs.
