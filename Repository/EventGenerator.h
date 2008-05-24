@@ -767,6 +767,13 @@ protected:
    * run has ended. Used eg. to write out statistics.
    */
   virtual void dofinish();
+
+  /**
+   * Additional things to do at the very end after the (do)finish(),
+   * such as closing output files etc.
+   */
+  void finally();
+
   //@}
 
   /**

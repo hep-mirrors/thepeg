@@ -254,6 +254,7 @@ void EventGenerator::finalize() {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
   finish();
+  finally();
 }
 
 void EventGenerator::dofinish() {
@@ -263,8 +264,6 @@ void EventGenerator::dofinish() {
 
   // Call the finish method for all other objects.
   for_each(objects(), mem_fun(&InterfacedBase::finish));
-
-  generateReferences();
 
   if ( theExceptions.empty() ) {
     log() << "No exceptions reported in this run.\n";
@@ -277,6 +276,14 @@ void EventGenerator::dofinish() {
 	  it != theExceptions.end(); ++it )
       log() << it->first->name() << " (" << it->second << " times)" << endl;
   }
+
+  theExceptions.clear();
+
+}
+
+void EventGenerator::finally() {
+
+  generateReferences();
 
   closeOutputFiles();
 
@@ -300,6 +307,7 @@ bool EventGenerator::loadMain(string file) {
   Main::eventGenerator(this);
   bool ok = DynamicLoader::load(file);
   finish();
+  finally();
   return ok;
 }
 
@@ -464,6 +472,8 @@ void EventGenerator::doGo(long next, long maxevent, bool tics) {
   }
 
   finish();
+
+  finally();
 
 }
 

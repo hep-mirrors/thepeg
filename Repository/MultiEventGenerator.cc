@@ -21,6 +21,8 @@
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Utilities/StringUtils.h"
+#include "ThePEG/Handlers/EventHandler.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 #include <ctime>
 
 
@@ -143,6 +145,7 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
       div *= theValues[i].size();
     }
 
+    reset();
     for_each(objects(), mem_fun(&InterfacedBase::reset));
     
     init();
@@ -159,11 +162,13 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
       finish();
       throw;
     }
-  }
+   finish();
+
+ }
 
   runName(baseName);
 
-  finish();
+  finally();
 
 }
 

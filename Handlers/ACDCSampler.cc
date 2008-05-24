@@ -24,6 +24,7 @@ using namespace ThePEG;
 ACDCSampler::~ACDCSampler() {}
 
 void ACDCSampler::initialize() {
+  theSampler.clear();
   theSampler.setRnd(0);
   theSampler.eps(theEps);
   theSampler.margin(theMargin);

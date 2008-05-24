@@ -1,3 +1,17 @@
+2008-05-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/Makefile.am, src/MultiLEP.in: Added test of
+	MultiEventGenerator.
+
+	* Repository/MultiEventGenerator.cc (MultiEventGenerator::doGo):
+	Fixed various bugs relating to resetting and finalizings.
+
+	* Repository/EventGenerator.* (EventGenerator::finally): Divided
+	up dofinish and added finally() to do things at the ultimate end.
+
+	* Handlers/ACDCSampler.cc (ACDCSampler::initialize): Added call to
+	clear() before initializing in case of multiple runs.
+
 2008-05-20  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Utilities/FixedSizeAllocator.*, EventRecord/{Collision,Particle,

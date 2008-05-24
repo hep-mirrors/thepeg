@@ -26,14 +26,15 @@ TestLHAPDF_la_SOURCES = TestLHAPDF.cc TestLHAPDF.h
 TestLHAPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 endif
 
-dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in
+dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in MultiLEP.in
 
 nodist_pkglib_DATA = ThePEGDefaults.rpo
 
 CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex \
+             MultiLEP.log MultiLEP.out MultiLEP.run MultiLEP.tex \
              ThePEGDefaults.rpo setupThePEG runThePEG done-all-links \
              TestLHAPDF.log TestLHAPDF.out TestLHAPDF.run TestLHAPDF.tex \
-             .runThePEG.timer.TestLHAPDF.run SimpleLEP.dump 
+             .runThePEG.timer.TestLHAPDF.run SimpleLEP.dump MultiLEP.dump 
 
 save:
 	mkdir -p save
@@ -44,7 +45,7 @@ valgrind:
 	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./runThePEG.bin SimpleLEP.run >> /tmp/valgrind.out 2>&1
 
 INPUTFILES = ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in \
-             SimpleLEP.in TestLHAPDF.in
+             SimpleLEP.in MultiLEP.in TestLHAPDF.in
 
 done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
@@ -80,6 +81,8 @@ check-local:
 	time ./runThePEG.bin --resume -d 0 SimpleLEP.dump
 	diff SimpleLEP.out SimpleLEP.cmp
 	rm SimpleLEP.cmp
+	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo MultiLEP.in
+	time ./runThePEG.bin -d 0 MultiLEP.run
 if USELHAPDF
 	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 	time ./runThePEG.bin -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
@@ -90,6 +93,12 @@ SimpleLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG.bin SimpleLEP.run
 	time ./runThePEG.bin -d 0 SimpleLEP.run
+
+MultiLEP.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo MultiLEP.in
+	./setupThePEG.bin --exitonerror -r ThePEGDefaults.rpo MultiLEP.in
+
+MultiLEP.out: runThePEG.bin MultiLEP.run
+	time ./runThePEG.bin -d 0 MultiLEP.run
 
 if USELHAPDF
 TestLHAPDF.run: done-all-links setupThePEG.bin ThePEGDefaults.rpo TestLHAPDF.in 
@@ -118,7 +127,7 @@ uninstall-local:
 
 installcheck-local:
 	$(mkdir_p) _test_thepeg_installation_
-	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; mv SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run; diff SimpleLEP.out SimpleLEP.cmp; mv SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/runThePEG --resume SimpleLEP.dump; diff SimpleLEP.out SimpleLEP.cmp;  
+	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/SimpleLEP.in; mv SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/runThePEG SimpleLEP.run; diff SimpleLEP.out SimpleLEP.cmp; mv SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/runThePEG --resume SimpleLEP.dump; diff SimpleLEP.out SimpleLEP.cmp; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/MultiLEP.in; $(DESTDIR)$(bindir)/runThePEG MultiLEP.run;
 if USELHAPDF
 	cd _test_thepeg_installation_; $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/TestLHAPDF.in; $(DESTDIR)$(bindir)/runThePEG -x $(DESTDIR)$(pkglibdir)/TestLHAPDF.so TestLHAPDF.run
 endif
