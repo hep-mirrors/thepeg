@@ -47,3 +47,7 @@ installcheck-local:
 
 install-data-local:
 	$(INSTALL) thepeg.sh $(DESTDIR)$(bindir)/thepeg
+
+uninstall-local:
+	rm -f $(DESTDIR)$(bindir)/thepeg
+
