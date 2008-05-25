@@ -25,6 +25,7 @@ IBPtr StandardRandom::fullclone() const {
 }
 
 void StandardRandom::setSeed(long seed) {
+  if ( seed == -1 ) seed = 19940801;
   long ij = seed/30082;
   long kl = seed - 30082*ij;
   long i = (ij/177) % 177 + 2;

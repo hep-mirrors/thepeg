@@ -48,7 +48,7 @@ extern "C" {
 using namespace ThePEG;
 
 RandomGenerator::RandomGenerator()
-  : theNumbers(1000), theSize(1000), theSeed(0),
+  : theNumbers(1000), theSize(1000), theSeed(-1),
     savedGauss(0.0), gaussSaved(false) {
   nextNumber = theNumbers.end();
   gsl = gsl_rng_alloc(gsl_rng_thepeg_random);
@@ -70,7 +70,7 @@ RandomGenerator::~RandomGenerator() {
 }
 
 void RandomGenerator::doinit() throw (InitException) {
-  if ( theSeed > 0 ) setSeed(theSeed);
+  if ( theSeed != 0 ) setSeed(theSeed);
   flush();
 }
 
@@ -163,8 +163,9 @@ void RandomGenerator::Init() {
   static Parameter<RandomGenerator,long> interfaceSeed
     ("Seed",
      "The seed with which this random generator is initialized. "
-     "If set to zero, the default build-in seed will be used.",
-     &RandomGenerator::theSeed, 0, 0, 100000000, true, false, false);
+     "If set to -1, the default build-in seed will be used. If set to zero, no seed will "
+     "be set.",
+     &RandomGenerator::theSeed, -1, -1, 100000000, true, false, false);
 
   interfaceSize.rank(10);
   interfaceSeed.rank(9);

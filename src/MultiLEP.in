@@ -10,5 +10,5 @@ set MultiLEPGenerator:PrintEvent 10
 set MultiLEPGenerator:EventHandler:LuminosityFunction:Energy 91.2
 set MultiLEPGenerator:EventHandler:DecayHandler NULL
 set /Defaults/Particles/Z0:NominalMass 92
-do MultiLEPGenerator:AddInterface /Defaults/Random:Seed 10001, 20002, 30003, 40004, 50005, 60006, 70007, 80008, 90009, 100001, 200002, 300003, 400004, 500005, 600006, 700007, 800008, 900009
+do MultiLEPGenerator:AddInterface /Defaults/Random:Seed 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 saverun MultiLEP MultiLEPGenerator

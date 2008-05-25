@@ -32,13 +32,14 @@ public:
   /**
    * Default constructor.
    */
-  StandardRandom() : u(97) { setSeed(theSeed); }
+  StandardRandom() : u(97) { if ( theSeed != 0 ) setSeed(theSeed); }
   //@}
 
 public:
 
   /**
-   * Reset the underlying random algorithm with the given seed.
+   * Reset the underlying random algorithm with the given seed. If the
+   * \a seed is set to -1 a standard seed will be used.
    */
   virtual void setSeed(long seed);
 
