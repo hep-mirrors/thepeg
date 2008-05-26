@@ -200,7 +200,7 @@ public:
    * Read commands from a file and send them one by one to exec().
    *
    * Passes the call through to read(istream, ostream), but also sets
-   * currentReadDir() correctly.
+   * currentReadDirStack() correctly.
    *
    * @param filename the file from which to read commands.
    * @param os the stream where output is written.
@@ -257,11 +257,6 @@ protected:
    * The default file name used by save().
    */
   static string & currentFileName();
-
-  /**
-   * The current directory for "read" commands
-   */
-  static string & currentReadDir();
 
 public:
 

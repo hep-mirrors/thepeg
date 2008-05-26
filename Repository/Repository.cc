@@ -52,11 +52,6 @@ string & Repository::currentFileName() {
   return theCurrentFileName;
 }
 
-string & Repository::currentReadDir() {
-  static string theCurrentReadDir;
-  return theCurrentReadDir;
-}
-
 int & Repository::exitOnError() {
   static int exitonerror = 0;
   return exitonerror;
@@ -356,13 +351,35 @@ void Repository::stats(ostream & os) {
 }
 
 void Repository::read(string filename, ostream & os) {
-  currentReadDir() = StringUtils::dirname(filename);
-  ifstream is(filename.c_str());
+  ifstream is;
+  string file = filename;
+  if ( file[0] == '/' ) is.open(file.c_str());
+  else {
+    vector<string> dirs(readDirs().rbegin(), readDirs().rend());
+    dirs.push_back(currentReadDirStack().top());
+    while ( dirs.size() ) {
+      string dir = dirs.back();
+      if ( dir != "" && dir[dir.length() -1] != '/' ) dir += '/';
+      file = dir + filename;
+      is.clear();
+      is.open(file.c_str());
+      if ( is ) break;
+      dirs.pop_back();
+    }
+  }
   if ( !is ) {
     cerr() << "Error: Could not find input file '" << filename << "'" << endl;
     return;
   }
-  Repository::read(is, os);
+  currentReadDirStack().push(StringUtils::dirname(file));
+  try {
+    Repository::read(is, os);
+    currentReadDirStack().pop();
+  }
+  catch ( ... ) {
+    currentReadDirStack().pop();
+    throw;
+  }
 }
 
 void Repository::read(istream & is, ostream & os, string prompt) {
@@ -547,15 +564,10 @@ string Repository::exec(string command, ostream & os) {
       return "";
     }
     if ( verb == "read" ) {
-      string file = StringUtils::car(command);
-      string dir = currentReadDir();
-      if (dir != "")
- 	file = dir + '/' + file;
-      ifstream input(file.c_str());
-      if (!input) return "Error: Could not access file " + file;
-      read(input, os);
+      string filename = StringUtils::car(command);
+      read(filename, os);
       return "";
-    }      
+    }
     if ( verb == "load" ) {
       load(StringUtils::car(command));
       return "";

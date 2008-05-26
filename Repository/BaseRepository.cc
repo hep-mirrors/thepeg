@@ -23,6 +23,7 @@
 #include "ThePEG/Utilities/TypeInfo.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/StringUtils.h"
+#include "ThePEG/Utilities/SystemUtils.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "BaseRepository.tcc"
@@ -79,6 +80,27 @@ BaseRepository::DirectorySet & BaseRepository::directories() {
 vector<string> & BaseRepository::globalLibraries() {
   static vector<string> theGlobalLibraries;
   return theGlobalLibraries;
+}
+
+stack<string> & BaseRepository::currentReadDirStack() {
+  static stack<string> theCurrentReadDirStack;
+  if ( theCurrentReadDirStack.empty() ) theCurrentReadDirStack.push("");
+  return theCurrentReadDirStack;
+}
+
+vector<string> & BaseRepository::readDirs() {
+  static vector<string>
+    theReadDirs(1, SystemUtils::getenv("ThePEG_INSTALL_PATH") +
+		"/../../share/ThePEG");
+  return theReadDirs;
+}
+
+void BaseRepository::prependReadDir(string dir) {
+  readDirs().insert(readDirs().begin(), dir);
+}
+
+void BaseRepository::appendReadDir(string dir) {
+  readDirs().push_back(dir);
 }
 
 BaseRepository::StringVector & BaseRepository::directoryStack() {

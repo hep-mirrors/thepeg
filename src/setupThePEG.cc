@@ -51,6 +51,13 @@ int main(int argc, char * argv[]) {
     else if ( arg == "-L" ) DynamicLoader::prependPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-L" )
       DynamicLoader::prependPath(arg.substr(2));
+    else if ( arg == "-i" ) Repository::appendReadDir(argv[++iarg]);
+    else if ( arg.substr(0,2) == "-i" )
+      Repository::appendReadDir(arg.substr(2));
+    else if ( arg == "-I" )
+      Repository::prependReadDir(argv[++iarg]);
+    else if ( arg.substr(0,2) == "-I" )
+      Repository::prependReadDir(arg.substr(2));
     else if ( arg == "-h" || arg == "--help" ) {
       cerr << "Usage: " << argv[0]
 	 << " {cmdfile} [-d {debuglevel|-debugitem}] [-r input-repository-file]"

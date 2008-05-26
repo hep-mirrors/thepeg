@@ -198,6 +198,35 @@ public:
    * A list of all globally loaded libraries.
    */
   static vector<string> & globalLibraries();
+
+  //@}
+
+  /** @name Information on where to read input files. */
+  //@{
+protected:
+
+  /**
+   * The stack of directories used by the "read" command.
+   */
+  static stack<string> & currentReadDirStack();
+
+  /**
+   * List of directories to search for files for the "read" command.
+   */
+  static vector<string> & readDirs();
+
+public:
+
+  /**
+   * Add a directory to readDirs().
+   */
+  static void prependReadDir(string);
+
+  /**
+   * Add a directory to readDirs().
+   */
+  static void appendReadDir(string);
+
   //@}
 
   /** @name Access objects in the repository. */
