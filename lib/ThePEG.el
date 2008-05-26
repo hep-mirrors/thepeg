@@ -1,7 +1,14 @@
 (require 'dired)
 
+(defun ThePEG-fheader-file (class)
+  "Create a .fh file with a skeleton suitable for a class CLASS."
+  (interactive "sClass Name: ")
+  (setq namespace (thepeg-get-namespace class))
+  (setq class (thepeg-get-class class))
+  (thepeg-fheaderfile namespace class))
+
 (defun ThePEG-class-files (class)
-  "Create the .h, .icc and .cc files with skeletons suitable for a class
+  "Create .h and .cc files with skeletons suitable for a class
 CLASS. The user will be prompted for the base class and the main include file.
 The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
   (interactive "sClass Name: ")
@@ -74,9 +81,9 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 
   (setq persist (y-or-n-p "Will this class be persistent "))
   (setq concrete (y-or-n-p "Will this class be concrete "))
-  (thepeg-sourcefile namespace class persist concrete implementations)
-  (thepeg-iheaderfile namespace class base interfaced concrete)
-  (thepeg-fheaderfile namespace class)
+  (thepeg-sourcefile namespace class persist interfaced concrete implementations)
+;  (thepeg-iheaderfile namespace class base interfaced concrete)
+;  (thepeg-fheaderfile namespace class)
   (thepeg-headerfile namespace class base baseheader interfaced
 		persist concrete declarations))
 
@@ -122,9 +129,9 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 
   (setq implement (funcall implfn class base))
 
-  (thepeg-sourcefile namespace class persist concrete implement)
-  (thepeg-iheaderfile namespace class base interfaced concrete)
-  (thepeg-fheaderfile namespace class)
+  (thepeg-sourcefile namespace class persist interfaced concrete implement)
+;  (thepeg-iheaderfile namespace class base interfaced concrete)
+;  (thepeg-fheaderfile namespace class)
   (thepeg-headerfile namespace class base baseheader
 		interfaced persist concrete declare))
 
@@ -140,7 +147,7 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	 (car (cdr (split-string class "::"))))
 	(t class)))
 
-(defun thepeg-sourcefile (namespace class persistent concrete specialfn)
+(defun thepeg-sourcefile (namespace class persistent interfaced concrete specialfn)
   "Create a file suitable for the implementation of a class CLASS.
 The class may or may not be PERSISTENT and/or CONCRETE. SPECIALFN may be
 used to include special function definitions"
@@ -148,13 +155,31 @@ used to include special function definitions"
   (c++-mode)
   (cond ((> (buffer-size) 0))
 	(t (insert-string (thepeg-source namespace class persistent
-					 concrete specialfn))
+					 interfaced concrete specialfn))
 	   (beginning-of-buffer))))
 
-(defun thepeg-source (namespace class persistent concrete specialfn)
+(defun thepeg-source (namespace class persistent interfaced concrete specialfn)
   "Return a skeleton suitable for the implementation file of a class CLASS.
 The class may or may not be PERSISTENT and/or CONCRETE. SPECIALFN may be
 used to include special function definitions"
+
+(setq interface (cond (interfaced (concat (cond (concrete "
+IBPtr THECLASS::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr THECLASS::fullclone() const {
+  return new_ptr(*this);
+}
+")
+						  (t ""))
+					    "
+
+// If needed, insert default implementations of virtual function defined
+// in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
+
+"))
+			(t "")))
 
   (setq piostring (cond (persistent "
 void THECLASS::persistentOutput(PersistentOStream & os) const {
@@ -190,15 +215,14 @@ AbstractNoPIOClassDescription<THECLASS> THECLASS::initTHECLASS;")))))
 #include \"THECLASS.h\"
 #include \"ThePEG/Interface/ClassDocumentation.h\"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include \"THECLASS.tcc\"
-#endif
 " pioinclude "
 
 using namespace " namespace ";
 
+THECLASS::THECLASS() {}
+
 THECLASS::~THECLASS() {}
-" specialfn piostring description "
+" specialfn interface piostring description "
 // Definition of the static class description member.
 
 void THECLASS::Init() {
@@ -223,7 +247,7 @@ may not be INTERFACED and/or CONCRETE."
 
 
 (defconst thepeg-interfaced-impl "
-inline void THECLASS::doupdate() throw(UpdateException) {
+void THECLASS::doupdate() throw(UpdateException) {
   THEBASE::doupdate();
   // First update base class.
   bool redo = touched();
@@ -241,25 +265,24 @@ inline void THECLASS::doupdate() throw(UpdateException) {
   // Touch if anything has changed.
 }
 
-inline void THECLASS::doinit() throw(InitException) {
+void THECLASS::doinit() throw(InitException) {
   THEBASE::doinit();
 }
 
-inline void THECLASS::dofinish() {
+void THECLASS::dofinish() {
   THEBASE::dofinish();
 }
 
-inline void THECLASS::doinitrun() {
+void THECLASS::doinitrun() {
   THEBASE::doinitrun();
 }
 
-inline void THECLASS::rebind(const TranslationMap & trans)
-  throw(RebindException) {
+void THECLASS::rebind(const TranslationMap & trans) throw(RebindException) {
   // dummy = trans.translate(dummy);
   THEBASE::rebind(trans);
 }
 
-inline IVector THECLASS::getReferences() {
+IVector THECLASS::getReferences() {
   IVector ret = THEBASE::getReferences();
   // ret.push_back(dummy);
   return ret;
@@ -387,13 +410,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 ")
 
@@ -405,26 +428,26 @@ protected:
   /**
    * Check sanity of the object during the setup phase.
    */
-  inline virtual void doupdate() throw(UpdateException);
+  virtual void doupdate() throw(UpdateException);
 
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  inline virtual void doinit() throw(InitException);
+  virtual void doinit() throw(InitException);
 
   /**
    * Initialize this object. Called in the run phase just before
    * a run begins.
    */
-  inline virtual void doinitrun();
+  virtual void doinitrun();
 
   /**
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish();
+  virtual void dofinish();
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -435,15 +458,14 @@ protected:
    * @throws RebindException if no cloned object was found for a given
    * pointer.
    */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
+  virtual void rebind(const TranslationMap & trans) throw(RebindException);
 
   /**
    * Return a vector of all pointers to Interfaced objects used in this
    * object.
    * @return a vector of pointers.
    */
-  inline virtual IVector getReferences();
+  virtual IVector getReferences();
   //@}
 ")
 
@@ -550,7 +572,6 @@ using namespace ThePEG;
 //
 
 #include \"" include "\"
-#include \"THECLASS.fh\"
 
 namespace " namespace " {
 " using "
@@ -566,12 +587,7 @@ public:
   /**
    * The default constructor.
    */
-  inline THECLASS();
-
-  /**
-   * The copy constructor.
-   */
-  inline THECLASS(const THECLASS &);
+  THECLASS();
 
   /**
    * The destructor.
@@ -636,11 +652,6 @@ struct ClassTraits<" namespacequalifyer "THECLASS>
 /** @endcond */
 
 }
-
-#include \"THECLASS.icc\"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include \"THECLASS.tcc\"
-#endif
 
 #endif /* " NAMESPACE "_THECLASS_H */
 "))))
