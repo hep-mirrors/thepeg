@@ -94,7 +94,7 @@ void DecayMode::rebind(const TranslationMap & trans) throw(RebindException) {
     trans.alwaysTranslate(inserter(newProducts),
 			  products().begin(), products().end());
     products().swap(newProducts);
-    PDVector newOrdered;
+    tPDVector newOrdered;
     trans.alwaysTranslate(inserter(newOrdered),
 			  orderedProducts().begin(), orderedProducts().end());
     theOrderedProducts.swap(newOrdered);

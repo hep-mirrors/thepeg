@@ -35,7 +35,7 @@ inline const ParticleMSet & DecayMode::products() const {
   return theProducts;
 }
 
-inline const PDVector & DecayMode::orderedProducts() const {
+inline const tPDVector & DecayMode::orderedProducts() const {
   return theOrderedProducts;
 }
 

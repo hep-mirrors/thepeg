@@ -26,7 +26,7 @@ namespace Helicity {
  * Enumeration for naming of vertices
  */
 enum VertexType {FFS,VSS,VVSS,VVS,SSS,SSSS,
-		 FFV,VVV,VVVV,FFT,FFVT,SST,VVT,VVVT};
+		 FFV,VVV,VVVV,FFT,FFVT,SST,VVT,VVVT,UNDEFINED};
 
 /** \ingroup Helicity
  * 
@@ -63,7 +63,8 @@ public:
    * @param kine Whether the kinematic invariants should be calculated.
    */
   inline VertexBase(int ispin1,int ispin2,int ispin3,
-		    vector<int> id1,vector<int> id2,vector<int> id3,bool kine=false);
+		    vector<long> id1,vector<long> id2,vector<long> id3,
+		    bool kine=false);
 
   /**
    * Constructor for four point vertices.
@@ -78,7 +79,7 @@ public:
    * @param kine Whether the kinematic invariants should be calculated.
    */
   inline VertexBase(int ispin1,int ispin2,int ispin3,int ispin4,
-		    vector<int> id1,vector<int> id2,vector<int> id3,vector<int> id4,
+		    vector<long> id1,vector<long> id2,vector<long> id3,vector<long> id4,
 		    bool kine=false);
 
   /**
@@ -96,8 +97,8 @@ public:
    * @param kine Whether the kinematic invariants should be calculated.
    */
   inline VertexBase(int ispin1,int ispin2,int ispin3,int ispin4,int ispin5,
-		    vector<int> id1,vector<int> id2,vector<int> id3,vector<int> id4,
-		    vector<int> id5,bool kine=false);
+		    vector<long> id1,vector<long> id2,vector<long> id3,vector<long> id4,
+		    vector<long> id5,bool kine=false);
 
   /**
    * Constructor for \f$n\f$-point vertices.
@@ -142,7 +143,7 @@ public:
    * @param id2 PDG code of the second particle.
    * @param id3 PDG code of the third particle.
    */
-  void add(int id1,int id2,int id3);
+  void add(long id1,long id2,long id3);
 
   /**
    * Add item to four point list.
@@ -151,7 +152,7 @@ public:
    * @param id3 PDG code of the third particle.
    * @param id4 PDG code of the fourth particle.
    */
-  void add(int id1,int id2,int id3,int id4);
+  void add(long id1,long id2,long id3,long id4);
 
   /**
    * Add item to five  point list.
@@ -161,7 +162,7 @@ public:
    * @param id4 PDG code of the fourth particle.
    * @param id5 PDG code of the fifth particle.
    */
-  void add(int id1,int id2,int id3,int id4,int id5);
+  void add(long id1,long id2,long id3,long id4,long id5);
   //@}
 
   /**
@@ -182,35 +183,35 @@ public:
    * Is a particle allowed as an incoming particle?
    * @param id The PDG code
    */
-  inline bool incoming(int id);
+  inline bool incoming(long id);
 
   /**
    * Is a particle allowed as an outgoing particle?
    * @param id The PDG code
    */
-  inline bool outgoing(int id);
+  inline bool outgoing(long id);
 
   /**
    * Get the list of incoming particles.
    */
-  inline vector<PDPtr> getIncoming();
+  inline const vector<tPDPtr> & getIncoming() const;
 
   /**
    * Get the list of outgoing particles.
    */
-  inline vector<PDPtr> getOutgoing();
+  inline const vector<tPDPtr> & getOutgoing() const;
 
   /**
    * Get the coupling.
    */
-  inline const Complex & getNorm();
+  inline Complex getNorm() const;
 
   /**
    * Function to search the list.
    * @param ilist Which list to search
    * @param id The PDG code to look for.
    */
-  vector<PDPtr> search(unsigned int ilist,int id);
+  vector<tPDPtr> search(unsigned int ilist,long id);
 
   /**
    * Is a given combination allowed.
@@ -218,7 +219,7 @@ public:
    * @param id2 PDG code of the second particle.
    * @param id3 PDG code of the third particle.
    */
-  bool allowed(int id1,int id2,int id3);
+  bool allowed(long id1,long id2,long id3);
 
   /**
    * Is a given combination allowed.
@@ -227,7 +228,7 @@ public:
    * @param id3 PDG code of the third particle.
    * @param id4 PDG code of the fourth particle.
    */
-  bool allowed(int id1,int id2,int id3,int id4);
+  bool allowed(long id1,long id2,long id3,long id4);
 
   /**
    * Is a given combination allowed.
@@ -237,7 +238,7 @@ public:
    * @param id4 PDG code of the fourth particle.
    * @param id5 PDG code of the fifth particle.
    */
-  bool allowed(int id1,int id2,int id3,int id4,int id5);
+  bool allowed(long id1,long id2,long id3,long id4,long id5);
 
   /**
    * Get name of Vertex
@@ -328,7 +329,7 @@ protected:
    * @param id2 The PDG codes for the second set of particles.
    * @param id3 The PDG codes for the third  set of particles.
    */
-  void setList(vector<int> id1,vector<int> id2,vector<int> id3);
+  void setList(vector<long> id1,vector<long> id2,vector<long> id3);
 
   /**
    * Set up the lists of particles for the three point vertex.
@@ -337,7 +338,7 @@ protected:
    * @param id3 The PDG codes for the third  set of particles.
    * @param id4 The PDG codes for the fourth set of particles.
    */
-  void setList(vector<int> id1,vector<int> id2,vector<int> id3,vector<int> id4);
+  void setList(vector<long> id1,vector<long> id2,vector<long> id3,vector<long> id4);
 
   /**
    * Set up the lists of particles for the three point vertex.
@@ -347,8 +348,8 @@ protected:
    * @param id4 The PDG codes for the fourth set of particles.
    * @param id5 The PDG codes for the fifth  set of particles.
    */
-  void setList(vector<int> id1,vector<int> id2,vector<int> id3,vector<int> id4,
-	       vector<int> id5);
+  void setList(vector<long> id1,vector<long> id2,vector<long> id3,vector<long> id4,
+	       vector<long> id5);
 
   /**
    * Set the list of incoming particles.
@@ -481,32 +482,32 @@ private:
   /**
    * PDG codes for the first set of  particles.
    */
-  vector<int> _iparticlea;
+  vector<long> _iparticlea;
 
   /**
    * PDG codes for the second set of  particles.
    */
-  vector<int> _iparticleb;
+  vector<long> _iparticleb;
 
   /**
    * PDG codes for the third set of  particles.
    */
-  vector<int> _iparticlec;
+  vector<long> _iparticlec;
 
   /**
    * PDG codes for the fourth set of  particles.
    */
-  vector<int> _iparticled;
+  vector<long> _iparticled;
 
   /**
    * PDG codes for the fifth set of  particles.
    */
-  vector<int> _iparticlee;
+  vector<long> _iparticlee;
 
   /**
    *  Particles interacting at the vertex
    */
-  vector<vector<PDPtr> > _particles;
+  vector<vector<tPDPtr> > _particles;
 
   /**
    * Spin.
@@ -526,22 +527,22 @@ private:
   /**
    * ParticleData pointers for the allowed incoming particles.
    */
-  vector<PDPtr> _inpart;
+  vector<tPDPtr> _inpart;
 
   /**
    * PDG codes for the allowed incoming particles.
    */
-  vector <int> _iinpart;
+  vector <long> _iinpart;
 
   /**
    * ParticleData pointers for the allowed outgoing particles.
    */
-  vector<PDPtr> _outpart;
+  vector<tPDPtr> _outpart;
 
   /**
    * PDG codes for the allowed outgoing particles.
    */
-  vector <int> _ioutpart;
+  vector <long> _ioutpart;
   //@}
 
   /**
@@ -557,7 +558,7 @@ private:
   /**
    * Kinematica quantities needed for loop vertices
    */
-  Energy2 _kine[5][5];
+  vector<vector<Energy2> > _kine;
 
   /**
    * Name of vertex

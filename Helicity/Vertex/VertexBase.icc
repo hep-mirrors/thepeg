@@ -15,54 +15,60 @@ namespace ThePEG {
 namespace Helicity{
 
 // constructors for three point vertices
-inline VertexBase::VertexBase(int isa, int isb, int isc,vector<int> ida,
-			      vector<int> idb,vector<int> idc,bool kine) 
-  : _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+inline VertexBase::VertexBase(int isa, int isb, int isc,vector<long> ida,
+			      vector<long> idb,vector<long> idc,bool kine) 
+  : _npoint(3), _nsize(0), _norm(0), _calckinematics(kine), 
+    _kine(5,vector<Energy2>(5)), _theName(UNDEFINED), 
+    _ordergEM(0), _ordergS(0),
+    _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), 
+    _ee(sqrt(4.*Constants::pi/137.04)),
     _sw(sqrt(0.232)) {
-  // number of external particles
-  _npoint = 3;
   // initialise the spins
   setSpin(isa,isb,isc);
   // and the particles;
   setList(ida,idb,idc);
-  _calckinematics=kine;
 }
 
 // constructors for four  point vertices
 inline VertexBase::VertexBase(int isa,int isb, int isc, int isd,
-			      vector<int> ida, vector<int> idb,
-			      vector<int> idc, vector<int> idd, bool kine) 
-  : _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+			      vector<long> ida, vector<long> idb,
+			      vector<long> idc, vector<long> idd, bool kine) 
+  : _npoint(4), _nsize(0), _norm(0), _calckinematics(kine), 
+    _kine(5,vector<Energy2>(5)), _theName(UNDEFINED), 
+    _ordergEM(0), _ordergS(0),
+    _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), 
+    _ee(sqrt(4.*Constants::pi/137.04)),
     _sw(sqrt(0.232)) {
-  // number of external particles
-  _npoint = 4;
   // initialise the spins
   setSpin(isa,isb,isc,isd);
   // and the particles
   setList(ida,idb,idc,idd);
-  _calckinematics=kine;
 }
 
 // constructors for five point vertices
 inline VertexBase::VertexBase(int ia, int ib, int ic, int id , int ie,
-			      vector<int> ida,vector<int> idb,
-			      vector<int> idc,vector<int> idd,
-			      vector<int> ide,bool kine) 
-  : _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
-    _sw(sqrt(0.232)) {
-  // number of external particles
-  _npoint = 5;
+			      vector<long> ida,vector<long> idb,
+			      vector<long> idc,vector<long> idd,
+			      vector<long> ide,bool kine) 
+  :  _npoint(5), _nsize(0), _norm(0), _calckinematics(kine), 
+     _kine(5,vector<Energy2>(5)), _theName(UNDEFINED), 
+     _ordergEM(0), _ordergS(0),
+     _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), 
+     _ee(sqrt(4.*Constants::pi/137.04)),
+     _sw(sqrt(0.232)) {
   // initialise the spins
   setSpin(ia,ib,ic,id,ie);
   // and the particles
   setList(ida,idb,idc,idd,ide);
-  _calckinematics=kine;
 }
 
 // default constructor
 inline VertexBase::VertexBase(unsigned int nin, bool kine) 
-  : _npoint(nin), _calckinematics(kine),
-    _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), _ee(sqrt(4.*Constants::pi/137.04)),
+  : _npoint(nin), _nsize(0), _norm(0), _calckinematics(kine), 
+    _kine(5,vector<Energy2>(5)), _theName(UNDEFINED), 
+    _ordergEM(0), _ordergS(0),
+    _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), 
+    _ee(sqrt(4.*Constants::pi/137.04)),
     _sw(sqrt(0.232)) 
 {}
 
@@ -124,7 +130,7 @@ inline void VertexBase::setNpoint(unsigned int in) {
 }
 
 // is a particle allowed as an incoming particle
-inline bool VertexBase::incoming(int id) {
+inline bool VertexBase::incoming(long id) {
   if(_iinpart.size()==0) return false; 
   for(unsigned int ix=0;ix<_iinpart.size();++ix) {
     if(_iinpart[ix]==id) return true;
@@ -133,7 +139,7 @@ inline bool VertexBase::incoming(int id) {
 }
 
 // is a particle allowed as an outgoing particle
-inline bool VertexBase::outgoing(int id) {
+inline bool VertexBase::outgoing(long id) {
   if(_outpart.size()==0) return false; 
   for(unsigned int ix=0;ix<_ioutpart.size();++ix) {
     if(_ioutpart[ix]==id) return true;
@@ -142,12 +148,12 @@ inline bool VertexBase::outgoing(int id) {
 }
 
 // get the list of incoming particles
-inline vector<PDPtr> VertexBase::getIncoming() {
+inline const vector<tPDPtr> & VertexBase::getIncoming() const {
   return _inpart;
 }
 
 // get the list of outgoing particles
-inline vector<PDPtr> VertexBase::getOutgoing() {
+inline const vector<tPDPtr> & VertexBase::getOutgoing() const {
   return _outpart;
 }
 
@@ -157,7 +163,7 @@ inline void VertexBase::setNorm(const Complex & in) {
 }
 
 // get the coupling
-inline const Complex & VertexBase::getNorm() {
+inline Complex VertexBase::getNorm() const {
   return _norm;
 }
   

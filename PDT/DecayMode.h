@@ -161,7 +161,7 @@ public:
   /**
    * The set of identified decay products in the order they were specified.
    */
-  inline const PDVector & orderedProducts() const;
+  inline const tPDVector & orderedProducts() const;
 
   /**
    * Produce particles corresponding to the identified decay
@@ -520,7 +520,7 @@ private:
   /**
    * The set of specified decay particles in the order they was specified.
    */
-  PDVector theOrderedProducts;
+  tPDVector theOrderedProducts;
 
   /**
    * The set of matching decay channels corresponding to a specified

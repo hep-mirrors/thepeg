@@ -71,7 +71,7 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
   }
   Energy summq = 0.0*GeV;
   Energy summp = 0.0*GeV;
-  PDVector prods = dm.orderedProducts();
+  tPDVector prods = dm.orderedProducts();
   for ( int i = 0, N = prods.size(); i < N; ++i )
     if ( QuarkMatcher::Check(*prods[i]) || DiquarkMatcher::Check(*prods[i])) {
       quarks.push_back(prods[i]);
