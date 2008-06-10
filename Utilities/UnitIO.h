@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <sstream>
 #include <cstdlib>
+#include <cmath>
 
 namespace ThePEG {
 
@@ -178,7 +179,7 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
   osse << std::scientific << setprecision(0) << dx;
   string sse = osse.str();
   string::size_type ee = sse.find('e');
-  long m = round(abs(u.x)/exp10(std::atoi(sse.substr(ee + 1).c_str())));
+  long m = round(abs(u.x)/std::pow(10.0,std::atoi(sse.substr(ee + 1).c_str())));
   int powx = m <= 0? os.precision(): int(log10(double(m)));
   if ( m <= 0 || powx > os.precision() ) sse[0]='0';  
   ostringstream oss;
@@ -272,7 +273,7 @@ IStream & operator>>(IStream & is, const IUnitErr<T,UT> & u) {
     se = s.substr(open + 1);
     sp += s.substr(close + 1);
     string::size_type dot = s.find('.');
-    if ( dot != string::npos && dot < open ) pe = exp10(1.0 - (open - dot));
+    if ( dot != string::npos && dot < open ) pe = std::pow(10.0, 1.0 - (open - dot));
   }
 
   istringstream(s) >> x;
