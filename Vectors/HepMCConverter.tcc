@@ -164,6 +164,9 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
 	it != vmap.end(); ++it )
     Traits::addVertex(*geneve, it->second);
 
+  // and the incoming beam particles
+  Traits::setBeamParticles(*geneve,pmap[ev.incoming().first],
+			   pmap[ev.incoming().second]);
 }
 
 template <typename HepMCEventT, typename Traits>

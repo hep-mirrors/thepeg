@@ -127,6 +127,11 @@ struct HepMCTraitsBase {
     v.set_position(p_scaled);
   }
 
+  /** Set the beam particles for the event.*/
+  static void setBeamParticles(EventT & e,ParticleT *p1,ParticleT *p2) {
+    e.set_beam_particles(p1,p2);		   
+  }
+
 };
 
 /**
