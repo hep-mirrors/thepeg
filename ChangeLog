@@ -1,3 +1,9 @@
+2008-06-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/LWHFactory.cc: The LWH namespace is renamed to
+	ThePEGLWH to avoid problems with using the Rivet versions of the
+	LWH classes (herwig:ticket:198).
+
 2008-05-29  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* PDT/DecayMode.*: Made theOrderedProducts a tPDVector to break

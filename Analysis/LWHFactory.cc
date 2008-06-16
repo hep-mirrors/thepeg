@@ -16,9 +16,11 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Repository/EventGenerator.h"
+
 #ifndef LWH 
-#define ThePEGLWH
+#define LWH ThePEGLWH
 #endif
+
 #include "AnalysisFactory.h"
 
 using namespace ThePEG;
