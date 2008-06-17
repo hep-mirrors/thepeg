@@ -197,7 +197,7 @@ std::string LHAPDF::getIndexPath() {
 }
 
 bool LHAPDF::openLHAIndex(ifstream & is) {
-  is.close();
+  if(is.is_open()) is.close();
   is.open(getIndexPath().c_str());
   if ( is ) return true;
   is.clear();
