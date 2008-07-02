@@ -30,7 +30,7 @@ extern "C" {
   return static_cast<thepeg_random_state_t *>(s)->r->rnd();
   }
   unsigned long int thepeg_random_get(void * s) {
-    return std::numeric_limits<unsigned>::max()*thepeg_random_get_double(s);
+    return static_cast<unsigned long int>(std::numeric_limits<unsigned long int>::max()*thepeg_random_get_double(s));
   }
 
   static const gsl_rng_type thepeg_random_type =

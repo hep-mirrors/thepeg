@@ -179,7 +179,7 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
   osse << std::scientific << setprecision(0) << dx;
   string sse = osse.str();
   string::size_type ee = sse.find('e');
-  long m = round(abs(u.x)/std::pow(10.0,std::atoi(sse.substr(ee + 1).c_str())));
+  long m = static_cast<long>(round(abs(u.x)/std::pow(10.0,std::atoi(sse.substr(ee + 1).c_str()))));
   int powx = m <= 0? os.precision(): int(log10(double(m)));
   if ( m <= 0 || powx > os.precision() ) sse[0]='0';  
   ostringstream oss;
