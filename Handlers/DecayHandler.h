@@ -102,6 +102,11 @@ public:
    */
   inline long maxLoop() const;
 
+  /**
+   * Get the maximum lifetime above which a particle is not decayed.
+   */
+  inline Length maxLifeTime() const;
+
 protected:
 
   /** @name Clone Methods. */
@@ -164,6 +169,11 @@ private:
    * particle.
    */
   long theMaxLoop;
+
+  /**
+   * The maximum lifetime above which a particle is not decayed.
+   */
+  Length theMaxLifeTime;
 
 private:
 

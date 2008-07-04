@@ -52,17 +52,22 @@ handle(EventHandler &, const tPVector & tagged,
 
 void DecayHandler::
 performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
+  if ( maxLifeTime() >= 0.0*mm ) {
+    const ParticleData & pd = parent->data();
+    Energy m = parent->mass();
+    if ( pd.generateLifeTime(m ,pd.generateWidth(m)) > maxLifeTime() ) return;
+  }
   ParticleVector children = Decayer::DecayParticle(parent, s, maxLoop());
   for ( int i = 0, N = children.size(); i < N; ++i )
     if ( !children[i]->data().stable() ) performDecay(children[i], s);
 }
 
 void DecayHandler::persistentOutput(PersistentOStream & os) const {
-  os << theMaxLoop;
+  os << theMaxLoop << ounit(theMaxLifeTime, mm);
 }
 
 void DecayHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theMaxLoop;
+  is >> theMaxLoop >> iunit(theMaxLifeTime, mm);
 }
 
 ClassDescription<DecayHandler> DecayHandler::initDecayHandler;
@@ -78,5 +83,12 @@ void DecayHandler::Init() {
     ("MaxLoop",
      "The maximum number of attempts per event when selecting a decay channel.",
      &DecayHandler::theMaxLoop, 100000, 100, 100000000, true, false, true);
+
+  static Parameter<DecayHandler,Length> interfaceMaxLifeTime
+    ("MaxLifeTime",
+     "The maximum lifetime (c*tau) in units of mm. Particles with longer "
+     "lifetimes than this will not be decayed.",
+     &DecayHandler::theMaxLifeTime, mm, -1.0*mm, -1.0*mm, 0*mm,
+     true, false, Interface::lowerlim);
 }
 

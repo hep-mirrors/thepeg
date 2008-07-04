@@ -14,13 +14,18 @@
 namespace ThePEG {
 
 inline DecayHandler::DecayHandler()
-  : theMaxLoop(100000) {}
+  : theMaxLoop(100000), theMaxLifeTime(-1.0*mm) {}
 
 inline DecayHandler::DecayHandler(const DecayHandler & dh)
-: StepHandler(dh), theMaxLoop(dh.theMaxLoop) {}
+: StepHandler(dh), theMaxLoop(dh.theMaxLoop),
+  theMaxLifeTime(dh.theMaxLifeTime) {}
 
 inline long DecayHandler::maxLoop() const {
   return theMaxLoop;
+}
+
+inline Length DecayHandler::maxLifeTime() const {
+  return theMaxLifeTime;
 }
 
 inline IBPtr DecayHandler::clone() const {
