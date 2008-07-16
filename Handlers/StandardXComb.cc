@@ -81,7 +81,6 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
   for ( int i = 0, N = me->diagrams().size(); i < N; ++i )
     if ( me->diagrams()[i]->getTag() == tag )
       theDiagrams.push_back(me->diagrams()[i]);
-  createPartonBinInstances();
 }
 
 StandardXComb::~StandardXComb() {}
@@ -178,6 +177,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   double pdf = pExtractor()->fullFn(partonBinInstances(), lastScale());
   if ( pdf == 0.0 ) return zero;
+  matrixElement()->setKinematics();
   CrossSection xsec = matrixElement()->dSigHatDR() * pdf;
 
   lastAlphaS(matrixElement()->alphaS());
