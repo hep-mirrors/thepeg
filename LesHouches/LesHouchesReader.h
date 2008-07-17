@@ -845,6 +845,11 @@ protected:
    */
   bool skipping;
 
+  /**
+   *  Option for the treatment of the momenta supplied
+   */
+  unsigned int theMomentumTreatment;
+
 private:
 
   /** Access function for the interface. */

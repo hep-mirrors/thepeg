@@ -42,7 +42,7 @@ LesHouchesReader::LesHouchesReader(bool active)
     isActive(active), theCacheFileName(""), doCutEarly(true), theCacheFile(NULL),
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
-    weightScale(1.0*picobarn), skipping(false) {}
+    weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -61,7 +61,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW),
     lastweight(x.lastweight), maxFactor(x.maxFactor),
     weightScale(x.weightScale), xSecWeights(x.xSecWeights),
-    maxWeights(x.maxWeights), skipping(x.skipping) {}
+    maxWeights(x.maxWeights), skipping(x.skipping),
+    theMomentumTreatment(x.theMomentumTreatment) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -698,6 +699,8 @@ void LesHouchesReader::createParticles() {
     Lorentz5Momentum mom(hepeup.PUP[i][0]*GeV, hepeup.PUP[i][1]*GeV,
 			 hepeup.PUP[i][2]*GeV, hepeup.PUP[i][3]*GeV,
 			 hepeup.PUP[i][4]*GeV);
+    if(theMomentumTreatment == 1)      mom.rescaleEnergy();
+    else if(theMomentumTreatment == 2) mom.rescaleMass();
     PPtr p = getParticleData(hepeup.IDUP[i])->produceParticle(mom);
     tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
     if ( c ) c->addColoured(p);
@@ -956,7 +959,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
      << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
-     << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights;
+     << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
+     << theMomentumTreatment;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -975,7 +979,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
      >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
-     >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights;
+     >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
+     >> theMomentumTreatment;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -996,6 +1001,7 @@ void LesHouchesReader::setPDFB(PDFPtr pdf) { inPDF.second = pdf; }
 PDFPtr LesHouchesReader::getPDFB() const { return inPDF.second; }
 
 void LesHouchesReader::Init() {
+
   static ClassDocumentation<LesHouchesReader> documentation
     ("ThePEG::LesHouchesReader is an abstract base class to be used "
      "for objects which reads event files or streams from matrix element "
@@ -1162,6 +1168,28 @@ void LesHouchesReader::Init() {
      "procedure should be applied.",
      &LesHouchesReader::theMinMultCKKW, 0, 0, 0,
      true, false, Interface::lowerlim);
+
+
+  static Switch<LesHouchesReader,unsigned int> interfaceMomentumTreatment
+    ("MomentumTreatment",
+     "Treatment of the momenta supplied by tghe interface",
+     &LesHouchesReader::theMomentumTreatment, 0, false, false);
+  static SwitchOption interfaceMomentumTreatmentAccept
+    (interfaceMomentumTreatment,
+     "Accept",
+     "Just accept the momenta given",
+     0);
+  static SwitchOption interfaceMomentumTreatmentRescaleEnergy
+    (interfaceMomentumTreatment,
+     "RescaleEnergy",
+     "Rescale the energy supplied so it is consistent with the mass",
+     1);
+  static SwitchOption interfaceMomentumTreatmentRescaleMass
+    (interfaceMomentumTreatment,
+     "RescaleMass",
+     "Rescale the mass supplied so it is consistent with the"
+     " energy and momentum",
+     2);
 
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);
