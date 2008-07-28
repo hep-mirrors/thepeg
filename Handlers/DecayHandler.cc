@@ -19,14 +19,11 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/EventRecord/Step.h"
 #include "ThePEG/EventRecord/Collision.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DecayHandler.tcc"
-#endif
 
 using namespace ThePEG;
 
@@ -53,9 +50,11 @@ handle(EventHandler &, const tPVector & tagged,
 void DecayHandler::
 performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
   if ( maxLifeTime() >= 0.0*mm ) {
-    const ParticleData & pd = parent->data();
-    Energy m = parent->mass();
-    if ( pd.generateLifeTime(m ,pd.generateWidth(m)) > maxLifeTime() ) return;
+    if( ( lifeTimeOption() && parent->lifeLength().tau() > maxLifeTime())||
+	(!lifeTimeOption() && parent->data().cTau()      > maxLifeTime()) ) {
+      parent->setLifeLength(Distance());
+      return;
+    }
   }
   ParticleVector children = Decayer::DecayParticle(parent, s, maxLoop());
   for ( int i = 0, N = children.size(); i < N; ++i )
@@ -63,11 +62,11 @@ performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
 }
 
 void DecayHandler::persistentOutput(PersistentOStream & os) const {
-  os << theMaxLoop << ounit(theMaxLifeTime, mm);
+  os << theMaxLoop << ounit(theMaxLifeTime, mm) << theLifeTimeOption;
 }
 
 void DecayHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theMaxLoop >> iunit(theMaxLifeTime, mm);
+  is >> theMaxLoop >> iunit(theMaxLifeTime, mm) >> theLifeTimeOption;
 }
 
 ClassDescription<DecayHandler> DecayHandler::initDecayHandler;
@@ -90,5 +89,22 @@ void DecayHandler::Init() {
      "lifetimes than this will not be decayed.",
      &DecayHandler::theMaxLifeTime, mm, -1.0*mm, -1.0*mm, 0*mm,
      true, false, Interface::lowerlim);
+
+
+  static Switch<DecayHandler,bool> interfaceLifeTimeOption
+    ("LifeTimeOption",
+     "Option for how the maximum life time is interpreted",
+     &DecayHandler::theLifeTimeOption, false, false, false);
+  static SwitchOption interfaceLifeTimeOptionAverage
+    (interfaceLifeTimeOption,
+     "Average",
+     "Cut on the average lifetime of the particle type",
+     false);
+  static SwitchOption interfaceLifeTimeOptionReal
+    (interfaceLifeTimeOption,
+     "Real",
+     "Cut on the lifetime generated for the given instance",
+     true);
+
 }
 
