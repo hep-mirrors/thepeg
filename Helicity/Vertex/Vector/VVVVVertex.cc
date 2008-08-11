@@ -239,75 +239,77 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
 	    ( _iorder[0]==2 && _iorder[1]==1 && _iorder[2]==0 && _iorder[3]==3)||
 	    ( _iorder[0]==1 && _iorder[1]==2 && _iorder[2]==3 && _iorder[3]==0)||
 	    ( _iorder[0]==2 && _iorder[1]==1 && _iorder[2]==3 && _iorder[3]==0)) {
-	  // contact term
-	  vertex = 2.*dotv1v4*dotv2v3-dotv1v3*dotv2v4-dotv1v2*dotv3v4;
-	  // now for the u- and t-channel terms if needed
-	  if(iopt!=0) {
-	    // dot products of momenta and wavefunction
-	    complex<Energy> dotv1p12 =
-	      vec1.wave().dot(vec1.getMomentum() + 2.*vec2.getMomentum() );
-	    complex<Energy> dotv1p13 =
-	      vec1.wave().dot(vec1.getMomentum() + 2.*vec3.getMomentum() );
-	    complex<Energy> dotv2p24 = 
-	      vec2.wave().dot(vec2.getMomentum() + 2.*vec4.getMomentum() );
-	    complex<Energy> dotv2p21 = 
-	      vec2.wave().dot(vec2.getMomentum() + 2.*vec1.getMomentum() );
-	    complex<Energy> dotv3p31 = 
-	      vec3.wave().dot(vec3.getMomentum() + 2.*vec1.getMomentum() );
-	    complex<Energy> dotv3p34 =
-	      vec3.wave().dot(vec3.getMomentum() + 2.*vec4.getMomentum() );
-	    complex<Energy> dotv4p43 = 
-	      vec4.wave().dot(vec4.getMomentum() + 2.*vec3.getMomentum() );
-	    complex<Energy> dotv4p42 =
-	      vec4.wave().dot(vec4.getMomentum() + 2.*vec2.getMomentum() );
-	    LorentzPolarizationVectorE ja = 
-	      (vec2.getMomentum()-vec1.getMomentum())*dotv1v2
-	      +dotv2p21*vec1.wave()-dotv1p12*vec2.wave();
-	    LorentzPolarizationVectorE jb = 
-	      (vec3.getMomentum()-vec4.getMomentum())*dotv3v4
-	      +dotv3p34*vec4.wave()-dotv4p43*vec3.wave();
-	    LorentzPolarizationVectorE jc = 
-	      (vec3.getMomentum()-vec1.getMomentum())*dotv1v3
-	      +dotv3p31*vec1.wave()-dotv1p13*vec3.wave();
-	    LorentzPolarizationVectorE jd = 
-	      (vec2.getMomentum()-vec4.getMomentum())*dotv2v4
-	      +dotv2p24*vec4.wave()-dotv4p42*vec2.wave();
-	    // dot products of these vectors
-	    complex<Energy2> dotjajb = ja.dot(jb);
-	    complex<Energy2> dotjcjd = jc.dot(jd);
-	    complex<Energy2> dotjaq = ja.dot(vec1.getMomentum()+vec2.getMomentum());
-	    complex<Energy2> dotjbq = jb.dot(vec1.getMomentum()+vec2.getMomentum());
-	    complex<Energy2> dotjck = jc.dot(vec1.getMomentum()+vec3.getMomentum());
-	    complex<Energy2> dotjdk = jd.dot(vec1.getMomentum()+vec3.getMomentum());
-	    Energy2 q2 = (vec1.getMomentum()+vec2.getMomentum()).m2();
-	    Energy2 k2 = (vec1.getMomentum()+vec3.getMomentum()).m2();
-	    // compute the term we need
-	    Energy2 mass2;
-	    for(int ix=0;ix<2;++ix) {
-	      if(_inter[ix]) {
-		mass2 = sqr(_inter[ix]->mass());
-		if(mass2!=Energy2()) {
-		  vertex+=UnitRemoval::InvE2 *
-		    _coup[ix]*propagator(iopt,q2,_inter[ix])*
-		    (dotjajb-dotjaq*dotjbq/mass2);
-		  vertex+=UnitRemoval::InvE2 *
-		    _coup[ix]*propagator(iopt,k2,_inter[ix])*
-		    (dotjcjd-dotjck*dotjdk/mass2);
-		}
-		else {
-		  vertex+=UnitRemoval::InvE2 *_coup[ix]*
-		    propagator(iopt,q2,_inter[ix])*dotjajb;
-		  vertex+=UnitRemoval::InvE2 *_coup[ix]*
-		    propagator(iopt,k2,_inter[ix])*dotjcjd;
-		}
-	      }
+      // contact term
+      vertex = 2.*dotv1v4*dotv2v3-dotv1v3*dotv2v4-dotv1v2*dotv3v4;
+      // now for the u- and t-channel terms if needed
+      if(iopt!=0) {
+	// dot products of momenta and wavefunction
+	complex<Energy> dotv1p12 =
+	  vec1.wave().dot(vec1.getMomentum() + 2.*vec2.getMomentum() );
+	complex<Energy> dotv1p13 =
+	  vec1.wave().dot(vec1.getMomentum() + 2.*vec3.getMomentum() );
+	complex<Energy> dotv2p24 = 
+	  vec2.wave().dot(vec2.getMomentum() + 2.*vec4.getMomentum() );
+	complex<Energy> dotv2p21 = 
+	  vec2.wave().dot(vec2.getMomentum() + 2.*vec1.getMomentum() );
+	complex<Energy> dotv3p31 = 
+	  vec3.wave().dot(vec3.getMomentum() + 2.*vec1.getMomentum() );
+	complex<Energy> dotv3p34 =
+	  vec3.wave().dot(vec3.getMomentum() + 2.*vec4.getMomentum() );
+	complex<Energy> dotv4p43 = 
+	  vec4.wave().dot(vec4.getMomentum() + 2.*vec3.getMomentum() );
+	complex<Energy> dotv4p42 =
+	  vec4.wave().dot(vec4.getMomentum() + 2.*vec2.getMomentum() );
+	LorentzPolarizationVectorE ja = 
+	  (vec2.getMomentum()-vec1.getMomentum())*dotv1v2
+	  +dotv2p21*vec1.wave()-dotv1p12*vec2.wave();
+	LorentzPolarizationVectorE jb = 
+	  (vec3.getMomentum()-vec4.getMomentum())*dotv3v4
+	  +dotv3p34*vec4.wave()-dotv4p43*vec3.wave();
+	LorentzPolarizationVectorE jc = 
+	  (vec3.getMomentum()-vec1.getMomentum())*dotv1v3
+	  +dotv3p31*vec1.wave()-dotv1p13*vec3.wave();
+	LorentzPolarizationVectorE jd = 
+	  (vec2.getMomentum()-vec4.getMomentum())*dotv2v4
+	  +dotv2p24*vec4.wave()-dotv4p42*vec2.wave();
+	// dot products of these vectors
+	complex<Energy2> dotjajb = ja.dot(jb);
+	complex<Energy2> dotjcjd = jc.dot(jd);
+	complex<Energy2> dotjaq = ja.dot(vec1.getMomentum()+vec2.getMomentum());
+	complex<Energy2> dotjbq = jb.dot(vec1.getMomentum()+vec2.getMomentum());
+	complex<Energy2> dotjck = jc.dot(vec1.getMomentum()+vec3.getMomentum());
+	complex<Energy2> dotjdk = jd.dot(vec1.getMomentum()+vec3.getMomentum());
+	Energy2 q2 = (vec1.getMomentum()+vec2.getMomentum()).m2();
+	Energy2 k2 = (vec1.getMomentum()+vec3.getMomentum()).m2();
+	// compute the term we need
+	Energy2 mass2;
+	for(int ix=0;ix<2;++ix) {
+	  if(_inter[ix]) {
+	    mass2 = sqr(_inter[ix]->mass());
+	    if(mass2!=Energy2()) {
+	      vertex+=UnitRemoval::InvE2 *
+		_coup[ix]*propagator(iopt,q2,_inter[ix])*
+		(dotjajb-dotjaq*dotjbq/mass2);
+	      vertex+=UnitRemoval::InvE2 *
+		_coup[ix]*propagator(iopt,k2,_inter[ix])*
+		(dotjcjd-dotjck*dotjdk/mass2);
+	    }
+	    else {
+	      vertex+=UnitRemoval::InvE2 *_coup[ix]*
+		propagator(iopt,q2,_inter[ix])*dotjajb;
+	      vertex+=UnitRemoval::InvE2 *_coup[ix]*
+		propagator(iopt,k2,_inter[ix])*dotjcjd;
 	    }
 	  }
+	}
+      }
     }
     else
       throw HelicityConsistencyError() << "Unknown order of particles in "
 				       << "VVVVVertex::evaluate()"
 				       << Exception::runerror;
+    // final coupling factors
+    vertex = -ii*norm*vertex;
   }
   else
     throw HelicityConsistencyError() << "Unknown order of particles in "
