@@ -20,10 +20,6 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StandardModelBase.tcc"
-#endif
-
 using namespace ThePEG;
 
 StandardModelBase::StandardModelBase()

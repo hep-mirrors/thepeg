@@ -113,24 +113,5 @@ inline Energy StandardModelBase::LambdaQCD(Energy2 scale) const {
   return LambdaQCD(Nf(scale));
 }
 
-inline void StandardModelBase::doupdate() throw(UpdateException) {
-  Interfaced::doupdate();
-}
-
-inline void StandardModelBase::dofinish() {
-  Interfaced::dofinish();
-}
-
-inline void StandardModelBase::rebind(const TranslationMap & trans)
-  throw(RebindException) {
-  Interfaced::rebind(trans);
-}
-
-inline IVector StandardModelBase::getReferences() {
-  IVector ret = Interfaced::getReferences();
-  //  ret.push_back(dummy);
-  return ret;
-}
-
 }
 
