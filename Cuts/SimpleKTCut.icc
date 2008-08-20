@@ -13,8 +13,8 @@
 
 namespace ThePEG {
 
-inline SimpleKTCut::SimpleKTCut()
-  : theMinKT(10.0*GeV), theMaxKT(Constants::MaxEnergy),
+inline SimpleKTCut::SimpleKTCut(Energy minKT)
+  : theMinKT(minKT), theMaxKT(Constants::MaxEnergy),
     theMinEta(-Constants::MaxRapidity),
     theMaxEta(Constants::MaxRapidity) {}
 

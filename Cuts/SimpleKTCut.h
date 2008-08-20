@@ -35,7 +35,7 @@ public:
   /**
    * The default constructor.
    */
-  inline SimpleKTCut();
+  inline SimpleKTCut(Energy minKT=10*GeV);
 
   /**
    * The copy constructor.

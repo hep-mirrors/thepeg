@@ -72,7 +72,7 @@ public:
   /**
    * The default constructor.
    */
-  inline Cuts();
+  inline Cuts(Energy MhatMin=2*GeV);
 
   /**
    * The copy constructor.

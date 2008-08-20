@@ -13,9 +13,9 @@
 
 namespace ThePEG {
 
-inline Cuts::Cuts()
+inline Cuts::Cuts(Energy MhatMin)
   : theSMax(0.0*GeV2), theY(0), theCurrentSHat(-1.0*GeV2),
-    theCurrentYHat(0), theMHatMin(2.0*GeV), theMHatMax(Constants::MaxEnergy),
+    theCurrentYHat(0), theMHatMin(MhatMin), theMHatMax(Constants::MaxEnergy),
     theYHatMin(-Constants::MaxRapidity), theYHatMax(Constants::MaxRapidity),
     theX1Min(0.0), theX1Max(1.0), theX2Min(0.0), theX2Max(1.0),
     theScaleMin(0.0*GeV2), theScaleMax(Constants::MaxEnergy2),
