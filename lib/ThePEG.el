@@ -750,8 +750,9 @@ double " class "::me2() const {
 }
 
 CrossSection " class "::dSigHatDR() const {
-  return me2()*jacobian()/sHat(); // Here we can add other prefactors coming
-                                  // from the phase space integration.
+  return sqr(hbarc)*me2()*jacobian()/sHat(); // Here we can add other prefactors
+                                             // coming from the phase space
+                                             // integration.
 }
 
 unsigned int " class "::orderInAlphaS() const {
