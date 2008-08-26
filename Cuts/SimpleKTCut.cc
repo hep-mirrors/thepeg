@@ -50,7 +50,7 @@ double SimpleKTCut::maxEta(tcPDPtr p) const {
 bool SimpleKTCut::passCuts(tcCutsPtr parent,
 			   tcPDPtr ptype, LorentzMomentum p) const {
   if ( theMatcher && !theMatcher->matches(*ptype) ) return true;
-  if ( p.perp() <= theMinKT ) return false;
+  if ( p.perp() < theMinKT ) return false;
   if ( p.perp() > theMaxKT ) return false;
   double y = p.rapidity() + parent->Y() + parent->currentYHat();
   if ( p.mt()*sinh(y) <= p.perp()*sinh(theMinEta) ) return false;
