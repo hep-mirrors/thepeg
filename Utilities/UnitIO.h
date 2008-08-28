@@ -136,7 +136,7 @@ IStream & operator>>(IStream & is, const IUnit<T,UT> & u) {
 /**
  * OUnitErr is used to write out unitful numbers with an error
  * estimate on a standard ostream. using the helper function ouniterr
- * an energy <code>e</code> with an error estimate <code>de<code> can
+ * an energy <code>e</code> with an error estimate <code>de</code> can
  * be written out as eg. <code>cout << ouniterr(e, de,
  * GeV);</code>. The result will be presented in scientific format
  * (with the exponent divisible by three) with the relevant number of

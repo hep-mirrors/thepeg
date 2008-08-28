@@ -49,6 +49,10 @@ public:
    * @param sp1   The wavefunction for the ferimon.
    * @param sbar2 The wavefunction for the antifermion.
    * @param vec3  The wavefunction for the vector.
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
    */
   virtual TensorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				      const SpinorWaveFunction & sp1,
