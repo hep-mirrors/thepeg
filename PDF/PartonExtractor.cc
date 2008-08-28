@@ -189,14 +189,13 @@ generateL(const PBIPair & pbins, const double * r1, const double * r2) {
 Energy2 PartonExtractor::
 generateSHat(Energy2, const PBIPair & pbins,
 	     const double * r1, const double * r2) {
-
   Direction<0> dir(true);
-  pbins.first->scale(-lastScale());
+  if(pbins.first->bin()->pdfDim()<=1) pbins.first->scale(-lastScale());
   if ( !generate(*pbins.first, r1, lastSHat(),
 		 pbins.first->getFirst()->parton()->momentum()) )
     return -1.0*GeV2;
   dir.reverse();
-  pbins.second->scale(-lastScale());
+  if(pbins.second->bin()->pdfDim()<=1) pbins.second->scale(-lastScale());
   if ( !generate(*pbins.second, r2, lastSHat(),
 		 pbins.second->getFirst()->parton()->momentum()) )
     return -1.0*GeV2;
@@ -232,7 +231,7 @@ generate(PartonBinInstance & pb, const double * r,
   if ( !pb.incoming() ) return true;
   if ( !generate(*pb.incoming(), r + pb.bin()->pdfDim() + pb.bin()->remDim(),
 		 shat/pb.xi(), first) )
-    return false;;
+    return false;
   pb.remnantWeight(1.0);
   pb.parton()->setMomentum
     (pb.remnantHandler()->generate(pb, r, pb.scale(), shat,
