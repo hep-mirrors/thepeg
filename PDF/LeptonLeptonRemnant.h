@@ -8,11 +8,8 @@
 //
 #ifndef ThePEG_LeptonLeptonRemnant_H
 #define ThePEG_LeptonLeptonRemnant_H
-// This is the declaration of the LeptonLeptonRemnant class.
 
 #include "ThePEG/PDF/RemnantHandler.h"
-// #include "LeptonLeptonRemnant.fh"
-// #include "LeptonLeptonRemnant.xh"
 
 namespace ThePEG {
 

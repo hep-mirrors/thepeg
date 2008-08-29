@@ -30,6 +30,7 @@
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/PDT/EnumParticles.h"
 
 using namespace ThePEG;
 
@@ -146,7 +147,17 @@ Energy2 PartonExtractor::newScale() {
 }
 
 pair<int,int> PartonExtractor::nDims(const PBPair & pbins) {
-  return make_pair(pbins.first->nDim(false), pbins.second->nDim(false));
+  // if photon from a lepton generate scale
+  bool genscale[2]={false,false};
+  for(unsigned int ix=0;ix<2;++ix) {
+    ThePEG::PBPtr bin = ix==0 ? pbins.first : pbins.second;
+    int id = abs(bin->particle()->id()); 
+    if( ( id==ThePEG::ParticleID::eminus || id==ThePEG::ParticleID::muminus ) &&
+	bin->parton()->id()==ThePEG::ParticleID::gamma )
+      genscale[ix]=true;
+  }
+  return ThePEG::make_pair(pbins.first ->nDim(genscale[0]),
+			   pbins.second->nDim(genscale[1]));
 }
 
 void PartonExtractor::prepare(const PBIPair & pbins) {

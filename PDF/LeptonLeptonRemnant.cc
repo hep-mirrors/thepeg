@@ -43,68 +43,123 @@ void LeptonLeptonRemnant::doinit() throw(InitException) {
 
 bool LeptonLeptonRemnant::
 canHandle(tcPDPtr particle, const cPDVector & partons) const {
-  for ( cPDVector::const_iterator it = partons.begin();
-	it != partons.end(); ++it )
-    if ( (**it).id() != particle->id() ) return false;
+  for ( cPDVector::const_iterator it = partons.begin(); it != partons.end(); ++it ) {
+    if ( (**it).id() != particle->id()    &&
+	 (**it).id() != ParticleID::gamma ) return false;
+  }
   return true;
 }
 
 Lorentz5Momentum LeptonLeptonRemnant::
 generate(PartonBinInstance & pb, const double *,
 	 Energy2 scale, const LorentzMomentum & parent) const {
-  if ( pb.particleData() != pb.partonData() )
-    throw RemnantHandlerException
-      (pb.particleData()->name(), pb.partonData()->name(), name(),
-       "The remnant handler can only extract leptons from "
-       "leptons of the same type.");
-  if ( pb.eps() < minX ) {
-    pb.remnants(PVector());
-    return parent;
-  }
-  LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
-  TransverseMomentum qt;
-  Energy2 qt2 = 0.0*GeV2;
-  if ( scale >= 0.0*GeV2 ) {
-    qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
+  // photon into hard process and lepton remnant
+  if ( pb.particleData() != pb.partonData() && 
+       pb.partonData()->id() == ParticleID::gamma) {
+    Energy  ppl = pb.xi()*(abs(parent.z())+parent.t());
+    Energy2 qt2 = pb.eps()*scale-sqr(pb.xi()*parent.m());
+    Energy  pmi = (qt2-scale)/ppl;
+    Lorentz5Momentum pgam;
+    pgam.setMass(-sqrt(scale));
+    pgam.setT(0.5*(ppl+pmi));
+    if(parent.z()<0.*GeV) 
+      pgam.setZ(-0.5*(ppl-pmi));
+    else
+      pgam.setZ(0.5*(ppl-pmi));
     double phi = rnd(2.0*Constants::pi);
-    qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
+    pgam.setX(sqrt(qt2)*cos(phi));
+    pgam.setY(sqrt(qt2)*sin(phi));
+    pgam.rotateY(parent.theta());
+    pgam.rotateZ(parent.phi());
+    Lorentz5Momentum prem=parent-pgam;
+    PPtr rem = pb.particleData()->produceParticle(prem, pb.particleData()->mass());
+    pb.remnants(PVector(1, rem));
+    return pgam;
   }
-  Energy pl = p.plus()*pb.eps();
-  LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
-  prem.rotateY(parent.theta());
-  prem.rotateZ(parent.phi());
-  PPtr rem = photon->produceParticle(prem, 0.0*GeV);
-  pb.remnants(PVector(1, rem));
-  return parent - rem->momentum();
+  else if( pb.particleData() == pb.partonData() ) {
+    if ( pb.eps() < minX ) {
+      pb.remnants(PVector());
+      return parent;
+    }
+    LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
+    TransverseMomentum qt;
+    Energy2 qt2 = 0.0*GeV2;
+    if ( scale >= 0.0*GeV2 ) {
+      qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
+      double phi = rnd(2.0*Constants::pi);
+      qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
+    }
+    Energy pl = p.plus()*pb.eps();
+    LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
+    prem.rotateY(parent.theta());
+    prem.rotateZ(parent.phi());
+    PPtr rem = photon->produceParticle(prem, 0.0*GeV);
+    pb.remnants(PVector(1, rem));
+    return parent - rem->momentum();
+  }
+  else {
+    if ( pb.particleData() != pb.partonData() )
+      throw RemnantHandlerException
+	(pb.particleData()->name(), pb.partonData()->name(), name(),
+	 "The remnant handler can only extract leptons from "
+	 "leptons of the same type or photons.");
+  }
 }
 
 Lorentz5Momentum LeptonLeptonRemnant::
 generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
 	 const LorentzMomentum & parent) const {
-  if ( pb.particleData() != pb.partonData() )
-    throw RemnantHandlerException
-      (pb.particleData()->name(), pb.partonData()->name(), name(),
-       "The remnant handler can only extract leptons from "
-       "leptons of the same type.");
-  if ( pb.eps() < minX ) {
-    pb.remnants(PVector());
-    return parent;
-  }
-  LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
-  TransverseMomentum qt;
-  Energy2 qt2 = 0.0*GeV2;
-  if ( scale >= 0.0*GeV2 ) {
-    qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
+  // photon into hard process and lepton remnant
+  if ( pb.particleData() != pb.partonData() && 
+       pb.partonData()->id() == ParticleID::gamma) {
+    Energy  ppl = pb.xi()*(abs(parent.z())+parent.t());
+    Energy2 qt2 = pb.eps()*scale-sqr(pb.xi()*parent.m());
+    Energy  pmi = (qt2-scale)/ppl;
+    Lorentz5Momentum pgam;
+    pgam.setMass(-sqrt(scale));
+    pgam.setT(0.5*(ppl+pmi));
+    if(parent.z()<0.*GeV)
+      pgam.setZ(-0.5*(ppl-pmi));
+    else
+      pgam.setZ(0.5*(ppl-pmi));
     double phi = rnd(2.0*Constants::pi);
-    qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
+    pgam.setX(sqrt(qt2)*cos(phi));
+    pgam.setY(sqrt(qt2)*sin(phi));
+    pgam.rotateY(parent.theta());
+    pgam.rotateZ(parent.phi());
+    Lorentz5Momentum prem=parent-pgam;
+    PPtr rem = pb.particleData()->produceParticle(prem, pb.particleData()->mass());
+    pb.remnants(PVector(1, rem));
+    return pgam;
   }
-  Energy pl = p.plus()*pb.eps();
-  LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
-  prem.rotateY(parent.theta());
-  prem.rotateZ(parent.phi());
-  PPtr rem = photon->produceParticle(prem, 0.0*GeV);
-  pb.remnants(PVector(1, rem));
-  return parent - rem->momentum();
+  else if ( pb.particleData() == pb.partonData() ) {
+    if ( pb.eps() < minX ) {
+      pb.remnants(PVector());
+      return parent;
+    }
+    LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
+    TransverseMomentum qt;
+    Energy2 qt2 = 0.0*GeV2;
+    if ( scale >= 0.0*GeV2 ) {
+      qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
+      double phi = rnd(2.0*Constants::pi);
+      qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
+    }
+    Energy pl = p.plus()*pb.eps();
+    LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
+    prem.rotateY(parent.theta());
+    prem.rotateZ(parent.phi());
+    PPtr rem = photon->produceParticle(prem, 0.0*GeV);
+    pb.remnants(PVector(1, rem));
+    return parent - rem->momentum();
+  }
+  else {
+    if ( pb.particleData() != pb.partonData() )
+      throw RemnantHandlerException
+	(pb.particleData()->name(), pb.partonData()->name(), name(),
+	 "The remnant handler can only extract leptons from "
+	 "leptons of the same type or photons.");
+  }
 }
 
 void LeptonLeptonRemnant::persistentOutput(PersistentOStream & os) const {
