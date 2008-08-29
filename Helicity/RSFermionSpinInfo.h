@@ -51,11 +51,6 @@ public:
   inline RSFermionSpinInfo();
 
   /**
-   * Copy-constructor.
-   */
-  inline RSFermionSpinInfo(const RSFermionSpinInfo &);
-
-  /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.

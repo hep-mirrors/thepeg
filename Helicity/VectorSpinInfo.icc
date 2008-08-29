@@ -18,30 +18,15 @@
 namespace ThePEG {
 namespace Helicity {
 
-inline VectorSpinInfo::VectorSpinInfo()
-{
-  _productionstates.resize(3,LorentzPolarizationVector());
-  _currentstates.resize(3,LorentzPolarizationVector());
-  _decaystates.resize(3,LorentzPolarizationVector());
-  iSpin(PDT::Spin1);
-  _decaycalc = false;
-}
-
-inline VectorSpinInfo::VectorSpinInfo(const VectorSpinInfo & x)
-  : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _currentstates(x._currentstates),
-    _decaycalc(x._decaycalc) {}
+inline VectorSpinInfo::VectorSpinInfo() 
+  : SpinInfo(PDT::Spin1), 
+    _productionstates(3), _decaystates(3), _currentstates(3), 
+    _decaycalc(false) {}
 
 inline VectorSpinInfo::VectorSpinInfo(const Lorentz5Momentum & in,bool intime)
-{
-  _productionstates.resize(3,LorentzPolarizationVector());
-  _currentstates.resize(3,LorentzPolarizationVector());
-  _decaystates.resize(3,LorentzPolarizationVector());
-  iSpin(PDT::Spin1);
-  setProductionMomentum(in);
-  _decaycalc=false;
-  setTimelike(intime);
-}
+  : SpinInfo(PDT::Spin1, in, intime),
+    _productionstates(3), _decaystates(3), _currentstates(3), 
+    _decaycalc(false) {}
 
 inline EIPtr VectorSpinInfo::clone() const
 {

@@ -203,7 +203,7 @@ constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,
       }
       constructSpinInfo(wave,inspin,vertex);
     }
-    rho = RhoDMatrix(PDT::Spin1Half);rho.average();
+    rho = RhoDMatrix(PDT::Spin1Half);
   }
   else {
     if(inspin) {
@@ -225,7 +225,7 @@ constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,
 	if(time) inspin->decayed(true);
 	part->spinInfo(newspin);
       }
-      rho = RhoDMatrix(PDT::Spin1Half);rho.average();
+      rho = RhoDMatrix(PDT::Spin1Half);
       constructSpinInfo(wave,inspin,vertex);
     }
   }
@@ -306,7 +306,7 @@ void SpinorBarWaveFunction::constructSpinInfo(vector<SpinorBarWaveFunction>& wav
 	}
 	constructSpinInfo(wave,inspin,vertex);
       }
-      rho = RhoDMatrix(PDT::Spin1Half);rho.average();
+      rho = RhoDMatrix(PDT::Spin1Half);
   }
   else {
     if(inspin) {
@@ -332,7 +332,7 @@ void SpinorBarWaveFunction::constructSpinInfo(vector<SpinorBarWaveFunction>& wav
 	if(time) inspin->decayed(true);
 	part->spinInfo(newspin);
       }
-      rho = RhoDMatrix(PDT::Spin1Half);rho.average();
+      rho = RhoDMatrix(PDT::Spin1Half);
       constructSpinInfo(wave,inspin,vertex);
     }
   }

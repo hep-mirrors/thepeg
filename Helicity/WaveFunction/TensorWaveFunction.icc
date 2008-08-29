@@ -422,7 +422,7 @@ inline void TensorWaveFunction::constructSpinInfo(vector<LorentzTensor<double> >
 	    }
 	  constructSpinInfo(wave,tspin,massless,phase,vertex);
 	}
-      rho =RhoDMatrix(PDT::Spin2);rho.average();
+      rho =RhoDMatrix(PDT::Spin2);
     }
   else
     {
@@ -447,7 +447,7 @@ inline void TensorWaveFunction::constructSpinInfo(vector<LorentzTensor<double> >
 	      if(time) tspin->decayed(true);
 	      part->spinInfo(newspin);
 	    }
-	  rho =RhoDMatrix(PDT::Spin2);rho.average();
+	  rho =RhoDMatrix(PDT::Spin2);
 	  constructSpinInfo(wave,tspin,massless,phase,vertex);
 	}
     }

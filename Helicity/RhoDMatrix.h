@@ -10,9 +10,9 @@
 #define ThePEG_RhoDMatrix_H
 // This is the declaration of the RhoDMatrix class.
 
-#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDT/PDT.h"
-#include "ThePEG/Utilities/ClassDescription.h"
+#include "ThePEG/Helicity/HelicityDefinitions.h"
+#include <cassert>
 
 namespace ThePEG {
 namespace Helicity {
@@ -34,12 +34,20 @@ public:
   /**
    * Default constructor with undefined spin.
    */
-  inline RhoDMatrix();
+  RhoDMatrix() : _spin(), _ispin() {}
 
   /**
-   * Standard constructor giving the spin as 2s+1.
+   * Standard constructor giving the spin as 2s+1. The matrix starts out averaged, 
+   * unless the second argument is false, when it is zeroed.
    */
-  inline RhoDMatrix(PDT::Spin);
+  RhoDMatrix(PDT::Spin inspin, bool average = true) 
+  : _spin(inspin), _ispin(abs(int(inspin))) {
+    assert(_ispin <= MAXSPIN);
+    // initialize to average
+    for(size_t ix=0; ix<_ispin; ++ix)
+      for(size_t iy=0; iy<_ispin; ++iy)	
+	_matrix[ix][iy] = (average && ix==iy) ? 1./_ispin : 0.;
+  }
   //@}
 
 public:
@@ -49,47 +57,51 @@ public:
   /**
    * Return an element of the matrix.
    */
-  inline Complex operator () (unsigned int,unsigned int) const;
+  Complex operator() (size_t ix, size_t iy) const {
+    assert(ix < _ispin);
+    assert(iy < _ispin);
+    return _matrix[ix][iy];
+  }
 
   /**
    * Set an element of the matrix.
    */
-  inline Complex & operator () (unsigned int,unsigned int);
-
-  /**
-   * set the matrix to 1/(2s+1) on diagonals and zero elsewhere
-   */
-  inline void average();
-
-  /**
-   * zero the matrix
-   */
-  inline void zero();
+  Complex & operator() (size_t ix, size_t iy) {
+    assert(ix < _ispin);
+    assert(iy < _ispin);
+    return _matrix[ix][iy];
+  }
 
   /**
    * renormalise the matrix so it has unit trace
    */
-  inline void normalize();
+  void normalize() {
+    static const double epsa=1e-30, epsb=1e-10;
+    Complex norm = 0.;
+    for(size_t ix=0; ix<_ispin; ++ix) 
+      norm += _matrix[ix][ix];
+    assert(norm.real() > epsa);
+    assert(norm.imag()/norm.real() < epsb);
+    norm = 1./norm;
+    for(size_t ix=0; ix<_ispin; ++ix)
+      for(size_t iy=0; iy<_ispin; ++iy) 
+	_matrix[ix][iy]*=norm;
+  }
   //@}
 
   /** @name Access the spin. */
   //@{
-  /**
-   * Set the spin. The spin should be given as 2J+1 (in units of
-   * hbar/2) using the PDT::Spin enum.
-   */
-  inline PDT::Spin iSpin(PDT::Spin);
 
   /**
    * Get the spin. The spin is returned as 2J+1 in units of hbar/2.
    */
-  inline PDT::Spin iSpin() const;
+  PDT::Spin iSpin() const { return _spin; }
   //@}
 
   /**
    * Output the spin density matrix for debugging purposes.
    */
-  inline void output();
+  friend ostream & operator<<(ostream & os, const RhoDMatrix & rd);
 
 private:
 
@@ -101,22 +113,33 @@ private:
   /**
    *  Storage of 2s+1 for speed.
    */
-  unsigned int _ispin;
+  size_t _ispin;
 
   /**
-   * Storage for the matrix allowing up to spin 2 particles
+   * Spin matrix size
    */
-  vector<vector<Complex> > _matrix;
+  enum { MAXSPIN = 5 };
+
+  /**
+   * Storage for the matrix allowing up to spin 2 particles.
+   */
+  // Deliberately not using vector<> to avoid calls to 'new' 
+  // from this commonly used class.
+  Complex _matrix[MAXSPIN][MAXSPIN];
 
 };
 
-}
+inline ostream & operator<<(ostream & os, const RhoDMatrix & rd) {
+  for (size_t ix = 0; ix < rd._ispin; ++ix) {
+    for (size_t iy = 0; iy < rd._ispin; ++iy)
+      os << rd._matrix[ix][iy] << "  ";
+    os << '\n';
+  }
+  return os;
 }
 
 
-#include "RhoDMatrix.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RhoDMatrix.tcc"
-#endif
+}
+}
 
 #endif /* ThePEG_RhoDMatrix_H */

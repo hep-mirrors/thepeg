@@ -17,16 +17,45 @@
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
+const double SpinInfo::_eps=1e-6;
+
+SpinInfo::SpinInfo(const SpinInfo & x)
+  : SpinBase(x), _production(x._production), _decay(x._decay),
+    _timelike(x._timelike),
+    _prodloc(x._prodloc), _decayloc(x._decayloc),
+    _decayed(x._decayed), _developed(x._developed),_rhomatrix(x._rhomatrix),
+    _Dmatrix(x._Dmatrix),_spin(x._spin),
+    _productionmomentum(x._productionmomentum),
+    _decaymomentum(x._decaymomentum),
+    _currentmomentum(x._currentmomentum) 
+{
+  x._production=VertexPtr();
+  x._decay=VertexPtr();
+  // set the vertex so it now points to the copy
+  if(_production) {
+    // for timelike
+    if(_timelike) _production->resetOutgoing(this,_prodloc); 
+    // for spacelike
+    else          _production->resetIncoming(this,_prodloc);
+  }
+}
+
+EIPtr SpinInfo::clone() const {
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
+}
+
+void SpinInfo::rebind(const EventTranslationMap & trans) {
+  if(_production) _production = trans.translate(_production);
+  if(_decay)      _decay      = trans.translate(_decay);
+  SpinBase::rebind(trans);
+}
+
+
 NoPIOClassDescription<SpinInfo> SpinInfo::initSpinInfo;
 // Definition of the static class description member.
 
 void SpinInfo::Init() {}
-
-void SpinInfo::transform(const LorentzMomentum &, LorentzRotation r) {
-  _currentmomentum.transform(r);
-}
-
-const double SpinInfo::_eps=1e-6;
 
 void SpinInfo::update() const {
   // number of instances fo this object

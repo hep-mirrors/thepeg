@@ -49,11 +49,6 @@ public:
   inline VectorSpinInfo();
 
   /**
-   * Copy-constructor.
-   */
-  inline VectorSpinInfo(const VectorSpinInfo &);
-
-  /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.

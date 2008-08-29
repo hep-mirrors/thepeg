@@ -33,19 +33,15 @@ public:
   /**
    * Default constructor.
    */
-  ScalarSpinInfo() { iSpin(PDT::Spin0); }
+  ScalarSpinInfo() : SpinInfo(PDT::Spin0) {}
 
   /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  ScalarSpinInfo(const Lorentz5Momentum & p, bool time)
-  {
-    iSpin(PDT::Spin0);
-    setProductionMomentum(p);
-    setTimelike(time);
-  }
+  ScalarSpinInfo(const Lorentz5Momentum & p, bool time) 
+    : SpinInfo(PDT::Spin0, p, time) {}
   //@}
 
 public:

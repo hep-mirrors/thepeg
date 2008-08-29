@@ -16,25 +16,16 @@
 namespace ThePEG {
 namespace Helicity {
 
-inline FermionSpinInfo::FermionSpinInfo()
-  : _productionstates(2),
-    _currentstates(2),
-    _decaystates(2),
-    _decaycalc(false) {
-  iSpin(PDT::Spin1Half);
-}
-
+inline FermionSpinInfo::FermionSpinInfo() 
+  : SpinInfo(PDT::Spin1Half),
+    _productionstates(2), _currentstates(2), _decaystates(2), 
+    _decaycalc(false) {}
+  
 inline FermionSpinInfo::
 FermionSpinInfo(const Lorentz5Momentum & in,bool intime)
-  : _productionstates(2),
-    _currentstates(2),
-    _decaystates(2),
-    _decaycalc(false)
-{
-  setProductionMomentum(in);
-  iSpin(PDT::Spin1Half);
-  setTimelike(intime);
-}
+  : SpinInfo(PDT::Spin1Half, in, intime),
+    _productionstates(2), _currentstates(2), _decaystates(2),
+    _decaycalc(false) {}
 
 inline EIPtr FermionSpinInfo::clone() const
 {

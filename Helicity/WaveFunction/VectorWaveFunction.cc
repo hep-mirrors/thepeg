@@ -184,7 +184,7 @@ void VectorWaveFunction::constructSpinInfo(vector<LorentzPolarizationVector>& wa
       }
       constructSpinInfo(wave,inspin,massless,phase,vertex);
     }
-    rho = RhoDMatrix(PDT::Spin1);rho.average();
+    rho = RhoDMatrix(PDT::Spin1);
   }
   else {
     if(inspin) {
@@ -206,7 +206,7 @@ void VectorWaveFunction::constructSpinInfo(vector<LorentzPolarizationVector>& wa
 	if(time) inspin->decayed(true);
 	part->spinInfo(newspin);
       }
-      rho = RhoDMatrix(PDT::Spin1);rho.average();
+      rho = RhoDMatrix(PDT::Spin1);
       constructSpinInfo(wave,inspin,massless,phase,vertex);
     }
   }
@@ -301,7 +301,7 @@ void VectorWaveFunction::constructSpinInfo(vector<VectorWaveFunction>& wave,
 	}
 	constructSpinInfo(wave,inspin,massless,phase,vertex);
       }
-      rho = RhoDMatrix(PDT::Spin1);rho.average();
+      rho = RhoDMatrix(PDT::Spin1);
   }
   else {
     if(inspin)
@@ -325,7 +325,7 @@ void VectorWaveFunction::constructSpinInfo(vector<VectorWaveFunction>& wave,
       if(time) inspin->decayed(true);
       part->spinInfo(newspin);
     }
-    rho = RhoDMatrix(PDT::Spin1);rho.average();
+    rho = RhoDMatrix(PDT::Spin1);
     constructSpinInfo(wave,inspin,massless,phase,vertex);
     }
   }

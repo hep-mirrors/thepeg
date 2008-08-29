@@ -427,7 +427,7 @@ inline void RSSpinorWaveFunction::constructSpinInfo(vector<LorentzRSSpinor<SqrtE
 	    }
 	  constructSpinInfo(wave,inspin,vertex);
 	}
-      rho = RhoDMatrix(PDT::Spin3Half);rho.average();
+      rho = RhoDMatrix(PDT::Spin3Half);
     }
   else
     {
@@ -452,7 +452,7 @@ inline void RSSpinorWaveFunction::constructSpinInfo(vector<LorentzRSSpinor<SqrtE
 	      if(time) inspin->decayed(true);
 	      part->spinInfo(newspin);
 	    }
-	  rho = RhoDMatrix(PDT::Spin3Half);rho.average();
+	  rho = RhoDMatrix(PDT::Spin3Half);
 	  constructSpinInfo(wave,inspin,vertex);
 	}
     }

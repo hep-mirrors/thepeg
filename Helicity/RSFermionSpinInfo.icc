@@ -17,29 +17,14 @@ namespace ThePEG {
 namespace Helicity {
 
 inline RSFermionSpinInfo::RSFermionSpinInfo() 
-{
-  _productionstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
-  _currentstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
-  _decaystates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
-  iSpin(PDT::Spin3Half);
-  _decaycalc=false;
-}
-
-inline RSFermionSpinInfo::RSFermionSpinInfo(const RSFermionSpinInfo & x)
-  : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _currentstates(x._currentstates),
-    _decaycalc(x._decaycalc) {}
+  : SpinInfo(PDT::Spin3Half),
+    _productionstates(4), _decaystates(4), _currentstates(4), 
+    _decaycalc(false) {}
 
 inline RSFermionSpinInfo::RSFermionSpinInfo(const Lorentz5Momentum & in,bool intime)
-{
-  _productionstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
-  _currentstates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
-  _decaystates.resize(4,LorentzRSSpinor<SqrtEnergy> ());
-  iSpin(PDT::Spin3Half);
-  setProductionMomentum(in);
-  _decaycalc=false;
-  setTimelike(intime);
-}
+  : SpinInfo(PDT::Spin3Half, in, intime),
+    _productionstates(4), _decaystates(4), _currentstates(4), 
+    _decaycalc(false) {}
 
 inline EIPtr RSFermionSpinInfo::clone() const
 {

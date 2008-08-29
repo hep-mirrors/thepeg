@@ -17,29 +17,14 @@ namespace ThePEG {
 namespace Helicity {
 
 inline TensorSpinInfo::TensorSpinInfo() 
-{
-  _productionstates.resize(5);
-  _currentstates.resize(5);
-  _decaystates.resize(5);
-  iSpin(PDT::Spin2);
-  _decaycalc = false;
-}
-
-inline TensorSpinInfo::TensorSpinInfo(const TensorSpinInfo & x)
-  : SpinInfo(x), _productionstates(x._productionstates),
-    _decaystates(x._decaystates), _currentstates(x._currentstates),
-    _decaycalc(x._decaycalc) {}
+  : SpinInfo(PDT::Spin2),
+    _productionstates(5), _decaystates(5), _currentstates(5), 
+    _decaycalc(false) {}
 
 inline TensorSpinInfo::TensorSpinInfo(const Lorentz5Momentum & in,bool intime)
-{
-  _productionstates.resize(5);
-  _currentstates.resize(5);
-  _decaystates.resize(5);
-  iSpin(PDT::Spin2);
-  setProductionMomentum(in);
-  _decaycalc=false;
-  setTimelike(intime);
-}
+  : SpinInfo(PDT::Spin2, in, intime),
+    _productionstates(5), _decaystates(5), _currentstates(5), 
+    _decaycalc(false) {}
 
 inline EIPtr TensorSpinInfo::clone() const
 {

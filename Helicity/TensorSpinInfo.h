@@ -51,11 +51,6 @@ public:
   inline TensorSpinInfo();
 
   /**
-   * Copy-constructor.
-   */
-  inline TensorSpinInfo(const TensorSpinInfo &);
-
-  /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.

@@ -14,8 +14,8 @@ DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
 INCLUDEFILES = $(DOCFILES) epsilon.icc HelicityVertex.fh HelicityVertex.icc \
                LorentzSpinor.fh LorentzSpinor.tcc LorentzSpinorBar.tcc \
                LorentzSpinor.icc LorentzSpinorBar.fh LorentzSpinorBar.icc \
-               LorentzTensor.icc FermionSpinInfo.fh RhoDMatrix.icc \
-               SpinInfo.fh SpinInfo.icc LorentzTensor.fh \
+               LorentzTensor.icc FermionSpinInfo.fh \
+               SpinInfo.fh LorentzTensor.fh \
                FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
                ScalarSpinInfo.fh \
                TensorSpinInfo.fh TensorSpinInfo.icc LorentzTensor.tcc \

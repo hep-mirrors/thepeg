@@ -68,19 +68,28 @@ public:
   /**
    * Default constructor.
    */
-  inline SpinInfo();
+  SpinInfo() 
+    : _timelike(false), _prodloc(-1), _decayloc(-1), 
+      _decayed(false), _developed(false) {}
 
   /**
    * Standard Constructor.
+   * @param s the spin.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  inline SpinInfo(const Lorentz5Momentum & p, bool time);
+  SpinInfo(PDT::Spin s, 
+	   const Lorentz5Momentum & p = Lorentz5Momentum(), 
+	   bool time = false)
+    : _timelike(time), _prodloc(-1), _decayloc(-1),
+      _decayed(false), _developed(false),
+      _rhomatrix(s), _Dmatrix(s), _spin(s),
+      _productionmomentum(p), _currentmomentum(p) {}
 
   /**
    * Copy-constructor.
    */
-  inline SpinInfo(const SpinInfo &);
+  SpinInfo(const SpinInfo &);
   //@}
 
 public:
@@ -101,7 +110,7 @@ public:
   /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const;
 
   /**
    * Method to handle the delelation
@@ -111,7 +120,9 @@ public:
   /**
    * Perform a lorentz rotation of the spin information
    */
-  virtual void transform(const LorentzMomentum &,LorentzRotation);
+  virtual void transform(const LorentzMomentum &, const LorentzRotation & r) {
+    _currentmomentum.transform(r);
+  }
 
 public:
 
@@ -121,22 +132,37 @@ public:
   /**
    * Set the vertex at which the particle was produced.
    */
-  inline void setProductionVertex(VertexPtr) const;
+  void setProductionVertex(VertexPtr in) const {
+    _production=in;
+    // add to the list of outgoing if timelike
+    int temp;
+    if(_timelike) in->addOutgoing(this,temp); 
+    // or incoming if spacelike
+    else          in->addIncoming(this,temp);
+    _prodloc=temp;
+  }
 
   /**
    * Get the vertex at which the particle was produced.
    */
-  inline tcVertexPtr getProductionVertex() const;
+  tcVertexPtr getProductionVertex() const { return _production; }
 
   /**
    * Set the vertex at which the particle decayed or branched.
    */
-  inline void setDecayVertex(VertexPtr) const;
+  void setDecayVertex(VertexPtr in) const {
+    _decay=in;
+    int temp;
+    in->addIncoming(this,temp);
+    _decayloc=temp;
+    assert(temp==0);
+    //if(temp!=0){cout << "something dodgy here can only decay once" << endl;}
+  }
 
   /**
    * Get the vertex at which the particle decayed or branched.
    */
-  inline tcVertexPtr getDecayVertex() const;
+  tcVertexPtr getDecayVertex() const { return _decay; }
   //@}
 
   /** @name Access information about the associated particle. */
@@ -144,58 +170,74 @@ public:
   /**
    * Has the particle decayed?
    */
-  inline bool decayed() const;
+  bool decayed() const { return _decayed; }
 
   /**
    * Set if the particle has decayed.
    */
-  inline void decayed(bool) const;
+  void decayed(bool b) const { _decayed = b; }
 
   /**
    * Return true if the decay matrix required to perform the decays of
    * the siblings of a particle has been calculated.
    */
-  inline  bool developed() const;
+  bool developed() const { return _developed; }
 
   /**
    * Calculate the rho matrix for the decay if not already done.
    */
-  inline void decay() const;
+  void decay() const {
+    // if the particle has already been decayed do nothing
+    if(_decayed) return;
+    // otherwise we need to obtain the correct rho matrix
+    _decayed=true;
+    if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc);
+    _decaymomentum = _currentmomentum;
+  }
+
 
   /**
    * Set the developed flag and calculate the D matrix for the decay.
    */
-  inline void develop() const;
+  void develop() const {
+    // if the particle has already been developed do nothing
+    if(_developed) return; 
+    // otherwise we need to obtain the correct D matrix
+    _developed=true;
+    if(_decay) _Dmatrix= _decay->getDMatrix(_decayloc);
+    else {
+      _Dmatrix=RhoDMatrix(iSpin());
+    }
+  }
 
   /**
    * Set the developed variable for the particle.
    */
-  inline void setDeveloped(bool) const;
+  void setDeveloped(bool b) const { _developed = b; }
 
   /**
    * Return 2s+1 for the particle
    */
-  inline PDT::Spin iSpin() const;
-
-  /**
-   * Return true if this is a particle (rather than an antiparticle).
-   */
-  inline bool Particle();
+  PDT::Spin iSpin() const { return _spin; }
 
   /**
    * Return the momentum of the particle when it was produced.
    */
-  inline const Lorentz5Momentum & productionMomentum() const;
+  const Lorentz5Momentum & productionMomentum() const {
+    return _productionmomentum;
+  }
 
   /**
    *  The current momentum of the particle
    */
-  inline const Lorentz5Momentum & currentMomentum() const;
+  const Lorentz5Momentum & currentMomentum() const {
+    return _currentmomentum;
+  }
 
   /**
    * Return true if particle is timelike (rather than spacelike).
    */
-  inline bool timelike();
+  bool timelike() const { return _timelike; }
   //@}
 
 public:
@@ -205,45 +247,32 @@ public:
   /**
    * Access the rho matrix.
    */
-  inline RhoDMatrix rhoMatrix() const;
+  RhoDMatrix rhoMatrix() const { return _rhomatrix; }
 
   /**
    * Access the rho matrix.
    */
-  inline RhoDMatrix & rhoMatrix();
+  RhoDMatrix & rhoMatrix() { return _rhomatrix; }
 
   /**
    * Access the D matrix.
    */
-  inline RhoDMatrix DMatrix() const;
+  RhoDMatrix DMatrix() const { return _Dmatrix; }
 
   /**
    * Access the D matrix.
    */
-  inline RhoDMatrix & DMatrix();
+  RhoDMatrix & DMatrix() { return _Dmatrix; }
   //@}
 
 protected:
 
   /**
-   * Set the spin of the particle.
-   */
-  inline PDT::Spin iSpin(PDT::Spin);
-
-  /**
-   * Set the production momentum  of the particle.
-   */
-  inline void setProductionMomentum(const Lorentz5Momentum & in);
-
-  /**
-   * Specify if the particle is timelike (rather than spacelike).
-   */
-  inline void setTimelike(bool);
-
-  /**
    *  Check if momentum is near to the current momentum
    */
-  inline bool isNear(const Lorentz5Momentum &);
+  bool isNear(const Lorentz5Momentum & p) {
+    return currentMomentum().isNear(p,_eps);
+  }
 
 private:
 
@@ -369,10 +398,5 @@ struct ClassTraits<ThePEG::Helicity::SpinInfo>
 /** @endcond */
 
 }
-
-#include "SpinInfo.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SpinInfo.tcc"
-#endif
 
 #endif /* ThePEG_SpinInfo_H */
