@@ -25,7 +25,6 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 
 using namespace ThePEG;
-
 PDFBase::PDFBase()
   : rangeException(rangeZero) {}
 
@@ -73,6 +72,20 @@ xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
   if ( !QuarkMatcher::Check(*parton) ) return 0.0;
   return max(0.0, xfl(particle, parton, partonScale, l, particleScale) -
 	     xfl(particle, parton->CC(), partonScale, l, particleScale));
+}
+
+double PDFBase::
+xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double x,
+     double eps, Energy2 particleScale) const {
+  return max(0., xfx(particle,parton,partonScale,x,eps,particleScale)-
+	     xfvx(particle,parton,partonScale,x,eps,particleScale));
+}
+
+double PDFBase::
+xfsl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
+     Energy2 particleScale) const {
+  return max(0., xfl(particle,parton,partonScale,l,particleScale)-
+	     xfvl(particle,parton,partonScale,l,particleScale));
 }
 
 double PDFBase::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,

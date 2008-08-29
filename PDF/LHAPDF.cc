@@ -578,6 +578,69 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   return 0.0;
 }
 
+double LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		    double x, double, Energy2 particleScale) const {
+  // Here we should return the actual density.
+  using namespace ThePEG::ParticleID;
+  using namespace LHAPDFIndex;
+  checkUpdate(x, partonScale, particleScale);
+
+  switch ( parton->id() ) {
+  case t:
+    return maxFlav() < 6? 0.0: lastXF[top];
+  case tbar:
+    return maxFlav() < 6? 0.0: lastXF[topb];
+  case b:
+    return maxFlav() < 5? 0.0: lastXF[bot];
+  case bbar:
+    return maxFlav() < 5? 0.0: lastXF[botb];
+  case c:
+    return maxFlav() < 4? 0.0: lastXF[cha];
+  case cbar:
+    return maxFlav() < 4? 0.0: lastXF[chab];
+  case ParticleID::s:
+    return lastXF[str];
+  case sbar:
+    return lastXF[strb];
+  case u:
+    switch ( particle->id() ) {
+    case n0: return lastXF[dowb];
+    case pbarminus: return lastXF[upb];
+    case nbar0: return lastXF[dowb];
+    case pplus: return lastXF[upb];
+    default: return lastXF[up];
+    }
+  case ubar:
+    switch ( particle->id() ) {
+    case n0: return lastXF[dowb];
+    case pbarminus: return lastXF[upb];
+    case nbar0: return lastXF[dowb];
+    case pplus: return lastXF[upb];
+    default: return lastXF[upb];
+    }
+  case d:
+    switch ( particle->id() ) {
+    case n0: return lastXF[upb];
+    case pbarminus: return lastXF[dowb];
+    case nbar0: return lastXF[upb];
+    case pplus: return lastXF[dowb];
+    default: return lastXF[dow];
+    }
+  case dbar:
+    switch ( particle->id() ) {
+    case n0: return lastXF[upb];
+    case pbarminus: return lastXF[dowb];
+    case nbar0: return lastXF[upb];
+    case pplus: return lastXF[dowb];
+    default: return lastXF[dowb];
+    }
+  case ParticleID::g:
+    return lastXF[glu];
+  case ParticleID::gamma:
+    return enablePartonicGamma ? lastXF[gamma] : 0.;
+  }
+  return 0.0;
+}
 
 void LHAPDF::persistentOutput(PersistentOStream & os) const {
   os << oenum(thePType) << thePDFName << theMember << thePhotonOption 

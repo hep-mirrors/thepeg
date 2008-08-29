@@ -22,6 +22,9 @@ namespace ThePEG {
  * for particles with sub-structure. A number of of virtual methods
  * are defined which should be overridden by sub-classes.
  *
+ * It is essential that either xfx or xfl is overidden to avoid
+ * infinite recursive function calls.
+ *
  * A PDFBase object can be assigned to a BeamParticleData object
  * and/or to a PartonExtractor object. A PDFBase has a pointer to a
  * RemnantHandler object which should be capable of generating
@@ -128,6 +131,31 @@ public:
    * valense quarks, but return zero for anything else.
    */
   virtual double xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		      double x, double eps = 0.0,
+		      Energy2 particleScale = 0.0*GeV2) const;
+
+  /**
+   * The sea density. Return the pdf for the given cvalence \a
+   * parton inside the given \a particle for the virtuality \a
+   * partonScale and logarithmic momentum fraction \a l
+   * \f$(l=\log(1/x)\f$. The \a particle is assumed to have a
+   * virtuality \a particleScale. If not overidden by a sub class this
+   * implementation will assume that the difference between a quark
+   * and anti-quark distribution is due do valense quarks.
+   */
+  virtual double xfsl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
+		      double l, Energy2 particleScale = 0.0*GeV2) const;
+
+  /**
+   * The sea density. Return the pdf for the given cvalence \a
+   * parton inside the given \a particle for the virtuality \a
+   * partonScale and momentum fraction \a x. The \a particle is
+   * assumed to have a virtuality \a particleScale. If not overidden
+   * by a sub class this implementation will assume that the
+   * difference between a quark and anti-quark distribution is due do
+   * valense quarks.
+   */
+  virtual double xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		      double x, double eps = 0.0,
 		      Energy2 particleScale = 0.0*GeV2) const;
 
