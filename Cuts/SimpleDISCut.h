@@ -31,7 +31,9 @@ public:
   /**
    * The default constructor.
    */
-  inline SimpleDISCut();
+  SimpleDISCut()
+    : theMinQ2(1.0*GeV2), theMaxQ2(100.0*GeV2),
+      theMinW2(100.0*GeV2), theMaxW2(1000000.0*GeV2), chargedCurrent(false) {}
 
 public:
 
@@ -131,13 +133,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -238,7 +240,5 @@ struct ClassTraits<SimpleDISCut>
 /** @endcond */
 
 }
-
-#include "SimpleDISCut.icc"
 
 #endif /* THEPEG_SimpleDISCut_H */

@@ -22,6 +22,14 @@
 
 using namespace ThePEG;
 
+IBPtr SimpleDISCut::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr SimpleDISCut::fullclone() const {
+  return new_ptr(*this);
+}
+
 bool SimpleDISCut::check(long idi, long ido) const {
   if ( abs(idi) <= 10 || abs(idi) > 16 ) return false;
   if ( idi*ido <= 0 ) return false;

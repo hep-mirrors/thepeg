@@ -72,12 +72,7 @@ public:
   /**
    * The default constructor.
    */
-  inline Cuts(Energy MhatMin=2*GeV);
-
-  /**
-   * The copy constructor.
-   */
-  inline Cuts(const Cuts &);
+  Cuts(Energy MhatMin=2*GeV);
 
   /**
    * The destructor.
@@ -301,17 +296,17 @@ public:
   /**
    * Add a OneCutBase object.
    */
-  void add(tOneCutPtr);
+  void add(tOneCutPtr c) { theOneCuts.push_back(c); }
 
   /**
    * Add a TwoCutBase object.
    */
-  void add(tTwoCutPtr);
+  void add(tTwoCutPtr c) { theTwoCuts.push_back(c); }
 
   /**
    * Add a MultiCutBase object.
    */
-  void add(tMultiCutPtr);
+  void add(tMultiCutPtr c) { theMultiCuts.push_back(c); }
   //@}
 
 public:
@@ -322,26 +317,28 @@ public:
    * The maximum allowed total invariant mass squared allowed for
    * events to be considered.
    */
-  inline Energy2 SMax() const;
+  Energy2 SMax() const { return theSMax; }
+
 
   /**
    * The total rapidity of the colliding particles corresponding to
    * the maximum invariant mass squared, SMax().
    */
-  inline double Y() const;
+  double Y() const { return theY; }
 
   /**
    * The invariant mass squared of the hard sub-process of the event
    * being considered.
    */
-  inline Energy2 currentSHat() const;
+  Energy2 currentSHat() const { return theCurrentSHat; }
 
   /**
    * The total rapidity of hard sub-process (wrt. the rest system of
    * the colliding particles so that currentYHat() + Y() gives the
    * true rapidity) of the event being considered.
    */
-  inline double currentYHat() const;
+  double currentYHat() const { return theCurrentYHat; }
+
   //@}
 
   /** @name Functions to inquire about specific cuts. */
@@ -349,101 +346,101 @@ public:
   /**
    * The minimum allowed value of \f$\hat{s}\f$.
    */
-  inline Energy2 sHatMin() const;
+  Energy2 sHatMin() const { return max(sqr(theMHatMin), theX1Min*theX2Min*SMax()); }
 
   /**
    * The maximum allowed value of \f$\hat{s}\f$.
    */
-  inline Energy2 sHatMax() const;
+  Energy2 sHatMax() const { return min(sqr(theMHatMax), theX1Max*theX2Max*SMax()); }
 
   /**
    * Check if the given \f$\hat{s}\f$ is within the cuts.
    */
-  inline bool sHat(Energy2 sh) const;
+  bool sHat(Energy2 sh) const { return sh > sHatMin() && sh <= sHatMax(); }
 
   /**
    * The minimum allowed value of \f$\sqrt{\hat{s}}\f$.
    */
-  inline Energy mHatMin() const;
+  Energy mHatMin() const { return max(theMHatMin, sqrt(theX1Min*theX2Min*SMax())); }
 
   /**
    * The maximum allowed value of \f$\sqrt{\hat{s}}\f$.
    */
-  inline Energy mHatMax() const;
+  Energy mHatMax() const { return min(theMHatMax, sqrt(theX1Max*theX2Max*SMax())); }
 
   /**
    * The minimum value of the rapidity of the hard sub-process
    * (wrt. the rest system of the colliding particles).
    */
-  inline double yHatMin() const;
+  double yHatMin() const;
 
   /**
    * The maximum value of the rapidity of the hard sub-process
    * (wrt. the rest system of the colliding particles).
    */
-  inline double yHatMax() const;
+  double yHatMax() const;
 
   /**
    * Check if the given \f$\hat{y}\f$ is within the cuts.
    */
-  inline bool yHat(double y) const;
+  bool yHat(double y) const;
 
   /**
    * The minimum value of the positive light-cone fraction of the hard
    * sub-process.
    */
-  inline double x1Min() const;
+  double x1Min() const;
 
   /**
    * The maximum value of the positive light-cone fraction of the hard
    * sub-process.
    */
-  inline double x1Max() const;
+  double x1Max() const;
 
   /**
    * Check if the given \f$x_1\f$ is within the cuts.
    */
-  inline bool x1(double x) const;
+  bool x1(double x) const;
 
   /**
    * The minimum value of the negative light-cone fraction of the hard
    * sub-process.
    */
-  inline double x2Min() const;
+  double x2Min() const;
 
   /**
    * The maximum value of the negative light-cone fraction of the hard
    * sub-process.
    */
-  inline double x2Max() const;
+  double x2Max() const;
 
   /**
    * Check if the given \f$x_2\f$ is within the cuts.
    */
-  inline bool x2(double x) const;
+  bool x2(double x) const;
 
   /**
    * The minimum allowed value of the scale to be used in PDF's and
    * coupling constants.
    */
-  inline Energy2 scaleMin() const;
+  Energy2 scaleMin() const { return theScaleMin; }
 
   /**
    * The maximum allowed value of the scale to be used in PDF's and
    * coupling constants.
    */
-  inline Energy2 scaleMax() const;
+  Energy2 scaleMax() const { return theScaleMax; }
 
   /**
    * Check if the given scale is within the cuts.
    */
-  inline bool scale(Energy2 Q2) const;
+  bool scale(Energy2 Q2) const { return Q2 > scaleMin() && Q2 < scaleMax(); }
 
   /**
    * Set true if a matrix element is should be using this cut and is
    * mirrored along the z-axis .
    */
-  inline bool subMirror() const;
+  bool subMirror() const { return theSubMirror; }
   //@}
 
 public:
@@ -480,61 +477,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
-  //@}
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  inline virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this
-   * object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -742,10 +691,5 @@ struct ClassTraits<Cuts>
 /** @endcond */
 
 }
-
-#include "Cuts.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Cuts.tcc"
-#endif
 
 #endif /* THEPEG_Cuts_H */

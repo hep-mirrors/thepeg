@@ -30,6 +30,14 @@ using namespace ThePEG;
 
 SimpleKTCut::~SimpleKTCut() {}
 
+IBPtr SimpleKTCut::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr SimpleKTCut::fullclone() const {
+  return new_ptr(*this);
+}
+
 Energy SimpleKTCut::minKT(tcPDPtr p) const {
   if ( theMatcher && !theMatcher->matches(*p) ) return 0.0*GeV;
   return theMinKT;

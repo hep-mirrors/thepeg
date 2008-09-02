@@ -29,6 +29,14 @@ using namespace ThePEG;
 
 V2LeptonsCut::~V2LeptonsCut() {}
 
+IBPtr V2LeptonsCut::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr V2LeptonsCut::fullclone() const {
+  return new_ptr(*this);
+}
+
 Energy2 V2LeptonsCut::minS(const tcPDVector & pv) const {
   if ( pv.size() != 2 ) return 0.0*GeV2;
   if ( !checkTypes(pv[0]->id(), pv[1]->id()) ) return 0.0*GeV2;

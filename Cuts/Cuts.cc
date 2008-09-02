@@ -32,7 +32,23 @@
 
 using namespace ThePEG;
 
+Cuts::Cuts(Energy MhatMin)
+  : theSMax(0.0*GeV2), theY(0), theCurrentSHat(-1.0*GeV2),
+    theCurrentYHat(0), theMHatMin(MhatMin), theMHatMax(Constants::MaxEnergy),
+    theYHatMin(-Constants::MaxRapidity), theYHatMax(Constants::MaxRapidity),
+    theX1Min(0.0), theX1Max(1.0), theX2Min(0.0), theX2Max(1.0),
+    theScaleMin(0.0*GeV2), theScaleMax(Constants::MaxEnergy2),
+    theSubMirror(false) {}
+
 Cuts::~Cuts() {}
+
+IBPtr Cuts::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr Cuts::fullclone() const {
+  return new_ptr(*this);
+}
 
 void Cuts::initialize(Energy2 smax, double Y) {
   theSMax = smax;
@@ -242,18 +258,6 @@ double Cuts::maxYStar(tcPDPtr p) const {
   }
 }
 
-void Cuts::add(tOneCutPtr c) {
-  theOneCuts.push_back(c);
-}
-
-void Cuts::add(tTwoCutPtr c) {
-  theTwoCuts.push_back(c);
-}
-
-void Cuts::add(tMultiCutPtr c) {
-  theMultiCuts.push_back(c);
-}
-
 void Cuts::persistentOutput(PersistentOStream & os) const {
   os << ounit(theSMax, GeV2) << theY << ounit(theCurrentSHat, GeV2)
      << theCurrentYHat << ounit(theMHatMin, GeV) << ounit(theMHatMax, GeV)
@@ -444,3 +448,73 @@ void Cuts::Init() {
 
 }
 
+double Cuts::yHatMin() const {
+  return theX1Min > 0.0 && theX2Max > 0.0?
+    max(theYHatMin, 0.5*log(theX1Min/theX2Max)): theYHatMin;
+}
+
+double Cuts::yHatMax() const {
+  return theX1Max > 0.0 && theX2Min > 0.0?
+    min(theYHatMax, 0.5*log(theX1Max/theX2Min)): theYHatMax;
+}
+
+bool Cuts::yHat(double y) const {
+  return y > yHatMin() && y < yHatMax();
+}
+
+double Cuts::x1Min() const {
+  return max(theX1Min, (theMHatMin/sqrt(SMax()))*exp(theYHatMin));
+}
+
+double Cuts::x1Max() const {
+  return min(theX1Max, (theMHatMax/sqrt(SMax()))*exp(theYHatMax));
+}
+
+bool Cuts::x1(double x) const {
+  return x > x1Min() && x <= x1Max();
+}
+
+double Cuts::x2Min() const {
+  return max(theX2Min, (theMHatMin/sqrt(SMax()))/exp(theYHatMax));
+}
+
+double Cuts::x2Max() const {
+  return min(theX2Max, (theMHatMax/sqrt(SMax()))/exp(theYHatMin));
+}
+
+bool Cuts::x2(double x) const {
+  return x > x2Min() && x <= x2Max();
+}
+
+template <typename T>
+vector<typename Ptr<T>::transient_const_pointer>
+Cuts::oneCutObjects() const {
+  typedef typename Ptr<T>::transient_const_pointer tcPtr;
+  vector<tcPtr> ret;
+  for ( int i = 0, N = theOneCuts.size(); i < N; ++i )
+    if ( dynamic_ptr_cast<tcPtr>(theOneCuts[i]) )
+      ret.push_back(dynamic_ptr_cast<tcPtr>(theOneCuts[i]));
+  return ret;
+}
+
+template <typename T>
+vector<typename Ptr<T>::transient_const_pointer>
+Cuts::twoCutObjects() const {
+  typedef typename Ptr<T>::transient_const_pointer tcPtr;
+  vector<tcPtr> ret;
+  for ( int i = 0, N = theTwoCuts.size(); i < N; ++i )
+    if ( dynamic_ptr_cast<tcPtr>(theTwoCuts[i]) )
+      ret.push_back(dynamic_ptr_cast<tcPtr>(theTwoCuts[i]));
+  return ret;
+}
+
+template <typename T>
+vector<typename Ptr<T>::transient_const_pointer>
+Cuts::multiCutObjects() const {
+  typedef typename Ptr<T>::transient_const_pointer tcPtr;
+  vector<tcPtr> ret;
+  for ( int i = 0, N = theMultiCuts.size(); i < N; ++i )
+    if ( dynamic_ptr_cast<tcPtr>(theMultiCuts[i]) )
+      ret.push_back(dynamic_ptr_cast<tcPtr>(theMultiCuts[i]));
+  return ret;
+}
