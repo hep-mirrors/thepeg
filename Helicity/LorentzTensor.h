@@ -20,10 +20,10 @@ namespace Helicity {
 // compiler magic needs these pre-declarations to make friend templates work
 template<typename Value> class LorentzTensor;
 
-/// Scalar product with another tensor
-template <typename T, typename U>
-complex<typename BinaryOpTraits<T,U>::MulT> 
-operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);
+// /// Scalar product with another tensor
+// template <typename T, typename U>
+// complex<typename BinaryOpTraits<T,U>::MulT> 
+// operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);
 
 
 /**
@@ -276,7 +276,7 @@ public:
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzTensor<Value> & boost(const Boost & b) {
+  LorentzTensor<Value> & boost(const Boost & b) {
     return boost(b.x(), b.y(), b.z());
   }
 
@@ -372,7 +372,7 @@ private:
  * Multiplication by a complex number.
  */
 template<typename T, typename U> 
-LorentzTensor<typename BinaryOpTraits<T,U>::MulT> 
+inline LorentzTensor<typename BinaryOpTraits<T,U>::MulT> 
 operator*(complex<U> a, const LorentzTensor<T> & t) {
   return LorentzTensor<typename BinaryOpTraits<T,U>::MulT>
     (a*t.xx(), a*t.xy(), a*t.xz(), a*t.xt(),
@@ -416,6 +416,25 @@ operator*(const LorentzTensor<T> & inten, const LorentzVector<U> & invec){
   outvec.setT(invec.t()*inten(3,3)-invec.x()*inten(3,0)
 	      -invec.y()*inten(3,1)-invec.z()*inten(3,2));
   return outvec;
+}
+
+/**
+ * Multiply a LorentzTensor by a LorentzTensor
+ */
+template <typename T, typename U>
+inline complex<typename BinaryOpTraits<T,U>::MulT>
+operator*(const LorentzTensor<T> & t, const LorentzTensor<U> & u) {
+  typedef complex<typename BinaryOpTraits<T,U>::MulT> RetT;
+  RetT output=RetT(),temp;
+  for(unsigned int ix=0;ix<4;++ix) {
+    temp = t._tensor[ix][3]*u._tensor[ix][3];
+    for(unsigned int iy=0;iy<3;++iy) {
+      temp+= t._tensor[ix][iy]*u._tensor[ix][iy];
+    }
+    if(ix<3) output-=temp;
+    else     output+=temp;
+  }
+  return output;
 }
 
 }
