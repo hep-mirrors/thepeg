@@ -15,25 +15,23 @@
 
 #include "TensorSpinInfo.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "TensorSpinInfo.tcc"
-#endif
-
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
-
-TensorSpinInfo::~TensorSpinInfo() {}
 
 NoPIOClassDescription<TensorSpinInfo> TensorSpinInfo::initTensorSpinInfo;
 // Definition of the static class description member.
 
 void TensorSpinInfo::Init() {}
 
-void TensorSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
+void TensorSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+  if(isNear(m)) {
+    for(unsigned int ix=0;ix<5;++ix) _currentstates[ix].transform(r.one());
+    SpinInfo::transform(m,r);
+  }
+}
+
+EIPtr TensorSpinInfo::clone() const
 {
-  if(isNear(m))
-    {
-      for(unsigned int ix=0;ix<5;++ix){_currentstates[ix].transform(r.one());}
-      SpinInfo::transform(m,r);
-    }
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
 }

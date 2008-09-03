@@ -19,8 +19,6 @@
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
-FermionSpinInfo::~FermionSpinInfo() {}
-
 NoPIOClassDescription<FermionSpinInfo> FermionSpinInfo::initFermionSpinInfo;
 // Definition of the static class description member.
 
@@ -28,7 +26,12 @@ void FermionSpinInfo::Init() {}
 
 void FermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
   if(isNear(m)) {
-    for(unsigned int ix=0;ix<2;++ix){_currentstates[ix].transform(r);}
+    for(unsigned int ix=0;ix<2;++ix) _currentstates[ix].transform(r);
     SpinInfo::transform(m,r);
   }
+}
+
+EIPtr FermionSpinInfo::clone() const {
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
 }

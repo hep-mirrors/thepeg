@@ -345,7 +345,7 @@ public:
   /**
    * return the barred spinor
    */
-  LorentzRSSpinorBar<Value> bar();
+  LorentzRSSpinorBar<Value> bar() const;
 
   /**
    * Standard Lorentz boost specifying the components of the beta vector.

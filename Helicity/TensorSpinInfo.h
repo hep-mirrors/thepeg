@@ -48,19 +48,19 @@ public:
   /**
    * Default constructor.
    */
-  inline TensorSpinInfo();
-
+  TensorSpinInfo() : SpinInfo(PDT::Spin2),_productionstates(5),
+		     _decaystates(5), _currentstates(5), 
+		     _decaycalc(false) {}
+  
   /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  inline TensorSpinInfo(const Lorentz5Momentum & p,bool time);
-
-  /**
-   * Destructor.
-   */
-  virtual ~TensorSpinInfo();
+  TensorSpinInfo(const Lorentz5Momentum & p,bool time)
+    : SpinInfo(PDT::Spin2, p, time),
+      _productionstates(5), _decaystates(5), _currentstates(5), 
+      _decaycalc(false) {}
   //@}
 
 public:
@@ -72,26 +72,45 @@ public:
    * @param hel the helicity (0,1,2,3,4 as described above.)
    * @param in the LorentzTensor for the given helicity.
    */
-  inline void setBasisState(unsigned int hel, LorentzTensor<double> in) const;
+  void setBasisState(unsigned int hel, LorentzTensor<double> in) const {
+    assert(hel<5);
+    _productionstates[hel]=in;
+    _currentstates   [hel]=in;
+  }
 
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0,1,2,3,4 as described above.)
    * @param in the LorentzTensor for the given helicity.
    */
-  inline void setDecayState(unsigned int hel, LorentzTensor<double> in) const;
+  void setDecayState(unsigned int hel, LorentzTensor<double> in) const {
+    assert(hel<5);
+    _decaycalc = true;
+    _decaystates[hel] = in;
+  }
 
   /**
    * Get the basis state for the production for the given helicity, \a
    * hel  (0,1,2,3,4 as described above.)
    */
-  inline LorentzTensor<double> getProductionBasisState(unsigned int hel) const;
+  const LorentzTensor<double> & getProductionBasisState(unsigned int hel) const {
+    assert(hel<5);
+    return _productionstates[hel];
+  }
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (0,1,2,3,4 as described above.)
    */
-  inline LorentzTensor<double> getDecayBasisState(unsigned int hel) const;
+  const LorentzTensor<double> & getDecayBasisState(unsigned int hel) const {
+    assert(hel<5);
+    if(!_decaycalc) {
+      for(unsigned int ix=0;ix<5;++ix)
+	_decaystates[ix]=_currentstates[ix].conjugate();
+      _decaycalc=true;
+    }
+    return _decaystates[hel];
+  }
   //@}
 
   /**
@@ -107,17 +126,9 @@ public:
   static void Init();
 
   /**
-   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
-   * with a whole Event and this has pointers to other event record
-   * objects, these should be rebound to their clones in this
-   * function.
-   */
-  virtual void rebind(const EventTranslationMap & trans);
-
-  /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const;
 
 private:
 
@@ -190,11 +201,5 @@ struct ClassTraits<ThePEG::Helicity::TensorSpinInfo>
 /** @endcond */
 
 }
-
-#include "TensorSpinInfo.icc"
-
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "TensorSpinInfo.tcc"
-#endif
 
 #endif /* THEPEG_TensorSpinInfo_H */

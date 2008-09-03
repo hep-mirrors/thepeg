@@ -24,8 +24,7 @@ inline TensorWaveFunction::TensorWaveFunction(const Lorentz5Momentum & p,
 					      Complex yz,Complex yt,Complex zx,
 					      Complex zy,Complex zz,Complex zt,
 					      Complex tx,Complex ty,Complex tz,
-					      Complex tt)
-{
+					      Complex tt) {
   direction(intermediate);setMomentum(p);checkParticle(part);
   setXX(xx);setXY(xy);setXZ(xz);setXT(xt);
   setYX(yx);setYY(yy);setYZ(yz);setYT(yt);

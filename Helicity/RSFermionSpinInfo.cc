@@ -17,15 +17,8 @@
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RSFermionSpinInfo.tcc"
-#endif
-
-
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
-
-RSFermionSpinInfo::~RSFermionSpinInfo() {}
 
 NoPIOClassDescription<RSFermionSpinInfo> RSFermionSpinInfo::initRSFermionSpinInfo;
 // Definition of the static class description member.
@@ -33,16 +26,19 @@ NoPIOClassDescription<RSFermionSpinInfo> RSFermionSpinInfo::initRSFermionSpinInf
 void RSFermionSpinInfo::Init() {
 
   static ClassDocumentation<RSFermionSpinInfo> documentation
-    ("There is no documentation for the \\classname{RSFermionSpinInfo} class");
+    ("The\\classname{RSFermionSpinInfo} class implements the SpinInfo for spin-3/2"
+     " particles");
 
 }
 
-void RSFermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r)
-{
-  if(isNear(m))
-    {
-      for(unsigned int ix=0;ix<4;++ix){_currentstates[ix].transform(r);}
-      SpinInfo::transform(m,r);
-    }
+void RSFermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+  if(isNear(m)) {
+    for(unsigned int ix=0;ix<4;++ix) _currentstates[ix].transform(r);
+    SpinInfo::transform(m,r);
+  }
 }
 
+EIPtr RSFermionSpinInfo::clone() const {
+  tcSpinPtr temp=this;
+  return const_ptr_cast<SpinPtr>(temp);
+}

@@ -16,10 +16,6 @@
 #include "HelicityVertex.h"
 #include "ThePEG/Helicity/SpinInfo.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HelicityVertex.tcc"
-#endif
-
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
@@ -28,3 +24,13 @@ HelicityVertex::initHelicityVertex;
 // Definition of the static class description member.
 
 void HelicityVertex::Init() {}
+
+void HelicityVertex::rebind(const EventTranslationMap & trans) {
+  EventInfoBase::rebind(trans);
+  for(unsigned int ix=0;ix<_incoming.size();++ix) {
+    _incoming[ix]=trans.translate(_incoming[ix]);
+  }
+  for(unsigned int ix=0;ix<_outgoing.size();++ix) {
+    _outgoing[ix]=trans.translate(_outgoing[ix]);
+  }
+}

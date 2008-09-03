@@ -46,19 +46,19 @@ public:
   /**
    * Default constructor.
    */
-  inline FermionSpinInfo();
+  FermionSpinInfo() : SpinInfo(PDT::Spin1Half), _productionstates(2), 
+		      _currentstates(2), _decaystates(2), 
+		      _decaycalc(false) {}
 
   /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  inline FermionSpinInfo(const Lorentz5Momentum & p, bool time);
-
-  /**
-   * Destructor.
-   */
-  virtual ~FermionSpinInfo();
+  FermionSpinInfo(const Lorentz5Momentum & p, bool time)
+    : SpinInfo(PDT::Spin1Half, p, time),
+      _productionstates(2), _currentstates(2), _decaystates(2),
+      _decaycalc(false) {}
   //@}
 
 public:
@@ -70,32 +70,55 @@ public:
    * @param hel the helicity (0 or 1 as described above.)
    * @param in the LorentzSpinor for the given helicity.
    */
-  inline void setBasisState(unsigned int hel, LorentzSpinor<SqrtEnergy> in) const;
+  void setBasisState(unsigned int hel,
+		     const LorentzSpinor<SqrtEnergy> & in) const {
+    assert(hel<2);
+    _productionstates[hel] = in;
+    _currentstates   [hel] = in;
+  }
 
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0 or 1 as described above.)
    * @param in the LorentzSpinor for the given helicity.
    */
-  inline void setDecayState(unsigned int hel, LorentzSpinor<SqrtEnergy> in) const;
+  void setDecayState(unsigned int hel,
+		     const LorentzSpinor<SqrtEnergy> & in) const {
+    assert(hel<2);
+    _decaycalc = true;
+    _decaystates[hel] = in;
+  }
 
   /**
    * Get the basis state for the production for the given helicity, \a
    * hel (which is 0 or 1 as described above.)
    */
-  inline LorentzSpinor<SqrtEnergy> getProductionBasisState(unsigned int hel) const;
+  const LorentzSpinor<SqrtEnergy> & getProductionBasisState(unsigned int hel) const {
+    assert(hel<2);
+    return _productionstates[hel];
+  }
 
   /**
    * Get the current basis state for the given helicity, \a
    * hel (which is 0 or 1 as described above.)
    */
-  inline LorentzSpinor<SqrtEnergy> getCurrentBasisState(unsigned int hel) const;
+  const LorentzSpinor<SqrtEnergy> & getCurrentBasisState(unsigned int hel) const {
+    assert(hel<2);
+    return _currentstates[hel];
+  }
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
    * (which is 0 or 1 as described above.)
    */
-  inline LorentzSpinor<SqrtEnergy> getDecayBasisState(unsigned int hel) const;
+  const LorentzSpinor<SqrtEnergy> & getDecayBasisState(unsigned int hel) const {
+    assert(hel<2);
+    if(!_decaycalc) {
+      for(unsigned int ix=0;ix<2;++ix) _decaystates[ix]=_currentstates[ix];
+      _decaycalc=true;
+    }
+    return _decaystates[hel];
+  }
   //@}
 
   /**
@@ -111,17 +134,9 @@ public:
   static void Init();
 
   /**
-   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
-   * with a whole Event and this has pointers to other event record
-   * objects, these should be rebound to their clones in this
-   * function.
-   */
-  virtual void rebind(const EventTranslationMap & trans);
-
-  /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const;
 
 private:
 
@@ -193,10 +208,5 @@ struct ClassTraits<ThePEG::Helicity::FermionSpinInfo>
 /** @endcond */
 
 }
-
-#include "FermionSpinInfo.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FermionSpinInfo.tcc"
-#endif
 
 #endif /* ThePEG_FermionSpinInfo_H */

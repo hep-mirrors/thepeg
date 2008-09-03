@@ -13,7 +13,6 @@
 #include "SpinInfo.h"
 #include "ThePEG/Helicity/LorentzPolarizationVector.h"
 #include "VectorSpinInfo.fh"
-// #include "VectorSpinInfo.xh"
 
 namespace ThePEG {
 namespace Helicity {
@@ -46,21 +45,21 @@ public:
   /**
    * Default constructor.
    */
-  inline VectorSpinInfo();
-
+  VectorSpinInfo() : SpinInfo(PDT::Spin1), _productionstates(3),
+		     _decaystates(3), _currentstates(3), 
+		     _decaycalc(false) {}
+  
   /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  inline VectorSpinInfo(const Lorentz5Momentum & p, bool time);
-
-  /**
-   * Destructor.
-   */
-  virtual ~VectorSpinInfo();
+  VectorSpinInfo(const Lorentz5Momentum & p, bool time)
+    : SpinInfo(PDT::Spin1, p, time),
+      _productionstates(3), _decaystates(3), _currentstates(3), 
+      _decaycalc(false) {}
   //@}
-
+  
 public:
 
   /** @name Set and get methods for the basis state. */
@@ -70,26 +69,48 @@ public:
    * @param hel the helicity (0,1,2 as described above.)
    * @param in the LorentzPolarizationVector for the given helicity.
    */
-  inline void setBasisState(unsigned int hel, LorentzPolarizationVector in) const;
+  void setBasisState(unsigned int hel, 
+		     const LorentzPolarizationVector & in) const {
+    assert(hel<3);
+    _productionstates[hel] = in;
+    _currentstates   [hel] = in;
+  }
 
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0,1,2 as described above.)
    * @param in the LorentzPolarizationVector for the given helicity.
    */
-  inline void setDecayState(unsigned int hel, LorentzPolarizationVector in) const;
+  void setDecayState(unsigned int hel, 
+		     const LorentzPolarizationVector & in) const {
+    assert(hel<3);
+    _decaycalc = true;
+    _decaystates[hel] = in;;
+  }
 
   /**
    * Get the basis state for the production for the given helicity, \a
    * hel (0,1,2 as described above.)
    */
-  inline LorentzPolarizationVector getProductionBasisState(unsigned int hel) const;
+  const LorentzPolarizationVector & getProductionBasisState(unsigned int hel) const {
+    assert(hel<3);
+    return _productionstates[hel];
+  }
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel 
    * (0,1,2 as described above.)
    */
-  inline LorentzPolarizationVector getDecayBasisState(unsigned int hel) const;
+  const LorentzPolarizationVector & getDecayBasisState(unsigned int hel) const {
+    assert(hel<3);
+    if(!_decaycalc) {
+      for(unsigned int ix=0;ix<3;++ix)
+	_decaystates[ix]=_currentstates[ix].conjugate();
+      _decaycalc=true;
+    }
+    // return the basis function
+    return _decaystates[hel];
+  }
   //@}
 
   /**
@@ -105,17 +126,9 @@ public:
   static void Init();
 
   /**
-   * Rebind to cloned objects. If a FermionSpinInfo is cloned together
-   * with a whole Event and this has pointers to other event record
-   * objects, these should be rebound to their clones in this
-   * function.
-   */
-  virtual void rebind(const EventTranslationMap & trans);
-
-  /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const;
 
 private:
 
@@ -188,11 +201,5 @@ struct ClassTraits<ThePEG::Helicity::VectorSpinInfo>
 /** @endcond */
 
 }
-
-#include "VectorSpinInfo.icc"
-
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "VectorSpinInfo.tcc"
-#endif
 
 #endif /* THEPEG_VectorSpinInfo_H */

@@ -20,41 +20,39 @@ using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
 // return the barred spinor
-template<typename Value> LorentzRSSpinorBar<Value> LorentzRSSpinor<Value>::bar()
-{
-  complex<Value> out[4][4]; unsigned int ix;
-  switch(_dirac)
-    {
-      // Haber lower energy
-    case HaberDRep:
-      for(ix=0;ix<4;++ix)
-	{
-	  out[ix][0] = conj(_spin[ix][0]);
-	  out[ix][1] = conj(_spin[ix][1]);
-	  out[ix][2] =-conj(_spin[ix][2]);
-	  out[ix][3] =-conj(_spin[ix][3]);
-	}
-      break;
-    case HELASDRep:
-      // HELAS
-      for(ix=0;ix<4;++ix)
-	{
-	  out[ix][0] = conj(_spin[ix][2]);
-	  out[ix][1] = conj(_spin[ix][3]);
-	  out[ix][2] = conj(_spin[ix][0]);
-	  out[ix][3] = conj(_spin[ix][1]);
-	}
-      break;
+template<typename Value> LorentzRSSpinorBar<Value>
+LorentzRSSpinor<Value>::bar() const {
+  complex<Value> out[4][4];
+  unsigned int ix;
+  switch(_dirac) {
+    // Haber lower energy
+  case HaberDRep:
+    for(ix=0;ix<4;++ix) {
+      out[ix][0] = conj(_spin[ix][0]);
+      out[ix][1] = conj(_spin[ix][1]);
+      out[ix][2] =-conj(_spin[ix][2]);
+      out[ix][3] =-conj(_spin[ix][3]);
     }
+    break;
+  case HELASDRep:
+    // HELAS
+    for(ix=0;ix<4;++ix) {
+      out[ix][0] = conj(_spin[ix][2]);
+      out[ix][1] = conj(_spin[ix][3]);
+      out[ix][2] = conj(_spin[ix][0]);
+      out[ix][3] = conj(_spin[ix][1]);
+    }
+    break;
+  }
   return LorentzRSSpinorBar<Value>(out[0][0],out[0][1],out[0][2],out[0][3],
-			    out[1][0],out[1][1],out[1][2],out[1][3],
-			    out[2][0],out[2][1],out[2][2],out[2][3],
-			    out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
+				   out[1][0],out[1][1],out[1][2],out[1][3],
+				   out[2][0],out[2][1],out[2][2],out[2][3],
+				   out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
 }
 
 // boost the spinor
-template<typename Value> LorentzRSSpinor<Value> & LorentzRSSpinor<Value>::boost(double bx,double by,double bz)
-{
+template<typename Value> LorentzRSSpinor<Value> & 
+LorentzRSSpinor<Value>::boost(double bx,double by,double bz) {
   // work out beta and chi
   double b2(bx*bx+by*by+bz*bz),beta(sqrt(b2)),chi(atanh(beta));
   double sinhchi(sinh(0.5*chi)/beta),coshchi(cosh(0.5*chi));

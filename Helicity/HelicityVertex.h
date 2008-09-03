@@ -16,6 +16,7 @@
 #include "ThePEG/EventRecord/EventInfoBase.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/EventRecord/SpinBase.h"
+#include "ThePEG/Helicity/HelicityDefinitions.h"
 #include "HelicityVertex.fh"
 
 // #include "HelicityVertex.xh"
@@ -46,6 +47,13 @@ class HelicityVertex: public EventInfoBase {
 
 public:
 
+  /**
+   * Output the spin density matrix for debugging purposes.
+   */
+  friend ostream & operator<<(ostream & os, const HelicityVertex & vert);
+
+public:
+
   /** A vector of SpinInfo objects. */
   typedef vector<tcSpinPtr> SpinVector;
 
@@ -71,42 +79,49 @@ public:
   /**
    * Access the spin of the incoming particles.
    */
-  inline SpinVector incoming() const;
+  const SpinVector & incoming() const {return _incoming;}
 
   /**
    * Access the spin of the outgoing particles.
    */
-  inline SpinVector outgoing() const;
+  const SpinVector & outgoing() const {return _outgoing;}
 
   /**
    * Add the spin of an incoming particle.
    * @param spin the spin of the particle.
    * @param loc is set to the position in the list of incoming spins.
    */
-  inline void addIncoming(tcSpinPtr spin, int & loc);
+  void addIncoming(tcSpinPtr spin, int & loc) {
+    _incoming.push_back(spin);
+    loc=_incoming.size()-1;
+  }
 
   /**
    * Add the spin of an outgoing particle.
    * @param spin the spin of the particle.
    * @param loc is set to the position in the list of outgoing spins.
    */
-  inline void addOutgoing(tcSpinPtr spin, int & loc);
+  void addOutgoing(tcSpinPtr spin, int & loc) {
+    _outgoing.push_back(spin);
+    loc=_outgoing.size()-1;
+  }
 
   /**
    * Reset the \a spin of the incoming particle at position \a loc.
    */
-  inline void resetIncoming(tcSpinPtr spin, int loc);
+  void resetIncoming(tcSpinPtr spin, int loc) {
+    assert( loc < int(_incoming.size()) && loc >= 0 );
+    _incoming[loc]=spin;
+  }
 
   /**
    * Reset the \a spin of the outgoing particle at position \a loc.
    */
-  inline void resetOutgoing(tcSpinPtr spin, int loc);
+  void resetOutgoing(tcSpinPtr spin, int loc) {
+    assert( loc < int(_outgoing.size()) && loc >= 0 );
+    _outgoing[loc]=spin;
+  }
   //@}
-
-  /**
-   * Print function used for debugging.
-   */
-  inline void output() const;
 
 public:
 
@@ -149,6 +164,18 @@ private:
 
 };
 
+inline ostream & operator<<(ostream & os, const HelicityVertex & vert) {
+  os << "the incoming particles at the vertex are" << endl;
+  for(unsigned int ix=0;ix<vert._incoming.size();++ix) {
+    os << "the " << ix << " th incoming particle " << vert._incoming[ix] << "\n";
+  }
+  os << "the outgoing particles at the vertex are" << endl;
+  for(unsigned int ix=0;ix<vert._outgoing.size();++ix) {
+    os << "the " << ix << " th outgoing particle " << vert._outgoing[ix] << "\n";
+  }
+  return os;
+}
+  
 }
 }
 
@@ -184,10 +211,5 @@ struct ClassTraits<ThePEG::Helicity::HelicityVertex>
 /** @endcond */
 
 }
-
-#include "HelicityVertex.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HelicityVertex.tcc"
-#endif
 
 #endif /* ThePEG_HelicityVertex_H */

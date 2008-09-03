@@ -11,17 +11,17 @@ DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
            LorentzRSSpinor.h LorentzRSSpinorBar.h RSFermionSpinInfo.h \
 	   epsilon.h
 
-INCLUDEFILES = $(DOCFILES) epsilon.icc HelicityVertex.fh HelicityVertex.icc \
+INCLUDEFILES = $(DOCFILES) HelicityVertex.fh \
                LorentzSpinor.fh LorentzSpinor.tcc LorentzSpinorBar.tcc \
-               LorentzSpinor.icc LorentzSpinorBar.fh LorentzSpinorBar.icc \
-               LorentzTensor.icc FermionSpinInfo.fh \
+               LorentzSpinorBar.fh LorentzSpinorBar.icc \
+               FermionSpinInfo.fh \
                SpinInfo.fh LorentzTensor.fh \
-               FermionSpinInfo.icc VectorSpinInfo.fh VectorSpinInfo.icc \
+               VectorSpinInfo.fh \
                ScalarSpinInfo.fh \
-               TensorSpinInfo.fh TensorSpinInfo.icc LorentzTensor.tcc \
+               TensorSpinInfo.fh LorentzTensor.tcc \
                HelicityDefinitions.h LorentzRSSpinor.icc LorentzRSSpinorBar.icc \
                LorentzRSSpinor.fh LorentzRSSpinorBar.fh RSFermionSpinInfo.fh \
-               RSFermionSpinInfo.icc LorentzRSSpinor.tcc LorentzRSSpinorBar.tcc
+               LorentzRSSpinor.tcc LorentzRSSpinorBar.tcc
 
 noinst_LTLIBRARIES = libThePEGHelicity.la
 

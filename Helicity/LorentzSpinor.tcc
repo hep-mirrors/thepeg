@@ -74,7 +74,7 @@ LorentzSpinor<Value> & LorentzSpinor<Value>::boost(double bx,double by,double bz
       out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
       break;
     }
-  for(unsigned int ix=0;ix<4;++ix){_spin[ix]=out[ix];}
+  for(unsigned int ix=0;ix<4;++ix) _spin[ix]=out[ix];
   return *this;
 }
 
@@ -107,36 +107,32 @@ LorentzSpinor<Value> & LorentzSpinor<Value>::boost(const Boost & boostv)
       out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxpiny*_spin[2]);
       break;
     }
-  for(unsigned int ix=0;ix<4;++ix){_spin[ix]=out[ix];}
+  for(unsigned int ix=0;ix<4;++ix) _spin[ix]=out[ix];
   return *this;
 }
 
 // general transform
 template <typename Value>
-LorentzSpinor<Value> & LorentzSpinor<Value>::transform(const SpinHalfLorentzRotation & r)
-{
+LorentzSpinor<Value> & LorentzSpinor<Value>::
+transform(const SpinHalfLorentzRotation & r) {
   unsigned int ix,iy;
-  if(Rep()==defaultDRep)
-    {
-      complex<Value> out[4];
-      for(ix=0;ix<4;++ix)
-	{
-	  out[ix]=complex<Value>();
-	  for(iy=0;iy<4;++iy){out[ix]+=r(ix,iy)*_spin[iy];}
-	}
-      for(ix=0;ix<4;++ix){_spin[ix]=out[ix];}
+  if(Rep()==defaultDRep) {
+    complex<Value> out[4];
+    for(ix=0;ix<4;++ix) {
+      out[ix]=complex<Value>();
+      for(iy=0;iy<4;++iy) out[ix]+=r(ix,iy)*_spin[iy];
     }
-  else
-    {
-      LorentzSpinor temp=(*this).transformRep(defaultDRep);
-      LorentzSpinor output(defaultDRep);
-      for(ix=0;ix<4;++ix)
-	{
-	  output[ix]=complex<Value>();
-	  for(iy=0;iy<4;++iy){output[ix]+=r(ix,iy)*temp[iy];}
-	}
-      *this=output.transformRep(Rep());
+    for(ix=0;ix<4;++ix) _spin[ix]=out[ix];
+  }
+  else {
+    LorentzSpinor temp=(*this).transformRep(defaultDRep);
+    LorentzSpinor output(defaultDRep);
+    for(ix=0;ix<4;++ix) {
+      output[ix]=complex<Value>();
+      for(iy=0;iy<4;++iy) output[ix]+=r(ix,iy)*temp[iy];
     }
+    *this=output.transformRep(Rep());
+  }
   return *this;
 }
 

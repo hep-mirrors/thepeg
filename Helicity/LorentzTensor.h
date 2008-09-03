@@ -40,7 +40,7 @@ operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);
  */
 
 template<typename Value> 
-class LorentzTensor{
+class LorentzTensor {
 
 public:
 
@@ -49,27 +49,43 @@ public:
   /**
    * Default zero constructor.
    */
-  inline LorentzTensor();
+  LorentzTensor()  {
+    for(unsigned int ix=0;ix<4;++ix)
+      for(unsigned int iy=0;iy<4;++iy)
+	_tensor[ix][iy]=Value();
+  }
 
   /**
    * Constructor specifyign all components.
    */
-  LorentzTensor(complex<Value>, complex<Value>, complex<Value>, complex<Value>,
-		complex<Value>, complex<Value>, complex<Value>, complex<Value>,
-		complex<Value>, complex<Value>, complex<Value>, complex<Value>,
-		complex<Value>, complex<Value>, complex<Value>, complex<Value>);
+  LorentzTensor(complex<Value> xx, complex<Value> xy, 
+		complex<Value> xz, complex<Value> xt,
+		complex<Value> yx, complex<Value> yy,
+		complex<Value> yz, complex<Value> yt,
+		complex<Value> zx, complex<Value> zy,
+		complex<Value> zz, complex<Value> zt,
+		complex<Value> tx, complex<Value> ty,
+		complex<Value> tz, complex<Value> tt){
+    _tensor[0][0]=xx;_tensor[0][1]=xy;_tensor[0][2]=xz;_tensor[0][3]=xt;
+    _tensor[1][0]=yx;_tensor[1][1]=yy;_tensor[1][2]=yz;_tensor[1][3]=yt;
+    _tensor[2][0]=zx;_tensor[2][1]=zy;_tensor[2][2]=zz;_tensor[2][3]=zt;
+    _tensor[3][0]=tx;_tensor[3][1]=ty;_tensor[3][2]=tz;_tensor[3][3]=tt;
+  }
 
   /**
    * Constructor in terms of two polarization vectors.
    */
-  inline LorentzTensor(LorentzPolarizationVector, LorentzPolarizationVector);
-
-//   /**
-//    * Constructor in terms of two LorentzVectors
-//    */
-//   inline LorentzTensor(const LorentzVector<double> & p,
-// 		       const LorentzVector<double> & q);
-
+  LorentzTensor(const LorentzPolarizationVector & p,
+		const LorentzPolarizationVector & q) {
+    setXX(p.x() * q.x()); setYX(p.y() * q.x());
+    setZX(p.z() * q.x()); setTX(p.t() * q.x());
+    setXY(p.x() * q.y()); setYY(p.y() * q.y());
+    setZY(p.z() * q.y()); setTY(p.t() * q.y());
+    setXZ(p.x() * q.z()); setYZ(p.y() * q.z());
+    setZZ(p.z() * q.z()); setTZ(p.t() * q.z());
+    setXT(p.x() * q.t()); setYT(p.y() * q.t());
+    setZT(p.z() * q.t()); setTT(p.t() * q.t());
+  }
   //@}
 
   /** @name Access individual components. */
@@ -77,171 +93,177 @@ public:
   /**
    * Get x,x component.
    */
-  inline complex<Value> xx() const;
+  complex<Value> xx() const {return _tensor[0][0];}
 
   /**
    * Get y,x component.
    */
-  inline complex<Value> yx() const;
+  complex<Value> yx() const {return _tensor[1][0];}
   /**
    * Get z,x component.
    */
-  inline complex<Value> zx() const;
+  complex<Value> zx() const {return _tensor[2][0];}
 
   /**
    * Get t,x component.
    */
-  inline complex<Value> tx() const;
+  complex<Value> tx() const {return _tensor[3][0];}
 
   /**
    * Get x,y component.
    */
-  inline complex<Value> xy() const;
+  complex<Value> xy() const {return _tensor[0][1];}
 
   /**
    * Get y,y component.
    */
-  inline complex<Value> yy() const;
+  complex<Value> yy() const {return _tensor[1][1];}
 
   /**
    * Get z,y component.
    */
-  inline complex<Value> zy() const;
+  complex<Value> zy() const {return _tensor[2][1];}
 
   /**
    * Get t,y component.
    */
-  inline complex<Value> ty() const;
+  complex<Value> ty() const {return _tensor[3][1];}
 
   /**
    * Get x,z component.
    */
-  inline complex<Value> xz() const;
+  complex<Value> xz() const {return _tensor[0][2];}
 
   /**
    * Get y,z component.
    */
-  inline complex<Value> yz() const;
+  complex<Value> yz() const {return _tensor[1][2];}
 
   /**
    * Get z,z component.
    */
-  inline complex<Value> zz() const;
+  complex<Value> zz() const {return _tensor[2][2];}
 
   /**
    * Get t,z component.
    */
-  inline complex<Value> tz() const;
+  complex<Value> tz() const {return _tensor[3][2];}
 
   /**
    * Get x,t component.
    */
-  inline complex<Value> xt() const;
+  complex<Value> xt() const {return _tensor[0][3];}
 
   /**
    * Get y,t component.
    */
-  inline complex<Value> yt() const;
+  complex<Value> yt() const {return _tensor[1][3];}
 
   /**
    * Get z,t component.
    */
-  inline complex<Value> zt() const;
+  complex<Value> zt() const {return _tensor[2][3];}
 
   /**
    * Get t,t component.
    */
-  inline complex<Value> tt() const;
+  complex<Value> tt() const {return _tensor[3][3];}
 
   /**
    * Set x,x component.
    */
-  inline void setXX(complex<Value>);
+  void setXX(complex<Value> a) {_tensor[0][0]=a;}
 
   /**
    * Set y,x component.
    */
-  inline void setYX(complex<Value>);
+  void setYX(complex<Value> a) {_tensor[1][0]=a;}
 
   /**
    * Set z,x component.
    */
-  inline void setZX(complex<Value>);
+  void setZX(complex<Value> a) {_tensor[2][0]=a;}
 
   /**
    * Set t,x component.
    */
-  inline void setTX(complex<Value>);
+  void setTX(complex<Value> a) {_tensor[3][0]=a;}
 
   /**
    * Set x,y component.
    */
-  inline void setXY(complex<Value>);
+  void setXY(complex<Value> a) {_tensor[0][1]=a;}
 
   /**
    * Set y,y component.
    */
-  inline void setYY(complex<Value>);
+  void setYY(complex<Value> a) {_tensor[1][1]=a;}
 
   /**
    * Set z,y component.
    */
-  inline void setZY(complex<Value>);
+  void setZY(complex<Value> a) {_tensor[2][1]=a;}
 
   /**
    * Set t,y component.
    */
-  inline void setTY(complex<Value>);
+  void setTY(complex<Value> a) {_tensor[3][1]=a;}
 
   /**
    * Set x,z component.
    */
-  inline void setXZ(complex<Value>);
+  void setXZ(complex<Value> a) {_tensor[0][2]=a;}
 
   /**
    * Set y,z component.
    */
-  inline void setYZ(complex<Value>);
+  void setYZ(complex<Value> a) {_tensor[1][2]=a;}
 
   /**
    * Set z,z component.
    */
-  inline void setZZ(complex<Value>);
+  void setZZ(complex<Value> a) {_tensor[2][2]=a;}
 
   /**
    * Set t,z component.
    */
-  inline void setTZ(complex<Value>);
+  void setTZ(complex<Value> a) {_tensor[3][2]=a;}
 
   /**
    * Set x,t component.
    */
-  inline void setXT(complex<Value>);
+  void setXT(complex<Value> a) {_tensor[0][3]=a;}
 
   /**
    * Set y,t component.
    */
-  inline void setYT(complex<Value>);
+  void setYT(complex<Value> a) {_tensor[1][3]=a;}
 
   /**
    * Set z,t component.
    */
-  inline void setZT(complex<Value>);
+  void setZT(complex<Value> a) {_tensor[2][3]=a;}
 
   /**
    * Set t,t component.
    */
-  inline void setTT(complex<Value>);
+  void setTT(complex<Value> a) {_tensor[3][3]=a;}
 
   /**
    * Get components by indices.
    */
-  inline complex<Value> operator () (int,int) const;
+  complex<Value> operator () (int i, int j) const {
+    assert( i>=0 && i<=3 && j>=0 && j<=3);
+    return _tensor[i][j];
+  }
 
   /**
    * Set components by indices.
    */
-  inline complex<Value> & operator () (int,int);
+  complex<Value> & operator () (int i, int j) {
+    assert( i>=0 && i<=3 && j>=0 && j<=3);
+    return _tensor[i][j];
+  }
   //@}
 
   /** @name Transformations. */
@@ -254,17 +276,41 @@ public:
   /**
    * Standard Lorentz boost specifying the beta vector.
    */
-  inline LorentzTensor & boost(const Boost &);
+  inline LorentzTensor<Value> & boost(const Boost & b) {
+    return boost(b.x(), b.y(), b.z());
+  }
 
   /**
    * General Lorentz transformation
    */
-  inline LorentzTensor & transform(const SpinOneLorentzRotation &);
-
+  LorentzTensor & transform(const SpinOneLorentzRotation & r){
+    unsigned int ix,iy,ixa,iya;
+    LorentzTensor<Value> output;
+    complex<Value> temp;
+    for(ix=0;ix<4;++ix) {
+      for(iy=0;iy<4;++iy) {
+	temp=complex<Value>();
+	for(ixa=0;ixa<4;++ixa) {
+	  for(iya=0;iya<4;++iya)
+	    temp+=r(ix,ixa)*r(iy,iya)*(*this)(ixa,iya);
+	}
+	output(ix,iy)=temp;
+      }
+    }
+    *this=output;
+    return *this;
+  }
+  
   /**
    * Return the complex conjugate.
    */
-  inline LorentzTensor conjugate();
+  LorentzTensor<Value> conjugate() {
+    return LorentzTensor<Value>(conj(xx()), conj(xy()), conj(xz()), conj(xt()),
+				conj(yx()), conj(yy()), conj(yz()), conj(yt()),
+				conj(zx()), conj(zy()), conj(zz()), conj(zt()),
+				conj(tx()), conj(ty()), conj(tz()), conj(tt()));
+  }
+
   //@}
 
   /** @name Arithmetic operators. */
@@ -272,29 +318,45 @@ public:
   /**
    * Scaling with a complex number
    */
-  inline LorentzTensor operator*=(Complex);
+  LorentzTensor<Value> operator*=(Complex a) {
+    for(int ix=0;ix<4;++ix)
+      for(int iy=0;iy<4;++iy) _tensor[ix][iy]*=a;
+    return *this;
+  }
 
   /**
    * Scalar product with other tensor
    */
   template <typename T, typename U>
   friend complex<typename BinaryOpTraits<T,U>::MulT> 
-  operator*(const LorentzTensor<T> &, const LorentzTensor<U> &);
-
+  operator*(const LorentzTensor<T> & t, const LorentzTensor<U> & u);
+    
   /**
    * Addition.
    */
-  inline LorentzTensor operator+(const LorentzTensor &) const;
-
+  LorentzTensor<Value> operator+(const LorentzTensor<Value> & in) const {
+    return LorentzTensor<Value>(xx()+in.xx(),xy()+in.xy(),xz()+in.xz(),xt()+in.xt(),
+				yx()+in.yx(),yy()+in.yy(),yz()+in.yz(),yt()+in.yt(),
+				zx()+in.zx(),zy()+in.zy(),zz()+in.zz(),zt()+in.zt(),
+				tx()+in.tx(),ty()+in.ty(),tz()+in.tz(),tt()+in.tt());
+  }
+  
   /**
    * Subtraction.
    */
-  inline LorentzTensor operator-(const LorentzTensor &) const;
+  LorentzTensor<Value> operator-(const LorentzTensor<Value> & in) const {
+    return LorentzTensor<Value>(xx()-in.xx(),xy()-in.xy(),xz()-in.xz(),xt()-in.xt(),
+				yx()-in.yx(),yy()-in.yy(),yz()-in.yz(),yt()-in.yt(),
+				zx()-in.zx(),zy()-in.zy(),zz()-in.zz(),zt()-in.zt(),
+				tx()-in.tx(),ty()-in.ty(),tz()-in.tz(),tt()-in.tt());
+  }
 
   /**
    * Trace
    */
-  inline complex<Value> trace();
+  complex<Value> trace()  {
+    return _tensor[3][3]-_tensor[0][0]-_tensor[1][1]-_tensor[2][2];
+  }
   //@}
 
 private:
@@ -302,7 +364,7 @@ private:
   /**
    * The components.
    */
-  vector<vector<complex<Value> > > _tensor;
+  complex<Value> _tensor[4][4];
 
 };
 
@@ -310,27 +372,55 @@ private:
  * Multiplication by a complex number.
  */
 template<typename T, typename U> 
-inline LorentzTensor<typename BinaryOpTraits<T,U>::MulT> 
-operator*(complex<U>, const LorentzTensor<T> &);
+LorentzTensor<typename BinaryOpTraits<T,U>::MulT> 
+operator*(complex<U> a, const LorentzTensor<T> & t) {
+  return LorentzTensor<typename BinaryOpTraits<T,U>::MulT>
+    (a*t.xx(), a*t.xy(), a*t.xz(), a*t.xt(),
+     a*t.yx(), a*t.yy(), a*t.yz(), a*t.yt(),
+     a*t.zx(), a*t.zy(), a*t.zz(), a*t.zt(),
+     a*t.tx(), a*t.ty(), a*t.tz(), a*t.tt());
+}
 
 /**
  * Multiply a LorentzVector by a LorentzTensor.
  */
 template<typename T, typename U> 
 inline LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT>
-operator*(const LorentzVector<U> &, const LorentzTensor<T> &);
+operator*(const LorentzVector<U> & invec, 
+	  const LorentzTensor<T> & inten) {
+  LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT> outvec;
+  outvec.setX(invec.t()*inten(3,0)-invec.x()*inten(0,0)
+	      -invec.y()*inten(1,0)-invec.z()*inten(2,0));
+  outvec.setY(invec.t()*inten(3,1)-invec.x()*inten(0,1)
+	      -invec.y()*inten(1,1)-invec.z()*inten(2,1));
+  outvec.setZ(invec.t()*inten(3,2)-invec.x()*inten(0,2)
+	      -invec.y()*inten(1,2)-invec.z()*inten(2,2));
+  outvec.setT(invec.t()*inten(3,3)-invec.x()*inten(0,3)
+	      -invec.y()*inten(1,3)-invec.z()*inten(2,3));
+  return outvec;
+}
 
 /**
  * Multiply a LorentzTensor by a LorentzVector.
  */
 template<typename T, typename U> 
 inline LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT>
-operator*(const LorentzTensor<T> &, const LorentzVector<U> &);
+operator*(const LorentzTensor<T> & inten, const LorentzVector<U> & invec){
+  LorentzVector<typename BinaryOpTraits<complex<T>,U>::MulT> outvec;
+  outvec.setX(invec.t()*inten(0,3)-invec.x()*inten(0,0)
+	      -invec.y()*inten(0,1)-invec.z()*inten(0,2));
+  outvec.setY(invec.t()*inten(1,3)-invec.x()*inten(1,0)
+	      -invec.y()*inten(1,1)-invec.z()*inten(1,2));
+  outvec.setZ(invec.t()*inten(2,3)-invec.x()*inten(2,0)
+	      -invec.y()*inten(2,1)-invec.z()*inten(2,2));
+  outvec.setT(invec.t()*inten(3,3)-invec.x()*inten(3,0)
+	      -invec.y()*inten(3,1)-invec.z()*inten(3,2));
+  return outvec;
+}
 
 }
 }
 
-#include "LorentzTensor.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "LorentzTensor.tcc"
 #endif 
