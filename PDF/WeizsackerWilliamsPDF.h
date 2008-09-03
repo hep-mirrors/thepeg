@@ -1,8 +1,8 @@
 // -*- C++ -*-
-#ifndef THEPEG_WeiszackerWilliamsPDF_H
-#define THEPEG_WeiszackerWilliamsPDF_H
+#ifndef THEPEG_WeizsackerWilliamsPDF_H
+#define THEPEG_WeizsackerWilliamsPDF_H
 //
-// This is the declaration of the WeiszackerWilliamsPDF class.
+// This is the declaration of the WeizsackerWilliamsPDF class.
 //
 
 #include "ThePEG/PDF/PDFBase.h"
@@ -12,19 +12,19 @@ namespace ThePEG {
 using namespace ThePEG;
 
 /**
- * Here is the documentation of the WeiszackerWilliamsPDF class.
+ * Here is the documentation of the WeizsackerWilliamsPDF class.
  *
- * @see \ref WeiszackerWilliamsPDFInterfaces "The interfaces"
- * defined for WeiszackerWilliamsPDF.
+ * @see \ref WeizsackerWilliamsPDFInterfaces "The interfaces"
+ * defined for WeizsackerWilliamsPDF.
  */
-class WeiszackerWilliamsPDF: public PDFBase {
+class WeizsackerWilliamsPDF: public PDFBase {
 
 public:
 
   /**
    *  Default constructor
    */
-  WeiszackerWilliamsPDF();
+  WeizsackerWilliamsPDF();
 
   /** @name Virtual functions to be overridden by sub-classes. */
   //@{
@@ -124,13 +124,13 @@ private:
    * The static object used to initialize the description of this class.
    * Indicates that this is an concrete class without persistent data.
    */
-  static NoPIOClassDescription<WeiszackerWilliamsPDF> initWeiszackerWilliamsPDF;
+  static NoPIOClassDescription<WeizsackerWilliamsPDF> initWeizsackerWilliamsPDF;
 
   /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  WeiszackerWilliamsPDF & operator=(const WeiszackerWilliamsPDF &);
+  WeizsackerWilliamsPDF & operator=(const WeizsackerWilliamsPDF &);
 
 private:
 
@@ -155,32 +155,32 @@ namespace ThePEG {
 /** @cond TRAITSPECIALIZATIONS */
 
 /** This template specialization informs ThePEG about the
- *  base classes of WeiszackerWilliamsPDF. */
+ *  base classes of WeizsackerWilliamsPDF. */
 template <>
-struct BaseClassTrait<WeiszackerWilliamsPDF,1> {
-  /** Typedef of the first base class of WeiszackerWilliamsPDF. */
+struct BaseClassTrait<WeizsackerWilliamsPDF,1> {
+  /** Typedef of the first base class of WeizsackerWilliamsPDF. */
   typedef PDFBase NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of
- *  the WeiszackerWilliamsPDF class and the shared object where it is defined. */
+ *  the WeizsackerWilliamsPDF class and the shared object where it is defined. */
 template <>
-struct ClassTraits<WeiszackerWilliamsPDF>
-  : public ClassTraitsBase<WeiszackerWilliamsPDF> {
+struct ClassTraits<WeizsackerWilliamsPDF>
+  : public ClassTraitsBase<WeizsackerWilliamsPDF> {
   /** Return a platform-independent class name */
-  static string className() { return "WeiszackerWilliamsPDF"; }
+  static string className() { return "WeizsackerWilliamsPDF"; }
   /**
    * The name of a file containing the dynamic library where the class
-   * WeiszackerWilliamsPDF is implemented. It may also include several, space-separated,
-   * libraries if the class WeiszackerWilliamsPDF depends on other classes (base classes
+   * WeizsackerWilliamsPDF is implemented. It may also include several, space-separated,
+   * libraries if the class WeizsackerWilliamsPDF depends on other classes (base classes
    * excepted). In this case the listed libraries will be dynamically
    * linked in the order they are specified.
    */
-  static string library() { return "WeiszackerWilliamsPDF.so"; }
+  static string library() { return "WeizsackerWilliamsPDF.so"; }
 };
 
 /** @endcond */
 
 }
 
-#endif /* THEPEG_WeiszackerWilliamsPDF_H */
+#endif /* THEPEG_WeizsackerWilliamsPDF_H */

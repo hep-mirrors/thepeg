@@ -103,6 +103,10 @@ generate(PartonBinInstance & pb, const double *,
 	(pb.particleData()->name(), pb.partonData()->name(), name(),
 	 "The remnant handler can only extract leptons from "
 	 "leptons of the same type or photons.");
+    else
+      throw RemnantHandlerException
+	(pb.particleData()->name(), pb.partonData()->name(), name(),
+	 "Should not get here.");
   }
 }
 
@@ -159,6 +163,10 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
 	(pb.particleData()->name(), pb.partonData()->name(), name(),
 	 "The remnant handler can only extract leptons from "
 	 "leptons of the same type or photons.");
+    else
+      throw RemnantHandlerException
+	(pb.particleData()->name(), pb.partonData()->name(), name(),
+	 "Should not get here.");
   }
 }
 

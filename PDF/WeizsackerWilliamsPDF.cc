@@ -1,10 +1,10 @@
 // -*- C++ -*-
 //
 // This is the implementation of the non-inlined, non-templated member
-// functions of the WeiszackerWilliamsPDF class.
+// functions of the WeizsackerWilliamsPDF class.
 //
 
-#include "WeiszackerWilliamsPDF.h"
+#include "WeizsackerWilliamsPDF.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/PDT/ParticleData.h"
@@ -14,21 +14,21 @@
 
 using namespace ThePEG;
 
-WeiszackerWilliamsPDF::WeiszackerWilliamsPDF() 
+WeizsackerWilliamsPDF::WeizsackerWilliamsPDF() 
   : _q2min(0.*GeV2), _q2max(4.*GeV2)
 {}
 
-bool WeiszackerWilliamsPDF::canHandleParticle(tcPDPtr particle) const {
+bool WeizsackerWilliamsPDF::canHandleParticle(tcPDPtr particle) const {
   return ( abs(particle->id()) == ParticleID::eminus ||
 	   abs(particle->id()) == ParticleID::muminus );
 }
 
-cPDVector WeiszackerWilliamsPDF::partons(tcPDPtr) const {
+cPDVector WeizsackerWilliamsPDF::partons(tcPDPtr) const {
   // only photon
   return cPDVector(1,getParticleData(ParticleID::gamma));
 }
 
-double WeiszackerWilliamsPDF::xfl(tcPDPtr particle, tcPDPtr parton, Energy2,
+double WeizsackerWilliamsPDF::xfl(tcPDPtr, tcPDPtr parton, Energy2,
                       double l, Energy2 ) const {
   if(parton->id()!=ParticleID::gamma) return 0.;
   double x(exp(-l));
@@ -36,39 +36,39 @@ double WeiszackerWilliamsPDF::xfl(tcPDPtr particle, tcPDPtr parton, Energy2,
   return 0.5*SM().alphaEM()/Constants::pi*(1.+sqr(1.-x));
 }
 
-double WeiszackerWilliamsPDF::xfvl(tcPDPtr, tcPDPtr, Energy2, double,
+double WeizsackerWilliamsPDF::xfvl(tcPDPtr, tcPDPtr, Energy2, double,
 				   Energy2) const {
   // valence density is zero
   return 0.0;
 }
 
 
-NoPIOClassDescription<WeiszackerWilliamsPDF> 
-WeiszackerWilliamsPDF::initWeiszackerWilliamsPDF;
+NoPIOClassDescription<WeizsackerWilliamsPDF> 
+WeizsackerWilliamsPDF::initWeizsackerWilliamsPDF;
 // Definition of the static class description member.
 
-void WeiszackerWilliamsPDF::Init() {
+void WeizsackerWilliamsPDF::Init() {
 
-  static ClassDocumentation<WeiszackerWilliamsPDF> documentation
-    ("The WeiszackerWilliamsPDF provides the PDF for a photon inside"
+  static ClassDocumentation<WeizsackerWilliamsPDF> documentation
+    ("The WeizsackerWilliamsPDF provides the PDF for a photon inside"
      " an incoming lepton in the Weisszacker-Williams approximation");
 
-  static Parameter<WeiszackerWilliamsPDF,Energy2> interfaceQ2Min
+  static Parameter<WeizsackerWilliamsPDF,Energy2> interfaceQ2Min
     ("Q2Min",
      "Minimum value of the magnitude of Q^2 for the photon",
-     &WeiszackerWilliamsPDF::_q2min, GeV2, 0.0*GeV2, 0.0*GeV2, 100.0*GeV2,
+     &WeizsackerWilliamsPDF::_q2min, GeV2, 0.0*GeV2, 0.0*GeV2, 100.0*GeV2,
      false, false, Interface::limited);
 
-  static Parameter<WeiszackerWilliamsPDF,Energy2> interfaceQ2Max
+  static Parameter<WeizsackerWilliamsPDF,Energy2> interfaceQ2Max
     ("Q2Max",
      "Maximum value of the magnitude of Q^2 for the photon",
-     &WeiszackerWilliamsPDF::_q2max, GeV2, 4.0*GeV2, 0.0*GeV2, 100.0*GeV2,
+     &WeizsackerWilliamsPDF::_q2max, GeV2, 4.0*GeV2, 0.0*GeV2, 100.0*GeV2,
      false, false, Interface::limited);
 
 }
 
-double WeiszackerWilliamsPDF::
-flattenScale(tcPDPtr a, tcPDPtr b, const PDFCuts & c,
+double WeizsackerWilliamsPDF::
+flattenScale(tcPDPtr a, tcPDPtr, const PDFCuts & c,
 	     double l, double z, double & jacobian) const {
   double x = exp(-l);
   Energy2 qqmax = min(_q2max,0.25*sqr(x)*c.sMax());
@@ -83,7 +83,7 @@ flattenScale(tcPDPtr a, tcPDPtr b, const PDFCuts & c,
   return exp(low+z*(upp-low));
 }
 
-double WeiszackerWilliamsPDF::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
+double WeizsackerWilliamsPDF::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
 			 double z, double & jacobian) const {
   jacobian *= c.lMax() - c.lMin();
   return c.lMin() + z*(c.lMax() - c.lMin());

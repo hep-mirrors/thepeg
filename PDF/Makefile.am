@@ -19,7 +19,7 @@ CLEANFILES = done-all-links
 
 noinst_LTLIBRARIES = libThePEGPDF.la
 pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
-          GRVBase.la GRV94L.la GRV94M.la WeiszackerWilliamsPDF.la
+          GRVBase.la GRV94L.la GRV94M.la WeizsackerWilliamsPDF.la
 
 if USELHAPDF
 LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h LHAPDF.icc
@@ -38,8 +38,8 @@ LeptonLeptonPDF_la_SOURCES = LeptonLeptonPDF.cc LeptonLeptonPDF.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-WeiszackerWilliamsPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-WeiszackerWilliamsPDF_la_SOURCES = WeiszackerWilliamsPDF.cc WeiszackerWilliamsPDF.h
+WeizsackerWilliamsPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+WeizsackerWilliamsPDF_la_SOURCES = WeizsackerWilliamsPDF.cc WeizsackerWilliamsPDF.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

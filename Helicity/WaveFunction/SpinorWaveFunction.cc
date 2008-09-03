@@ -83,7 +83,8 @@ void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dirac)
     }
   }
   // decide which definition of the spinors we are using
-  SqrtEnergy eplusm,eminusm,eplusp,eminusp,upper,lower;
+  SqrtEnergy eplusm,eminusm,eplusp,eminusp;
+  SqrtEnergy upper=SqrtEnergy(),lower=SqrtEnergy();
   switch(dirac) {
     // Haber lower energy
   case HaberDRep:
