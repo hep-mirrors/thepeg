@@ -27,12 +27,7 @@ public:
   /**
    * The default constructor.
    */
-  inline XSecCheck();
-
-  /**
-   * The copy constructor.
-   */
-  inline XSecCheck(const XSecCheck &);
+  XSecCheck() : target(0*picobarn), tol(0.01), sumw(0.0) {}
 
   /**
    * The destructor.
@@ -105,13 +100,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 
@@ -124,13 +119,16 @@ protected:
    * Initialize this object. Called in the run phase just before
    * a run begins.
    */
-  inline virtual void doinitrun();
+  virtual void doinitrun() {
+    AnalysisHandler::doinitrun();
+    sumw = 0.0;
+  }
 
   /**
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline void dofinish();
+  virtual void dofinish();
   //@}
 
 private:
@@ -203,10 +201,5 @@ struct ClassTraits<XSecCheck>
 /** @endcond */
 
 }
-
-#include "XSecCheck.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "XSecCheck.tcc"
-#endif
 
 #endif /* THEPEG_XSecCheck_H */

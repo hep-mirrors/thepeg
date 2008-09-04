@@ -60,11 +60,6 @@ public:
   StandardModelBase();
 
   /**
-   * Copy-constructor.
-   */
-  StandardModelBase(const StandardModelBase &);
-
-  /**
    * Destructor.
    */
   virtual ~StandardModelBase();
@@ -75,7 +70,7 @@ public:
   /**
    * Return the number of families assumed in the standard model.
    */
-  unsigned int families() const;
+  unsigned int families() const { return theFamilies; }
 
 public:
 
@@ -85,87 +80,89 @@ public:
   /**
    * Running \f$\alpha_{EM}\f$.
    */
-  inline double alphaEM() const;
+  double alphaEM() const { return theAlphaEM; }
 
   /**
    * Constant \f$\alpha_{EM}\f$.
    */
-  inline double alphaEM(Energy2 scale) const;
+  double alphaEM(Energy2 scale) const {
+    return theRunningAlphaEM->value(scale, *this);
+  }
 
   /**
    * Return a pointer to the object handling \f$\alpha_{EM}\f$.
    */
-  inline tAEMPtr alphaEMPtr() const;
+  tAEMPtr alphaEMPtr() const { return theRunningAlphaEM; }
 
   /**
    * Return \f$\sin^2(\theta_W)\f$.
    */
-  inline double sin2ThetaW() const;
+  double sin2ThetaW() const { return theSin2ThetaW; }
 
   /**
    * The neutrino-photon coupling.
    */
-  inline double enu() const;
+  double enu() const { return theEnu; }
 
   /**
    * The charged lepton-photon coupling.
    */
-  inline double ee() const;
+  double ee() const { return theEe; }
 
   /**
    * The up-type-photon coupling.
    */
-  inline double eu() const;
+  double eu() const { return theEu; }
 
   /**
    * The down-type-photon coupling.
    */
-  inline double ed() const;
+  double ed() const { return theEd; }
 
   /**
    * The vector neutrino-\f$Z^0\f$ coupling.
    */
-  inline double vnu() const;
+  double vnu() const { return theVnu; }
 
   /**
    * The vector charged lepton-\f$Z^0\f$ coupling.
    */
-  inline double ve() const;
+  double ve() const { return theVe; }
 
   /**
    * The vector up-type-\f$Z^0\f$ coupling.
    */
-  inline double vu() const;
+  double vu() const { return theVu; }
 
   /**
    * The vector down-type-\f$Z^0\f$ coupling.
    */
-  inline double vd() const;
+  double vd() const { return theVd; }
 
   /**
    * The axial neutrino-\f$Z^0\f$ coupling.
    */
-  inline double anu() const;
+  double anu() const { return theAnu; }
 
   /**
    * The axial charged lepton-\f$Z^0\f$ coupling.
    */
-  inline double ae() const;
+  double ae() const { return theAe; }
 
   /**
    * The axial up-type-\f$Z^0\f$ coupling.
    */
-  inline double au() const;
+  double au() const { return theAu; }
 
   /**
    * The axial down-type-\f$Z^0\f$ coupling.
    */
-  inline double ad() const;
+  double ad() const { return theAd; }
 
   /**
    * Return a pointer to the CKMBase object used.
    */
-  inline tCKMPtr CKM() const;
+  tCKMPtr CKM() const { return theCKM; }
 
   /**
    * Return a square of the element of the Cabibbo-Kobayashi-Maskawa
@@ -189,37 +186,45 @@ public:
   /**
    * Return the number of colours.
    */
-  inline unsigned int Nc() const;
+  unsigned int Nc() const { return theNc; }
 
   /**
    * Return the number of avtive quark flavours for a given \a scale.
    */
-  inline unsigned int Nf(Energy2 scale) const;
+  unsigned int Nf(Energy2 scale) const {
+    return theRunningAlphaS->Nf(scale);
+  }
 
   /**
    * Return the constant strong coupling constant.
    */
-  inline double alphaS() const;
+  double alphaS() const { return theAlphaS; }
 
   /**
    * Return the running strong coupling for a given \a scale
    */
-  inline double alphaS(Energy2 scale) const;
+  double alphaS(Energy2 scale) const {
+    return theRunningAlphaS->value(scale, *this);
+  }
 
   /**
    * Return a pointer to the object handling \f$\alpha_S\f$.
    */
-  inline tASPtr alphaSPtr() const;
+  tASPtr alphaSPtr() const {
+    return theRunningAlphaS;
+  }
 
   /**
    * Return the \f$\Lambda_{QCD}\f$ for \a nflav active flavours.
    */
-  inline Energy LambdaQCD(unsigned int nflav) const;
+  Energy LambdaQCD(unsigned int nflav) const {
+    return theRunningAlphaS->LambdaQCD(nflav);
+  }
 
   /**
    * Return the \f$\Lambda_{QCD}\f$ for the given \a scale.
    */
-  inline Energy LambdaQCD(Energy2 scale) const;
+  Energy LambdaQCD(Energy2 scale) const { return LambdaQCD(Nf(scale)); }
   //@}
 
 public:
@@ -430,7 +435,5 @@ struct ClassTraits<StandardModelBase>:
 /** @endcond */
 
 }
-
-#include "StandardModelBase.icc"
 
 #endif /* ThePEG_StandardModelBase_H */

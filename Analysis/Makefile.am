@@ -18,7 +18,7 @@ pkglib_LTLIBRARIES = LWHFactory.la XSecCheck.la
 LWHFactory_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 LWHFactory_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
-XSecCheck_la_SOURCES = XSecCheck.cc XSecCheck.h XSecCheck.icc
+XSecCheck_la_SOURCES = XSecCheck.cc XSecCheck.h
 XSecCheck_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 noinst_LTLIBRARIES = libThePEGHist.la

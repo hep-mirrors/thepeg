@@ -21,6 +21,14 @@ using namespace ThePEG;
 
 XSecCheck::~XSecCheck() {}
 
+IBPtr XSecCheck::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr XSecCheck::fullclone() const {
+  return new_ptr(*this);
+}
+
 void XSecCheck::analyze(tEventPtr event, long ieve, int loop, int state) {
   AnalysisHandler::analyze(event, ieve, loop, state);
   sumw += event->weight();

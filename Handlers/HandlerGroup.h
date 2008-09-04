@@ -72,14 +72,17 @@ public:
   /**
    * Returns true if current selections in this group is empty.
    */
-  inline bool empty() const;
+  bool empty() const { return isEmpty; }
 
   /**
    * Initialize, taking the default StepHandlers as the current ones,
    * possibly overridden by the default ones in the auxilliary group
    * supplied in the argument.
    */
-  inline void init(const HandlerGroupBase &);
+  void init(const HandlerGroupBase & ext) {
+    clear();
+    refillDefaults(ext);
+  }
 
   /**
    * Return the next step;
@@ -114,12 +117,12 @@ public:
   /**
    * Return a reference to the list of default pre-handlers.
    */
-  inline StepVector & preHandlers();
+  StepVector & preHandlers() { return theDefaultPreHandlers; }
 
   /**
    * Return a reference to the list of default pre-handlers.
    */
-  inline const StepVector & preHandlers() const;
+  const StepVector & preHandlers() const { return theDefaultPreHandlers; }
 
   /**
    * Return a pointer to the default main handler.
@@ -129,12 +132,12 @@ public:
   /**
    * Return a reference to the list of default post-handlers.
    */
-  inline StepVector & postHandlers();
+  StepVector & postHandlers() { return theDefaultPostHandlers; }
 
   /**
    * Return a reference to the list of default post-handlers.
    */
-  inline const StepVector & postHandlers() const;
+  const StepVector & postHandlers() const { return theDefaultPostHandlers; }
 
   /**
    * Return a pointer to the current main handler.
@@ -351,17 +354,21 @@ public:
   /**
    * Unset the current main handler.
    */
-  inline virtual void setHandler();
+  virtual void setHandler() { theHandler = HdlPtr(); }
 
   /**
    * Return a pointer to the current main handler.
    */
-  inline virtual tStepHdlPtr handler() const;
+  virtual tStepHdlPtr handler() const {
+    return dynamic_ptr_cast<tStepHdlPtr>(theHandler);
+  }
 
   /**
    * Return a pointer to the default main handler.
    */
-  inline virtual tStepHdlPtr defaultHandler() const;
+  virtual tStepHdlPtr defaultHandler() const {
+    return dynamic_ptr_cast<tStepHdlPtr>(theDefaultHandler);
+  }
 
   /**
    * Set the current main handler. If the null pointer use the default
@@ -392,12 +399,18 @@ public:
   /**
    * Write to persistent streams.
    */
-  inline virtual void write(PersistentOStream &) const;
+  virtual void write(PersistentOStream & os) const {
+    os << theDefaultHandler << theHandler;
+    HandlerGroupBase::write(os);
+  }
 
   /**
    * Read from persistent streams.
    */
-  inline virtual void read(PersistentIStream &);
+  virtual void read(PersistentIStream & is) {
+    is >> theDefaultHandler >> theHandler;
+    HandlerGroupBase::read(is);
+  }
 
 private:
 
@@ -445,13 +458,19 @@ enum Level {
 
 /** Output a HandlerGroup to a PersistentOStream. */
 template <typename HDLR>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const HandlerGroup<HDLR> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const HandlerGroup<HDLR> & hg) {
+  hg.write(os);
+  return os;
+}
 
 /** Input a HandlerGroup from a PersistentIStream. */
 template <typename HDLR>
-inline PersistentIStream & operator>>(PersistentIStream &,
-				      HandlerGroup<HDLR> &);
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      HandlerGroup<HDLR> & hg) {
+  hg.read(is);
+  return is;
+}
 
 }
 
@@ -529,13 +548,8 @@ static Reference<ThisClass,HandlerClass> interface ## HandlerClass             \
  &ThisClass::interfaceGet ## HandlerClass);                                    \
 ThePEG_DECLARE_PREPOST_OBJECTS(ThisClass,HandlerClass,Post, after)
 
-
-#include "HandlerGroup.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "HandlerGroup.tcc"
 #endif
 
 #endif /* ThePEG_HandlerGroup_H */
-/**
- * Enumerations for indexing of different HandlerGroup.
- */

@@ -3,8 +3,7 @@ mySOURCES = StandardModelBase.cc AlphaEMBase.cc CKMBase.cc AlphaSBase.cc
 DOCFILES = AlphaEMBase.h AlphaSBase.h CKMBase.h  \
            StandardModelBase.h
 
-INCLUDEFILES = $(DOCFILES) AlphaSBase.icc \
-               StandardModelBase.fh StandardModelBase.icc 
+INCLUDEFILES = $(DOCFILES) StandardModelBase.fh
 
 
 noinst_LTLIBRARIES = libThePEGSM.la

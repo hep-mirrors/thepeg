@@ -29,16 +29,6 @@ StandardModelBase::StandardModelBase()
     theAnu(1.0), theAe(-1.0), theAu(1.0), theAd(-1.0), recalculateEW(1),
     theNc(3), theAlphaS(0.3) {}
 
-StandardModelBase::StandardModelBase(const StandardModelBase & x)
-  : Interfaced(x), theFamilies(x.theFamilies), theAlphaEM(x.theAlphaEM),
-    theRunningAlphaEM(x.theRunningAlphaEM), theSin2ThetaW(x.theSin2ThetaW),
-    theEnu(x.theEnu), theEe(x.theEe), theEu(x.theEu), theEd(x.theEd),
-    theVnu(x.theVnu), theVe(x.theVe), theVu(x.theVu), theVd(x.theVd),
-    theAnu(x.theAnu), theAe(x.theAe), theAu(x.theAu), theAd(x.theAd),
-    recalculateEW(x.recalculateEW), theCKM(x.theCKM),
-    theCKM2Matrix(x.theCKM2Matrix), theNc(x.theNc), theAlphaS(x.theAlphaS),
-    theRunningAlphaS(x.theRunningAlphaS) {}
-
 StandardModelBase::~StandardModelBase() {}
 
 IBPtr StandardModelBase::clone() const {

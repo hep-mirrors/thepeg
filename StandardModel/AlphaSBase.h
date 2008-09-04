@@ -58,17 +58,22 @@ public:
   /**
    * Return the number of avtive quark flavours.
    */
-  inline unsigned int Nf(Energy2 scale) const;
+  unsigned int Nf(Energy2 scale) const {
+    unsigned int i = 0;
+    while ( i < theFlavourThresholds.size() &&
+	    theFlavourThresholds[i] < scale ) ++i;
+    return i;
+  }
 
   /**
    * Return the \f$\Lambda_{QCD}\f$ used for \a nflav active flavours.
    */
-  inline Energy LambdaQCD(unsigned int nflav) const;
+  Energy LambdaQCD(unsigned int nflav) const  { return theLambdaQCDs[nflav]; }
 
   /**
    * Return the \f$\Lambda_{QCD}\f$ used for corresponding given \a scale.
    */
-  inline Energy LambdaQCD(Energy2 scale) const;
+  Energy LambdaQCD(Energy2 scale) const { return theLambdaQCDs[Nf(scale)]; }
   //@}
 
 public:
@@ -158,7 +163,5 @@ struct ClassTraits<AlphaSBase>: public ClassTraitsBase<AlphaSBase> {
 /** @endcond */
 
 }
-
-#include "AlphaSBase.icc"
 
 #endif /* ThePEG_AlphaSBase_H */

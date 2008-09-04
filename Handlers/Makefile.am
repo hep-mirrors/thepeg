@@ -21,7 +21,7 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
 
 INCLUDEFILES = $(DOCFILES) CascadeHandler.icc \
                DecayHandler.icc EventHandler.icc \
-               HandlerBase.icc HandlerGroup.icc \
+               HandlerBase.icc \
                HandlerGroup.tcc \
                StandardEventHandler.icc \
                StandardEventHandler.fh StepHandler.icc \
