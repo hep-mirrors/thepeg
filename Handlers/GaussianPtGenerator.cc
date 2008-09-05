@@ -16,17 +16,20 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Vectors/Transverse.h"
 #include "ThePEG/Repository/EventGenerator.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "GaussianPtGenerator.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 GaussianPtGenerator::~GaussianPtGenerator() {}
+
+IBPtr GaussianPtGenerator::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr GaussianPtGenerator::fullclone() const {
+  return new_ptr(*this);
+}
 
 TransverseMomentum GaussianPtGenerator::generate() const {
   pair<Energy,Energy> ret;

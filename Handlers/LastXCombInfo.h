@@ -42,12 +42,12 @@ public:
   /**
    * Return a reference to the last selected XComb.
    */
-  inline const XC & lastXComb() const;
+  const XC & lastXComb() const { return *theLastXComb; }
 
   /**
    * Return a pointer to the last selected XComb.
    */
-  inline tXCPtr lastXCombPtr() const;
+  tXCPtr lastXCombPtr() const { return theLastXComb; }
   //@}
 
   /** @name Access the objects used by the XComb object. */
@@ -55,12 +55,12 @@ public:
   /**
    * Return a reference to the currently used EventHandler
    */
-  inline const EventHandler & lastEventHandler() const;
+  const EventHandler & lastEventHandler() const { return lastXComb().eventHandler(); }
 
   /**
    * A pointer to the currently used parton extractor.
    */
-  inline tPExtrPtr lastExtractor() const;
+  tPExtrPtr lastExtractor() const { return lastXComb().pExtractor(); }
 
   /**
    * Return the parton density used to extract the given parton. This
@@ -68,17 +68,18 @@ public:
    * all its dependencies in this header.
    */
   template <typename PDFT>
-  inline PDFT pdf(tcPPtr parton) const;
+  PDFT pdf(tcPPtr parton) const { return PDFT(lastExtractor()->partonBinInstance(parton)); }
 
   /**
    * A reference to the currently used kinematical cuts.
    */
-  inline const Cuts & lastCuts() const;
+  const Cuts & lastCuts() const { return *lastXComb().cuts(); }
 
   /**
    * A pointer to the currently used kinematical cuts.
    */
-  inline tCutsPtr lastCutsPtr() const;
+  tCutsPtr lastCutsPtr() const { return lastXComb().cuts(); }
+
   //@}
 
   /** @name Access information about the incoming particles and partons. */
@@ -86,86 +87,86 @@ public:
   /**
    * Return the pair of incoming parton instances.
    */
-  inline const PPair & lastParticles() const;
+  const PPair & lastParticles() const { return lastXComb().lastParticles(); }
 
   /**
    * The last generated total energy squared of the incoming particles.
    */
-  inline Energy2 lastS() const;
+  Energy2 lastS() const { return lastXComb().lastS(); }
 
   /**
    * Return the pair of incoming parton instances.
    */
-  inline const PPair & lastPartons() const;
+  const PPair & lastPartons() const { return lastXComb().lastPartons(); }
 
   /**
    * The last used interval in total parton-parton energy squared
    */
-  inline Energy2 lastSHat() const;
+  Energy2 lastSHat() const { return lastXComb().lastSHat(); }
 
   /**
    * Return lastSHat()/lastS().
    */
-  inline double lastTau() const;
+  double lastTau() const { return lastXComb().lastTau(); }
 
   /**
    * The generated rapidity of the hard scattering sub-system.
    */
-  inline double lastY() const;
+  double lastY() const { return lastXComb().lastY(); }
 
   /**
    * Log of one over the momentum fraction of the first incoming
    * particle w.r.t. the maximum allowed energy.
    */
-  inline double lastP1() const;
+  double lastP1() const { return lastXComb().lastP1(); }
 
   /**
    * Log of one over the momentum fraction of the second incoming
    * particle w.r.t. the maximum allowed energy.
    */
-  inline double lastP2() const;
+  double lastP2() const { return lastXComb().lastP2(); }
 
   /**
    * Log of one over the first incoming parton momentum fraction w.r.t. the
    * first incoming particle.
    */
-  inline double lastL1() const;
+  double lastL1() const { return lastXComb().lastL1(); }
 
   /**
    * Log of one over the second incoming parton momentum fraction
    * w.r.t. the second incoming particle.
    */
-  inline double lastL2() const;
+  double lastL2() const { return lastXComb().lastL2(); }
 
   /**
    * The first incoming parton momentum fraction w.r.t. the
    * first incoming particle.
    */
-  inline double lastX1() const;
+  double lastX1() const { return lastXComb().lastX1(); }
 
   /**
    * The second incoming parton momentum fraction
    * w.r.t. the second incoming particle.
    */
-  inline double lastX2() const;
+  double lastX2() const { return lastXComb().lastX2(); }
 
   /**
    * Return 1-lastX1() to highest possible precision for
    * x \f$\rightarrow\f$ 1.
    */
-  inline double lastE1() const;
+  double lastE1() const { return lastXComb().lastE1(); }
 
   /**
    * Return 1-lastX2() to highest possible precision for
    * x\f$\rightarrow\f$ 1.
    */
-  inline double lastE2() const;
+  double lastE2() const { return lastXComb().lastE2(); }
 
   /**
    * The product of the parton density functions at the last generated
    * phase-space point.
    */
-  inline double lastFL1L2() const;
+  double lastFL1L2() const { return lastXComb().lastFL1L2(); }
   //@}
 
   /** @name Access information of the hard sub-process. */
@@ -173,40 +174,39 @@ public:
   /**
    * The chosen scale of the hard scattering.
    */
-  inline Energy2 lastScale() const;
+  Energy2 lastScale() const { return lastXComb().lastScale(); }
 
   /**
    * Get the \f$\alpha_S\f$ used in the hard scattering. Is negative
    * if no value has been set.
    */
-  inline double lastAlphaS() const;
+  double lastAlphaS() const { return lastXComb().lastAlphaS(); }
 
   /**
    * Get the \f$\alpha_{EM}\f$ used in the hard scattering. Is negative
    * if no value has been set.
    */
-  inline double lastAlphaEM() const;
+  double lastAlphaEM() const { return lastXComb().lastAlphaEM(); }
 
   /**
    * Return the momenta of the incoming and outgoing partons to be
    * used by the matrix element object, in the order specified by the
    * TreeDiagram objects given by the matrix element.
    */
-  inline const vector<Lorentz5Momentum> & meMomenta() const;
+  const vector<Lorentz5Momentum> & meMomenta() const { return lastXComb().meMomenta(); }
 
   /**
    * Return the SubProcess object corresponding to the last generated
    * sub-process.
    */
-  inline tSubProPtr subProcess() const;
+  tSubProPtr subProcess() const { return lastXComb().subProcess(); }
 
   /**
    * Return the incoming and outgoing parton types to be used by the
    * matrix element object, in the order specified by the TreeDiagram
    * objects given by the matrix element.
    */
-  inline const cPDVector & mePartonData() const;
-
+  const cPDVector & mePartonData() const { return lastXComb().mePartonData(); }
   //@}
 
 protected:
@@ -215,11 +215,8 @@ protected:
    * The pointer to the last selected XComb.
    */
   XCPtr theLastXComb;
-
 };
 
 }
-
-#include "LastXCombInfo.icc"
 
 #endif /* ThePEG_LastXCombInfo_H */

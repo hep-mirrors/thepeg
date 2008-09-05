@@ -43,16 +43,6 @@ StandardEventHandler::StandardEventHandler()
   setupGroups();
 }
 
-StandardEventHandler::StandardEventHandler(const StandardEventHandler & eh)
-  : EventHandler(eh), theIncomingA(eh.theIncomingA),
-    theIncomingB(eh.theIncomingB), theSubProcesses(eh.theSubProcesses),
-    theCuts(eh.theCuts), theXCombs(eh.theXCombs), theXSecs(eh.theXSecs),
-    theBinStrategy(eh.theBinStrategy), theMEXMap(eh.theMEXMap),
-    theMaxDims(eh.theMaxDims), theCurrentEventBoost(eh.theCurrentEventBoost),
-    weightedEvents(eh.weightedEvents),
-    theSampler(eh.theSampler),
-    theLumiDim(eh.theLumiDim) {}
-
 StandardEventHandler::~StandardEventHandler() {}
 
 void StandardEventHandler::reject(double w) {

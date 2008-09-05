@@ -331,19 +331,9 @@ public:
 public:
 
   /**
-   * Default constructor.
-   */
-  HandlerGroup();
-
-  /**
-   * Copy-constructor.
-   */
-  HandlerGroup(const HandlerGroup<HDLR> &);
-
-  /**
    * Destructor.
    */
-  ~HandlerGroup();
+  virtual ~HandlerGroup();
 
   /**
    * Set the current main handler. Also refill the current pre- and

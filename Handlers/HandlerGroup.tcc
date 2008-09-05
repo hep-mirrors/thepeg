@@ -17,14 +17,6 @@
 namespace ThePEG {
 
 template <typename HDLR>
-HandlerGroup<HDLR>::HandlerGroup() {}
-
-template <typename HDLR>
-HandlerGroup<HDLR>::HandlerGroup(const HandlerGroup<HDLR> & hg)
-  : HandlerGroupBase(hg), theDefaultHandler(hg.theDefaultHandler),
-    theHandler(hg.theHandler) {}
-
-template <typename HDLR>
 HandlerGroup<HDLR>::~HandlerGroup() {}
 
 template <typename HDLR>

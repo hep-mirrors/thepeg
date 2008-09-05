@@ -76,11 +76,6 @@ public:
 		const DiagramVector & newDiagrams, bool mir);
 
   /**
-   * Copy-constructor.
-   */
-  StandardXComb(const StandardXComb &);
-
-  /**
    * Default constructor.
    */
   StandardXComb();
@@ -103,12 +98,12 @@ public:
    * Return a pointer to the corresponding sub-process handler. May be
    * null if the standard process generation in ThePEG was not used.
    */
-  inline tcSubHdlPtr subProcessHandler() const;
+  tcSubHdlPtr subProcessHandler() const { return theSubProcessHandler; }
 
   /**
    * The matrix element to be used.
    */
-  inline tMEPtr matrixElement() const;
+  tMEPtr matrixElement() const { return theME; }
   //@}
 
   /** @name Main functions used for the generation. */
@@ -122,7 +117,7 @@ public:
    * The number of dimensions of the phase space used to generate this
    * process.
    */
-  inline int nDim() const;
+  int nDim() const { return theNDim; }
 
   /**
    * Generate a phase space point from a vector \a r of \a nr numbers
@@ -142,30 +137,30 @@ public:
   /**
    * The statistics object for this XComb.
    */
-  inline const XSecStat & stats() const;
+  const XSecStat & stats() const { return theStats; }
 
   /**
    * Select the current event. It will later be rejected with a
    * probability given by \a weight.
    */
-  inline void select(double weight);
+  void select(double weight) { theStats.select(weight); }
 
   /**
    * Accept the current event assuming it was previously selcted.
    */
-  inline void accept();
+  void accept() { theStats.accept(); }
 
   /**
    * Reject the current event assuming it was previously accepted. If
    * weighted events are produced, the \a weight should be the same as
    * the previous call to select(double).
    */
-  inline void reject(double weight = 1.0);
+  void reject(double weight = 1.0) { theStats.reject(weight); }
 
   /**
    * Reset statistics.
    */
-  inline void reset();
+  void reset() { theStats.reset(); }
   //@}
 
   /** @name Access information used by the MEBase object. */
@@ -173,51 +168,51 @@ public:
   /**
    * The diagrams used by the matrix element.
    */
-  inline const DiagramVector & diagrams() const;
+  const DiagramVector & diagrams() const { return theDiagrams; }
 
   /**
    * True if the TreeDiagram's for this matrix element should in fact
    * be mirrored before used to create an actual sub-rocess.
    */
-  inline bool mirror() const;
+  bool mirror() const { return isMirror; }
 
   /**
    * Return the momenta of the partons to be used by the matrix
    * element object, in the order specified by the TreeDiagram objects
    * given by the matrix element.
    */
-  inline const vector<Lorentz5Momentum> & meMomenta() const;
+  const vector<Lorentz5Momentum> & meMomenta() const { return theMEMomenta; }
 
   /**
    * Return the last selected diagram.
    */
-  inline tcDiagPtr lastDiagram() const;
+  tcDiagPtr lastDiagram() const { return diagrams()[lastDiagramIndex()]; }
 
   /**
    * Return the parton types to be used by the matrix element object,
    * in the order specified by the TreeDiagram objects given by the
    * matrix element.
    */
-  inline const cPDVector & mePartonData() const;
+  const cPDVector & mePartonData() const { return theMEPartonData; }
 
   /**
    * Return the index of the last selected diagram.
    */
-  inline DiagramIndex lastDiagramIndex() const;
+  DiagramIndex lastDiagramIndex() const { return theLastDiagramIndex; }
 
   /**
    * Get information saved by the matrix element in the calculation of
    * the cross section to be used later when selecting diagrams and
    * colour flow.
    */
-  inline const DVector & meInfo() const;
+  const DVector & meInfo() const { return theMEInfo; }
 
   /**
    * Set information saved by the matrix element in the calculation of
    * the cross section to be used later when selecting diagrams and
    * colour flow.
    */
-  inline void meInfo(const DVector & info);
+  void meInfo(const DVector & info) { theMEInfo = info; }
   //@}
 
 protected:
@@ -233,19 +228,19 @@ protected:
    * element object, in the order specified by the TreeDiagram objects
    * given by the matrix element.
    */
-  inline vector<Lorentz5Momentum> & meMomenta();
+  vector<Lorentz5Momentum> & meMomenta() { return theMEMomenta; }
 
   /**
    * Return the parton types to be used by the matrix element object,
    * in the order specified by the TreeDiagram objects given by the
    * matrix element.
    */
-  inline cPDVector & mePartonData();
+  cPDVector & mePartonData() { return theMEPartonData; }
 
   /**
    * Set the last selected diagram.
    */
-  inline void lastDiagramIndex(DiagramIndex);
+  void lastDiagramIndex(DiagramIndex i) { theLastDiagramIndex = i; }
 
 public:
 
@@ -376,10 +371,5 @@ struct ClassTraits<StandardXComb>:
 /** @endcond */
 
 }
-
-#include "StandardXComb.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StandardXComb.tcc"
-#endif
 
 #endif /* ThePEG_StandardXComb_H */

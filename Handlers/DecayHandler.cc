@@ -29,6 +29,14 @@ using namespace ThePEG;
 
 DecayHandler::~DecayHandler() {}
 
+IBPtr DecayHandler::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr DecayHandler::fullclone() const {
+  return new_ptr(*this);
+}
+
 void DecayHandler::
 handle(EventHandler &, const tPVector & tagged,
        const Hint &) ThePEG_THROW_SPEC((Veto, Stop, Exception)) {

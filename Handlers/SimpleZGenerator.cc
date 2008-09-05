@@ -15,17 +15,20 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Repository/EventGenerator.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleZGenerator.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 SimpleZGenerator::~SimpleZGenerator() {}
+
+IBPtr SimpleZGenerator::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr SimpleZGenerator::fullclone() const {
+  return new_ptr(*this);
+}
 
 double SimpleZGenerator::generate(cPDPtr q1, cPDPtr q2, Energy2) const {
   if ( BaryonMatcher::Check(*q1) || DiquarkMatcher::Check(*q1) ) {

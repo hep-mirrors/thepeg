@@ -183,39 +183,40 @@ public:
    * Return the maximum number attemts allowed to select a sub-process
    * for each event.
    */
-  inline long maxLoop() const;
+  long maxLoop() const { return theMaxLoop; }
 
   /**
    * The pair of incoming particle types. These are null if not set by
    * a subclass.
    */
-  inline const cPDPair & incoming() const;
+  const cPDPair & incoming() const { return theIncoming; }
 
   /**
    * Access the luminosity function.
    */
-  inline const LuminosityFunction & lumiFn() const;
+  const LuminosityFunction & lumiFn() const { return *theLumiFn; }
 
   /**
    * Access the luminosity function.
    */
-  inline tcLumiFnPtr lumiFnPtr() const;
+  tcLumiFnPtr lumiFnPtr() const{ return theLumiFn; }
 
   /**
    * Access to the luminosity function.
    */
-  inline tLumiFnPtr lumiFnPtr();
+  tLumiFnPtr lumiFnPtr(){ return theLumiFn; }
 
   /**
    * The kinematical cuts to used by subclasses which do not provide their own.
    */
-  inline tCutsPtr cuts() const;
+  tCutsPtr cuts() const { return theCuts; }
 
   /**
    * A PartonExtractor object to be used by sub classes which do not
    * provide their own.
    */
-  inline tPExtrPtr partonExtractor() const;
+  tPExtrPtr partonExtractor() const { return thePartonExtractor; }
+
 
   /**
    * Return a pointer (possibly null) to the assigned main
@@ -226,37 +227,37 @@ public:
   /**
    * Gget current event.
    */
-  inline tEventPtr currentEvent() const;
+  tEventPtr currentEvent() const { return theCurrentEvent; }
 
   /**
    * Get current collision.
    */
-  inline tCollPtr currentCollision() const;
+  tCollPtr currentCollision() const { return theCurrentCollision; }
 
   /**
    * Get current step.
    */
-  inline tStepPtr currentStep() const;
-
+  tStepPtr currentStep() const { return theCurrentStep; }
   /**
    * The level of statistics. Controlls the amount of statistics
    * written out after each run to the <code>EventGenerator</code>s
    * <code>.out</code> file.
    */
-  inline int statLevel() const;
+  int statLevel() const { return theStatLevel; }
 
   /**
    * Determines how often the event handler should check for charge
    * and energy-momentum conservation.
    */
-  inline ConsistencyLevel consistencyLevel() const;
+  ConsistencyLevel consistencyLevel() const { return theConsistencyLevel; }
 
   /**
    * The maximum fraction of the total invariant mass of a collision
    * that any of the components of the summed momentum is allowed to
    * change during the generation.
    */
-  inline double consistencyEpsilon() const;
+  double consistencyEpsilon() const { return theConsistencyEpsilon; }
+
   //@}
 
   /** @name Internal functions used by main functions and possibly
@@ -279,12 +280,18 @@ public:
    * supplied which will be set as the handler for the created
    * Step.
    */
-  inline tStepPtr newStep(tcStepHdlPtr sh);
+  tStepPtr newStep(tcStepHdlPtr sh) {
+    currentStep(currentCollision()->newStep(sh));
+    return currentStep();
+  }
 
   /**
    * Remove the last step.
    */
-  inline void popStep();
+  void popStep() {
+    currentCollision()->popStep();
+    currentStep(currentCollision()->finalStep());
+  }
 
   /**
    * Initialize the groups of step handlers.
@@ -294,26 +301,27 @@ public:
   /**
    * Set current event.
    */
-  inline void currentEvent(tEventPtr e);
+  void currentEvent(tEventPtr e) { theCurrentEvent = e; }
 
   /**
    * Set current collision.
    */
-  inline void currentCollision(tCollPtr c);
+  void currentCollision(tCollPtr c) { theCurrentCollision = c; }
 
   /**
    * Set current step.
    */
-  inline void currentStep(tStepPtr s);
+  void currentStep(tStepPtr s) { theCurrentStep = s; }
 
   /**
    * Get current StepHandler.
    */
-  inline tStepHdlPtr currentStepHandler() const;
+  tStepHdlPtr currentStepHandler() const { return theCurrentStepHandler; }
+
   /**
    * Set current StepHandler.
    */
-  inline void currentStepHandler(tStepHdlPtr sh);
+  void currentStepHandler(tStepHdlPtr sh) { theCurrentStepHandler = sh; }
 
   /**
    * Throw away the current event/collision.
@@ -365,52 +373,27 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
   /** @name Standard Interfaced functions. */
   //@{
   /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual void dofinish() {
+    currentEvent(tEventPtr());
+    currentCollision(tCollPtr());
+    currentStep(tStepPtr());
+    HandlerBase::dofinish();
+  }
   //@}
 
 protected:
@@ -418,7 +401,7 @@ protected:
   /**
    * Access to the luminosity function.
    */
-  inline LuminosityFunction & lumiFn();
+  LuminosityFunction & lumiFn() { return *theLumiFn; }
 
   /**
    * Setup the step handler groups.
@@ -428,12 +411,13 @@ protected:
   /**
    * Access the step handler groups
    */
-  inline GroupVector & groups();
+  GroupVector & groups() { return theGroups; }
 
   /**
    * Access the step handler groups
    */
-  inline const GroupVector & groups() const;
+  const GroupVector & groups() const { return theGroups; }
+
 
 protected:
 
@@ -646,10 +630,5 @@ ThePEG_DECLARE_CLASS_TRAITS(EventHandler,HandlerBase);
 /** @endcond */
 
 }
-
-#include "EventHandler.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "EventHandler.tcc"
-#endif
 
 #endif /* ThePEG_EventHandler_H */

@@ -20,17 +20,35 @@
 #include "ThePEG/Repository/RandomGenerator.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/Triplet.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleFlavour.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
+SimpleFlavour::SimpleFlavour()
+: theSSup(0.3), theDiSup(0.1), theDi1Sup(0.05), theDiSSup(0.4),
+  theEtaSup(1.0), theEtaPSup(0.4), theBaryon10Sup(1.0), thePSpin1(0.5),
+  thePSpinS1(0.6), thePSpinC1(0.75) {}
+
 SimpleFlavour::~SimpleFlavour() {}
+
+IBPtr SimpleFlavour::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr SimpleFlavour::fullclone() const {
+  return new_ptr(*this);
+}
+
+void SimpleFlavour::doinit() throw(InitException) {
+  FlavourGenerator::doinit();
+  clear();
+}
+
+void SimpleFlavour::doinitrun() {
+  FlavourGenerator::doinitrun();
+  clear();
+}
 
 void SimpleFlavour::clear() {
   theFlavourSelector.clear();

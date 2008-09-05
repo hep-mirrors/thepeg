@@ -49,12 +49,9 @@ public:
   /**
    * The default constructor.
    */
-  inline ClusterCollapser();
-
-  /**
-   * The copy constructor.
-   */
-  inline ClusterCollapser(const ClusterCollapser &);
+  ClusterCollapser()
+    : theEnergyCut(1.0*GeV), theNTry2(2), errorlevel(Exception::eventerror),
+      pStrange(1.0/3.0) {}
 
   /**
    * The destructor.
@@ -127,13 +124,13 @@ public:
    * of its partons is below this cut, it will be collapsed into one
    * or two particles.
    */
-  inline Energy cut() const;
+  Energy cut() const { return theEnergyCut; }
 
   /**
    * The number of attempts to collapse a cluster into two particles,
    * before it is collapsed into one particle.
    */
-  inline int nTry2() const;
+  int nTry2() const { return theNTry2; }
 
   /**
    * Return the invariant mass of a cluster minus the constituent
@@ -223,59 +220,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
-  //@}
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  inline virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual IBPtr fullclone() const;
   //@}
 
   /** @cond EXCEPTIONCLASSES */
@@ -375,10 +326,5 @@ struct ClassTraits<ClusterCollapser>:
 /** @endcond */
 
 }
-
-#include "ClusterCollapser.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ClusterCollapser.tcc"
-#endif
 
 #endif /* ThePEG_ClusterCollapser_H */

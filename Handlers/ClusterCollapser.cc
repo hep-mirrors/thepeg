@@ -36,6 +36,14 @@ using namespace ThePEG;
 
 ClusterCollapser::~ClusterCollapser() {}
 
+IBPtr ClusterCollapser::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ClusterCollapser::fullclone() const {
+  return new_ptr(*this);
+}
+
 void ClusterCollapser::
 handle(EventHandler &, const tPVector & tagged,
        const Hint &) throw(Veto, Stop, Exception) {

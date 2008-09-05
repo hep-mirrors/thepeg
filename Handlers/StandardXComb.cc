@@ -57,13 +57,6 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
   mePartonData() = lastDiagram()->partons();
 }
 
-StandardXComb::StandardXComb(const StandardXComb & x)
-  : XComb(x), theSubProcessHandler(x.theSubProcessHandler), theME(x.theME),
-    theStats(x.theStats), theDiagrams(x.theDiagrams),
-    isMirror(x.isMirror), theNDim(x.theNDim), partonDims(x.partonDims),
-    theMEMomenta(x.theMEMomenta), theMEPartonData(x.theMEPartonData),
-    theLastDiagramIndex(x.theLastDiagramIndex), theMEInfo(x.theMEInfo) {}
-
 StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
 			     DiagramIndex indx)
   : theME(me), isMirror(false), theNDim(0), partonDims(make_pair(0, 0)),

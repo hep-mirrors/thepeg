@@ -35,10 +35,6 @@
 #include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/Utilities/EnumIO.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "EventHandler.tcc"
-#endif
-
 using namespace ThePEG;
 
 EventHandler::EventHandler(bool warnincomplete)
@@ -65,6 +61,14 @@ EventHandler(const EventHandler & x)
 }
 
 EventHandler::~EventHandler() {}
+
+IBPtr EventHandler::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr EventHandler::fullclone() const {
+  return new_ptr(*this);
+}
 
 void EventHandler::lumiFn(LumiFnPtr newLumiFn) {
   if ( newLumiFn->canHandle(incoming()) ) theLumiFn = newLumiFn;

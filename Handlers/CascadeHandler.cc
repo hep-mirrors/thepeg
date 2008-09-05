@@ -18,16 +18,7 @@
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "CascadeHandler.tcc"
-#endif
-
 using namespace ThePEG;
-
-CascadeHandler::CascadeHandler() {}
-
-CascadeHandler::CascadeHandler(const CascadeHandler & x)
-  : StepHandler(x), LastXCombInfo<>(x) {}
 
 CascadeHandler::~CascadeHandler() {}
 

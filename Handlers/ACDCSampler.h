@@ -43,12 +43,15 @@ public:
   /**
    * The default constructor.
    */
-  inline ACDCSampler();
+  ACDCSampler() : theEps(100*Constants::epsilon), theMargin(1.1), theNTry(1000) {}
 
   /**
-   * The copy constructor.
+   * The copy constructor. We don't copy theSampler.
    */
-  inline ACDCSampler(const ACDCSampler &);
+  ACDCSampler(const ACDCSampler & x)
+    : SamplerBase(x), theSampler(),
+      theEps(x.theEps), theMargin(x.theMargin),
+      theNTry(x.theNTry) {}
 
   /**
    * The destructor.
@@ -367,10 +370,5 @@ struct ACDCRandomTraits<ThePEG::UseRandom>: public ACDCTraitsType {
 /** @endcond */
 
 }
-
-#include "ACDCSampler.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ACDCSampler.tcc"
-#endif
 
 #endif /* ThePEG_ACDCSampler_H */

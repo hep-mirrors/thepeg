@@ -54,11 +54,6 @@ public:
 	const PBPair & newPartonBins,	tCutsPtr newCuts);
 
   /**
-   * Copy-constructor.
-   */
-  XComb(const XComb &);
-
-  /**
    * Default constructor.
    */
   XComb();
@@ -76,23 +71,23 @@ public:
   /**
    * Return a reference to the corresponding collision handler
    */
-  inline const EventHandler & eventHandler() const;
+  const EventHandler & eventHandler() const { return *theEventHandler; }
 
   /**
    * A pointer to the parton extractor.
    */
-  inline tPExtrPtr pExtractor() const;
+  tPExtrPtr pExtractor() const { return thePartonExtractor; }
 
   /**
    * A pointer to the kinematical cuts.
    */
-  inline tCutsPtr cuts() const;
+  tCutsPtr cuts() const { return theCuts; }
 
   /**
    * Return a possibly null pointer to a CascadeHandler to be used for
    * CKKW-reweighting.
    */
-  inline tCascHdlPtr CKKWHandler() const;
+  tCascHdlPtr CKKWHandler() const { return theCKKW; }
   //@}
 
   /** @name Access information about incoming particles and partons. */
@@ -100,22 +95,22 @@ public:
   /**
    * The incoming particle types.
    */
-  inline const cPDPair & particles() const;
+  const cPDPair & particles() const { return theParticles; }
 
   /**
    * The incoming parton types.
    */
-  inline const cPDPair & partons() const;
+  const cPDPair & partons() const { return thePartons; }
 
   /**
    * Additional information about the incoming partons.
    */
-  inline const PBPair & partonBins() const;
-
+  const PBPair & partonBins() const { return thePartonBins; }
+  
   /**
    * The maximum cm energy for this process.
    */
-  inline Energy maxEnergy() const;
+  Energy maxEnergy() const { return theMaxEnergy; }
 
   /**
    * Returns true if this XComb does not correspond to a proper
@@ -123,7 +118,7 @@ public:
    * event and the incoming particles and partons are not used
    * explicitly.
    */
-  inline bool empty() const;
+  bool empty() const { return !theEventHandler; }
   //@}
 
   /** @name Manipulate and acces information about the last selected
@@ -148,23 +143,23 @@ public:
   /**
    * Return the pair of incoming particle instances.
    */
-  inline const PPair & lastParticles() const;
+  const PPair & lastParticles() const { return theLastParticles; }
 
   /**
    * Return the pair of incoming parton instances.
    */
-  inline const PPair & lastPartons() const;
+  const PPair & lastPartons() const { return theLastPartons; }
 
   /**
    * Set the pair of incoming parton instances.
    */
-  inline void lastPartons(PPair);
+  void lastPartons(PPair pp) { theLastPartons = pp; }
 
   /**
    * Return the SubProcess object corresponding to the last generated
    * sub-process.
    */
-  inline tSubProPtr subProcess() const;
+  tSubProPtr subProcess() const { return theSub; }
 
   /**
    * Set the SubProcess object corresponding to the last generated
@@ -175,148 +170,148 @@ public:
   /**
    * Additional information about the incoming partons.
    */
-  inline const PBIPair & partonBinInstances() const;
+  const PBIPair & partonBinInstances() const { return thePartonBinInstances; }
 
   /**
    * The last generated total energy squared of the incoming particles.
    */
-  inline Energy2 lastS() const;
+  Energy2 lastS() const { return theLastS; }
 
   /**
    * Set the last generated total energy squared of the incoming
    * particles.
    */
-  inline void lastS(Energy2);
+  void lastS(Energy2 s) { theLastS = s; }
 
   /**
    * The last generated total energy squared of the incoming prtons.
    */
-  inline Energy2 lastSHat() const;
+  Energy2 lastSHat() const { return theLastSHat; }
 
   /**
    * Set the last generated total energy squared of the incoming
    * prtons.
    */
-  inline void lastSHat(Energy2);
+  void lastSHat(Energy2 sh) { theLastSHat = sh; }
 
   /**
    * lastSHat()/lastS().
    */
-  inline double lastTau() const;
+  double lastTau() const { return lastSHat()/lastS(); }
 
   /**
    * The last generated rapidity of the hard scattering sub-system.
    */
-  inline double lastY() const;
+  double lastY() const { return theLastY; }
 
   /**
    * Set the last generated rapidity of the hard scattering sub-system.
    */
-  inline void lastY(double);
+  void lastY(double y) { theLastY = y; }
 
   /**
    * Log of one over the momentum fraction of the first incoming
    * particle w.r.t. the maximum allowed energy.
    */
-  inline double lastP1() const;
+  double lastP1() const { return theLastP1P2.first; }
 
   /**
    * Log of one over the momentum fraction of the second incoming
    * particle w.r.t. the maximum allowed energy.
    */
-  inline double lastP2() const;
+  double lastP2() const { return theLastP1P2.second; }
 
   /**
    * Set log of one over the momentum fraction of the incoming
    * particles w.r.t. the maximum allowed energy.
    */
-  inline void lastP1P2(pair<double,double>);
+  void lastP1P2(pair<double,double> pp) { theLastP1P2 = pp; }
 
   /**
    * Log of one over the first incoming parton momentum fraction
    * w.r.t. the first incoming particle.
    */
-  inline double lastL1() const;
+  double lastL1() const { return theLastL1L2.first; }
 
   /**
    * Log of one over the second incoming parton momentum fraction
    * w.r.t. the second incoming particle.
    */
-  inline double lastL2() const;
+  double lastL2() const { return theLastL1L2.second; }
 
   /**
    * Set log of one over the incoming parton momentum fractions
    * w.r.t. the incoming particles.
    */
-  inline void lastL1L2(pair<double,double>);
+  void lastL1L2(pair<double,double>);
 
   /**
    * The first incoming parton momentum fraction w.r.t. the
    * first incoming particle.
    */
-  inline double lastX1() const;
+  double lastX1() const { return theLastX1X2.first; }
 
   /**
    * The second incoming parton momentum fraction
    * w.r.t. the second incoming particle.
    */
-  inline double lastX2() const;
+  double lastX2() const { return theLastX1X2.second; }
 
   /**
    * Set the incoming parton momentum fractions w.r.t. the incoming
    * particles.
    */
-  inline void lastX1X2(pair<double,double>);
+  void lastX1X2(pair<double,double>);
 
   /**
    * Return 1-lastX1() to highest possible precision for
    * x\f$\rightarrow\f$ 1.
    */
-  inline double lastE1() const;
+  double lastE1() const { return theLastE1E2.first; }
 
   /**
    * Return 1-lastX2() to highest possible precision for
    * x\f$\rightarrow\f$ 1.
    */
-  inline double lastE2() const;
+  double lastE2() const { return theLastE1E2.second; }
 
   /**
    * Set one minus the incoming parton momentum fractions w.r.t. the
    * incoming particles.
    */
-  inline void lastE1E2(pair<double,double>);
+  void lastE1E2(pair<double,double>);
 
   /**
    * Get the last chosen scale of the hard scattering.
    */
-  inline Energy2 lastScale() const;
+  Energy2 lastScale() const { return theLastScale; }
 
   /**
    * Set the last chosen scale of the hard scattering.
    */
-  inline void lastScale(Energy2);
+  void lastScale(Energy2 Q2) { theLastScale = Q2; }
 
   /**
    * Get the \f$\alpha_S\f$ used in the hard scattering. Is negative
    * if no value has been set.
    */
-  inline double lastAlphaS() const;
+  double lastAlphaS() const { return theLastAlphaS; }
 
   /**
    * Set the \f$\alpha_S\f$ used in the hard scattering.
    */
-  inline void lastAlphaS(double);
+  void lastAlphaS(double a) { theLastAlphaS = a; }
 
   /**
    * Get the \f$\alpha_{EM}\f$ used in the hard scattering. Is negative
    * if no value has been set.
    */
-  inline double lastAlphaEM() const;
+  double lastAlphaEM() const { return theLastAlphaEM; }
 
   /**
    * Set the \f$\alpha_{EM}\f$ used in the hard scattering.
    */
-  inline void lastAlphaEM(double);
+  void lastAlphaEM(double a) { theLastAlphaEM = a; }
   //@}
 
 protected:
@@ -522,10 +517,5 @@ struct ClassTraits<XComb>:
 /** @endcond */
 
 }
-
-#include "XComb.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "XComb.tcc"
-#endif
 
 #endif /* ThePEG_XComb_H */

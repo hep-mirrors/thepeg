@@ -39,12 +39,7 @@ public:
   /**
    * Default constructor.
    */
-  inline SimpleFlavour();
-
-  /**
-   * Copy-constructor.
-   */
-  inline SimpleFlavour(const SimpleFlavour &);
+  SimpleFlavour();
 
   /**
    * Destructor.
@@ -112,55 +107,55 @@ public:
   /**
    * Return the suppression factor of strange quarks w.r.t. u and d.
    */
-  inline double sSup() const;
+  double sSup() const { return theSSup; }
 
   /**
    * Return the suppression factor for di-quarks w.r.t. quarks
    */
-  inline double diSup() const;
+  double diSup() const { return theDiSup; }
 
   /**
    * Return the suppression of spin-1 di-quarks w.r.t. spin-0 ones;
    */
-  inline double di1Sup() const;
+  double di1Sup() const { return theDi1Sup; }
 
   /**
    * Return the suppression of strange di-quarks w.r.t. u and d ones
    * in addition to the standard strangness suppression of quarks.
    */
-  inline double diSSup() const;
+  double diSSup() const  { return theDiSSup; }
 
   /**
    * Return the extra suppression of eta's
    */
-  inline double etaSup() const;
+  double etaSup() const  { return theEtaSup; }
 
   /**
    * Return the extra suppression of ets-prime's
    */
-  inline double etaPSup() const;
+  double etaPSup() const  { return theEtaPSup; }
 
   /**
    * Return the extra suppression for baryons of the spin 3/2
    * decuplet.
    */
-  inline double baryon10Sup() const;
+  double baryon10Sup() const { return theBaryon10Sup; }
 
   /**
    * Return the probability that light (u/d) mesons has spin 1;
    */
-  inline double pSpin1() const;
+  double pSpin1() const { return thePSpin1; }
 
   /**
    * Return the probability that strange mesons has spin 1;
    */
-  inline double pSpinS1() const;
+  double pSpinS1() const { return thePSpinS1; }
 
   /**
    * Return the probability that charmed and heavier mesons has spin
    * 1;
    */
-  inline double pSpinC1() const;
+  double pSpinC1() const { return thePSpinC1; }
   //@}
 
 protected:
@@ -308,13 +303,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 protected:
@@ -322,46 +317,17 @@ protected:
   /** @name Standard Interfaced functions. */
   //@{
   /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  inline virtual void doinit() throw(InitException);
+  virtual void doinit() throw(InitException);
 
   /**
    * Initialize this object. Called in the run phase just before
    * a run begins.
    */
-  inline virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual void doinitrun();
   //@}
 
 private:
@@ -481,10 +447,5 @@ struct ClassTraits<SimpleFlavour>
 /** @endcond */
 
 }
-
-#include "SimpleFlavour.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleFlavour.tcc"
-#endif
 
 #endif /* THEPEG_SimpleFlavour_H */

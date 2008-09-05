@@ -37,7 +37,7 @@ public:
   /**
    * Default constructor.
    */
-  inline DecayHandler();
+  DecayHandler() : theMaxLoop(100000), theMaxLifeTime(-1.0*mm), theLifeTimeOption(false) {}
 
   /**
    * Destructor.
@@ -95,19 +95,19 @@ public:
    * The maximum number of failed decay attempts allowed for each
    * particle.
    */
-  inline long maxLoop() const;
+  long maxLoop() const { return theMaxLoop; }
 
   /**
    * Get the maximum lifetime above which a particle is not decayed.
    */
-  inline Length maxLifeTime() const;
+  Length maxLifeTime() const { return theMaxLifeTime; }
 
   /**
    * Option for whether the maximum lifetime should be applied to the
    * mean lifetime of the particle species or the lifetime of the particle
    * instance
    */
-  inline bool lifeTimeOption() const;
+  bool lifeTimeOption() const { return theLifeTimeOption; }
 
 protected:
 
@@ -117,13 +117,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -183,10 +183,5 @@ struct ClassTraits<DecayHandler>: public ClassTraitsBase<DecayHandler> {
 /** @endcond */
 
 }
-
-#include "DecayHandler.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DecayHandler.tcc"
-#endif
 
 #endif /* ThePEG_DecayHandler_H */

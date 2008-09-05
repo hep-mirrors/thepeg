@@ -26,10 +26,6 @@ using namespace ThePEG;
 
 SamplerBase::~SamplerBase() {}
 
-int SamplerBase::lastBin() const {
-  return 0;
-}
-
 void SamplerBase::persistentOutput(PersistentOStream & os) const {
   os << theEventHandler << theLastPoint;
   // Add all member variable which should be written persistently here.

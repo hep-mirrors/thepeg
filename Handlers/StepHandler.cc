@@ -15,10 +15,6 @@
 #include "ThePEG/Handlers/EventHandler.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StepHandler.tcc"
-#endif
-
 using namespace ThePEG;
 
 StepHandler::~StepHandler() {}

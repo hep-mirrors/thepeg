@@ -23,6 +23,14 @@ using namespace ThePEG;
 
 ACDCSampler::~ACDCSampler() {}
 
+IBPtr ACDCSampler::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ACDCSampler::fullclone() const {
+  return new_ptr(*this);
+}
+
 void ACDCSampler::initialize() {
   theSampler.clear();
   theSampler.setRnd(0);

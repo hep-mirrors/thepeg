@@ -21,6 +21,14 @@ using namespace ThePEG;
 
 FixedCMSLuminosity::~FixedCMSLuminosity() {}
 
+IBPtr FixedCMSLuminosity::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr FixedCMSLuminosity::fullclone() const {
+  return new_ptr(*this);
+}
+
 void FixedCMSLuminosity::setEnergy(Energy e) {
   beamEMaxA(e*0.5);
   beamEMaxB(e*0.5);

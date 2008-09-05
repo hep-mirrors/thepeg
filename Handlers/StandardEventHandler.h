@@ -65,11 +65,6 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * Copy-constructor.
-   */
-  StandardEventHandler(const StandardEventHandler &);
-
-  /**
    * Default constructor.
    */
   StandardEventHandler();
@@ -77,7 +72,7 @@ public:
   /**
    * Destructor.
    */
-  ~StandardEventHandler();
+  virtual ~StandardEventHandler();
   //@}
 
 public:
@@ -132,7 +127,7 @@ public:
    * Return the boost needed to transform the current event from the
    * CMS system to the lab system.
    */
-  inline const LorentzRotation & currentEventBoost() const;
+  const LorentzRotation & currentEventBoost() const { return theCurrentEventBoost; }
   //@}
 
   /** @name Simple access functions */
@@ -142,7 +137,7 @@ public:
    * EventHandler. Note that these cuts may be overridden by the
    * SubProcess chosen.
    */
-  inline tCutsPtr cuts() const;
+  tCutsPtr cuts() const { return theCuts; }
 
   /**
    * Return the number of separate bins of StandardXComb objects to
@@ -154,24 +149,24 @@ public:
    * Return the number of phase space dimensions needed for the
    * sampling of indicated bin of StandardXComb objects.
    */
-  inline int maxDim(int bin) const;
+  int maxDim(int bin) const { return theMaxDims[bin]; }
 
   /**
    * Return true if this event handler should produce weightes events
    */
-  inline bool weighted() const;
+  bool weighted() const { return weightedEvents; }
 
   /**
    * The number of phase space dimensions used by the luminosity
    * function.
    */
-  inline int lumiDim() const;
+  int lumiDim() const { return theLumiDim; }
 
   /**
    * The number of dimensions of the basic phase space to generate
    * sub-processes in for a given bin of StandardXComb objects.
    */
-  inline int nDim(int bin) const;
+  int nDim(int bin) const { return lumiDim() + maxDim(bin); }
   //@}
 
 protected:
@@ -235,12 +230,12 @@ protected:
    * transformation, but an EventHandler derived from this class may
    * override it.
    */
-  inline LorentzRotation & currentEventBoost();
+  LorentzRotation & currentEventBoost() { return theCurrentEventBoost; }
 
   /**
    * Produce instances of the specified incoming particle types.
    */
-  inline void createIncoming();
+  void createIncoming();
 
   /**
    * Set information about the current sub-process.
@@ -250,22 +245,22 @@ protected:
   /**
    * Return the vector of StandardXComb objects.
    */
-  inline const XVector & xCombs() const;
+  const XVector & xCombs() const { return theXCombs; }
 
   /**
    * Return the vector of StandardXComb objects.
    */
-  inline XVector & xCombs();
+  XVector & xCombs()  { return theXCombs; }
 
   /**
    * Return the vector of cross sections.
    */
-  inline const XSVector & xSecs() const;
+  const XSVector & xSecs() const { return theXSecs; }
 
   /**
    * Return the vector of cross sections.
    */
-  inline XSVector & xSecs();
+  XSVector & xSecs() { return theXSecs; }
 
   /**
    * Return the strategy to be used when sampling different StandardXComb
@@ -274,19 +269,19 @@ protected:
    * all StandardXComb objects which have the same matrix element object are
    * sampled together. 2 if all StandardXComb objects are sampled separately.
    */
-  inline int binStrategy() const;
+  int binStrategy() const { return theBinStrategy; }
 
 private:
 
   /**
    * Access the list of sub-process handlers.
    */
-  inline const SubHandlerList & subProcesses() const;
+  const SubHandlerList & subProcesses() const { return theSubProcesses; }
 
   /**
    * Access the list of sub-process handlers.
    */
-  inline SubHandlerList & subProcesses();
+  SubHandlerList & subProcesses() { return theSubProcesses; }
 
 public:
 
@@ -364,12 +359,12 @@ protected:
   /**
    * Return the sampler assigned to this event handler.
    */
-  inline tSamplerPtr sampler();
+  tSamplerPtr sampler() { return theSampler; }
 
   /**
    * Return the sampler assigned to this event handler.
    */
-  inline tcSamplerPtr sampler() const;
+  tcSamplerPtr sampler() const { return theSampler; }
 
 private:
 
@@ -508,7 +503,5 @@ struct ClassTraits<StandardEventHandler>
 /** @endcond */
 
 }
-
-#include "StandardEventHandler.icc"
 
 #endif /* ThePEG_StandardEventHandler_H */

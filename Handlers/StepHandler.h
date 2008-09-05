@@ -45,16 +45,6 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * The default constructor.
-   */
-  inline StepHandler();
-
-  /**
-   * The copy constructor.
-   */
-  inline StepHandler(const StepHandler &);
-
-  /**
    * The destructor.
    */
   virtual ~StepHandler();
@@ -90,7 +80,7 @@ public:
    * Get a pointer to the EventHandler which made the last call to
    * handle().
    */
-  inline tEHPtr eventHandler() const;
+  tEHPtr eventHandler() const { return theEventHandler; }
 
   /**
    * Set a pointer to the EventHandler which made the last call to
@@ -102,13 +92,19 @@ public:
    * Return a pointer to a new step. If one has alredy been created in
    * the last call to handle(), that step will be returned.
    */
-  inline tStepPtr newStep();
+  tStepPtr newStep() {
+    if ( !theNewStep ) createNewStep();
+    return theNewStep;
+  }
 
   /**
    * If a new step has been created, return it, otherwise return the
    * current step from the eventHandler().
    */
-  inline tStepPtr currentStep();
+  tStepPtr currentStep() {
+    if ( theNewStep ) return theNewStep;
+    return theCurrentStep;
+  }
   //@}
 
 public:
@@ -124,45 +120,6 @@ protected:
    * Use the collision handler to create a new step.
    */
   void createNewStep();
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
 
 private:
 
@@ -222,7 +179,5 @@ struct ClassTraits<StepHandler>: public ClassTraitsBase<StepHandler> {
 /** @endcond */
 
 }
-
-#include "StepHandler.icc"
 
 #endif /* ThePEG_StepHandler_H */

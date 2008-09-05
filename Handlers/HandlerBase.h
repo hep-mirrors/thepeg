@@ -36,8 +36,6 @@ template <typename T = UseRandom>
  * 
  */
 class HandlerBaseT: public Interfaced {
-
-
 public:
 
   /** HandlerBase is a friend. */
@@ -51,13 +49,7 @@ private:
   /**
    * Default constructor.
    */
-  inline HandlerBaseT() {}
-
-  /**
-   * Copy-constructor.
-   */
-  inline HandlerBaseT(const HandlerBaseT & x) 
-    : Interfaced(x) {}
+  HandlerBaseT() {}
 
 public:
   /**
@@ -71,77 +63,76 @@ public:
   /**
    * Return a simple flat random number in the range ]0,1[.
    */
-  inline double rnd() const;
+  double rnd() const {  return T::rnd(); }
 
   /**
    * Return a simple flat random number in the range ]0,\a xu[.
    */
-  inline double rnd(double xu) const;
+  double rnd(double xu) const { return T::rnd(xu); }
 
   /**
    * Return a simple flat random number in the range ]\a xl,\a xu[.
    */
-  inline double rnd(double xl, double xu) const;
+  double rnd(double xl, double xu) const { return T::rnd(xl, xu); }
 
   /**
    * Return true with 50% probability.
    */
-  inline bool rndbool() const;
+  bool rndbool() const { return T::rndbool(); }
 
   /**
    * Return a true with probability \a p.
    */
-  inline bool rndbool(double p) const;
+  bool rndbool(double p) const { return T::rndbool(p); }
 
   /**
    * Return a true with probability \a p1/(\a p1+\a p2).
    */
-  inline bool rndbool(double p1, double p2) const;
+  bool rndbool(double p1, double p2) const { return T::rndbool(p1, p2); }
 
   /**
    * Return -1, 0, or 1 with relative probabilities \a p1, \a p2, \a p3.
    */
-  inline int rndsign(double p1, double p2, double p3) const;
+  int rndsign(double p1, double p2, double p3) const { return T::rndsign(p1, p2, p3); }
 
   /**
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a p1).
    */
-  inline int rnd2(double p0, double p1) const;
+  int rnd2(double p0, double p1) const { return T::rnd2(p0, p1); }
 
   /**
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a
    * p1+\a p2).
    */
-  inline int rnd3(double p0, double p1, double p2) const;
+  int rnd3(double p0, double p1, double p2) const { return T::rnd3(p0, p1, p2); }
 
   /**
    * Return an integer/ \f$i\f$ with probability p\f$i\f$(\a p0+\a
    * p1+\a p2+\a p3).
    */
-  inline int rnd4(double p0, double p1, double p2, double p3) const;
+  int rnd4(double p0, double p1, double p2, double p3) const { return T::rnd4(p0, p1, p2, p3); }
 
   /**
    * Return a simple flat random integrer number in the range [0,\a xu[.
    */
-  inline long irnd(long xu = 2) const;
+  long irnd(long xu = 2) const { return T::irnd(xu); }
 
   /**
    * Return a simple flat random integrer number in the range [\a xl,\a xu[.
    */
-  inline long irnd(long xl, long xu) const;
+  long irnd(long xl, long xu) const { return T::irnd(xl, xu); }
 
   /**
    * Return a reference to the object containing the standard model
    * parameters for this run.
    */
-  inline const StandardModelBase & SM() const;
+  const StandardModelBase & SM() const { return *standardModel(); }
 
   /**
    * Return a pointer to the object containing the standard model
    * parameters for this run.
    */
-  inline tSMPtr standardModel() const;
-
+  tSMPtr standardModel() const { return generator()->standardModel(); }
 };
 
 /**
@@ -164,46 +155,6 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
 
 private:
 
@@ -245,10 +196,5 @@ struct ClassTraits<HandlerBase>: public ClassTraitsBase<HandlerBase> {
 /** @endcond */
 
 }
-
-#include "HandlerBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "HandlerBase.tcc"
-#endif
 
 #endif /* ThePEG_HandlerBase_H */

@@ -32,10 +32,6 @@
 #include "ThePEG/Handlers/CascadeHandler.h"
 #include "ThePEG/Repository/EventGenerator.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-#include "XComb.tcc"
-#endif
-
 using namespace ThePEG;
 
 XComb::XComb()
@@ -65,23 +61,6 @@ XComb(Energy newMaxEnergy, const cPDPair & inc, tEHPtr newEventHandler,
   theParticleBins.first = thePartonBins.first->getFirst();
   theParticleBins.second = thePartonBins.second->getFirst();
 }
-
-XComb::XComb(const XComb & x)
-  : Base(x),
-    theEventHandler(x.theEventHandler),
-    thePartonExtractor(x.thePartonExtractor), theCKKW(x.theCKKW),
-    theCuts(x.theCuts), theParticles(x.theParticles),
-    thePartons(x.thePartons), thePartonBins(x.thePartonBins),
-    theParticleBins(x.theParticleBins),
-    thePartonBinInstances(x.thePartonBinInstances),
-    theLastParticles(x.theLastParticles),
-    theLastPartons(x.theLastPartons), theLastS(x.theLastS),
-    theLastSHat(x.theLastSHat), theLastY(x.theLastY),
-    theLastP1P2(x.theLastP1P2), theLastL1L2(x.theLastL1L2),
-    theLastX1X2(x.theLastX1X2), theLastE1E2(x.theLastE1E2),
-    theLastScale(x.theLastScale), theLastAlphaS(x.theLastAlphaS),
-    theLastAlphaEM(x.theLastAlphaEM), theMaxEnergy(x.theMaxEnergy),
-    theMEInfo(x.theMEInfo), theSub(x.theSub) {}
 
 XComb::~XComb() {}
 
@@ -137,6 +116,24 @@ void XComb::setPartonBinInstances(PBIPair pbip, Energy2 scale) {
 		     lastParticles().second->momentum().minus()));
   lastY(log(lastX1()/lastX2())*0.5);
   lastScale(scale);
+}
+
+void XComb::lastL1L2(pair<double,double> ll) {
+  theLastL1L2 = ll;
+  theLastX1X2 = make_pair(exp(-ll.first), exp(-ll.second));
+  theLastE1E2 = make_pair(Math::exp1m(-ll.first), Math::exp1m(-ll.second));
+}
+
+void XComb::lastX1X2(pair<double,double> xx) {
+  theLastX1X2 = xx;
+  theLastL1L2 = make_pair(-log(xx.first), -log(xx.second));
+  theLastE1E2 = make_pair(1.0 - xx.first, 1.0 - xx.second);
+}
+
+void XComb::lastE1E2(pair<double,double> ee) {
+  theLastE1E2= ee;
+  theLastL1L2 = make_pair(-Math::log1m(ee.first), -Math::log1m(ee.second));
+  theLastX1X2 = make_pair(1.0 - ee.first, 1.0 - ee.second);
 }
 
 

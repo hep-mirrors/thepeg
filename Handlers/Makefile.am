@@ -19,17 +19,10 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
            SamplerBase.h  ClusterCollapser.h \
            PtGenerator.h ZGenerator.h StandardXComb.h
 
-INCLUDEFILES = $(DOCFILES) CascadeHandler.icc \
-               DecayHandler.icc EventHandler.icc \
-               HandlerBase.icc \
-               HandlerGroup.tcc \
-               StandardEventHandler.icc \
-               StandardEventHandler.fh StepHandler.icc \
-               SubProcessHandler.fh XComb.icc \
-               EventHandler.fh  \
-               LastXCombInfo.icc SamplerBase.icc SamplerBase.fh \
-               ClusterCollapser.fh ClusterCollapser.icc \
-               StandardXComb.fh StandardXComb.icc
+INCLUDEFILES = $(DOCFILES) HandlerGroup.tcc \
+               StandardEventHandler.fh \
+               SubProcessHandler.fh EventHandler.fh SamplerBase.fh \
+               ClusterCollapser.fh StandardXComb.fh 
 
 
 noinst_LTLIBRARIES = libThePEGHandlers.la
@@ -43,27 +36,27 @@ libThePEGHandlers_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 FixedCMSLuminosity_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-FixedCMSLuminosity_la_SOURCES = FixedCMSLuminosity.cc FixedCMSLuminosity.h FixedCMSLuminosity.icc
+FixedCMSLuminosity_la_SOURCES = FixedCMSLuminosity.cc FixedCMSLuminosity.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 ACDCSampler_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-ACDCSampler_la_SOURCES = ACDCSampler.cc ACDCSampler.h ACDCSampler.icc 
+ACDCSampler_la_SOURCES = ACDCSampler.cc ACDCSampler.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 SimpleFlavour_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-SimpleFlavour_la_SOURCES = SimpleFlavour.cc SimpleFlavour.h SimpleFlavour.icc 
+SimpleFlavour_la_SOURCES = SimpleFlavour.cc SimpleFlavour.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 GaussianPtGenerator_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-GaussianPtGenerator_la_SOURCES = GaussianPtGenerator.cc GaussianPtGenerator.h GaussianPtGenerator.icc 
+GaussianPtGenerator_la_SOURCES = GaussianPtGenerator.cc GaussianPtGenerator.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 SimpleZGenerator_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-SimpleZGenerator_la_SOURCES = SimpleZGenerator.cc SimpleZGenerator.h SimpleZGenerator.icc
+SimpleZGenerator_la_SOURCES = SimpleZGenerator.cc SimpleZGenerator.h
 
 include $(top_srcdir)/Config/Makefile.aminclude
 
