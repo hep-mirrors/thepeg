@@ -13,7 +13,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Vectors/Lorentz5Vector.h"
 #include "Transverse.fh"
-// #include "Transverse.xh"
 
 namespace ThePEG {
 
@@ -44,32 +43,32 @@ public:
   /**
    * Default constructor.
    */
-  inline Transverse();
+  Transverse() : BasePair(Value(), Value()) {}
 
   /**
    * Constructor from underlying representation.
    */
-  inline Transverse(const BasePair &);
+  Transverse(const BasePair & p) : BasePair(p) {}
 
   /**
    * Constructor from x and y components.
    */
-  inline Transverse(Value x, Value y);
+  Transverse(Value x, Value y) : BasePair(x, y) {}
 
   /**
    * Constructor taking the transverse parts of a Vector3.
    */
-  inline Transverse(const Vector3<Value> &);
+  Transverse(const Vector3<Value> & p) : BasePair(p.x(), p.y()) {}
 
   /**
    * Constructor taking the transverse parts of a LorentzVector.
    */
-  inline Transverse(const LorentzVector<Value> &);
+  Transverse(const LorentzVector<Value> & p) : BasePair(p.x(), p.y()) {}
 
   /**
    * Constructor taking the transverse parts of a Lorentz5Vector.
    */
-  inline Transverse(const Lorentz5Vector<Value> &);
+  Transverse(const Lorentz5Vector<Value> & p) : BasePair(p.x(), p.y()) {}
   //@}
 
   /** @name Assignment operators. */
@@ -77,22 +76,35 @@ public:
   /**
    * Assignment from underlying representation.
    */
-  inline const Transverse & operator=(const BasePair &);
+  const Transverse & operator=(const BasePair & p) {
+    BasePair::operator=(p);
+    return *this;
+  }
 
   /**
    * Assignment taking the transverse parts of a Vector3.
    */
-  inline const Transverse & operator=(const Vector3<Value> &);
+  const Transverse & operator=(const Vector3<Value> & p) {
+    BasePair::operator=(BasePair(p.x(), p.y()));
+    return *this;
+  }
 
   /**
    * Assignment taking the transverse parts of a LorentzVector.
    */
-  inline const Transverse & operator=(const LorentzVector<Value> &);
+  const Transverse & operator=(const LorentzVector<Value> & p) {
+    BasePair::operator=(BasePair(p.x(), p.y()));
+    return *this;
+  }
 
   /**
    * Assignment taking the transverse parts of a Lorentz5Vector.
    */
-  inline const Transverse & operator=(const Lorentz5Vector<Value> &);
+  const Transverse & operator=(const Lorentz5Vector<Value> & p) { 
+    BasePair::operator=(BasePair(p.x(), p.y()));
+    return *this;
+  }
+
   //@}
 
   /** @name Arithmetric operations */
@@ -100,27 +112,39 @@ public:
   /**
    * Unary minus.
    */
-  inline Transverse operator-() const;
+  Transverse operator-() const { return Transverse(-x(), -y()); }
 
   /**
    * Binary minus.
    */
-  inline Transverse operator-(const Transverse &) const;
+  Transverse operator-(const Transverse & pt) const { 
+    return Transverse(x() - pt.x(), y() - pt.y()); 
+  }
 
   /**
    * Assign-subtract.
    */
-  inline Transverse & operator-=(const Transverse &);
+  Transverse & operator-=(const Transverse & pt) {
+    BasePair::first -= pt.x();
+    BasePair::second -= pt.y();
+    return *this;
+  }
 
   /**
    * Addition.
    */
-  inline Transverse operator+(const Transverse &) const;
+  Transverse operator+(const Transverse &) const {
+    return Transverse(x() + pt.x(), y() + pt.y());
+  }
 
   /**
    * Assign-add.
    */
-  inline Transverse & operator+=(const Transverse &);
+  Transverse & operator+=(const Transverse &) {
+    BasePair::first += pt.x();
+    BasePair::second += pt.y();
+    return *this;
+  }
   //@}
 
   /** @name Access coordinates. */
@@ -128,27 +152,27 @@ public:
   /**
    * The x-component.
    */
-  inline Value x() const;
+  Value x() const { return BasePair::first; }
 
   /**
    * The y-component.
    */
-  inline Value y() const;
+  Value y() const { return BasePair::second; }
 
   /**
    * The magnitude squared.
    */
-  inline Value2 pt2() const;
+  Value2 pt2() const { return sqr(x()) + sqr(y()); }
 
   /**
    * The magnitude.
    */
-  inline Value pt() const;
+  Value pt() const { return sqrt(pt2()); }
 
   /**
    * The azimuth angle.
    */
-  inline double phi() const;
+  double phi() const { return atan2(y(), x()); }
   //@}
 
 };
@@ -168,10 +192,5 @@ void iunitstream(IStream & is, Transverse<T> & p, UT & u) {
 }
 
 }
-
-#include "Transverse.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Transverse.tcc"
-#endif
 
 #endif /* ThePEG_Transverse_H */

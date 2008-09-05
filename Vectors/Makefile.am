@@ -5,11 +5,10 @@ DOCFILES = Lorentz5Vector.h LorentzRotation.h LorentzVector.h \
            SpinHalfLorentzRotation.h HepMCTraits.h HepMCConverter.h
 
 INCLUDEFILES = $(DOCFILES) Lorentz5Vector.fh \
-               Lorentz5Vector.icc LorentzRotation.fh LorentzVector.fh \
-               ThreeVector.fh Transverse.icc Transverse.fh \
-               SpinOneLorentzRotation.fh LorentzRotation.icc \
-               SpinHalfLorentzRotation.icc \
-               HepMCConverter.tcc SpinOneLorentzRotation.icc
+               LorentzRotation.fh LorentzVector.fh \
+               ThreeVector.fh Transverse.fh \
+               SpinOneLorentzRotation.fh \
+               HepMCConverter.tcc
 
 noinst_LTLIBRARIES = libThePEGVectors.la
 

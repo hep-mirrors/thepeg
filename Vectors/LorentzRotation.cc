@@ -13,11 +13,6 @@
 
 #include "LorentzRotation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LorentzRotation.tcc"
-#endif
-
-
 using namespace ThePEG;
 
 // output operator

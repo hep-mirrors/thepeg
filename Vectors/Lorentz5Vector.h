@@ -62,56 +62,62 @@ public:
   /**
    * Constructor giving the null vector.
    */
-  inline Lorentz5Vector();
+  Lorentz5Vector() : mm() {}
 
   /**
    * Constructor giving the invariant length.
    */
-  inline Lorentz5Vector(Value m);
+  Lorentz5Vector(Value m) 
+    : LorentzVector<Value>(Value(), Value(), Value(), m), mm(m) {}
 
   /**
    * Constructor giving the components x, y, z, t. The invariant
    * length is set to LorentzVector::mag().
    */
-  inline Lorentz5Vector(Value x, Value y,
-			Value z, Value t = Value());
+  Lorentz5Vector(Value x, Value y, Value z, Value t = Value())
+    : LorentzVector<Value>(x, y, z, t) { rescaleMass(); }
 
   /**
    * Constructor giving the components x, y, z, t and invariant length.
    * May result in an inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector(Value x, Value y, Value z,
-			Value t, Value tau);
+  Lorentz5Vector(Value x, Value y, Value z, Value t, Value tau)
+    : LorentzVector<Value>(x, y, z, t), mm(tau) {}
 
   /**
    * Constructor giving a 3-Vector and a time component. The invariant
    * length is set to LorentzVector::mag().
    */
-  inline Lorentz5Vector(const Vector3<Value> &, Value);
+  Lorentz5Vector(const Vector3<Value> & p, Value e)
+    : LorentzVector<Value>(p, e) { rescaleMass(); }
 
   /**
    * Constructor giving an invariant length and a 3-Vector
    * component. The time component is set to the corresponding value.
    */
-  inline Lorentz5Vector(Value, const Vector3<Value> &);
+  Lorentz5Vector(Value m, const Vector3<Value> & p) 
+    : LorentzVector<Value>(p, sqrt(p.mag2() + m*m)), mm(m) {}
 
   /**
    * Constructor giving a 3-Vector, a time component and an invariant
    * length. May result in an inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector(const Vector3<Value> &, Value t, Value tau);
+  Lorentz5Vector(const Vector3<Value> & p, Value t, Value tau)
+    : LorentzVector<Value>(p, t), mm(tau) {}
 
   /**
    * Constructor giving a LorentzVector and an invariant length.
    * May result in an inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector(const LorentzVector<Value> &, Value);
+  Lorentz5Vector(const LorentzVector<Value> & p, Value m) 
+    : LorentzVector<Value>(p), mm(m) {}
 
   /**
    * Copy from HepLorentzVector constructor. The invariant
    * length is set to LorentzVector::mag().
    */
-  inline Lorentz5Vector(const LorentzVector<Value> &);
+  Lorentz5Vector(const LorentzVector<Value> & p)
+    : LorentzVector<Value>(p) { rescaleMass(); } 
   //@}
 
   /** @name Assignment and set functions. */
@@ -119,18 +125,21 @@ public:
   /**
    * Set invariant length/mass.
    */
-  inline void setTau(Value);
+  void setTau(Value a) { mm = a; }
 
   /**
    * Set invariant length/mass.
    */
-  inline void setMass(Value);
+  void setMass(Value a) { mm = a; }
 
   /**
    * Assignment. The invariant length is kept fixed. May result in an
    * inconsistent Lorentz5Vector.
    */
-  inline Lorentz5Vector & operator=(const LorentzVector<Value> &);
+  Lorentz5Vector & operator=(const LorentzVector<Value> & q) {
+    LorentzVector<Value>::operator=(q);
+    return *this;
+  }
   //@}
 
   /** @name Rescale functions to make consistent. */
@@ -139,19 +148,25 @@ public:
    * Rescale energy, so that the invariant length/mass of the
    * LorentzVector agrees with the current one.
    */
-  inline void rescaleEnergy();
+  void rescaleEnergy() {
+    LorentzVector<Value>::setT(sqrt(LorentzVector<Value>::vect().mag2() + mass2()));
+  }
 
   /**
    * Rescale spatial component, so that the invariant length/mass of
    * the LorentzVector agrees with the current one.
    */
-  inline void rescaleRho();
+  void rescaleRho() {
+    LorentzVector<Value>::setRho(sqrt(t()*t() - mass2()));
+  }
 
   /**
    * Set the invariant length/mass member, so that it agrees with the
    * invariant length/mass of the LorentzVector.
    */
-  inline void rescaleMass();
+  void rescaleMass() {
+    mm = LorentzVector<Value>::mag();
+  }
   //@}
 
   /** @name Check consistency. */
@@ -159,17 +174,25 @@ public:
   /**
    * Return the relative inconsistency in the mass component.
    */
-  inline double massError() const;
+  double massError() const {
+    return sqrt(abs(Math::relativeError(mass2(), LorentzVector<Value>::mag2())));
+  }
 
   /**
    * Return the relative inconsistency in the energy component.
    */
-  inline double energyError() const;
+  double energyError() const {
+    return sqrt(abs(Math::relativeError(t()*t(), mass2() 
+					+ LorentzVector<Value>::vect().mag2())));
+  }
 
   /**
    * Return the relative inconsistency in the spatial components.
    */
-  inline double rhoError() const;
+  double rhoError() const {
+    return sqrt(abs(Math::relativeError(LorentzVector<Value>::vect().mag2(), 
+					t()*t() - mass2())));
+  }
   //@}
 
   /** @name Access components. */
@@ -178,43 +201,58 @@ public:
    * Mass/invariant length component squared. mag2() and m2() gives
    * the same calculated from the LorentzVector
    */
-  inline Value2 mass2() const;
+  Value2 mass2() const { return mm > Value() ? mm*mm: -mm*mm; }
 
   /**
    * Mass/invariant length component squared. mag2() and m2() gives
    * the same calculated from the LorentzVector
    */
-  inline Value2 tau2() const;
+  Value2 tau2() const { return mass2(); }
 
   /**
    * Mass/invariant length component. mag() and m() gives the same
    * calculated from the LorentzVector
    */
-  inline Value mass() const;
+  Value mass() const { return mm; }
+
 
   /**
    * Mass/invariant length component. mag() and m() gives the same
    * calculated from the LorentzVector
    */
-  inline Value tau() const;
+  Value tau() const { return mass(); }
 
   /**
    * Return the positive negative light-cone components (depending on
    * the value of Direction<0>.
    */
-  inline Value dirPlus() const;
+  Value dirPlus() const {
+    return Direction<0>::pos() ? 
+      LorentzVector<Value>::plus() 
+      : 
+      LorentzVector<Value>::minus();
+  }
 
   /**
    * Return the positive negative light-cone components (depending on
    * the value of Direction<0>.
    */
-  inline Value dirMinus() const;
+  Value dirMinus() const {
+    return Direction<0>::neg() ? 
+      LorentzVector<Value>::plus() 
+      : 
+      LorentzVector<Value>::minus();
+  }
   //@}
 
   /**
    *  Perform a Lorentz transformation
    */
-  inline Lorentz5Vector & transform(const LorentzRotation &);
+  Lorentz5Vector & transform(const LorentzRotation & r) 
+  {
+    LorentzVector<Value>::transform(r.one());
+    return *this;
+  }
 
 private:
 
@@ -324,7 +362,5 @@ operator*(const Lorentz5Vector<Value> & a, const Lorentz5Vector<Value> & b) {
 }
 //@}
 }
-
-#include "Lorentz5Vector.icc"
 
 #endif /* ThePEG_Particle_H */

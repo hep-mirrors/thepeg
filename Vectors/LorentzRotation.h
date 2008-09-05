@@ -39,7 +39,7 @@ public:
   /**
    * Default constructor. Gives a unit matrix.
    */
-  inline LorentzRotation();
+  LorentzRotation() : _half(), _one() {}
 
   /**
    * Constructor giving the components of a Lorentz boost.
@@ -48,30 +48,41 @@ public:
    * @param bz The z-component of the boost
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline LorentzRotation (double bx, double by, double bz, double gamma=-1.);
+  LorentzRotation (double bx, double by, double bz, double gamma=-1.) 
+    : _half(bx,by,bz,gamma), _one(bx,by,bz,gamma) {}
 
   /**
    * Constructor giving the vector for a Lorentz boost.
    * @param b The boost vector 
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline LorentzRotation (const Boost & b, double gamma=-1.);
+  LorentzRotation (const Boost & b, double gamma=-1.)
+    : _half(b,gamma), _one(b,gamma) {}
   //@}
 
   /**
    * Returns true if the Identity matrix.
    */
-  inline bool isIdentity() const;
+  bool isIdentity() const { 
+    return _half.isIdentity() && _one.isIdentity(); 
+  } 
 
   /**
    * Return the inverse.
    */
-  LorentzRotation inverse() const;
+  LorentzRotation inverse() const {
+    LorentzRotation output;
+    output._half = _half.inverse();
+    output._one  =  _one.inverse();
+    return output;
+  }
 
   /**
    * Inverts the LorentzRotation matrix.
    */
-  inline LorentzRotation & invert();
+  LorentzRotation & invert() {
+    return *this=inverse();
+  }
 
   /**
    *  output operator
@@ -88,58 +99,93 @@ public:
    * @param bz The z-component of the boost
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & setBoost (double bx, double by, double bz, double gamma=-1.);
+  LorentzRotation & setBoost (double bx, double by, double bz, double gamma=-1.) {
+    _half.setBoost(bx,by,bz,gamma);
+    _one.setBoost(bx,by,bz,gamma);
+    return *this;
+  }
 
   /**
    * Specify a Lorentz Boost as a vector
    * @param b The boost vector
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & setBoost (const Boost & b, double gamma=-1.);
+  LorentzRotation & setBoost (const Boost & b, double gamma=-1.) {
+    _half.setBoost(b,gamma);
+    _one.setBoost(b,gamma);
+    return *this;
+  }
 
   /**
    * Specify a boost by the given factor along the x-axis
    * @param boost The Lorentz boost  
    */
-  inline LorentzRotation & setBoostX (double boost);
+  LorentzRotation & setBoostX (double boost) {
+    _half.setBoostX(boost);
+    _one.setBoost(boost,0,0);
+    return *this;
+  }
 
   /**
    * Specify a boost by the given factor along the y-axis
    * @param boost The Lorentz boost  
    */
-  inline LorentzRotation & setBoostY (double boost);
+  LorentzRotation & setBoostY (double boost) {
+    _half.setBoostY(boost);
+    _one.setBoost(0,boost,0);
+    return *this;
+  }
 
   /**
    * Specify a boost by the given factor along the z-axis
    * @param boost The Lorentz boost  
    */
-  inline LorentzRotation & setBoostZ (double boost);
+  LorentzRotation & setBoostZ (double boost) {
+    _half.setBoostZ(boost);
+    _one.setBoost(0,0,boost);
+    return *this;
+  }
 
   /**
    * Specify a rotation about a general axis by the angle given.
    * @param delta The angle
    * @param axis The axis
    */
-  inline LorentzRotation & setRotate(double delta, const Axis & axis);
+  LorentzRotation & setRotate(double delta, const Axis & axis) {
+    _half.setRotate(delta,axis);
+    _one.setRotate(delta,axis);
+    return *this;
+  }
 
   /**
    * Specify a rotation by the given angle about the x-axis
    * @param angle The rotation angle 
    */
-  inline LorentzRotation & setRotateX (double angle);
+  LorentzRotation & setRotateX (double angle) {
+    _half.setRotateX(angle);
+    _one.setRotateX(angle);
+    return *this;
+  }
 
   /**
    * Specify a rotation by the given angle about the y-axis
    * @param angle The rotation angle 
    */
-  inline LorentzRotation & setRotateY (double angle);
+  LorentzRotation & setRotateY (double angle) {
+    _half.setRotateZ(angle);
+    _one.setRotateZ(angle);
+    return *this;
+  }
 
   /**
    * Specify a rotation by the given angle about the z-axis
    * @param angle The rotation angle 
    */
-  inline LorentzRotation & setRotateZ (double angle);
-  
+  LorentzRotation & setRotateZ (double angle) {
+    _half.setRotateZ(angle);
+    _one.setRotateZ(angle);
+    return *this;
+  }
   //@}
 
   /** @name Methods to return the spin-\f$\frac12\f$ and spin-1 transformations */
@@ -148,17 +194,17 @@ public:
   /**
    * The spin-\f$\frac12\f$ transformation
    */
-  inline const SpinHalfLorentzRotation & half() const;
+  const SpinHalfLorentzRotation & half() const { return _half; }
 
   /**
    * The spin-1 transformation
    */
-  inline const SpinOneLorentzRotation & one() const;
+  const SpinOneLorentzRotation & one() const { return _one; }
 
   /**
    * Automatically cast to the spin-1 transformation
    */
-  inline operator const SpinOneLorentzRotation & () const;
+  operator const SpinOneLorentzRotation & () const { return _one; }
   //@}
 
   /** @name Access methods for the components of the spin-1 rotation */
@@ -167,82 +213,82 @@ public:
   /**
    *   The xx component
    */
-  inline double xx() const;
+  double xx() const { return _one.xx(); }
 
   /**
    *   The xy component
    */
-  inline double xy() const;
+  double xy() const { return _one.xy(); }
 
   /**
    *   The xz component
    */
-  inline double xz() const;
+  double xz() const { return _one.xz(); }
 
   /**
    *   The xt component
    */
-  inline double xt() const;
+  double xt() const { return _one.xt(); }
 
   /**
    *   The yx component
    */
-  inline double yx() const;
+  double yx() const { return _one.yx(); }
 
   /**
    *   The yy component
    */
-  inline double yy() const;
+  double yy() const { return _one.yy(); }
 
   /**
    *   The yz component
    */
-  inline double yz() const;
+  double yz() const { return _one.yz(); }
 
   /**
    *   The yt component
    */
-  inline double yt() const;
+  double yt() const { return _one.yt(); }
 
   /**
    *   The zx component
    */
-  inline double zx() const;
+  double zx() const { return _one.zx(); }
 
   /**
    *   The zy component
    */
-  inline double zy() const;
+  double zy() const { return _one.zy(); }
 
   /**
    *   The zz component
    */
-  inline double zz() const;
+  double zz() const { return _one.zz(); }
 
   /**
    *   The zt component
    */
-  inline double zt() const;
+  double zt() const { return _one.zt(); }
 
   /**
    *   The tx component
    */
-  inline double tx() const;
+  double tx() const { return _one.tx(); }
 
   /**
    *   The ty component
    */
-  inline double ty() const;
+  double ty() const { return _one.ty(); }
 
   /**
    *   The tz component
    */
-  inline double tz() const;
+  double tz() const { return _one.tz(); }
 
   /**
    *   The tt component
    */
-  inline double tt() const;
+  double tt() const { return _one.tt(); }
   //@}
 
   /** @name Access methods for the components of the spin-\f$\frac12\f$ rotation */
@@ -250,82 +296,82 @@ public:
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s1s1() const;
+  Complex s1s1() const { return _half.s1s1(); }
 
   /**
    *   The \f$(1,2)\f$ component
    */
-  inline Complex s1s2() const;
+  Complex s1s2() const { return _half.s1s2(); }
 
   /**
    *   The \f$(1,3)\f$ component
    */
-  inline Complex s1s3() const;
+  Complex s1s3() const { return _half.s1s3(); }
 
   /**
    *   The \f$(1,4)\f$ component
    */
-  inline Complex s1s4() const;
+  Complex s1s4() const { return _half.s1s4(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s2s1() const;
+  Complex s2s1() const { return _half.s2s1(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s2s2() const;
+  Complex s2s2() const { return _half.s2s2(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s2s3() const;
+  Complex s2s3() const { return _half.s2s3(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s2s4() const;
+  Complex s2s4() const { return _half.s2s4(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s3s1() const;
+  Complex s3s1() const { return _half.s3s1(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s3s2() const;
+  Complex s3s2() const { return _half.s3s2(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s3s3() const;
+  Complex s3s3() const { return _half.s3s3(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s3s4() const;
+  Complex s3s4() const { return _half.s3s4(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s4s1() const;
+  Complex s4s1() const { return _half.s4s1(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s4s2() const;
+  Complex s4s2() const { return _half.s4s2(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s4s3() const;
+  Complex s4s3() const { return _half.s4s3(); }
 
   /**
    *   The \f$(1,1)\f$ component
    */
-  inline Complex s4s4() const;
+  Complex s4s4() const { return _half.s4s4(); }
   //@}
 
 
@@ -336,66 +382,107 @@ public:
    * Product with a LorentzVector simply returns the rotated vector.
    */
   template <typename Value>
-  inline LorentzVector<Value>
-  operator*(const LorentzVector<Value> & lv) const;
+  LorentzVector<Value>
+  operator*(const LorentzVector<Value> & lv) const { return one()*lv; }
 
   /**
    * Product with a Lorentz5Vector simply returns the rotated vector.
    */
   template <typename Value>
-  inline Lorentz5Vector<Value>
-  operator*(const Lorentz5Vector<Value> & lv) const;
+  Lorentz5Vector<Value>
+  operator*(const Lorentz5Vector<Value> & lv) const { return one()*lv; }
 
   /**
    * Product of two LorentzRotations (this) * lt - matrix multiplication  
    * @param lt The LorentzRotation we are multiplying
    */
-  inline LorentzRotation operator * (const LorentzRotation & lt) const;
+  LorentzRotation operator * (const LorentzRotation & lt) const {
+    LorentzRotation output;
+    output._half = _half * lt._half;
+    output._one  = _one * lt._one; 
+    return output;
+  }
 
   /**
    * Multiply by and assign a*=b becomes a= a*b
    */
-  inline  LorentzRotation & operator *= (const LorentzRotation & );
+  LorentzRotation & operator *= (const LorentzRotation & lt) {
+    _one *=lt._one;
+    _half*=lt._half;
+    return *this;
+  }
 
   /**
    *  Transform  (similar to *= but a.transform(b) becomes a = b*a
    */
-  inline  LorentzRotation & transform   (const LorentzRotation & );
+  LorentzRotation & transform(const LorentzRotation & lt) {
+    _half.transform(lt._half);
+    _one.transform(lt._one);
+    return *this;
+  }
 
   /**
    * Rotation around the x-axis; equivalent to LT = RotationX(delta) * LT
    */
-  inline LorentzRotation & rotateX(double delta);
+  LorentzRotation & rotateX(double delta) {
+    _half.rotateX(delta);
+    _one.rotateX(delta);
+    return *this;
+  }
 
   /**
    * Rotation around the y-axis; equivalent to LT = RotationY(delta) * LT
    */
-  inline LorentzRotation & rotateY(double delta);
+  LorentzRotation & rotateY(double delta) {
+    _half.rotateY(delta);
+    _one.rotateY(delta);
+    return *this;
+  }
 
   /**
    * Rotation around the z-axis; equivalent to LT = RotationZ(delta) * LT
    */
-  inline LorentzRotation & rotateZ(double delta);
+  LorentzRotation & rotateZ(double delta) {
+    _half.rotateZ(delta);
+    _one.rotateZ(delta);
+    return *this;
+  }
   
   /**
    *  Rotation around specified vector - LT = Rotation(delta,axis)*LT
    */
-  inline LorentzRotation & rotate(double delta, const Axis & axis);
+  LorentzRotation & rotate(double delta, const Axis & axis) {
+    _half.rotate(delta,axis);
+    _one.rotate(delta,axis);
+    return *this;
+  }
 
   /**
    * Pure boost along the x-axis; equivalent to LT = BoostX(beta) * LT
    */
-  LorentzRotation & boostX(double beta);
+  LorentzRotation & boostX(double beta) {
+    _half.boostX(beta);
+    _one.boostX(beta);
+    return *this;
+  }
 
   /**
    * Pure boost along the y-axis; equivalent to LT = BoostX(beta) * LT
    */
-  LorentzRotation & boostY(double beta);
+  LorentzRotation & boostY(double beta) {
+    _half.boostY(beta);
+    _one.boostY(beta);
+    return *this;
+  }
 
   /**
    * Pure boost along the z-axis; equivalent to LT = BoostX(beta) * LT
    */
-  LorentzRotation & boostZ(double beta);
+  LorentzRotation & boostZ(double beta) {
+    _half.boostZ(beta);
+    _one.boostZ(beta);
+    return *this;
+  }
 
   /**
    *  boost equivalent to LT = Boost(bx,by,bz) * LT
@@ -404,14 +491,22 @@ public:
    * @param bz The z-component of the boost
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & boost(double bx, double by, double bz, double gamma=-1.);
+  LorentzRotation & boost(double bx, double by, double bz, double gamma=-1.) {
+    _half.boost(bx,by,bz,gamma);
+    _one.boost(bx,by,bz,gamma);
+    return *this;
+  }
 
   /**
    *  boost equivalent to LT = Boost(bv) * LT
    * @param bv The boost
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  LorentzRotation & boost(const Boost & bv, double gamma=-1.);
+  LorentzRotation & boost(const Boost & bv, double gamma=-1.) {
+    _half.boost(bv,gamma);
+    _one.boost(bv,gamma);
+    return *this;
+  }
   //@}
 
 private:
@@ -431,20 +526,19 @@ private:
 /**
  *  Global method to get the inverse
  */
-inline LorentzRotation inverseOf ( const LorentzRotation & lt );
+inline LorentzRotation inverseOf ( const LorentzRotation & lt ) {
+  return lt.inverse();
+}
 
 /**
  *  output operator
  */
 inline std::ostream & operator<< ( std::ostream & os,
-				   const  LorentzRotation& lt ) 
-{
+				   const  LorentzRotation& lt ) {
   return lt.print(os);
 }
 
 }
-
-#include "LorentzRotation.icc"
 
 #endif /* THEPEG_LorentzRotation_H */
 

@@ -9,7 +9,6 @@
 #ifndef ThePEG_SpinOneLorentzRotation_H
 #define ThePEG_SpinOneLorentzRotation_H
 
-/** @file SpinOneLorentzRotation.h is... */
 #include "ThePEG/Helicity/HelicityDefinitions.h"
 #include "ThePEG/Helicity/LorentzTensor.fh"
 #include "ThePEG/Helicity/LorentzRSSpinor.fh"
@@ -35,8 +34,10 @@ public:
   /**
    * Default constructor. Gives a unit matrix.
    */
-  inline SpinOneLorentzRotation();
-
+  SpinOneLorentzRotation() : matrix_(16) {
+    xx_() = yy_() = zz_() = tt_() = 1.0;
+  }
+  
   /**
    * Constructor giving the components of a Lorentz boost.
    * @param bx The x-component of the boost
@@ -44,30 +45,36 @@ public:
    * @param bz The z-component of the boost
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation (double bx, double by, double bz, double gamma=-1.);
+  SpinOneLorentzRotation (double bx, double by, double bz, double gamma=-1.) 
+    : matrix_(16) {
+    setBoost(bx,by,bz,gamma);
+  }
 
   /**
    * Constructor giving the vector for a Lorentz boost.
    * @param b The boost vector
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline explicit SpinOneLorentzRotation (const Boost & b, double gamma=-1.);
+  explicit SpinOneLorentzRotation (const Boost & b, double gamma=-1.)
+    : matrix_(16) {
+    setBoost(b.x(), b.y(), b.z(),gamma);
+  }
   //@}
 
   /**
    * Returns true if the Identity matrix.
    */
-  inline bool isIdentity() const;
+  bool isIdentity() const;
 
   /**
    * Return the inverse.
    */
-  inline SpinOneLorentzRotation inverse() const;
+  SpinOneLorentzRotation inverse() const;
 
   /**
    * Inverts the SpinOneLorentzRotation matrix.
    */
-  inline SpinOneLorentzRotation & invert();
+  SpinOneLorentzRotation & invert() { return *this = inverse(); }
 
   /**
    *  output operator
@@ -91,32 +98,34 @@ public:
    * @param b The boost vector
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation & setBoost (const Boost & b, double gamma=-1.);
+  SpinOneLorentzRotation & setBoost (const Boost & b, double gamma=-1.) {
+    return setBoost(b.x(), b.y(), b.z(),gamma); 
+  }
 
   /**
    * Specify a rotation about a general axis by the angle given.
    * @param delta The angle
    * @param axis The axis
    */
-  inline SpinOneLorentzRotation & setRotate(double delta, const Axis & axis);
+  SpinOneLorentzRotation & setRotate(double delta, const Axis & axis);
 
   /**
    * Specify a rotation by the given angle about the x-axis
    * @param angle The rotation angle 
    */
-  inline SpinOneLorentzRotation & setRotateX (double angle);
+  SpinOneLorentzRotation & setRotateX (double angle);
 
   /**
    * Specify a rotation by the given angle about the y-axis
    * @param angle The rotation angle 
    */
-  inline SpinOneLorentzRotation & setRotateY (double angle);
+  SpinOneLorentzRotation & setRotateY (double angle);
 
   /**
    * Specify a rotation by the given angle about the z-axis
    * @param angle The rotation angle 
    */
-  inline SpinOneLorentzRotation & setRotateZ (double angle);
+  SpinOneLorentzRotation & setRotateZ (double angle);
   
   //@}
 
@@ -126,82 +135,82 @@ public:
   /**
    *   The xx component
    */
-  inline double xx() const;
+  double xx() const { return matrix_[ 0]; }
 
   /**
    *   The xy component
    */
-  inline double xy() const;
+  double xy() const { return matrix_[ 1]; }
 
   /**
    *   The xz component
    */
-  inline double xz() const;
+  double xz() const { return matrix_[ 2]; }
 
   /**
    *   The xt component
    */
-  inline double xt() const;
+  double xt() const { return matrix_[ 3]; }
 
   /**
    *   The yx component
    */
-  inline double yx() const;
+  double yx() const { return matrix_[ 4]; }
 
   /**
    *   The yy component
    */
-  inline double yy() const;
+  double yy() const { return matrix_[ 5]; }
 
   /**
    *   The yz component
    */
-  inline double yz() const;
+  double yz() const { return matrix_[ 6]; }
 
   /**
    *   The yt component
    */
-  inline double yt() const;
+  double yt() const { return matrix_[ 7]; }
 
   /**
    *   The zx component
    */
-  inline double zx() const;
+  double zx() const { return matrix_[ 8]; }
 
   /**
    *   The zy component
    */
-  inline double zy() const;
+  double zy() const { return matrix_[ 9]; }
 
   /**
    *   The zz component
    */
-  inline double zz() const;
+  double zz() const { return matrix_[10]; }
 
   /**
    *   The zt component
    */
-  inline double zt() const;
+  double zt() const { return matrix_[11]; }
 
   /**
    *   The tx component
    */
-  inline double tx() const;
+  double tx() const { return matrix_[12]; }
 
   /**
    *   The ty component
    */
-  inline double ty() const;
+  double ty() const { return matrix_[13]; }
 
   /**
    *   The tz component
    */
-  inline double tz() const;
+  double tz() const { return matrix_[14]; }
 
   /**
    *   The tt component
    */
-  inline double tt() const;
+  double tt() const { return matrix_[15]; }
   //@}
 
   /** @name Transformation and product members */
@@ -211,66 +220,104 @@ public:
    * Product with a LorentzVector simply returns the rotated vector.
    */
   template <typename Value>
-  inline LorentzVector<Value>
-  operator*(const LorentzVector<Value> & lv) const;
+  LorentzVector<Value>
+  operator*(const LorentzVector<Value> & v) const {
+    return LorentzVector<Value>
+      (xx()*v.x() + xy()*v.y() + xz()*v.z() + xt()*v.t(),
+       yx()*v.x() + yy()*v.y() + yz()*v.z() + yt()*v.t(),
+       zx()*v.x() + zy()*v.y() + zz()*v.z() + zt()*v.t(),
+       tx()*v.x() + ty()*v.y() + tz()*v.z() + tt()*v.t());
+  }
 
   /**
    * Product with a Lorentz5Vector simply returns the rotated vector.
    */
   template <typename Value>
-  inline Lorentz5Vector<Value>
-  operator*(const Lorentz5Vector<Value> & lv) const;
+  Lorentz5Vector<Value>
+  operator*(const Lorentz5Vector<Value> & v) const {
+    return Lorentz5Vector<Value>
+      (xx()*v.x() + xy()*v.y() + xz()*v.z() + xt()*v.t(),
+       yx()*v.x() + yy()*v.y() + yz()*v.z() + yt()*v.t(),
+       zx()*v.x() + zy()*v.y() + zz()*v.z() + zt()*v.t(),
+       tx()*v.x() + ty()*v.y() + tz()*v.z() + tt()*v.t());
+  }
 
   /**
    * Product of two LorentzRotations (this) * lt - matrix multiplication  
    * @param lt The LorentzRotation we are multiplying
    */
-  inline SpinOneLorentzRotation operator * (const SpinOneLorentzRotation & lt) const;
+  SpinOneLorentzRotation operator * (const SpinOneLorentzRotation & lt) const;
 
   /**
    * Multiply by and assign a*=b becomes a= a*b
    */
-  inline  SpinOneLorentzRotation & operator *= (const SpinOneLorentzRotation & );
+  SpinOneLorentzRotation & operator *= (const SpinOneLorentzRotation & lt) {
+    return *this = *this * lt;
+  }
 
   /**
    *  Transform  (similar to *= but a.transform(b) becomes a = b*a
    */
-  inline  SpinOneLorentzRotation & transform   (const SpinOneLorentzRotation & );
+  SpinOneLorentzRotation & transform   (const SpinOneLorentzRotation & lt) {
+    return *this = lt * *this;
+  }
 
   /**
    * Rotation around the x-axis; equivalent to LT = RotationX(delta) * LT
    */
-  inline SpinOneLorentzRotation & rotateX(double delta);
+  SpinOneLorentzRotation & rotateX(double delta) {
+    SpinOneLorentzRotation tmp;
+    tmp.setRotateX(delta);
+    return *this = tmp * *this;
+  }
 
   /**
    * Rotation around the y-axis; equivalent to LT = RotationY(delta) * LT
    */
-  inline SpinOneLorentzRotation & rotateY(double delta);
+  SpinOneLorentzRotation & rotateY(double delta) {
+    SpinOneLorentzRotation tmp;
+    tmp.setRotateY(delta);
+    return *this = tmp * *this;
+  }
 
   /**
    * Rotation around the z-axis; equivalent to LT = RotationZ(delta) * LT
    */
-  inline SpinOneLorentzRotation & rotateZ(double delta);
+  SpinOneLorentzRotation & rotateZ(double delta) {
+    SpinOneLorentzRotation tmp;
+    tmp.setRotateZ(delta);
+    return *this = tmp * *this;
+  }
   
   /**
    *  Rotation around specified vector - LT = Rotation(delta,axis)*LT
    */
-  inline SpinOneLorentzRotation & rotate(double delta, const Axis & axis);
+  SpinOneLorentzRotation & rotate(double delta, const Axis & axis) {
+    SpinOneLorentzRotation tmp;
+    tmp.setRotate(delta, axis);
+    return *this = tmp * *this;
+  }
 
   /**
    * Pure boost along the x-axis; equivalent to LT = BoostX(beta) * LT
    */
-  inline SpinOneLorentzRotation & boostX(double beta);
+  SpinOneLorentzRotation & boostX(double beta) {
+    return *this = SpinOneLorentzRotation(beta,0,0) * *this;
+  }
 
   /**
    * Pure boost along the y-axis; equivalent to LT = BoostX(beta) * LT
    */
-  inline SpinOneLorentzRotation & boostY(double beta);
+  SpinOneLorentzRotation & boostY(double beta) {
+    return *this = SpinOneLorentzRotation(0,beta,0) * *this;
+  }
 
   /**
    * Pure boost along the z-axis; equivalent to LT = BoostX(beta) * LT
    */
-  inline SpinOneLorentzRotation & boostZ(double beta);
+  SpinOneLorentzRotation & boostZ(double beta) {
+    return *this = SpinOneLorentzRotation(0,0,beta) * *this;
+  }
 
   /**
    *  boost equivalent to LT = Boost(bx,by,bz) * LT
@@ -279,15 +326,19 @@ public:
    * @param bz The z-component of the boost
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation & boost(double bx, double by, double bz,
-					double gamma=-1.);
+  SpinOneLorentzRotation & boost(double bx, double by, double bz,
+				 double gamma=-1.) {
+    return *this = SpinOneLorentzRotation(bx,by,bz,gamma) * *this;
+  }
 
   /**
    *  boost equivalent to LT = Boost(bv) * LT
-   * @param bv The boost vector
+   * @param b The boost vector
    * @param gamma The \f$\gamma\f$ factor (optional)
    */
-  inline SpinOneLorentzRotation & boost(const Boost & bv, double gamma=-1.);
+  SpinOneLorentzRotation & boost(const Boost & b, double gamma=-1.) {
+    return *this = SpinOneLorentzRotation(b.x(),b.y(),b.z(),gamma) * *this;
+  }
   //@}
 
 private:
@@ -334,12 +385,6 @@ private:
   //@}
 };
 
-
-/**
- *  Global method to get the inverse
- */
-inline SpinOneLorentzRotation inverseOf ( const SpinOneLorentzRotation & lt );
-
 /**
  *  output operator
  */
@@ -349,9 +394,5 @@ inline std::ostream & operator<< ( std::ostream & os,
 }
 
 }
-
-#include "SpinOneLorentzRotation.icc"
-
-
 
 #endif /* ThePEG_SpinOneLorentzRotation_H */
