@@ -45,18 +45,31 @@ public:
   /**
    * Get the description of a class giving its type_info object.
    */
-  static inline const ClassDescriptionBase * find(const type_info & ti);
+  static inline const ClassDescriptionBase * find(const type_info & ti) {
+#ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
+  DescriptionMap::const_iterator it =  descriptionMap().find(&ti);
+#else
+  DescriptionMap::const_iterator it =  descriptionMap().find(ti.name());
+#endif
+  if ( it == descriptionMap().end() ) return 0;
+  return (*it).second;
+}
+
 
   /**
    * Get the description of a class giving its name.
    */
-  static inline const ClassDescriptionBase * find(const string & name);
+  static inline const ClassDescriptionBase * find(const string & name) {
+    StringMap::const_iterator it =  stringMap().find(name);
+    if ( it == stringMap().end() ) return 0;
+    return it->second;
+  }
 
   /**
    * Return the static set of descriptions mapped to the relevant
    * type_info objects.
    */
-  static inline const DescriptionMap & all();
+  static inline const DescriptionMap & all() { return descriptionMap(); }
 
   /**
    * Print the classes in the list and their base classes to a
@@ -93,7 +106,5 @@ protected:
 };
 
 }
-
-#include "DescriptionList.icc"
 
 #endif /* ThePEG_DescriptionList_H */

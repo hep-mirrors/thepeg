@@ -13,10 +13,6 @@
 
 #include "Direction.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Direction.tcc"
-#endif
-
 using namespace ThePEG;
 
 MultipleDirectionException::MultipleDirectionException(int i) {

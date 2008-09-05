@@ -14,15 +14,14 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
 	   Level.h
 
 INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
-               ClassDescription.tcc DescriptionList.icc HoldFlag.icc \
-               Interval.fh Interval.icc Interval.tcc Maths.icc Rebinder.fh \
+               ClassDescription.tcc \
+               Interval.fh Interval.tcc Maths.icc Rebinder.fh \
                Rebinder.icc Selector.icc Selector.tcc \
                SimplePhaseSpace.tcc SimplePhaseSpace.xh \
-               Direction.icc Direction.xh UtilityBase.icc UtilityBase.tcc \
-               StringUtils.icc \
+               Direction.xh UtilityBase.icc UtilityBase.tcc \
                Exception.icc Exception.fh \
                VSelector.icc VSelector.tcc ObjectIndexer.icc \
-               CFileLineReader.fh XSecStat.icc \
+               CFileLineReader.fh \
                CompSelector.icc
 
 noinst_LTLIBRARIES = libThePEGUtilities.la

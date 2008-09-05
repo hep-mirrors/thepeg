@@ -31,103 +31,138 @@ public:
   /**
    * Construct an empty interval.
    */
-  inline Interval();
+  Interval() : theLimits(pair<T,T>()) {}
 
   /**
    * Construct interval [dn,up).
    */
-  inline Interval(T dn, T up);
+  Interval(T dn, T up) : theLimits(pair<T,T>(dn, up)) {}
 
   /**
    * Test for equality.
    */
-  inline bool operator==(const Interval & i) const;
+  bool operator==(const Interval & i) const {
+    return lower() == i.lower() && upper() == i.upper();
+  }
 
   /**
    * Test for ordering.
    * @return true if <code>lower() < i.lower()</code> or <code>lower()
    * == i.lower()</code> and <code>upper() < i.upper()</code>.
    */
-  inline bool operator<(const Interval & i) const;
+  bool operator<(const Interval & i) const {
+    return cmp(lower(), i.lower()) ||
+      ( lower() == i.lower() && cmp(upper(), i.upper()) );
+  }
 
   /**
    * Check consistency ie. that lower() < upper().
    */
-  inline bool check() const;
+  bool check() const { return cmp(lower(), upper()); }
 
   /**
    * Returns true if x is within the interval.
    */
-  inline bool operator()(T x) const;
+  bool operator()(T x) const { return includes(x); }
 
   /**
    * Returns true if x is within the interval.
    */
-  inline bool includes(T x) const;
+  bool includes(T x) const { return !cmp(x, lower()) && cmp(x, upper()); }
 
   /**
    * Returns true if the whole of i is within the interval.
    */
-  inline bool includes(const Interval<T,CMP> & i) const;
+  bool includes(const Interval<T,CMP> & i) const {
+    return includes(i.lower()) && !cmp(upper(), i.upper());
+  }
 
   /**
    * If x is in the interval return the interval [x,upper()) and
    * change this interval to [lower(),x). If x is not within the
    * interval, return [0,0) and leave this interval as it is.
    */
-  inline Interval<T,CMP> chopUpper(T x);
+  Interval<T,CMP> chopUpper(T x) {
+    Interval<T,CMP> r;
+    if ( includes(x) ) {
+      r.lower(x);
+      r.upper(upper());
+      upper(x);
+    }
+    return r;
+  }
 
   /**
    * If x is in the interval return the interval [lower(),x) and
    * change this interval to [x,upper()). If x is not within the
    * interval, return [0,0) and leave this interval as it is.
    */
-  inline Interval<T,CMP> chopLower(T x);
+  Interval<T,CMP> chopLower(T x) {
+    Interval<T,CMP> r;
+    if ( includes(x) ) {
+      r.lower(lower());
+      r.upper(x);
+      lower(x);
+    }
+    return r;
+  }
 
   /**
    * If this interval operlaps with i return the overlapping interval.
    */
-  inline Interval<T,CMP> overlap(const Interval & i) const;
+  Interval<T,CMP> overlap(const Interval & i) const {
+    Interval<T,CMP> res;
+    if ( operator==(i) ) res = i;
+    if ( includes(i.upper()) || includes(i.lower()) )
+      res = Interval<T,CMP>(max(lower(),i.lower()), min(upper(), i.upper()));
+    return res;
+  }
 
   /**
    * If this interval operlaps with i return the union of the two
    * intervals.
    */
-  inline Interval<T,CMP> sum(const Interval & i) const;
+  Interval<T,CMP> sum(const Interval & i) const {
+    Interval<T,CMP> res;
+    if ( operator==(i) ) res = i;
+    if ( includes(i.upper()) || includes(i.lower()) )
+      res = Interval<T,CMP>(min(lower(),i.lower()), max(upper(), i.upper()));
+    return res;
+  }
 
   /**
    * Return the upper limit of the interval.
    */
-  inline T upper() const;
+  T upper() const { return theLimits.second; }
 
   /**
    * Return the lower limit of the interval.
    */
-  inline T lower() const;
+  T lower() const { return theLimits.first; }
 
   /**
    * Set the upper limit of the interval.
    */
-  inline void upper(T up);
+  void upper(T up) { theLimits.second = up; }
 
   /**
    * Set the lower limit of the interval.
    */
-  inline void lower(T dn);
+  void lower(T dn) { theLimits.first = dn; }
 
   /**
    * Check if any of the values in the iterator given range is
    * included in this interval.
    */
   template <typename Iterator>
-  inline static bool check(Iterator first, Iterator last);
+  static bool check(Iterator first, Iterator last);
 
   /**
    * Check if all of the values in the given iterator range is
    * included in this interval.
    */
   template <typename Iterator>
-  inline static bool checkAll(Iterator first, Iterator last);
+  static bool checkAll(Iterator first, Iterator last);
 
   /**
    * If x is in the given interval, split the given interval in two,
@@ -158,16 +193,25 @@ typedef Interval<double> DInterval;
 
 /** Helper function to create an interval of a type determined by the
  *  parameters. */
-template <typename T>
-inline Interval<T> makeInterval(T dn, T up);
+template <typename T, typename CMP>
+inline Interval<T,CMP> makeInterval(T dn, T up) { return Interval<T,CMP>(dn, up); }
 
 /** Ouptut an interval to a stream. */
 template <typename OStream, typename T, typename CMP>
-inline OStream & operator<<(OStream &, const Interval<T,CMP> &);
+inline OStream & operator<<(OStream & os, const Interval<T,CMP> & i) {
+  os << i.lower() << i.upper();
+  return os;
+}
 
 /** Input an interval from a stream. */
 template <typename IStream, typename T, typename CMP>
-inline IStream & operator>>(IStream &, Interval<T,CMP> &);
+inline IStream & operator>>(IStream & is, Interval<T,CMP> & i) {
+  T up, dn;
+  is >> dn >> up;
+  i.lower(dn);
+  i.upper(up);
+  return is;
+}
 
 /** Output an interval of a diminsionful type to a stream using the
  *  given unit.
@@ -193,7 +237,6 @@ void iunitstream(IStream & is, Interval<T,CMP> & i, UT & u) {
 
 }
 
-#include "Interval.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Interval.tcc"
 #endif

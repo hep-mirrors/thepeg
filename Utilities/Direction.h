@@ -11,7 +11,6 @@
 // This is the declaration of the Direction class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "Direction.fh"
 #include "Direction.xh"
 
 namespace ThePEG {
@@ -56,52 +55,79 @@ public:
   /**
    * Create an object with a given direction.
    */
-  inline Direction(Dir newDirection)
-    throw(MultipleDirectionException, UndefinedDirectionException);
+  Direction(Dir newDirection)
+    throw(MultipleDirectionException, UndefinedDirectionException) 
+  {
+    if ( theDirection != Undefined ) throw MultipleDirectionException(I);
+    if ( newDirection == Positive ) theDirection = Positive;
+    else if ( newDirection == Negative ) theDirection = Negative;
+    else throw UndefinedDirectionException(I);
+  }
 
   /**
    * Create an object with a positive direction if rnd > 0.5,
    * otherwise set the negative direction.
    */
-  inline Direction(double rnd) throw(MultipleDirectionException);
+  Direction(double rnd) throw(MultipleDirectionException)
+  {
+    if ( theDirection != Undefined ) throw MultipleDirectionException(I);
+    theDirection = rnd > 0 ? Positive : Negative;
+  }
 
   /**
    * Create an object with a positive direction if p is true,
    * otherwise set the negative direction.
    */
-  inline Direction(bool p) throw(MultipleDirectionException);
+  Direction(bool p) throw(MultipleDirectionException)
+  {
+    if ( theDirection != Undefined ) throw MultipleDirectionException(I);
+    theDirection = p ? Positive : Negative;
+  }
 
   /**
    * Destructure makeing the static variable undefined.
    */
-  inline ~Direction();
+  ~Direction() { theDirection = Undefined; }
 
 public:
 
   /**
    * Set the direction.
    */
-  inline static void set(Dir newDirection) throw(UndefinedDirectionException);
+  static void set(Dir newDirection) throw(UndefinedDirectionException) {
+    if ( newDirection == Positive ) theDirection = Positive;
+    else if ( newDirection == Negative ) theDirection = Negative;
+    else throw UndefinedDirectionException(I);
+  }
 
   /**
    * Reverse the direction.
    */
-  inline static void reverse() throw(UndefinedDirectionException);
+  static void reverse() throw(UndefinedDirectionException) {
+    theDirection = pos() ? Negative : Positive;
+  }
 
   /**
    * Return true if the direction is positive.
    */
-  inline static bool pos() throw(UndefinedDirectionException);
+  static bool pos() throw(UndefinedDirectionException) {
+    return dir() == Positive;
+  }
 
   /**
    * Return true if the direction is negative (reversed).
    */
-  inline static bool neg() throw(UndefinedDirectionException);
+  static bool neg() throw(UndefinedDirectionException) {
+    return dir() == Negative;
+  }
 
   /**
    * Return the direction.
    */
-  inline static Dir dir() throw(UndefinedDirectionException);
+  static Dir dir() throw(UndefinedDirectionException) {
+    if ( theDirection == Undefined ) throw UndefinedDirectionException(I);
+    return theDirection;
+  }
 
 private:
 
@@ -127,11 +153,9 @@ private:
 
 };
 
-}
+template<int I>
+typename Direction<I>::Dir Direction<I>::theDirection = Direction<I>::Undefined;
 
-#include "Direction.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Direction.tcc"
-#endif
+}
 
 #endif /* ThePEG_Direction_H */

@@ -14,13 +14,7 @@
 #include "StringUtils.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StringUtils.tcc"
-#endif
-
-
 using namespace ThePEG;
-
 
 StringUtils::StringVector StringUtils::split(string s, string ws) {
   StringVector r;
@@ -103,3 +97,27 @@ xmlAttributes(string tag, string line, string::size_type curr) {
   }
 }
 
+
+string StringUtils::dirname(string file) {
+  string::size_type pos = file.rfind('/');
+  if ( pos == string::npos ) return "";
+  return file.substr(0,pos);
+}
+
+string StringUtils::basename(string file) {
+  string::size_type pos = file.rfind('/');
+  if ( pos == string::npos ) return file;
+  return file.substr(pos + 1);
+}
+
+string StringUtils::remsuf(string file) {
+  string::size_type pos = file.rfind('.');
+  if ( pos == string::npos ) return "";
+  return file.substr(0,pos);
+}
+
+string StringUtils::suffix(string file) {
+  string::size_type pos = file.rfind('.');
+  if ( pos == string::npos ) return file;
+  return file.substr(pos + 1);
+}

@@ -11,8 +11,6 @@
 // This is the declaration of the StringUtils class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "StringUtils.fh"
-// #include "StringUtils.xh"
 
 namespace ThePEG {
 
@@ -61,24 +59,24 @@ public:
    * the given filename, or an empty string if no directory path is
    * included
    */
-  inline static string dirname(string file);
+  static string dirname(string file);
 
   /**
    * Return the base name of the given filename, removing the
    * directory path if present.
    */
-  inline static string basename(string file);
+  static string basename(string file);
 
   /**
    * Remove the trailing suffix from the given filename.
    */
-  inline static string remsuf(string file);
+  static string remsuf(string file);
 
   /**
    * Return the trailing suffix (without the dot) of the given
    * filename.
    */
-  inline static string suffix(string file);
+  static string suffix(string file);
 
   /**
    * Assuming the \a line contains a valid XML \a tag, scan the \a
@@ -103,10 +101,5 @@ public:
 };
 
 }
-
-#include "StringUtils.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "StringUtils.tcc"
-#endif
 
 #endif /* ThePEG_StringUtils_H */

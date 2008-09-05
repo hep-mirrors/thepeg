@@ -11,6 +11,19 @@
 
 namespace ThePEG {
 
+template <typename T, typename CMP>
+template <typename Iterator>
+bool Interval<T,CMP>::check(Iterator first, Iterator last) {
+  while ( first != last ) if ( includes(*first++) ) return true;
+  return false;
+}
+
+template <typename T, typename CMP>
+template <typename Iterator>
+bool Interval<T,CMP>::checkAll(Iterator first, Iterator last) {
+  while ( first != last ) if ( !includes(*first++) ) return false;
+  return true;
+}
 
 template <typename T, typename CMP>
 std::vector< Interval<T,CMP> > Interval<T,CMP>::split(Interval<T,CMP> i, T x) {
@@ -42,5 +55,7 @@ Interval<T,CMP>::split(Interval<T,CMP> i, Iterator first, Iterator last) {
 
 template <typename T, typename CMP>
 CMP Interval<T,CMP>::cmp;
+
+
 
 }

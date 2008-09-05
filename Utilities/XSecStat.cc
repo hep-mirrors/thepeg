@@ -15,10 +15,6 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "XSecStat.tcc"
-#endif
-
 namespace ThePEG {
 
 PersistentOStream & operator<<(PersistentOStream & os, const XSecStat & x) {

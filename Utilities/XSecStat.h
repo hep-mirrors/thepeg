@@ -42,33 +42,49 @@ public:
   /**
    * The default constructor.
    */
-  inline XSecStat();
+  XSecStat() 
+    : theMaxXSec(0.0*picobarn), theAttempts(0), theAccepted(0),
+      theSumWeights(0.0), theSumWeights2(0.0) {}
 
   /**
    * Constructor taking the overestimated cross section, \a xsecmax,
    * as argument.
    */
-  inline XSecStat(CrossSection xsecmax);
-
-  /**
-   * The copy constructor.
-   */
-  inline XSecStat(const XSecStat &);
+  XSecStat(CrossSection xsecmax) 
+    : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0),
+      theSumWeights(0.0), theSumWeights2(0.0) {}
 
   /**
    * The assignment operator.
    */
-  inline XSecStat & operator=(const XSecStat &);
+  XSecStat & operator=(const XSecStat & x) {
+    theMaxXSec = x.theMaxXSec;
+    theAttempts = x.theAttempts;
+    theAccepted = x.theAccepted;
+    theSumWeights = x.theSumWeights;
+    theSumWeights2 = x.theSumWeights2;
+    return *this;
+  }
 
   /**
    * Add the contents of another XSecStat.
    */
-  inline XSecStat & operator+=(const XSecStat &);
+  XSecStat & operator+=(const XSecStat & x) {
+    theMaxXSec += x.theMaxXSec;
+    theAttempts += x.theAttempts;
+    theAccepted += x.theAccepted;
+    theSumWeights += x.theSumWeights;
+    theSumWeights2 += x.theSumWeights2;
+    return *this;
+  }
 
   /**
    * Reset the statistics.
    */
-  inline void reset();
+  void reset() {
+    theAttempts = theAccepted = 0;
+    theSumWeights = theSumWeights2 = 0.0;
+  }
 
   //@}
 
@@ -81,13 +97,17 @@ public:
    * An event of the corresponding class has been accepted. The
    * select() method must have been called before.
    */
-  inline void accept();
+  void accept() { ++theAccepted; }
 
   /**
    * An event of the corresponding class has been attempted. It will
    * subsequently be accepted with the given \a weight.
    */
-  inline void select(double weight);
+  void select(double weight) {
+    ++theAttempts;
+    theSumWeights += weight;
+    theSumWeights2 += sqr(weight);
+  }
 
   /**
    * Reject the event which was last accepted with accept() or
@@ -97,51 +117,60 @@ public:
    * \f$w\f$, in which case \a weight should be set to \f$sign(1,
    * w)\f$.
    */
-  inline void reject(double weight = 1.0);
+  void reject(double weight = 1.0) {
+    theSumWeights -= weight;
+    theSumWeights2 -= sqr(weight);
+    --theAccepted;
+  }
 
   /**
    * The current estimate of the cross section for the corresponding
    * class of events. If no events have been generated, maxXSec() will
    * be returned.
    */
-  inline CrossSection xSec() const;
+  CrossSection xSec() const {
+    return attempts() ? maxXSec()*sumWeights()/attempts() : maxXSec();
+  }
+
 
   /**
    * The current estimate of the error in the cross section for the
    * corresponding class of events. If no events have been generated,
    * maxXSec() will be returned.
    */
-  inline CrossSection xSecErr() const;
+  CrossSection xSecErr() const {
+    return attempts() ? maxXSec()*sqrt(sumWeights2())/attempts() : maxXSec();
+  }
 
   /**
    * The overestimated cross section.
    */
-  inline CrossSection maxXSec() const;
+  CrossSection maxXSec() const { return theMaxXSec; }
 
   /**
    * The sum of the weights so far.
    */
-  inline double sumWeights() const;
+  double sumWeights() const { return theSumWeights; }
 
   /**
    * The sum of the squared weights so far.
    */
-  inline double sumWeights2() const;
+  double sumWeights2() const { return theSumWeights2; }
 
   /**
    * Number of attempts so far.
    */
-  inline long attempts() const;
+  long attempts() const { return theAttempts; }
 
   /**
    * Number of attempts so far.
    */
-  inline long accepted() const;
+  long accepted() const { return theAccepted; }
 
   /**
    * Set the overestimated cross section.
    */
-  inline void maxXSec(CrossSection);
+  void maxXSec(CrossSection x) { theMaxXSec = x; }
   //@}
 
 public:
@@ -195,13 +224,11 @@ PersistentOStream & operator<<(PersistentOStream &, const XSecStat &);
 PersistentIStream & operator>>(PersistentIStream &, XSecStat &);
 
 /** Add the contents of two XSecStat objects. */
-inline XSecStat operator+(const XSecStat & x1, const XSecStat & x2);
-
+inline XSecStat operator+(const XSecStat & x1, const XSecStat & x2) {
+  XSecStat x = x1;
+  return x += x2;
 }
 
-#include "XSecStat.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "XSecStat.tcc"
-#endif
+}
 
 #endif /* THEPEG_XSecStat_H */
