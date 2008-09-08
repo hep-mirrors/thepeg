@@ -150,14 +150,15 @@ pair<int,int> PartonExtractor::nDims(const PBPair & pbins) {
   // if photon from a lepton generate scale
   bool genscale[2]={false,false};
   for(unsigned int ix=0;ix<2;++ix) {
-    ThePEG::PBPtr bin = ix==0 ? pbins.first : pbins.second;
+    PBPtr bin = ix==0 ? pbins.first : pbins.second;
+    if (!bin || !bin->particle() || !bin->parton()) continue;
     int id = abs(bin->particle()->id()); 
-    if( ( id==ThePEG::ParticleID::eminus || id==ThePEG::ParticleID::muminus ) &&
-	bin->parton()->id()==ThePEG::ParticleID::gamma )
+    if( ( id==ParticleID::eminus || id==ParticleID::muminus ) &&
+	bin->parton()->id()==ParticleID::gamma )
       genscale[ix]=true;
   }
-  return ThePEG::make_pair(pbins.first ->nDim(genscale[0]),
-			   pbins.second->nDim(genscale[1]));
+  return make_pair(pbins.first ->nDim(genscale[0]),
+		   pbins.second->nDim(genscale[1]));
 }
 
 void PartonExtractor::prepare(const PBIPair & pbins) {
