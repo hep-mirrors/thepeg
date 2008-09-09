@@ -145,6 +145,24 @@ public:
     BasePair::second += pt.y();
     return *this;
   }
+
+  /**
+   * Multiply-assign with a scalar.
+   */
+  inline Transverse & operator*=(double a) {
+    BasePair::first *= a;
+    BasePair::second *= a;
+    return *this;
+  }
+
+  /**
+   * Divide-assign with a scalar.
+   */
+  inline Transverse & operator/=(double a) {
+    BasePair::first /= a;
+    BasePair::second /= a;
+    return *this;
+  }
   //@}
 
   /** @name Access coordinates. */
@@ -189,6 +207,54 @@ void iunitstream(IStream & is, Transverse<T> & p, UT & u) {
   T x, y;
   is >> iunit(x, u) >> iunit(y, u);
   p = Transverse<T>(x, y);
+}
+
+template <typename Value>
+inline Transverse<Value>
+operator*(Transverse<Value> a, double b) {
+  return a *= b;
+}
+
+template <typename Value>
+inline Transverse<Value>
+operator*(double b, Transverse<Value> a) {
+  return a *= b;
+}
+
+template <typename Value>
+inline Transverse<Value>
+operator/(Transverse<Value> a, double b) {
+  return a /= b;
+}
+
+template <typename ValueA, typename ValueB>
+inline
+Transverse<typename BinaryOpTraits<ValueA,ValueB>::MulT> 
+operator*(ValueB a, const Transverse<ValueA> & v) {
+  typedef typename BinaryOpTraits<ValueB,ValueA>::MulT ResultT;
+  return Transverse<ResultT>(a*v.x(), a*v.y());
+}
+
+template <typename ValueA, typename ValueB>
+inline
+Transverse<typename BinaryOpTraits<ValueA,ValueB>::MulT> 
+operator*(const Transverse<ValueA> & v, ValueB a) {
+  typedef typename BinaryOpTraits<ValueB,ValueA>::MulT ResultT;
+  return Transverse<ResultT>(a*v.x(), a*v.y());
+}
+
+template <typename Value>
+inline Transverse<double>
+operator/(const Transverse<Value> & v, Value a) {
+  return Transverse<double>(v.x()/a, v.y()/a);
+}
+
+template <typename ValueA, typename ValueB>
+inline
+Transverse<typename BinaryOpTraits<ValueA,ValueB>::DivT> 
+operator/(const Transverse<ValueA> & v, ValueB b) {
+  typedef typename BinaryOpTraits<ValueA,ValueB>::DivT ResultT;
+  return Transverse<ResultT>(v.x()/b, v.y()/b);
 }
 
 }

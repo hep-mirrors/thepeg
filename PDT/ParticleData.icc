@@ -70,7 +70,7 @@ inline Energy ParticleData::widthLoCut() const {
 }
 
 inline Length ParticleData::cTau() const {
-  return theCTau >= Length() ? theCTau :
+  return theCTau > Length() ? theCTau :
     ( theWidth > Energy() ? hbarc/theWidth :
       ( theWidth == Energy() ? Constants::MaxLength : Length() ) );
 }
