@@ -26,9 +26,9 @@
 namespace {
   /// Debug helper function
 #ifdef NDEBUG
-  inline void errorIf(bool, std::string) {}
+  inline void errorIf(bool, const std::string &) {}
 #else
-  inline void errorIf(bool condition, std::string message) {
+  inline void errorIf(bool condition, const std::string & message) {
     if ( condition )
       throw ThePEG::Exception(message, ThePEG::Exception::eventerror);
   }
@@ -128,6 +128,12 @@ public:
 
   /// Squared magnitude \f$x^\mu\,x_\mu=t^2 - \vec{x}^2\f$.
   Value2 m2() const { return mag2(); }
+
+  /// Squared magnitude with another vector
+  Value2 m2(const LorentzVector<Value> & a) const {
+    Value tt(a.t()+t()),zz(a.z()+z());
+    return (tt-zz)*(tt+zz)-sqr(a.x()+x())-sqr(a.y()+y());
+  }
 
   /// Magnitude (signed) \f$\pm\sqrt{|t^2 - \vec{x}^2|}\f$.
   Value  mag() const 
@@ -246,12 +252,12 @@ public:
   //@}
 
   /// Pseudorapidity of spatial part.
-  double eta() const 
-  { 
+  double eta() const {
+    static const string 
+      em("Pseudorapidity for 3-vector along z-axis undefined.");
     Value m = rho();
     if ( m ==  Value() ) return  0.0;
-    errorIf(m == z() || m == -z(),
-	    "Pseudorapidity for 3-vector along z-axis undefined.");
+    errorIf(m == z() || m == -z(),em);
     return 0.5 * log( (m+z()) / (m-z()) );
   }
 
@@ -262,27 +268,25 @@ public:
   }
 
   /// Rapidity \f$\frac{1}{2}\ln\frac{t+z}{t-z} \f$
-  double rapidity() const 
-  {
-    errorIf(abs(t()) == abs(z()),
-	    "rapidity for 4-vector with |E| = |Pz| -- infinite result");
-    errorIf(abs(t()) < abs(z()),
-	    "rapidity for spacelike 4-vector with |E| < |Pz| -- undefined");
+  double rapidity() const {
+    static const string em1("rapidity for 4-vector with |E| = |Pz| -- infinite result");
+    static const string em2("rapidity for spacelike 4-vector with |E| < |Pz| -- undefined");
+    errorIf(abs(t()) == abs(z()),em1);
+    errorIf(abs(t()) < abs(z()) ,em2);
     double q = (t() + z()) / (t() - z());
     return 0.5 * log(q);
   }
 
   /// Rapidity with respect to another vector
-  double rapidity(const Axis & ref) const 
-  {
+  double rapidity(const Axis & ref) const {
+    static const string em1("A zero vector used as reference to LorentzVector rapidity");
+    static const string em2("rapidity for 4-vector with |E| = |Pu| -- infinite result");
+    static const string em3("rapidity for spacelike 4-vector with |E|<|P*ref| undefined");
     double r = ref.mag2();
-    errorIf(r == 0,
-	    "A zero vector used as reference to LorentzVector rapidity");
+    errorIf(r == 0,em1);
     Value vdotu = vect().dot(ref)/sqrt(r);
-    errorIf(abs(t()) == abs(vdotu),
-	    "rapidity for 4-vector with |E| = |Pu| -- infinite result");
-    errorIf(abs(t()) < abs(vdotu),
-	    "rapidity for spacelike 4-vector with |E|<|P*ref| undefined");
+    errorIf(abs(t()) == abs(vdotu),em2);
+    errorIf(abs(t()) < abs(vdotu),em3);
     double q = (t() + vdotu) / (t() - vdotu);
     return 0.5 * log(q);
   }
@@ -291,19 +295,18 @@ public:
    * Boost from reference frame into this vector's rest
    * frame: \f$\frac{\vec{x}}{t}\f$.
    */
-  Boost boostVector() const 
-  {
+  Boost boostVector() const {
+    static const string em1("boostVector computed for LorentzVector with t=0"
+		     " -- infinite result");
+    static const string em2("boostVector computed for a non-timelike LorentzVector");
     if (t() == Value()) {
       if (rho2() == Value2()) 
 	return Boost();
       else 
-	errorIf(true,
-		"boostVector computed for LorentzVector with t=0"
-		" -- infinite result");
+	errorIf(true,em1);
     }
     // result will make analytic sense but is physically meaningless
-    errorIf(m2() <= Value2(),
-	  "boostVector computed for a non-timelike LorentzVector");
+    errorIf(m2() <= Value2(),em2);
     return vect() * (1./t());
   }
   
