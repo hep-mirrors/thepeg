@@ -265,7 +265,6 @@ void ParticleData::doupdate() throw(UpdateException) {
       if ( dit2 != dit ) dm->addOverlap(dm);
     if ( dm->brat() > 0.0 ) theDecaySelector.insert(dm->brat(), dm);
   }
-  if ( theDecaySelector.empty() ) stable(true);
   if ( theMassGenerator && !theMassGenerator->accept(*this) )
     throw UpdateException();
   if ( theWidthGenerator &&
