@@ -100,7 +100,7 @@ struct HepMCTraitsBase {
    * Set the units to be used by the given GenEvent object. If
    * HasUnits is false this should be a no-op.
    */
-  static void setUnits(EventT & e, Energy momu, Length lenu) {}
+  static void setUnits(EventT &, Energy, Length) {}
 
   /** Set the \a scale, \f$\alpha_S\f$ (\a aS) and \f$\alpha_{EM}\f$
       (\a aEM) for the event \a e. The scale will be scaled with \a
