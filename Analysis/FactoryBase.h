@@ -12,6 +12,7 @@
 // This is the declaration of the FactoryBase class.
 //
 
+#include "ThePEG/Config/LWH.h"
 #include "ThePEG/Interface/Interfaced.h"
 #include "FactoryBase.fh"
 #include "AIAnalysisFactory.h"

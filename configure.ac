@@ -8,7 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 THEPEG_LIBTOOL_VERSION_INFO(5,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
-AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
+AC_CONFIG_HEADERS([Config/config.h Config/LWH.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
 
 AC_CANONICAL_HOST
 
@@ -53,6 +53,7 @@ THEPEG_CHECK_LOG1P
 THEPEG_CHECK_DLOPEN
 THEPEG_CHECK_FPUCONTROL
 THEPEG_CHECK_GSL
+THEPEG_CHECK_AIDA
 
 AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
 if test "$GCC" = "yes"; then

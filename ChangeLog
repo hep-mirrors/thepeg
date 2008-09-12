@@ -1,3 +1,10 @@
+2008-09-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/FactoryBase.h, configure.ac, Config/LWH.h.in,
+	m4/thepeg.m4: Configure now checks for AIDA header files and
+	includes them instead of the stubs in LWH. This will hopefully fix
+	some of the problems in herwig:ticket:198
+
 2008-09-10  Peter Richardson  <Peter.Richardson@durham.ac.uk>
 
 	Vectors/LorentzVector.h: Added a member to mass squared of two vectors
