@@ -166,6 +166,7 @@ const InvEnergy InvGeV = 1/GeV;
 
 const Length meter = 1.0e3 * millimeter;
 const Length mm = millimeter;
+const Length centimeter = 10.0*millimeter;
 const Length micrometer = 1.0e-3  * millimeter;
 const Length nanometer  = 1.0e-6  * millimeter;
 const Length picometer  = 1.0e-9  * millimeter;

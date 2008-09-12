@@ -35,6 +35,14 @@ convert(const Event & ev, bool nocopies, Energy eunit, Length lunit) {
 
 template <typename HepMCEventT, typename Traits>
 void HepMCConverter<HepMCEventT,Traits>::
+convert(const Event & ev, GenEvent & gev, bool nocopies) {
+  HepMCConverter<HepMCEventT,Traits>
+    converter(ev, gev, nocopies,
+	      Traits::momentumUnit(gev), Traits::lengthUnit(gev));
+}
+
+template <typename HepMCEventT, typename Traits>
+void HepMCConverter<HepMCEventT,Traits>::
 convert(const Event & ev, GenEvent & gev, bool nocopies,
 	Energy eunit, Length lunit) {
   HepMCConverter<HepMCEventT,Traits> converter(ev, gev, nocopies, eunit, lunit);
@@ -65,6 +73,16 @@ HepMCConverter(const Event & ev, GenEvent & gev, bool nocopies,
 
 template <typename HepMCEventT, typename Traits>
 void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
+
+  if ( lengthUnit != millimeter && lengthUnit != centimeter )
+    throw HepMCConverterException()
+      << "Length unit used for HepMC::GenEvent was not MM nor CM."
+      << Exception::runerror;
+  if ( energyUnit != GeV && energyUnit != MeV )
+    throw HepMCConverterException()
+      << "Momentum unit used for HepMC::GenEvent was not GEV nor MEV."
+      << Exception::runerror;
+  Traits::setUnits(*geneve, energyUnit, lengthUnit);
 
   tcEHPtr eh;
   if ( ev.primaryCollision() && ( eh =
