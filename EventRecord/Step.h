@@ -49,7 +49,8 @@ public:
    * of this Step.
    */
   Step(tCollPtr newCollision = tCollPtr(),
-       tcEventBasePtr newHandler = tcEventBasePtr());
+       tcEventBasePtr newHandler = tcEventBasePtr())
+    : theCollision(newCollision), theHandler(newHandler) {}
 
   /**
    * The copy constructor.
@@ -65,12 +66,12 @@ public:
    * Return a pointer to the step handler which performed the
    * generation of this step.
    */
-  inline tcEventBasePtr handler() const;
+  tcEventBasePtr handler() const { return theHandler; }
 
   /**
    * Return a pointer to the Collision to which this step belongs.
    */
-  inline tCollPtr collision() const;
+  tCollPtr collision() const { return theCollision; }
 
   /**
    * Extract particles from this Step which satisfies the
@@ -89,13 +90,19 @@ public:
    * (pointers to) particles will be appended.
    */
   template <typename OutputIterator>
-  inline void selectFinalState(OutputIterator r) const;
+  void selectFinalState(OutputIterator r) const {
+    select(r, SelectFinalState());
+  }
 
   /**
    * Extract all final state particles in this Step.
    * @return a vector of pointers to the extracted particles.
    */
-  inline tPVector getFinalState() const;
+  tPVector getFinalState() const {
+    tPVector ret;
+    selectFinalState(back_inserter(ret));
+    return ret;
+  }
 
   /**
    * Return a vector of particle vectors with colour-connected
@@ -103,28 +110,33 @@ public:
    * @deprecated Use the corresponding functions in ColourLine instead.
    */
   template <typename PIterator>
-  inline static vector<tPVector> getSinglets(PIterator first, PIterator last);
+  static vector<tPVector> getSinglets(PIterator first, PIterator last) {
+    tParticleSet left(first, last);
+    return getSinglets(left);
+  }
 
   /**
    * A reference to the set of all particles in this step.
    */
-  inline const ParticleSet & all() const;
+  const ParticleSet & all() const { return allParticles; }
 
   /**
    * A reference to the set of outgoing particles in this step.
    */
-  inline const ParticleSet & particles() const;
+  const ParticleSet & particles() const { return theParticles; }
 
   /**
    * A reference to the set of intermediate particles in this step.
    */
-  inline const ParticleSet & intermediates() const;
+  const ParticleSet & intermediates() const { return theIntermediates; }
 
   /**
    * A reference to the vector of sub-processes introduced in this
    * step.
    */
-  inline const SubProcessVector & subProcesses() const;
+  const SubProcessVector & subProcesses() const {
+    return theSubProcesses;
+  }
 
   /**
    * Returns the colliding particles in the collision to which this
@@ -138,7 +150,12 @@ public:
    * Get mutable particle. If the given particle is present in this
    * step, return its pointer otherwise return the null pointer;
    */
-  inline tPPtr find(tcPPtr) const;
+  tPPtr find(tcPPtr p) const {
+    tPPtr r = const_ptr_cast<tPPtr>(p);
+    if ( !member(all(), r) ) return tPPtr();
+    return r;
+  }
+
 
   /**
    * Copy a particle. If the given Particle is present in this step,
@@ -197,9 +214,13 @@ public:
    * @return true iff the addition succeeded.
    */
   template <typename CIterator>
-  inline bool addDecayProduct(tcPPtr parent,
-			      CIterator firstChild, CIterator lastChild,
-			      bool fixColour = true);
+  bool addDecayProduct(tcPPtr parent,
+		       CIterator firstChild, CIterator lastChild,
+		       bool fixColour = true) {
+    for ( ; firstChild != lastChild; ++firstChild )
+      if ( !addDecayProduct(parent, *firstChild, fixColour) ) return false;
+    return true;
+  }
 
   /**
    * Add a particle to this Step. It is assumed to be already setup as
@@ -228,8 +249,13 @@ public:
    * removed from the decay record.
    */
   template <typename CIterator>
-  inline bool removeDecayProduct(tcPPtr parent,
-				 CIterator firstChild, CIterator lastChild);
+  bool removeDecayProduct(tcPPtr parent,
+			  CIterator firstChild, CIterator lastChild) {
+    bool success = true;
+    for ( ; firstChild != lastChild; ++firstChild )
+      if ( !removeDecayProduct(parent, *firstChild) ) success = false;
+    return success;
+  }
 
   /**
    * Add decay product. Add the \a child as a decay product of all the
@@ -363,7 +389,9 @@ public:
    * checked and possibly added instead (recursively).
    */
   template <typename Cont>
-  inline tParticleSet getCurrent(const Cont & c) const;
+  tParticleSet getCurrent(const Cont & c) const {
+    return getCurrent(c.begin(), c.end());
+  }
 
   /**
    * Get final state particles. Given a range of particles, return the
@@ -430,16 +458,17 @@ private:
   /**
    * Assignement is not allowed.
    */
-  inline Step & operator=(const Step &);
+  Step & operator=(const Step &);
 
   /**
    * Setup pointer to the Collision.
    */
-  inline void collision(tCollPtr);
+  void collision(tCollPtr c) { theCollision = c; }
+
   /**
    * Setup pointer to the step handler.
    */
-  inline void handler(tcEventBasePtr);
+  void handler(tcEventBasePtr sh) { theHandler = sh; }
 
 private:
 
@@ -499,7 +528,12 @@ ThePEG_DECLARE_CLASS_TRAITS(Step,EventRecordBase);
 
 }
 
-#include "Step.icc"
+#include "Collision.h"
+
+inline const ThePEG::PPair & ThePEG::Step::incoming() const {
+  return collision()->incoming(); 
+}
+
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Step.tcc"
 #endif

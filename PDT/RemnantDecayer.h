@@ -57,12 +57,7 @@ public:
   /**
    * The default constructor.
    */
-  inline RemnantDecayer();
-
-  /**
-   * The copy constructor.
-   */
-  inline RemnantDecayer(const RemnantDecayer &);
+  RemnantDecayer() : respectDIS(true), theRecoilOption(copyFinal) {}
 
   /**
    * The destructor.
@@ -132,20 +127,20 @@ public:
    * The option for how to distribute recoils in the hard subsystem
    * when taking energy to produce remnants.
    */
-  inline RecoilOption recoilOption() const;
+  RecoilOption recoilOption() const { return theRecoilOption; }
 
   /**
    * If true, do not boost a scattered lepton (and possible radiated
    * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
    * unmodified.
    */
-  inline bool respectDISKinematics() const;
+  bool respectDISKinematics() const { return respectDIS; }
 
   /**
    * An object capable of generating an intrinsic transverse momentum
    * of the created remnants.
    */
-  inline PtGPtr pTGenerator() const;
+  PtGPtr pTGenerator() const { return thePTGenerator; }
 
   /**
    * Static function to decay al remnants among the given \a
@@ -161,17 +156,19 @@ protected:
   /**
    * Access the RemnantData object of a \a remnant.
    */
-  inline tRemPDPtr data(tcRemPPtr remnant) const;
+  tRemPDPtr data(tcRemPPtr remnant) const { return remnant->remData; }
 
   /**
    * Access the parent  of a \a remnant.
    */
-  inline tcPPtr parent(tcRemPPtr remnant) const;
+  tcPPtr parent(tcRemPPtr remnant) const { return remnant->parent; }
 
   /**
    * Access the vector of extracted particles of a \a remnant.
    */
-  inline const PVector & extracted(tcRemPPtr remnant) const;
+  const PVector & extracted(tcRemPPtr remnant) const {
+    return remnant->extracted;
+  }
 
   /**
    * Recursively find all particles produced from an extracted parton.
@@ -315,10 +312,5 @@ struct ClassTraits<RemnantDecayer>
 /** @endcond */
 
 }
-
-#include "RemnantDecayer.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantDecayer.tcc"
-#endif
 
 #endif /* THEPEG_RemnantDecayer_H */

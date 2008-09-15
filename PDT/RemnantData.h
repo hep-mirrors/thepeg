@@ -160,7 +160,7 @@ protected:
    * The default constructor is protected and must only be used by the
    * PersistentIStream class via the ClassTraits<RemnantData> class.
    */
-  inline RemnantData() {}
+  RemnantData() {}
 
   /**
    * The ClassTraits<RemnantData> class must be a friend to be able to

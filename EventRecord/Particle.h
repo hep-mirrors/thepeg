@@ -16,6 +16,7 @@
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/EventRecord/ColourBase.h"
 #include "ThePEG/EventRecord/SpinBase.h"
+#include "ThePEG/PDT/ParticleData.h"
 
 namespace ThePEG {
 
@@ -103,7 +104,7 @@ public:
    * private - there is no particle without a pointer to a
    * ParticleData object.
    */
-  inline Particle(tcEventPDPtr);
+  Particle(tcEventPDPtr newData) : theData(newData), theRep(0) {}
 
   /**
    * Copy constructor.
@@ -113,7 +114,7 @@ public:
   /**
    * Destructor.
    */
-  ~Particle();
+  virtual ~Particle();
   //@}
 
   /** @name Functions relating to ancestry of particles. */
@@ -121,33 +122,49 @@ public:
   /**
    * Returns true if and only if this particle has decayed.
    */
-  inline bool decayed() const;
+  bool decayed() const {
+    return hasRep() && !rep().theChildren.empty();
+  }
 
   /**
    * The list of decay products.
    */
-  inline const ParticleVector & children() const;
+  const ParticleVector & children() const {
+    static const ParticleVector null;
+    return hasRep() ? rep().theChildren : null;
+  }
 
   /**
    * Add a child (the childs parent pointer will be set accordingly).
    */
-  inline void addChild(tPPtr);
+  void addChild(tPPtr c) {
+      rep().theChildren.push_back(c);
+      (c->rep()).theParents.push_back(this);
+  }
 
   /**
    * Remove the given child from the list of children of this particle
    * (the corresponding parent pointer of the child will also be
    * removed).
    */
-  inline void abandonChild(tPPtr);
+  void abandonChild(tPPtr child) {
+    removeChild(child);
+    child->removeParent(this);
+  }
 
   /**
    * The list of parent particles.
    */
-  inline const tParticleVector & parents() const;
+  const tParticleVector & parents() const {
+    static const tParticleVector null;
+    return hasRep() ? rep().theParents : null;
+  }
 
   /**
    * Return a set of neighboring particles coming from the same decay
-   * as this one.
+   * as this one. The return value is a newly recalculated set
+   * every time. It must be stored to be used further, do not directly call
+   * e.g. siblings().begin() or siblings().end()!
    */
   tParticleSet siblings() const;
 
@@ -155,52 +172,73 @@ public:
    * Undo the decay of this particle, removing all children (and
    * grand children ...) from the event record
    */
-  inline void undecay();
+  void undecay() {
+    if ( hasRep() ) {
+      rep().theChildren.clear();
+      rep().theNext = tPPtr();
+    }
+  }
 
   /**
    * If this particle has decayed set the corresponding decay mode.
    */
-  inline void decayMode(tDMPtr);
+  void decayMode(tDMPtr dm) { rep().theDecayMode = dm; }
 
   /**
    * If this particle has decayed get the corresponding decay mode.
    */
-  inline tDMPtr decayMode() const;
+  tDMPtr decayMode() const {
+    return hasRep() ? rep().theDecayMode : tDMPtr();
+  }
 
   /**
    * Next instance. Pointer to another instance of the same
    * physical particle in later steps.
    */
-  inline tPPtr next() const;
+  tPPtr next() const {
+    return hasRep() ? rep().theNext : PPtr();
+  }
 
   /**
    * Previous instance. Pointer to another instance of the same
    * physical particle in earlier steps.
    */
-  inline tPPtr previous() const;
+  tPPtr previous() const {
+    return hasRep() ? rep().thePrevious : tPPtr();
+  }
 
   /**
    * Original instance. If there exists another previous instance of
    * this particle return this instance (recursively).
    */
-  inline tcPPtr original() const;
+  tcPPtr original() const {
+    return previous() ? tcPPtr(previous()->original()) : tcPPtr(this);
+  }
 
   /**
    * Original instance. If there exists another previous instance of
    * this particle return this instance (recursively).
    */
-  inline tPPtr original();
-  /**
-   * Final instance. If there exists another subsequent instance of
-   * this particle return this instance (recursively).
-   */
-  inline tcPPtr final() const;
+  tPPtr original() {
+    return previous() ? previous()->original() : tPPtr(this);
+  }
+
 
   /**
    * Final instance. If there exists another subsequent instance of
    * this particle return this instance (recursively).
    */
-  inline tPPtr final();
+  tcPPtr final() const {
+    return next() ? tcPPtr(next()->final()) : tcPPtr(this);
+  }
+
+  /**
+   * Final instance. If there exists another subsequent instance of
+   * this particle return this instance (recursively).
+   */
+  tPPtr final() {
+    return next() ? next()->final() : tPPtr(this);
+  }
 
   //@}
 
@@ -209,12 +247,16 @@ public:
   /**
    * Get the first Step object where this particle occurred.
    */
-  inline tStepPtr birthStep() const;
+  tStepPtr birthStep() const { 
+    return hasRep() ? rep().theBirthStep : tStepPtr();
+  }
 
   /**
    * Get the order-number for this particle in the current event.
    */
-  inline int number() const;
+  int number() const { 
+    return hasRep() ? rep().theNumber : 0; 
+  }
   //@}
 
   /** @name Access the underlying ParticleData object. */
@@ -222,22 +264,22 @@ public:
   /**
    * Access the ParticleData object of this particle type
    */
-  inline const ParticleDataClass & data() const;
+  const ParticleDataClass & data() const { return *theData; }
 
   /**
    * Access the ParticleData object of this particle type
    */
-  inline tcEventPDPtr dataPtr() const;
+  tcEventPDPtr dataPtr() const { return theData; }
 
   /**
    * Return the PDG name of this particle.
    */
-  inline string PDGName() const;
+  const string & PDGName() const { return data().PDGName(); }
 
   /**
    * Return the PDG id number of this particle.
    */
-  inline long id() const;
+  long id() const { return data().id(); }
   //@}
 
   /** @name Functions to access the momentum. */
@@ -245,85 +287,103 @@ public:
   /**
    * Return the momentum of this particle.
    */
-  inline const Lorentz5Momentum & momentum() const;
+  const Lorentz5Momentum & momentum() const { return theMomentum; }
 
   /**
    * Set the 3-momentum of this particle. The energy is set to be
    * consistent with the mass.
    */
-  inline void set3Momentum(const Momentum3 &);
+  void set3Momentum(const Momentum3 & p) {
+    theMomentum.setVect(p);
+    theMomentum.rescaleEnergy();
+  }
 
   /**
    * Set the momentum of this particle. Afterwards, the underlying
    * Lorentz5Momentum may have inconsistent mass.
    */
-  inline void setMomentum(const LorentzMomentum &);
+  void setMomentum(const LorentzMomentum & p) {
+    theMomentum = p;
+  }
 
   /**
    * Set the momentum and mass.
    */
-  inline void set5Momentum(const Lorentz5Momentum &);
+  void set5Momentum(const Lorentz5Momentum & p) {
+    theMomentum = p;
+  }
 
   /**
    * Acces the mass of this particle.
    */
-  inline Energy mass() const;
+  Energy mass() const { return momentum().mass(); }
 
   /**
    * Acces the mass of this particle type.
    */
-  inline Energy nominalMass() const;
+  Energy nominalMass() const { return data().mass(); }
 
   /**
    * Get the scale at which this particle is considered resolved.
    */
-  inline Energy2 scale() const;
+  Energy2 scale() const { 
+    return hasRep() ? rep().theScale : -1.0*GeV2;
+  }
 
   /**
    * Set the scale at which this particle is considered resolved.
    */
-  inline void scale(Energy2);
+  void scale(Energy2 q2) { rep().theScale = q2; }
 
   /**
    * Return the transverse mass (squared), calculated from the energy
    * and the longitudinal momentum.
    */
-  inline Energy2 mt2() const;
+  Energy2 mt2() const { return sqr(momentum().t()) - sqr(momentum().z()); }
+
   /**
    * Return the transverse mass (squared), calculated from the energy
    * and the longitudinal momentum.
    */
-  inline Energy mt() const;
+  Energy mt() const { return sqrt(mt2()); }
 
   /**
    * Return the transverse mass (squared), calculated from the mass
    * and the transverse momentum.
    */
-  inline Energy2 perpmass2() const;
+  Energy2 perpmass2() const { return momentum().perp2() + momentum().mass2(); }
+
   /**
    * Return the transverse mass (squared), calculated from the mass
    * and the transverse momentum.
    */
-  inline Energy perpmass() const;
+  Energy perpmass() const { return sqrt(perpmass2()); }
 
   /**
-   * Return the (preudo) rapidity.
+   * Return the (pseudo) rapidity.
    */
-  inline double rapidity() const;
+  double rapidity() const {
+    return ( Pplus() > 0.0*GeV && Pminus() > 0.0*GeV )?
+      0.5*log(Pplus()/Pminus()) : Constants::MaxFloat;
+  }
+
   /**
-   * Return the (preudo) rapidity.
+   * Return the (pseudo) rapidity.
    */
-  inline double eta() const;
+  double eta() const {
+    Energy rho = momentum().rho();
+    return rho > abs(momentum().z())?
+      0.5*log((rho+momentum().z())/(rho-momentum().z())) : Constants::MaxFloat;
+  }
 
   /**
    * Return the positive and negative light-cone momenta.
    */
-  inline Energy Pplus() const;
+  Energy Pplus() const { return momentum().plus(); }
   /**
    * Return the positive and negative light-cone momenta.
    */
-  inline Energy Pminus() const;
-
+  Energy Pminus() const { return momentum().minus(); }
   //@}
 
   /** @name Functions to access the position. */
@@ -332,7 +392,10 @@ public:
    * The creation vertex of this particle. The point is given
    * relative to the collision vertex.
    */
-  inline const LorentzPoint & vertex() const;
+  const LorentzPoint & vertex() const {
+    static const LorentzPoint null;
+    return hasRep() ? rep().theVertex : null;
+  }
 
   /**
    * The creation vertex of this particle. The absolute
@@ -344,24 +407,33 @@ public:
    * The decay vertex of this particle. The point is given
    * relative to the collision vertex.
    */
-  inline LorentzPoint decayVertex() const;
+  LorentzPoint decayVertex() const { 
+    return vertex() + lifeLength();
+  }
 
   /**
    * The decay vertex of this particle. The absolute
    * position in the lab is given.
    */
-  inline LorentzPoint labDecayVertex() const;
+  LorentzPoint labDecayVertex() const {
+    return labVertex() + lifeLength();
+  }
 
   /**
    * The life time/length. Return the Lorentz vector connecting the
    * creation to the decay vertes.
    */
-  inline const Lorentz5Distance & lifeLength() const;
+  const Lorentz5Distance & lifeLength() const {
+    static const Lorentz5Distance null;
+    return hasRep() ? rep().theLifeLength : null;
+  }
 
   /**
    * Set the creation vertex relative to the collision vertex.
    */
-  inline void setVertex(const LorentzPoint &);
+  void setVertex(const LorentzPoint & p) {
+    rep().theVertex = p;
+  }
 
   /**
    * Set the creation vertex in the lab frame of this particle.
@@ -373,23 +445,30 @@ public:
    * automatically rescaled to be consistent with the invariant
    * distance.
    */
-  inline void setLifeLength(const Distance &);
+  void setLifeLength(const Distance & d) {
+    rep().theLifeLength.setVect(d);
+    rep().theLifeLength.rescaleEnergy();
+  }
 
   /**
    * Set the life time/length of a particle. The invariant distance
    * may become inconsistent.
    */
-  inline void setLifeLength(const LorentzDistance &);
+  void setLifeLength(const LorentzDistance & d) {
+    rep().theLifeLength = d;
+  }
 
   /**
    * Set the life time/length of a particle.
    */
-  inline void setLifeLength(const Lorentz5Distance &);
+  void setLifeLength(const Lorentz5Distance & d) {
+    rep().theLifeLength = d;
+  }
 
   /**
    * The invariant life time of this particle.
    */
-  inline Time lifeTime() const;
+  Time lifeTime() const { return lifeLength().mag(); }
 
   //@}
 
@@ -404,13 +483,15 @@ public:
    * Do Lorentz transformations on this particle. \a bx, \a by and \a
    * bz are the boost vector components.
    */
-  inline void boost(double bx, double by, double bz);
+  void boost(double bx, double by, double bz) {
+    transform(LorentzRotation(Boost(bx, by, bz)));
+  }
 
   /**
    * Do Lorentz transformations on this particle. \a b is the boost
    * vector.
    */
-  inline void boost(const Boost & b);
+  void boost(const Boost & b) { transform(LorentzRotation(b)); }
 
   /**
    * Rotate around the x-axis.
@@ -435,7 +516,7 @@ public:
   /**
    * Mirror in the xy-plane.
    */
-  inline void mirror();
+  void mirror() { theMomentum.setZ(-theMomentum.z()); }
 
   /**
    * Do Lorentz transformations on this particle and its decendants.
@@ -447,13 +528,15 @@ public:
    * decendants. \a bx, \a by and \a bz are the boost vector
    * components.
    */
-  inline void deepBoost(double bx, double by, double bz);
+  void deepBoost(double bx, double by, double bz) {
+    deepTransform(LorentzRotation(Boost(bx, by, bz)));
+  }
 
   /**
    * Do Lorentz transformations on this particle and its
    * decendants. \a b is the boost vector.
    */
-  inline void deepBoost(const Boost & b);
+  void deepBoost(const Boost & b) { deepTransform(LorentzRotation(b)); }
 
   /**
    * Rotate this particle and its decendants around the x-axis.
@@ -482,100 +565,117 @@ public:
   /**
    * Return the relative inconsistency in the mass component.
    */
-  inline double massError() const;
+  double massError() const { return theMomentum.massError(); }
 
   /**
    * Return the relative inconsistency in the energy component.
    */
-  inline double energyError() const;
+  double energyError() const { return theMomentum.energyError(); }
 
   /**
    * Return the relative inconsistency in the spatial components.
    */
-  inline double rhoError() const;
+  double rhoError() const { return theMomentum.rhoError(); }
 
   /**
    * Rescale energy, so that the invariant length/mass of the
    * LorentzVector agrees with the current one.
    */
-  inline void rescaleEnergy();
+  void rescaleEnergy() { theMomentum.rescaleEnergy(); }
 
   /**
    * Rescale spatial component, so that the invariant length/mass of
    * the LorentzVector agrees with the current one.
    */
-  inline void rescaleRho();
+  void rescaleRho() { theMomentum.rescaleRho(); }
 
   /**
    * Set the invariant length/mass member, so that it agrees with the
    * invariant length/mass of the LorentzVector.
    */
-  inline void rescaleMass();
-
+  void rescaleMass() { theMomentum.rescaleMass(); }
   //@}
 
   /** @name Acces incormation about colour connections */
   //@{
   /**
    * True if this particle has colour information. To determine if
-   * this particle is actually coloured, the colored(), hasColour() or
+   * this particle is actually coloured, the coloured(), hasColour() or
    * hasAntiColour() methods should be used instead.
    */
-  inline bool hasColourInfo() const;
+  bool hasColourInfo() const {
+    return hasRep() && rep().theColourInfo;
+  }
 
   /**
    * Return the colour lines to which this particles anti-colour is
    * connected.
    */
-  inline tColinePtr antiColourLine() const;
+  tColinePtr antiColourLine() const {
+    return hasColourInfo() ? colourInfo()->antiColourLine() : tColinePtr();
+  }
 
   /**
    * Return the colour lines to which this particles (\a anti-)colour
    * is connected.
    */
-  inline tColinePtr colourLine(bool anti = false) const;
+  tColinePtr colourLine(bool anti = false) const {
+    if ( anti ) return antiColourLine();
+    return hasColourInfo() ? colourInfo()->colourLine() : tColinePtr();
+  }
 
   /**
    * Return true if the particle is connected to the given (\a anti-)
    * colour \a line.
    */
-  inline bool hasColourLine(tcColinePtr line, bool anti = false) const;
+  bool hasColourLine(tcColinePtr line, bool anti = false) const {
+    return hasColourInfo() ? colourInfo()->hasColourLine(line, anti) : false;
+  }
 
   /**
    * Return true if the particle is connected to the given anti-colour
    * \a line.
    */
-  inline bool hasAntiColourLine(tcColinePtr line) const;
+  bool hasAntiColourLine(tcColinePtr line) const {
+    return hasColourLine(line, true);
+  }
 
   /**
    * True if this particle type is not a colour singlet.
    */
-  inline bool coloured() const;
+  bool coloured() const { return data().coloured(); }
 
   /**
    * True if this particle type carries (\a anti-)colour.
    */
-  inline bool hasColour(bool anti = false) const;
+  bool hasColour(bool anti = false) const { return data().hasColour(anti); }
 
   /**
    * True if this particle type carries anti-colour.
    */
-  inline bool hasAntiColour() const;
+  bool hasAntiColour() const { return data().hasAntiColour(); }
 
   /**
    * Get the ColourBase object.
    */
-  inline tcCBPtr colourInfo() const;
+  tcCBPtr colourInfo() const {
+    return hasRep() ? rep().theColourInfo : CBPtr();
+  }
 
   /**
    * Get the ColourBase object.
    */
-  inline tCBPtr colourInfo();
+  tCBPtr colourInfo() {
+    if ( !rep().theColourInfo ) rep().theColourInfo = new_ptr(ColourBase());
+    return rep().theColourInfo;
+  }
 
   /**
    * Set the ColourBase object.
    */
-  inline void colourInfo(tCBPtr);
+  void colourInfo(tCBPtr c) {
+    rep().theColourInfo = c;
+  }
 
   /**
    * Get a pointer to the colour neighbor. Returns a particle in the
@@ -593,8 +693,10 @@ public:
    * connected to the same line as this particles colour.
    */
   template <typename Iterator>
-  inline typename std::iterator_traits<Iterator>::value_type
-  antiColourNeighbour(Iterator first, Iterator last) const;
+  typename std::iterator_traits<Iterator>::value_type
+  antiColourNeighbour(Iterator first, Iterator last) const {
+    return colourNeighbour(first, last, true);
+  }
 
   /**
    * Set the colour neighbor. Connects the given particles colour to
@@ -607,20 +709,24 @@ public:
    * Set the anti-colour neighbor. Connects the given particles
    * anti-colour to the same colour line as this particles colour.
    */
-  inline void antiColourNeighbour(tPPtr);
+  void antiColourNeighbour(tPPtr p) { colourNeighbour(p, true); }
 
   /**
    * Connect colour. Create a colour line connecting to it this
    * particles colour and the given particles anti-colour.
    */
-  inline void antiColourConnect(tPPtr neighbour);
+  void antiColourConnect(tPPtr neighbour) {
+    colourConnect(neighbour, true);
+  }
 
   /**
    * Connect colour. Create a colour line connecting to it this
    * particles anti-colour and the given particles colour. If \a anti
    * is true call antiColourConnect(tPPtr).
    */
-  inline void colourConnect(tPPtr neighbour, bool anti = false);
+  void colourConnect(tPPtr neighbour, bool anti = false) {
+    colourNeighbour(neighbour, anti);
+  }
 
   /**
    * Incoming colour. Return the parent particle which colour is
@@ -634,20 +740,20 @@ public:
    * anti-colour is connected to the same colour line as this
    * particle.
    */
-  inline tPPtr incomingAntiColour() const;
+  tPPtr incomingAntiColour() const { return incomingColour(true); }
 
   /**
    * Set incoming colour. Connect this particles colour to the same
    * colour line as the given particle. If \a anti
    * is true call incomingAntiColour(tPPtr).
    */
-  inline void incomingColour(tPPtr, bool anti = false);
+  void incomingColour(tPPtr p, bool anti = false) { p->outgoingColour(this, anti); }
 
   /**
    * Set incoming anti-colour. Connect this particles anti colour to
    * the same colour line as the given particle.
    */
-  inline void incomingAntiColour(tPPtr);
+  void incomingAntiColour(tPPtr p) { p->outgoingColour(this, true); }
 
   /**
    * Outgoing colour. Return the daughter particle which colour is
@@ -660,7 +766,7 @@ public:
    * anti-colour is connected to the same colour line as this
    * particle.
    */
-  inline tPPtr outgoingAntiColour() const;
+  tPPtr outgoingAntiColour() const { return outgoingColour(true); }
 
   /**
    * Set outgoing colour. Connect this particles colour to the same
@@ -673,21 +779,26 @@ public:
    * Set outgoing anti-colour. Connect this particles anti-colour to
    * the same colour line as the given particle.
    */
-  inline void outgoingAntiColour(tPPtr);
+  void outgoingAntiColour(tPPtr p) { outgoingColour(p, true); }
 
   /**
    * Specify colour flow. Calls outgoingColour(tPPtr,bool).
    */
-  inline void colourFlow(tPPtr child, bool anti = false);
+  void colourFlow(tPPtr child, bool anti = false) {
+    outgoingColour(child, anti);
+  }
+
   /**
    * Specify anticolour flow. Calls outgoingAntiColour(tPPtr,bool).
    */
-  inline void antiColourFlow(tPPtr child);
+  void antiColourFlow(tPPtr child) { colourFlow(child, true); }
 
   /**
    * Remove all colour information;
    */
-  inline void resetColour();
+  void resetColour() {
+    if ( hasColourInfo() ) rep().theColourInfo = CBPtr();
+  }
 
   //@}
 
@@ -696,17 +807,21 @@ public:
   /**
    * Return the Spin object.
    */
-  inline tcSpinPtr spinInfo() const;
+  tcSpinPtr spinInfo() const { 
+    return hasRep() ? rep().theSpinInfo : SpinPtr(); 
+  }
 
   /**
    * Return the Spin object.
    */
-  inline tSpinPtr spinInfo();
+  tSpinPtr spinInfo() {
+    return hasRep() ? rep().theSpinInfo : SpinPtr(); 
+  }
 
   /**
    * Set the Spin object.
    */
-  inline void spinInfo(tSpinPtr s);
+  void spinInfo(tSpinPtr s) { rep().theSpinInfo = s; }
   //@}
 
   /** @name Accessing user-defined information. */
@@ -714,13 +829,16 @@ public:
   /**
    * Access user-defined information as a vector of EventInfoBase pointers.
    */
-  inline const EIVector & getInfo() const;
+  const EIVector & getInfo() const {
+    static const EIVector null;
+    return hasRep() ? rep().theExtraInfo : null;
+  }
+
   /**
    * Access user-defined information as a vector of EventInfoBase pointers.
    */
-  inline EIVector & getInfo();
- 
- //@}
+  EIVector & getInfo() { return rep().theExtraInfo; }
+  //@}
 
 public:
 
@@ -730,13 +848,13 @@ public:
    * True if this particle has instantiated the object with
    * information other than type and momentum.
    */
-  inline bool hasRep() const;
+  bool hasRep() const { return theRep; }
 
   /**
    * If this particle has only a type and momentum, instantiate the
    * rest of the information.
    */
-  void initFull() const;
+  void initFull();
 
   //@}
 
@@ -773,8 +891,10 @@ public:
    * Print a container of particles.
    */
   template <typename Cont>
-  inline static void PrintParticles(ostream & os, const Cont &,
-				    tcStepPtr step = tcStepPtr());
+  static inline void PrintParticles(ostream & os, const Cont & c,
+			     tcStepPtr step = tcStepPtr()) {
+    PrintParticles(os, c.begin(), c.end(), step);
+  }
    
   /**
    * Standard Init function. @see Base::Init().
@@ -805,39 +925,55 @@ private:
   /**
    * Set the order-number for this particle in the current event.
    */
-  inline void number(int);
+  void number(int n) { rep().theNumber = n; }
 
   /**
    * Remove the given particle from the list of children.
    */
-  inline void removeChild(tPPtr);
+  void removeChild(tPPtr c) {
+    if ( hasRep() )
+      rep().theChildren.erase(remove(rep().theChildren.begin(),
+				     rep().theChildren.end(), c),
+			      rep().theChildren.end());
+  }
 
   /**
    * Remove the given particle from the list of parents.
    */
-  inline void removeParent(tPPtr);
+  void removeParent(tPPtr p) {
+    if ( hasRep() )
+      rep().theParents.erase(remove(rep().theParents.begin(),
+				    rep().theParents.end(), p),
+			     rep().theParents.end());
+  }
 
   /**
    * Set the mass of this particle.
    */
-  inline void mass(Energy);
+  void mass(Energy m) { theMomentum.setMass(m); }
 
   /**
    * Set the invaiant life time of this particle.
    */
-  inline void lifeTime(Length);
+  void lifeTime(Length t) { rep().theLifeLength.setTau(t); }
 
   /**
    * Return a reference to the bulk information of this particle. if
    * no ParticleRep object exists, one is created.
    */
-  inline ParticleRep & rep();
+  ParticleRep & rep() {
+    if ( !hasRep() ) initFull();
+    return *theRep;
+  }
 
   /**
    * Return a reference to the bulk information of this particle. if
-   * no ParticleRep object exists, one is created.
+   * no ParticleRep object exists, we return the default values.
    */
-  inline const ParticleRep & rep() const;
+  const ParticleRep & rep() const {
+    static const ParticleRep null;
+    return hasRep() ? *theRep : null;
+  }
 
   /**
    * The pointer to the ParticleData object
@@ -853,7 +989,7 @@ private:
    * The rest of the information in this particle is only instantiated
    * if needed.
    */
-  mutable ParticleRep * theRep;
+  ParticleRep * theRep;
 
 public:
 
@@ -868,7 +1004,7 @@ public:
     /**
      * Default constructor.
      */
-    ParticleRep();
+    ParticleRep() : theScale(-1.0*GeV2), theNumber(0) {}
 
     /**
      * Copy constructor.
@@ -957,7 +1093,7 @@ protected:
    * Private default constructor must only be used by the
    * PersistentIStream class via the ClassTraits<Particle> class.
    */
-  inline Particle();
+  Particle() : theRep(0) {}
 
   /**
    * The ClassTraits<Particle> class must be a friend to be able to
@@ -1009,7 +1145,6 @@ struct ClassTraits<Particle>: public ClassTraitsBase<Particle> {
 
 }
 
-#include "Particle.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Particle.tcc"
 #endif

@@ -30,16 +30,6 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * Default constructor.
-   */
-  inline DalitzDecayer();
-
-  /**
-   * Copy-constructor.
-   */
-  inline DalitzDecayer(const DalitzDecayer &);
-
-  /**
    * Destructor.
    */
   virtual ~DalitzDecayer();
@@ -98,13 +88,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 protected:
@@ -112,28 +102,11 @@ protected:
   /** @name Standard Interfaced functions. */
   //@{
   /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
   virtual void doinit() throw(InitException);
-
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  inline virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -209,10 +182,5 @@ struct ClassTraits<DalitzDecayer>
 /** @endcond */
 
 }
-
-#include "DalitzDecayer.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DalitzDecayer.tcc"
-#endif
 
 #endif /* THEPEG_DalitzDecayer_H */

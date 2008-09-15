@@ -21,16 +21,18 @@
 #include "ThePEG/Handlers/Hint.h"
 #include "ThePEG/Handlers/EventHandler.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourPairDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-ColourPairDecayer::~ColourPairDecayer() {}
+IBPtr ColourPairDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ColourPairDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool ColourPairDecayer::accept(const DecayMode & dm) const {
   if ( !FlatDecayer::accept(dm) ) return false;

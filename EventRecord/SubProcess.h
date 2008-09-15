@@ -48,39 +48,34 @@ public:
 	     tcEventBasePtr newHandler = tcEventBasePtr());
 
   /**
-   * Copy constructor.
-   */
-  SubProcess(const SubProcess &);
-
-  /**
    * Destructor.
    */
-  inline ~SubProcess();
+  virtual ~SubProcess();
 
   /**
    * A pointer to the MEBase object which generated this SubProcess.
    */
-  inline tcEventBasePtr handler() const;
+  tcEventBasePtr handler() const { return theHandler; }
 
   /**
    * A pointer to the collision to which this sub-process belongs.
    */
-  inline tCollPtr collision() const;
+  tCollPtr collision() const { return theCollision; }
 
   /**
    * The pair of incoming partons.
    */
-  inline const PPair & incoming() const;
+  const PPair & incoming() const { return theIncoming; }
 
   /**
    * A reference to the vector of intermediate partons.
    */
-  inline const ParticleVector & intermediates() const;
+  const ParticleVector & intermediates() const { return theIntermediates; }
 
   /**
    * A reference to the vector of outgoing particles.
    */
-  inline const ParticleVector & outgoing() const;
+  const ParticleVector & outgoing() const { return theOutgoing; }
 
   /**
    * Set the vector of outgoing particles.
@@ -122,13 +117,13 @@ public:
    * True if a perturbative cascade has been applied to this sub
    * process.
    */
-  inline bool decayed() const;
+  bool decayed() const { return isDecayed; }
 
   /**
    * Set to true if a perturbative cascade has been applied to this
    * sub process.
    */
-  inline void decayed(bool);
+  void decayed(bool x) { isDecayed = x; }
 
 
 protected:
@@ -155,21 +150,27 @@ public:
    * Return the value of the Mandelstam variable \f$\hat{s}\f$ in this
    * SubProcess. It is calculated using the incoming particles.
    */
-  inline Energy2 shat() const;
+  Energy2 shat() const {
+    return (incoming().first->momentum() + incoming().second->momentum()).m2();
+  }
 
   /**
    * Return the value of the Mandelstam variable \f$\hat{t}\f$ in this
    * SubProcess. It is calculated using the first incoming and first outgoing
    * particle.
    */
-  inline Energy2 that() const;
+  Energy2 that() const {
+    return (incoming().first->momentum() - outgoing()[0]->momentum()).m2();
+  }
 
   /**
    * Return the value of the Mandelstam variable \f$\hat{u}\f$ in this
    * SubProcess. It is calculated using the first incoming and last outgoing
    * particle.
    */
-  inline Energy2 uhat() const;
+  Energy2 uhat() const {
+    return (incoming().second->momentum() - outgoing()[0]->momentum()).m2();
+  }
 
 public:
 
@@ -239,7 +240,7 @@ private:
    * Private default constructor must only be used by the
    * PersistentIStream class via the ClassTraits<SubProcess> class .
    */
-  inline SubProcess();
+  SubProcess() : isDecayed(false) {}
 
   /**
    * The ClassTraits<SubProcess> class must be a friend to be able to
@@ -250,7 +251,7 @@ private:
   /**
    * Assignment is forbidden.
    */
-  inline SubProcess & operator=(const SubProcess &);
+  SubProcess & operator=(const SubProcess &);
 
 };
 
@@ -282,7 +283,6 @@ struct ClassTraits<SubProcess>: public ClassTraitsBase<SubProcess> {
 
 }
 
-#include "SubProcess.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "SubProcess.tcc"
 #endif

@@ -31,10 +31,7 @@ SubProcess(const PPair & newIncoming,
   : theHandler(newHandler), theCollision(newCollision),
     theIncoming(newIncoming), isDecayed(false) {}
 
-SubProcess::SubProcess(const SubProcess & s)
-  : Base(s), theHandler(s.theHandler), theCollision(s.theCollision),
-    theIncoming(s.theIncoming), theIntermediates(s.theIntermediates),
-    theOutgoing(s.theOutgoing), isDecayed(s.isDecayed) {}
+SubProcess::~SubProcess() {}
 
 SubProPtr SubProcess::clone() const {
   return ptr_new<SubProPtr>(*this);

@@ -17,17 +17,20 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/EventRecord/Particle.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Tau2HadronsDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 Tau2HadronsDecayer::~Tau2HadronsDecayer() {}
+
+IBPtr Tau2HadronsDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr Tau2HadronsDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool Tau2HadronsDecayer::accept(const DecayMode & dm) const {
   if ( dm.products().size() < 3 || !dm.cascadeProducts().empty() ||

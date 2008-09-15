@@ -30,9 +30,6 @@
 
 using namespace ThePEG;
 
-Particle::ParticleRep::ParticleRep()
-  : theScale(-1.0*GeV2), theNumber(0) {}
-
 Particle::ParticleRep::ParticleRep(const ParticleRep & p)
   : theParents(p.theParents), theChildren(p.theChildren),
     thePrevious(p.thePrevious), theNext(p.theNext),
@@ -65,7 +62,7 @@ Particle::~Particle() {
   theData = cEventPDPtr();
 }
 
-void Particle::initFull() const {
+void Particle::initFull() {
   if ( theRep ) return;
   theRep = new ParticleRep;
 

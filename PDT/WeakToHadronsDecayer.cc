@@ -16,17 +16,18 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Repository/EventGenerator.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "WeakToHadronsDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-WeakToHadronsDecayer::~WeakToHadronsDecayer() {}
+IBPtr WeakToHadronsDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr WeakToHadronsDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool WeakToHadronsDecayer::accept(const DecayMode & dm) const {
   if ( dm.orderedProducts().size() < 3 || !dm.productMatchers().empty() ||

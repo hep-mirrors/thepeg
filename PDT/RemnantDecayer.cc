@@ -22,11 +22,6 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/Throw.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RemnantDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 

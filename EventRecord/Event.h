@@ -12,6 +12,7 @@
 
 #include "Particle.h"
 #include "StandardSelectors.h"
+#include "SubProcess.h"
 #include "ThePEG/Utilities/Named.h"
 
 namespace ThePEG {
@@ -86,7 +87,7 @@ public:
    * Return a pointer to the EventHandler which produced this
    * Event. May be the null pointer.
    */
-  inline tcEventBasePtr handler() const;
+  tcEventBasePtr handler() const { return theHandler; }
 
   /** @name Functions for accessing particles etc. */
   //@{
@@ -107,7 +108,9 @@ public:
    * (pointers to) particles will be appended.
    */
   template <class OutputIterator>
-  inline void selectFinalState(OutputIterator r) const;
+  void selectFinalState(OutputIterator r) const {
+    select(r, SelectFinalState());
+  }
 
   /**
    * Extract all final state particles in this Event.
@@ -115,24 +118,32 @@ public:
    * will be appended.
    */
   template <class Container>
-  inline void getFinalState(Container & c) const;
+  void getFinalState(Container & c) const {
+    selectFinalState(inserter(c));
+  }
 
   /**
    * Extract all final state particles in this Event.
    * @return a vector of pointers to the extracted particles.
    */
-  inline tPVector getFinalState() const;
+  tPVector getFinalState() const {
+    tPVector ret;
+    selectFinalState(back_inserter(ret));
+    return ret;
+  }
 
   /**
    * Return a pointer to the primary Collision in this Event. May
    * be the null pointer.
    */
-  inline tCollPtr primaryCollision() const;
+  tCollPtr primaryCollision() const {
+    return collisions().empty() ? tCollPtr() : tCollPtr(collisions()[0]);
+  }
 
   /**
    * Return a possibly empty list of collisions in this Event.
    */
-  inline const CollisionVector & collisions() const;
+  const CollisionVector & collisions() const { return theCollisions; }
 
   /**
    * Return a pointer to the primary SubProcess in the prinmary
@@ -144,7 +155,7 @@ public:
    * Return a reference to the pair of colliding particles in the
    * primary Collision of this Event.
    */
-  inline const PPair & incoming() const;
+  const PPair & incoming() const { return theIncoming; }
 
   //@}
 
@@ -169,7 +180,7 @@ public:
    * Return the number assigned to this Event. The name is accessed
    * with the name() method of the Named base class.
    */
-  inline long number() const;
+  long number() const { return theNumber; }
 
   /**
    * Return the index of the given colour line.
@@ -201,12 +212,12 @@ public:
   /**
    * Return the weight associated with this event.
    */
-  inline double weight() const;
+  double weight() const { return theWeight; }
 
   /**
    * Set the weight associated with this event.
    */
-  inline void weight(double);
+  void weight(double w) { theWeight = w; }
 
   /**
    * Set event info.
@@ -230,7 +241,9 @@ protected:
    * Add a range of particles to this Collision.
    */
   template <class Iterator>
-  inline void addParticles(Iterator first, Iterator last);
+  void addParticles(Iterator first, Iterator last) {
+    while ( first != last ) addParticle(*first++);
+  }
 
   /**
    * Add a particle to this Collision.
@@ -242,19 +255,23 @@ protected:
    * only. The sub-processes are accessed from the different
    * Collisions in this Event.
    */
-  inline void addSubProcess(tSubProPtr p);
+  void addSubProcess(tSubProPtr p) {
+    if ( p ) allSubProcesses.insert(p);
+  }
 
   /**
    * Remove a SubProcess from this Event.
    */
-  inline void removeSubProcess(tSubProPtr p);
+  void removeSubProcess(tSubProPtr p) { allSubProcesses.erase(p); }
 
   /**
    * Add a new Step to this Collision. For book keeping purposes
    * only. The steps are accessed from the different Collisions in
    * this Event.
    */
-  void addStep(tStepPtr);
+  void addStep(tStepPtr s) { 
+    if ( s ) allSteps.insert(s); 
+  }
 
   /**
    * Remove a given Particle entry.
@@ -359,7 +376,7 @@ private:
    * Private default constructor must only be used by the
    * PersistentIStream class via the ClassTraits<Event> class .
    */
-  inline Event();
+  Event() : theNumber(-1), theWeight(1.0), theParticleNumber(0) {}
 
   /**
    * The ClassTraits<Event> class must be a friend to be able to
@@ -370,7 +387,7 @@ private:
   /**
    * The assignment operator is private and not implemented.
    */
-  inline Event & operator=(const Event&);
+  Event & operator=(const Event&);
 
 };
 
@@ -402,7 +419,13 @@ struct ClassTraits<Event>: public ClassTraitsBase<Event> {
 
 }
 
-#include "Event.icc"
+#include "Collision.h"
+
+inline ThePEG::tSubProPtr ThePEG::Event::primarySubProcess() const {
+  return collisions().empty() ? ThePEG::tSubProPtr() :
+    ThePEG::tSubProPtr(primaryCollision()->primarySubProcess());
+}
+
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Event.tcc"
 #endif

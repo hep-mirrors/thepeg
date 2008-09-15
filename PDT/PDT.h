@@ -11,8 +11,6 @@
 // This is the declaration of the PDT class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "PDT.fh"
-// #include "PDT.xh"
 
 namespace ThePEG {
 
@@ -89,7 +87,7 @@ public:
   };
 
   /**
-   *Definition of enumerated values used for color information.
+   *Definition of enumerated values used for colour information.
    */
   enum Colour {
     ColourUnknown = -1,   /**< Unknown colour */
@@ -99,56 +97,44 @@ public:
     Coloured = 1,         /**< Coloured */
     Colour3 = 3,          /**< Colour-triplet */
     Colour3bar = -3,      /**< Colour-anti-triplet */
-    Colour8 = 8,          /**< Colour-octet */
-    ColorUnknown = -1,    /**< Unknown colour */
-    ColorUndefined = -1,  /**< Undefined colour */
-    ColorNeutral = 0,     /**< Colour-singlet */
-    Color0 = 0,           /**< Colour-singlet */
-    Colored = 1,          /**< Coloured */
-    Color3 = 3,           /**< Colour-triplet */
-    Color3bar = -3,       /**< Colour-anti-triplet */
-    Color8 = 8            /**< Colour-octet */
- };
-
-  /**
-   * Allow also for american spelling.
-   */
-  typedef Colour Color;
+    Colour8 = 8           /**< Colour-octet */
+  };
 
   /**
    * True if the argument corresponds to a non-zero charge.
    */
-  static inline bool charged(Charge c);
+  static bool charged(Charge c) {
+    return c != ChargeNeutral && c != ChargeUndefined;
+  }
 
   /**
    * True if the argument corresponds to a positive charge.
    */
-  static inline bool positive(Charge c);
+  static bool positive(Charge c) {
+    return c > ChargeNeutral && c != Charged;
+  }
 
   /**
    * True if the argument corresponds to a negative charge.
    */
-  static inline bool negative(Charge c);
+  static bool negative(Charge c) {
+    return c < ChargeNeutral && c != ChargeUndefined;
+  }
 
   /**
-   * True if the argument corresponds to a non-zero color charge.
+   * True if the argument corresponds to a non-zero colour charge.
    */
-  static inline bool colored(Color c);
-
-  /**
-   * True if the argument corresponds to a non-zero color charge.
-   */
-  static inline bool coloured(Color c);
-
-  /**
-   * Return the anti-colour of the specified colour.
-   */
-  static inline Color antiColor(Color c);
+  static bool coloured(Colour c) {
+    return c != ColourNeutral && c != ColourUnknown;
+  }
 
   /**
    * Return the anti-colour of the specified colour.
    */
-  static inline Colour antiColour(Color c);
+  static Colour antiColour(Colour c) {
+    if ( c == Colour3 || c == Colour3bar ) return Colour(-c);
+    return c;
+  }
 
   /**
    * Return the flavour content of the given particle. The flavours
@@ -189,21 +175,31 @@ public:
 
 /** Input a colour from a stream. */
 template <typename IStream>
-inline IStream & operator>>(IStream &, PDT::Colour &);
+IStream & operator>>(IStream & is, PDT::Colour & c) {
+  int ci;
+  is >> ci;
+  c = PDT::Colour(ci);
+  return is;
+}
 
 /** Input a charge from a stream. */
 template <typename IStream>
-inline IStream & operator>>(IStream &, PDT::Charge &);
+IStream & operator>>(IStream & is, PDT::Charge & c) {
+  int ci;
+  is >> ci;
+  c = PDT::Charge(ci);
+  return is;
+}
 
 /** Input a spin from a stream. */
 template <typename IStream>
-inline IStream & operator>>(IStream &, PDT::Spin &);
-
+IStream & operator>>(IStream & is, PDT::Spin & s) {
+  int si;
+  is >> si;
+  s = PDT::Spin(si);
+  return is;
 }
 
-#include "PDT.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PDT.tcc"
-#endif
+}
 
 #endif /* ThePEG_PDT_H */

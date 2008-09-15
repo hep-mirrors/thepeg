@@ -27,19 +27,6 @@
 
 using namespace ThePEG;
 
-Collision::Collision(const PPair & newIncoming, tEventPtr newEvent,
-		     tcEventBasePtr newHandler)
-  : theIncoming(newIncoming), theEvent(newEvent), theHandler(newHandler) {
-  addParticle(incoming().first);
-  addParticle(incoming().second);
-}
-
-Collision::Collision(const Collision & c)
-  : Base(c), theIncoming(c.theIncoming), theSteps(c.theSteps),
-    theSubProcesses(c.theSubProcesses),
-    allParticles(c.allParticles), theEvent(c.theEvent),
-    theHandler(c.theHandler), theVertex(c.theVertex) {}
-
 Collision::~Collision() {
   for ( int i = 0, N = theSteps.size(); i < N; ++i )
     if ( theSteps[i]->collision() == this )

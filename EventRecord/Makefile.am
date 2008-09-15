@@ -7,11 +7,9 @@ DOCFILES = EventConfig.h Collision.h Event.h Particle.h ParticleTraits.h \
            EventInfoBase.h ColourLine.h ColourBase.h SpinBase.h \
            ColourSinglet.h TmpTransform.h RemnantParticle.h MultiColour.h
 
-INCLUDEFILES = $(DOCFILES) Collision.icc Collision.tcc Event.icc \
-               Event.tcc Particle.fh Particle.icc Particle.tcc \
-               SelectorBase.icc Step.icc Step.tcc SubProcess.icc \
-               SubProcess.tcc ColourLine.icc ColourBase.icc \
-               ColourSinglet.icc RemnantParticle.fh
+INCLUDEFILES = $(DOCFILES) Collision.tcc \
+               Event.tcc Particle.fh Particle.tcc \
+               Step.tcc SubProcess.tcc RemnantParticle.fh
 
 noinst_LTLIBRARIES = libThePEGEvent.la
 libThePEGEvent_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)

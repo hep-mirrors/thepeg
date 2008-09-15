@@ -14,8 +14,6 @@
 #include "ParticleData.h"
 #include "ParticleData.xh"
 #include "ThePEG/PDT/DecayMode.h"
-#include "ThePEG/PDT/MassGenerator.h"
-#include "ThePEG/PDT/WidthGenerator.h"
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/EventRecord/Particle.h"
@@ -39,33 +37,18 @@ ParticleData::ParticleData()
   : theId(0), thePDGName(""), theMass(-1.0*GeV), theWidth(-1.0*GeV),
     theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
     theCharge(PDT::ChargeUnknown),
-    theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
+    theSpin(PDT::SpinUnknown), theColour(PDT::ColourUnknown), isStable(true),
     theVariableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
     theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
     theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
     theDefColour(PDT::ColourUnknown) {}
 
-
-ParticleData::ParticleData(const ParticleData & pd)
-  : Interfaced(pd), theId(pd.theId), thePDGName(pd.thePDGName),
-    theMass(pd.theMass), theWidth(pd.theWidth),
-    theWidthUpCut(pd.theWidthUpCut), theWidthLoCut(pd.theWidthLoCut),
-    theCTau(pd.theCTau), theCharge(pd.theCharge), theSpin(pd.theSpin),
-    theColor(pd.theColor), theMassGenerator(pd.theMassGenerator),
-    isStable(pd.isStable), theDecaySelector(pd.theDecaySelector),
-    theDecayModes(pd.theDecayModes), theWidthGenerator(pd.theWidthGenerator),
-    theVariableRatio(pd.theVariableRatio), theAntiPartner(pd.theAntiPartner),
-    syncAnti(pd.syncAnti), theDefMass(pd.theDefMass),
-    theDefWidth(pd.theDefWidth), theDefCut(pd.theDefCut),
-    theDefCTau(pd.theDefCTau), theDefCharge(pd.theDefCharge),
-    theDefSpin(pd.theDefSpin), theDefColour(pd.theDefColour) {}
-
 ParticleData::
-ParticleData(long newId, string newPDGName)
+ParticleData(long newId, const string & newPDGName)
   : theId(newId), thePDGName(newPDGName), theMass(-1.0*GeV), theWidth(-1.0*GeV),
     theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
     theCharge(PDT::ChargeUnknown),
-    theSpin(PDT::SpinUnknown), theColor(PDT::ColourUnknown), isStable(true),
+    theSpin(PDT::SpinUnknown), theColour(PDT::ColourUnknown), isStable(true),
     theVariableRatio(false), syncAnti(false), theDefMass(-1.0*GeV),
     theDefWidth(-1.0*GeV), theDefCut(-1.0*GeV), theDefCTau(-1.0*mm),
     theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
@@ -73,12 +56,12 @@ ParticleData(long newId, string newPDGName)
 
 ParticleData::~ParticleData() {}
 
-PDPtr ParticleData::Create(long newId, string newPDGName) {
+PDPtr ParticleData::Create(long newId, const string & newPDGName) {
   return new_ptr(ParticleData(newId, newPDGName));
 }
 
 PDPair ParticleData::
-Create(long newId, string newPDGName, string newAntiPDGName) {
+Create(long newId, const string & newPDGName, const string & newAntiPDGName) {
   PDPair pap;
   pap.first = new_ptr(ParticleData(newId, newPDGName));
   pap.second = new_ptr(ParticleData(-newId, newAntiPDGName));
@@ -96,7 +79,7 @@ void ParticleData::readSetup(istream & is) throw(SetupException) {
   theWidthLoCut = theDefCut;
   theCTau = theDefCTau;
   theCharge = theDefCharge;
-  theColor = theDefColour;
+  theColour = theDefColour;
   theSpin = theDefSpin;
   if ( PDGName() == "-" ) thePDGName = name();
   return;
@@ -175,16 +158,10 @@ PDT::Spin ParticleData::iSpin(PDT::Spin si) {
   return si;
 }
 
-PDT::Color ParticleData::iColor(PDT::Color ci) {
-  theColor = ci;
-  if ( synchronized() && CC() ) CC()->theColor = PDT::Color(-ci);
-  return theColor;
-}
-
 PDT::Colour ParticleData::iColour(PDT::Colour ci) {
-  theColor = ci;
-  if ( synchronized() && CC() ) CC()->theColor = PDT::Color(-ci);
-  return theColor;
+  theColour = ci;
+  if ( synchronized() && CC() ) CC()->theColour = PDT::Colour(-ci);
+  return theColour;
 }
 
 void ParticleData::stable(bool s) {
@@ -235,7 +212,7 @@ void ParticleData::synchronize() {
   theCTau = CC()->theCTau;
   theCharge = PDT::Charge(-CC()->theCharge);
   theSpin = CC()->theSpin;
-  theColor = PDT::antiColor(CC()->theColor);
+  theColour = PDT::antiColour(CC()->theColour);
   theMassGenerator = CC()->theMassGenerator;
   theWidthGenerator = CC()->theWidthGenerator;
   syncAnti = CC()->syncAnti;
@@ -313,8 +290,6 @@ IVector ParticleData::getReferences() {
   IVector refs = Interfaced::getReferences();
   if ( CC() ) refs.push_back(CC());
   refs.insert(refs.end(), theDecayModes.begin(), theDecayModes.end());
-//    for ( DecaySet::iterator it = theDecayModes.begin();
-//  	it != theDecayModes.end(); ++it ) refs.push_back(*it);
   return refs;
 }
 
@@ -346,7 +321,6 @@ Length ParticleData::generateLifeTime(Energy m, Energy w) const {
   return widthGenerator() ? 
     widthGenerator()->lifeTime(*this, m, w) :
     UseRandom::rndExp(cTau());
-    //    RandExponential::shoot(UseRandom::currentEngine(), cTau()/mm)*mm;
 }
 
 PPtr ParticleData::produceParticle(const Lorentz5Momentum & pp) const {
@@ -482,11 +456,11 @@ void ParticleData::setWidthGenerator(WidthGeneratorPtr wg) {
 }
 
 void ParticleData::setColour(long c) {
-  theColor = PDT::Colour(c);
+  theColour = PDT::Colour(c);
 }
 
 long ParticleData::getColour() const {
-  return theColor;
+  return theColour;
 }
 
 long ParticleData::defColour() const {
@@ -562,7 +536,7 @@ void ParticleData::persistentOutput(PersistentOStream & os) const {
   os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
      << ounit(theWidthUpCut, GeV) << ounit(theWidthLoCut, GeV)
      << ounit(theCTau, mm) << oenum(theCharge) << oenum(theSpin)
-     << oenum(theColor);
+     << oenum(theColour);
   os << theMassGenerator << isStable << modes << theDecaySelector
      << theWidthGenerator << theVariableRatio << theAntiPartner << syncAnti
      << ounit(theDefMass, GeV) << ounit(theDefWidth, GeV)
@@ -574,7 +548,7 @@ void ParticleData::persistentInput(PersistentIStream & is, int) {
   is >> theId >> thePDGName >> iunit(theMass, GeV) >> iunit(theWidth, GeV)
      >> iunit(theWidthUpCut, GeV) >> iunit(theWidthLoCut, GeV)
      >> iunit(theCTau, mm) >> ienum(theCharge) >> ienum(theSpin)
-     >> ienum(theColor) >> theMassGenerator >> isStable
+     >> ienum(theColour) >> theMassGenerator >> isStable
      >> theDecayModes >> theDecaySelector >> theWidthGenerator >> theVariableRatio
      >> theAntiPartner >> syncAnti >> iunit(theDefMass, GeV)
      >> iunit(theDefWidth, GeV) >> iunit(theDefCut, GeV)
@@ -695,10 +669,10 @@ void ParticleData::Init() {
   static SwitchOption interfaceColour8
     (interfaceColour, "Octet", "This particle is a colour octet.", 8);
   
-  static Switch<ParticleData,PDT::Color> interfaceDefColour
+  static Switch<ParticleData,PDT::Colour> interfaceDefColour
     ("DefaultColour",
      "The default colour quantum number of this particle type.",
-     &ParticleData::theDefColour, PDT::Color(-1), false, true);
+     &ParticleData::theDefColour, PDT::Colour(-1), false, true);
   static SwitchOption interfaceDefColourUndefined
     (interfaceDefColour, "Undefined", "The coulur is undefined.", -1);
   static SwitchOption interfaceDefColourNeutral

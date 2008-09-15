@@ -19,17 +19,20 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "QuarksToHadronsDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 QuarksToHadronsDecayer::~QuarksToHadronsDecayer() {}
+
+IBPtr QuarksToHadronsDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr QuarksToHadronsDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool QuarksToHadronsDecayer::accept(const DecayMode & dm) const {
   int col = 0;

@@ -130,7 +130,7 @@ public:
   /**
    * Destructor.
    */
-  inline ~DecayMode();
+  ~DecayMode();
   //@}
 
   /**
@@ -145,23 +145,25 @@ public:
    * Return the tag for this decay mode. This string is a unique
    * identifier for this decay mode.
    */
-  inline string tag() const;
+  const string & tag() const {
+    return theTag.size() ? theTag : ( theTag = makeTag() );
+  }
 
   /**
    * Get a pointer to the particle data object corresponding to
    * the decaying particle.
    */
-  inline tcPDPtr parent() const;
+  tcPDPtr parent() const { return theParent; }
 
   /**
    * The set of identified decay products.
    */
-  inline const ParticleMSet & products() const;
+  const ParticleMSet & products() const { return theProducts; }
 
   /**
    * The set of identified decay products in the order they were specified.
    */
-  inline const tPDVector & orderedProducts() const;
+  const tPDVector & orderedProducts() const { return theOrderedProducts; }
 
   /**
    * Produce particles corresponding to the identified decay
@@ -174,24 +176,24 @@ public:
    * The set of identified resonance products with specified decay
    * modes
    */
-  inline const ModeMSet & cascadeProducts() const;
+  const ModeMSet & cascadeProducts() const { return theCascadeProducts; }
 
   /**
    * The set of matchers each corresponding to one decay product.
    */
-  inline const MatcherMSet & productMatchers() const;
+  const MatcherMSet & productMatchers() const { return theMatchers; }
 
   /**
    * The pointer to a matcher corresponding to any number of decay
    * products
    */
-  inline tPMPtr wildProductMatcher() const;
+  tPMPtr wildProductMatcher() const { return theWildMatcher; }
 
   /**
    * The set particles corresponding to excluded intermediate
    * resonances.
    */
-  inline const ParticleMSet & excluded() const;
+  const ParticleMSet & excluded() const { return theExcluded; }
 
   /**
    * Return the branching ratio to be used.
@@ -206,7 +208,7 @@ public:
   /**
    * Get the decayer assigned to this mode.
    */
-  inline tDecayerPtr decayer() const;
+  tDecayerPtr decayer() const { return theDecayer; }
 
   /**
    * Check if another decay mode is included in this one.
@@ -217,24 +219,26 @@ public:
    * Return a pointer to the corresponding decaymode for the
    * antiparticle decay.
    */
-  inline tDMPtr CC() const;
+  tDMPtr CC() const { return theAntiPartner; }
 
   /**
    * Check if another decay mode has the same final state as this
    * one.
    */
-  inline bool operator == (const DecayMode &) const;
+  bool operator == (const DecayMode & d) const { 
+    return tag() == d.tag() ;
+  }
 
   /**
    * Return a vector of pairs of decay products which are linked
    * together (e.g. colourless q-qbar pairs).
    */
-  inline const LinkVector & links() const;
+  const LinkVector & links() const { return theLinks; }
 
   /**
    * Return the list of overlapping decay modes.
    */
-  inline const ModeVector & overlap() const;
+  const ModeVector & overlap() const { return theOverlap; }
 
   /**
    * Modify this mode to have properties corresponding to its anti-partner.
@@ -244,7 +248,7 @@ public:
   /**
    *  Check whether this decay mode is switched on
    */
-  inline bool on() const;
+  bool on() const { return isOn; }
 
 public:
 
@@ -279,19 +283,6 @@ protected:
   virtual void doupdate() throw(UpdateException);
 
   /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-
-  inline virtual void dofinish();
-  /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
    * after all objects used in an EventGenerator has been cloned so that
    * the pointers will refer to the cloned objects afterwards.
@@ -317,7 +308,7 @@ protected:
    * Set a pointer to the particle data object corresponding to
    * the decaying particle.
    */
-  inline void parent(tPDPtr);
+  void parent(tPDPtr pd) { theParent = pd; }
 
   /**
    * Set the branching ratio to be used.
@@ -388,13 +379,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
   /**
@@ -413,30 +404,30 @@ protected:
   /**
    * The set of identified decay products.
    */
-  inline ParticleMSet & products();
+  ParticleMSet & products() { return theProducts; }
 
   /**
    * The set of identified resonant products with specified decay
    * modes
    */
-  inline ModeMSet & cascadeProducts();
+  ModeMSet & cascadeProducts() { return theCascadeProducts; }
 
   /**
    * The set of matchers each corresponding to one decay product.
    */
-  inline MatcherMSet & productMatchers();
+  MatcherMSet & productMatchers() { return theMatchers; }
 
   /**
    * The pointer to a matcher corresponding to any number of decay
    * products
    */
-  inline tPMPtr & wildProductMatcher();
+  tPMPtr & wildProductMatcher() { return theWildMatcher; }
 
   /**
    * The set particles corresponding to excluded intermediate
    * resonances.
    */
-  inline ParticleMSet & excluded();
+  ParticleMSet & excluded() { return theExcluded; }
 
 private:
 
@@ -470,7 +461,11 @@ private:
   /**
    * Delete the tag (it will be regenerated later if asked for).
    */
-  void resetTag();
+  void resetTag() {
+    theTag = "";
+    if ( CC() ) CC()->theTag = "";
+  }
+
 
 private:
 
@@ -602,7 +597,5 @@ struct ClassTraits<DecayMode>:
 /** @endcond */
 
 }
-
-#include "DecayMode.icc"
 
 #endif /* ThePEG_DecayMode_H */

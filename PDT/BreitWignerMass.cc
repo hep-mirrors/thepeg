@@ -17,13 +17,15 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Repository/UseRandom.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "BreitWignerMass.tcc"
-#endif
-
 using namespace ThePEG;
 
-BreitWignerMass::~BreitWignerMass() {}
+IBPtr BreitWignerMass::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr BreitWignerMass::fullclone() const {
+  return new_ptr(*this);
+}
 
 Energy BreitWignerMass::mass(const ParticleData & pd) const {
   Energy ret = 0.0*GeV;

@@ -23,17 +23,20 @@
 #include "ThePEG/Handlers/HandlerGroup.h"
 #include "ThePEG/Handlers/Hint.h"
 #include "ThePEG/Handlers/EventHandler.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Onium3GDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 Onium3GDecayer::~Onium3GDecayer() {}
+
+IBPtr Onium3GDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr Onium3GDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool Onium3GDecayer::accept(const DecayMode & dm) const {
   if ( dm.products().size() != 3 || !dm.cascadeProducts().empty() ||

@@ -34,7 +34,7 @@ struct AndMatcher: public MatcherType {
    * Check match. Return true if the particle type \a pd is matched by
    * this class (ie. by both of the template argument classes).
    */
-  inline static bool Check(const ParticleData & pd) {
+  static bool Check(const ParticleData & pd) {
     return T1::Check(pd) && T2::Check(pd);
   }
 
@@ -59,7 +59,7 @@ struct OrMatcher: public MatcherType {
    * Check match. Return true if the particle type \a pd is matched by
    * this class (ie. by either of the template argument classes).
    */
-  inline static bool Check(const ParticleData & pd) {
+  static bool Check(const ParticleData & pd) {
     return T1::Check(pd) || T2::Check(pd);
   }
 
@@ -85,7 +85,7 @@ struct NotMatcher: public MatcherType {
    * this class (ie. if it is not matched by the template argument
    * class).
    */
-  inline static bool Check(const ParticleData & pd) {
+  static bool Check(const ParticleData & pd) {
     return !T::Check(pd);
   }
 

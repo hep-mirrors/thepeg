@@ -14,13 +14,15 @@
 #include "DummyDecayer.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DummyDecayer.tcc"
-#endif
-
 using namespace ThePEG;
 
-DummyDecayer::~DummyDecayer() {}
+IBPtr DummyDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr DummyDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool DummyDecayer::accept(const DecayMode &) const {
   return true;

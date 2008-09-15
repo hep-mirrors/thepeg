@@ -9,14 +9,11 @@ DOCFILES = CombinedMatcher.h DecayMode.h WidthGenerator.h Decayer.h \
            ConstituentParticleData.h FlatDecayer.h RemnantData.h \
            RemnantDecayer.h SimpleBaryonRemnantDecayer.h
 
-INCLUDEFILES = $(DOCFILES) DecayMode.fh DecayMode.icc \
+INCLUDEFILES = $(DOCFILES) DecayMode.fh \
                DecayMode.xh WidthGenerator.fh Decayer.fh \
                MassGenerator.fh \
-               Matcher.tcc MatcherBase.icc PDT.icc \
-               DummyDecayer.icc ParticleData.icc ParticleData.tcc \
-               ParticleData.xh ConstituentParticleData.icc FlatDecayer.icc \
-               RemnantData.fh RemnantDecayer.icc \
-               RemnantDecayer.fh SimpleBaryonRemnantDecayer.icc 
+               Matcher.tcc ParticleData.xh \
+               RemnantData.fh RemnantDecayer.fh
 
 noinst_LTLIBRARIES = libThePEGPDT.la
 pkglib_LTLIBRARIES = BreitWignerMass.la OmegaPhi3PiDecayer.la \
@@ -29,47 +26,47 @@ libThePEGPDT_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 BreitWignerMass_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-BreitWignerMass_la_SOURCES = BreitWignerMass.cc BreitWignerMass.h  BreitWignerMass.icc
+BreitWignerMass_la_SOURCES = BreitWignerMass.cc BreitWignerMass.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 OmegaPhi3PiDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-OmegaPhi3PiDecayer_la_SOURCES = OmegaPhi3PiDecayer.cc OmegaPhi3PiDecayer.h OmegaPhi3PiDecayer.icc
+OmegaPhi3PiDecayer_la_SOURCES = OmegaPhi3PiDecayer.cc OmegaPhi3PiDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 V2PPDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-V2PPDecayer_la_SOURCES = V2PPDecayer.cc V2PPDecayer.h V2PPDecayer.icc
+V2PPDecayer_la_SOURCES = V2PPDecayer.cc V2PPDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 DalitzDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-DalitzDecayer_la_SOURCES = DalitzDecayer.cc DalitzDecayer.h  DalitzDecayer.icc
+DalitzDecayer_la_SOURCES = DalitzDecayer.cc DalitzDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 Tau2HadronsDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-Tau2HadronsDecayer_la_SOURCES = Tau2HadronsDecayer.cc Tau2HadronsDecayer.h Tau2HadronsDecayer.icc
+Tau2HadronsDecayer_la_SOURCES = Tau2HadronsDecayer.cc Tau2HadronsDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 Onium3GDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-Onium3GDecayer_la_SOURCES = Onium3GDecayer.cc Onium3GDecayer.h Onium3GDecayer.icc
+Onium3GDecayer_la_SOURCES = Onium3GDecayer.cc Onium3GDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 QuarksToHadronsDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-QuarksToHadronsDecayer_la_SOURCES = QuarksToHadronsDecayer.cc QuarksToHadronsDecayer.h QuarksToHadronsDecayer.icc
+QuarksToHadronsDecayer_la_SOURCES = QuarksToHadronsDecayer.cc QuarksToHadronsDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 ColourPairDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-ColourPairDecayer_la_SOURCES = ColourPairDecayer.cc ColourPairDecayer.h  ColourPairDecayer.icc 
+ColourPairDecayer_la_SOURCES = ColourPairDecayer.cc ColourPairDecayer.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 WeakToHadronsDecayer_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-WeakToHadronsDecayer_la_SOURCES = WeakToHadronsDecayer.cc WeakToHadronsDecayer.h WeakToHadronsDecayer.icc
+WeakToHadronsDecayer_la_SOURCES = WeakToHadronsDecayer.cc WeakToHadronsDecayer.h
 
 include $(top_srcdir)/Config/Makefile.aminclude
 

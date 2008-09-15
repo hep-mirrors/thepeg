@@ -16,10 +16,6 @@
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/EventRecord/Particle.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-#include "PDT.tcc"
-#endif
-
 using namespace ThePEG;
 
 vector<long> PDT::flavourContent(long id) {

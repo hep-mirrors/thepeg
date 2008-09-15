@@ -21,8 +21,13 @@
 
 using namespace ThePEG;
 
-FlatDecayer::~FlatDecayer() {}
+IBPtr FlatDecayer::clone() const {
+  return new_ptr(*this);
+}
 
+IBPtr FlatDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool FlatDecayer::accept(const DecayMode & dm) const {
   if ( dm.products().size() == 1 && 

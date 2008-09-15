@@ -1,3 +1,19 @@
+2008-09-15  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* EventRecord/*, PDT/*: icc removal.
+
+	* EventRecord/Particle.*: Reduction of needless rep() constructions for
+	'get' type member functions. 'theRep' no longer needs to be
+	mutable. Checked with several long Herwig++ runs, 1.5% runtime
+	improvement.
+
+	* PDT/ParticleData.*, PDT/PDT.*, PDT/MatcherBase.* :
+	Inconsistent colo(u)r spelling unified to British only.
+	Previously, MatcherBase used American only, Particle used
+	British only and PDT and ParticleData offered both.
+
+	* PDT/ParticleData.* : Strings now passed by reference.
+
 2008-09-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.*: Introduced

@@ -12,8 +12,6 @@
 
 #include "ThePEG/EventRecord/EventInfoBase.h"
 #include "ThePEG/EventRecord/ColourLine.h"
-// #include "ColourBase.fh"
-// #include "ColourBase.xh"
 
 namespace ThePEG {
 
@@ -41,16 +39,6 @@ public:
 public:
 
   /**
-   * Default constructor.
-   */
-  inline ColourBase();
-
-  /**
-   * Copy constructor.
-   */
-  inline ColourBase(const ColourBase &);
-
-  /**
    * Destructor.
    */
   virtual ~ColourBase();
@@ -60,12 +48,12 @@ public:
   /**
    * Return the anti-colour line to which this particle is connected.
    */
-  inline tColinePtr antiColourLine() const;
+  tColinePtr antiColourLine() const { return theAntiColourLine; }
 
   /**
    * Return the colour line to which this particle is connected.
    */
-  inline tColinePtr colourLine() const;
+  tColinePtr colourLine() const { return theColourLine; }
 
   /**
    * Return the anti-colour lines to which this particle is
@@ -89,29 +77,41 @@ public:
    * Return true if the particle is connected to the given anti-colour
    * \a line.
    */
-  inline bool hasAntiColourLine(tcColinePtr line) const;
+  bool hasAntiColourLine(tcColinePtr line) const {
+    return hasColourLine(line, true);
+  }
 
 protected:
 
   /**
    * Set the anti-colour \a line to which this particle is connected.
    */
-  inline virtual void antiColourLine(tColinePtr line);
+  virtual void antiColourLine(tColinePtr line) {
+    theAntiColourLine = line;
+  }
 
   /**
    * Set the (\a anti-) colour line to which this particle is connected.
    */
-  inline virtual void colourLine(tColinePtr line, bool anti = false);
+  virtual void colourLine(tColinePtr l, bool anti = false) {
+    if ( anti ) antiColourLine(l);
+    else theColourLine = l;
+  }
 
   /**
    * Remove the anti-colour \a line to which this particle is connected.
    */
-  inline virtual void removeAntiColourLine(tcColinePtr line);
+  virtual void removeAntiColourLine(tcColinePtr line) {
+    if ( antiColourLine() == line ) theAntiColourLine = tColinePtr();
+  }
 
   /**
    * Remove the (\a anti-) colour line to which this particle is connected.
    */
-  inline virtual void removeColourLine(tcColinePtr line, bool anti = false);
+  virtual void removeColourLine(tcColinePtr line, bool anti = false) {
+    if ( anti ) removeAntiColourLine(line);
+    else if ( colourLine() == line ) theColourLine = tColinePtr();
+  }
 
 public:
 
@@ -142,7 +142,7 @@ public:
   /**
    * Standard clone method.
    */
-  inline virtual EIPtr clone() const;
+  virtual EIPtr clone() const;
 
 private:
 
@@ -176,10 +176,5 @@ ThePEG_DECLARE_CLASS_TRAITS(ColourBase,EventInfoBase);
 /** @endcond */
 
 }
-
-#include "ColourBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourBase.tcc"
-#endif
 
 #endif /* ThePEG_ColourBase_H */

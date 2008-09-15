@@ -40,6 +40,8 @@ DecayMode::DecayMode(const DecayMode & dm)
     theOverlap(dm.theOverlap), theDecayer(dm.theDecayer),
     theAntiPartner(dm.theAntiPartner), theLinks(dm.theLinks) {}
 
+DecayMode::~DecayMode() {}
+
 DMPtr DecayMode::Create(tPDPtr newParent, double newBrat, bool newOn) {
   DMPtr dm = new_ptr(DecayMode(newParent, newBrat, newOn));
   Repository::Register(dm, newParent->fullName() + "/NEWMODE");

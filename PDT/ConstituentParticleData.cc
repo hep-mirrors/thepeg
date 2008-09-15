@@ -17,10 +17,6 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ConstituentParticleData.tcc"
-#endif
-
 using namespace ThePEG;
 
 ConstituentParticleData::ConstituentParticleData(long newId, string newPDGName)
@@ -41,8 +37,6 @@ Create(long newId, string newPDGName, string newAntiPDGName) {
   antiSetup(pap);
   return pap;
 }
-
-ConstituentParticleData::~ConstituentParticleData() {}
 
 void ConstituentParticleData::readSetup(istream & is) throw(SetupException) {
   ParticleData::readSetup(is);

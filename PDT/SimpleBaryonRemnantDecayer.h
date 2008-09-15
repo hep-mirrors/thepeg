@@ -44,12 +44,16 @@ public:
   /**
    * The default constructor.
    */
-  inline SimpleBaryonRemnantDecayer();
+  SimpleBaryonRemnantDecayer()
+    : theMargin(1.0*GeV), useSpecialValence(false) {}
 
   /**
    * The copy constructor.
    */
-  inline SimpleBaryonRemnantDecayer(const SimpleBaryonRemnantDecayer &);
+  SimpleBaryonRemnantDecayer(const SimpleBaryonRemnantDecayer & x)
+    : RemnantDecayer(x), theZGenerator(x.theZGenerator),
+      theFlavourGenerator(x.theFlavourGenerator), theMargin(x.theMargin),
+      useSpecialValence(x.useSpecialValence) {}
 
   /**
    * The destructor.
@@ -154,13 +158,13 @@ protected:
    * Return a reference to the object responsible for generating
    * momentum fractions in case of more than one remnant.
    */
-  inline ZGenerator & zGenerator() const;
+  ZGenerator & zGenerator() const { return *theZGenerator; }
 
   /**
    * Return a reference to the object responsible for handling the
    * flavour contents of a baryon.
    */
-  inline FlavourGenerator & flavourGenerator() const;
+  FlavourGenerator & flavourGenerator() const { return *theFlavourGenerator; }
 
   /**
    * Return the energy margin to be added to the sum of the parent and
@@ -168,12 +172,12 @@ protected:
    * remnants with the given (upper limit of the) virtuality of the
    * extracted parton.
    */
-  inline Energy margin() const;
+  Energy margin() const { return theMargin; }
 
   /**
    * If true an extracted valens quark will always give a di-quark remnant.
    */
-  inline bool specialValence() const;
+  bool specialValence() const { return useSpecialValence; }
 
 protected:
 
@@ -183,13 +187,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 protected:
@@ -291,10 +295,5 @@ struct ClassTraits<SimpleBaryonRemnantDecayer>
 /** @endcond */
 
 }
-
-#include "SimpleBaryonRemnantDecayer.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleBaryonRemnantDecayer.tcc"
-#endif
 
 #endif /* THEPEG_SimpleBaryonRemnantDecayer_H */

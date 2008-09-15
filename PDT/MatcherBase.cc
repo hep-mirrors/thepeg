@@ -20,23 +20,19 @@
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MatcherBase.tcc"
-#endif
-
 using namespace ThePEG;
 
 MatcherBase::MatcherBase()
   : theMaxMass(0.0*GeV), theMinMass(0.0*GeV), commonMass(-1.0*GeV),
     commonWidth(-1.0*GeV), commonCTau(-1.0*mm),
     commonCharge(PDT::ChargeUndefined), commonSpin(PDT::SpinUndefined),
-    commonColor(PDT::ColourUndefined), commonStable(-1) {}
+    commonColour(PDT::ColourUndefined), commonStable(-1) {}
 
 MatcherBase::MatcherBase(const MatcherBase & m)
   : Interfaced(m), theMaxMass(m.theMaxMass), theMinMass(m.theMinMass),
     commonMass(m.commonMass), commonWidth(m.commonWidth),
     commonCTau(m.commonCTau), commonCharge(m.commonCharge),
-    commonSpin(m.commonSpin), commonColor(m.commonColor),
+    commonSpin(m.commonSpin), commonColour(m.commonColour),
     commonStable(m.commonStable), theAntiPartner(m.theAntiPartner) {}
 
 MatcherBase::~MatcherBase() {}
@@ -50,7 +46,7 @@ void MatcherBase::doupdate() throw(UpdateException) {
   Length oldCTau = commonCTau;
   PDT::Spin  oldSpin = commonSpin;
   PDT::Charge oldCharge = commonCharge;
-  PDT::Color oldColor = commonColor;
+  PDT::Colour oldColour = commonColour;
   int oldStable = commonStable;
   matchingParticles.swap(oldParticles);
   matchingMatchers.swap(oldMatchers);
@@ -65,7 +61,7 @@ void MatcherBase::doupdate() throw(UpdateException) {
   if ( matchingParticles != oldParticles || matchingMatchers != oldMatchers ||
     oldMass != commonMass || oldWidth != commonWidth || oldCTau != commonCTau ||
     oldSpin != commonSpin || oldCharge != commonCharge ||
-       oldColor != commonColor || oldStable != commonStable ) touch();
+       oldColour != commonColour || oldStable != commonStable ) touch();
 }
 
 void MatcherBase::clear() {
@@ -78,7 +74,7 @@ void MatcherBase::clear() {
   commonCTau = -1.0*mm;
   commonSpin = PDT::SpinUndefined;
   commonCharge = PDT::ChargeUndefined;
-  commonColor = PDT::ColourUndefined;
+  commonColour = PDT::ColourUndefined;
   commonStable = -1;
 }
 
@@ -102,7 +98,7 @@ void MatcherBase::addPIfMatch(tPDPtr pd) {
     commonCTau = pd->cTau();
     commonCharge = pd->iCharge();
     commonSpin = pd->iSpin();
-    commonColor = pd->iColor();
+    commonColour = pd->iColour();
     commonStable = pd->stable();
   } else {
     if ( commonMass != pd->mass() ) commonMass = -1.0*GeV;
@@ -147,11 +143,11 @@ void MatcherBase::addPIfMatch(tPDPtr pd) {
       }
     }
     if ( commonSpin != pd->iSpin() ) commonSpin = PDT::SpinUndefined;
-    if ( commonColor != pd->iColor() ) {
-      if ( PDT::colored(commonColor) && PDT::colored(pd->iColor()) )
-	commonColor = PDT::Coloured;
+    if ( commonColour != pd->iColour() ) {
+      if ( PDT::coloured(commonColour) && PDT::coloured(pd->iColour()) )
+	commonColour = PDT::Coloured;
       else
-	commonColor = PDT::ColorUndefined;
+	commonColour = PDT::ColourUndefined;
       if ( commonStable != pd->stable() ) commonStable = -1;
     }
   }
@@ -182,19 +178,15 @@ void MatcherBase::persistentOutput(PersistentOStream & os ) const {
   os << parts << match << ounit(theMaxMass, GeV) << ounit(theMinMass, GeV)
      << ounit(commonMass, GeV) << ounit(commonWidth, GeV)
      << ounit(commonCTau, mm) << oenum(commonCharge) << oenum(commonSpin)
-     << oenum(commonColor) << commonStable << theAntiPartner;
+     << oenum(commonColour) << commonStable << theAntiPartner;
 }
 
 void MatcherBase::persistentInput(PersistentIStream & is, int) {
   is >> matchingParticles >> matchingMatchers >> iunit(theMaxMass, GeV)
      >> iunit(theMinMass, GeV) >> iunit(commonMass, GeV)
      >> iunit(commonWidth, GeV) >> iunit(commonCTau, mm) >> ienum(commonCharge)
-     >> ienum(commonSpin) >> ienum(commonColor) >> commonStable
+     >> ienum(commonSpin) >> ienum(commonColour) >> commonStable
      >> theAntiPartner;
-}
-
-void MatcherBase::rebind(const TranslationMap & trans) throw(RebindException) {
-  Interfaced::rebind(trans);
 }
 
 AbstractClassDescription<MatcherBase> MatcherBase::initMatcherBase;

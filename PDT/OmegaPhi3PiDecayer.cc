@@ -17,17 +17,18 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/EventRecord/Particle.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "OmegaPhi3PiDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-OmegaPhi3PiDecayer::~OmegaPhi3PiDecayer() {}
+IBPtr OmegaPhi3PiDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr OmegaPhi3PiDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool OmegaPhi3PiDecayer::accept(const DecayMode & dm) const {
   if ( dm.products().size() != 3 || !dm.cascadeProducts().empty() ||

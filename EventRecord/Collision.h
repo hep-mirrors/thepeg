@@ -10,8 +10,8 @@
 #define ThePEG_Collision_H
 // This is the decalaration of the Collision class. It
 
-#include "ThePEG/EventRecord/EventConfig.h"
-#include "ThePEG/EventRecord/Particle.h"
+#include "EventConfig.h"
+#include "Particle.h"
 #include "StandardSelectors.h"
 #include "ThePEG/Vectors/LorentzVector.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
@@ -57,12 +57,11 @@ public:
    * of this Collision.
    */
   Collision(const PPair & newIncoming, tEventPtr newEvent = tEventPtr(),
-	    tcEventBasePtr newHandler = tcEventBasePtr());
-
-  /**
-   * The copy constructor.
-   */
-  Collision(const Collision &);
+	    tcEventBasePtr newHandler = tcEventBasePtr()) 
+    : theIncoming(newIncoming), theEvent(newEvent), theHandler(newHandler) {
+    addParticle(incoming().first);
+    addParticle(incoming().second);
+  }
 
   /**
    * The destructor
@@ -88,13 +87,13 @@ public:
    * Return a pointer to the EventHandler which produced this
    * Collision. May be the null pointer.
    */
-  inline tcEventBasePtr handler() const;
+  tcEventBasePtr handler() const { return theHandler; }
 
   /**
    * Return a pointer to the Event to which this Collision
    * belongs. May be the null pointer.
    */
-  inline tEventPtr event() const;
+  tEventPtr event() const { return theEvent; }
 
   /** @name Functions for accessing particles etc. */
   //@{
@@ -115,51 +114,68 @@ public:
    * (pointers to) particles will be appended.
    */
   template <class OutputIterator>
-  inline void selectFinalState(OutputIterator r) const;
+  void selectFinalState(OutputIterator r) const {
+    select(r, SelectFinalState());
+  }
 
   /**
    * Extract all final state particles in this Collision.
    * @return a vector of pointers to the extracted particles.
    */
-  inline tPVector getFinalState() const;
+  tPVector getFinalState() const {
+    tPVector ret;
+    selectFinalState(back_inserter(ret));
+    return ret;
+  }
 
   /**
    * Return a pointer to the primary SubProcess in this Collision. May
    * be the null pointer.
    */
-  inline tSubProPtr primarySubProcess() const;
+  tSubProPtr primarySubProcess() const {
+    return subProcesses().empty()? SubProPtr(): subProcesses().front();
+  }
 
   /**
    * Return the possibly empty list of sub processes in this Collision.
    */
-  inline const SubProcessVector & subProcesses() const;
+  const SubProcessVector & subProcesses() const {
+    return theSubProcesses;
+  }
 
   /**
    * Return a const pointer to the last step in this Collission.
    */
-  inline tcStepPtr finalStep() const;
+  tcStepPtr finalStep() const {
+    return steps().empty()? tcStepPtr(): tcStepPtr(steps().back());
+  }
 
   /**
    * Return a pointer to the last step in this Collission.
    */
-  inline tStepPtr finalStep();
+  tStepPtr finalStep() {
+    return steps().empty()? StepPtr(): steps().back();
+  }
 
   /**
    * Return the vector of steps in this Collision. 
    */
-  inline const StepVector & steps() const;
+  const StepVector & steps() const { return theSteps; }
 
   /**
    * Return a pointer to a given Step in this Collision.
    */
-  inline tcStepPtr step(unsigned int i) const;
+  tcStepPtr step(unsigned int i) const {
+    return i < steps().size()? tcStepPtr(theSteps[i]): tcStepPtr();
+  }
 
   /**
    * Return a reference to the pair of colliding particles in this
    * Collision.
    */
 
-  inline const PPair & incoming() const;
+  const PPair & incoming() const { return theIncoming; }
+
   /**
    * Return the set of remnants in this collision. Remnants are
    * defined as the daughters of the incoming particles which are not
@@ -174,19 +190,19 @@ public:
    * particles it is better to call getRemnants directly and check if
    * the particles are members of the resulting set by hand.
    */
-  inline bool isRemnant(tPPtr) const;
+  bool isRemnant(tPPtr p) const { return member(getRemnants(), p); }
 
   //@}
 
   /**
    * Return the vertex position of this Collision.
    */
-  inline const LorentzPoint & vertex() const;
+  const LorentzPoint & vertex() const { return theVertex; }
 
   /**
    * Set the vertex position of this Collision.
    */
-  inline void vertex(const LorentzPoint &);
+  void vertex(const LorentzPoint & p) { theVertex = p; }
 
   /**
    * Transform all particles in this Collision.
@@ -197,7 +213,9 @@ public:
    * Return the total invariant mass squared of the final-state
    * particles in this Collision.
    */
-  inline Energy2 m2() const;
+  Energy2 m2() const {
+    return ( incoming().first->momentum() + incoming().second->momentum() ).m2();
+  }
 
   /** @name Functions for removing entires from a Collision. */
   //@{
@@ -278,7 +296,7 @@ protected:
   /**
    * Return a reference to the list of all particles in this Collision.
    */
-  inline const ParticleSet & all() const;
+  const ParticleSet & all() const { return allParticles; }
 
   /**
    * Clone this Collision. This also makes clones of all steps, sub
@@ -345,7 +363,7 @@ private:
    * Private default constructor must only be used by the
    * PersistentIStream class via the ClassTraits<Collision> class .
    */
-  inline Collision();
+  Collision() {}
 
   /**
    * The ClassTraits<Collision> class must be a friend to be able to
@@ -356,7 +374,7 @@ private:
   /**
    * The assignment operator is private and not implemented.
    */
-  inline Collision & operator=(const Collision &);
+  Collision & operator=(const Collision &);
 
   /** Output to a standard ostream. */
   friend ostream & operator<<(ostream & os, const Collision & c);
@@ -391,7 +409,6 @@ struct ClassTraits<Collision>: public ClassTraitsBase<Collision> {
 
 }
 
-#include "Collision.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Collision.tcc"
 #endif

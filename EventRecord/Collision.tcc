@@ -11,6 +11,9 @@
 // the Collision class.
 //
 
+#include "Step.h"
+#include "Event.h"
+
 namespace ThePEG {
 
 template <class OutputIterator>

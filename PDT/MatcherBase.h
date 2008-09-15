@@ -85,7 +85,7 @@ public:
   /**
    * Check if a Particle meets the criteria.
    */
-  inline bool checkp(const Particle &) const;
+  bool checkp(const Particle & p) const { return check(p.data()); }
 
   /**
    * Check if a given particle type belongs to the set of
@@ -93,7 +93,10 @@ public:
    * the set of all particles matched by this matcher. May be quicker
    * than to go through the check proceedure.
    */
-  inline bool matches(const ParticleData &) const;
+  bool matches(const ParticleData & pd) const {
+    return member(matchingParticles, PDPtr(const_cast<ParticleData *>(&pd)));
+  }
+
 
   /**
    * Check if a given particle belongs to the set of matches. This
@@ -101,14 +104,16 @@ public:
    * set of all particles matched by this matcher. May be quicker than
    * to go through the check proceedure.
    */
-  inline bool matches(const Particle &) const;
+  bool matches(const Particle & p) const { return matches(p.data()); }
   
   /**
    * Check if a given particle matcher belongs to the set of
    * matches. This function looks for the same MatcherBase object in
    * the set of all matchers matched by this matcher.
    */
-  inline bool matches(const MatcherBase &) const;
+  bool matches(const MatcherBase & pm) const {
+    return member(matchingMatchers, PMPtr(const_cast<MatcherBase *>(&pm)));
+  }
   //@}
 
   /** @name Access the sets of matching particles and matchers. */
@@ -116,11 +121,11 @@ public:
   /**
    * Access to the set of matching particles.
    */
-  inline const tPDSet & particles() const;
+  const tPDSet & particles() const { return matchingParticles; }
   /**
    * Access to the set of matching matchers.
    */
-  inline const tPMSet & matchers() const;
+  const tPMSet & matchers() const { return matchingMatchers; }
   //@}
 
   /** @name Access common properties of all matched particles. */
@@ -128,31 +133,31 @@ public:
   /**
    * Returns the minimum mass of the matching particles.
    */
-  inline Energy minMass() const;
+  Energy minMass() const { return theMinMass; }
 
   /**
    * Returns the maximum mass of the matching particles.
    */
-  inline Energy maxMass() const;
+  Energy maxMass() const { return theMaxMass; }
 
   /**
    * Returns the common mass of the matching particles. If all matching
    * particles do not have exactly the same mass, -1.0 GeV is returned.
    */
-  inline Energy mass() const;
+  Energy mass() const { return commonMass; }
 
   /**
    * Returns the common width of the matching particles. If all matching
    * particles do not have exactly the same width, -1.0 GeV is returned.
    */
-  inline Energy width() const;
+  Energy width() const { return commonWidth; }
 
   /**
    * Returns the common decay length of the matching particles. If all
    * matching particles do not have exactly the same decay length -1.0
    * mm is returned.
    */
-  inline Length cTau() const;
+  Length cTau() const { return commonCTau; }
 
   /**
    * Return common charge. If all matching particles have the same
@@ -161,58 +166,58 @@ public:
    * returned. Otherwise if all are charged, PDT::Charged is
    * returned. Otherwise PDT::ChargeUndefined is returned.
    */
-  inline PDT::Charge iCharge() const;
+  PDT::Charge iCharge() const { return commonCharge; }
 
   /**
    * Are the particles charged? If all matching particles are charged, return
    * true, otherwise false.
    */
-  inline bool charged() const;
+  bool charged() const { return PDT::charged(commonCharge); }
 
   /**
    * Are the particles positively charged? If all matching particles
    * are positively charged, return true, otherwise false.
    */
-  inline bool positive() const;
+  bool positive() const { return PDT::positive(commonCharge); }
 
   /**
    * Are the particles negatively charged? If all matching particles
    * are negatively charged, return true, otherwise false.
    */
-  inline bool negative() const;
+  bool negative() const { return PDT::negative(commonCharge); }
 
   /**
    * Return common spin. If all matching particles have the same spin,
    * the common spin is returned. Otherwise PDT::SpinUndefined is
    * returned.
    */
-  inline PDT::Spin iSpin() const;
+  PDT::Spin iSpin() const { return commonSpin; }
 
   /**
-   * If all matching particles have the same color, the common color
-   * is returned. Otherwise if all are colored, PDT::Coloured is
+   * If all matching particles have the same colour, the common colour
+   * is returned. Otherwise if all are coloured, PDT::Coloured is
    * returned. Otherwise PDT::ColourUndefined is returned.
    */
-  inline PDT::Color iColor() const;
+  PDT::Colour iColour() const { return commonColour; }
 
   /**
    * Are the particles coloured? If all matching particles are
    * coloured, return true, otherwise false.
    */
-  inline bool colored() const;
+  bool coloured() const { return PDT::coloured(commonColour); }
 
   /**
    * Are the particles stable? Returns (0)1 if all matching particles
    * are (un)stable. Otherwise -1 is returned.
    */
-  inline int stable() const;
+  int stable() const { return commonStable; }
   //@}
 
   /**
    * Get the matcher object matching the antiparticles of this. If
    * no-one exists null is returned.
    */
-  inline tPMPtr CC() const;
+  tPMPtr CC() const { return theAntiPartner; }
 
 public:
 
@@ -246,32 +251,6 @@ protected:
    * Check sanity of the object during the setup phase.
    */
   virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
   //@}
 
 protected:
@@ -293,28 +272,36 @@ protected:
    * they meets the criteria.
    */
   template <typename Iterator>
-  inline void addPIfMatch(Iterator, Iterator);
+  void addPIfMatch(Iterator first, Iterator last) {
+    for ( ; first != last; ++first ) addPIfMatch(*first);
+  }
 
   /**
    * Add a number of particles to the set of matching particles if
    * they meets the criteria.
    */
   template <typename Cont>
-  inline void addPIfMatchFrom(const Cont &);
+  void addPIfMatchFrom(const Cont & c) {
+    addPIfMatch(c.begin(), c.end());
+  }
 
   /**
    * Add a number of particle matchers to the set of matching
    * matchers if they meets the criteria.
    */
   template <typename Iterator>
-  inline void addMIfMatch(Iterator, Iterator);
+  void addMIfMatch(Iterator first, Iterator last) {
+    for ( ; first != last; ++first ) addMIfMatch(*first);
+  }
 
   /**
    * Add a number of particle matchers to the set of matching
    * matchers if they meets the criteria.
    */
   template <typename Cont>
-  inline void addMIfMatchFrom(const Cont &);
+  void addMIfMatchFrom(const Cont & c) {
+    addMIfMatch(c.begin(), c.end());
+  }
 
   /**
    * Clear information about matching particles and matchers.
@@ -324,7 +311,10 @@ protected:
   /**
    * Set antipartner.
    */
-  inline void setCC(tPMPtr, tPMPtr) const;
+  void setCC(tPMPtr pm, tPMPtr apm) const {
+    pm->theAntiPartner = apm;
+    apm->theAntiPartner = pm;
+  }
 
 private:
 
@@ -376,7 +366,7 @@ private:
   /**
    * The common colour of all matching particles.
    */
-  PDT::Color commonColor;
+  PDT::Colour commonColour;
 
   /**
    * The common stability of all matching particles.
@@ -426,10 +416,5 @@ struct ClassTraits<MatcherBase>:
 /** @endcond */
 
 }
-
-#include "MatcherBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MatcherBase.tcc"
-#endif
 
 #endif /* ThePEG_MatcherBase_H */

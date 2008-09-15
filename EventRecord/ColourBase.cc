@@ -17,13 +17,13 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourBase.tcc"
-#endif
-
 using namespace ThePEG;
 
 ColourBase::~ColourBase() {}
+
+EIPtr ColourBase::clone() const {
+  return new_ptr(*this);
+}
 
 bool ColourBase::hasColourLine(tcColinePtr line, bool anti) const {
   return ( anti? ( antiColourLine() == line ): ( colourLine() == line ) );

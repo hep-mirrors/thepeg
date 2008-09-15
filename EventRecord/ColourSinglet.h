@@ -8,11 +8,8 @@
 //
 #ifndef ThePEG_ColourSinglet_H
 #define ThePEG_ColourSinglet_H
-// This is the declaration of the ColourSinglet class.
 
 #include "ThePEG/EventRecord/EventConfig.h"
-// #include "ColourSinglet.fh"
-// #include "ColourSinglet.xh"
 
 namespace ThePEG {
 
@@ -47,7 +44,7 @@ public:
   /**
    * Default constructor.
    */
-  inline ColourSinglet();
+  ColourSinglet() {}
 
   /**
    * Constructor taking an initial colour line and a set of partons to
@@ -69,17 +66,17 @@ public:
   /**
    * Access the vector of partons.
    */
-  inline tcPVector & partons();
+  tcPVector & partons() { return thePartons; }
 
   /**
    * Access the vector of partons.
    */
-  inline const tcPVector & partons() const;
+  const tcPVector & partons() const { return thePartons; }
 
   /**
    * Access a parton giving an index.
    */
-  inline tcPPtr parton(tcPVector::size_type i) const;
+  tcPPtr parton(tcPVector::size_type i) const { return thePartons[i]; }
 
   /**
    * Return the total momentum for the partons in the colour singlet.
@@ -89,54 +86,58 @@ public:
   /**
    * Return the number of string pieces.
    */
-  inline Index nPieces() const;
+  Index nPieces() const { return thePieces.size(); }
 
   /**
    * Return the partons belonging to string piece with index i (note
    * that the indices starts with 1).
    */
-  inline StringPiece & piece(Index i);
+  StringPiece & piece(Index i) { return thePieces[i - 1]; }
 
   /**
    * Return the partons belonging to string piece with index i (note
    * that the indices starts with 1).
    */
-  inline const StringPiece & piece(Index i) const;
+  const StringPiece & piece(Index i) const { return thePieces[i - 1]; }
 
   /**
    * Return the sink (or source if \a forward is false) neighbors of
    * a string piece with index i (note that the indices starts with 1).
    */
-  inline Junction & junction(Index i, bool forward);
+  Junction & junction(Index i, bool forward) {
+    return forward ? sink(i) : source(i);
+  }
 
   /**
    * Return the sink (or source if \a forward is false) neighbors of
    * a string piece with index i (note that the indices starts with 1).
    */
-  inline const Junction & junction(Index i, bool forward) const;
+  const Junction & junction(Index i, bool forward) const {
+    return forward ? sink(i) : source(i);
+  }
 
   /**
    * Return the sink or source neighbors of a string piece with index
    * i (note that the indices starts with 1).
    */
-  inline Junction & sink(Index i);
+  Junction & sink(Index i) { return theSinks[i - 1]; }
 
   /**
    * Return the sink or source neighbors of a string piece with index
    * i (note that the indices starts with 1).
    */
-  inline const Junction & sink(Index i) const;
+  const Junction & sink(Index i) const { return theSinks[i - 1]; }
 
   /**
    * Return the sink or source neighbors of a string piece with index
    * i (note that the indices starts with 1).
    */
-  inline Junction & source(Index i);
+  Junction & source(Index i) { return theSources[i - 1]; }
   /**
    * Return the sink or source neighbors of a string piece with index
    * i (note that the indices starts with 1).
    */
-  inline const Junction & source(Index i) const;
+  const Junction & source(Index i) const { return theSources[i - 1]; }
 
   /**
    * Extract colour-singlet strings/clusters of partons from the given
@@ -150,8 +151,11 @@ public:
    * range of particles.
    */
   template <typename Iterator>
-  inline static vector<ColourSinglet>
-  getSinglets(Iterator first, Iterator last);
+  static vector<ColourSinglet>
+  getSinglets(Iterator first, Iterator last) {
+    tcParticleSet pset(first, last);
+    return getSinglets(pset);
+  }
 
   /**
    * Return a vector with data objects corresponding to all triplet
@@ -213,7 +217,12 @@ public:
   /**
    * Swap this colour singlet for the argument.
    */
-  inline void swap(ColourSinglet & x);
+  void swap(ColourSinglet & x) {
+    thePartons.swap(x.thePartons);
+    thePieces.swap(x.thePieces);
+    theSources.swap(x.theSources);
+    theSinks.swap(x.theSinks);
+  }
 
 private:
 
@@ -236,7 +245,12 @@ private:
   /**
    * Add a new string piece and return its index.
    */
-  inline Index addPiece();
+  Index addPiece() {
+    thePieces.push_back(StringPiece());
+    theSinks.push_back(Junction());
+    theSources.push_back(Junction());
+    return nPieces();
+  }
 
   /**
    * Add a junction which is a source (or sink if \a forward) to the
@@ -278,10 +292,5 @@ private:
 };
 
 }
-
-// #include "ColourSinglet.tcc"
-#include "ColourSinglet.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#endif
 
 #endif /* ThePEG_ColourSinglet_H */

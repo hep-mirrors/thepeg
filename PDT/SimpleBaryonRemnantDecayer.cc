@@ -27,17 +27,20 @@
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/EventRecord/Step.h"
 #include "ThePEG/Repository/EventGenerator.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleBaryonRemnantDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 SimpleBaryonRemnantDecayer::~SimpleBaryonRemnantDecayer() {}
+
+IBPtr SimpleBaryonRemnantDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr SimpleBaryonRemnantDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 bool SimpleBaryonRemnantDecayer::accept(const DecayMode &) const {
   return true;

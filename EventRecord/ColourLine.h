@@ -14,9 +14,6 @@
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/EventRecord/ColourSinglet.h"
 
-// #include "ColourLine.fh"
-// #include "ColourLine.xh"
-
 namespace ThePEG {
 
 /**
@@ -43,16 +40,6 @@ public:
   /** @name Creation functions. */
   //@{
   /**
-   * Default Constructor.
-   */
-  inline ColourLine();
-
-  /**
-   * Copy constructor.
-   */
-  inline ColourLine(const ColourLine &);
-
-  /**
    * Create a colour line. Set a pair of colour - anticolour particles
    * in a newly created colour line.
    */
@@ -72,7 +59,7 @@ public:
    * is a anti-colour line .
    * @param p the particle to be connected.
    */
-  static inline tColinePtr createAnti(tPPtr p);
+  static tColinePtr createAnti(tPPtr p) { return create(p, true); }
 
   //@}
 
@@ -89,13 +76,13 @@ public:
    * Return the vectors of particles connected to this line with their
    * colours.
    */
-  inline const tPVector & coloured() const;
+  const tPVector & coloured() const { return theColoured; }
 
   /**
    * Return the vectors of particles connected to this line with their
    * anti-colours.
    */
-  inline const tPVector & antiColoured() const;
+  const tPVector & antiColoured() const { return theAntiColoured; }
 
   /**
    * Return the first particle on this colour line. Returns null if
@@ -103,14 +90,18 @@ public:
    * outgoing, its anti colour is connected, otherwise its colour is
    * connected.
    */
-  inline tPPtr startParticle() const;
+  tPPtr startParticle() const {
+    return sinkNeighbours().first? tPPtr(): antiColoured().back();
+  }
 
   /**
    * Return the last particle on this colour line. Returns null if
    * this line ends in a colour sink. If the particle is outgoing, its
    * colour is connected, otherwise its anti colour is connected.
    */
-  inline tPPtr endParticle() const;
+  tPPtr endParticle() const {
+    return sourceNeighbours().first? tPPtr(): coloured().back();
+  }
 
   //@}
 
@@ -148,28 +139,38 @@ public:
    * If this colour line ends in a colour sink, these two colour lines
    * ends in the same.
    */
-  inline tColinePair sinkNeighbours() const;
+  tColinePair sinkNeighbours() const { return theSinkNeighbours; }
 
   /**
    * If this colour line stems from a colour source (sink), these two colour
    * lines stems from (ends in) the same.
    * @param anti if true return sinkNeighbours().
    */
-  inline tColinePair sourceNeighbours(bool anti = false) const;
+  tColinePair sourceNeighbours(bool anti = false) const {
+    return anti? theSinkNeighbours: theSourceNeighbours;
+  }
 
   /**
    * Add two colour lines as neighbours to this line. Afterwards all
    * three will end in the same sink. Also the neighbors are set up
    * correspondingly.
    */
-  inline void setSinkNeighbours(tColinePtr, tColinePtr);
+  void setSinkNeighbours(tColinePtr l1, tColinePtr l2) {
+    theSinkNeighbours.second = l1->theSinkNeighbours.second = l2;
+    l2->theSinkNeighbours.second = theSinkNeighbours.first = l1;
+    l1->theSinkNeighbours.first = l2->theSinkNeighbours.first = this;
+  }
 
   /**
    * Add two colour lines as neighbours to this line. Afterwards all
    * three will stem from the same source. Also the neighbors are set
    * up correspondingly.
    */
-  inline void setSourceNeighbours(tColinePtr, tColinePtr);
+  void setSourceNeighbours(tColinePtr l1, tColinePtr l2) {
+    theSourceNeighbours.second = l1->theSourceNeighbours.second = l2;
+    l2->theSourceNeighbours.second = theSourceNeighbours.first = l1;
+    l1->theSourceNeighbours.first = l2->theSourceNeighbours.first = this;
+  }
 
   //@}
 
@@ -188,8 +189,14 @@ public:
    * particles which is on this colour line.
    */
   template <typename Iterator>
-  inline typename std::iterator_traits<Iterator>::value_type
-  getColouredParticle(Iterator first, Iterator last, bool anti = false) const;
+  typename std::iterator_traits<Iterator>::value_type
+  getColouredParticle(Iterator first, Iterator last, bool anti = false) const {
+    typedef typename std::iterator_traits<Iterator>::value_type ParticlePointer;
+    for ( ; first != last; ++first )
+      if ( (**first).coloured() && (**first).hasColourLine(this, anti) )
+	return *first;
+    return ParticlePointer();
+  }
 
   /**
    * Write out information about this colour line to the stream.
@@ -281,10 +288,5 @@ struct ClassTraits<ColourLine>: public ClassTraitsBase<ColourLine> {
 /** @endcond */
 
 }
-
-#include "ColourLine.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourLine.tcc"
-#endif
 
 #endif /* ThePEG_ColourLine_H */

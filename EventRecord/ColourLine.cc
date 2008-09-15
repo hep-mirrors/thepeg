@@ -16,11 +16,6 @@
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Config/algorithm.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourLine.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 

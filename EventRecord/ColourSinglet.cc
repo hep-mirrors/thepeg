@@ -16,10 +16,6 @@
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Repository/UseRandom.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ColourSinglet.tcc"
-#endif
-
 using namespace ThePEG;
 
 LorentzMomentum ColourSinglet::momentum() const {

@@ -25,10 +25,6 @@
 
 using namespace ThePEG;
 
-Step::
-Step(tCollPtr newCollision, tcEventBasePtr newHandler)
-  : theCollision(newCollision), theHandler(newHandler) {}
-
 Step::Step(const Step & s)
   : Base(s), 
     theParticles(s.theParticles), theIntermediates(s.theIntermediates),

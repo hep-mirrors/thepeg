@@ -20,17 +20,20 @@
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/Rebinder.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DalitzDecayer.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 DalitzDecayer::~DalitzDecayer() {}
+
+IBPtr DalitzDecayer::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr DalitzDecayer::fullclone() const {
+  return new_ptr(*this);
+}
 
 void DalitzDecayer::doinit() throw(InitException) {
   Decayer::doinit();

@@ -47,66 +47,61 @@ class SelectorBase {
 public:
 
   /**
-   * Default constructor.
+   * Virtual destructor.
    */
-  inline SelectorBase();
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~SelectorBase();
+  virtual ~SelectorBase() {}
 
   /**
    * Static method corresponding to the virtual check() method.
    */
-  inline static bool Check(const Particle &);
+  static bool Check(const Particle &) { return true; }
 
   /**
    * Static method corresponding to the virtual intermediate() method.
    */
-  inline static bool Intermediate();
+  static bool Intermediate() { return true; }
 
   /**
    * Static method corresponding to the virtual finalState() method.
    */
-  inline static bool FinalState();
+  static bool FinalState() { return true; }
 
   /**
    * Static method corresponding to the virtual allSteps() method.
    */
-  inline static bool AllSteps();
+  static bool AllSteps() { return true; }
 
   /**
    * Static method corresponding to the virtual allCollisions() method.
    */
-  inline static bool AllCollisions();
+  static bool AllCollisions() { return true; }
 
   /**
    * Return true if the particle should be extracted.
    */
-  inline virtual bool check(const Particle &  p) const;
+  virtual bool check(const Particle &  p) const { return Check(p); }
 
   /**
    * Return true if final state particles are to be considered.
    */
-  inline virtual bool finalState() const;
+  virtual bool finalState() const { return FinalState(); }
 
   /**
    * Return true if intermediate particles should be considered.
    */
-  inline virtual bool intermediate() const;
+  virtual bool intermediate() const { return Intermediate(); }
 
   /**
    * Return true if all steps should be considered. Otherwise only the
    * last step in each collision is considered.
    */
-  inline virtual bool allSteps() const;
+  virtual bool allSteps() const { return AllSteps(); }
 
   /**
    * Return ture if all collisions should be considered. Otherwise
    * only the primary collision will be considered.
    */
-  inline virtual bool allCollisions() const;
+  virtual bool allCollisions() const { return AllCollisions(); }
 
 };
 
@@ -123,66 +118,56 @@ template <class T>
 struct ParticleSelector: public SelectorBase {
 
   /**
-   * Default constructor.
-   */
-  inline ParticleSelector();
-
-  /**
-   * Destructor.
-   */
-  inline virtual ~ParticleSelector();
-
-  /**
    * Static method corresponding to the virtual check() method.
    */
-  inline static bool Check(const Particle &);
+  static bool Check(const Particle & p) { return T::Check(p); }
 
   /**
    * Static method corresponding to the virtual intermediate() method.
    */
-  inline static bool Intermediate();
+  static bool Intermediate() { return T::Intermediate(); }
 
   /**
    * Static method corresponding to the virtual finalState() method.
    */
-  inline static bool FinalState();
+  static bool FinalState() { return T::FinalState(); }
 
   /**
    * Static method corresponding to the virtual allSteps() method.
    */
-  inline static bool AllSteps();
+  static bool AllSteps() { return T::AllSteps(); }
 
   /**
    * Static method corresponding to the virtual allCollisions() method.
    */
-  inline static bool AllCollisions();
+  static bool AllCollisions() { return T::AllCollisions(); }
 
   /**
    * Return true if the particle should be extracted.
    */
-  inline virtual bool check(const Particle &  p) const;
+  virtual bool check(const Particle &  p) const { return Check(p); }
 
   /**
    * Return true if final state particles are to be considered.
    */
-  inline virtual bool finalState() const;
+  virtual bool finalState() const { return FinalState(); }
 
   /**
    * Return true if intermediate particles should be considered.
    */
-  inline virtual bool intermediate() const;
+  virtual bool intermediate() const { return Intermediate(); }
 
   /**
    * Return true if all steps should be considered. Otherwise only the
    * last step in each collision is considered.
    */
-  inline virtual bool allSteps() const;
+  virtual bool allSteps() const { return AllSteps(); }
 
    /**
    * Return ture if all collisions should be considered. Otherwise
    * only the primary collision will be considered.
    */
- inline virtual bool allCollisions() const;
+  virtual bool allCollisions() const { return AllCollisions(); }
 
 };  
 
@@ -195,52 +180,41 @@ class SelectIfNot: public SelectorBase {
 public:
 
   /** Constructor taking the SelectorBase object to be negated. */
-  inline SelectIfNot(const SelectorBase &);
-
-  /**
-   * Copy constructor.
-   */
-  inline SelectIfNot(const SelectIfNot &);
+  explicit SelectIfNot(const SelectorBase & S) : s(S) {}
 
   /**
    * Return true if the particle should be extracted.
    */
-  inline virtual bool check(const Particle &  p) const;
+  virtual bool check(const Particle &  p) const { return !s.check(p); }
 
   /**
    * Return true if final state particles are to be considered.
    */
-  inline virtual bool finalState() const;
+  virtual bool finalState() const { return !s.finalState(); }
 
   /**
    * Return true if intermediate particles should be considered.
    */
-  inline virtual bool intermediate() const;
+  virtual bool intermediate() const { return !s.intermediate(); }
 
   /**
    * Return true if all steps should be considered. Otherwise only the
    * last step in each collision is considered.
    */
-  inline virtual bool allSteps() const;
+  virtual bool allSteps() const { return !s.allSteps(); }
 
   /**
    * Return ture if all collisions should be considered. Otherwise
    * only the primary collision will be considered.
    */
-  inline virtual bool allCollisions() const;
+  virtual bool allCollisions() const { return !s.allCollisions(); }
 
 private:
-
-  /**
-   * Default constructor is private.
-   */
-  inline SelectIfNot();
 
   /**
    * The selector to be negated.
    */
   const SelectorBase & s;
-
 };
 
 /**
@@ -255,46 +229,47 @@ public:
   /**
    * Constructor taking two SelectorBase object to be combiden.
    */
-  inline SelectIfBoth(const SelectorBase &, const SelectorBase &);
-
-  /**
-   * Copy constructor.
-   */
-  inline SelectIfBoth(const SelectIfBoth &);
+  SelectIfBoth(const SelectorBase & S1, const SelectorBase & S2)
+    : s1(S1), s2(S2) {}
 
   /**
    * Return true if the particle should be extracted.
    */
-  inline virtual bool check(const Particle &  p) const;
+  virtual bool check(const Particle &  p) const {
+    return s1.check(p) && s2.check(p);
+  }
 
   /**
    * Return true if final state particles are to be considered.
    */
-  inline virtual bool finalState() const;
+  virtual bool finalState() const {
+    return s1.finalState() && s2.finalState();
+  }
 
   /**
    * Return true if intermediate particles should be considered.
    */
-  inline virtual bool intermediate() const;
+  virtual bool intermediate() const {
+    return s1.intermediate() && s2.intermediate();
+  }
 
   /**
    * Return true if all steps should be considered. Otherwise only the
    * last step in each collision is considered.
    */
-  inline virtual bool allSteps() const;
+  virtual bool allSteps() const {
+    return s1.allSteps() && s2.allSteps();
+  }
 
   /**
    * Return ture if all collisions should be considered. Otherwise
    * only the primary collision will be considered.
    */
-  inline virtual bool allCollisions() const;
+  virtual bool allCollisions() const {
+    return s1.allCollisions() && s2.allCollisions();
+  }
 
 private:
-
-  /**
-   * Default constructor is private.
-   */
-  inline SelectIfBoth();
 
   /**
    * One selector to be combined.
@@ -320,46 +295,47 @@ public:
   /**
    * Constructor taking two SelectorBase object to be combiden.
    */
-  inline SelectIfEither(const SelectorBase &, const SelectorBase &);
-
-  /**
-   * Copy constructor.
-   */
-  inline SelectIfEither(const SelectIfEither &);
+  SelectIfEither(const SelectorBase & S1, const SelectorBase & S2)
+    : s1(S1), s2(S2) {}
 
   /**
    * Return true if the particle should be extracted.
    */
-  inline virtual bool check(const Particle &  p) const;
+  virtual bool check(const Particle &  p) const {
+    return s1.check(p) || s2.check(p);
+  }
 
   /**
    * Return true if final state particles are to be considered.
    */
-  inline virtual bool finalState() const;
+  virtual bool finalState() const {
+    return s1.finalState() || s2.finalState();
+  }
 
   /**
    * Return true if intermediate particles should be considered.
    */
-  inline virtual bool intermediate() const;
+  virtual bool intermediate() const {
+    return s1.intermediate() || s2.intermediate();
+  }
 
   /**
    * Return true if all steps should be considered. Otherwise only the
    * last step in each collision is considered.
    */
-  inline virtual bool allSteps() const;
+  virtual bool allSteps() const {
+    return s1.allSteps() || s2.allSteps();
+  }
 
   /**
    * Return ture if all collisions should be considered. Otherwise
    * only the primary collision will be considered.
    */
-  inline virtual bool allCollisions() const;
+  virtual bool allCollisions() const {
+    return s1.allCollisions() || s2.allCollisions();
+  }
 
 private:
-
-  /**
-   * Default constructor is private.
-   */
-  inline SelectIfEither();
 
   /**
    * One selector to be combined.
@@ -376,10 +352,12 @@ private:
 /** Helper function to be used together with SelectorBase objects. */
 template <typename OutputIterator, typename Container>
 inline void copyIfCheck(OutputIterator r, const Container & c,
-			const SelectorBase & s);
-
+			const SelectorBase & s) {
+  for ( typename Container::const_iterator it = c.begin();
+	it != c.end(); ++it )
+    if ( s.check(**it) ) *r++ = *it;
 }
 
-#include "SelectorBase.icc"
+}
 
 #endif /* ThePEG_SelectorBase_H */

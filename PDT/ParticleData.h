@@ -16,8 +16,8 @@
 #include "ThePEG/Vectors/ThreeVector.h"
 #include "ThePEG/Interface/Interfaced.h"
 #include "ThePEG/Utilities/Selector.h"
-#include "ThePEG/PDT/WidthGenerator.fh"
-#include "ThePEG/PDT/MassGenerator.fh"
+#include "ThePEG/PDT/WidthGenerator.h"
+#include "ThePEG/PDT/MassGenerator.h"
 #include "ThePEG/PDT/DecayMode.fh"
 #include "ThePEG/Utilities/ClassTraits.h"
 #include "ThePEG/Utilities/ClassDescription.h"
@@ -58,11 +58,6 @@ public:
   ParticleData();
 
   /**
-   * Copy-constructor.
-   */
-  ParticleData(const ParticleData &);
-
-  /**
    * Destructor.
    */
   virtual ~ParticleData();
@@ -74,12 +69,12 @@ public:
   /**
    * Create a Particle which is its own anti-particle.
    */
-  static PDPtr Create(long newId, string newPDGName);
+  static PDPtr Create(long newId, const string & newPDGName);
 
   /**
    * Create a particle - anti particle pair.
    */
-  static PDPair Create(long newId, string newPDGName, string newAntiPDGName);
+  static PDPair Create(long newId, const string & newPDGName, const string & newAntiPDGName);
   //@}
 
 public:
@@ -89,19 +84,19 @@ public:
   /**
    * Return the PDG id number.
    */
-  inline long id() const;
+  long id() const { return theId; }
 
   /**
    * Return the generic PDG name. Note that this is not really
    * standardised.
    */
-  inline string PDGName() const;
+  const string & PDGName() const { return thePDGName; }
 
   /**
    * Return the generic PDG name. Note that this is not really
    * standardised.
    */
-  inline string genericName() const;
+  const string & genericName() const { return thePDGName; }
   //@}
 
   /** @name Functions used for producing Particle instances. */
@@ -164,7 +159,7 @@ public:
    * Return the nominal decay selector for this particle. Ie. the
    * decay modes weighted by their nominal branching ratios.
    */
-  inline const DecaySelector & decaySelector() const;
+  const DecaySelector & decaySelector() const { return theDecaySelector; }
 
   /**
    * Selects a decay mode randomly according to the branching
@@ -178,29 +173,29 @@ public:
    * Access all the decay modes, including those which are
    * switched off, or have zero branching ratio
    */
-  inline const DecaySet & decayModes() const;
+  const DecaySet & decayModes() const { return theDecayModes; }
   //@}
 
   /**
    * Return the nominal mass.
    */
-  inline Energy mass() const;
+  Energy mass() const { return theMass; }
 
   /**
    * Return the maximum possible mass of this particle type.
    */
-  inline Energy massMax() const;
+  Energy massMax() const { return mass() + widthUpCut(); }
 
   /**
    * Return the minimum possible mass of this particle type.
    */
-  inline Energy massMin() const;
+  Energy massMin() const { return max(mass() - widthLoCut(), 0.0*MeV); }
 
   /**
    * Return the constituent mass of this particle if relevant. This
    * version simply returns the nominal mass.
    */
-  inline virtual Energy constituentMass() const;
+  virtual Energy constituentMass() const { return mass(); }
 
   /**
    * Set the width.
@@ -211,17 +206,24 @@ public:
    * Get the width. If no width is specified, it is calculated from
    * the lifetime.
    */
-  inline Energy width() const;
+  Energy width() const {
+    return theWidth >= Energy() ? theWidth :
+      ( theCTau > Length() ? hbarc/theCTau :
+	( theCTau == Length() ? Constants::MaxEnergy : Energy() ) );
+  }
 
   /**
    * Set the width cut. Both upper and lower cut is set.
    */
-  inline Energy widthCut(Energy);
+  Energy widthCut(Energy wci) {
+    widthUpCut(wci);
+    return widthLoCut(wci);
+  }
 
   /**
    * Get the width cut.
    */
-  inline Energy widthCut() const;
+  Energy widthCut() const { return max(widthUpCut(), widthLoCut()); }
 
   /**
    * Set the upper width cut.
@@ -231,7 +233,7 @@ public:
   /**
    * Get the upper width cut.
    */
-  inline Energy widthUpCut() const;
+  Energy widthUpCut() const { return theWidthUpCut; }
 
   /**
    * Set the lower width cut.
@@ -241,7 +243,7 @@ public:
   /**
    * Get the lower width cut.
    */
-  inline Energy widthLoCut() const;
+  Energy widthLoCut() const { return theWidthLoCut; }
 
   /**
    * Set the life time cTau.
@@ -252,7 +254,11 @@ public:
    * Get the life time cTau cTau. If no life time is specified, it is
    * calculated from the width.
    */
-  inline Length cTau() const;
+  Length cTau() const {
+    return theCTau > Length() ? theCTau :
+      ( theWidth > Energy() ? hbarc/theWidth :
+	( theWidth == Energy() ? Constants::MaxLength : Length() ) );
+  }
 
   /**
    * Set the charge. The charge should be given
@@ -264,27 +270,27 @@ public:
    * Get the charge. The charge is returned in standard units and in
    * iCharge the charge is returned in units of e/3.
    */
-  inline Charge charge() const;
+  Charge charge() const { return eplus*double(theCharge)/3.0; }
 
   /**
    * Get the charge. The charge is returned in units of e/3.
    */
-  inline PDT::Charge iCharge() const;
+  PDT::Charge iCharge() const { return theCharge; }
 
   /**
    * Return true if charged.
    */
-  inline bool charged() const;
+  bool charged() const { return PDT::charged(theCharge); }
 
   /**
    * Return true if positively charged.
    */
-  inline bool positive() const;
+  bool positive() const { return PDT::positive(theCharge); }
 
   /**
    * Return true if negatively charged.
    */
-  inline bool negative() const;
+  bool negative() const { return PDT::negative(theCharge); }
 
   /**
    * Set the spin. The spin should be given as 2J+1 (in units of
@@ -295,51 +301,42 @@ public:
   /**
    * Get the spin.The spin is returned in standard units.
    */
-  inline AngularMomentum spin() const;
+  AngularMomentum spin() const { return hbar_Planck*double(theSpin-1)*0.5; }
+
   /**
    * Get the spin. The spin is returned as 2J+1 in units of hbar/2.
    */
-  inline PDT::Spin iSpin() const;
+  PDT::Spin iSpin() const { return theSpin; }
 
   /**
-   * Set the color of the particle in units of PDT::Color.
-   */
-  PDT::Color iColor(PDT::Color);
-
-  /**
-   * Set the color of the particle in units of PDT::Color.
+   * Set the colour of the particle in units of PDT::Colour.
    */
   PDT::Colour iColour(PDT::Colour);
 
   /**
-   * Get the color of the particle in units of PDT::Color.
+   * Get the colour of the particle in units of PDT::Colour.
    */
-  inline PDT::Color iColor() const;
-
-  /**
-   * Get the color of the particle in units of PDT::Color.
-   */
-  inline PDT::Colour iColour() const;
+  PDT::Colour iColour() const { return theColour; }
 
   /**
    * Return true if coloured.
    */
-  inline bool colored() const;
-
-  /**
-   * Return true if coloured.
-   */
-  inline bool coloured() const;
+  bool coloured() const { return PDT::coloured(iColour()); }
 
   /**
    * Return true if (\a anti) coloured or colour-octet.
    */
-  inline bool hasColour(bool anti = false) const;
+  bool hasColour(bool anti = false) const {
+    return anti? hasAntiColour():
+      ( iColour() == PDT::Colour3 || iColour() == PDT::Colour8 );
+  }
 
   /**
    * Return true if anti coloured or colour-octet.
    */
-  inline bool hasAntiColour() const;
+  bool hasAntiColour() const {
+    return iColour() == PDT::Colour3bar || iColour() == PDT::Colour8;
+  }
 
   /**
    * Specify if particle is to be considered stable according to \a
@@ -352,12 +349,12 @@ public:
    * table is empty the function always returns true, even if the
    * member variable is false.
    */
-  inline bool stable() const;
+  bool stable() const { return isStable || theDecayModes.empty(); }
 
   /**
    * Get the pointer to the corresponding anti partner.
    */
-  inline tPDPtr CC() const;
+  tPDPtr CC() const { return theAntiPartner; }
 
   /**
    * Specify if the anti partner chould be changed automatically when
@@ -369,7 +366,7 @@ public:
    * Return true if the anti partner chould be changed automatically
    * when this object is changed.
    */
-  inline bool synchronized() const;
+  bool synchronized() const { return syncAnti; }
 
   /**
    * If there is an anti-partner, update this object to have correct
@@ -385,7 +382,7 @@ public:
   /**
    * Get the mass generator object.
    */
-  inline tMassGenPtr massGenerator() const;
+  tMassGenPtr massGenerator() const { return theMassGenerator; }
 
   /**
    * Set the width generator object.
@@ -395,7 +392,7 @@ public:
   /**
    * Get the width generator object.
    */
-  inline tWidthGeneratorPtr widthGenerator() const;
+  tWidthGeneratorPtr widthGenerator() const { return theWidthGenerator; }
 
   /**
    * Specify if the branching ratio of the Particle instances should vary with their
@@ -407,7 +404,7 @@ public:
    * Return true if the branching ratio should vary with the mass of the Particle
    * instance.
    */
-  inline bool variableRatio() const;
+  bool variableRatio() const { return theVariableRatio; }
 
 public:
 
@@ -461,7 +458,7 @@ protected:
    * Protected constructor only to be used by subclasses or by the
    * Create method.
    */
-  ParticleData(long newId, string newPDGName);
+  ParticleData(long newId, const string & newPDGName);
 
   /**
    * Read setup info from a standard stream. The following information
@@ -585,7 +582,7 @@ private:
   /**
    * The colour for this particle.
    */
-  PDT::Color theColor;
+  PDT::Colour theColour;
 
   /**
    * A pointer to an object capable to generate a mass for a particle
@@ -884,7 +881,5 @@ struct ClassTraits<ParticleData>: public ClassTraitsBase<ParticleData> {
 /** @endcond */
 
 }
-
-#include "ParticleData.icc"
 
 #endif /* ThePEG_ParticleData_H */
