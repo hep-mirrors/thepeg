@@ -274,6 +274,7 @@ public:
   ScalarWaveFunction(tPPtr part,Direction dir,bool time) {
     direction(dir);
     setMomentum(part->momentum());
+    checkParticle(part->dataPtr());
     _wf=1.;
     constructSpinInfo(part,dir,time);
   }
