@@ -140,205 +140,6 @@ void SpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dir
   _wf[3] = lower*hel_wf[1]*UnitRemoval::InvSqrtE;
 }
 
-// construct the spininfo object
-void SpinorBarWaveFunction::
-constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,
-		  tPPtr part,bool time, bool vertex) {
-  tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() :
-    dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
-  if(direction()==outgoing) {
-    if(inspin){
-      wave.resize(2);
-      wave[0]=inspin->getProductionBasisState(0).bar();
-      wave[1]=inspin->getProductionBasisState(1).bar();
-    }
-    else {
-      if(vertex) {
-	SpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin=dynamic_ptr_cast<tFermionSpinPtr>(temp);
-	part->spinInfo(temp);
-      }
-      constructSpinInfo(wave,inspin,vertex);
-    }
-  }
-  else {
-    if(inspin) {
-      inspin->decay();
-      wave.resize(2);
-      wave[0]=inspin->getDecayBasisState(0).bar();
-      wave[1]=inspin->getDecayBasisState(1).bar();
-    }
-    else {
-      if(part->spinInfo()) throw ThePEG::Helicity::HelicityConsistencyError() 
-	<< "Wrong type of SpinInfo for the incoming particle in "
-	<< "SpinorBarWaveFunction::constructSpinInfo() "
-	<< Exception::runerror;
-      if(vertex) {
-	SpinPtr newspin=new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin= dynamic_ptr_cast<tFermionSpinPtr>(newspin);
-	if(time) inspin->decayed(true);
-	part->spinInfo(newspin);
-      }
-      constructSpinInfo(wave,inspin,vertex);
-    }
-  }
-}
-
-// construct the spininfo object
-void SpinorBarWaveFunction::
-constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,
-		  RhoDMatrix& rho,tPPtr part,bool time, bool vertex) {
-  tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() :
-    dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
-  if(direction()==outgoing) {
-    if(inspin) {
-      wave.resize(2);
-      wave[0]=inspin->getProductionBasisState(0).bar();
-      wave[1]=inspin->getProductionBasisState(1).bar();
-    }
-    else {
-      if(vertex) {
-	SpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin=dynamic_ptr_cast<tFermionSpinPtr>(temp);
-	part->spinInfo(temp);
-      }
-      constructSpinInfo(wave,inspin,vertex);
-    }
-    rho = RhoDMatrix(PDT::Spin1Half);
-  }
-  else {
-    if(inspin) {
-      inspin->decay();
-      rho = inspin->rhoMatrix();
-      // rho matrix should be here
-      wave.resize(2);
-      wave[0]=inspin->getDecayBasisState(0).bar();
-      wave[1]=inspin->getDecayBasisState(1).bar();
-    }
-    else {
-      if(part->spinInfo()) throw ThePEG::Helicity::HelicityConsistencyError() 
-	<< "Wrong type of SpinInfo for the incoming particle in "
-	<< "SpinorBarWaveFunction::constructSpinInfo() "
-	<< Exception::runerror;
-      if(vertex) {
-	SpinPtr newspin=new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin= dynamic_ptr_cast<tFermionSpinPtr>(newspin);
-	if(time) inspin->decayed(true);
-	part->spinInfo(newspin);
-      }
-      rho = RhoDMatrix(PDT::Spin1Half);
-      constructSpinInfo(wave,inspin,vertex);
-    }
-  }
-}
-
-// construct the spininfo object
-void SpinorBarWaveFunction::constructSpinInfo(vector<SpinorBarWaveFunction>& wave,
-					      tPPtr part,bool time, bool vertex) {
-  tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() : 
-    dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
-  if(direction()==outgoing) {
-    if(inspin) {
-      wave.resize(2);
-      wave[0]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				    inspin->getProductionBasisState(0).bar(),
-				    DummyType(),direction());
-      wave[1]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				    inspin->getProductionBasisState(1).bar(),
-				    DummyType(),direction());
-    }
-    else {
-      if(vertex) {
-	SpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin=dynamic_ptr_cast<tFermionSpinPtr>(temp);
-	part->spinInfo(temp);
-      }
-      constructSpinInfo(wave,inspin,vertex);
-    }
-  }
-  else {
-    if(inspin) {
-      inspin->decay();
-      wave.resize(2);
-      wave[0]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				    inspin->getDecayBasisState(0).bar(),
-				    DummyType(),direction());
-      wave[1]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				    inspin->getDecayBasisState(1).bar(),
-				    DummyType(),direction());
-    }
-    else {
-      if(part->spinInfo()) throw ThePEG::Helicity::HelicityConsistencyError() 
-	<< "Wrong type of SpinInfo for the incoming particle in "
-	<< "SpinorBarWaveFunction::constructSpinInfo() "
-	<< Exception::runerror;
-      if(vertex) {
-	SpinPtr newspin=new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin= dynamic_ptr_cast<tFermionSpinPtr>(newspin);
-	if(time) inspin->decayed(true);
-	part->spinInfo(newspin);
-      }
-      constructSpinInfo(wave,inspin,vertex);
-    }
-  }
-}
-
-// construct the spininfo object
-void SpinorBarWaveFunction::constructSpinInfo(vector<SpinorBarWaveFunction>& wave,
-					      RhoDMatrix& rho,tPPtr part,bool time,
-					      bool vertex) {
-  tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() :
-    dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
-  if(direction()==outgoing) {
-      if(inspin) {
-	wave.resize(2);
-	wave[0]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				      inspin->getProductionBasisState(0).bar(),
-				      DummyType(),direction());
-	wave[1]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				      inspin->getProductionBasisState(1).bar(),
-				      DummyType(),direction());
-      }
-      else {
-	if(vertex) {
-	  SpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
-	  inspin=dynamic_ptr_cast<tFermionSpinPtr>(temp);
-	  part->spinInfo(temp);
-	}
-	constructSpinInfo(wave,inspin,vertex);
-      }
-      rho = RhoDMatrix(PDT::Spin1Half);
-  }
-  else {
-    if(inspin) {
-      inspin->decay();
-      rho = inspin->rhoMatrix();
-      // rho matrix should be here
-      wave.resize(2);
-      wave[0]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				    inspin->getDecayBasisState(0).bar(),
-				    DummyType(),direction());
-      wave[1]=SpinorBarWaveFunction(getMomentum(),getParticle(),
-				    inspin->getDecayBasisState(1).bar(),
-				    DummyType(),direction());
-    }
-    else {
-      if(part->spinInfo()) throw ThePEG::Helicity::HelicityConsistencyError() 
-	<< "Wrong type of SpinInfo for the incoming particle in "
-	<< "SpinorBarWaveFunction::constructSpinInfo() "
-	<< Exception::runerror;
-      if(vertex) {
-	SpinPtr newspin=new_ptr(FermionSpinInfo(part->momentum(),time));
-	inspin= dynamic_ptr_cast<tFermionSpinPtr>(newspin);
-	if(time) inspin->decayed(true);
-	part->spinInfo(newspin);
-      }
-      rho = RhoDMatrix(PDT::Spin1Half);
-      constructSpinInfo(wave,inspin,vertex);
-    }
-  }
-}
-
 void SpinorBarWaveFunction::conjugate() {
   _wf=_wf.conjugate();
 }
@@ -349,3 +150,174 @@ SpinorWaveFunction SpinorBarWaveFunction::bar() {
   return SpinorWaveFunction(p,getParticle(),_wf.bar(),direction());
 }	  
 
+void SpinorBarWaveFunction::
+calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
+		       tPPtr particle,Direction dir) {
+  tFermionSpinPtr inspin = !particle->spinInfo() ? tFermionSpinPtr() :
+    dynamic_ptr_cast<tFermionSpinPtr>(particle->spinInfo());
+  waves.resize(2);
+  // spin info object exists
+  if(inspin) {
+    if(dir==outgoing) {
+      waves[0] = inspin->getProductionBasisState(0).bar();
+      waves[1] = inspin->getProductionBasisState(1).bar();
+    }
+    else {
+      inspin->decay();
+      waves[0] = inspin->getDecayBasisState(0).bar();
+      waves[1] = inspin->getDecayBasisState(1).bar();
+    }
+  }
+  // do the calculation
+  else {
+    assert(!particle->spinInfo());
+    SpinorBarWaveFunction wave(particle->momentum(),particle->dataPtr(),dir);
+    for(unsigned int ix=0;ix<2;++ix) {
+      wave.reset(ix);
+      waves[ix] = wave.dimensionedWave();
+    }
+  }
+}
+
+void SpinorBarWaveFunction::
+calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
+		       tPPtr particle,Direction dir) {
+  tFermionSpinPtr inspin = !particle->spinInfo() ? tFermionSpinPtr() :
+    dynamic_ptr_cast<tFermionSpinPtr>(particle->spinInfo());
+  waves.resize(2);
+  // spin info object exists
+  if(inspin) {
+    if(dir==outgoing) {
+      for(unsigned int ix=0;ix<2;++ix)
+	waves[ix] = SpinorBarWaveFunction(particle,
+					  inspin->getProductionBasisState(ix).bar(),
+					  dir);
+    }
+    else {
+      inspin->decay();
+      for(unsigned int ix=0;ix<2;++ix)
+	waves[ix] = SpinorBarWaveFunction(particle,
+					  inspin->getDecayBasisState(ix).bar(),
+					  dir);
+    }
+  }
+  // do the calculation
+  else {
+    assert(!particle->spinInfo());
+    SpinorBarWaveFunction wave(particle->momentum(),particle->dataPtr(),dir);
+    for(unsigned int ix=0;ix<2;++ix) {
+      wave.reset(ix);
+      waves[ix] = wave;
+    }
+  }
+}
+
+void SpinorBarWaveFunction::
+calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
+		       RhoDMatrix & rho,
+		       tPPtr particle,Direction dir) {
+  tFermionSpinPtr inspin = !particle->spinInfo() ? tFermionSpinPtr() :
+    dynamic_ptr_cast<tFermionSpinPtr>(particle->spinInfo());
+  waves.resize(2);
+  // spin info object exists
+  if(inspin) {
+    if(dir==outgoing) {
+      waves[0] = inspin->getProductionBasisState(0).bar();
+      waves[1] = inspin->getProductionBasisState(1).bar();
+      rho = RhoDMatrix(PDT::Spin1Half);
+    }
+    else {
+      inspin->decay();
+      waves[0] = inspin->getDecayBasisState(0).bar();
+      waves[1] = inspin->getDecayBasisState(1).bar();
+      rho = inspin->rhoMatrix();
+    }
+  }
+  // do the calculation
+  else {
+    assert(!particle->spinInfo());
+    SpinorBarWaveFunction wave(particle->momentum(),particle->dataPtr(),dir);
+    for(unsigned int ix=0;ix<2;++ix) {
+      wave.reset(ix);
+      waves[ix] = wave.dimensionedWave();
+    }
+    rho = RhoDMatrix(PDT::Spin1Half);
+  }
+}
+
+void SpinorBarWaveFunction::
+calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
+		       RhoDMatrix & rho,
+		       tPPtr particle,Direction dir) {
+  tFermionSpinPtr inspin = !particle->spinInfo() ? tFermionSpinPtr() :
+    dynamic_ptr_cast<tFermionSpinPtr>(particle->spinInfo());
+  waves.resize(2);
+  // spin info object exists
+  if(inspin) {
+    if(dir==outgoing) {
+      for(unsigned int ix=0;ix<2;++ix)
+	waves[ix] = SpinorBarWaveFunction(particle,
+					  inspin->getProductionBasisState(ix).bar(),
+					  dir);
+      rho = RhoDMatrix(PDT::Spin1Half);
+    }
+    else {
+      inspin->decay();
+      for(unsigned int ix=0;ix<2;++ix)
+	waves[ix] = SpinorBarWaveFunction(particle,
+					  inspin->getDecayBasisState(ix).bar(),
+					  dir);
+      rho = inspin->rhoMatrix();
+    }
+  }
+  // do the calculation
+  else {
+    assert(!particle->spinInfo());
+    SpinorBarWaveFunction wave(particle->momentum(),particle->dataPtr(),dir);
+    for(unsigned int ix=0;ix<2;++ix) {
+      wave.reset(ix);
+      waves[ix] = wave;
+    }
+    rho = RhoDMatrix(PDT::Spin1Half);
+  }
+}
+
+void SpinorBarWaveFunction::
+constructSpinInfo(const vector<LorentzSpinorBar<SqrtEnergy> > & waves,
+		  tPPtr part,Direction dir, bool time) {
+  assert(waves.size()==2);
+  tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() :
+    dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
+  if(inspin) {
+    for(unsigned int ix=0;ix<2;++ix)
+      if (dir==outgoing) inspin->setBasisState(ix,waves[ix].bar());
+      else               inspin->setDecayState(ix,waves[ix].bar());
+  }
+  else {
+    FermionSpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
+    part->spinInfo(temp);
+    for(unsigned int ix=0;ix<2;++ix)
+      if(dir==outgoing) temp->setBasisState(ix,waves[ix].bar());
+      else              temp->setDecayState(ix,waves[ix].bar());
+  }
+}
+
+void SpinorBarWaveFunction::
+constructSpinInfo(const vector<SpinorBarWaveFunction> & waves,
+		  tPPtr part,Direction dir, bool time) {
+  assert(waves.size()==2);
+  tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() :
+    dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
+  if(inspin) {
+    for(unsigned int ix=0;ix<2;++ix)
+      if (dir==outgoing) inspin->setBasisState(ix,waves[ix].dimensionedWf().bar());
+      else               inspin->setDecayState(ix,waves[ix].dimensionedWf().bar());
+  }
+  else {
+    FermionSpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
+    part->spinInfo(temp);
+    for(unsigned int ix=0;ix<2;++ix)
+      if(dir==outgoing) temp->setBasisState(ix,waves[ix].dimensionedWf().bar());
+      else              temp->setDecayState(ix,waves[ix].dimensionedWf().bar());
+  }
+}

@@ -268,8 +268,7 @@ public:
    * General Lorentz transformation
    */
   LorentzSpinor & transform(const LorentzRotation & r) {
-    SpinHalfLorentzRotation half(r.half());
-    transform(half);
+    transform(r.half());
     return *this;
   }
   //@}
@@ -279,7 +278,7 @@ public:
   /**
    * Change the dirac matrix representation.
    */
-  inline void changeRep(DiracRep newdirac) {
+  void changeRep(DiracRep newdirac) {
     if(newdirac!=_dirac) *this = transformRep(newdirac);
   }
 
@@ -289,7 +288,7 @@ public:
   LorentzSpinor transformRep(DiracRep newdirac) const {
     // do nothing if all ready in the correct representation
     if(newdirac==_dirac) return LorentzSpinor(*this);
-    double fact(1./sqrt(2.));
+    double fact(sqrt(0.5));
     // transform from HELAS representation to Haber one
     complex<Value> output[4];
     if(newdirac==HELASDRep && _dirac==HaberDRep) {
@@ -313,7 +312,7 @@ public:
   /**
    * Return the representation of the spinor.
    */
-  inline DiracRep Rep() const {return _dirac;}
+  DiracRep Rep() const {return _dirac;}
 
   /**
    * Return the type of the spinor.
@@ -329,7 +328,7 @@ public:
    * @param fb The barred spinor.
    */
   template<typename ValueB>
-  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
   leftCurrent(const LorentzSpinorBar<ValueB>& fb) const {
     typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
     LorentzVector<ResultT> vec;
@@ -388,7 +387,7 @@ public:
    * @param fb The barred spinor.
    */
   template<typename ValueB>
-  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
   rightCurrent(const LorentzSpinorBar<ValueB>& fb) const {
     typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
     LorentzVector<ResultT> vec;
@@ -447,7 +446,7 @@ public:
    * @param fb The barred spinor.
    */
   template<typename ValueB>
-  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
   vectorCurrent(const LorentzSpinorBar<ValueB>& fb) const {
     typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
     LorentzVector<ResultT> vec;
@@ -497,7 +496,7 @@ public:
    * @param right The right coupling, \f$c_R\f$.
    */
   template<typename ValueB>
-  inline LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
+  LorentzVector<complex<typename BinaryOpTraits<Value,ValueB>::MulT> >
   generalCurrent(const LorentzSpinorBar<ValueB>& fb,
 		 Complex left, Complex right) const {
     typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
@@ -592,7 +591,7 @@ public:
    * @param fb The barred spinor.
    */
   template<typename ValueB>
-  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT>
   leftScalar(const LorentzSpinorBar<ValueB>& fb) const  {
     if(Rep()==fb.Rep()) {
       // high energy conventions
@@ -625,7 +624,7 @@ public:
    * @param fbar The barred spinor.
    */
   template<typename ValueB>
-  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT>
   rightScalar(const LorentzSpinorBar<ValueB>& fb) const {
     if(Rep()==fb.Rep()) {
       // high energy conventions
@@ -658,7 +657,7 @@ public:
    * @param fbar The barred spinor.
    */
   template<typename ValueB>
-  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT>
   scalar(const LorentzSpinorBar<ValueB>& fb) const {
     if(Rep()==fb.Rep()) {
       return fb.s1()*s1()+fb.s2()*s2()+fb.s3()*s3()+fb.s4()*s4();
@@ -675,7 +674,7 @@ public:
    * @param fb The barred spinor.
    */
   template<typename ValueB>
-  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT>
   pseudoScalar(const LorentzSpinorBar<ValueB>& fb) const {
     // ensure both spinors are in the same representation, otherwise change to default
     if(Rep()==fb.Rep()) {
@@ -710,7 +709,7 @@ public:
    * @param right The right coupling, \f$c_R\f$.
    */
   template<typename ValueB>
-  inline complex<typename BinaryOpTraits<Value,ValueB>::MulT>
+  complex<typename BinaryOpTraits<Value,ValueB>::MulT>
   generalScalar(const LorentzSpinorBar<ValueB>& fb,
 		Complex left, Complex right) const {
     if(Rep()==HELASDRep) {

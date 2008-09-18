@@ -13,13 +13,13 @@ DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
 
 INCLUDEFILES = $(DOCFILES) HelicityVertex.fh \
                LorentzSpinor.fh LorentzSpinor.tcc LorentzSpinorBar.tcc \
-               LorentzSpinorBar.fh LorentzSpinorBar.icc \
+               LorentzSpinorBar.fh \
                FermionSpinInfo.fh \
                SpinInfo.fh LorentzTensor.fh \
                VectorSpinInfo.fh \
                ScalarSpinInfo.fh \
                TensorSpinInfo.fh LorentzTensor.tcc \
-               HelicityDefinitions.h LorentzRSSpinor.icc LorentzRSSpinorBar.icc \
+               HelicityDefinitions.h \
                LorentzRSSpinor.fh LorentzRSSpinorBar.fh RSFermionSpinInfo.fh \
                LorentzRSSpinor.tcc LorentzRSSpinorBar.tcc
 

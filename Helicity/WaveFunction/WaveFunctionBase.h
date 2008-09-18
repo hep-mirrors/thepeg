@@ -63,37 +63,37 @@ public:
   /**
    * Get the x component of the momentum.
    */
-  inline Energy px() const;
+  Energy px() const {return _momentum.x();}
 
   /**
    * Get the y component of the momentum.
    */
-  inline Energy py() const;
+  Energy py() const {return _momentum.y();}
 
   /**
    * Get the z component of the momentum.
    */
-  inline Energy pz() const;
+  Energy pz() const {return _momentum.z();}
 
   /**
    * Get the energy.
    */
-  inline Energy e() const;
+  Energy e()  const {return _momentum.e();}
 
   /**
    * Get the mass.
    */
-  inline Energy mass() const;
+  Energy mass() const {return _momentum.mass();}
 
   /**
    * Get off-shell mass squared.
    */
-  inline Energy2 m2() const;
+  Energy2 m2() const {return _momentum.m2();}
 
   /**
    *  Access to the 5-momentum
    */
-  inline const Lorentz5Momentum & getMomentum() const ;
+  const Lorentz5Momentum & getMomentum() const {return _momentum;}
   //@}
 
   /**
@@ -103,31 +103,38 @@ public:
   /**
    * Set the x component of the momentum.
    */
-  inline void setPx(Energy);
+  void setPx(Energy x) {_momentum.setX(x);}
 
   /**
    * Set the y component of the momentum.
    */
-  inline void setPy(Energy);
+  void setPy(Energy y) {_momentum.setY(y);}
 
   /**
    * Set the z component of the momentum.
    */
-  inline void setPz(Energy);
+  void setPz(Energy z) {_momentum.setZ(z);}
 
   /**
    * Set the energy.
    */
-  inline void setE(Energy);
+  void setE(Energy t) {_momentum.setT(t);}
 
   /**
    * Set the mass.
    */
-  inline void setMass(Energy);
+  void setMass(Energy m) {_momentum.setMass(m);}
+
   /**
    * Set 5 momentum.
    */
-  inline void setMomentum(const Lorentz5Momentum &);
+  void setMomentum(const Lorentz5Momentum & pin) {
+    if(_dir==outgoing)
+      _momentum=Lorentz5Momentum(-pin.x(),-pin.y(),-pin.z(),
+				 -pin.t(),pin.mass());
+    else if(_dir==incoming||_dir==intermediate)
+      _momentum=pin;
+  }
 
   /**
    * Set all components of momentum.
@@ -137,7 +144,12 @@ public:
    * @param E  The energy.
    * @param m  The mass.
    */
-  inline void setMomentum(Energy px,Energy py,Energy pz,Energy E,Energy m);
+  void setMomentum(Energy px,Energy py,Energy pz,Energy E,Energy m) {
+    if(_dir==1)                
+      _momentum=Lorentz5Momentum(-px,-py,-pz,-E,m);
+    else if(_dir==-1||_dir==0) 
+      _momentum=Lorentz5Momentum( px, py, pz, E,m);
+  }
 
   /** 
    * Set 4-momentum components.
@@ -146,31 +158,51 @@ public:
    * @param pz The x-component of the momentum.
    * @param E  The energy.
    */
-  inline void setMomentum(Energy px,Energy py,Energy pz,Energy E);
+  void setMomentum(Energy px,Energy py,Energy pz,Energy E) {
+    if(_dir==1)
+      _momentum=Lorentz5Momentum(-px,-py,-pz,-E);
+    else if(_dir==-1||_dir==0)
+      _momentum=Lorentz5Momentum( px, py, pz, E);
+  }
 
   /** 
    * Set 4-momentum using a vector.
    * @param p The momentum.
    */
-  inline void setMomentum(LorentzMomentum p);
-
+  void setMomentum(const LorentzMomentum & p) {
+    if(_dir==1)
+      _momentum=Lorentz5Momentum(-p);
+    else if(_dir==-1||_dir==0)
+      _momentum=Lorentz5Momentum(p);
+  }
+  
   /**
    * Set mass and zero momentum.
    * @param m The mass
    */
-  inline void setMomentum(Energy m);
-
+  void setMomentum(Energy m) {
+    _momentum=Lorentz5Momentum(m);
+    if(_dir==1) _momentum.setT(-_momentum.t());
+  }
+  
   /**
    * Set 4 momentum and mass.
    * @param p The momentum.
    * @param m The mass
    */
-  inline void setMomentum(LorentzMomentum p,Energy m);
-
+  void setMomentum(const LorentzMomentum & p,Energy m) {
+    if(_dir==1) 
+      _momentum=Lorentz5Momentum(-p,m);
+    else if(_dir==-1||_dir==0) 
+      _momentum=Lorentz5Momentum(p,m);
+  }
+  
   /**
    * Zero the 4 momentum and mass.
    */
-  inline void setMomentum();
+  void setMomentum() {
+    _momentum=Lorentz5Momentum();
+  }
   //@}
 
   /**
@@ -180,27 +212,27 @@ public:
   /** 
    * Get the particle id.
    */
-  inline int id();
+  int id() {return _particle->id();}
 
   /** 
    * Get 2s+1 for the particle.
    */
-  inline PDT::Spin iSpin();
+  PDT::Spin iSpin() {return _particle->iSpin();}
 
   /**
    * Get the particle pointer.
    */
-  inline const tcPDPtr & getParticle() const;
+  const tcPDPtr & getParticle() const {return _particle;}
 
   /** 
    * Get the direction of particle.
    */
-  inline ThePEG::Helicity::Direction direction() const;
+  ThePEG::Helicity::Direction direction() const {return _dir;}
 
   /**
    * Set the direction of the particle
    */
-  inline void direction(ThePEG::Helicity::Direction);
+  void direction(ThePEG::Helicity::Direction in) {_dir=in;}
   //@}
 
 protected:
@@ -208,14 +240,21 @@ protected:
   /**
    * Set the particle pointer.
    */
-  inline void setParticle(const tcPDPtr &);
-
+  void setParticle(const tcPDPtr & in) {
+    if(_dir==-1) {
+      tcPDPtr anti((in->CC()));
+      _particle = anti ? anti : in;
+    }
+    else
+      _particle=in;
+  }
+  
 private:
 
   /**
    * Check particle type and set pointer.
    */
-  void checkParticle(const tcPDPtr &);
+  void checkParticle(const tcPDPtr & in) {setParticle(in);}
 
 private:
 
@@ -236,7 +275,5 @@ private:
 };
 }
 }
-
-#include "WaveFunctionBase.icc"
 
 #endif

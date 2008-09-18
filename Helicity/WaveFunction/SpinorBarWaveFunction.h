@@ -73,9 +73,15 @@ public:
    * @param s4 The fourth component
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			       complex<double> s1,complex<double> s2,complex<double> s3,complex<double> s4,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+			complex<double> s1,complex<double> s2,
+			complex<double> s3,complex<double> s4,
+			DiracRep drep=defaultDRep) {
+    direction(intermediate);
+    setMomentum(p);
+    checkParticle(part);
+    _wf=LorentzSpinorBar<double>(s1,s2,s3,s4,drep);
+  }
   
   
   /**
@@ -85,13 +91,24 @@ public:
    * @param wave The wavefunction.
    * @param dir The direction of the particle
    */
-  inline SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			       const LorentzSpinorBar<double> & wave,
-			       Direction dir=intermediate);
-  inline SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			       const LorentzSpinorBar<SqrtEnergy> & wave,
-			       DummyType,
-			       Direction dir=intermediate);
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+			const LorentzSpinorBar<double> & wave,
+			Direction dir=intermediate) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    _wf=wave;
+  }
+  
+  SpinorBarWaveFunction(const tPPtr & p, const LorentzSpinorBar<SqrtEnergy> & wave,
+			Direction dir=intermediate) {
+    direction(dir);
+    setMomentum(p->momentum());
+    checkParticle(p->dataPtr());
+    _wf = LorentzSpinorBar<double>(wave.Type(), wave.Rep());
+    for (unsigned int i=0; i<4; ++i)
+      _wf[i]=wave[i]*UnitRemoval::InvSqrtE;
+  }
  
   /**
    * Constructor, set the momentum, helicity, direction and Dirac representation.
@@ -101,9 +118,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			       unsigned int ihel,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+			unsigned int ihel,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    calculateWaveFunction(ihel,drep);
+  }
   
   /**
    * Constructor, set the momentum components and mass, helicity, direction and
@@ -118,9 +140,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
-			       const tcPDPtr & part,unsigned int ihel,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
+			const tcPDPtr & part,unsigned int ihel,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(px,py,pz,E,m);
+    checkParticle(part);
+    calculateWaveFunction(ihel,drep);
+  }
   
   /**
    * Constructor, set the momentum components, helicity, direction and
@@ -134,9 +161,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,
-			       const tcPDPtr & part,unsigned int ihel,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,
+			const tcPDPtr & part,unsigned int ihel,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(px,py,pz,E);
+    checkParticle(part);
+    calculateWaveFunction(ihel,drep);
+  }
   
   /**
    * Constructor, set the 4-momentum, helicity, direction and
@@ -147,8 +179,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(LorentzMomentum p,const tcPDPtr & part,unsigned int ihel,
-			       Direction dir,DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(const LorentzMomentum & p,const tcPDPtr & part,
+			unsigned int ihel,
+			Direction dir,DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(p); 
+    checkParticle(part);
+    calculateWaveFunction(ihel,drep);
+  }
   
   /**
    * Constructor, set the mass and zero the momentum, set the helicity, direction and
@@ -159,8 +197,13 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Energy m,const tcPDPtr & part,unsigned int ihel,
-			       Direction dir, DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(Energy m,const tcPDPtr & part,unsigned int ihel,
+			Direction dir, DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(m);
+    checkParticle(part);
+    calculateWaveFunction(ihel,drep);
+  }
   
   /**
    * Constructor, set the 4-momentum, mass, helicity, direction and
@@ -172,9 +215,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(LorentzMomentum p,Energy m,const tcPDPtr & part,
-			       unsigned int ihel,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(const LorentzMomentum & p,Energy m,const tcPDPtr & part,
+			unsigned int ihel,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(p,m);
+    checkParticle(part);
+    calculateWaveFunction(ihel,drep);
+  }
 
   /**
    * Constructor, set the momentum, direction and Diracrepresentation, zero the 
@@ -184,8 +232,13 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Lorentz5Momentum p,const tcPDPtr & part,Direction dir,
-			       DiracRep drep=defaultDRep); 
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+			Direction dir, DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    zeroWaveFunction(drep);
+  }
 
   /**
    * Constructor, set the momentum components, mass, direction and
@@ -199,9 +252,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
-			       const tcPDPtr & part,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
+			const tcPDPtr & part,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(px,py,pz,E,m);
+    checkParticle(part);
+    zeroWaveFunction(drep);
+  }
 
   /**
    * Constructor, set the momentum components, direction and
@@ -214,9 +272,14 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,
-			       const tcPDPtr & part,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(Energy px,Energy py,Energy pz,Energy E,
+			const tcPDPtr & part,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(px,py,pz,E);
+    checkParticle(part);
+    zeroWaveFunction(drep);
+  }
   
   /**
    * Constructor set the 4-momentum, direction and
@@ -226,8 +289,13 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(LorentzMomentum p,const tcPDPtr & part,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(const LorentzMomentum & p,const tcPDPtr & part,Direction dir,
+			DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    zeroWaveFunction(drep);
+  }
   
   /**
    * Constructor set the mass, direction and
@@ -237,8 +305,13 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(Energy m,const tcPDPtr & part,Direction dir,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(Energy m,const tcPDPtr & part,Direction dir,
+			       DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(m);
+    checkParticle(part);
+    zeroWaveFunction(drep);
+  }
   
   /**
    * Constructor set the 4-momentum, mass, direction and
@@ -249,81 +322,32 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  inline SpinorBarWaveFunction(LorentzMomentum p,Energy m,const tcPDPtr & part,
-			       Direction dir,DiracRep drep=defaultDRep);
-
-  /**
-   * Special constructor which calculates all the helicities, as LorentzSpinorBar
-   * objects, and sets up a particle's SpinInfo.
-   * @param wave The spinors for the different helicities.
-   * @param part The particle to setup
-   * @param dir The direction.
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   * @param drep The Dirac representation.
-   */
-  inline SpinorBarWaveFunction(vector<LorentzSpinorBar<SqrtEnergy> >& wave, tPPtr part,Direction dir,
-			       bool time, bool vertex, DiracRep drep=defaultDRep);
-
-  /**
-   * Special constructor which calculates all the helicities, as LorentzSpinorBar
-   * objects, and sets up a particle's SpinInfo.
-   * @param wave The spinors for the different helicities.
-   * @param rho  The \f$\rho\f$ matrix for the particle
-   * @param part The particle to setup
-   * @param dir The direction.
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   * @param drep The Dirac representation.
-   */
-  inline SpinorBarWaveFunction(vector<LorentzSpinorBar<SqrtEnergy> >& wave,RhoDMatrix& rho,
-			       tPPtr part,Direction dir,bool time, bool vertex,
-			       DiracRep drep=defaultDRep);
+  SpinorBarWaveFunction(const LorentzMomentum & p,Energy m,const tcPDPtr & part,
+			Direction dir,DiracRep drep=defaultDRep) {
+    direction(dir);
+    setMomentum(p,m);
+    checkParticle(part);
+    zeroWaveFunction(drep);
+  }
   
-  /**
-   * Special constructor which calculates all the helicities, as SpinorBarWaveFunction
-   * objects, and sets up a particle's SpinInfo.
-   * @param wave The spinors for the different helicities.
-   * @param part The particle to setup
-   * @param dir The direction.
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   * @param drep The Dirac representation.
-   */
-  inline SpinorBarWaveFunction(vector<SpinorBarWaveFunction>& wave, tPPtr part,
-			       Direction dir,bool time, bool vertex,
-			       DiracRep drep=defaultDRep);
-
-  /**
-   * Special constructor which calculates all the helicities, as SpinorBarWaveFunction
-   * objects, and sets up a particle's SpinInfo.
-   * @param wave The spinors for the different helicities.
-   * @param rho  The \f$\rho\f$ matrix for the particle
-   * @param part The particle to setup
-   * @param dir The direction.
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   * @param drep The Dirac representation.
-   */
-  inline SpinorBarWaveFunction(vector<SpinorBarWaveFunction>& wave,RhoDMatrix& rho,
-			       tPPtr part,Direction dir,bool time, bool vertex,
-			       DiracRep drep=defaultDRep);
-
   /**
    * Default constructor.
    */
-  inline SpinorBarWaveFunction(DiracRep=defaultDRep);
-  
-  /**
-   * Destructor.
-   */
-  inline ~SpinorBarWaveFunction();
-  //@}
+  SpinorBarWaveFunction(DiracRep drep=defaultDRep) {
+    direction(intermediate);
+    setMomentum ();
+    zeroWaveFunction(drep);
+  }
 
   /**
-   * Assignment. 
+   *  Special for spin correlations
    */
-  inline SpinorBarWaveFunction & operator = (const SpinorBarWaveFunction &);
+  SpinorBarWaveFunction(vector<SpinorBarWaveFunction> & wave,
+			tPPtr part,Direction dir,bool time,bool=true) {
+    calculateWaveFunctions(wave,part,dir);
+    constructSpinInfo(wave,part,dir,time);
+  }
+  //@}
 
   /**
    *  Access to the wavefunction and its components.
@@ -332,60 +356,68 @@ public:
   /**
    * Subscript operator for the wavefunction.
    */
-  inline complex<double> operator ()(int ) const;
-
+  complex<double> operator ()(int i) const {
+    assert(i>=0 &&i<=3);
+    return _wf(i);
+  }
+  
   /**
    * Set components by index.
    */
-  inline complex<double> & operator () (int);
-
+  complex<double> & operator () (int i) {
+    assert(i>=0 &&i<=3);
+    return _wf(i);
+  }
+  
   /**
    * Return wavefunction as LorentzSpinorBar<double>.
    */
-  inline const LorentzSpinorBar<double> & wave() const;
-
+  const LorentzSpinorBar<double> & wave() const {return _wf;}
+  
   /// Return wavefunction as LorentzSpinorBar<SqrtEnergy>
-  inline LorentzSpinorBar<SqrtEnergy> dimensionedWave() const;
-
+  LorentzSpinorBar<SqrtEnergy> dimensionedWave() const {
+    return dimensionedWf();
+  }
+  
   /**
    * Get the first spin component component.
    */
-  inline complex<double> s1() const;
+  complex<double> s1() const {return _wf.s1();}
 
   /**
    * Get the second spin component component.
    */
-  inline complex<double> s2() const;
+  complex<double> s2() const {return _wf.s2();}
 
   /**
    * Get the third spin component component.
    */
-  inline complex<double> s3() const;
+  complex<double> s3() const {return _wf.s3();}
 
   /**
    * Get the fourth spin component component.
    */
-  inline complex<double> s4() const;
+  complex<double> s4() const {return _wf.s4();}
 
   /**
    * Set first spin component.
    */
-  inline void setS1(complex<double>);
+  void setS1(complex<double> in) {_wf.setS1(in);}
 
   /**
    * Set second spin component.
    */
-  inline void setS2(complex<double>);
+  void setS2(complex<double> in) {_wf.setS2(in);}
 
   /**
    * Set third spin component.
    */
-  inline void setS3(complex<double>);
+  void setS3(complex<double> in) {_wf.setS3(in);}
 
   /**
    * Set fourth spin component.
    */
-  inline void setS4(complex<double>);
+  void setS4(complex<double> in) {_wf.setS4(in);}
   //@}
 
   /**
@@ -410,94 +442,67 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline void reset(const Lorentz5Momentum & p, const tcPDPtr & part, Direction dir);
+  void reset(const Lorentz5Momentum & p, const tcPDPtr & part,
+	     Direction dir) {
+    direction(dir);
+    checkParticle(part);
+    setMomentum(p);
+  }
 
   /** 
    * Reset the momentum and direction
    * @param p The momentum.
    * @param dir The direction
    */
-  inline void reset(const Lorentz5Momentum & p,Direction dir);
+  void reset(const Lorentz5Momentum & p,Direction dir) {
+    direction(dir);
+    setMomentum(p);
+  }
 
   /**
    * Reset the momentum.
    * @param p The momentum.
    */
-  inline void reset(const Lorentz5Momentum & p);
+  void reset(const Lorentz5Momentum & p) {
+    setMomentum(p);
+  }
 
   /**
    * Reset the helicity (calculates the new spinor).
    * @param ihel The helicity (0,1 as described above.)
    * @param drep The Dirac matrix representation.
    */
-  inline void reset(unsigned int ihel,DiracRep drep=defaultDRep);
+  void reset(unsigned int ihel,DiracRep drep=defaultDRep) {
+    calculateWaveFunction(ihel,drep);
+  }
 
   /**
    * Reset particle type and direction.
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline void reset(const tcPDPtr & part,Direction dir);
+  void reset(const tcPDPtr & part,Direction dir) {
+    direction(dir);
+    checkParticle(part);
+  }
 
   /**
    * Reset particle type.
    * @param part The ParticleData pointer.
    */
-  inline void reset(const tcPDPtr & part);
+  void reset(const tcPDPtr & part) {
+    checkParticle(part);
+  }
   //@}
-
-  /**
-   * Calculate the spinors, as LorentzSpinorBar objects,
-   * for all helicities, create and set up the SpinInfo object
-   * @param wave The spinors for the different helicities.
-   * @param part The particle to setup
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   */
-  void constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,tPPtr part,bool time,
-			 bool vertex=true);
-
-  /**
-   * Calculate the spinors, as LorentzSpinorBar objects,
-   * for all helicities, create and set up the SpinInfo object
-   * @param wave The spinors for the different helicities.
-   * @param rho The \f$\rho\f$ matrix for the particle
-   * @param part The particle to setup
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   */
-  void constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,RhoDMatrix& rho,
-			 tPPtr part,bool time,bool vertex=true);
-
-  /**
-   * Calculate the spinors, as SpinorBarWaveFunction objects,
-   * for all helicities, create and set up the SpinInfo object
-   * @param wave The spinors for the different helicities.
-   * @param part The particle to setup
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   */
-  void constructSpinInfo(vector<SpinorBarWaveFunction>& wave,tPPtr part,bool time,
-			 bool vertex=true);
-
-  /**
-   * Calculate the spinors, as SpinorBarWaveFunction objects,
-   * for all helicities, create and set up the SpinInfo object
-   * @param wave The spinors for the different helicities.
-   * @param rho The \f$\rho\f$ matrix for the particle
-   * @param part The particle to setup
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param vertex Whether or not to create the FermionSpinInfo object 
-   */
-  void constructSpinInfo(vector<SpinorBarWaveFunction>& wave,RhoDMatrix& rho,
-			 tPPtr part,bool time,bool vertex=true);
 
 private:
 
   /**
    * Zero the wavefunction.
    */
-  inline void zeroWaveFunction(DiracRep=defaultDRep);
+  void zeroWaveFunction(DiracRep drep=defaultDRep) {
+    _wf=LorentzSpinorBar<double>(drep);
+  }
 
   /**
    * Calcuate the wavefunction.
@@ -510,27 +515,28 @@ private:
    * Check particle spin and set pointer.
    * @param part The ParticleData pointer.
    */
-  inline void checkParticle(const tcPDPtr & part);
+  void checkParticle(const tcPDPtr & part) {
+    setParticle(part);
+    assert(iSpin()==2);
+  }
 
-  /**
-   * Calculate the spinors, as LorentzSpinorBar objects,
-   * for all the helicities and set up the SpinInfo object.
-   * @param wave The spinors for the different helicities
-   * @param spin Pointer to the FermionSpinInfo object
-   * @param vertex Whether or not to set up the FermionSpinInfo object 
-   */
-  inline void constructSpinInfo(vector<LorentzSpinorBar<SqrtEnergy> >& wave,tFermionSpinPtr spin,
-				bool vertex=true);
-  
-  /**
-   * Calculate the spinors, as SpinorBarWaveFunction objects,
-   *  for all the helicities and set up the SpinInfo object.
-   * @param wave The spinors for the different helicities
-   * @param spin Pointer to the FermionSpinInfo object
-   * @param vertex Whether or not to set up the FermionSpinInfo object 
-   */
-  inline void constructSpinInfo(vector<SpinorBarWaveFunction>& wave,tFermionSpinPtr spin,
-				bool vertex=true);
+public:
+
+  static void calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
+				     tPPtr particle,Direction);
+  static void calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
+				     tPPtr particle,Direction);
+  static void calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
+				     RhoDMatrix & rho,
+				     tPPtr particle,Direction);
+  static void calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
+				     RhoDMatrix & rho,
+				     tPPtr particle,Direction);
+
+  static void constructSpinInfo(const vector<LorentzSpinorBar<SqrtEnergy> > & waves,
+				tPPtr part,Direction dir, bool time);
+  static void constructSpinInfo(const vector<SpinorBarWaveFunction> & waves,
+				tPPtr part,Direction dir, bool time);
 private:
   
   /**
@@ -548,8 +554,6 @@ private:
 };
 }
 }
-
-#include "SpinorBarWaveFunction.icc"
 
 #endif
 

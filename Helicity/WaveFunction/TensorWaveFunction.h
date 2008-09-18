@@ -25,8 +25,7 @@ namespace Helicity {
  * Definition of the enumerated values of the phase to include in the 
  * calculation of the polarization tensor.
  */
-enum TensorPhase 
-{
+enum TensorPhase {
   tensor_phase, /**< Include the phase factor.*/
   tensor_nophase, /**< No phase-factor. */
   default_tensor_phase=tensor_nophase /**< Default option.*/
@@ -72,6 +71,22 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
+   * Constructor, set the momentum and Wavefunction, the direction can also
+   * be specified. 
+   * @param p The momentum.
+   * @param part The ParticleData pointer
+   * @param wave The wavefunction, \e i.e. the polarization vector.
+   * @param dir The direction of the particle.
+   */
+  TensorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
+		     const LorentzTensor<double> & wave,
+		     Direction  dir=intermediate) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    _wf=wave;
+  }
+  /**
    * Constructor, set the momentum and the components of the tensor.
    * @param p The momentum.
    * @param part The ParticleData pointer
@@ -92,11 +107,19 @@ public:
    * @param tz The \f$tz\f$ component.
    * @param tt The \f$tt\f$ component.
    */
-  inline TensorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			    Complex xx,Complex xy,Complex xz,Complex xt,Complex yx,
-			    Complex yy,Complex yz,Complex yt,Complex zx,Complex zy,
-			    Complex zz,Complex zt,Complex tx,Complex ty,Complex tz,
-			    Complex tt);
+  TensorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+		     Complex xx,Complex xy,Complex xz,Complex xt,Complex yx,
+		     Complex yy,Complex yz,Complex yt,Complex zx,Complex zy,
+		     Complex zz,Complex zt,Complex tx,Complex ty,Complex tz,
+		     Complex tt) {
+    direction(intermediate);
+    setMomentum(p);
+    checkParticle(part);
+    setXX(xx);setXY(xy);setXZ(xz);setXT(xt);
+    setYX(yx);setYY(yy);setYZ(yz);setYT(yt);
+    setZX(zx);setZY(zy);setZZ(zz);setZT(zt);
+    setTX(tx);setTY(ty);setTZ(tz);setTT(tt);
+  }
 
   /**
    * Constructor, set the momentum, helicity, direction and optionally the phase
@@ -106,10 +129,14 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  inline TensorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			    unsigned int ihel,
-			    Direction dir,TensorPhase phase=default_tensor_phase);
-
+  TensorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+		     unsigned int ihel,Direction dir,
+		     TensorPhase phase=default_tensor_phase) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    calculateWaveFunction(ihel,phase);
+  }
 
   /**
    * Constructor, set the momentum components, mass, helicity and direction,
@@ -124,10 +151,15 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  inline TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
-			    const tcPDPtr & part,unsigned int ihel,Direction dir,
-			    TensorPhase phase=default_tensor_phase);
-
+  TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
+		     const tcPDPtr & part,unsigned int ihel,Direction dir,
+		     TensorPhase phase=default_tensor_phase) {
+    direction(dir);
+    setMomentum(px,py,pz,E,m);
+    checkParticle(part);
+    calculateWaveFunction(ihel,phase);
+  }
+  
   /**
    * Constructor, set the momentum components, helicity and direction,
    * optionally the choice of the phase.
@@ -140,10 +172,15 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  inline TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,
-			    const tcPDPtr & part,unsigned int ihel,Direction dir,
-			    TensorPhase phase=default_tensor_phase);
-
+  TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,
+		     const tcPDPtr & part,unsigned int ihel,Direction dir,
+		     TensorPhase phase=default_tensor_phase) {
+    direction(dir);
+    setMomentum(px,py,pz,E);
+    checkParticle(part);
+    calculateWaveFunction(ihel,phase);
+  }
+  
   /**
    * Constructor, set the 4-momentum, helicity, direction and optionally the phase
    * @param p The 4-momentum.
@@ -152,8 +189,13 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  inline TensorWaveFunction(LorentzMomentum p,const tcPDPtr & part,unsigned int ihel,
-			    Direction dir, TensorPhase phase=default_tensor_phase);
+  TensorWaveFunction(const LorentzMomentum & p,const tcPDPtr & part,unsigned int ihel,
+		     Direction dir, TensorPhase phase=default_tensor_phase) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    calculateWaveFunction(ihel,phase);
+  }
 
   /**
    * Constructor, set the mass, zero the momentum and set the helicity, direction 
@@ -164,9 +206,13 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  inline TensorWaveFunction(Energy m,const tcPDPtr & part,unsigned int ihel,
-			    Direction dir,
-			    TensorPhase phase=default_tensor_phase);
+  TensorWaveFunction(Energy m,const tcPDPtr & part,unsigned int ihel,
+		     Direction dir, TensorPhase phase=default_tensor_phase) {
+    direction(dir);
+    setMomentum(m); 
+    checkParticle(part);
+    calculateWaveFunction(ihel,phase);
+  }
 
   /**
    * Constructor, set the 4-momentum, mass, helicity, direction and optionally the phase
@@ -177,9 +223,14 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  inline TensorWaveFunction(LorentzMomentum p,Energy m,const tcPDPtr & part,
-			    unsigned int ihel,
-			    Direction dir,TensorPhase phase=default_tensor_phase);
+  TensorWaveFunction(const LorentzMomentum & p,Energy m,
+		     const tcPDPtr & part, unsigned int ihel,
+		     Direction dir,TensorPhase phase=default_tensor_phase) {
+    direction(dir);
+    setMomentum(p,m);
+    checkParticle(part);
+    calculateWaveFunction(ihel,phase);
+  }
 
   /**
    * Constructor, set the 5-momentum and direction, zero the wavefunction.
@@ -187,8 +238,14 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline TensorWaveFunction(Lorentz5Momentum  p,const tcPDPtr & part,Direction dir); 
-
+  TensorWaveFunction(const Lorentz5Momentum & p,
+		     const tcPDPtr & part,Direction dir) {
+    direction(dir);
+    setMomentum(p); 
+    checkParticle(part); 
+    zeroWaveFunction();
+  }
+  
   /** 
    * Constructor, set the momentum components, mass and direction, zero the wavefunction.
    * @param px The x component of the momentum.
@@ -199,8 +256,13 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
-			    const tcPDPtr & part,Direction dir);
+  TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,Energy m,
+		     const tcPDPtr & part,Direction dir) {
+    direction(dir);
+    setMomentum(px,py,pz,E,m);
+    checkParticle(part);
+    zeroWaveFunction();
+  }
 
   /**
    * Constructor, set the momentum components and direction, zero the wavefunction.
@@ -211,8 +273,13 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,const tcPDPtr & part,
-			    Direction dir);
+  TensorWaveFunction(Energy px,Energy py,Energy pz,Energy E,
+		     const tcPDPtr & part, Direction dir) {
+    direction(dir);
+    setMomentum(px,py,pz,E); 
+    checkParticle(part);
+    zeroWaveFunction();
+  }
 
   /**
    * Constructor, set the 4-momentum and direction, zero the wavefunction.
@@ -220,7 +287,12 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline TensorWaveFunction(LorentzMomentum p,const tcPDPtr & part,Direction dir);
+  TensorWaveFunction(const LorentzMomentum & p,const tcPDPtr & part,Direction dir) {
+    direction(dir);
+    setMomentum(p);
+    checkParticle(part);
+    zeroWaveFunction();
+  }
 
   /**
    * Constructor, set the mass and direction, zero the momentum and wavefunction.
@@ -228,7 +300,12 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline TensorWaveFunction(Energy m,const tcPDPtr & part,Direction dir);
+  TensorWaveFunction(Energy m,const tcPDPtr & part,Direction dir) {
+    direction(dir);
+    setMomentum(m); 
+    checkParticle(part);
+    zeroWaveFunction();
+  }
 
   /**
    * Constructor, set the 4-momentum, mass and direction, zero the wavefunction.
@@ -237,55 +314,34 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline TensorWaveFunction(LorentzMomentum p,Energy m,const tcPDPtr & part,
-			    Direction dir);
-
-  /**
-   * Special constructor which calculates all the helicities and sets up a particle's
-   * SpinInfo.
-   * @param wave The polarization tensors for the different helicities.
-   * @param part The particle to setup
-   * @param dir The direction.
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param massless Whether or not the particle is massless
-   * @param vertex Whether or not to create the VectorSpinInfo object 
-   * @param phase The phase choice.
-   */
-  inline TensorWaveFunction(vector<LorentzTensor<double> >& wave, tPPtr part,
-			    Direction dir, bool time, bool massless, bool vertex,
-			    TensorPhase phase=default_tensor_phase);
-
-  /**
-   * Special constructor which calculates all the helicities and sets up a particle's
-   * SpinInfo.
-   * @param wave The polarization tensors for the different helicities.
-   * @param rho The \f$\rho\f$ matrix for the particle.
-   * @param part The particle to setup
-   * @param dir The direction.
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param massless Whether or not the particle is massless
-   * @param vertex Whether or not to create the VectorSpinInfo object 
-   * @param phase The phase choice.
-   */
-  inline TensorWaveFunction(vector<LorentzTensor<double> >& wave, RhoDMatrix& rho,tPPtr part,
-			    Direction dir, bool time, bool massless, bool vertex,
-			    TensorPhase phase=default_tensor_phase);
+  TensorWaveFunction(const LorentzMomentum & p,Energy m,
+		     const tcPDPtr & part, Direction dir) {
+    direction(dir);
+    setMomentum(p,m);
+    checkParticle(part);
+    zeroWaveFunction();
+  }
 
   /** 
    * Default constructor.
    */
-  inline TensorWaveFunction();
+  TensorWaveFunction() {
+    direction(intermediate);
+    setMomentum();
+    zeroWaveFunction();
+  }
 
   /**
-   * Destructor.
+   *  Special for spin correlations
    */
-  inline ~TensorWaveFunction();
+  TensorWaveFunction(vector<TensorWaveFunction> & wave,
+		     tPPtr part,Direction dir,bool time,bool massless,
+		     bool=true,
+		     TensorPhase phase=default_tensor_phase) {
+    calculateWaveFunctions(wave,part,dir,massless,phase);
+    constructSpinInfo(wave,part,dir,time,massless);
+  }
   //@}
-
-  /**
-   * Assignment. 
-   */
-  inline TensorWaveFunction & operator = (const TensorWaveFunction &);
 
   /**
    *  Access to the wavefunction and its components.
@@ -294,177 +350,181 @@ public:
   /**
    * Subscript operator for the wavefunction.
    */
-  inline Complex operator ()(int,int ) const;
+  Complex operator ()(int i, int j) const {
+    return _wf(i,j);
+  }
 
   /**
    * Set components by index.
    */
-  inline Complex & operator () (int,int);
+  Complex & operator () (int i, int j) {
+    return _wf(i,j);
+  }
 
   /**
    * Return wavefunction as polarization vector.
    */
-  inline const LorentzTensor<double> & wave() const;
+  const LorentzTensor<double> & wave() const {return _wf;}
 
   /**
    * Get the \f$xx\f$ component.
    */
-  inline Complex xx() const;
+  Complex xx() const {return _wf.xx();}
 
   /**
    * Get the \f$yx\f$ component.
    */
-  inline Complex yx() const;
+  Complex yx() const {return _wf.yx();}
 
   /**
    * Get the \f$zx\f$ component.
    */
-  inline Complex zx() const;
+  Complex zx() const {return _wf.zx();}
 
   /**
    * Get the \f$tx\f$ component.
    */
-  inline Complex tx() const;
+  Complex tx() const {return _wf.tx();}
 
   /**
    * Get the \f$xy\f$ component.
    */
-  inline Complex xy() const;
+  Complex xy() const {return _wf.xy();}
 
   /**
    * Get the \f$yy\f$ component.
    */
-  inline Complex yy() const;
+  Complex yy() const {return _wf.yy();}
 
   /**
    * Get the \f$zy\f$ component.
    */
-  inline Complex zy() const;
+  Complex zy() const {return _wf.zy();}
 
   /**
    * Get the \f$ty\f$ component.
    */
-  inline Complex ty() const;
+  Complex ty() const {return _wf.ty();}
 
   /**
    * Get the \f$xz\f$ component.
    */
-  inline Complex xz() const;
+  Complex xz() const {return _wf.xz();}
 
   /**
    * Get the \f$yz\f$ component.
    */
-  inline Complex yz() const;
+  Complex yz() const {return _wf.yz();}
 
   /**
    * Get the \f$zz\f$ component.
    */
-  inline Complex zz() const;
+  Complex zz() const {return _wf.zz();}
 
   /**
    * Get the \f$tz\f$ component.
    */
-  inline Complex tz() const;
+  Complex tz() const {return _wf.tz();}
 
   /**
    * Get the \f$xt\f$ component.
    */
-  inline Complex xt() const;
+  Complex xt() const {return _wf.xt();}
 
   /**
    * Get the \f$yt\f$ component.
    */
-  inline Complex yt() const;
+  Complex yt() const {return _wf.yt();}
 
   /**
    * Get the \f$zt\f$ component.
    */
-  inline Complex zt() const;
+  Complex zt() const {return _wf.zt();}
 
   /**
    * Get the \f$tt\f$ component.
    */
-  inline Complex tt() const;
+  Complex tt() const {return _wf.tt();}
 
   /**
    * Set the \f$xx\f$ component.
    */
-  inline void setXX(Complex);
+  void setXX(Complex in) {_wf.setXX(in);}
 
   /**
    * Set the \f$yx\f$ component.
    */
-  inline void setYX(Complex);
+  void setYX(Complex in) {_wf.setYX(in);}
 
   /**
    * Set the \f$zx\f$ component.
    */
-  inline void setZX(Complex);
+  void setZX(Complex in) {_wf.setZX(in);}
 
   /**
    * Set the \f$tx\f$ component.
    */
-  inline void setTX(Complex);
+  void setTX(Complex in) {_wf.setTX(in);}
 
   /**
    * Set the \f$xy\f$ component.
    */
-  inline void setXY(Complex);
+  void setXY(Complex in) {_wf.setXY(in);}
 
   /**
    * Set the \f$yy\f$ component.
    */
-  inline void setYY(Complex);
+  void setYY(Complex in) {_wf.setYY(in);}
 
   /**
    * Set the \f$zy\f$ component.
    */
-  inline void setZY(Complex);
+  void setZY(Complex in) {_wf.setZY(in);}
 
   /**
    * Set the \f$ty\f$ component.
    */
-  inline void setTY(Complex);
+  void setTY(Complex in) {_wf.setTY(in);}
 
   /**
    * Set the \f$xz\f$ component.
    */
-  inline void setXZ(Complex);
+  void setXZ(Complex in) {_wf.setXZ(in);}
 
   /**
    * Set the \f$yz\f$ component.
    */
-  inline void setYZ(Complex);
+  void setYZ(Complex in) {_wf.setYZ(in);}
 
   /**
    * Set the \f$zz\f$ component.
    */
-  inline void setZZ(Complex);
+  void setZZ(Complex in) {_wf.setZZ(in);}
 
   /**
    * Set the \f$tz\f$ component.
    */
-  inline void setTZ(Complex);
+  void setTZ(Complex in) {_wf.setTZ(in);}
 
   /**
    * Set the \f$xt\f$ component.
    */
-  inline void setXT(Complex);
+  void setXT(Complex in) {_wf.setXT(in);}
 
   /**
    * Set the \f$yt\f$ component.
    */
-  inline void setYT(Complex);
+  void setYT(Complex in) {_wf.setYT(in);}
 
   /**
    * Set the \f$zt\f$ component.
    */
-  inline void setZT(Complex);
+  void setZT(Complex in) {_wf.setZT(in);}
 
   /**
    * Set the \f$tt\f$ component.
    */
-  inline void setTT(Complex);
+  void setTT(Complex in) {_wf.setTT(in);}
   //@}
 
   /**
@@ -477,103 +537,106 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline void reset(const Lorentz5Momentum & p, const tcPDPtr & part, Direction dir);
+  void reset(const Lorentz5Momentum & p, const tcPDPtr & part, Direction dir) {
+    direction(dir);
+    checkParticle(part);
+    setMomentum(p);
+  }
 
   /** 
    * Reset the momentum and direction
    * @param p The momentum.
    * @param dir The direction
    */
-  inline void reset(const Lorentz5Momentum & p,Direction dir);
+  void reset(const Lorentz5Momentum & p,Direction dir) {
+    direction(dir);
+    setMomentum(p);
+  }
 
   /**
    * Reset the momentum.
    * @param p The momentum.
    */
-  inline void reset(const Lorentz5Momentum & p);
+  void reset(const Lorentz5Momentum & p) {setMomentum(p);}
 
   /**
    * Reset helicity (recalculate the tensor ).
    * @param ihel The new helicity (0,1,2,3,4 as described above.)
    * @param phase The phase choice.
    */
-  inline void reset(unsigned int ihel,TensorPhase phase=default_tensor_phase);
+  void reset(unsigned int ihel,TensorPhase phase=default_tensor_phase) {
+    calculateWaveFunction(ihel,phase);
+  }
 
   /**
    * Reset particle type and direction.
    * @param part The ParticleData pointer.
    * @param dir The direction.
    */
-  inline void reset(const tcPDPtr & part,Direction dir);
+  void reset(const tcPDPtr & part,Direction dir) {
+    direction(dir);
+    checkParticle(part);
+  }
 
   /**
    * Reset particle type.
    * @param part The ParticleData pointer.
    */
-  inline void reset(const tcPDPtr & part);
+  void reset(const tcPDPtr & part) {checkParticle(part);}	
   //@}
 
-  /**
-   * Calculate the polarization tensors for all helicities,
-   * create and set up the SpinInfo object
-   * @param wave The polarization tensors for the different helicities.
-   * @param part The particle to setup
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param massless Whether or not the particle is massless
-   * @param phase The phase choice.
-   * @param vertex Whether or not to create the TensorSpinInfo object 
-   */
-  inline void constructSpinInfo(vector<LorentzTensor<double> >& wave,tPPtr part,
-				bool time, bool massless,
-				TensorPhase phase=default_tensor_phase,bool vertex=true);
+public:
 
-  /**
-   * Calculate the polarization tensors for all helicities,
-   * create and set up the SpinInfo object
-   * @param wave The polarization tensors for the different helicities.
-   * @param rho The \f$\rho\f$ matrix for the particle
-   * @param part The particle to setup
-   * @param time Is this is timelike (true) or spacelike (false ) particle?
-   * @param massless Whether or not the particle is massless
-   * @param phase The phase choice.
-   * @param vertex Whether or not to create the TensorSpinInfo object 
-   */
-  inline void constructSpinInfo(vector<LorentzTensor<double> >& wave,RhoDMatrix& rho,tPPtr part,
-				bool time, bool massless,
-				TensorPhase phase=default_tensor_phase,bool vertex=true);
+  static void calculateWaveFunctions(vector<LorentzTensor<double> > & waves,
+				     tPPtr particle,Direction,bool massless,
+				     TensorPhase phase=default_tensor_phase);
+
+  static void calculateWaveFunctions(vector<TensorWaveFunction> & waves,
+				     tPPtr particle,Direction,bool massless,
+				     TensorPhase phase=default_tensor_phase);
+
+  static void calculateWaveFunctions(vector<LorentzTensor<double> > & waves,
+				     RhoDMatrix & rho,
+				     tPPtr particle,Direction,bool massless,
+				     TensorPhase phase=default_tensor_phase);
+
+  static void calculateWaveFunctions(vector<TensorWaveFunction> & waves,
+				     RhoDMatrix & rho,
+				     tPPtr particle,Direction,bool massless,
+				     TensorPhase phase=default_tensor_phase);
+
+  static void constructSpinInfo(const vector<LorentzTensor<double> > & waves,
+				tPPtr part,Direction dir, bool time,bool massless);
+
+  static void constructSpinInfo(const vector<TensorWaveFunction> & waves,
+				tPPtr part,Direction dir, bool time,bool massless);
 
 private:
 
   /**
    * Zero the wavefunction.
    */
-  inline void zeroWaveFunction();
+  void zeroWaveFunction() {
+    for(int i=0;i<4;++i)
+      for(int j=0;j<4;++j) _wf(i,j)=0.;
+  }
 
   /**
    * Calculate the wavefunction.
    * @param ihel The helicity (0,1,2,3,4 as described above.)
    * @param phase The phase choice.
    */
-  void calculateWaveFunction(unsigned int ihel,TensorPhase phase=default_tensor_phase);
+  void calculateWaveFunction(unsigned int ihel,
+			     TensorPhase phase=default_tensor_phase);
 
   /**
    * Check particle spin and set pointer.
    * @param part The ParticleData pointer.
    */
-  inline void checkParticle(const tcPDPtr & part);
-
-  /**
-   * Calculate the polarization tensors for all the helicities and set up the
-   * SpinInfo object.
-   * @param wave The polarization tensors for the different helicities
-   * @param spin Pointer to the TensorSpinInfo object
-   * @param massless Whether or not the particle is massless
-   * @param phase The phase choice.
-   * @param vertex Whether or not to set up the TensorSpinInfo object 
-   */
-  inline void constructSpinInfo(vector<LorentzTensor<double> >& wave,
-				tTensorSpinPtr spin, bool massless,
-				TensorPhase phase=default_tensor_phase,bool vertex=true);
+  void checkParticle(const tcPDPtr & part) {
+    setParticle(part);
+    assert(iSpin()==PDT::Spin2);
+  }
 
 private:
 
@@ -585,7 +648,5 @@ private:
 };
 }
 }
-
-#include "TensorWaveFunction.icc"
 
 #endif
