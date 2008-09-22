@@ -91,6 +91,11 @@ public:
   void addOutgoing(tPPtr p, bool fixrelations = true);
 
   /**
+   * Change the incoming parton
+   */
+  void changeIncoming(tPPtr pnew, tPPtr pold); 
+
+  /**
    * Set the vector of intermediate particles.
    */
   template <class InputIterator>

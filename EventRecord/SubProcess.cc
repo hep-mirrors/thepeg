@@ -65,6 +65,17 @@ void SubProcess::addOutgoing(tPPtr p, bool fixrelations) {
   theOutgoing.push_back(p);
 }
 
+void SubProcess::changeIncoming(tPPtr pnew, tPPtr pold) {
+  if(pold==theIncoming.first) {
+    theIntermediates.push_back(pold);
+    theIncoming.first = pnew;
+  }
+  else if(pold==theIncoming.second) {
+    theIntermediates.push_back(pold);
+    theIncoming.second = pnew;
+  }
+}
+
 void SubProcess::rebind(const EventTranslationMap & trans) {
   theIncoming.first = trans.translate(theIncoming.first);
   theIncoming.second = trans.translate(theIncoming.second);
