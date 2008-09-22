@@ -42,6 +42,8 @@ extern "C" {
   void initpdfm_(F77ThePEGInteger &,F77ThePEGInteger  &);
   void evolvepdfm_(F77ThePEGInteger &, F77ThePEGDouble &,
 		   F77ThePEGDouble &, F77ThePEGDouble *);
+  void evolvepdfphotonm_(F77ThePEGInteger &, F77ThePEGDouble &,
+			 F77ThePEGDouble &, F77ThePEGDouble *, F77ThePEGDouble &);
   void evolvepdfpm_(F77ThePEGInteger &, F77ThePEGDouble &,
 		    F77ThePEGDouble &, F77ThePEGDouble &,
 		    F77ThePEGInteger &, F77ThePEGDouble *);
@@ -410,7 +412,13 @@ void LHAPDF::checkUpdate(double x, Energy2 Q2, Energy2 P2) const {
     F77ThePEGInteger IP2 = thePhotonOption;
     evolvepdfpm_(iset, xx, Q, PP2, IP2, &res[0]);
   } else {
-    evolvepdfm_(iset, xx, Q, &res[0]);
+    if(!enablePartonicGamma) 
+      evolvepdfm_(iset, xx, Q, &res[0]);
+    else {
+      double gamma(0.);
+      evolvepdfphotonm_(iset, xx, Q, &res[0],gamma);
+      res.push_back(gamma);
+    }
   }
   lastXF = vector<double>(res.begin(), res.end());
 }
@@ -448,7 +456,7 @@ cPDVector LHAPDF::partons(tcPDPtr particle) const {
 namespace LHAPDFIndex {
 enum VectorIndices {
   topb = 0, botb = 1, chab = 2, strb = 3, upb = 4, dowb = 5, glu = 6, dow = 7,
-  up = 8, str = 9, cha = 10, bot = 11, top = 12, gamma = 13 };
+  up = 8, str = 9, cha = 10, bot = 11, top = 12, photon = 13 };
 }
 
 double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
@@ -457,7 +465,6 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   using namespace ThePEG::ParticleID;
   using namespace LHAPDFIndex;
   checkUpdate(x, partonScale, particleScale);
-
   switch ( parton->id() ) {
   case t:
     return maxFlav() < 6? 0.0: lastXF[top];
@@ -510,7 +517,7 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   case ParticleID::g:
     return lastXF[glu];
   case ParticleID::gamma:
-    return enablePartonicGamma ? lastXF[gamma] : 0.;
+    return enablePartonicGamma ? lastXF[photon] : 0.;
   }
   return 0.0;
 }
@@ -637,7 +644,7 @@ double LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   case ParticleID::g:
     return lastXF[glu];
   case ParticleID::gamma:
-    return enablePartonicGamma ? lastXF[gamma] : 0.;
+    return enablePartonicGamma ? lastXF[photon] : 0.;
   }
   return 0.0;
 }
