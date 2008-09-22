@@ -172,6 +172,9 @@ void Step::removeEntry(tPPtr p) {
     antiColourNeighbour(p)->colourNeighbour(colourNeighbour(p));
   if ( p->incomingColour() ) p->outgoingColour(tPPtr());
   if ( p->incomingAntiColour() ) p->outgoingAntiColour(tPPtr());
+  it = theIntermediates.find(p);
+  if ( it == theIntermediates.end() ) return;
+  theIntermediates.erase(it);
 }
 
 void Step::removeParticle(tPPtr p) {
