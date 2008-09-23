@@ -22,8 +22,7 @@ XSecCheck_la_SOURCES = XSecCheck.cc XSecCheck.h
 XSecCheck_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 noinst_LTLIBRARIES = libThePEGHist.la
-libThePEGHist_la_SOURCES = FactoryBase.cc FactoryBase.fh \
-			FactoryBase.icc FactoryBase.h 
+libThePEGHist_la_SOURCES = FactoryBase.cc FactoryBase.fh FactoryBase.h 
 
 LWH.tgz: $(AIDAWRAPPERS) $(LWHHEADERS)
 	tar czf LWH.tgz  $(AIDAWRAPPERS) $(LWHHEADERS)

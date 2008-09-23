@@ -30,26 +30,6 @@ class NoRemnants: public RemnantHandler {
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
-  /**
-   * Default constructor.
-   */
-  inline NoRemnants();
-
-  /**
-   * Copy-constructor.
-   */
-  inline NoRemnants(const NoRemnants &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~NoRemnants();
-  //@}
-
-public:
-
   /** @name Virtual functions mandated by the RemnantHandler base class. */
   //@{
   /**
@@ -57,8 +37,9 @@ public:
    * specified partons. The NoRemnants will return false if any
    * partons are given.
    */
-  inline virtual bool canHandle(tcPDPtr particle,
-				const cPDVector & partons) const;
+  virtual bool canHandle(tcPDPtr, const cPDVector & partons) const {
+    return partons.empty();
+  }
 
   /**
    * Generate Remnants. Will not generate remnants and will throw a
@@ -103,53 +84,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
-  //@}
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this
-   * object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual IBPtr fullclone() const;
   //@}
 
 private:
@@ -187,10 +128,5 @@ struct ClassTraits<NoRemnants>: public ClassTraitsBase<NoRemnants> {
 /** @endcond */
 
 }
-
-#include "NoRemnants.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "NoRemnants.tcc"
-#endif
 
 #endif /* ThePEG_NoRemnants_H */

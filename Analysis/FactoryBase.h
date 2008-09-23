@@ -85,28 +85,31 @@ public:
     /**
      * The standard constructor needs a IDataPointSet as argument.
      */
-    inline DataFiller(AIDA::IDataPointSet * dps);
+    DataFiller(AIDA::IDataPointSet * dps) : dset(dps) {}
 
     /**
      * Copy constructor.
      */
-    inline DataFiller(const DataFiller & df);
+    DataFiller(const DataFiller & df) : dset(df.dset) {}
 
     /**
      * Destructor. Will commit the pints filled to the underlying
      * IDataPointSet.
      */
-    inline ~DataFiller();
+    ~DataFiller();
 
     /**
      * Add a number to measurement currently being read.
      */
-    inline DataFiller & operator<<(double x);
+    DataFiller & operator<<(double x) {
+      v.push_back(x);
+      return *this;
+    }
 
     /**
      * Automatic conversion to the underlying IDataPointSet.
      */
-    inline operator AIDA::IDataPointSet * ();
+    operator AIDA::IDataPointSet * () { return dset; }
 
   private:
 
@@ -129,12 +132,12 @@ public:
   /**
    * The default constructor.
    */
-  inline FactoryBase();
+  FactoryBase();
 
   /**
    * The copy constructor.
    */
-  inline FactoryBase(const FactoryBase &);
+  FactoryBase(const FactoryBase &);
 
   /**
    * The destructor.
@@ -151,18 +154,18 @@ public:
    * histograms will be stored. If empty, generator()->filename() will
    * be used instead.
    */
-  inline string filename() const;
+  const string & filename() const { return theFilename; }
 
   /**
    * Together with filename(), the name of the file where the
    * resulting histograms will be stored.
    */
-  inline string suffix() const;
+  const string & suffix() const { return theSuffix; }
 
   /**
    * The format in which the histograms are stored in the output file.
    */
-  inline string storeType() const;
+  const string & storeType() const { return theStoreType; }
   //@}
 
   /** @name Manipulate histograms */
@@ -194,37 +197,43 @@ public:
   /**
    * Access the underlying AIDA::IAnalysisFactory object.
    */
-  inline AIDA::IAnalysisFactory & analysisFactory() const;
+  AIDA::IAnalysisFactory & analysisFactory() const {
+    return *theAnalysisFactory;
+  }
 
   /**
    * Access the underlying AIDA::ITree object.
    */
-  inline AIDA::ITree & tree() const;
+  AIDA::ITree & tree() const { return *theTree; }
 
   /**
    * A pointer to the underlying AIDA::IHistogramFactory object.
    */
-  inline AIDA::IHistogramFactory & histogramFactory() const;
+  AIDA::IHistogramFactory & histogramFactory() const {
+    return *theHistogramFactory;
+  }
 
   /**
    * A pointer to the underlying AIDA::IDataPointSetFactory object.
    */
-  inline AIDA::IDataPointSetFactory & dataSetFactory() const;
+  AIDA::IDataPointSetFactory & dataSetFactory() const {
+    return *theDataSetFactory;
+  }
 
   /**
    * Create a new directory in the underlying AIDA tree.
    */
-  inline void mkdir(string);
+  void mkdir(const string & path) { tree().mkdir(path); }
 
   /**
    * Create a new directory in the underlying AIDA tree.
    */
-  inline void mkdirs(string);
+  void mkdirs(const string & path) { tree().mkdirs(path); }
 
   /**
    * Set the default working directory for the underlying AIDA tree.
    */
-  inline void cd(string);
+  void cd(const string & path) { tree().cd(path); }
 
   /**
    * Create and return a AIDA::IHistogram1D object in the underlying
@@ -241,7 +250,9 @@ public:
    * @param up the upper edge of the histogram.
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
-  inline tH1DPtr createHistogram1D(string path, int nb, double lo, double up);
+  tH1DPtr createHistogram1D(const string & path, int nb, double lo, double up) {
+    return histogramFactory().createHistogram1D(path, nb, lo, up);
+  }
 
   /**
    * Create and return a AIDA::IHistogram1D object in the underlying
@@ -258,8 +269,10 @@ public:
    * @param up the upper edge of the histogram.
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
-  inline tH1DPtr createHistogram1D(string path, string title, int nb,
-				   double lo, double up);
+  tH1DPtr createHistogram1D(const string & path, const string & title, int nb,
+			    double lo, double up) {
+    return histogramFactory().createHistogram1D(path, title, nb, lo, up);
+  }
 
   /**
    * Create and return a AIDA::IHistogram1D object in the underlying
@@ -274,8 +287,10 @@ public:
    * @param edges A vector of bin edges specifying th bins.
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
-  inline tH1DPtr createHistogram1D(string path, string title,
-				   const std::vector<double> & edges);
+  tH1DPtr createHistogram1D(const string & path, const string & title,
+			    const std::vector<double> & edges) {
+    return histogramFactory().createHistogram1D(path, title, edges);
+  }
 
   /**
    * Create a IDataPointSet with the given \a path and \a title and
@@ -284,7 +299,9 @@ public:
    * facilitate the addition of data points to the set or be converted
    * to a pointer to the created IDataPointSet.
    */
-  inline DataFiller createDataSet(string path, string title, int dim);
+  DataFiller createDataSet(const string & path, const string & title, int dim) {
+    return DataFiller(dataSetFactory().create(path, title, dim));
+  }
 
   /**
    * Used by a \a client object to indicate that he has required
@@ -293,7 +310,10 @@ public:
    * committed and the AIDA::IHistogramFactory is deleted together
    * with all histograms.
    */
-  inline void registerClient(tIPtr client);
+  void registerClient(tIPtr client) {
+    initrun();
+    clients.insert(client);
+  }
   //@}
 
 protected:
@@ -306,7 +326,9 @@ protected:
    * doinitrun() function before the doinitrun() function of this
    * class is called.
    */
-  inline void analysisFactory(AIDA::IAnalysisFactory *);
+  void analysisFactory(AIDA::IAnalysisFactory * x) {
+    theAnalysisFactory = x;
+  }
 
   /**
    * Delete all associated AIDA objects. Note that the tree is not
@@ -448,10 +470,5 @@ struct ClassTraits<FactoryBase>
 /** @endcond */
 
 }
-
-#include "FactoryBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FactoryBase.tcc"
-#endif
 
 #endif /* THEPEG_FactoryBase_H */

@@ -15,6 +15,10 @@
 #include "ParVector.h"
 #include "ParVector.xh"
 
+#ifdef ThePEG_TEMPLATES_IN_CC_FILE
+#include "ParVector.tcc"
+#endif
+
 namespace ThePEG {
 
 string ParVectorBase::

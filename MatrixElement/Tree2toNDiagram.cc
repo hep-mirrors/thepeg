@@ -20,12 +20,9 @@
 #include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/PDT/EnumParticles.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Tree2toNDiagram.tcc"
-#endif
-
-
 using namespace ThePEG;
+
+Tree2toNDiagram::~Tree2toNDiagram() {}
 
 Tree2toNDiagram & Tree2toNDiagram::add(tcPDPtr pd) {
   if ( thePartons.size() < theNSpace ) addSpacelike(pd);

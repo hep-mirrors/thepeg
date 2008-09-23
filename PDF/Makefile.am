@@ -8,10 +8,9 @@ DOCFILES = BeamParticleData.h \
            PDF.h PartonBinInstance.h SoftRemnantHandler.h
 
 INCLUDEFILES = $(DOCFILES) BeamParticleData.xh \
-               NoRemnants.icc PDFBase.xh PDFCuts.icc \
-               PartonExtractor.fh \
+               PDFBase.xh PartonExtractor.fh \
                PartonExtractor.xh RemnantHandler.xh \
-               PDF.fh PDF.icc PartonBinInstance.icc PartonBin.fh
+               PDF.fh PartonBin.fh
 
 INPUTFILES = PDFsets.index
 
@@ -22,7 +21,7 @@ pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
           GRVBase.la GRV94L.la GRV94M.la WeizsackerWilliamsPDF.la
 
 if USELHAPDF
-LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h LHAPDF.icc
+LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h
 libThePEGPDF_la_LDFLAGS = $(LHAPDF_LDFLAGS)
 libThePEGPDF_la_LIBADD = $(LHAPDF_LIBS)
 else
@@ -49,7 +48,7 @@ LeptonLeptonRemnant_la_SOURCES = LeptonLeptonRemnant.cc LeptonLeptonRemnant.h
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 GRVBase_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-GRVBase_la_SOURCES = GRVBase.cc GRVBase.h GRVBase.icc 
+GRVBase_la_SOURCES = GRVBase.cc GRVBase.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

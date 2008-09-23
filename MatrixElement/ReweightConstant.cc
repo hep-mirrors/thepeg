@@ -20,7 +20,13 @@
 
 using namespace ThePEG;
 
-ReweightConstant::~ReweightConstant() {}
+IBPtr ReweightConstant::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ReweightConstant::fullclone() const {
+  return new_ptr(*this);
+}
 
 double ReweightConstant::weight() const {
   return C;

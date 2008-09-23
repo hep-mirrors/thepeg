@@ -31,18 +31,6 @@ MECuts::MECuts()
     theUHatMin(0.0*GeV2), theUHatMax(-1.0*GeV2),
     theScaleMin(0.0*GeV2), theScaleMax(-1.0*GeV2) {}
 
-MECuts::MECuts(const MECuts & kc)
-  : Interfaced(kc), theMHatMin(kc.theMHatMin), theMHatMax(kc.theMHatMax),
-    thePTHatMin(kc.thePTHatMin), thePTHatMax(kc.thePTHatMax),
-    thePTHatSingularMin(kc.thePTHatSingularMin),
-    theSingularMassMax(kc.theSingularMassMax),
-    theCTHMin(kc.theCTHMin), theCTHMax(kc.theCTHMax),
-    theTHatMin(kc.theTHatMin), theTHatMax(kc.theTHatMax),
-    theUHatMin(kc.theUHatMin), theUHatMax(kc.theUHatMax),
-    theScaleMin(kc.theScaleMin), theScaleMax(kc.theScaleMax) {}
-
-MECuts::~MECuts() {}
-
 void MECuts::newcut(const SubProcess &) const
   ThePEG_THROW_SPEC((Veto)) {}
 

@@ -15,17 +15,29 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Utilities/Throw.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LesHouchesFileReader.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
+LesHouchesFileReader::
+LesHouchesFileReader(const LesHouchesFileReader & x)
+  : LesHouchesReader(x), neve(x.neve), ieve(0),
+    LHFVersion(x.LHFVersion), outsideBlock(x.outsideBlock),
+    headerBlock(x.headerBlock), initComments(x.initComments),
+    initAttributes(x.initAttributes), eventComments(x.eventComments),
+    eventAttributes(x.eventAttributes),
+    theFile(NULL), theFileName(x.theFileName) {}
+
 LesHouchesFileReader::~LesHouchesFileReader() {}
+
+IBPtr LesHouchesFileReader::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr LesHouchesFileReader::fullclone() const {
+  return new_ptr(*this);
+}
 
 void LesHouchesFileReader::initialize(LesHouchesEventHandler & eh) {
   LesHouchesReader::initialize(eh);

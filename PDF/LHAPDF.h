@@ -47,12 +47,12 @@ public:
   /**
    * The default constructor.
    */
-  inline LHAPDF();
+  LHAPDF();
 
   /**
    * The copy constructor.
    */
-  inline LHAPDF(const LHAPDF &);
+  LHAPDF(const LHAPDF &);
   //@}
 
 public:
@@ -126,25 +126,25 @@ public:
    * done to see if the selected PDF set in LHAPDF actually can handle
    * this type
    */
-  inline PType ptype() const;
+  PType ptype() const { return thePType; }
 
   /**
    * The name if the PDF set to be used. The full name including the
    * <code>.LHpdf</code> or <code>.LHgrid</code> suffix.
    */
-  inline string PDFName() const;
+  const string & PDFName() const { return thePDFName; }
 
   /**
    * The chosen member of the selected PDF set.
    */
-  inline int member() const;
+  int member() const { return theMember; }
 
   /**
    * The maximum number of flavours for which non-zero densities are
    * reported. The actual number of flavours may be less depending on
    * the chosen PDF set.
    */
-  inline int maxFlav() const;
+  int maxFlav() const { return theMaxFlav; }
   //@}
 
 protected:
@@ -514,7 +514,5 @@ struct ClassTraits<LHAPDF>
 /** @endcond */
 
 }
-
-#include "LHAPDF.icc"
 
 #endif /* THEPEG_LHAPDF_H */

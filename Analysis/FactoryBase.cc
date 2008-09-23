@@ -16,17 +16,38 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Config/algorithm.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "FactoryBase.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
+FactoryBase::FactoryBase()
+  : theFilename(""), theSuffix("aida"), theStoreType("xml"),
+    theAnalysisFactory(0), theTree(0), theHistogramFactory(0),
+    theDataSetFactory(0) {}
+
+FactoryBase::FactoryBase(const FactoryBase & x)
+  : Interfaced(x), theFilename(x.theFilename), theSuffix(x.theSuffix),
+    theStoreType(x.theStoreType), theAnalysisFactory(0), theTree(0),
+    theHistogramFactory(0), theDataSetFactory(0) {}
+
 FactoryBase::~FactoryBase() {}
+
+FactoryBase::DataFiller::~DataFiller() {
+  int N = v.size()/(3*dset->dimension());
+  for ( int i = 0; i < N; ++i ) {
+    AIDA::IDataPoint * p = dset->addPoint();
+    for ( int j = 0; j < p->dimension(); ++j ) {
+      p->coordinate(j)->setValue(v.front());
+      v.pop_front();
+      p->coordinate(j)->setErrorPlus(v.front());
+      v.pop_front();
+      p->coordinate(j)->setErrorMinus(v.front());
+      v.pop_front();
+    }
+  }
+}
+
 
 void FactoryBase::clear() {
   if ( theTree ) delete theTree;

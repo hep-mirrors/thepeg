@@ -14,11 +14,6 @@
 #include "DiagramBase.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/DescriptionList.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DiagramBase.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 

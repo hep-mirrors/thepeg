@@ -10,6 +10,7 @@
 #define ThePEG_XComb_H
 // This is the declaration of the XComb class.
 
+#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDF/PartonExtractor.fh"
 #include "ThePEG/PDF/PartonBin.h"
 #include "ThePEG/PDF/PartonBinInstance.h"
@@ -19,8 +20,6 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Handlers/EventHandler.fh"
 #include "ThePEG/Cuts/Cuts.fh"
-// #include "XComb.fh"
-// #include "XComb.xh"
 
 namespace ThePEG {
 

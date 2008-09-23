@@ -12,7 +12,6 @@
 
 #include "ThePEG/Repository/EventGenerator.h"
 #include "CurrentGenerator.fh"
-// #include "CurrentGenerator.xh"
 
 namespace ThePEG {
 
@@ -38,24 +37,32 @@ public:
   /**
    * Default constructor does nothing.
    */
-  inline CurrentGenerator();
+  CurrentGenerator() : generatorPushed(false) {}
 
   /**
    * Copy-constructor does nothing.
    */
-  inline CurrentGenerator(const CurrentGenerator &);
+  CurrentGenerator(const CurrentGenerator &)
+    : generatorPushed(false) {}
 
   /**
    * Construct a new object specifying a new EventGenerator, \a eg, to
    * be used during this objects lifetime.
    */
-  inline CurrentGenerator(const EGPtr & eg);
+  CurrentGenerator(const EGPtr & eg) : generatorPushed(false) {
+    if ( eg ) {
+      theGeneratorStack.push_back(eg);
+      generatorPushed = true;
+    }
+  }
 
   /**
    * The destructor removing the EventGenerator specified in the
    * constructor from the stack.
    */
-  inline ~CurrentGenerator();
+  ~CurrentGenerator() {
+    if ( generatorPushed ) theGeneratorStack.pop_back();
+  }
 
 public:
 
@@ -63,24 +70,30 @@ public:
    * Returns true if there is no currently chosen EventGenerator
    * object.
    */
-  inline static bool isVoid();
+  static bool isVoid() {
+    return theGeneratorStack.empty() || !(theGeneratorStack.back());
+  }
 
   /**
    * Return a reference to the currently chosen EventGenerator object.
    */
-  inline static EventGenerator & current();
+  static EventGenerator & current() {
+    return *theGeneratorStack.back();
+  }
 
   /**
    * Return a pointer to the standard model parameters used by the
    * current generator.
    */
-  inline static tSMPtr standardModel();
+  static tSMPtr standardModel() {
+    return current().standardModel();
+  }
 
   /**
    * Return a pointer to the strategy object containing eg. a set of
    * non-default particles to be used by the current generator.
    */
-  inline static tStrategyPtr strategy();
+  static tStrategyPtr strategy() { return current().strategy(); }
 
   /**
    * Get the current standard output stream. Return a reference to the
@@ -88,7 +101,7 @@ public:
    * generator. If no file is connected, the BaseRepository::cout()
    * will be used instead.
    */
-  static ostream & out();
+  static ostream & out() { return current().out(); }
 
   /**
    * Get the current standard log stream. Return a reference to the
@@ -96,7 +109,7 @@ public:
    * current generator. If no file is connected, the
    * BaseRepository::clog() will be used instead.
    */
-  static ostream & log();
+  static ostream & log() { return current().log(); }
 
   /**
    * Get the current standard ref stream. Return a reference to the
@@ -104,7 +117,7 @@ public:
    * the current generator. If no file is connected, the
    * BaseRepository::cout() will be used instead.
    */
-  static ostream & ref();
+  static ostream & ref() { return current().ref(); }
 
   /**
    * Get object. Return a garbage collected pointer to a given object
@@ -112,14 +125,18 @@ public:
    * pointer will be returned.
    */
   template <typename T>
-  inline static typename Ptr<T>::pointer getPtr(const T &);
+  static typename Ptr<T>::pointer getPtr(const T & t) {
+    return current().getPtr(t);
+  }
 
   /**
    * Get object. Return a pointer to an object present in the current
    * EventGenerator given its full name. Return the null pointer if
    * non-existent.
    */
-  inline static IBPtr getPointer(string name);
+  static IBPtr getPointer(string name) {
+    return current().getPointer(name);
+  }
 
   /**
    * Get object. Return a pointer to an object of type T present in
@@ -127,14 +144,18 @@ public:
    * pointer if non-existent.
    */
   template <typename T>
-  inline static typename Ptr<T>::pointer getObject(string name);
+  static typename Ptr<T>::pointer getObject(string name) {
+    return current().getObject<T>(name);
+  }
 
   /**
    * Get default object. Return the default object for class T in the
    * current EventGenerator. Returns the null pointer if non-existent.
    */
   template <typename T>
-  inline static typename Ptr<T>::pointer getDefault();
+  static typename Ptr<T>::pointer getDefault() {
+    return current().getDefault<T>();
+  }
 
 private:
 
@@ -159,11 +180,5 @@ private:
 };
 
 }
-
-
-#include "CurrentGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "CurrentGenerator.tcc"
-#endif
 
 #endif /* ThePEG_CurrentGenerator_H */

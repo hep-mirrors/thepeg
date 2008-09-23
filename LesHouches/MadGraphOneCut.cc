@@ -19,17 +19,18 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Cuts/Cuts.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MadGraphOneCut.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-MadGraphOneCut::~MadGraphOneCut() {}
+IBPtr MadGraphOneCut::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr MadGraphOneCut::fullclone() const {
+  return new_ptr(*this);
+}
 
 Energy MadGraphOneCut::minKT(tcPDPtr p) const {
   if ( cutType != PT || !checkType(p) ) return 0.0*GeV;

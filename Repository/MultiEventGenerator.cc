@@ -25,14 +25,17 @@
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include <ctime>
 
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MultiEventGenerator.tcc"
-#endif
-
 using namespace ThePEG;
 
 MultiEventGenerator::~MultiEventGenerator() {}
+
+IBPtr MultiEventGenerator::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr MultiEventGenerator::fullclone() const {
+  return new_ptr(*this);
+}
 
 string MultiEventGenerator::removeInterface(string cmd) {
   string noun = StringUtils::car(cmd);
@@ -178,6 +181,12 @@ void MultiEventGenerator::persistentOutput(PersistentOStream & os) const {
 
 void MultiEventGenerator::persistentInput(PersistentIStream & is, int) {
   is >> theObjects >> theInterfaces >> thePosArgs >> theValues;
+}
+
+IVector MultiEventGenerator::getReferences() {
+  IVector ret = EventGenerator::getReferences();
+  ret.insert(ret.end(), theObjects.begin(), theObjects.end());
+  return ret;
 }
 
 void MultiEventGenerator::rebind(const TranslationMap & trans)

@@ -136,8 +136,3 @@ void Exception::writeMessage(ostream & os) const {
 ostream * Exception::errstream = &cerr;
 
 }
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-#include "Exception.tcc"
-#endif
-

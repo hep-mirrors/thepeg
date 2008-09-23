@@ -14,8 +14,6 @@
 #include "ThePEG/Vectors/LorentzRotation.fh"
 #include "ThePEG/Utilities/Triplet.h"
 #include "ThePEG/PDT/StandardMatchers.h"
-// #include "MECuts.fh"
-// #include "MECuts.xh"
 
 namespace ThePEG {
 
@@ -51,14 +49,6 @@ public:
    * Standard ctors and dtor
    */
   MECuts();
-  /**
-   * Standard ctors and dtor
-   */
-  MECuts(const MECuts &);
-  /**
-   * Standard ctors and dtor
-   */
-  virtual ~MECuts();
 
 public:
 
@@ -74,86 +64,96 @@ public:
    * The minimum and maximum values of the invariant mass (squared) of
    * the hard sub-process.
    */
-  inline Energy mHatMin() const;
+  Energy mHatMin() const { return theMHatMin; }
   /**
    * The minimum and maximum values of the invariant mass (squared) of
    * the hard sub-process.
    */
-  inline Energy mHatMax() const;
+  Energy mHatMax() const { 
+    theMHatMax > mHatMin()? theMHatMax: Constants::MaxEnergy; 
+  }
   /**
    * The minimum and maximum values of the invariant mass (squared) of
    * the hard sub-process.
    */
-  inline Energy sHatMin() const;
+  Energy sHatMin() const { return sqr(mHatMin()); }
   /**
    * The minimum and maximum values of the invariant mass (squared) of
    * the hard sub-process.
    */
-  inline Energy sHatMax() const;
+  Energy sHatMax() const { return sqr(mHatMax()); }
 
   /**
    * The minimum and maximum values of the transverse momentum of the
    * outgoing particles in the hard sub-process.
    */
-  inline Energy pTHatMin() const;
+  Energy pTHatMin() const { return thePTHatMin; }
   /**
    * The minimum and maximum values of the transverse momentum of the
    * outgoing particles in the hard sub-process.
    */
-  inline Energy pTHatMax() const;
+  Energy pTHatMax() const { 
+    return thePTHatMax > pTHatMin()? thePTHatMax: Constants::MaxEnergy; 
+  }
 
   /**
    * Additional cut on the transverse momenta of the hard sub-process
    * for s-channel hard sub-processes for outgoing particles of mass
    * less than singularMassMax().
    */
-  inline Energy pTHatSingularMin() const;
+  Energy pTHatSingularMin() const { return thePTHatSingularMin; }
   /**
    * Additional cut on the transverse momenta of the hard sub-process
    * for s-channel hard sub-processes for outgoing particles of mass
    * less than singularMassMax().
    */
-  inline Energy singularMassMax() const;
+  Energy singularMassMax() const { return theSingularMassMax; }
 
   /**
    * The minimum and maximum value of cosine of the scattering angle
    * in the restframe of a hard 2->2 scattering.
    */
-  inline double cTHMin() const;
+  double cTHMin() const { return theCTHMin; }
   /**
    * The minimum and maximum value of cosine of the scattering angle
    * in the restframe of a hard 2->2 scattering.
    */
-  inline double cTHMax() const;
+  double cTHMax() const { return theCTHMax; }
 
   /**
    * The minimum and maximum value of that of a hard 2->2 scattering.
    */
-  inline Energy2 tHatMin() const;
+  Energy2 tHatMin() const { return theTHatMin; }
   /**
    * The minimum and maximum value of that of a hard 2->2 scattering.
    */
-  inline Energy2 tHatMax() const;
+  Energy2 tHatMax() const { 
+    return theTHatMax > tHatMin()? theTHatMax: Constants::MaxEnergy2; 
+  }
 
   /**
    * The minimum and maximum value of uhat of a hard 2->2 scattering.
    */
-  inline Energy2 uHatMin() const;
+  Energy2 uHatMin() const { return theUHatMin; }
   /**
    * The minimum and maximum value of uhat of a hard 2->2 scattering.
    */
-  inline Energy2 uHatMax() const;
+  Energy2 uHatMax() const { 
+    return theUHatMax > uHatMin()? theUHatMax: Constants::MaxEnergy2; 
+  }
 
   /**
    * The minimum and maximum value of the scale in a hard scattering
    * as defined by the Handlers which performed the hard scattering.
    */
-  inline Energy2 scaleMin() const;
+  Energy2 scaleMin() const { return theScaleMin; }
   /**
    * The minimum and maximum value of the scale in a hard scattering
    * as defined by the Handlers which performed the hard scattering.
    */
-  inline Energy2 scaleMax() const;
+  Energy2 scaleMax() const {
+    return theScaleMax > scaleMin()? theScaleMax: Constants::MaxEnergy2; 
+  }
 
 public:
 
@@ -186,14 +186,6 @@ protected:
    * Standard Interfaced virtual functions.
    */
   virtual void doupdate() throw(UpdateException);
-  /**
-   * Standard Interfaced virtual functions.
-   */
-  inline virtual void doinit() throw(InitException);
-  /**
-   * Standard Interfaced virtual functions.
-   */
-  inline virtual void dofinish();
 
   /**
    * Standard clone method.
@@ -317,10 +309,5 @@ struct ClassTraits<MECuts>:
 /** @endcond */
 
 }
-
-#include "MECuts.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MECuts.tcc"
-#endif
 
 #endif /* ThePEG_MECuts_H */

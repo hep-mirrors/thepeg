@@ -12,12 +12,6 @@
 //
 
 #include "UseRandom.h"
-#include "ThePEG/Interface/ClassDocumentation.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "UseRandom.tcc"
-#endif
-
 
 using namespace ThePEG;
 

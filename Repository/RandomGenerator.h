@@ -11,8 +11,6 @@
 // This is the declaration of the RandomGenerator class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "RandomGenerator.fh"
-// #include "RandomGenerator.xh"
 #include "ThePEG/Interface/Interfaced.h"
 #include "gsl/gsl_rng.h"
 
@@ -78,39 +76,45 @@ public:
    * Return a (possibly cached) flat random number in the interval
    * \f$]0,1[\f$.
    */
-  inline double rnd();
+  double rnd() {
+    if ( nextNumber == theNumbers.end() ) fill();
+    return *nextNumber++;
+  }
 
   /**
    * Return a flat random number in the interval
    * \f$]0,b[\f$.
    */
-  template <typename Unit>
-  inline Unit rnd(Unit b);
+  template <typename Unit> Unit rnd(Unit b) { return b*rnd(); }
 
   /**
    * Return a flat random number in the interval
    * \f$]a,b[\f$.
    */
   template <typename Unit>
-  inline Unit rnd(Unit a, Unit b);
+  Unit rnd(Unit a, Unit b) { return a + rnd(b - a); }
 
   /**
    * Return \a n flat random number in the interval
    * \f$]0,1[\f$.
    */
-  inline RndVector rndvec(int n);
+  RndVector rndvec(int n) {
+    RndVector ret(n);
+    for ( int i = 0; i < n; ++i ) ret[i] = rnd();
+    return ret;
+  }
 
   /**
    * Return a (possibly cached) flat random number in the interval
    * \f$]0,1[\f$.
    */
-  inline double operator()();
+  double operator()() { return rnd(); }
 
   /**
    * Return a (possibly cached) flat integer random number in the
    * interval \f$[0,N[\f$.
    */
-  inline long operator()(long N);
+  long operator()(long N) { return long(rnd() * N); }
 
   /**
    * Return a true with probability \a p. Uses rnd(). Also uses
@@ -122,7 +126,7 @@ public:
    * Return a true with probability \a p1/(\a p1+\a p2). Uses
    * rnd(). Also uses push_back(double).
    */
-  inline bool rndbool(double p1, double p2);
+  bool rndbool(double p1, double p2) { return rndbool(p1/(p1 + p2)); }
 
   /**
    * Return -1, 0, or 1 with relative probabilities \a p1, \a p2, \a
@@ -134,13 +138,17 @@ public:
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a
    * p1). Uses rnd().
    */
-  inline int rnd2(double p0, double p1);
+  int rnd2(double p0, double p1) {
+    return rndbool(p0, p1)? 0: 1;
+  }
 
   /**
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a
    * p1+\a p2). Uses rnd().
    */
-  inline int rnd3(double p0, double p1, double p2);
+  int rnd3(double p0, double p1, double p2) {
+    return 1 + rndsign(p0, p1, p2);
+  }
 
   /**
    * Return an integer/ \f$i\f$ with probability p\f$i\f$(\a p0+\a
@@ -152,27 +160,41 @@ public:
    * Return a number between zero and infinity, distributed according
    * to \f$e^-x\f$.
    */
-  inline double rndExp();
+  double rndExp() {
+    return -log(rnd());
+  }
 
   /**
    * Return a number between zero and infinity, distributed according
    * to \f$e^-{x/\mu}\f$ where \f$\mu\f$ is the \a mean value.
    */
   template <typename Unit>
-  inline Unit rndExp(Unit mean);
+  Unit rndExp(Unit mean) { return mean*rndExp(); }
 
   /**
    * Return a number distributed according to a Gaussian distribution
    * with zero mean and unit variance.
    */
-  inline double rndGauss();
+  double rndGauss() { 
+    if ( gaussSaved ) {
+      gaussSaved = false;
+      return savedGauss;
+    }
+    double r = sqrt(-2.0*log(rnd()));
+    double phi = rnd()*2.0*Constants::pi;
+    savedGauss = r*cos(phi);
+    gaussSaved = true;
+    return r*sin(phi);
+  }
 
   /**
    * Return a number distributed according to a Gaussian distribution
    * with a given standard deviation, \a sigma, and a given \a mean.
    */
   template <typename Unit>
-  inline Unit rndGauss(Unit sigma, Unit mean = Unit());
+  Unit rndGauss(Unit sigma, Unit mean = Unit()) {
+    return mean + sigma*rndGauss();
+  }
 
   /**
    * Return a positive number distributed according to a
@@ -180,7 +202,10 @@ public:
    * given \a mean.
    */
   template <typename Unit>
-  inline Unit rndBW(Unit mean, Unit gamma);
+  Unit rndBW(Unit mean, Unit gamma) {
+    if ( gamma <= Unit() ) return mean;
+    return mean + 0.5*gamma*tan(rnd(atan(-2.0*mean/gamma), Constants::pi/2));
+  }
 
   /**
    * Return a positive number distributed according to a
@@ -189,14 +214,22 @@ public:
    * between \a mean - \a cut and \a mean + \a cut
    */
   template <typename Unit>
-  inline Unit rndBW(Unit mean, Unit gamma, Unit cut);
+  Unit rndBW(Unit mean, Unit gamma, Unit cut) {
+    if ( gamma <= Unit() || cut <= Unit() ) return mean;
+    return mean + 0.5*gamma*tan(rnd(atan(-2.0*min(mean,cut)/gamma),
+				    atan(2.0*cut/gamma)));
+  }
 
   /**
    * Return a positive number distributed according to a relativistic
    * Breit-Wigner with a given width, \a gamma, and a given \a mean.
    */
   template <typename Unit>
-  inline Unit rndRelBW(Unit mean, Unit gamma);
+  Unit rndRelBW(Unit mean, Unit gamma) {
+    if ( gamma <= Unit() ) return mean;
+    return sqrt(sqr(mean) + mean*gamma*tan(rnd(atan(-mean/gamma),
+					       Constants::pi/2)));
+  }
 
   /**
    * Return a positive number distributed according to a relativistic
@@ -205,7 +238,13 @@ public:
    * \a mean - \a cut and \a mean + \a cut
    */
   template <typename Unit>
-  inline Unit rndRelBW(Unit mean, Unit gamma, Unit cut);
+  Unit rndRelBW(Unit mean, Unit gamma, Unit cut) {
+    if ( gamma <= Unit() || cut <= Unit() ) return mean;
+    double minarg = cut > mean? -mean/gamma:
+      (sqr(mean - cut) - sqr(mean))/(gamma*mean);
+    double maxarg = (sqr(mean + cut) - sqr(mean))/(mean*gamma);
+    return sqrt(sqr(mean) + mean*gamma*tan(rnd(atan(minarg), atan(maxarg))));
+  }
 
   /**
    * Return a non-negative number generated according to a Poissonian
@@ -233,25 +272,32 @@ public:
    * number random number in the next call to rnd(), pop_back() should
    * be used.
    */
-  inline void push_back(double r);
+  void push_back(double r) {  
+    if ( r > 0.0 && r < 1.0 && nextNumber != theNumbers.begin() )
+      *--nextNumber = r;
+  }
 
   /**
    * Discard the next random number in the cache.
    */
-  inline void pop_back();
+  void pop_back() {
+    if ( nextNumber != theNumbers.end() ) ++nextNumber;
+  }
 
   /**
    * Discard all random numbers in the cache. Typically used after the
    * internal random engine has been reinitialized for some reason.
    */
-  inline void flush();
+  void flush() { nextNumber = theNumbers.end(); }
 
   /**
    * Generate n random numbers between 0 and 1 and put them in the
    * output iterator.
    */
   template <typename OutputIterator>
-  inline void rnd(OutputIterator, size_type n);
+  void rnd(OutputIterator o, size_type n) {
+    while ( n-- ) *o++ = rnd();
+  }
   //@}
 
 protected:
@@ -290,7 +336,7 @@ public:
   /**
    * Return a gsl_rng interface to this random generator.
    */
-  inline gsl_rng * getGslInterface();
+  gsl_rng * getGslInterface() { return gsl; }
 
 protected:
 
@@ -383,10 +429,5 @@ struct ClassTraits<RandomGenerator>:
 /** @endcond */
 
 }
-
-#include "RandomGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RandomGenerator.tcc"
-#endif
 
 #endif /* ThePEG_RandomGenerator_H */

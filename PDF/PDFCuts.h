@@ -13,8 +13,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/Interval.h"
 #include "ThePEG/Cuts/Cuts.fh"
-// #include "PDFCuts.fh"
-// #include "PDFCuts.xh"
 
 namespace ThePEG {
 
@@ -35,13 +33,14 @@ public:
   /**
    * Default constructor.
    */
-  inline PDFCuts();
+  PDFCuts() : theSMax() {}
 
   /**
    * Construction from members.
    */
-  inline PDFCuts(const Interval<double> & newL,
-		 const SInterval & newScale, const Energy2 & newSMax);
+  PDFCuts(const Interval<double> & newL,
+	  const SInterval & newScale, const Energy2 & newSMax) 
+    : theL(newL), theScale(newScale), theSMax(newSMax) {}
 
   /**
    * Construction from a Cuts object, using the values for
@@ -64,46 +63,56 @@ public:
   /**
    * The minimum value of \f$\log(1/x)\f$.
    */
-  inline double lMin() const;
+  double lMin() const { return theL.lower(); }
+
 
   /**
    * The maximum value of \f$\log(1/x)\f$.
    */
-  inline double lMax() const;
+  double lMax() const { return theL.upper(); }
+
   /**
    * The minimum value of x.
    */
-  inline double xMin() const;
+  double xMin() const { return exp(-lMax()); }
+
 
   /**
    * The maximum value of x.
    */
-  inline double xMax() const;
+  double xMax() const { return exp(-lMin()); }
+
 
   /**
    * The lower limit on the scale to be used.
    */
-  inline Energy2 scaleMin() const;
+  Energy2 scaleMin() const { return theScale.lower(); }
+
 
   /**
    * The upper limit on the scale to be used.
    */
-  inline Energy2 scaleMax() const;
+  Energy2 scaleMax() const { return theScale.upper(); }
+
 
   /**
    * The maximum scale for a given momentum fraction.
    */
-  inline Energy2 scaleMax(double x) const;
+  Energy2 scaleMax(double x) const { return min(scaleMax(), sMax()*x); }
+
 
   /**
    * The maximum scale for a given logarithmic momentum fraction.
    */
-  inline Energy2 scaleMaxL(double l) const;
+  Energy2 scaleMaxL(double l) const { return scaleMax(exp(-l)); }
+
 
   /**
    * The maximum invariant mass squared of the colliding particles.
    */
-  inline Energy2 sMax() const;
+  Energy2 sMax() const { return theSMax; }
+
+
   //@}
 
 private:
@@ -126,10 +135,5 @@ private:
 };
 
 }
-
-#include "PDFCuts.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PDFCuts.tcc"
-#endif
 
 #endif /* ThePEG_PDFCuts_H */

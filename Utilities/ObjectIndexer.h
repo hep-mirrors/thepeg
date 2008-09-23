@@ -11,8 +11,6 @@
 // This is the declaration of the ObjectIndexer class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "ObjectIndexer.fh"
-// #include "ObjectIndexer.xh"
 
 namespace ThePEG {
 
@@ -39,45 +37,84 @@ public:
    * Return the index for the given object. If the object is not known,
    * a new index will be created.
    */
-  inline IntT operator()(tTPtr o);
+  IntT operator()(tTPtr o) {
+    typename ObjectIndexMap::iterator it = objectIndex.find(o);
+    if ( it == objectIndex.end() ) {
+      IntT i = 0;
+      while ( indexObject.find(i) != indexObject.end() ) ++i;
+      objectIndex[o] = i;
+      indexObject[i] = o;
+      return i;
+    } else
+      return it->second;
+  }
 
   /**
    * Return the object for the given index. If the index is not known,
    * a new object will be (default) created.
    */
-  inline tTPtr operator()(IntT i);
+  tTPtr operator()(IntT i) {
+    typename IndexObjectMap::iterator it = indexObject.find(i);
+    if ( it == indexObject.end() ) {
+      TPtr o = new_ptr<ObjT>();
+      objectIndex[o] = i;
+      indexObject[i] = o;
+      return o;
+    } 
+    else
+      return it->second;
+  }
 
   /**
    * Return the object for the given index. If the index is not known,
    * a null pointer will be returned.
    */
-  inline tTPtr operator()(IntT i) const;
+  tTPtr operator()(IntT i) const {
+    typename IndexObjectMap::const_iterator it = indexObject.find(i);
+    return it == indexObject.end()? tTPtr(): it->second;
+  }
 
   /**
    * Associate the given object with the given index. Possible other
    * associations involving the index or the object is removed.
    */
-  inline void operator()(IntT i, tTPtr o);
+  void operator()(IntT i, tTPtr o) {
+    typename IndexObjectMap::iterator iit = indexObject.find(i);
+    if ( iit != indexObject.end() ) objectIndex.erase(iit->second);
+    typename ObjectIndexMap::iterator oit = objectIndex.find(o);
+    if ( oit != objectIndex.end() ) indexObject.erase(oit->second);
+    objectIndex[o] = i;
+    indexObject[i] = o;
+  }
 
   /**
    * Return true if the given object is known.
    */
-  inline bool included(tTPtr o) const;
+  bool included(tTPtr o) const {
+    return objectIndex.find(o) != objectIndex.end();
+  }
 
   /**
    * Return true if the given index is known.
    */
-  inline bool included(IntT i) const;
+  bool included(IntT i) const {
+    return indexObject.find(i) != indexObject.end();
+  }
 
   /**
    * Remove all associations.
    */
-  inline void clear();
+  void clear() {
+    indexObject.clear();
+    objectIndex.clear();
+  }
 
   /**
    * Return true if no associations has been made.
    */
-  bool empty() const;
+  bool empty() const {
+    return indexObject.empty() && objectIndex.empty();
+  }
 
 private:
 
@@ -101,10 +138,5 @@ private:
 };
 
 }
-
-#include "ObjectIndexer.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ObjectIndexer.tcc"
-#endif
 
 #endif /* THEPEG_ObjectIndexer_H */

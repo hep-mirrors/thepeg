@@ -12,11 +12,6 @@
 //
 
 #include "PartonBinInstance.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PartonBinInstance.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 

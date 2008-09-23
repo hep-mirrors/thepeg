@@ -14,7 +14,6 @@
 #include "ThePEG/Utilities/Named.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/HoldFlag.h"
-// #include "InterfacedBase.fh"
 #include "InterfacedBase.xh"
 
 namespace ThePEG {
@@ -78,23 +77,30 @@ public:
    * Returns the full name of this object including its path, e.g.
    * <code>/directory/subdirectory/name</code>.
    */
-  inline string fullName() const;
+  string fullName() const { return Named::name(); }
 
   /**
    * Returns the name of this object, without the path.
    */
-  inline string name() const;
+  string name() const {
+    return Named::name().substr(Named::name().rfind('/')+1);
+  }
 
   /**
    * Returns the path to this object including the trailing
    * '/'. <code>fullName() = path() + name()</code>.
    */
-  inline string path() const;
+  string path() const {
+    string::size_type slash = Named::name().rfind('/');
+    string ret;
+    if ( slash != string::npos ) ret = Named::name().substr(0,slash);
+    return ret;
+  }
 
   /**
    * Returns a comment assigned to this object.
    */
-  inline string comment() const;
+  string comment() const { return theComment; }
 
   /**
    * Read setup info from a standard istream \a is. May be called by
@@ -103,7 +109,10 @@ public:
    * part \a is to initialize themselves. What ever is left in \a is
    * after that will be assigned to the comment() of the object.
    */
-  inline void setup(istream & is) throw(SetupException);
+  void setup(istream & is) throw(SetupException) {
+    readSetup(is);
+    getline(is, theComment);
+  }
 
 protected:
 
@@ -141,7 +150,7 @@ protected:
    * @throws UpdateException if the setup is such that the object
    * would not work properly.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate() throw(UpdateException) {}
 
   /**
    * Initialize this object after the setup phase before saving an
@@ -164,7 +173,7 @@ protected:
    * method is called for other objects.
    * @throws InitException if object could not be initialized properly.
    */
-  virtual void doinit() throw (InitException);
+  virtual void doinit() throw (InitException) {}
 
   /**
    * Initialize this object. Called in the run phase just before
@@ -181,7 +190,7 @@ protected:
    * doinitrun() method is called for the base class, while the
    * initrun() method is called for other objects.
    */
-  virtual void doinitrun();
+  virtual void doinitrun() {}
 
   /**
    * Finalize this object. Called in the run phase just after a
@@ -193,14 +202,14 @@ protected:
    * the dofinish() method of the base class is called while the
    * finish() methd is called for other objects.
    */
-  virtual void dofinish();
+  virtual void dofinish() {}
 
   /**
    * Return a vector of all pointers to Interfaced objects used in this
    * object.
    * @return a vector of pointers.
    */
-  inline virtual IVector getReferences();
+  virtual IVector getReferences() { return IVector(); }
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -211,8 +220,7 @@ protected:
    * @throws RebindException if no cloned object was found for a given
    * pointer.
    */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
+  virtual void rebind(const TranslationMap &) throw(RebindException) {}
   //@}
 
 public:
@@ -222,12 +230,20 @@ public:
   /**
    * Calls the doupdate() function with recursion prevention.
    */
-  inline void update() throw(UpdateException);
+  void update() throw(UpdateException) {
+    if ( initState ) return;
+    HoldFlag<InitState> hold(initState, initializing, initialized);
+    doupdate();
+  }
 
   /**
    * Calls the doinit() function with recursion prevention.
    */
-  inline void init() throw (InitException);
+  void init() throw (InitException) {
+    if ( initState ) return;
+    HoldFlag<InitState> hold(initState, initializing, initialized);
+    doinit();
+  }
 
   /**
    * Return true if this object needs to be initialized before all
@@ -240,53 +256,64 @@ public:
   /**
    * Calls the doinitrun() function with recursion prevention.
    */
-  inline void initrun();
+  void initrun() {
+    if ( initState == runready || initState == initializing ) return;
+    HoldFlag<InitState> hold(initState, initializing, runready);
+    doinitrun();
+  }
 
   /**
    * Calls the dofinish() function with recursion prevention.
    */
-  inline void finish();
+  void finish() {
+    if ( initState == uninitialized || initState == initializing ) return;
+    HoldFlag<InitState> hold(initState, initializing, uninitialized);
+    dofinish();
+  }
 
   /**
    * This function should be called every time something in this
    * object has changed in a way that a sanity check with update() is
    * needed
    */
-  inline void touch();
+  void touch() { isTouched = true; }
 
   /**
    * Set the state of this object to uninitialized.
    */
-  inline void reset();
+  void reset() { initState = uninitialized; }
 
   /**
    * Calls reset() and unTouch().
    */
-  inline void clear();
+  void clear() {
+    reset();
+    untouch();
+  }
 
   /**
    * Return the state of initialization of this object.
    */
-  inline InitState state() const;
+  InitState state() const { return initState; }
 
   /**
    * Return true if the BaseRepository is not allowed to change the
    * state of this object.
    */
-  inline bool locked() const;
+  bool locked() const { return isLocked; }
 
   /**
    * Return true if the state of this object has been changed since
    * the last call to update().
    */
-  inline bool touched() const;
+  bool touched() const { return isTouched; }
   //@}
 
   /**
    * Return a full clone of this object possibly doing things to the
    * clone to make it sane.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const { return clone(); }
 
   /** @name Functions used by the persistent I/O system. */
   //@{
@@ -320,39 +347,45 @@ protected:
   /**
    * Protected default constructor.
    */
-  inline InterfacedBase();
+  InterfacedBase()
+    : Named(""), isLocked(false), isTouched(true), 
+      initState(uninitialized) {}
 
   /**
    * Protected constructor with the name given as argument.
    */
-  inline InterfacedBase(string newName);
+  InterfacedBase(string newName)
+    : Named(newName), isLocked(false), isTouched(true),
+      initState(uninitialized) {}
 
   /**
    * Protected copy-constructor.
    */
-  inline InterfacedBase(const InterfacedBase &);
+  InterfacedBase(const InterfacedBase & i)
+    : Base(i), Named(i), isLocked(false), isTouched(true), 
+      initState(uninitialized), theComment(i.theComment) {}
 
 private:
 
   /**
    * Set a new name (full name including path).
    */
-  inline void name(string newName);
+  void name(string newName) { Named::name(newName); }
 
   /**
    * Lock this object.
    */
-  inline void lock();
+  void lock() { isLocked = true; }
 
   /**
    * Unlock this object.
    */
-  inline void unlock();
+  void unlock() { isLocked = false; }
 
   /**
    * Clear the isTouched flag.
    */
-  inline void untouch();
+  void untouch() { isTouched = false; }
 
 private:
 
@@ -468,10 +501,5 @@ struct ClassTraits<InterfacedBase>: public ClassTraitsBase<InterfacedBase> {
 /** @endcond */
 
 }
-
-#include "InterfacedBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "InterfacedBase.tcc"
-#endif
 
 #endif /* ThePEG_InterfacedBase_H */

@@ -33,17 +33,20 @@
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/Utilities/Debug.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LesHouchesEventHandler.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
 LesHouchesEventHandler::~LesHouchesEventHandler() {}
+
+IBPtr LesHouchesEventHandler::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr LesHouchesEventHandler::fullclone() const {
+  return new_ptr(*this);
+}
 
 void LesHouchesEventHandler::doinit() throw(InitException) {
   EventHandler::doinit();

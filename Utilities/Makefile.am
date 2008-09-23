@@ -13,16 +13,11 @@ DOCFILES = ClassDescription.h ClassTraits.h  Debug.h DescriptionList.h \
            CFileLineReader.h CompSelector.h XSecStat.h Throw.h MaxCmp.h \
 	   Level.h
 
-INCLUDEFILES = $(DOCFILES) ClassDescription.fh ClassDescription.icc \
-               ClassDescription.tcc \
-               Interval.fh Interval.tcc Maths.icc Rebinder.fh \
-               Rebinder.icc Selector.icc Selector.tcc \
-               SimplePhaseSpace.tcc SimplePhaseSpace.xh \
-               Direction.xh UtilityBase.icc UtilityBase.tcc \
-               Exception.icc Exception.fh \
-               VSelector.icc VSelector.tcc ObjectIndexer.icc \
-               CFileLineReader.fh \
-               CompSelector.icc
+INCLUDEFILES = $(DOCFILES) ClassDescription.fh \
+               Interval.fh Interval.tcc Rebinder.fh \
+               Selector.tcc SimplePhaseSpace.tcc SimplePhaseSpace.xh \
+               Direction.xh UtilityBase.tcc \
+               Exception.fh VSelector.tcc CFileLineReader.fh
 
 noinst_LTLIBRARIES = libThePEGUtilities.la
 

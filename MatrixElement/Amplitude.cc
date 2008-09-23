@@ -13,38 +13,13 @@
 
 #include "Amplitude.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Amplitude.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-Amplitude::Amplitude() {}
-
-Amplitude::Amplitude(const Amplitude & x)
-  : HandlerBase(x) {}
-
-Amplitude::~Amplitude() {}
-
-void Amplitude::persistentOutput(PersistentOStream &) const {
-  // os <<;
-}
-
-void Amplitude::persistentInput(PersistentIStream &, int) {
-  // is >> ;
-}
-
-AbstractClassDescription<Amplitude> Amplitude::initAmplitude;
+AbstractNoPIOClassDescription<Amplitude> Amplitude::initAmplitude;
 // Definition of the static class description member.
-
-void Amplitude::rebind(const TranslationMap & trans)
-  throw(RebindException) {
-  HandlerBase::rebind(trans);
-}
 
 void Amplitude::Init() {
   static ClassDocumentation<Amplitude> documentation

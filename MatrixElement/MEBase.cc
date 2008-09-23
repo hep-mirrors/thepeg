@@ -22,11 +22,6 @@
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEBase.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -35,15 +30,6 @@ using namespace ThePEG;
 MEBase::MEBase()
   : theLastSHat(-1.0*GeV2), lastPreweight(1.0), theLastJacobian(1.0),
     theMaxMultCKKW(0), theMinMultCKKW(0) {}
-
-MEBase::MEBase(const MEBase & x)
-  : HandlerBase(x), LastXCombInfo<StandardXComb>(x),
-    theDiagrams(x.theDiagrams),
-    theLastSHat(x.theLastSHat),
-    reweights(x.reweights), preweights(x.preweights),
-    lastPreweight(x.lastPreweight),
-    theAmplitude(x.theAmplitude), theLastJacobian(x.theLastJacobian),
-    theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW) {}
 
 MEBase::~MEBase() {}
 
@@ -185,11 +171,6 @@ void MEBase::persistentInput(PersistentIStream & is, int) {
 
 AbstractClassDescription<MEBase> MEBase::initMEBase;
 // Definition of the static class description member.
-
-void MEBase::rebind(const TranslationMap & trans)
-  throw(RebindException) {
-  HandlerBase::rebind(trans);
-}
 
 void MEBase::Init() {
 

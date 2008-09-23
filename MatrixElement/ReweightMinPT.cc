@@ -15,17 +15,18 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Handlers/StandardXComb.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ReweightMinPT.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-ReweightMinPT::~ReweightMinPT() {}
+IBPtr ReweightMinPT::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr ReweightMinPT::fullclone() const {
+  return new_ptr(*this);
+}
 
 double ReweightMinPT::weight() const {
   Energy minPt = Constants::MaxEnergy;

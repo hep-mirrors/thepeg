@@ -17,6 +17,13 @@
 
 namespace ThePEG {
 
+SwitchOption::SwitchOption(SwitchBase & theSwitch, string newName,
+			   string newDescription, long newValue)
+  : Named(newName), theDescription(newDescription), theValue(newValue) 
+{
+  theSwitch.registerOption(*this);
+}
+  
 string SwitchBase::exec(InterfacedBase & i, string action,
 		    string arguments) const throw(InterfaceException) {
   ostringstream ret;

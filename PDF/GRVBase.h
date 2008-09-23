@@ -11,8 +11,6 @@
 // This is the declaration of the GRVBase class.
 
 #include "ThePEG/PDF/PDFBase.h"
-// #include "GRVBase.fh"
-// #include "GRVBase.xh"
 
 namespace ThePEG {
 
@@ -33,11 +31,6 @@ public:
    * Default constructor.
    */
   GRVBase();
-
-  /**
-   * Copy-constructor.
-   */
-  GRVBase(const GRVBase &);
 
   /**
    * Destructor.
@@ -86,47 +79,48 @@ public:
    * Return last selected
    * \f$S\f$. \f$S=\log(\log(Q^2/\mu^2)/\log(Q^2/\Lambda_{QCD}^2))\f$
    */
-  inline double S() const;
+  double S() const { return theS; }
 
   /**
    * Return last selected
    * \f$S^2\f$. \f$S=\log(\log(Q^2/\mu^2)/\log(Q^2/\Lambda_{QCD}^2))\f$
    */
-  inline double S2() const;
+  double S2() const { return theS2; }
 
   /**
    * Return last selected
    * \f$S^3\f$. \f$S=\log(\log(Q^2/\mu^2)/\log(Q^2/\Lambda_{QCD}^2))\f$
    */
-  inline double S3() const;
+  double S3() const { return theS3; }
 
   /**
    * Return last selected
    * \f$\sqrt{S}\f$. \f$S=\log(\log(Q^2/\mu^2)/\log(Q^2/\Lambda_{QCD}^2))\f$
    */
-  inline double rootS() const;
+  double rootS() const { return theRootS; }
 
   /**
    * Return last selected momentum fraction, \f$x\f$.
    */
-  inline double x() const;
+  double x() const { return thex; }
 
   /**
    * Return last selected logarithmic momentum fraction
    * \f$l=\log(1/x)\f$.
    */
-  inline double lx() const;
+  double lx() const { return theLx; }
 
   /**
    * Return one minus the last selected momentum fraction, eps\f$=1-x\f$.
    */
-  inline double eps() const;
+  double eps() const { return theEps; }
 
   /**
    * Return the square root of the last selected momentum fraction,
    * \f$x\f$.
    */
-  inline double rootx() const;
+  double rootx() const { return theRootx; }
+
   //@}
 
 protected:
@@ -214,49 +208,49 @@ protected:
    * fuv() returns the saved values from the quv() functions if
    * present. Otherwise uv() is called, saved and returned.
    */
-  inline double fuv() const;
+  double fuv() const { return uvSave >= 0.0? uvSave: ( uvSave = uv() ); }
 
   /**
    * fdv() returns the saved values from the dv() functions if
    * present. Otherwise dv() is called, saved and returned.
    */
-  inline double fdv() const;
+  double fdv() const { return dvSave >= 0.0? dvSave: ( dvSave = dv() ); }
 
   /**
    * fdel() returns the saved values from the del() functions if
    * present. Otherwise del() is called, saved and returned.
    */
-  inline double fdel() const;
+  double fdel() const { return delSave >= 0.0? delSave: ( delSave = del() ); }
 
   /**
    * fudb() returns the saved values from the udb() functions if
    * present. Otherwise udb() is called, saved and returned.
    */
-  inline double fudb() const;
+  double fudb() const { return udbSave >= 0.0? udbSave: ( udbSave = udb() ); }
 
   /**
    * fsb() returns the saved values from the sb() functions if
    * present. Otherwise sb() is called, saved and returned.
    */
-  inline double fsb() const;
+  double fsb() const { return sbSave >= 0.0? sbSave: ( sbSave = sb() ); }
 
   /**
    * fcb() returns the saved values from the cb() functions if
    * present. Otherwise cb() is called, saved and returned.
    */
-  inline double fcb() const;
+  double fcb() const { return cbSave >= 0.0? cbSave: ( cbSave = cb() ); }
 
   /**
    * fbb() returns the saved values from the bb() functions if
    * present. Otherwise bb() is called, saved and returned.
    */
-  inline double fbb() const;
+  double fbb() const { return bbSave >= 0.0? bbSave: ( bbSave = bb() ); }
 
   /**
    * fgl() returns the saved values from the gl() functions if
    * present. Otherwise gl() is called, saved and returned.
    */
-  inline double fgl() const;
+  double fgl() const { return glSave >= 0.0? glSave: ( glSave = gl() ); }
 
 public:
 
@@ -264,48 +258,6 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this
-   * object.
-   * @return a vector of pointers.
-   */
-  virtual IVector getReferences();
-  //@}
 
 private:
 
@@ -445,10 +397,5 @@ struct ClassTraits<GRVBase>: public ClassTraitsBase<GRVBase> {
 /** @endcond */
 
 }
-
-#include "GRVBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "GRVBase.tcc"
-#endif
 
 #endif /* ThePEG_GRVBase_H */

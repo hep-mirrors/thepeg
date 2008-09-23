@@ -8,14 +8,9 @@
 //
 #ifndef ThePEG_ClassDescription_H
 #define ThePEG_ClassDescription_H
-// This is the declaration of the ClassDescriptionBase,
-// ClassDescriptionTBase, ClassDescription, AbstractClassDescription,
-// NoPIOClassDescription and AbstractNoPIOClassDescription classes.
-
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ClassDescription.fh"
-// #include "ClassDescription.xh"
 #include "ThePEG/Utilities/Named.h"
 #include "ThePEG/Persistency/PersistentOStream.fh"
 #include "ThePEG/Persistency/PersistentIStream.fh"
@@ -83,43 +78,47 @@ protected:
    * @param abst true if the class is abstract.
    * library where the class is implemented.
    */
-  inline ClassDescriptionBase(string newName, const type_info & newInfo,
-			      int newVersion, string newLibrary,
-			      bool abst);
+  ClassDescriptionBase(string newName, 
+		       const type_info & newInfo,
+		       int newVersion, 
+		       string newLibrary,
+		       bool abst)
+    : Named(newName), theVersion(newVersion), theLibrary(newLibrary),
+      theInfo(newInfo), isAbstract(abst), done(false) {}
 
 public:
 
   /**
    * Empty destructor.
    */
-  inline virtual ~ClassDescriptionBase();
+  virtual ~ClassDescriptionBase();
 
   /**
    * The standart RTTI type_info object for the described class.
    */
-  inline const type_info & info() const;
+  const type_info & info() const { return theInfo; }
 
   /**
    * The version of the described class.
    */
-  inline int version() const;
+  int version() const { return theVersion; }
 
   /**
    * The name of a file containing the dynamic
    * library where the class is implemented.
    */
-  inline string library() const;
+  string library() const { return theLibrary; }
 
   /**
    * Return true if this object was set up properly.
    */
-  inline bool check() const;
+  bool check() const { return done; }
 
   /**
    * Return the descriptions of the base classes of the described
    * class.
    */
-  inline const DescriptionVector & descriptions() const;
+  const DescriptionVector & descriptions() const { return theBaseClasses; }
 
   /**
    * Set up the base class information for this object.
@@ -157,7 +156,7 @@ public:
   /**
    * Return true if the corresponding class is abstract.
    */
-  bool abstract() const;
+  bool abstract() const { return isAbstract; }
 
 protected:
 
@@ -167,8 +166,12 @@ protected:
    * @param last an iterator giving the end of the range of base class
    * descriptions.
    */
-  inline void baseClasses(DescriptionVector::iterator first,
-			  DescriptionVector::iterator last);
+  void baseClasses(DescriptionVector::iterator first,
+		   DescriptionVector::iterator last) 
+  {
+    theBaseClasses = DescriptionVector(first, last);
+    done = true;
+  }
 
 private:
 
@@ -205,6 +208,36 @@ private:
 };
 
 /**
+ * A helper class for tracing the base classes of a class to be
+ * described
+ */
+template <typename T, int IBase,
+          typename B = typename BaseClassTrait<T,IBase>::NthBase>
+struct ClassDescriptionHelper {
+  /** Add base classes */
+  static void addBases(vector<const ClassDescriptionBase *> & c){
+    const ClassDescriptionBase * b = DescriptionList::find(typeid(B));
+    if ( !b ) return;
+    c.push_back(b);
+    ClassDescriptionHelper<T,IBase+1>::addBases(c);
+  }
+};
+
+/** @cond TRAITSPECIALIZATIONS */
+
+/**
+ * A helper class for tracing the base classes of a class to be
+ * described
+ */
+template <typename T, int IBase>
+struct ClassDescriptionHelper<T, IBase, int> {
+  /** Add base classes */
+  static void addBases(vector<const ClassDescriptionBase *> & ) {}
+};
+
+/** @endcond */
+
+/**
  * An intermediate templated base class derived from
  * ClassDescriptionBase.
  */
@@ -222,17 +255,28 @@ public:
    * Default constructor. If \a abst is true then the corresponding
    * class is abstract.
    */
-  inline ClassDescriptionTBase(bool abst);
+  ClassDescriptionTBase(bool abst)
+    : ClassDescriptionBase(Traits::className(), typeid(T), Traits::version(),
+			   Traits::library(), abst) 
+  {
+    DescriptionList::Register(*this);
+    T::Init();
+  }
+
 
   /**
    * The descructor.
    */
-  inline virtual ~ClassDescriptionTBase();
+  virtual ~ClassDescriptionTBase() {}
 
   /**
    * Set up the base class information for this object.
    */
-  inline virtual void setup();
+  virtual void setup() {
+    DescriptionVector bases;
+    ClassDescriptionHelper<T,1>::addBases(bases);
+    baseClasses(bases.begin(), bases.end());
+  }
 
 };
 
@@ -253,13 +297,15 @@ public:
   /**
    * Default constructor.
    */
-  inline AbstractClassDescription();
+  AbstractClassDescription() : ClassDescriptionTBase<T>(true) {}
 
   /**
    * Do not create an object of the described class (which is
    * abstract). Just return the null pointer.
    */
-  inline virtual BPtr create() const;
+  virtual BPtr create() const {
+    throw std::logic_error("Tried to instantiate virtual class " + Named::name());
+  }
 
   /**
    * Output the members of an object of the described class to a
@@ -267,7 +313,9 @@ public:
    * @param b the object to be written.
    * @param os the persistent stream.
    */
-  inline virtual void output(tcBPtr b, PersistentOStream & os) const;
+  virtual void output(tcBPtr b, PersistentOStream & os) const {
+    Traits::output(Traits::cast(b), os);
+  }
 
   /**
    * Read the members of an object of the described class from a
@@ -276,8 +324,10 @@ public:
    * @param is the persistent stream.
    * @param oldVersion the version number of the object when it was written.
    */
-  inline virtual void input(tBPtr b, PersistentIStream & is,
-			    int oldVersion) const;
+  virtual void input(tBPtr b, PersistentIStream & is,
+		     int oldVersion) const {
+    Traits::input(Traits::cast(b), is, oldVersion);
+  }
 
 };
 
@@ -298,12 +348,12 @@ public:
   /**
    * Default constructor.
    */
-  inline ClassDescription();
+  ClassDescription() : ClassDescriptionTBase<T>(false) {}
 
   /**
    * Create an object of the described class.
    */
-  inline virtual BPtr create() const;
+  virtual BPtr create() const { return Traits::create(); }
 
   /**
    * Output the members of an object of the described class to a
@@ -311,7 +361,9 @@ public:
    * @param b the object to be written.
    * @param os the persistent stream.
    */
-  inline virtual void output(tcBPtr b, PersistentOStream & os) const;
+  virtual void output(tcBPtr b, PersistentOStream & os) const {
+    Traits::output(Traits::cast(b), os);
+  }
 
   /**
    * Read the members of an object of the described class from a
@@ -320,8 +372,10 @@ public:
    * @param is the persistent stream.
    * @param oldVersion the version number of the object when it was written.
    */
-  inline virtual void input(tBPtr b, PersistentIStream & is,
-			    int oldVersion) const;
+  virtual void input(tBPtr b, PersistentIStream & is,
+		     int oldVersion) const {
+    Traits::input(Traits::cast(b), is, oldVersion);
+  }
 
 };
 
@@ -342,22 +396,22 @@ public:
   /**
    * Default constructor.
    */
-  inline NoPIOClassDescription();
+  NoPIOClassDescription() : ClassDescriptionTBase<T>(false) {}
 
   /**
    * Create an object of the described class.
    */
-  inline virtual BPtr create() const;
+  virtual BPtr create() const { return Traits::create(); }
 
   /**
    * Do nothing since the described class has no persistent data.
    */
-  inline virtual void output(tcBPtr, PersistentOStream &) const;
+  virtual void output(tcBPtr, PersistentOStream &) const {}
 
   /**
    * Do nothing since the described class has no persistent data.
    */
-  inline virtual void input(tBPtr, PersistentIStream &, int) const;
+  virtual void input(tBPtr, PersistentIStream &, int) const {}
 
 };
 
@@ -378,50 +432,27 @@ public:
   /**
    * Default constructor.
    */
-  inline AbstractNoPIOClassDescription();
+  AbstractNoPIOClassDescription() : ClassDescriptionTBase<T>(true) {}
 
   /**
    * Do not create an object of the described class (which is
    * abstract). Just return the null pointer.
    */
-  inline virtual BPtr create() const;
+  virtual BPtr create() const {
+    throw std::logic_error("Tried to instantiate virtual class " + Named::name());
+  }
 
   /**
    * Do nothing since the described class has no persistent data.
    */
-  inline virtual void output(tcBPtr, PersistentOStream & ) const;
+  virtual void output(tcBPtr, PersistentOStream & ) const {}
 
   /**
    * Do nothing since the described class has no persistent data.
    */
-  inline virtual void input(tBPtr, PersistentIStream &, int) const;
+  virtual void input(tBPtr, PersistentIStream &, int) const {}
 
 };
-
-/**
- * A helper class for tracing the base classes of a class to be
- * described
- */
-template <typename T, int IBase,
-          typename B = typename BaseClassTrait<T,IBase>::NthBase>
-struct ClassDescriptionHelper {
-  /** Add base classes */
-  static void addBases(vector<const ClassDescriptionBase *> & c);
-};
-
-/** @cond TRAITSPECIALIZATIONS */
-
-/**
- * A helper class for tracing the base classes of a class to be
- * described
- */
-template <typename T, int IBase>
-struct ClassDescriptionHelper<T, IBase, int> {
-  /** Add base classes */
-  static void addBases(vector<const ClassDescriptionBase *> & c);
-};
-
-/** @endcond */
 
 }
 
@@ -452,10 +483,5 @@ NoPIOClassDescription<Class> Class::init ## Class                  \
 
 #define ThePEG_IMPLEMENT_ABSTRACT_NOPIO_CLASS_DESCRIPTION(Class)   \
 AbstractNoPIOClassDescription<Class> Class::init ## Class          \
-
-#include "ClassDescription.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#include "ClassDescription.tcc"
-#endif
 
 #endif /* ThePEG_ClassDescription_H */

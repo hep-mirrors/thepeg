@@ -14,11 +14,6 @@
 #include "ME2to2Base.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Switch.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ME2to2Base.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/SimplePhaseSpace.h"
@@ -37,10 +32,6 @@ Energy2 ME2to2Base::scale() const {
   default:
     return tHat()*uHat()/sHat();
   }
-}
-
-int ME2to2Base::nDim() const {
-  return 1;
 }
 
 void ME2to2Base::setKinematics() {

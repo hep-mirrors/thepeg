@@ -18,6 +18,22 @@
 
 namespace ThePEG {
 
+/// Helper functions for putUnit
+namespace {
+  template <typename T>
+  inline void putUnitImpl2(ostream & os, T v, T u, DimensionT) {
+    os << v/u;
+  }
+  
+  template <typename T>
+  inline void putUnitImpl2(ostream & os, T v, T u, StandardT) {
+    if ( u > T() )
+      os << v/u;
+    else
+      os << v;
+  }
+}
+
 /**
  * The ParVector and its base classes ParVectorTBase and ParVectorBase
  * defines an interface to a class derived from the InterfacedBase,
@@ -73,15 +89,18 @@ public:
    * limited from above and/or below. The possible values are given by
    * Interface::Limits.
    */
-  inline ParVectorBase(string newName, string newDescription,
-		       string newClassName,
-		       const type_info & newTypeInfo, int newSize,
-		       bool depSafe, bool readonly, int limits);
+  ParVectorBase(string newName, string newDescription,
+		string newClassName,
+		const type_info & newTypeInfo, int newSize,
+		bool depSafe, bool readonly, int limits) 
+    : InterfaceBase(newName, newDescription, newClassName, 
+		    newTypeInfo, depSafe,
+		    readonly), limit(limits), theSize(newSize) {}
 
   /**
    * Destructor.
    */
-  inline virtual ~ParVectorBase();
+  virtual ~ParVectorBase() {}
 
   /**
    * The general interface method overriding the one in
@@ -166,47 +185,51 @@ public:
   /**
    * True if there the variable is limited from above and below.
    */
-  inline bool limited() const;
+  bool limited() const { return limit != Interface::nolimits; }
 
   /**
    * True if there the variable is limited from abovew.
    */
-  inline bool upperLimit() const;
+  bool upperLimit() const { 
+    return limit == Interface::limited || limit == Interface::upperlim;
+  }
 
   /**
    * True if there the variable is limited from  below.
    */
-  inline bool lowerLimit() const;
+  bool lowerLimit() const { 
+    return limit == Interface::limited || limit == Interface::lowerlim;
+  }
 
   /**
    * Set a flag indicating that there are limits associated with the
    * variables.
    */
-  inline void setLimited();
+  void setLimited() { limit = Interface::limited; }
 
   /**
    * Set a flag indicating if there are no limits associated with the
    * variables.
    */
-  inline void setUnlimited();
+  void setUnlimited() { limit = Interface::nolimits; }
 
   /**
    * Get the size of the container being interfaced. If the size() is
    * less than 0, the size is allowed to vary.
    */
-  inline int size() const;
+  int size() const { return theSize; }
 
   /**
    * Set the size of the container being interfaced. If the size is
    * less than 0, the size is allowed to vary.
    */
-  inline void setSize(int);
+  void setSize(int sz) { theSize = sz; }
 
   /**
    * Set the size of the container being interfaced to -1, i.e. the
    * size is allowed to vary.
    */
-  inline void setVariableSize();
+  void setVariableSize() { theSize = 0; }
 
 private:
 
@@ -282,15 +305,19 @@ public:
    * limited from above and/or below. The possible values are given by
    * Interface::Limits.
    */
-  inline ParVectorTBase(string newName, string newDescription,
-			string newClassName, const type_info & newTypeInfo,
-			Type newUnit, int newSize, bool depSafe,
-			bool readonly, int limits);
+  ParVectorTBase(string newName, string newDescription,
+		 string newClassName, const type_info & newTypeInfo,
+		 Type newUnit, int newSize, bool depSafe,
+		 bool readonly, int limits)
+    : ParVectorBase(newName, newDescription, newClassName, 
+		    newTypeInfo, newSize,
+		    depSafe, readonly, limits), theUnit(newUnit) {}
+
 
   /**
    * Destructor.
    */
-  inline virtual ~ParVectorTBase();
+  virtual ~ParVectorTBase() {}
 
   /**
    * Return a code for the type of this parameter.
@@ -334,19 +361,19 @@ public:
 
 private:
   /// Implementation of set() for standard types.
-  inline void setImpl(InterfacedBase & ib, string val, int i, StandardT)
+  void setImpl(InterfacedBase & ib, string val, int i, StandardT)
     const throw(InterfaceException);
 
   /// Implementation of set() for dimensioned types.
-  inline void setImpl(InterfacedBase & ib, string val, int i, DimensionT) 
+  void setImpl(InterfacedBase & ib, string val, int i, DimensionT) 
     const throw(InterfaceException);
 
   /// Implementation of insert() for standard types.
-  inline void insertImpl(InterfacedBase & ib, string val, int i, StandardT)
+  void insertImpl(InterfacedBase & ib, string val, int i, StandardT)
     const throw(InterfaceException);
 
   /// Implementation of insert() for dimensioned types.
-  inline void insertImpl(InterfacedBase & ib, string val, int i, DimensionT) 
+  void insertImpl(InterfacedBase & ib, string val, int i, DimensionT) 
     const throw(InterfaceException);
 
 public:
@@ -436,7 +463,7 @@ public:
    * set the \a i'th element of a container of member variables of \a ib to
    * its default value.
    */
-  virtual inline void setDef(InterfacedBase & ib, int i) const
+  virtual void setDef(InterfacedBase & ib, int i) const
     throw(InterfaceException);
 
   /**
@@ -444,21 +471,23 @@ public:
    * written to (read from) a stream via a double. If unit() is zero,
    * the Type object is written/read directly.
    */
-  inline Type unit() const;
+  Type unit() const { return theUnit; }
 
   /**
    * Set the unit which an Type object is divided (multiplied) by when
    * written to (read from) a stream via a double. If unit() is zero,
    * the Type object is written/read directly.
    */
-  inline void unit(Type u);
+  void unit(Type u) { theUnit = u; }
 
 protected:
 
   /**
    * Write a numer to a stream with the unit specified with unit().
    */
-  inline void putUnit(ostream &, Type val) const;
+  void putUnit(ostream & os, Type val) const { 
+    putUnitImpl2(os, val, unit(), typename TypeTraits<Type>::DimType());
+  }
 
 private:
 
@@ -604,7 +633,7 @@ public:
    * @param newStringGetFn optional pointer to member function for the
    * 'get' action.
    */
-  inline ParVector(string newName, string newDescription,
+  ParVector(string newName, string newDescription,
 		   Member newMember, int newSize, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   bool limits = true, SetFn newSetFn = 0,
@@ -677,7 +706,7 @@ public:
    * @param newStringGetFn optional pointer to member function for the
    * 'get' action.
    */
-  inline ParVector(string newName, string newDescription, Member newMember,
+  ParVector(string newName, string newDescription, Member newMember,
 		   Type newUnit, int newSize, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   bool limits = true, SetFn newSetFn = 0,
@@ -747,7 +776,7 @@ public:
    * @param newStringGetFn optional pointer to member function for the
    * 'get' action.
    */
-  inline ParVector(string newName, string newDescription,
+  ParVector(string newName, string newDescription,
 		   Member newMember, int newSize, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   int limits = Interface::limited, SetFn newSetFn = 0,
@@ -820,7 +849,7 @@ public:
    * @param newStringGetFn optional pointer to member function for the
    * 'get' action.
    */
-  inline ParVector(string newName, string newDescription, Member newMember,
+  ParVector(string newName, string newDescription, Member newMember,
 		   Type newUnit, int newSize, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   int limits = Interface::limited, SetFn newSetFn = 0,
@@ -900,42 +929,42 @@ public:
   /**
    * Give a pointer to a member function to be used by tset().
    */
-  inline void setSetFunction(SetFn);
+  void setSetFunction(SetFn sf) { theSetFn = sf; }
 
   /**
    * Give a pointer to a member function to be used by tinsert().
    */
-  inline void setInsertFunction(InsFn);
+  void setInsertFunction(InsFn ifn) { theInsFn = ifn; }
 
   /**
    * Give a pointer to a member function to be used by tget().
    */
-  inline void setGetFunction(GetFn);
+  void setGetFunction(GetFn gf) { theGetFn = gf; }
 
   /**
    * Give a pointer to a member function to be used by terase().
    */
-  inline void setEraseFunction(DelFn);
+  void setEraseFunction(DelFn df) { theDelFn = df; }
 
   /**
    * Give a pointer to a member function to be used by tdef().
    */
-  inline void setDefaultFunction(GetFn);
+  void setDefaultFunction(GetFn df) { theDefFn = df; }
 
   /**
    * Give a pointer to a member function to be used by tminimum().
    */
-  inline void setMinFunction(GetFn);
+  void setMinFunction(GetFn mf) { theMinFn = mf; }
 
   /**
    * Give a pointer to a member function to be used by tmaximum().
    */
-  inline void setMaxFunction(GetFn);
+  void setMaxFunction(GetFn mf) { theMaxFn = mf; }
 
   /**
    * Give a pointer to a member function to be used by get().
    */
-  inline void setStringGetFunction(StringGetFn);
+  void setStringGetFunction(StringGetFn gf) { theStringGetFn = gf; }
 
   /**
    * Print a description to be included in the Doxygen documentation
@@ -1012,7 +1041,8 @@ private:
 
 }
 
-#include "ParVector.icc"
+#ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "ParVector.tcc"
+#endif
 
 #endif /* ThePEG_ParVector_H */

@@ -43,10 +43,6 @@ void InterfaceBase::doxygenDescription(ostream & os) const {
      << description() << "<br>\n";
 }
 
-IVector InterfaceBase::getReferences(const InterfacedBase &) const {
-  return IVector();
-}
-
 bool InterfaceBase::NoReadOnly = false;
 
 InterExClass::InterExClass(const InterfaceBase & i, const InterfacedBase & o) {
@@ -89,9 +85,15 @@ InterExNoNull::InterExNoNull(const InterfaceBase & i,
 }
 
 
+RefInterfaceBase::
+RefInterfaceBase(string newName, string newDescription, string newClassName,
+		 const type_info & newTypeInfo, string newRefClassName,
+		 const type_info & newRefTypeInfo, bool depSafe,
+		 bool readonly, bool norebind, bool nullable, bool defnull)
+  : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
+		  readonly), theRefClassName(newRefClassName),
+  theRefTypeInfo(newRefTypeInfo), dontRebind(norebind),
+  isNullable(nullable), theDefaultIfNull(defnull) {}
+
+
 }
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "InterfaceBase.tcc"
-#endif
-

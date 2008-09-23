@@ -19,11 +19,9 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Interface/Command.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Interfaced.tcc"
-#endif
-
 using namespace ThePEG;
+
+Interfaced::~Interfaced() {}
 
 void Interfaced::registerRepository(IBPtr i) {
   Repository::Register(i);

@@ -51,28 +51,28 @@ public:
    *
    * @param newValue the integer value corresponding to this option.
    */
-  inline SwitchOption(SwitchBase & theSwitch, string newName,
-		      string newDescription, long newValue);
+  SwitchOption(SwitchBase & theSwitch, string newName,
+	       string newDescription, long newValue);
 
   /**
    * Default constructor.
    */
-  inline SwitchOption();
+  SwitchOption() : theValue(-999) {}
 
   /**
    * The description of this option
    */
-  inline string description() const;
+  const string & description() const { return theDescription; }
 
   /**
    * The value of this option.
    */
-  inline long value() const;
+  long value() const { return theValue; }
 
   /**
    * The value of this option.
    */
-  inline operator long () const;
+  operator long () const;
 
 protected:
 
@@ -148,9 +148,11 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    */
-  inline SwitchBase(string newName, string newDescription,
-		    string newClassName, const type_info & newTypeInfo,
-		    bool depSafe, bool readonly);
+  SwitchBase(string newName, string newDescription,
+	     string newClassName, const type_info & newTypeInfo,
+	     bool depSafe, bool readonly)
+    : InterfaceBase(newName, newDescription, newClassName, 
+		    newTypeInfo, depSafe, readonly) {}
 
   /**
    * The general interface method overriding the one in
@@ -193,17 +195,19 @@ public:
   /**
    * Set the member variable of \a ib to its default value.
    */
-  inline void setDef(InterfacedBase & ib) const throw(InterfaceException);
+  void setDef(InterfacedBase & i) const throw(InterfaceException) {
+    set(i, def(i));
+  }
 
   /**
    * Check if \a val is among the listed options.
    */
-  inline bool check(long val) const;
+  bool check(long newValue) const { return member(theOptions, newValue); }
 
   /**
    * Return the map relating options to their values
    */
-  inline const OptionMap & options() const;
+  const OptionMap & options() const { return theOptions; }
 
   /**
    * Return a string describing the type of interface to be included
@@ -216,7 +220,10 @@ protected:
   /**
    * Register a new option.
    */
-  inline void registerOption(const SwitchOption & o);
+  void registerOption(const SwitchOption & o) {
+    theOptions[o.value()] = o;
+    theOptionNames[o.name()] = o;
+  }
 
 private:
 
@@ -336,17 +343,17 @@ public:
   /**
    * Give a pointer to a member function to be used by 'set()'.
    */
-  inline void setSetFunction(SetFn);
+  void setSetFunction(SetFn sf) { theSetFn = sf; }
 
   /**
    * Give a pointer to a member function to be used by 'get()'.
    */
-  inline void setGetFunction(GetFn);
+  void setGetFunction(GetFn gf) { theGetFn = gf; }
 
   /**
    * Give a pointer to a member function to be used by 'def()'.
    */
-  inline void setDefaultFunction(GetFn);
+  void setDefaultFunction(GetFn df) { theDefFn = df; }
 
   /**
    * Print a description to be included in the Doxygen documentation
@@ -386,7 +393,6 @@ private:
 
 }
 
-#include "Switch.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Switch.tcc"
 #endif

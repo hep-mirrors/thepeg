@@ -37,11 +37,15 @@ protected:
   /**
    * Increment the counter of a reference counted object.
    */
-  inline void increment(const ReferenceCounted *);
+  void increment(const ReferenceCounted * rcp) {
+    if ( rcp ) rcp->incrementReferenceCount();
+  }
   /**
    * Decrement the counter of a reference counted object.
    */
-  inline bool release(const ReferenceCounted *);
+  bool release(const ReferenceCounted * rcp) {
+    return rcp && rcp->decrementReferenceCount();
+  }
 
 };
 
@@ -78,165 +82,219 @@ public:
   /**
    * Constructor for null pointer.
    */
-  inline RCPtr();
+  RCPtr() : ptr(0) {}
 
   /**
    * Copy constructor.
    */
-  inline RCPtr(const RCPtr & p);
+  RCPtr(const RCPtr & p) : ptr(p.ptr) { increment(); }
 
   /**
    * Copy constructor for class UPtr which has operator-> defined
    * resulting in a value implicitly convertible to T *.
    */
   template <typename UPtr>
-  inline RCPtr(const UPtr & u);
+  RCPtr(const UPtr & u) 
+    : ptr(PtrTraits<UPtr>::barePointer(u)) { increment(); }
 
   /**
    * Construction from real pointer.
    */
-  inline explicit RCPtr(pointer p);
+  explicit RCPtr(pointer p) : ptr(p) { increment(); }
 
   /**
    * Destructor. Deletes the object pointed to if this is the last
    * pointer to it.
    */
-  inline ~RCPtr();
+  ~RCPtr() { release(); }
 
   /**
    * Allocate and construct an object of class T and return a RCPtr to
    * it.
    */
-  inline static RCPtr Create();
+  static RCPtr Create() {
+    RCPtr<T> p;
+    return p.create();
+  }
 
   /**
    * Allocate and copy-construct an object of class T and return a
    * RCPtr to it.
    */
-  inline static RCPtr Create(const_reference t);
+  static RCPtr Create(const_reference t) {
+    RCPtr<T> p;
+    return p.create(t);
+  }
+
 
   /**
    * Allocate and construct an object of class T and point to it,
    * possibly deleting the object pointed to before.
    */
-  inline RCPtr & create();
+  RCPtr & create() {
+    release();
+    ptr = new T;
+    //  increment(); // ReferenceCounted() constructor starts at 1
+    return *this;
+  }
 
   /**
    * Allocate and copy-construct an object of class T and point to it,
    * possibly deleting the object pointed to before.
    */
-  inline RCPtr & create(const_reference t);
+  RCPtr & create(const_reference t) {
+    release();
+    ptr = new T(t);
+    //  increment(); // ReferenceCounted() constructor starts at 1
+    return *this;
+  }
 
   /**
    * Assignment.
    */
-  inline RCPtr & operator=(const RCPtr & p);
+  RCPtr & operator=(const RCPtr & p) {
+    if ( ptr == p.ptr ) return *this;
+    release();
+    ptr = p.ptr;
+    increment();
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value implicitly convertible to T *.
    */
   template <typename UPtr>
-  inline RCPtr & operator=(const UPtr & u);
+  RCPtr & operator=(const UPtr & u) {
+    if ( ptr == PtrTraits<UPtr>::barePointer(u) ) return *this;
+    release();
+    ptr = PtrTraits<UPtr>::barePointer(u);
+    increment();
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value which can be cast dynamically to T *.
    */
   template <typename UPtr>
-  inline RCPtr & assignDynamic(const UPtr & u);
+  RCPtr & assignDynamic(const UPtr & u) {
+    pointer up = dynamic_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
+    if ( ptr == up ) return *this;
+    release();
+    ptr = up;
+    increment();
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value which can be const_cast'ed to T *.
    */
   template <typename UPtr>
-  inline RCPtr & assignConst(const UPtr & u);
-
-  /**
-   * Assignment from bare pointer without increasing refcount.
-   */
-  inline void assign(pointer);
+  RCPtr & assignConst(const UPtr & u) {
+    pointer up = const_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
+    if ( ptr == up ) return *this;
+    release();
+    ptr = up;
+    increment();
+    return *this;
+  }
 
   /**
    * Make p point to the object pointed to by this and vice versa.  
    */
-  inline void swap(RCPtr & p);
+  void swap(RCPtr & p) {
+    const pointer tmp = ptr;
+    ptr = p.ptr;
+    p.ptr = tmp;
+    //  std::swap(ptr, p.ptr);
+  }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const RCPtr & p) const;
+  bool operator==(const RCPtr & p) const { return ptr == p.ptr; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const RCPtr & p) const;
+  bool operator!=(const RCPtr & p) const { return ptr != p.ptr; }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const_pointer p) const;
+  bool operator==(const_pointer p) const { return ptr == p; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const_pointer p) const;
+  bool operator!=(const_pointer p) const { return ptr != p; }
 
   /**
    * Test for equality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator==(const UPtr & u) const;
+  bool operator==(const UPtr & u) const {
+    return ptr == PtrTraits<UPtr>::barePointer(u);
+  }
 
   /**
    * Test for inequality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator!=(const UPtr & u) const;
+  bool operator!=(const UPtr & u) const {
+    return ptr != PtrTraits<UPtr>::barePointer(u);
+  }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const RCPtr & p) const;
+  bool operator<(const RCPtr & p) const {
+    return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+      ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
+  }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const_pointer p) const;
+  bool operator<(const_pointer p) const {
+    return ( ptr && p && ptr->uniqueId != p->uniqueId ) ?
+      ptr->uniqueId < p->uniqueId : ptr < p;
+  }
 
   /**
    * Returns true if the underlying pointer is null.
    */
-  inline bool operator!() const ;
+  bool operator!() const { return !ptr; }
 
   /**
    * Returns the underlying pointer.
    */
-  inline operator T * () const ;
+  operator T * () const { return ptr; }
 
   /**
    * Member access.
    */
-  inline pointer operator->() const;
+  pointer operator->() const { return ptr; }
 
   /**
    * Dereferencing.
    */
-  inline reference operator*() const;
+  reference operator*() const { return *ptr; }
 
 private:
 
   /**
    * Increment the counter of the object pointed to.
    */
-  void increment();
+  void increment() { RCPtrBase::increment(ptr); }
 
   /**
    * Stop pointing to the current object and delete it if this was the
    * last pointer to it.
    */
-  inline void release();
+  void release() { if ( RCPtrBase::release(ptr) )  delete ptr; }
    
   /**
    * The actual pointer.
@@ -278,129 +336,160 @@ public:
   /**
    * Constructor for null pointer.
    */
-  inline ConstRCPtr();
+  ConstRCPtr() : ptr(0) {}
 
   /**
    * Copy constructor.
    */
-  inline ConstRCPtr(const ConstRCPtr & p);
+  ConstRCPtr(const ConstRCPtr & p) : ptr(p.ptr) { increment(); }
 
   /**
    * Copyconstructor for class UPtr which has operator-> defined
    * resulting in a value implicitly convertible to const T *.
    */
   template <typename UPtr>
-  inline ConstRCPtr(const UPtr & u);
+  ConstRCPtr(const UPtr & u) : ptr(PtrTraits<UPtr>::barePointer(u)) { increment(); }
 
   /**
    * Construction from real pointer.
    */
-  inline explicit ConstRCPtr(const_pointer p);
+  explicit ConstRCPtr(const_pointer p) : ptr(p) { increment(); }
 
   /**
    * Destructor. Deletes the object pointed to if this is the last
    * pointer to it.
    */
-  inline ~ConstRCPtr();
+  ~ConstRCPtr() { release(); }
 
   /**
    * Assignment.
    */
-  inline ConstRCPtr & operator=(const ConstRCPtr & p);
-
+  ConstRCPtr & operator=(const ConstRCPtr & p) {
+    if ( ptr == p.ptr ) return *this;
+    release();
+    ptr = p.ptr;
+    increment();
+    return *this;
+  }
+  
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value implicitly convertible to const T *.
    */
   template <typename UPtr>
-  inline ConstRCPtr & operator=(const UPtr & u);
+  ConstRCPtr & operator=(const UPtr & u) {
+    if ( ptr == PtrTraits<UPtr>::barePointer(u) ) return *this;
+    release();
+    ptr = PtrTraits<UPtr>::barePointer(u);
+    increment();
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value which can be cast dynamically to const T *.
    */
   template <typename UPtr>
-  inline ConstRCPtr & assignDynamic(const UPtr & u);
+  ConstRCPtr & assignDynamic(const UPtr & u) {
+    const_pointer up =
+      dynamic_cast<const_pointer>(PtrTraits<UPtr>::barePointer(u));
+    if ( ptr == up ) return *this;
+    release();
+    ptr = up;
+    increment();
+    return *this;
+  }
 
   /**
    * Make p point to the object pointed to by this and vice versa.  
    */
-  inline void swap(ConstRCPtr & p);
+  void swap(ConstRCPtr & p) {
+    const const_pointer tmp = ptr;
+    ptr = p.ptr;
+    p.ptr = tmp;
+    //  std::swap(ptr, p.ptr);
+  }  
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const ConstRCPtr & p) const;
+  bool operator==(const ConstRCPtr & p) const { return ptr == p.ptr; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const ConstRCPtr & p) const;
+  bool operator!=(const ConstRCPtr & p) const { return ptr != p.ptr; }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const_pointer p) const;
+  bool operator==(const_pointer p) const { return ptr == p; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const_pointer p) const;
+  bool operator!=(const_pointer p) const { return ptr != p; }
 
   /**
    * Test for equality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator==(const UPtr & u) const;
+    bool operator==(const UPtr & u) const { return ptr == PtrTraits<UPtr>::barePointer(u); }
 
   /**
    * Test for inequality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator!=(const UPtr & u) const;
+  bool operator!=(const UPtr & u) const { return ptr != PtrTraits<UPtr>::barePointer(u); }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const ConstRCPtr & p) const;
+  bool operator<(const ConstRCPtr & p) const {
+    return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+      ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
+  }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const_pointer p) const;
+  bool operator<(const_pointer p) const {
+    return ( ptr && p && ptr->uniqueId != p->uniqueId ) ?
+      ptr->uniqueId < p->uniqueId : ptr < p;
+  }
 
   /**
    * Returns true if the underlying pointer is null.
    */
-  inline bool operator!() const ;
+  bool operator!() const { return !ptr; }
 
   /**
    * Returns the underlying pointer.
    */
-  inline operator const T * () const ;
+  operator const T * () const { return ptr; }
 
   /**
    * Member access.
    */
-  inline const_pointer operator->() const;
+  const_pointer operator->() const { return ptr; }
 
   /**
    * Dereferencing.
    */
-  inline const_reference operator*() const;
+  const_reference operator*() const { return *ptr; }
 
 private:
 
   /**
    * Increment the counter of the object pointed to.
    */
-  void increment();
+  void increment() { RCPtrBase::increment(ptr); }
 
   /**
    * Stop pointing to the current object and delete it if this was the
    * last pointer to it.
    */
-  inline void release();
+  void release() { if ( RCPtrBase::release(ptr) ) delete ptr; }
    
   /**
    * The actual pointer.
@@ -441,117 +530,135 @@ public:
   /**
    * Constructor for null pointer.
    */
-  inline TransientRCPtr();
+  TransientRCPtr() : ptr(0) {}
 
   /**
    * Copy constructor.
    */
-  inline TransientRCPtr(const TransientRCPtr & p);
+  TransientRCPtr(const TransientRCPtr & p) : ptr(p.ptr) {}
 
   /**
    * Copyconstructor for class UPtr which has operator-> defined
    * resulting in a value implicitly convertible to T *.
    */
   template <typename UPtr>
-  inline TransientRCPtr(const UPtr & u);
+  TransientRCPtr(const UPtr & u) : ptr(PtrTraits<UPtr>::barePointer(u)) {}
 
   /**
    * Construction from real pointer.
    */
-  inline explicit TransientRCPtr(pointer p);
+  explicit TransientRCPtr(pointer p) : ptr(p) {}
 
   /**
    * Destructor. Does not delete the object pointed to.
    */
-  inline ~TransientRCPtr();
+  ~TransientRCPtr() {}
 
   /**
    * Assignment.
    */
-  inline TransientRCPtr & operator=(const TransientRCPtr & p);
+  TransientRCPtr & operator=(const TransientRCPtr & p) {
+    ptr = p.ptr;
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value implicitly convertible to T *.
    */
   template <typename UPtr>
-  inline TransientRCPtr & operator=(const UPtr & u);
+  TransientRCPtr & operator=(const UPtr & u) {
+    ptr = PtrTraits<UPtr>::barePointer(u);
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value which can be cast dynamically to T *.
    */
   template <typename UPtr>
-  inline TransientRCPtr & assignDynamic(const UPtr & u);
+  TransientRCPtr & assignDynamic(const UPtr & u) {
+    ptr = dynamic_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value whcih can be const_cast'ed to T *.
    */
   template <typename UPtr>
-  inline TransientRCPtr & assignConst(const UPtr & u);
+  TransientRCPtr & assignConst(const UPtr & u) {
+    ptr = const_cast<pointer>(PtrTraits<UPtr>::barePointer(u));
+    return *this;
+  }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const TransientRCPtr & p) const;
+  bool operator==(const TransientRCPtr & p) const { return ptr == p.ptr; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const TransientRCPtr & p) const;
+  bool operator!=(const TransientRCPtr & p) const { return ptr != p.ptr; }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const_pointer p) const;
+  bool operator==(const_pointer p) const { return ptr == p; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const_pointer p) const;
+  bool operator!=(const_pointer p) const { return ptr != p; }
 
   /**
    * Test for equality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator==(const UPtr & u) const;
+  bool operator==(const UPtr & u) const { return ptr == PtrTraits<UPtr>::barePointer(u); }
 
   /**
    * Test for inequality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator!=(const UPtr & u) const;
+  bool operator!=(const UPtr & u) const { return ptr != PtrTraits<UPtr>::barePointer(u); }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const TransientRCPtr & p) const;
+  bool operator<(const TransientRCPtr & p) const {
+    return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+      ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
+  }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const_pointer p) const;
+  bool operator<(const_pointer p) const {
+    return ( ptr && p && ptr->uniqueId != p->uniqueId ) ?
+      ptr->uniqueId < p->uniqueId : ptr < p;
+  }
 
   /**
    * Returns true if the underlying pointer is null.
    */
-  inline bool operator!() const ;
+  bool operator!() const { return !ptr; }
 
   /**
    * Returns the underlying pointer.
    */
-  inline operator T * () const ;
+  operator T * () const { return ptr; }
 
   /**
    * Member access.
    */
-  inline pointer operator->() const;
+  pointer operator->() const { return ptr; }
 
   /**
    * Dereferencing.
    */
-  inline reference operator*() const;
+  reference operator*() const { return *ptr; }
 
 private:
 
@@ -595,110 +702,126 @@ public:
   /**
    * Constructor for null pointer.
    */
-  inline TransientConstRCPtr();
+  TransientConstRCPtr() : ptr(0) {}
 
   /**
    * Copy constructor.
    */
-  inline TransientConstRCPtr(const TransientConstRCPtr & p);
+  TransientConstRCPtr(const TransientConstRCPtr & p) : ptr(p.ptr) {}
 
   /**
    * Copyconstructor for class UPtr which has operator-> defined
    * resulting in a value implicitly convertible to const T *.
    */
   template <typename UPtr>
-  inline TransientConstRCPtr(const UPtr & u);
+  TransientConstRCPtr(const UPtr & u) : ptr(PtrTraits<UPtr>::barePointer(u)) {}
 
   /**
    * Construction from real pointer.
    */
-  inline explicit TransientConstRCPtr(const_pointer p);
+  explicit TransientConstRCPtr(const_pointer p) : ptr(p) {}
 
   /**
    * Destructor. Does not delete the object pointed to.
    */
-  inline ~TransientConstRCPtr();
+  ~TransientConstRCPtr() {}
 
   /**
    * Assignment.
    */
-  inline TransientConstRCPtr & operator=(const TransientConstRCPtr & p);
+  TransientConstRCPtr & operator=(const TransientConstRCPtr & p) {
+    ptr = p.ptr;
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value implicitly convertible to const T *.
    */
   template <typename UPtr>
-  inline TransientConstRCPtr & operator=(const UPtr & u);
+  TransientConstRCPtr & operator=(const UPtr & u) {
+    ptr = PtrTraits<UPtr>::barePointer(u);
+    return *this;
+  }
 
   /**
    * Assignment from class UPtr which has operator-> defined resulting
    * in a value which can be cast dynamically to const T *.
    */
   template <typename UPtr>
-  inline TransientConstRCPtr & assignDynamic(const UPtr & u);
+  TransientConstRCPtr & assignDynamic(const UPtr & u) {
+    ptr = dynamic_cast<const_pointer>(PtrTraits<UPtr>::barePointer(u));
+    return *this;
+  }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const TransientConstRCPtr & p) const;
+  bool operator==(const TransientConstRCPtr & p) const { return ptr == p.ptr; }
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const TransientConstRCPtr & p) const;
+  bool operator!=(const TransientConstRCPtr & p) const { return ptr != p.ptr; }
 
   /**
    * Test for equality of the underlying pointers.
    */
-  inline bool operator==(const_pointer p) const;
+  bool operator==(const_pointer p) const { return ptr == p; }
+
 
   /**
    * Test for inequality of the underlying pointers.
    */
-  inline bool operator!=(const_pointer p) const;
+  bool operator!=(const_pointer p) const { return ptr != p; }
 
   /**
    * Test for equality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator==(const UPtr & u) const;
+  bool operator==(const UPtr & u) const { return ptr == PtrTraits<UPtr>::barePointer(u); }
 
   /**
    * Test for inequality of the underlying pointers.
    */
   template <typename UPtr>
-  inline bool operator!=(const UPtr & u) const;
+  bool operator!=(const UPtr & u) const { return ptr != PtrTraits<UPtr>::barePointer(u); }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const TransientConstRCPtr & p) const;
+  bool operator<(const TransientConstRCPtr & p) const {
+    return ( ptr && p.ptr && ptr->uniqueId != p.ptr->uniqueId ) ?
+      ptr->uniqueId < p.ptr->uniqueId : ptr < p.ptr;
+  }
 
   /**
    * Test for ordering.
    */
-  inline bool operator<(const_pointer p) const;
+  bool operator<(const_pointer p) const {
+    return ( ptr && p && ptr->uniqueId != p->uniqueId ) ?
+      ptr->uniqueId < p->uniqueId : ptr < p;
+  }
 
   /**
    * Returns true if the underlying pointer is null.
    */
-  inline bool operator!() const ;
+  bool operator!() const { return !ptr; }
 
   /**
    * Returns (not) the underlying pointer.
    */
-  inline operator const T * () const ;
+  operator const T * () const { return ptr; }
 
   /**
    * Member access.
    */
-  inline const_pointer operator->() const;
+  const_pointer operator->() const { return ptr; }
 
   /**
    * Dereferencing.
    */
-  inline const_reference operator*() const;
+  const_reference operator*() const { return *ptr; }
 
 private:
 
@@ -1008,21 +1131,21 @@ namespace std {
  * the reference count.
  */
 template <typename T>
-void swap(ThePEG::Pointer::RCPtr<T> &, ThePEG::Pointer::RCPtr<T> &);
+inline void swap(ThePEG::Pointer::RCPtr<T> & t1, 
+		 ThePEG::Pointer::RCPtr<T> & t2) {
+  t1.swap(t2);
+}
 
 /**
  * Specialization of std::swap to avoid unnecessary (in/de)crements of
  * the reference count.
  */
 template <typename T>
-void swap(ThePEG::Pointer::ConstRCPtr<T> &,
-	       ThePEG::Pointer::ConstRCPtr<T> &);
-
+inline void swap(ThePEG::Pointer::ConstRCPtr<T> & t1,
+		 ThePEG::Pointer::ConstRCPtr<T> & t2) {
+  t1.swap(t2);
 }
 
-#include "RCPtr.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "RCPtr.tcc"
-#endif
+}
 
 #endif /* ThePEG_RCPtr_H */

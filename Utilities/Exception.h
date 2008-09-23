@@ -79,12 +79,17 @@ public:
   /**
    * Default constructor.
    */
-  inline Exception();
+  Exception() : handled(false), theSeverity(unknown) { breakThePEG(); }
 
   /**
    * The copy constructor.
    */
-  inline Exception(const Exception &);
+  Exception(const Exception & ex) 
+    : std::exception(ex), theMessage(ex.message()), 
+      handled(ex.handled), theSeverity(ex.severity()) 
+  {
+    ex.handle();
+  }
 
   /**
    * The destructor
@@ -96,30 +101,47 @@ public:
   /**
    * Assignment.
    */
-  inline const Exception & operator=(const Exception &);
+  const Exception & operator=(const Exception & ex) {
+    handled = ex.handled;
+    theMessage << ex.message();
+    theSeverity = ex.severity();
+    ex.handle();
+    return *this;
+  }
 
   /**
    * Comparison
    */
-  inline bool operator==(const Exception &) const;
+  bool operator==(const Exception & ex) const {
+    return ( message() == ex.message() && severity() == ex.severity() );
+  }
 
   /**
    * Compare severity. If equal compare error message
    * lexicographically.
    */
-  inline bool operator<(const Exception &) const;
+  bool operator<(const Exception & ex) const {
+    return ( severity() == ex.severity() ? 
+	     ( message() < ex.message() ) :
+	     ( severity() < ex.severity() ) );
+  }
 
 public:
 
   /**
    * Return the error message.
    */
-  inline virtual const char* what () const throw();
+  virtual const char* what() const throw() {
+    return message().c_str();
+  }
 
   /**
    * Return the error message.
    */
-  inline string message() const;
+  string message() const {
+    string mess = theMessage.str();
+    return mess.empty() ? string("Error message not provided.") : mess;
+  }
 
   /**
    * Write the error message to a stream.
@@ -129,23 +151,29 @@ public:
   /**
    * Return the severity.
    */
-  inline Severity severity() const;
+  Severity severity() const { return theSeverity; }
 
   /**
    * Indicate that this exception has been taken care of.
    */
-  inline void handle() const;
+  void handle() const { handled = true; }
 
   /**
    * Add info to the exception message.
    */
   template <typename T>
-  inline Exception & operator<<(const T & t);
+  Exception & operator<<(const T & t) {
+    theMessage << t;
+    return *this;
+  }
 
   /**
    * Set the severity for the exception.
    */
-  inline Exception & operator<<(Severity sev);
+  Exception & operator<<(Severity sev) {
+    severity(sev);
+    return *this;
+  }
 
 protected:
 
@@ -179,10 +207,5 @@ private:
 };
 
 }
-
-#include "Exception.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Exception.tcc"
-#endif
 
 #endif /* ThePEG_Exception_H */

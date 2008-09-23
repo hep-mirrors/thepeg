@@ -23,7 +23,6 @@
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/Handlers/StandardEventHandler.h"
-#include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/Handlers/SubProcessHandler.fh"
 #include "StandardXComb.fh"
 

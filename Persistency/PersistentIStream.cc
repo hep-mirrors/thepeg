@@ -16,7 +16,6 @@
 #include "PersistentIStream.xh"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Debug.h"
-//#include <pfstream.h>
 
 namespace ThePEG {
 
@@ -243,5 +242,53 @@ const InputDescription * PersistentIStream::getClass() {
   id->setDescription(db);
   return id;
 }
+
+
+PersistentIStream & PersistentIStream::operator>>(string & s) {
+  s.erase();
+  char c = 0;
+  while ( good() && (c = get()) != tSep ) {
+    if ( c == tNull ) s += escaped();
+    else s += c;
+  }
+  return *this;
+}
+
+PersistentIStream & PersistentIStream::operator>>(char & c) {
+  if ( (c = get()) == tNull ) c = escaped();
+  getSep();
+  return *this;
+}
+
+PersistentIStream & PersistentIStream::operator>>(unsigned char & c) {
+  char cc;
+  *this >> cc;
+  c = static_cast<unsigned char>(cc);
+  return *this;
+}
+
+PersistentIStream & PersistentIStream::operator>>(signed char & c) {
+  char cc;
+  *this >> cc;
+  c = static_cast<signed char>(cc);
+  return *this;
+}
+
+PersistentIStream & PersistentIStream::operator>>(bool & t) {
+  char c = get();
+  t = ( c == tYes );
+  if ( !t && c != tNo ) setBadState();
+  getSep();
+  return *this;
+}
+
+PersistentIStream & PersistentIStream::operator>>(Complex & z) {
+  double re = 0.0;
+  double im = 0.0;
+  *this >> re >> im;
+  z = Complex(re, im);
+  return *this;
+}
+
 
 }

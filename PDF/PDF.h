@@ -11,8 +11,6 @@
 // This is the declaration of the PDF class.
 
 #include "ThePEG/PDF/PartonBinInstance.h"
-// #include "PDF.fh"
-// #include "PDF.xh"
 
 namespace ThePEG {
 
@@ -30,17 +28,22 @@ public:
   /**
    * Default constructor.
    */
-  inline PDF();
+  PDF() {}
 
   /**
    * Constructor from a given PartonBinInstance.
    */
-  inline PDF(tcPBIPtr);
+  PDF(tcPBIPtr pb) {
+    if ( !pb ) return;
+    thePDF = pb->pdf();
+    theParticle = pb->particleData();
+  }
 
   /**
    * Constructor from a given PDFBase and ParticleData object.
    */
-  inline PDF(tcPDFPtr, tcPDPtr);
+  PDF(tcPDFPtr pdf, tcPDPtr pd)
+    : thePDF(pdf), theParticle(pd) {}
   //@}
 
 public:
@@ -52,76 +55,96 @@ public:
    * partonScale and logarithmic momentum fraction \a l assuming the
    * particle has a virtuality \a particleScale.
    */
-  inline double xfl(tcPPtr parton, Energy2 partonScale, double l,
-		    Energy2 particleScale = 0.0*GeV2) const;
+  double xfl(tcPPtr parton, Energy2 partonScale, double l,
+	     Energy2 particleScale = 0.0*GeV2) const {
+    return xfl(parton->dataPtr(), partonScale, l, particleScale);
+  }
 
   /**
    * Return the density for the given \a parton, for a given \a
    * partonScale and momentum fraction \a x assuming the
    * particle has a virtuality \a particleScale.
    */
-  inline double xfx(tcPPtr parton, Energy2 partonScale, double x,
-		    double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const;
+  double xfx(tcPPtr parton, Energy2 partonScale, double x,
+	     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+    return xfx(parton->dataPtr(), partonScale, x, eps, particleScale);
+  }
 
   /**
    * Return the valence density for the given \a parton, for a given
    * \a partonScale and logarithmic momentum fraction \a l assuming
    * the particle has a virtuality \a particleScale.
    */
-  inline double xfvl(tcPPtr parton, Energy2 partonScale, double l,
-		     Energy2 particleScale = 0.0*GeV2) const;
+  double xfvl(tcPPtr parton, Energy2 partonScale, double l,
+	      Energy2 particleScale = 0.0*GeV2) const {
+    return xfvl(parton->dataPtr(), partonScale, l, particleScale);
+  }
 
   /**
    * Return the valence density for the given \a parton, for a given
    * \a partonScale and momentum fraction \a x assuming the particle
    * has a virtuality \a particleScale.
    */
-  inline double xfvx(tcPPtr parton, Energy2 partonScale, double x,
-		     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const;
+  double xfvx(tcPPtr parton, Energy2 partonScale, double x,
+	      double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+    return xfvx(parton->dataPtr(), partonScale, x, eps, particleScale);
+  }
 
   /**
    * Return the density for the given \a parton, for a given \a
    * partonScale and logarithmic momentum fraction \a l assuming the
    * particle has a virtuality \a particleScale.
    */
-  inline double xfl(tcPDPtr parton, Energy2 partonScale, double l,
-		    Energy2 particleScale = 0.0*GeV2) const;
+  double xfl(tcPDPtr parton, Energy2 partonScale, double l,
+	     Energy2 particleScale = 0.0*GeV2) const {
+    return thePDF?
+      thePDF->xfl(theParticle, parton, partonScale, l, particleScale): 0.0;
+  }
 
   /**
    * Return the density for the given \a parton, for a given \a
    * partonScale and momentum fraction \a x assuming the
    * particle has a virtuality \a particleScale.
    */
-  inline double xfx(tcPDPtr parton, Energy2 partonScale, double x,
-		    double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const;
+  double xfx(tcPDPtr parton, Energy2 partonScale, double x,
+	     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+    return thePDF?
+      thePDF->xfx(theParticle, parton, partonScale, x, eps, particleScale): 0.0;
+  }
 
   /**
    * Return the valence density for the given \a parton, for a given
    * \a partonScale and logarithmic momentum fraction \a l assuming
    * the particle has a virtuality \a particleScale.
    */
-  inline double xfvl(tcPDPtr parton, Energy2 partonScale, double l,
-		     Energy2 particleScale = 0.0*GeV2) const;
+  double xfvl(tcPDPtr parton, Energy2 partonScale, double l,
+	      Energy2 particleScale = 0.0*GeV2) const {
+    return thePDF?
+      thePDF->xfvl(theParticle, parton, partonScale, l, particleScale): 0.0;
+  }
 
   /**
    * Return the valence density for the given \a parton, for a given
    * \a partonScale and momentum fraction \a x assuming the particle
    * has a virtuality \a particleScale.
    */
-  inline double xfvx(tcPDPtr parton, Energy2 partonScale, double x,
-		     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const;
+  double xfvx(tcPDPtr parton, Energy2 partonScale, double x,
+	      double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+    return thePDF?
+      thePDF->xfvx(theParticle, parton, partonScale, x, eps, particleScale): 0.0;
+  }
   //@}
 
   
   /**
    * The parton density object.
    */
-  inline tcPDFPtr pdf() const;
+  tcPDFPtr pdf() const { return thePDF; }
 
   /**
    * The particle for which the parton density is used.
    */
-  inline tcPDPtr particle() const;
+  tcPDPtr particle() const { return theParticle; }
 
 private:
 
@@ -138,10 +161,5 @@ private:
 };
 
 }
-
-#include "PDF.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PDF.tcc"
-#endif
 
 #endif /* ThePEG_PDF_H */

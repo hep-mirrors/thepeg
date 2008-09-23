@@ -81,7 +81,13 @@ public:
    * and the probability itself is returned. Otherwise the sum of
    * probabilities so far is returned.
    */
-  inline WeightType insert(WeightType, const T &);
+  WeightType insert(WeightType d, const T & t) {
+    typedef typename MapType::value_type value_type;
+    WeightType newSum = theSum + d;
+    if ( newSum <= theSum ) return d;
+    theMap.insert(theMap.end(), value_type((theSum = newSum), t));
+    return theSum;
+  }
 
   /**
    * Reweight an object previously inserted giving it a new
@@ -106,7 +112,10 @@ public:
    * Replace all occurencies of oldObject with newObject without
    * changing the probability for the entry.
    */
-  void replace(const T & oldObject, const T & newObject);
+  void replace(const T & oldObject, const T & newObject) {
+    for ( iterator it = theMap.begin(); it != theMap.end(); ++it )
+      if ( it->second == oldObject ) it->second = newObject;
+  }
 
   /**
    * Select an object randomly. Given a random number flatly
@@ -165,7 +174,12 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  inline T & select(RNDGEN & rnd) throw(range_error);
+  T & select(RNDGEN & rnd) throw(range_error) {
+    double rem = 0.0;
+    T & t = select(rnd(), &rem);
+    rnd.push_back(rem);
+    return t;
+  }
 
   /**
    * Selct an object randomly. Given a random number generator which
@@ -180,7 +194,12 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  inline const T & select(RNDGEN & rnd) const throw(range_error);
+  const T & select(RNDGEN & rnd) const throw(range_error) {
+    double rem = 0.0;
+    const T & t = select(rnd(), &rem);
+    rnd.push_back(rem);
+    return t;
+  }
 
   /**
    * Return the sum of probabilities of the objects inserted. Note
@@ -249,7 +268,7 @@ private:
  * Output a Selector to a stream.
  */
 template <typename OStream, typename T, typename WeightType>
-inline OStream & operator<<(OStream & os, const Selector<T,WeightType> & s)
+OStream & operator<<(OStream & os, const Selector<T,WeightType> & s)
 {
   s.output(os);
   return os;
@@ -259,7 +278,7 @@ inline OStream & operator<<(OStream & os, const Selector<T,WeightType> & s)
  * Input a Selector from a stream.
  */
 template <typename IStream, typename T, typename WeightType>
-inline IStream & operator>>(IStream & is, Selector<T,WeightType> & s)
+IStream & operator>>(IStream & is, Selector<T,WeightType> & s)
 {
   s.input(is);
   return is;
@@ -268,7 +287,6 @@ inline IStream & operator>>(IStream & is, Selector<T,WeightType> & s)
 
 }
 
-#include "Selector.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Selector.tcc"
 #endif

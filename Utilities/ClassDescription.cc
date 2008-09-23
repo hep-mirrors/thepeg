@@ -13,16 +13,15 @@
 
 #include "ClassDescription.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ClassDescription.tcc"
-#endif
-
 using namespace ThePEG;
+
+ClassDescriptionBase::~ClassDescriptionBase() {}
 
 bool ClassDescriptionBase::isA(const ClassDescriptionBase & base) const {
   if ( base.info() == info() ) return true;
   for ( DescriptionVector::const_iterator i = descriptions().begin();
-	i != descriptions().end(); ++i ) if ( (**i).isA(base) ) return true;
+	i != descriptions().end(); ++i ) 
+    if ( (**i).isA(base) ) return true;
   return false;
 }
 

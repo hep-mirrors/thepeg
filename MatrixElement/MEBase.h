@@ -17,9 +17,9 @@
 #include "ThePEG/MatrixElement/Amplitude.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
 #include "ThePEG/Handlers/StandardXComb.fh"
+#include "ReweightBase.h"
 
 #include "MEBase.fh"
-// #include "MEBase.xh"
 
 namespace ThePEG {
 
@@ -83,11 +83,6 @@ public:
    * Default constructor.
    */
   MEBase();
-
-  /**
-   * Copy-constructor.
-   */
-  MEBase(const MEBase &);
 
   /**
    * Destructor.
@@ -203,7 +198,10 @@ public:
   /**
    * Return all possible diagrams.
    */
-  inline const DiagramVector & diagrams() const;
+  const DiagramVector & diagrams() const {
+    if ( theDiagrams.empty() ) getDiagrams();
+    return theDiagrams;
+  }
 
   /**
    * Return a Selector with possible colour geometries for the selected
@@ -226,7 +224,10 @@ public:
    * override this method to weight the given diagrams with their
    * (although certainly not physical) relative probabilities.
    */
-  inline virtual Selector<DiagramIndex> diagrams(const DiagramVector &) const;
+  virtual Selector<DiagramIndex> diagrams(const DiagramVector &) const {
+    return Selector<DiagramIndex>();
+  }
+
 
   /**
    * Select a diagram. Default version uses diagrams(const
@@ -265,7 +266,7 @@ public:
    * function is allowed to return the null pointer if the amplitude
    * is not available.
    */
-  inline Ptr<Amplitude>::pointer amplitude() const;
+  Ptr<Amplitude>::pointer amplitude() const { return theAmplitude; }
   //@}
 
 public:
@@ -275,13 +276,13 @@ public:
   /**
    * Return the last set invariant mass squared.
    */
-  inline Energy2 sHat() const;
+  Energy2 sHat() const { return theLastSHat; }
 
   /**
    * Return the factor with which this matrix element was last
    * pre-weighted.
    */
-  inline double preweight() const;
+  double preweight() const { return lastPreweight; }
 
   /**
    * Set the XComb object to be used in the next call to
@@ -307,7 +308,7 @@ public:
    * outgoing particles in the highest multiplicity matrix element in
    * the group.
    */
-  inline int maxMultCKKW() const;
+  int maxMultCKKW() const { return theMaxMultCKKW; }
 
   /**
    * If this matrix element is to be used together with others for
@@ -315,7 +316,7 @@ public:
    * outgoing particles in the lowest multiplicity matrix element in
    * the group.
    */
-  inline int minMultCKKW() const;
+  int minMultCKKW() const { return theMinMultCKKW; }
   //@}
 
 public:
@@ -347,7 +348,7 @@ protected:
    * To be used by sub classes in the getDiagrams() method to add
    * included diagrams.
    */
-  inline void add(DiagPtr) const;
+  void add(DiagPtr dp) const { theDiagrams.push_back(dp); }
 
   /**
    * Access the momenta set by the last call to generateKinematics().
@@ -359,54 +360,13 @@ protected:
    * Get the last jacobian obtained when generating the kinematics
    * for the call to dSigHatDR.
    */
-  inline double jacobian() const;
+  double jacobian() const { return theLastJacobian; }
 
   /**
    * Set the last jacobian obtained when generating the kinematics for
    * the call to dSigHatDR.
    */
-  inline void jacobian(double);
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
+  void jacobian(double j) { theLastJacobian = j; }
 
 private:
 
@@ -507,9 +467,6 @@ struct ClassTraits<MEBase>: public ClassTraitsBase<MEBase> {
 
 }
 
-#include "MEBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MEBase.tcc"
-#endif
+#include "ThePEG/Handlers/StandardXComb.h"
 
 #endif /* ThePEG_MEBase_H */

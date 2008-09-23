@@ -55,7 +55,8 @@ public:
    * used to get a new overestimated probability for an object when
    * entering compensation mode.
    */
-  inline CompSelector(double newMargin = 1.1, double newTolerance = 1.0e-6);
+  CompSelector(double newMargin = 1.1, double newTolerance = 1.0e-6)
+    : N(0), last(), theMargin(newMargin), theTolerance(newTolerance) {}
   //@}
 
 public:
@@ -71,7 +72,10 @@ public:
    * will immediately leave this mode and the selection procedure will
    * start from scratch.
    */
-  inline WeightType insert(WeightType, const T &);
+  WeightType insert(WeightType d, const T & t) {
+    reset();
+    return selector.insert(d, t);
+  }
 
   /**
    * Selct an object randomly. Given a random number generator which
@@ -86,7 +90,11 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  inline T & select(RNDGEN & rnd) throw(range_error);
+  T & select(RNDGEN & rnd) throw(range_error) {
+    ++N;
+    if ( !compensating() ) last = selector.select(rnd);
+    return last;
+  }
 
   /**
    * Report the weight associated with the last selected
@@ -94,30 +102,68 @@ public:
    * compensation mode will be entered and the new overestimated
    * probabilty for the last selected object will be returned.
    */
-  inline WeightType reweight(double & weight);
+  WeightType reweight(double & weight) {
+    if ( abs(weight) > 1.0 + tolerance() ) {
+      // Retrieve the old overestimate of the object by seing how much
+      // the summed weights are decreased when removing the object.
+      WeightType oldtot = selector.sum();
+      WeightType oldmax = oldtot - selector.erase(last);
+      WeightType newmax = oldmax*abs(weight)*margin();
+      WeightType newtot = selector.insert(newmax, last);
+      double rat = newmax/oldmax;
+      
+      // Setup the new compensation level.
+      Level level;
+      level.weight = 1.0/rat;
+      level.lastN = long(N*newtot/oldtot);
+      
+      // If we are already compensating, reweight the previous
+      // compensation levels.
+      for ( int i = 0, M = levels.size(); i < M; ++i ) {
+	levels[i].lastN = long(levels[i].lastN*newtot/oldtot);
+	levels[i].weight /= rat;
+      }
+      levels.push_back(level);
+      weight /= rat;
+      return newmax;
+    }
+    
+    // If we are compensating we should only accept the selection if the
+    // weight is above the previous overestimate.
+    if ( compensating() ) if ( abs(weight) < levels.back().weight ) weight = 0.0;
+    
+    return WeightType();
+  }
 
   /**
    * Exit compensation mode and start selection procedure from
    * scratch.
    */
-  inline void reset();
+  void reset() {
+    N = 0;
+    levels.clear();
+    last = T();
+  }
 
   /**
    * Erases all objects.
    */
-  inline void clear();
+  void clear() {
+    selector.clear();
+    reset();
+  }
 
   /**
    * Set the margin used to get a new overestimated probability for an
    * object when entering compensation mode.
    */
-  inline void margin(double);
+  void margin(double m) { theMargin = m; }
 
   /**
    * Set the tolerance for how much a weight is allowed to be
    * larger than unity before starting the compensation.
    */
-  inline void tolerance(double);
+  void tolerance(double t) { theTolerance = t; }
   //@}
 
 
@@ -126,13 +172,17 @@ public:
   /**
    * Return true if this CompSelector is in a compensating state.
    */
-  inline bool compensating();
+  bool compensating() {
+    // Leave all levels which has reached there 'expiry date'.
+    while ( levels.size() && levels.back().lastN < N ) levels.pop_back();
+    return !levels.empty();
+  }
 
   /**
    * If in a compensating mode, return the number of selection needed
    * before exiting this mode.
    */
-  inline long compleft() const;
+  long compleft() const { return levels.empty()? 0: levels.back().lastN - N; }
 
   /**
    * Return the sum of probabilities of the objects inserted. Note
@@ -140,19 +190,19 @@ public:
    * rescaled with this number to give unit probability for
    * 'select()'.
    */
-  inline WeightType sum() const;
+  WeightType sum() const { return selector.sum(); }
 
   /**
    * Return the margin used to get a new overestimated probability for an
    * object when entering compensation mode.
    */
-  inline double margin() const;
+  double margin() const { return theMargin; }
 
   /**
    * Return the tolerance for how much a weight is allowed to be
    * larger than unity before starting the compensation.
    */
-  inline double tolerance() const;
+  double tolerance() const { return theTolerance; }
   //@}
 
   /** @name I/O functions. */
@@ -161,13 +211,22 @@ public:
    * Output to a stream.
    */
   template <typename OStream>
-  inline void output(OStream &) const;
+  void output(OStream & os) const {
+    os << selector << N << last << theMargin << theTolerance << levels.size();
+    for ( int i = 0, M = levels.size(); i < M; ++i )
+      os << levels[i].lastN << levels[i].weight;
+  }
 
   /**
    * Input from a stream.
    */
   template <typename IStream>
-  inline void input(IStream &);
+  void input(IStream & is) {
+    long M;
+    is >> selector >> N >> last >> theMargin >> theTolerance >> M;
+    levels.resize(M);
+    for ( int i = 0; i < M; ++i ) is >> levels[i].lastN >> levels[i].weight;
+  }
   //@}
 
 private:
@@ -230,19 +289,22 @@ private:
  * Output a Selector to a stream.
  */
 template <typename OStream, typename T, typename WeightType>
-inline OStream & operator<<(OStream &, const CompSelector<T,WeightType> &);
+inline OStream & operator<<(OStream & os,
+			    const CompSelector<T,WeightType> & s) {
+  s.output(os);
+  return os;
+}
 
 /**
  * Input a Selector from a stream.
  */
 template <typename IStream, typename T, typename WeightType>
-inline IStream & operator>>(IStream &, CompSelector<T,WeightType> &);
-
+inline IStream & operator>>(IStream & is,
+			    CompSelector<T,WeightType> & s) {
+  s.input(is);
+  return is;
 }
 
-#include "CompSelector.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "CompSelector.tcc"
-#endif
+}
 
 #endif /* THEPEG_CompSelector_H */

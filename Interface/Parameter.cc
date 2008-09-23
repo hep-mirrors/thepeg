@@ -17,6 +17,8 @@
 
 namespace ThePEG {
 
+ParameterBase::~ParameterBase() {}
+
 string ParameterBase::exec(InterfacedBase & i, string action,
 			   string arguments) const  throw(InterfaceException) {
   ostringstream ret;

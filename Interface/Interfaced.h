@@ -47,7 +47,7 @@ public:
   /**
    * Empty virtual destructor
    */
-  inline virtual ~Interfaced();
+  virtual ~Interfaced();
 
   /**
    * Functions which are to be used during the actual event
@@ -83,19 +83,19 @@ public:
   /**
    * Returns true if this object has actally been used.
    */
-  inline bool used() const;
+  bool used() const { return theUseFlag; }
 
   /**
    * Should be called to indicate that this object has actually been
    * used.
    */
-  inline void useMe() const;
+  void useMe() const { if ( !used() ) setUsed(); }
 
   /**
    * Return a pointer to the EventGenerator controlling the run.
    * During the setup phase this returns a null pointer.
    */
-  inline tEGPtr generator() const;
+  tEGPtr generator() const { return theGenerator; }
   //@}
 
 public:
@@ -150,31 +150,41 @@ protected:
    * this object.
    */
   template <typename PtrT>
-  inline bool setDefaultReference(PtrT & ptr, string classname,
-				  string objectname);
+  bool setDefaultReference(PtrT & ptr, string classname, string objectname) {
+    if ( ptr ) return true;
+    const ClassDescriptionBase * db = DescriptionList::find(classname);
+    if ( !db ) return false;
+    ptr = dynamic_ptr_cast<PtrT>(db->create());
+    if ( !ptr ) return false;
+    reporeg(ptr, objectname);
+    if ( !ptr->defaultInit() ) return false;
+    return true;
+  }
 
   /**
    * Protected default constructor.
    */
-  inline Interfaced();
+  Interfaced() : theUseFlag(false) {}
 
   /**
    * Protected constructor taking a name as argument.
    */
-  inline Interfaced(string newName);
+  Interfaced(const string & newName) 
+    : InterfacedBase(newName), theUseFlag(false) {}
 
   /**
    * Protected copy-constructor.
    */
-  inline Interfaced(const Interfaced &);
-
+  Interfaced(const Interfaced & i)
+    : InterfacedBase(i), theGenerator(i.theGenerator), theUseFlag(false) {}
+  
 protected:
 
   /**
    * Protected function to reset the generator pointer, required
    * for automatic decayer generation in Herwig++ BSM models
    */
-  inline void setGenerator(tEGPtr generator);
+  void setGenerator(tEGPtr generator) { theGenerator=generator; }
 
 private:
 
@@ -237,7 +247,5 @@ struct ClassTraits<Interfaced>: public ClassTraitsBase<Interfaced> {
 /** @endcond */
 
 }
-
-#include "Interfaced.icc"
 
 #endif /* ThePEG_Interfaced_H */

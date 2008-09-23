@@ -21,6 +21,22 @@
 
 namespace ThePEG {
 
+/// Helper functions for putUnit()
+namespace {
+  template <typename T>
+  inline void putUnitImpl(ostream & os, T v, T u, DimensionT) {
+    os << v/u;
+  }
+  
+  template <typename T>
+  inline void putUnitImpl(ostream & os, T v, T u, StandardT) {
+    if ( u > T() )
+      os << v/u;
+    else
+      os << v;
+  }
+}
+
 /**
  * The Parameter and its base classes ParameterTBase and ParameterBase
  * defines an interface to a class derived from the InterfacedBase,
@@ -67,14 +83,18 @@ public:
    * limited from above and/or below. The possible values are given by
    * Interface::Limits.
    */
-  inline ParameterBase(string newName, string newDescription,
-		       string newClassName,
-		       const type_info & newTypeInfo, bool depSafe,
-		       bool readonly, int limits);  
+  ParameterBase(string newName, string newDescription,
+		string newClassName,
+		const type_info & newTypeInfo, bool depSafe,
+		bool readonly, int limits)
+    : InterfaceBase(newName, newDescription, 
+		    newClassName, newTypeInfo, depSafe,
+		    readonly), limit(limits) {}
+
   /**
    * The destructor.
    */
-  inline virtual ~ParameterBase();
+  virtual ~ParameterBase();
 
   /**
    * The general interface method overriding the one in
@@ -130,29 +150,33 @@ public:
   /**
    * True if there the variable is limited from above and below.
    */
-  inline bool limited() const;
+  bool limited() const { return limit != Interface::nolimits; }
 
   /**
    * True if there the variable is limited from abovew.
    */
-  inline bool upperLimit() const;
+  bool upperLimit() const { 
+    return limit == Interface::limited || limit == Interface::upperlim;
+  }
 
   /**
    * True if there the variable is limited from  below.
    */
-  inline bool lowerLimit() const;
+  bool lowerLimit() const {
+    return limit == Interface::limited || limit == Interface::lowerlim;
+  }
 
   /**
    * Set flag indicating that there are limits associated with the
    * variable.
    */
-  inline void setLimited();
+  void setLimited() { limit = Interface::limited; }
 
   /**
    * Set flag indicating that there are no limits associated with the
    * variable.
    */
-  inline void setUnlimited();
+  void setUnlimited() { limit = Interface::nolimits; }
 
 private:
 
@@ -215,15 +239,18 @@ public:
    * limited from above and/or below. The possible values are given by
    * Interface::Limits.
    */
-  inline ParameterTBase(string newName, string newDescription,
-			string newClassName,
-			const type_info & newTypeInfo, Type newUnit,
-			bool depSafe, bool readonly, int limits);
+  ParameterTBase(string newName, string newDescription,
+		 string newClassName,
+		 const type_info & newTypeInfo, Type newUnit,
+		 bool depSafe, bool readonly, int limits) 
+    : ParameterBase(newName, newDescription, 
+		    newClassName, newTypeInfo, depSafe,
+		    readonly, limits), theUnit(newUnit) {}
 
   /**
    * Destructor.
    */
-  inline virtual ~ParameterTBase();
+  virtual ~ParameterTBase() {}
 
   /**
    * Return a code for the type of this parameter.
@@ -233,12 +260,12 @@ public:
 private:
 
   /// Implementation of set() for standard types.
-  inline void setImpl (InterfacedBase & i, 
+  void setImpl (InterfacedBase & i, 
 		       string newValue, StandardT) 
     const throw(InterfaceException);
 
   /// Implementation of set() for dimensioned types.
-  inline void setImpl (InterfacedBase & i, 
+  void setImpl (InterfacedBase & i, 
 		       string newValue, DimensionT) 
     const throw(InterfaceException);
 
@@ -319,22 +346,23 @@ public:
   /**
    * set the member variable of \a ib to its default value.
    */
-  inline virtual void setDef(InterfacedBase & ib)
-    const throw(InterfaceException);
+  virtual void setDef(InterfacedBase & ib) const throw(InterfaceException) {
+    tset(ib, tdef(ib));
+  }
 
   /**
    * Get the unit which an Type object is divided (multiplied) by when
    * written to (read from) a stream via a double. If unit() is zero,
    * the Type object is written/read directly.
    */
-  inline Type unit() const;
+  Type unit() const { return theUnit; }
 
   /**
    * Set the unit which an Type object is divided (multiplied) by when
    * written to (read from) a stream via a double. If unit() is zero,
    * the Type object is written/read directly.
    */
-  inline void unit(Type u);
+  void unit(Type u) { theUnit = u; }
 
   /**
    * Return a string describing the type of interface to be included
@@ -345,9 +373,11 @@ public:
 protected:
 
   /**
-   * Write a numer to a stream with the unit specified with unit().
+   * Write a number to a stream with the unit specified with unit().
    */
-  inline void putUnit(ostream &, Type val) const;
+  void putUnit(ostream & os, Type val) const {
+    putUnitImpl(os, val, unit(), typename TypeTraits<Type>::DimType());
+  }
 
 private:
 
@@ -443,7 +473,7 @@ public:
    * @param newDefFn optional pointer to the member function for the
    * 'def' action.
    */
-  inline Parameter(string newName, string newDescription,
+  Parameter(string newName, string newDescription,
 		   Member newMember, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   bool limits = true, SetFn newSetFn = 0,
@@ -500,7 +530,7 @@ public:
    * @param newDefFn optional pointer to the member function for the
    * 'def' action.
    */
-  inline Parameter(string newName, string newDescription,
+  Parameter(string newName, string newDescription,
 		   Member newMember, Type newUnit, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   bool limits = true, SetFn newSetFn = 0,
@@ -555,7 +585,7 @@ public:
    * @param newDefFn optional pointer to the member function for the
    * 'def' action.
    */
-  inline Parameter(string newName, string newDescription,
+  Parameter(string newName, string newDescription,
 		   Member newMember, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   int limits = Interface::limited, SetFn newSetFn = 0,
@@ -613,7 +643,7 @@ public:
    * @param newDefFn optional pointer to the member function for the
    * 'def' action.
    */
-  inline Parameter(string newName, string newDescription,
+  Parameter(string newName, string newDescription,
 		   Member newMember, Type newUnit, Type newDef, Type newMin,
 		   Type newMax, bool depSafe = false, bool readonly = false,
 		   int limits = Interface::limited, SetFn newSetFn = 0,
@@ -628,7 +658,7 @@ public:
   /**
    * Default dtor.
    */
-  inline virtual ~Parameter();
+  virtual ~Parameter() {}
 
   /**
    * Set the member variable of \a ib to \a val.
@@ -662,27 +692,27 @@ public:
   /**
    * Give a pointer to a member function to be used by tset().
    */
-  inline void setSetFunction(SetFn);
+  void setSetFunction(SetFn sf) { theSetFn = sf; }
 
   /**
    * Give a pointer to a member function to be used by tget().
    */
-  inline void setGetFunction(GetFn);
+  void setGetFunction(GetFn gf) { theGetFn = gf; }
 
   /**
    * Give a pointer to a member function to be used by tdef().
    */
-  inline void setDefaultFunction(GetFn);
+  void setDefaultFunction(GetFn df) { theDefFn = df; }
 
   /**
    * Give a pointer to a member function to be used by tminimum().
    */
-  inline void setMinFunction(GetFn);
+  void setMinFunction(GetFn mf) { theMinFn = mf; }
 
   /**
    * Give a pointer to a member function to be used by tmaximum().
    */
-  inline void setMaxFunction(GetFn);
+  void setMaxFunction(GetFn mf) { theMaxFn = mf; }
 
   /**
    * Print a description to be included in the Doxygen documentation
@@ -785,48 +815,59 @@ public:
    * able to manipulate objects of the corresponding class, but will
    * still be able to access information.
    */
-  inline ParameterTBase(string newName, string newDescription,
-			string newClassName,
-			const type_info & newTypeInfo,
-			bool depSafe, bool readonly);
+  ParameterTBase(string newName, string newDescription,
+		 string newClassName,
+		 const type_info & newTypeInfo,
+		 bool depSafe, bool readonly)
+    : ParameterBase(newName, newDescription, 
+		    newClassName, newTypeInfo, depSafe,
+		    readonly, false), isFileType(NoFile) {}
 
   /**
    * Destructor.
    */
-  inline virtual ~ParameterTBase();
+  virtual ~ParameterTBase() {}
 
   /**
    * Return a code for the type of this parameter.
    */
-  inline virtual string type() const;
+  virtual string type() const {
+    switch ( file() ) {
+    case File: return "PF";
+    case Directory: return "PD";
+    default: return "Ps";
+    }
+  }
 
   /**
    * Indicate that this parameter corresponds to a file. 
    */
-  inline void fileType();
+  void fileType() { file(File); }
 
   /**
    * Indicate that this parameter corresponds to a directory. 
    */
-  inline void directoryType();
+  void directoryType() { file(Directory); }
 
   /**
    * Indicate if this parameter corresponds to a file or directory. 
    */
-  inline void file(FileType t);
+  void file(FileType t) { isFileType = t; }
 
   /**
    * See if this parameter corresponds to a file or directory.
    */
-  inline FileType file() const;
+  FileType file() const { return isFileType; }
 
   /**
    * Set the member variables of \a ib to \a val. Uses a stringstream
    * to read the \a val into a Type object and then calls
    * tset(InterfacedBase &, Type).
    */
-  inline virtual void set(InterfacedBase & ib, string newValue)
-    const throw(InterfaceException);
+  virtual void set(InterfacedBase & ib, string newValue)
+    const throw(InterfaceException) {
+    tset(ib, StringUtils::stripws(newValue));
+  }
 
   /**
    * Set the member variables of \a ib to \a val.
@@ -839,8 +880,10 @@ public:
    * tget(const InterfacedBase &) and converts the returned value with
    * an ostringstream.
    */
-  inline virtual string get(const InterfacedBase & ib) const
-    throw(InterfaceException);
+  virtual string get(const InterfacedBase & ib) const
+    throw(InterfaceException) {
+    return tget(ib);
+  }
 
   /**
    * Return the value of the member variable of \a ib.
@@ -852,23 +895,27 @@ public:
    * Return the minimum value allowed for the member variable of \a
    * ib. Not relevant for strings. Returns the empty string.
    */
-  inline virtual string minimum(const InterfacedBase & ib) const
-    throw(InterfaceException);
+  virtual string minimum(const InterfacedBase &) const throw(InterfaceException) {
+    return "";
+  }
 
   /**
    * Return the maximum value allowed for the member variable of \a
    * ib. Not relevant for strings. Returns the empty string.
    */
-  inline virtual string maximum(const InterfacedBase & ib) const
-    throw(InterfaceException);
+  virtual string maximum(const InterfacedBase &) const throw(InterfaceException) {
+    return "";
+  }
 
   /**
    * Return the default value for the member variables of \a ib. Calls
    * tdef(const InterfacedBase &) and converts the returned value with
    * an ostringstream.
    */
-  inline virtual string def(const InterfacedBase & ib) const
-    throw(InterfaceException);
+  virtual string def(const InterfacedBase & ib) const
+    throw(InterfaceException) {
+    return tdef(ib);
+  }
 
   /**
    * Return the default value for the member variables of \a ib.
@@ -879,14 +926,15 @@ public:
   /**
    * set the member variable of \a ib to its default value.
    */
-  inline virtual void setDef(InterfacedBase & ib)
-    const throw(InterfaceException);
+  virtual void setDef(InterfacedBase & i) const throw(InterfaceException) {
+    tset(i, tdef(i));
+  }
 
   /**
    * Return a string describing the type of interface to be included
    * in the Doxygen documentation.
    */
-  inline virtual string doxygenType() const;
+  virtual string doxygenType() const { return "Character string parameter"; }
 
 private:
 
@@ -955,7 +1003,7 @@ public:
    * @param newDefFn optional pointer to the member function for the
    * 'def' action.
    */
-  inline Parameter(string newName, string newDescription,
+  Parameter(string newName, string newDescription,
 		   Member newMember, string newDef,
 		   bool depSafe = false, bool readonly = false,
 		   SetFn newSetFn = 0, GetFn newGetFn = 0, GetFn newDefFn = 0)
@@ -969,7 +1017,7 @@ public:
   /**
    * Default dtor.
    */
-  inline virtual ~Parameter();
+  virtual ~Parameter() {}
 
   /**
    * Set the member variable of \a ib to \a val.
@@ -992,17 +1040,17 @@ public:
   /**
    * Give a pointer to a member function to be used by tset().
    */
-  inline void setSetFunction(SetFn);
+  void setSetFunction(SetFn sf) { theSetFn = sf; }
 
   /**
    * Give a pointer to a member function to be used by tget().
    */
-  inline void setGetFunction(GetFn);
+  void setGetFunction(GetFn gf) { theGetFn = gf; }
 
   /**
    * Give a pointer to a member function to be used by tdef().
    */
-  inline void setDefaultFunction(GetFn);
+  void setDefaultFunction(GetFn df) { theDefFn = df; }
 
   /**
    * Print a description to be included in the Doxygen documentation
@@ -1042,7 +1090,6 @@ private:
 
 }
 
-#include "Parameter.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Parameter.tcc"
 #endif

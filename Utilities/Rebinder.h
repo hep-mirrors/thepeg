@@ -12,7 +12,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "Rebinder.fh"
 #include <stdexcept>
-// #include "Rebinder.xh"
 
 namespace ThePEG {
 
@@ -28,6 +27,11 @@ template <typename T>
 class Rebinder {
 
 public:
+  
+  /** Default constructor. */
+  Rebinder() {}
+
+public:
 
   ThePEG_DECLARE_TEMPLATE_POINTERS(T,TPtr);
 
@@ -39,15 +43,10 @@ public:
 
 public:
 
-  /** Default constructor. */
-  inline Rebinder();
-
-public:
-
   /**
    * Return a pointer to the object associated with the argument.
    */
-  inline TPtr & operator[](tcTPtr);
+  TPtr & operator[](tcTPtr t) { return theMap[t]; }
 
   /**
    * Return a pointer to the object associated with the argument. If
@@ -56,7 +55,10 @@ public:
    * @param r a pointer to an object of a type which is derived from T.
    */
   template <typename R>
-  inline R translate(const R & r) const;
+  R translate(const R & r) const {
+    const_iterator it = theMap.find(r);
+    return it == theMap.end()? R(): dynamic_ptr_cast<R>(it->second);
+  }
 
   /**
    * Insert pointers to objects into the output iterator, pointers to
@@ -65,8 +67,10 @@ public:
    * exists, a null pointer will be inserted in the output iterator.
    */
   template <typename OutputIterator, typename InputIterator>
-  inline void translate(OutputIterator ouptut,
-			InputIterator first, InputIterator last) const;
+  void translate(OutputIterator r,
+		 InputIterator first, InputIterator last) const {
+    while ( first != last ) *r++ = translate(*first++);
+  }
 
   /**
    * Return a pointer to the object associated with the argument. If
@@ -74,7 +78,14 @@ public:
    * @param r a pointer to an object of a type which is derived from T.
    */
   template <typename R>
-  inline R alwaysTranslate(const R & r) const throw(std::runtime_error);
+  R alwaysTranslate(const R & r) const throw(std::runtime_error) {
+    R ret;
+    if ( !r ) return ret;
+    const_iterator it = theMap.find(r);
+    ret = (it == theMap.end()? R(): dynamic_ptr_cast<R>(it->second));
+    if ( !ret ) throw std::runtime_error("Rebinder exception");
+    return ret;
+  }
 
   /**
    * Insert pointers to objects into the output iterator, pointers to
@@ -83,13 +94,15 @@ public:
    * exists, an exception will be thrown.
    */
   template <typename OutputIterator, typename InputIterator>
-  inline void alwaysTranslate(OutputIterator, InputIterator, InputIterator)
-    const throw(std::runtime_error);
+  void alwaysTranslate(OutputIterator r, InputIterator first, InputIterator last)
+    const throw(std::runtime_error) {
+    while ( first != last ) *r++ = alwaysTranslate(*first++);
+  }
 
   /**
    * Acces the underlying map representation.
    */
-  inline const MapType & map() const;
+  const MapType & map() const { return theMap; }
 
 private:
 
@@ -102,19 +115,14 @@ private:
 private:
 
   /** The copy constructor is private and not implemented */
-  inline Rebinder(const Rebinder &);
+  Rebinder(const Rebinder &);
 
   /** The assignment operator is private and not implemented */
-  inline Rebinder & operator=(const Rebinder &);
+  Rebinder & operator=(const Rebinder &);
 
 };
 
 
 }
-
-#include "Rebinder.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Rebinder.tcc"
-#endif
 
 #endif /* ThePEG_Rebinder_H */

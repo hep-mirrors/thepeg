@@ -255,7 +255,15 @@ public:
    * file. \a npart is the number of particles. If \a npart is 0, the
    * number is taken from NUP.
    */
-  inline static size_t eventSize(int N);
+  static size_t eventSize(int N) {
+    return (N + 1)*sizeof(int) +       // IDPRUP, ISTUP
+      (7*N + 4)*sizeof(double) +       // XWGTUP, SCALUP, AQEDUP, AQCDUP, PUP,
+                                       // VTIMUP, SPINUP
+      N*sizeof(long) +                 // IDUP
+      2*N*sizeof(pair<int,int>) +      // MOTHUP, ICOLUP
+      sizeof(pair<double,double>) +    // XPDWUP.
+      2*sizeof(double);                // lastweight and preweight
+  }
 
   /**
    * The current event weight given by XWGTUP times possible
@@ -263,53 +271,46 @@ public:
    * is returned by getEvent(), which is scaled with the maximum
    * weight.
    */
-  inline double eventWeight() const;
+  double eventWeight() const { return hepeup.XWGTUP*lastweight; }
 
   /**
    * The pair of PartonBinInstance objects describing the current
    * incoming partons in the event.
    */
-  inline const PBIPair & partonBinInstances() const;
-
+  const PBIPair & partonBinInstances() const { return thePartonBinInstances; }
   /**
    * Return the instances of the beam particles for the current event.
    */
-  inline const PPair & beams() const;
-
+  const PPair & beams() const { return theBeams; }
   /**
    * Return the instances of the incoming particles to the sub process
    * for the current event.
    */
-  inline const PPair & incoming() const;
-
+  const PPair & incoming() const { return theIncoming; }
   /**
    * Return the instances of the outgoing particles from the sub process
    * for the current event.
    */
-  inline const PVector & outgoing() const;
-
+  const PVector & outgoing() const { return theOutgoing; }
   /**
    * Return the instances of the intermediate particles in the sub
    * process for the current event.
    */
-  inline const PVector & intermediates() const;
-
+  const PVector & intermediates() const { return theIntermediates; }
   /**
    * If this reader is to be used (possibly together with others) for
    * CKKW reweighting and veto, this should give the multiplicity of
    * outgoing particles in the highest multiplicity matrix element in
    * the group.
    */
-  inline int maxMultCKKW() const;
-
+  int maxMultCKKW() const { return theMaxMultCKKW; }
   /**
    * If this reader is to be used (possibly together with others) for
    * CKKW reweighting and veto, this should give the multiplicity of
    * outgoing particles in the lowest multiplicity matrix element in
    * the group.
    */
-  inline int minMultCKKW() const;
-  //@}
+  int minMultCKKW() const { return theMinMultCKKW; }  //@}
 
   /** @name Other inlined access functions. */
   //@{
@@ -317,56 +318,65 @@ public:
    * The number of events found in this reader. If less than zero the
    * number of events are unlimited.
    */
-  inline long NEvents() const;
+  long NEvents() const { return theNEvents; }
 
   /**
    * The number of events produced so far. Is reset to zero if an
    * event file is reopened.
    */
-  inline long currentPosition() const;
+  long currentPosition() const { return position; }
 
   /**
    * The maximum number of events to scan to collect information about
    * processes and cross sections. If less than 0, all events will be
    * scanned.
    */
-  inline long maxScan() const;
+  long maxScan() const { return theMaxScan; }
 
   /**
    * Return true if this reader is active.
    */
-  inline bool active() const;
+  bool active() const { return isActive; }
 
   /**
    * True if negative weights may be produced.
    */
-  inline bool negativeWeights() const;
+  bool negativeWeights() const { return heprup.IDWTUP < 0; }
 
   /**
    * The collected cross section statistics for this reader.
    */
-  inline const XSecStat & xSecStats() const;
+  const XSecStat & xSecStats() const { return stats; }
 
   /**
    * Collected statistics about the individual processes.
    */
-  inline const StatMap & processStats() const;
+  const StatMap & processStats() const { return statmap; }
 
   /**
    * Select the current event. It will later be rejected with a
    * probability given by \a weight.
    */
-  inline void select(double weight);
+  void select(double weight) {
+    stats.select(weight);
+    statmap[hepeup.IDPRUP].select(weight);
+  }
 
   /**
    * Accept the current event assuming it was previously selcted.
    */
-  inline void accept();
+  void accept() {
+    stats.accept();
+    statmap[hepeup.IDPRUP].accept();
+  }
 
   /**
    * Reject the current event assuming it was previously accepted.
    */
-  inline void reject(double weight);
+  void reject(double w) {
+    stats.reject(w);
+    statmap[hepeup.IDPRUP].reject(w);
+  }
 
   /**
    * Increase the overestimated cross section for this reader.
@@ -376,30 +386,30 @@ public:
   /**
    * The PartonExtractor object used to construct remnants.
    */
-  inline tPExtrPtr partonExtractor() const;
+  tPExtrPtr partonExtractor() const { return thePartonExtractor; }
 
   /**
    * Return a possibly null pointer to a CascadeHandler to be used for
    * CKKW-reweighting.
    */
-  inline tCascHdlPtr CKKWHandler() const;
+  tCascHdlPtr CKKWHandler() const { return theCKKW; }
 
   /**
    * The pairs of PartonBin objects describing the partons which can
    * be extracted by the PartonExtractor object.
    */
-  inline const PartonPairVec & partonBins() const;
+  const PartonPairVec & partonBins() const { return thePartonBins; }
 
   /**
    * The map of XComb objects indexed by the corresponding PartonBin
    * pair.
    */
-  inline const XCombMap & xCombs() const;
+  const XCombMap & xCombs() const { return theXCombs; }
 
   /**
    * The Cuts object to be used for this reader.
    */
-  inline const Cuts & cuts() const;
+  const Cuts & cuts() const { return *theCuts; }
 
   //@}
 
@@ -412,18 +422,18 @@ protected:
    * Name of file used to cache the events form the reader in a
    * fast-readable form. If empty, no cache file will be generated.
    */
-  inline string cacheFileName() const;
+  string cacheFileName() const { return theCacheFileName; }
 
   /**
    * Determines whether to apply cuts to events converting them to
    * ThePEG format.
    */
-  inline bool cutEarly() const;
+  bool cutEarly() const { return doCutEarly; }
 
   /**
    * File stream for the cache.
    */
-  inline CFile cacheFile() const;
+  CFile cacheFile() const { return theCacheFile;}
 
   /**
    * Open the cache file for reading.
@@ -466,13 +476,19 @@ protected:
    * Helper function to write a variable to a memory location
    */
   template <typename T>
-  static char * mwrite(char * pos, const T & t, size_t n = 1);
+  static char * mwrite(char * pos, const T & t, size_t n = 1) {
+    std::memcpy(pos, &t, n*sizeof(T));
+    return pos + n*sizeof(T);
+  }
 
   /**
    * Helper function to read a variable from a memory location
    */
   template <typename T>
-  static const char * mread(const char * pos, T & t, size_t n = 1);
+  static const char * mread(const char * pos, T & t, size_t n = 1) {
+    std::memcpy(&t, pos, n*sizeof(T));
+    return pos + n*sizeof(T);
+  }
 
   //@}
 
@@ -543,22 +559,17 @@ protected:
    * The number of events in this reader. If less than zero the number
    * of events is unlimited.
    */
-  inline void NEvents(long);
+  void NEvents(long x) { theNEvents = x; }
 
   /**
    * The map of XComb objects indexed by the corresponding PartonBin
    * pair.
    */
-  inline XCombMap & xCombs();
+  XCombMap & xCombs() { return theXCombs; }  
   //@}
 
   /** @name Standard (and non-standard) Interfaced functions. */
   //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
@@ -576,25 +587,10 @@ protected:
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
+  virtual void dofinish() {
+    close();
+    HandlerBase::dofinish();
+  }
 
   /**
    * Return true if this object needs to be initialized before all
@@ -957,10 +953,5 @@ struct ClassTraits<LesHouchesReader>
 /** @endcond */
 
 }
-
-// #include "LesHouchesReader.tcc"
-#include "LesHouchesReader.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#endif
 
 #endif /* THEPEG_LesHouchesReader_H */

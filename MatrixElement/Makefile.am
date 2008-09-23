@@ -6,10 +6,9 @@ myQCDSOURCES =
 DOCFILES = Amplitude.h ColourLines.h DiagramBase.h Tree2toNDiagram.h MEBase.h \
            ReweightBase.h ME2to2Base.h ME2to2QCD.h
 
-INCLUDEFILES = $(DOCFILES) Amplitude.icc ColourLines.xh \
-               DiagramBase.icc DiagramBase.xh DiagramBase.fh \
-               Tree2toNDiagram.icc Tree2toNDiagram.xh MEBase.icc \
-               ReweightBase.icc ME2to2Base.icc ME2to2QCD.icc MEBase.fh
+INCLUDEFILES = $(DOCFILES) ColourLines.xh \
+               DiagramBase.xh DiagramBase.fh \
+               Tree2toNDiagram.xh MEBase.fh
 
 noinst_LTLIBRARIES = libThePEGME.la
 pkglib_LTLIBRARIES = MEQCD.la MEee2gZ2qq.la MENCDIS.la \
@@ -33,12 +32,12 @@ MEee2gZ2qq_la_SOURCES = MEee2gZ2qq.cc MEee2gZ2qq.h
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 ReweightConstant_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-ReweightConstant_la_SOURCES = ReweightConstant.cc ReweightConstant.h ReweightConstant.icc
+ReweightConstant_la_SOURCES = ReweightConstant.cc ReweightConstant.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
 ReweightMinPT_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-ReweightMinPT_la_SOURCES = ReweightMinPT.cc ReweightMinPT.h ReweightMinPT.icc
+ReweightMinPT_la_SOURCES = ReweightMinPT.cc ReweightMinPT.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

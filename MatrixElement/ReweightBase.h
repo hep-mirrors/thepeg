@@ -14,8 +14,6 @@
 #include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/Handlers/LastXCombInfo.h"
 #include "ThePEG/Handlers/StandardXComb.fh"
-// #include "ReweightBase.fh"
-// #include "ReweightBase.xh"
 
 namespace ThePEG {
 
@@ -41,25 +39,16 @@ namespace ThePEG {
 class ReweightBase: public HandlerBase, public LastXCombInfo<> {
 
 public:
-
+ 
   /** @name Standard constructors and destructors. */
   //@{
-  /**
-   * Default constructor.
-   */
-  ReweightBase();
-
-  /**
-   * Copy-constructor.
-   */
-  ReweightBase(const ReweightBase &);
-
+  
   /**
    * Destructor.
    */
   virtual ~ReweightBase();
   //@}
-
+  
 public:
 
   /**
@@ -72,7 +61,7 @@ public:
    * Assigne an XComb object with information about the sub-process to
    * be used in the reweighting.
    */
-  void setXComb(tXCombPtr);
+  void setXComb(tXCombPtr xc);
 
 public:
 
@@ -96,47 +85,6 @@ public:
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
 
 private:
 
@@ -182,10 +130,5 @@ struct ClassTraits<ReweightBase>: public ClassTraitsBase<ReweightBase> {
 /** @endcond */
 
 }
-
-#include "ReweightBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ReweightBase.tcc"
-#endif
 
 #endif /* ThePEG_ReweightBase_H */

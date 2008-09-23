@@ -11,8 +11,6 @@
 // This is the declaration of the InputDescription class.
 
 #include "ThePEG/Config/ThePEG.h"
-// #include "InputDescription.fh"
-// #include "InputDescription.xh"
 #include "ThePEG/Utilities/ClassDescription.h"
 
 namespace ThePEG {
@@ -46,34 +44,51 @@ public:
    * @param newName the name of the class being read.
    * @param version the version number of the class when written.
    */
-  inline InputDescription(string newName, int version);
+  InputDescription(string newName, int newVersion) 
+    : Named(newName), theDescription(0), theVersion(newVersion) {}
 
   /**
    * Set the ClassDescriptionBase object of the class being read.
    */
-  inline void setDescription(const ClassDescriptionBase *);
+  void setDescription(const ClassDescriptionBase * cd) {
+    theDescription = cd;
+  }
 
   /**
    * Add a base class description.
    */
-  inline void addBaseClass(const InputDescription *);
+  void addBaseClass(const InputDescription * newBase) {
+    theBaseClasses.push_back(newBase);
+  }
 
   /**
    * Return the list of base class descriptions.
    */
-  inline const DescriptionVector & descriptions() const;
+  const DescriptionVector & descriptions() const {
+    return theBaseClasses;
+  }
 
   /**
    * Create an object of the corresponding class.
    */
-  inline BPtr create() const;
+  BPtr create() const {
+    if ( theDescription ) return theDescription->create();
+    DescriptionVector::const_iterator dit = theBaseClasses.begin();
+    while ( dit != theBaseClasses.end() ) {
+      BPtr obj = (*dit++)->create();
+      if ( obj ) return obj;
+    }
+    return BPtr();
+  }
 
   /**
    * Read an object part of the corresponding class from a stream.
    * Will only read the part of the object corresponding to the
    * members of the class represented by this object.
    */
-  inline void input(tBPtr b, PersistentIStream & is) const;
+  void input(tBPtr b, PersistentIStream & is) const {
+    if ( theDescription ) theDescription->input(b, is, theVersion);
+  }
 
 private:
 
@@ -96,10 +111,5 @@ private:
 };
 
 }
-
-#include "InputDescription.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "InputDescription.tcc"
-#endif
 
 #endif /* ThePEG_InputDescription_H */

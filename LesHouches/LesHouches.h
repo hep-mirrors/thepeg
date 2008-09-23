@@ -32,7 +32,7 @@ public:
   /**
    * Default constructor.
    */
-  inline HEPRUP();
+  HEPRUP() : IDWTUP(0), NPRUP(0) {}
   //@}
 
 public:
@@ -42,14 +42,22 @@ public:
    * sub-processes, to \a nrup, and resize all relevant vectors
    * accordingly.
    */
-  inline void resize(int nrup);
+  void resize(int nrup) {
+    NPRUP = nrup;
+    resize();
+  }
 
   /**
    * Assuming the NPRUP variable, corresponding to the number of
    * sub-processes, is correctly set, resize the relevant vectors
    * accordingly.
    */
-  inline void resize();
+  void resize() {
+    XSECUP.resize(NPRUP);
+    XERRUP.resize(NPRUP);
+    XMAXUP.resize(NPRUP);
+    LPRUP.resize(NPRUP);
+  }
 
   /**
    * PDG id's of beam particles. (first/second is in +/-z direction).
@@ -126,7 +134,9 @@ public:
   /**
    * Default constructor.
    */
-  inline HEPEUP();
+  HEPEUP()
+    : NUP(0), IDPRUP(0), XWGTUP(0.0), XPDWUP(0.0, 0.0),
+      SCALUP(0.0), AQEDUP(0.0), AQCDUP(0.0) {}
   //@}
 
 public:
@@ -136,14 +146,25 @@ public:
    * the current event, to \a nup, and resize all relevant vectors
    * accordingly.
    */
-  inline void resize(int nup);
+  void resize(int nup) {
+    NUP = nup;
+    resize();
+  }
 
   /**
    * Assuming the NUP variable, corresponding to the number of
    * particles in the current event, is correctly set, resize the
    * relevant vectors accordingly.
    */
-  inline void resize();
+  void resize() {
+    IDUP.resize(NUP);
+    ISTUP.resize(NUP);
+    MOTHUP.resize(NUP);
+    ICOLUP.resize(NUP);
+    PUP.resize(NUP, std::vector<double>(5));
+    VTIMUP.resize(NUP);
+    SPINUP.resize(NUP);
+  }
 
   /**
    * The number of particle entries in the current event.
@@ -228,7 +249,5 @@ public:
 };
 
 }
-
-#include "LesHouches.icc"
 
 #endif /* THEPEG_LesHouches_H */

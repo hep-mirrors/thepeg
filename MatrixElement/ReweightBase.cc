@@ -13,27 +13,13 @@
 
 #include "ReweightBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ReweightBase.tcc"
-#endif
-
 #include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-ReweightBase::ReweightBase() {}
-
-ReweightBase::ReweightBase(const ReweightBase & x)
-  : HandlerBase(x), LastXCombInfo<>(x) {}
-
 ReweightBase::~ReweightBase() {}
-
-void ReweightBase::setXComb(tXCombPtr xc) {
-  theLastXComb = xc;
-}
 
 void ReweightBase::persistentOutput(PersistentOStream & os) const {
   os << theLastXComb;
@@ -41,6 +27,10 @@ void ReweightBase::persistentOutput(PersistentOStream & os) const {
 
 void ReweightBase::persistentInput(PersistentIStream & is, int) {
   is >> theLastXComb;
+}
+
+void ReweightBase::setXComb(tXCombPtr xc) {
+  theLastXComb = xc;
 }
 
 AbstractClassDescription<ReweightBase> ReweightBase::initReweightBase;

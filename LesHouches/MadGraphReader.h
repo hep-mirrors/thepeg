@@ -30,17 +30,9 @@ public:
   /**
    * Default constructor.
    */
-  inline MadGraphReader();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MadGraphReader(const MadGraphReader &);
-
-  /**
-   * Destructor.
-   */
-  virtual ~MadGraphReader();
+  MadGraphReader()
+    : fixedScale(91.188*GeV), fixedAEM(0.007546772), fixedAS(0.12),
+      doInitCuts(false) {}
   //@}
 
 public:
@@ -102,13 +94,13 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 protected:
@@ -146,7 +138,10 @@ protected:
    * Finalize this object. Called in the run phase just after a
    * run has ended. Used eg. to write out statistics.
    */
-  inline virtual void dofinish();
+  virtual void dofinish() {
+    LesHouchesFileReader::dofinish();
+    if ( stats.accepted() > 0 ) useMe();
+  }
   //@}
 
 protected:
@@ -258,10 +253,5 @@ struct ClassTraits<MadGraphReader>
 /** @endcond */
 
 }
-
-#include "MadGraphReader.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MadGraphReader.tcc"
-#endif
 
 #endif /* THEPEG_MadGraphReader_H */

@@ -47,12 +47,7 @@ public:
   /**
    * Default constructor.
    */
-  inline DiagramBase();
-
-  /**
-   * Copy-constructor.
-   */
-  inline DiagramBase(const DiagramBase &);
+  DiagramBase() : theNIncoming(-1), theId(0) {}
 
   /**
    * Destructor.
@@ -81,18 +76,18 @@ public:
    * Return the number of incoming partons for this diagram. I.e. the
    * incoming partons plus the number of space-like lines.
    */
-  inline int nIncoming() const;
+  int nIncoming() const { return theNIncoming; }
 
   /**
    * Return the incoming, followed by the outgoing partons for this
    * diagram.
    */
-  inline const cPDVector & partons() const;
+  const cPDVector & partons() const { return thePartons; }
 
   /**
    * Return the id number of this diagram.
    */
-  inline int id() const;
+  int id() const { return theId; }
 
   /**
    * Generate a tag which is unique for diagrams with the same
@@ -115,13 +110,17 @@ protected:
    *
    * @param newId the id number of this diagram.
    */
-  inline void partons(int ninc, const cPDVector & parts, int newId);
+  void partons(int ninc, const cPDVector & parts, int newId) {
+    theNIncoming = ninc;
+    thePartons = parts;
+    theId = newId;
+  }
 
   /**
    * Returns true if the partons(int, const cPDVector &, int) function
    * has been called properly from the sub class.
    */
-  inline bool done() const;
+  bool done() const { return nIncoming() >= 0; }
 
 public:
 
@@ -208,10 +207,5 @@ struct ClassTraits<DiagramBase>: public ClassTraitsBase<DiagramBase> {
 /** @endcond */
 
 }
-
-#include "DiagramBase.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DiagramBase.tcc"
-#endif
 
 #endif /* ThePEG_DiagramBase_H */

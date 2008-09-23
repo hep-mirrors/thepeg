@@ -103,54 +103,54 @@ public:
   /**
    * Return a pointer to the standard model parameters.
    */
-  inline tSMPtr standardModel() const;
+  tSMPtr standardModel() const { return theStandardModel; }
 
   /**
    * Return a pointer to the strategy object containing a set of
    * non-default particles to use.
    */
-  inline tStrategyPtr strategy() const;
+  tStrategyPtr strategy() const { return theStrategy; }
 
   /**
    * Get the currently active EventHandler.
    */
-  inline tEHPtr currentEventHandler() const;
+  tEHPtr currentEventHandler() const { return theCurrentEventHandler; }
 
   /**
    * Set the currently active EventHandler.
    */
-  inline void currentEventHandler(tEHPtr);
+  void currentEventHandler(tEHPtr eh) { theCurrentEventHandler = eh; }
 
   /**
    * Get the currently active step handler.
    */
-  inline tStepHdlPtr currentStepHandler() const;
+  tStepHdlPtr currentStepHandler() const { return theCurrentStepHandler; }
 
   /**
    * Set the currently active step handler.
    */
-  inline void currentStepHandler(tStepHdlPtr);
+  void currentStepHandler(tStepHdlPtr sh) { theCurrentStepHandler = sh; }
 
   /**
    * Return a pointer to the EventHandler.
    */
-  inline tEHPtr eventHandler() const;
+  tEHPtr eventHandler() const { return theEventHandler; }
 
   /**
    * Return the vector of analysis objects to be used in the run.
    */
-  inline AnalysisVector & analysisHandlers();
+  AnalysisVector & analysisHandlers() { return theAnalysisHandlers; }
 
   /**
    * Return a pointer to an associated factory objects for handling
    * histograms to be used by <code>AnalysisHandler</code>s.
    */
-  inline tHistFacPtr histogramFactory() const;
+  tHistFacPtr histogramFactory() const { return theHistogramFactory; }
 
   /**
    * Return the EventManipulator used in the run.
    */
-  inline tEvtManipPtr manipulator() const;
+  tEvtManipPtr manipulator() const { return theEventManipulator; }
   //@}
 
 public:
@@ -221,7 +221,7 @@ public:
   /**
    * The number of the event currently being generated.
    */
-  inline long currentEventNumber() const;
+  long currentEventNumber() const { return ieve; }
 
   /**
    * Return the event being generated.
@@ -243,7 +243,7 @@ public:
   /**
    * Set the random seed for the global random number generator.
    */
-  inline void setSeed(long seed);
+  void setSeed(long seed) { random().setSeed(seed); }
 
   /**
    * Log a given exception.
@@ -253,7 +253,7 @@ public:
   /**
    * The number of events to be generated in this run.
    */
-  inline long N() const;
+  long N() const { return theNumberOfEvents; }
 
   /**
    * Histogram scale. A histogram bin which has been filled with the
@@ -271,7 +271,7 @@ public:
   /**
    * The sum of all weight of the events generated so far.
    */
-  inline double sumWeights() const;
+  double sumWeights() const { return weightSum; }
   //@}
 
   /** @name Functions for accessing output files. */
@@ -285,18 +285,18 @@ public:
    * file respectively. The filename is constructed from the path()
    * and runName().
    */
-  inline string filename() const;
+  string filename() const { return path() + "/" + runName(); }
 
   /**
    * Return the name assigned to this run. If no name is given, the
    * name of the EventGenerator object is returned.
    */
-  inline string runName() const;
+  string runName() const { return theRunName.size()? theRunName: name(); }
 
   /**
    * The directory in which the filename() is located
    */
-  inline string path() const;
+  string path() const { return thePath; }
 
   /**
    * Open all ouput files.
@@ -311,19 +311,19 @@ public:
   /**
    * Return a reference to the output file stream.
    */
-  inline ofstream & outfile();
+  ofstream & outfile() { return theOutfile; }
 
   /**
    * Return a reference to the log file stream.
    */
-  inline ofstream & logfile();
+  ofstream & logfile() { return theLogfile; }
 
   /**
    * Return a reference to the reference file stream. This file is
    * used to output LaTeX text with information about the models used
    * in the run.
    */
-  inline ofstream & reffile();
+  ofstream & reffile() { return theReffile; }
 
   /**
    * Return a reference to the stream connected to the file for
@@ -352,12 +352,13 @@ public:
   /**
    * Return the set of objects used in this run.
    */
-  const ObjectSet & objects() const;
+  const ObjectSet & objects() const { return theObjects; }
+
 
   /**
    * Return the map of objects used in this run indexed by their name.
    */
-  const ObjectMap & objectMap() const;
+  const ObjectMap & objectMap() const { return theObjectMap; }
 
   /**
    * Return a garbage collected pointer to a given object. If the
@@ -380,7 +381,9 @@ public:
    * requested pointer type.
    */
   template <typename T>
-  inline typename Ptr<T>::pointer getObject(string name) const;
+  typename Ptr<T>::pointer getObject(string name) const {
+    return dynamic_ptr_cast<typename Ptr<T>::pointer>(getPointer(name));
+  }
 
   /**
    * Return the default object for class T. Returns the null pointer
@@ -405,19 +408,19 @@ public:
    * Return a reference to the complete list of matchers in this
    * generator.
    */
-  inline const MatcherSet & matchers() const;
+  const MatcherSet & matchers() const { return theMatchers; }
 
   /**
    * Return a reference to the complete map of particle data objects
    * in this generator, indexed by their id numbers.
    */
-  inline const ParticleMap & particles() const;
+  const ParticleMap & particles() const { return theParticles; }
 
   /**
    * Return a reference to the set of objects which have been
    * registered as used during the current run.
    */
-  inline const ObjectSet & used() const;
+  const ObjectSet & used() const { return usedObjects; }
   //@}
 
 protected:
@@ -432,7 +435,7 @@ protected:
    * Return a reference to the default RandomGenerator object in this
    * run.
    */
-  inline RandomGenerator & random() const;
+  RandomGenerator & random() const { return *theRandom; }
 
   /**
    * Finish the setup of an event generator run. Set run name, all
@@ -491,36 +494,36 @@ protected:
   /**
    * Set number of events to be generated.
    */
-  inline void N(long);
+  void N(long n) { theNumberOfEvents = n; }
 
   /**
    * Set the name of this run
    */
-  inline void runName(string);
+  void runName(string f) { theRunName = f; }
 
 private:
 
   /**
    * Return the vector of default objects.
    */
-  inline const vector<IPtr> & defaultObjects() const;
+  const vector<IPtr> & defaultObjects() const { return theDefaultObjects; }
 
   /**
    * Access the special particles used in this generator. Not relevant
    * in the run phase.
    */
-  inline ParticleMap & localParticles();
+  ParticleMap & localParticles() { return theLocalParticles; }
 
   /**
    * Access the special particles used in this generator. Not relevant
    * in the run phase.
    */
-  inline const ParticleMap & localParticles() const;
+  const ParticleMap & localParticles() const { return theLocalParticles; }
 
   /**
    * Set the directory where the output files will be stored.
    */
-  inline void path(string);
+  void path(string f) { thePath = f; }
 
   /**
    * Set a pointer to the strategy object containing a set of
@@ -731,24 +734,19 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 protected:
 
   /** @name Standard Interfaced functions. */
   //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
@@ -779,13 +777,13 @@ protected:
   /**
    * Return the set of all objects to be used in this run.
    */
-  inline ObjectSet & objects();
+  ObjectSet & objects() { return theObjects; }
 
   /**
    * Return the map of all objects to be used in this run indexed by
    * their name.
    */
-  inline ObjectMap & objectMap();
+  ObjectMap & objectMap() { return theObjectMap; }
 
   /**
    * Print out the .tex file with descriptions of and references to
@@ -1076,7 +1074,6 @@ struct ClassTraits<EventGenerator>: public ClassTraitsBase<EventGenerator> {
 
 }
 
-#include "EventGenerator.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "EventGenerator.tcc"
 #endif

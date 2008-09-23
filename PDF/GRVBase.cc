@@ -29,13 +29,6 @@ GRVBase::GRVBase()
     uvSave(-1.0), dvSave(-1.0), delSave(-1.0), udbSave(-1.0), sbSave(-1.0),
     cbSave(-1.0), bbSave(-1.0), glSave(-1.0) {}
 
-GRVBase::GRVBase(const GRVBase & x)
-  : PDFBase(x), theLx(x.theLx), thex(x.thex), theEps(x.theEps),
-    theRootx(x.theRootx), Q2(x.Q2), theLam2(x.theLam2), theMu2(x.theMu2),
-    theS(x.theS), theS2(x.theS2), theS3(x.theS3), theRootS(x.theRootS),
-    uvSave(x.uvSave), dvSave(x.dvSave), delSave(x.delSave), udbSave(x.udbSave),
-    sbSave(x.sbSave), cbSave(x.cbSave), bbSave(x.bbSave), glSave(x.glSave) {}
-
 GRVBase::~GRVBase() {}
 
 bool GRVBase::canHandleParticle(tcPDPtr particle) const {
@@ -165,15 +158,6 @@ setup(double l, Energy2 scale, Energy2 mu2, Energy2 lam2) const {
     theS3 = S()*S2();
     theRootS = sqrt(S());
   }
-}
-
-IVector GRVBase::getReferences() {
-  IVector ret = PDFBase::getReferences();
-  return ret;
-}
-
-void GRVBase::rebind(const TranslationMap & trans) throw(RebindException) {
-  PDFBase::rebind(trans);
 }
 
 AbstractNoPIOClassDescription<GRVBase> GRVBase::initGRVBase;

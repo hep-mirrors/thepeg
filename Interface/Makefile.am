@@ -7,12 +7,12 @@ DOCFILES = Command.h InterfaceBase.h Interfaced.h InterfacedBase.h ParVector.h \
            Interface.h
 
 INCLUDEFILES = $(DOCFILES) Command.fh Command.tcc \
-            Command.xh InterfaceBase.fh InterfaceBase.icc InterfaceBase.xh \
-            Interfaced.icc InterfacedBase.icc InterfacedBase.xh ParVector.fh \
-            ParVector.icc ParVector.tcc ParVector.xh Parameter.fh \
-            Parameter.icc Parameter.tcc Parameter.xh RefVector.fh \
+            Command.xh InterfaceBase.fh InterfaceBase.xh \
+            InterfacedBase.xh ParVector.fh \
+            ParVector.tcc ParVector.xh Parameter.fh \
+            Parameter.tcc Parameter.xh RefVector.fh \
             RefVector.tcc RefVector.xh Reference.fh \
-            Reference.tcc Reference.xh Switch.fh Switch.icc \
+            Reference.tcc Reference.xh Switch.fh \
             Switch.tcc Switch.xh ClassDocumentation.fh Deleted.h
 
 noinst_LTLIBRARIES = libThePEGInter.la

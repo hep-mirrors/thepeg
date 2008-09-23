@@ -13,7 +13,6 @@
 #include "ThePEG/MatrixElement/DiagramBase.h"
 #include "ThePEG/MatrixElement/ColourLines.h"
 #include "ThePEG/Handlers/StandardXComb.fh"
-// #include "Tree2toNDiagram.fh"
 #include "Tree2toNDiagram.xh"
 
 namespace ThePEG {
@@ -74,23 +73,20 @@ public:
   /**
    * Default constructor.
    */
-  inline Tree2toNDiagram();
-
-  /**
-   * Copy-constructor.
-   */
-  inline Tree2toNDiagram(const Tree2toNDiagram &);
+  Tree2toNDiagram()
+    : theNSpace(0), theNOutgoing(0), nextOrig(0) {}
 
   /**
    * Destructor.
    */
-  inline ~Tree2toNDiagram();
+  ~Tree2toNDiagram();
 
   /**
    * The standard constructor giving the number of \a space-like
    * propagators.
    */
-  inline Tree2toNDiagram(int space);
+  explicit Tree2toNDiagram(int space) 
+    : theNSpace(space), theNOutgoing(0), nextOrig(-1) {}
   //@}
 
 public:
@@ -99,27 +95,31 @@ public:
    * If less than zero indicate that this tree is competed. Otherwise
    * signal the parent of the next added parton.
    */
-  inline Tree2toNDiagram & operator,(int);
+  Tree2toNDiagram & operator,(int o) {
+    nextOrig = o - 1;
+    if ( o < 0 ) check();
+    return *this;
+  }
 
   /**
    * Add a space- or time-like parton.
    */
-  inline Tree2toNDiagram & operator,(PDPtr);
+  Tree2toNDiagram & operator,(PDPtr pd) { return add(pd); }
 
   /**
    * Add a space- or time-like parton.
    */
-  inline Tree2toNDiagram & operator,(cPDPtr);
+  Tree2toNDiagram & operator,(cPDPtr pd) { return add(pd); }
 
   /**
    * Add a space- or time-like parton.
    */
-  inline Tree2toNDiagram & operator,(tPDPtr);
+  Tree2toNDiagram & operator,(tPDPtr pd) { return add(pd); }
 
   /**
    * Add a space- or time-like parton.
    */
-  inline Tree2toNDiagram & operator,(tcPDPtr);
+  Tree2toNDiagram & operator,(tcPDPtr pd) { return add(pd); }
 
   /**
    * Construct a sub process corresponding to this diagram. The
@@ -139,7 +139,7 @@ public:
   /**
    * Return the complete vector of partons in this tree diagram.
    */
-  inline const cPDVector & allPartons() const;
+  const cPDVector & allPartons() const { return thePartons; }
 
   /**
    * Return the outgoing parton types of this tree diagram.
@@ -155,7 +155,7 @@ public:
   /**
    * Return the index of the parent of the given parton.
    */
-  inline int parent(int i) const;
+  int parent(int i) const { return theParents[i]; }
 
   /**
    * Return the indices of the children of the given parton.
@@ -165,12 +165,12 @@ public:
   /**
    * Return the number of space-like partons
    */
-  inline int nSpace() const;
+  int nSpace() const { return theNSpace; }
 
   /**
    * Return the number of outgoing partons.
    */
-  inline int nOutgoing() const;
+  int nOutgoing() const { return theNOutgoing; }
 
 private:
 
@@ -182,7 +182,11 @@ private:
   /**
    * Add a space-like parton to this diagram.
    */
-  inline void addSpacelike(tcPDPtr);
+  void addSpacelike(tcPDPtr pd) {
+    if ( thePartons.size() >= theNSpace ) throw Tree2toNDiagramError();
+    theParents.push_back(thePartons.size() - 1);
+    thePartons.push_back(pd);
+  }
   /**
    * Add a time-like parton to this diagram.
    */
@@ -286,10 +290,5 @@ struct ClassTraits<Tree2toNDiagram>: public ClassTraitsBase<Tree2toNDiagram> {
 /** @endcond */
 
 }
-
-#include "Tree2toNDiagram.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Tree2toNDiagram.tcc"
-#endif
 
 #endif /* ThePEG_Tree2toNDiagram_H */

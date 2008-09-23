@@ -63,7 +63,15 @@ public:
    * istream. If keepid is true, the order in which the original
    * objects were created will be kept.
    */
-  inline PersistentIStream(istream &, bool keepid = false);
+  PersistentIStream(istream & is, bool keepid = false) 
+    : theIStream(&is), isPedantic(true), 
+      allocStream(false), badState(false),
+      keepId(keepid) 
+  {
+    init();
+  }
+
+
 
   /**
    * Constuctor giving a file name to read from. If the first
@@ -86,7 +94,12 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(RCPtr<T> & p);
+  PersistentIStream & operator>>(RCPtr<T> & ptr) {
+    BPtr b = getObject();
+    ptr = dynamic_ptr_cast< RCPtr<T> >(b);
+    if ( b && !ptr ) setBadState();
+    return *this;
+  }
 
   /**
    * Operator for extracting persistent objects from the stream.
@@ -94,7 +107,12 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(ConstRCPtr<T> & p);
+  PersistentIStream & operator>>(ConstRCPtr<T> & ptr) {
+    BPtr b = getObject();
+    ptr = dynamic_ptr_cast< ConstRCPtr<T> >(b);
+    if ( b && !ptr ) setBadState();
+    return *this;
+  }
 
   /**
    * Operator for extracting persistent objects from the stream.
@@ -102,7 +120,12 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(TransientRCPtr<T> & p);
+  PersistentIStream & operator>>(TransientRCPtr<T> & ptr) {
+    BPtr b = getObject();
+    ptr = dynamic_ptr_cast< TransientRCPtr<T> >(b);
+    if ( b && !ptr ) setBadState();
+    return *this;
+  }
 
   /**
    * Operator for extracting persistent objects from the stream.
@@ -110,88 +133,133 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentIStream & operator>>(TransientConstRCPtr<T> & p);
+  PersistentIStream & operator>>(TransientConstRCPtr<T> & ptr) {
+    BPtr b = getObject();
+    ptr = dynamic_ptr_cast< TransientConstRCPtr<T> >(b);
+    if ( b && !ptr ) setBadState();
+    return *this;
+  }
+
 
   /** @name Operators for extracting built-in types from the stream. */
   //@{
   /**
    * Read a character string.
    */
-  inline PersistentIStream & operator>>(string &);
+  PersistentIStream & operator>>(string &);
 
   /**
    * Read a character.
    */
-  inline PersistentIStream & operator>>(char &);
+  PersistentIStream & operator>>(char &);
 
   /**
    * Read a signed character.
    */
-  inline PersistentIStream & operator>>(signed char &);
+  PersistentIStream & operator>>(signed char &);
 
   /**
    * Read an unsigned character.
    */
-  inline PersistentIStream & operator>>(unsigned char &);
+  PersistentIStream & operator>>(unsigned char &);
 
   /**
    * Read an integer.
    */
-  inline PersistentIStream & operator>>(int &);
+  PersistentIStream & operator>>(int & i) {
+    is() >> i;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read an unsigned integer.
    */
-  inline PersistentIStream & operator>>(unsigned int &);
+  PersistentIStream & operator>>(unsigned int & i) {
+    is() >> i;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read a long integer.
    */
-  inline PersistentIStream & operator>>(long &);
+  PersistentIStream & operator>>(long & i) {
+    is() >> i;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read an unsigned long integer.
    */
-  inline PersistentIStream & operator>>(unsigned long &);
+  PersistentIStream & operator>>(unsigned long & i) {
+    is() >> i;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read a short integer.
    */
-  inline PersistentIStream & operator>>(short &);
+  PersistentIStream & operator>>(short & i) {
+    is() >> i;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read an unsigned short integer.
    */
-  inline PersistentIStream & operator>>(unsigned short &);
+  PersistentIStream & operator>>(unsigned short & i) {
+    is() >> i;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read a double.
    */
-  inline PersistentIStream & operator>>(double &);
+  PersistentIStream & operator>>(double & d) {
+    is() >> d;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read a float.
    */
-  inline PersistentIStream & operator>>(float &);
+  PersistentIStream & operator>>(float & f) {
+    is() >> f;
+    getSep();
+    return *this;
+  }
 
   /**
    * Read a bool.
    */
-  inline PersistentIStream & operator>>(bool &);
+  PersistentIStream & operator>>(bool &);
 
   /**
    * Read a Complex.
    */
-  inline PersistentIStream & operator>>(Complex &);
-
+  PersistentIStream & operator>>(Complex &);
   //@}
 
   /**
    * Intput of containers streamable objects.
    * @param c the container into which objects are added.
    */
-  template <typename Container>
-  void getContainer(Container & c);
+  template <typename Container> void getContainer(Container & c) {
+    long size;
+    typename Container::value_type val;
+    c.clear();
+    *this >> size;
+    while ( size-- && good() ) {
+      *this >> val;
+      c.insert(c.end(), val);
+    }
+  }
 
   /**
    * Read in an object. Create an object and read its data from the
@@ -223,7 +291,11 @@ public:
    * known. If the stream is set to be pedantic this is not allowed.
    * By default, the stream is pedantic.
    */
-  inline PersistentIStream & setPedantic();
+  PersistentIStream & setPedantic() {
+    isPedantic = true;
+    return *this;
+  }
+
   /**
    * Set tolerant mode.  If the stream is set to be tolerant it is
    * allowed to read an object from the stream even if the
@@ -232,28 +304,31 @@ public:
    * known. If the stream is set to be pedantic this is not allowed.
    * By default, the stream is pedantic.
    */
-  inline PersistentIStream & setTolerant();
+  PersistentIStream & setTolerant() {
+    isPedantic = false;
+    return *this;
+  }
 
   /**
    * Check the state of the stream.
    */
-  inline bool good() const;
+  bool good() const { return !badState && is(); }
+  
+  /**
+   * Check the state of the stream.
+   */
+  bool operator!() const { return !good(); }
 
   /**
    * Check the state of the stream.
    */
-  inline bool operator!() const;
-
-  /**
-   * Check the state of the stream.
-   */
-  inline operator bool() const;
+  operator bool() const { return good(); }
 
   /**
    * Check the tolerance. Returns true if setPedantic() has been
    * called or if not setTolerant() has been called.
    */
-  inline bool pedantic() const;
+  bool pedantic() const { return isPedantic; }
 
 private:
 
@@ -279,33 +354,46 @@ private:
   /**
    * Get the next character from the associated istream.
    */
-  inline char get();
+  char get() { return is().get(); }
 
   /**
    * Get the next character from the associated istream and decode it
    * if it is escaped.
    */
-  inline char escaped();
+  char escaped() {
+    char c = get();
+    return c == tNoSep? tSep: c;
+  }
 
   /**
    * Set the stream in a bad state
    */
-  inline void setBadState();
+  void setBadState() {
+    breakThePEG();
+    badState = true;
+  }
 
   /**
    * Read a field separator from the stream.
    */
-  inline void getSep();
+  void getSep() {
+    if ( !pedantic() ) skipField();
+    else if ( get() != tSep ) setBadState();
+  }
 
   /**
    * Scan the stream for the next field separator.
    */
-  inline void skipField();
+  void skipField() {
+    is().ignore(INT_MAX, tSep);
+    if ( !is() ) setBadState();
+  }
+
 
   /**
    * Check if the next char to be read is a tBegin marker.
    */
-  inline bool beginObject();
+  bool beginObject() { return is().peek() == tBegin; }
 
   /**
    * Scan the stream to the end of the current object. If any new object are
@@ -324,12 +412,12 @@ private:
   /**
    * Return a reference to the associated stream.
    */
-  inline istream & is();
+  istream & is() { return *theIStream; }
 
   /**
    * Return a const reference to the associated stream.
    */
-  inline const istream & is() const;
+  const istream & is() const { return *theIStream; }
 
   /**
    * Lists of objects that have been read.
@@ -427,17 +515,17 @@ private:
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  inline PersistentIStream();
+  PersistentIStream();
 
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  inline PersistentIStream(const PersistentIStream &);
+  PersistentIStream(const PersistentIStream &);
 
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  inline PersistentIStream & operator=(const PersistentIStream &);
+  PersistentIStream & operator=(const PersistentIStream &);
 
 };
 
@@ -445,17 +533,26 @@ private:
 /**
  * Operator for applying manipulators to the stream.
  */
-inline PersistentIStream & operator>>(PersistentIStream &, PersistentIManip);
+inline PersistentIStream & operator>>(PersistentIStream & is, 
+				      PersistentIManip func) {
+  return (*func)(is);
+}
   
 /**
  * The manipulator for setting pedantic mode.
  */
-inline PersistentIStream & pedantic(PersistentIStream &);
+inline PersistentIStream & pedantic(PersistentIStream & is) {
+  return is.setPedantic();
+}
+
 
 /**
  * The manipulator for setting tolerant mode.
  */
-inline PersistentIStream & tolerant(PersistentIStream &);
+inline PersistentIStream & tolerant(PersistentIStream & is) {
+  return is.setTolerant();
+}
+
 
 /**
  * @name Partial specializations of operator>> for input of
@@ -464,44 +561,85 @@ inline PersistentIStream & tolerant(PersistentIStream &);
 //@{
 /** Input a pair of objects. */
 template <typename T1, typename T2>
-inline PersistentIStream & operator>>(PersistentIStream &, pair<T1,T2> &);
+inline PersistentIStream & operator>>(PersistentIStream & is, pair<T1,T2> & p) {
+  return is >> p.first >> p.second;
+}
 
 /** Input a map of key/objects pairs. */
 template <typename Key, typename T, typename Cmp, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &, map<Key,T,Cmp,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is, map<Key,T,Cmp,A> & m) {
+  m.clear();
+  long size;
+  Key k;
+  is >> size;
+  while ( size-- && is ) {
+    is >> k;
+    is >> m[k];
+  }
+  return is;
+}
 
 /** Input a multimap of key/objects pairs. */
 template <typename Key, typename T, typename Cmp, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &,
-				      multimap<Key,T,Cmp,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      multimap<Key,T,Cmp,A> & m) {
+  m.clear();
+  long size;
+  Key k;
+  T t;
+  is >> size;
+  while ( size-- && is ) {
+    is >> k;
+    is >> t;
+    m.insert(make_pair(k, t));
+  }
+  return is;
+}
+
 
 /** Input a set of objects. */
 template <typename Key, typename Cmp, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &, set<Key,Cmp,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is, 
+				      set<Key,Cmp,A> & s) {
+  is.getContainer(s);
+  return is;
+}
 
 /** Input a multoset of objects. */
 template <typename Key, typename Cmp, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &,
-				      multiset<Key,Cmp,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is,
+				      multiset<Key,Cmp,A> & s) {
+  is.getContainer(s);
+  return is;
+}
+
 
 /** Input a list of objects. */
 template <typename T, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &, list<T,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is, 
+				      list<T,A> & l) {
+  is.getContainer(l);
+  return is;
+}
+
 
 /** Input a vector of objects. */
 template <typename T, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &, vector<T,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is, 
+				      vector<T,A> & v) {
+  is.getContainer(v);
+  return is;
+}
+
 
 /** Input a deque of objects. */
 template <typename T, typename A>
-inline PersistentIStream & operator>>(PersistentIStream &, deque<T,A> &);
+inline PersistentIStream & operator>>(PersistentIStream & is, 
+				      deque<T,A> & d) {
+  is.getContainer(d);
+  return is;
+}
 
 }
 
-#include "PersistentIStream.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#include "PersistentIStream.tcc"
-#endif
-
 #endif /* ThePEG_PersistentIStream_H */
-

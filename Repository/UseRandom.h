@@ -11,8 +11,6 @@
 // This is the declaration of the UseRandom class.
 
 #include "ThePEG/Repository/RandomGenerator.h"
-// #include "UseRandom.fh"
-// #include "UseRandom.xh"
 
 namespace ThePEG {
 
@@ -39,137 +37,157 @@ public:
   /**
    * Default constructor does nothing.
    */
-  inline UseRandom();
+  UseRandom() : randomPushed(false) {}
 
   /**
    * Copy-constructor does nothing.
    */
-  inline UseRandom(const UseRandom &);
+  UseRandom(const UseRandom &) : randomPushed(false) {}
 
   /**
    * Construct a new object specifying a new RandomGenerator, \a r, to
    * be used during this objects lifetime
    */
-  inline UseRandom(const RanGenPtr & r);
+  UseRandom(const RanGenPtr & r) : randomPushed(false) {
+    if ( r ) {
+      theRandomStack.push_back(r);
+      randomPushed = true;
+    }
+  }
 
   /**
    * The destructor removing the RandomGenerator specified in the
    * constructor from the stack.
    */
-  inline ~UseRandom();
+  ~UseRandom() { if ( randomPushed ) theRandomStack.pop_back(); }
 
 public:
 
   /**
    * Return a reference to the currently chosen RandomGenerator object.
    */
-  inline static RandomGenerator & current();
+  static RandomGenerator & current() { return *theRandomStack.back(); }
 
   /**
    * Return a pointer to the currently chosen RandomGenerator object.
    */
-//  inline static RandomEngine * currentEngine();
+//  static RandomEngine * currentEngine() {
+//    return &(current().randomGenerator());
+//  }
 
   /**
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]0,1[.
    */
-  inline static double rnd();
+  static double rnd() { return current().rnd(); }
 
   /**
    * Return \a n simple flat random number (from the current
    * RandomGenerator object) in the range ]0,1[.
    */
-  inline static RandomGenerator::RndVector rndvec(int n);
+  static RandomGenerator::RndVector rndvec(int n) {
+    return current().rndvec(n);
+  }
 
   /**
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]0,\a xu[.
    */
   template <typename Unit>
-  inline static Unit rnd(Unit xu);
+  static Unit rnd(Unit xu) { return current().rnd(xu); }
 
   /**
    * Return a simple flat random number (from the current
    * RandomGenerator object) in the range ]\a xl,\a xu[.
    */
   template <typename Unit>
-  inline static Unit rnd(Unit xl, Unit xu);
+  static Unit rnd(Unit xl, Unit xu) { 
+    return current().rnd(xl, xu); 
+  }
   
   /**
-   * Return a true with probability 0.5.
+   * Return a true with probability \a p (default 0.5).
    */
-  inline static bool rndbool();
-
-  /**
-   * Return a true with probability \a p.
-   */
-  inline static bool rndbool(double p);
+  static bool rndbool(double p = 0.5) {
+    return current().rndbool(p);
+  }
 
   /**
    * Return a true with probability \a p1/(\a p1+\a p2).
    */
-  inline static bool rndbool(double p1, double p2);
+  static bool rndbool(double p1, double p2) {
+    return current().rndbool(p1, p2);
+  }
 
   /**
    * Return -1, 0, or 1 with relative probabilities \a p1, \a p2, \a
    * p3.
    */
-  inline static int rndsign(double p1, double p2, double p3);
+  static int rndsign(double p1, double p2, double p3) {
+    return current().rndsign(p1, p2, p3);
+  }
 
   /**
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a
    * p1).
    */
-  inline static int rnd2(double p0, double p1);
+  static int rnd2(double p0, double p1) {
+    return current().rnd2(p0, p1);
+  }
 
   /**
    * Return an integer \f$i\f$ with probability p\f$i\f$/(\a p0+\a
    * p1+\a p2).
    */
-  inline static int rnd3(double p0, double p1, double p2);
+  static int rnd3(double p0, double p1, double p2) {
+    return current().rnd3(p0, p1, p2);
+  }
 
   /**
    * Return an integer/ \f$i\f$ with probability p\f$i\f$(\a p0+\a
    * p1+\a p2+\a p3).
    */
-  inline static int rnd4(double p0, double p1, double p2, double p3);
+  static int rnd4(double p0, double p1, double p2, double p3) {
+    return current().rnd4(p0, p1, p2, p3);
+  }
 
   /**
    * Return a simple flat random integrer number in the range [0,\a xu[.
    */
-  inline static long irnd(long xu = 2);
+  static long irnd(long xu = 2) { return long(rnd() * xu); }
 
   /**
    * Return a simple flat random integrer number in the range [\a xl,\a xu[.
    */
-  inline static long irnd(long xl, long xu);
+  static long irnd(long xl, long xu) { return xl + irnd(xu-xl); }
   
   /**
    * Return a number between zero and infinity, distributed according
    * to \f$e^-x\f$.
    */
-  inline static double rndExp();
+  static double rndExp() { return current().rndExp(); }
 
   /**
    * Return a number between zero and infinity, distributed according
    * to \f$e^-{x/\mu}\f$ where \f$\mu\f$ is the \a mean value.
    */
   template <typename Unit>
-  inline static Unit rndExp(Unit mean);
+  static Unit rndExp(Unit mean) { return current().rndExp(mean); }
 
   /**
    * Return a number distributed according to a Gaussian distribution
    * with zero mean and unit variance.
    */
-  inline static double rndGauss();
+  static double rndGauss() { return current().rndGauss(); }
 
   /**
    * Return a number distributed according to a Gaussian distribution
    * with a given standard deviation, \a sigma, and a given \a mean.
    */
   template <typename Unit>
-  inline static Unit rndGauss(Unit sigma, Unit mean = Unit());
+  static Unit rndGauss(Unit sigma, Unit mean = Unit()) {
+    return current().rndGauss(sigma, mean);
+  }
 
   /**
    * Return a positive number distributed according to a
@@ -177,7 +195,9 @@ public:
    * given \a mean.
    */
   template <typename Unit>
-  inline static Unit rndBW(Unit mean, Unit gamma);
+  static Unit rndBW(Unit mean, Unit gamma) {
+    return current().rndBW(mean, gamma);
+  }
 
   /**
    * Return a positive number distributed according to a
@@ -186,14 +206,18 @@ public:
    * between \a mean - \a cut and \a mean + \a cut
    */
   template <typename Unit>
-  inline static Unit rndBW(Unit mean, Unit gamma, Unit cut);
+  static Unit rndBW(Unit mean, Unit gamma, Unit cut) {
+    return current().rndBW(mean, gamma, cut);
+  }
 
   /**
    * Return a positive number distributed according to a relativistic
    * Breit-Wigner with a given width, \a gamma, and a given \a mean.
    */
   template <typename Unit>
-  inline static Unit rndRelBW(Unit mean, Unit gamma);
+  static Unit rndRelBW(Unit mean, Unit gamma) {
+    return current().rndRelBW(mean, gamma);
+  }
 
   /**
    * Return a positive number distributed according to a relativistic
@@ -202,13 +226,17 @@ public:
    * \a mean - \a cut and \a mean + \a cut
    */
   template <typename Unit>
-  inline static Unit rndRelBW(Unit mean, Unit gamma, Unit cut);
+  static Unit rndRelBW(Unit mean, Unit gamma, Unit cut) {
+    return current().rndRelBW(mean, gamma, cut);
+  }
 
   /**
    * Return a non-negative number generated according to a Poissonian
    * distribution with a given \a mean.
    */
-  inline static long rndPoisson(double mean);
+  static long rndPoisson(double mean) {
+    return current().rndPoisson(mean);
+  }
 
 private:
 
@@ -233,11 +261,5 @@ private:
 };
 
 }
-
-
-#include "UseRandom.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "UseRandom.tcc"
-#endif
 
 #endif /* ThePEG_UseRandom_H */

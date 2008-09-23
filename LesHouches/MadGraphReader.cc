@@ -24,17 +24,20 @@
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/Throw.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MadGraphReader.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 using std::fgetc;
 using std::fgets;
+
+IBPtr MadGraphReader::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr MadGraphReader::fullclone() const {
+  return new_ptr(*this);
+}
 
 void MadGraphReader::open() {
   LesHouchesFileReader::open();
@@ -336,8 +339,6 @@ bool MadGraphReader::doReadEvent() {
   return true;
 
 }
-
-MadGraphReader::~MadGraphReader() {}
 
 void MadGraphReader::persistentOutput(PersistentOStream & os) const {
   os << ounit(fixedScale, GeV) << fixedAEM << fixedAS << cuts

@@ -15,13 +15,16 @@
 #include "ThePEG/Vectors/LorentzVector.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/EventRecord/Particle.h"
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "NoRemnants.tcc"
-#endif
 
 using namespace ThePEG;
 
-NoRemnants::~NoRemnants() {}
+IBPtr NoRemnants::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr NoRemnants::fullclone() const {
+  return new_ptr(*this);
+}
 
 Lorentz5Momentum NoRemnants::
 generate(PartonBinInstance & pb, const double *,

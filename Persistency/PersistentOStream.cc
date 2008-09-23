@@ -14,7 +14,6 @@
 #include "PersistentOStream.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include <fstream>
-// #include <pfstream.h>
 
 namespace ThePEG {
 
@@ -137,5 +136,18 @@ writeClassDescription(const ClassDescriptionBase * db) {
   DescriptionVector::const_iterator bit = db->descriptions().begin();
   while ( bit != db->descriptions().end() ) writeClassDescription(*bit++);
 }
+
+PersistentOStream & PersistentOStream::flush() {
+  ObjectMap::iterator it = writtenObjects.begin();
+  while ( it != writtenObjects.end() ) {
+    ObjectMap::iterator it2 = it++;
+    if ( (*it2).second > lastSavedObject.top() ) writtenObjects.erase(it2);
+  }
+  os().flush();
+  return *this;
+}
+
+
+
 
 }

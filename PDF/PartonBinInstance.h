@@ -12,8 +12,6 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDF/PartonBin.h"
-// #include "PartonBinInstance.fh"
-// #include "PartonBinInstance.xh"
 
 namespace ThePEG {
 
@@ -82,30 +80,30 @@ public:
   /**
    * Return a pointer to the PartonBin this instance refer to.
    */
-  inline tcPBPtr bin() const;
+  tcPBPtr bin() const { return theBin; }
 
   /**
    * Return pointers to the bins this instance refer to in case more
    * than one parton has been extracted.
    */
-  inline const PartonVector & bins() const;
+  const PartonVector & bins() const { return theBins; }
 
   /**
    * Return a pointer to the data object of the incoming particle.
    */
-  inline tcPDPtr particleData() const;
+  tcPDPtr particleData() const { return bin()->particle(); }
 
   /**
    * Return a pointer to the data object of the extracted parton.
    */
-  inline tcPDPtr partonData() const;
+  tcPDPtr partonData() const { return bin()->parton(); }
 
   /**
    * In the case the incoming particle in turn is extracted from
    * another particle, return the PartonBinInstance for that
    * extraction.
    */
-  inline tPBIPtr incoming() const;
+  tPBIPtr incoming() const { return theIncoming; }
 
   /**
    * Return the parton bin instance corresponding to the first
@@ -117,12 +115,12 @@ public:
    * The PDFBase object describing the momentum distribution of the
    * parton within the particle in this PartonBin.
    */
-  inline tcPDFPtr pdf() const;
+  tcPDFPtr pdf() const { return bin()->pdf(); }
 
   /**
    * The remnant handler associated with the pdf().
    */
-  inline tcRemHPtr remnantHandler() const;
+  tcRemHPtr remnantHandler() const { return bin()->remnantHandler(); }
 
   /**
    * Return true if the corresponding PDFs has a pole at $x=1$ for the
@@ -157,12 +155,12 @@ public:
   /**
    * Get the jacobian associated with the phase space point generated.
    */
-  inline double jacobian() const;
+  double jacobian() const { return theJacobian; }
 
   /**
    * Set the jacobian associated with the phase space point generated.
    */
-  inline void jacobian(double);
+  void jacobian(double j) { theJacobian = j; }
   //@}
 
   /** @name Access information about the generated extraction. */
@@ -170,119 +168,139 @@ public:
   /**
    * Get the current particle instance.
    */
-  inline tPPtr particle() const;
+  tPPtr particle() const { return theParticle; }
 
   /**
    * Set the current particle instance.
    */
-  inline void particle(tPPtr);
+  void particle(tPPtr p) { theParticle = p; }
 
   /**
    * Get the current parton instance.
    */
-  inline tPPtr parton() const;
+  tPPtr parton() const { return theParton; }
 
   /**
    * Set the current parton instance.
    */
-  inline void parton(tPPtr);
+  void parton(tPPtr p) { theParton = p; }
 
   /**
    * The currently extracted partons (in case of multiple
    * interactions.
    */
-  inline const PVector & partons() const;
+  const PVector & partons() const { return thePartons; }
 
   /**
    * Get the momentum fraction of this parton w.r.t. the incoming
    * particle in this bin.
    */
-  inline double xi() const;
+  double xi() const {
+    if ( theXi < 0.0 ) theXi = exp(-li());
+    return theXi;
+  }
+
 
   /**
    * Get one minus the momentum fraction of this parton w.r.t. the
    * incoming particle in this bin.
    */
-  inline double eps() const;
+  double eps() const {
+    if ( theEps < 0.0 ) theEps =  Math::exp1m(-li());
+    return theEps;
+  }
 
   /**
    * Get the logarithmic momentum fraction of this parton w.r.t. the
    * incoming particle in this bin.
    */
-  inline double li() const;
+  double li() const { return theLi; }
 
   /**
    * Set the logarithmic momentum fraction of this parton w.r.t. the
    * incoming particle in this bin.
    */
-  inline void li(double);
+  void li(double lx) {
+    theLi = lx;
+    theXi = theEps = -1.0;
+  }
+
 
   /**
    * Get the momentum fraction of this parton w.r.t. the collidig
    * particles.
    */
-  inline double x() const;
+  double x() const {
+    if ( theX < 0.0 ) theX = exp(-l());
+    return theX;
+  }
+
 
   /**
    * Get the logarithmic momentum fraction of this parton w.r.t. the
    * collidig particles.
    */
-  inline double l() const;
+  double l() const { return theL; }
 
   /**
    * Set the logarithmic momentum fraction of this parton w.r.t. the
    * collidig particles.
    */
-  inline void l(double);
+  void l(double lx) {
+    theL = lx;
+    theX = -1.0;
+  }
+
 
   /**
    * Get the scale at which the current parton was extracted.
    */
-  inline Energy2 scale() const;
+  Energy2 scale() const { return theScale; }
+  
 
   /**
    * Set the scale at which the current parton was extracted.
    */
-  inline void scale(Energy2);
+  void scale(Energy2 s) { theScale = s; }
 
   /**
    * Return the transverse momentum of the extracted parton.
    */
-  inline const TransverseMomentum & kT() const;
+  const TransverseMomentum & kT() const { return theKT; }
 
   /**
    * Get the weight associated with the remnant generation.
    */
-  inline double remnantWeight() const;
+  double remnantWeight() const { return theRemnantWeight; }
 
   /**
    * Set the weight associated with the remnant generation.
    */
-  inline void remnantWeight(double);
+  void remnantWeight(double w) { theRemnantWeight = w; }
 
   /**
    * Get the current remnants.
    */
-  inline const PVector & remnants() const;
+  const PVector & remnants() const { return theRemnants; }
 
   /**
    * Set the current remnants.
    */
-  inline void remnants(const PVector &);
+  void remnants(const PVector & rems) { theRemnants = rems; }
 
   /**
    * Get information saved by the remnant handler from the generation,
    * to be used in the construction of the remnants. (In addition the
    * remnantWeight and remnants() may be used for this purpose.)
    */
-  inline tRemIPtr remnantInfo() const;
+  tRemIPtr remnantInfo() const { return theRemInfo; }
 
   /**
    * Set information saved by the remnant handler from the generation,
    * to be used in the construction of the remnants. (In addition the
    * remnantWeight and remnants() may be used for this purpose.)
    */
-  inline void remnantInfo(tRemIPtr);
+  void remnantInfo(tRemIPtr ri) { theRemInfo = ri; }
   //@}
 
 public:
@@ -454,10 +472,5 @@ struct ClassTraits<PartonBinInstance>:
 /** @endcond */
 
 }
-
-#include "PartonBinInstance.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "PartonBinInstance.tcc"
-#endif
 
 #endif /* THEPEG_PartonBinInstance_H */

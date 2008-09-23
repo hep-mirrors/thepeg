@@ -18,11 +18,6 @@
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ME2to2QCD.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 

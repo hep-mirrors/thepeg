@@ -13,8 +13,6 @@
 #include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/MatrixElement/Tree2toNDiagram.h"
 #include "ThePEG/Interface/Switch.fh"
-// #include "ME2to2Base.fh"
-// #include "ME2to2Base.xh"
 
 namespace ThePEG {
 
@@ -40,12 +38,9 @@ public:
   /**
    * Default constructor.
    */
-  inline ME2to2Base();
-
-  /**
-   * Copy-constructor.
-   */
-  inline ME2to2Base(const ME2to2Base &);
+  ME2to2Base()
+    : theScaleChoice(0), theLastTHat(0.0*GeV2), theLastUHat(0.0*GeV2),
+      theLastPhi(0.0) {}
 
   /**
    * Destructor.
@@ -61,7 +56,7 @@ public:
    * The number of internal degreed of freedom used in the matrix
    * element.
    */
-  virtual int nDim() const;
+  virtual int nDim() const { return 1; }
 
   /**
    * Generate internal degrees of freedom given 'nDim()' uniform
@@ -102,7 +97,7 @@ public:
    * Give the option corresponding to the way the scale of an
    * interaction is calculated.
    */
-  inline int scaleChoice() const;
+  int scaleChoice() const { return theScaleChoice; }
 
 public:
 
@@ -111,17 +106,17 @@ public:
   /**
    * Return the \f$\hat{t}\f$ of the last set phase space point.
    */
-  inline Energy2 tHat() const;
+  Energy2 tHat() const { return theLastTHat; }
 
   /**
    * Return the \f$\hat{u}\f$ of the last set phase space point.
    */
-  inline Energy2 uHat() const;
+  Energy2 uHat() const { return theLastUHat; }
 
   /**
    * Return the azimuth angle of the last set phase space point.
    */
-  inline double phi() const;
+  double phi() const { return theLastPhi; }
   //@}
 
 public:
@@ -149,63 +144,22 @@ public:
 
 protected:
 
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
-
-protected:
-
   /** @name Set the cached values in of the last set phase space point. */
   //@{
   /**
    * Set the \f$\hat{t}\f$ of the last set phase space point.
    */
-  inline void tHat(Energy2);
+  void tHat(Energy2 e2) { theLastTHat = e2; }
 
   /**
    * Set the \f$\hat{u}\f$ of the last set phase space point.
    */
-  inline void uHat(Energy2);
+  void uHat(Energy2 e2) { theLastUHat = e2; }
 
   /**
    * Set the azimuth angle of the last set phase space point.
    */
-  inline void phi(double);
+  void phi(double phi) { theLastPhi = phi; }
   //@}
 
 protected:
@@ -283,10 +237,5 @@ struct ClassTraits<ME2to2Base>: public ClassTraitsBase<ME2to2Base> {
 /** @endcond */
 
 }
-
-#include "ME2to2Base.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ME2to2Base.tcc"
-#endif
 
 #endif /* ThePEG_ME2to2Base_H */

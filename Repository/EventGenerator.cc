@@ -106,6 +106,14 @@ EventGenerator::~EventGenerator() {
   if ( theCurrentGenerator ) delete theCurrentGenerator;
 }
 
+IBPtr EventGenerator::clone() const {
+  return new_ptr(*this);
+}
+
+IBPtr EventGenerator::fullclone() const {
+  return new_ptr(*this);
+}
+
 tcEventPtr EventGenerator::currentEvent() const {
   return eventHandler()->currentEvent();
 }

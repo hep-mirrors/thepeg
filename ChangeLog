@@ -1,3 +1,7 @@
+2008-09-23  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* *: Global icc cleanup. Tested with several Herwig long runs.
+
 2008-09-15  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* EventRecord/*, PDT/*: icc removal.

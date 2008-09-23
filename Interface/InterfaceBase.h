@@ -88,7 +88,7 @@ public:
   /**
    * The destructor.
    */
-  inline virtual ~InterfaceBase();
+  virtual ~InterfaceBase() {}
 
   /**
    * Manipulate an object of the corresponding class. Execute the \a
@@ -108,20 +108,22 @@ public:
    * Rebind all references in ib according to the translation
    * map. Only used by derived classed interfacing references.
    */
-  inline virtual void rebind(InterfacedBase & ib,
-			     const TranslationMap & trans,
-			     const IVector & defs = IVector()) const;
+  virtual void rebind(InterfacedBase &,
+		      const TranslationMap &,
+		      const IVector & = IVector()) const {}
 
   /**
    * For derived classes interfacing references between Interfaced
    * objects, return the references for this interface.
    */
-  virtual IVector getReferences(const InterfacedBase & is) const;
+  virtual IVector getReferences(const InterfacedBase &) const {
+    return IVector();
+  }
 
   /**
    * Return the description of this interface.
    */
-  inline string description() const;
+  string description() const { return theDescription; }
 
   /**
    * Return a complete description of this interface.
@@ -144,61 +146,61 @@ public:
    * Return the class name for the class this interface is defined
    * for.
    */
-  inline string className() const;
+  string className() const { return theClassName; }    
 
   /**
    * Get the flag saying whether changing an object with this
    * interface may change the state of a dependent object .
    */
-  inline bool dependencySafe() const;
+  bool dependencySafe() const { return isDependencySafe; } 
 
   /**
    * Set the flag saying whether changing an object with this
    * interface may change the state of a dependent object .
    */
-  inline void setDependencySafe();
+  void setDependencySafe() { isDependencySafe = true; } 
 
   /**
    * Set the flag saying whether changing an object with this
    * interface may change the state of a dependent object .
    */
-  inline void setDependencySensitive();
+  void setDependencySensitive() { isDependencySafe = false; } 
 
   /**
    * Get the flag saying whether this interface is allowed to change
    * an object.
    */
-  inline bool readOnly() const;
+  bool readOnly() const { return isReadOnly && (!NoReadOnly); } 
 
   /**
    * Set the flag saying that this interface is allowed to
    * change an object.
    */
-  inline void setReadOnly();
+  void setReadOnly() { isReadOnly = true; } 
 
   /**
    * Unset the flag saying that this interface is allowed to change an
    * object.
    */
-  inline void setReadWrite();
+  void setReadWrite() { isReadOnly = false; } 
 
   /**
    * Return true if this interface is anonyous, ie. invisible for the
    * user interface.
    */
-  inline bool anonymous() const;
+  bool anonymous() const { return description().empty(); } 
 
   /**
    * Get the rank for this interface. Used for sorting by user
    * interface.
    */
-  inline double rank() const;
+  double rank() const { return theRank; } 
 
   /**
    * Set the rank for this interface. Used for sorting by user
    * interface.
    */
-  inline void rank(double r);
+  void rank(double r) { theRank = r; } 
 
   /**
    * If set to true, all read-only interfaces can be changed.
@@ -286,7 +288,7 @@ public:
    * null it may be given a a default value in the initialization of
    * an EventGenerator.
    */
-   inline RefInterfaceBase(string newName, string newDescription,
+   RefInterfaceBase(string newName, string newDescription,
 			  string newClassName, const type_info & newTypeInfo,
 			  string newRefClassName,
 			  const type_info & newRefTypeInfo,
@@ -297,67 +299,67 @@ public:
    * Return the class name of the class referred to by
    * this interface.
    */
-  inline string refClassName() const;
+  string refClassName() const { return theRefClassName; } 
 
   /**
    * Return the type_info object of the class referred to by this
    * interface.
    */
-  inline const type_info & refTypeInfo() const;
+  const type_info & refTypeInfo() const { return theRefTypeInfo; } 
 
   /**
    * Get the flag saying whether the interface is responsible for
    * rebinding of the corresponding refenerces.
    */
-  inline bool noRebind() const;
+  bool noRebind() const { return dontRebind; } 
 
   /**
    * Set the flag saying that the interface is not responsible for
    * rebinding refenerces.
    */
-  inline void setNoRebind();
+  void setNoRebind() { dontRebind = true; } 
 
   /**
    * Set the flag saying that the interface is responsible for
    * rebinding refenerces.
    */
-  inline void setRebind();
+  void setRebind() { dontRebind = false; } 
 
   /**
    * Get the flag saying whether the interface is allowed to set the
    * reference to null.
    */
-  inline bool noNull() const;
+  bool noNull() const { return !isNullable; } 
 
   /**
    * Set the flag saying that the interface it is allowed to set the
    * reference to null.
    */
-  inline void setNullable();
+  void setNullable() { isNullable = true; } 
 
   /**
    * Set the flag saying that the interface it is not allowed to set
    * the reference to null.
    */
-  inline void setNotNullable();
+  void setNotNullable() { isNullable = false; } 
 
   /**
    * Get the flag saying wether a null pointer should be replaced by a
    * default of suitable class when rebind is called.
    */
-  inline bool defaultIfNull() const;
+  bool defaultIfNull() const { return theDefaultIfNull; } 
 
   /**
    * Set the flag saying that a null pointer should be replaced by a
    * default of suitable class when rebind is called.
    */
-  inline void setDefaultIfNull();
+  void setDefaultIfNull() { theDefaultIfNull = true; } 
 
   /**
    * Set the flag saying that a null pointer should not be replaced by
    * a default of suitable class when rebind is called.
    */
-  inline void setNoDefaultIfNull();
+  void setNoDefaultIfNull() { theDefaultIfNull = false; } 
 
 private:
 
@@ -401,7 +403,5 @@ inline double operator/(string,string) { return 0.0; }
 inline string operator*(double,string) { return ""; }
 
 }
-
-#include "InterfaceBase.icc"
 
 #endif /* ThePEG_InterfaceBaseH */

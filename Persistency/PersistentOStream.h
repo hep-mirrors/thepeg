@@ -91,7 +91,9 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const RCPtr<T> & p);
+  PersistentOStream & operator<<(const RCPtr<T> & p) { 
+    return outputPointer(p); 
+  }
 
   /**
    * Operator for writing persistent objects to the stream.
@@ -99,7 +101,9 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const ConstRCPtr<T> & p);
+  PersistentOStream & operator<<(const ConstRCPtr<T> & p) { 
+    return outputPointer(p); 
+  }
 
   /**
    * Operator for writing persistent objects to the stream.
@@ -107,7 +111,9 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const TransientRCPtr<T> & p);
+  PersistentOStream & operator<<(const TransientRCPtr<T> & p) { 
+    return outputPointer(p); 
+  }
 
   /**
    * Operator for writing persistent objects to the stream.
@@ -115,86 +121,150 @@ public:
    * @return a reference to the stream.
    */
   template <typename T>
-  inline PersistentOStream & operator<<(const TransientConstRCPtr<T> & p);
+  PersistentOStream & operator<<(const TransientConstRCPtr<T> & p) {
+    return outputPointer(p);
+  }
+
 
   /** @name Operators for extracting built-in types from the stream. */
   //@{
   /**
    * Write a character string.
    */
-  inline PersistentOStream & operator<<(string);
+  PersistentOStream & operator<<(string s) {
+    for ( string::const_iterator i = s.begin(); i < s.end(); ++i ) escape(*i);
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a character.
    */
-  inline PersistentOStream & operator<<(char);
+  PersistentOStream & operator<<(char c) {
+    escape(c);
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a signed character.
    */
-  inline PersistentOStream & operator<<(signed char);
-
+  PersistentOStream & operator<<(signed char c) {
+    return (*this) << static_cast<char>(c);
+  }
+  
   /**
    * Write an unsigned character.
    */
-  inline PersistentOStream & operator<<(unsigned char);
-
+  PersistentOStream & operator<<(unsigned char c) {
+    return (*this) << static_cast<char>(c);
+  }
+  
   /**
    * Write an integer.
    */
-  inline PersistentOStream & operator<<(int);
+  PersistentOStream & operator<<(int i) {
+    os() << i;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write an unsigned integer.
    */
-  inline PersistentOStream & operator<<(unsigned int);
+  PersistentOStream & operator<<(unsigned int i) {
+    os() << i;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a long integer.
    */
-  inline PersistentOStream & operator<<(long);
+  PersistentOStream & operator<<(long i) {
+    os() << i;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write an unsigned long integer.
    */
-  inline PersistentOStream & operator<<(unsigned long);
+  PersistentOStream & operator<<(unsigned long i) {
+    os() << i;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a short integer.
    */
-  inline PersistentOStream & operator<<(short);
+  PersistentOStream & operator<<(short i) {
+    os() << i;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write an unsigned short integer.
    */
-  inline PersistentOStream & operator<<(unsigned short);
+  PersistentOStream & operator<<(unsigned short i) {
+    os() << i;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a double.
    */
-  inline PersistentOStream & operator<<(double);
+  PersistentOStream & operator<<(double d) {
+    os() << setprecision(18) << d;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a float.
    */
-  inline PersistentOStream & operator<<(float);
+  PersistentOStream & operator<<(float f) {
+    os() << setprecision(9) << f;
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a boolean.
    */
-  inline PersistentOStream & operator<<(bool);
+  PersistentOStream & operator<<(bool t) {
+    if (t) put(tYes);
+    else put(tNo);
+    // This is a workaround for a possible bug in gcc 4.0.0
+    // which inserts tYes and tNo as global symbols although
+    // they are private
+    //  put(t? tYes: tNo);
+    put(tSep);
+    return *this;
+  }
 
   /**
    * Write a Complex.
    */
-  inline PersistentOStream & operator<<(Complex);
+  PersistentOStream & operator<<(Complex z) {
+    *this << z.real() << z.imag();
+    return *this;
+  }
   //@}
 
   /**
    * Output of containers of streamable objects.
    */
   template <typename Container>
-  inline void putContainer(const Container & c);
+  void putContainer(const Container & c) {
+    *this << c.size();
+    for ( typename Container::const_iterator it = c.begin();
+	  it != c.end() && good() ; ++it )
+      *this << *it;
+  }
 
   /**
    * Write out a persistent object given a pointer to it.
@@ -214,33 +284,39 @@ public:
    * Remove all objects that have been written, except those which are
    * to be saved, from the list of written objects.
    */
-  inline PersistentOStream & flush();
-
+  PersistentOStream & flush();
+  
   /**
    * Instuct the stream to save the following objects (protecting them from
    * being flushed).
    */
-  inline PersistentOStream & push();
+  PersistentOStream & push() {
+    lastSavedObject.push(writtenObjects.size() - 1);
+    return *this;
+  }
 
   /**
    * Instuct the stream not to save the following objects.
    */
-  inline PersistentOStream & pop();
+  PersistentOStream & pop() {
+    lastSavedObject.pop();
+    return *this;
+  }
 
   /**
    * Check the state of the stream.
    */
-  inline bool good() const;
+  bool good() const { return !badState && os(); }
 
   /**
    * Check the state of the stream.
    */
-  inline operator bool() const;
+  operator bool() const { return good(); }
 
   /**
    * Check the state of the stream.
    */
-  inline bool operator!() const;
+  bool operator!() const { return !good(); }
 
 private:
 
@@ -312,17 +388,22 @@ private:
   /**
    * Return true if the given character is aspecial marker character.
    */
-  bool isToken(char c) const;
+  bool isToken(char c) const {
+    return c == tBegin || c == tEnd || c == tNext || c == tSep || c == tNull;
+  }
 
   /**
    * Set the stream in a bad state.
    */
-  inline void setBadState();
+  void setBadState() {
+    breakThePEG();
+    badState = true;
+  }
 
   /**
    * Check if the state is ok.
    */
-  inline void checkState();
+  void checkState() { if ( ! os() ) badState = true; }
 
   /**
    * Write out class information to the associated ostream.
@@ -337,38 +418,44 @@ private:
   /**
    * Put a "begin object" marker on the associated ostream
    */
-  inline void beginObject();
+  void beginObject() { put(tBegin); }
 
   /**
    * Put a "end of object" marker on the associated ostream
    */
-  inline void endObject();
+  void endObject() { put(tEnd); }
 
   /**
    * Put an "next base class" marker on the associated ostream
    */
-  inline void endBase();
+  void endBase() { put(tNext); }
 
   /**
    * Put a character on the associated ostream
    */
-  inline void put(char);
+  void put(char c) { os().put(c); }
 
   /**
    * Put a character on the associated ostream but escape it if it is
    * a token.
    */
-  inline void escape(char c);
+  void escape(char c) { 
+    if ( isToken(c) ) {
+      put(tNull);
+      put( c == tSep? tNoSep: c );
+    } else
+      put(c);
+  }
 
   /**
    * Return a reference to the associated ostream.
    */
-  inline ostream & os();
+  ostream & os() { return *theOStream; }
 
   /**
    * Return a const reference to the associated ostream.
    */
-  inline const ostream & os() const;
+  const ostream & os() const { return *theOStream; }
 
   /**
    * Write out initial metainfo on the stream.
@@ -410,17 +497,17 @@ private:
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  inline PersistentOStream();
+  PersistentOStream();
 
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  inline PersistentOStream(const PersistentOStream &);
+  PersistentOStream(const PersistentOStream &);
 
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  inline PersistentOStream & operator=(const PersistentOStream &);
+  PersistentOStream & operator=(const PersistentOStream &);
 
 };
 
@@ -428,22 +515,25 @@ private:
  * Operator for applying manipulators to the stream.
  */
 inline PersistentOStream &
-operator<<(PersistentOStream & os, PersistentOManip func);
+operator<<(PersistentOStream & os, PersistentOManip func) {
+  return (*func)(os);
+}
+
 
 /**
  * The manipulator for calling PersistentOStream::flush().
  */
-inline PersistentOStream & flush(PersistentOStream & os);
+inline PersistentOStream & flush(PersistentOStream & os) { return os.flush(); }
 
 /**
  * The manipulator for calling PersistentOStream::push().
  */
-inline PersistentOStream & push(PersistentOStream & os);
+inline PersistentOStream & push(PersistentOStream & os) { return os.push(); }
 
 /**
  * The manipulator for calling PersistentOStream::pop().
  */
-inline PersistentOStream & pop(PersistentOStream & os);
+inline PersistentOStream & pop(PersistentOStream & os) { return os.pop(); }
 
 
 /**
@@ -453,60 +543,85 @@ inline PersistentOStream & pop(PersistentOStream & os);
 //@{
 /** Output a pair of objects. */
 template <typename T1, typename T2>
-inline PersistentOStream & operator<<(PersistentOStream &, const pair<T1,T2> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const pair<T1,T2> & p) {
+  return os << p.first << p.second;
+}
 
 /**
  * Output a multimap of key/object pairs.
  */
 template <typename Key, typename T, typename Cmp, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const multimap<Key,T,Cmp,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const multimap<Key,T,Cmp,A> & m) {
+  os.putContainer(m);
+  return os;
+}
+
 /**
  * Output a map of key/object pairs.
  */
 template <typename Key, typename T, typename Cmp, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const map<Key,T,Cmp,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const map<Key,T,Cmp,A> & m) {
+  os.putContainer(m);
+  return os;
+}
 
 /**
  * Output a set of objects.
  */
 template <typename Key, typename Cmp, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const set<Key,Cmp,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const set<Key,Cmp,A> & s) {
+  os.putContainer(s);
+  return os;
+}
+
 
 /**
  * Output a multiset of objects.
  */
 template <typename Key, typename Cmp, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const multiset<Key,Cmp,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const multiset<Key,Cmp,A> & s) {
+  os.putContainer(s);
+  return os;
+}
+
 
 /**
  * Output a list of objects.
  */
 template <typename T, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const list<T,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const list<T,A> & l) {
+  os.putContainer(l);
+  return os;
+}
+
 
 /**
  * Output a vector of objects.
  */
 template <typename T, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const vector<T,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const vector<T,A> & v) {
+  os.putContainer(v);
+  return os;
+}
 
 /**
  * Output a deque of objects.
  */
 template <typename T, typename A>
-inline PersistentOStream & operator<<(PersistentOStream &,
-				      const deque<T,A> &);
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const deque<T,A> & d) {
+  os.putContainer(d);
+  return os;
+}
 //@}
 
 }
 
-#include "PersistentOStream.icc"
-
 #endif /* ThePEG_PersistentOStream_H */
-

@@ -68,12 +68,11 @@ public:
   /**
    * The default constructor.
    */
-  inline LesHouchesEventHandler();
-
-  /**
-   * The copy constructor.
-   */
-  inline LesHouchesEventHandler(const LesHouchesEventHandler &);
+  LesHouchesEventHandler()
+    : theWeightOption(unitweight), theUnitTolerance(1.0e-6), warnPNum(true) 
+  {
+    selector().tolerance(unitTolerance());
+  }
 
   /**
    * The destructor.
@@ -172,34 +171,35 @@ public:
   /**
    * The way weights are to be treated.
    */
-  inline WeightOpt weightOption() const;
+  WeightOpt weightOption() const { return theWeightOption; }
 
   /**
    * If the weight option is set to unit weight, do not start
    * compensating unless the weight is this much larger than unity.
    */
-  inline double unitTolerance() const;
+  double unitTolerance() const { return theUnitTolerance; }
 
   /**
    * Access the list of readers.
    */
-  inline const ReaderVector & readers() const;
+  const ReaderVector & readers() const { return theReaders; }
 
   /**
    * The selector to choose readers according to their overestimated
    * cross section.
    */
-  inline const ReaderSelector & selector() const;
+  const ReaderSelector & selector() const { return theSelector; }
 
   /**
    * The currently selected reader object.
    */
-  inline tLesHouchesReaderPtr currentReader() const;
+  tLesHouchesReaderPtr currentReader() const { return theCurrentReader; }
 
   /**
    * Set the currently selected reader object.
    */
-  inline void currentReader(tLesHouchesReaderPtr);
+  void currentReader(tLesHouchesReaderPtr x) { theCurrentReader = x; }
+
   //@}
 
 public:
@@ -236,24 +236,19 @@ protected:
    * Make a simple clone of this object.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr clone() const;
+  virtual IBPtr clone() const;
 
   /** Make a clone of this object, possibly modifying the cloned object
    * to make it sane.
    * @return a pointer to the new object.
    */
-  inline virtual IBPtr fullclone() const;
+  virtual IBPtr fullclone() const;
   //@}
 
 protected:
 
   /** @name Standard Interfaced functions. */
   //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
@@ -272,25 +267,6 @@ protected:
    * run has ended. Used eg. to write out statistics.
    */
   virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given
-   * pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in this
-   * object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
   //@}
 
 protected:
@@ -298,13 +274,13 @@ protected:
   /**
    * Access the list of readers.
    */
-  inline ReaderVector & readers();
+  ReaderVector & readers() { return theReaders; }
 
   /**
    * The selector to choose readers according to their overestimated
    * cross section.
    */
-  inline ReaderSelector & selector();
+  ReaderSelector & selector() { return theSelector; }
 
   /**
    * Helper function for the interface;
@@ -422,10 +398,5 @@ struct ClassTraits<LesHouchesEventHandler>
 /** @endcond */
 
 }
-
-#include "LesHouchesEventHandler.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "LesHouchesEventHandler.tcc"
-#endif
 
 #endif /* THEPEG_LesHouchesEventHandler_H */

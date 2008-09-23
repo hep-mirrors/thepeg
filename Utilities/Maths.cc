@@ -10,10 +10,6 @@
 #include <config.h>
 #include "Maths.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Math.tcc"
-#endif
-
 double ThePEG::Math::atanh(double x) {
 #ifndef ThePEG_HAS_ATANH
   return 0.5*(ThePEG::Math::log1m(-x) - ThePEG::Math::log1m(x));

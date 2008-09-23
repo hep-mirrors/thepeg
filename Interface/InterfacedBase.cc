@@ -21,10 +21,6 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Command.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "InterfacedBase.tcc"
-#endif
-
 using namespace ThePEG;
 
 InterfacedBase::~InterfacedBase() {}

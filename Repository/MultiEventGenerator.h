@@ -11,8 +11,6 @@
 // This is the declaration of the MultiEventGenerator class.
 
 #include "EventGenerator.h"
-// #include "MultiEventGenerator.fh"
-// #include "MultiEventGenerator.xh"
 
 namespace ThePEG {
 
@@ -39,16 +37,6 @@ public:
 
   /** @name Standard constructors and destructors. */
   //@{
-  /**
-   * Default constructor.
-   */
-  inline MultiEventGenerator();
-
-  /**
-   * Copy-constructor.
-   */
-  inline MultiEventGenerator(const MultiEventGenerator &);
-
   /**
    * Destructor.
    */
@@ -130,30 +118,6 @@ protected:
   /** @name Standard Interfaced functions. */
   //@{
   /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  inline virtual void doinitrun();
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
    * after all objects used in an EventGenerator has been cloned so that
    * the pointers will refer to the cloned objects afterwards.
@@ -169,7 +133,7 @@ protected:
    * object.
    * @return a vector of pointers.
    */
-  inline virtual IVector getReferences();
+  virtual IVector getReferences();
   //@}
 
 private:
@@ -242,10 +206,5 @@ struct ClassTraits<MultiEventGenerator>:
 /** @endcond */
 
 }
-
-#include "MultiEventGenerator.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "MultiEventGenerator.tcc"
-#endif
 
 #endif /* ThePEG_MultiEventGenerator_H */

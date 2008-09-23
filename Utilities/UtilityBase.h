@@ -12,8 +12,6 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/EventRecord/ParticleTraits.h"
 #include "ThePEG/Utilities/Triplet.h"
-// #include "UtilityBase.fh"
-// #include "UtilityBase.xh"
 
 namespace ThePEG {
 
@@ -32,7 +30,9 @@ struct UtilityBase {
    * implemented correctly.
    */
   template <typename Cont>
-  static inline LorentzMomentum sumMomentum(const Cont &);
+  static LorentzMomentum sumMomentum(const Cont & c) {
+    return sumMomentum(c.begin(), c.end());
+  }
 
   /**
    * Sums the four-momentum of the entries between first and last. The
@@ -41,7 +41,14 @@ struct UtilityBase {
    * T&)</code> is implemented correctly.
    */
   template <typename Iterator>
-  static inline LorentzMomentum sumMomentum(Iterator first, Iterator last);
+  static LorentzMomentum sumMomentum(Iterator first, Iterator last) {
+    LorentzMomentum sum;
+    typedef typename std::iterator_traits<Iterator>::value_type PType;
+    typedef ParticleTraits<PType> Traits;
+    
+    while ( first != last ) sum += Traits::momentum(*first++);
+    return sum;
+  }
 
   /**
    * Transform the entries between \a first and \a last. The class
@@ -50,8 +57,13 @@ struct UtilityBase {
    * T&)</code> is implemented correctly.
    */
   template <typename Iterator>
-  static inline void transform(Iterator first, Iterator last,
-			       const LorentzRotation & boost);
+  static void transform(Iterator first, Iterator last,
+			const LorentzRotation & boost) {
+    typedef typename std::iterator_traits<Iterator>::value_type PType;
+    typedef ParticleTraits<PType> Traits;
+    
+    while ( first != last ) Traits::transform(*first++, boost);
+  }
 
   /**
    * Transform the entries in a container \a cont. The class
@@ -60,7 +72,9 @@ struct UtilityBase {
    * implemented correctly.
    */
   template <typename Cont>
-  static inline void transform(Cont & cont, const LorentzRotation & boost);
+  static void transform(Cont & cont, const LorentzRotation & boost) {
+    transform(cont.begin(), cont.end(), boost);
+  }
 
   /**
    * Boost the two objects in the pair to their CM system. Also rotate
@@ -125,7 +139,9 @@ struct UtilityBase {
    * LorentzRotation&)</code> are implemented correctly.
    */
   template <typename Iterator>
-  inline static LorentzRotation boostToCM(Iterator first, Iterator last);
+  static LorentzRotation boostToCM(Iterator first, Iterator last) {
+    return boostToCM(first, last, last, last);
+  }
 
   /**
    * Boost the entries between fisrt and last into their CM system. If
@@ -137,8 +153,10 @@ struct UtilityBase {
    * LorentzRotation&)</code> are implemented correctly.
    */
   template <typename Iterator>
-  inline static LorentzRotation boostToCM(Iterator first, Iterator last,
-					  Iterator zAxis);
+  static LorentzRotation boostToCM(Iterator first, Iterator last, Iterator zAxis) {
+    return boostToCM(first, last, zAxis, last);
+  }
+
   /**
    * Boost the entries between fisrt and last into their CM system. If
    * zAxis != last, also rotate the entries so that zAxis becomes
@@ -231,8 +249,12 @@ struct UtilityBase {
    * \deprecated{Use getTransformToMomentum() instead.}
    */
   template <typename PType>
-  inline static LorentzRotation
-  transformToMomentum(const PType & p, const Momentum3 & q);
+  static LorentzRotation transformToMomentum(const PType & p, 
+					     const Momentum3 & q) {
+    typedef ParticleTraits<PType> Traits;
+    LorentzMomentum q4(q, sqrt(q.mag2() + Traits::momentum(p).m2()));
+    return transformToMomentum(p, q4);
+  }
 
   /**
    * Return the transformation needed to rotate \a p to the z-axis and
@@ -245,8 +267,10 @@ struct UtilityBase {
    * \deprecated{Use getTransformToMomentum() instead.}
    */
   template <typename PType>
-  inline static LorentzRotation
-  transformToMomentum(const PType & p, const LorentzMomentum & q);
+  static LorentzRotation transformToMomentum(const PType & p, 
+					     const LorentzMomentum & q) {
+    return transformFromCMS(q)*transformToCMS(p);
+  }
 
   /**
    * Return a transformation appropriate for transforming \a p to have
@@ -254,9 +278,14 @@ struct UtilityBase {
    * auxiliary vector \a k is left unchanged.
    */
   template <typename PType>
-  inline static LorentzRotation
-  getTransformToMomentum(const PType & p, const LorentzMomentum & q,
-			 const LorentzMomentum & k);
+  static LorentzRotation getTransformToMomentum(const PType & p, 
+						const LorentzMomentum & q,
+						const LorentzMomentum & k) {
+    typedef ParticleTraits<PType> Traits;
+    LorentzMomentum k0 = Traits::momentum(p) - k;
+    LorentzMomentum k1 = Traits::momentum(q) - k;
+    return getBoostFromCM(make_pair(k1, k))*getBoostToCM(make_pair(k0, k));
+  }
 
   /**
    * Return a transformation appropriate for transforming \a p to have
@@ -264,9 +293,13 @@ struct UtilityBase {
    * auxiliary vector \a k is left unchanged.
    */
   template <typename PType>
-  inline static LorentzRotation
-  getTransformToMomentum(const PType & p, const Momentum3 & q,
-			 const LorentzMomentum & k);
+  static LorentzRotation getTransformToMomentum(const PType & p, 
+						const Momentum3 & q,
+						const LorentzMomentum & k) {
+    typedef ParticleTraits<PType> Traits;
+    LorentzMomentum q4(q, sqrt(q.mag2() + Traits::momentum(p).m2()));
+    return getTransformToMomentum(p, q4, k);
+  }
 
   /**
    * Create a rotation corresponding to transforming p to its current
@@ -342,7 +375,6 @@ struct Utilities: public UtilityBase {};
 
 }
 
-#include "UtilityBase.icc"
 #ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "UtilityBase.tcc"
 #endif

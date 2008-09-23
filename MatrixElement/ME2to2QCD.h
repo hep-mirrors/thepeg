@@ -11,8 +11,6 @@
 // This is the declaration of the ME2to2QCD class.
 
 #include "ThePEG/MatrixElement/ME2to2Base.h"
-// #include "ME2to2QCD.fh"
-// #include "ME2to2QCD.xh"
 
 namespace ThePEG {
 
@@ -36,12 +34,8 @@ public:
   /**
    * Default constructor.
    */
-  inline ME2to2QCD();
-
-  /**
-   * Copy-constructor.
-   */
-  inline ME2to2QCD(const ME2to2QCD &);
+  ME2to2QCD()
+    : theMaxFlavour(5), theKfac(1.0), theKfacA(1.0), useInterference(true) {}
 
   /**
    * Destructor.
@@ -74,32 +68,34 @@ public:
   /**
    * Return the heaviest flavour allowed for this matrix element.
    */
-  inline int maxFlavour() const;
+  int maxFlavour() const { return theMaxFlavour; }
 
   /**
    * K-factor for artificially boosting the cross-section.
    */
-  inline double Kfac() const;
+  double Kfac() const { return theKfac; }
 
   /**
    * K-factor for artificially boosting colour-annihilation diagrams.
    */
-  inline double KfacA() const;
+  double KfacA() const { return theKfacA >= 0.0? theKfacA: theKfac; }
 
   /**
    * Return true if interference terms should be used.
    */
-  inline bool interference() const;
+  bool interference() const { return useInterference; }
 
   /**
    * Return true if argument is a quark.
    */
-  inline bool isQuark(const ParticleData &) const;
+  bool isQuark(const ParticleData & p) const {
+    return ( p.id() && abs(p.id()) <= maxFlavour() );
+  }
 
   /**
    * Return the quark with flavour i (or gluon if i = 0);
    */
-  inline tcPDPtr quark(int i) const;
+  tcPDPtr quark(int i) const;
   //@}
 
 public:
@@ -124,47 +120,6 @@ public:
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
-
-protected:
-
-  /** @name Standard Interfaced functions. */
-  //@{
-  /**
-   * Check sanity of the object during the setup phase.
-   */
-  inline virtual void doupdate() throw(UpdateException);
-
-  /**
-   * Initialize this object after the setup phase before saving an
-   * EventGenerator to disk.
-   * @throws InitException if object could not be initialized properly.
-   */
-  inline virtual void doinit() throw(InitException);
-
-  /**
-   * Finalize this object. Called in the run phase just after a
-   * run has ended. Used eg. to write out statistics.
-   */
-  inline virtual void dofinish();
-
-  /**
-   * Rebind pointer to other Interfaced objects. Called in the setup phase
-   * after all objects used in an EventGenerator has been cloned so that
-   * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
-   * @throws RebindException if no cloned object was found for a given pointer.
-   */
-  inline virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
-
-  /**
-   * Return a vector of all pointers to Interfaced objects used in
-   * this object.
-   * @return a vector of pointers.
-   */
-  inline virtual IVector getReferences();
-  //@}
 
 private:
 
@@ -233,10 +188,5 @@ struct ClassTraits<ME2to2QCD>: public ClassTraitsBase<ME2to2QCD> {
 /** @endcond */
 
 }
-
-#include "ME2to2QCD.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ME2to2QCD.tcc"
-#endif
 
 #endif /* ThePEG_ME2to2QCD_H */

@@ -70,12 +70,20 @@ public:
   /**
    * Default constructor.
    */
-  inline VSelector(size_type reserved = 0);
+  VSelector(size_type reserved = 0) : theSum() 
+  {
+    reserve(reserved);
+  }
 
   /**
    * Swap the underlying representation with the argument.
    */
-  inline void swap(VSelector &);
+  void swap(VSelector & s) {
+    theSums.swap(s.theSums);
+    theWeights.swap(s.theWeights);
+    theObjects.swap(s.theObjects);
+    std::swap(theSum, s.theSum);
+  }
 
   /**
    * Insert an object given a probability for this object. If the
@@ -83,7 +91,14 @@ public:
    * and the probability itself is returned. Otherwise the sum of
    * probabilities is returned.
    */
-  inline WeightType insert(WeightType, const T &);
+  WeightType insert(WeightType d, const T & t) {
+    WeightType newSum = theSum + d;
+    if ( newSum <= theSum ) return d;
+    theSums.push_back(theSum = newSum);
+    theWeights.push_back(d);
+    theObjects.push_back(t);
+    return theSum;
+  }
 
   /**
    * Reweight an object previously inserted giving it a new weight. If
@@ -104,7 +119,10 @@ public:
    * Replace all occurencies of told with tnew without changing the
    * probability for the entry.
    */
-  void replace(const T & told, const T & tnew);
+  void replace(const T & told, const T & tnew) {
+    for ( iterator it = theObjects.begin(); it != theObjects.end(); ++it )
+      if ( *it == told ) *it = tnew;
+  }
 
   /**
    * Select an object randomly. Given a random number flatly
@@ -117,7 +135,9 @@ public:
    * a uniform random number in the interval ]0,1[ calculated from the
    * fraction of rnd which was in the range of the selected object.
    */
-  T & select(double rnd, double * remainder = 0) throw(range_error);
+  T & select(double rnd, double * remainder = 0) throw(range_error) {
+    return theObjects[iselect(rnd, remainder)];
+  }
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -126,7 +146,9 @@ public:
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
    * range_error will be thrown.
    */
-  inline T & operator[](double rnd) throw(range_error);
+  T & operator[](double rnd) throw(range_error) {
+    return select(rnd, 0);
+  }
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -139,7 +161,9 @@ public:
    * a uniform random number in the interval ]0,1[ calculated from the
    * fraction of rnd which was in the range of the selected object.
    */
-  const T & select(double rnd, double * remainder = 0) const throw(range_error);
+  const T & select(double rnd, double * remainder = 0) const throw(range_error) {
+    return theObjects[iselect(rnd, remainder)];
+  }
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -148,7 +172,9 @@ public:
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
    * range_error will be thrown.
    */
-  inline const T & operator[](double rnd) const throw(range_error);
+  const T & operator[](double rnd) const throw(range_error) {
+    return select(rnd, 0);
+  }
 
   /**
    * Selct an object randomly. Given a random number generator which
@@ -163,7 +189,12 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  inline T & select(RNDGEN & rnd) throw(range_error);
+  T & select(RNDGEN & rnd) throw(range_error) {
+    double rem = 0.0;
+    T & t = select(rnd(), &rem);
+    rnd.push_back(rem);
+    return t;
+  }
 
   /**
    * Selct an object randomly. Given a random number generator which
@@ -178,7 +209,12 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  inline const T & select(RNDGEN & rnd) const throw(range_error);
+  const T & select(RNDGEN & rnd) const throw(range_error) {
+    double rem = 0.0;
+    const T & t = select(rnd(), &rem);
+    rnd.push_back(rem);
+    return t;
+  }
 
   /**
    * Return the sum of probabilities of the objects inserted. Note
@@ -186,39 +222,48 @@ public:
    * rescaled with this number to give unit probability for
    * 'select()'.
    */
-  inline WeightType sum() const;
+  WeightType sum() const { return theSum; }
 
   /**
    * Access to the <code>begin()</code> iterator of the underlying
    * vector of objects.
    */
-  inline const_iterator begin() const;
+  const_iterator begin() const { return theObjects.begin(); }
 
   /**
    * Access to the <code>end()</code> iterator in the underlying
    * vector of objects.
    */
-  inline const_iterator end() const;
+  const_iterator end() const { return theObjects.end(); }
 
   /**
    * Returns true if the VSelector is empty.
    */
-  inline bool empty() const;
+  bool empty() const { return theObjects.empty(); }
 
   /**
    * Returns the number of objects in the selector.
    */
-  inline size_type size() const;
+  size_type size() const { return theObjects.size(); }
 
   /**
    * Allocate space for a number of objects in the underlying vectors.
    */
-  inline void reserve(size_type reserved);
+  void reserve(size_type reserved) {
+    theSums.reserve(reserved);
+    theWeights.reserve(reserved);
+    theObjects.reserve(reserved);
+  }
 
   /**
    * Erases all objects.
    */
-  inline void clear();
+  void clear() {
+    theSums.clear();
+    theWeights.clear();
+    theObjects.clear();
+    theSum = WeightType();
+  }
 
   /**
    * Output to a stream.
@@ -267,20 +312,25 @@ private:
  * Output a VSelector to a stream.
  */
 template <typename OStream, typename T, typename WeightType>
-inline OStream & operator<<(OStream &, const VSelector<T,WeightType> &);
+inline OStream & operator<<(OStream & os,
+			    const VSelector<T,WeightType> & s) {
+  s.output(os);
+  return os;
+}
 
 /**
  * Input a VSelector from a stream.
  */
 template <typename IStream, typename T, typename WeightType>
-inline IStream & operator>>(IStream &, VSelector<T,WeightType> &);
+inline IStream & operator>>(IStream & is, 
+			    VSelector<T,WeightType> & s) {
+  s.input(is);
+  return is;
+}
 
 
 }
 
-#include "VSelector.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
 #include "VSelector.tcc"
-#endif
 
 #endif /* ThePEG_VSelector_H */
