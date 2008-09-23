@@ -20,7 +20,6 @@
 using namespace ThePEG;
 
 Length WidthGenerator::lifeTime(const ParticleData &, Energy, Energy w) const {
-  //  return RandExponential::shoot(UseRandom::currentEngine(), hbarc/w/mm)*mm;
   return UseRandom::rndExp(hbarc/w);
 }
 

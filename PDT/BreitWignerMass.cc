@@ -31,9 +31,6 @@ Energy BreitWignerMass::mass(const ParticleData & pd) const {
   Energy ret = 0.0*GeV;
   do {
     ret = UseRandom::rndRelBW(pd.mass(), pd.width(), pd.widthCut());
-//     ret = RandBreitWigner::shootM2(UseRandom::currentEngine(),
-// 				   pd.mass()/GeV, pd.width()/GeV,
-// 				   pd.widthCut()/GeV)*GeV;
   } while ( ret > pd.massMax() || ret < pd.massMin() );
   return ret;
 }
