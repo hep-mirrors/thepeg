@@ -165,6 +165,12 @@ bool LesHouchesFileReader::doReadEvent() {
 	          >> hepeup.PUP[i][3] >> hepeup.PUP[i][4]
         	  >> hepeup.VTIMUP[i] >> hepeup.SPINUP[i] ) )
       return false;
+    if(isnan(hepeup.PUP[i][0])||isnan(hepeup.PUP[i][1])||
+       isnan(hepeup.PUP[i][2])||isnan(hepeup.PUP[i][3])||
+       isnan(hepeup.PUP[i][4])) 
+      throw Exception() 
+	<< "nan's as momenta in Les Houches file "
+	<< Exception::eventerror;
   }
 
   // Now read any additional comments.
