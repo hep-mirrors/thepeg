@@ -1,3 +1,8 @@
+2008-09-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Vectors/Transverse.h: Fixed bug where named arguments were
+	omitted when moving the implementation from the .icc files.
+
 2008-09-23  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* *: Global icc cleanup. Tested with several Herwig long runs.

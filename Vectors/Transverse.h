@@ -133,14 +133,14 @@ public:
   /**
    * Addition.
    */
-  Transverse operator+(const Transverse &) const {
+  Transverse operator+(const Transverse & pt) const {
     return Transverse(x() + pt.x(), y() + pt.y());
   }
 
   /**
    * Assign-add.
    */
-  Transverse & operator+=(const Transverse &) {
+  Transverse & operator+=(const Transverse & pt) {
     BasePair::first += pt.x();
     BasePair::second += pt.y();
     return *this;
