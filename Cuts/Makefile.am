@@ -10,10 +10,14 @@ noinst_LTLIBRARIES = libThePEGCuts.la
 
 libThePEGCuts_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
-pkglib_LTLIBRARIES = SimpleKTCut.la KTClus.la V2LeptonsCut.la SimpleDISCut.la
+pkglib_LTLIBRARIES = SimpleKTCut.la KTClus.la V2LeptonsCut.la SimpleDISCut.la \
+                     KTRapidityCut.la
 
 SimpleKTCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 SimpleKTCut_la_SOURCES = SimpleKTCut.cc SimpleKTCut.h
+
+KTRapidityCut_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+KTRapidityCut_la_SOURCES = KTRapidityCut.cc KTRapidityCut.h
 
 KTClus_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 KTClus_la_SOURCES = KTClus.cc KTClus.h

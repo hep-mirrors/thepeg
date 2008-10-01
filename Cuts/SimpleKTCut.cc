@@ -18,11 +18,6 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/MatcherBase.h"
 #include "ThePEG/Cuts/Cuts.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SimpleKTCut.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
