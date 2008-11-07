@@ -17,7 +17,7 @@
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
-const double SpinInfo::_eps=1e-6;
+const double SpinInfo::_eps=1.0e-8;
 
 SpinInfo::SpinInfo(const SpinInfo & x)
   : SpinBase(x), _production(x._production), _decay(x._decay),
