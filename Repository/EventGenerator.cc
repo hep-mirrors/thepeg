@@ -282,7 +282,7 @@ void EventGenerator::dofinish() {
 	  << endl;
     for ( ExceptionMap::iterator it = theExceptions.begin();
 	  it != theExceptions.end(); ++it )
-      log() << it->first->name() << " (" << it->second << " times)" << endl;
+      log() << typeid(it->first).name() << " (" << it->second << " times)" << endl;
   }
 
   theExceptions.clear();
@@ -575,7 +575,7 @@ void EventGenerator::strategy(StrategyPtr s) {
 }
 
 int EventGenerator::count(const Exception & ex) {
-  return ++theExceptions[&typeid(ex)];
+  return ++theExceptions[ex];
 }
 
 void EventGenerator::printException(const Exception & ex) {
