@@ -128,25 +128,8 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
     subname << baseName << ":" << iargs + 1;
     runName(subname.str());
 
-    long div = 1;
-    if ( iargs > 0 ) {
-      log() << endl;
-      out() << endl;
-    }
-    log() << baseName << " sub-run number " << iargs + 1 << endl;
-    out() << baseName << " sub-run number " << iargs + 1
-	  << " using the following interface values:" << endl;
-
-    for ( string::size_type i = 0; i < theObjects.size(); ++i ) {
-      long iarg = (iargs/div)%theValues[i].size();
-      interfaces[i]->exec(*theObjects[i], "set",
-			  thePosArgs[i] + " " + theValues[i][iarg]);
-      out() << "   set " << theObjects[i]->name() << ":" << theInterfaces[i];
-      if ( !thePosArgs[i].empty() ) out() << "[" << thePosArgs[i] << "]";
-
-      out() << " " << theValues[i][iarg] << endl;
-      div *= theValues[i].size();
-    }
+    heading(log(), iargs, interfaces, baseName);
+    heading(out(), iargs, interfaces, baseName);
 
     reset();
     for_each(objects(), mem_fun(&InterfacedBase::reset));
@@ -174,6 +157,27 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
   finally();
 
 }
+
+void MultiEventGenerator::heading(ostream & os, long iargs,
+				  const vector<const InterfaceBase *> & interfaces,
+				  string baseName) const {
+    long div = 1;
+    if ( iargs > 0 ) os << endl;
+      
+    os << baseName << " sub-run number " << iargs + 1
+       << " using the following interface values:" << endl;
+
+    for ( string::size_type i = 0; i < theObjects.size(); ++i ) {
+      long iarg = (iargs/div)%theValues[i].size();
+      interfaces[i]->exec(*theObjects[i], "set",
+			  thePosArgs[i] + " " + theValues[i][iarg]);
+      os << "   set " << theObjects[i]->name() << ":" << theInterfaces[i];
+      if ( !thePosArgs[i].empty() ) os << "[" << thePosArgs[i] << "]";
+
+      os << " " << theValues[i][iarg] << endl;
+      div *= theValues[i].size();
+    }
+}  
 
 void MultiEventGenerator::persistentOutput(PersistentOStream & os) const {
   os << theObjects << theInterfaces << thePosArgs << theValues;

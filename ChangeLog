@@ -1,3 +1,8 @@
+2008-11-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/MultiEventGenerator.* (MultiEventGenerator::doGo):
+	Header with sub-run information is now written also to the log file.
+
 2008-09-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/Transverse.h: Fixed bug where named arguments were
