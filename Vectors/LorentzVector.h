@@ -720,7 +720,9 @@ void iunitstream(IStream & is, LorentzVector<Value> & p, UnitT & u) {
 //@{
 template <typename T, typename U>
 struct BinaryOpTraits;
-
+/**
+ * Template for multiplication by scalar
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<LorentzVector<T>, U> {
   /** The type resulting from multiplication of the template type with
@@ -731,6 +733,9 @@ struct BinaryOpTraits<LorentzVector<T>, U> {
   typedef LorentzVector<typename BinaryOpTraits<T,U>::DivT> DivT;
 };
 
+/**
+ * Template for multiplication by scalar
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<T, LorentzVector<U> > {
   /** The type resulting from multiplication of the template type with

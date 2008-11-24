@@ -280,6 +280,9 @@ void iunitstream(IStream & is, Lorentz5Vector<T> & p, UT & u) {
 template <typename T, typename U>
 struct BinaryOpTraits;
 
+/**
+ *  Template for multiplication by scalar
+ */
 template <typename T>
 struct BinaryOpTraits<Lorentz5Vector<T>, double> {
   /** The type resulting from multiplication of the template type with
@@ -290,6 +293,9 @@ struct BinaryOpTraits<Lorentz5Vector<T>, double> {
   typedef Lorentz5Vector<T> DivT;
 };
 
+/**
+ *  Template for multiplication by scalar
+ */
 template <typename U>
 struct BinaryOpTraits<double, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
@@ -307,6 +313,9 @@ struct BinaryOpTraits<Lorentz5Vector<T>, std::complex<U> > {
   typedef Lorentz5Vector<std::complex<typename BinaryOpTraits<T,U>::DivT> > DivT;
 };
 
+/**
+ *  Template for multiplication by scalar
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<std::complex<T>, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
@@ -314,6 +323,9 @@ struct BinaryOpTraits<std::complex<T>, Lorentz5Vector<U> > {
   typedef Lorentz5Vector<std::complex<typename BinaryOpTraits<T,U>::MulT> > MulT;
 };
 
+/**
+ *  Template for multiplication of two Lorentz5Vectors
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<Lorentz5Vector<T>, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with

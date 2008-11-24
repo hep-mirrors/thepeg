@@ -24,6 +24,9 @@ namespace ThePEG {
 
 /// Helper classes to extend or shorten fractions
 //@{
+/**
+ * Template to help with fractional powers of dimensions 
+ */
 template <int M, int II>
 struct QtyHelper 
 {
@@ -31,6 +34,9 @@ struct QtyHelper
   static const int I = -999999;
 };
 
+/**
+ * Template to help with fractional powers of dimensions
+ */
 template <int II>
 struct QtyHelper<0,II> 
 {
@@ -38,6 +44,9 @@ struct QtyHelper<0,II>
   static const int I = II;
 };
 
+/**
+ * Template to help with fractional powers of dimensions 
+ */
 template <int II, int DI, int DI2>
 struct QtyInt 
 {
@@ -219,6 +228,9 @@ struct BinaryOpTraits<Qty<L1,E1,Q1,DL1,DE1,DQ1>,
   typedef double DivT;
 };
 
+/**
+ *  Multiplication template
+ */
 template<int L1, int E1, int Q1, int DL1, int DE1, int DQ1>
 struct BinaryOpTraits<double,
 		      Qty<L1,E1,Q1,DL1,DE1,DQ1> > {

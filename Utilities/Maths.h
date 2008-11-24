@@ -112,24 +112,39 @@ inline T sign(T x, U y) {
 
 /** Templated class for calculating integer powers. */
 //@{
+/**
+ *  Struct for powers
+ */
 template <int N, bool Inv>
 struct Power: public MathType {};
 
+/**
+ *  Struct for powers
+ */
 template <int N>
 struct Power<N,false> {
   static double pow(double x) { return x*Power<N-1,false>::pow(x); }
 };
 
+/**
+ *  Struct for powers
+ */
 template <int N>
 struct Power<N,true> {
   static double pow(double x) { return Power<N+1,true>::pow(x)/x; }
 };
 
+/**
+ *  Struct for powers
+ */
 template <>
 struct Power<0,true> {
   static double pow(double) { return 1.0; }
 };
 
+/**
+ *  Struct for powers
+ */
 template <>
 struct Power<0,false> {
   static double pow(double) { return 1.0; }
