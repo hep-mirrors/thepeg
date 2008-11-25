@@ -164,6 +164,9 @@ private:
 
 };
 
+/**
+ *  Output operator
+ */
 inline ostream & operator<<(ostream & os, const HelicityVertex & vert) {
   os << "the incoming particles at the vertex are" << endl;
   for(unsigned int ix=0;ix<vert._incoming.size();++ix) {

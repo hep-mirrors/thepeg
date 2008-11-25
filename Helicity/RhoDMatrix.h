@@ -131,6 +131,7 @@ private:
 
 };
 
+/** Output operator */
 inline ostream & operator<<(ostream & os, const RhoDMatrix & rd) {
   for (size_t ix = 0; ix < rd._ispin; ++ix) {
     for (size_t iy = 0; iy < rd._ispin; ++iy)

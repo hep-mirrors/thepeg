@@ -34,5 +34,9 @@ library ThePEGStrategy.so
 library V2LeptonsCut.so
 library V2PPDecayer.so
 library WeakToHadronsDecayer.so
+library WeizsackerWilliamsPDF.so
+library KTRapidityCut.so
+library XSecCheck.so
+library LWHFactory.so
 
 doxygendump ThePEG:: AllInterfaces.h

@@ -621,7 +621,7 @@ public:
 
   /**
    * Calculate the right-handed scalar \f$\bar{f}P_Rf\f$.
-   * @param fbar The barred spinor.
+   * @param fb The barred spinor.
    */
   template<typename ValueB>
   complex<typename BinaryOpTraits<Value,ValueB>::MulT>
@@ -654,7 +654,7 @@ public:
 
   /**
    *  Calculate the scalar \f$\bar{f}f\f$.
-   * @param fbar The barred spinor.
+   * @param fb The barred spinor.
    */
   template<typename ValueB>
   complex<typename BinaryOpTraits<Value,ValueB>::MulT>

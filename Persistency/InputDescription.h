@@ -42,7 +42,7 @@ public:
   /**
    * The standard constructor.
    * @param newName the name of the class being read.
-   * @param version the version number of the class when written.
+   * @param newVersion the version number of the class when written.
    */
   InputDescription(string newName, int newVersion) 
     : Named(newName), theDescription(0), theVersion(newVersion) {}

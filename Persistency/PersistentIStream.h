@@ -90,7 +90,7 @@ public:
 
   /**
    * Operator for extracting persistent objects from the stream.
-   * @param p this pointer will refer to the extracted object.
+   * @param ptr this pointer will refer to the extracted object.
    * @return a reference to the stream.
    */
   template <typename T>
@@ -103,7 +103,7 @@ public:
 
   /**
    * Operator for extracting persistent objects from the stream.
-   * @param p this pointer will refer to the extracted object.
+   * @param ptr this pointer will refer to the extracted object.
    * @return a reference to the stream.
    */
   template <typename T>
@@ -116,7 +116,7 @@ public:
 
   /**
    * Operator for extracting persistent objects from the stream.
-   * @param p this pointer will refer to the extracted object.
+   * @param ptr this pointer will refer to the extracted object.
    * @return a reference to the stream.
    */
   template <typename T>
@@ -129,7 +129,7 @@ public:
 
   /**
    * Operator for extracting persistent objects from the stream.
-   * @param p this pointer will refer to the extracted object.
+   * @param ptr this pointer will refer to the extracted object.
    * @return a reference to the stream.
    */
   template <typename T>

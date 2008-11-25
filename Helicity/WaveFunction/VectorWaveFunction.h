@@ -442,28 +442,45 @@ public:
   }
   //@}
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzPolarizationVector> & waves,
 				     tPPtr particle,Direction,bool massless,
 				     VectorPhase phase=default_vector_phase);
 
-
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<VectorWaveFunction> & waves,
 				     tPPtr particle,Direction,bool massless,
 				     VectorPhase phase=default_vector_phase);
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzPolarizationVector> & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction,bool massless,
 				     VectorPhase phase=default_vector_phase);
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<VectorWaveFunction> & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction,bool massless,
 				     VectorPhase phase=default_vector_phase);
 
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<LorentzPolarizationVector> & waves,
 				tPPtr part,Direction dir, bool time,bool massless);
 
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<VectorWaveFunction> & waves,
 				tPPtr part,Direction dir, bool time,bool massless);
 

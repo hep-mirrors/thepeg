@@ -260,29 +260,35 @@ struct BinaryOpTraits<Qty<L1,E1,Q1,DL1,DE1,DQ1>,
 
 /// @name Type traits for alternative code generation.
 //@{
+/** Type traits for alternative code generation*/
 template <int L, int E, int Q, int DL, int DE, int DQ> 
 struct TypeTraits<Qty<L,E,Q,DL,DE,DQ> >
 {
+  /** Enum for dimensions*/
   enum { hasDimension = true };
   /// Type switch set to dimensioned type.
   typedef DimensionT DimType;
   static const Qty<L,E,Q,DL,DE,DQ> baseunit;
 };
 
+/** Type traits for alternative code generation*/
 template <int L, int E, int Q, int DL, int DE, int DQ> 
 const Qty<L,E,Q,DL,DE,DQ> 
 TypeTraits<Qty<L,E,Q,DL,DE,DQ> >::baseunit = Qty<L,E,Q,DL,DE,DQ>::baseunit();
 
 
+/** Type traits for alternative code generation*/
 template <int DL, int DE, int DQ> 
 struct TypeTraits<Qty<0,0,0,DL,DE,DQ> >
 {
+  /** Enum for dimensions*/
   enum { hasDimension = false };
   /// Type switch set to standard type.
   typedef StandardT DimType;
   static const double baseunit;
 };
 
+/** Type traits for alternative code generation*/
 template <int DL, int DE, int DQ> 
 const double 
 TypeTraits<Qty<0,0,0,DL,DE,DQ> >::baseunit = 1.0;

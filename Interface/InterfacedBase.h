@@ -215,8 +215,6 @@ protected:
    * Rebind pointer to other Interfaced objects. Called in the setup phase
    * after all objects used in an EventGenerator has been cloned so that
    * the pointers will refer to the cloned objects afterwards.
-   * @param trans a TranslationMap relating the original objects to
-   * their respective clones.
    * @throws RebindException if no cloned object was found for a given
    * pointer.
    */

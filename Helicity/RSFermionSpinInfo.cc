@@ -26,7 +26,7 @@ NoPIOClassDescription<RSFermionSpinInfo> RSFermionSpinInfo::initRSFermionSpinInf
 void RSFermionSpinInfo::Init() {
 
   static ClassDocumentation<RSFermionSpinInfo> documentation
-    ("The\\classname{RSFermionSpinInfo} class implements the SpinInfo for spin-3/2"
+    ("The RSFermionSpinInfo class implements the SpinInfo for spin-3/2"
      " particles");
 
 }

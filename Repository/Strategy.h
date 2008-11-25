@@ -53,7 +53,7 @@ public:
    * A directory in the repository which will be scanned for particles
    * which will be included as default particles in a run. These
    * particles will be overridden by particles specified in
-   * <interface>LocalParticles</interface> and default particles
+   * LocalParticles and default particles
    * specified directly in the EventGenerator.
    */
   string localParticlesDir() const;
@@ -131,7 +131,7 @@ private:
    * A directory in the repository which will be scanned for particles
    * which will be included as default particles in a run. These
    * particles will be overridden by particles specified in
-   * <interface>LocalParticles</interface> and default particles
+   * LocalParticles and default particles
    * specified directly in the EventGenerator.
    */
   string theLocalParticlesDir;
@@ -167,7 +167,7 @@ private:
    * A directory in the repository which will be scanned for particles
    * which will be included as default particles in a run. These
    * particles will be overridden by particles specified in
-   * <interface>LocalParticles</interface> and default particles
+   * LocalParticles and default particles
    * specified directly in the EventGenerator.
    */
   void setLocalParticlesDir(string);

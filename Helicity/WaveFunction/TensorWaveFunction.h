@@ -587,27 +587,45 @@ public:
 
 public:
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzTensor<double> > & waves,
 				     tPPtr particle,Direction,bool massless,
 				     TensorPhase phase=default_tensor_phase);
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<TensorWaveFunction> & waves,
 				     tPPtr particle,Direction,bool massless,
 				     TensorPhase phase=default_tensor_phase);
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzTensor<double> > & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction,bool massless,
 				     TensorPhase phase=default_tensor_phase);
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<TensorWaveFunction> & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction,bool massless,
 				     TensorPhase phase=default_tensor_phase);
 
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<LorentzTensor<double> > & waves,
 				tPPtr part,Direction dir, bool time,bool massless);
 
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<TensorWaveFunction> & waves,
 				tPPtr part,Direction dir, bool time,bool massless);
 

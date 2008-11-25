@@ -77,7 +77,7 @@ inline double pGenerate(int p, double xl, double xu, double rnd) {
  *  \f$e\rightarrow 0\f$.
  * @param e the parameter defining the power in \f$x^{e-1}\f$.
  * @param xl the lower bound of the generation interval.
- * @param xu the upper bound of the generation interval.
+ * @param dx the interval.
  * @param rnd a flat random number in the interval ]0,1[. */
 inline double pXGenerate(double e, double xl, double dx, double rnd) {
   return e == 0.0? -xl*exp1m(rnd*log1m(-dx/xl)):
@@ -123,6 +123,7 @@ struct Power: public MathType {};
  */
 template <int N>
 struct Power<N,false> {
+  /** Member for the power*/
   static double pow(double x) { return x*Power<N-1,false>::pow(x); }
 };
 
@@ -131,6 +132,7 @@ struct Power<N,false> {
  */
 template <int N>
 struct Power<N,true> {
+  /** Member for the power*/
   static double pow(double x) { return Power<N+1,true>::pow(x)/x; }
 };
 
@@ -139,6 +141,7 @@ struct Power<N,true> {
  */
 template <>
 struct Power<0,true> {
+  /** Member for the power*/
   static double pow(double) { return 1.0; }
 };
 
@@ -147,6 +150,7 @@ struct Power<0,true> {
  */
 template <>
 struct Power<0,false> {
+  /** Member for the power*/
   static double pow(double) { return 1.0; }
 };
 //@}
@@ -184,35 +188,56 @@ struct PowX: public MathType {
 };
 
 template <>
+/**
+ *  Template for generating according to a specific power
+ */
 inline double PowX<1>::generate(double x0, double x1, double R) {
   return std::sqrt(x0*x0 + R*(x1*x1 - x0*x0));
 }
 
+/**
+ *  Template for generating according to a specific power
+ */
 template <>
 inline double PowX<0>::generate(double x0, double x1, double R) {
   return x0 + R*(x1 - x0);
 }
 
 template<>
+/**
+ *  Template for generating according to a specific power
+ */
 inline double PowX<-1>::primitive(double x) {
   return log(x);
 }
 
 template <>
+/**
+ *  Template for generating according to a specific power
+ */
 inline double PowX<-1>::integrate(double x0, double x1) {
   return log(x1/x0);
 }
 
 template <>
+/**
+ *  Template for generating according to a specific power
+ */
 inline double PowX<-1>::generate(double x0, double x1, double R) {
   return x0*pow(x1/x0, R);
 }
 
 template <>
+/**
+ *  Template for generating according to a specific power
+ */
 inline double PowX<-2>::generate(double x0, double x1, double R) {
   return x0*x1/(x1 - R*(x1 - x0));
 }
 
+/**
+ *  Template for generating according to a specific power
+ */
 template <>
 inline double PowX<-3>::generate(double x0, double x1, double R) {
   return x0*x1/std::sqrt(x1*x1 - R*(x1*x1 - x0*x0));

@@ -21,11 +21,17 @@ namespace ThePEG {
 /// Helper functions for putUnit
 namespace {
   template <typename T>
+  /**
+   * Helper function for putUnit
+   */
   inline void putUnitImpl2(ostream & os, T v, T u, DimensionT) {
     os << v/u;
   }
   
   template <typename T>
+  /**
+   * Helper function for putUnit
+   */
   inline void putUnitImpl2(ostream & os, T v, T u, StandardT) {
     if ( u > T() )
       os << v/u;

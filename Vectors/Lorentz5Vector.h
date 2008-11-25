@@ -303,6 +303,9 @@ struct BinaryOpTraits<double, Lorentz5Vector<U> > {
   typedef Lorentz5Vector<U> MulT;
 };
 
+/**
+ * Template for multiplication for complex and Lorentz5Vector
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<Lorentz5Vector<T>, std::complex<U> > {
   /** The type resulting from multiplication of the template type with
@@ -333,6 +336,9 @@ struct BinaryOpTraits<Lorentz5Vector<T>, Lorentz5Vector<U> > {
   typedef typename BinaryOpTraits<T,U>::MulT MulT;
 };
 
+/**
+ * Template for multiplication for LorentzVector and Lorentz5Vector
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<LorentzVector<T>, Lorentz5Vector<U> > {
   /** The type resulting from multiplication of the template type with
@@ -340,6 +346,9 @@ struct BinaryOpTraits<LorentzVector<T>, Lorentz5Vector<U> > {
   typedef typename BinaryOpTraits<T,U>::MulT MulT;
 };
 
+/**
+ * Template for multiplication for LorentzVector and Lorentz5Vector
+ */
 template <typename T, typename U>
 struct BinaryOpTraits<Lorentz5Vector<T>, LorentzVector<U> > {
   /** The type resulting from multiplication of the template type with

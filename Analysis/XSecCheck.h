@@ -12,7 +12,7 @@ namespace ThePEG {
 /**
  * The XSecCheck class is a simple analysis class used for testing
  * purposes. If the total cross section does not match the one
- * specified by <interface>TargetXSec</interface>, an exception will
+ * specified by TargetXSec, an exception will
  * be thrown.
  *
  * @see \ref XSecCheckInterfaces "The interfaces"

@@ -503,19 +503,41 @@ public:
 
 public:
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzSpinor<SqrtEnergy> > & waves,
 				     tPPtr particle,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<SpinorWaveFunction> & waves,
 				     tPPtr particle,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzSpinor<SqrtEnergy> > & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<SpinorWaveFunction> & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction);
 
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<LorentzSpinor<SqrtEnergy> > & waves,
 				tPPtr part,Direction dir, bool time);
+
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<SpinorWaveFunction> & waves,
 				tPPtr part,Direction dir, bool time);
   

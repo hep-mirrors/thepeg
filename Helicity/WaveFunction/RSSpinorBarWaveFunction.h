@@ -118,9 +118,8 @@ public:
   }
   
   /**
-   * Constructor, set the momentum and the wavefunction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
+   * Constructor, set the particle and the wavefunction.
+   * @param p Particle
    * @param wave The wavefunction.
    * @param dir The direction of the particle
    */
@@ -620,17 +619,35 @@ public:
 
 public:
 
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzRSSpinorBar<SqrtEnergy> > & waves,
 				     tPPtr particle,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<RSSpinorBarWaveFunction> & waves,
 				     tPPtr particle,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzRSSpinorBar<SqrtEnergy> > & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<RSSpinorBarWaveFunction> & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction);
 
+  /**
+   *  Construct the SpinInfo object
+   */
   static void constructSpinInfo(const vector<LorentzRSSpinorBar<SqrtEnergy> > & waves,
 				tPPtr part,Direction dir, bool time);
 
