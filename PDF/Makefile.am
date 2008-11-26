@@ -22,14 +22,16 @@ pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
 
 if USELHAPDF
 LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h
+LHAPDF_CPPFLAGS = -DLHAPDF_PKGDATADIR="\"$(LHAPDF_PKGDATADIR)\""
 libThePEGPDF_la_LDFLAGS = $(LHAPDF_LDFLAGS)
 libThePEGPDF_la_LIBADD = $(LHAPDF_LIBS)
-libThePEGPDF_la_CPPFLAGS = $(AM_CPPFLAGS) -DLHAPDF_PKGDATADIR="\"$(LHAPDF_PKGDATADIR)\""
 else
 LHAPDF_SOURCES = 
+LHAPDF_CPPFLAGS = 
 endif
 
 libThePEGPDF_la_SOURCES = $(mySOURCES) $(INCLUDEFILES) $(LHAPDF_SOURCES)
+libThePEGPDF_la_CPPFLAGS = $(AM_CPPFLAGS) $(LHAPDF_CPPFLAGS)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
