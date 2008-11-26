@@ -13,6 +13,7 @@
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Repository/Main.h"
+#include <config.h>
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
@@ -51,6 +52,10 @@ int main(int argc, char * argv[]) {
     cerr << "Usage: " << argv[0] << " [-d {debuglevel|-debugitem}] "
 	 << "[-l load-path] [-L first-load-path] run-file" << endl;
       return 3;
+    }
+    else if ( arg == "-v" || arg == "--version" ) {
+      cout << PACKAGE_VERSION << endl;
+      return 0;
     }
     else
       run = arg;

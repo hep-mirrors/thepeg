@@ -12,6 +12,7 @@
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/SystemUtils.h"
+#include <config.h>
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
@@ -63,6 +64,10 @@ int main(int argc, char * argv[]) {
 	 << " {cmdfile} [-d {debuglevel|-debugitem}] [-r input-repository-file]"
 	 << " [-l load-path] [-L first-load-path]" << endl;
       return 3;
+    }
+    else if ( arg == "-v" || arg == "--version" ) {
+      cout << PACKAGE_VERSION << endl;
+      return 0;
     }
     else
       file = arg;

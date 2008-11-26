@@ -17,6 +17,7 @@ class GenEvent;
 class GenParticle;
 class GenVertex;
 class Polarization;
+class PdfInfo;
 
 #ifndef HEPMC_UNITS_H
 #define ThePEG_HEPMC_HAS_UNITS false
@@ -49,8 +50,10 @@ namespace ThePEG {
  * HepMC implementation is specifying units or not.
  */
 template <typename HepMCEventT, typename HepMCParticleT,
-  typename HepMCVertexT, typename HepMCPolarizationT,
-  bool HasUnits = ThePEG_HEPMC_HAS_UNITS>
+	  typename HepMCVertexT, typename HepMCPolarizationT,
+	  typename HepMCPdfInfoT,
+	  bool HasUnits = ThePEG_HEPMC_HAS_UNITS>
+
 struct HepMCTraitsBase {
 
   /** Typedef of the particle class. */
@@ -64,6 +67,9 @@ struct HepMCTraitsBase {
 
   /** Typedef of the polarization class. */
   typedef HepMCPolarizationT PolarizationT;
+
+  /** Typedef of the PdfInfo class. */
+  typedef HepMCPdfInfoT PdfInfoT;
 
   /** Create an event object with number \a evno and \a weight. */
   static EventT * newEvent(long evno, double weight) {
@@ -175,6 +181,11 @@ struct HepMCTraitsBase {
     e.set_beam_particles(p1,p2);		   
   }
 
+  /** Set the PDF info for the event. */
+  static void setPdfInfo(EventT & e, PdfInfoT & pdf) {
+    e.set_pdf_info(pdf);
+  }
+
 };
 
 /**
@@ -182,9 +193,12 @@ struct HepMCTraitsBase {
  * specifies units.
  */
 template <typename HepMCEventT, typename HepMCParticleT,
-          typename HepMCVertexT, typename HepMCPolarizationT>
+          typename HepMCVertexT, typename HepMCPolarizationT,
+	  typename HepMCPdfInfoT>
 struct HepMCTraitsBase<HepMCEventT, HepMCParticleT,
-                       HepMCVertexT, HepMCPolarizationT, true>  {
+                       HepMCVertexT, HepMCPolarizationT, 
+		       HepMCPdfInfoT,
+		       true>  {
 
   /** Typedef of the particle class. */
   typedef HepMCParticleT ParticleT;
@@ -197,6 +211,9 @@ struct HepMCTraitsBase<HepMCEventT, HepMCParticleT,
 
   /** Typedef of the polarization class. */
   typedef HepMCPolarizationT PolarizationT;
+
+  /** Typedef of the PdfInfo class. */
+  typedef HepMCPdfInfoT PdfInfoT;
 
   /** Create an event object with number \a evno and \a weight. */
   static EventT * newEvent(long evno, double weight) {
@@ -306,6 +323,11 @@ struct HepMCTraitsBase<HepMCEventT, HepMCParticleT,
   /** Set the beam particles for the event.*/
   static void setBeamParticles(EventT & e,ParticleT *p1,ParticleT *p2) {
     e.set_beam_particles(p1,p2);		   
+  }
+
+  /** Set the PDF info for the event. */
+  static void setPdfInfo(EventT & e, PdfInfoT & pdf) {
+    e.set_pdf_info(pdf);
   }
 
 };

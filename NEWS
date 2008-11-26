@@ -8,6 +8,43 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.3.0 release: 2008-06-20
+** Statistical errors
+   Error estimates on the cross-sections are now reported in the .out files.
+
+** Decaymode setup
+   The decaymode setup has been reworked, keeping backwards
+   compatibility. The 'defaultparticle' command has been removed.
+
+** Madgraph reader
+   Updated to latest Madevent version. 
+
+** LHAPDF improvements
+   lhapdf-config is not used anymore to determine the location of the
+   PDF sets. Instead, they are fixed at configure-time.
+
+** HepMC 
+   The beam particles are now set correctly.
+
+** Arbitrary search paths for .in files
+   Input files don't have to be in '.', use '-I' to specify additional
+   directories.
+
+** Ticket #172
+   Fix for cuts in mirrored processes.
+
+** Simpler emacs macros
+   The emacs macros have been significantly cleaned up.
+
+** Helicity vertex classes
+   Potential prolems with uninitialized variables were fixed. No
+   actual bugs had occurred from here.
+
+** Memory leak fixes and performance
+   Several loops of shared pointers were fixed involving DecayModes
+   and ParticleData. FixedSizeAllocator was removed, the regular 'new'
+   and 'delete' is now used for all allocations, giving a 5% speedup.  
+
 * ThePEG-1.2.0 release: 2008-04-18
 ** ThePEG uses GSL 
    The GNU Scientific Library and its headers are now required for

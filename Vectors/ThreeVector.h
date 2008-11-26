@@ -17,6 +17,7 @@
  */
 
 #include "ThreeVector.fh"
+#include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/UnitIO.h"
 #include <cassert>
 

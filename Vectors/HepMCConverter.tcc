@@ -21,6 +21,8 @@
 #include "ThePEG/EventRecord/SubProcess.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/Handlers/EventHandler.h"
+#include "ThePEG/PDF/PartonExtractor.h"
+#include "ThePEG/PDF/PDF.h"
 
 namespace ThePEG {
 
@@ -185,6 +187,10 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
   // and the incoming beam particles
   Traits::setBeamParticles(*geneve,pmap[ev.incoming().first],
 			   pmap[ev.incoming().second]);
+
+  // and the PDF info
+  PdfInfo * pdf = createPdfInfo(ev);
+  Traits::setPdfInfo(*geneve,*pdf);
 }
 
 template <typename HepMCEventT, typename Traits>
@@ -253,6 +259,43 @@ HepMCConverter<HepMCEventT,Traits>::createVertex(Vertex * v) {
 
   return gv;
 }
+
+template <typename HepMCEventT, typename Traits>
+typename HepMCConverter<HepMCEventT,Traits>::PdfInfo *
+HepMCConverter<HepMCEventT,Traits>::createPdfInfo(const Event & e) {
+  // ids of the partons going into the primary sub process
+  tSubProPtr sub = e.primarySubProcess();
+  int id1 = sub->incoming().first ->id();
+  int id2 = sub->incoming().second->id();
+  // get the event handler
+  tcEHPtr eh = dynamic_ptr_cast<tcEHPtr>(e.handler());
+  // get the values of x
+  double x1 = eh->lastX1();
+  double x2 = eh->lastX2();
+  // get the pdfs
+  pair<PDF,PDF> pdfs;
+  pdfs.first  =  eh->pdf<PDF>(sub->incoming().first );
+  pdfs.second =  eh->pdf<PDF>(sub->incoming().second);
+  // get the scale
+  Energy2 scale = eh->lastScale();
+  // get the values of the pdfs
+  double pdf1 = pdfs.first.xfx(sub->incoming().first ->dataPtr(),scale,x1);
+  double pdf2 = pdfs.first.xfx(sub->incoming().second->dataPtr(),scale,x2);
+  // create the PDFinfo object
+  PdfInfo * output = new PdfInfo();
+  // set the values
+  output->set_id1(id1);
+  output->set_id2(id2);
+  output->set_x1(x1);
+  output->set_x2(x2);
+  output->set_scalePDF(sqrt(scale/GeV2));
+  output->set_pdf1(pdf1);
+  output->set_pdf2(pdf2);
+  // return the answer
+  return output;
+}
+
+
 
 }
 
