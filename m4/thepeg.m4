@@ -87,13 +87,18 @@ LDFLAGS="$oldLDFLAGS"
 
 if test "$HAS_LHAPDF" == "yes"; then
   AC_MSG_RESULT([yes])
+  LHAPDF_PKGDATADIR="$LHAPDF_LIBDIR/../share/lhapdf"
+  dnl don't need to check for existence of LHAPDF_PKGDATADIR
+  dnl if this location is invalid, we'll use ThePEG's index file anyway
 elif test "x$with_LHAPDF" == "xno" -o "x$with_LHAPDF" == "x"; then
   AC_MSG_RESULT([no])
 else
   AC_MSG_ERROR([LHAPDF was requested but the library was not found.])
 fi
+
 AC_SUBST(LHAPDF_LIBS)
 AC_SUBST(LHAPDF_LDFLAGS)
+AC_SUBST(LHAPDF_PKGDATADIR)
 AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
 ])
 

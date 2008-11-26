@@ -81,6 +81,12 @@
 	ThePEGLWH to avoid problems with using the Rivet versions of the
 	LWH classes (herwig:ticket:198).
 
+2008-06-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDF/LHAPDF.cc, m4/thepeg.m4: Removed usage of lhapdf-config. The
+	same information can be obtained at configure-time, and is passed
+	in with a '-D' compile flag.
+
 2008-05-29  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* PDT/DecayMode.*: Made theOrderedProducts a tPDVector to break

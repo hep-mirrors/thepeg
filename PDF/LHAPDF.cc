@@ -37,7 +37,7 @@ typedef double F77ThePEGDouble;
 typedef int F77ThePEGInteger;
 
 extern "C" {
-
+  void setlhaparm_(const char *, F77ThePEGInteger);
   void initpdfsetbynamem_(F77ThePEGInteger &, const char *, F77ThePEGInteger);
   void initpdfm_(F77ThePEGInteger &,F77ThePEGInteger  &);
   void evolvepdfm_(F77ThePEGInteger &, F77ThePEGDouble &,
@@ -190,6 +190,7 @@ int LHAPDF::getMaxNSet() const {
 }
 
 void LHAPDF::checkInit() const {
+  setlhaparm_("SILENT", 6);
   if ( nset < 0 || nset >= MaxNSet) {
     setnset();
     initpdfsetm();
@@ -205,13 +206,8 @@ void LHAPDF::checkInit() const {
 }
 
 std::string LHAPDF::getIndexPath() {
-  std::string path;
-  system("lhapdf-config --pdfsets-path > /tmp/lhapdfpath");
-  std::ifstream is("/tmp/lhapdfpath");
-  is >> path;
-  is.close();
-  system("rm -f /tmp/lhapdfpath");
-  return path + ".index";
+  // macro is passed in from -D compile flag
+  return std::string(LHAPDF_PKGDATADIR) + "/PDFsets.index";
 }
 
 bool LHAPDF::openLHAIndex(ifstream & is) {
