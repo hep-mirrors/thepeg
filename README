@@ -57,8 +57,10 @@ general structure is described in "PYTHIA version 7-0.0 - a
 proof-of-concept version" Comput. Phys. Commun. 134 (2001) 365. (see
 also http://www.thep.lu.se/Pythia7/Doc/Proof/). This describes the
 Pythia7 program before it was broken up into the basic event generator
-platform - ThePEG - and the Pythia-specific parts in Pythia7. In
-addition there is Doxygen-generated documentation of the
+platform - ThePEG - and the Pythia-specific parts in Pythia7. 
+
+A brief description of ThePEG is also included in "Herwig++ Physics and Manual"
+[arXiv:0803.0883]. In addition, there is Doxygen-generated documentation of the
 classes in http://projects.hepforge.org/thepeg/doxygen
 The doxygen documentation can also be generated locally by 'make html', in
 which it will end up in the Doc/refman-html directory. A subsequent

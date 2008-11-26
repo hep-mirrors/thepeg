@@ -8,6 +8,46 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.4.0 release: 2008-11-27
+** Efficiency improvements
+   The LorentzVector class, the helicity amplitude code and PDF
+   lookups have been profiled and restructured to eliminate speed
+   bottlenecks. 
+
+** Deep inelastic scattering
+   Support for DIS is now implemented in ThePEG.
+
+** New rapidity cut
+   Added alternative pT cut that cuts on rapidity rather than
+   pseudorapidty as the existing one fails for zero-pt massive
+   particles.
+
+** HepMC units support
+   Users of HepMC versions > 2.04 get full units support. The HepMC
+   GenEvent object has the correct units set.
+
+** Support for HepMC PdfInfo data
+   Users of the HepMC converter can now fill the PdfInfo data, which
+   has been available since HepMC 1.28.00. Older versions are no
+   longer supported.
+
+** Ticket #199: Particle lifetime cutoff
+   Users can set a maximum lifetime. Particles that live longer than
+   this are not decayed.
+
+** Ticket #215: Madgraph
+   Fixed a problem in reading certain Madgraph event files.
+
+** Les Houches files
+   Optional rescaling of energy or mass of particles which were read
+   in. Check the file to trap 'nan' and 'inf' values early during the read-in.
+
+** File cleanup
+   Most inline functions are now defined in the headers rather than a
+   separate .icc file.
+
+
+
 * ThePEG-1.3.0 release: 2008-06-20
 ** Statistical errors
    Error estimates on the cross-sections are now reported in the .out files.
