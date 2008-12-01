@@ -14,11 +14,6 @@
 #include "SamplerBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Handlers/StandardEventHandler.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "SamplerBase.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
@@ -48,4 +43,3 @@ void SamplerBase::Init() {
      "ThePEG::StandardEventHandler.");
 
 }
-

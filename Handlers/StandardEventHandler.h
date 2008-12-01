@@ -233,11 +233,6 @@ protected:
   LorentzRotation & currentEventBoost() { return theCurrentEventBoost; }
 
   /**
-   * Produce instances of the specified incoming particle types.
-   */
-  void createIncoming();
-
-  /**
    * Set information about the current sub-process.
    */
   void setScale(Energy2);
