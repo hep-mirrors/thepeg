@@ -55,7 +55,8 @@ bool SimpleKTCut::passCuts(tcCutsPtr parent,
   if ( theMatcher && !theMatcher->matches(*ptype) ) return true;
   if ( p.perp() < theMinKT ) return false;
   if ( p.perp() > theMaxKT ) return false;
-  double y = p.rapidity() + parent->Y() + parent->currentYHat();
+  double y = abs(p.t()) <= abs(p.z()) ? (p .z() > Energy() ? 1e10 : -1e10) : p.rapidity();
+  y += parent->Y() + parent->currentYHat();
   if ( p.mt()*sinh(y) <= p.perp()*sinh(theMinEta) ) return false;
   if ( p.mt()*sinh(y) >= p.perp()*sinh(theMaxEta) ) return false;
   return true;

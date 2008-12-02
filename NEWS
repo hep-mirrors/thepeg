@@ -8,7 +8,7 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.4.0 release: 2008-11-27
+* ThePEG-1.4.0 release: 2008-12-02
 ** Efficiency improvements
    The LorentzVector class, the helicity amplitude code and PDF
    lookups have been profiled and restructured to eliminate speed
