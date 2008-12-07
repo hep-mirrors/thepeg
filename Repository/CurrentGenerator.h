@@ -16,7 +16,7 @@
 namespace ThePEG {
 
 /**
- * This CurrentGenerator class keeps a static stack of EventGeneratora
+ * This CurrentGenerator class keeps a static stack of EventGenerators
  * which can be used anywhere by any class. When an EventGenerator is
  * initialized or run it adds itself to the stack which can be used by
  * any other object being initialized or run through the static
@@ -160,12 +160,12 @@ public:
 private:
 
   /**
-   * The stack of RandomGenerators requested.
+   * The stack of EventGenerators requested.
    */
   static vector<EGPtr> theGeneratorStack;
 
   /**
-   * True if this object is responsible for pushing a RandomGenerator
+   * True if this object is responsible for pushing a EventGenerator
    * onto the stack.
    */
   bool generatorPushed;
