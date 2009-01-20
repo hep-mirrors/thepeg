@@ -180,11 +180,11 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   double Y = 0.0;
   if ( !theCuts ) {
     theCuts = eh.cuts();
-    if ( !theCuts ) throw LesHouchesInitError()
+    if ( !theCuts ) Throw<LesHouchesInitError>()
       << "No Cuts object was assigned to the LesHouchesReader '"
-      << name() << "' nor was one assigned to the controlling "
-      << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
-      << "needs to have a Cuts object." << Exception::warning;
+      << name() << "' nor was one\nassigned to the controlling "
+      << "LesHouchesEventHandler '" << eh.name() << "'.\nAt least one of them "
+      << "needs to have a Cuts object." << Exception::runerror;
 
     Smax = cuts().SMax();
     Y = cuts().Y();
@@ -192,20 +192,21 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
 
   theCKKW = eh.CKKWHandler();
 
-  if ( !partonExtractor() ) thePartonExtractor = eh.partonExtractor();
-  if ( !partonExtractor() )  throw LesHouchesInitError()
-    << "No PartonExtractor object was assigned to the LesHouchesReader '"
-    << name() << "' nor was one assigned to the controlling "
-    << "LesHouchesEventHandler '" << eh.name() << "'. At least one of them "
-    << "needs to have a PartonExtractor object." << Exception::warning;
-
+  if ( !partonExtractor() ) {
+    thePartonExtractor = eh.partonExtractor();
+    if ( !partonExtractor() )  Throw<LesHouchesInitError>()
+      << "No PartonExtractor object was assigned to the LesHouchesReader '"
+      << name() << "' nor was one\nassigned to the controlling "
+      << "LesHouchesEventHandler '" << eh.name() << "'.\nAt least one of them "
+      << "needs to have a PartonExtractor object." << Exception::runerror;
+  }
   open();
 
   Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
   theCuts->initialize(sqr(emax),
 		      0.5*log(heprup.EBMUP.first/heprup.EBMUP.second));
   if ( Smax > 0.0*GeV2 && ( Smax != cuts().SMax() || Y != cuts().Y() ) )
-    throw LesHouchesInitError()
+    Throw<LesHouchesInitError>()
       << "The LesHouchesReader '" << name() << "' uses the same Cuts object "
       << "as another LesHouchesReader which has not got the same energies of "
       << "the colliding particles. For the generation to work properly "
@@ -237,7 +238,19 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
       << heprup.IDWTUP << " which is not supported by this reader, the "
       << "produced events may not be sampled correctly. It is up to "
       << "sub-classes of LesHouchesReader to correctly convert to match IDWTUP "
-      << "+/- 1. Will try to make intelligent guesses to get correct statistics."
+      << "+/- 1. Will try to make intelligent guesses to get correct statistics.\n"
+      << "In most cases this should be sufficient."
+      << Exception::warning;
+
+  if ( heprup.IDWTUP !=  eh.weightOption() && abs(heprup.IDWTUP) < 3 )
+    Throw<LesHouchesInitError>()
+      << "LesHouchesReader " << name() << " has the IDWTUP flag set to "
+      << heprup.IDWTUP 
+      << ", which does not correspond\nto the weight option "
+      << eh.weightOption() << " set in "
+      << "the LesHouchesEventHandler " << eh.name() << ".\n\n"
+      << "Use the following handler setting instead:\n"
+      << "  set " << eh.name() << ":WeightOption " << heprup.IDWTUP << '\n'
       << Exception::warning;
 
   scan();
@@ -261,7 +274,7 @@ long LesHouchesReader::scan() {
 
   // If the open() has not already gotten information about subprocesses
   // and cross sections we have to scan through the events.
-  if ( !heprup.NPRUP || cacheFile() != NULL || abs(heprup.IDWTUP) != 1 ) {
+  if ( !heprup.NPRUP || cacheFile() != NULL || abs(heprup.IDWTUP) != 1 ) { // why scan if IDWTUP != 1?
 
     HoldFlag<> isScanning(scanning);
 
@@ -323,7 +336,7 @@ long LesHouchesReader::scan() {
       }	
     }
     if ( heprup.NPRUP == 0 ) {
-      // No heprup block was supplied or somethingwent wrong.
+      // No heprup block was supplied or something went wrong.
       heprup.NPRUP = lprup.size();
       heprup.LPRUP.resize(lprup.size());
       heprup.XMAXUP.resize(lprup.size());
@@ -431,13 +444,13 @@ void LesHouchesReader::reopen() {
   if ( cacheFile() != NULL ) {
     closeCacheFile();
     openReadCacheFile();
-    if ( !uncacheEvent() ) throw LesHouchesReopenError()
+    if ( !uncacheEvent() ) Throw<LesHouchesReopenError>()
       << "Could not reopen LesHouchesReader '" << name()
       << "'." << Exception::runerror;
   } else {  
     close();
     open();
-    if ( !readEvent() ) throw LesHouchesReopenError()
+    if ( !readEvent() ) Throw<LesHouchesReopenError>()
       << "Could not reopen LesHouchesReader '" << name()
       << "'." << Exception::runerror;
   }
@@ -650,7 +663,7 @@ tcPBPair LesHouchesReader::createPartonBinInstances() {
     sel = partonBins()[i];
     break;
   }
-  if ( !sel.first || !sel.second ) throw LesHouchesInconsistencyError()
+  if ( !sel.first || !sel.second ) Throw<LesHouchesInconsistencyError>()
     << "Could not find appropriate PartonBin objects for event produced by "
     << "LesHouchesReader '" << name() << "'." << Exception::runerror;
 
@@ -696,7 +709,16 @@ void LesHouchesReader::createParticles() {
 			 hepeup.PUP[i][4]*GeV);
     if(theMomentumTreatment == 1)      mom.rescaleEnergy();
     else if(theMomentumTreatment == 2) mom.rescaleMass();
-    PPtr p = getParticleData(hepeup.IDUP[i])->produceParticle(mom);
+    PDPtr pd = getParticleData(hepeup.IDUP[i]);
+    if (!pd) {
+      Throw<LesHouchesInitError>()
+	<< "LesHouchesReader '" << name() << "' found unknown particle ID "
+	<< hepeup.IDUP[i]
+	<< " in Les Houches common block structure.\n"
+	<< "You need to define the new particle in an input file.\n"
+	<< Exception::runerror;
+    }
+    PPtr p = pd->produceParticle(mom);
     tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
     if ( c ) c->addColoured(p);
     c = colourIndex(hepeup.ICOLUP[i].second);
@@ -747,7 +769,7 @@ void LesHouchesReader::createParticles() {
     case -9:
       if ( !theBeams.first ) theBeams.first = p;
       else if ( !theBeams.second ) theBeams.second = p;
-      else throw LesHouchesInconsistencyError()
+      else Throw<LesHouchesInconsistencyError>()
 	<< "To many incoming beam particles in the LesHouchesReader '"
 	<< name() << "'." << Exception::runerror;
       break;
@@ -758,7 +780,7 @@ void LesHouchesReader::createParticles() {
 	theIncoming.first = p;
       else if ( particleIndex(theIncoming.second) == hepeup.MOTHUP[i].first )
 	theIncoming.second = p;
-      else throw LesHouchesInconsistencyError()
+      else Throw<LesHouchesInconsistencyError>()
 	<< "To many incoming particles to hard subprocess in the "
 	<< "LesHouchesReader '"	<< name() << "'." << Exception::runerror;
       p->scale(sqr(hepeup.SCALUP*GeV));
@@ -773,7 +795,7 @@ void LesHouchesReader::createParticles() {
       theIntermediates.push_back(p);
       break;
     default:
-      throw LesHouchesInconsistencyError()
+      Throw<LesHouchesInconsistencyError>()
 	<< "Unknown status code (" << hepeup.ISTUP[i]
 	<< ") in the LesHouchesReader '" << name() << "'."
 	<< Exception::runerror;
@@ -1167,7 +1189,7 @@ void LesHouchesReader::Init() {
 
   static Switch<LesHouchesReader,unsigned int> interfaceMomentumTreatment
     ("MomentumTreatment",
-     "Treatment of the momenta supplied by tghe interface",
+     "Treatment of the momenta supplied by the interface",
      &LesHouchesReader::theMomentumTreatment, 0, false, false);
   static SwitchOption interfaceMomentumTreatmentAccept
     (interfaceMomentumTreatment,

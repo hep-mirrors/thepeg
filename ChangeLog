@@ -1,3 +1,8 @@
+2008-12-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* LesHouches/LesHouchesReader.cc: Fixed several segfaults when
+	LHE file is inconsistent with repository settings.
+
 2008-12-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Current.h (ThePEG): Added general class for accessing
