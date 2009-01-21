@@ -41,7 +41,9 @@ namespace ThePEG {
  * For each event, the Cuts object must also be initialized giving the
  * squared invarint mass, \f$\hat{s}\f$, and the total rapidity,
  * \f$\hat{y}\f$, of the hard sub-process in the center-of-mass frame
- * of the colliding particles.
+ * of the colliding particles. Note that this means that the
+ * transformation between the lab frame and the rest frame of the hard
+ * sub-process is assumed to be a simple boost along the z-axis.
  *
  * @see \ref CutsInterfaces "The interfaces"
  * defined for Cuts.

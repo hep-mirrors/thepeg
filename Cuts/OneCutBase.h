@@ -26,9 +26,12 @@ namespace ThePEG {
  * concrete sub-classes. minKT() should return the minimum allowed
  * transverse momentum of a given type, while minEta() and maxEta()
  * should return the minimum and maximum allowed pseudo-rapidity for a
- * particle of a given type as measured in the lab-system. In addition
- * the passCut() function should return true if a particle with a
- * given type and given momentum will pass the cuts.
+ * particle of a given type as measured in the lab-system. Note that
+ * when applied in the rest frame of a hard sub-process, the
+ * transformation from the lab frame is assumed to be a simple boost
+ * along the z-axis. In addition the passCut() function should return
+ * true if a particle with a given type and given momentum will pass
+ * the cuts.
  *
  * @see \ref OneCutBaseInterfaces "The interfaces"
  * defined for OneCutBase.
