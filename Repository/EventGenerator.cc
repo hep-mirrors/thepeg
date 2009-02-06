@@ -445,7 +445,7 @@ EventPtr EventGenerator::generateEvent(Step & s) {
 
 Energy EventGenerator::maximumCMEnergy() const {
   tcEHPtr eh = eventHandler();
-  return eh->lumiFnPtr()? eh->lumiFn().maximumCMEnergy(): 0.0*GeV;
+  return eh->lumiFnPtr()? eh->lumiFn().maximumCMEnergy(): ZERO;
 }
 
 void EventGenerator::doInitialize() {

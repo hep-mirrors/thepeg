@@ -62,7 +62,7 @@ generate(PartonBinInstance & pb, const double *,
     Lorentz5Momentum pgam;
     pgam.setMass(-sqrt(scale));
     pgam.setT(0.5*(ppl+pmi));
-    if(parent.z()<0.*GeV) 
+    if(parent.z() < ZERO) 
       pgam.setZ(-0.5*(ppl-pmi));
     else
       pgam.setZ(0.5*(ppl-pmi));
@@ -81,10 +81,10 @@ generate(PartonBinInstance & pb, const double *,
       pb.remnants(PVector());
       return parent;
     }
-    LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
+    LorentzMomentum p(ZERO, ZERO, parent.rho(), parent.e());
     TransverseMomentum qt;
-    Energy2 qt2 = 0.0*GeV2;
-    if ( scale >= 0.0*GeV2 ) {
+    Energy2 qt2 = ZERO;
+    if ( scale >= ZERO ) {
       qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
       double phi = rnd(2.0*Constants::pi);
       qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
@@ -93,7 +93,7 @@ generate(PartonBinInstance & pb, const double *,
     LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
     prem.rotateY(parent.theta());
     prem.rotateZ(parent.phi());
-    PPtr rem = photon->produceParticle(prem, 0.0*GeV);
+    PPtr rem = photon->produceParticle(prem, ZERO);
     pb.remnants(PVector(1, rem));
     return parent - rem->momentum();
   }
@@ -122,7 +122,7 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     Lorentz5Momentum pgam;
     pgam.setMass(-sqrt(scale));
     pgam.setT(0.5*(ppl+pmi));
-    if(parent.z()<0.*GeV)
+    if(parent.z() < ZERO)
       pgam.setZ(-0.5*(ppl-pmi));
     else
       pgam.setZ(0.5*(ppl-pmi));
@@ -141,10 +141,10 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
       pb.remnants(PVector());
       return parent;
     }
-    LorentzMomentum p(0.0*GeV, 0.0*GeV, parent.rho(), parent.e());
+    LorentzMomentum p(ZERO, ZERO, parent.rho(), parent.e());
     TransverseMomentum qt;
-    Energy2 qt2 = 0.0*GeV2;
-    if ( scale >= 0.0*GeV2 ) {
+    Energy2 qt2 = ZERO;
+    if ( scale >= ZERO ) {
       qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
       double phi = rnd(2.0*Constants::pi);
       qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
@@ -153,7 +153,7 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
     prem.rotateY(parent.theta());
     prem.rotateZ(parent.phi());
-    PPtr rem = photon->produceParticle(prem, 0.0*GeV);
+    PPtr rem = photon->produceParticle(prem, ZERO);
     pb.remnants(PVector(1, rem));
     return parent - rem->momentum();
   }

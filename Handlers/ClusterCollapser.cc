@@ -128,7 +128,7 @@ collapse(tPVector tagged, tStepPtr newstep) {
 
 Energy ClusterCollapser::mass(const ColourSinglet & cl) {
   LorentzMomentum sump;
-  Energy summ = 0.0*GeV;
+  Energy summ = ZERO;
   for ( int i = 0, N = cl.partons().size(); i < N; ++i ) {
     summ += cl.parton(i)->data().constituentMass();
     sump += cl.parton(i)->momentum();
@@ -308,14 +308,14 @@ getCompensators(Energy mh, const ColourSinglet & cs,
     // particle. Also check that compensators have mass to avoid boost
     // problems.
   } while ( comp.empty() || (pc + pcomp).m() <= mh + pcomp.m() ||
-	    ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) );
+	    ( comp.size() > 1 && pcomp.m2() <= ZERO ) );
 
 
   // If this didn't work, let's try to fix it by disregarding the
   // closest particle.
   tcPVector::size_type end = comp.size();
   while ( (pc + pcomp).m() <= mh + pcomp.m() ||
-	  ( comp.size() > 1 && pcomp.m2() <= 0.0*GeV2 ) ) {
+	  ( comp.size() > 1 && pcomp.m2() <= ZERO ) ) {
     if ( end == comp.size() ) {
       if ( comp.size() < 2 ) return ret;
       comp.erase(comp.begin());
@@ -367,7 +367,7 @@ collapse(tStepPtr newStep, const ColourSinglet & cs,
       Utilities::sumMomentum(comp.begin(), comp.end() - 1);
     Energy2 s = (pcomp + h->momentum()).m2();
     Energy pnew = SimplePhaseSpace::getMagnitude(s, mh, pcomp.m());
-    h->set5Momentum(R*Lorentz5Momentum(0.0*GeV, 0.0*GeV,
+    h->set5Momentum(R*Lorentz5Momentum(ZERO, ZERO,
 				       pnew, sqrt(sqr(pnew) + sqr(mh)), mh));
 
     comp.pop_back();
@@ -532,7 +532,7 @@ void ClusterCollapser::Init() {
      "If the invariant mass of a cluster, minus the constituent masses of its "
      "partons is below this cut (in GeV), it will be collapsed into one "
      "or two particles.",
-     &ClusterCollapser::theEnergyCut, GeV, 1.0*GeV, 0.0*GeV, 10.0*GeV,
+     &ClusterCollapser::theEnergyCut, GeV, 1.0*GeV, ZERO, 10.0*GeV,
      false, false, true);
 
   static Parameter<ClusterCollapser, int> interfaceNTry2

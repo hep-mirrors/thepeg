@@ -50,7 +50,7 @@ bool ME2to2Base::generateKinematics(const double * r) {
   double ctmin = -1.0;
   double ctmax = 1.0;
 
-  Energy q = 0.0*GeV;
+  Energy q = ZERO;
   try {
     q = SimplePhaseSpace::
       getMagnitude(sHat(), meMomenta()[2].mass(), meMomenta()[3].mass());
@@ -69,20 +69,20 @@ bool ME2to2Base::generateKinematics(const double * r) {
   Energy2 pq = 2.0*e*q;
 
   Energy2 thmin = lastCuts().minTij(mePartonData()[0], mePartonData()[2]);
-  if ( thmin > 0.0*GeV2 ) ctmax = min(ctmax, (e0e2 - m22 - thmin)/pq);
+  if ( thmin > ZERO ) ctmax = min(ctmax, (e0e2 - m22 - thmin)/pq);
 
   thmin = lastCuts().minTij(mePartonData()[1], mePartonData()[2]);
-  if ( thmin > 0.0*GeV2 ) ctmin = max(ctmin, (thmin + m22 - e1e2)/pq);
+  if ( thmin > ZERO ) ctmin = max(ctmin, (thmin + m22 - e1e2)/pq);
 
   thmin = lastCuts().minTij(mePartonData()[1], mePartonData()[3]);
-  if ( thmin > 0.0*GeV2 ) ctmax = min(ctmax, (e1e3 - m32 - thmin)/pq);
+  if ( thmin > ZERO ) ctmax = min(ctmax, (e1e3 - m32 - thmin)/pq);
 
   thmin = lastCuts().minTij(mePartonData()[0], mePartonData()[3]);
-  if ( thmin > 0.0*GeV2 ) ctmin = max(ctmin, (thmin + m32 - e0e3)/pq);
+  if ( thmin > ZERO ) ctmin = max(ctmin, (thmin + m32 - e0e3)/pq);
 
   Energy ptmin = max(lastCuts().minKT(mePartonData()[2]),
    		     lastCuts().minKT(mePartonData()[3]));
-  if ( ptmin > 0.0*GeV ) {
+  if ( ptmin > ZERO ) {
     double ctm = 1.0 - sqr(ptmin/q);
     if ( ctm <= 0.0 ) return false;
     ctmin = max(ctmin, -sqrt(ctm));

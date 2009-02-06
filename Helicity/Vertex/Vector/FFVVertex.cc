@@ -132,7 +132,7 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass<0.*GeV) mass  = iopt==5 ? Energy() : out->mass();
+  if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex nos for for the spinor
@@ -214,7 +214,7 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass<0.*GeV) mass  = (iopt==5) ? Energy() : out->mass();
+  if(mass < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
   complex<Energy> p1p2=pout.x()+ii*pout.y();
   complex<Energy> p1m2=pout.x()-ii*pout.y();
   // complex numbers for the spinor
@@ -288,7 +288,7 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact = normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass<0.*GeV) mass  = (iopt==5) ? Energy() : out->mass();
+  if(mass < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
   Energy2 mass2 = sqr(mass);
   // the vector for the fermion-antifermion
   Complex vec[4];
@@ -355,7 +355,7 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
     }
   }
   // massless boson
-  if(mass==Energy()) {
+  if(mass==ZERO) {
     for(int ix=0;ix<4;++ix){vec[ix]*=fact;}
   }
   // massive boson

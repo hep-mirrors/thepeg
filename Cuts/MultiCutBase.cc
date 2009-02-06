@@ -18,7 +18,7 @@
 using namespace ThePEG;
 
 Energy2 MultiCutBase::minS(const tcPDVector &) const {
-  return 0.0*GeV2;
+  return ZERO;
 }
 
 Energy2 MultiCutBase::maxS(const tcPDVector &) const {

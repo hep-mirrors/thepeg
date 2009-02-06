@@ -520,10 +520,10 @@ void VertexBase::setList(vector<long> ida,vector<long> idb, vector<long> idc,
 // calculate the propagator for a diagram
 Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
 			       Energy mass, Energy width) {
-  if(mass<0.*GeV) mass = part->mass();
+  if(mass < ZERO) mass = part->mass();
   const Energy2 mass2 = sqr(mass);
   const Energy p = sqrt(p2);
-  if(width<0.*GeV) {
+  if(width < ZERO) {
     const tcWidthGeneratorPtr widthgen = part->widthGenerator();
     width = widthgen && (iopt==2 || iopt==6 ) ? 
       widthgen->width(*part,p) : part->width();
@@ -534,8 +534,8 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
   if(iopt==5) {
     return Complex(UnitRemoval::E2/p2);
   }
-  else if(p2 < 0.*MeV2) {
-    masswidth = 0.*MeV2;
+  else if(p2 < ZERO) {
+    masswidth = ZERO;
   }
   else {
     switch (iopt) {
@@ -543,7 +543,7 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
       masswidth = ii * mass * width;         
       break;
     case 3: 
-      masswidth = 0.*MeV2;                    
+      masswidth = ZERO;                    
       break;
     case 4: 
       return 1.0;

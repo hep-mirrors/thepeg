@@ -32,7 +32,7 @@ public:
    * Default constructor.
    */
   ConstituentParticleData()
-    : theConstituentMass(0.0*GeV), theDefaultConstituentMass(0.0*GeV) {}
+    : theConstituentMass(ZERO), theDefaultConstituentMass(ZERO) {}
   //@}
 
   /** @name The Create methods are special interfaces for ParticleData

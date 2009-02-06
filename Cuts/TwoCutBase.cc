@@ -16,36 +16,9 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Particle.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "TwoCutBase.tcc"
-#endif
-
-#include "ThePEG/Persistency/PersistentOStream.h"
-#include "ThePEG/Persistency/PersistentIStream.h"
-
 using namespace ThePEG;
 
 TwoCutBase::~TwoCutBase() {}
-
-Energy2 TwoCutBase::minSij(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV2;
-}
-
-Energy2 TwoCutBase::minTij(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV2;
-}
-
-double TwoCutBase::minDeltaR(tcPDPtr, tcPDPtr) const {
-  return 0.0;
-}
-
-Energy TwoCutBase::minKTClus(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV;
-}
-
-double TwoCutBase::minDurham(tcPDPtr, tcPDPtr) const {
-  return 0.0;
-}
 
 bool TwoCutBase::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
 			  LorentzMomentum pi, LorentzMomentum pj,

@@ -85,7 +85,7 @@ LHAPDF::LHAPDF()
     thePhotonOption(7), enablePartonicGamma(false),
     theVerboseLevel(0), theMaxFlav(5), nset(-1),
     lastQ2(-1.0*GeV2), lastX(-1.0), lastP2(-1.0*GeV2),
-    xMin(0.0), xMax(1.0), Q2Min(0.0*GeV2), Q2Max(Constants::MaxEnergy2) {}
+    xMin(0.0), xMax(1.0), Q2Min(ZERO), Q2Max(Constants::MaxEnergy2) {}
 
 LHAPDF::LHAPDF(const LHAPDF & x)
   : PDFBase(x), thePType(x.thePType), thePDFName(x.thePDFName),
@@ -382,8 +382,8 @@ void LHAPDF::setPDFName(string name) {
 
 string LHAPDF::doTest(string input) {
   double x = 0;
-  Energy2 Q2 = 0.0*GeV2;
-  Energy2 P2 = 0.0*GeV2;
+  Energy2 Q2 = ZERO;
+  Energy2 P2 = ZERO;
   istringstream is(input);
   is >> x >> iunit(Q2, GeV2) >> iunit(P2, GeV2);
   checkUpdate(x, Q2, P2);

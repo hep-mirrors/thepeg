@@ -59,9 +59,9 @@ void PartonBin::persistentOutput(PersistentOStream & os) const {
 void PartonBin::persistentInput(PersistentIStream & is, int) {
   double lmin = 0.0;
   double lmax = 0.0;
-  Energy2 scmin = 0.0*GeV2;
-  Energy2 scmax = 0.0*GeV2;
-  Energy2 smax = 0.0*GeV2;
+  Energy2 scmin = ZERO;
+  Energy2 scmax = ZERO;
+  Energy2 smax = ZERO;
   is >> theParticle >> theIncomingBin >> theOutgoing >> theParton >> thePDF
      >> theRemnantHandler >> thePDFDim >> theRemDim
      >> lmin >> lmax >> iunit(scmin, GeV2) >> iunit(scmax, GeV2)

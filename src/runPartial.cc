@@ -65,8 +65,8 @@ int main(int argc, char * argv[]) {
       PPtr d = eg->getParticle(ParticleID::ubar);
       // Create a quark and an anti-quark.
 
-      u->set3Momentum(Momentum3(0.0*GeV, 0.0*GeV, 400.0*MeV));
-      d->set3Momentum(Momentum3(0.0*GeV, 0.0*GeV, -400.0*MeV));
+      u->set3Momentum(Momentum3(ZERO, ZERO, 400.0*MeV));
+      d->set3Momentum(Momentum3(ZERO, ZERO, -400.0*MeV));
       // Set the momentum of the quarks.
       u->antiColourNeighbour(d);
       d->colourNeighbour(u);
@@ -76,7 +76,7 @@ int main(int argc, char * argv[]) {
       // Add the quarks to the first step
 
       PPtr p = eg->getParticle(ParticleID::pplus);
-      p->set3Momentum(Momentum3(100.0*GeV, 0.0*GeV, 0.0*GeV));
+      p->set3Momentum(Momentum3(100.0*GeV, ZERO, ZERO));
       firstStep->addParticle(p);
       // Sometimes, the string fragmentation routine needs to shuffle some
       // energy around, so we add an extra proton for this purpose.

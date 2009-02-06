@@ -51,7 +51,7 @@ FixedCMSLuminosity::initFixedCMSLuminosity;
   static Parameter<FixedCMSLuminosity,Energy> interfaceEnergy
     ("Energy",
      "The total energy in GeV in the cms of the colliding particles.",
-     0, GeV, 91.2*GeV, 0.0*GeV, 0*GeV,
+     0, GeV, 91.2*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim,
      &FixedCMSLuminosity::setEnergy, &FixedCMSLuminosity::getEnergy,
      (Energy(FixedCMSLuminosity::*)()const)(0),

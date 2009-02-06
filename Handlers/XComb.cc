@@ -38,8 +38,8 @@ XComb::XComb()
   : theLastS(Energy2()), theLastSHat(Energy2()), theLastY(0.0),
     theLastP1P2(make_pair(1.0, 1.0)), theLastL1L2(make_pair(1.0, 1.0)),
     theLastX1X2(make_pair(1.0, 1.0)), theLastE1E2(make_pair(0.0, 0.0)),
-    theLastScale(0.0*GeV2), theLastAlphaS(-1.0), theLastAlphaEM(-1.0),
-    theMaxEnergy(0.0*GeV) {}
+    theLastScale(ZERO), theLastAlphaS(-1.0), theLastAlphaEM(-1.0),
+    theMaxEnergy(ZERO) {}
 
 XComb::
 XComb(Energy newMaxEnergy, const cPDPair & inc, tEHPtr newEventHandler,
@@ -50,7 +50,7 @@ XComb(Energy newMaxEnergy, const cPDPair & inc, tEHPtr newEventHandler,
     theParticles(inc), thePartonBins(newPartonBins), theLastS(Energy2()),
     theLastSHat(Energy2()), theLastY(0.0), theLastP1P2(make_pair(1.0, 1.0)),
     theLastL1L2(make_pair(1.0, 1.0)), theLastX1X2(make_pair(1.0, 1.0)),
-    theLastE1E2(make_pair(0.0, 0.0)), theLastScale(0.0*GeV2),
+    theLastE1E2(make_pair(0.0, 0.0)), theLastScale(ZERO),
     theLastAlphaS(-1.0), theLastAlphaEM(-1.0), theMaxEnergy(newMaxEnergy) {
   thePartons = cPDPair(partonBins().first->parton(),
 		       partonBins().second->parton());
@@ -67,7 +67,7 @@ XComb::~XComb() {}
 void XComb::clean() {
   theLastParticles = PPair();
   theLastPartons = PPair();
-  theLastS = theLastSHat = theLastScale = 0.0*GeV2;
+  theLastS = theLastSHat = theLastScale = ZERO;
   theLastAlphaS = theLastAlphaEM = -1.0;
   theLastY = 0.0;
   theLastP1P2 = theLastL1L2 = theLastX1X2 = theLastE1E2 = DPair(0.0, 0.0);

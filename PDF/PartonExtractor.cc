@@ -410,7 +410,7 @@ transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
     else
       SimplePhaseSpace::CMS(Ph, Pr, (k + P).m2(), 1.0, 0.0);
     LorentzRotation rpt;
-    if ( sqr(Pr.z()) > 0.0*GeV2 ) rpt.rotateY(asin(pt.pt()/Pr.z()));
+    if ( sqr(Pr.z()) > ZERO ) rpt.rotateY(asin(pt.pt()/Pr.z()));
     rpt.rotateZ(pt.phi());
     rpt = Direction<0>::pos()?
       Utilities::getBoostFromCM(make_pair(P, k))*rpt:

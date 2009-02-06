@@ -15,7 +15,7 @@
 using namespace ThePEG;
 
 WeizsackerWilliamsPDF::WeizsackerWilliamsPDF() 
-  : _q2min(0.*GeV2), _q2max(4.*GeV2)
+  : _q2min(ZERO), _q2max(4.*GeV2)
 {}
 
 bool WeizsackerWilliamsPDF::canHandleParticle(tcPDPtr particle) const {
@@ -56,13 +56,13 @@ void WeizsackerWilliamsPDF::Init() {
   static Parameter<WeizsackerWilliamsPDF,Energy2> interfaceQ2Min
     ("Q2Min",
      "Minimum value of the magnitude of Q^2 for the photon",
-     &WeizsackerWilliamsPDF::_q2min, GeV2, 0.0*GeV2, 0.0*GeV2, 100.0*GeV2,
+     &WeizsackerWilliamsPDF::_q2min, GeV2, ZERO, ZERO, 100.0*GeV2,
      false, false, Interface::limited);
 
   static Parameter<WeizsackerWilliamsPDF,Energy2> interfaceQ2Max
     ("Q2Max",
      "Maximum value of the magnitude of Q^2 for the photon",
-     &WeizsackerWilliamsPDF::_q2max, GeV2, 4.0*GeV2, 0.0*GeV2, 100.0*GeV2,
+     &WeizsackerWilliamsPDF::_q2max, GeV2, 4.0*GeV2, ZERO, 100.0*GeV2,
      false, false, Interface::limited);
 
 }

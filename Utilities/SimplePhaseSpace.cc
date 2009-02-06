@@ -17,15 +17,15 @@ using namespace ThePEG;
 
 Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
-  if ( m1 >= 0.0*GeV && m2 >= 0.0*GeV ) {
+  if ( m1 >= ZERO && m2 >= ZERO ) {
     Energy2 aa = s - sqr(m1+m2);
     if ( aa < Energy2() ) throw ImpossibleKinematics();
     return 0.5*sqrt(aa*(s-sqr(m1-m2))/s);
   }
-  Energy2 m12 = m1 < 0.0*GeV? -sqr(m1): sqr(m1);
-  Energy2 m22 = m2 < 0.0*GeV? -sqr(m2): sqr(m2);
+  Energy2 m12 = m1 < ZERO? -sqr(m1): sqr(m1);
+  Energy2 m22 = m2 < ZERO? -sqr(m2): sqr(m2);
   Energy2 r2 = 0.25*(sqr(m12) + sqr(m22 - s) -2.0*m12*(m22 + s))/s;
-  if ( r2 < 0.0*GeV2 || r2 + m12 < 0.0*GeV2 || r2 + m22 < 0.0*GeV2 )
+  if ( r2 < ZERO || r2 + m12 < ZERO || r2 + m22 < ZERO )
     throw ImpossibleKinematics();
   return sqrt(r2);
 }
@@ -68,7 +68,7 @@ CMSn(Energy m0, const vector<Energy> & m)
     if ( weight > UseRandom::rnd() ) continue;
 
     // Now we just have to generate the angles.
-    ret[Np - 1] = LorentzMomentum(0.0*GeV, 0.0*GeV, 0.0*GeV, m[Np - 1]);
+    ret[Np - 1] = LorentzMomentum(ZERO, ZERO, ZERO, m[Np - 1]);
     for ( int i = Np - 2; i >= 0; --i ) {
       Momentum3 p3 = polar3Vector(p[i], 2.0*UseRandom::rnd() - 1.0,
 				  2.0*pi*UseRandom::rnd());

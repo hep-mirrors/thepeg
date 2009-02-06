@@ -73,8 +73,8 @@ void LesHouchesEventHandler::initialize() {
   typedef map<int,tLesHouchesReaderPtr> ProcessMap;
   ProcessMap processes;
   PDPair incoming;
-  Energy MaxEA = 0.0*GeV;
-  Energy MaxEB = 0.0*GeV;
+  Energy MaxEA = ZERO;
+  Energy MaxEB = ZERO;
   
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
@@ -129,7 +129,7 @@ void LesHouchesEventHandler::initialize() {
   histStats.maxXSec(selector().sum());
 
   // Check that we have any cross section at all.
-  if ( stats.maxXSec() <= 0.0*picobarn )
+  if ( stats.maxXSec() <= ZERO )
     throw LesHouchesInitError()
       << "The sum of the cross sections of the readers in the "
       << "LesHouchesEventHandler '" << name()

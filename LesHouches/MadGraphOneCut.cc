@@ -33,7 +33,7 @@ IBPtr MadGraphOneCut::fullclone() const {
 }
 
 Energy MadGraphOneCut::minKT(tcPDPtr p) const {
-  if ( cutType != PT || !checkType(p) ) return 0.0*GeV;
+  if ( cutType != PT || !checkType(p) ) return ZERO;
   return theCut*GeV;
 }
 
@@ -48,7 +48,7 @@ double MadGraphOneCut::maxEta(tcPDPtr p) const {
 }
 
 Energy MadGraphOneCut::minMaxKT(tcPDPtr p) const {
-  if ( cutType != XPT || !checkType(p) ) return 0.0*GeV;
+  if ( cutType != XPT || !checkType(p) ) return ZERO;
   return theCut*GeV;  
 }
 

@@ -22,8 +22,8 @@ void TensorWaveFunction::calculateWaveFunction(unsigned int ihel, TensorPhase tp
   int jhel=ihel-2;
   assert(direction()!=intermediate);
   // check for a valid helicty combination
-  assert((jhel<=2 && jhel>=-2   && mass() >Energy()) || 
-	 ((jhel==2 || jhel==-2) && mass()==Energy()));
+  assert((jhel<=2 && jhel>=-2   && mass() >ZERO) || 
+	 ((jhel==2 || jhel==-2) && mass()==ZERO));
   // extract the momentum components
   double fact = direction()==outgoing ? -1. : 1;
   Energy ppx=fact*px(),ppy=fact*py(),ppz=fact*pz(),pee=fact*e(),pmm=mass();
@@ -38,13 +38,13 @@ void TensorWaveFunction::calculateWaveFunction(unsigned int ihel, TensorPhase tp
     // calculate the overall phase
     complex<double>phase;
     if(tphase==tensor_phase) {
-      phase = pt==Energy() ? 1. : complex<double>(ppx/pt,-fact*ppy/pt);
+      phase = pt==ZERO ? 1. : complex<double>(ppx/pt,-fact*ppy/pt);
     }
     else phase = 1.; 
     phase = phase*sqrt(0.5);
     // first the no pt case
-    if(pt==Energy()) {
-      double sgnz = ppz<Energy() ? -1. : 1.;
+    if(pt==ZERO) {
+      double sgnz = ppz<ZERO ? -1. : 1.;
       epsp[0]=-phase;
       epsp[1]= sgnz*phase*complex<double>(0,-fact);
       epsp[2]=0.;
@@ -66,14 +66,14 @@ void TensorWaveFunction::calculateWaveFunction(unsigned int ihel, TensorPhase tp
     // calculate the overall phase
     complex<double> phase;
     if(tphase==tensor_phase) {
-      phase = pt==Energy() ? 1. : complex<double>(ppx/pt,fact*ppy/pt);
+      phase = pt==ZERO ? 1. : complex<double>(ppx/pt,fact*ppy/pt);
     }
     else phase = 1.;
     phase = phase*sqrt(0.5);
     // first the no pt case
-    if(pt==Energy()) {
+    if(pt==ZERO) {
       double sgnz;
-      if(ppz<Energy()){sgnz=-1.;}
+      if(ppz<ZERO){sgnz=-1.;}
       else{sgnz=1.;}
       epsm[0]= phase;
       epsm[1]= sgnz*phase*complex<double>(0,-fact);
@@ -93,7 +93,7 @@ void TensorWaveFunction::calculateWaveFunction(unsigned int ihel, TensorPhase tp
   }
   // 0 helicity vector if needed
   if(jhel<=1 && jhel>=-1) {
-    if(pabs==Energy()) {
+    if(pabs==ZERO) {
       eps0[0] = 0.;
       eps0[1] = 0.;
       eps0[2] = 1.;

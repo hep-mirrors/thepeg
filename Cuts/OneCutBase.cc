@@ -54,7 +54,7 @@ bool OneCutBase::passCuts(tcCutsPtr parent, tcPPtr p) const {
 }
 
 Energy OneCutBase::minKT(tcPDPtr) const {
-  return 0.0*GeV;
+  return ZERO;
 }
 
 double OneCutBase::minEta(tcPDPtr) const {

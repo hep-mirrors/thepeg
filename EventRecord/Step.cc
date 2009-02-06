@@ -413,13 +413,13 @@ ostream & ThePEG::operator<<(ostream & os, const Step & s) {
   int oldprecision = os.precision();
   Energy sumx1
     = ( sqr(sum.x()) > Constants::epsilon*sumx ? 
-	sum.x(): Energy() );
+	sum.x(): ZERO );
   Energy sumy1
     = ( sqr(sum.y()) > Constants::epsilon*sumy ? 
-	sum.y(): Energy() );
+	sum.y(): ZERO );
   Energy sumz1
     = ( sqr(sum.z()) > Constants::epsilon*sumz ? 
-	sum.z(): Energy() );
+	sum.z(): ZERO );
   os << setprecision(3) << setw(10) << sumx1/GeV << setw(10) << sumy1/GeV
      << setw(10) << sumz1/GeV << setw(10) << sum.e()/GeV
      << setw(10) << sum.m()/GeV << endl << setprecision(oldprecision);

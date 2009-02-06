@@ -79,7 +79,7 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
 StandardXComb::~StandardXComb() {}
 
 bool StandardXComb::checkInit() {
-  Energy summin = 0.0*GeV;
+  Energy summin = ZERO;
   for ( int i = 2, N = mePartonData().size(); i < N; ++i ) {
     summin += mePartonData()[i]->massMin();
   }
@@ -88,7 +88,6 @@ bool StandardXComb::checkInit() {
 
 CrossSection StandardXComb::
 dSigDR(const pair<double,double> ll, int nr, const double * r) {
-  CrossSection zero = 0.0*nanobarn;
   //  attempt();
 
   pExtractor()->select(this);
@@ -98,18 +97,18 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   if ( !pExtractor()->generateL(partonBinInstances(),
 				r, r + nr - partonDims.second) )
-    return zero;
+    return ZERO;
 
   lastSHat(lastS()/exp(partonBinInstances().first->l() +
 		       partonBinInstances().second->l()));
   lastPartons(make_pair(partonBinInstances().first->parton(),
 			partonBinInstances().second->parton()));
 
-  if ( lastSHat()  < cuts()->sHatMin() ) return zero;
+  if ( lastSHat()  < cuts()->sHatMin() ) return ZERO;
 
   lastY(0.5*(partonBinInstances().second->l() -
 	     partonBinInstances().first->l()));
-  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) return zero;
+  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) return ZERO;
 
   meMomenta().resize(mePartonData().size());
   meMomenta()[0] = lastPartons().first->momentum();
@@ -117,7 +116,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   if ( mirror() ) swap(meMomenta()[0], meMomenta()[1]);
   SimplePhaseSpace::CMS(meMomenta()[0], meMomenta()[1], lastSHat());
 
-  Energy summ = 0.0*GeV;
+  Energy summ = ZERO;
   if ( meMomenta().size() == 3 )
     meMomenta()[2] = Lorentz5Momentum(sqrt(lastSHat()));
   else {
@@ -125,18 +124,18 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
       meMomenta()[i] = Lorentz5Momentum(mePartonData()[i]->mass());
       summ += mePartonData()[i]->massMin();
     }
-    if ( sqr(summ) >= lastSHat() ) return zero;
+    if ( sqr(summ) >= lastSHat() ) return ZERO;
   }
   
   matrixElement()->setXComb(this);
-  //  if ( !matrixElement()->generateKinematics(r + partonDims.first) ) return zero;
+  //  if ( !matrixElement()->generateKinematics(r + partonDims.first) ) return ZERO;
   // lastScale(matrixElement()->scale());
   lastScale(max(lastSHat()/4.0, cuts()->scaleMin()));
 
   lastSHat(pExtractor()->generateSHat(lastS(), partonBinInstances(),
 				      r, r + nr - partonDims.second));
 
-  if ( !cuts()->sHat(lastSHat()) ) return zero;
+  if ( !cuts()->sHat(lastSHat()) ) return ZERO;
 
   r += partonDims.first;
 
@@ -145,12 +144,12 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 		     lastPartons().second->momentum().minus()/
 		     lastParticles().second->momentum().minus()));
 
-  if ( !cuts()->x1(lastX1()) || !cuts()->x2(lastX2()) ) return zero;
+  if ( !cuts()->x1(lastX1()) || !cuts()->x2(lastX2()) ) return ZERO;
   
   lastY((lastPartons().first->momentum() +
 	 lastPartons().second->momentum()).rapidity());
-  if ( !cuts()->yHat(lastY()) ) return zero;
-  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) return zero;
+  if ( !cuts()->yHat(lastY()) ) return ZERO;
+  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) return ZERO;
 
   meMomenta()[0] = lastPartons().first->momentum();
   meMomenta()[1] = lastPartons().second->momentum();
@@ -160,16 +159,16 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   if ( meMomenta().size() == 3 )
     meMomenta()[2] = Lorentz5Momentum(sqrt(lastSHat()));
   else {
-    if ( sqr(summ) >= lastSHat() ) return zero;
+    if ( sqr(summ) >= lastSHat() ) return ZERO;
   }
 
   matrixElement()->setXComb(this);
-  if ( !matrixElement()->generateKinematics(r) ) return zero;
+  if ( !matrixElement()->generateKinematics(r) ) return ZERO;
   lastScale(matrixElement()->scale());
-  if ( !cuts()->scale(lastScale()) ) return zero;
+  if ( !cuts()->scale(lastScale()) ) return ZERO;
 
   double pdf = pExtractor()->fullFn(partonBinInstances(), lastScale());
-  if ( pdf == 0.0 ) return zero;
+  if ( pdf == 0.0 ) return ZERO;
   matrixElement()->setKinematics();
   CrossSection xsec = matrixElement()->dSigHatDR() * pdf;
 

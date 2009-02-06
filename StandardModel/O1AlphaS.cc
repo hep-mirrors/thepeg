@@ -91,7 +91,7 @@ void O1AlphaS::Init() {
       "<interface>LambdaFlav</interface> active "
       "flavours. The value for other numbers of active flavours is derived by "
       "assuming that \\f$\\alpha_S\\f$ is continuous.",
-      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, 0.0*GeV, 0.0*GeV,
+      &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, ZERO, ZERO,
       false, false, Interface::lowerlim);
 
    static Parameter<O1AlphaS,unsigned int> interfaceMaxFlav
@@ -112,7 +112,7 @@ void O1AlphaS::Init() {
   static Parameter<O1AlphaS,Energy> interfaceFreezeScale
     ("FreezeScale",
      "The scale in units of GeV below which \\f$\\alpha_S\\f$ is frozen.",
-     &O1AlphaS::Q0, GeV, 0.0*GeV, 0.0*GeV, 0*GeV,
+     &O1AlphaS::Q0, GeV, ZERO, ZERO, ZERO,
      true, false, Interface::lowerlim);
 
   interfaceLambdaQCD.rank(10);

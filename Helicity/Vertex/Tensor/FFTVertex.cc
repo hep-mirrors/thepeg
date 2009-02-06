@@ -115,7 +115,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // mass of the fermion
-  if(mass<0.*GeV) mass = out->mass();
+  if(mass < ZERO) mass = out->mass();
   // overall factor
   Energy2 p2 = pout.m2();
   Complex fact = 0.125*getNorm()*propagator(iopt,p2,out,mass,width);
@@ -154,7 +154,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     vec.setZ(a0p3*spt.s1()+a1m2*spt.s2());
     vec.setT(a0m3*spt.s2()+a1p2*spt.s1());
   }
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     complex<Energy> dot = 4.*mass*trace;
     vec.setX(vec.x() + dot*spt.s1()); 
     vec.setY(vec.y() + dot*spt.s2());
@@ -184,7 +184,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     ferm[2] = UnitRemoval::InvE2 * fact*( p0p3*vec.x()+p1m2*vec.y());
     ferm[3] = UnitRemoval::InvE2 * fact*( p1p2*vec.x()+p0m3*vec.y());
   }
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     ferm[0] += UnitRemoval::InvE2 * fact*(mass*vec.x());
     ferm[1] += UnitRemoval::InvE2 * fact*(mass*vec.y());
     ferm[2] += UnitRemoval::InvE2 * fact*(mass*vec.z());
@@ -209,7 +209,7 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // mass of the fermion
-  if(mass<0.*GeV) mass = out->mass();
+  if(mass < ZERO) mass = out->mass();
       // overall factor
   Energy2 p2 = pout.m2();
   Complex fact=0.125*getNorm()*propagator(iopt,p2,out,mass,width);
@@ -248,7 +248,7 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     vec.setZ(a0m3*sbart.s1()-a1p2*sbart.s2());
     vec.setT(a0p3*sbart.s2()-a1m2*sbart.s1());
   }
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     complex<Energy> dot = 4.*mass*trace;
     vec.setX(vec.x() + dot*sbart.s1()); 
     vec.setY(vec.y() + dot*sbart.s2());
@@ -278,7 +278,7 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     ferm[2] = UnitRemoval::InvE2 * fact*(-p0m3*vec.x()+p1p2*vec.y());
     ferm[3] = UnitRemoval::InvE2 * fact*( p1m2*vec.x()-p0p3*vec.y());
   }
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     ferm[0] += UnitRemoval::InvE2 * fact*mass*vec.x();
     ferm[1] += UnitRemoval::InvE2 * fact*mass*vec.y();
     ferm[2] += UnitRemoval::InvE2 * fact*mass*vec.z();
@@ -302,7 +302,7 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the prefactor
   Energy2 p2   = pout.m2();
   Complex fact = 0.125*norm*propagator(iopt,p2,out,mass,width);
-  if(mass<0.*GeV) mass  = out->mass();
+  if(mass < ZERO) mass  = out->mass();
   Energy2 mass2 = sqr(mass);
   // spinor vector
   Complex aspin[4];
@@ -332,7 +332,7 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
                  -sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
   // mass dependent term
   Complex ffbar;
-  if(sp.getParticle()->mass()!=Energy()) {
+  if(sp.getParticle()->mass()!=ZERO) {
     ffbar = UnitRemoval::InvE * (sp.getParticle()->mass())*
       (sp.s1()*sbar.s1()+sp.s2()*sbar.s2()+sp.s3()*sbar.s3()+sp.s4()*sbar.s4());
   }

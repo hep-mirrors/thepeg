@@ -42,7 +42,7 @@ bool SimpleDISCut::check(long idi, long ido) const {
 }
 
 Energy2 SimpleDISCut::minTij(tcPDPtr pi, tcPDPtr po) const {
-  if ( !check(pi->id(), po->id()) ) return 0.0*GeV2;
+  if ( !check(pi->id(), po->id()) ) return ZERO;
   return theMinQ2;
 }
   
@@ -71,7 +71,7 @@ bool SimpleDISCut::passCuts(tcCutsPtr cuts, tcPDPtr pitype, tcPDPtr pjtype,
 }
 
 Energy2 SimpleDISCut::minSij(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV2;
+  return ZERO;
 }
 
 double SimpleDISCut::minDeltaR(tcPDPtr, tcPDPtr) const {
@@ -79,7 +79,7 @@ double SimpleDISCut::minDeltaR(tcPDPtr, tcPDPtr) const {
 }
 
 Energy SimpleDISCut::minKTClus(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV;
+  return ZERO;
 }
 
 double SimpleDISCut::minDurham(tcPDPtr, tcPDPtr) const {
@@ -126,7 +126,7 @@ void SimpleDISCut::Init() {
   static Parameter<SimpleDISCut,Energy2> interfaceMinQ2
     ("MinQ2",
      "The minimum \\f$Q^2\\f$.",
-     &SimpleDISCut::theMinQ2, GeV2, 1.0*GeV2, 0.0*GeV2, Constants::MaxEnergy2,
+     &SimpleDISCut::theMinQ2, GeV2, 1.0*GeV2, ZERO, Constants::MaxEnergy2,
      true, false, Interface::limited,
      0, 0, 0, &SimpleDISCut::maxMinQ2, 0);
 
@@ -134,7 +134,7 @@ void SimpleDISCut::Init() {
     ("MaxQ2",
      "The maximum \\f$Q^2\\f$. Note that this is only applied as a post-cut "
      "and will not affect the initial phase space cuts in the generation.",
-     &SimpleDISCut::theMaxQ2, GeV2, 100.0*GeV2, 0.0*GeV2, 0.0*GeV2,
+     &SimpleDISCut::theMaxQ2, GeV2, 100.0*GeV2, ZERO, ZERO,
      true, false, Interface::lowerlim,
      0, 0, &SimpleDISCut::minMaxQ2, 0, 0);
 
@@ -142,7 +142,7 @@ void SimpleDISCut::Init() {
     ("MinW2",
      "The minimum \\f$W^2\\f$. Note that this is only applied as a post-cut "
      "and will not affect the initial phase space cuts in the generation.",
-     &SimpleDISCut::theMinW2, GeV2, 100.0*GeV2, 0.0*GeV2, Constants::MaxEnergy2,
+     &SimpleDISCut::theMinW2, GeV2, 100.0*GeV2, ZERO, Constants::MaxEnergy2,
      true, false, Interface::limited,
      0, 0, 0, &SimpleDISCut::maxMinW2, 0);
 
@@ -150,7 +150,7 @@ void SimpleDISCut::Init() {
     ("MaxW2",
      "The maximum \\f$W^2\\f$. Note that this is only applied as a post-cut "
      "and will not affect the initial phase space cuts in the generation.",
-     &SimpleDISCut::theMaxW2, GeV2, 1000000.0*GeV2, 0.0*GeV2, 0.0*GeV2,
+     &SimpleDISCut::theMaxW2, GeV2, 1000000.0*GeV2, ZERO, ZERO,
      true, false, Interface::lowerlim,
      0, 0, &SimpleDISCut::minMaxW2, 0, 0);
 

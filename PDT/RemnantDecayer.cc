@@ -71,14 +71,14 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
   if ( member(sub, p) ) return;
 
   if ( respectDISKinematics() && !LeptonMatcher::Check(p->data()) &&
-       p->momentum().m2() < 0.0*GeV2 ) {
+       p->momentum().m2() < ZERO ) {
     // If this particle belongs to an electro-weak scattering vertex
     // it should be excluded. (more specifically part of a vertex
     // where the other particles are incoming and outgoing leptons
     // while this is not a lepton and is spece-like)
     if ( p->children().size() == 1 && p->children()[0]->parents().size() == 2 &&
 	 LeptonMatcher::Check(p->children()[0]->data()) &&
-	 ( p->children()[0]->momentum().m2() >= 0.0*GeV2 ||
+	 ( p->children()[0]->momentum().m2() >= ZERO ||
 	   p->children()[0]->children().empty() ) &&
 	 ( LeptonMatcher::Check(p->children()[0]->parents()[0]->data()) ||
 	   LeptonMatcher::Check(p->children()[0]->parents()[1]->data()) ) )
@@ -86,10 +86,10 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
     if ( p->parents().size() == 1 && p->parents()[0]->children().size() == 2 &&
 	 LeptonMatcher::Check(p->parents()[0]->data()) &&
 	 ( ( LeptonMatcher::Check(p->parents()[0]->children()[0]->data()) &&
-	     ( p->parents()[0]->children()[0]->momentum().m2() >= 0.0*GeV2 ||
+	     ( p->parents()[0]->children()[0]->momentum().m2() >= ZERO ||
 	       p->parents()[0]->children()[0]->children().empty() ) ) ||
 	   ( LeptonMatcher::Check(p->parents()[0]->children()[1]->data())  &&
-	     ( p->parents()[0]->children()[1]->momentum().m2() >= 0.0*GeV2 ||
+	     ( p->parents()[0]->children()[1]->momentum().m2() >= ZERO ||
 	       p->parents()[0]->children()[1]->children().empty() ) ) ) )
       return;
   }
@@ -145,7 +145,7 @@ tPVector RemnantDecayer::getSubSystem(tcPPtr parent, tPPtr parton) const {
 LorentzRotation RemnantDecayer::
 getZBoost(const LorentzMomentum & p0, const LorentzMomentum & p) {
   LorentzRotation R;
-  if ( p.z() > 0.0*GeV )
+  if ( p.z() > ZERO )
     R.setBoostZ((sqr(p.plus()) - sqr(p0.plus()))/
 		(sqr(p.plus()) + sqr(p0.plus())));
   else

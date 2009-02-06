@@ -69,7 +69,7 @@ public:
    * @param scale the resolution scale at which the \a parton was
    * extracted.
    */
-  PartonBinInstance(tPPtr parton, tcPBPtr pb, Energy2 scale = 0.0*GeV2);
+  PartonBinInstance(tPPtr parton, tcPBPtr pb, Energy2 scale = ZERO);
 
   //@}
 
@@ -134,7 +134,7 @@ public:
   /**
    * Reset the current PartonBin, making room for a new event.
    */
-  void reset(double lx = 0, Energy2 Q2 = 0.0*GeV2);
+  void reset(double lx = 0, Energy2 Q2 = ZERO);
 
   /**
    * Reset last generated l and Q2 values of this and parent bins.

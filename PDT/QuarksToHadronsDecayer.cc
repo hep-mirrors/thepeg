@@ -72,8 +72,8 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
     quarks.push_back(pd);
     quarks.push_back(pd->CC());
   }
-  Energy summq = 0.0*GeV;
-  Energy summp = 0.0*GeV;
+  Energy summq = ZERO;
+  Energy summp = ZERO;
   tPDVector prods = dm.orderedProducts();
   for ( int i = 0, N = prods.size(); i < N; ++i )
     if ( QuarkMatcher::Check(*prods[i]) || DiquarkMatcher::Check(*prods[i])) {
@@ -84,14 +84,14 @@ PVector QuarksToHadronsDecayer::decay(const DecayMode & dm,
       summp += children.back()->mass();
     }
 
-  Energy summh = 0.0*GeV;
+  Energy summh = ZERO;
   PVector hadrons;
 
   if ( !quarks.empty() ) do {
 
     hadrons = getHadrons(getN(parent.mass(), summq, quarks.size()), quarks);
 
-    summh = 0.0*GeV;
+    summh = ZERO;
     for ( int i = 0, N = hadrons.size(); i < N; ++i )
       summh += hadrons[i]->mass();
 
@@ -208,7 +208,7 @@ void QuarksToHadronsDecayer::Init() {
     ("C2",
      "The c2 parameter of the gaussian multiplicity distribution centered "
      "around c1 log((m - summ)/c2) +c3.",
-     &QuarksToHadronsDecayer::theC2, GeV, 0.7*GeV, 0.0*GeV, 10.0*GeV,
+     &QuarksToHadronsDecayer::theC2, GeV, 0.7*GeV, ZERO, 10.0*GeV,
      true, false, true);
 
   static Parameter<QuarksToHadronsDecayer,double> interfaceC3

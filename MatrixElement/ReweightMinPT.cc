@@ -62,7 +62,7 @@ void ReweightMinPT::Init() {
      "The scale with which the minimum transverse momentum is divided "
      "befor it is raised to a <interface>Power</interface> to give the "
      "weight..",
-     &ReweightMinPT::scale, GeV, 50.0*GeV, 0.0*GeV, 0.0*GeV,
+     &ReweightMinPT::scale, GeV, 50.0*GeV, ZERO, ZERO,
      false, false, Interface::lowerlim);
 
   interfacePower.rank(10);

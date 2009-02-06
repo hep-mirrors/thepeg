@@ -56,7 +56,7 @@ public:
    * particle has a virtuality \a particleScale.
    */
   double xfl(tcPPtr parton, Energy2 partonScale, double l,
-	     Energy2 particleScale = 0.0*GeV2) const {
+	     Energy2 particleScale = ZERO) const {
     return xfl(parton->dataPtr(), partonScale, l, particleScale);
   }
 
@@ -66,7 +66,7 @@ public:
    * particle has a virtuality \a particleScale.
    */
   double xfx(tcPPtr parton, Energy2 partonScale, double x,
-	     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+	     double eps = 0.0, Energy2 particleScale = ZERO) const {
     return xfx(parton->dataPtr(), partonScale, x, eps, particleScale);
   }
 
@@ -76,7 +76,7 @@ public:
    * the particle has a virtuality \a particleScale.
    */
   double xfvl(tcPPtr parton, Energy2 partonScale, double l,
-	      Energy2 particleScale = 0.0*GeV2) const {
+	      Energy2 particleScale = ZERO) const {
     return xfvl(parton->dataPtr(), partonScale, l, particleScale);
   }
 
@@ -86,7 +86,7 @@ public:
    * has a virtuality \a particleScale.
    */
   double xfvx(tcPPtr parton, Energy2 partonScale, double x,
-	      double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+	      double eps = 0.0, Energy2 particleScale = ZERO) const {
     return xfvx(parton->dataPtr(), partonScale, x, eps, particleScale);
   }
 
@@ -96,7 +96,7 @@ public:
    * particle has a virtuality \a particleScale.
    */
   double xfl(tcPDPtr parton, Energy2 partonScale, double l,
-	     Energy2 particleScale = 0.0*GeV2) const {
+	     Energy2 particleScale = ZERO) const {
     return thePDF?
       thePDF->xfl(theParticle, parton, partonScale, l, particleScale): 0.0;
   }
@@ -107,7 +107,7 @@ public:
    * particle has a virtuality \a particleScale.
    */
   double xfx(tcPDPtr parton, Energy2 partonScale, double x,
-	     double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+	     double eps = 0.0, Energy2 particleScale = ZERO) const {
     return thePDF?
       thePDF->xfx(theParticle, parton, partonScale, x, eps, particleScale): 0.0;
   }
@@ -118,7 +118,7 @@ public:
    * the particle has a virtuality \a particleScale.
    */
   double xfvl(tcPDPtr parton, Energy2 partonScale, double l,
-	      Energy2 particleScale = 0.0*GeV2) const {
+	      Energy2 particleScale = ZERO) const {
     return thePDF?
       thePDF->xfvl(theParticle, parton, partonScale, l, particleScale): 0.0;
   }
@@ -129,7 +129,7 @@ public:
    * has a virtuality \a particleScale.
    */
   double xfvx(tcPDPtr parton, Energy2 partonScale, double x,
-	      double eps = 0.0, Energy2 particleScale = 0.0*GeV2) const {
+	      double eps = 0.0, Energy2 particleScale = ZERO) const {
     return thePDF?
       thePDF->xfvx(theParticle, parton, partonScale, x, eps, particleScale): 0.0;
   }

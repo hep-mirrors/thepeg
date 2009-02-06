@@ -65,7 +65,7 @@ void XSecCheck::Init() {
   static Parameter<XSecCheck,CrossSection> interfaceTargetXSec
     ("TargetXSec",
      "The expected total cross section in units of picobarn.",
-     &XSecCheck::target, picobarn, 0.0*picobarn, 0.0*picobarn, 0*picobarn,
+     &XSecCheck::target, picobarn, ZERO, ZERO, ZERO,
      true, false, Interface::lowerlim);
 
   static Parameter<XSecCheck,double> interfaceTolerance

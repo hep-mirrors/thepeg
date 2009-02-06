@@ -96,7 +96,7 @@ public:
    * particle is assumed to have a virtuality \a particleScale.
    */
   virtual double xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double l, Energy2 particleScale = 0.0*GeV2) const;
+		     double l, Energy2 particleScale = ZERO) const;
 
   /**
    * The density. Return the pdf for the given \a parton inside the
@@ -106,7 +106,7 @@ public:
    */
   virtual double xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		     double x, double eps = 0.0,
-		     Energy2 particleScale = 0.0*GeV2) const;
+		     Energy2 particleScale = ZERO) const;
 
   /**
    * The valence density. Return the pdf for the given cvalence \a
@@ -119,7 +119,7 @@ public:
    * zero for anything else.
    */
   virtual double xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double l, Energy2 particleScale = 0.0*GeV2) const;
+		     double l, Energy2 particleScale = ZERO) const;
 
   /**
    * The valence density. Return the pdf for the given cvalence \a
@@ -132,7 +132,7 @@ public:
    */
   virtual double xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		      double x, double eps = 0.0,
-		      Energy2 particleScale = 0.0*GeV2) const;
+		      Energy2 particleScale = ZERO) const;
 
   /**
    * The sea density. Return the pdf for the given cvalence \a
@@ -144,7 +144,7 @@ public:
    * and anti-quark distribution is due do valense quarks.
    */
   virtual double xfsl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		      double l, Energy2 particleScale = 0.0*GeV2) const;
+		      double l, Energy2 particleScale = ZERO) const;
 
   /**
    * The sea density. Return the pdf for the given cvalence \a
@@ -157,7 +157,7 @@ public:
    */
   virtual double xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
 		      double x, double eps = 0.0,
-		      Energy2 particleScale = 0.0*GeV2) const;
+		      Energy2 particleScale = ZERO) const;
 
   /**
    * Generate a momentum fraction. If the PDF contains strange peaks

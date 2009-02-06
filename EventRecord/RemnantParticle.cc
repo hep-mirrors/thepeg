@@ -34,7 +34,7 @@ RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr parton)
 
 bool RemnantParticle::extract(tPPtr parton, bool fixcolour) {
   LorentzMomentum pnew = momentum() - parton->momentum();
-  if ( pnew.e() < 0.0*GeV ) return false;
+  if ( pnew.e() < ZERO ) return false;
   if ( !remData->extract(parton->dataPtr()) ) return false;
   extracted.push_back(parton);
   setMomentum(pnew);
@@ -45,7 +45,7 @@ bool RemnantParticle::extract(tPPtr parton, bool fixcolour) {
 
 bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp, bool fixcolour) {
   LorentzMomentum pnew = momentum() + oldp->momentum() - newp->momentum();
-  if ( pnew.e() < 0.0*GeV ) return false;
+  if ( pnew.e() < ZERO ) return false;
   PVector::iterator it = find(extracted, oldp);
   if ( it == extracted.end() ) return false;
   if ( !remData->reextract(oldp->dataPtr(), newp->dataPtr()) ) return false;

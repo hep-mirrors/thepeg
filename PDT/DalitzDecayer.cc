@@ -66,7 +66,7 @@ ParticleVector DalitzDecayer::decay(const DecayMode & dm,
     else if ( children[i]->id() == ParticleID::gamma ) gam = children[i];
   }
 
-  Energy2 mee2 = 0.0*GeV2;
+  Energy2 mee2 = ZERO;
   Energy2 me2 = ep->mass()*em->mass();
   Energy2 mm2 = sqr(parent.mass());
   Energy2 mr2 = sqr(rho->mass());

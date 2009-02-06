@@ -29,7 +29,7 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
   assert(direction()!=intermediate);
   assert(ihel<=3);
   // massive
-  if(mass()>Energy()) {
+  if(mass()>ZERO) {
     // extract the momentum components
     // compute the normal spinors to construct the RS spinor
     Complex hel_wf[2][2];
@@ -174,15 +174,15 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
     if((direction()==incoming && ihel==3)||(direction()==outgoing &&ihel==0)) {
       // the polarization vector
       // first the no pt case
-      if(ptran==Energy()) {
+      if(ptran==ZERO) {
 	double sgnz;
-	if(ppz<Energy()){sgnz=-1.;}
+	if(ppz<ZERO){sgnz=-1.;}
 	else{sgnz=1.;}
 	vec[0]=-root;
 	vec[1]=-sgnz*root*ii;
 	vec[2]=0.;
 	vec[3]=0.;
-	if(ppz>=Energy()) {
+	if(ppz>=ZERO) {
 	  hel_wf[0] = 1;
 	  hel_wf[1] = 0;
 	}
@@ -200,7 +200,7 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
 	vec[3]=0.;
 	InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
 	SqrtEnergy rtppluspz;
-	if(ppz>=Energy()) rtppluspz = sqrt(pabs+ppz);
+	if(ppz>=ZERO) rtppluspz = sqrt(pabs+ppz);
 	else              rtppluspz = ptran/sqrt(pabs-ppz); 
 	hel_wf[0] = denominator*rtppluspz;
 	hel_wf[1] = denominator/rtppluspz*complex<Energy>(ppx,ppy);
@@ -210,15 +210,15 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
     else {
       // the polarization vector
       // first the no pt case
-      if(ptran==Energy()) {
+      if(ptran==ZERO) {
 	double sgnz;
-	if(ppz<Energy()){sgnz=-1.;}
+	if(ppz<ZERO){sgnz=-1.;}
 	else{sgnz=1.;}
 	vec[0]= root;
 	vec[1]= -sgnz*root*ii;
 	vec[2]=0.;
 	vec[3]=0.;
-	if(ppz>=Energy()) {
+	if(ppz>=ZERO) {
 	  hel_wf[0] = 0;
 	  hel_wf[1] = 1;
 	}
@@ -237,7 +237,7 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
 	vec[3]=0.;
 	InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
 	SqrtEnergy rtppluspz;
-	if(ppz>=Energy()) rtppluspz = sqrt(pabs+ppz);
+	if(ppz>=ZERO) rtppluspz = sqrt(pabs+ppz);
 	else              rtppluspz = ptran/sqrt(pabs-ppz);
 	hel_wf[0] = denominator/rtppluspz*
 	  complex<Energy>(-ppx,ppy);
@@ -265,7 +265,7 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
     case HELASDRep:
       // HELAS
       eplusp = sqrt(pee+pabs);
-      if(pmm!=Energy()) eminusp=pmm/eplusp;
+      if(pmm!=ZERO) eminusp=pmm/eplusp;
       else              eminusp=SqrtEnergy();
       // set up the coefficients for the different cases
       if(direction()==incoming) {

@@ -545,7 +545,7 @@ void MadGraphReader::Init() {
      "Old MadGraph files do not necessarily contain information about "
      "the factorization (or renormalization) scale. In this case this "
      "is used instead.",
-     &MadGraphReader::fixedScale, GeV, 91.188*GeV, 0.0*GeV, 1000.0*GeV,
+     &MadGraphReader::fixedScale, GeV, 91.188*GeV, ZERO, 1000.0*GeV,
      true, false, true);
 
   static Parameter<MadGraphReader,double> interfaceFixedAlphaEM

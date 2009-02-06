@@ -93,14 +93,14 @@ void LuminosityFunction::Init() {
     ("BeamEMaxA",
      "The maximum energy of the beam entering along the positive z-axis. "
      "Note that derived classes may shift the beams away from the z-axis.",
-     &LuminosityFunction::theBeamEMaxA, GeV, 45.6*GeV, 0.0*GeV, 0*GeV,
+     &LuminosityFunction::theBeamEMaxA, GeV, 45.6*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim);
 
   static Parameter<LuminosityFunction,Energy> interfaceBeamEMaxB
     ("BeamEMaxB",
      "The maximum energy of the beam entering along the negative z-axis. "
      "Note that derived classes may shift the beams away from the z-axis.",
-     &LuminosityFunction::theBeamEMaxB, GeV, 45.6*GeV, 0.0*GeV, 0*GeV,
+     &LuminosityFunction::theBeamEMaxB, GeV, 45.6*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim);
 
   interfaceBeamEMaxA.rank(10);

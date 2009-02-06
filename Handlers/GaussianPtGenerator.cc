@@ -33,7 +33,7 @@ IBPtr GaussianPtGenerator::fullclone() const {
 
 TransverseMomentum GaussianPtGenerator::generate() const {
   pair<Energy,Energy> ret;
-  Energy pt = 0.0*GeV;
+  Energy pt = ZERO;
   while ( ( pt = theSigma*sqrt(-log(rnd())) ) > theUpperCut ) {}
   double phi = rnd(2.0*Constants::pi);
   ret.first = pt*cos(phi);
@@ -64,13 +64,13 @@ void GaussianPtGenerator::Init() {
     ("Sigma",
      "The width of the Gaussian distribution. The average squared transverse "
      "momentum is Sigma squared.",
-     &GaussianPtGenerator::theSigma, GeV, 1.0*GeV, 0.0*GeV, 10.0*GeV,
+     &GaussianPtGenerator::theSigma, GeV, 1.0*GeV, ZERO, 10.0*GeV,
      true, false, true);
 
   static Parameter<GaussianPtGenerator,Energy> interfaceUpperCut
     ("UpperCut",
      "Upper cutoff for the transverse momentum distribution.",
-     &GaussianPtGenerator::theUpperCut, GeV, 5.0*GeV, 0.0*GeV, 50.0*GeV,
+     &GaussianPtGenerator::theUpperCut, GeV, 5.0*GeV, ZERO, 50.0*GeV,
      true, false, true);
 
   interfaceSigma.rank(10);

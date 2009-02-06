@@ -33,12 +33,12 @@ IBPtr MadGraphTwoCut::fullclone() const {
 }
 
 Energy2 MadGraphTwoCut::minSij(tcPDPtr pi, tcPDPtr pj) const {
-  if ( !checkType(pi, pj) || cutType != INVMASS ) return 0.0*GeV2;
+  if ( !checkType(pi, pj) || cutType != INVMASS ) return ZERO;
   return sqr(theCut*GeV);
 }
 
 Energy2 MadGraphTwoCut::minTij(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV2;
+  return ZERO;
 }
 
 double MadGraphTwoCut::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
@@ -47,7 +47,7 @@ double MadGraphTwoCut::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
 }
 
 Energy MadGraphTwoCut::minKTClus(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV;
+  return ZERO;
 }
 
 double MadGraphTwoCut::minDurham(tcPDPtr, tcPDPtr) const {

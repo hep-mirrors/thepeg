@@ -176,7 +176,7 @@ void LesHouchesReader::initPDFs() {
 }
 
 void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
-  Energy2 Smax = 0.0*GeV2;
+  Energy2 Smax = ZERO;
   double Y = 0.0;
   if ( !theCuts ) {
     theCuts = eh.cuts();
@@ -205,7 +205,7 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   Energy emax = 2.0*sqrt(heprup.EBMUP.first*heprup.EBMUP.second)*GeV;
   theCuts->initialize(sqr(emax),
 		      0.5*log(heprup.EBMUP.first/heprup.EBMUP.second));
-  if ( Smax > 0.0*GeV2 && ( Smax != cuts().SMax() || Y != cuts().Y() ) )
+  if ( Smax > ZERO && ( Smax != cuts().SMax() || Y != cuts().Y() ) )
     Throw<LesHouchesInitError>()
       << "The LesHouchesReader '" << name() << "' uses the same Cuts object "
       << "as another LesHouchesReader which has not got the same energies of "
@@ -809,7 +809,7 @@ void LesHouchesReader::createBeams() {
     theBeams.first = getParticleData(heprup.IDBMUP.first)->produceParticle();
     double m = theBeams.first->mass()/GeV;
     theBeams.first->set5Momentum
-      (Lorentz5Momentum(0.0*GeV, 0.0*GeV,
+      (Lorentz5Momentum(ZERO, ZERO,
 			sqrt(sqr(heprup.EBMUP.first) - sqr(m))*GeV,
 			heprup.EBMUP.first*GeV, m*GeV));
     hepeup.IDUP.push_back(heprup.IDBMUP.first);
@@ -826,7 +826,7 @@ void LesHouchesReader::createBeams() {
     theBeams.second = getParticleData(heprup.IDBMUP.second)->produceParticle();
     double m = theBeams.second->mass()/GeV;
     theBeams.second->set5Momentum
-      (Lorentz5Momentum(0.0*GeV, 0.0*GeV,
+      (Lorentz5Momentum(ZERO, ZERO,
 			-sqrt(sqr(heprup.EBMUP.second) - sqr(m))*GeV,
 			heprup.EBMUP.second*GeV, m*GeV));
     hepeup.IDUP.push_back(heprup.IDBMUP.second);
@@ -1049,7 +1049,7 @@ void LesHouchesReader::Init() {
      "The energy of the incoming particle along the positive z-axis. "
      "If zero the corresponding information is to be deduced from the "
      "event stream/file.",
-     0, GeV, 0.0*GeV, 0.0*GeV, 1000000000.0*GeV,
+     0, GeV, ZERO, ZERO, 1000000000.0*GeV,
      true, false, true,
      &LesHouchesReader::setEBeamA, &LesHouchesReader::getEBeamA, 0, 0, 0);
 
@@ -1058,7 +1058,7 @@ void LesHouchesReader::Init() {
      "The energy of the incoming particle along the negative z-axis. "
      "If zero the corresponding information is to be deduced from the "
      "event stream/file.",
-     0, GeV, 0.0*GeV, 0.0*GeV, 1000000000.0*GeV,
+     0, GeV, ZERO, ZERO, 1000000000.0*GeV,
      true, false, true,
      &LesHouchesReader::setEBeamB, &LesHouchesReader::getEBeamB, 0, 0, 0);
 

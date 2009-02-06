@@ -45,7 +45,7 @@ Complex VVVVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   // calculate the coupling
   setCoupling(q2,vec1.getParticle(),vec2.getParticle(),vec3.getParticle(),
 	      vec1.direction(),vec2.direction(),vec3.direction());
-  complex<Energy> alpha1(0.*GeV);
+  complex<Energy> alpha1(ZERO);
   // decide if we need to use special treatment to avoid gauge cancelations
   // first vector
   if(abs(vec1.t())!=0.) {
@@ -97,7 +97,7 @@ VectorWaveFunction VVVVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // prefactor
   Energy2 p2    = pout.m2();
   Complex fact  = getNorm()*propagator(iopt,p2,out,mass,width);
-  if(mass<0.*GeV) mass   = out->mass();
+  if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   // dot products we need
   Complex dot12 = vec1.wave().dot(vec2.wave());
@@ -107,7 +107,7 @@ VectorWaveFunction VVVVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   LorentzPolarizationVector vect = UnitRemoval::InvE*fact*
     (dot12*(vec1.getMomentum()-vec2.getMomentum())-dotb*vec1.wave()+dota*vec2.wave());
   // scalar piece for massive case
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     complex<InvEnergy> dot = vect.dot(pout)/mass2;
     vect -= dot*pout;       
   }

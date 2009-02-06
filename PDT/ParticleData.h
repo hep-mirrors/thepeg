@@ -189,7 +189,7 @@ public:
   /**
    * Return the minimum possible mass of this particle type.
    */
-  Energy massMin() const { return max(mass() - widthLoCut(), 0.0*MeV); }
+  Energy massMin() const { return max(mass() - widthLoCut(), ZERO); }
 
   /**
    * Return the constituent mass of this particle if relevant. This
@@ -207,9 +207,9 @@ public:
    * the lifetime.
    */
   Energy width() const {
-    return theWidth >= Energy() ? theWidth :
+    return theWidth >= ZERO ? theWidth :
       ( theCTau > Length() ? hbarc/theCTau :
-	( theCTau == Length() ? Constants::MaxEnergy : Energy() ) );
+	( theCTau == Length() ? Constants::MaxEnergy : ZERO ) );
   }
 
   /**
@@ -256,8 +256,8 @@ public:
    */
   Length cTau() const {
     return theCTau > Length() ? theCTau :
-      ( theWidth > Energy() ? hbarc/theWidth :
-	( theWidth == Energy() ? Constants::MaxLength : Length() ) );
+      ( theWidth > ZERO ? hbarc/theWidth :
+	( theWidth == ZERO ? Constants::MaxLength : Length() ) );
   }
 
   /**

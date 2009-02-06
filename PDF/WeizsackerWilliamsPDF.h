@@ -47,7 +47,7 @@ public:
    * particle is assumed to have a virtuality \a particleScale.
    */
   virtual double xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double l, Energy2 particleScale = 0.0*GeV2) const;
+		     double l, Energy2 particleScale = ZERO) const;
 
   /**
    * The valence density. Return the pdf for the given cvalence \a
@@ -58,7 +58,7 @@ public:
    * will return zero.
    */
   virtual double xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double l, Energy2 particleScale = 0.0*GeV2) const;
+		     double l, Energy2 particleScale = ZERO) const;
 
   /**
    * Generate scale (as a fraction of the maximum scale). If the PDF

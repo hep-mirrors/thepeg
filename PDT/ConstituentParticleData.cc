@@ -20,8 +20,8 @@
 using namespace ThePEG;
 
 ConstituentParticleData::ConstituentParticleData(long newId, string newPDGName)
-  : ParticleData(newId, newPDGName), theConstituentMass(0.0*GeV),
-    theDefaultConstituentMass(0.0*GeV) {}
+  : ParticleData(newId, newPDGName), theConstituentMass(ZERO),
+    theDefaultConstituentMass(ZERO) {}
 
 
 PDPtr ConstituentParticleData::
@@ -79,7 +79,7 @@ void ConstituentParticleData::Init() {
     ("ConstituentMass",
      "The constituent mass of the particle in GeV.",
      &ConstituentParticleData::theConstituentMass,
-     GeV, 0.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     GeV, ZERO, ZERO, Constants::MaxEnergy,
      false, false, Interface::lowerlim,
      &ConstituentParticleData::setConstituentMass, 0, 0, 0,
      &ConstituentParticleData::defConstituentMass);

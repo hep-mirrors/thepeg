@@ -24,7 +24,7 @@
 using namespace ThePEG;
 
 MEee2gZ2qq::MEee2gZ2qq()
-  : coefs(20), mZ2(0.0*GeV2), GZ2(0.0*GeV2), lastCont(0.0), lastBW(0.0) {}
+  : coefs(20), mZ2(ZERO), GZ2(ZERO), lastCont(0.0), lastBW(0.0) {}
 
 unsigned int MEee2gZ2qq::orderInAlphaS() const {
   return 0;

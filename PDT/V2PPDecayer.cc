@@ -63,7 +63,7 @@ double V2PPDecayer::reweight(const DecayMode &, const Particle & parent,
   if ( !sibling || !grandParent ) return 1.0;
   LorentzMomentum gp = grandParent->momentum();
   gp.boost(-parent.momentum().boostVector());
-  LorentzMomentum pp(0.0*GeV, 0.0*GeV, 0.0*GeV, parent.mass());
+  LorentzMomentum pp(ZERO, ZERO, ZERO, parent.mass());
   Energy2 p10 = pp*gp;
   Energy2 p12 = pp*children[0]->momentum();
   Energy2 p02 = gp*children[0]->momentum();

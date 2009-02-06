@@ -61,13 +61,13 @@ VectorWaveFunction VVSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   setCoupling(q2,out,vec.getParticle(),sca1.getParticle(),sca2.getParticle());
   // prefactor
   Energy2 p2    = pout.m2();
-  if(mass<0.*GeV) mass   = out->mass();
+  if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Complex fact  = getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   // evaluate the wavefunction
   LorentzPolarizationVector vect;
   // massless case
-  if(mass==Energy()) {
+  if(mass==ZERO) {
     vect = fact*vec.wave();
   }
   // massive case

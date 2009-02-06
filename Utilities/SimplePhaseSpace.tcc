@@ -18,8 +18,8 @@ void SimplePhaseSpace::CMS(PType & p1, PType & p2, Energy2 s)
   ThePEG_THROW_SPEC((ImpossibleKinematics)) {
   typedef ParticleTraits<PType> Traits;
   Energy z = getMagnitude(s, Traits::mass(p1), Traits::mass(p2));
-  Traits::set3Momentum(p1, Momentum3(0*GeV, 0*GeV, z));
-  Traits::set3Momentum(p2, Momentum3(0*GeV, 0*GeV, -z));
+  Traits::set3Momentum(p1, Momentum3(ZERO, ZERO, z));
+  Traits::set3Momentum(p2, Momentum3(ZERO, ZERO, -z));
 }
 
 template <typename PType>
@@ -67,7 +67,7 @@ CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
   Energy r1 = sqrt(sqr(e1)-sqr(m1));
   Energy r2 = sqrt(sqr(e2)-sqr(m2));
   Energy r3 = sqrt(sqr(e3)-sqr(m3));
-  Traits::set3Momentum(p1, Momentum3(0.0*GeV, 0.0*GeV, r1));
+  Traits::set3Momentum(p1, Momentum3(ZERO, ZERO, r1));
   double cthe2 = (sqr(r3)-sqr(r2)-sqr(r1))/(2.0*r2*r1);
   double cthe3 = (sqr(r2)-sqr(r3)-sqr(r1))/(2.0*r3*r1);
   if ( abs(cthe2) > 1.0 || abs(cthe3) > 1.0 ) throw ImpossibleKinematics();
@@ -100,7 +100,7 @@ CMS(PType & p1, PType & p2, Energy2 s, Energy2 t, double phi,
   Momentum3 p(r*sthe*cos(phi), r*sthe*sin(phi), r*cthe);
   Traits::set3Momentum(p1, p);
   Traits::set3Momentum(p2, -p);
-  if ( Traits::momentum(p0).perp2() > 0.0*GeV2 ) {
+  if ( Traits::momentum(p0).perp2() > ZERO ) {
     LorentzRotation r;
     r.rotateX(Traits::momentum(p0).theta());
     r.rotateZ(Traits::momentum(p0).phi());

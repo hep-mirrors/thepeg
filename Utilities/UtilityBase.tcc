@@ -186,8 +186,8 @@ transformToCMS(const LV & sum, const LV & zAxis, LV xyPlane) {
 template <typename PType>
 void UtilityBase::setMomentum(PType & p, const Momentum3 & q) {
   typedef ParticleTraits<PType> Traits;
-  if ( Traits::momentum(p).m2() <= 0.0*GeV2 ||
-       Traits::mass(p) <= 0.0*GeV ) {
+  if ( Traits::momentum(p).m2() <= ZERO ||
+       Traits::mass(p) <= ZERO ) {
     Traits::set3Momentum(p, q);
   } else {
     Traits::transform(p, transformToCMS(Traits::momentum(p)));

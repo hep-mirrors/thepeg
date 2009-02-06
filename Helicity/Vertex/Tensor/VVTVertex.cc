@@ -50,7 +50,7 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   Energy vmass = vec1.getParticle()->mass();
   // mass+k1.k2
   Energy2 mdot = vec1.getMomentum()*vec2.getMomentum();
-  if(vmass!=Energy()) mdot += sqr(vmass);
+  if(vmass!=ZERO) mdot += sqr(vmass);
   // dot product of wavefunctions and momenta
   Complex dotv1v2         = vec1.wave().dot(vec2.wave());
   complex<Energy> dotk1v2 = vec1.getMomentum()*vec2.wave();
@@ -119,7 +119,7 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // outgoing momentum
   Lorentz5Momentum pout = ten.getMomentum()+vec.getMomentum();
   // normalisation factor
-  if(mass<0.*GeV) mass   = out->mass();
+  if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
   Complex fact  = -0.5*getNorm()*propagator(iopt,p2,out,mass,width);
@@ -128,7 +128,7 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   complex<Energy> dotk2v1  = vec.wave()       *pout;
   // mass-k1.k2
   complex<Energy2> mdot = -dotk1k2;
-  if(mass!=Energy()) mdot += mass2;
+  if(mass!=ZERO) mdot += mass2;
   // components of the tensor
   Complex tentx = ten.tx()+ten.xt();
   Complex tenty = ten.ty()+ten.yt();
@@ -194,7 +194,7 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
      +dotk2v1*(+2.*ten.tt()*vec.e() -    tentx*  vec.px()
 	       -   tenty*   vec.py()-    tentz*  vec.pz()));
   // now add the piece for massive bosons
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     // DGRELL unit problem?
     Complex dot = tenk2v1 * UnitRemoval::InvE 
       -  dotk1k2 * trace  * UnitRemoval::InvE2;
@@ -218,7 +218,7 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   // outgoing momentum
   Lorentz5Momentum pout= vec1.getMomentum()+vec2.getMomentum();
   // overall normalisation
-  if(tmass<0.*GeV) tmass   = out->mass();
+  if(tmass < ZERO) tmass   = out->mass();
   Energy2 tmass2 = sqr(tmass);
   Energy vmass   = vec1.getParticle()->mass();
   Energy2 vmass2 = sqr(vmass);

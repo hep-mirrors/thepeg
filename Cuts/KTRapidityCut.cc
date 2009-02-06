@@ -57,7 +57,7 @@ void KTRapidityCut::Init() {
     ("MinKT",
      "The minimum allowed value of the transverse momentum of an outgoing "
      "parton.",
-     &KTRapidityCut::theMinKT, GeV, 10.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     &KTRapidityCut::theMinKT, GeV, 10.0*GeV, ZERO, Constants::MaxEnergy,
      true, false, Interface::limited,
      (ISFNK)0, (IGFNK)0, (IGFNK)0, &KTRapidityCut::maxKTMin, (IGFNK)0);
 
@@ -66,7 +66,7 @@ void KTRapidityCut::Init() {
      "The maximum allowed value of the transverse momentum of an outgoing "
      "parton. Note that this cut does not increase the efficiency of the phase "
      "space generation, but is only applied as a post-cut.",
-     &KTRapidityCut::theMaxKT, GeV, Constants::MaxEnergy, 0.0*GeV, 0*GeV,
+     &KTRapidityCut::theMaxKT, GeV, Constants::MaxEnergy, ZERO, ZERO,
      true, false, Interface::lowerlim,
      (ISFNK)0, (IGFNK)0,  &KTRapidityCut::minKTMax, (IGFNK)0, (IGFNK)0);
 
@@ -118,7 +118,7 @@ double KTRapidityCut::minRapidityMax() const {
 }
 
 Energy KTRapidityCut::minKT(tcPDPtr p) const {
-  if ( theMatcher && !theMatcher->matches(*p) ) return 0.0*GeV;
+  if ( theMatcher && !theMatcher->matches(*p) ) return ZERO;
   return theMinKT;
 }
 

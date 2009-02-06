@@ -33,11 +33,11 @@
 using namespace ThePEG;
 
 Cuts::Cuts(Energy MhatMin)
-  : theSMax(0.0*GeV2), theY(0), theCurrentSHat(-1.0*GeV2),
+  : theSMax(ZERO), theY(0), theCurrentSHat(-1.0*GeV2),
     theCurrentYHat(0), theMHatMin(MhatMin), theMHatMax(Constants::MaxEnergy),
     theYHatMin(-Constants::MaxRapidity), theYHatMax(Constants::MaxRapidity),
     theX1Min(0.0), theX1Max(1.0), theX2Min(0.0), theX2Max(1.0),
-    theScaleMin(0.0*GeV2), theScaleMax(Constants::MaxEnergy2),
+    theScaleMin(ZERO), theScaleMax(Constants::MaxEnergy2),
     theSubMirror(false) {}
 
 Cuts::~Cuts() {}
@@ -98,7 +98,7 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
   for ( int j = 0, M = theMultiCuts.size(); j < M; ++j )
     if ( !theMultiCuts[j]->passCuts(this, ptype, p) ) return false;
   if ( t1 ) {
-    LorentzMomentum p1(0.0*GeV, 0.0*GeV, 0.5*sqrt(currentSHat()),
+    LorentzMomentum p1(ZERO, ZERO, 0.5*sqrt(currentSHat()),
 		       0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
       for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
@@ -107,7 +107,7 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
 	  return false;
   }
   if ( t2 ) {
-    LorentzMomentum p2(0.0*GeV, 0.0*GeV,
+    LorentzMomentum p2(ZERO, ZERO,
 		       -0.5*sqrt(currentSHat()), 0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
       for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
@@ -146,7 +146,7 @@ bool Cuts::passCuts(const Collision & coll) const {
 }
 
 Energy2 Cuts::minS(const tcPDVector & pv) const {
-  Energy2 mins = 0.0*GeV2;
+  Energy2 mins = ZERO;
   for ( int i = 0, N = theMultiCuts.size(); i < N; ++i )
     mins = max(mins, theMultiCuts[i]->minS(pv));
   return mins;
@@ -160,10 +160,10 @@ Energy2 Cuts::maxS(const tcPDVector & pv) const {
 }
 
 Energy2 Cuts::minSij(tcPDPtr pi, tcPDPtr pj) const {
-  Energy2 mins = 0.0*GeV2;
+  Energy2 mins = ZERO;
   for ( int i = 0, N = theTwoCuts.size(); i < N; ++i )
     mins = max(mins, theTwoCuts[i]->minSij(pi, pj));
-  if ( mins > 0.0*GeV2 ) return mins;
+  if ( mins > ZERO ) return mins;
   mins = sqr(pi->massMin() + pj->massMin());
   mins = max(mins, sqr(minKTClus(pi, pj))/4.0);
   mins = max(mins, minDurham(pi, pj)*currentSHat()/2.0);
@@ -172,10 +172,10 @@ Energy2 Cuts::minSij(tcPDPtr pi, tcPDPtr pj) const {
 }
 
 Energy2 Cuts::minTij(tcPDPtr pi, tcPDPtr po) const {
-  Energy2 mint = 0.0*GeV2;
+  Energy2 mint = ZERO;
   for ( int i = 0, N = theTwoCuts.size(); i < N; ++i )
     mint = max(mint, theTwoCuts[i]->minTij(pi, po));
-  if ( mint > 0.0*GeV2 ) return mint;
+  if ( mint > ZERO ) return mint;
   mint = max(mint, sqr(minKT(po)));
   return mint;
 }
@@ -188,7 +188,7 @@ double Cuts::minDeltaR(tcPDPtr pi, tcPDPtr pj) const {
 }
 
 Energy Cuts::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
-  Energy minkt = 0.0*GeV;
+  Energy minkt = ZERO;
   for ( int i = 0, N = theTwoCuts.size(); i < N; ++i )
     minkt = max(minkt, theTwoCuts[i]->minKTClus(pi, pj));
   return minkt;
@@ -202,10 +202,10 @@ double Cuts::minDurham(tcPDPtr pi, tcPDPtr pj) const {
 }
 
 Energy Cuts::minKT(tcPDPtr p) const {
-  Energy minkt = 0.0*GeV;
+  Energy minkt = ZERO;
   for ( int i = 0, N = theOneCuts.size(); i < N; ++i )
     minkt = max(minkt, theOneCuts[i]->minKT(p));
-  if ( minkt > 0.0*GeV ) return minkt;
+  if ( minkt > ZERO ) return minkt;
   minkt = minKTClus(p, tcPDPtr());
   return minkt;
 }
@@ -225,7 +225,7 @@ double Cuts::maxEta(tcPDPtr p) const {
 }
 
 double Cuts::minYStar(tcPDPtr p) const {
-  if ( currentSHat() < 0.0*GeV2 ) return -Constants::MaxRapidity;
+  if ( currentSHat() < ZERO ) return -Constants::MaxRapidity;
   if ( subMirror() ) {
     HoldFlag<>  nomir(theSubMirror, false);
     return -maxYStar(p);
@@ -242,7 +242,7 @@ double Cuts::minYStar(tcPDPtr p) const {
 }
 
 double Cuts::maxYStar(tcPDPtr p) const {
-  if ( currentSHat() < 0.0*GeV2 ) return Constants::MaxRapidity;
+  if ( currentSHat() < ZERO ) return Constants::MaxRapidity;
   if ( subMirror() ) {
     HoldFlag<>  nomir(theSubMirror, false);
     return -minYStar(p);
@@ -338,14 +338,14 @@ void Cuts::Init() {
   static Parameter<Cuts,Energy> interfaceMHatMin
     ("MHatMin",
      "The minimum allowed value of \\f$\\sqrt{\\hat{s}}\\f$.",
-     &Cuts::theMHatMin, GeV, 2.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     &Cuts::theMHatMin, GeV, 2.0*GeV, ZERO, Constants::MaxEnergy,
      true, false, Interface::limited,
      0, 0, 0, &Cuts::maxMHatMin, 0);
 
   static Parameter<Cuts,Energy> interfaceMHatMax
     ("MHatMax",
      "The maximum allowed value of \\f$\\sqrt{\\hat{s}}\\f$.",
-     &Cuts::theMHatMax, GeV, 100.0*GeV, 0.0*GeV, 0.0*GeV,
+     &Cuts::theMHatMax, GeV, 100.0*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim,
      0, 0,
      &Cuts::minMHatMax, 0, 0);
@@ -354,7 +354,7 @@ void Cuts::Init() {
     ("ScaleMin",
      "The minimum allowed value of the scale to be used in PDFs and "
      "coupling constants.",
-     &Cuts::theScaleMin, GeV2, 0.0*GeV2, 0.0*GeV2, Constants::MaxEnergy2,
+     &Cuts::theScaleMin, GeV2, ZERO, ZERO, Constants::MaxEnergy2,
      true, false, Interface::limited,
      0, 0, 0, &Cuts::maxScaleMin, 0);
 
@@ -362,7 +362,7 @@ void Cuts::Init() {
     ("ScaleMax",
      "The maximum allowed value of the scale to be used in PDFs and "
      "coupling constants.",
-     &Cuts::theScaleMax, GeV2, 10000.0*GeV2, 0.0*GeV2, 0.0*GeV2,
+     &Cuts::theScaleMax, GeV2, 10000.0*GeV2, ZERO, ZERO,
      true, false, Interface::lowerlim,
      0, 0,
      &Cuts::minScaleMax, 0, 0);

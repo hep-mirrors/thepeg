@@ -81,7 +81,7 @@ flattenL(tcPDPtr particle, tcPDPtr,
   using namespace Constants;
   using Math::log1m;
   Energy2 scale = min(c.sMax(), c.scaleMax());
-  if ( c.scaleMin() > 0.0*GeV2 ) scale = min(scale, c.scaleMin());
+  if ( c.scaleMin() > ZERO ) scale = min(scale, c.scaleMin());
   double beta2 =
     SM().alphaEM()*(log(scale/sqr(particle->mass()))-1.0)/pi;
 //   double zpow = pow(z, 1.0/beta2);

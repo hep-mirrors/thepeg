@@ -24,12 +24,12 @@
 using namespace ThePEG;
 
 MECuts::MECuts()
-  : theMHatMin(2.0*GeV), theMHatMax(-1.0*GeV), thePTHatMin(0.0*GeV),
+  : theMHatMin(2.0*GeV), theMHatMax(-1.0*GeV), thePTHatMin(ZERO),
     thePTHatMax(-1.0*GeV), thePTHatSingularMin(1.0*GeV),
     theSingularMassMax(1.0*GeV), theCTHMin(-1.0),
-    theCTHMax(1.0), theTHatMin(0.0*GeV2), theTHatMax(-1.0*GeV2),
-    theUHatMin(0.0*GeV2), theUHatMax(-1.0*GeV2),
-    theScaleMin(0.0*GeV2), theScaleMax(-1.0*GeV2) {}
+    theCTHMax(1.0), theTHatMin(ZERO), theTHatMax(-1.0*GeV2),
+    theUHatMin(ZERO), theUHatMax(-1.0*GeV2),
+    theScaleMin(ZERO), theScaleMax(-1.0*GeV2) {}
 
 void MECuts::newcut(const SubProcess &) const
   ThePEG_THROW_SPEC((Veto)) {}
@@ -125,7 +125,7 @@ void MECuts::Init() {
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler",
      &MECuts::thePTHatMin, GeV,
-     0.0*GeV, 0.0*GeV, Constants::MaxEnergy, false, false, true);
+     ZERO, ZERO, Constants::MaxEnergy, false, false, true);
 
   static Parameter<MECuts,Energy> interfacePTHatMax
     ("SubProcess/PTHatMax",
@@ -149,7 +149,7 @@ void MECuts::Init() {
      "automatically, but is assumed to be checked by the relevant "
      "ThePEG::PartonXSecFn objects.",
      &MECuts::thePTHatSingularMin, GeV,
-     1.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     1.0*GeV, ZERO, Constants::MaxEnergy,
      false, false, true);
 
 
@@ -163,7 +163,7 @@ void MECuts::Init() {
      "checked automatically, but is assumed to be checked by the relevant "
      "ThePEG::PartonXSecFn objects.",
      &MECuts::theSingularMassMax, GeV,
-     1.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     1.0*GeV, ZERO, Constants::MaxEnergy,
      false, false, true);
 
   static Parameter<MECuts,double> interfaceCTHMin
@@ -194,7 +194,7 @@ void MECuts::Init() {
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theTHatMin, GeV2,
-     0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
+     ZERO, ZERO, Constants::MaxEnergy2, false, false, true);
 
   static Parameter<MECuts,Energy2> interfaceTHatMax
     ("SubProcess/THatMax",
@@ -214,7 +214,7 @@ void MECuts::Init() {
      "is less than this, the upper limit is inactive. "
      "This limit is automatically checked by the event handler.",
      &MECuts::theUHatMin, GeV2,
-     0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
+     ZERO, ZERO, Constants::MaxEnergy2, false, false, true);
 
   static Parameter<MECuts,Energy2> interfaceUHatMax
     ("SubProcess/UHatMax",
@@ -234,7 +234,7 @@ void MECuts::Init() {
      "is less than this, the upper limit is "
      "inactive. This limit is automatically checked by the event handler.",
      &MECuts::theScaleMin, GeV2,
-     0.0*GeV, 0.0*GeV, Constants::MaxEnergy2, false, false, true);
+     ZERO, ZERO, Constants::MaxEnergy2, false, false, true);
 
   static Parameter<MECuts,Energy2> interfaceScaleMax
     ("SubProcess/ScaleMax",

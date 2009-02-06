@@ -76,7 +76,7 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the outgoing momentum
   Lorentz5Momentum pout = sca1.getMomentum()+sca2.getMomentum();
   // prefactor
-  if(mass<0.*GeV) mass   = out->mass();
+  if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
   Complex fact  = 0.5*getNorm()*sca1.wave()*sca2.wave()*
@@ -90,7 +90,7 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   double a,b;
   Energy2 mphi2 = sqr(sca1.getParticle()->mass());
   // massive case
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     double norm1=dot1/mass2;
     double norm2=dot2/mass2;
     a = UnitRemoval::InvE2 * ((mphi2+dot12)*(2.*p2/mass2-5)
@@ -139,7 +139,7 @@ ScalarWaveFunction SSTVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // calculate the outgoing momentum
   Lorentz5Momentum pout = sca.getMomentum()+ten.getMomentum();
   // prefactors
-  if(mass<0.*GeV) mass   = out->mass();
+  if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
   Complex fact  = 0.5*getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);

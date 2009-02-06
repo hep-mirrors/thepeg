@@ -26,8 +26,8 @@ RemnantData(tcPDPtr particle, RemDecPtr dec)
   : ParticleData(82, "Rem:" + particle->PDGName()),
     parentPD(particle), decayer(dec) {
   synchronized(false);
-  width(0.0*GeV);
-  widthCut(0.0*GeV);
+  width(ZERO);
+  widthCut(ZERO);
   iCharge(particle->iCharge());
   iSpin(particle->iSpin());
   iColour(particle->iColour());

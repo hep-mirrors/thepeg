@@ -39,7 +39,7 @@ public:
    * Default constructor.
    */
   ME2to2Base()
-    : theScaleChoice(0), theLastTHat(0.0*GeV2), theLastUHat(0.0*GeV2),
+    : theScaleChoice(0), theLastTHat(ZERO), theLastUHat(ZERO),
       theLastPhi(0.0) {}
 
   /**

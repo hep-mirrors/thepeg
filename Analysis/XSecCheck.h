@@ -27,7 +27,7 @@ public:
   /**
    * The default constructor.
    */
-  XSecCheck() : target(0*picobarn), tol(0.01), sumw(0.0) {}
+  XSecCheck() : target(ZERO), tol(0.01), sumw(0.0) {}
 
   /**
    * The destructor.

@@ -139,7 +139,7 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // useful combinations of the momenta
-  if(mass<0.*GeV) mass  = out->mass();
+  if(mass < ZERO) mass  = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
@@ -200,7 +200,7 @@ SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // momentum components
-  if(mass<0.*GeV) mass = out->mass();
+  if(mass < ZERO) mass = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex numbers for the spinor

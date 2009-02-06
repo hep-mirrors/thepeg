@@ -52,7 +52,7 @@ public:
    * l\f$=\log(1/x)\f$ and scale for the given parton.
    */
   virtual double xfl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double l, Energy2 particleScale = 0.0*GeV2) const;
+		     double l, Energy2 particleScale = ZERO) const;
 
   /**
    * Return the the valens part of the true pdf for the given
@@ -60,7 +60,7 @@ public:
    * l\f$=\log(1/x)\f$. This version simply returns the full pdf.
    */
   virtual double xfvl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
-		     double l, Energy2 particleScale = 0.0*GeV2) const;
+		     double l, Energy2 particleScale = ZERO) const;
 
   /**
    * Return the the valens part of the true pdf for the given

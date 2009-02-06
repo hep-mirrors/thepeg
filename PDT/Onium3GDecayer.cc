@@ -125,7 +125,7 @@ void Onium3GDecayer::Init() {
     ("MinGGMass",
      "The minimum invariant mass of the two gluons allowed in gamma-g-g "
      "decays.",
-     &Onium3GDecayer::theMinGGMass, GeV, 2.0*GeV, 0.0*GeV, 10.0*GeV,
+     &Onium3GDecayer::theMinGGMass, GeV, 2.0*GeV, ZERO, 10.0*GeV,
      true, false, true);
 
   interfaceShower.rank(10);

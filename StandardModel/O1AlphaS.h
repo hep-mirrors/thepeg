@@ -35,7 +35,7 @@ public:
    */
   O1AlphaS()
     : theLambdaQCD(0.25*GeV), theLambdaFlavour(4), 
-      theMaxFlav(6), Q0(0.0*GeV) {}
+      theMaxFlav(6), Q0(ZERO) {}
   //@}
 
 public:

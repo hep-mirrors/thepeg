@@ -70,8 +70,8 @@ decay(const DecayMode & dm, const Particle & p, Step & step) const {
   tPVector subpart;
   LorentzMomentum pitot = Utilities::sumMomentum(subsys) + remnant->momentum();
 
-  Energy2 s = 0.0*GeV2;
-  Energy2 shat = 0.0*GeV2;
+  Energy2 s = ZERO;
+  Energy2 shat = ZERO;
   LorentzMomentum psub;
   Energy minmass = particle->nominalMass() +
     2.0*parton->nominalMass() + margin();
@@ -145,7 +145,7 @@ decay(const DecayMode & dm, const Particle & p, Step & step) const {
     }
   }
 
-  Energy mr = 0.0*GeV;
+  Energy mr = ZERO;
 
   while ( true ) {
 
@@ -224,7 +224,7 @@ decay(const DecayMode & dm, const Particle & p, Step & step) const {
     Utilities::transform(subpart, Rs);
   } else {
     subpart[0]->set5Momentum(
-      Lorentz5Momentum(0.0*GeV, 0.0*GeV, pz,
+      Lorentz5Momentum(ZERO, ZERO, pz,
 		       sqrt(sqr(pz) + shat), sqrt(shat)));
     R.invert();
     Utilities::transform(subpart, R);
@@ -364,7 +364,7 @@ void SimpleBaryonRemnantDecayer::Init() {
      "The energy margin (in GeV) to be added to the sum of the parent and "
      "parton masses to determine if it is possible to construct the remnants "
      "with the given (upper limit of the) virtuality of the extracted parton.",
-     &SimpleBaryonRemnantDecayer::theMargin, GeV, 1.0*GeV, 0.0*GeV, 10.0*GeV,
+     &SimpleBaryonRemnantDecayer::theMargin, GeV, 1.0*GeV, ZERO, 10.0*GeV,
      false, false, true);
 
   static Switch<SimpleBaryonRemnantDecayer,bool> interfaceSpecialValence

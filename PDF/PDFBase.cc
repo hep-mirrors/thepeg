@@ -97,7 +97,7 @@ double PDFBase::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
 double PDFBase::
 flattenScale(tcPDPtr, tcPDPtr, const PDFCuts & c,
 	     double l, double z, double & jacobian) const {
-  if ( c.scaleMin()  > 0.0*GeV2 ) {
+  if ( c.scaleMin()  > ZERO ) {
     double r = c.scaleMaxL(l)/c.scaleMin();
     double ret = pow(r, z - 1.0);
     jacobian *= log(r)*ret;

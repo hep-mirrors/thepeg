@@ -13,6 +13,8 @@ namespace ThePEG {
 #include <cmath>
 namespace ThePEG {
 
+const double ZERO = 0.0;
+
 /// Fractional powers of a double.
 template<int P, int R>
 double pow(double q) {

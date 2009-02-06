@@ -22,6 +22,12 @@
 
 namespace ThePEG {
 
+/// Helper class to construct zero unitful quantities.
+struct ZeroUnit {
+  operator double() const { return 0.0; }
+};
+const ZeroUnit ZERO = ZeroUnit();
+
 /// Helper classes to extend or shorten fractions
 //@{
 /**
@@ -87,6 +93,9 @@ public:
   /// Default constructor to 0.
   Qty() : rawValue_(0.0) {}
 
+  /// Default constructor to 0.
+  Qty(ZeroUnit) : rawValue_(0.0) {}
+
   /// Constructor from a compatible quantity
   template <int DL2, int DE2, int DQ2>
   Qty(const Qty<QtyInt<L,DL,DL2>::I,
@@ -146,7 +155,10 @@ public:
     return 1.0;
   }
 
-  /// Default constructor form a double.
+  /// Default constructor to 0.
+  Qty(ZeroUnit) : rawValue_(0.0) {}
+
+  /// Default constructor from a double.
   Qty(double x = 0.0) : rawValue_(x) {}
 
   /// Constructor from a compatible quantity

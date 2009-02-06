@@ -34,17 +34,17 @@ IBPtr KTClus::fullclone() const {
 Energy KTClus::minKTClus(tcPDPtr pi, tcPDPtr pj) const {
   if ( onlyJets &&
        ( ( pi && !pi->coloured() ) ||
-	 ( pj && !pj->coloured() ) ) ) return 0.0*GeV;
-  if ( !pi && !pj ) return 0.0*GeV;
+	 ( pj && !pj->coloured() ) ) ) return ZERO;
+  if ( !pi && !pj ) return ZERO;
   return theCut;
 }
 
 Energy2 KTClus::minSij(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV2;
+  return ZERO;
 }
 
 Energy2 KTClus::minTij(tcPDPtr, tcPDPtr) const {
-  return 0.0*GeV2;
+  return ZERO;
 }
 
 double KTClus::minDeltaR(tcPDPtr, tcPDPtr) const {
@@ -105,7 +105,7 @@ void KTClus::Init() {
      "\\sqrt{\\Delta\\eta_{ij}^2+\\Delta\\phi_{ij}^2}\\f$ for two outgoing "
      "partons, or simply \\f$p_{\\perp i}\\f$ or \\f$p_{\\perp j}\\f$ for a "
      "single outgoing parton.",
-     &KTClus::theCut, GeV, 10.0*GeV, 0.0*GeV, 0*GeV,
+     &KTClus::theCut, GeV, 10.0*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim);
 
   static Switch<KTClus,bool> interfaceOnlyJets

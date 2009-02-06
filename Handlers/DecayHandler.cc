@@ -57,7 +57,7 @@ handle(EventHandler &, const tPVector & tagged,
 
 void DecayHandler::
 performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
-  if ( maxLifeTime() >= 0.0*mm ) {
+  if ( maxLifeTime() >= ZERO ) {
     if( ( lifeTimeOption() && parent->lifeLength().tau() > maxLifeTime())||
 	(!lifeTimeOption() && parent->data().cTau()      > maxLifeTime()) ) {
       parent->setLifeLength(Distance());
@@ -95,7 +95,7 @@ void DecayHandler::Init() {
     ("MaxLifeTime",
      "The maximum lifetime (c*tau) in units of mm. Particles with longer "
      "lifetimes than this will not be decayed.",
-     &DecayHandler::theMaxLifeTime, mm, -1.0*mm, -1.0*mm, 0*mm,
+     &DecayHandler::theMaxLifeTime, mm, -1.0*mm, -1.0*mm, ZERO,
      true, false, Interface::lowerlim);
 
 

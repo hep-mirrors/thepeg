@@ -243,7 +243,7 @@ dSigDR(const pair<double,double> ll, Energy2 maxS,
     
   xSecs().resize(xv.size());
   for ( int i = 0, N = xv.size(); i < N; ++i ) xv[i]->prepare(inc);
-  CrossSection sum = 0.0*nanobarn;
+  CrossSection sum = ZERO;
   for ( int i = 0, N = xv.size(); i < N; ++i )
     xSecs()[i] = ( sum += xv[i]->dSigDR(ll, nr, r) );
   return sum;
@@ -443,7 +443,7 @@ CrossSection StandardEventHandler::histogramScale() const {
 }
 
 CrossSection StandardEventHandler::integratedXSec() const {
-  if ( sampler()->integratedXSec() == 0.0*nanobarn )
+  if ( sampler()->integratedXSec() == ZERO )
     return sampler()->maxXSec();
 
   Stat tot;

@@ -112,7 +112,7 @@ ParticleVector Decayer::DecayParticle(tPPtr parent, Step & s, long maxtry) {
 	    << "produced children (of type " << children[i]->data().PDGName()
 	    << ") could not be added to the current step."
 	    << Exception::abortnow;
-	parent->scale(0.0*GeV2);
+	parent->scale(ZERO);
 	return children;
       }
     }

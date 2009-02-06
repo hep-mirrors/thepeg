@@ -130,6 +130,38 @@ operator>=(Qty<L,E,Q,DL,DE,DQ> q1,
   return q1.rawValue()>=q2.rawValue();
 }
 
+// comparisons with ZERO
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline bool
+operator==(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() == 0.0;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline bool
+operator!=(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() != 0.0;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline bool
+operator<(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() < 0.0;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline bool
+operator>(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() > 0.0;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline bool
+operator<=(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() <= 0.0;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline bool
+operator>=(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() >= 0.0;
+}
+
 // qty = qty * double
 template<int L, int E, int Q, int DL, int DE, int DQ>
 inline Qty<L,E,Q,DL,DE,DQ>
@@ -220,6 +252,16 @@ max(Qty<L,E,Q,DL,DE,DQ> q1,
     Qty<L,E,Q,DL,DE,DQ> q2) { 
   return q1.rawValue() < q2.rawValue() ? q2 : q1;
 }
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline Qty<L,E,Q,DL,DE,DQ> 
+max(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() < 0.0 ? ZERO : q1;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline Qty<L,E,Q,DL,DE,DQ> 
+max(ZeroUnit, Qty<L,E,Q,DL,DE,DQ> q1) {
+  return q1.rawValue() < 0.0 ? ZERO : q1;
+}
 template<int DL, int DE, int DQ>
 inline double
 max(double q1, 
@@ -248,6 +290,16 @@ inline Qty<L,E,Q,DL,DE,DQ>
 min(Qty<L,E,Q,DL,DE,DQ> q1, 
     Qty<L,E,Q,DL,DE,DQ> q2) { 
   return q1.rawValue() < q2.rawValue() ? q1 : q2;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline Qty<L,E,Q,DL,DE,DQ> 
+min(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
+  return q1.rawValue() > 0.0 ? ZERO : q1;
+}
+template<int L, int E, int Q, int DL, int DE, int DQ>
+inline Qty<L,E,Q,DL,DE,DQ> 
+min(ZeroUnit, Qty<L,E,Q,DL,DE,DQ> q1) {
+  return q1.rawValue() > 0.0 ? ZERO : q1;
 }
 template<int DL, int DE, int DQ>
 inline double

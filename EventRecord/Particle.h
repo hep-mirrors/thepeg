@@ -363,7 +363,7 @@ public:
    * Return the (pseudo) rapidity.
    */
   double rapidity() const {
-    return ( Pplus() > 0.0*GeV && Pminus() > 0.0*GeV )?
+    return ( Pplus() > ZERO && Pminus() > ZERO )?
       0.5*log(Pplus()/Pminus()) : Constants::MaxFloat;
   }
 

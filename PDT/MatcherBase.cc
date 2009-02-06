@@ -23,7 +23,7 @@
 using namespace ThePEG;
 
 MatcherBase::MatcherBase()
-  : theMaxMass(0.0*GeV), theMinMass(0.0*GeV), commonMass(-1.0*GeV),
+  : theMaxMass(ZERO), theMinMass(ZERO), commonMass(-1.0*GeV),
     commonWidth(-1.0*GeV), commonCTau(-1.0*mm),
     commonCharge(PDT::ChargeUndefined), commonSpin(PDT::SpinUndefined),
     commonColour(PDT::ColourUndefined), commonStable(-1) {}
@@ -67,8 +67,8 @@ void MatcherBase::doupdate() throw(UpdateException) {
 void MatcherBase::clear() {
   matchingParticles.clear();
   matchingMatchers.clear();
-  theMaxMass = 0.0*GeV;
-  theMinMass = 0.0*GeV;
+  theMaxMass = ZERO;
+  theMinMass = ZERO;
   commonMass = -1.0*GeV;
   commonWidth = -1.0*GeV;
   commonCTau = -1.0*mm;

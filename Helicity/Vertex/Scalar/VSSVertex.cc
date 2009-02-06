@@ -61,7 +61,7 @@ VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the coupling
   setCoupling(q2,out,sca1.getParticle(),sca2.getParticle());
   // mass and width
-  if(mass<0.*GeV) mass   = out->mass();
+  if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   // calculate the prefactor
   Energy2 p2    = pout.m2();
@@ -69,7 +69,7 @@ VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // compute the vector
   LorentzPolarizationVector vec;
   // massive outgoing vector
-  if(mass!=Energy()) {
+  if(mass!=ZERO) {
     vec = UnitRemoval::InvE * fact * (sca2.getMomentum()-sca1.getMomentum());
   }
   // massless outgoing vector

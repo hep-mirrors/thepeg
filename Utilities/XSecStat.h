@@ -43,7 +43,7 @@ public:
    * The default constructor.
    */
   XSecStat() 
-    : theMaxXSec(0.0*picobarn), theAttempts(0), theAccepted(0),
+    : theMaxXSec(ZERO), theAttempts(0), theAccepted(0),
       theSumWeights(0.0), theSumWeights2(0.0) {}
 
   /**

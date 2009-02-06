@@ -19,7 +19,7 @@ using namespace ThePEG;
 
 PartonBinInstance::PartonBinInstance()
   : theJacobian(1.0), theXi(-1.0), theEps(-1.0), theLi(-1.0), theX(-1.0),
-    theL(-1.0), theScale(0.0*GeV2), theRemnantWeight(0.0) {}
+    theL(-1.0), theScale(ZERO), theRemnantWeight(0.0) {}
 
 PartonBinInstance::PartonBinInstance(const PartonBinInstance & x)
   : Base(x),
@@ -32,7 +32,7 @@ PartonBinInstance::PartonBinInstance(const PartonBinInstance & x)
 
 PartonBinInstance::PartonBinInstance(tcPBPtr pb, tPBIPtr pbi)
   : theBin(pb), theJacobian(1.0), theXi(-1.0), theEps(-1.0), theLi(-1.0),
-    theX(-1.0), theL(-1.0), theScale(0.0*GeV2), theRemnantWeight(0.0) {
+    theX(-1.0), theL(-1.0), theScale(ZERO), theRemnantWeight(0.0) {
   if ( pbi ) theIncoming = pbi;
   else if ( bin()->incoming() )
     theIncoming = new_ptr(PartonBinInstance(bin()->incoming()));
@@ -44,7 +44,7 @@ PartonBinInstance::PartonBinInstance(tPPtr part, tcPBPtr pb, Energy2 scale)
     theRemnantWeight(1.0) {
   if ( !pb->incoming() || part->parents().empty() ) return;
   particle(parton()->parents()[0]);
-  Energy2 P2 = max(-particle()->momentum().m2(), 0.0*GeV2);
+  Energy2 P2 = max(-particle()->momentum().m2(), ZERO);
   theXi = parton()->momentum().dirPlus()/particle()->momentum().dirPlus();
   theLi = -log(xi());
   theIncoming = new_ptr(PartonBinInstance(particle(), pb->incoming(), P2));
@@ -77,7 +77,7 @@ void PartonBinInstance::prepare() {
   if ( !incoming() ) return;
   //  li(-1.0);
   //  l(-1.0);
-  reset(-1.0, 0.0*GeV2);
+  reset(-1.0, ZERO);
   incoming()->prepare();
 }
 
@@ -88,7 +88,7 @@ bool PartonBinInstance::hasPoleIn1() const {
 
 // TAKE AWAY ?
 void PartonBinInstance::generate(const double * r) {
-  scale(0.0*GeV2);
+  scale(ZERO);
   if ( !incoming() ) return;
   if ( li() >= 0 ) return;
   li(0.0);
@@ -108,7 +108,7 @@ void PartonBinInstance::generate(const double * r) {
 // TAKE AWAY ?
 double PartonBinInstance::fullFn(Energy2 newScale) {
   if ( !incoming() ) return 1.0;
-  if ( newScale > 0.0*GeV2 ) scale(newScale);
+  if ( newScale > ZERO ) scale(newScale);
   return incoming()->fullFn() * jacobian() *
     pdf()->xfl(particleData(), partonData(),
 	       scale(), li(), incoming()->scale());

@@ -38,8 +38,8 @@ IBPtr V2LeptonsCut::fullclone() const {
 }
 
 Energy2 V2LeptonsCut::minS(const tcPDVector & pv) const {
-  if ( pv.size() != 2 ) return 0.0*GeV2;
-  if ( !checkTypes(pv[0]->id(), pv[1]->id()) ) return 0.0*GeV2;
+  if ( pv.size() != 2 ) return ZERO;
+  if ( !checkTypes(pv[0]->id(), pv[1]->id()) ) return ZERO;
   return sqr(theMinM);
 }
 
@@ -134,14 +134,14 @@ void V2LeptonsCut::Init() {
   static Parameter<V2LeptonsCut,Energy> interfaceMinM
     ("MinM",
      "The minimum allowed invariant mass of the matched lepton pair.",
-     &V2LeptonsCut::theMinM, GeV, 70.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     &V2LeptonsCut::theMinM, GeV, 70.0*GeV, ZERO, Constants::MaxEnergy,
      true, false, Interface::limited,
      0, 0, 0, &V2LeptonsCut::maxMinM, 0);
 
   static Parameter<V2LeptonsCut,Energy> interfaceMaxM
     ("MaxM",
      "The maximum allowed invariant mass of the matched lepton pair.",
-     &V2LeptonsCut::theMaxM, GeV, 90.0*GeV, 0.0*GeV, 0.0*GeV,
+     &V2LeptonsCut::theMaxM, GeV, 90.0*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim,
      0, 0, &V2LeptonsCut::minMaxM, 0, 0);
 

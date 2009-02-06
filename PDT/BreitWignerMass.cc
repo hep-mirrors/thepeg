@@ -28,7 +28,7 @@ IBPtr BreitWignerMass::fullclone() const {
 }
 
 Energy BreitWignerMass::mass(const ParticleData & pd) const {
-  Energy ret = 0.0*GeV;
+  Energy ret = ZERO;
   do {
     ret = UseRandom::rndRelBW(pd.mass(), pd.width(), pd.widthCut());
   } while ( ret > pd.massMax() || ret < pd.massMin() );

@@ -34,7 +34,7 @@ IBPtr SimpleKTCut::fullclone() const {
 }
 
 Energy SimpleKTCut::minKT(tcPDPtr p) const {
-  if ( theMatcher && !theMatcher->matches(*p) ) return 0.0*GeV;
+  if ( theMatcher && !theMatcher->matches(*p) ) return ZERO;
   return theMinKT;
 }
 
@@ -55,7 +55,7 @@ bool SimpleKTCut::passCuts(tcCutsPtr parent,
   if ( theMatcher && !theMatcher->matches(*ptype) ) return true;
   if ( p.perp() < theMinKT ) return false;
   if ( p.perp() > theMaxKT ) return false;
-  double y = abs(p.t()) <= abs(p.z()) ? (p .z() > Energy() ? 1e10 : -1e10) : p.rapidity();
+  double y = abs(p.t()) <= abs(p.z()) ? (p .z() > ZERO ? 1e10 : -1e10) : p.rapidity();
   y += parent->Y() + parent->currentYHat();
   if ( p.mt()*sinh(y) <= p.perp()*sinh(theMinEta) ) return false;
   if ( p.mt()*sinh(y) >= p.perp()*sinh(theMaxEta) ) return false;
@@ -109,7 +109,7 @@ void SimpleKTCut::Init() {
     ("MinKT",
      "The minimum allowed value of the transverse momentum of an outgoing "
      "parton.",
-     &SimpleKTCut::theMinKT, GeV, 10.0*GeV, 0.0*GeV, Constants::MaxEnergy,
+     &SimpleKTCut::theMinKT, GeV, 10.0*GeV, ZERO, Constants::MaxEnergy,
      true, false, Interface::limited,
      (ISFNK)0, (IGFNK)0, (IGFNK)0, &SimpleKTCut::maxKTMin, (IGFNK)0);
 
@@ -119,7 +119,7 @@ void SimpleKTCut::Init() {
      "The maximum allowed value of the transverse momentum of an outgoing "
      "parton. Note that this cut does not increase the efficiency of the phase "
      "space generation, but is only applied as a post-cut.",
-     &SimpleKTCut::theMaxKT, GeV, Constants::MaxEnergy, 0.0*GeV, 0*GeV,
+     &SimpleKTCut::theMaxKT, GeV, Constants::MaxEnergy, ZERO, ZERO,
      true, false, Interface::lowerlim,
      (ISFNK)0, (IGFNK)0,  &SimpleKTCut::minKTMax, (IGFNK)0, (IGFNK)0);
 

@@ -27,7 +27,7 @@ void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vph
       << "particle must be incoming or outgoing not intermediate" 
       << Exception::abortnow;
   // check a valid helicity combination
-  if(ihel==0 || ihel==2||(ihel==1&&mass()>Energy())) {
+  if(ihel==0 || ihel==2||(ihel==1&&mass()>ZERO)) {
     int jhel=ihel-1;
     // extract the momentum components
     double fact=-1.; if(dir==incoming){fact=1.;}
@@ -39,7 +39,7 @@ void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vph
     // overall phase of the vector
     Complex phase;
     if(vphase==vector_phase) {
-      if(pt==Energy() || ihel==1) phase = 1.;
+      if(pt==ZERO || ihel==1) phase = 1.;
       else if(ihel==0)            phase = Complex(ppx/pt,-fact*ppy/pt);
       else                        phase = Complex(ppx/pt, fact*ppy/pt);
     }
@@ -48,9 +48,9 @@ void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vph
     // first the +/-1 helicity states
     if(ihel!=1) {
       // first the no pt case
-      if(pt==Energy()) {
+      if(pt==ZERO) {
 	double sgnz;
-	sgnz = ppz<Energy() ? -1. : 1.;
+	sgnz = ppz<ZERO ? -1. : 1.;
 	_wf.setX(-complex<double>(jhel)*phase);
 	_wf.setY(sgnz*phase*complex<double>(0,-fact));
 	_wf.setZ(0.);
@@ -67,7 +67,7 @@ void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vph
     }
     // 0 component for massive vectors
     else {
-      if(pabs==Energy()) {
+      if(pabs==ZERO) {
 	_wf.setX(0.);
 	_wf.setY(0.);
 	_wf.setZ(1.);

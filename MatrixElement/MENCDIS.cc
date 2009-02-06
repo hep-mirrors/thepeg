@@ -24,7 +24,7 @@
 using namespace ThePEG;
 
 MENCDIS::MENCDIS()
-  : mZ2(0.0*GeV2) {}
+  : mZ2(ZERO) {}
 
 MENCDIS::MENCDIS(const MENCDIS & x)
   : ME2to2QCD(x), mZ2(x.mZ2) {}
@@ -65,7 +65,7 @@ double MENCDIS::me2() const {
 
   //pq is a vector in the same direction as the quark with zero mass.
   Lorentz5Momentum pq = meMomenta()[0];
-  pq.setMass(0.0*GeV);
+  pq.setMass(ZERO);
   pq.rescaleEnergy();
   double y = 1.0 - pq.dot(meMomenta()[3]) / pq.dot(meMomenta()[1]);
   Energy4 F2Coeff = sqr(sHat()) * (1 + sqr(1-y));
