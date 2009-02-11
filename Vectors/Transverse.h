@@ -221,12 +221,6 @@ operator*(double b, Transverse<Value> a) {
   return a *= b;
 }
 
-template <typename Value>
-inline Transverse<Value>
-operator/(Transverse<Value> a, double b) {
-  return a /= b;
-}
-
 template <typename ValueA, typename ValueB>
 inline
 Transverse<typename BinaryOpTraits<ValueA,ValueB>::MulT> 
