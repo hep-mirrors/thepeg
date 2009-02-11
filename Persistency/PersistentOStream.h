@@ -247,6 +247,14 @@ public:
   }
 
   /**
+   * Write a c-style character string (to be read in as a std::string).
+   */
+  PersistentOStream & operator<<(const char * s) {
+    *this << string(s);
+    return *this;
+  }
+
+  /**
    * Write a Complex.
    */
   PersistentOStream & operator<<(Complex z) {

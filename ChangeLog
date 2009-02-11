@@ -1,5 +1,8 @@
 2009-02-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Persistency/PersistentOStream.h: Added output operator for
+	c-style strings as requested in ticket #231.
+
 	* LesHouches/LesHouchesReader.*: Added interfaced flag
 	WeightWarnings to avoid warnings about inconsisten weight
 	warnings. The default is still to issue warnings.
