@@ -66,6 +66,13 @@ void MadGraphReader::open() {
       neve = numberOfEvents(headerBlock);
       madheader = headerBlock;
     }
+    if ( neve == 0 )
+      Throw<LesHouchesFileError>()
+      << "The MadGraphReader '" << name() << "' expected the LHE file '"
+      << filename() << "' to include MadGraph-specific header information, "
+      << "but did not find any. The events may not be properly sampled."
+      << Exception::warning;
+
     if ( neve != 0 ) NEvents(neve);
 
     // MadEvent has gives wrong values for XMAXUP and XWGTUP, they

@@ -8,6 +8,11 @@
 	* Utilities/Current.h (ThePEG): Added general class for accessing
 	a static default object of a certain class.
 
+2008-12-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* LesHouches/MadGraphReader.cc (MadGraphReader::open): Now issues
+	warning if LHE file does not include proper MadGraph header.
+
 2008-11-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/MultiEventGenerator.* (MultiEventGenerator::doGo):
