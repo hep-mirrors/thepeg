@@ -37,7 +37,8 @@ LesHouchesReader::LesHouchesReader(bool active)
     isActive(active), theCacheFileName(""), doCutEarly(true), theCacheFile(NULL),
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
-    weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0) {}
+    weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0),
+    useWeightWarnings(true) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -57,7 +58,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     lastweight(x.lastweight), maxFactor(x.maxFactor),
     weightScale(x.weightScale), xSecWeights(x.xSecWeights),
     maxWeights(x.maxWeights), skipping(x.skipping),
-    theMomentumTreatment(x.theMomentumTreatment) {}
+    theMomentumTreatment(x.theMomentumTreatment),
+    useWeightWarnings(x.useWeightWarnings) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -226,23 +228,25 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
 
   close();
 
-  if ( !heprup.IDWTUP )
+  if ( !heprup.IDWTUP && useWeightWarnings )
     Throw<LesHouchesInitError>()
       << "No information about the weighting scheme was found. The events "
       << "produced by LesHouchesReader " << name()
       << " may not be sampled correctly." << Exception::warning;
 
-  if ( abs(heprup.IDWTUP) > 1 )
+  if ( abs(heprup.IDWTUP) > 1 && useWeightWarnings  )
     Throw<LesHouchesInitError>()
       << "LesHouchesReader " << name() << " has the IDWTUP flag set to "
       << heprup.IDWTUP << " which is not supported by this reader, the "
       << "produced events may not be sampled correctly. It is up to "
       << "sub-classes of LesHouchesReader to correctly convert to match IDWTUP "
-      << "+/- 1. Will try to make intelligent guesses to get correct statistics.\n"
-      << "In most cases this should be sufficient."
+      << "+/- 1. Will try to make intelligent guesses to get "
+      << "correct statistics.\nIn most cases this should be sufficient. "
+      << "Unset <interface>WeightWarnings</interface> to avoid this message"
       << Exception::warning;
 
-  if ( heprup.IDWTUP !=  eh.weightOption() && abs(heprup.IDWTUP) < 3 )
+  if ( heprup.IDWTUP !=  eh.weightOption() && abs(heprup.IDWTUP) < 3 &&
+       useWeightWarnings  )
     Throw<LesHouchesInitError>()
       << "LesHouchesReader " << name() << " has the IDWTUP flag set to "
       << heprup.IDWTUP 
@@ -250,7 +254,10 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
       << eh.weightOption() << " set in "
       << "the LesHouchesEventHandler " << eh.name() << ".\n\n"
       << "Use the following handler setting instead:\n"
-      << "  set " << eh.name() << ":WeightOption " << heprup.IDWTUP << '\n'
+      << "  set " << eh.name() << ":WeightOption " << heprup.IDWTUP
+      << "\nWill try to make intelligent guesses to get "
+      << "correct statistics. In most cases this should be sufficient. "
+      << "Unset <interface>WeightWarnings</interface> to avoid this message"
       << Exception::warning;
 
   scan();
@@ -977,7 +984,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
      << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
      << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
-     << theMomentumTreatment;
+     << theMomentumTreatment << useWeightWarnings;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -997,7 +1004,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
      >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
      >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
-     >> theMomentumTreatment;
+     >> theMomentumTreatment >> useWeightWarnings;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -1207,6 +1214,26 @@ void LesHouchesReader::Init() {
      "Rescale the mass supplied so it is consistent with the"
      " energy and momentum",
      2);
+
+
+  static Switch<LesHouchesReader,bool> interfaceWeightWarnings
+    ("WeightWarnings",
+     "Determines if warnings about possible weight incompatibilities should "
+     "be issued when this reader is initialized.",
+     &LesHouchesReader::useWeightWarnings, true, true, false);
+  static SwitchOption interfaceWeightWarningsWarnAboutWeights
+    (interfaceWeightWarnings,
+     "WarnAboutWeights",
+     "Warn about possible incompatibilities with the weight option in the "
+     "Les Houches common block and the requested weight treatment.",
+     true);
+  static SwitchOption interfaceWeightWarningsDontWarnAboutWeights
+    (interfaceWeightWarnings,
+     "DontWarnAboutWeights",
+     "Do not warn about possible incompatibilities with the weight option "
+     "in the Les Houches common block and the requested weight treatment.",
+     false);
+
 
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);

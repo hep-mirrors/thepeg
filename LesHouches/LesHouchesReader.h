@@ -846,6 +846,12 @@ protected:
    */
   unsigned int theMomentumTreatment;
 
+  /**
+   * Set to true if warnings about possible weight incompatibilities
+   * should be issued.
+   */
+  bool useWeightWarnings;
+
 private:
 
   /** Access function for the interface. */
