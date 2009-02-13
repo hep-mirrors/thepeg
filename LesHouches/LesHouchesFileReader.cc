@@ -49,6 +49,11 @@ void LesHouchesFileReader::initialize(LesHouchesEventHandler & eh) {
 }
 
 void LesHouchesFileReader::open() {
+  if ( filename().empty() )
+    throw LesHouchesFileError()
+      << "No Les Houches file name. "
+      << "Use 'set " << name() << ":FileName'."
+      << Exception::runerror;
   cfile.open(filename());
   theFile = cfile.cfile();
   if ( ( theFile = cfile.cfile() ) == NULL )

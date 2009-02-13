@@ -766,8 +766,14 @@ string BaseRepository::exec(string command, ostream &) {
 	+ StringUtils::cdr(command);
       IBPtr ip = getObjectFromNoun(noun);
       const InterfaceBase * ifb = FindInterface(ip, getInterfaceFromNoun(noun));
-      if ( !ifb && verb != "describe" && verb != "fulldescribe" )
-	return "Error: The interface '" + noun + "' was not found.";
+      if ( !ifb && verb != "describe" && verb != "fulldescribe" ) {
+	string ret = "Error: The interface '" + noun + "' was not found.\n";
+	ret += "Valid interfaces:\n";
+	InterfaceMap imap = getInterfaces(typeid(*ip));
+	for ( InterfaceMap::iterator it = imap.begin(); it != imap.end(); ++it )
+	  ret += "* " + it->second->name() + "\n";
+	return ret;
+      }
       if ( verb == "describe" ) {
 	if ( ifb ) return ifb->description();
 	const ClassDescriptionBase * cd = DescriptionList::find(typeid(*ip));
