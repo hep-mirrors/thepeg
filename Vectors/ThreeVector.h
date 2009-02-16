@@ -91,10 +91,18 @@ public:
   template <typename U>
   Value2 perp2(const Vector3<U> & p) const {
     typedef typename BinaryOpTraits<U,U>::MulT pSqType;
+    pSqType zeroPSq = pSqType();
     pSqType tot = p.mag2();
     typename BinaryOpTraits<Value,U>::MulT
       ss = this->dot(p);
-    return tot > pSqType() ? mag2()-sqr(ss)/tot : mag2();
+
+    if ( tot <= zeroPSq ) 
+      return mag2();
+
+    Value2 ret = mag2() - sqr(ss)/tot;
+    if ( ret <= Value2() )
+      ret = Value2();
+    return ret;
   }
 
   /// Transverse component with respect to the given axis.
