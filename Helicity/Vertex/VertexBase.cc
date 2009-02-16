@@ -522,11 +522,11 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
 			       Energy mass, Energy width) {
   if(mass < ZERO) mass = part->mass();
   const Energy2 mass2 = sqr(mass);
-  const Energy p = sqrt(p2);
+
   if(width < ZERO) {
     const tcWidthGeneratorPtr widthgen = part->widthGenerator();
     width = widthgen && (iopt==2 || iopt==6 ) ? 
-      widthgen->width(*part,p) : part->width();
+      widthgen->width(*part,sqrt(p2)) : part->width();
   }
   const Complex ii(0.,1.);
 
@@ -548,7 +548,7 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
     case 4: 
       return 1.0;
     case 6: 
-      masswidth = ii * mass2 * width / p;
+      masswidth = ii * mass2 * width / sqrt(p2);
       return Complex(UnitRemoval::E2 * (mass2/p2) / (p2-mass2+masswidth));
     default:
       throw HelicityConsistencyError() << "Unknown option in VertexBase::Propagator" 
