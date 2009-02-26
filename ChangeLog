@@ -1,3 +1,9 @@
+2009-02-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Config/Pointers.h (ThePEG_DECLARE_POINTERS): Changed macro so
+	that they can be used to easily typedef pointers outside the
+	ThePEG namespace.
+
 2009-02-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentOStream.h: Added output operator for
