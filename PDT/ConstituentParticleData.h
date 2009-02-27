@@ -92,7 +92,7 @@ protected:
    * be supplied is the same as for ParticleData::readSetup with an
    * additional constituent mass (in GeV) added in the end.
    */
-  virtual void readSetup(istream & is) throw(SetupException);
+  virtual void readSetup(istream & is);
 
   /**
    * ParticleData clone method

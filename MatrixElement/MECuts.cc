@@ -64,7 +64,7 @@ IBPtr MECuts::clone() const {
   return new_ptr(*this);
 }
 
-void MECuts::doupdate() throw(UpdateException) {
+void MECuts::doupdate() {
   Interfaced::doupdate();
   if ( cTHMax() <= cTHMin() )
     throw MECutZeroInterval(*this, "CTHMax <= CTHMin");

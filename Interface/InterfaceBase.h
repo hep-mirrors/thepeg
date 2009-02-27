@@ -97,7 +97,7 @@ public:
    */
   virtual string
   exec(InterfacedBase & ib, string action, string arguments) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return a code for the type of this interface.

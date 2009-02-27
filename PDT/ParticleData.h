@@ -469,7 +469,7 @@ protected:
    * instead of a generic name, the name of the object will be used
    * instead.
    */
-  virtual void readSetup(istream & is) throw(SetupException);
+  virtual void readSetup(istream & is);
 
   /**
    * Used by subclasses or by the Create method to setup
@@ -485,14 +485,14 @@ protected:
   /**
    * Check sanity of the object during the setup phase.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate();
 
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  virtual void doinit() throw(InitException);
+  virtual void doinit();
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -504,7 +504,7 @@ protected:
    * pointer.
    */
   virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
+   ;
 
   /**
    * Return a vector of all pointers to Interfaced objects used in this

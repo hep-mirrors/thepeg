@@ -35,7 +35,7 @@ IBPtr DalitzDecayer::fullclone() const {
   return new_ptr(*this);
 }
 
-void DalitzDecayer::doinit() throw(InitException) {
+void DalitzDecayer::doinit() {
   Decayer::doinit();
   rho = getParticleData(ParticleID::rho0);
 }
@@ -110,7 +110,7 @@ void DalitzDecayer::persistentInput(PersistentIStream & is, int) {
 }
 
 void DalitzDecayer::rebind(const TranslationMap & trans)
-  throw(RebindException) {
+  {
   rho = trans.translate(rho);
   Decayer::rebind(trans);
 }

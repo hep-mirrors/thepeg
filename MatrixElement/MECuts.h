@@ -185,7 +185,7 @@ protected:
   /**
    * Standard Interfaced virtual functions.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate();
 
   /**
    * Standard clone method.

@@ -33,7 +33,7 @@ template <typename Type>
 inline void 
 ParameterTBase<Type>::setImpl(InterfacedBase & i, 
 			      string newValue, StandardT) 
-  const throw(InterfaceException) {
+  const {
   istringstream is(newValue);
   if ( unit() > Type() ) {
     double t;
@@ -50,7 +50,7 @@ template <typename Type>
 inline void 
 ParameterTBase<Type>::setImpl(InterfacedBase & i, 
 			      string newValue, DimensionT) 
-  const throw(InterfaceException) {
+  const {
   istringstream is(newValue);
   double t;
   is >> t;
@@ -59,13 +59,13 @@ ParameterTBase<Type>::setImpl(InterfacedBase & i,
 
 template <typename T>
 void ParameterTBase<T>::
-set(InterfacedBase & i, string newValue) const throw(InterfaceException) {
+set(InterfacedBase & i, string newValue) const {
   setImpl(i, newValue, typename TypeTraits<T>::DimType());
 }
 
 template <typename Type>
 string ParameterTBase<Type>::
-get(const InterfacedBase & i) const throw(InterfaceException) {
+get(const InterfacedBase & i) const {
   ostringstream os;
   putUnit(os, tget(i));
   return os.str();
@@ -73,7 +73,7 @@ get(const InterfacedBase & i) const throw(InterfaceException) {
 
 template <typename Type>
 string ParameterTBase<Type>::
-minimum(const InterfacedBase & i) const throw(InterfaceException) {
+minimum(const InterfacedBase & i) const {
   ostringstream os;
   if ( ParameterBase::lowerLimit() ) putUnit(os, tminimum(i));
   return os.str();
@@ -81,7 +81,7 @@ minimum(const InterfacedBase & i) const throw(InterfaceException) {
 
 template <typename Type>
 string ParameterTBase<Type>::
-maximum(const InterfacedBase & i) const throw(InterfaceException) {
+maximum(const InterfacedBase & i) const {
   ostringstream os;
   if ( ParameterBase::upperLimit() ) putUnit(os, tmaximum(i));
   return os.str();
@@ -89,7 +89,7 @@ maximum(const InterfacedBase & i) const throw(InterfaceException) {
     
 template <typename Type>
 string ParameterTBase<Type>::
-def(const InterfacedBase & i) const throw(InterfaceException) {
+def(const InterfacedBase & i) const {
   ostringstream os;
   putUnit(os, tdef(i));
   return os.str();
@@ -97,7 +97,7 @@ def(const InterfacedBase & i) const throw(InterfaceException) {
 
 template <typename T, typename Type>
 void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
-  throw(InterfaceException) {
+  {
   if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -118,7 +118,7 @@ void Parameter<T,Type>::tset(InterfacedBase & i, Type newValue) const
 
 template <typename T>
 void Parameter<T,string>::tset(InterfacedBase & i, string newValue) const
-  throw(InterfaceException) {
+  {
   if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -136,7 +136,7 @@ void Parameter<T,string>::tset(InterfacedBase & i, string newValue) const
 
 template <typename T, typename Type>
 Type Parameter<T,Type>::tget(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
@@ -150,7 +150,7 @@ Type Parameter<T,Type>::tget(const InterfacedBase & i) const
 
 template <typename T>
 string Parameter<T,string>::tget(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
@@ -164,7 +164,7 @@ string Parameter<T,string>::tget(const InterfacedBase & i) const
 
 template <typename T, typename Type>
 Type Parameter<T,Type>::tminimum(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   if ( theMinFn ) {
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
@@ -177,7 +177,7 @@ Type Parameter<T,Type>::tminimum(const InterfacedBase & i) const
 
 template <typename T, typename Type>
 Type Parameter<T,Type>::tmaximum(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   if ( theMaxFn ) {
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
@@ -190,7 +190,7 @@ Type Parameter<T,Type>::tmaximum(const InterfacedBase & i) const
 
 template <typename T, typename Type>
 Type Parameter<T,Type>::tdef(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   if ( theDefFn ) {
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);
@@ -203,7 +203,7 @@ Type Parameter<T,Type>::tdef(const InterfacedBase & i) const
 
 template <typename T>
 string Parameter<T,string>::tdef(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   if ( theDefFn ) {
     const T * t = dynamic_cast<const T *>(&i);
     if ( !t ) throw InterExClass(*this, i);

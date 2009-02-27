@@ -247,7 +247,7 @@ may not be INTERFACED and/or CONCRETE."
 
 
 (defconst thepeg-interfaced-impl "
-void THECLASS::doupdate() throw(UpdateException) {
+void THECLASS::doupdate() {
   THEBASE::doupdate();
   // First update base class.
   bool redo = touched();
@@ -265,7 +265,7 @@ void THECLASS::doupdate() throw(UpdateException) {
   // Touch if anything has changed.
 }
 
-void THECLASS::doinit() throw(InitException) {
+void THECLASS::doinit() {
   THEBASE::doinit();
 }
 
@@ -277,7 +277,7 @@ void THECLASS::doinitrun() {
   THEBASE::doinitrun();
 }
 
-void THECLASS::rebind(const TranslationMap & trans) throw(RebindException) {
+void THECLASS::rebind(const TranslationMap & trans) {
   // dummy = trans.translate(dummy);
   THEBASE::rebind(trans);
 }
@@ -428,14 +428,14 @@ protected:
   /**
    * Check sanity of the object during the setup phase.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate();
 
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  virtual void doinit() throw(InitException);
+  virtual void doinit();
 
   /**
    * Initialize this object. Called in the run phase just before
@@ -458,7 +458,7 @@ protected:
    * @throws RebindException if no cloned object was found for a given
    * pointer.
    */
-  virtual void rebind(const TranslationMap & trans) throw(RebindException);
+  virtual void rebind(const TranslationMap & trans);
 
   /**
    * Return a vector of all pointers to Interfaced objects used in this
@@ -957,7 +957,7 @@ public:
     * @throws Exception if something goes wrong.
     */
   virtual void handle(EventHandler & eh, const tPVector & tagged,
-		      const Hint & hint) throw(Veto, Stop, Exception);
+		      const Hint & hint);
   //@}
 "))
 
@@ -965,7 +965,7 @@ public:
   (concat "
 void " class "::
 handle(EventHandler & eh, const tPVector & tagged,
-       const Hint & hint) throw(Veto, Stop, Exception) {
+       const Hint & hint) {
   // Implement the Handle method here.
   // Note that if the method actually does anything to the current event
   // the changes should be inserted in a new step which should be obtained

@@ -80,7 +80,7 @@ bool LesHouchesReader::preInitialize() const {
   return false;
 }
 
-void LesHouchesReader::doinit() throw(InitException) {
+void LesHouchesReader::doinit() {
   HandlerBase::doinit();
   open();
   close();

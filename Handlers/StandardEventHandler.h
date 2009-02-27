@@ -285,14 +285,14 @@ public:
   /**
    * Check sanity of the object during the setup phase.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate();
 
   /**
    * Initialize this object after the setup phase before saving an
    * EventGenerator to disk.
    * @throws InitException if object could not be initialized properly.
    */
-  virtual void doinit() throw(InitException);
+  virtual void doinit();
 
   /**
    * Initialize this object. Called in the run phase just before

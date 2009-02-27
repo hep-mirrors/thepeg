@@ -182,7 +182,7 @@ bool RemnantDecayer::preInitialize() const {
   return Decayer::preInitialize() || !pTGenerator();
 }
 
-void RemnantDecayer::doinit() throw(InitException) {
+void RemnantDecayer::doinit() {
   Decayer::doinit();
   if ( pTGenerator() ) return;
   thePTGenerator = dynamic_ptr_cast<PtGPtr>

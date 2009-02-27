@@ -87,7 +87,7 @@ public:
    * InterfacedBase object in the BaseRepository.
    */
   virtual string exec(InterfacedBase & ib, string action,
-		      string arguments) const throw(InterfaceException);
+		      string arguments) const;
 
   /**
    * Return a complete description of this reference.
@@ -109,20 +109,20 @@ public:
    * Set the pointer of \a ib to \a ip.
    */
   virtual void set(InterfacedBase & ib, IBPtr ip, bool chk = true)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Return the pointer of \a ib.
    */
   virtual IBPtr get(const InterfacedBase & ib)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Check if set(ib, ip) will be successfull but do not do
    * anything.
    */
   virtual bool check(const InterfacedBase & ib, cIBPtr ip) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * In the object \a ib, replace the pointer in this interface with one
@@ -278,20 +278,20 @@ public:
    * Set the pointer of \a ib to \a ip.
    */
   virtual void set(InterfacedBase & ib, IBPtr ip, bool chk = true) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the pointer of \a ib.
    */
   virtual IBPtr get(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Check if set(ib, ip) will be successfull but do not do
    * anything.
    */
   virtual bool check(const InterfacedBase & ib, cIBPtr newRef) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Give a pointer to a member function to be used by 'set()'.

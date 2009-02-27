@@ -20,7 +20,7 @@ namespace ThePEG {
 ParameterBase::~ParameterBase() {}
 
 string ParameterBase::exec(InterfacedBase & i, string action,
-			   string arguments) const  throw(InterfaceException) {
+			   string arguments) const  {
   ostringstream ret;
   istringstream arg(arguments.c_str());
   if ( action == "get" ) {

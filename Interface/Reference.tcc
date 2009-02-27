@@ -15,7 +15,7 @@ namespace ThePEG {
 
 template <class T, class R>
 void Reference<T,R>::set(InterfacedBase & i, IBPtr newRef, bool chk) const
-  throw(InterfaceException) {
+  {
   if ( readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -36,7 +36,7 @@ void Reference<T,R>::set(InterfacedBase & i, IBPtr newRef, bool chk) const
 
 template <class T, class R>
 IBPtr Reference<T,R>::get(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
@@ -50,7 +50,7 @@ IBPtr Reference<T,R>::get(const InterfacedBase & i) const
 
 template <class T, class R>
 bool Reference<T,R>::check(const InterfacedBase & i, cIBPtr ir) const
-  throw(InterfaceException) {
+  {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( noNull() && !ir ) return false;

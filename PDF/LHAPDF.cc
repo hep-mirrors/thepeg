@@ -104,7 +104,7 @@ IBPtr LHAPDF::fullclone() const {
   return new_ptr(*this);
 }
 
-void LHAPDF::doinit() throw(InitException) {
+void LHAPDF::doinit() {
   PDFBase::doinit();
   setMinMax();
   checkInit();

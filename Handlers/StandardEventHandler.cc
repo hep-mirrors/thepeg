@@ -51,7 +51,7 @@ void StandardEventHandler::reject(double w) {
   last->reject(w);
 }
 
-void StandardEventHandler::doupdate() throw(UpdateException) {
+void StandardEventHandler::doupdate() {
   EventHandler::doupdate();
   bool redo = touched();
   UpdateChecker::check(theIncomingA, redo);
@@ -71,7 +71,7 @@ void StandardEventHandler::doupdate() throw(UpdateException) {
 	<< theIncomingA->name() << "," << theIncomingB->name() << ").";
 }
 
-void StandardEventHandler::doinit() throw(InitException) {
+void StandardEventHandler::doinit() {
   EventHandler::doinit();
   if ( !lumiFnPtr() ) throw StandardEventHandlerUpdateException()
     << "The StandardEventHandler '" << name() << "' does not have any "

@@ -56,7 +56,7 @@ handle(EventHandler &, const tPVector & tagged,
 }
 
 void DecayHandler::
-performDecay(tPPtr parent, Step & s) const throw(Veto, Exception) {
+performDecay(tPPtr parent, Step & s) const {
   if ( maxLifeTime() >= ZERO ) {
     if( ( lifeTimeOption() && parent->lifeLength().tau() > maxLifeTime())||
 	(!lifeTimeOption() && parent->data().cTau()      > maxLifeTime()) ) {

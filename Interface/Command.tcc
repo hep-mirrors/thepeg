@@ -15,7 +15,7 @@ namespace ThePEG {
 
 template <class T>
 string Command<T>::cmd(InterfacedBase & i, string arg) const
-  throw(InterfaceException) {
+  {
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theExeFn ) {

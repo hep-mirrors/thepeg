@@ -36,7 +36,7 @@ IBPtr LeptonLeptonRemnant::fullclone() const {
 LeptonLeptonRemnant::LeptonLeptonRemnant()
   : minX(1.0e-10) {}
 
-void LeptonLeptonRemnant::doinit() throw(InitException) {
+void LeptonLeptonRemnant::doinit() {
   photon = getParticleData(ParticleID::gamma);
   RemnantHandler::doinit();
 }

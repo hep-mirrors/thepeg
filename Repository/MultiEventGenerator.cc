@@ -194,7 +194,7 @@ IVector MultiEventGenerator::getReferences() {
 }
 
 void MultiEventGenerator::rebind(const TranslationMap & trans)
-  throw(RebindException) {
+  {
   for ( string::size_type i = 0; i < theObjects.size(); ++i )
     theObjects[i] = trans.translate(theObjects[i]);
   EventGenerator::rebind(trans);

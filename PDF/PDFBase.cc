@@ -107,7 +107,7 @@ flattenScale(tcPDPtr, tcPDPtr, const PDFCuts & c,
   }
 }
 
-void PDFBase::doinit() throw(InitException) {
+void PDFBase::doinit() {
   HandlerBase::doinit();
 }
 

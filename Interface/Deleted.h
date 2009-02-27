@@ -74,7 +74,7 @@ public:
    */
   virtual string
   exec(InterfacedBase &ib, string action, string arguments) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return a string describing the type of interface to be included

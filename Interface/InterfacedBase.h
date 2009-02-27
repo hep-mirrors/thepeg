@@ -109,7 +109,7 @@ public:
    * part \a is to initialize themselves. What ever is left in \a is
    * after that will be assigned to the comment() of the object.
    */
-  void setup(istream & is) throw(SetupException) {
+  void setup(istream & is) {
     readSetup(is);
     getline(is, theComment);
   }
@@ -126,7 +126,7 @@ protected:
    * is. If the \a is is not empty after readSetup is called the
    * remaining string will be assigned to the comment() of the object.
    */
-  virtual void readSetup(istream & is) throw(SetupException);
+  virtual void readSetup(istream & is);
 
   /**
    * Check sanity of the object during the setup phase.  This function
@@ -150,7 +150,7 @@ protected:
    * @throws UpdateException if the setup is such that the object
    * would not work properly.
    */
-  virtual void doupdate() throw(UpdateException) {}
+  virtual void doupdate() {}
 
   /**
    * Initialize this object after the setup phase before saving an
@@ -173,7 +173,7 @@ protected:
    * method is called for other objects.
    * @throws InitException if object could not be initialized properly.
    */
-  virtual void doinit() throw (InitException) {}
+  virtual void doinit() {}
 
   /**
    * Initialize this object. Called in the run phase just before
@@ -218,7 +218,7 @@ protected:
    * @throws RebindException if no cloned object was found for a given
    * pointer.
    */
-  virtual void rebind(const TranslationMap &) throw(RebindException) {}
+  virtual void rebind(const TranslationMap &) {}
   //@}
 
 public:
@@ -228,7 +228,7 @@ public:
   /**
    * Calls the doupdate() function with recursion prevention.
    */
-  void update() throw(UpdateException) {
+  void update() {
     if ( initState ) return;
     HoldFlag<InitState> hold(initState, initializing, initialized);
     doupdate();
@@ -237,7 +237,7 @@ public:
   /**
    * Calls the doinit() function with recursion prevention.
    */
-  void init() throw (InitException) {
+  void init() {
     if ( initState ) return;
     HoldFlag<InitState> hold(initState, initializing, initialized);
     doinit();

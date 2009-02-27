@@ -280,7 +280,7 @@ protected:
   /**
    * Check sanity of the object during the setup phase.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate();
 
   /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
@@ -292,7 +292,7 @@ protected:
    * pointer.
    */
   virtual void rebind(const TranslationMap & trans)
-    throw(RebindException);
+   ;
 
   /**
    * Return a vector of all pointers to Interfaced objects used in this
@@ -399,7 +399,7 @@ protected:
    * white-space separated list: the branching ratio, on or off (true
    * or false), and the name of a Decayer.
    */
-  virtual void readSetup(istream & is) throw(SetupException);
+  virtual void readSetup(istream & is);
 
   /**
    * The set of identified decay products.

@@ -40,7 +40,7 @@ IBPtr SimpleFlavour::fullclone() const {
   return new_ptr(*this);
 }
 
-void SimpleFlavour::doinit() throw(InitException) {
+void SimpleFlavour::doinit() {
   FlavourGenerator::doinit();
   clear();
 }

@@ -46,7 +46,7 @@ IBPtr ClusterCollapser::fullclone() const {
 
 void ClusterCollapser::
 handle(EventHandler &, const tPVector & tagged,
-       const Hint &) throw(Veto, Stop, Exception) {
+       const Hint &) {
   collapse(tagged, newStep());
 }
 

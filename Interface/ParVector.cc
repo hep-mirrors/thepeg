@@ -23,7 +23,7 @@ namespace ThePEG {
 
 string ParVectorBase::
 exec(InterfacedBase & i, string action, string arguments) const
-  throw(InterfaceException) {
+  {
   istringstream arg(arguments.c_str());
   int place = 0;
   if ( !(arg >> place) ) place = -1;

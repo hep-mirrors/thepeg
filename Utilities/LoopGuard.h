@@ -41,7 +41,7 @@ public:
    * Increase the iteration count and throw an ExceptionT if the
    * maximum number of iterations is exceeded.
    */
-  void operator()() throw (ExceptionT)
+  void operator()()
   {
     if ( ++count > maxCount ) throw ExceptionT(message);
   }

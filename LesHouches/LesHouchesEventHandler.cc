@@ -48,7 +48,7 @@ IBPtr LesHouchesEventHandler::fullclone() const {
   return new_ptr(*this);
 }
 
-void LesHouchesEventHandler::doinit() throw(InitException) {
+void LesHouchesEventHandler::doinit() {
   EventHandler::doinit();
   for ( int i = 0, N = readers().size(); i < N; ++i )
     readers()[i]->init();

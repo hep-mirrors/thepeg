@@ -17,7 +17,7 @@
 using namespace ThePEG;
 
 string CommandBase::exec(InterfacedBase & i, string,
-			 string arguments) const throw(InterfaceException) {
+			 string arguments) const {
   return cmd(i, arguments);
 }
 

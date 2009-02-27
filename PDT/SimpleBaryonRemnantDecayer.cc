@@ -299,7 +299,7 @@ bool SimpleBaryonRemnantDecayer::preInitialize() const {
     !theZGenerator || !theFlavourGenerator;
 }
 
-void SimpleBaryonRemnantDecayer::doinit() throw(InitException) {
+void SimpleBaryonRemnantDecayer::doinit() {
   RemnantDecayer::doinit();
   if ( !theZGenerator ) {
     theZGenerator = dynamic_ptr_cast<ZGPtr>

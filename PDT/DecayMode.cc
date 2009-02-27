@@ -53,7 +53,7 @@ DMPtr DecayMode::Create(tPDPtr newParent, double newBrat, bool newOn) {
   return dm;
 }
 
-void DecayMode::readSetup(istream & is) throw(SetupException) {
+void DecayMode::readSetup(istream & is) {
   string decnam;
   is >> theBrat >> ienum(isOn) >> decnam;
   if ( decnam.empty() ) return;
@@ -80,7 +80,7 @@ IBPtr DecayMode::fullclone() const {
   return dm;
 }
 
-void DecayMode::doupdate() throw(UpdateException) {
+void DecayMode::doupdate() {
   Interfaced::doupdate();
   bool redo = touched();
   UpdateChecker::check(decayer(), redo);
@@ -89,7 +89,7 @@ void DecayMode::doupdate() throw(UpdateException) {
     throw DecModNoAccept(tag(), decayer()->name());
 }
 
-void DecayMode::rebind(const TranslationMap & trans) throw(RebindException) {
+void DecayMode::rebind(const TranslationMap & trans) {
   try {
     theParent = trans.alwaysTranslate(theParent);
     ParticleMSet newProducts;

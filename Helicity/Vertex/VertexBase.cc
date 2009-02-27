@@ -22,7 +22,7 @@
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
         
-void VertexBase::doinit() throw(InitException) {
+void VertexBase::doinit() {
   Interfaced::doinit();
   _nsize=0;
   // get the particle data points for the external particles

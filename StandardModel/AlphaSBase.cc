@@ -18,7 +18,7 @@
 
 using namespace ThePEG;
 
-void AlphaSBase::doinit() throw(InitException) {
+void AlphaSBase::doinit() {
   theFlavourThresholds = flavourThresholds();
   theLambdaQCDs = LambdaQCDs();
   Interfaced::doinit();

@@ -110,7 +110,7 @@ public:
    * stringstream with the standard '>>' operator.
    */
   virtual string exec(InterfacedBase & ib, string action,
-		      string arguments) const throw(InterfaceException);
+		      string arguments) const;
 
   /**
    * Return a complete description of this parameter.
@@ -121,37 +121,37 @@ public:
    * Set the member variable of \a ib to \a val.
    */
   virtual void set(InterfacedBase & ib, string) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the minimum value allowed for the member variable of \a ib.
    */
   virtual string minimum(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the maximum value allowed for the member variable of \a ib.
    */
   virtual string maximum(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the value of the member variable of \a ib.
    */
   virtual string get(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the default value for the member variable of \a ib.
    */
   virtual string def(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Set the member variable of \a ib to its default value.
    */
   virtual void setDef(InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * True if there the variable is limited from above and below.
@@ -268,12 +268,12 @@ private:
   /// Implementation of set() for standard types.
   void setImpl (InterfacedBase & i, 
 		       string newValue, StandardT) 
-    const throw(InterfaceException);
+    const;
 
   /// Implementation of set() for dimensioned types.
   void setImpl (InterfacedBase & i, 
 		       string newValue, DimensionT) 
-    const throw(InterfaceException);
+    const;
 
 public:
 
@@ -283,13 +283,13 @@ public:
    * tset(InterfacedBase &, Type).
    */
   virtual void set(InterfacedBase & ib, string newValue)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Set the member variables of \a ib to \a val.
    */
   virtual void tset(InterfacedBase & ib, Type) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the value of the member variable of \a ib. Calls
@@ -297,13 +297,13 @@ public:
    * an ostringstream.
    */
   virtual string get(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the value of the member variable of \a ib.
    */
   virtual Type tget(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the minimum value allowed for the member variable of \a
@@ -311,14 +311,14 @@ public:
    * returned value with an ostringstream.
    */
   virtual string minimum(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the minimum value allowed for the member variable of \a
    * ib.
    */
   virtual Type tminimum(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the maximum value allowed for the member variable of \a
@@ -326,14 +326,14 @@ public:
    * returned value with an ostringstream.
    */
   virtual string maximum(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the maximum value allowed for the member variable of
    * \a ib.
    */
   virtual Type tmaximum(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the default value for the member variables of \a ib. Calls
@@ -341,18 +341,18 @@ public:
    * an ostringstream.
    */
   virtual string def(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the default value for the member variables of \a ib.
    */
   virtual Type tdef(const InterfacedBase &ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * set the member variable of \a ib to its default value.
    */
-  virtual void setDef(InterfacedBase & ib) const throw(InterfaceException) {
+  virtual void setDef(InterfacedBase & ib) const {
     tset(ib, tdef(ib));
   }
 
@@ -670,30 +670,30 @@ public:
    * Set the member variable of \a ib to \a val.
    */
   virtual void tset(InterfacedBase & ib, Type val)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Return the value of the member variable of ib.
    */
-  virtual Type tget(const InterfacedBase & ib) const throw(InterfaceException);
+  virtual Type tget(const InterfacedBase & ib) const;
 
   /**
    * Return the minimum value allowed for the member variable of \a ib.
    */
   virtual Type tminimum(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the miaximum value allowed for the member variable of \a ib.
    */
   virtual Type tmaximum(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the default value for the member variable of \a ib.
    */
   virtual Type tdef(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Give a pointer to a member function to be used by tset().
@@ -871,7 +871,7 @@ public:
    * tset(InterfacedBase &, Type).
    */
   virtual void set(InterfacedBase & ib, string newValue)
-    const throw(InterfaceException) {
+    const {
     tset(ib, StringUtils::stripws(newValue));
   }
 
@@ -879,7 +879,7 @@ public:
    * Set the member variables of \a ib to \a val.
    */
   virtual void tset(InterfacedBase & ib, string) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the value of the member variable of \a ib. Calls
@@ -887,7 +887,7 @@ public:
    * an ostringstream.
    */
   virtual string get(const InterfacedBase & ib) const
-    throw(InterfaceException) {
+    {
     return tget(ib);
   }
 
@@ -895,13 +895,13 @@ public:
    * Return the value of the member variable of \a ib.
    */
   virtual string tget(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the minimum value allowed for the member variable of \a
    * ib. Not relevant for strings. Returns the empty string.
    */
-  virtual string minimum(const InterfacedBase &) const throw(InterfaceException) {
+  virtual string minimum(const InterfacedBase &) const {
     return "";
   }
 
@@ -909,7 +909,7 @@ public:
    * Return the maximum value allowed for the member variable of \a
    * ib. Not relevant for strings. Returns the empty string.
    */
-  virtual string maximum(const InterfacedBase &) const throw(InterfaceException) {
+  virtual string maximum(const InterfacedBase &) const {
     return "";
   }
 
@@ -919,7 +919,7 @@ public:
    * an ostringstream.
    */
   virtual string def(const InterfacedBase & ib) const
-    throw(InterfaceException) {
+    {
     return tdef(ib);
   }
 
@@ -927,12 +927,12 @@ public:
    * Return the default value for the member variables of \a ib.
    */
   virtual string tdef(const InterfacedBase &ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * set the member variable of \a ib to its default value.
    */
-  virtual void setDef(InterfacedBase & i) const throw(InterfaceException) {
+  virtual void setDef(InterfacedBase & i) const {
     tset(i, tdef(i));
   }
 
@@ -1029,19 +1029,19 @@ public:
    * Set the member variable of \a ib to \a val.
    */
   virtual void tset(InterfacedBase & ib, string val)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Return the value of the member variable of ib.
    */
   virtual string tget(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the default value for the member variable of \a ib.
    */
   virtual string tdef(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Give a pointer to a member function to be used by tset().

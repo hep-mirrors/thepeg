@@ -363,7 +363,7 @@ bool MadGraphReader::preInitialize() const {
   return false;
 }
 
-void MadGraphReader::doinit() throw(InitException) {
+void MadGraphReader::doinit() {
   LesHouchesFileReader::doinit();
   if ( doInitCuts && !theCuts ) {
     theCuts = initCuts();

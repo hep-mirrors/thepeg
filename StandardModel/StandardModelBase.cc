@@ -39,7 +39,7 @@ IBPtr StandardModelBase::fullclone() const {
   return new_ptr(*this);
 }
 
-void StandardModelBase::doinit() throw(InitException) {
+void StandardModelBase::doinit() {
   if ( recalculateEW ) {
     theAnu = theEnu < 0? -1.0: 1.0;
     theAe = theEe < 0? -1.0: 1.0;

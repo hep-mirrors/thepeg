@@ -114,7 +114,7 @@ IBPtr MEee2gZ2qq::fullclone() const {
   return new_ptr(*this);
 }
 
-void MEee2gZ2qq::doinit() throw(InitException) {
+void MEee2gZ2qq::doinit() {
   double C = sqr(4.0*Constants::pi)/3.0;
   double SW2 = SM().sin2ThetaW();
   double SW4 = sqr(SW2);

@@ -38,7 +38,7 @@ IVector ReferenceBase::getReferences(const InterfacedBase & i) const {
 }
 
 string ReferenceBase::exec(InterfacedBase & i, string action,
-			   string arguments) const throw(InterfaceException) {
+			   string arguments) const {
   ostringstream ret;
   istringstream arg(arguments.c_str());
   if ( action == "get" ) {

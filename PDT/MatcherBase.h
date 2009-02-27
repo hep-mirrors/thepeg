@@ -250,7 +250,7 @@ protected:
   /**
    * Check sanity of the object during the setup phase.
    */
-  virtual void doupdate() throw(UpdateException);
+  virtual void doupdate();
   //@}
 
 protected:

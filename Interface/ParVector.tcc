@@ -44,7 +44,7 @@ string ParVectorTBase<Type>::fullDescription(const InterfacedBase & ib) const {
 
 template <typename Type>
 void ParVectorTBase<Type>::setDef(InterfacedBase & i, int place) const
-  throw(InterfaceException) {
+  {
   if ( place >= 0 ) tset(i, tdef(i, place), place);
   int sz = get(i).size();
   for ( int j = 0; j < sz; ++j ) tset(i, tdef(i, j), j);
@@ -53,7 +53,7 @@ void ParVectorTBase<Type>::setDef(InterfacedBase & i, int place) const
 template <typename Type>
 inline void ParVectorTBase<Type>::
 setImpl(InterfacedBase & i, string newValue, int place, StandardT) 
-  const throw(InterfaceException) {
+  const {
   istringstream is(newValue);
   if ( unit() > Type() ) {
     double t;
@@ -69,7 +69,7 @@ setImpl(InterfacedBase & i, string newValue, int place, StandardT)
 template <typename Type>
 inline void ParVectorTBase<Type>::
 setImpl(InterfacedBase & i, string newValue, int place, DimensionT) 
-  const throw(InterfaceException) {
+  const {
   istringstream is(newValue);
   double t;
   is >> t;
@@ -79,14 +79,14 @@ setImpl(InterfacedBase & i, string newValue, int place, DimensionT)
 template <typename T>
 void ParVectorTBase<T>::
 set(InterfacedBase & i, string newValue, int place) const 
-  throw(InterfaceException) {
+  {
   setImpl(i, newValue, place, typename TypeTraits<T>::DimType());
 }
 
 template <typename Type>
 inline void ParVectorTBase<Type>::
 insertImpl(InterfacedBase & i, string newValue, int place, StandardT) 
-  const throw(InterfaceException) {
+  const {
   istringstream is(newValue);
   if ( unit() > Type() ) {
     double t;
@@ -102,7 +102,7 @@ insertImpl(InterfacedBase & i, string newValue, int place, StandardT)
 template <typename Type>
 inline void ParVectorTBase<Type>::
 insertImpl(InterfacedBase & i, string newValue, int place, DimensionT) 
-  const throw(InterfaceException) {
+  const {
   istringstream is(newValue);
   double t;
   is >> t;
@@ -112,13 +112,13 @@ insertImpl(InterfacedBase & i, string newValue, int place, DimensionT)
 template <typename T>
 void ParVectorTBase<T>::
 insert(InterfacedBase & i, string newValue, int place) const 
-  throw(InterfaceException) {
+  {
   insertImpl(i, newValue, place, typename TypeTraits<T>::DimType());
 }
 
 template <typename Type>
 typename ParVectorTBase<Type>::StringVector ParVectorTBase<Type>::
-get(const InterfacedBase & i) const throw(InterfaceException) {
+get(const InterfacedBase & i) const {
   TypeVector tres = tget(i);
   StringVector res;
   for ( typename TypeVector::iterator it = tres.begin();
@@ -132,7 +132,7 @@ get(const InterfacedBase & i) const throw(InterfaceException) {
 
 template <typename Type>
 string ParVectorTBase<Type>::
-minimum(const InterfacedBase & i, int place) const throw(InterfaceException) {
+minimum(const InterfacedBase & i, int place) const {
   ostringstream os;
   putUnit(os, tminimum(i,place));
   return os.str();
@@ -140,7 +140,7 @@ minimum(const InterfacedBase & i, int place) const throw(InterfaceException) {
 
 template <typename Type>
 string ParVectorTBase<Type>::
-maximum(const InterfacedBase & i, int place) const throw(InterfaceException) {
+maximum(const InterfacedBase & i, int place) const {
   ostringstream os;
   putUnit(os, tmaximum(i, place));
   return os.str();
@@ -148,7 +148,7 @@ maximum(const InterfacedBase & i, int place) const throw(InterfaceException) {
 
 template <typename Type>
 string ParVectorTBase<Type>::
-def(const InterfacedBase & i, int place) const throw(InterfaceException) {
+def(const InterfacedBase & i, int place) const {
   ostringstream os;
   putUnit(os, tdef(i,place));
   return os.str();
@@ -168,7 +168,7 @@ Type ParVector<T,Type>::tdef() const {
 
 template <typename T, typename Type>
 void ParVector<T,Type>::tset(InterfacedBase & i, Type newValue, int place) const
-  throw(InterfaceException) {
+  {
   if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -192,7 +192,7 @@ void ParVector<T,Type>::tset(InterfacedBase & i, Type newValue, int place) const
 template <typename T, typename Type>
 void ParVector<T,Type>::
 tinsert(InterfacedBase & i, Type newValue, int place) const
-  throw(InterfaceException) {
+  {
   if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   if ( ParVectorBase::size() > 0 ) throw ParVExFixed(*this, i);
   T * t = dynamic_cast<T *>(&i);
@@ -216,7 +216,7 @@ tinsert(InterfacedBase & i, Type newValue, int place) const
 
 template <typename T, typename Type>
 void ParVector<T,Type>::
-erase(InterfacedBase & i, int place) const throw(InterfaceException) {
+erase(InterfacedBase & i, int place) const {
   if ( InterfaceBase::readOnly() ) throw InterExReadOnly(*this, i);
   if ( ParVectorBase::size() > 0 ) throw ParVExFixed(*this, i);
   T * t = dynamic_cast<T *>(&i);
@@ -237,7 +237,7 @@ erase(InterfacedBase & i, int place) const throw(InterfaceException) {
 
 template <typename T, typename Type>
 typename ParVector<T,Type>::TypeVector ParVector<T,Type>::
-tget(const InterfacedBase & i) const throw(InterfaceException) {
+tget(const InterfacedBase & i) const {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
@@ -251,7 +251,7 @@ tget(const InterfacedBase & i) const throw(InterfaceException) {
 
 template <typename T, typename Type>
 typename ParVector<T,Type>::StringVector ParVector<T,Type>::
-get(const InterfacedBase & i) const throw(InterfaceException) {
+get(const InterfacedBase & i) const {
   if ( !theStringGetFn ) return ParVectorTBase<Type>::get(i);
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -263,7 +263,7 @@ get(const InterfacedBase & i) const throw(InterfaceException) {
 
 template <typename T, typename Type>
 Type ParVector<T,Type>::tdef(const InterfacedBase & i, int place) const
-  throw(InterfaceException) {
+  {
   if ( place < 0 || !theDefFn ) return theMin;
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -274,7 +274,7 @@ Type ParVector<T,Type>::tdef(const InterfacedBase & i, int place) const
 
 template <typename T, typename Type>
 Type ParVector<T,Type>::tminimum(const InterfacedBase & i, int place) const
-  throw(InterfaceException) {
+  {
   if ( place < 0 || !theMinFn ) return theMin;
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -285,7 +285,7 @@ Type ParVector<T,Type>::tminimum(const InterfacedBase & i, int place) const
 
 template <typename T, typename Type>
 Type ParVector<T,Type>::tmaximum(const InterfacedBase & i, int place) const
-  throw(InterfaceException) {
+  {
   if ( place < 0 || !theMaxFn ) return theMax;
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);

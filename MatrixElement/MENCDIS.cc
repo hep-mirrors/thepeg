@@ -136,7 +136,7 @@ IBPtr MENCDIS::fullclone() const {
   return new_ptr(*this);
 }
 
-void MENCDIS::doinit() throw(InitException) {
+void MENCDIS::doinit() {
   ME2to2QCD::doinit();
   tcPDPtr Z0 = getParticleData(ParticleID::Z0);
   mZ2 = sqr(Z0->mass());

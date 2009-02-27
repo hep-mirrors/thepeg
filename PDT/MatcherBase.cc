@@ -37,7 +37,7 @@ MatcherBase::MatcherBase(const MatcherBase & m)
 
 MatcherBase::~MatcherBase() {}
 
-void MatcherBase::doupdate() throw(UpdateException) {
+void MatcherBase::doupdate() {
   Interfaced::doupdate();
   tPDSet oldParticles;
   tPMSet oldMatchers;

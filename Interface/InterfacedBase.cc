@@ -25,7 +25,7 @@ using namespace ThePEG;
 
 InterfacedBase::~InterfacedBase() {}
 
-void InterfacedBase::readSetup(istream &) throw(SetupException) {}
+void InterfacedBase::readSetup(istream &) {}
 
 bool InterfacedBase::preInitialize() const {
   return false;

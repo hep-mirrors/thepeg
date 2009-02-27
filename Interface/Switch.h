@@ -162,7 +162,7 @@ public:
    * with the standard '>>' operator.
    */
   virtual string exec(InterfacedBase & ib, string action,
-		    string arguments) const throw(InterfaceException);
+		    string arguments) const;
 
   /**
    * Return a complete description of this switch.
@@ -178,24 +178,24 @@ public:
    * Set the member variable of \a ib to \a val.
    */
   virtual void set(InterfacedBase & ib, long val)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Return the value of the member variable of \a ib.
    */
   virtual long get(const InterfacedBase & ib)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Return the default value for the member variable of \a ib.
    */
   virtual long def(const InterfacedBase & ib)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Set the member variable of \a ib to its default value.
    */
-  void setDef(InterfacedBase & i) const throw(InterfaceException) {
+  void setDef(InterfacedBase & i) const {
     set(i, def(i));
   }
 
@@ -328,17 +328,17 @@ public:
    * Set the member variable of \a ib to \a val.
    */
   virtual void set(InterfacedBase & ib, long val) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the value of the member variable of \a ib.
    */
-  virtual long get(const InterfacedBase & ib) const throw(InterfaceException);
+  virtual long get(const InterfacedBase & ib) const;
 
   /**
    * Return the default value for the member variable of \a ib.
    */
-  virtual long def(const InterfacedBase & ib) const throw(InterfaceException);
+  virtual long def(const InterfacedBase & ib) const;
 
   /**
    * Give a pointer to a member function to be used by 'set()'.

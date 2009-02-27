@@ -25,7 +25,7 @@ SwitchOption::SwitchOption(SwitchBase & theSwitch, string newName,
 }
   
 string SwitchBase::exec(InterfacedBase & i, string action,
-		    string arguments) const throw(InterfaceException) {
+		    string arguments) const {
   ostringstream ret;
   istringstream arg(arguments);
   if ( action == "get" ) {

@@ -85,7 +85,7 @@ void SubProcessHandler::persistentInput(PersistentIStream & is, int) {
      >> theMEs >> reweights >> preweights;
 }
 
-void SubProcessHandler::doinit() throw(InitException) {
+void SubProcessHandler::doinit() {
   for ( MEVector::iterator me = theMEs.begin(); me != theMEs.end(); ++me ) {
     (**me).init();
     for ( ReweightVector::iterator i = reweights.begin();

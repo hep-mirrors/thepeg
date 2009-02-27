@@ -38,7 +38,7 @@ Create(long newId, string newPDGName, string newAntiPDGName) {
   return pap;
 }
 
-void ConstituentParticleData::readSetup(istream & is) throw(SetupException) {
+void ConstituentParticleData::readSetup(istream & is) {
   ParticleData::readSetup(is);
   is >> iunit(theDefaultConstituentMass, GeV);
   theConstituentMass = theDefaultConstituentMass;

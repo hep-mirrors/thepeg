@@ -41,7 +41,7 @@ RefVector(string newName, string newDescription,
 template <class T, class R>
 void RefVector<T,R>::
 set(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
-  throw(InterfaceException) {
+  {
   if ( readOnly() ) throw InterExReadOnly(*this, i);
   T * t = dynamic_cast<T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
@@ -65,7 +65,7 @@ set(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
 template <class T, class R>
 void RefVector<T,R>::
 insert(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
-  throw(InterfaceException) {
+  {
   if ( readOnly() ) throw InterExReadOnly(*this, i);
   if ( size() > 0 ) throw RefVExFixed(*this, i);
   T * t = dynamic_cast<T *>(&i);
@@ -89,7 +89,7 @@ insert(InterfacedBase & i, IBPtr newRef, int place, bool chk) const
 
 template <class T, class R>
 void RefVector<T,R>::erase(InterfacedBase & i, int place) const
-  throw(InterfaceException) {
+  {
   if ( readOnly() ) throw InterExReadOnly(*this, i);
   if ( size() > 0 ) throw RefVExFixed(*this, i);
   T * t = dynamic_cast<T *>(&i);
@@ -110,7 +110,7 @@ void RefVector<T,R>::erase(InterfacedBase & i, int place) const
 
 template <class T, class R>
 IVector RefVector<T,R>::get(const InterfacedBase & i) const
-  throw(InterfaceException) {
+  {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( theGetFn ) {
@@ -128,7 +128,7 @@ IVector RefVector<T,R>::get(const InterfacedBase & i) const
 
 template <class T, class R>
 bool RefVector<T,R>::check(const InterfacedBase & i, cIBPtr ir, int place) const
-  throw(InterfaceException) {
+  {
   const T * t = dynamic_cast<const T *>(&i);
   if ( !t ) throw InterExClass(*this, i);
   if ( noNull() && !ir ) return false;

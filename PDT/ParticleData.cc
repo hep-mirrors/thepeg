@@ -69,7 +69,7 @@ Create(long newId, const string & newPDGName, const string & newAntiPDGName) {
   return pap;
 }
 
-void ParticleData::readSetup(istream & is) throw(SetupException) {
+void ParticleData::readSetup(istream & is) {
   is >> theId >> thePDGName >> iunit(theDefMass, GeV) >> iunit(theDefWidth, GeV)
      >> iunit(theDefCut, GeV) >> iunit(theDefCTau, mm) >> ienum(theDefCharge)
      >> ienum(theDefColour) >> ienum(theDefSpin) >> ienum(isStable);
@@ -224,7 +224,7 @@ void ParticleData::synchronize() {
   }
 }
 
-void ParticleData::doupdate() throw(UpdateException) {
+void ParticleData::doupdate() {
   Interfaced::doupdate();
   bool redo = touched();
   for_each(theDecayModes, UpdateChecker(redo));
@@ -270,7 +270,7 @@ tDMPtr ParticleData::selectMode(Particle & p) const {
   }
 }
 
-void ParticleData::rebind(const TranslationMap & trans) throw(RebindException) {
+void ParticleData::rebind(const TranslationMap & trans) {
   if ( CC() ) theAntiPartner = trans.translate(theAntiPartner);
   DecaySet newModes;
   DecaySelector newSelector;
@@ -839,7 +839,7 @@ ParticleChargeCommand(const ParticleData & pd, string arg) {
   severity(warning);
 }
 
-void ParticleData::doinit() throw(InitException) {
+void ParticleData::doinit() {
   Interfaced::doinit();
   if( theMassGenerator )  theMassGenerator->init();
   if( theWidthGenerator ) theWidthGenerator->init();

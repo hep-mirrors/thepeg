@@ -307,7 +307,7 @@ protected:
    * all before the initialization of any other object associated with
    * an event generator.
    */
-  virtual void doinit() throw (InitException);
+  virtual void doinit();
 
 public:
 

@@ -56,7 +56,7 @@ public:
    * Create an object with a given direction.
    */
   Direction(Dir newDirection)
-    throw(MultipleDirectionException, UndefinedDirectionException) 
+    
   {
     if ( theDirection != Undefined ) throw MultipleDirectionException(I);
     if ( newDirection == Positive ) theDirection = Positive;
@@ -68,7 +68,7 @@ public:
    * Create an object with a positive direction if rnd > 0.5,
    * otherwise set the negative direction.
    */
-  Direction(double rnd) throw(MultipleDirectionException)
+  Direction(double rnd)
   {
     if ( theDirection != Undefined ) throw MultipleDirectionException(I);
     theDirection = rnd > 0 ? Positive : Negative;
@@ -78,7 +78,7 @@ public:
    * Create an object with a positive direction if p is true,
    * otherwise set the negative direction.
    */
-  Direction(bool p) throw(MultipleDirectionException)
+  Direction(bool p)
   {
     if ( theDirection != Undefined ) throw MultipleDirectionException(I);
     theDirection = p ? Positive : Negative;
@@ -94,7 +94,7 @@ public:
   /**
    * Set the direction.
    */
-  static void set(Dir newDirection) throw(UndefinedDirectionException) {
+  static void set(Dir newDirection) {
     if ( newDirection == Positive ) theDirection = Positive;
     else if ( newDirection == Negative ) theDirection = Negative;
     else throw UndefinedDirectionException(I);
@@ -103,28 +103,28 @@ public:
   /**
    * Reverse the direction.
    */
-  static void reverse() throw(UndefinedDirectionException) {
+  static void reverse() {
     theDirection = pos() ? Negative : Positive;
   }
 
   /**
    * Return true if the direction is positive.
    */
-  static bool pos() throw(UndefinedDirectionException) {
+  static bool pos() {
     return dir() == Positive;
   }
 
   /**
    * Return true if the direction is negative (reversed).
    */
-  static bool neg() throw(UndefinedDirectionException) {
+  static bool neg() {
     return dir() == Negative;
   }
 
   /**
    * Return the direction.
    */
-  static Dir dir() throw(UndefinedDirectionException) {
+  static Dir dir() {
     if ( theDirection == Undefined ) throw UndefinedDirectionException(I);
     return theDirection;
   }

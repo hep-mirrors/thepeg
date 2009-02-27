@@ -117,7 +117,7 @@ public:
    * operator.
    */
   virtual string exec(InterfacedBase &, string action,
-		      string arguments) const throw(InterfaceException);
+		      string arguments) const;
 
   /**
    * Return a complete description of this parameter vector.
@@ -131,7 +131,7 @@ public:
    * standard '>>' operator.
    */
   virtual void set(InterfacedBase & ib, string val, int i)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Insert a new object before the \a i'th element of a container of
@@ -140,41 +140,41 @@ public:
    * stringstream with the standard '>>' operator.
    */
   virtual void insert(InterfacedBase & ib, string val, int i)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Remove the \a i'th element of a container of member variables of
    * \a ib.
    */
   virtual void erase(InterfacedBase & ib, int i)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Return the values of a container of member variables of \a ib.
    */
   virtual StringVector get(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the minimum value allowed for the \a i'th element of a
    * container of member variables of \a ib.
    */
   virtual string minimum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the maximum value allowed for the \a i'th element of a
    * container of member variables of \a ib.
    */
   virtual string maximum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the default value for the \a i'th element of a container
    * of member variables of \a ib.
    */
   virtual string def(const InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the general default value for this parameter vector.
@@ -186,7 +186,7 @@ public:
    * ib to its default value.
    */
   virtual void setDef(InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * True if there the variable is limited from above and below.
@@ -347,14 +347,14 @@ public:
    * object and then calls tset(InterfacedBase &, Type, int).
    */
   virtual void set(InterfacedBase & ib, string val, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Set the \a i'th element of a container of member variables of \a
    * ib to \a val.
    */
   virtual void tset(InterfacedBase & ib, Type val, int i)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Insert a new object before the \a i'th element of a container of
@@ -363,24 +363,24 @@ public:
    * tinsert(InterfacedBase &, Type, int).
    */
   virtual void insert(InterfacedBase & ib, string val, int i) const
-    throw(InterfaceException);
+   ;
 
 private:
   /// Implementation of set() for standard types.
   void setImpl(InterfacedBase & ib, string val, int i, StandardT)
-    const throw(InterfaceException);
+    const;
 
   /// Implementation of set() for dimensioned types.
   void setImpl(InterfacedBase & ib, string val, int i, DimensionT) 
-    const throw(InterfaceException);
+    const;
 
   /// Implementation of insert() for standard types.
   void insertImpl(InterfacedBase & ib, string val, int i, StandardT)
-    const throw(InterfaceException);
+    const;
 
   /// Implementation of insert() for dimensioned types.
   void insertImpl(InterfacedBase & ib, string val, int i, DimensionT) 
-    const throw(InterfaceException);
+    const;
 
 public:
   
@@ -389,7 +389,7 @@ public:
    * member variables of \a ib and set it to \a val.
    */
   virtual void tinsert(InterfacedBase & ib, Type val, int i)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Return the values of a container of member variables of \a ib in
@@ -397,14 +397,14 @@ public:
    * and returns a vector of strings converted with ostringstreams.
    */
   virtual StringVector get(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the values of a container of member variables of \a ib in a
    * vector of Type.
    */
   virtual TypeVector tget(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the minimum value allowed for the \a i'th element of a
@@ -414,14 +414,14 @@ public:
    * 
    */
   virtual string minimum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the minimum value allowed for the \a i'th element of a
    * container of member variables of \a ib.
    */
   virtual Type tminimum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the maximum value allowed for the \a i'th element of a
@@ -430,14 +430,14 @@ public:
    * ostringstream.
    */
   virtual string maximum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the maximum value allowed for the \a i'th element of a
    * container of member variables of \a ib.
    */
   virtual Type tmaximum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the default value for the \a i'th element of a container
@@ -445,14 +445,14 @@ public:
    * int) and converts the returned value with an ostringstream.
    */
   virtual string def(const InterfacedBase & ib, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the default value for the \a i'th element of a container of
    * member variables of \a ib.
    */
   virtual Type tdef(const InterfacedBase & ib, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Return the general default value for this parameter vector. Calls
@@ -470,7 +470,7 @@ public:
    * its default value.
    */
   virtual void setDef(InterfacedBase & ib, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Get the unit which an Type object is divided (multiplied) by when
@@ -875,21 +875,21 @@ public:
    * ib to \a val.
    */
   virtual void tset(InterfacedBase & ib, Type val, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Insert a new object before the \a i'th element of a container of
    * member variables of \a ib and set it to \a val.
    */
   virtual void tinsert(InterfacedBase & ib, Type val, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Remove the \a i'th element of a container of
    * member variables of \a ib.
    */
   virtual void erase(InterfacedBase & ib, int i)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Return the values of a container of member variables of \a ib in
@@ -897,35 +897,35 @@ public:
    * and returns a vector of strings converted with ostringstreams.
    */
   virtual StringVector get(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the values of a container of member variables of \a ib in a
    * vector of Type.
    */
   virtual TypeVector tget(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the minimum value allowed for the \a i'th element of a
    * container of member variables of \a ib.
    */
   virtual Type tminimum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the maximum value allowed for the \a i'th element of a
    * container of member variables of \a ib.
    */
   virtual Type tmaximum(const InterfacedBase & ib, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the default value for the \a i'th element of a container of
    * member variables of \a ib.
    */
   virtual Type tdef(const InterfacedBase &, int) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Return the general default value for this parameter vector.

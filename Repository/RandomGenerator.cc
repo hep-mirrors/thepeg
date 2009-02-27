@@ -69,7 +69,7 @@ RandomGenerator::~RandomGenerator() {
   gsl_rng_free(gsl);
 }
 
-void RandomGenerator::doinit() throw (InitException) {
+void RandomGenerator::doinit() {
   if ( theSeed != 0 ) setSeed(theSeed);
   flush();
 }

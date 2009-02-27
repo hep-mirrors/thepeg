@@ -18,7 +18,7 @@
 using namespace ThePEG;
 
 string DeletedBase::exec(InterfacedBase &, string,
-			 string) const throw(InterfaceException) {
+			 string) const {
   Throw<InterfaceException>()
     << "The interface '" << name() << "' has been removed. " << description()
     << Exception::runerror;

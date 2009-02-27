@@ -169,7 +169,7 @@ void EventGenerator::closeOutputFiles() {
   logfile().close();
 }
 
-void EventGenerator::doinit() throw (InitException) {
+void EventGenerator::doinit() {
 
   // First initialize base class and random number generator.
   Interfaced::doinit();

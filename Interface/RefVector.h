@@ -93,7 +93,7 @@ public:
    * BaseRepository.
    */
   virtual string exec(InterfacedBase & ib, string action,
-		      string arguments) const throw(InterfaceException);
+		      string arguments) const;
 
   /**
    * Return a complete description of this reference vector.
@@ -116,34 +116,34 @@ public:
    * to \a ip.
    */
   virtual void set(InterfacedBase & ib, IBPtr ip, int i, bool chk = true)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Insert a new pointer before the \a i'th element of a container of
    * pointers of \a ib and set it to \a ip.
    */
   virtual void insert(InterfacedBase & ib, IBPtr ip, int i, bool chk = true)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Remove the \a i'th element of a container of pointers of \a ib.
    */
   virtual void erase(InterfacedBase & ib, int i)
-    const throw(InterfaceException) = 0;
+    const = 0;
 
   /**
    * Return a vector of pointers corresponding to the container of
    * pointers of \a ib.
    */
   virtual IVector get(const InterfacedBase & ib) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * Check if set(ib, ip, i) will be successfull but do not do
    * anything.
    */
   virtual bool check(const InterfacedBase & ib, cIBPtr ip, int i) const
-    throw(InterfaceException) = 0;
+    = 0;
 
   /**
    * In the object \a ib, replace all pointers to objects in this
@@ -337,34 +337,34 @@ public:
    * to \a ip.
    */
   virtual void set(InterfacedBase & ib, IBPtr ip, int i, bool chk = true)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Insert a new pointer before the \a i'th element of a container of
    * pointers of \a ib and set it to \a ip.
    */
   virtual void insert(InterfacedBase & ib, IBPtr ip, int i, bool chk = true)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Remove the \a i'th element of a container of pointers of \a ib.
    */
   virtual void erase(InterfacedBase & ib, int i)
-    const throw(InterfaceException);
+    const;
 
   /**
    * Return a vector of pointers corresponding to the container of
    * pointers of \a ib.
    */
   virtual IVector get(const InterfacedBase & ib) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Check if set(ib, ip, i) will be successfull but do not do
    * anything.
    */
   virtual bool check(const InterfacedBase & ib, cIBPtr, int i) const
-    throw(InterfaceException);
+   ;
 
   /**
    * Give a pointer to a member function to be used by 'set()'.

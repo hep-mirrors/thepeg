@@ -37,7 +37,7 @@ IVector RefVectorBase::getReferences(const InterfacedBase & i) const {
 }
 
 string RefVectorBase::exec(InterfacedBase & i, string action,
-			   string arguments) const throw(InterfaceException) {
+			   string arguments) const {
   istringstream arg(arguments.c_str());
   int place = -1;
   if ( !( arg >> place ) ) place = -1;
