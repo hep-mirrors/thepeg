@@ -1,3 +1,8 @@
+2009-03-02  Mike Seymour  <Mike.Seymour@cern.ch>
+
+	* Vectors/HepMCConverter.tcc: Fixed minor bug leading to incorrect
+	PDFInfo when the two beam particles are different.
+
 2009-02-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Pointers.h (ThePEG_DECLARE_POINTERS): Changed macro so

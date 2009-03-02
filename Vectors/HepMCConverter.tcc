@@ -279,8 +279,8 @@ HepMCConverter<HepMCEventT,Traits>::createPdfInfo(const Event & e) {
   // get the scale
   Energy2 scale = eh->lastScale();
   // get the values of the pdfs
-  double pdf1 = pdfs.first.xfx(sub->incoming().first ->dataPtr(),scale,x1);
-  double pdf2 = pdfs.first.xfx(sub->incoming().second->dataPtr(),scale,x2);
+  double pdf1 = pdfs.first .xfx(sub->incoming().first ->dataPtr(),scale,x1);
+  double pdf2 = pdfs.second.xfx(sub->incoming().second->dataPtr(),scale,x2);
   // create the PDFinfo object
   PdfInfo * output = new PdfInfo();
   // set the values
