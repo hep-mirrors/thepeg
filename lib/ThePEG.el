@@ -352,15 +352,11 @@ declarations of a class CLASS."
 #ifndef " NAMESPACE "_THECLASS_FH
 #define " NAMESPACE "_THECLASS_FH
 
-#include \"ThePEG/Config/Pointers.h\"
+#include \"ThePEG/Config/ThePEG.h\"
 
 namespace " namespace " {
 
 class THECLASS;
-
-}
-
-namespace ThePEG {
 
 ThePEG_DECLARE_POINTERS(" namespace "::THECLASS,THECLASSPtr);
 
@@ -1483,20 +1479,16 @@ ParticleVector " class "::decay(const DecayMode & dm,
   /**
    * " getdesc "
    */
-  inline " type " " name "() const;
+  inline " type " " name "() const {
+    return " theName ";
+  }
 
   /**
    * " setdesc "
    */
-  inline void " name "(" type ");
-
-inline " type " " class "::" name "() const {
-  return " theName ";
-}
-
-inline void " class "::" name "(" type " x) {
-  " theName " = x;
-}
+  inline void " name "(" type " x) {
+    " theName " = x;
+  }
 
 " class "::" class "() : Base(), " theName "(" def ") {}
 
