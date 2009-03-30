@@ -168,7 +168,7 @@ template <>
 struct ClassTraits<WeizsackerWilliamsPDF>
   : public ClassTraitsBase<WeizsackerWilliamsPDF> {
   /** Return a platform-independent class name */
-  static string className() { return "WeizsackerWilliamsPDF"; }
+  static string className() { return "ThePEG::WeizsackerWilliamsPDF"; }
   /**
    * The name of a file containing the dynamic library where the class
    * WeizsackerWilliamsPDF is implemented. It may also include several, space-separated,
