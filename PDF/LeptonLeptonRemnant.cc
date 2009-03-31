@@ -122,10 +122,7 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     Lorentz5Momentum pgam;
     pgam.setMass(-sqrt(scale));
     pgam.setT(0.5*(ppl+pmi));
-    if(parent.z() < ZERO)
-      pgam.setZ(-0.5*(ppl-pmi));
-    else
-      pgam.setZ(0.5*(ppl-pmi));
+    pgam.setZ(0.5*(ppl-pmi));
     double phi = rnd(2.0*Constants::pi);
     pgam.setX(sqrt(qt2)*cos(phi));
     pgam.setY(sqrt(qt2)*sin(phi));
