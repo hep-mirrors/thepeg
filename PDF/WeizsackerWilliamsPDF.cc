@@ -6,6 +6,8 @@
 
 #include "WeizsackerWilliamsPDF.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Persistency/PersistentOStream.h"
+#include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/EnumParticles.h"
@@ -43,7 +45,7 @@ double WeizsackerWilliamsPDF::xfvl(tcPDPtr, tcPDPtr, Energy2, double,
 }
 
 
-NoPIOClassDescription<WeizsackerWilliamsPDF> 
+ClassDescription<WeizsackerWilliamsPDF> 
 WeizsackerWilliamsPDF::initWeizsackerWilliamsPDF;
 // Definition of the static class description member.
 
@@ -88,3 +90,12 @@ double WeizsackerWilliamsPDF::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
   jacobian *= c.lMax() - c.lMin();
   return c.lMin() + z*(c.lMax() - c.lMin());
 }
+
+void WeizsackerWilliamsPDF::persistentOutput(PersistentOStream & os) const {
+  os << ounit(_q2min,GeV2) << ounit(_q2max,GeV2);
+}
+
+void WeizsackerWilliamsPDF::persistentInput(PersistentIStream & is, int) {
+  is >> iunit(_q2min,GeV2) >> iunit(_q2max,GeV2);
+}
+

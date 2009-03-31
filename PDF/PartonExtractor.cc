@@ -422,8 +422,8 @@ transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
 
 
 double PartonExtractor::fullFn(const PBIPair & pbins, Energy2 scale) {
-  pbins.first->scale(scale);
-  pbins.second->scale(scale);
+  if(pbins.first->bin()->pdfDim()<=1) pbins.first->scale(scale);
+  if(pbins.second->bin()->pdfDim()<=1) pbins.second->scale(scale);
   return fullFn(*pbins.first)*fullFn(*pbins.second);
 }
 

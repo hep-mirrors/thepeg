@@ -50,23 +50,25 @@ canHandle(tcPDPtr particle, const cPDVector & partons) const {
   return true;
 }
 
+int LeptonLeptonRemnant::nDim(const PartonBin &, bool) const {
+  return 1;
+}
+
 Lorentz5Momentum LeptonLeptonRemnant::
-generate(PartonBinInstance & pb, const double *,
+generate(PartonBinInstance & pb, const double *r,
 	 Energy2 scale, const LorentzMomentum & parent) const {
   // photon into hard process and lepton remnant
   if ( pb.particleData() != pb.partonData() && 
        pb.partonData()->id() == ParticleID::gamma) {
+    scale = abs(scale);
     Energy  ppl = pb.xi()*(abs(parent.z())+parent.t());
     Energy2 qt2 = pb.eps()*scale-sqr(pb.xi()*parent.m());
     Energy  pmi = (qt2-scale)/ppl;
     Lorentz5Momentum pgam;
     pgam.setMass(-sqrt(scale));
     pgam.setT(0.5*(ppl+pmi));
-    if(parent.z() < ZERO) 
-      pgam.setZ(-0.5*(ppl-pmi));
-    else
-      pgam.setZ(0.5*(ppl-pmi));
-    double phi = rnd(2.0*Constants::pi);
+    pgam.setZ(0.5*(ppl-pmi));
+    double phi = r[0]*Constants::twopi;
     pgam.setX(sqrt(qt2)*cos(phi));
     pgam.setY(sqrt(qt2)*sin(phi));
     pgam.rotateY(parent.theta());
@@ -86,7 +88,7 @@ generate(PartonBinInstance & pb, const double *,
     Energy2 qt2 = ZERO;
     if ( scale >= ZERO ) {
       qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
-      double phi = rnd(2.0*Constants::pi);
+      double phi = r[0]*Constants::twopi;
       qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
     }
     Energy pl = p.plus()*pb.eps();
@@ -111,11 +113,12 @@ generate(PartonBinInstance & pb, const double *,
 }
 
 Lorentz5Momentum LeptonLeptonRemnant::
-generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
+generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
 	 const LorentzMomentum & parent) const {
   // photon into hard process and lepton remnant
   if ( pb.particleData() != pb.partonData() && 
        pb.partonData()->id() == ParticleID::gamma) {
+    scale = abs(scale);
     Energy  ppl = pb.xi()*(abs(parent.z())+parent.t());
     Energy2 qt2 = pb.eps()*scale-sqr(pb.xi()*parent.m());
     Energy  pmi = (qt2-scale)/ppl;
@@ -123,7 +126,7 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     pgam.setMass(-sqrt(scale));
     pgam.setT(0.5*(ppl+pmi));
     pgam.setZ(0.5*(ppl-pmi));
-    double phi = rnd(2.0*Constants::pi);
+    double phi = r[0]*Constants::twopi;
     pgam.setX(sqrt(qt2)*cos(phi));
     pgam.setY(sqrt(qt2)*sin(phi));
     pgam.rotateY(parent.theta());
@@ -143,7 +146,7 @@ generate(PartonBinInstance & pb, const double *, Energy2 scale, Energy2,
     Energy2 qt2 = ZERO;
     if ( scale >= ZERO ) {
       qt2 = pb.eps()*(pb.xi()*parent.m2() + scale);
-      double phi = rnd(2.0*Constants::pi);
+      double phi = r[0]*Constants::twopi;
       qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
     }
     Energy pl = p.plus()*pb.eps();
@@ -196,3 +199,43 @@ void LeptonLeptonRemnant::Init() {
 
 }
 
+
+bool LeptonLeptonRemnant::
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
+		 Energy2 scale, const LorentzMomentum & p,
+		 const PVector & prev) const {
+  if ( !oldp || !prev.empty() ) return false;
+  // get the same random number used for the azimuth last time
+  Lorentz5Momentum pgam=oldp->momentum();
+  pgam.rotateZ(-p.phi());
+  pgam.rotateY(-p.theta());
+  double test = atan2(pgam.y(),pgam.x())/Constants::twopi;
+  if(test<0.) test+=1.;
+  vector<double> rv;
+  int rd = pb.bin()->remDim();
+  for ( int i = 0; i < rd; ++i) rv.push_back(test);
+  // compute the momentum
+  newp->set5Momentum(generate(pb, pb.bin()->remDim()? &rv[0]: 0, scale, p));
+  boostRemnants(pb);
+  return true;
+}  
+
+bool LeptonLeptonRemnant::
+recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
+		 Energy2 scale, Energy2 shat,
+		 const LorentzMomentum & p, const PVector & prev) const {
+  if ( !oldp || !prev.empty() ) return false;
+  // get the same random number used for the azimuth last time
+  Lorentz5Momentum pgam=oldp->momentum();
+  pgam.rotateZ(-p.phi());
+  pgam.rotateY(-p.theta());
+  double test = atan2(pgam.y(),pgam.x())/Constants::twopi;
+  if(test<0.) test+=1.;
+  vector<double> rv;
+  int rd = pb.bin()->remDim();
+  for ( int i = 0; i < rd; ++i) rv.push_back(test);
+  // compute the momentum
+  newp->set5Momentum(generate(pb, rd > 0? &rv[0]: 0, scale, shat, p));
+  boostRemnants(pb);
+  return true;
+}  
