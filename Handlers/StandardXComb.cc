@@ -202,8 +202,8 @@ void StandardXComb::newSubProcess() {
   subProcess()->transform(r.inverse());
   lastPartons().first->set5Momentum(p1);
   lastPartons().second->set5Momentum(p2);
-  lastPartons().first->scale(lastScale());
-  lastPartons().second->scale(lastScale());
+  lastPartons().first ->scale(partonBinInstances().first ->scale());
+  lastPartons().second->scale(partonBinInstances().second->scale());
   for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
     subProcess()->outgoing()[i]->scale(lastScale());
   // construct the spin information for the interaction
