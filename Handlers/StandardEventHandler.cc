@@ -114,10 +114,14 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tCutsPtr cuts,
     if ( xcomb->checkInit() ) xCombs().push_back(xcomb);
     else generator()->logWarning(
       StandardEventHandlerInitError() << "The matrix element '"
-      << xcomb->matrixElement()->name() << "' cannot generate the diagram '"
-      << dit->first << "' when used together with the parton extractor '"
+      << xcomb->matrixElement()->name() 
+      << "' cannot generate the diagram '"
+      << dit->first 
+      << "' when used together with the parton extractor '"
       << xcomb->pExtractor()->name()
-      << "'. The corresponding diagram is switched off." << Exception::warning);
+      << "'.\nThe corresponding diagram is switched off, " 
+      << "check the collision energy and/or the cuts."
+      << Exception::warning);
   }
 }
 

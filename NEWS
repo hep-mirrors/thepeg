@@ -8,6 +8,26 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.4.1 release: 2009-03-31
+** User interaction
+   Error messages have been clarified in BaseRepository and
+   StandardEventHandler
+
+** Les Houches files
+   File readers are more robust, with clearer messages when things go
+   wrong.
+
+** Floating point issues
+   fixed in ThreeVector and VertexBase.
+
+** HepMC converter
+   Fixed PDF choice for asymmetric beams.
+
+** Libtool
+   Updated to version 2.2.6
+
+
+
 * ThePEG-1.4.0 release: 2008-12-02
 ** Efficiency improvements
    The LorentzVector class, the helicity amplitude code and PDF
@@ -84,6 +104,8 @@ or at http:///projects.hepforge.org/herwig/versions
    Several loops of shared pointers were fixed involving DecayModes
    and ParticleData. FixedSizeAllocator was removed, the regular 'new'
    and 'delete' is now used for all allocations, giving a 5% speedup.  
+
+
 
 * ThePEG-1.2.0 release: 2008-04-18
 ** ThePEG uses GSL 

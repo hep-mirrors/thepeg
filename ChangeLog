@@ -1,3 +1,7 @@
+2009-03-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* m4/*: Updated libtool files to version 2.2.6
+
 2009-03-02  Mike Seymour  <Mike.Seymour@cern.ch>
 
 	* Vectors/HepMCConverter.tcc: Fixed minor bug leading to incorrect
