@@ -1,3 +1,13 @@
+2009-04-02  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Repository/EventGenerator.*: Setting dumpPeriod to -1 will now
+	disable dumping completely, even in the case of errors.
+
+	* Repository/Repository.*, configure.ac, m4/vl_readline.m4,
+	lib/Makefile.am: Implemented basic readline support for the
+	interactive mode. Will fall back to previous method if not reading
+	from std::cin, or readline is not available.
+
 2009-03-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* m4/*: Updated libtool files to version 2.2.6

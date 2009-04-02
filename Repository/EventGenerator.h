@@ -963,6 +963,8 @@ private:
   /**
    * If the dubug level is higher than 0, dump the complete state of
    * this run to the default dump file every 'dumpPeriod' events.
+   * If 'dumpPeriod' is -1, dumping is disabled completely,
+   * even when runs are aborted.
    */
   long dumpPeriod;
 

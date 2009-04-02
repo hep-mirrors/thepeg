@@ -500,11 +500,12 @@ void EventGenerator::tic(long currev, long totev) const {
   if ( currev == totev ) cerr << endl;
 }
   
-  
 
 void EventGenerator::dump() const {
-  PersistentOStream file((filename() + ".dump").c_str());
-  file << tcEGPtr(this);
+  if ( dumpPeriod > -1 ) {
+    PersistentOStream file((filename() + ".dump").c_str());
+    file << tcEGPtr(this);
+  }
 }
 
 void EventGenerator::use(const Interfaced & i) {
@@ -1096,8 +1097,8 @@ void EventGenerator::Init() {
   static Parameter<EventGenerator,long> interfaceDumpPeriod
     ("DumpPeriod",
      "If the debug level is above zero, dump the full state of the run every "
-     "'DumpPeriod' events.",
-     &EventGenerator::dumpPeriod, 0, 0, Constants::MaxInt,
+     "'DumpPeriod' events. Set it to -1 to disable dumping even in the case of errors.",
+     &EventGenerator::dumpPeriod, 0, -1, Constants::MaxInt,
      true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,long> interfaceDebugEvent
