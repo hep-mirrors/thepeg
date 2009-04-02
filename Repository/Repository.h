@@ -228,6 +228,11 @@ private:
    */
   static void registerMatcher(tPMPtr);
 
+  /** 
+   * Used by read()
+   */
+  static void execAndCheckReply(string, ostream &);
+
 protected:
 
   /** @name Functions containing the static instances of objects used

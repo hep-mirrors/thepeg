@@ -24,6 +24,35 @@
 #include "ThePEG/Utilities/StringUtils.h"
 #include "ThePEG/Utilities/SystemUtils.h"
 
+#include <config.h>
+
+// readline options taken from
+// http://autoconf-archive.cryp.to/vl_lib_readline.html 
+// Copyright © 2008 Ville Laurikari <vl@iki.fi> 
+// Copying and distribution of this file, with or without
+// modification, are permitted in any medium without royalty provided
+// the copyright notice and this notice are preserved.
+
+#ifdef HAVE_LIBREADLINE
+#  if defined(HAVE_READLINE_READLINE_H)
+#    include <readline/readline.h>
+#  elif defined(HAVE_READLINE_H)
+#    include <readline.h>
+#  else
+     extern "C" char *readline (const char *);
+#  endif
+#endif
+
+#ifdef HAVE_READLINE_HISTORY
+#  if defined(HAVE_READLINE_HISTORY_H)
+#    include <readline/history.h>
+#  elif defined(HAVE_HISTORY_H)
+#    include <history.h>
+#  else
+     extern "C" void add_history (const char *);
+#  endif
+#endif
+
 using namespace ThePEG;
 
 ParticleMap & Repository::defaultParticles() {
@@ -382,28 +411,72 @@ void Repository::read(string filename, ostream & os) {
   }
 }
 
+void Repository::execAndCheckReply(string line, ostream & os) {
+  string reply = exec(line, os);
+  if ( reply.size() ) 
+    os << reply;
+  if ( reply.size() && reply[reply.size()-1] != '\n' ) 
+    os << endl;
+  if ( exitOnError() && reply.size() >= 7 
+       && reply.substr(0, 7) == "Error: " )
+    exit(exitOnError());
+}
+
 void Repository::read(istream & is, ostream & os, string prompt) {
-  string line;
-  if ( prompt.size() ) os << prompt;
-  while ( getline(is, line) ) {
-    while ( !line.empty() && line[line.size() - 1] == '\\' ) {
-      line[line.size() - 1] = ' ';
-      string cont;
-      if ( prompt.size() ) os << "> ";
-      getline(is, cont);
-      line += cont;
+#ifdef HAVE_LIBREADLINE
+  if ( is == std::cin ) {
+    char * line_read = 0;
+    do {
+      if ( line_read ) {
+	free(line_read);
+	line_read = 0;
+      }
+      
+      line_read = readline(prompt.c_str());
+      
+      if ( line_read && *line_read ) {
+	string line = line_read;
+	while ( !line.empty() && line[line.size() - 1] == '\\' ) {
+	  line[line.size() - 1] = ' ';
+	  char * cont_read = readline("... ");
+	  if ( cont_read ) {
+	    line += cont_read;
+	    free(cont_read);
+	  }
+	}
+	if ( prompt.empty() && ThePEG_DEBUG_LEVEL > 0 )
+	  os << "(" << line << ")" << endl;
+#ifdef HAVE_READLINE_HISTORY
+	add_history(line.c_str());
+#endif // HAVE_READLINE_HISTORY
+	execAndCheckReply(line, os);
+      }
     }
-    if ( prompt.empty() && ThePEG_DEBUG_LEVEL > 0 )
-      os << "(" << line << ")" << endl;;
-    string reply = exec(line, os);
-    if ( reply.size() ) os << reply;
-    if ( reply.size() && reply[reply.size()-1] != '\n' ) os << endl;
-    if ( exitOnError() && reply.size() >= 7 && reply.substr(0, 7) == "Error: " )
-      exit(exitOnError());
-    if ( prompt.size() ) os << prompt;
+    while ( line_read );
   }
+  else {
+#endif // HAVE_LIBREADLINE
+    string line;
+    if ( prompt.size() ) os << prompt;
+    while ( getline(is, line) ) {
+      while ( !line.empty() && line[line.size() - 1] == '\\' ) {
+	line[line.size() - 1] = ' ';
+	string cont;
+	if ( prompt.size() ) os << "... ";
+	getline(is, cont);
+	line += cont;
+      }
+      if ( prompt.empty() && ThePEG_DEBUG_LEVEL > 0 )
+	os << "(" << line << ")" << endl;
+      execAndCheckReply(line, os);
+      if ( prompt.size() ) os << prompt;
+    }
+#ifdef HAVE_LIBREADLINE
+  }
+#endif
   if ( prompt.size() ) os << endl;
 }
+
 
 string Repository::copyParticle(tPDPtr p, string newname) {
   DirectoryAppend(newname);
