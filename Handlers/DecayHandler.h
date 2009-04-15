@@ -57,8 +57,7 @@ public:
    * @param hint a possible Hint which is ignored in this implementation.
    */
   virtual void handle(EventHandler & eh, const tPVector & tagged,
-		      const Hint & hint)
-    ThePEG_THROW_SPEC((Veto, Stop, Exception));
+		      const Hint & hint);
   //@}
 
   /**

@@ -69,9 +69,7 @@ public:
     * @throws Exception if something goes wrong.
     */
   virtual void handle(EventHandler & eh, const tPVector & tagged,
-		      const Hint & hint)
-    ThePEG_THROW_SPEC((Veto, Stop, Exception)) = 0;
-
+		      const Hint & hint) = 0;
   //@}
 
   /** @name Access to the calling EventHandler and current Step. */

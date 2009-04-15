@@ -16,7 +16,7 @@
 using namespace ThePEG;
 
 Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   if ( m1 >= ZERO && m2 >= ZERO ) {
     Energy2 aa = s - sqr(m1+m2);
     if ( aa < Energy2() ) throw ImpossibleKinematics();
@@ -32,7 +32,7 @@ Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
 
 vector<LorentzMomentum> SimplePhaseSpace::
 CMSn(Energy m0, const vector<Energy> & m)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   using Constants::pi;
 
   // Setup constants.

@@ -31,11 +31,10 @@ MECuts::MECuts()
     theUHatMin(ZERO), theUHatMax(-1.0*GeV2),
     theScaleMin(ZERO), theScaleMax(-1.0*GeV2) {}
 
-void MECuts::newcut(const SubProcess &) const
-  ThePEG_THROW_SPEC((Veto)) {}
+void MECuts::newcut(const SubProcess &) const {}
 
 void MECuts::cut(const SubProcess & sp) const
-  ThePEG_THROW_SPEC((Veto)) {
+{
   newcut(sp);
   const ParticleVector & out = sp.outgoing();
   int N = out.size();

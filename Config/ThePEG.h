@@ -16,18 +16,6 @@
  * macro <code>ThePEG_ALTERNATE_CONFIG</code>.
  */
 
-// For some reason the gcc compiler has a very slow exception
-// handling. And it is even slower if functions which have throw
-// specification throws. The following macro should therefore be used
-// for exception specifications.
-#ifndef __GNUG__
-/** Macro for declaring throw specification for a function. */
-#define ThePEG_THROW_SPEC(classes) throw classes
-#else
-/** Macro for declaring throw specification for a function. */
-#define ThePEG_THROW_SPEC(classes)
-#endif
-
 #ifndef ThePEG_ALTERNATE_CONFIG
 
 #include "ThePEG/Pointer/Ptr.h"

@@ -15,7 +15,7 @@ namespace ThePEG {
 
 template <typename PType>
 void SimplePhaseSpace::CMS(PType & p1, PType & p2, Energy2 s)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   typedef ParticleTraits<PType> Traits;
   Energy z = getMagnitude(s, Traits::mass(p1), Traits::mass(p2));
   Traits::set3Momentum(p1, Momentum3(ZERO, ZERO, z));
@@ -24,14 +24,14 @@ void SimplePhaseSpace::CMS(PType & p1, PType & p2, Energy2 s)
 
 template <typename PType>
 void SimplePhaseSpace::CMS(Energy2 s, PType & p1, PType & p2)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   CMS(p1, p2, s, 2.0*UseRandom::rnd() - 1.0, Constants::twopi*UseRandom::rnd());
 }
 
 template <typename PType>
 void SimplePhaseSpace::CMS(PType & p1, PType & p2, Energy2 s,
 			   double cthe, double phi)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   typedef ParticleTraits<PType> Traits;
   Energy r = getMagnitude(s, Traits::mass(p1), Traits::mass(p2));
   double sthe = sqrt(1.0-sqr(cthe));
@@ -44,7 +44,7 @@ template <typename PType>
 void SimplePhaseSpace::
 CMS(PType & p1, PType & p2, PType & p3,
     Energy2 s, double x1, double x3)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   CMS(p1, p2, p3, s, x1, x3,
       Constants::twopi*UseRandom::rnd(), acos(2.0*UseRandom::rnd() - 1.0),
       Constants::twopi*UseRandom::rnd());
@@ -54,7 +54,7 @@ template <typename PType>
 void SimplePhaseSpace::
 CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
     double x1, double x3, double phii, double the, double phi)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   typedef ParticleTraits<PType> Traits;
   Energy Etot = sqrt(s);
   Energy m1 = Traits::mass(p1);
@@ -88,7 +88,7 @@ CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
 template <typename PType>
 void SimplePhaseSpace::
 CMS(PType & p1, PType & p2, Energy2 s, Energy2 t, double phi,
-    const PType & p0) ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+    const PType & p0) {
   typedef ParticleTraits<PType> Traits;
   Energy r = getMagnitude(s, Traits::mass(p1), Traits::mass(p2));
   Energy e = sqrt(sqr(r) + sqr(Traits::mass(p1)));
@@ -112,7 +112,7 @@ CMS(PType & p1, PType & p2, Energy2 s, Energy2 t, double phi,
 
 template <typename Container>
 void SimplePhaseSpace::CMSn(Container & particles, Energy m0)
-  ThePEG_THROW_SPEC((ImpossibleKinematics)) {
+{
   typedef typename Container::value_type PType;
   typedef typename Container::iterator Iterator;
   if ( particles.size() == 2 ) {

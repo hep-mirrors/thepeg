@@ -24,7 +24,7 @@ CascadeHandler::~CascadeHandler() {}
 
 void CascadeHandler::
 handle(EventHandler & eh, const tPVector & tagged,
-       const Hint & hint) ThePEG_THROW_SPEC((Veto, Stop, Exception))
+       const Hint & hint)
 {
   static tPVector notags;
   theLastXComb = eh.lastXCombPtr();

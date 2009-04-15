@@ -39,7 +39,7 @@ IBPtr DecayHandler::fullclone() const {
 
 void DecayHandler::
 handle(EventHandler &, const tPVector & tagged,
-       const Hint &) ThePEG_THROW_SPEC((Veto, Stop, Exception)) {
+       const Hint &) {
   // First go through to see which of the tagged particles should be
   // decayed: Exit if none are found.
   tPVector parents;

@@ -56,7 +56,7 @@ public:
    * This method is called by the EventHandler with the primary
    * SubProcess provided in its cm frame.
    */
-  void cut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));
+  void cut(const SubProcess &) const;
 
 public:
 
@@ -178,7 +178,7 @@ protected:
    * primary SubProcess provided in its cm frame. This bas-class
    * method does nothing.
    */
-  virtual void newcut(const SubProcess &) const ThePEG_THROW_SPEC((Veto));
+  virtual void newcut(const SubProcess &) const;
 
 protected:
 

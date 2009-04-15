@@ -44,8 +44,7 @@ struct SimplePhaseSpace {
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
   template <typename PType>
-  static void CMS(Energy2 s, PType & p1, PType & p2)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+  static void CMS(Energy2 s, PType & p1, PType & p2);
 
   /**
    * Set two momenta in their center of mass system. Their total
@@ -64,8 +63,7 @@ struct SimplePhaseSpace {
    */
   template <typename PType>
   static void CMS(PType & p1, PType & p2, Energy2 s,
-		  double cosTheta, double phi)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+		  double cosTheta, double phi);
 
   /**
    * Set two momenta in their center of mass system. Their total
@@ -85,7 +83,7 @@ struct SimplePhaseSpace {
    */
   template <typename PType>
   static void CMS(PType & p1, PType & p2, Energy2 s, Energy2 t, double phi,
-		  const PType & p0) ThePEG_THROW_SPEC((ImpossibleKinematics));
+		  const PType & p0);
 
   /**
    * Set two momenta in their center of mass system. Their total
@@ -99,8 +97,7 @@ struct SimplePhaseSpace {
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
   template <typename PType>
-  static void CMS(PType & p1, PType & p2, Energy2 s)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+  static void CMS(PType & p1, PType & p2, Energy2 s);
 
   /**
    * Set two momenta in their center of mass system. Their total
@@ -114,7 +111,6 @@ struct SimplePhaseSpace {
    */
   template <typename PPairType>
   static void CMS(const PPairType & p, Energy2 s)
-    ThePEG_THROW_SPEC((ImpossibleKinematics))
   {
     CMS(*p.first, *p.second, s);
   }
@@ -138,8 +134,7 @@ struct SimplePhaseSpace {
    */
   template <typename PType>
   static void CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
-		  double x1, double x3)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+		  double x1, double x3);
 
   /**
    * Set three momenta in their center of mass system. Their total
@@ -166,8 +161,7 @@ struct SimplePhaseSpace {
   template <typename PType>
   static void CMS(PType & p1, PType & p2, PType & p3, Energy2 s,
 		  double x1, double x3, double phii = 0.0,
-		  double theta = 0.0, double phi = 0.0)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+		  double theta = 0.0, double phi = 0.0);
 
   /**
    * Calculate the absolute magnitude of the momenta of two particles
@@ -179,8 +173,7 @@ struct SimplePhaseSpace {
    * @throw ImpossibleKinematics if the sum of the masses was
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
-  static Energy getMagnitude(Energy2 s, Energy m1, Energy m2)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+  static Energy getMagnitude(Energy2 s, Energy m1, Energy m2);
 
   /**
    * Return a three-vector given the absolute momentum, cos(theta) and
@@ -211,8 +204,7 @@ struct SimplePhaseSpace {
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
   static vector<LorentzMomentum>
-  CMSn(Energy m0, const vector<Energy> & m)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+  CMSn(Energy m0, const vector<Energy> & m);
 
   /**
    * Set the momentum of a number of particles. Given a number of
@@ -227,8 +219,7 @@ struct SimplePhaseSpace {
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
   template <typename Container>
-  static void CMSn(Container & particles, Energy m0)
-    ThePEG_THROW_SPEC((ImpossibleKinematics));
+  static void CMSn(Container & particles, Energy m0);
 
 };
 
