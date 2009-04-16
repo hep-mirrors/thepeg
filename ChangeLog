@@ -1,3 +1,9 @@
+2009-04-16  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Cuts/*: Added describe() functionality. Called during initrun()
+	if Debug::level is set, it will print the ranges of the active cuts to
+	the logfile.
+
 2009-04-02  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Repository/EventGenerator.*: Setting dumpPeriod to -1 will now

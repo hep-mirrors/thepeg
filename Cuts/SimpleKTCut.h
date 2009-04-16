@@ -79,6 +79,11 @@ public:
 			tcPDPtr ptype, LorentzMomentum p) const;
   //@}
 
+  /**
+   * Describe the currently active cuts in the log file.
+   */
+  virtual void describe() const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

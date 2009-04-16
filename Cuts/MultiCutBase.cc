@@ -14,8 +14,14 @@
 #include "MultiCutBase.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
+
+void MultiCutBase::describe() const {
+  CurrentGenerator::log() << fullName() << " has no description.\n\n";
+}
+
 
 Energy2 MultiCutBase::minS(const tcPDVector &) const {
   return ZERO;

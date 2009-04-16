@@ -17,17 +17,19 @@
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/PDT/EnumParticles.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "V2LeptonsCut.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
 
 V2LeptonsCut::~V2LeptonsCut() {}
+
+void V2LeptonsCut::describe() const {
+  CurrentGenerator::log() 
+    << fullName() << ":\n"
+    << "M = " << theMinM/GeV << " .. " << theMaxM/GeV << " GeV\n\n";
+}
 
 IBPtr V2LeptonsCut::clone() const {
   return new_ptr(*this);

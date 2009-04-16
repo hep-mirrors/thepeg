@@ -447,6 +447,24 @@ public:
 
 public:
 
+  /**
+   * Describe the currently active cuts in the log file.
+   */
+  virtual void describe() const;
+
+protected:
+
+  /** @name Standard Interfaced functions. */
+  //@{
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  virtual void doinitrun();
+  //@}
+
+public:
+
   /** @name Functions used by the persistent I/O system. */
   //@{
   /**

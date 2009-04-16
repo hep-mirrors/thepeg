@@ -20,10 +20,18 @@
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
 
 SimpleKTCut::~SimpleKTCut() {}
+
+void SimpleKTCut::describe() const {
+  CurrentGenerator::log() 
+    << fullName() << ":\n"
+    << "KT  = " << theMinKT/GeV << " .. " << theMaxKT/GeV << " GeV\n"
+    << "Eta = " << theMinEta << " .. " << theMaxEta << "\n\n";
+}
 
 IBPtr SimpleKTCut::clone() const {
   return new_ptr(*this);

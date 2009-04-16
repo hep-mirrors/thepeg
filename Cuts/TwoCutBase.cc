@@ -15,10 +15,15 @@
 #include "Cuts.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
 
 TwoCutBase::~TwoCutBase() {}
+
+void TwoCutBase::describe() const {
+  CurrentGenerator::log() << fullName() << " has no description.\n\n";
+}
 
 bool TwoCutBase::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
 			  LorentzMomentum pi, LorentzMomentum pj,

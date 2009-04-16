@@ -16,17 +16,17 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Cuts/Cuts.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "OneCutBase.tcc"
-#endif
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
 
 OneCutBase::~OneCutBase() {}
+
+void OneCutBase::describe() const {
+  CurrentGenerator::log() << fullName() << " has no description.\n\n";
+}
 
 Energy OneCutBase::minMaxKT(tcPDPtr p) const {
   return minKT(p);

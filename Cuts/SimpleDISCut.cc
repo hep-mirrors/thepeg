@@ -19,8 +19,16 @@
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
+
+void SimpleDISCut::describe() const {
+  CurrentGenerator::log() 
+    << fullName() << ":\n"
+    << "Q2 = " << theMinQ2/GeV2 << " .. " << theMaxQ2/GeV2 << " GeV2\n"
+    << "W2 = " << theMinW2/GeV2 << " .. " << theMaxW2/GeV2 << " GeV2\n\n";
+}
 
 IBPtr SimpleDISCut::clone() const {
   return new_ptr(*this);

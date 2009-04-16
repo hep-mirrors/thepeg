@@ -17,11 +17,17 @@
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Cuts/Cuts.h"
-
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
+
+void KTClus::describe() const {
+  CurrentGenerator::log() 
+    << fullName() << ":\n"
+    << "Cut = " << theCut/GeV << " GeV\n\n";
+}
 
 IBPtr KTClus::clone() const {
   return new_ptr(*this);

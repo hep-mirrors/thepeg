@@ -112,6 +112,11 @@ public:
 		bool inci = false, bool incj = false) const;
   //@}
 
+  /**
+   * Describe the currently active cuts in the log file.
+   */
+  virtual void describe() const;
+
 public:
 
   /**

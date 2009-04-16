@@ -88,6 +88,11 @@ public:
 			const vector<LorentzMomentum> & p) const;
   //@}
 
+  /**
+   * Describe the currently active cuts in the log file.
+   */
+  virtual void describe() const;
+
 protected:
 
   /**

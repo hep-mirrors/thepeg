@@ -22,13 +22,11 @@
 #include "ThePEG/EventRecord/TmpTransform.h"
 #include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Utilities/HoldFlag.h"
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "Cuts.tcc"
-#endif
-
+#include "ThePEG/Utilities/Debug.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Config/algorithm.h"
 
 using namespace ThePEG;
 
@@ -48,6 +46,26 @@ IBPtr Cuts::clone() const {
 
 IBPtr Cuts::fullclone() const {
   return new_ptr(*this);
+}
+
+void Cuts::doinitrun() {
+  Interfaced::doinitrun();
+  if ( Debug::level ) {
+    describe();
+    for_each(theOneCuts,   mem_fun(&OneCutBase::describe));
+    for_each(theTwoCuts,   mem_fun(&TwoCutBase::describe));
+    for_each(theMultiCuts, mem_fun(&MultiCutBase::describe));
+  }
+}
+
+void Cuts::describe() const {
+  CurrentGenerator::log() 
+    << fullName() << ":\n"
+    << "MHat  = " << theMHatMin/GeV << " .. " << theMHatMax/GeV << " GeV\n"
+    << "Scale = " << theScaleMin/GeV2 << " .. " << theScaleMax/GeV2 << " GeV2\n"
+    << "YHat  = " << theYHatMin << " .. " << theYHatMax << '\n'
+    << "X1    = "   << theX1Min << " .. " << theX1Max << '\n'
+    << "X2    = "   << theX2Min << " .. " << theX2Max << "\n\n";
 }
 
 void Cuts::initialize(Energy2 smax, double Y) {

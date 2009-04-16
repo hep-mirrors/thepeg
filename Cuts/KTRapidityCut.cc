@@ -13,10 +13,18 @@
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 
 using namespace ThePEG;
 
 KTRapidityCut::~KTRapidityCut() {}
+
+void KTRapidityCut::describe() const {
+  CurrentGenerator::log() 
+    << fullName() << ":\n"
+    << "KT       = " << theMinKT/GeV << " .. " << theMaxKT/GeV << " GeV\n"
+    << "Rapidity = " << theMinRapidity << " .. " << theMaxRapidity << "\n\n";
+}
 
 IBPtr KTRapidityCut::clone() const {
   return new_ptr(*this);

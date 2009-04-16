@@ -64,6 +64,11 @@ public:
   bool passCuts(tcCutsPtr parent, const tcPVector & p) const;
   //@}
 
+  /**
+   * Describe the currently active cuts in the log file.
+   */
+  virtual void describe() const;
+
 public:
 
   /**
