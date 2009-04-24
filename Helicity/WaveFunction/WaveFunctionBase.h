@@ -145,9 +145,9 @@ public:
    * @param m  The mass.
    */
   void setMomentum(Energy px,Energy py,Energy pz,Energy E,Energy m) {
-    if(_dir==1)                
+    if(_dir==outgoing)                
       _momentum=Lorentz5Momentum(-px,-py,-pz,-E,m);
-    else if(_dir==-1||_dir==0) 
+    else if(_dir==incoming||_dir==intermediate) 
       _momentum=Lorentz5Momentum( px, py, pz, E,m);
   }
 
@@ -159,9 +159,9 @@ public:
    * @param E  The energy.
    */
   void setMomentum(Energy px,Energy py,Energy pz,Energy E) {
-    if(_dir==1)
+    if(_dir==outgoing)
       _momentum=Lorentz5Momentum(-px,-py,-pz,-E);
-    else if(_dir==-1||_dir==0)
+    else if(_dir==incoming||_dir==intermediate)
       _momentum=Lorentz5Momentum( px, py, pz, E);
   }
 
@@ -170,9 +170,9 @@ public:
    * @param p The momentum.
    */
   void setMomentum(const LorentzMomentum & p) {
-    if(_dir==1)
+    if(_dir==outgoing)
       _momentum=Lorentz5Momentum(-p);
-    else if(_dir==-1||_dir==0)
+    else if(_dir==incoming||_dir==intermediate)
       _momentum=Lorentz5Momentum(p);
   }
   
@@ -182,7 +182,7 @@ public:
    */
   void setMomentum(Energy m) {
     _momentum=Lorentz5Momentum(m);
-    if(_dir==1) _momentum.setT(-_momentum.t());
+    if(_dir==outgoing) _momentum.setT(-_momentum.t());
   }
   
   /**
@@ -191,9 +191,9 @@ public:
    * @param m The mass
    */
   void setMomentum(const LorentzMomentum & p,Energy m) {
-    if(_dir==1) 
+    if(_dir==outgoing) 
       _momentum=Lorentz5Momentum(-p,m);
-    else if(_dir==-1||_dir==0) 
+    else if(_dir==incoming||_dir==intermediate) 
       _momentum=Lorentz5Momentum(p,m);
   }
   
@@ -241,7 +241,7 @@ protected:
    * Set the particle pointer.
    */
   void setParticle(const tcPDPtr & in) {
-    if(_dir==-1) {
+    if(_dir==incoming) {
       tcPDPtr anti((in->CC()));
       _particle = anti ? anti : in;
     }
