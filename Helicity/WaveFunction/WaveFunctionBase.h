@@ -57,6 +57,11 @@ class WaveFunctionBase{
 public:
 
   /**
+   * Default constructor
+   */
+  WaveFunctionBase() : _momentum(), _dir(intermediate) {}
+
+  /**
    * Access to the momentum components and mass
    */
   //@{
@@ -135,75 +140,6 @@ public:
     else if(_dir==incoming||_dir==intermediate)
       _momentum=pin;
   }
-
-  /**
-   * Set all components of momentum.
-   * @param px The x-component of the momentum.
-   * @param py The x-component of the momentum.
-   * @param pz The x-component of the momentum.
-   * @param E  The energy.
-   * @param m  The mass.
-   */
-  void setMomentum(Energy px,Energy py,Energy pz,Energy E,Energy m) {
-    if(_dir==outgoing)                
-      _momentum=Lorentz5Momentum(-px,-py,-pz,-E,m);
-    else if(_dir==incoming||_dir==intermediate) 
-      _momentum=Lorentz5Momentum( px, py, pz, E,m);
-  }
-
-  /** 
-   * Set 4-momentum components.
-   * @param px The x-component of the momentum.
-   * @param py The x-component of the momentum.
-   * @param pz The x-component of the momentum.
-   * @param E  The energy.
-   */
-  void setMomentum(Energy px,Energy py,Energy pz,Energy E) {
-    if(_dir==outgoing)
-      _momentum=Lorentz5Momentum(-px,-py,-pz,-E);
-    else if(_dir==incoming||_dir==intermediate)
-      _momentum=Lorentz5Momentum( px, py, pz, E);
-  }
-
-  /** 
-   * Set 4-momentum using a vector.
-   * @param p The momentum.
-   */
-  void setMomentum(const LorentzMomentum & p) {
-    if(_dir==outgoing)
-      _momentum=Lorentz5Momentum(-p);
-    else if(_dir==incoming||_dir==intermediate)
-      _momentum=Lorentz5Momentum(p);
-  }
-  
-  /**
-   * Set mass and zero momentum.
-   * @param m The mass
-   */
-  void setMomentum(Energy m) {
-    _momentum=Lorentz5Momentum(m);
-    if(_dir==outgoing) _momentum.setT(-_momentum.t());
-  }
-  
-  /**
-   * Set 4 momentum and mass.
-   * @param p The momentum.
-   * @param m The mass
-   */
-  void setMomentum(const LorentzMomentum & p,Energy m) {
-    if(_dir==outgoing) 
-      _momentum=Lorentz5Momentum(-p,m);
-    else if(_dir==incoming||_dir==intermediate) 
-      _momentum=Lorentz5Momentum(p,m);
-  }
-  
-  /**
-   * Zero the 4 momentum and mass.
-   */
-  void setMomentum() {
-    _momentum=Lorentz5Momentum();
-  }
-  //@}
 
   /**
    *  Access to the particle properties
