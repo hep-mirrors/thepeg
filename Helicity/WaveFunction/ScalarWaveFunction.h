@@ -47,12 +47,11 @@ public:
    * @param wave The wavefunction.
    * @param dir The direction of the particle.
    */
-  ScalarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-		     Complex wave,Direction dir=intermediate) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
-    _wf=wave;
+  ScalarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
+		     Complex wave,Direction dir=intermediate) 
+    : WaveFunctionBase(p,part,dir), _wf(wave)
+  {
+    assert(iSpin()==1);
   }
 
   /**
@@ -61,11 +60,10 @@ public:
    * @param part The ParticleData pointer.
    * @param dir The direction of the particle.
    */
-  ScalarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,Direction dir) {
-    direction(dir);
-    setMomentum(p);
-    _wf=1.;
-    checkParticle(part);
+  ScalarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,Direction dir) 
+    : WaveFunctionBase(p,part,dir), _wf(1.0)
+  {
+    assert(iSpin()==1);
   }
 
   static void calculateWaveFunctions(RhoDMatrix & rho,
@@ -85,91 +83,22 @@ public:
   /**
    * Default constructor.
    */
-  ScalarWaveFunction() {
-    _wf=1.;
-  }
+  ScalarWaveFunction() : WaveFunctionBase(), _wf(1.0) {}
 
   /**
    *  Special for spin correlations
    */
-  ScalarWaveFunction(tPPtr part,Direction dir,bool time) {
-    direction(dir);
-    setMomentum(part->momentum());
-    checkParticle(part->dataPtr());
-    _wf=1.;
-    constructSpinInfo(part,dir,time);
+  ScalarWaveFunction(tPPtr p,Direction dir,bool time) 
+    : WaveFunctionBase(p->momentum(), p->dataPtr(), dir), _wf(1.0)
+  {
+    assert(iSpin()==1);
+    constructSpinInfo(p,dir,time);
   }
 
   /**
    * Return the wavefunction.
    */
   const Complex & wave() const {return _wf;}
-
-  /**
-   * Functions to reset the wavefunction and momentum (to speed the code up).
-   */
-  //@{
-  /**
-   * Reset the momentum, particle type and direction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const Lorentz5Momentum & p, const tcPDPtr & part, Direction dir) {
-    direction(dir);
-    checkParticle(part);
-    setMomentum(p);
-  }
-
-  /**
-   * Reset the momentum and particle type.
-   * @param p The momentum.
-   * @param dir The direction.
-   */
-  void reset(const Lorentz5Momentum & p,Direction dir) {
-    direction(dir);
-    setMomentum(p);
-  }
-
-  /**
-   * Reset the momentum.
-   * @param p The momentum.
-   */
-  void reset(const Lorentz5Momentum & p) {setMomentum(p);}
-
-  /**
-   * Reset the wavefunction.
-   * @param wave The wavefunction
-   */
-  void reset(Complex wave) {_wf=wave;}
-
-  /**
-   * Reset the particle type and direction.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const tcPDPtr & part,Direction dir) {
-    direction(dir);
-    checkParticle(part);
-  }
-
-  /**
-   * Reset the particle type.
-   * @param part The ParticleData pointer.
-   */
-  void reset(const tcPDPtr & part) {checkParticle(part);}
-  //@}  
-
-private:
-  
-  /**
-   * Check the particle type.
-   * @param part The ParticleData pointer.
-   */
-  void checkParticle(const tcPDPtr & part) {
-    setParticle(part);
-    assert(iSpin()==1);
-  }
 
 private:
 

@@ -73,14 +73,13 @@ public:
    * @param s4 The fourth component
    * @param drep The Dirac representation.
    */
-  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 			complex<double> s1,complex<double> s2,
 			complex<double> s3,complex<double> s4,
-			DiracRep drep=defaultDRep) {
-    direction(intermediate);
-    setMomentum(p);
-    checkParticle(part);
-    _wf=LorentzSpinorBar<double>(s1,s2,s3,s4,drep);
+			DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(p,part), _wf(s1,s2,s3,s4,drep)
+  {
+    assert(iSpin()==2);
   }
   
   
@@ -91,21 +90,19 @@ public:
    * @param wave The wavefunction.
    * @param dir The direction of the particle
    */
-  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 			const LorentzSpinorBar<double> & wave,
-			Direction dir=intermediate) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
-    _wf=wave;
+			Direction dir=intermediate) 
+    : WaveFunctionBase(p,part,dir), _wf(wave)
+  {
+    assert(iSpin()==2);
   }
   
   SpinorBarWaveFunction(const tPPtr & p, const LorentzSpinorBar<SqrtEnergy> & wave,
-			Direction dir=intermediate) {
-    direction(dir);
-    setMomentum(p->momentum());
-    checkParticle(p->dataPtr());
-    _wf = LorentzSpinorBar<double>(wave.Type(), wave.Rep());
+			Direction dir=intermediate) 
+    : WaveFunctionBase(p->momentum(),p->dataPtr(),dir), _wf(wave.Type(),wave.Rep())
+  {
+    assert(iSpin()==2);
     for (unsigned int i=0; i<4; ++i)
       _wf[i]=wave[i]*UnitRemoval::InvSqrtE;
   }
@@ -118,12 +115,12 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 			unsigned int ihel,Direction dir,
-			DiracRep drep=defaultDRep) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
+			DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(p,part,dir)
+  {
+    assert(iSpin()==2);
     calculateWaveFunction(ihel,drep);
   }
 
@@ -135,20 +132,19 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  SpinorBarWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-			Direction dir, DiracRep drep=defaultDRep) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
-    zeroWaveFunction(drep);
+  SpinorBarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
+			Direction dir, DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(p,part,dir), _wf(drep)
+  {
+    assert(iSpin()==2);
   }
 
   /**
    * Default constructor.
    */
-  SpinorBarWaveFunction(DiracRep drep=defaultDRep) {
-    zeroWaveFunction(drep);
-  }
+  SpinorBarWaveFunction(DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(), _wf(drep)
+  {}
 
   /**
    *  Special for spin correlations
@@ -171,15 +167,7 @@ public:
     assert(i>=0 &&i<=3);
     return _wf(i);
   }
-  
-  /**
-   * Set components by index.
-   */
-  complex<double> & operator () (int i) {
-    assert(i>=0 &&i<=3);
-    return _wf(i);
-  }
-  
+    
   /**
    * Return wavefunction as LorentzSpinorBar<double>.
    */
@@ -211,27 +199,6 @@ public:
   complex<double> s4() const {return _wf.s4();}
 
   /**
-   * Set first spin component.
-   */
-  void setS1(complex<double> in) {_wf.setS1(in);}
-
-  /**
-   * Set second spin component.
-   */
-  void setS2(complex<double> in) {_wf.setS2(in);}
-
-  /**
-   * Set third spin component.
-   */
-  void setS3(complex<double> in) {_wf.setS3(in);}
-
-  /**
-   * Set fourth spin component.
-   */
-  void setS4(complex<double> in) {_wf.setS4(in);}
-  //@}
-
-  /**
    * Take the conjugate of the spinor \f$u_c=C\bar{u}^T\f$. This operation
    * transforms u-spinors to v-spinors and vice-versa and is required when
    * dealing with majorana particles.
@@ -248,37 +215,6 @@ public:
    */
   //@{
   /**
-   * Reset the momentum, particle type and direction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const Lorentz5Momentum & p, const tcPDPtr & part,
-	     Direction dir) {
-    direction(dir);
-    checkParticle(part);
-    setMomentum(p);
-  }
-
-  /** 
-   * Reset the momentum and direction
-   * @param p The momentum.
-   * @param dir The direction
-   */
-  void reset(const Lorentz5Momentum & p,Direction dir) {
-    direction(dir);
-    setMomentum(p);
-  }
-
-  /**
-   * Reset the momentum.
-   * @param p The momentum.
-   */
-  void reset(const Lorentz5Momentum & p) {
-    setMomentum(p);
-  }
-
-  /**
    * Reset the helicity (calculates the new spinor).
    * @param ihel The helicity (0,1 as described above.)
    * @param drep The Dirac matrix representation.
@@ -286,34 +222,9 @@ public:
   void reset(unsigned int ihel,DiracRep drep=defaultDRep) {
     calculateWaveFunction(ihel,drep);
   }
-
-  /**
-   * Reset particle type and direction.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const tcPDPtr & part,Direction dir) {
-    direction(dir);
-    checkParticle(part);
-  }
-
-  /**
-   * Reset particle type.
-   * @param part The ParticleData pointer.
-   */
-  void reset(const tcPDPtr & part) {
-    checkParticle(part);
-  }
   //@}
 
 private:
-
-  /**
-   * Zero the wavefunction.
-   */
-  void zeroWaveFunction(DiracRep drep=defaultDRep) {
-    _wf=LorentzSpinorBar<double>(drep);
-  }
 
   /**
    * Calcuate the wavefunction.
@@ -321,15 +232,6 @@ private:
    * @param drep The Dirac matrix representation.
    */
   void calculateWaveFunction(unsigned int ihel,DiracRep drep=defaultDRep);
-
-  /**
-   * Check particle spin and set pointer.
-   * @param part The ParticleData pointer.
-   */
-  void checkParticle(const tcPDPtr & part) {
-    setParticle(part);
-    assert(iSpin()==2);
-  }
 
 public:
 

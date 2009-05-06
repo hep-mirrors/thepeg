@@ -56,10 +56,34 @@ class WaveFunctionBase{
 
 public:
 
+  /// Constructors
+  //@{
   /**
    * Default constructor
    */
-  WaveFunctionBase() : _momentum(), _dir(intermediate) {}
+  WaveFunctionBase() 
+    : _particle(), _momentum(), _dir(intermediate) 
+  {}
+
+  /**
+   * 
+   */
+  WaveFunctionBase(const Lorentz5Momentum & p,
+		   tcPDPtr pd, Direction dir = intermediate) 
+    : _particle(pd), _momentum(p), _dir(dir) 
+  {
+    /// \todo DG streamline this when setMomentum usage pattern is clear
+    setMomentum(p);
+    
+    if ( dir == incoming ) {
+      tcPDPtr anti = pd->CC();
+      if ( anti ) _particle = anti;
+    }
+  }
+
+
+  //@}
+
 
   /**
    * Access to the momentum components and mass
@@ -148,49 +172,23 @@ public:
   /** 
    * Get the particle id.
    */
-  int id() {return _particle->id();}
+  int id() const {return _particle->id();}
 
   /** 
    * Get 2s+1 for the particle.
    */
-  PDT::Spin iSpin() {return _particle->iSpin();}
+  PDT::Spin iSpin() const {return _particle->iSpin();}
 
   /**
    * Get the particle pointer.
    */
-  const tcPDPtr & getParticle() const {return _particle;}
+  tcPDPtr getParticle() const {return _particle;}
 
   /** 
    * Get the direction of particle.
    */
   ThePEG::Helicity::Direction direction() const {return _dir;}
-
-  /**
-   * Set the direction of the particle
-   */
-  void direction(ThePEG::Helicity::Direction in) {_dir=in;}
   //@}
-
-protected:
-
-  /**
-   * Set the particle pointer.
-   */
-  void setParticle(const tcPDPtr & in) {
-    if(_dir==incoming) {
-      tcPDPtr anti((in->CC()));
-      _particle = anti ? anti : in;
-    }
-    else
-      _particle=in;
-  }
-  
-private:
-
-  /**
-   * Check particle type and set pointer.
-   */
-  void checkParticle(const tcPDPtr & in) {setParticle(in);}
 
 private:
 

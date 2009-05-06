@@ -73,11 +73,10 @@ public:
    */
   VectorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 		     const LorentzPolarizationVector & wave,
-		     Direction  dir=intermediate) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
-    _wf=wave;
+		     Direction  dir=intermediate) 
+    : WaveFunctionBase(p,part,dir), _wf(wave)
+  {
+    assert(iSpin()==3);
   }
 
   /**
@@ -90,11 +89,10 @@ public:
    * @param t The t component of the polarization vector
    */
   VectorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,const Complex & x,
-		     const Complex & y,const Complex & z, const Complex & t) {
-    direction(intermediate);
-    setMomentum(p);
-    checkParticle(part);
-    setX(x);setY(y);setZ(z);setT(t);
+		     const Complex & y,const Complex & z, const Complex & t) 
+    : WaveFunctionBase(p,part), _wf(x,y,z,t)
+  {
+    assert(iSpin()==3);
   }
   
   /**
@@ -106,12 +104,12 @@ public:
    * @param dir The direction.
    * @param phase The phase choice.
    */
-  VectorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+  VectorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 		     unsigned int ihel,Direction dir,
-		     VectorPhase phase=default_vector_phase) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
+		     VectorPhase phase=default_vector_phase) 
+    : WaveFunctionBase(p,part,dir)
+  {
+    assert(iSpin()==3);
     calculateWaveFunction(ihel,phase);
   }
   
@@ -122,22 +120,19 @@ public:
    * @param dir The direction.
    */
   VectorWaveFunction(const Lorentz5Momentum &p,
-		     const tcPDPtr & part,Direction dir)  {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
-    zeroWaveFunction();
+		     tcPDPtr part,Direction dir)  
+    : WaveFunctionBase(p,part,dir), _wf()
+  {
+    assert(iSpin()==3);
   }
   
   /**
    * Default constructor.
    */
-  VectorWaveFunction() {
-    zeroWaveFunction();
-  }
+  VectorWaveFunction() {}
 
   /**
-   *  Special for spin correlations
+   *  Special for spin correlations \todo make static?
    */
   VectorWaveFunction(vector<VectorWaveFunction> & wave,
 		     tPPtr part,Direction dir,bool time,bool massless,
@@ -176,62 +171,11 @@ public:
    * Get t component.
    */
   Complex t() const {return _wf.t();}
-  
-  /**
-   * Set x component
-   */
-  void setX(const Complex& in) {_wf.setX(in);}
-  
-  /**
-   * Set y component
-   */
-  void setY(const Complex& in) {_wf.setY(in);}
-  
-  /**
-   * Set z component
-   */
-  void setZ(const Complex& in) {_wf.setZ(in);}
-  
-  /**
-   * Set t component
-   */
-  void setT(const Complex& in) {_wf.setT(in);}
-  //@}
 
   /**
    * Reset functions.
    */
   //@{
-  /**
-   * Reset the momentum, particle type and direction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const Lorentz5Momentum & p, const tcPDPtr & part, Direction dir) {
-    direction(dir);
-    checkParticle(part);
-    setMomentum(p);
-  }
-
-  /**
-   * Reset the momentum and particle type.
-   * @param p The momentum.
-   * @param dir The direction.
-   */
-  void reset(const Lorentz5Momentum & p,Direction dir) {
-    direction(dir);
-    setMomentum(p);
-  }
-
-  /**
-   * Reset the momentum.
-   * @param p The momentum.
-   */
-  void reset(const Lorentz5Momentum & p) {
-    setMomentum(p);
-  }
-
   /**
    * Reset the helicity (recalculation the polarization vector).
    * @param ihel The new helicity (0,1,2 as described above.)
@@ -239,24 +183,6 @@ public:
    */
   void reset(unsigned int ihel,VectorPhase phase=default_vector_phase) {
     calculateWaveFunction(ihel,phase);
-  }
-
-  /**
-   * Reset the particle type and direction.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const tcPDPtr & part,Direction dir) {
-    direction(dir);
-    checkParticle(part);
-  }
-  
-  /**
-   * Reset the particle type.
-   * @param part The ParticleData pointer.
-   */
-  void reset(const tcPDPtr & part) {
-    checkParticle(part);
   }
   //@}
 
@@ -303,13 +229,6 @@ public:
 				tPPtr part,Direction dir, bool time,bool massless);
 
 private:
-
-  /** 
-   * Zero the wavefunction.
-   */
-  void zeroWaveFunction() {
-    _wf=LorentzPolarizationVector();
-  }
   
   /**
    * Calculate the wavefunction
@@ -318,15 +237,6 @@ private:
    */
   void calculateWaveFunction(unsigned int ihel,
 			     VectorPhase phase=default_vector_phase);
-
-  /**
-   * Check the particle type.
-   * @param part The ParticleData pointer.
-   */
-  void checkParticle(const tcPDPtr & part) {
-    setParticle(part);
-    assert(iSpin()==3);
-  }
 
 private:
   

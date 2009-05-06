@@ -85,7 +85,7 @@ public:
    * @param ts4 The fourth spinor component of the \f$t\f$ vector.
    * @param drep The Dirac representation.
    */
-  RSSpinorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
+  RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 		       complex<double> xs1, complex<double> xs2,
 		       complex<double> xs3, complex<double> xs4,
 		       complex<double> ys1, complex<double> ys2,
@@ -94,12 +94,13 @@ public:
 		       complex<double> zs3, complex<double> zs4,
 		       complex<double> ts1, complex<double> ts2,
 		       complex<double> ts3, complex<double> ts4,
-		       DiracRep drep=defaultDRep) {
-    direction(intermediate);
-    setMomentum(p);
-    checkParticle(part);
-    _wf = LorentzRSSpinor<double>(xs1,xs2,xs3,xs4,ys1,ys2,ys3,ys4,
-				  zs1,zs2,zs3,zs4,ts1,ts2,ts3,ts4,drep);
+		       DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(p,part), _wf(xs1,xs2,xs3,xs4,
+				    ys1,ys2,ys3,ys4,
+				    zs1,zs2,zs3,zs4,
+				    ts1,ts2,ts3,ts4,drep)
+  {
+    assert(iSpin()==4);
   }
 
   /**
@@ -109,13 +110,12 @@ public:
    * @param wave The wavefunction.
    * @param dir The direction of the particle
    */
-  RSSpinorWaveFunction(const Lorentz5Momentum & p, const tcPDPtr & part,
+  RSSpinorWaveFunction(const Lorentz5Momentum & p, tcPDPtr part,
 		       const LorentzRSSpinor<double> & wave,
-		       Direction dir=intermediate) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part); 
-    _wf=wave;
+		       Direction dir=intermediate) 
+    : WaveFunctionBase(p,part,dir), _wf(wave)
+  {
+    assert(iSpin()==4);
   }
   
   /**
@@ -127,28 +127,13 @@ public:
    */
   RSSpinorWaveFunction(const tPPtr & p,
 		       const LorentzRSSpinor<SqrtEnergy> & wave,
-		       Direction dir=intermediate) {
-    direction(dir);
-    setMomentum(p->momentum());
-    checkParticle(p->dataPtr());  
-    _wf = LorentzRSSpinor<double>(wave.Type(), wave.Rep());
+		       Direction dir=intermediate) 
+    : WaveFunctionBase(p->momentum(),p->dataPtr(),dir), _wf(wave.Type(),wave.Rep())
+  {
+    assert(iSpin()==4);
     for (unsigned int i=0; i<4; ++i)
       for(unsigned int j=0; j<4; ++j)
 	_wf(i,j)=wave(i,j)*UnitRemoval::InvSqrtE;
-  }
-  
-  /**
-   * Constructor, set the momentum and the wavefunction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
-   * @param wave The wavefunction.
-   */
-  RSSpinorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-		       LorentzRSSpinor<double> & wave) {
-    direction(intermediate);
-    setMomentum(p);
-    checkParticle(part); 
-    _wf=wave;
   }
 
   /**
@@ -159,11 +144,11 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  RSSpinorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,
-		       unsigned int ihel, Direction dir,DiracRep drep=defaultDRep) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
+  RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
+		       unsigned int ihel, Direction dir,DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(p,part,dir)
+  {
+    assert(iSpin()==4);
     calculateWaveFunction(ihel,drep);
   }
 
@@ -175,20 +160,19 @@ public:
    * @param dir The direction.
    * @param drep The Dirac representation.
    */
-  RSSpinorWaveFunction(const Lorentz5Momentum & p,const tcPDPtr & part,Direction dir,
-		       DiracRep drep=defaultDRep) {
-    direction(dir);
-    setMomentum(p);
-    checkParticle(part);
-    zeroWaveFunction(drep);
+  RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,Direction dir,
+		       DiracRep drep=defaultDRep) 
+    : WaveFunctionBase(p,part,dir), _wf(drep)
+  {
+    assert(iSpin()==4);
   }
 
   /**
    * Default constructor
    */
-  RSSpinorWaveFunction(DiracRep dirac=defaultDRep) {
-    zeroWaveFunction(dirac);
-  }
+  RSSpinorWaveFunction(DiracRep dirac=defaultDRep) 
+    : WaveFunctionBase(), _wf(dirac)
+  {}
   //@}
 
   /**
@@ -200,15 +184,6 @@ public:
    * Set components by index.
    */
   complex<double> operator ()(int i, int j) const {
-    assert(  i>=0 && i<=3 && j>=0 && j<=3);
-    return _wf(i,j);
-  }
-
-  /**
-   * subscript operator for the wavefunction
-   * Set components by index.
-   */
-  complex<double> & operator () (int i, int j) {
     assert(  i>=0 && i<=3 && j>=0 && j<=3);
     return _wf(i,j);
   }
@@ -297,123 +272,12 @@ public:
    * Get fourth spinor component for the t vector
    */
   complex<double> ts4() const {return _wf.ts4();}
-  
-  /**
-   * Set first spinor component for the x vector
-   */
-  void setXS1(complex<double> in) {_wf.setXS1(in);}
-  
-  /**
-   * Set second spinor component for the x vector
-   */
-  void setXS2(complex<double> in) {_wf.setXS2(in);}
-  
-  /**
-   * Set third spinor component for the x vector
-   */
-  void setXS3(complex<double> in) {_wf.setXS3(in);}
-  
-  /**
-   * Set fourth spinor component for the x vector
-   */
-  void setXS4(complex<double> in) {_wf.setXS4(in);}
-  
-  /**
-   * Set first spinor component for the y vector
-   */
-  void setYS1(complex<double> in) {_wf.setYS1(in);}
-  
-  /**
-   * Set second spinor component for the y vector
-   */
-  void setYS2(complex<double> in) {_wf.setYS2(in);}
-  
-  /**
-   * Set third spinor component for the y vector
-   */
-  void setYS3(complex<double> in) {_wf.setYS3(in);}
-  
-  /**
-   * Set fourth spinor component for the y vector
-   */
-  void setYS4(complex<double> in) {_wf.setYS4(in);}
-  
-  /**
-   * Set first spinor component for the z vector
-   */
-  void setZS1(complex<double> in) {_wf.setZS1(in);}
-  
-  /**
-   * Set second spinor component for the z vector
-   */
-  void setZS2(complex<double> in) {_wf.setZS2(in);}
-  
-  /**
-   * Set third spinor component for the z vector
-   */
-  void setZS3(complex<double> in) {_wf.setZS3(in);}
-  
-  /**
-   * Set fourth spinor component for the z vector
-   */
-  void setZS4(complex<double> in) {_wf.setZS4(in);}
-  
-  /**
-   * Set first spinor component for the t vector
-   */
-  void setTS1(complex<double> in) {_wf.setTS1(in);}
-  
-  /**
-   * Set second spinor component for the t vector
-   */
-  void setTS2(complex<double> in) {_wf.setTS2(in);}
-  
-  /**
-   * Set third spinor component for the t vector
-   */
-  void setTS3(complex<double> in) {_wf.setTS3(in);}
-  
-  /**
-   * Set fourth spinor component for the t vector
-   */
-  void setTS4(complex<double> in) {_wf.setTS4(in);}
   //@}
 
   /**
    * reset functions
    */
   //@{
-  /**
-   * Reset the momentum, particle type and direction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const Lorentz5Momentum & p, const tcPDPtr & part,
-	     Direction dir) {
-    direction(dir);
-    checkParticle(part);
-    setMomentum(p);
-  }
-
-  /** 
-   * Reset the momentum and direction
-   * @param p The momentum.
-   * @param dir The direction
-   */
-  void reset(const Lorentz5Momentum & p,Direction dir) {
-    direction(dir);
-    setMomentum(p);
-  }
-
-  /**
-   * Reset the momentum.
-   * @param p The momentum.
-   */
-  void reset(const Lorentz5Momentum & p) {
-    setMomentum(p);
-  }
-
   /**
    * Reset the helicity (calculates the new spinor).
    * @param ihel The helicity (0,1,2,3 as described above.)
@@ -422,24 +286,6 @@ public:
   void reset(unsigned int ihel,DiracRep drep=defaultDRep) {
     calculateWaveFunction(ihel,drep);
   }
-
-  /**
-   * Reset particle type and direction.
-   * @param part The ParticleData pointer.
-   * @param dir The direction.
-   */
-  void reset(const tcPDPtr & part,Direction dir) {
-    direction(dir);
-    checkParticle(part);
-  }
-
-  /**
-   * Reset particle type.
-   * @param part The ParticleData pointer.
-   */
-  void reset(const tcPDPtr & part) {
-    checkParticle(part);
-  }	
   //@}
 
 public:
@@ -479,27 +325,11 @@ public:
 private:
 
   /**
-   * Zero the wavefunction.
-   */
-  void zeroWaveFunction(DiracRep drep=defaultDRep) {
-    _wf=LorentzRSSpinor<double>(drep);
-  }
-
-  /**
    * Calcuate the wavefunction.
    * @param ihel The helicity (0,1,2,3 as described above.)
    * @param drep The Dirac matrix representation.
    */
   void calculateWaveFunction(unsigned int ihel,DiracRep drep=defaultDRep);
-
-  /**
-   * Check particle spin and set pointer.
-   * @param part The ParticleData pointer.
-   */
-  void checkParticle(const tcPDPtr & part) {
-    setParticle(part);
-    assert(iSpin()==4);
-  }
 
 private:
 
