@@ -75,7 +75,7 @@ public:
     /// \todo DG streamline this when setMomentum usage pattern is clear
     setMomentum(p);
     
-    if ( dir == incoming ) {
+    if ( dir == -1 ) { /// \todo BROKEN, see helicityfix branch
       tcPDPtr anti = pd->CC();
       if ( anti ) _particle = anti;
     }
