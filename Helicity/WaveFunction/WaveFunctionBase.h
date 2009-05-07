@@ -188,6 +188,11 @@ public:
    * Get the direction of particle.
    */
   ThePEG::Helicity::Direction direction() const {return _dir;}
+
+  /** 
+   * Set the direction of the particle 
+   */ 
+  void direction(ThePEG::Helicity::Direction in) {_dir=in;} 
   //@}
 
 private:
