@@ -3,6 +3,12 @@
 	* Helicity/WaveFunction/*.h: Removed lots of redundant, unused
 	constructors.
 
+2009-04-30  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Helicity/RhoDMatrix.h: Worked around gcc 4.1.2 compiler bug on
+	x86_64. The 'norm = 1/norm' line was omitted if optimization was
+	higher than -O1.
+
 2009-04-16  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Cuts/*: Added describe() functionality. Called during initrun()

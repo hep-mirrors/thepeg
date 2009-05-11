@@ -8,6 +8,18 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.4.2 release: 2009-05-08
+** Ticket #242
+   Fixed a compiler problem that showed up on openSUSE 10.2, g++
+   4.1.2.  A source line was omitted if the optimization level was
+   higher than -O1.
+
+** User interaction
+   Dump file generation can now be disabled completely by setting
+   EventGenerator:DumpPeriod to -1.
+
+
+
 * ThePEG-1.4.1 release: 2009-03-31
 ** User interaction
    Error messages have been clarified in BaseRepository and

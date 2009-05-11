@@ -281,8 +281,20 @@ void EventGenerator::dofinish() {
 	  << "The following exception classes were reported in this run:"
 	  << endl;
     for ( ExceptionMap::iterator it = theExceptions.begin();
-	  it != theExceptions.end(); ++it )
-      log() << typeid(it->first).name() << " (" << it->second << " times)" << endl;
+	  it != theExceptions.end(); ++it ) {
+      string severity;
+      switch ( it->first.severity() ) {
+      case Exception::info       : severity="info"; break;
+      case Exception::warning    : severity="warning"; break;
+      case Exception::setuperror : severity="setuperror"; break;
+      case Exception::eventerror : severity="eventerror"; break;
+      case Exception::runerror   : severity="runerror"; break;
+      case Exception::maybeabort : severity="maybeabort"; break;
+      case Exception::abortnow   : severity="abortnow"; break;
+      default                    : severity="unknown";
+      }
+      log() << typeid(it->first).name() << ' ' << severity << " (" << it->second << " times)" << endl;
+    }
   }
 
   theExceptions.clear();
@@ -625,8 +637,8 @@ void EventGenerator::logWarning(const Exception & ex) {
 bool EventGenerator::
 logException(const Exception & ex, tcEventPtr event) {
   bool noEvent = !event;
-  int c = count(ex);
   ex.handle();
+  int c = count(ex);
   if ( c <= maxWarnings ) {
     printException(ex);
     if ( c == maxWarnings )

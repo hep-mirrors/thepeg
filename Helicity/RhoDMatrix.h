@@ -84,10 +84,10 @@ public:
       norm += _matrix[ix][ix];
     assert(norm.real() > epsa);
     assert(norm.imag()/norm.real() < epsb);
-    norm = 1./norm;
+    double invnorm = 1./norm.real();
     for(size_t ix=0; ix<_ispin; ++ix)
       for(size_t iy=0; iy<_ispin; ++iy) 
-	_matrix[ix][iy]*=norm;
+	_matrix[ix][iy]*=invnorm;
   }
   //@}
 

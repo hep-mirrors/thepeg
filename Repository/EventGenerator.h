@@ -25,14 +25,14 @@
 
 namespace ThePEG {
 
-/** Comparsion for Exceptions*/
+/** Comparsion for Exceptions */
 struct ExceptionComparison {
   bool operator() (const Exception & a, const Exception & b) {
-    if(&typeid(a)==&typeid(b)) {
+    if ( typeid(a) == typeid(b) ) {
       return a.severity() < b.severity();
     }
     else {
-      return &typeid(a) < &typeid(b);
+      return typeid(a).before(typeid(b));
     }
   }
 };
