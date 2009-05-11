@@ -510,6 +510,7 @@ public:
     for ( int i = 0; i < h->ax->bins() + 2; ++i ) {
       h->sum[i] *= h2.sum[i];
       h->sumw[i] *= h2.sumw[i];
+      h->sumxw[i] *= h2.sumw[i];
       h->sumw2[i] += h1.sumw[i]*h1.sumw[i]*h2.sumw2[i] +
 	h2.sumw[i]*h2.sumw[i]*h1.sumw2[i];
     }
@@ -558,6 +559,7 @@ public:
       }
       h->sum[i] /= h2.sum[i];
       h->sumw[i] /= h2.sumw[i];
+      h->sumxw[i] /= h2.sumw[i];
       h->sumw2[i] = h1.sumw2[i]/(h2.sumw[i]*h2.sumw[i]) +
 	h1.sumw[i]*h1.sumw[i]*h2.sumw2[i]/
 	(h2.sumw[i]*h2.sumw[i]*h2.sumw[i]*h2.sumw[i]);
