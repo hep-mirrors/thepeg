@@ -52,7 +52,7 @@ ScalarWaveFunction SSSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca2,
 				       Energy mass, Energy width) {
   // outgoing momentum 
-  Lorentz5Momentum pout = sca1.getMomentum()-sca2.getMomentum(); 
+  Lorentz5Momentum pout = sca1.getMomentum()+sca2.getMomentum(); 
   // calculate the coupling
   setCoupling(q2,sca1.getParticle(),sca2.getParticle(),out);
   // wavefunction
