@@ -97,20 +97,20 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tCutsPtr cuts,
   DiagramMap tdiag;
   DiagramMap tmdiag;
   for ( int i = 0, N = diag.size(); i < N; ++i ) {
-    if ( diag[i]->partons()[0] == pin.first &&
-	 diag[i]->partons()[1] == pin.second )
-      tdiag[diag[i]->getTag()].push_back(diag[i]);
-    if ( diag[i]->partons()[0] == pin.second &&
-	 diag[i]->partons()[1] == pin.first )
+    cPDPair din(diag[i]->partons()[0], diag[i]->partons()[1]);
+    if ( din.first->id() < din.second->id() ) swap(din.first, din.second);
+    if ( din == pin ) tdiag[diag[i]->getTag()].push_back(diag[i]);
+    if ( din.first == pin.second && din.second == pin.first )
       tmdiag[diag[i]->getTag()].push_back(diag[i]);
   }
 
-  bool mirror = false;
-  if ( ( mirror = tdiag.empty() ) ) tdiag = tmdiag;
+  if ( tdiag.empty() ) tdiag = tmdiag;
   for ( DiagramMap::iterator dit = tdiag.begin(); dit != tdiag.end(); ++dit ) {
+    cPDPair din(dit->second.back()->partons()[0],
+		dit->second.back()->partons()[1]);
     StdXCombPtr xcomb =
       new_ptr(StandardXComb(maxEnergy, incoming(), this, sub, extractor,
-			    ckkw, pBins, cuts, me, dit->second, mirror));
+			    ckkw, pBins, cuts, me, dit->second, din != pin));
     if ( xcomb->checkInit() ) xCombs().push_back(xcomb);
     else generator()->logWarning(
       StandardEventHandlerInitError() << "The matrix element '"

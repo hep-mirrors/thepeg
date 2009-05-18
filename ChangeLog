@@ -1,3 +1,11 @@
+2009-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/StandardEventHandler.cc (addME): herwig:ticket:253
+	Fixed so that before determining whether or not a diagram should
+	be mirrored to match the incoming partons, the diagram partons are
+	temporarily ordered so that the first never has a id lower than
+	the second.
+
 2009-05-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistogramFactory.h: Fixed bug in divide and multiply so
