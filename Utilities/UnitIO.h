@@ -173,6 +173,10 @@ inline OUnitErr<double,double> ouniterr(double t, double dt) {
 /** Output an OUnitErr object to a stream. */
 template <typename OStream, typename T, typename UT>
 OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
+  if ( isnan(u.x) ) return os << "nan";
+  if ( isinf(u.x) ) return os << "inf";
+  if ( isnan(u.dx) ) return os << u.x << "(nan)";
+  if ( isinf(u.dx) ) return os << u.x << "(inf)";
   double dx = min(u.dx, abs(u.x));
   if ( dx <= 0.0 ) return os << u.x;
   ostringstream osse;
