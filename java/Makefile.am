@@ -40,7 +40,7 @@ test: ThePEG.jar
                 -L../../Pythia7/lib -r ../../Pythia7/lib/Pythia7Defaults.rpo
 
 check-local:
-	$(JAVA) -jar ThePEG.jar --classcheck
+	$(JAVA) -Djava.awt.headless=true -jar ThePEG.jar --classcheck
 
 installcheck-local:
 	$(DESTDIR)$(bindir)/thepeg --classcheck
