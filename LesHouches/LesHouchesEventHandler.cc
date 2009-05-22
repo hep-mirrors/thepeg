@@ -342,6 +342,8 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
 	 << reader.stats.attempts() << setw(17)
 	 << ouniterr(reader.stats.xSec(), reader.stats.xSecErr(), nanobarn)
 	 << endl;
+      CrossSection xsectot = reader.stats.xSec();
+      if ( xsectot != ZERO ) xsectot /= reader.stats.sumWeights();
       typedef LesHouchesReader::StatMap::const_iterator const_iterator;
       for ( const_iterator i = reader.statmap.begin();
 	    i != reader.statmap.end(); ++i ) {
@@ -351,7 +353,8 @@ void LesHouchesEventHandler::statistics(ostream & os) const {
 	n.resize(37, ' ');
 	os << n << setw(11) << i->second.accepted() << setw(13)
 	   << i->second.attempts() << setw(17)
-	   << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn) << endl;
+	   << ouniterr(i->second.sumWeights()*xsectot,
+		       sqrt(i->second.sumWeights2())*xsectot, nanobarn) << endl;
       }
       os << line;
     }
