@@ -7,4 +7,4 @@ VSSVertex.cc  VSSVertex.h  VSSVertex.fh \
 VVSSVertex.cc VVSSVertex.h VVSSVertex.fh \
 VVSVertex.cc  VVSVertex.h  VVSVertex.fh \
 GeneralVVSVertex.cc GeneralVVSVertex.h \
-GeneralVVSVertex.icc GeneralVVSVertex.fh
+GeneralVVSVertex.fh

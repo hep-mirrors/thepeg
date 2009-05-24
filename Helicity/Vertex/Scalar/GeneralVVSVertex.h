@@ -32,7 +32,15 @@ public:
   /**
    * The default constructor.
    */
-  inline GeneralVVSVertex();
+  GeneralVVSVertex() {
+    setNpoint(3);
+    setSpin(3,3,1);
+    _a00 = 1.;_a11 = 0.;
+    _a12 = 0.;_a21 = 0.;
+    _a22 = 0.;_aEp = 0.;
+    _representation = 1;
+    setName(VVS);
+  }
 
   /**
    * The standard Init function used to initialize the interfaces.
@@ -112,66 +120,68 @@ public:
   /**
    * Access coefficient of \f$g^{\mu\nu}\f$
    */
-  inline Complex a00() const;
+  Complex a00() const {return _a00;}
       
   /**
    * Access coefficient of \f$p_1^\mu p_1^\nu\f$
    */
-  inline Complex a11() const;
+  Complex a11() const {return _a11;}
       
   /**
    * Access coefficient of \f$p_1^\mu p_2^\nu\f$
    */
-  inline Complex a12() const;
+  Complex a12() const {return _a12;}
       
   /**
    * Access coefficient of \f$p_2^\mu p_1^\nu\f$
    */
-  inline Complex a21() const;
+  Complex a21() const {return _a21;}
       
   /**
    * Access coefficient of \f$p_2^\mu p_2^\nu\f$
    */
-  inline Complex a22() const;
+  Complex a22() const {return _a22;}
       
   /**
    * Access coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
-  inline Complex aEp() const;
+  Complex aEp() const {return _aEp;}
       
   /**
    * Set tensor coefficient of \f$g^{\mu\nu}\f$
    */
-  inline void a00(const Complex & val);
+  void a00(const Complex & val) {_a00 = val;}
       
   /**
    * Set tensor coefficient of \f$p_1^\mu p_1^\nu\f$
    */
-  inline void a11(const Complex & val);
+  void a11(const Complex & val) {_a11 = val;}
       
   /**
    * Set tensor coefficient of \f$p_1^\mu p_2^\nu\f$
    */
-  inline void a12(const Complex & val);
+  void a12(const Complex & val) {_a12 = val;}
       
   /**
    * Set tensor coefficient of \f$p_2^\mu p_1^\nu\f$
    */
-  inline void a21(const Complex & val);
+  void a21(const Complex & val) {_a21 = val;}
       
   /**
    * Set tensor coefficient of \f$p_2^\mu p_2^\nu\f$
    */ 
-  inline void a22(const Complex & val);
+  void a22(const Complex & val) {_a22 = val;}
       
   /**
    * Set tensor coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
-  inline void aEp(const Complex & val);
+  void aEp(const Complex & val) {_aEp = val;}
 
   /**
    */
-  inline void setCoefScheme(unsigned int representation);
+  void setCoefScheme(unsigned int representation) {
+    _representation = representation;
+  }
   //@}
 
 private:
@@ -262,7 +272,5 @@ struct ClassTraits<Helicity::GeneralVVSVertex>
 /** @endcond */
 
 }
-
-#include "GeneralVVSVertex.icc"
 
 #endif /* HELICITY_GeneralVVSVertex_H */

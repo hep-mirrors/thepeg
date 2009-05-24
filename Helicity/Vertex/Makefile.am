@@ -2,8 +2,7 @@ SUBDIRS = Scalar Vector Tensor
 
 noinst_LTLIBRARIES = libThePEGVertex.la
 libThePEGVertex_la_SOURCES = \
-VertexBase.cc VertexBase.h \
-VertexBase.fh VertexBase.icc \
+VertexBase.cc VertexBase.h VertexBase.fh \
 AbstractFFSVertex.h  AbstractFFSVertex.fh  AbstractFFSVertex.cc  \
 AbstractFFVVertex.h  AbstractFFVVertex.fh  AbstractFFVVertex.cc  \
 AbstractVVVVertex.h  AbstractVVVVertex.fh  AbstractVVVVertex.cc  \

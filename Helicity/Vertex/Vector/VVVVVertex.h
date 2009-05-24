@@ -43,7 +43,13 @@ public:
   /**
    * Default constructor.
    */
-  inline VVVVVertex();
+  VVVVVertex() {
+    // number of external particles
+    setNpoint(4);
+    // spins of external particles
+    setSpin(3,3,3,3);
+    setName(VVVV);
+  }
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -93,13 +99,20 @@ protected:
    * @param id3 The PDG code of the third  particle.
    * @param id4 The PDG code of the fourth particle.
    */
-  inline void setOrder(int id1,int id2,int id3,int id4);
+  void setOrder(int id1,int id2,int id3,int id4) {
+    _iorder[0]=id1;
+    _iorder[1]=id2;
+    _iorder[2]=id3;
+    _iorder[3]=id4;
+  }
 
   /**
    * Set the type of the vertex.
    * @param itype The type of vertex (QCD=1 or electroweak=2).
    */
-  inline void setType(int itype);
+  void setType(int itype) {
+    _itype=itype;
+  }
 
   /**
    * Set the intermediate particles if including s/u/t channel terms.
@@ -108,7 +121,12 @@ protected:
    * @param c1 The coupling for the first  particle.
    * @param c2 The coupling for the second particle.
    */
-  inline void setIntermediate(tcPDPtr part1,tcPDPtr part2,Complex c1,Complex c2);
+  void setIntermediate(tcPDPtr part1,tcPDPtr part2,Complex c1,Complex c2) {
+    _inter[0]=part1;
+    _inter[1]=part2;
+    _coup[0]=c1;
+    _coup[1]=c2;
+  }
   
 private:
   
@@ -147,8 +165,6 @@ private:
 };
 }
 }
-
-#include "VVVVVertex.icc"
 
 namespace ThePEG {
 
