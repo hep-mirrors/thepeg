@@ -1517,3 +1517,59 @@ void " class "::persistentInput(PersistentIStream & is, int) {
 
 (global-set-key "\C-c\C-f" 'ThePEG-comment-function)
 
+(define-generic-mode 'ThePEG-repository-mode
+;; Comment characters
+      '("#")
+;; Language Keywords 
+;; codegrep 'verb == \"[[:alnum:]]*\"' -o \
+;; | cut -d: -f3 | cut -d\  -f3 | sort | uniq | column
+      '(
+	"appendpath"		"library"		"popd"
+	"baseclasses"		"load"			"prependpath"
+	"cd"			"ls"			"pushd"
+	"check"			"lsclass"		"pwd"
+	"cp"			"lspaths"		"rcp"
+	"create"		"lsruns"		"read"
+	"decaymode"		"makeanti"		"removerun"
+	"def"			"makerun"		"rm"
+	"defaultparticle"	"max"			"rmdir"
+	"describe"		"mdef"			"rmgloballibrary"
+	"describeclass"		"mdo"			"rmrun"
+	"dirs"			"merase"		"rrmdir"
+	"DISABLEREADONLY"	"mget"			"run"
+	"do"			"min"			"save"
+	"doxygendump"		"minsert"		"saverun"
+	"ENABLEREADONLY"	"mkdir"			"saverunfile"
+	"erase"			"mmax"			"send"
+	"EXITONERROR"		"mmin"			"set"
+	"fulldescribe"		"msend"			"setdef"
+	"get"			"mset"			"setup"
+	"globallibrary"		"msetdef"
+	"insert"		"mv"
+	)
+;; Further Regex highlighting
+      '(
+	;; anchored on "read" highlight the second pattern
+	("read" "[[:alnum:]]+\\.in" nil nil (0 'font-lock-string-face) )
+	;; simplest pattern highlight
+	;;("[[:alnum:]]+\\.so" . 'font-lock-function-name-face)
+	("[[:alnum:]]+\\.so" . 'font-lock-type-face)
+	("\\([[:alnum:]]+::\\)+[[:alnum:]]+" . 'font-lock-type-face)
+
+
+	(":\\([]_/[:alnum:]\\[]+\\)" . (1 'font-lock-constant-face) )
+
+
+	;; highlight everything that isn't painted yet: 'keep'
+	("create.*"  . (0 'font-lock-variable-name-face keep)	)
+
+;;;;;;;;;; Directories in the repo
+;;	("/[/[:alnum:]]+/" . 'font-lock-builtin-face )
+;;	("\\(rrm\\|rm\\|mk\\)dir.*\\|cd.*"  
+;;	 . (0 'font-lock-builtin-face keep)	)
+;;;;;;;;;;;;;;;;;;;;;
+	)
+      ;; file pattern to apply this mode to
+      nil ;;'(".in\\'")
+      nil
+      "Major mode for editing ThePEG repository input files.")
