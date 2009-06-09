@@ -379,7 +379,7 @@ void LesHouchesReader::initStat() {
   xSecWeights.resize(heprup.NPRUP, 1.0);
   maxWeights.clear();
   for ( int ip = 0; ip < heprup.NPRUP; ++ip ) {
-    sumx += heprup.XMAXUP[ip]*xSecWeights[ip];
+    sumx = max(heprup.XMAXUP[ip]*xSecWeights[ip], sumx);
     statmap[heprup.LPRUP[ip]] =
       XSecStat(heprup.XMAXUP[ip]*weightScale*xSecWeights[ip]);
     maxWeights[heprup.LPRUP[ip]] = heprup.XMAXUP[ip];
