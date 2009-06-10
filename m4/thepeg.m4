@@ -612,9 +612,13 @@ GSLLIBS=""
 AC_ARG_WITH(gsl,
         AC_HELP_STRING([--with-gsl=path],[location of gsl installation. Default: system lib]),
         [],
-	[with_gsl=no])
+	[with_gsl=system])
 
 if test "x$with_gsl" = "xno"; then
+AC_MSG_ERROR([libgsl is required. Please install the GNU scientific library and header files.])
+fi
+
+if test "x$with_gsl" = "xsystem"; then
 	AC_MSG_RESULT([in system libraries])
 	oldlibs="$LIBS"
 	AC_CHECK_LIB(m,sqrt)
@@ -644,4 +648,26 @@ fi
 dnl AM_CONDITIONAL(HAVE_GSL,[test "x$with_HepMC" != "xno"])
 AC_SUBST(GSLINCLUDE)
 AC_SUBST(GSLLIBS)
+])
+
+AC_DEFUN([THEPEG_OVERVIEW],
+[
+CXXSTRING=`$CXX --version | head -1`
+cat << _THEPEG_EOF_ > config.thepeg
+*****************************************************
+*** $PACKAGE_STRING configuration summary
+*** Please include this information in bug reports!
+***--------------------------------------------------
+*** Prefix:		$prefix
+***
+*** Dimension checks:	$enable_unitchecks
+***
+*** GSL:		$with_gsl
+***
+*** LHAPDF:		$with_LHAPDF
+***
+*** Host:		$host
+*** CXX:		$CXXSTRING
+*****************************************************
+_THEPEG_EOF_
 ])

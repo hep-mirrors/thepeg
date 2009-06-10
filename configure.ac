@@ -114,4 +114,8 @@ java/Makefile
 Makefile])
 AC_CONFIG_FILES([Doc/fixinterfaces.pl],[chmod +x Doc/fixinterfaces.pl])
 
+THEPEG_OVERVIEW
+
+AC_CONFIG_COMMANDS([summary],[cat config.thepeg])
+
 AC_OUTPUT
