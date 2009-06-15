@@ -126,6 +126,10 @@ CrossSection EventGenerator::integratedXSec() const {
   return eventHandler()->integratedXSec();
 }
 
+CrossSection EventGenerator::integratedXSecErr() const {
+  return eventHandler()->integratedXSecErr();
+}
+
 void
 EventGenerator::setup(string newRunName,
 		      ObjectSet & newObjects,

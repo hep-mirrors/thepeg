@@ -175,6 +175,15 @@ public:
    * @return 0 if no integrated cross section could be estimated.
    */
   virtual CrossSection integratedXSec() const;
+
+  /**
+   * The estimated error in the total integrated cross section of the
+   * processes generated in this run. This version of the function
+   * will produce an error message. It is up to a sub-class able to
+   * generate full events to return the correct value.
+   * @return 0 if no integrated cross section error could be estimated.
+   */
+  virtual CrossSection integratedXSecErr() const;
   //@}
 
   /** @name Simple access functions. */

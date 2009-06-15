@@ -282,6 +282,12 @@ public:
   CrossSection integratedXSec() const;
 
   /**
+   * The error estimate for the total integrated cross section of the
+   * processes generated in this run.
+   */
+  CrossSection integratedXSecErr() const;
+
+  /**
    * The sum of all weight of the events generated so far.
    */
   double sumWeights() const { return weightSum; }

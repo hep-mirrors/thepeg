@@ -109,6 +109,13 @@ public:
    * @return 0 if no integrated cross section could be estimated.
    */
   virtual CrossSection integratedXSec() const;
+
+  /**
+   * The estimated error in the total integrated cross section of the
+   * processes generated in this run.
+   *  @return 0 if no integrated cross section error could be estimated.
+   */
+  virtual CrossSection integratedXSecErr() const;
   //@}
 
   /** @name Functions used for the actual generation */

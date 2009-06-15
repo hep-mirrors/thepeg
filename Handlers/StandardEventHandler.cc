@@ -463,6 +463,26 @@ CrossSection StandardEventHandler::integratedXSec() const {
   return tot.xSec();
 }
 
+CrossSection StandardEventHandler::integratedXSecErr() const {
+  if ( sampler()->integratedXSec() == ZERO )
+    return sampler()->maxXSec();
+
+  Stat tot;
+  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
+    const StandardXComb & x = *xCombs()[i];
+    Stat s;
+    s = Stat(x.stats().attempts(), x.stats().accepted(),
+	     x.stats().sumWeights(), x.stats().sumWeights2(),
+	     sampler()->integratedXSec(), sampler()->sumWeights());
+    tot += s;
+  }
+
+  return sampler()->integratedXSec()*
+    sqrt(sqr(sampler()->integratedXSecErr()/sampler()->integratedXSec()) + 
+	 tot.sumw2/sqr(tot.sumw) - 1.0/tot.attempted);
+
+}
+
 void StandardEventHandler::doinitrun() {
   EventHandler::doinitrun();
   sampler()->initrun();

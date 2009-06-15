@@ -1,3 +1,11 @@
+2009-06-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/EventHandler.*, Handlers/StandardEventHandler.*,
+	Repository/EventGenerator.*,
+	LesHouches/LesHouchesEventHandler.* (integratedXSecErr): Added
+	integratedXSecErr() function returning the estimated error on
+	integratedXSec() at the request of Fred Stober.
+
 2009-06-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* configure.ac, m4/thepeg.m4: Added summary output after

@@ -401,6 +401,10 @@ CrossSection LesHouchesEventHandler::integratedXSec() const {
   return histStats.xSec();
 }
 
+CrossSection LesHouchesEventHandler::integratedXSecErr() const {
+  return histStats.xSecErr();
+}
+
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
   os << stats << histStats << theReaders << theSelector
      << oenum(theWeightOption) << theUnitTolerance << theCurrentReader << warnPNum;

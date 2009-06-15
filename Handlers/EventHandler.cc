@@ -266,6 +266,14 @@ CrossSection EventHandler::integratedXSec() const {
   return 1.0*picobarn;
 }
 
+CrossSection EventHandler::integratedXSecErr() const {
+  generator()->logWarning(
+    EventHandlerHistError()
+    << "The event handler '" << name() << "' was not able give the cross "
+    "section error for the generated processes." << Exception::warning);
+  return ZERO;
+}
+
 void EventHandler::checkConsistency() const {
   if ( !currentCollision() ) return;
   const Collision & c = *currentCollision();
