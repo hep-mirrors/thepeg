@@ -204,7 +204,7 @@ EventPtr LesHouchesEventHandler::generateEvent() {
     }
     catch (Stop) {
     }
-    catch (Exception & ex) {
+    catch (Exception &) {
       reject(weight);
       throw;
     }
@@ -275,7 +275,7 @@ EventPtr LesHouchesEventHandler::continueEvent() {
   }
   catch (Stop) {
   }
-  catch (Exception & ex) {
+  catch (Exception &) {
     reject(currentEvent()->weight());
     throw;
   }

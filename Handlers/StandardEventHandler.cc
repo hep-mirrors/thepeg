@@ -540,7 +540,7 @@ EventPtr StandardEventHandler::generateEvent() {
     catch (Stop) {
       break;
     }
-    catch (Exception & ex) {
+    catch (Exception &) {
       reject(weight);
       throw;
     }
@@ -560,7 +560,7 @@ EventPtr StandardEventHandler::continueEvent() {
   }
   catch (Stop) {
   }
-  catch (Exception & ex) {
+  catch (Exception &) {
     reject(currentEvent()->weight());
     throw;
   }

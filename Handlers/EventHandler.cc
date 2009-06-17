@@ -243,7 +243,7 @@ EventPtr EventHandler::continueEvent() {
   }
   catch (Stop) {
   }
-  catch (Exception & ex) {
+  catch (Exception &) {
     throw;
   }
   return currentEvent(); 

@@ -82,6 +82,7 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel,
 	lower[1] = eplusp;
       }
       break;
+    default:
       assert(false); 
     }
     // now construct the spinors

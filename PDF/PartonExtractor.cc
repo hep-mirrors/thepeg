@@ -351,7 +351,7 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
 
   LorentzRotation Rh = Utilities::getBoostToCM(make_pair(k1, k2));
   LorentzMomentum Ph = k1 + k2;
-  LorentzMomentum Phold = Ph;
+  //  LorentzMomentum Phold = Ph;
 
   bool otherside = rndbool();
   if ( otherside && side2 ){
@@ -392,7 +392,7 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
 
   Rh.transform(Utilities::getBoostFromCM(make_pair(k1, k2)));
 
-  LorentzMomentum phh = Rh*Phold;
+  // LorentzMomentum phh = Rh*Phold;
 
   return Rh;
 
