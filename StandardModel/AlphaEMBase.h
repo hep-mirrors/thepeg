@@ -10,8 +10,7 @@
 #define ThePEG_AlphaEMBase_H
 // This is the declaration of the AlphaEMBase class.
 
-#include "ThePEG/Interface/Interfaced.h"
-#include "StandardModelBase.fh"
+#include "RunningCoupling.h"
 
 namespace ThePEG {
 
@@ -25,16 +24,7 @@ namespace ThePEG {
  * defined for AlphaEMBase.
  * @see StandardModelBase
  */
-class AlphaEMBase: public Interfaced {
-
-public:
-
-  /**
-   * The \f$\alpha_{EM}\f$. Return the value of the coupling at a
-   * given \a scale using the given standard model object, \a sm. This
-   * is the only virtual function to be implemented by base classes.
-   */
-  virtual double value(Energy2 scale, const StandardModelBase & sm) const = 0;
+class AlphaEMBase: public RunningCoupling {
 
 public:
 
@@ -64,7 +54,7 @@ private:
 template <>
 struct BaseClassTrait<AlphaEMBase,1>: public ClassTraitsType {
   /** Typedef of the first base class of AlphaEMBase. */
-  typedef Interfaced NthBase;
+  typedef RunningCoupling NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of the

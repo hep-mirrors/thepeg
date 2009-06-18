@@ -49,6 +49,12 @@ public:
   virtual double value(Energy2 scale, const StandardModelBase &) const;
 
   /**
+   * Return the number of loops contributing to
+   * the running this coupling.
+   */
+  inline virtual unsigned int nloops () const { return 1; }
+
+  /**
    * Return the flavour thresholds used. The returned vector contains
    * (in position <code>i</code>) the scales when the active number of
    * flavours changes from <code>i</code> to <code>i+1</code>.

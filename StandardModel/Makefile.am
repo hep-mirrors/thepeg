@@ -1,6 +1,6 @@
-mySOURCES = StandardModelBase.cc AlphaEMBase.cc CKMBase.cc AlphaSBase.cc
+mySOURCES = StandardModelBase.cc RunningCoupling.cc AlphaEMBase.cc CKMBase.cc AlphaSBase.cc
 
-DOCFILES = AlphaEMBase.h AlphaSBase.h CKMBase.h  \
+DOCFILES = RunningCoupling.h AlphaEMBase.h AlphaSBase.h CKMBase.h  \
            StandardModelBase.h
 
 INCLUDEFILES = $(DOCFILES) StandardModelBase.fh

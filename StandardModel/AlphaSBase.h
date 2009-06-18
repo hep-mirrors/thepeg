@@ -10,8 +10,7 @@
 #define ThePEG_AlphaSBase_H
 // This is the declaration of the AlphaSBase class.
 
-#include "ThePEG/Interface/Interfaced.h"
-#include "StandardModelBase.fh"
+#include "RunningCoupling.h"
 
 namespace ThePEG {
 
@@ -26,18 +25,12 @@ namespace ThePEG {
  * defined for AlphaSBase.
  * @see StandardModelBase
  */
-class AlphaSBase: public Interfaced {
+class AlphaSBase: public RunningCoupling {
 
 public:
 
   /** @name Virtual functions to be overridden by sub-classes. */
   //@{
-  /**
-   * The \f$\alpha_S\f$. Return the QCD coupling for a given \a scale
-   * using the given standard model object \a sm.
-   */
-  virtual double value(Energy2 scale, const StandardModelBase & sm) const = 0;
-
   /**
    * Return the flavour thresholds used. The returned vector contains
    * (in position <code>i</code>) the scales when the active number of
@@ -149,7 +142,7 @@ private:
 template <>
 struct BaseClassTrait<AlphaSBase,1>: public ClassTraitsType {
   /** Typedef of the first base class of AlphaSBase. */
-  typedef Interfaced NthBase;
+  typedef RunningCoupling NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of the

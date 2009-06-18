@@ -21,7 +21,7 @@ using namespace ThePEG;
 void AlphaSBase::doinit() {
   theFlavourThresholds = flavourThresholds();
   theLambdaQCDs = LambdaQCDs();
-  Interfaced::doinit();
+  RunningCoupling::doinit();
 }
 
 void AlphaSBase::persistentOutput(PersistentOStream & os) const {

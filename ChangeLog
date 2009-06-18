@@ -1,3 +1,12 @@
+2009-06-18 Simon Plätzer <sp@particle.uni-karlsruhe.de>
+
+	* StandardModel/*Alpha*, StandardModel/RunningCoupling.*,
+	StandardModel/Makefile.am:
+	Changes to unify the treatment of running couplings, providing
+	scale factors, helpers to veto algorithms and information about
+	the number of loops entering the beta function to perform
+	consistency checks.
+	
 2009-06-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.*, Handlers/StandardEventHandler.*,

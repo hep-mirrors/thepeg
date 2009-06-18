@@ -30,7 +30,13 @@ public:
    * The \f$\alpha_{EM}\f$. Return the value of the coupling at a
    * given \a scale using the given standard model object, \a sm.
    */
-virtual double value(Energy2 scale, const StandardModelBase &) const;
+  virtual double value(Energy2 scale, const StandardModelBase &) const;
+
+  /**
+   * Return the number of loops contributing to
+   * the running this coupling.
+   */
+  inline virtual unsigned int nloops () const { return 1; }
 
 public:
 
