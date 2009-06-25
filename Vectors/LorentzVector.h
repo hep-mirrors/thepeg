@@ -540,8 +540,8 @@ operator-(LorentzVector<ValueA> a, const LorentzVector<ValueB> & b) {
 
 template <typename Value>
 inline LorentzVector<Value>
-operator*(LorentzVector<Value> a, double b) {
-  return a *= b;
+operator*(const LorentzVector<Value> & a, double b) {
+  return LorentzVector<Value>(a.x()*b, a.y()*b, a.z()*b, a.t()*b);
 }
 
 template <typename Value>
