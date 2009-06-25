@@ -534,6 +534,9 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
   if(iopt==5) {
     return Complex(UnitRemoval::E2/p2);
   }
+  else if(iopt==4) {
+    return 1.0;
+  }
   else if(p2 < ZERO) {
     masswidth = ZERO;
   }
@@ -545,8 +548,6 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
     case 3: 
       masswidth = ZERO;                    
       break;
-    case 4: 
-      return 1.0;
     case 6: 
       masswidth = ii * mass2 * width / sqrt(p2);
       return Complex(UnitRemoval::E2 * (mass2/p2) / (p2-mass2+masswidth));
