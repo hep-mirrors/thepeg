@@ -102,193 +102,126 @@ AC_SUBST(LHAPDF_PKGDATADIR)
 AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
 ])
 
-# Search for stand-alone HepMC in standard directories
-AC_DEFUN([THEPEG_SEARCH_HEPMC],
+dnl ##### HEPMC #####
+AC_DEFUN([THEPEG_CHECK_HEPMC],
 [
-AC_MSG_CHECKING([if stand-alone HepMC is present and works])
-HAS_HEPMC="yes"
-HEPMC_LIBDIR=""
-AC_ARG_ENABLE(HEPMC,[  --disable-HEPMC        do not use stand-alone HepMC package
-                          (enabled by default --enable-HEPMC=path to specify
-                          where the HEPMC shared library is located)], [if test -n "$enable_HEPMC" -a "$enable_HEPMC" != "yes" -a "$enable_HEPMC" != "no"; then HEPMC_LIBDIR="$enable_HEPMC"; elif test "$enable_HEPMC" == "no"; then HAS_HEPMC="no"; fi])
+AC_MSG_CHECKING([for HepMC location])
+HEPMCINCLUDE=""
+HEPMCLIBS="-lHepMC"
 
+AC_ARG_WITH(hepmc,
+        AC_HELP_STRING([--with-hepmc=DIR],[Location of HepMC installation @<:@default=system libs@:>@]),
+        [],
+	[with_hepmc=system])
 
-HEPMC_LDFLAGS=""
-if test -n "$HEPMC_LIBDIR"; then
-  HEPMC_LDFLAGS="-L$HEPMC_LIBDIR"
-fi
-
-HEPMC_LIBS="-lHepMC"
-
-oldLIB="$LIBS"
-oldLDFLAGS="$LDFLAGS"
-
-if test "$HAS_HEPMC" == "yes"; then
-dnl Now lets see if the libraries work properly
-  LIBS="$LIBS $HEPMC_LIBS"
-  LDFLAGS="$LDFLAGS $HEPMC_LDFLAGS"
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include "HepMC/GenEvent.h"]],
-                                  [[HepMC::GenEvent * eve;]])], ,
-                                  HAS_HEPMC="no")
-fi
-
-LIBS="$oldLIB"
-LDFLAGS="$oldLDFLAGS"
-
-if test "$HAS_HEPMC" == "yes"; then
-  HEPMC_LIBS="-lHepMC -lHepMCfio"
-  AC_MSG_RESULT([yes])
+if test "x$with_hepmc" = "xno"; then
+	AC_MSG_RESULT([HepMC support disabled.])
+elif test "x$with_hepmc" = "xsystem"; then
+        AC_MSG_RESULT([in system libraries])
+	oldlibs="$LIBS"
+	AC_CHECK_LIB(HepMC,main,
+		[],
+		[with_hepmc=no
+		 AC_MSG_WARN([
+HepMC not found in system libraries])
+		])
+	HEPMCLIBS="$LIBS"
+	LIBS=$oldlibs
 else
-  AC_MSG_RESULT([no])
+	AC_MSG_RESULT([$with_hepmc])
+	HEPMCINCLUDE=-I$with_hepmc/include
+	HEPMCLIBS="-L$with_hepmc/lib -R$with_hepmc/lib -lHepMC"
 fi
-AC_SUBST(HEPMC_LIBS)
-AC_SUBST(HEPMC_LDFLAGS)
-AM_CONDITIONAL([USEHEPMC], [test "x$HAS_HEPMC" == "xyes"])
+
+if test "x$with_hepmc" != "xno"; then
+	# Now lets see if the libraries work properly
+	oldLIBS="$LIBS"
+	oldLDFLAGS="$LDFLAGS"
+	oldCPPFLAGS="$CPPFLAGS"
+	LIBS="$LIBS $HEPMCLIBS"
+	LDFLAGS="$LDFLAGS"
+	CPPFLAGS="$CPPFLAGS $HEPMCINCLUDE"
+
+	# check HepMC
+	AC_MSG_CHECKING([that HepMC works])
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <HepMC/GenEvent.h>
+]],[[HepMC::GenEvent();]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
+	AC_MSG_ERROR([Use '--with-hepmc=' to set a path or use '--without-hepmc'.])
+	])
+
+	AC_CHECK_HEADERS([HepMC/PdfInfo.h],[],[AC_MSG_ERROR([Need HepMC with PdfInfo support.])],[#include <algorithm>])
+	AC_CHECK_HEADERS([HepMC/IO_GenEvent.h])
+	AC_CHECK_HEADERS([HepMC/IO_ExtendedAscii.h])
+
+	LIBS="$oldLIBS"
+	LDFLAGS="$oldLDFLAGS"
+	CPPFLAGS="$oldCPPFLAGS"
+fi
+
+AM_CONDITIONAL(HAVE_HEPMC,[test "x$with_hepmc" != "xno"])
+AC_SUBST(HEPMCINCLUDE)
+AC_SUBST(HEPMCLIBS)
+AC_SUBST(CREATE_HEPMC)
+AC_SUBST(LOAD_HEPMC)
 ])
 
-# Search for CLHEP in standard directories using standard CLHEP names
-AC_DEFUN([THEPEG_SEARCH_CLHEP],
-[AC_MSG_CHECKING([if CLHEPPATH is set])
-notsetp=""
-notsetl=""
-if test -z "$CLHEPPATH"; then
-  notsetp="true"
-  for dirbase in / /usr $ac_default_prefix $prefix; do
-    if test -z "$CLHEPLIB"; then
-      notsetl="true"
-      for filename in $dirbase/lib/libCLHEP-?.?.?.?.{so,dylib} $dirbase/lib/libCLHEP.{so,dylib}; do
-        if test -f $filename; then
-          CLHEPPATH=$dirbase
-          CLHEPLIB=`basename $filename | sed -e 's/^lib/-l/' -e 's/\.\(so\|dylib\)$//'`
-        fi
-      done
-    else
-      filename=`echo $CLHEPLIB | sed -e 's/^-l/lib/'`
-      if test -f $dirbase/lib/$filename.so -o -f $dirbase/lib/$filename.dylib; then
-	CLHEPPATH=$dirbase
-      fi
-    fi
-  done
+dnl ##### RIVET #####
+
+AC_DEFUN([THEPEG_CHECK_RIVET],
+[
+AC_REQUIRE([THEPEG_CHECK_HEPMC])
+AC_MSG_CHECKING([for Rivet location])
+RIVETINCLUDE=""
+RIVETLIBS="-lRivet"
+
+AC_ARG_WITH(Rivet,
+        AC_HELP_STRING([--with-Rivet=DIR],[Location of Rivet installation @<:@default=system libs@:>@]),
+        [],
+	[with_Rivet=system])
+
+if test "x$with_Rivet" = "xno"; then
+	AC_MSG_RESULT([Rivet support disabled.])
+elif test "x$with_hepmc" = "xsystem"; then
+        AC_MSG_RESULT([in system libraries])
+	oldlibs="$LIBS"
+	AC_CHECK_LIB(Rivet,main,
+		[],
+		[with_Rivet=no
+		 AC_MSG_WARN([
+Rivet not found in system libraries])
+		])
+	RIVETLIBS="$LIBS"
+	LIBS=$oldlibs
 else
-  if test -z "$CLHEPLIB"; then
-    notsetl="true"
-    for filename in $CLHEPPATH/lib/libCLHEP-?.?.?.?.{so,dylib} CLHEPPATH/lib/libCLHEP.{so,dylib}; do
-      if test -f $filename; then
-        CLHEPLIB=`basename $filename | sed -e 's/^lib/-l/' -e 's/\.\(so\|dylib\)$//'`
-      fi
-    done
-  fi
+	AC_MSG_RESULT([$with_Rivet])
+	RIVETINCLUDE=-I$with_Rivet/include
+	RIVETLIBS="-L$with_Rivet/lib -R$with_Rivet/lib -lRivet"
 fi
 
-if test -z "$notsetp"; then
-  AC_MSG_RESULT([yes ($CLHEPPATH)])
-else
-  AC_MSG_RESULT([no (found $CLHEPPATH)])
+if test "x$with_Rivet" != "xno"; then
+	# Now lets see if the libraries work properly
+	oldLIBS="$LIBS"
+	oldLDFLAGS="$LDFLAGS"
+	oldCPPFLAGS="$CPPFLAGS"
+	LIBS="$LIBS $HEPMCLIBS $RIVETLIBS"
+	LDFLAGS="$LDFLAGS"
+	CPPFLAGS="$CPPFLAGS $RIVETINCLUDE"
+
+	# check Rivet
+	AC_MSG_CHECKING([that Rivet works])
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <Rivet/AnalysisHandler.hh>
+]],[[Rivet::GenEvent();]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
+	AC_MSG_ERROR([Use '--with-Rivet=' to set a path or use '--without-Rivet'.])
+	])
+
+	LIBS="$oldLIBS"
+	LDFLAGS="$oldLDFLAGS"
+	CPPFLAGS="$oldCPPFLAGS"
 fi
-AC_MSG_CHECKING([if CLHEPLIB is set])
-if test -z "$notsetl"; then
-  AC_MSG_RESULT([yes ($CLHEPLIB)])
-else
-  AC_MSG_RESULT([no (found $CLHEPLIB)])
-fi
 
-AC_MSG_CHECKING([if CLHEPINCLUDE is set])
-if test -z "$CLHEPINCLUDE"; then
-  CLHEPINCLUDE=-I$CLHEPPATH/include
-  AC_MSG_RESULT([no (found $CLHEPINCLUDE)])
-else
-  AC_MSG_RESULT([yes ($CLHEPINCLUDE)])
-fi
-
-dnl Now lets see if the libraries work properly
-oldLIB="$LIBS"
-oldLDFLAGS="$LDFLAGS"
-oldCPPFLAGS="$CPPFLAGS"
-LIBS="$LIBS $CLHEPLIB"
-LDFLAGS="$LDFLAGS -L$CLHEPPATH/lib"
-CPPFLAGS="$CPPFLAGS $CLHEPINCLUDE"
-
-dnl check CLHEP first
-AC_MSG_CHECKING([that CLHEP works])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <CLHEP/Random/Random.h>
-namespace CLHEP {}]], [[using namespace CLHEP; HepRandom r; r.flat();]])],AC_MSG_RESULT(yes),[AC_MSG_RESULT(no) 
-AC_MSG_ERROR(CLHEP must be installed to continue.)
-AC_SUBST(CLHEPPATH)
-AC_SUBST(CLHEPLIB)
-AC_SUBST(CLHEPINCLUDE)
-])
-    
-LIBS="$oldLIB"
-LDFLAGS="$oldLDFLAGS"
-CPPFLAGS="$oldCPPFLAGS"
-
-AC_ARG_VAR(CLHEPPATH,[The path to where CLHEP is installed. Default is $prefix.])
-AC_ARG_VAR(CLHEPLIB,[The argument to be used when linking the CLHEP library. Default is "-lCLHEP".])
-
-AC_ARG_VAR(CLHEPINCLUDE,[The argument used when compiling source files which uses CLHEP. Default is "-I$CLHEPPATH/include".])
-
-])
-
-
-
-# Check for CLHEP.
-AC_DEFUN([THEPEG_CHECK_CLHEP],
-[AC_MSG_CHECKING([if CLHEPPATH is set])
-if test -z "$CLHEPPATH"; then
-  if test "x$prefix" == "xNONE"; then
-    CLHEPPATH=$ac_default_prefix
-  else
-    CLHEPPATH=$prefix
-  fi
-  AC_MSG_RESULT([no (using $CLHEPPATH)])
-else
-  AC_MSG_RESULT([yes ($CLHEPPATH)])
-fi
-AC_ARG_VAR(CLHEPPATH,[The path to where CLHEP is installed. Default is $prefix.])
-
-AC_MSG_CHECKING([if CLHEPLIB is set])
-if test -z "$CLHEPLIB"; then
-  CLHEPLIB="-lCLHEP"
-  AC_MSG_RESULT([no (using $CLHEPLIB)])
-else
-  AC_MSG_RESULT([yes ($CLHEPLIB)])
-fi
-AC_ARG_VAR(CLHEPLIB,[The argument to be used when linking the CLHEP library. Default is "-lCLHEP".])
-
-AC_MSG_CHECKING([if CLHEPINCLUDE is set])
-if test -z "$CLHEPINCLUDE"; then
-  CLHEPINCLUDE=-I$CLHEPPATH/include
-  AC_MSG_RESULT([no (using $CLHEPINCLUDE)])
-else
-  AC_MSG_RESULT([yes ($CLHEPINCLUDE)])
-fi
-AC_ARG_VAR(CLHEPINCLUDE,[The argument used when compiling source files which uses CLHEP. Default is "-I$CLHEPPATH/include".])
-
-dnl ###############################
-dnl ###############################
-dnl ###############################
-
-dnl Now lets see if the libraries work properly
-oldLIB="$LIBS"
-oldLDFLAGS="$LDFLAGS"
-oldCPPFLAGS="$CPPFLAGS"
-LIBS="$LIBS $CLHEPLIB"
-LDFLAGS="$LDFLAGS -L$CLHEPPATH/lib"
-CPPFLAGS="$CPPFLAGS $CLHEPINCLUDE"
-
-dnl check CLHEP first
-AC_MSG_CHECKING([that CLHEP works])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <CLHEP/Random/Random.h>
-namespace CLHEP {}]], [[using namespace CLHEP; HepRandom r; r.flat();]])],AC_MSG_RESULT(yes),[AC_MSG_RESULT(no) 
-AC_MSG_ERROR(CLHEP must be installed to continue.)
-AC_SUBST(CLHEPPATH)
-AC_SUBST(CLHEPLIB)
-AC_SUBST(CLHEPINCLUDE)
-])
-
-LIBS="$oldLIB"
-LDFLAGS="$oldLDFLAGS"
-CPPFLAGS="$oldCPPFLAGS"
+AM_CONDITIONAL(HAVE_RIVET,[test "x$with_Rivet" != "xno"])
+AC_SUBST(RIVETINCLUDE)
+AC_SUBST(RIVETLIBS)
 ])
 
 # Check for ThePEG.
@@ -301,7 +234,7 @@ if test -z "$THEPEGPATH"; then
     THEPEGPATH="\$(top_builddir)/../ThePEG"
     THEPEGBUILD="yes"
     AC_MSG_RESULT([no (using ../ThePEG)])
-    AM_CPPFLAGS="-I\$(top_builddir)/include -I\$(top_builddir)/../ThePEG/include $CLHEPINCLUDE"
+    AM_CPPFLAGS="-I\$(top_builddir)/include -I\$(top_builddir)/../ThePEG/include "
     SETUPTHEPEG="$THEPEGPATH/src/setupThePEG.bin -L $THEPEGPATH/lib"
     RUNTHEPEG="$THEPEGPATH/src/runThePEG.bin -L $THEPEGPATH/lib"
     THEPEGDOC="\$(top_builddir)/../ThePEG/Doc"
@@ -319,7 +252,7 @@ else
 fi
 
 if test "$THEPEGBUILD" == "no"; then
-  AM_CPPFLAGS="-I\$(top_builddir)/include -I$THEPEGPATH/include $CLHEPINCLUDE"
+  AM_CPPFLAGS="-I\$(top_builddir)/include -I$THEPEGPATH/include "
   SETUPTHEPEG="$THEPEGPATH/bin/setupThePEG"
   RUNTHEPEG="$THEPEGPATH/bin/runThePEG"
   THEPEGDOC="$THEPEGPATH/share/ThePEG/Doc"
@@ -355,7 +288,7 @@ if test -z "$THEPEGPATH"; then
     THEPEGPATH="\$(top_builddir)/../ThePEG"
     THEPEGBUILD="yes"
     AC_MSG_RESULT([no (found ../ThePEG)])
-    AM_CPPFLAGS="-I\$(top_builddir)/include -I\$(top_builddir)/../ThePEG/include $CLHEPINCLUDE"
+    AM_CPPFLAGS="-I\$(top_builddir)/include -I\$(top_builddir)/../ThePEG/include "
     SETUPTHEPEG="$THEPEGPATH/src/setupThePEG.bin -L $THEPEGPATH/lib"
     RUNTHEPEG="$THEPEGPATH/src/runThePEG.bin -L $THEPEGPATH/lib"
     THEPEGDOC="\$(top_builddir)/../ThePEG/Doc"
@@ -378,7 +311,7 @@ else
 fi
 
 if test "$THEPEGBUILD" == "no"; then
-  AM_CPPFLAGS="-I\$(top_builddir)/include -I$THEPEGPATH/include $CLHEPINCLUDE"
+  AM_CPPFLAGS="-I\$(top_builddir)/include -I$THEPEGPATH/include "
   SETUPTHEPEG="$THEPEGPATH/bin/setupThePEG"
   RUNTHEPEG="$THEPEGPATH/bin/runThePEG"
   THEPEGDOC="$THEPEGPATH/share/ThePEG/Doc"
@@ -513,12 +446,18 @@ echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_CHECK_AIDA],
-[echo $ECHO_N "checking for installed AIDA headers... $ECHO_C" 1>&6
+[
+echo $ECHO_N "checking for installed AIDA headers... $ECHO_C" 1>&6
+if $HAVE_RIVET; then
+   echo "using rivet aida"
+else
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include "AIDA/IAnalysisFactory.h"
 ]], [[AIDA::IAnalysisFactory * af;
 ]])],[AC_DEFINE(LWH_USING_AIDA,1,define if AIDA headers are installed)
 echo "${ECHO_T}yes" 1>&6
-],[echo "${ECHO_T}no" 1>&6])])
+],[echo "${ECHO_T}no" 1>&6])
+fi
+])
 
 AC_DEFUN([THEPEG_CHECK_DLOPEN],
 [echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
@@ -665,6 +604,10 @@ cat << _THEPEG_EOF_ > config.thepeg
 *** GSL:		$with_gsl
 ***
 *** LHAPDF:		$with_LHAPDF
+***
+*** HepMC:		$with_hepmc
+***
+*** RIVET:		$with_Rivet
 ***
 *** Host:		$host
 *** CXX:		$CXXSTRING

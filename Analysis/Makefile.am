@@ -8,13 +8,20 @@ LWHHEADERS = AnalysisFactory.h Axis.h Tree.h TreeFactory.h \
              VariAxis.h DataPoint.h DataPointSet.h DataPointSetFactory.h \
              Measurement.h
 
+DOCFILES =  LWHFactory.h
 mySOURCES = LWHFactory.cc
-
-DOCFILES = $(AIDAWRAPPERS) $(LWHHEADERS) LWHFactory.h
-
-INCLUDEFILES = $(DOCFILES) 
-
 pkglib_LTLIBRARIES = LWHFactory.la XSecCheck.la
+if HAVE_RIVET
+DOCFILES += RivetAnalysis.h 
+pkglib_LTLIBRARIES += RivetAnalysis.la
+RivetAnalysis_la_CPPFLAGS = $(AM_CPPFLAGS) $(HEPMCINCLUDE) $(RIVETINCLUDE)
+RivetAnalysis_la_LIBADD = $(HEPMCLIBS) $(RIVETLIBS)
+RivetAnalysis_la_SOURCES = RivetAnalysis.cc $(INCLUDEFILES)
+RivetAnalysis_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+else
+DOCFILES += $(AIDAWRAPPERS) $(LWHHEADERS)
+endif
+INCLUDEFILES = $(DOCFILES) 
 LWHFactory_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 LWHFactory_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
@@ -23,6 +30,22 @@ XSecCheck_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 noinst_LTLIBRARIES = libThePEGHist.la
 libThePEGHist_la_SOURCES = FactoryBase.cc FactoryBase.fh FactoryBase.h 
+
+if HAVE_RIVET
+LWHFactory_la_CPPFLAGS = $(AM_CPPFLAGS) $(RIVETINCLUDE)
+libThePEGHist_la_CPPFLAGS = $(AM_CPPFLAGS) $(RIVETINCLUDE)
+endif
+
+if HAVE_HEPMC
+pkglib_LTLIBRARIES += HepMCAnalysis.la
+HepMCAnalysis_la_LDFLAGS = -module -version-info 1:0:0
+HepMCAnalysis_la_SOURCES = \
+GraphvizPlot.h GraphvizPlot.cc \
+HepMCFile.h    HepMCFile.cc
+HepMCAnalysis_la_CPPFLAGS = $(AM_CPPFLAGS) $(HEPMCINCLUDE)
+HepMCAnalysis_la_LIBADD = $(HEPMCLIBS)
+endif
+
 
 LWH.tgz: $(AIDAWRAPPERS) $(LWHHEADERS)
 	tar czf LWH.tgz  $(AIDAWRAPPERS) $(LWHHEADERS)
