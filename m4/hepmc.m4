@@ -49,8 +49,7 @@ if test "x$with_hepmc" != "xno"; then
 #include <ostream>
 #include <istream>
 ])
-	AC_CHECK_HEADERS([HepMC/IO_GenEvent.h])
-	AC_CHECK_HEADERS([HepMC/IO_ExtendedAscii.h])
+	AC_CHECK_HEADERS([HepMC/IO_GenEvent.h],[],[AC_MSG_ERROR([Need HepMC with GenEvent support.])])
 
 	LIBS="$oldLIBS"
 	LDFLAGS="$oldLDFLAGS"
