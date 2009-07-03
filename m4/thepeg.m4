@@ -211,7 +211,8 @@ if test "x$with_Rivet" != "xno"; then
 	AC_MSG_CHECKING([that Rivet works])
 	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <Rivet/AnalysisHandler.hh>
 ]],[[Rivet::GenEvent();]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
-	AC_MSG_ERROR([Use '--with-Rivet=' to set a path or use '--without-Rivet'.])
+	AC_MSG_RESULT([Use '--with-Rivet=' to set a path'.])
+	with_Rivet="no"
 	])
 
 	LIBS="$oldLIBS"
@@ -447,8 +448,9 @@ echo "${ECHO_T}yes" 1>&6
 
 AC_DEFUN([THEPEG_CHECK_AIDA],
 [
+AC_REQUIRE([THEPEG_CHECK_RIVET])
 echo $ECHO_N "checking for installed AIDA headers... $ECHO_C" 1>&6
-if $HAVE_RIVET; then
+if test "x$with_Rivet" != "xno"; then
    echo "using rivet aida"
 else
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include "AIDA/IAnalysisFactory.h"
