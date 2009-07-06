@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// HepMCFile.cc is a part of Herwig++ - A multi-purpose Monte Carlo event generator
-// Copyright (C) 2002-2007 The Herwig Collaboration
+// HepMCFile.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
 //
-// Herwig++ is licenced under version 2 of the GPL, see COPYING for details.
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 //
@@ -25,7 +25,6 @@
 #include "HepMC/IO_AsciiParticles.h"
 
 using namespace ThePEG;
-using namespace Herwig;
 
 HepMCFile::HepMCFile() 
   : _eventNumber(1), _format(1), _filename(), _unitchoice() {}

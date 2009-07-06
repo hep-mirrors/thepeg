@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// GraphvizPlot.h is a part of Herwig++ - A multi-purpose Monte Carlo event generator
-// Copyright (C) 2002-2007 The Herwig Collaboration
+// Graphviz.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
 //
-// Herwig++ is licenced under version 2 of the GPL, see COPYING for details.
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 #ifndef THEPEG_GraphvizPlot_H
@@ -15,8 +15,7 @@
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
 
-namespace Herwig {
-  using namespace ThePEG;
+namespace ThePEG {
 
 /** \ingroup Analysis
  * The GraphvizPlot class uses  HepMC event to generate
@@ -163,7 +162,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the
  *  base classes of GraphvizPlot. */
 template <>
-struct BaseClassTrait<Herwig::GraphvizPlot,1> {
+struct BaseClassTrait<GraphvizPlot,1> {
   /** Typedef of the first base class of GraphvizPlot. */
   typedef AnalysisHandler NthBase;
 };
@@ -171,10 +170,10 @@ struct BaseClassTrait<Herwig::GraphvizPlot,1> {
 /** This template specialization informs ThePEG about the name of
  *  the GraphvizPlot class and the shared object where it is defined. */
 template <>
-struct ClassTraits<Herwig::GraphvizPlot>
-  : public ClassTraitsBase<Herwig::GraphvizPlot> {
+struct ClassTraits<GraphvizPlot>
+  : public ClassTraitsBase<GraphvizPlot> {
   /** Return a platform-independent class name */
-  static string className() { return "Herwig::GraphvizPlot"; }
+  static string className() { return "ThePEG::GraphvizPlot"; }
   /** Return the name(s) of the shared library (or libraries) be loaded to get
    *  access to the GraphvizPlot class and any other class on which it depends
    *  (except the base class). */

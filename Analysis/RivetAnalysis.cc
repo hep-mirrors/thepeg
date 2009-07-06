@@ -14,7 +14,7 @@
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
 
-using namespace Herwig;
+using namespace ThePEG;
 
 RivetAnalysis::RivetAnalysis() : _rivet() 
 {}
@@ -53,7 +53,7 @@ void RivetAnalysis::Init() {
 
   static ThePEG::ClassDocumentation<RivetAnalysis> documentation
     ("The RivetAnalysis class is a simple class to allow analyses"
-     " from the Rivet library to be called from Herwig++");
+     " from the Rivet library to be called from ThePEG");
 
   static ThePEG::ParVector<RivetAnalysis,string> interfaceAnalyses
     ("Analyses",

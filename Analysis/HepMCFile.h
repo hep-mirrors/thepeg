@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// HepMCFile.h is a part of Herwig++ - A multi-purpose Monte Carlo event generator
-// Copyright (C) 2002-2007 The Herwig Collaboration
+// HepMCFile.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
 //
-// Herwig++ is licenced under version 2 of the GPL, see COPYING for details.
+// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 #ifndef THEPEG_HepMCFile_H
@@ -18,11 +18,10 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "HepMC/IO_BaseClass.h"
 
-namespace Herwig {
-  using namespace ThePEG;
+namespace ThePEG {
 
 /** \ingroup Analysis
- * The HepMCFile class outputs Herwig++ events in HepMC format.
+ * The HepMCFile class outputs ThePEG events in HepMC format.
  *
  * @see \ref HepMCFileInterfaces "The interfaces"
  * defined for HepMCFile.
@@ -186,7 +185,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the
  *  base classes of HepMCFile. */
 template <>
-struct BaseClassTrait<Herwig::HepMCFile,1> {
+struct BaseClassTrait<HepMCFile,1> {
   /** Typedef of the first base class of HepMCFile. */
   typedef AnalysisHandler NthBase;
 };
@@ -194,10 +193,10 @@ struct BaseClassTrait<Herwig::HepMCFile,1> {
 /** This template specialization informs ThePEG about the name of
  *  the HepMCFile class and the shared object where it is defined. */
 template <>
-struct ClassTraits<Herwig::HepMCFile>
-  : public ClassTraitsBase<Herwig::HepMCFile> {
+struct ClassTraits<HepMCFile>
+  : public ClassTraitsBase<HepMCFile> {
   /** Return a platform-independent class name */
-  static string className() { return "Herwig::HepMCFile"; }
+  static string className() { return "ThePEG::HepMCFile"; }
   /** Return the name(s) of the shared library (or libraries) be loaded to get
    *  access to the HepMCFile class and any other class on which it depends
    *  (except the base class). */

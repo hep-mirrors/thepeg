@@ -1,6 +1,6 @@
 // -*- C++ -*-
-#ifndef HERWIG_RivetAnalysis_H
-#define HERWIG_RivetAnalysis_H
+#ifndef THEPEG_RivetAnalysis_H
+#define THEPEG_RivetAnalysis_H
 //
 // This is the declaration of the RivetAnalysis class.
 //
@@ -8,8 +8,7 @@
 #include "ThePEG/Handlers/AnalysisHandler.h"
 #include "Rivet/AnalysisHandler.hh"
 
-namespace Herwig {
-using namespace ThePEG;
+namespace ThePEG {
 
 /**
  * Here is the documentation of the RivetAnalysis class.
@@ -148,7 +147,7 @@ namespace ThePEG {
 /** This template specialization informs ThePEG about the
  *  base classes of RivetAnalysis. */
 template <>
-struct BaseClassTrait<Herwig::RivetAnalysis,1> {
+struct BaseClassTrait<RivetAnalysis,1> {
   /** Typedef of the first base class of RivetAnalysis. */
   typedef AnalysisHandler NthBase;
 };
@@ -156,10 +155,10 @@ struct BaseClassTrait<Herwig::RivetAnalysis,1> {
 /** This template specialization informs ThePEG about the name of
  *  the RivetAnalysis class and the shared object where it is defined. */
 template <>
-struct ClassTraits<Herwig::RivetAnalysis>
-  : public ClassTraitsBase<Herwig::RivetAnalysis> {
+struct ClassTraits<RivetAnalysis>
+  : public ClassTraitsBase<RivetAnalysis> {
   /** Return a platform-independent class name */
-  static string className() { return "Herwig::RivetAnalysis"; }
+  static string className() { return "ThePEG::RivetAnalysis"; }
   /**
    * The name of a file containing the dynamic library where the class
    * RivetAnalysis is implemented. It may also include several, space-separated,
@@ -174,4 +173,4 @@ struct ClassTraits<Herwig::RivetAnalysis>
 
 }
 
-#endif /* HERWIG_RivetAnalysis_H */
+#endif /* THEPEG_RivetAnalysis_H */
