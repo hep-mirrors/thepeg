@@ -149,7 +149,7 @@ public:
    * Return a pointer to the primary SubProcess in the prinmary
    * Collision in this Event. May be the null pointer.
    */
-  inline tSubProPtr primarySubProcess() const;
+  tSubProPtr primarySubProcess() const;
 
   /**
    * Return a reference to the pair of colliding particles in the

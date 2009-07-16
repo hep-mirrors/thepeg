@@ -144,7 +144,7 @@ public:
    * method will probably cause a segmentation fault - This should be
    * fixed. @deprecated Maybe this method is not needed at all.)
    */
-  inline const PPair & incoming() const;
+  const PPair & incoming() const;
 
   /**
    * Get mutable particle. If the given particle is present in this

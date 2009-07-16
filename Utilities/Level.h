@@ -30,10 +30,10 @@ public:
 
   /** Constructor taking an integer variable which is incremented. A
    *  reference to the variable will be stored. */
-  inline Level(T & newLevel) : theLevel(++newLevel) {}
+  Level(T & newLevel) : theLevel(++newLevel) {}
 
   /** Destructor decrementing the associated integer variable. */
-  inline ~Level() { --theLevel; }
+  ~Level() { --theLevel; }
 
 private:
 
@@ -44,17 +44,17 @@ private:
   /**
    * Default constructor is private and not implemented.
    */
-  inline Level();
+  Level();
 
   /**
    * Copy constructor is private and not implemented.
    */
-  inline Level(const Level &);
+  Level(const Level &);
 
   /**
    * Assignment is private and not implemented.
    */
-  inline Level & operator=(const Level &);
+  Level & operator=(const Level &);
 
 };
 

@@ -36,7 +36,7 @@ public:
    * Return the number of loops contributing to
    * the running this coupling.
    */
-  inline virtual unsigned int nloops () const { return 1; }
+  virtual unsigned int nloops () const { return 1; }
 
 public:
 

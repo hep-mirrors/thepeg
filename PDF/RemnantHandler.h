@@ -138,7 +138,7 @@ public:
    * Return true if this remnant handler is able to handle multiple
    * extractions of partons from the same particle.
    */
-  inline bool multiCapable() const;
+  bool multiCapable() const { return isMultiCapable; }
 
 public:
 

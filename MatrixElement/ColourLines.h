@@ -40,7 +40,7 @@ public:
   /**
    * Default constructor.
    */
-  inline ColourLines() {}
+  ColourLines() {}
 
   /**
    * The standard constructor. The string \a s should contain a

@@ -30,12 +30,12 @@ public:
   /**
    * The default constructor.
    */
-  inline MaxCmp() : init(false), max(T()) {}
+  MaxCmp() : init(false), max(T()) {}
 
   /**
    * Constructor specifying an initial maximum value, \a t.
    */
-  inline MaxCmp(const T & t) : init(true), max(t) {}
+  MaxCmp(const T & t) : init(true), max(t) {}
 
 public:
 

@@ -31,8 +31,7 @@ public:
   /**
    * The default constructor.
    */
-  inline RunningCoupling ()
-    : theScaleFactor(1.) {}
+  RunningCoupling () : theScaleFactor(1.) {}
 
   /**@name Methods to be implemented by a derived class */
   //@{
@@ -48,9 +47,7 @@ public:
    * the running this coupling. The default returns
    * zero to ensure backward compatibility.
    */
-  virtual unsigned int nloops () const {
-    return 0;
-  }
+  virtual unsigned int nloops () const { return 0; }
 
   //@}
 
@@ -58,7 +55,7 @@ public:
    * Return the value of the coupling at a given \a scale using the
    * StandardModelBase object used by the EventGenerator.
    */
-  inline double value(Energy2 scale) const {
+  double value(Energy2 scale) const {
     return value(scale,*(generator()->standardModel()));
   }
 
@@ -68,7 +65,7 @@ public:
    * and by default returns the coupling itself, using the EventGenerators's
    * StandardModelBase object.
    */
-  virtual inline double overestimateValue (Energy2 scale) const {
+  virtual double overestimateValue (Energy2 scale) const {
     return value(scale);
   }
 
@@ -78,7 +75,7 @@ public:
    * one in accordance with the default implementation of
    * overestimateValue
    */
-  virtual inline double ratioToOverestimate (Energy2) const {
+  virtual double ratioToOverestimate (Energy2) const {
     return 1.;
   }
 
@@ -86,7 +83,7 @@ public:
    * Return the scale factor, which may be used to globally
    * rescale the argument of the running coupling.
    */
-  inline double scaleFactor () const { return theScaleFactor; }
+  double scaleFactor () const { return theScaleFactor; }
 
 public:
 

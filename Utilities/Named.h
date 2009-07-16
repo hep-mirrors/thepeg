@@ -57,7 +57,7 @@ protected:
   /**
    * Assignment.
    */
-  inline const Named & operator = (const Named & other) 
+  const Named & operator = (const Named & other) 
   { 
     if (this != &other)
       theName = other.name(); 
@@ -67,7 +67,7 @@ protected:
   /**
    * Set new name.
    */
-  inline const string & name(const string & newName) 
+  const string & name(const string & newName) 
   { 
     return theName = newName; 
   } 
