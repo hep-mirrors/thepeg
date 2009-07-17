@@ -1,21 +1,21 @@
 // -*- C++ -*-
 //
-// FFVVertex.h is a part of ThePEG - Toolkit for HEP Event Generation
+// GeneralFFVVertex.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 2003-2007 Peter Richardson, Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
-#ifndef ThePEG_FFVVertex_H
-#define ThePEG_FFVVertex_H
+#ifndef ThePEG_GeneralFFVVertex_H
+#define ThePEG_GeneralFFVVertex_H
 //
-// This is the declaration of the FFVVertex class.
+// This is the declaration of the GeneralFFVVertex class.
 
 #include <ThePEG/Helicity/Vertex/AbstractFFVVertex.h>
 #include <ThePEG/Helicity/WaveFunction/VectorWaveFunction.h>
 #include <ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h>
 #include <ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h>
-#include "FFVVertex.fh"
+#include "GeneralFFVVertex.fh"
 
 namespace ThePEG {
 
@@ -23,27 +23,26 @@ namespace Helicity{
 
 /** \ingroup Helicity
  *
- *  The FFVVertex class is the base class for all helicity amplitude
- *  vertices which use the renormalisable form for the 
- *  fermion-fermion-vector vertex. 
+ *  The GeneralFFVVertex class is the base class for all helicity amplitude
+ *  vertices which use a general form of the fermion-fermion-vector vertex.
  *
  *  Any such vertices should inherit from this class and implement the virtual
- *  setcoupling member function. The base AbstractFFVVertex class is used to store the
- *  particles allowed to interact at the vertex.
+ *  setcoupling member function. The base AbstractFFVVertex class is
+ *  used to store the particles allowed to interact at the vertex.
  *
  *  The form of the vertex is
  *  \f[ic\bar{f_2}\gamma^\mu a^\lambda P_\lambda f_1\epsilon_{3\mu}\f]
  *
  *  @see AbstractFFVVertex
  */
-class FFVVertex: public AbstractFFVVertex {
+class GeneralFFVVertex: public AbstractFFVVertex {
   
 public:
   
   /**
    * Default constructor.
    */
-  FFVVertex();
+  GeneralFFVVertex();
   
   /**
    * Standard Init function used to initialize the interfaces.
@@ -144,6 +143,16 @@ public:
    * Get the right coupling.
    */
   const Complex & getRight() { return _right; }
+
+  /**
+   *  Get the left coupling for the \f$\sigma^{\mu\nu}\f$ term
+   */
+  const complex<InvEnergy> getLeftSigma() { return _leftSigma; }
+
+  /**
+   *  Get the right coupling for the \f$\sigma^{\mu\nu}\f$ term
+   */
+  const complex<InvEnergy> getRightSigma() { return _rightSigma; }
   //@}
 
 protected:
@@ -161,6 +170,16 @@ protected:
    * Set the right coupling.
    */
   void setRight(const Complex & in) { _right = in; }
+
+  /**
+   *  Set the left coupling for the \f$\sigma^{\mu\nu}\f$ term
+   */
+  void  setLeftSigma(const complex<InvEnergy> & in) { _leftSigma  = in; }
+
+  /**
+   *  Set the right coupling for the \f$\sigma^{\mu\nu}\f$ term
+   */
+  void setRightSigma(const complex<InvEnergy> & in) { _rightSigma = in; }
   //@}
 
 private:
@@ -168,24 +187,34 @@ private:
   /**
    * Describe an abstract class with persistent data.
    */
-  static AbstractNoPIOClassDescription<FFVVertex> initFFVVertex;
+  static AbstractNoPIOClassDescription<GeneralFFVVertex> initGeneralFFVVertex;
   
   /**
    * Private and non-existent assignment operator.
    */
-  FFVVertex & operator=(const FFVVertex &);
+  GeneralFFVVertex & operator=(const GeneralFFVVertex &);
   
 private:
 
   /**
-   * Left coupling.
+   *  Left \f$\gamma^\mu\f$ coupling.
    */
   Complex _left;
 
   /**
-   * Right coupling.
+   * Right \f$\gamma^\mu\f$ coupling.
    */
   Complex _right;
+
+  /**
+   * Left \f$\sigma^{\mu\nu}\f$ coupling
+   */
+  complex<InvEnergy> _leftSigma;
+
+  /**
+   * Right \f$\sigma^{\mu\nu}\f$ coupling
+   */
+  complex<InvEnergy> _rightSigma;
   
 };
 }
@@ -194,11 +223,11 @@ private:
 
 /**
  * The following template specialization informs ThePEG about the
- * base class of FFVVertex.
+ * base class of GeneralFFVVertex.
  */
 template <>
-struct BaseClassTrait<ThePEG::Helicity::FFVVertex,1> {
-  /** Typedef of the base class of FFVVertex. */
+struct BaseClassTrait<ThePEG::Helicity::GeneralFFVVertex,1> {
+  /** Typedef of the base class of GeneralFFVVertex. */
   typedef ThePEG::Helicity::AbstractFFVVertex NthBase;
 };
 
@@ -207,13 +236,13 @@ struct BaseClassTrait<ThePEG::Helicity::FFVVertex,1> {
  * name of this class and the shared object where it is defined.
  */
 template <>
-struct ClassTraits<ThePEG::Helicity::FFVVertex>
-  : public ClassTraitsBase<ThePEG::Helicity::FFVVertex> {
+struct ClassTraits<ThePEG::Helicity::GeneralFFVVertex>
+  : public ClassTraitsBase<ThePEG::Helicity::GeneralFFVVertex> {
 
   /**
    * Return the class name.
    */
-  static string className() { return "ThePEG::FFVVertex"; }
+  static string className() { return "ThePEG::GeneralFFVVertex"; }
 };
 
 /** @endcond */
@@ -221,4 +250,4 @@ struct ClassTraits<ThePEG::Helicity::FFVVertex>
 }
 
 
-#endif /* ThePEG_FFVVertex_H */
+#endif /* ThePEG_GeneralFFVVertex_H */
