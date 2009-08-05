@@ -91,7 +91,8 @@ public:
    * connected.
    */
   tPPtr startParticle() const {
-    return sinkNeighbours().first? tPPtr(): antiColoured().back();
+    return sinkNeighbours().first || antiColoured().empty() ? 
+      tPPtr() : antiColoured().back();
   }
 
   /**
@@ -100,7 +101,8 @@ public:
    * colour is connected, otherwise its anti colour is connected.
    */
   tPPtr endParticle() const {
-    return sourceNeighbours().first? tPPtr(): coloured().back();
+    return sourceNeighbours().first || coloured().empty() ? 
+      tPPtr() : coloured().back();
   }
 
   //@}
