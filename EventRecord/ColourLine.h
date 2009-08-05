@@ -90,20 +90,14 @@ public:
    * outgoing, its anti colour is connected, otherwise its colour is
    * connected.
    */
-  tPPtr startParticle() const {
-    return sinkNeighbours().first || antiColoured().empty() ? 
-      tPPtr() : antiColoured().back();
-  }
+  tPPtr startParticle() const;
 
   /**
    * Return the last particle on this colour line. Returns null if
    * this line ends in a colour sink. If the particle is outgoing, its
    * colour is connected, otherwise its anti colour is connected.
    */
-  tPPtr endParticle() const {
-    return sourceNeighbours().first || coloured().empty() ? 
-      tPPtr() : coloured().back();
-  }
+  tPPtr endParticle() const;
 
   //@}
 

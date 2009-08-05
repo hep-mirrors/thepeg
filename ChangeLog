@@ -1,7 +1,8 @@
 2009-08-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* EventRecord/ColourLine.h: Handle possible segfault in
-	start/endParticle() more gracefully.
+	start/endParticle() more gracefully. Also, source and sink were
+	the wrong way round.
 
 2009-06-18 Simon Plätzer <sp@particle.uni-karlsruhe.de>
 

@@ -38,6 +38,16 @@ tColinePtr ColourLine::create(tPPtr col, bool anti) {
 
 ColourLine::~ColourLine() {}
 
+tPPtr ColourLine::startParticle() const {
+  return sourceNeighbours().first || antiColoured().empty() ? 
+    tPPtr() : antiColoured().back();
+}
+
+tPPtr ColourLine::endParticle() const {
+  return sinkNeighbours().first || coloured().empty() ? 
+    tPPtr() : coloured().back();
+}
+
 void ColourLine::addAntiColoured(tPPtr p) {
   theAntiColoured.push_back(p);
   p->colourInfo()->antiColourLine(this);
