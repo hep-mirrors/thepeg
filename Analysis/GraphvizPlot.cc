@@ -14,11 +14,11 @@
 #include "GraphvizPlot.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-#include <HepMCHelper.h>
 
 using namespace ThePEG;
 
@@ -26,14 +26,21 @@ namespace {
   const string header = "digraph test {\nrankdir=LR;\nranksep=1.5;\n";
 }
 
+string GraphvizPlot::particleName(const HepMC::GenParticle & p) const {
+  if ( p.pdg_id() == 82 ) return "[remnant]";
+  tcPDPtr pd = generator()->getParticleData(p.pdg_id());
+  return pd? pd->PDGName(): string("unknown");
+}
+
 void GraphvizPlot::dofinish() {
   AnalysisHandler::dofinish();
-  cout << "\nGraphvizPlot: plots can be generated like this:\n"
-       << "GraphvizPlot: 'dot -Tpng " 
-       << generator()->filename() 
-       << '-'
-       << name() 
-       << "-NNN.dot > plot.png'";
+  if (! _quiet )
+    cout << "\nGraphvizPlot: plots can be generated like this:\n"
+	 << "GraphvizPlot: 'dot -Tpng " 
+	 << generator()->filename() 
+	 << '-'
+	 << name() 
+	 << "-NNN.dot > plot.png'\n";
 }
 
 void GraphvizPlot::analyze(tEventPtr event, long, int, int) {
@@ -69,8 +76,7 @@ void GraphvizPlot::analyze(tEventPtr event, long, int, int) {
       
       hepmcdotfile << (*jt)->barcode() << " -> "
 		   << (*it)->barcode() << " [label=\""
-		   << generator()->
-	getParticleData((*jt)->pdg_id())->PDGName()
+		   << particleName(**jt)
 		   << "\"]\n";
       
     }
@@ -88,8 +94,7 @@ void GraphvizPlot::analyze(tEventPtr event, long, int, int) {
 	hepmcdotfile << (*jt)->barcode();
       
       hepmcdotfile << " [label=\"" 
-		   << generator()->
-	getParticleData((*jt)->pdg_id())->PDGName()
+		   << particleName(**jt)
 		   << "\"]\n";
     }
     
@@ -113,11 +118,11 @@ LorentzRotation GraphvizPlot::transform(tEventPtr) const {
 void GraphvizPlot::analyze(tPPtr) {}
 
 void GraphvizPlot::persistentOutput(PersistentOStream & os) const {
-  os << _eventNumber;
+  os << _eventNumber << _quiet;
 }
 
 void GraphvizPlot::persistentInput(PersistentIStream & is, int) {
-  is >> _eventNumber;
+  is >> _eventNumber >> _quiet;
 }
 
 ClassDescription<GraphvizPlot> GraphvizPlot::initGraphvizPlot;
@@ -133,5 +138,22 @@ void GraphvizPlot::Init() {
      "The number of the event that should be drawn.",
      &GraphvizPlot::_eventNumber, 1, 1, 1,
      false, false, Interface::lowerlim);
+
+  static Switch<GraphvizPlot,bool> interfaceQuiet
+    ("Quiet",
+     "Prevent GraphvizPlot from outputing instructions for how to generate "
+     "the actual graph.",
+     &GraphvizPlot::_quiet, false, true, false);
+  static SwitchOption interfaceQuietVerbose
+    (interfaceQuiet,
+     "Verbose",
+     "Allow output.",
+     false);
+  static SwitchOption interfaceQuietQuiet
+    (interfaceQuiet,
+     "Quiet",
+     "Prevent output.",
+     true);
+
 }
 

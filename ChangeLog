@@ -1,3 +1,28 @@
+2009-08-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/GraphvizPlot.cc (dofinish): Made the message sent to
+	cout optional.
+
+	* lib/inputerror.pm (inputerror): Added small PERL module for
+	reading numbers with errors as written out bu ThePEG.
+
+	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.tcc,
+	Vectors/HepMCConverter.h: Included support for cross sectio
+	information and made the traits class implement cross sections,
+	pdf's and units depending on what is set in HepMCDefs.h.
+
+	Also reordered the particles according to their numbering as an
+	alternative to CMS's suggested "topological" sorting.
+
+	This will hopefully fix herwig:ticket:153
+
+	* include/Makefile.am (CONFIGHEADERS): Make sure
+	Config/HepMCHelper is properly symlinked.
+
+	* Analysis/GraphvizPlot.cc (particleName): Added helper function
+	for getting the name of a particle to be able to handle remnant
+	particles (which have code 82).
+
 2009-08-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* EventRecord/ColourLine.h: Handle possible segfault in

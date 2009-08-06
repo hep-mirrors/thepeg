@@ -20,7 +20,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-#include <HepMCHelper.h>
+#include "ThePEG/Config/HepMCHelper.h"
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/IO_AsciiParticles.h"
 

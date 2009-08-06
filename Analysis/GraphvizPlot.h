@@ -14,6 +14,7 @@
 
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
+#include "ThePEG/Config/HepMCHelper.h"
 
 namespace ThePEG {
 
@@ -33,7 +34,7 @@ public:
   /**
    * The default constructor.
    */
-  GraphvizPlot() : _eventNumber(1) {}
+  GraphvizPlot() : _eventNumber(1), _quiet(false) {}
   //@}
 
 public:
@@ -128,6 +129,11 @@ protected:
   virtual void dofinish();
   //@}
 
+  /**
+   * Helper function to obtain the name of a GenParticle.
+   */
+  string particleName(const HepMC::GenParticle &) const;
+
 private:
 
   /**
@@ -148,6 +154,12 @@ private:
    * Event number that should be drawn 
    */
   long _eventNumber;
+
+  /**
+   * Tell the object not to write out messages to the standard output.
+   */
+  bool _quiet;
+
 
 };
 

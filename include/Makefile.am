@@ -31,6 +31,7 @@ CONFIGHEADERS = $(top_srcdir)/Config/Complex.h \
 		$(top_srcdir)/Config/PhysicalQtyOps.h \
 		$(top_srcdir)/Config/TemplateTools.h \
 		$(top_srcdir)/Config/Unitsystem.h \
+		$(top_srcdir)/Config/HepMCHelper.h \
 		$(top_srcdir)/Config/std.h
 
 CLEANFILES = done-all-links 

@@ -40,7 +40,7 @@ public:
 public:
 
   /**
-   * If \a t is the largest value sen so far return true. Otherwise
+   * If \a t is the largest value seen so far return true. Otherwise
    * return false.
    */
   bool operator()(const T & t)
