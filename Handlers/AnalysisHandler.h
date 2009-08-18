@@ -13,6 +13,7 @@
 #include "HandlerBase.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Analysis/FactoryBase.h"
+#include "ThePEG/EventRecord/Event.h"
 #include <stdexcept>
 
 namespace ThePEG {
