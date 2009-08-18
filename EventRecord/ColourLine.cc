@@ -39,13 +39,19 @@ tColinePtr ColourLine::create(tPPtr col, bool anti) {
 ColourLine::~ColourLine() {}
 
 tPPtr ColourLine::startParticle() const {
-  return sourceNeighbours().first || antiColoured().empty() ? 
-    tPPtr() : antiColoured().back();
+  if ( sourceNeighbours().first ) return tPPtr();
+  for ( tPVector::const_reverse_iterator it = antiColoured().rbegin();
+	it != antiColoured().rend(); ++it )
+    if ( !(**it).outgoingAntiColour() ) return *it;
+  return tPPtr();
 }
 
 tPPtr ColourLine::endParticle() const {
-  return sinkNeighbours().first || coloured().empty() ? 
-    tPPtr() : coloured().back();
+  if ( sinkNeighbours().first ) return tPPtr();
+  for ( tPVector::const_reverse_iterator it = coloured().rbegin();
+	it != coloured().rend(); ++it )
+    if ( !(**it).outgoingColour() ) return *it;
+  return tPPtr();
 }
 
 void ColourLine::addAntiColoured(tPPtr p) {
