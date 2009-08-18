@@ -21,6 +21,7 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Command.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
@@ -75,7 +76,7 @@ EventGenerator::EventGenerator()
     preinitializing(false), ieve(0), weightSum(0.0),
     theDebugLevel(0), printEvent(0), dumpPeriod(0), debugEvent(0),
     maxWarnings(10), maxErrors(10), theCurrentRandom(0),
-    theCurrentGenerator(0) {}
+    theCurrentGenerator(0), useStdout(false) {}
 
 EventGenerator::EventGenerator(const EventGenerator & eg)
   : Interfaced(eg), theDefaultObjects(eg.theDefaultObjects),
@@ -99,7 +100,8 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
     theCurrentGenerator(0),
     theCurrentEventHandler(eg.theCurrentEventHandler),
-    theCurrentStepHandler(eg.theCurrentStepHandler) {}
+    theCurrentStepHandler(eg.theCurrentStepHandler),
+    useStdout(eg.useStdout) {}
 
 EventGenerator::~EventGenerator() {
   if ( theCurrentRandom ) delete theCurrentRandom;
@@ -164,13 +166,17 @@ IBPtr EventGenerator::getPointer(string name) const {
 }
 
 void EventGenerator::openOutputFiles() {
-  logfile().open((filename() + ".log").c_str());
-  outfile().open((filename() + ".out").c_str());
+  if ( !useStdout ) {
+    logfile().open((filename() + ".log").c_str());
+    outfile().open((filename() + ".out").c_str());
+  }
 }
 
 void EventGenerator::closeOutputFiles() {
-  outfile().close();
-  logfile().close();
+  if ( !useStdout ) {
+    outfile().close();
+    logfile().close();
+  }
 }
 
 void EventGenerator::doinit() {
@@ -281,9 +287,8 @@ void EventGenerator::dofinish() {
     log() << "No exceptions reported in this run.\n";
   } else {
 
-    log() << endl
-	  << "The following exception classes were reported in this run:"
-	  << endl;
+    log() << "\nThe following exception classes were reported in this run:\n";
+
     for ( ExceptionMap::iterator it = theExceptions.begin();
 	  it != theExceptions.end(); ++it ) {
       string severity;
@@ -552,39 +557,41 @@ void EventGenerator::generateReferences() {
   }
 
   // Open the file and write out an appendix header
-  reffile().open((filename() + ".tex").c_str());
-  reffile() << "\\documentclass{article}" << endl
-	    << "\\usepackage{graphics}" << endl
-	    << "\\begin{document}" << endl
-	    << "\\appendix" << endl
-	    << "\\section[xxx]{T\\scalebox{0.8}{HE}PEG\\cite{ThePEG} Run "
-	    << "Information}" << endl << "Run name: \\textbf{" << runName()
-	    << "}:\\\\\n";
+  if ( !useStdout )
+    reffile().open((filename() + ".tex").c_str());
+  ref() << "\\documentclass{article}\n"
+	<< "\\usepackage{graphics}\n"
+	<< "\\begin{document}\n"
+	<< "\\appendix\n"
+	<< "\\section[xxx]{T\\scalebox{0.8}{HE}PEG\\cite{ThePEG} Run "
+	<< "Information}\n" << "Run name: \\textbf{" << runName()
+	<< "}:\\\\\n";
   if ( !stratdesc.empty() )
-    reffile() << "This run was generated using " << stratdesc <<
-      " and the following models:\n";
+    ref() << "This run was generated using " << stratdesc 
+	  << " and the following models:\n";
   else
-    reffile() << "The following models were used:\n";
+    ref() << "The following models were used:\n";
 
-  reffile() << "\\begin{itemize}" << endl;
+    ref() << "\\begin{itemize}\n";
 
   // Write out all descriptions.
   for ( StringMap::iterator it = references.begin();
 	it != references.end(); ++it )
-    reffile() << "\\item " << it->first << endl;
+    ref() << "\\item " << it->first << '\n';
 
   // Write out thebibliography header and all references.
-  reffile() << "\\end{itemize}" << endl << endl
-	    << "\\begin{thebibliography}{99}" << endl
+  ref() << "\\end{itemize}\n\n"
+	    << "\\begin{thebibliography}{99}\n"
 	    << "\\bibitem{ThePEG} L.~L\\\"onnblad, "
-	    << "Comput.~Phys.~Commun.\\ {\\bf 118} (1999) 213." << endl;
-  if ( !stratref.empty() ) reffile() << stratref << endl;
+	    << "Comput.~Phys.~Commun.\\ {\\bf 118} (1999) 213.\n";
+  if ( !stratref.empty() ) ref() << stratref << '\n';
   for ( StringMap::iterator it = references.begin();
 	it != references.end(); ++it )
-    reffile() << it->second << endl;
-  reffile() << "\\end{thebibliography}" << endl
+    ref() << it->second << '\n';
+  ref() << "\\end{thebibliography}\n"
 	    << "\\end{document}" << endl;
-  reffile().close();
+  if ( !useStdout )
+    reffile().close();
 }
 
 void EventGenerator::strategy(StrategyPtr s) {
@@ -622,10 +629,10 @@ void EventGenerator::printException(const Exception & ex) {
   }
   if ( ieve > 0 )
     log() << " exception occurred while generating event number "
-	  << ieve << ": " << endl << ex.message() << endl;
+	  << ieve << ": \n" << ex.message() << endl;
   else
     log() << " exception occurred in the initialization of "
-	  << name() << ": " << endl << ex.message() << endl;
+	  << name() << ": \n" << ex.message() << endl;
   if ( ex.severity() == Exception::eventerror )
     log() << "The event will be discarded." << endl;
 }
@@ -695,7 +702,7 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << theQuickParticles << theQuickSize << match << usedset
      << ieve << weightSum << theDebugLevel << printEvent << dumpPeriod << debugEvent
      << maxWarnings << maxErrors << theCurrentEventHandler
-     << theCurrentStepHandler;
+     << theCurrentStepHandler << useStdout;
 }
 
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
@@ -706,7 +713,7 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
      >> ieve >> weightSum >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
-     >> theCurrentStepHandler;
+     >> theCurrentStepHandler >> useStdout;
   theObjects.clear();
   for ( ObjectMap::iterator it = theObjectMap.begin();
 	it != theObjectMap.end(); ++it ) theObjects.insert(it->second);
@@ -1167,6 +1174,23 @@ void EventGenerator::Init() {
   interfaceRunName.rank(8.0);
   interfaceNumberOfEvents.rank(7.0);
   interfaceAnalysisHandlers.rank(6.0);
+
+
+  static Switch<EventGenerator,bool> interfaceUseStdout
+    ("UseStdout",
+     "Redirect the logging and output to stdout instead of files.",
+     &EventGenerator::useStdout, false, true, false);
+  static SwitchOption interfaceUseStdoutYes
+    (interfaceUseStdout,
+     "Yes",
+     "Use stdout instead of log files.",
+     true);
+  static SwitchOption interfaceUseStdoutNo
+    (interfaceUseStdout,
+     "No",
+     "Use log files.",
+     false);
+  
 
 }
 

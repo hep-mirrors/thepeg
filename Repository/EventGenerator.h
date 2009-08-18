@@ -1059,6 +1059,13 @@ private:
    */
   tStepHdlPtr theCurrentStepHandler;
 
+
+  /**
+   * Whether to use files or stdout for logging and output.
+   */
+  bool useStdout;
+
+
 private:
 
   /**

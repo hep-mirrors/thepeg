@@ -5,6 +5,11 @@
 
 2009-08-18  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Repository/EventGenerator.{h,cc}: Added new Switch:
+	UseStdout. ATLAS requested to receive all output on stdout
+	instead of .out .log and .tex files. (herwig:ticket:213)
+	Reduced frequent usage of 'endl'.
+
 	* EventRecord/ColourLine.cc (startParticle, endParticle): Leif has
 	fixed the determination of start and end particles to only
 	consider ones without coloured children.
