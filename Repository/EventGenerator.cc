@@ -34,8 +34,11 @@
 #include "ThePEG/Analysis/FactoryBase.h"
 #include "ThePEG/Handlers/EventManipulator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
+#include "ThePEG/MatrixElement/MEBase.h"
 #include "ThePEG/EventRecord/Event.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
+#include "ThePEG/Handlers/CascadeHandler.h"
+#include "ThePEG/Handlers/HadronizationHandler.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Config/algorithm.h"
@@ -542,9 +545,21 @@ void EventGenerator::generateReferences() {
   // used objects. Put them in a map indexed by the description to
   // avoid duplicates.
   for ( ObjectSet::iterator it = usedObjects.begin();
-	it != usedObjects.end(); ++it )
-    references[Repository::getModelDescription(*it)] =
-      Repository::getModelReferences(*it);
+	it != usedObjects.end(); ++it ) {
+    if ( *it == strategy() ) continue;
+    string desc = Repository::getModelDescription(*it);
+    if ( desc.empty() ) continue;
+    if ( dynamic_ptr_cast<cEHPtr>(*it) ) desc = "A " + desc;
+    else if ( dynamic_ptr_cast<cSMPtr>(*it) ) desc = "B " + desc;
+    else if ( dynamic_ptr_cast<cMEPtr>(*it) ) desc = "C " + desc;
+    else if ( dynamic_ptr_cast<cCascHdlPtr>(*it) ) desc = "D " + desc;
+    else if ( dynamic_ptr_cast<cHadrHdlPtr>(*it) ) desc = "E " + desc;
+    else if ( dynamic_ptr_cast<cStepHdlPtr>(*it) ) desc = "F " + desc;
+    else if ( dynamic_ptr_cast<Ptr<HandlerBase>::const_pointer>(*it) )
+      desc = "G " + desc;
+    else  desc = "H " + desc;
+    references[desc] = Repository::getModelReferences(*it);
+  }
 
   // Now get the main strategy description which should put first and
   // remove it from the map.
@@ -577,7 +592,7 @@ void EventGenerator::generateReferences() {
   // Write out all descriptions.
   for ( StringMap::iterator it = references.begin();
 	it != references.end(); ++it )
-    ref() << "\\item " << it->first << '\n';
+    ref() << "\\item " << it->first.substr(2) << endl;
 
   // Write out thebibliography header and all references.
   ref() << "\\end{itemize}\n\n"
