@@ -219,6 +219,10 @@ bool LHAPDF::openLHAIndex(ifstream & is) {
   is.open((instpath + "/../../share/ThePEG/PDFsets.index").c_str());
   if ( is ) return true;
   is.clear();
+  instpath = std::string(THEPEG_PKGDATADIR) + "/PDFsets.index";
+  is.open(instpath.c_str());
+  if ( is ) return true;
+  is.clear();
   is.open("../PDF/PDFsets.index");
   if ( is ) return true;
   is.clear();

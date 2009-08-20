@@ -51,6 +51,11 @@
 	start/endParticle() more gracefully. Also, source and sink were
 	the wrong way round.
 
+2009-07-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDF/LHAPDF.cc, PDF/Makefile.am: Also look in ThePEG's pkgdatadir
+	for the PDFsets.index file.
+
 2009-06-18 Simon Plätzer <sp@particle.uni-karlsruhe.de>
 
 	* StandardModel/*Alpha*, StandardModel/RunningCoupling.*,
