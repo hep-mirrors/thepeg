@@ -184,7 +184,12 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 					matrixElement()->maxMultCKKW());
   }
 
-  return xsec * matrixElement()->reWeight() * matrixElement()->preWeight();
+  if ( matrixElement()->reweighted() ) {
+    newSubProcess();
+    xsec *= matrixElement()->reWeight() * matrixElement()->preWeight();
+  }
+
+  return xsec;
 }
 
 void StandardXComb::newSubProcess() {

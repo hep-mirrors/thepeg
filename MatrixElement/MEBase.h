@@ -238,6 +238,14 @@ public:
   virtual DiagramIndex diagram(const DiagramVector &) const;
 
   /**
+   * Return true if this matrix element has associated (p)reWeight
+   * objects assigned.
+   */
+  inline bool reweighted() const {
+    return reweights.size() > 0 || preweights.size() > 0;
+  }
+
+  /**
    * With the information previously supplied with the
    * setKinematics(...) methods, return the combined effects of the
    * reweighters.

@@ -131,12 +131,12 @@ double MEBase::reWeight() const {
 }
 
 double MEBase::preWeight() const {
-  double w = 1.0;
+  lastPreweight = 1.0;
   for ( int i = 0, N = preweights.size(); i < N; ++i ) {
     preweights[i]->setXComb(lastXCombPtr());
-    w *= preweights[i]->weight();
+    lastPreweight *= preweights[i]->weight();
   }
-  return w;
+  return lastPreweight;
 }
 
 void MEBase::generateSubCollision(SubProcess &) {}

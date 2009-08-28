@@ -253,7 +253,7 @@ dSigDR(const pair<double,double> ll, Energy2 maxS,
   return sum;
 }
 
-tStdXCombPtr StandardEventHandler::select(int bin, double weight) {
+tStdXCombPtr StandardEventHandler::select(int bin, double & weight) {
 
   int i = upper_bound(xSecs().begin(), xSecs().end(), rnd()*xSecs().back())
       - xSecs().begin();
@@ -275,9 +275,10 @@ tStdXCombPtr StandardEventHandler::select(int bin, double weight) {
   // clean up the old XComb object before switching to a new one
   if ( theLastXComb && theLastXComb != lastXC ) theLastXComb->clean();
   theLastXComb = lastXC;
+  lastXC->matrixElement()->setXComb(lastXC);
+  weight /= lastXC->matrixElement()->preWeight();
   lastXC->select(weight);
   lastXC->accept();
-  lastXC->matrixElement()->setXComb(lastXC);
   return lastXC;
 }
 
@@ -294,16 +295,19 @@ struct Stat {
 
   Stat() : attempted(0), accepted(0), sumw(0.0), sumw2(),
 	   maxXSec(CrossSection()), totsum(0.0) {}
-  Stat(long att, long acc, double w, double w2, CrossSection x, double sumw)
+  Stat(long att, long acc, double w, double w2, CrossSection x,
+       double sumw, double genrerr)
     : attempted(att), accepted(acc), sumw(w), sumw2(w2), maxXSec(x),
-      totsum(sumw) {}
+      totsum(sumw), totrerr(genrerr) {}
 
   inline CrossSection xSec() const {
     return totsum >0.0? maxXSec*sumw/totsum: maxXSec;
   }
 
   inline CrossSection xSecErr() const {
-    return totsum >0.0? maxXSec*sqrt(sumw2)/totsum: maxXSec;
+    if ( totsum <= 0.0 ) return maxXSec;
+    if ( sumw <= 0.0 ) return xSec();
+    return xSec()*sqrt(sqr(totrerr) + sumw2/sqr(sumw));
   }
 
   long attempted;
@@ -312,6 +316,7 @@ struct Stat {
   double sumw2;
   CrossSection maxXSec;
   double totsum;
+  double totrerr;
 
   const Stat & operator+= (const Stat & s) {
     attempted += s.attempted;
@@ -323,6 +328,7 @@ struct Stat {
       maxXSec = max(maxXSec, s.maxXSec);
     else
       maxXSec += s.maxXSec;
+    totrerr = s.totrerr;
     return *this;
   }
 };
@@ -333,13 +339,13 @@ void StandardEventHandler::statistics(ostream & os) const {
   map<MEPtr, Stat> meMap;
   map<PExtrPtr, Stat> extractMap;
   Stat tot;
+  double genrerr = sampler()->integratedXSecErr()/sampler()->integratedXSec();
 
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s;
-    s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights());
+    Stat s(x.stats().attempts(), x.stats().accepted(),
+	   x.stats().sumWeights(), x.stats().sumWeights2(),
+	   sampler()->integratedXSec(), sampler()->sumWeights(), genrerr);
     partonMap[x.partons()] += s;
     meMap[x.matrixElement()] += s;
     extractMap[x.pExtractor()] += s;
@@ -361,12 +367,9 @@ void StandardEventHandler::statistics(ostream & os) const {
      << "                                       "
      << "   events     attempts             (nb)\n";
 
-  CrossSection errtot = sampler()->integratedXSec()*
-    sqrt(sqr(sampler()->integratedXSecErr()/sampler()->integratedXSec()) + 
-	 tot.sumw2/sqr(tot.sumw) - 1.0/tot.attempted);
-
   os << line << "Total:" << setw(42) << tot.accepted << setw(13)
-     << tot.attempted << setw(17) << ouniterr(tot.xSec(), errtot, nanobarn)
+     << tot.attempted << setw(17)
+     << ouniterr(tot.xSec(),tot.xSecErr() , nanobarn)
      << endl << line;
 
   if ( statLevel() == 1 ) return;
@@ -439,7 +442,7 @@ CrossSection StandardEventHandler::histogramScale() const {
     Stat s;
     s = Stat(x.stats().attempts(), x.stats().accepted(),
 	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights());
+	     sampler()->integratedXSec(), sampler()->sumWeights(), 1.0);
     tot += s;
   }
 
@@ -456,7 +459,7 @@ CrossSection StandardEventHandler::integratedXSec() const {
     Stat s;
     s = Stat(x.stats().attempts(), x.stats().accepted(),
 	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights());
+	     sampler()->integratedXSec(), sampler()->sumWeights(), 1.0);
     tot += s;
   }
 
@@ -468,18 +471,17 @@ CrossSection StandardEventHandler::integratedXSecErr() const {
     return sampler()->maxXSec();
 
   Stat tot;
+  double genrerr = sampler()->integratedXSecErr()/sampler()->integratedXSec();
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
     Stat s;
     s = Stat(x.stats().attempts(), x.stats().accepted(),
 	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights());
+	     sampler()->integratedXSec(), sampler()->sumWeights(), genrerr);
     tot += s;
   }
 
-  return sampler()->integratedXSec()*
-    sqrt(sqr(sampler()->integratedXSecErr()/sampler()->integratedXSec()) + 
-	 tot.sumw2/sqr(tot.sumw) - 1.0/tot.attempted);
+  return tot.xSecErr();
 
 }
 
@@ -513,7 +515,6 @@ EventPtr StandardEventHandler::generateEvent() {
     double weight = sampler()->generate();
 
     tStdXCombPtr lastXC = select(sampler()->lastBin(), weight);
-    weight /= lastXC->matrixElement()->preWeight();
 
     try {
 
@@ -524,13 +525,11 @@ EventPtr StandardEventHandler::generateEvent() {
       currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
 				 generator()->currentEventNumber(), weight)));
 
-      //      cerr << endl << "Constructing the event..."; //////DEBUG//////
-
       performCollision();
       if ( !currentCollision() ) throw Veto();
 
       currentEvent()->transform(currentEventBoost());
-      //      cerr << endl << "Done." << endl; //////DEBUG//////
+
       return currentEvent();
 
     }

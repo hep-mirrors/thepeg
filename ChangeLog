@@ -1,3 +1,12 @@
+2009-08-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* MatrixElement/MEBase.*, Handlers/StandardXComb.*,
+	Handlers/StandardEventHandler.*: Fixed problem with (p)reweighting
+	of matrix elements: the sub-process object for the XComb was not
+	properly set which caused segfault. Then the reweighting was not
+	properly taken into account in the statistics function in the
+	StandardEventHandler.
+
 2009-08-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc (EventGenerator::generateReferences): 

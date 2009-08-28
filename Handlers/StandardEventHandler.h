@@ -199,7 +199,7 @@ protected:
    * StandardXComb objects pick one to generate the corresponding
    * sub-process with the given \a weight.
    */
-  tStdXCombPtr select(int bin, double weight);
+  tStdXCombPtr select(int bin, double & weight);
 
   /**
    * Create and add <code>StandardXComb</code> objects.
