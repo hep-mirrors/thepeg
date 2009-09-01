@@ -8,6 +8,73 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.5.0 release: 2009-09-01
+** New ZERO object
+   The ZERO object can be used to set any dimensionful quantity to
+   zero. This avoids explicit constructs like 0.0*GeV.
+
+** Readline interface
+   The interactive repository access now uses the readline library,
+   providing a command history and easier command line editing.
+
+** Syntax highlighting
+   We now have a syntax highlighting mode for emacs. To enable it, use
+   'M-x ThePEG-repository-mode' on any .in file.
+
+** Configure information
+   Important configuration information is listed at the end of the
+   'configure' run and in the file 'config.thepeg'. Please provide
+   this file in any bug reports.
+
+** Rivet interface
+   ThePEG now supports Rivet internally as an AnalysisHandler if it's
+   available.
+
+** HepMC tools; CLHEP support removed
+   The HepMC file output and graphviz event view have migrated from
+   Herwig++ to ThePEG. The deprecated CLHEP support has been removed.
+
+** Exception specifiers removed
+   Client code changes are needed in doinit() etc. Simply remove the
+   exception specifier after the function name.
+
+** Support for HepMC 2.05
+*** New features
+    ThePEG now supports cross-section output, PDF information and unit
+    specifications if they are available in HepMC.
+*** IO_ASCII
+    Support for the deprecated IO_ASCII format has been removed.
+*** Status codes
+    ThePEG uses codes 1, 2 and 11 according to the HepMC agreement.
+
+** Redirection of .out, .log and .tex to stdout
+   Set 'EventGenerator:UseStdout' to 'Yes' and (almost) all output
+   will be streamed to stdout instead of files.
+
+** Ticket #248: Les Houches reader
+   The cross-section information is now reported correctly when
+   reading several files.
+
+** Cuts output
+   If the debug level is set > 0, the current set of cuts is prepended
+   to the logfile.
+
+** Preweighting of matrix elements
+   A segfault when using preweights was fixed. Preweights are now
+   correctly included in handler statistics.
+
+** Other technical changes
+*** Colour line improvements
+*** PDFsets.index search improved
+*** Ticket #232: Java check on OS X now works headless
+*** Running couplings restructured
+*** LeptonLeptonRemnant iprovements to support GammaGamma
+*** WaveFunction constructors streamlined
+*** VertexBase now provides sin2ThetaW etc.
+
+
+
+
 * ThePEG-1.4.2 release: 2009-05-08
 ** Ticket #242
    Fixed a compiler problem that showed up on openSUSE 10.2, g++

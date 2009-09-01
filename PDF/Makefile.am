@@ -46,7 +46,7 @@ WeizsackerWilliamsPDF_la_SOURCES = WeizsackerWilliamsPDF.cc WeizsackerWilliamsPD
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-LeptonLeptonRemnant_la_LDFLAGS = -module -version-info 7:1:0
+LeptonLeptonRemnant_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 LeptonLeptonRemnant_la_SOURCES = LeptonLeptonRemnant.cc LeptonLeptonRemnant.h
 
 # Version info should be updated if any interface or persistent I/O

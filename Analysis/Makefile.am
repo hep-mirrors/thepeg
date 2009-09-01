@@ -44,7 +44,7 @@ endif
 
 if HAVE_HEPMC
   pkglib_LTLIBRARIES += HepMCAnalysis.la
-  HepMCAnalysis_la_LDFLAGS = -module -version-info 1:0:0
+  HepMCAnalysis_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
   HepMCAnalysis_la_SOURCES = \
   GraphvizPlot.h GraphvizPlot.cc \
   HepMCFile.h    HepMCFile.cc

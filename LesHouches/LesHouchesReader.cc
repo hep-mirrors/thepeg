@@ -648,25 +648,27 @@ bool LesHouchesReader::checkPartonBin() {
 
 }
 
+namespace {
+  bool recursionNotNull(tcPBPtr bin, tcPPtr p) {
+    while ( bin && p ) {
+      if ( p->dataPtr() != bin->parton() ) break;
+      bin = bin->incoming();
+      p = p->parents().size()? p->parents()[0]: tPPtr();
+    }
+    return bin || p;
+  }
+}
+
+
 tcPBPair LesHouchesReader::createPartonBinInstances() {
   tcPBPair sel;
   for ( int i = 0, N = partonBins().size(); i < N; ++i ) {
     tcPBPtr bin = partonBins()[i].first;
-    tPPtr p = incoming().first;
-    while ( bin && p ) {
-      if ( p->dataPtr() != bin->parton() ) break;
-      bin = bin->incoming();
-      p = p->parents().size()? p->parents()[0]: tPPtr();
-    }
-    if ( bin || p ) continue;
+    tcPPtr p = incoming().first;
+    if ( recursionNotNull(bin,p) ) continue;
     bin = partonBins()[i].second;
     p = incoming().second;
-    while ( bin && p ) {
-      if ( p->dataPtr() != bin->parton() ) break;
-      bin = bin->incoming();
-      p = p->parents().size()? p->parents()[0]: tPPtr();
-    }
-    if ( bin || p ) continue;
+    if ( recursionNotNull(bin,p) ) continue;
     sel = partonBins()[i];
     break;
   }
@@ -853,7 +855,8 @@ void LesHouchesReader::connectMothers() {
   for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
     if ( pi(hepeup.MOTHUP[i].first) ) 
       pi(hepeup.MOTHUP[i].first)->addChild(pi(i + 1));
-    if ( pi(hepeup.MOTHUP[i].second) && hepeup.MOTHUP[i].second != hepeup.MOTHUP[i].first) 
+    if ( pi(hepeup.MOTHUP[i].second) 
+	 && hepeup.MOTHUP[i].second != hepeup.MOTHUP[i].first ) 
       pi(hepeup.MOTHUP[i].second)->addChild(pi(i + 1));
   }
 }

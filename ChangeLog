@@ -1,3 +1,9 @@
+2009-09-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* LesHouches/LesHouchesEventHandler.cc (initialize),
+	LesHouches/LesHouchesReader.cc (createPartonBinInstances):
+	Improved error message in LesHouches reader.
+
 2009-08-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/MEBase.*, Handlers/StandardXComb.*,
@@ -9,7 +15,7 @@
 
 2009-08-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
-	* Repository/EventGenerator.cc (EventGenerator::generateReferences): 
+	* Repository/EventGenerator.cc (EventGenerator::generateReferences):
 	Order the items in the LaTeX file with references according to
 	importance (in response to herwig:ticket:270).
 

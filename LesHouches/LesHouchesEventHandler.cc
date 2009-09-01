@@ -82,10 +82,22 @@ void LesHouchesEventHandler::initialize() {
 
     // Check that the incoming particles are consistent between the
     // readers.
-    if ( !incoming.first )
+    if ( !incoming.first ) {
       incoming.first = getParticleData(reader.heprup.IDBMUP.first);
-    if ( !incoming.second )
+      if ( !incoming.first )
+	Throw<LesHouchesInitError>() 
+	  << "Unknown beam PID " << reader.heprup.IDBMUP.first
+	  << ". Have you created a matching BeamParticle object?"
+	  << Exception::runerror;
+    }
+    if ( !incoming.second ) {
       incoming.second = getParticleData(reader.heprup.IDBMUP.second);
+      if ( !incoming.second )
+	Throw<LesHouchesInitError>() 
+	  << "Unknown beam PID " << reader.heprup.IDBMUP.first
+	  << ". Have you created a matching BeamParticle object?"
+	  << Exception::runerror;
+    }
     if ( incoming.first->id() != reader.heprup.IDBMUP.first ||
 	 incoming.second->id() != reader.heprup.IDBMUP.second )
       Repository::clog()
