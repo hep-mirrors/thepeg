@@ -248,12 +248,11 @@ struct HepMCTraitsBase {
  * flavour of HepMC you only need to do <code>template&lt;&gt; struct
  * HepMCTraits&lt;HepMC::GenEvent&gt;: public
  * HepMCTraitsBase&lt;HepMC::GenEvent,HepMC::GenParticle,HepMC::GenVertex,
- * HepMC::Polarization&gt; {};</code> somewhere inside the ThePEG
+ * HepMC::Polarization,HepMC::PdfInfo&gt; {};</code> somewhere inside the ThePEG
  * namespace.
  */
 template <typename HepMCEventT>
 struct HepMCTraits {};
-
 }
 
 #endif

@@ -10,7 +10,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Vectors/HepMCConverter.h"
-#include "HepMCHelper.h"
+#include "ThePEG/Config/HepMCHelper.h"
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
 
