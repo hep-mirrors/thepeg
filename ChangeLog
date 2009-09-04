@@ -1,3 +1,8 @@
+2009-09-04  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Vectors/HepMCConverter.tcc: Relaxed units exception for older HepMC
+	versions.
+
 2009-09-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* LesHouches/LesHouchesEventHandler.cc (initialize),

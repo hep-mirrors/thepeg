@@ -24,6 +24,7 @@
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/PDF/PDF.h"
 #include "ThePEG/PDT/StandardMatchers.h"
+#include "ThePEG/Utilities/Throw.h"
 
 namespace ThePEG {
 
@@ -83,29 +84,14 @@ struct ParticleOrderNumberCmp {
 template <typename HepMCEventT, typename Traits>
 void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
 
-  if ( Traits::hasUnits() ) {
-    if ( lengthUnit != millimeter && lengthUnit != centimeter )
-      throw HepMCConverterException()
-	<< "Length unit used for HepMC::GenEvent was not MM nor CM."
-	<< Exception::runerror;
-    if ( energyUnit != GeV && energyUnit != MeV )
-      throw HepMCConverterException()
-	<< "Momentum unit used for HepMC::GenEvent was not GEV nor MEV."
-	<< Exception::runerror;
-  } else {
-    if ( lengthUnit != millimeter )
-      throw HepMCConverterException()
-	<< "Length unit used for HepMC::GenEvent was not MM and the "
-	<< "HepMCTraits class claims that the used version of HepMC "
-	<< "cannot handle user-defined units."
-	<< Exception::runerror;
-    if ( energyUnit != GeV )
-      throw HepMCConverterException()
-	<< "Momentum unit used for HepMC::GenEvent was not GEV and the "
-	<< "HepMCTraits class claims that the used version of HepMC "
-	<< "cannot handle user-defined units."
-	<< Exception::runerror;
-  }
+  if ( lengthUnit != millimeter && lengthUnit != centimeter )
+    Throw<HepMCConverterException>()
+      << "Length unit used for HepMC::GenEvent was not MM nor CM."
+      << Exception::runerror;
+  if ( energyUnit != GeV && energyUnit != MeV )
+    Throw<HepMCConverterException>()
+      << "Momentum unit used for HepMC::GenEvent was not GEV nor MEV."
+      << Exception::runerror;
   Traits::setUnits(*geneve, energyUnit, lengthUnit);
 
   tcEHPtr eh;
@@ -250,7 +236,7 @@ template <typename HepMCEventT, typename Traits>
 void HepMCConverter<HepMCEventT,Traits>::join(tcPPtr parent, tcPPtr child) {
   Vertex * dec = decv[parent];
   Vertex * pro = prov[child];
-  if ( !pro || !dec ) throw HepMCConverterException()
+  if ( !pro || !dec ) Throw<HepMCConverterException>()
     << "Found a reference to a ThePEG::Particle which was not in the Event."
     << Exception::eventerror;
   if ( pro == dec ) return;
@@ -269,7 +255,7 @@ void HepMCConverter<HepMCEventT,Traits>::join(tcPPtr parent, tcPPtr child) {
 template <typename HepMCEventT, typename Traits>
 typename HepMCConverter<HepMCEventT,Traits>::GenVertex *
 HepMCConverter<HepMCEventT,Traits>::createVertex(Vertex * v) {
-  if ( !v ) throw HepMCConverterException()
+  if ( !v ) Throw<HepMCConverterException>()
     << "Found internal null Vertex." << Exception::abortnow;
 
   GenVertex * gv = new GenVertex();
