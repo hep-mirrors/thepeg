@@ -24,6 +24,8 @@
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/StringUtils.h"
 #include "ThePEG/Utilities/SystemUtils.h"
+#include "ThePEG/Utilities/Throw.h"
+#include "ThePEG/PDT/DecayMode.h"
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "BaseRepository.tcc"
@@ -376,6 +378,22 @@ IBPtr BaseRepository::TraceObject(string path) {
   DirectoryAppend(path);
   string::size_type colon = path.find(':');
   IBPtr ip = GetPointer(path.substr(0, colon));
+  if ( !ip ) {
+    // Do special check if this is a decay mode.
+    string name = path.substr(0, colon);
+    string::size_type slash = name.rfind('/');
+    if ( slash != string::npos ) name = name.substr(slash + 1);
+    if ( name.find("->") != string::npos && name[name.length() - 1] == ';' ) {
+      vector<DMPtr> save;
+      DMPtr dm = DecayMode::constructDecayMode(name, &save);
+      if ( dm )	ip = dynamic_ptr_cast<DMPtr>(GetPointer(path.substr(0, slash + 1)
+							+ dm->tag()));
+      if ( ip ) Throw<Exception>()
+		  << "Warning: rewriting DecayMode name '"
+		  << path.substr(0, colon).substr(slash + 1) << "' to '"
+		  << ip->name() << Exception::warning;
+    }
+  }
   while ( colon != string::npos ) {
   if ( !ip ) throw RepositoryNotFound(path);
     path = path.substr(colon+1);

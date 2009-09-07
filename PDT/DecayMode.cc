@@ -485,7 +485,7 @@ void DecayMode::decayer(tDecayerPtr dec) {
   theDecayer = dec;
 }
 
-DMPtr DecayMode::constructDecayMode(string & tag) {
+DMPtr DecayMode::constructDecayMode(string & tag, vector<DMPtr> * save) {
   DMPtr rdm;
   DMPtr adm;
   int level = 0;
@@ -523,7 +523,8 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
     case '[':
       {
 	tag = tag.substr(1);
-	tDMPtr cdm = constructDecayMode(tag);
+	DMPtr cdm = constructDecayMode(tag, save);
+	if ( save ) save->push_back(cdm);
 	if ( cdm ) rdm->addCascadeProduct(cdm);
 	else error = true;
       } break;
@@ -582,9 +583,15 @@ DMPtr DecayMode::constructDecayMode(string & tag) {
 	dit != pd->decayModes().end(); ++dit )
     if ( (**dit).tag() == rdm->tag() ) return *dit;
 
-  pd->addDecayMode(rdm);
-  Repository::Register(rdm, pd->fullName() + "/" + rdm->tag());
-  if ( adm ) Repository::Register(adm, pd->CC()->fullName() + "/" + adm->tag());
+  if ( save ) {
+    save->push_back(rdm);
+    save->push_back(adm);
+  } else {
+    pd->addDecayMode(rdm);
+    Repository::Register(rdm, pd->fullName() + "/" + rdm->tag());
+    if ( adm )
+      Repository::Register(adm, pd->CC()->fullName() + "/" + adm->tag());
+  }
   return rdm;
 }
 

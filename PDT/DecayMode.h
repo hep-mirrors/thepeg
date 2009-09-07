@@ -113,7 +113,7 @@ public:
    * that particle, otherwise it will be added to the default particle
    * of that name.
    */
-  static DMPtr constructDecayMode(string & tag);
+  static DMPtr constructDecayMode(string & tag, vector<DMPtr> * save = 0);
 
   /** @name Standard constructors and destructors. */
   //@{
