@@ -22,6 +22,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDF/PartonExtractor.h"
+#include "ThePEG/PDF/NoPDF.h"
 #include "ThePEG/Cuts/Cuts.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/Handlers/CascadeHandler.h"
@@ -814,7 +815,10 @@ void LesHouchesReader::createParticles() {
 
 void LesHouchesReader::createBeams() {
 
-  if ( !theBeams.first ) {
+  if ( !theBeams.first && dynamic_ptr_cast<Ptr<NoPDF>::tcp>(inPDF.first) ) {
+    theBeams.first = theIncoming.first;
+  }
+  else if ( !theBeams.first ) {
     theBeams.first = getParticleData(heprup.IDBMUP.first)->produceParticle();
     double m = theBeams.first->mass()/GeV;
     theBeams.first->set5Momentum
@@ -831,7 +835,10 @@ void LesHouchesReader::createBeams() {
     hepeup.MOTHUP[particleIndex(theIncoming.first) - 1].first =
       hepeup.IDUP.size();
   }
-  if ( !theBeams.second ) {
+  if ( !theBeams.second && dynamic_ptr_cast<Ptr<NoPDF>::tcp>(inPDF.second) ) {
+    theBeams.second = theIncoming.second;
+  }
+  else if ( !theBeams.second ) {
     theBeams.second = getParticleData(heprup.IDBMUP.second)->produceParticle();
     double m = theBeams.second->mass()/GeV;
     theBeams.second->set5Momentum

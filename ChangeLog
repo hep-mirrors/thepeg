@@ -1,5 +1,10 @@
 2009-09-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* LesHouches/LesHouchesReader.cc (LesHouchesReader::createBeams):
+	If there are no PDFs used (and NoPDF's are assigned to the reader),
+	the incoming particles are the same as the beams. This should fix
+	herwig:ticket:273.
+
 	* PDT/DecayMode.cc (DecayMode::constructDecayMode),
 	Repository/BaseRepository.cc (BaseRepository::TraceObject):
 	(In response to herwig:ticket:271) if an object is not found and
