@@ -222,6 +222,9 @@ namespace {
   };
 }
 
+void ThePEG::Event::printGraphviz() const {
+  ThePEG::printGraphviz(cout, this);
+}
 
 
 void ThePEG::printGraphviz(ostream & os, tcEventPtr ev) {

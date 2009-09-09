@@ -215,6 +215,11 @@ public:
   double weight() const { return theWeight; }
 
   /**
+   * Print this Event in Graphviz format on the standard output.
+   */
+  void printGraphviz() const;
+
+  /**
    * Set the weight associated with this event.
    */
   void weight(double w) { theWeight = w; }
