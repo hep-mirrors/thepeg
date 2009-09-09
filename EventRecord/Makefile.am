@@ -8,7 +8,7 @@ DOCFILES = EventConfig.h Collision.h Event.h Particle.h ParticleTraits.h \
            ColourSinglet.h TmpTransform.h RemnantParticle.h MultiColour.h
 
 INCLUDEFILES = $(DOCFILES) Collision.tcc \
-               Event.tcc Particle.fh Particle.tcc \
+               Particle.fh Particle.tcc \
                Step.tcc SubProcess.tcc RemnantParticle.fh
 
 noinst_LTLIBRARIES = libThePEGEvent.la

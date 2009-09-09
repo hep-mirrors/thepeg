@@ -20,10 +20,6 @@
 #include "ThePEG/Utilities/DIterator.h"
 #include <iostream>
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-#include "Event.tcc"
-#endif
-
 using namespace ThePEG;
 
 Event::Event(const PPair & newIncoming, tcEventBasePtr newHandler,
@@ -201,6 +197,96 @@ ostream & ThePEG::operator<<(ostream & os, const Event & e) {
   }
   return os;
 }
+
+namespace {
+  static const string header = "digraph test {\nrankdir=LR;\nranksep=1.5;\n";
+
+  inline unsigned long startnode(tcPPtr p) {
+    return p->parents().empty() ? -p->uniqueId : p->parents()[0]->uniqueId;
+  }
+
+  inline unsigned long endnode(tcPPtr p) {
+    return p->children().empty() ? p->uniqueId : startnode( p->children()[0] );
+  }
+
+  static const char * colours[] = {
+    "red",
+    "green",
+    "blue",
+    "orange",
+    "aquamarine",
+    "deeppink",
+    "darkviolet",
+    "darkolivegreen",
+    "cyan"
+  };
+}
+
+
+
+void ThePEG::printGraphviz(ostream & os, tcEventPtr ev) {
+  os << header
+     << "node [width=0.03,height=0.03,shape=point,label=\"\"];\n";
+
+  tcParticleSet all;
+  ev->select(inserter(all), SelectAll());
+
+  for (tcParticleSet::const_iterator it = all.begin();
+       it != all.end(); ++it) {
+    tcPPtr p = (*it);
+
+    os << startnode(p) << " -> " << endnode(p) 
+       << " [label=\"" << p->number() << " " 
+       << p->PDGName() << "\"";
+
+    if ( p->hasColourInfo() &&
+	 ( p->colourLine() || p->antiColourLine() )) {
+      os << ",penwidth=2,color=\"";
+
+      const vector<tcColinePtr> & clines = p->colourInfo()->colourLines();
+      for ( int i = 0, N = clines.size(); i < N; ++i ) {
+	int colindex = ev->colourLineIndex(clines[i]) % 9;
+	if ( i > 0 )  os << ':';
+	os << colours[colindex];
+      }
+      const vector<tcColinePtr> & aclines = p->colourInfo()->antiColourLines();
+      for ( int i = 0, N = aclines.size(); i < N; ++i ) {
+	int colindex = ev->colourLineIndex(aclines[i]) % 9;
+	if ( i > 0 || !clines.empty() )  os << ':';
+	os << colours[colindex];
+      }
+      os << '"';
+    }
+    os << "];\n";
+
+//   if ( !momentumOK(this) )
+//     os << endnode(this) << " [color=red,width=0.2,height=0.2];\n";
+  }
+
+  os << '}' << endl;
+}
+
+
+
+// namespace {
+
+//   inline bool momentumOK(const Particle * p) {
+//     if ( p->children().empty() ) return true;
+//     LorentzMomentum mom = -p->momentum();
+//     cerr << p->uniqueId << ' ' << mom/MeV << '\n';
+//     for ( size_t i = 0; i < p->children().size(); ++i ) {
+//       mom += p->children()[i]->momentum();
+//     }
+//     cerr << p->uniqueId << ' ' << mom/MeV << "\n\n";
+//     return sqr(mom.x()/MeV) < 1.0e-6 
+//       && sqr(mom.y()/MeV) < 1.0e-6 
+//       && sqr(mom.z()/MeV) < 1.0e-6 
+//       && sqr(mom.e()/MeV) < 1.0e-6;
+//   }
+// }
+
+
+
 
 void Event::debugme() const {
   cerr << *this;

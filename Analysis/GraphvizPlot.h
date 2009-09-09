@@ -14,12 +14,11 @@
 
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
-#include "ThePEG/Config/HepMCHelper.h"
 
 namespace ThePEG {
 
 /** \ingroup Analysis
- * The GraphvizPlot class uses  HepMC event to generate
+ * The GraphvizPlot class generates
  * an output of the tree structure of the event which can be viewed using dot.
  *
  * @see \ref GraphvizPlotInterfaces "The interfaces"
@@ -59,20 +58,6 @@ public:
    * manipulated in some way since it was last presented.
    */
   virtual void analyze(tEventPtr event, long ieve, int loop, int state);
-
-  /**
-   * Transform the event to the desired Lorentz frame and return the
-   * corresponding LorentzRotation.
-   * @param event a pointer to the Event to be transformed.
-   * @return the LorentzRotation used in the transformation.
-   */
-  virtual LorentzRotation transform(tEventPtr event) const;
-
-  /**
-   * Analyze the given particle.
-   * @param particle pointer to the particle to be analyzed.
-   */
-  virtual void analyze(tPPtr particle);
   //@}
 
 public:
@@ -130,9 +115,9 @@ protected:
   //@}
 
   /**
-   * Helper function to obtain the name of a GenParticle.
+   * Helper function to obtain the name of a particle.
    */
-  string particleName(const HepMC::GenParticle &) const;
+  string particleName(tcPPtr) const;
 
 private:
 
@@ -189,7 +174,7 @@ struct ClassTraits<GraphvizPlot>
   /** Return the name(s) of the shared library (or libraries) be loaded to get
    *  access to the GraphvizPlot class and any other class on which it depends
    *  (except the base class). */
-  static string library() { return "HepMCAnalysis.so"; }
+  static string library() { return "GraphvizPlot.so"; }
 };
 
 /** @endcond */

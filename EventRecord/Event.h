@@ -394,6 +394,8 @@ private:
 /** Output a Event to a standard ostream. */
 ostream & operator<<(ostream &, const Event &);
 
+/** Print event tree in Graphviz format, ready for plotting. */
+void printGraphviz(ostream &, tcEventPtr);
 
 /** @cond TRAITSPECIALIZATIONS */
 
@@ -426,8 +428,16 @@ inline ThePEG::tSubProPtr ThePEG::Event::primarySubProcess() const {
     ThePEG::tSubProPtr(primaryCollision()->primarySubProcess());
 }
 
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-#include "Event.tcc"
-#endif
+namespace ThePEG {
+  template <class OutputIterator>
+  void Event::select(OutputIterator r, const SelectorBase & s) const {
+    if ( s.allCollisions() ) {
+      for ( CollisionVector::const_iterator it = theCollisions.begin();
+	    it != theCollisions.end(); ++it ) (**it).select(r, s);
+    } else {
+      primaryCollision()->select(r, s);
+    }
+  }
+}
 
 #endif /* ThePEG_Event_H */

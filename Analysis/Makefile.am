@@ -46,11 +46,14 @@ if HAVE_HEPMC
   pkglib_LTLIBRARIES += HepMCAnalysis.la
   HepMCAnalysis_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
   HepMCAnalysis_la_SOURCES = \
-  GraphvizPlot.h GraphvizPlot.cc \
   HepMCFile.h    HepMCFile.cc
   HepMCAnalysis_la_CPPFLAGS = $(AM_CPPFLAGS) $(HEPMCINCLUDE)
   HepMCAnalysis_la_LIBADD = $(HEPMCLIBS)
 endif
+
+pkglib_LTLIBRARIES += GraphvizPlot.la
+GraphvizPlot_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+GraphvizPlot_la_SOURCES = GraphvizPlot.h GraphvizPlot.cc
 
 LWH.tgz: $(AIDAWRAPPERS) $(LWHHEADERS)
 	tar czf LWH.tgz  $(AIDAWRAPPERS) $(LWHHEADERS)

@@ -16,106 +16,37 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/EventRecord/Event.h"
+#include "ThePEG/EventRecord/StandardSelectors.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 
-namespace {
-  const string header = "digraph test {\nrankdir=LR;\nranksep=1.5;\n";
-}
-
-string GraphvizPlot::particleName(const HepMC::GenParticle & p) const {
-  if ( p.pdg_id() == 82 ) return "[remnant]";
-  tcPDPtr pd = generator()->getParticleData(p.pdg_id());
-  return pd? pd->PDGName(): string("unknown");
-}
-
 void GraphvizPlot::dofinish() {
   AnalysisHandler::dofinish();
   if (! _quiet )
     cout << "\nGraphvizPlot: plots can be generated like this:\n"
-	 << "GraphvizPlot: 'dot -Tpng " 
-	 << generator()->filename() 
-	 << '-'
-	 << name() 
-	 << "-NNN.dot > plot.png'\n";
+	 << "GraphvizPlot: 'dot -Tsvg " 
+	 << generator()->filename() << '-'
+	 << name() << '-'
+	 << _eventNumber << ".dot > plot.svg'\n";
 }
 
 void GraphvizPlot::analyze(tEventPtr event, long, int, int) {
   if (event->number() != _eventNumber) return;
 
+  // prepare dot file
   ostringstream fname;
   fname << generator()->filename() << '-' 
 	<< name() << '-'
 	<< event->number() << ".dot";
   ofstream hepmcdotfile(fname.str().c_str());
-  
-  hepmcdotfile << header 
-	       << "node [width=0.1,height=0.1,shape=point,label=\"\"];\n";
 
-  HepMC::GenEvent * hepmc = 
-    HepMCConverter<HepMC::GenEvent>::convert(*event);
-  
-  //  hepmc->print(hepmcfile);
+  printGraphviz(hepmcdotfile, event);
 
-  // loop over all vertices
-  for (HepMC::GenEvent::vertex_const_iterator 
-	 it = hepmc->vertices_begin();
-       it !=  hepmc->vertices_end();
-       ++it) {
-
-    // loop over incoming lines
-    for (HepMC::GenVertex::particles_in_const_iterator 
-	   jt = (*it)->particles_in_const_begin() ;
-	 jt != (*it)->particles_in_const_end() ;
-	 ++jt) {
-
-      if ((*jt)->production_vertex()) continue;
-      
-      hepmcdotfile << (*jt)->barcode() << " -> "
-		   << (*it)->barcode() << " [label=\""
-		   << particleName(**jt)
-		   << "\"]\n";
-      
-    }
-    
-    // loop over outgoing lines
-    for (HepMC::GenVertex::particles_out_const_iterator 
-	   jt = (*it)->particles_out_const_begin() ;
-	 jt != (*it)->particles_out_const_end() ;
-	 ++jt) {
-      hepmcdotfile << (*it)->barcode() << " -> ";
-
-      if ((*jt)->end_vertex())
-	hepmcdotfile << (*jt)->end_vertex()->barcode();
-      else
-	hepmcdotfile << (*jt)->barcode();
-      
-      hepmcdotfile << " [label=\"" 
-		   << particleName(**jt)
-		   << "\"]\n";
-    }
-    
-    if ((*it)->check_momentum_conservation() > 1.0)
-      hepmcdotfile << (*it)->barcode() 
-		   << " [color=red,width=0.2,height=0.2]\n";
-    
-    hepmcdotfile << '\n';
-  }
-  hepmcdotfile << '}' << endl;
-  delete hepmc;
   hepmcdotfile.close();
 }
-
-LorentzRotation GraphvizPlot::transform(tEventPtr) const {
-  return LorentzRotation();
-  // Return the Rotation to the frame in which you want to perform the analysis.
-}
-
-
-void GraphvizPlot::analyze(tPPtr) {}
 
 void GraphvizPlot::persistentOutput(PersistentOStream & os) const {
   os << _eventNumber << _quiet;

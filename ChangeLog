@@ -1,3 +1,12 @@
+2009-09-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* EventRecord/Event.* (printGraphviz): Moved Graphviz generation
+	into Event. Added coloured lines for colour lines. tcc file
+	absorbed in header.
+
+	* Analysis/GraphvizPlot.*: Uses new printGraphviz functionality,
+	now independent of HepMC.
+
 2009-09-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc (LesHouchesReader::createBeams):
