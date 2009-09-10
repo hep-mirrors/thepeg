@@ -136,6 +136,9 @@ tPDPtr Repository::findParticle(string name) {
   for ( ParticleMap::iterator pit = defaultParticles().begin();
 	pit != defaultParticles().end(); ++pit )
     if ( pit->second->PDGName() == name ) return pit->second;
+  for ( ParticleDataSet::iterator pit = particles().begin();
+	pit != particles().end(); ++pit )
+    if ( (**pit).PDGName() == name ) return *pit;
   return pd;
 }
 
