@@ -209,18 +209,21 @@ void iunitstream(IStream & is, Transverse<T> & p, UT & u) {
   p = Transverse<T>(x, y);
 }
 
+/** Multiply a Transverse with a number. */
 template <typename Value>
 inline Transverse<Value>
 operator*(Transverse<Value> a, double b) {
   return a *= b;
 }
 
+/** Multiply a number with a Transverse. */
 template <typename Value>
 inline Transverse<Value>
 operator*(double b, Transverse<Value> a) {
   return a *= b;
 }
 
+/** Multiply a (unitful) number with a Transverse. */
 template <typename ValueA, typename ValueB>
 inline
 Transverse<typename BinaryOpTraits<ValueA,ValueB>::MulT> 
@@ -229,6 +232,7 @@ operator*(ValueB a, const Transverse<ValueA> & v) {
   return Transverse<ResultT>(a*v.x(), a*v.y());
 }
 
+/** Multiply a Transverse with a (unitful) number. */
 template <typename ValueA, typename ValueB>
 inline
 Transverse<typename BinaryOpTraits<ValueA,ValueB>::MulT> 
@@ -237,12 +241,14 @@ operator*(const Transverse<ValueA> & v, ValueB a) {
   return Transverse<ResultT>(a*v.x(), a*v.y());
 }
 
+/** Divide a Transverse by a number. */
 template <typename Value>
 inline Transverse<double>
 operator/(const Transverse<Value> & v, Value a) {
   return Transverse<double>(v.x()/a, v.y()/a);
 }
 
+/** Divide a Transverse by a (unitful) number. */
 template <typename ValueA, typename ValueB>
 inline
 Transverse<typename BinaryOpTraits<ValueA,ValueB>::DivT> 

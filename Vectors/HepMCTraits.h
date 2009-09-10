@@ -226,6 +226,7 @@ struct HepMCTraitsBase {
 			 double, double, double) {}
 #endif
 
+  /** Set the cross section info for the event. */
 #ifdef HEPMC_HAS_CROSS_SECTION
   static void setCrossSection(EventT & ev, double xs, double xserr) {
     HepMC::GenCrossSection x;

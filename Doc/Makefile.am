@@ -1,4 +1,4 @@
-CLEANFILES = AllInterfaces.h
+CLEANFILES = AllInterfaces.h MoreInterfaces.h
 
 docdir = $(pkgdatadir)/Doc
 
@@ -21,8 +21,12 @@ pdf-local: refman-html
 AllInterfaces.h: MakeDocs.in
 	$(top_builddir)/src/setupThePEG.bin --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
 
-refman-html: refman.conf refman.h AllInterfaces.h
+MoreInterfaces.h: MakeDocs.in
+	$(top_builddir)/src/setupThePEG.bin --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
+
+refman-html: refman.conf refman.h AllInterfaces.h MoreInterfaces.h
 	$(srcdir)/fixinterfaces.pl AllInterfaces.h
+	$(srcdir)/fixinterfaces.pl MoreInterfaces.h
 	doxygen $<
 
 install-data-local:

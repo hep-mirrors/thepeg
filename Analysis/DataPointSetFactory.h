@@ -535,7 +535,6 @@ public:
    *              names; it is only used to delimit directories within
    *		    paths.
    * @param hist    The IHistogram1D from which the data is taken.
-   * @param options Options, currently not specified
    * @return        The newly created IDataPointSet.
    */
   virtual IDataPointSet *

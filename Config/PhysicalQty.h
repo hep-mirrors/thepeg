@@ -24,8 +24,11 @@ namespace ThePEG {
 
 /// Helper class to construct zero unitful quantities.
 struct ZeroUnit {
+  /** Automatic conversion to double. */
   operator double() const { return 0.0; }
 };
+
+/// ZERO can be used as zero for any unitful quantity.
 const ZeroUnit ZERO = ZeroUnit();
 
 /// Helper classes to extend or shorten fractions
@@ -210,8 +213,15 @@ private:
 
 /// @name Result types for binary operations.
 //@{
+/**
+ * BinaryOpTraits should be specialized with typdefs called MulT and
+ * DivT which gives the type resulting when multiplying and dividing
+ * the template argument types respectively.
+ */
 template <typename T, typename U> 
 struct BinaryOpTraits;
+
+/** @cond TRAITSPECIALIZATIONS */
 
 template<int L1, int L2, int E1, int E2, int Q1, int Q2,
 	 int DL1, int DL2, int DE1, int DE2, int DQ1, int DQ2>
@@ -256,6 +266,9 @@ struct BinaryOpTraits<double,
               DL1,DE1,DQ1> DivT;
 };
 
+/**
+ *  Multiplication template
+ */
 template<int L1, int E1, int Q1, int DL1, int DE1, int DQ1>
 struct BinaryOpTraits<Qty<L1,E1,Q1,DL1,DE1,DQ1>,
 		      double> {
@@ -305,6 +318,8 @@ template <int DL, int DE, int DQ>
 const double 
 TypeTraits<Qty<0,0,0,DL,DE,DQ> >::baseunit = 1.0;
 //@}
+
+/** @endcond */
 
 }
 

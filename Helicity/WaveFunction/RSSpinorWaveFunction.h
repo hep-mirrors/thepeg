@@ -120,8 +120,7 @@ public:
   
   /**
    * Constructor, set the momentum and the wavefunction.
-   * @param p The momentum.
-   * @param part The ParticleData pointer.
+   * @param p The Particle pointer.
    * @param wave The wavefunction.
    * @param dir The direction of the particle
    */

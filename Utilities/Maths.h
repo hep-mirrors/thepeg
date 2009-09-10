@@ -187,10 +187,12 @@ struct PowX: public MathType {
 
 };
 
-template <>
+/** @cond TRAITSPECIALIZATIONS */
+
 /**
  *  Template for generating according to a specific power
  */
+template <>
 inline double PowX<1>::generate(double x0, double x1, double R) {
   return std::sqrt(x0*x0 + R*(x1*x1 - x0*x0));
 }
@@ -203,34 +205,34 @@ inline double PowX<0>::generate(double x0, double x1, double R) {
   return x0 + R*(x1 - x0);
 }
 
-template<>
 /**
  *  Template for generating according to a specific power
  */
+template<>
 inline double PowX<-1>::primitive(double x) {
   return log(x);
 }
 
-template <>
 /**
  *  Template for generating according to a specific power
  */
+template <>
 inline double PowX<-1>::integrate(double x0, double x1) {
   return log(x1/x0);
 }
 
-template <>
 /**
  *  Template for generating according to a specific power
  */
+template <>
 inline double PowX<-1>::generate(double x0, double x1, double R) {
   return x0*pow(x1/x0, R);
 }
 
-template <>
 /**
  *  Template for generating according to a specific power
  */
+template <>
 inline double PowX<-2>::generate(double x0, double x1, double R) {
   return x0*x1/(x1 - R*(x1 - x0));
 }
@@ -243,6 +245,7 @@ inline double PowX<-3>::generate(double x0, double x1, double R) {
   return x0*x1/std::sqrt(x1*x1 - R*(x1*x1 - x0*x0));
 }
 
+/** @endcond */
 
 
 

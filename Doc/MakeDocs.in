@@ -38,5 +38,8 @@ library WeizsackerWilliamsPDF.so
 library KTRapidityCut.so
 library XSecCheck.so
 library LWHFactory.so
+library GraphvizPlot.so
+library HepMCAnalysis.so
 
 doxygendump ThePEG:: AllInterfaces.h
+doxygendump Helicity:: MoreInterfaces.h

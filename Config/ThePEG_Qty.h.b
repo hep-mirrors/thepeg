@@ -23,6 +23,7 @@ double pow(double q) {
 
 #endif
 
+/// Helper class to define unitful quantities.
 template <int L, int E, int Q, int DL = 1, int DE = 1, int DQ = 1>
 struct QTY {
 #ifdef ThePEG_HAS_UNITS_CHECKING

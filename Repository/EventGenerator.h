@@ -27,6 +27,7 @@ namespace ThePEG {
 
 /** Comparsion for Exceptions */
 struct ExceptionComparison {
+  /** Compare two exceptions.*/
   bool operator() (const Exception & a, const Exception & b) {
     if ( typeid(a) == typeid(b) ) {
       return a.severity() < b.severity();

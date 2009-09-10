@@ -60,9 +60,11 @@ struct less<const type_info *> :
 
 }
 
+/** @cond SHOWOSXWORKAROUNDS */
 // Workarounds for OS X
 extern "C" int isnan(double) throw();
 extern "C" int isinf(double) throw();
+/** @endcond */
 
 namespace ThePEG {
 
