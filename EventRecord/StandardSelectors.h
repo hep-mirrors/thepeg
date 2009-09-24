@@ -136,7 +136,7 @@ struct IntermediateSelector: public SelectorBase {
 
 /** Typedef to declare a selector used to extract all intermediate
  *  particles from an event. */
-typedef ParticleSelector<FinalStateSelector> SelectFinalState;
+typedef ParticleSelector<IntermediateSelector> SelectIntermediates;
 
 /**
  * The PrimaryCollisionSelector class is used to extract all particles
