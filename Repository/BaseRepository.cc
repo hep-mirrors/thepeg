@@ -17,6 +17,7 @@
 #include "ThePEG/Interface/InterfaceBase.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
+#include "ThePEG/Interface/Command.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/DescriptionList.h"
 #include "ThePEG/Utilities/HoldFlag.h"
@@ -418,6 +419,13 @@ IBPtr BaseRepository::TraceObject(string path) {
       ip = iv[place];
       continue;
     }
+    const CommandBase * cb = dynamic_cast<const CommandBase *>(ifb);
+    if ( cb ) {
+      string::size_type ket = path.find(']');
+      string newobj = cb->cmd(*ip, path.substr(bra + 1,ket - bra - 1));
+      ip = GetPointer(newobj);
+      continue;
+    } 
     throw RepositoryNotFound(path);
   }
   if ( !ip ) throw RepositoryNotFound(path);

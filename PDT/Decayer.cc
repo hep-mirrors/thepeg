@@ -85,6 +85,9 @@ void Decayer::persistentInput(PersistentIStream & is, int) {
 
 ParticleVector Decayer::DecayParticle(tPPtr parent, Step & s, long maxtry) {
   ParticleVector children;
+  if ( !parent ) return children;
+  parent = parent->final();
+  if ( parent->decayed() ) return children;
   long itry = 0;
   while ( true ) {
     if ( itry++ >=  maxtry ) Throw<DecayFailure>()

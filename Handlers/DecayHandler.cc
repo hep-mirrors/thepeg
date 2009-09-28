@@ -52,7 +52,7 @@ handle(EventHandler &, const tPVector & tagged,
   // Create a new step, decay all particles and add their children in
   // the new step.
   for ( int i = 0, N = parents.size(); i < N; ++i )
-    performDecay(newStep()->find(parents[i]), *newStep());
+    performDecay(newStep()->find(parents[i]->final()), *newStep());
 }
 
 void DecayHandler::
