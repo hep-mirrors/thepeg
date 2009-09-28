@@ -7,10 +7,12 @@
 #include "RivetAnalysis.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/ParVector.h"
+#include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Vectors/HepMCConverter.h"
 #include "ThePEG/Config/HepMCHelper.h"
+#include "ThePEG/Repository/EventGenerator.h"
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
 
@@ -61,13 +63,23 @@ void RivetAnalysis::Init() {
      &RivetAnalysis::_analyses, -1, "", "","" "",
      false, false, ThePEG::Interface::nolimits);
 
+
+  static Parameter<RivetAnalysis,string> interfaceFilename
+    ("Filename",
+     "The name of the file where the AIDA histograms are put. If empty, "
+     "the run name will be used instead. '.aida' will in any case be "
+     "appended to the file name.",
+     &RivetAnalysis::filename, "", true, false);
+
+
+  interfaceAnalyses.rank(10);
+
 }
 
 void RivetAnalysis::dofinish() {
   AnalysisHandler::dofinish();
   _rivet->setCrossSection(generator()->integratedXSec()/picobarn);
   _rivet->finalize();
-  // this is needed but won't work because of the LWH crap is still in ThePEG
   _rivet->tree().commit();
 }
 
@@ -78,7 +90,9 @@ void RivetAnalysis::doinitrun() {
 			      << "RivetAnalysis::doinitrun()"
 			      << ThePEG::Exception::runerror;
   // create Rivet analysis handler
-  _rivet = new Rivet::AnalysisHandler("Rivet");
+  string fname = filename;
+  if ( fname.empty() ) fname = generator()->runName();
+  _rivet = new Rivet::AnalysisHandler(fname);
   // specify the analyses to be used
   for(unsigned int ix=0;ix<_analyses.size();++ix) {
     _rivet->addAnalysis(_analyses[ix]);

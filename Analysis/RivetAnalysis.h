@@ -131,6 +131,11 @@ private:
   vector<string> _analyses;
 
   /**
+   * The base name of the output file.
+   */
+  string filename;
+
+  /**
    *  The RivetAnalysisHandler
    */
   Rivet::AnalysisHandler * _rivet;
