@@ -134,6 +134,9 @@ library ReweightConstant.so
 
 cd /Defaults/Generators
 create ThePEG::EventGenerator SimpleLEPGenerator
+create ThePEG::Strategy DefaultStrategy
+insert DefaultStrategy:DefaultParticlesDirs[0] /Defaults/Particles
+set SimpleLEPGenerator:Strategy DefaultStrategy
 set SimpleLEPGenerator:RandomNumberGenerator /Defaults/Random
 set SimpleLEPGenerator:StandardModelParameters /Defaults/StandardModel
 set SimpleLEPGenerator:EventHandler /Defaults/Handlers/SimpleLEPHandler
@@ -154,7 +157,7 @@ cp /Defaults/CKM CKM
 set StandardModel:EW/CKM CKM
 set LesHouchesGenerator:RandomNumberGenerator StdRandom
 set LesHouchesGenerator:StandardModelParameters StandardModel
-create ThePEG::Strategy DefaultStrategy
+cp /Defaults/Generators/DefaultStrategy DefaultStrategy
 set LesHouchesGenerator:Strategy DefaultStrategy
 create ThePEG::LesHouchesEventHandler LesHouchesHandler
 cp /Defaults/Handlers/StandardExtractor QCDExtractor

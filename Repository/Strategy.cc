@@ -28,14 +28,11 @@ string Strategy::localParticlesDir() const {
   return theLocalParticlesDir;
 }
 
-void Strategy::setLocalParticlesDir(string x) {
-  if ( x == "" ) {
-    theLocalParticlesDir = x;
-    return;
-  }
+bool Strategy::checkDir(string x) {
+  if ( x == "" ) return false;
   if ( x[0] != '/' )
     Throw<InterfaceException>()
-      << "LocalParticlesDir directory name must start with a '/'."
+      << "Directory name must start with a '/'."
       << Exception::setuperror;
   if ( x[x.length() - 1] != '/' ) x += '/';
   try {
@@ -47,7 +44,35 @@ void Strategy::setLocalParticlesDir(string x) {
       << "No directory named " << x << " in the repository."
       << Exception::setuperror;
   }
-  theLocalParticlesDir = x;
+  return true;
+}
+
+void Strategy::setDefaultParticlesDirs(string dir, int i) {
+  if ( i < 0 || unsigned(i) >= theDefaultParticlesDirs.size() )
+    Throw<InterfaceException>()
+      << "Index out of range in DefaultParticlesDirs"
+      << Exception::setuperror;
+  if ( !checkDir(dir) )
+    Throw<InterfaceException>()
+      << "Empty directory name not allowd in DefaultParticlesDirs"
+      << Exception::setuperror;
+  theDefaultParticlesDirs[i] = dir;
+}
+
+void Strategy::insDefaultParticlesDirs(string dir, int i) {
+  if ( i < 0 || unsigned(i) > theDefaultParticlesDirs.size() )
+    Throw<InterfaceException>()
+      << "Index out of range in DefaultParticlesDirs"
+      << Exception::setuperror;
+  if ( !checkDir(dir) )
+    Throw<InterfaceException>()
+      << "Empty directory name not allowd in DefaultParticlesDirs"
+      << Exception::setuperror;
+  theDefaultParticlesDirs.insert(theDefaultParticlesDirs.begin() + i, dir);
+}
+
+void Strategy::setLocalParticlesDir(string x) {
+  if ( checkDir(x) ) theLocalParticlesDir = x;
 }
 
 IBPtr Strategy::clone() const {
@@ -145,8 +170,8 @@ void Strategy::Init() {
      "<interface>EventGenerator::LocalParticles</interface> will be "
      "considered.",
      &Strategy::theDefaultParticlesDirs, -1, "", "", "",
-     true, false, Interface::nolimits);
-
+     true, false, Interface::nolimits,
+     &Strategy::setDefaultParticlesDirs, &Strategy::insDefaultParticlesDirs);
 
   interfaceLocalParticles.rank(10);
   interfaceLocalParticlesDir.rank(11);

@@ -1,3 +1,11 @@
+2009-09-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/Strategy.*, Repository/Repository.cc: Strategy now
+	has a DefaultParticlesDirs interface (ParVector of strings). If
+	not empty, the scanning of all particles in the repository to
+	include particles in a run is disabled and only the directories
+	listed are scanned.
+
 2009-09-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/RivetAnalysis.h: Added filename parameter which

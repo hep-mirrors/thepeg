@@ -198,8 +198,10 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
   // used. First select the localParticles of the EventGenerator, then
   // add particles from the strategy of the EventGenerator which have
   // not already been selected. Finally add particles from the global
-  // default which have not already been selected.
+  // default if no default directories has been specified in the
+  // strategy which have not already been selected.
   PDVector allParticles;
+
   for ( ParticleMap::const_iterator pit = eg->localParticles().begin();
  	pit != eg->localParticles().end(); ++pit )
     allParticles.push_back(pit->second);
@@ -208,17 +210,26 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
     for ( ParticleMap::const_iterator pit = strat->particles().begin();
  	  pit != strat->particles().end(); ++pit )
       allParticles.push_back(pit->second);
-    if ( eg->strategy()->localParticlesDir().length() ) {
-      string dir = eg->strategy()->localParticlesDir();
+
+    vector<string> pdirs;
+    if ( eg->strategy()->localParticlesDir().length() )
+      pdirs.push_back(eg->strategy()->localParticlesDir());
+    pdirs.insert(pdirs.end(), eg->strategy()->defaultParticlesDirs().begin(),
+		 eg->strategy()->defaultParticlesDirs().end());
+
+    for ( int i = 0, N = pdirs.size(); i < N; ++i ) {
+      string dir = pdirs[i];
       for ( ParticleDataSet::iterator pit = particles().begin();
 	    pit != particles().end(); ++pit )
 	if ( (**pit).fullName().substr(0, dir.length()) == dir )
 	  allParticles.push_back(*pit);
     }
   }
-  for ( ParticleMap::iterator pit = defaultParticles().begin();
-	pit != defaultParticles().end(); ++pit )
-    allParticles.push_back(pit->second);
+
+  if ( !eg->strategy() || eg->strategy()->defaultParticlesDirs().empty() )
+    for ( ParticleMap::iterator pit = defaultParticles().begin();
+	  pit != defaultParticles().end(); ++pit )
+      allParticles.push_back(pit->second);
 
   ParticleMap localParticles;
 

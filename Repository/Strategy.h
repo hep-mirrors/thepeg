@@ -184,13 +184,24 @@ private:
   vector<PDPtr> getLocalParticles() const;
 
   /**
-   * A directory in the repository which will be scanned for particles
-   * which will be included as default particles in a run. These
-   * particles will be overridden by particles specified in
-   * LocalParticles and default particles
-   * specified directly in the EventGenerator.
+   * Utility function used by the interface.
    */
   void setLocalParticlesDir(string);
+
+  /**
+   * Utility function used by the interface.
+   */
+  void setDefaultParticlesDirs(string,int);
+
+  /**
+   * Utility function used by the interface.
+   */
+  void insDefaultParticlesDirs(string,int);
+
+  /**
+   * Utility function used by the interface.
+   */
+  static bool checkDir(string);
 
 private:
 

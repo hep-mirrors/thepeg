@@ -11,7 +11,7 @@ set GRV94L:RemnantHandler RemnantHandler
 set p+:PDF GRV94L
 set pbar-:PDF GRV94L
 
-create ThePEG::Strategy Strategy
+cp /Defaults/Generators/DefaultStrategy Strategy
 insert Strategy:LocalParticles[0] p+
 insert Strategy:LocalParticles[0] pbar-
 
