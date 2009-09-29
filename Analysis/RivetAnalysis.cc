@@ -41,11 +41,11 @@ ThePEG::IBPtr RivetAnalysis::fullclone() const {
 }
 
 void RivetAnalysis::persistentOutput(ThePEG::PersistentOStream & os) const {
-  os << _analyses;
+  os << _analyses << filename;
 }
 
 void RivetAnalysis::persistentInput(ThePEG::PersistentIStream & is, int) {
-  is >> _analyses;
+  is >> _analyses >> filename;
 }
 
 ThePEG::ClassDescription<RivetAnalysis> RivetAnalysis::initRivetAnalysis;
