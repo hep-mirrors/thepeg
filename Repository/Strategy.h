@@ -59,6 +59,18 @@ public:
   string localParticlesDir() const;
 
   /**
+   * By default all particles in the Repository are included in a run,
+   * although only one particle per PDG id number. If directories are
+   * listed here, only particles in these will be considered for
+   * inclusion in a run. Only particles which have a PDG id which is
+   * not given by particles in localParticlesDir(), particles(), or in
+   * EventGenerator::localParticles() will be considered.
+   */
+  const vector<string> & defaultParticlesDirs() const {
+    return theDefaultParticlesDirs;
+  }
+
+  /**
    * Return the vector of default objects.
    */
   const vector<IPtr> & defaultObjects() const { return theDefaultObjects; }
@@ -92,9 +104,6 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
-
-protected:
-
 
 protected:
 
@@ -140,6 +149,17 @@ private:
    * A vector of default objects.
    */
   vector<IPtr> theDefaultObjects;
+
+  /**
+   * By default all particles in the Repository are included in a run,
+   * although only one particle per PDG id number. If directories are
+   * listed in theDefaultParticlesDirs, only particles in these will
+   * be considered for inclusion in a run. Only particles which have a
+   * PDG id which is not given by particles in localParticlesDir(),
+   * particles(), or in EventGenerator::localParticles() will be
+   * considered.
+   */
+  vector<string> theDefaultParticlesDirs;
 
 private:
 

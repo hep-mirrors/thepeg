@@ -195,8 +195,8 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
 
 
   // Clone the particles. But only the ones which should be
-  // used. First select the localParticles of the OldEventGenerator, then
-  // add particles from the strategy of the OldEventGenerator which have
+  // used. First select the localParticles of the EventGenerator, then
+  // add particles from the strategy of the EventGenerator which have
   // not already been selected. Finally add particles from the global
   // default which have not already been selected.
   PDVector allParticles;

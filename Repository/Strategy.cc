@@ -17,6 +17,7 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ParVector.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/Utilities/Throw.h"
@@ -58,11 +59,13 @@ IBPtr Strategy::fullclone() const {
 }
 
 void Strategy::persistentOutput(PersistentOStream & os) const {
-  os << theParticles << theLocalParticlesDir << theDefaultObjects;
+  os << theParticles << theLocalParticlesDir << theDefaultObjects
+     << theDefaultParticlesDirs;
 }
 
 void Strategy::persistentInput(PersistentIStream & is, int) {
-  is >> theParticles >> theLocalParticlesDir >> theDefaultObjects;
+  is >> theParticles >> theLocalParticlesDir >> theDefaultObjects
+     >> theDefaultParticlesDirs;
 }
 
 ClassDescription<Strategy> Strategy::initStrategy;
@@ -130,8 +133,24 @@ void Strategy::Init() {
      &Strategy::setLocalParticlesDir, (string(Strategy::*)()const)(0),
      (string(Strategy::*)()const)(0));
 
+  static ParVector<Strategy,string> interfaceDefaultParticlesDirs
+    ("DefaultParticlesDirs",
+     "By default all particles in the Repository are included in a run, "
+     "although only one particle object per PDG id number. If directories are "
+     "listed in DefaultParticlesDirs, only particles in these will be "
+     "considered for default inclusion in a run. Only particles which have "
+     "a PDG id which is not given by particles in "
+     "<interface>LocalParticlesDir</interface>, "
+     "<interface>LocalParticles</interface>, or in "
+     "<interface>EventGenerator::LocalParticles</interface> will be "
+     "considered.",
+     &Strategy::theDefaultParticlesDirs, -1, "", "", "",
+     true, false, Interface::nolimits);
+
+
   interfaceLocalParticles.rank(10);
   interfaceLocalParticlesDir.rank(11);
   interfaceDefaultObjects.rank(9);
+  interfaceDefaultParticlesDirs.rank(8);
 
 }
