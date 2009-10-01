@@ -173,6 +173,11 @@ public:
   /** @name Command-line interface functions. */
   //@{
   /**
+   * Print out a help message. Extended text for a specific command if given.
+   */
+  static void help(string command, ostream & os);
+
+  /**
    * Remove the given object from the repository. If the object was
    * not present nothing will happen.
    */

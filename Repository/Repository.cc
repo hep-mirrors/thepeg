@@ -567,6 +567,10 @@ string Repository::exec(string command, ostream & os) {
   try {
     string verb = StringUtils::car(command);
     command = StringUtils::cdr(command);
+    if ( verb == "help" ) {
+      help(command, os);
+      return "";
+    }
     if ( verb == "rm" ) {
       ObjectSet rmset;
       while ( !command.empty() ) {
@@ -766,6 +770,85 @@ string Repository::exec(string command, ostream & os) {
   }
 
   return BaseRepository::exec(cpcmd, os);
+}
+
+void Repository::help(string cmd, ostream & os) {
+ 
+  cmd = StringUtils::car(cmd);
+
+  if ( cmd == "cd" )
+    os << "Usage: cd <directory>" << endl
+       << "Set the current directory to <directory>." << endl;
+  else if ( cmd == "mkdir" )
+    os << "Usage: mkdir <name>" << endl
+       << "Create a new directory called <name>." << endl;
+  else if ( cmd == "rmdir" )
+    os << "Usage: rmdir <directory>" << endl
+       << "Remove an empty directory." << endl;
+  else if ( cmd == "rrmdir" )
+    os << "Usage: rrmdir <directory>" << endl
+       << "Remove a directory and everything that is in it recursively." << endl
+       << "Will only succeed if no other objects refers to the ones to "
+       << "be deleted." << endl;
+  else if ( cmd == "cp" )
+    os << "Usage: cp <object> <name>" << endl
+       << "Copy the given object to a new object with the given name." << endl;
+  else if ( cmd == "setup" )
+    os << "Usage: setup <object> <arguments> ..." << endl
+       << "Tell a given object to read information given by the arguments."
+       << endl;
+  else if ( cmd == "decaymode" )
+    os << "Usage: decaymode <tag> <branching fraction> <on|off> <decayer-object>"
+       << endl
+       << "Construct a decay mode from the given decay tag. The resulting "
+       << "object will be inserted in the directory with the same path as "
+       << "the decaying particle object. The given brancing fraction will "
+       << "be set as well as the given decayer object. If the mode should "
+       << "be switched on by default 1(on) should be specified (otherwise "
+       << "0(off))." << endl;
+  else if ( cmd == "makeanti" )
+    os << "Usage: makeanti <particle-object> <particle-object>" << endl
+       << "Indicate that the two given particle objects are eachothers "
+       << "anti-partnets." << endl;
+  else if ( cmd == "read" )
+    os << "Usage: read <file-name>" << endl
+       << "Read more commands from the given file. The file name can be "
+       << "given relative to the current directory in the shell, or "
+       << "relative to standard directories, or as an absolute path." << endl;
+  else if ( cmd == "load" )
+    os << "Usage: load <repository-file-name>" << endl
+       << "Discard everything in the reopsitory and read in a completely "
+       << "new repository from the given file." << endl;
+  else if ( cmd == "save" )
+    os << "Usage: save <file-name>" << endl
+       << "Save the complete repository to the given file." << endl;
+  else if ( cmd == "lsruns" )
+    os << "Usage: lsruns" << endl
+       << "List the run names of all initialized event generators." << endl;
+  else if ( cmd == "makerun" )
+    os << "Usage: makerun <run-name> <event-generator-object>" << endl
+       << "Initialize the given event generator and assign a run name." << endl;
+  else if ( cmd == "rmrun" )
+    os << "Usage: rmrun <run-name>" << endl
+       << "Remove the initialized event generator given by the run name."
+       << endl;
+  else if ( cmd == "saverun" )
+    os << "Usage: saverun <run-name> <event-generator-object>" << endl
+       << "Initialize the given event generator and assign a run name "
+       << "and save it to a file named <run-name>.run" << endl;
+  else if ( cmd == "run" )
+    os << "Usage: run <run-name>" << endl
+       << "Run the initialized event generator given b the run name." << endl;
+  else if ( cmd == "create" )
+    os << "Usage: create <class-name> <name> {<dynamic-library>}" << endl
+       << "Create an object of the given class and assign the given name. "
+       << "Optionally supply a dynamically loaded library where the class "
+       << "is included." << endl;
+  if ( cmd.empty() ) {
+    os << "Common commands:" << endl;
+      
+  }
+
 }
 
 Repository::Repository() {
