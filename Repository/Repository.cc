@@ -791,7 +791,7 @@ void Repository::help(string cmd, ostream & os) {
        << "Will only succeed if no other objects refers to the ones to "
        << "be deleted." << endl;
   else if ( cmd == "cp" )
-    os << "Usage: cp <object> <name>" << endl
+    os << "Usage: cp <object> <path>" << endl
        << "Copy the given object to a new object with the given name." << endl;
   else if ( cmd == "setup" )
     os << "Usage: setup <object> <arguments> ..." << endl
@@ -844,6 +844,35 @@ void Repository::help(string cmd, ostream & os) {
        << "Create an object of the given class and assign the given name. "
        << "Optionally supply a dynamically loaded library where the class "
        << "is included." << endl;
+  else if ( cmd == "pushd" )
+    os << "Usage: pushd <directory>" << endl
+       << "Set the current directory to <directory>, but keep the previous "
+       << "working directory on the directory stack." << endl;
+  else if ( cmd == "popd" )
+    os << "Usage: popd" << endl
+       << "Leave the current working directory and set the current "
+       << "directory to the previous one on the directory stack." << endl;
+  else if ( cmd == "pwd" )
+    os << "Usage: pwd" << endl
+       << "Print the current working directory." << endl;
+  else if ( cmd == "dirs" )
+    os << "Usage: dirs" << endl
+       << "." << endl;
+  else if ( cmd == "" )
+    os << "Usage: Print the contents of the directory stack" << endl
+       << "." << endl;
+  else if ( cmd == "mv" )
+    os << "Usage: mv  <object> <path>" << endl
+       << "Rename the given object to a new name/path." << endl;
+  else if ( cmd == "" )
+    os << "Usage: " << endl
+       << "." << endl;
+  else if ( cmd == "" )
+    os << "Usage: " << endl
+       << "." << endl;
+  else if ( cmd == "" )
+    os << "Usage: " << endl
+       << "." << endl;
   if ( cmd.empty() ) {
     os << "Common commands:" << endl;
       
