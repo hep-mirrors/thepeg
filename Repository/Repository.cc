@@ -857,10 +857,7 @@ void Repository::help(string cmd, ostream & os) {
        << "Print the current working directory." << endl;
   else if ( cmd == "dirs" )
     os << "Usage: dirs" << endl
-       << "." << endl;
-  else if ( cmd == "" )
-    os << "Usage: Print the contents of the directory stack" << endl
-       << "." << endl;
+       << " Print the contents of the directory stack." << endl;
   else if ( cmd == "mv" )
     os << "Usage: mv  <object> <path-name>" << endl
        << "Rename the given object to a new path name." << endl;
@@ -877,9 +874,124 @@ void Repository::help(string cmd, ostream & os) {
        << "Make new classes available to the repository by dynamically "
        << "linking the given library. If this repository is saved and read "
        << "in again, this library will be linked in from the beginning." << endl;
+  else if ( cmd == "rmgloballibrary" )
+    os << "Usage: rmgloballibrary <dynamic library>" << endl
+       << "Remove a dynamic library previously added with globallibrary."
+       << endl;
+  else if ( cmd == "appendpath" )
+    os << "Usage: appendpath <unix-directory>" << endl
+       << "Add a search path for dynamic libraries to the end of the "
+       << "search list." << endl;
+  else if ( cmd == "lspaths" )
+    os << "Usage: lspaths" << endl
+       << "List search paths for dynamic libraries." << endl;
+  else if ( cmd == "prependpath" )
+    os << "Usage: prependpath <unix-directory>" << endl
+       << "Add a search path for dynamic libraries to the beginning of the "
+       << "search list." << endl;
+  else if ( cmd == "doxygendump" )
+    os << "Usage: doxygendump <namespace> <filename>" << endl
+       << "Extract doxygen documentation of all loaded classes in the "
+       << "given name space and weite it to a file.." << endl;
+  else if ( cmd == "mset" || cmd == "minsert" || cmd == "mdo" )
+    os << "Usage: " << cmd << " <directory> <class> <interface> <value>" << endl
+       << "Recursively find in the given all objects of the given class "
+       << "and call '" << cmd.substr(1) << "' with the given value for the "
+       << "given interface."
+       << endl;
+  else if ( cmd == "msetdef" || cmd == "mget" || cmd == "mdef" ||
+	    cmd == "mmin" || cmd == "mmax" || cmd == "merase" )
+    os << "Usage: " << cmd << " <directory> <class> <interface>" << endl
+       << "Recursively find in the given all objects of the given class "
+       << "and call '" << cmd.substr(1) << "' for the given interface." << endl;
+  else if ( cmd == "set" )
+    os << "Usage: set <object>:<interface> <value>" << endl
+       << "Set the interface for the given object to the given value." << endl;
+  else if ( cmd == "setdef" )
+    os << "Usage: setdef <object>:<interface>" << endl
+       << "Set the interface for the given object to its default value." << endl;
+  else if ( cmd == "insert" )
+    os << "Usage: insert <object>:<interface> <value>" << endl
+       << "Insert a value in the vector interface of the given object." << endl;
+  else if ( cmd == "erase" )
+    os << "Usage: erase <object>:<interface>" << endl
+       << "Erase a value from the vector interface of the given object." << endl;
+  else if ( cmd == "do" )
+    os << "Usage: do <object>:<command-interface> <arguments>" << endl
+       << "Call the command interface of the given object with the "
+       << "given arguments." << endl;
+  else if ( cmd == "get" )
+    os << "Usage: get <object>:<interface>" << endl
+       << "Print the value of the interface of the given object." << endl;
+  else if ( cmd == "def" )
+    os << "Usage: def <object>:<interface>" << endl
+       << "Print the default value of the interface of the given object."
+       << endl;
+  else if ( cmd == "min" )
+    os << "Usage: min <object>:<interface>" << endl
+       << "Print the minimum value of the interface of the given object."
+       << endl;
+  else if ( cmd == "max" )
+    os << "Usage: max <object>:<interface>" << endl
+       << "Print the maximum value of the interface of the given object."
+       << endl;
+  else if ( cmd == "describe" )
+    os << "Usage: describe <object>{:<interface>}" << endl
+       << "Describe the given object or an interface of the object." << endl;
+  else if ( cmd == "lsclass" )
+    os << "Usage: lsclass" << endl
+       << "List all classes available in the repository." << endl;
+  else if ( cmd == "all" ) {
+    os << "Available commands:"
+       << endl
+       << "cd, mkdir, rmdir, rrmdir, pwd, cp, mv, rm, pushd, popd, dirs, ls:\n"
+       << " Manipulate the repository structure. analogous to unix "
+       << "shell commands."
+       << endl
+       << "create, setup, decaymode makeanti:\n"
+       << " Create or setup an object."
+       << endl
+       << "set, get, insert, erase, do, detdef, def, min, max,\n"
+       << "mset, minsert, mdo, msetdef, mdef, mmin, mmax, merase:\n"
+       << " Manipulate interfaces to objects."
+       << endl
+       << "makerun, saverun, run, lsruns, rmrun:\n"
+       << " Create and handle initialized event genrators which can be run."
+       << endl
+       << "read, load, library globallibrary, rmgloballibrary,\n"
+       << "appendpath, prependpath, lspaths, doxygendump:\n"
+       << " Handle files."
+       << endl;
+    os << "Do 'help syntax' for help on syntax." << endl
+       << "Do 'help <command>' for help on a particular command." << endl;
+  }
+  else if ( cmd == "syntax" )
+    os << "<directory> = '/' | <name> | <directory>/<name>" << endl
+       << "<object> = <name> | <directory>/<name> | <object>:<ref-interface>"
+       << " Analogous to a unix file structure an object can be\n"
+       << " specified with an absolute path or a path relative to\n"
+       << " the current directory." << endl
+       << "<interface> = <interface-name>|<interface-name>[<index>]" << endl
+       << " Indices can only be given to vector interfaces" << endl;
+  else {
+    os << "No such command found." << endl;
+    cmd = "";
+  }
   if ( cmd.empty() ) {
-    os << "Common commands:" << endl;
-      
+    os << "Common commands:" << endl
+       << "cd, mkdir, rmdir, pwd, cp, mv, rm:\n"
+       << " Manipulate the repository structure. analogous to unix "
+       << "shell commands." << endl
+       << "create, setup:\n"
+       << " Create an object." << endl
+       << "set, get, insert, erase, do:\n"
+       << " Manipulate interfaces to objects." << endl
+       << "makerun, saverun, run, lsruns:\n"
+       << " Create and handle initialized event genrators which can be run."
+       << endl;
+    os << "Do 'help all' for a complete list of commands." << endl
+       << "Do 'help syntax' for help on syntax." << endl
+       << "Do 'help <command>' for help on a particular command." << endl;
   }
 
 }
