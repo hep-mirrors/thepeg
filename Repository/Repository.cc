@@ -780,8 +780,8 @@ void Repository::help(string cmd, ostream & os) {
     os << "Usage: cd <directory>" << endl
        << "Set the current directory to <directory>." << endl;
   else if ( cmd == "mkdir" )
-    os << "Usage: mkdir <name>" << endl
-       << "Create a new directory called <name>." << endl;
+    os << "Usage: mkdir <path-name>" << endl
+       << "Create a new directory called with the given path name." << endl;
   else if ( cmd == "rmdir" )
     os << "Usage: rmdir <directory>" << endl
        << "Remove an empty directory." << endl;
@@ -791,7 +791,7 @@ void Repository::help(string cmd, ostream & os) {
        << "Will only succeed if no other objects refers to the ones to "
        << "be deleted." << endl;
   else if ( cmd == "cp" )
-    os << "Usage: cp <object> <path>" << endl
+    os << "Usage: cp <object> <path-name>" << endl
        << "Copy the given object to a new object with the given name." << endl;
   else if ( cmd == "setup" )
     os << "Usage: setup <object> <arguments> ..." << endl
@@ -862,17 +862,21 @@ void Repository::help(string cmd, ostream & os) {
     os << "Usage: Print the contents of the directory stack" << endl
        << "." << endl;
   else if ( cmd == "mv" )
-    os << "Usage: mv  <object> <path>" << endl
-       << "Rename the given object to a new name/path." << endl;
-  else if ( cmd == "" )
-    os << "Usage: " << endl
-       << "." << endl;
-  else if ( cmd == "" )
-    os << "Usage: " << endl
-       << "." << endl;
-  else if ( cmd == "" )
-    os << "Usage: " << endl
-       << "." << endl;
+    os << "Usage: mv  <object> <path-name>" << endl
+       << "Rename the given object to a new path name." << endl;
+  else if ( cmd == "ls" )
+    os << "Usage: ls {<directory>}" << endl
+       << "List the objects and subdirectories in the current or given "
+       << "directory." << endl;
+  else if ( cmd == "library" )
+    os << "Usage: library <dynamic library>" << endl
+       << "Make new classes available to the repository by dynamically "
+       << "linking the given library." << endl;
+  else if ( cmd == "globallibrary" )
+    os << "Usage: globallibrary <dynamic library>" << endl
+       << "Make new classes available to the repository by dynamically "
+       << "linking the given library. If this repository is saved and read "
+       << "in again, this library will be linked in from the beginning." << endl;
   if ( cmd.empty() ) {
     os << "Common commands:" << endl;
       
