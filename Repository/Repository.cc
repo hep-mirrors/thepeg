@@ -951,7 +951,7 @@ void Repository::help(string cmd, ostream & os) {
        << "* create, setup, decaymode makeanti:\n"
        << "  Create or setup an object."
        << endl
-       << "* set, get, insert, erase, do, detdef, def, min, max,\n"
+       << "* set, get, insert, erase, do, detdef, def, min, max, describe\n"
        << "  mset, minsert, mdo, msetdef, mdef, mmin, mmax, merase:\n"
        << "  Manipulate interfaces to objects."
        << endl
