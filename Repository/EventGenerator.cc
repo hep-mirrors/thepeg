@@ -220,7 +220,8 @@ void EventGenerator::doinit() {
   // standard model and the strategy.
   standardModel()->init();
   if ( strategy() ) strategy()->init();
-  
+  eventHandler()->init();
+
   // initialize particles first
   for(ParticleMap::const_iterator pit = particles().begin();
       pit != particles().end(); ++pit) pit->second->init();
@@ -246,6 +247,7 @@ void EventGenerator::doinitrun() {
   // standard model and the strategy.
   standardModel()->initrun();
   if ( strategy() ) strategy()->initrun();
+  eventHandler()->initrun();
 
   // initialize particles first
   for(ParticleMap::const_iterator pit = particles().begin();

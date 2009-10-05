@@ -1,5 +1,12 @@
 2009-10-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Handlers/ACDCSampler.cc, Handlers/StandardEventHandler.cc,
+	Handlers/SubProcessHandler.*,
+	Repository/EventGenerator.cc (doinitrun): Made the initrun()
+	initialization of ACDICSampler require prior initrun() of the
+	StandardEventHandler and, via the SubProcessHandler, also the
+	MEBase objects (in response to herwig:ticket:275).
+
 	* Repository/Repository.cc (Repository::help): Added help command
 	which hopefully will write out helpful info (in response to
 	herwig:ticket:277).

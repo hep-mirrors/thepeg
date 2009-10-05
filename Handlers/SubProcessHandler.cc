@@ -96,6 +96,17 @@ void SubProcessHandler::doinit() {
   HandlerBase::doinit();
 }
 
+void SubProcessHandler::doinitrun() {
+  HandlerBase::doinitrun();
+  pExtractor()->initrun();
+  for ( MEVector::iterator me = theMEs.begin(); me != theMEs.end(); ++me )
+    (**me).initrun();
+  for ( ReweightVector::iterator i = reweights.begin();
+	i != reweights.end(); ++i ) (**i).initrun();
+  for ( ReweightVector::iterator i = preweights.begin();
+	i != preweights.end(); ++i ) (**i).initrun();
+}
+
 ClassDescription<SubProcessHandler> SubProcessHandler::initSubProcessHandler;
 
 void SubProcessHandler::Init() {

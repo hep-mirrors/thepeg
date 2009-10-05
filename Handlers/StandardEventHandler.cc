@@ -487,6 +487,9 @@ CrossSection StandardEventHandler::integratedXSecErr() const {
 
 void StandardEventHandler::doinitrun() {
   EventHandler::doinitrun();
+  for ( SubHandlerList::iterator sit = subProcesses().begin();
+	sit != subProcesses().end(); ++sit )
+    (**sit).initrun();
   sampler()->initrun();
   for ( int i = 0, N = xCombs().size(); i < N; ++i )
     xCombs()[i]->reset();

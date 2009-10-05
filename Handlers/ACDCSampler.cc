@@ -116,6 +116,7 @@ void ACDCSampler::dofinish() {
 
 void ACDCSampler::doinitrun() {
   SamplerBase::doinitrun();
+  eventHandler()->initrun();
   theSampler.setRnd(0);
   theSampler.eps(theEps);
   theSampler.margin(theMargin);
