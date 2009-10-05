@@ -866,16 +866,16 @@ void Repository::help(string cmd, ostream & os) {
        << "List the objects and subdirectories in the current or given "
        << "directory." << endl;
   else if ( cmd == "library" )
-    os << "Usage: library <dynamic library>" << endl
+    os << "Usage: library <dynamic-library>" << endl
        << "Make new classes available to the repository by dynamically "
        << "linking the given library." << endl;
   else if ( cmd == "globallibrary" )
-    os << "Usage: globallibrary <dynamic library>" << endl
+    os << "Usage: globallibrary <dynamic-library>" << endl
        << "Make new classes available to the repository by dynamically "
        << "linking the given library. If this repository is saved and read "
        << "in again, this library will be linked in from the beginning." << endl;
   else if ( cmd == "rmgloballibrary" )
-    os << "Usage: rmgloballibrary <dynamic library>" << endl
+    os << "Usage: rmgloballibrary <dynamic-library>" << endl
        << "Remove a dynamic library previously added with globallibrary."
        << endl;
   else if ( cmd == "appendpath" )
@@ -895,15 +895,15 @@ void Repository::help(string cmd, ostream & os) {
        << "given name space and weite it to a file.." << endl;
   else if ( cmd == "mset" || cmd == "minsert" || cmd == "mdo" )
     os << "Usage: " << cmd << " <directory> <class> <interface> <value>" << endl
-       << "Recursively find in the given all objects of the given class "
-       << "and call '" << cmd.substr(1) << "' with the given value for the "
-       << "given interface."
-       << endl;
+       << "Recursively find in the given directory all objects of the "
+       << "given class and call '" << cmd.substr(1)
+       << "' with the given value for the given interface." << endl;
   else if ( cmd == "msetdef" || cmd == "mget" || cmd == "mdef" ||
 	    cmd == "mmin" || cmd == "mmax" || cmd == "merase" )
     os << "Usage: " << cmd << " <directory> <class> <interface>" << endl
-       << "Recursively find in the given all objects of the given class "
-       << "and call '" << cmd.substr(1) << "' for the given interface." << endl;
+       << "Recursively find in the given directory all objects of the given "
+       << "class and call '" << cmd.substr(1)
+       << "' for the given interface." << endl;
   else if ( cmd == "set" )
     os << "Usage: set <object>:<interface> <value>" << endl
        << "Set the interface for the given object to the given value." << endl;
@@ -944,49 +944,51 @@ void Repository::help(string cmd, ostream & os) {
   else if ( cmd == "all" ) {
     os << "Available commands:"
        << endl
-       << "cd, mkdir, rmdir, rrmdir, pwd, cp, mv, rm, pushd, popd, dirs, ls:\n"
-       << " Manipulate the repository structure. analogous to unix "
+       << "* cd, mkdir, rmdir, rrmdir, pwd, cp, mv, rm, pushd, popd, dirs, ls:\n"
+       << "  Manipulate the repository structure. Analogous to unix "
        << "shell commands."
        << endl
-       << "create, setup, decaymode makeanti:\n"
-       << " Create or setup an object."
+       << "* create, setup, decaymode makeanti:\n"
+       << "  Create or setup an object."
        << endl
-       << "set, get, insert, erase, do, detdef, def, min, max,\n"
-       << "mset, minsert, mdo, msetdef, mdef, mmin, mmax, merase:\n"
-       << " Manipulate interfaces to objects."
+       << "* set, get, insert, erase, do, detdef, def, min, max,\n"
+       << "  mset, minsert, mdo, msetdef, mdef, mmin, mmax, merase:\n"
+       << "  Manipulate interfaces to objects."
        << endl
-       << "makerun, saverun, run, lsruns, rmrun:\n"
-       << " Create and handle initialized event genrators which can be run."
+       << "* makerun, saverun, run, lsruns, rmrun:\n"
+       << "  Create and handle initialized event genrators which can be run."
        << endl
-       << "read, load, library globallibrary, rmgloballibrary,\n"
-       << "appendpath, prependpath, lspaths, doxygendump:\n"
-       << " Handle files."
+       << "* read, load, library globallibrary, rmgloballibrary,\n"
+       << "  appendpath, prependpath, lspaths, doxygendump:\n"
+       << "  Handle files external files and libraries."
        << endl;
     os << "Do 'help syntax' for help on syntax." << endl
        << "Do 'help <command>' for help on a particular command." << endl;
   }
   else if ( cmd == "syntax" )
-    os << "<directory> = '/' | <name> | <directory>/<name>" << endl
-       << "<object> = <name> | <directory>/<name> | <object>:<ref-interface>"
-       << " Analogous to a unix file structure an object can be\n"
-       << " specified with an absolute path or a path relative to\n"
-       << " the current directory." << endl
-       << "<interface> = <interface-name>|<interface-name>[<index>]" << endl
-       << " Indices can only be given to vector interfaces" << endl;
+    os << "* <directory> = '/' | <name> | <directory>/<name>" << endl
+       << "  <object> = <name> | <directory>/<name> | <object>:<ref-interface>\n"
+       << "  Analogous to a unix file structure, an object can be "
+       << "specified with an\n  absolute path or a path relative to "
+       << "the current directory." << endl
+       << "* <interface> = <interface-name>|<interface-name>[<index>]" << endl
+       << "  An interface can be a parameter (floating point, integer or "
+       << "string),\n  a switch (integer, possibly named), a reference to "
+       << "another object in the\n  repository or a command which takes "
+       << "an arbitrary string as argument.\n  There are also vector interfaces "
+       << "of parameters and references for which\n  an index must be supplied."
+       << endl;
   else {
-    os << "No such command found." << endl;
-    cmd = "";
-  }
-  if ( cmd.empty() ) {
+    if ( !cmd.empty() ) os << "No command '" << cmd << "' found." << endl;
     os << "Common commands:" << endl
-       << "cd, mkdir, rmdir, pwd, cp, mv, rm:\n"
-       << " Manipulate the repository structure. analogous to unix "
+       << "* cd, mkdir, rmdir, pwd, cp, mv, rm:\n"
+       << "  Manipulate the repository structure. Analogous to unix "
        << "shell commands." << endl
-       << "create, setup:\n"
+       << "* create, setup:\n"
        << " Create an object." << endl
        << "set, get, insert, erase, do:\n"
        << " Manipulate interfaces to objects." << endl
-       << "makerun, saverun, run, lsruns:\n"
+       << "* makerun, saverun, run, lsruns:\n"
        << " Create and handle initialized event genrators which can be run."
        << endl;
     os << "Do 'help all' for a complete list of commands." << endl
