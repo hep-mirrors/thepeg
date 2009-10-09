@@ -40,9 +40,6 @@ bool WeakToHadronsDecayer::accept(const DecayMode & dm) const {
     if ( !dm.orderedProducts()[0]->iCharge() &&
 	 !dm.orderedProducts()[1]->iCharge() ) return false;
   }
-  else if ( !QuarkMatcher::Check(*dm.orderedProducts()[0]) ) {
-    return false;
-  }
 
   for ( int i = 0, N = dm.orderedProducts().size(); i < N; ++i ) {
     if ( !dm.orderedProducts()[i]->coloured() ) continue;
