@@ -358,7 +358,9 @@ public:
   /**
    * Check if the given \f$\hat{s}\f$ is within the cuts.
    */
-  bool sHat(Energy2 sh) const { return sh > sHatMin() && sh <= sHatMax(); }
+  bool sHat(Energy2 sh) const { 
+    return sh > sHatMin() && sh <= sHatMax()*(1.0 + 10.0*Constants::epsilon);
+  }
 
   /**
    * The minimum allowed value of \f$\sqrt{\hat{s}}\f$.

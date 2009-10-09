@@ -85,7 +85,7 @@ bool Cuts::initSubProcess(Energy2 shat, double yhat, bool mirror) const {
   theSubMirror = mirror;
   theCurrentSHat = shat;
   theCurrentYHat = yhat;
-  if ( shat <= sHatMin() || shat > sHatMax() ) return false;
+  if ( shat <= sHatMin() || shat > sHatMax()*(1.0 + 10.0*Constants::epsilon) ) return false;
   if ( yhat <= yHatMin() || yhat >= yHatMax() ) return false;
   double x1 = min(1.0, sqrt(shat/SMax())*exp(yhat));
   if ( x1 <= x1Min() || x1 > x1Max() ) return false;
