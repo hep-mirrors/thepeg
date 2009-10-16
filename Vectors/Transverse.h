@@ -21,7 +21,7 @@ namespace ThePEG {
  * LorentzVector. It inherits from
  * <code>std::pair<Value,Value></code> and can be used
  * anywhere such a pair is called for. It can also be created directly
- * from a <code>Vector3</code>, <code>LorentzVector</code> and
+ * from a <code>ThreeVector</code>, <code>LorentzVector</code> and
  * <code>Lorentz5Momentum</code>.
  *
  * @see Lorentz5Vector
@@ -56,9 +56,9 @@ public:
   Transverse(Value x, Value y) : BasePair(x, y) {}
 
   /**
-   * Constructor taking the transverse parts of a Vector3.
+   * Constructor taking the transverse parts of a ThreeVector.
    */
-  Transverse(const Vector3<Value> & p) : BasePair(p.x(), p.y()) {}
+  Transverse(const ThreeVector<Value> & p) : BasePair(p.x(), p.y()) {}
 
   /**
    * Constructor taking the transverse parts of a LorentzVector.
@@ -82,9 +82,9 @@ public:
   }
 
   /**
-   * Assignment taking the transverse parts of a Vector3.
+   * Assignment taking the transverse parts of a ThreeVector.
    */
-  const Transverse & operator=(const Vector3<Value> & p) {
+  const Transverse & operator=(const ThreeVector<Value> & p) {
     BasePair::operator=(BasePair(p.x(), p.y()));
     return *this;
   }

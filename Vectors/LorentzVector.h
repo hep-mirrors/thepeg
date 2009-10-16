@@ -60,7 +60,7 @@ public:
   LorentzVector(Value x, Value y, Value z, Value t)
     : theX(x), theY(y), theZ(z), theT(t) {}
 
-  LorentzVector(const Vector3<Value> & v, Value t)
+  LorentzVector(const ThreeVector<Value> & v, Value t)
     : theX(v.x()), theY(v.y()), theZ(v.z()), theT(t) {}
 
   template<typename U>
@@ -99,15 +99,15 @@ public:
 
 public:
   /// Access to the 3-component part.
-  Vector3<Value> vect() const {
-    return Vector3<Value>(x(),y(),z());
+  ThreeVector<Value> vect() const {
+    return ThreeVector<Value>(x(),y(),z());
   }
 
   /// Cast to the 3-component part.
-  operator Vector3<Value>() const { return vect(); }
+  operator ThreeVector<Value>() const { return vect(); }
   
   /// Set the 3-component part.
-  void setVect(const Vector3<Value> & p) {
+  void setVect(const ThreeVector<Value> & p) {
     theX = p.x();
     theY = p.y();
     theZ = p.z();
@@ -121,13 +121,10 @@ public:
   }
 
   /// Squared magnitude \f$x^\mu\,x_\mu=t^2 - \vec{x}^2\f$.
-  Value2 mag2() const 
+  Value2 m2() const 
   { 
     return (t()-z())*(t()+z()) - sqr(x()) - sqr(y()); 
   }
-
-  /// Squared magnitude \f$x^\mu\,x_\mu=t^2 - \vec{x}^2\f$.
-  Value2 m2() const { return mag2(); }
 
   /// Squared magnitude with another vector
   Value2 m2(const LorentzVector<Value> & a) const {
@@ -136,14 +133,11 @@ public:
   }
 
   /// Magnitude (signed) \f$\pm\sqrt{|t^2 - \vec{x}^2|}\f$.
-  Value  mag() const 
+  Value  m() const 
   {
-    Value2 tmp = mag2();
+    Value2 tmp = m2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
   }
-
-  /// Magnitude (signed) \f$\pm\sqrt{|t^2 - \vec{x}^2|}\f$.
-  Value m() const { return mag(); }
 
   /// Transverse mass squared \f$t^2-z^2\f$.
   Value2 mt2()  const { return (t()-z())*(t()+z()); }
@@ -166,7 +160,7 @@ public:
    * given axis.
    */
   template <typename U>
-  Value2 perp2(const Vector3<U> & p) const 
+  Value2 perp2(const ThreeVector<U> & p) const 
   {
     return vect().perp2(p);
   }
@@ -176,7 +170,7 @@ public:
    * given axis.
    */
   template <typename U>
-  Value perp(const Vector3<U> & p) const 
+  Value perp(const ThreeVector<U> & p) const 
   {
     return vect().perp(p);
   }
@@ -196,7 +190,7 @@ public:
   }
 
   /// Transverse energy squared with respect to the given axis.
-  Value2 et2(const Vector3<double> & v) const 
+  Value2 et2(const ThreeVector<double> & v) const 
   {
     Value2 pt2 = vect().perp2(v);
     Value pv = vect().dot(v.unit());
@@ -204,7 +198,7 @@ public:
   }
 
   /// Transverse energy with respect to the given axis (signed).
-  Value et(const Vector3<double> & v) const 
+  Value et(const ThreeVector<double> & v) const 
   {
     Value2 etet = et2(v);
     return e() < Value() ? -sqrt(etet) : sqrt(etet);
@@ -233,21 +227,24 @@ public:
   /// Polar angle.
   double theta() const 
   {
-    return x() == Value() && y() == Value() 
-      && z() == Value() ? 0.0 : atan2(perp(),z());
+    assert(!(x() == Value() && y() == Value() && z() == Value()));
+    return atan2(perp(),z());
   }
 
   /// Cosine of the polar angle.
   double cosTheta() const 
   {
     Value ptot = rho();
-    return ptot == Value() ? 1.0 : double(z()/ptot);
+    return ptot == Value() ? sqrt(-1.0) : double(z()/ptot);
   }
 
   /// Azimuthal angle.
   double phi()   const 
   {
-    return x() == Value() && y() == Value() ? 0.0 : atan2(y(),x()) ;
+    if ( x() == Value() && y() == Value() )
+      return 0.;
+    //    assert(!(x() == Value() && y() == Value()));
+    return atan2(y(),x()) ;
   }
   //@}
 
@@ -461,7 +458,6 @@ public:
       setX(-x());
       setZ(-z()); 
     }
-    else {}
     return *this;
   }
   
@@ -640,8 +636,8 @@ inline double dirCosTheta(const LorentzVector<Value> & p) {
 /** Get the boost vector for the LorentzVector. If the current
  *  Direction<0> is reversed, so is the z-component. */
 template <typename Value>
-inline Vector3<Value> dirBoostVector(const LorentzVector<Value> & p) {
-  Vector3<Value> b(p.boostVector());
+inline ThreeVector<Value> dirBoostVector(const LorentzVector<Value> & p) {
+  ThreeVector<Value> b(p.boostVector());
   if ( Direction<0>::neg() ) b.setZ(-b.z());
   return b;
 }

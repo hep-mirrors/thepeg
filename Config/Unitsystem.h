@@ -116,19 +116,19 @@ typedef QTY<2,-6,0>::Type Diff3XSec;
 typedef Energy2 Scale;
 
 /** A point in three-dimensional euclidean space. */
-typedef Vector3<Length> Point;
+typedef ThreeVector<Length> Point;
 
 /** A distance in three-dimensional euclidean space. */
-typedef Vector3<Length> Distance;
+typedef ThreeVector<Length> Distance;
 
 /** A direction in three-dimensional euclidean space. */
-typedef Vector3<double> Axis;
+typedef ThreeVector<double> Axis;
 
 /** A momentum in three-dimensional euclidean space. */
-typedef Vector3<Energy> Momentum3;
+typedef ThreeVector<Energy> Momentum3;
 
 /** A three-dimensional boost vector. */
-typedef Vector3<double> Boost;
+typedef ThreeVector<double> Boost;
 
 /** A distance in four-dimensional space-time. */
 typedef LorentzVector<Length> LorentzDistance;

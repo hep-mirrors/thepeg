@@ -32,7 +32,7 @@ using namespace std;
  * this:<BR> <code>os
  * << ounit(x, GeV);</code><BR> Also containers of unitful
  * numbers may be written like this, as well as LorentzVector and
- * Vector3.
+ * ThreeVector.
  *
  * @see PersistentOStream
  * @see PersistentIStream
@@ -60,7 +60,7 @@ struct OUnit {
  * and to a persistent stream. An Energy can hence be read like
  * this:<BR> <code>is >> iunit(x, GeV);</code><BR> Also containers of
  * unitful numbers may be read like this, as well as LorentzVector and
- * Vector3.
+ * ThreeVector.
  *
  * @see PersistentOStream
  * @see PersistentIStream

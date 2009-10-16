@@ -1,3 +1,11 @@
+2009-10-16  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Vectors/*Vector.h: Assertion in cosTheta() and perp2() to catch
+	zero-length vectors.  LorentzVector::mag() and mag2() have been
+	removed; use m() and m2() instead. The Vector3 class has been
+	renamed ThreeVector, in line with the other vector classes and its
+	file name.
+
 2009-10-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Cuts/Cuts.{h,cc}:

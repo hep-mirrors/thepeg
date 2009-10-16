@@ -468,7 +468,7 @@ public:
   /**
    * The invariant life time of this particle.
    */
-  Time lifeTime() const { return lifeLength().mag(); }
+  Time lifeTime() const { return lifeLength().m(); }
 
   //@}
 

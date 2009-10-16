@@ -4,7 +4,7 @@
 
 namespace ThePEG {
   template <typename Value>
-  class Vector3; 
+  class ThreeVector; 
 }
 
 #endif /* ThePEG_ThreeVector_FH */

@@ -88,21 +88,21 @@ public:
    * Constructor giving a 3-Vector and a time component. The invariant
    * length is set to LorentzVector::mag().
    */
-  Lorentz5Vector(const Vector3<Value> & p, Value e)
+  Lorentz5Vector(const ThreeVector<Value> & p, Value e)
     : LorentzVector<Value>(p, e) { rescaleMass(); }
 
   /**
    * Constructor giving an invariant length and a 3-Vector
    * component. The time component is set to the corresponding value.
    */
-  Lorentz5Vector(Value m, const Vector3<Value> & p) 
+  Lorentz5Vector(Value m, const ThreeVector<Value> & p) 
     : LorentzVector<Value>(p, sqrt(p.mag2() + m*m)), mm(m) {}
 
   /**
    * Constructor giving a 3-Vector, a time component and an invariant
    * length. May result in an inconsistent Lorentz5Vector.
    */
-  Lorentz5Vector(const Vector3<Value> & p, Value t, Value tau)
+  Lorentz5Vector(const ThreeVector<Value> & p, Value t, Value tau)
     : LorentzVector<Value>(p, t), mm(tau) {}
 
   /**
@@ -165,7 +165,7 @@ public:
    * invariant length/mass of the LorentzVector.
    */
   void rescaleMass() {
-    mm = LorentzVector<Value>::mag();
+    mm = LorentzVector<Value>::m();
   }
   //@}
 
@@ -175,7 +175,8 @@ public:
    * Return the relative inconsistency in the mass component.
    */
   double massError() const {
-    return sqrt(abs(Math::relativeError(mass2(), LorentzVector<Value>::mag2())));
+    return sqrt(abs(Math::relativeError(mass2(), 
+					LorentzVector<Value>::m2())));
   }
 
   /**
@@ -198,26 +199,26 @@ public:
   /** @name Access components. */
   //@{
   /**
-   * Mass/invariant length component squared. mag2() and m2() gives
+   * Mass/invariant length component squared. m2() gives
    * the same calculated from the LorentzVector
    */
   Value2 mass2() const { return mm > Value() ? mm*mm: -mm*mm; }
 
   /**
-   * Mass/invariant length component squared. mag2() and m2() gives
+   * Mass/invariant length component squared. m2() gives
    * the same calculated from the LorentzVector
    */
   Value2 tau2() const { return mass2(); }
 
   /**
-   * Mass/invariant length component. mag() and m() gives the same
+   * Mass/invariant length component. m() gives the same
    * calculated from the LorentzVector
    */
   Value mass() const { return mm; }
 
 
   /**
-   * Mass/invariant length component. mag() and m() gives the same
+   * Mass/invariant length component. m() gives the same
    * calculated from the LorentzVector
    */
   Value tau() const { return mass(); }
