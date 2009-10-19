@@ -1,3 +1,8 @@
+2009-10-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/ParticleData.*: Allow for negative values of upper and lower
+	cut on the width. Negative values represents no cut.
+
 2009-10-16  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Vectors/*Vector.h: Assertion in cosTheta() and perp2() to catch

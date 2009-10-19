@@ -599,8 +599,9 @@ void ParticleData::Init() {
   static Parameter<ParticleData,Energy> interfaceWidthUpCut
     ("WidthUpCut",
      "The upper hard cutoff in GeV in generated mass, which is the maximum "
-     "allowed upwards deviation from the nominal mass.",
-     0, GeV, ZERO, ZERO, Constants::MaxEnergy,
+     "allowed upwards deviation from the nominal mass. A negative value "
+     "corresponds to no limit.",
+     0, GeV, ZERO, -1.0*GeV, Constants::MaxEnergy,
      false, false, Interface::lowerlim,
      &ParticleData::setUpCut, &ParticleData::getUpCut,
      0, 0, &ParticleData::defCut);
@@ -608,8 +609,9 @@ void ParticleData::Init() {
   static Parameter<ParticleData,Energy> interfaceWidthLoCut
     ("WidthLoCut",
      "The lower hard cutoff in GeV in generated mass, which is the maximum "
-     "allowed downwards deviation from the nominal mass.",
-     0, GeV, ZERO, ZERO, Constants::MaxEnergy,
+     "allowed downwards deviation from the nominal mass. A negative value "
+     "corresponds to no limit.",
+     0, GeV, ZERO, -1.0*GeV, Constants::MaxEnergy,
      false, false, Interface::lowerlim,
      &ParticleData::setLoCut, &ParticleData::getLoCut,
      0, 0, &ParticleData::defCut);
@@ -618,8 +620,9 @@ void ParticleData::Init() {
     ("WidthCut",
      "The hard cutoff in GeV in generated mass, which is the maximum "
      "allowed deviation from the nominal mass. Sets both the upper and lower "
-     "cut. (The displayed value is the maximium of the upper and lower cut.)",
-     0, GeV, ZERO, ZERO, Constants::MaxEnergy,
+     "cut. (The displayed value is the maximium of the upper and lower cut.) "
+     "A negative value corresponds to no limit.",
+     0, GeV, ZERO, -1.0*GeV, Constants::MaxEnergy,
      false, false, Interface::lowerlim,
      &ParticleData::setCut, &ParticleData::getCut,
      0, 0, &ParticleData::defCut);

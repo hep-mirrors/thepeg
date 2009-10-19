@@ -233,7 +233,9 @@ public:
   /**
    * Get the upper width cut.
    */
-  Energy widthUpCut() const { return theWidthUpCut; }
+  Energy widthUpCut() const {
+    return theWidthUpCut >= ZERO? theWidthUpCut: Constants::MaxEnergy;
+  }
 
   /**
    * Set the lower width cut.
@@ -243,7 +245,9 @@ public:
   /**
    * Get the lower width cut.
    */
-  Energy widthLoCut() const { return theWidthLoCut; }
+  Energy widthLoCut() const {
+    return theWidthLoCut >= ZERO? theWidthLoCut: Constants::MaxEnergy;
+  }
 
   /**
    * Set the life time cTau.
