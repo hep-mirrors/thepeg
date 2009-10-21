@@ -452,6 +452,16 @@ private:
    */
   static ClassDescription<StandardEventHandler> initStandardEventHandler;
 
+  /**
+   * Helper function for the interface.
+   */
+  void setIncomingA(PDPtr);
+
+  /**
+   * Helper function for the interface.
+   */
+  void setIncomingB(PDPtr);
+
 protected:
 
   /** @cond EXCEPTIONCLASSES */

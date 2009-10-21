@@ -577,6 +577,16 @@ void StandardEventHandler::dofinish() {
 ClassDescription<StandardEventHandler>
 StandardEventHandler::initStandardEventHandler;	// 
 
+void StandardEventHandler::setIncomingA(PDPtr p) {
+  theIncomingA = p;
+  theIncoming.first = p;
+}
+
+void StandardEventHandler::setIncomingB(PDPtr p) {
+  theIncomingB = p;
+  theIncoming.second = p;
+}
+
 void StandardEventHandler::Init() {
 
   static ClassDocumentation<StandardEventHandler> documentation
@@ -591,12 +601,14 @@ void StandardEventHandler::Init() {
   static Reference<StandardEventHandler,ParticleData> interfaceIncomingA
     ("BeamA",
      "The type of particles in first beam",
-     &StandardEventHandler::theIncomingA, false, false, true, false);
+     &StandardEventHandler::theIncomingA, false, false, true, false,
+     &StandardEventHandler::setIncomingA);
 
   static Reference<StandardEventHandler,ParticleData> interfaceIncomingB
     ("BeamB",
      "The type of particles in second beam",
-     &StandardEventHandler::theIncomingB, false, false, true, false);
+     &StandardEventHandler::theIncomingB, false, false, true, false,
+     &StandardEventHandler::setIncomingB);
 
   static RefVector<StandardEventHandler,SubProcessHandler> interfaceSubhandlers
     ("SubProcessHandlers",

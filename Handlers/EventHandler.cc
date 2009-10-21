@@ -34,6 +34,7 @@
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/Utilities/EnumIO.h"
+#include "ThePEG/Utilities/Rebinder.h"
 
 using namespace ThePEG;
 
@@ -313,6 +314,19 @@ void EventHandler::checkConsistency() const {
       << Exception::warning;
 }
 
+
+void EventHandler::rebind(const TranslationMap & trans) {
+  theIncoming.first = trans.translate(theIncoming.first);
+  theIncoming.second = trans.translate(theIncoming.second);
+  HandlerBase::rebind(trans);
+}
+
+IVector EventHandler::getReferences() {
+  IVector ret = HandlerBase::getReferences();
+  ret.push_back(const_ptr_cast<PDPtr>(theIncoming.first));
+  ret.push_back(const_ptr_cast<PDPtr>(theIncoming.second));
+  return ret;
+}
 void EventHandler::persistentOutput(PersistentOStream & os) const {
   os << theLastXComb << theMaxLoop << theStatLevel << oenum(theConsistencyLevel)
      << theConsistencyEpsilon << theLumiFn << theCuts << thePartonExtractor
@@ -330,9 +344,6 @@ void EventHandler::persistentInput(PersistentIStream & is, int) {
      >> theCurrentCollision >> theCurrentStep >> theCurrentStepHandler
      >> warnIncomplete >> theIncoming;
 }
-
-//  ClassDescription<EventHandler>
-//  EventHandler::initEventHandler;
 
 ThePEG_IMPLEMENT_CLASS_DESCRIPTION(EventHandler);
 

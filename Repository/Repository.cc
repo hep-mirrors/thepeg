@@ -231,6 +231,10 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
 	  pit != defaultParticles().end(); ++pit )
       allParticles.push_back(pit->second);
 
+  for ( ParticleDataSet::iterator pit = particles().begin();
+	  pit != particles().end(); ++pit )
+      allParticles.push_back(*pit);
+
   ParticleMap localParticles;
 
   for ( PDVector::iterator pit = allParticles.begin();
@@ -243,8 +247,9 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
       clonedObjects.insert(pd);
       localObjects.insert(*pit);
       addReferences(*pit, localObjects);
-    } else
+    } else {
       trans[*pit] = it->second;
+    }
   }
 
   if ( ThePEG_DEBUG_ITEM(3) )
