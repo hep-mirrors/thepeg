@@ -70,6 +70,14 @@ public:
    * a null pointer will be returned.
    */
   tTPtr operator()(IntT i) const {
+    return find(i);
+  }
+
+  /**
+   * Return the object for the given index. If the index is not known,
+   * a null pointer will be returned.
+   */
+  tTPtr find(IntT i) const {
     typename IndexObjectMap::const_iterator it = indexObject.find(i);
     return it == indexObject.end()? tTPtr(): it->second;
   }
