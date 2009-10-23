@@ -57,7 +57,7 @@ public:
   /**
    * The default constructor.
    */
-  RemnantDecayer() : respectDIS(true), theRecoilOption(copyFinal) {}
+  RemnantDecayer() : respectDIS(2), theRecoilOption(copyFinal) {}
 
   /**
    * The destructor.
@@ -134,7 +134,7 @@ public:
    * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
    * unmodified.
    */
-  bool respectDISKinematics() const { return respectDIS; }
+  int respectDISKinematics() const { return respectDIS; }
 
   /**
    * An object capable of generating an intrinsic transverse momentum
@@ -252,7 +252,7 @@ protected:
    * photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is
    * unmodified.
    */
-  mutable bool respectDIS;
+  mutable int respectDIS;
 
 private:
 

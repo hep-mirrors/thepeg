@@ -1,5 +1,8 @@
 2009-10-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* PDT/RemnantDecayer.*: Added option to respect DIS kinematics but
+	to silently change scattered lepton if it doesn't work.
+
 	* src/ThePEGParticles.in: Set fourth generation neutrinos massive
 	by default.
 

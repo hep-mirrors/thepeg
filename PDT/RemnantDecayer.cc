@@ -75,7 +75,7 @@ fillSubSystem(tPPtr p, set<tPPtr> & sub) const {
     // If this particle belongs to an electro-weak scattering vertex
     // it should be excluded. (more specifically part of a vertex
     // where the other particles are incoming and outgoing leptons
-    // while this is not a lepton and is spece-like)
+    // while this is not a lepton and is space-like)
     if ( p->children().size() == 1 && p->children()[0]->parents().size() == 2 &&
 	 LeptonMatcher::Check(p->children()[0]->data()) &&
 	 ( p->children()[0]->momentum().m2() >= ZERO ||
@@ -230,22 +230,29 @@ void RemnantDecayer::Init() {
      "Boost all particles in the hard subsystem.",
      boostAll);
 
-  static Switch<RemnantDecayer,bool> interfaceRespectDISKinematics
+  static Switch<RemnantDecayer,int> interfaceRespectDISKinematics
     ("RespectDISKinematics",
      "If true, do not boost a scattered lepton (and possible radiated "
      "photons) in a DIS event, to ensure that \f$x\f$ and \f$Q^2\f$ is "
      "unmodified.",
-     &RemnantDecayer::respectDIS, true, true, false);
+     &RemnantDecayer::respectDIS, 2, true, false);
   static SwitchOption interfaceRespectDISKinematicsYes
     (interfaceRespectDISKinematics,
      "Yes",
-     "Do not boost scattered lepton.",
-     true);
+     "Do not boost scattered lepton. If that doesn't work, include "
+     "the scattered lepton and emit a warning message.",
+     1);
   static SwitchOption interfaceRespectDISKinematicsNo
     (interfaceRespectDISKinematics,
      "No",
      "Boost scattered lepton together with the rest of the hard subsystem.",
-     false);
+     0);
+  static SwitchOption interfaceRespectDISKinematicsTry
+    (interfaceRespectDISKinematics,
+     "Try",
+     "Do not boost scattered lepton. If that doesn't work, silently "
+     "include the scattered lepton.",
+     2);
 
   static Reference<RemnantDecayer,PtGenerator> interfacePTGenerator
     ("PTGenerator",

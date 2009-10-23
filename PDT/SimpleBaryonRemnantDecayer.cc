@@ -86,9 +86,9 @@ decay(const DecayMode & dm, const Particle & p, Step & step) const {
 
       psub = Utilities::sumMomentum(subpart);
 
-      s = (remnant->momentum() + psub).m2();
-      shat = psub.m2();
-      if ( subpart.size() == 1 ) shat = subpart[0]->momentum().mass2();
+      s = max((remnant->momentum() + psub).m2(), ZERO);
+      shat = max(psub.m2(), ZERO);
+      if ( subpart.size() == 1 ) shat = max(subpart[0]->momentum().mass2(), ZERO);
 
       if ( sqrt(s) > sqrt(shat) + minmass ) break;
 
@@ -107,13 +107,16 @@ decay(const DecayMode & dm, const Particle & p, Step & step) const {
       // If we couldn't find any way of shuffling momentum and this may
       // have been a DIS event, try to include the scattered lepton as
       // well.
-      HoldFlag<> nodis(respectDIS, false);
-      children = decay(dm, p, step);
-      Throw<NoDISRespect>()
-	<< "The decay of the remnant '" << p.PDGName()
-	<< "' changed the kinematics of a scattered lepton in a DIS event.\n"
-	<< step
-	<< Exception::warning;
+      {
+	HoldFlag<int> nodis(respectDIS, 0);
+	children = decay(dm, p, step);
+      }
+      if ( respectDISKinematics() == 1 )
+	Throw<NoDISRespect>()
+	  << "The decay of the remnant '" << p.PDGName()
+	  << "' changed the kinematics of a scattered lepton in a DIS event.\n"
+	  << *step.collision()->event()
+	  << Exception::warning;
       return children;
     } else {
       Throw<DecayFailed>()
