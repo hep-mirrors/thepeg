@@ -74,9 +74,9 @@ create ThePEG::ParticleData /Defaults/Particles/tau'+
 setup /Defaults/Particles/tau'+ -17 tau'+ 400.0 0.0 0.0 0.0 3 0 2 0
 makeanti /Defaults/Particles/tau'- /Defaults/Particles/tau'+ 
 create ThePEG::ParticleData /Defaults/Particles/nu'_tau 
-setup /Defaults/Particles/nu'_tau 18 nu'_tau 0.0 0.0 0.0 0.0 0 0 2 1
+setup /Defaults/Particles/nu'_tau 18 nu'_tau 400.0 0.0 0.0 0.0 0 0 2 1
 create ThePEG::ParticleData /Defaults/Particles/nu'_taubar 
-setup /Defaults/Particles/nu'_taubar -18 nu'_taubar 0.0 0.0 0.0 0.0 0 0 2 1
+setup /Defaults/Particles/nu'_taubar -18 nu'_taubar 400.0 0.0 0.0 0.0 0 0 2 1
 makeanti /Defaults/Particles/nu'_tau /Defaults/Particles/nu'_taubar 
 create ThePEG::ConstituentParticleData /Defaults/Particles/g 
 setup /Defaults/Particles/g 21 g 0.0 0.0 0.0 0.0 0 8 0 1 0.0 

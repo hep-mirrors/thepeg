@@ -40,7 +40,7 @@ libThePEG_la_LIBADD = \
 
 all-local: done-all-links
 
-done-all-links:
+done-all-links: libThePEG.la
 @EMPTY@ifdef SHOWCOMMAND
 	for dir in $(LINKDIRS); do \
 	  for sofile in ../$$dir/.libs/*.so* ../$$dir/.libs/*.la; \
