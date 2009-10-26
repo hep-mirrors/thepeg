@@ -51,7 +51,8 @@ generate(PartonBinInstance & pb, const double *,
   p.rotateY(parent.theta());
   p.rotateZ(parent.phi());
   pb.parton()->setMomentum(p);
-  PPtr rem = new_ptr(RemnantParticle(*pb.particle(), remdec, pb.parton()));
+  RemPPtr rem = new_ptr(RemnantParticle(*pb.particle(), remdec, pb.parton()));
+  if ( rem->extracted().empty() ) pb.remnantWeight(0.0);
   pb.remnants(PVector(1, rem));
   return pb.parton()->momentum();
 }

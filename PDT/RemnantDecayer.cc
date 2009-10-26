@@ -42,6 +42,11 @@ canHandle(tcPDPtr, tcPDPtr) const {
   return false;
 }
 
+bool RemnantDecayer::
+checkExtract(tcPPtr, tcPPtr, const LorentzMomentum & pnew) const {
+  return pnew.e() > ZERO;
+}
+
 bool RemnantDecayer::multiCapable() const {
   return false;
 }

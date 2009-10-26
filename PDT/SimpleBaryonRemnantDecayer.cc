@@ -52,6 +52,11 @@ canHandle(tcPDPtr particle, tcPDPtr parton) const {
     StandardQCDPartonMatcher::Check(*parton);
 }
 
+bool SimpleBaryonRemnantDecayer::
+checkExtract(tcPPtr parent, tcPPtr parton, const LorentzMomentum & pnew) const {
+  return pnew.e() > parent->nominalMass() + parton->data().constituentMass();
+}
+
 ParticleVector SimpleBaryonRemnantDecayer::
 decay(const DecayMode & dm, const Particle & p, Step & step) const {
   ParticleVector children;

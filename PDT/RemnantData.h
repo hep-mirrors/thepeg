@@ -60,6 +60,13 @@ public:
 public:
 
   /**
+   * The Decayer responsible for for the decay of this remnant.
+   */
+  const RemnantDecayer & decayer() const {
+    return *theDecayer;
+  };
+
+  /**
    * Modify the properties to reflect that the given \a parton was
    * extracted.
    */
@@ -142,7 +149,7 @@ private:
   /**
    * The Decayer responsible for for the decay of this remnant.
    */
-  RemDecPtr decayer;
+  RemDecPtr theDecayer;
 
   /**
    * The only DecayMode available for this remnant.

@@ -28,15 +28,15 @@ RemnantParticle(const Particle & particle, RemDecPtr decayer, tPPtr parton)
   remData = const_ptr_cast<tRemPDPtr>(dynamic_ptr_cast<tcRemPDPtr>(dataPtr()));
   set5Momentum(particle.momentum());
   colourInfo(new_ptr(MultiColour()));
-  extract(parton);
   parent = &particle;
+  if ( parton ) extract(parton);
 }
 
 bool RemnantParticle::extract(tPPtr parton, bool fixcolour) {
   LorentzMomentum pnew = momentum() - parton->momentum();
-  if ( pnew.e() < ZERO ) return false;
+  if ( !remData->decayer().checkExtract(parent, parton, pnew) ) return false;
   if ( !remData->extract(parton->dataPtr()) ) return false;
-  extracted.push_back(parton);
+  theExtracted.push_back(parton);
   setMomentum(pnew);
   rescaleMass();
   if ( fixcolour ) fixColourLines(parton);
@@ -45,11 +45,11 @@ bool RemnantParticle::extract(tPPtr parton, bool fixcolour) {
 
 bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp, bool fixcolour) {
   LorentzMomentum pnew = momentum() + oldp->momentum() - newp->momentum();
-  if ( pnew.e() < ZERO ) return false;
-  PVector::iterator it = find(extracted, oldp);
-  if ( it == extracted.end() ) return false;
+  if ( !remData->decayer().checkExtract(parent, newp, pnew) ) return false;
+  PVector::iterator it = find(theExtracted, oldp);
+  if ( it == theExtracted.end() ) return false;
   if ( !remData->reextract(oldp->dataPtr(), newp->dataPtr()) ) return false;
-  extracted[it - extracted.begin()] = newp;
+  theExtracted[it - theExtracted.begin()] = newp;
   setMomentum(pnew);
   rescaleMass();
   if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
@@ -60,10 +60,10 @@ bool RemnantParticle::reextract(tPPtr oldp, tPPtr newp, bool fixcolour) {
 
 bool RemnantParticle::remove(tPPtr oldp) {
   LorentzMomentum pnew = momentum() + oldp->momentum();
-  PVector::iterator it = find(extracted, oldp);
-  if ( it == extracted.end() ) return false;
+  PVector::iterator it = find(theExtracted, oldp);
+  if ( it == theExtracted.end() ) return false;
   if ( !remData->remove(oldp->dataPtr()) ) return false;
-  extracted.erase(it);
+  theExtracted.erase(it);
   setMomentum(pnew);
   rescaleMass();
   if ( oldp->colourLine() ) oldp->colourLine()->removeAntiColoured(this);
@@ -86,11 +86,11 @@ void RemnantParticle::fixColourLines(tPPtr parton) {
 }
 
 void RemnantParticle::persistentOutput(PersistentOStream & os) const {
-  os << remData << parent << extracted;
+  os << remData << parent << theExtracted;
 }
 
 void RemnantParticle::persistentInput(PersistentIStream & is, int) {
-  is >> remData >> parent >> extracted;
+  is >> remData >> parent >> theExtracted;
 }
 
 ClassDescription<RemnantParticle> RemnantParticle::initRemnantParticle;

@@ -118,6 +118,15 @@ public:
   virtual bool canHandle(tcPDPtr parent, tcPDPtr extracted) const;
 
   /**
+   * Return true if this decayer can handle the extraction of the \a
+   * extracted parton instance from the given \a particle instance. \a
+   * pnew is the momentum of the resulting remnant. The default
+   * version simply checks if the energy is positive.
+   */
+  virtual bool checkExtract(tcPPtr parent, tcPPtr extracted,
+			    const LorentzMomentum & pnew) const;
+
+  /**
    * Return true if this decayed can extract more than one parton from
    * a particle.
    */
@@ -167,7 +176,7 @@ protected:
    * Access the vector of extracted particles of a \a remnant.
    */
   const PVector & extracted(tcRemPPtr remnant) const {
-    return remnant->extracted;
+    return remnant->extracted();
   }
 
   /**

@@ -24,7 +24,7 @@ RemnantData::
 RemnantData(tcPDPtr particle, RemDecPtr dec)
   //  : ParticleData(particle->id(), "Rem:" + particle->PDGName()),
   : ParticleData(82, "Rem:" + particle->PDGName()),
-    parentPD(particle), decayer(dec) {
+    parentPD(particle), theDecayer(dec) {
   synchronized(false);
   width(ZERO);
   widthCut(ZERO);
@@ -49,13 +49,13 @@ bool RemnantData::extract(tcPDPtr parton) {
     decayMode = new_ptr(DecayMode());
     decayMode->parent(this);
     decayMode->brat(1.0);
-    decayMode->decayer(decayer);
+    decayMode->decayer(theDecayer);
     decayMode->switchOn();
     addDecayMode(decayMode);
   }
   if ( !parton ) return false;
   //  if ( !extracted.empty() && !decayer->multiCapable() ) return false;
-  if ( !decayer->canHandle(parentPD, parton) ) return false;
+  if ( !theDecayer->canHandle(parentPD, parton) ) return false;
   extracted.insert(parton);
   iCharge(PDT::Charge(iCharge() - parton->iCharge()));
   return fixColour();
@@ -65,7 +65,7 @@ bool RemnantData::
 reextract(tcPDPtr oldp, tcPDPtr newp) {
   multiset<tcPDPtr>::iterator it = extracted.find(oldp);
   if ( it == extracted.end() ) return false;
-  if ( !decayer->canHandle(parentPD, newp) ) return false;
+  if ( !theDecayer->canHandle(parentPD, newp) ) return false;
   extracted.erase(it);
   extracted.insert(newp);
   iCharge(PDT::Charge(iCharge() + oldp->iCharge() - newp->iCharge()));
@@ -98,11 +98,11 @@ bool RemnantData::fixColour() {
 }
 
 void RemnantData::persistentOutput(PersistentOStream & os) const {
-  os << parentPD << decayer << decayMode << extracted;
+  os << parentPD << theDecayer << decayMode << extracted;
 }
 
 void RemnantData::persistentInput(PersistentIStream & is, int) {
-  is >> parentPD >> decayer >> decayMode >> extracted;
+  is >> parentPD >> theDecayer >> decayMode >> extracted;
 }
 
 ClassDescription<RemnantData> RemnantData::initRemnantData;

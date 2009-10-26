@@ -1,3 +1,14 @@
+2009-10-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/RemnantData.*: Allow access to the decayer object.
+
+	* PDF/SoftRemnantHandler.cc: Set remnantWeight() to zero if a
+	parton could not be extracted.
+
+	* PDT/SimpleBaryonRemnantDecayer.*, PDT/RemnantDecayer.*,
+	EventRecord/RemnantParticle.*: The RemnantParticle now asks if the
+	RemnantDecayer feels it is OK to extract a given parton instance.
+
 2009-10-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/RemnantDecayer.*: Added option to respect DIS kinematics but

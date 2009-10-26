@@ -36,10 +36,10 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * The standard constructor takes as argument the \a particle
-   * for which this is the remnant and a \a decayer capable of
-   * performing the decay. Optionally a \a parton that has been
-   * extracted.
+   * The standard constructor takes as argument the \a particle for
+   * which this is the remnant and a \a decayer capable of performing
+   * the decay. Optionally a \a parton that has been extracted. Note
+   * that if the parton is given, the extraction may silently fail.
    */
   RemnantParticle(const Particle & particle, RemDecPtr decayer,
 		  tPPtr parton = tPPtr());
@@ -66,6 +66,13 @@ public:
    * was previously extracted is removed.
    */
   bool remove(tPPtr parton);
+
+  /**
+   * Acces the extracted partons.
+   */
+  const PVector & extracted() const {
+    return theExtracted;
+  }
 
 public:
 
@@ -115,7 +122,7 @@ private:
   /**
    * The set of extracted partons.
    */
-  PVector extracted;
+  PVector theExtracted;
 
 protected:
 
