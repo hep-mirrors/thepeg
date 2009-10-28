@@ -102,8 +102,8 @@ ColourSinglet::Junction ColourSinglet::addJunction(Index s0, bool forward) {
   junction(s0, forward).second = s2;
   junction(s1, forward).first = s0;
   junction(s1, forward).second = s2;
-  junction(s1, forward).first = s0;
-  junction(s1, forward).second = s1;
+  junction(s2, forward).first = s0;
+  junction(s2, forward).second = s1;
 
   // Return the indices of the new pieces.
   return junction(s0, forward);

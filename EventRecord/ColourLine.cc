@@ -36,6 +36,20 @@ tColinePtr ColourLine::create(tPPtr col, bool anti) {
   return l;
 }
 
+tColinePtr ColourLine::create(tColinePtr son1, tColinePtr son2,
+			      tColinePtr sin1, tColinePtr sin2) {
+  if ( !son1 || !son2 || !sin1 || !sin2 ) return tColinePtr();
+  ColinePtr l = new_ptr(ColourLine());
+  l->theSourceNeighbours = make_pair(son1, son2);
+  son1->theSourceNeighbours = make_pair(son2, l);
+  son2->theSourceNeighbours = make_pair(l, son1);
+  l->theSinkNeighbours = make_pair(sin1, sin2);
+  sin1->theSinkNeighbours = make_pair(sin2, l);
+  sin2->theSinkNeighbours = make_pair(l, sin1);
+  son1->orphanedConnectors.push_back(l);
+  return l;
+}
+
 ColourLine::~ColourLine() {}
 
 tPPtr ColourLine::startParticle() const {
@@ -114,12 +128,12 @@ void ColourLine::write(ostream & os, tcEventPtr event, bool anti) const {
 
 void ColourLine::persistentOutput(PersistentOStream & os) const {
   os << theColoured << theAntiColoured << theSourceNeighbours
-     << theSinkNeighbours;
+     << theSinkNeighbours << orphanedConnectors;
 }
 
 void ColourLine::persistentInput(PersistentIStream & is, int) {
   is >> theColoured >> theAntiColoured >> theSourceNeighbours
-     >> theSinkNeighbours;
+     >> theSinkNeighbours >> orphanedConnectors;
 }
 
 ClassDescription<ColourLine> ColourLine::initColourLine;

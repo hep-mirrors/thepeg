@@ -61,6 +61,14 @@ public:
    */
   static tColinePtr createAnti(tPPtr p) { return create(p, true); }
 
+  /**
+   * Create a coloue line which is a connector between two junctions,
+   * a source junction with neigboring colour lines \a son1 and \a
+   * son2 and a sink junction with neigboring colour lines \a sin1 and
+   * \a sin2.
+   */
+  static tColinePtr create(tColinePtr son1, tColinePtr son2,
+			   tColinePtr sin1, tColinePtr sin2);
   //@}
 
   /**
@@ -236,6 +244,13 @@ private:
    * ends in the same.
    */
   tColinePair theSinkNeighbours;
+
+  /**
+   * Colour lines which are connectors between two junctions do not
+   * have a particle which owns it, instead it is owned by one of the
+   * source neighbours.
+   */
+  vector<ColinePtr> orphanedConnectors;
 
 private:
 
