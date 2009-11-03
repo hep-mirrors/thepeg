@@ -41,18 +41,7 @@ Complex FFSVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
 			    const SpinorBarWaveFunction & sbar,
 			    const ScalarWaveFunction & sca) {
   // calculate the couplings
-  //integer to determine incoming
-  int iint(0);
-  if(sp.direction() == Helicity::incoming || 
-     sp.direction() == Helicity::intermediate)        iint = 1;
-  else if(sbar.direction() == Helicity::incoming ||
-	  sbar.direction() == Helicity::intermediate) iint = 2;
-  else if(sca.direction() == Helicity::incoming ||
-	  sca.direction() == Helicity::intermediate)  iint = 3;
-  else 
-    throw HelicityLogicalError() << "There is no incoming particle in "
-				 << fullName() << Exception::runerror;
-  setCoupling(q2,sp.getParticle(),sbar.getParticle(),sca.getParticle(),iint);
+  setCoupling(q2,sp.getParticle(),sbar.getParticle(),sca.getParticle());
   Complex norm=getNorm();
   Complex ii(0.,1.);
   Complex vertex(0.);
@@ -89,11 +78,7 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.getMomentum()+sp.getMomentum();
   // first calculate the couplings
-  int iint(0);
-  if     (  sp.direction()  == Helicity::incoming) iint = 1;
-  else if( sbar.direction() == Helicity::incoming) iint = 2;
-  else                                             iint = 3;
-  setCoupling(q2,sp.getParticle(),sbar.getParticle(),out,iint);
+  setCoupling(q2,sp.getParticle(),sbar.getParticle(),out);
   Energy2 p2   = pout.m2();
   Complex fact = getNorm()*propagator(iopt,p2,out,mass,width);
   Complex output;
@@ -130,11 +115,7 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sp.getMomentum()+sca.getMomentum();
   // first calculate the couplings
-  int iint(0);
-  if     (  sp.direction() == Helicity::incoming ) iint = 1;
-  else if( sca.direction() == Helicity::incoming ) iint = 3;
-  else                                             iint = 2;
-  setCoupling(q2,sp.getParticle(),out,sca.getParticle(), iint);
+  setCoupling(q2,sp.getParticle(),out,sca.getParticle());
   Energy2 p2   = pout.m2();
   Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
@@ -191,11 +172,7 @@ SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.getMomentum()+sca.getMomentum();
   // first calculate the couplings
-  int iint(0);
-  if     (  sca.direction() == Helicity::incoming ) iint = 3;
-  else if( sbar.direction() == Helicity::incoming ) iint = 2;
-  else                                              iint = 1;
-  setCoupling(q2,out,sbar.getParticle(),sca.getParticle(), iint);
+  setCoupling(q2,out,sbar.getParticle(),sca.getParticle());
   Energy2 p2   = pout.m2();
   Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);

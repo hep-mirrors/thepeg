@@ -147,7 +147,10 @@ void SpinorBarWaveFunction::conjugate() {
 SpinorWaveFunction SpinorBarWaveFunction::bar() {
   Lorentz5Momentum p = getMomentum();
   if(direction()==outgoing) p *= -1.;
-  return SpinorWaveFunction(p,getParticle(),_wf.bar(),direction());
+  tcPDPtr ptemp = getParticle();
+  if(direction()==incoming&&getParticle()->CC())
+    ptemp = getParticle()->CC();
+  return SpinorWaveFunction(p,ptemp,_wf.bar(),direction());
 }	  
 
 void SpinorBarWaveFunction::

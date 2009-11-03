@@ -43,8 +43,7 @@ Complex VVVVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
 			    const VectorWaveFunction & vec2,
 			    const VectorWaveFunction & vec3) {
   // calculate the coupling
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),vec3.getParticle(),
-	      vec1.direction(),vec2.direction(),vec3.direction());
+  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),vec3.getParticle());
   complex<Energy> alpha1(ZERO);
   // decide if we need to use special treatment to avoid gauge cancelations
   // first vector
@@ -92,8 +91,7 @@ VectorWaveFunction VVVVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // output momenta
   Lorentz5Momentum pout =vec1.getMomentum()+vec2.getMomentum();
   // calculate the coupling
-  setCoupling(q2,out,vec1.getParticle(),vec2.getParticle(),
-	      intermediate,vec1.direction(),vec2.direction());
+  setCoupling(q2,out,vec1.getParticle(),vec2.getParticle());
   // prefactor
   Energy2 p2    = pout.m2();
   Complex fact  = getNorm()*propagator(iopt,p2,out,mass,width);

@@ -17,7 +17,10 @@
 #include <ThePEG/Helicity/HelicityDefinitions.h>
 
 namespace ThePEG {
+
 namespace Helicity {
+
+
 
 /** \ingroup Helicity
  *  Definition of the enumerated values used for the direction of the 
@@ -75,7 +78,7 @@ public:
     /// \todo DG streamline this when setMomentum usage pattern is clear
     setMomentum(p);
     
-    if ( dir == -1 ) { /// \todo BROKEN, see helicityfix branch
+    if ( dir != outgoing ) {
       tcPDPtr anti = pd->CC();
       if ( anti ) _particle = anti;
     }
@@ -158,11 +161,8 @@ public:
    * Set 5 momentum.
    */
   void setMomentum(const Lorentz5Momentum & pin) {
-    if(_dir==outgoing)
-      _momentum=Lorentz5Momentum(-pin.x(),-pin.y(),-pin.z(),
-				 -pin.t(),pin.mass());
-    else if(_dir==incoming||_dir==intermediate)
-      _momentum=pin;
+    _momentum = pin;
+    if(_dir==outgoing) _momentum *= -1.0;
   }
 
   /**
@@ -172,7 +172,7 @@ public:
   /** 
    * Get the particle id.
    */
-  int id() const {return _particle->id();}
+  long id() const {return _particle->id();}
 
   /** 
    * Get 2s+1 for the particle.

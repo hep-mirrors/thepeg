@@ -136,8 +136,9 @@ public:
    * @param ioff An integer referring to which particle in the list is 
    * offshell if applicable.
    */
-  virtual void setCoupling(Energy2 q2,tcPDPtr part1,tcPDPtr part2,tcPDPtr part3,int ioff)=0;
-   
+  virtual void setCoupling(Energy2 q2,tcPDPtr part1,
+			   tcPDPtr part2,tcPDPtr part3)=0;
+  
   /**
    *  Get the couplings
    */

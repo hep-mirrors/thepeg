@@ -143,7 +143,10 @@ void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dirac)
 SpinorBarWaveFunction SpinorWaveFunction::bar() {
   Lorentz5Momentum p = getMomentum();
   if(direction()==outgoing) p *= -1.;
-  return SpinorBarWaveFunction(p,getParticle(),_wf.bar(),direction());
+  tcPDPtr ptemp = getParticle();
+  if(direction()==incoming&&getParticle()->CC())
+    ptemp = getParticle()->CC();
+  return SpinorBarWaveFunction(p,ptemp,_wf.bar(),direction());
 }	  
 
 void SpinorWaveFunction::
