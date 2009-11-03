@@ -24,6 +24,12 @@ using namespace ThePEG;
  * and the coefficients are stored here. They must be calculated
  * in the inheriting class along with implementation of the
  * setCoupling member.
+ *
+ *  The vertex takes the form
+ *  \f[  a_{00}g^{\mu\nu}p_1\cdot p_2 + a_{11}p_1^\mu p_1^\nu
+ *     + a_{12}p_1^\mu p_2^\nu + a_{21}p_2^\mu p_1^\nu
+ *     + a_{22}p_2^\mu p_2^\nu +a_e\epsilon^{p_1 \mu \nu p_2}\f]
+ *
  */
 class GeneralVVSVertex: public AbstractVVSVertex {
 
@@ -35,8 +41,7 @@ public:
   GeneralVVSVertex() : _a00(1), 
 		       _a11(0), _a12(0), 
 		       _a21(0), _a22(0),
-		       _aEp(0), 
-		       _representation(1) 
+		       _aEp(0)
   {}
 
   /**
@@ -173,12 +178,6 @@ public:
    * Set tensor coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   void aEp(const Complex & val) {_aEp = val;}
-
-  /**
-   */
-  void setCoefScheme(unsigned int representation) {
-    _representation = representation;
-  }
   //@}
 
 private:
@@ -229,14 +228,6 @@ private:
    * Coefficient of \f$\epsilon^{\mu\nu\alpha\beta}p_1\alpha p_2\beta\f$
    */
   Complex _aEp;
-  //@}
-
-  /**
-   * Switch between two representations of coefficients (_a00,_a11,_a12,_a21,_a22,_aEp):
-    suitable for the simplified H-g-g and H-gamma-gamma vertices and 
-    suitable for the Passarino-Veltman tensor reduction scheme
-   */
-  unsigned int _representation;
   //@}
 };
 

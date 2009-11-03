@@ -45,15 +45,6 @@ Complex GeneralVVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 
   Complex output = UnitRemoval::InvE2 * (_a00*e1e2*p1p2 + _aEp*p1Ep2 + 
   _a11*e1p1*e2p1 + _a12*e1p1*e2p2 + _a21*e1p2*e2p1+ _a22*e1p2*e2p2);
-  if (2 == _representation) {
-  // the standard, but inefficient(!), Passarino-Veltman tensor reduction scheme
-    output = _a00*e1e2;
-    output += UnitRemoval::InvE2 * (_a11*e1p1*e2p1
-                                  +_a12*e1p1*e2p2
-                                  +_a21*e1p2*e2p1
-                                  +_a22*e1p2*e2p2);
-    output += UnitRemoval::InvE2 *_aEp*p1Ep2;
-  }
   return -norm()*Complex(0.,1.) * sca.wave() * output;
 }
 
@@ -85,15 +76,6 @@ ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   complex<Energy2> p1Ep2 = eps.dot(pvec1);
   Complex output = UnitRemoval::InvE2 * (_a00*e1e2*p1p2 + _aEp*p1Ep2 + 
   _a11*e1p1*e2p1 + _a12*e1p1*e2p2 + _a21*e1p2*e2p1+ _a22*e1p2*e2p2);
-  if (2 == _representation) {
-  // the standard, but inefficient(!), Passarino-Veltman tensor reduction scheme
-    output = _a00*e1e2;
-    output += UnitRemoval::InvE2 * (_a11*e1p1*e2p1
-                                  +_a12*e1p1*e2p2
-                                  +_a21*e1p2*e2p1
-                                  +_a22*e1p2*e2p2);
-    output += UnitRemoval::InvE2 *_aEp*p1Ep2;
-  }
   output *=  -norm()*prop;
   return ScalarWaveFunction(pout,out,output);
 }
