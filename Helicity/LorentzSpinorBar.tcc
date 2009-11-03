@@ -24,24 +24,12 @@ template <typename Value>
 LorentzSpinor<Value> LorentzSpinorBar<Value>::bar() const
 {
   complex<Value> output[4];
-  switch(_dirac)
-    {
-      // Haber lower energy
-    case HaberDRep:
-      output[0] = conj(_spin[0]);
-      output[1] = conj(_spin[1]);
-      output[2] =-conj(_spin[2]);
-      output[3] =-conj(_spin[3]);
-      break;
-    case HELASDRep:
-      // HELAS
-      output[0] = conj(_spin[2]);
-      output[1] = conj(_spin[3]);
-      output[2] = conj(_spin[0]);
-      output[3] = conj(_spin[1]);
-      break;
-    }
-  return LorentzSpinor<Value>(output[0],output[1],output[2],output[3],_type,_dirac);
+  // HELAS
+  output[0] = conj(_spin[2]);
+  output[1] = conj(_spin[3]);
+  output[2] = conj(_spin[0]);
+  output[3] = conj(_spin[1]);
+  return LorentzSpinor<Value>(output[0],output[1],output[2],output[3],_type);
 }
 
 template <typename Value>
@@ -56,23 +44,10 @@ LorentzSpinorBar<Value> & LorentzSpinorBar<Value>::boost(double bx,double by,dou
   Complex ii(0.,1.);
   Complex nxminy=bx-ii*by;
   Complex nxpiny=bx+ii*by;
-  switch(_dirac)
-    {
-      // Haber lower energy
-    case HaberDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
-      out[1] = coshchi*_spin[1]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[0]+nxpiny*_spin[1]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[1]+nxminy*_spin[0]);
-      break;
-      // HELAS
-    case HELASDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxpiny*_spin[1]);
-      out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxminy*_spin[0]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
-      break;
-    }
+  out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxpiny*_spin[1]);
+  out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxminy*_spin[0]);
+  out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
+  out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
   for(unsigned int ix=0;ix<4;++ix){_spin[ix]=out[ix];}
   return *this;
 }
@@ -88,23 +63,10 @@ LorentzSpinorBar<Value> & LorentzSpinorBar<Value>::boost(const Boost & boostv)
   Complex ii(0.,1.);
   Complex nxminy=bx-ii*by;
   Complex nxpiny=bx+ii*by;
-  switch(_dirac)
-    {
-      // Haber lower energy
-    case HaberDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
-      out[1] = coshchi*_spin[1]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[0]+nxpiny*_spin[1]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[1]+nxminy*_spin[0]);
-      break;
-      // HELAS
-    case HELASDRep:
-      out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxpiny*_spin[1]);
-      out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxminy*_spin[0]);
-      out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
-      out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
-      break;
-    }
+  out[0] = coshchi*_spin[0]+sinhchi*(-bz*_spin[0]-nxpiny*_spin[1]);
+  out[1] = coshchi*_spin[1]+sinhchi*(+bz*_spin[1]-nxminy*_spin[0]);
+  out[2] = coshchi*_spin[2]+sinhchi*(+bz*_spin[2]+nxpiny*_spin[3]);
+  out[3] = coshchi*_spin[3]+sinhchi*(-bz*_spin[3]+nxminy*_spin[2]);
   for(unsigned int ix=0;ix<4;++ix){_spin[ix]=out[ix];}
   return *this;
 }
@@ -115,27 +77,13 @@ LorentzSpinorBar<Value> & LorentzSpinorBar<Value>::transform(const SpinHalfLoren
 {
   unsigned int ix,iy;
   SpinHalfLorentzRotation t(r.inverse());
-  if(Rep()==defaultDRep)
+  complex<Value> out[4];
+  for(ix=0;ix<4;++ix)
     {
-      complex<Value> out[4];
-      for(ix=0;ix<4;++ix)
-	{
-	  out[ix]=complex<Value>();
-	  for(iy=0;iy<4;++iy){out[ix]+=_spin[iy]*t(iy,ix);}
-	}
-      for(ix=0;ix<4;++ix){_spin[ix]=out[ix];}
+      out[ix]=complex<Value>();
+      for(iy=0;iy<4;++iy){out[ix]+=_spin[iy]*t(iy,ix);}
     }
-  else
-    {
-      LorentzSpinorBar temp=(*this).transformRep(defaultDRep);
-      LorentzSpinorBar output(defaultDRep);
-      for(ix=0;ix<4;++ix)
-	{
-	  output[ix]=complex<Value>();
-	  for(iy=0;iy<4;++iy){output[ix]+=temp[iy]*t(iy,ix);}
-	}
-      *this=output.transformRep(Rep());
-    }
+  for(ix=0;ix<4;++ix){_spin[ix]=out[ix];}
   return *this;
 }
 
@@ -157,5 +105,5 @@ LorentzSpinorBar<Value> LorentzSpinorBar<Value>::conjugate() const {
     break;
   }
   return LorentzSpinorBar<Value>(-conj(_spin[3]),+conj(_spin[2]),
-                         +conj(_spin[1]),-conj(_spin[0]),new_type,_dirac);
+                         +conj(_spin[1]),-conj(_spin[0]),new_type);
 }

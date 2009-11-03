@@ -18,12 +18,6 @@
 
 using namespace ThePEG;
 using namespace Helicity;
- 
-VVVTVertex::VVVTVertex() {
-  setNpoint(4);
-  setSpin(3,3,3,5);
-  setName(VVVT);
-}
 
 AbstractNoPIOClassDescription<VVVTVertex> VVVTVertex::initVVVTVertex;
 // Definition of the static class description member.
@@ -42,18 +36,17 @@ Complex VVVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
     				 const VectorWaveFunction & vec3,
     				 const TensorWaveFunction & ten) {
   // set the couplings
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),
-	      vec3.getParticle(),ten.getParticle());
-  Complex norm=getNorm();
+  setCoupling(q2,vec1.particle(),vec2.particle(),
+	      vec3.particle(),ten.particle());
   Complex ii(0.,1.);
   // dot products of the wavefunctions
   Complex dotv1v2 = vec1.wave().dot(vec2.wave());
   Complex dotv1v3 = vec1.wave().dot(vec3.wave());
   Complex dotv2v3 = vec2.wave().dot(vec3.wave());
   // dot product of wavefunctions and momenta
-  complex<Energy> dotv1k23 = vec1.wave().dot(vec2.getMomentum()-vec3.getMomentum());
-  complex<Energy> dotv2k31 = vec2.wave().dot(vec3.getMomentum()-vec1.getMomentum());
-  complex<Energy> dotv3k12 = vec3.wave().dot(vec1.getMomentum()-vec2.getMomentum());
+  complex<Energy> dotv1k23 = vec1.wave().dot(vec2.momentum()-vec3.momentum());
+  complex<Energy> dotv2k31 = vec2.wave().dot(vec3.momentum()-vec1.momentum());
+  complex<Energy> dotv3k12 = vec3.wave().dot(vec1.momentum()-vec2.momentum());
   // components of the tensor
   Complex tentx = ten.tx()+ten.xt();
   Complex tenty = ten.ty()+ten.yt();
@@ -125,7 +118,7 @@ Complex VVVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // compute the vertex
-  Complex  vertex= -0.5*ii*norm * UnitRemoval::InvE *
+  Complex  vertex= -0.5 * ii * norm() * UnitRemoval::InvE *
     (
      +dotv3k12*(tenv1v2-trace*dotv1v2)
      +dotv2k31*(tenv1v3-trace*dotv1v3)

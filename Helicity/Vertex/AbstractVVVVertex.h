@@ -21,6 +21,11 @@ class AbstractVVVVertex: public VertexBase {
 public:
   
   /**
+   * Default constructor
+   */
+  AbstractVVVVertex() : VertexBase(VertexType::VVV) {}
+
+  /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.
    */

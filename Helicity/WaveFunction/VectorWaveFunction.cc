@@ -93,7 +93,7 @@ void VectorWaveFunction::calculateWaveFunction(unsigned int ihel,VectorPhase vph
   else {
     ThePEG::Helicity::HelicityConsistencyError() 
       << "Invalid Helicity = " << ihel << " requested for Vector " 
-      << getParticle()->PDGName() << Exception::abortnow;
+      << particle()->PDGName() << Exception::abortnow;
     _wf.setX(0.);_wf.setY(0.);_wf.setZ(0.);_wf.setT(0.);
   }
 }

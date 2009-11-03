@@ -19,12 +19,6 @@
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
-FFSVertex::FFSVertex() {
-  setNpoint(3);
-  setSpin(2,2,1);
-  setName(FFS);
-}
-
 AbstractNoPIOClassDescription<FFSVertex> FFSVertex::initFFSVertex;
 // Definition of the static class description member.
     
@@ -41,33 +35,12 @@ Complex FFSVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
 			    const SpinorBarWaveFunction & sbar,
 			    const ScalarWaveFunction & sca) {
   // calculate the couplings
-  setCoupling(q2,sp.getParticle(),sbar.getParticle(),sca.getParticle());
-  Complex norm=getNorm();
-  Complex ii(0.,1.);
-  Complex vertex(0.);
-  // low energy conventions
-  if(sp.wave().Rep()==HaberDRep&&sbar.wave().Rep()==HaberDRep) {
-    vertex = _left*( (sbar.s1()-sbar.s3())*(sp.s1()-sp.s3())
-		    +(sbar.s2()-sbar.s4())*(sp.s2()-sp.s4()))
-           +_right*( (sbar.s1()+sbar.s3())*(sp.s1()+sp.s3())
-		    +(sbar.s2()+sbar.s4())*(sp.s2()+sp.s4()));
-    vertex=0.5*vertex;
-  }
-  // high energy conventions
-  else if(sp.wave().Rep()==HELASDRep&&sbar.wave().Rep()==HELASDRep) {
-    vertex=  _left*(sbar.s1()*sp.s1()+sbar.s2()*sp.s2())
-           +_right*(sbar.s3()*sp.s3()+sbar.s4()*sp.s4());
-  }
-  // mixing conventions
-  else {
-    LorentzSpinorBar<double> sbart=sbar.wave().transformRep(HELASDRep);
-    LorentzSpinor<double>    spt  =sp  .wave().transformRep(HELASDRep);
-    vertex=  _left*(sbart.s1()*spt.s1()+sbart.s2()*spt.s2())
-           +_right*(sbart.s3()*spt.s3()+sbart.s4()*spt.s4());
-  }
+  setCoupling(q2,sp.particle(),sbar.particle(),sca.particle());
+  Complex vertex(  _left*(sbar.s1()*sp.s1()+sbar.s2()*sp.s2())
+		   +_right*(sbar.s3()*sp.s3()+sbar.s4()*sp.s4())
+		   );
   // final factors
-  vertex *= ii*norm*sca.wave();
-  return vertex;
+  return Complex(0.,1.)*norm()*sca.wave()*vertex;
 }
 
 // off-shell scalar
@@ -76,31 +49,13 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const SpinorBarWaveFunction & sbar,
 				       Energy mass, Energy width) {
   // work out the momentum of the off-shell particle
-  Lorentz5Momentum pout = sbar.getMomentum()+sp.getMomentum();
+  Lorentz5Momentum pout = sbar.momentum()+sp.momentum();
   // first calculate the couplings
-  setCoupling(q2,sp.getParticle(),sbar.getParticle(),out);
+  setCoupling(q2,sp.particle(),sbar.particle(),out);
   Energy2 p2   = pout.m2();
-  Complex fact = getNorm()*propagator(iopt,p2,out,mass,width);
-  Complex output;
-  // low energy conventions
-  if(sp.wave().Rep()==HaberDRep&&sbar.wave().Rep()==HaberDRep) {
-    output = _left*( (sbar.s1()-sbar.s3())*(sp.s1()-sp.s3())
-          	    +(sbar.s2()-sbar.s4())*(sp.s2()-sp.s4()))
-           +_right*( (sbar.s1()+sbar.s3())*(sp.s1()+sp.s3())
-		    +(sbar.s2()+sbar.s4())*(sp.s2()+sp.s4()));
-    output*=0.5;
-  }
-  // high energy conventions
-  else if(sp.wave().Rep()==HELASDRep&&sbar.wave().Rep()==HELASDRep) {
-    output =  _left*(sbar.s1()*sp.s1()+sbar.s2()*sp.s2())
-	    +_right*(sbar.s3()*sp.s3()+sbar.s4()*sp.s4());
-  }
-  else {
-    LorentzSpinor<double>    spt  =sp  .wave().transformRep(HELASDRep);
-    LorentzSpinorBar<double> sbart=sbar.wave().transformRep(HELASDRep);
-    output =  _left*(sbart.s1()*spt.s1()+sbart.s2()*spt.s2())
-            +_right*(sbart.s3()*spt.s3()+sbart.s4()*spt.s4());
-  }
+  Complex fact = norm()*propagator(iopt,p2,out,mass,width);
+  Complex output =  _left*(sbar.s1()*sp.s1()+sbar.s2()*sp.s2())
+    +_right*(sbar.s3()*sp.s3()+sbar.s4()*sp.s4());
   // final factors and output
   output*=fact;
   return ScalarWaveFunction(pout,out,output);
@@ -110,71 +65,44 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const SpinorWaveFunction & sp,
 				       const ScalarWaveFunction & sca,
-				       Energy mass, Energy width,
-				       DiracRep dirac) {
+				       Energy mass, Energy width) {
   // work out the momentum of the off-shell particle
-  Lorentz5Momentum pout = sp.getMomentum()+sca.getMomentum();
+  Lorentz5Momentum pout = sp.momentum()+sca.momentum();
   // first calculate the couplings
-  setCoupling(q2,sp.getParticle(),out,sca.getParticle());
+  setCoupling(q2,sp.particle(),out,sca.particle());
   Energy2 p2   = pout.m2();
-  Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact = -norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // useful combinations of the momenta
   if(mass < ZERO) mass  = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
-  // ensure the spinor is in the correct dirac representation
-  LorentzSpinor<double> spt = sp.wave().transformRep(dirac);
-  // low energy convention
-  if(dirac==HaberDRep) {
-    fact = 0.5*fact;
-    complex<Energy> p0pm=pout.e()+mass;
-    complex<Energy> p0mm=pout.e()-mass;
-    complex<Energy> pz=pout.z();
-    Complex lpr=_left+_right;
-    Complex lmr=_left-_right;
-    s1 = UnitRemoval::InvE * 
-      fact*( lpr*(spt.s1()*p0pm-  pz*spt.s3()-p1m2*spt.s4())
-	     +lmr*(  pz*spt.s1()+p1m2*spt.s2()-p0pm*spt.s3()));
-    s2 = UnitRemoval::InvE * 
-      fact*( lpr*(spt.s2()*p0pm-p1p2*spt.s3()+  pz*spt.s4())
-	     +lmr*(p1p2*spt.s1()-  pz*spt.s2()-p0pm*spt.s4()));
-    s3 = UnitRemoval::InvE * 
-      -fact*( lpr*(spt.s3()*p0mm-  pz*spt.s1()-p1m2*spt.s2())
-	      +lmr*(  pz*spt.s3()+p1m2*spt.s4()-p0mm*spt.s1()));
-    s4 = UnitRemoval::InvE * 
-      -fact*( lpr*(spt.s4()*p0mm-p1p2*spt.s1()+  pz*spt.s2())
-	      +lmr*(p1p2*spt.s3()-  pz*spt.s4()-p0mm*spt.s2()));
-  }
-  // high energy convention
-  else if(dirac==HELASDRep) {
-    complex<Energy> p0p3=pout.e()+pout.z();
-    complex<Energy> p0m3=pout.e()-pout.z();
-    s1 = UnitRemoval::InvE * 
-      fact*( _left*mass*spt.s1()+_right*(p0m3*spt.s3()-p1m2*spt.s4()));
-    s2 = UnitRemoval::InvE * 
-      fact*( _left*mass*spt.s2()+_right*(p0p3*spt.s4()-p1p2*spt.s3()));
-    s3 = UnitRemoval::InvE * 
-      fact*(_right*mass*spt.s3()+ _left*(p0p3*spt.s1()+p1m2*spt.s2()));
-    s4 = UnitRemoval::InvE * 
-      fact*(_right*mass*spt.s4()+ _left*(p0m3*spt.s2()+p1p2*spt.s1()));
-  }
-  return SpinorWaveFunction(pout,out,s1,s2,s3,s4,dirac);
+  LorentzSpinor<double> spt = sp.wave();
+  complex<Energy> p0p3=pout.e()+pout.z();
+  complex<Energy> p0m3=pout.e()-pout.z();
+  s1 = UnitRemoval::InvE * 
+    fact*( _left*mass*spt.s1()+_right*(p0m3*spt.s3()-p1m2*spt.s4()));
+  s2 = UnitRemoval::InvE * 
+    fact*( _left*mass*spt.s2()+_right*(p0p3*spt.s4()-p1p2*spt.s3()));
+  s3 = UnitRemoval::InvE * 
+    fact*(_right*mass*spt.s3()+ _left*(p0p3*spt.s1()+p1m2*spt.s2()));
+  s4 = UnitRemoval::InvE * 
+    fact*(_right*mass*spt.s4()+ _left*(p0m3*spt.s2()+p1p2*spt.s1()));
+  return SpinorWaveFunction(pout,out,s1,s2,s3,s4);
 }
 
 // off-shell SpinorBar
 SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
 					  const SpinorBarWaveFunction & sbar,
 					  const ScalarWaveFunction & sca,
-					  Energy mass, Energy width,
-					  DiracRep dirac) {
+					  Energy mass, Energy width) {
   // work out the momentum of the off-shell particle
-  Lorentz5Momentum pout = sbar.getMomentum()+sca.getMomentum();
+  Lorentz5Momentum pout = sbar.momentum()+sca.momentum();
   // first calculate the couplings
-  setCoupling(q2,out,sbar.getParticle(),sca.getParticle());
+  setCoupling(q2,out,sbar.particle(),sca.particle());
   Energy2 p2   = pout.m2();
-  Complex fact = -getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact = -norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // momentum components
   if(mass < ZERO) mass = out->mass();
@@ -182,41 +110,16 @@ SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex numbers for the spinor
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
-  // ensure the spinorbar is in the correct dirac representation
-  LorentzSpinorBar<double> sbart=sbar.wave().transformRep(dirac);
-  // low energy convention
-  if(dirac==HaberDRep) {
-    fact = 0.5*fact;
-    complex<Energy> p0pm=pout.e()+mass;
-    complex<Energy> p0mm=pout.e()-mass;
-    complex<Energy> pz=pout.z();
-    Complex lpr=_left+_right;
-    Complex lmr=_left-_right;
-    s1 = UnitRemoval::InvE * 
-      fact*(-lpr*(p0mm*sbart.s1()+  pz*sbart.s3()+p1p2*sbart.s4())
-	    +lmr*(  pz*sbart.s1()+p1p2*sbart.s2()+p0mm*sbart.s3()));
-    s2 = UnitRemoval::InvE * 
-      fact*(-lpr*(p0mm*sbart.s2()+p1m2*sbart.s3()-  pz*sbart.s4())
-	    +lmr*(p1m2*sbart.s1()-  pz*sbart.s2()+p0mm*sbart.s4()));
-    s3 = UnitRemoval::InvE * 
-      fact*(+lpr*(p0pm*sbart.s3()+  pz*sbart.s1()+p1p2*sbart.s2())
-	    -lmr*(  pz*sbart.s3()+p1p2*sbart.s4()-p0pm*sbart.s1()));
-    s4 = UnitRemoval::InvE * 
-      fact*(+lpr*(p0pm*sbart.s4()+p1m2*sbart.s1()-  pz*sbart.s2())
-	    -lmr*(p1m2*sbart.s3()-  pz*sbart.s4()-p0pm*sbart.s2()));
-  }
-  // high energy convention
-  else if(dirac==HELASDRep) {
-    complex<Energy> p0p3=pout.e() +   pout.z();
-    complex<Energy> p0m3=pout.e() -   pout.z();
-    s1 = UnitRemoval::InvE * 
-      fact*( mass*_left*sbart.s1()-_right*(p0p3*sbart.s3()+p1p2*sbart.s4()));
-    s2 = UnitRemoval::InvE * 
-      fact*( mass*_left*sbart.s2()-_right*(p1m2*sbart.s3()+p0m3*sbart.s4()));
-    s3 = UnitRemoval::InvE * 
-      fact*(mass*_right*sbart.s3()- _left*(p0m3*sbart.s1()-p1p2*sbart.s2()));
-    s4 = UnitRemoval::InvE * 
-      fact*(mass*_right*sbart.s4()+ _left*(p1m2*sbart.s1()-p0p3*sbart.s2()));
-  }
-  return SpinorBarWaveFunction(pout,out,s1,s2,s3,s4,dirac);
+  LorentzSpinorBar<double> sbart=sbar.wave();
+  complex<Energy> p0p3=pout.e() +   pout.z();
+  complex<Energy> p0m3=pout.e() -   pout.z();
+  s1 = UnitRemoval::InvE * 
+    fact*( mass*_left*sbart.s1()-_right*(p0p3*sbart.s3()+p1p2*sbart.s4()));
+  s2 = UnitRemoval::InvE * 
+    fact*( mass*_left*sbart.s2()-_right*(p1m2*sbart.s3()+p0m3*sbart.s4()));
+  s3 = UnitRemoval::InvE * 
+    fact*(mass*_right*sbart.s3()- _left*(p0m3*sbart.s1()-p1p2*sbart.s2()));
+  s4 = UnitRemoval::InvE * 
+    fact*(mass*_right*sbart.s4()+ _left*(p1m2*sbart.s1()-p0p3*sbart.s2()));
+  return SpinorBarWaveFunction(pout,out,s1,s2,s3,s4);
 }    

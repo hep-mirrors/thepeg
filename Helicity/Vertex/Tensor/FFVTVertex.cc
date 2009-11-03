@@ -18,12 +18,6 @@
 
 using namespace ThePEG;
 using namespace Helicity;
- 
-FFVTVertex::FFVTVertex() {
-  setNpoint(4);
-  setSpin(2,2,3,5);
-  setName(FFVT);
-}
 
 AbstractNoPIOClassDescription<FFVTVertex> FFVTVertex::initFFVTVertex;
 // Definition of the static class description member.
@@ -43,30 +37,16 @@ Complex FFVTVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
 			     const VectorWaveFunction & vec,
 			     const TensorWaveFunction & ten) {
   // set the couplings
-  setCoupling(q2,sp.getParticle(),sbar.getParticle(),
-	      vec.getParticle(),ten.getParticle());
-  Complex norm=getNorm();
+  setCoupling(q2,sp.particle(),sbar.particle(),
+	      vec.particle(),ten.particle());
   Complex ii(0.,1.);
   // spinor vector
   // low energy convention
   Complex aspin[4];
   LorentzSpinorBar<double> sbart=sbar.wave();
   LorentzSpinor<double>    spt  =sp.wave();
-  if(sp.wave().Rep()==HaberDRep&&sbar.wave().Rep()==HaberDRep) {
-    aspin[3] = sbart.s1()*spt.s1()+sbart.s2()*spt.s2()
-              -sbart.s3()*spt.s3()-sbart.s4()*spt.s4();
-  }
-  // high energy convention
-  else if(sp.wave().Rep()==HELASDRep&&sbar.wave().Rep()==HELASDRep) {
-    aspin[3] = sbart.s1()*spt.s3()+sbart.s2()*spt.s4()
-              +sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
-  }
-  else {
-    spt.changeRep(HELASDRep);
-    sbart.changeRep(HELASDRep);
-    aspin[3] = sbart.s1()*spt.s3()+sbart.s2()*spt.s4()
-              +sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
-  }
+  aspin[3] = sbart.s1()*spt.s3()+sbart.s2()*spt.s4()
+            +sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
   // spatial components are the same in both conventions
   aspin[0] =     +sbart.s1()*spt.s4()+sbart.s2()*spt.s3()
                  -sbart.s3()*spt.s2()-sbart.s4()*spt.s1();
@@ -97,7 +77,7 @@ Complex FFVTVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
     +tenxz*(vec.x()*aspin[2]+vec.z()*aspin[0])
     +tenyz*(vec.y()*aspin[2]+vec.z()*aspin[1]);
   // return the vertex
-  return ii*0.25*norm*(tenav-2.*trace*dotav);
+  return ii*0.25*norm()*(tenav-2.*trace*dotav);
 }
 
 TensorWaveFunction FFVTVertex::evaluate(Energy2,int , tcPDPtr ,
@@ -126,7 +106,7 @@ SpinorWaveFunction FFVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					const SpinorWaveFunction & ,
 					const VectorWaveFunction & ,
 					const TensorWaveFunction &  ,
-					Energy, Energy, DiracRep) {
+					Energy, Energy) {
   throw Exception() << "FFVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"
@@ -137,7 +117,7 @@ SpinorBarWaveFunction FFVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					   const SpinorBarWaveFunction & ,
 					   const VectorWaveFunction & ,
 					   const TensorWaveFunction &  ,
-					   Energy, Energy, DiracRep) {
+					   Energy, Energy) {
   throw Exception() << "FFVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"

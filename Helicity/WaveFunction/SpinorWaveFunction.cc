@@ -20,7 +20,7 @@ using namespace ThePEG;
 using namespace Helicity;
 
 // calculate the Wavefunction
-void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dirac) {
+void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
   // check helicity is O.K.
   Direction dir = direction();
   if(dir==intermediate) throw ThePEG::Helicity::HelicityConsistencyError() 
@@ -85,55 +85,32 @@ void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dirac)
   // decide which definition of the spinors we are using
   SqrtEnergy eplusm,eminusm,eplusp,eminusp;
   SqrtEnergy upper=SqrtEnergy(),lower=SqrtEnergy();
-  switch(dirac) {
-    // Haber lower energy
-  case HaberDRep:
-    eplusm = sqrt(pee+pmm);
-    eminusm = pabs/eplusm;
-    if(dir==incoming) {
-      upper = eplusm;
-      lower = (ihel==1) ? eminusm : -eminusm;
+  // HELAS
+  eplusp = sqrt(pee+pabs);
+  eminusp = (pmm!=ZERO) ? pmm/eplusp : SqrtEnergy();
+  // set up the coefficients for the different cases
+  if(dir==incoming) {
+    if(ihel==1) {
+      upper = eminusp;
+      lower = eplusp;
     }
     else {
-      upper = eminusm;
-      lower = (ihel==1) ? -eplusm : eplusm;
+      upper = eplusp;
+      lower = eminusp;
     }
-    break;
-  case HELASDRep:
-    // HELAS
-    eplusp = sqrt(pee+pabs);
-    eminusp = (pmm!=ZERO) ? pmm/eplusp : SqrtEnergy();
-    // set up the coefficients for the different cases
-    if(dir==incoming) {
-      if(ihel==1) {
-	upper = eminusp;
-	lower = eplusp;
-      }
-      else {
-	upper = eplusp;
-	lower = eminusp;
-      }
+  }
+  else {
+    if(ihel==1) {
+      upper = -eplusp;
+      lower = eminusp;
     }
     else {
-      if(ihel==1) {
-	upper = -eplusp;
-	lower = eminusp;
-      }
-      else {
-	upper = eminusp;
-	lower =-eplusp;
-      }
+      upper = eminusp;
+      lower =-eplusp;
     }
-    break;
-    // invalid choice
-  default:
-    ThePEG::Helicity::HelicityConsistencyError() 
-      << "Invalid choice of Dirac representation in "
-      << "SpinorWaveFunction::calculateWaveFunction() " << Exception::abortnow; 
-    break;
   }
   // now finally we can construct the spinors
-  _wf = LorentzSpinor<double>( (dir==incoming) ? u_spinortype : v_spinortype , dirac);
+  _wf = LorentzSpinor<double>( (dir==incoming) ? u_spinortype : v_spinortype);
   _wf[0]=upper*hel_wf[0]*UnitRemoval::InvSqrtE;
   _wf[1]=upper*hel_wf[1]*UnitRemoval::InvSqrtE;
   _wf[2]=lower*hel_wf[0]*UnitRemoval::InvSqrtE;
@@ -141,11 +118,11 @@ void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dirac)
 }
 
 SpinorBarWaveFunction SpinorWaveFunction::bar() {
-  Lorentz5Momentum p = getMomentum();
+  Lorentz5Momentum p = momentum();
   if(direction()==outgoing) p *= -1.;
-  tcPDPtr ptemp = getParticle();
-  if(direction()==incoming&&getParticle()->CC())
-    ptemp = getParticle()->CC();
+  tcPDPtr ptemp = particle();
+  if(direction()==incoming&&particle()->CC())
+    ptemp = particle()->CC();
   return SpinorBarWaveFunction(p,ptemp,_wf.bar(),direction());
 }	  
 

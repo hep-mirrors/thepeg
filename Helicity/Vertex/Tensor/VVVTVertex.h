@@ -53,11 +53,6 @@ class VVVTVertex: public AbstractVVVTVertex {
 public:
 
   /**
-   * Default constructor.
-   */
-  VVVTVertex();
-  
-  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();

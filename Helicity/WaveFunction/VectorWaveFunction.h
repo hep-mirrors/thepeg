@@ -40,7 +40,7 @@ enum VectorPhase {
  *
  *  In addition to storing the vector using the LorentzPolarizationVector class
  *  it inherits from the WaveFunctionBase class to provide storage of the 
- *  momentum and particleData for the vector boson.
+ *  momentum and ParticleData for the vector boson.
  *
  *  This class also contains the code which does the actually calculation of the
  *  vector wavefunction.

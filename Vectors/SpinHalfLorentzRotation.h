@@ -16,10 +16,6 @@
 
 namespace ThePEG {
 
-using ThePEG::Helicity::HELASDRep;
-using ThePEG::Helicity::HaberDRep;
-using ThePEG::Helicity::defaultDRep;
-
 /**
  * The SpinHalfLorentzRotation class is designed to offer the same
  * features as the HepLorentzRotation class of CLHEP but for the spin-\f$\frac12\f$

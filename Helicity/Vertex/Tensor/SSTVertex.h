@@ -41,11 +41,6 @@ namespace Helicity {
 class SSTVertex: public AbstractSSTVertex {
   
 public:
-  
-  /**
-   * Default constructor.
-   */
-  SSTVertex();
 
   /**
    * Standard Init function used to initialize the interfaces.

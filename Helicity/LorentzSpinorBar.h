@@ -39,45 +39,19 @@ public:
   //@{
   /**
    * Default zero constructor, optionally specifying \a t, the type
-   * and \a rep, the choice of dirac matrix.
    */
-  LorentzSpinorBar(SpinorType t = unknown_spinortype,
-		   DiracRep r = defaultDRep): _dirac(r), _type(t) {
-    for(unsigned int ix=0;ix<4;++ix) _spin[ix]=Value();
-  }
-
-  /**
-   * Default zero constructor, optionally specifying the choice of
-   * dirac matrix.
-   */
-  LorentzSpinorBar(DiracRep dirac) 
-    : _dirac(dirac), _type(unknown_spinortype) {
+  LorentzSpinorBar(SpinorType t = unknown_spinortype) : _type(t) {
     for(unsigned int ix=0;ix<4;++ix) _spin[ix]=Value();
   }
 
   /**
    * Constructor with complex numbers specifying the components,
-   * optionally specifying \a t, the type and \a r, the choice of
-   * dirac matrix.
+   * optionally specifying \a t, the type
    */
   LorentzSpinorBar(complex<Value> a, complex<Value> b,
 		   complex<Value> c, complex<Value> d,
-		   SpinorType t = unknown_spinortype,
-		   DiracRep r = defaultDRep) 
-    : _dirac(r), _type(t) {
-    _spin[0]=a;
-    _spin[1]=b;
-    _spin[2]=c;
-    _spin[3]=d;
-  }
-
-  /**
-   * Constructor with complex numbers specifying the components,
-   * optionally specifying the choice of dirac matrix
-   */
-  LorentzSpinorBar(complex<Value> a, complex<Value> b,
-		   complex<Value> c, complex<Value> d, DiracRep r)  
-    : _dirac(r), _type(unknown_spinortype){
+		   SpinorType t = unknown_spinortype)
+    : _type(t) {
     _spin[0]=a;
     _spin[1]=b;
     _spin[2]=c;
@@ -198,46 +172,8 @@ public:
   }
   //@}
 
-  /** @name Functions related to type and representation. */
+  /** @name Functions related to type. */
   //@{
-  /**
-   * Change the dirac matrix representation.
-   */
-  void changeRep(DiracRep newdirac) {
-    if(newdirac!=_dirac) *this = transformRep(newdirac);
-  }
-
-  /**
-   * Return the spinor in a different representation.
-   */
-  LorentzSpinorBar transformRep(DiracRep newdirac) const {
-    if(newdirac==_dirac){return *this;}
-    double fact=sqrt(0.5);
-    // transform from HELAS representation to Haber one
-    complex<Value> output[4];
-    if(newdirac==HELASDRep && _dirac==HaberDRep) {
-      output[0] = fact*( _spin[0]-_spin[2]);
-      output[1] = fact*( _spin[1]-_spin[3]);
-      output[2] = fact*( _spin[0]+_spin[2]);
-      output[3] = fact*( _spin[1]+_spin[3]);
-  }
-    // transform from Haber representation to HELAS one
-    else if(newdirac==HaberDRep && _dirac==HELASDRep) {
-      output[0] = fact*( _spin[0]+_spin[2]);
-      output[1] = fact*( _spin[1]+_spin[3]);
-      output[2] = fact*(-_spin[0]+_spin[2]);
-      output[3] = fact*(-_spin[1]+_spin[3]);
-    }
-    // return the answer
-    return LorentzSpinorBar(output[0],output[1],
-			    output[2],output[3],_type,newdirac);
-  }
-  
-  /**
-   * Return the representation of the spinor.
-   */
-  DiracRep Rep() const {return _dirac;}
-
   /**
    * Return the type of the spinor.
    */
@@ -245,11 +181,6 @@ public:
   //@}
 
 private:
-  /**
-   * Definition of the Dirac matrices used.
-   */
-  DiracRep _dirac;
-
   /**
    * Type of spinor
    */

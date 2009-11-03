@@ -18,10 +18,6 @@
 
 namespace ThePEG {
 
-using ThePEG::Helicity::HELASDRep;
-using ThePEG::Helicity::HaberDRep;
-using ThePEG::Helicity::defaultDRep;
-
 /**
  * The SpinOneLorentzRotation class is ... */
 

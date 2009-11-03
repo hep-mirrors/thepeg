@@ -20,7 +20,12 @@ namespace Helicity {
 class AbstractVVVTVertex: public VertexBase {
 
 public:
-  
+
+  /**
+   * Default constructor
+   */
+  AbstractVVVTVertex() : VertexBase(VertexType::VVVT) {}
+
   /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.

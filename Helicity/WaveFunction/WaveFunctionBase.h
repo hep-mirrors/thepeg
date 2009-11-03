@@ -75,16 +75,12 @@ public:
 		   tcPDPtr pd, Direction dir = intermediate) 
     : _particle(pd), _momentum(p), _dir(dir) 
   {
-    /// \todo DG streamline this when setMomentum usage pattern is clear
-    setMomentum(p);
-    
+    if(_dir==outgoing) _momentum *= -1.0; 
     if ( dir != outgoing ) {
       tcPDPtr anti = pd->CC();
       if ( anti ) _particle = anti;
     }
   }
-
-
   //@}
 
 
@@ -125,45 +121,8 @@ public:
   /**
    *  Access to the 5-momentum
    */
-  const Lorentz5Momentum & getMomentum() const {return _momentum;}
+  const Lorentz5Momentum & momentum() const {return _momentum;}
   //@}
-
-  /**
-   * Set the components of the momentum and the mass
-   */
-  //@{
-  /**
-   * Set the x component of the momentum.
-   */
-  void setPx(Energy x) {_momentum.setX(x);}
-
-  /**
-   * Set the y component of the momentum.
-   */
-  void setPy(Energy y) {_momentum.setY(y);}
-
-  /**
-   * Set the z component of the momentum.
-   */
-  void setPz(Energy z) {_momentum.setZ(z);}
-
-  /**
-   * Set the energy.
-   */
-  void setE(Energy t) {_momentum.setT(t);}
-
-  /**
-   * Set the mass.
-   */
-  void setMass(Energy m) {_momentum.setMass(m);}
-
-  /**
-   * Set 5 momentum.
-   */
-  void setMomentum(const Lorentz5Momentum & pin) {
-    _momentum = pin;
-    if(_dir==outgoing) _momentum *= -1.0;
-  }
 
   /**
    *  Access to the particle properties
@@ -182,7 +141,7 @@ public:
   /**
    * Get the particle pointer.
    */
-  tcPDPtr getParticle() const {return _particle;}
+  tcPDPtr particle() const {return _particle;}
 
   /** 
    * Get the direction of particle.

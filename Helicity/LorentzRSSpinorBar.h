@@ -42,30 +42,17 @@ public:
   /** @name Standard constructors. */
   //@{
   /**
-   * Default zero constructor, optionally specifying \a t, the type
-   * and \a r, the choice of dirac matrix.
+   * Default zero constructor, optionally specifying \a t, the type.
    */
-  LorentzRSSpinorBar(SpinorType t = unknown_spinortype,
-		     DiracRep r = defaultDRep)  
-    : _dirac(r), _type(t) {
+  LorentzRSSpinorBar(SpinorType t = unknown_spinortype) : _type(t) {
     for(unsigned int ix=0;ix<4;++ix)
-      for(unsigned int iy=0;iy<4;++iy) _spin[ix][iy]=Value();
-  }
-  
-  /**
-   * Default zero constructor, optionally specifying the choice of
-   * dirac matrix.
-   */
-  LorentzRSSpinorBar(DiracRep dirac)
-    : _dirac(dirac), _type(unknown_spinortype) {
-    for(unsigned int ix=0;ix<4;++ix)
-      for(unsigned int iy=0;iy<4;++iy) _spin[ix][iy]=Value();
+      for(unsigned int iy=0;iy<4;++iy) 
+	_spin[ix][iy]=Value();
   }
 
   /**
    * Constructor with complex numbers specifying the components,
-   * optionally specifying \a t, the type and \a r, the choice of
-   * dirac matrix.
+   * optionally specifying \a t, the type.
    */
   LorentzRSSpinorBar(complex<Value> a1,complex<Value> b1,
 		     complex<Value> c1,complex<Value> d1,
@@ -75,27 +62,8 @@ public:
 		     complex<Value> c3,complex<Value> d3,
 		     complex<Value> a4,complex<Value> b4,
 		     complex<Value> c4,complex<Value> d4,
-		     SpinorType t=unknown_spinortype, DiracRep r=defaultDRep)
-    : _dirac(r), _type(t) {
-    _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
-    _spin[0][1]=b1;_spin[1][1]=b2;_spin[2][1]=b3;_spin[3][1]=b4;
-    _spin[0][2]=c1;_spin[1][2]=c2;_spin[2][2]=c3;_spin[3][2]=c4;
-    _spin[0][3]=d1;_spin[1][3]=d2;_spin[2][3]=d3;_spin[3][3]=d4;
-  }
-  
-  /**
-   * Constructor with complex numbers specifying the components,
-   * optionally specifying the choice of dirac matrix
-   */
-  LorentzRSSpinorBar(complex<Value> a1,complex<Value> b1,
-		     complex<Value> c1,complex<Value> d1,
-		     complex<Value> a2,complex<Value> b2,
-		     complex<Value> c2,complex<Value> d2,
-		     complex<Value> a3,complex<Value> b3,
-		     complex<Value> c3,complex<Value> d3,
-		     complex<Value> a4,complex<Value> b4,
-		     complex<Value> c4,complex<Value> d4,DiracRep dirac)
-    : _dirac(dirac), _type(unknown_spinortype) {
+		     SpinorType t=unknown_spinortype)
+    : _type(t) {
     _spin[0][0]=a1;_spin[1][0]=a2;_spin[2][0]=a3;_spin[3][0]=a4;
     _spin[0][1]=b1;_spin[1][1]=b2;_spin[2][1]=b3;_spin[3][1]=b4;
     _spin[0][2]=c1;_spin[1][2]=c2;_spin[2][2]=c3;_spin[3][2]=c4;
@@ -288,7 +256,7 @@ public:
    * dot product with a polarization vector
    */
   LorentzSpinorBar<Value> dot(const LorentzPolarizationVector & vec) const {
-    LorentzSpinorBar<Value> output(_type,_dirac);
+    LorentzSpinorBar<Value> output(_type);
     for(unsigned int ix=0;ix<4;++ix) {
       output[ix]=_spin[3][ix]*vec.t()-_spin[0][ix]*vec.x()
 	-_spin[1][ix]*vec.y()-_spin[2][ix]*vec.z();
@@ -300,7 +268,7 @@ public:
    * dot product with a 4-momentum
    */
   LorentzSpinorBar<Value> dot(const LorentzMomentum & invec) const {
-    LorentzSpinorBar<Value> output(_type,_dirac);
+    LorentzSpinorBar<Value> output(_type);
     LorentzVector<double> vec = UnitRemoval::InvE * invec;
     unsigned int ix;
     for(ix=0;ix<4;++ix) {
@@ -334,54 +302,8 @@ public:
   LorentzRSSpinorBar & transform(const LorentzRotation &);
   //@}
 
-  /** @name Functions related to type and representation. */
+  /** @name Functions related to type. */
   //@{
-  /**
-   * Change the dirac matrix representation.
-   */
-  void changeRep(DiracRep newdirac) {
-    if(newdirac!=_dirac) *this = transformRep(newdirac);
-  }
-
-  /**
-   * Return the spinor in a different representation.
-   */
-  LorentzRSSpinorBar transformRep(DiracRep newdirac) {
-    // do nothing if all ready in the correct representation
-    if(newdirac==_dirac) return *this;
-    double fact(sqrt(0.5));
-    // transform from HELAS representation to Haber one
-    complex<Value> out[4][4];
-    unsigned int ix;
-    if(newdirac==HELASDRep && _dirac==HaberDRep) {
-      for(ix=0;ix<4;++ix) {
-	out[ix][0] = fact*( _spin[ix][0]-_spin[ix][2]);
-	out[ix][1] = fact*( _spin[ix][1]-_spin[ix][3]);
-	out[ix][2] = fact*( _spin[ix][0]+_spin[ix][2]);
-	out[ix][3] = fact*( _spin[ix][1]+_spin[ix][3]);
-      }
-    }
-    // transform from Haber representation to HELAS one
-    else if(newdirac==HaberDRep && _dirac==HELASDRep) {
-      for(ix=0;ix<4;++ix) {
-	out[ix][0] = fact*( _spin[ix][0]+_spin[ix][2]);
-	out[ix][1] = fact*( _spin[ix][1]+_spin[ix][3]);
-	out[ix][2] = fact*(-_spin[ix][0]+_spin[ix][2]);
-	out[ix][3] = fact*(-_spin[ix][1]+_spin[ix][3]);
-      }
-    }
-    return LorentzRSSpinorBar
-      (out[0][0],out[0][1],out[0][2],out[0][3],
-       out[1][0],out[1][1],out[1][2],out[1][3],
-       out[2][0],out[2][1],out[2][2],out[2][3],
-       out[3][0],out[3][1],out[3][2],out[3][3],_type,_dirac);
-  }
-  
-  /**
-   * Return the representation of the spinor.
-   */
-  DiracRep Rep() const {return _dirac;}
-
   /**
    * Return the type of the spinor.
    */
@@ -400,38 +322,16 @@ public:
     generalCurrent(LorentzSpinor<ValueB>& f, Complex left, Complex right) {
       typedef complex<typename BinaryOpTraits<Value,ValueB>::MulT> ResultT;
       ResultT output[4];
-      // ensure both spinors are in the same representation,
-      // otherwise change to default
-      if(Rep()!=f.Rep()) {
-	f.changeRep(defaultDRep);
-	changeRep(defaultDRep);
-      }
       unsigned int iz;
-      // low energy
-      if(Rep()==HaberDRep) {
-	for(iz=0;iz<4;++iz) {
-	  output[iz] = 
-	    0.5*left*( (_spin[iz][0]-_spin[iz][2])*(f.s1()-f.s3())
-		       +(_spin[iz][1]-_spin[iz][3])*(f.s2()-f.s4()))
-	    +0.5*right*( (_spin[iz][0]+_spin[iz][2])*(f.s1()+f.s3())
-			 +(_spin[iz][1]+_spin[iz][3])*(f.s2()+f.s4()));}
-      }
-      else {
-	for(iz=0;iz<4;++iz){
-	  output[iz]=  left*(_spin[iz][0]*f.s1()+_spin[iz][1]*f.s2())
-	    +right*(_spin[iz][2]*f.s3()+_spin[iz][3]*f.s4());
-	}
+      for(iz=0;iz<4;++iz){
+	output[iz]=  left*(_spin[iz][0]*f.s1()+_spin[iz][1]*f.s2())
+	  +right*(_spin[iz][2]*f.s3()+_spin[iz][3]*f.s4());
       }
       return LorentzVector<ResultT>(output[0],output[1],
 				    output[2],output[3]);
     }
   
 private:
-  /**
-   * Definition of the Dirac matrices used.
-   */
-  DiracRep _dirac;
-
   /**
    * Type of spinor.
    */

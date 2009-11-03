@@ -12,6 +12,11 @@ namespace Helicity {
 
 class AbstractFFVTVertex;
 
+namespace VertexType {
+  typedef unsigned T;
+  const T FFVT = 2235;
+}
+
 }
 }
 

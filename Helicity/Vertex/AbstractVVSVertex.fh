@@ -12,6 +12,11 @@ namespace Helicity {
 
 class AbstractVVSVertex;
 
+namespace VertexType {
+  typedef unsigned T;
+  const T VVS = 331;
+}
+
 }
 }
 

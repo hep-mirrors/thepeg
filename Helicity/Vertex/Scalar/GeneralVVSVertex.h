@@ -32,15 +32,12 @@ public:
   /**
    * The default constructor.
    */
-  GeneralVVSVertex() {
-    setNpoint(3);
-    setSpin(3,3,1);
-    _a00 = 1.;_a11 = 0.;
-    _a12 = 0.;_a21 = 0.;
-    _a22 = 0.;_aEp = 0.;
-    _representation = 1;
-    setName(VVS);
-  }
+  GeneralVVSVertex() : _a00(1), 
+		       _a11(0), _a12(0), 
+		       _a21(0), _a22(0),
+		       _aEp(0), 
+		       _representation(1) 
+  {}
 
   /**
    * The standard Init function used to initialize the interfaces.

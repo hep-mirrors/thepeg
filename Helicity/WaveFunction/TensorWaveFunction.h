@@ -41,7 +41,7 @@ enum TensorPhase {
  * 
  *  In addition to storing the tensor using the LorentzTensor class
  *  it inherits from the WaveFunctionBase class to provide storage of
- *  the momentum and particleData for the tensor particle.
+ *  the momentum and ParticleData for the tensor particle.
  *
  *  This class also contains the code which does the actually 
  *  calculation of the tensor wavefunction.

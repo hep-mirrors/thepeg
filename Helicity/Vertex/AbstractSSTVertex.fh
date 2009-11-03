@@ -12,6 +12,11 @@ namespace Helicity {
 
 class AbstractSSTVertex;
 
+namespace VertexType {
+  typedef unsigned T;
+  const T SST = 115;
+}
+
 }
 }
 

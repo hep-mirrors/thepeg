@@ -32,15 +32,6 @@ namespace ThePEG {
 namespace Helicity {
 
 /**
- * Enumeration to choose between spinor representations.
- */
-enum DiracRep {
-  HELASDRep, /**< The representation used in HELAS. */
-  HaberDRep, /**< The representation used by Haber. */
-  defaultDRep = HELASDRep /**< THe default choice is HELAS. */
-};
-
-/**
  * Enumeration to specify spinor type.
  */
 enum SpinorType {

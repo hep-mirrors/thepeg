@@ -21,12 +21,6 @@ using namespace Helicity;
     
 AbstractNoPIOClassDescription<VSSVertex> VSSVertex::initVSSVertex;
 // Definition of the static class description member.
-     
-VSSVertex::VSSVertex() {
-  setNpoint(3);
-  setSpin(3,1,1);
-  setName(VSS); 
-}
 
 void VSSVertex::Init() {
       
@@ -42,13 +36,10 @@ Complex VSSVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec,
 			    const ScalarWaveFunction & sca1,
 			    const ScalarWaveFunction & sca2) {
   // calculate the coupling
-  setCoupling(q2,vec.getParticle(),sca1.getParticle(),sca2.getParticle());
-  Complex norm=getNorm();
+  setCoupling(q2,vec.particle(),sca1.particle(),sca2.particle());
   // calculate the vertex
-  Complex vertex(0.);
-  vertex = UnitRemoval::InvE * -Complex(0.,1.) * norm * sca1.wave()*sca2.wave()*
-    vec.wave().dot(sca1.getMomentum()-sca2.getMomentum());
-  return vertex;
+  return UnitRemoval::InvE * -Complex(0.,1.) * norm() * sca1.wave()*sca2.wave()*
+    vec.wave().dot(sca1.momentum()-sca2.momentum());
 }
 
 // off-shell vector
@@ -57,27 +48,27 @@ VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca2,
 				       Energy mass, Energy width) {
   // outgoing momentum 
-  Lorentz5Momentum pout(sca1.getMomentum()+sca2.getMomentum());
+  Lorentz5Momentum pout(sca1.momentum()+sca2.momentum());
   // calculate the coupling
-  setCoupling(q2,out,sca1.getParticle(),sca2.getParticle());
+  setCoupling(q2,out,sca1.particle(),sca2.particle());
   // mass and width
   if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   // calculate the prefactor
   Energy2 p2    = pout.m2();
-  Complex fact = getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact = norm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   // compute the vector
   LorentzPolarizationVector vec;
   // massive outgoing vector
   if(mass!=ZERO) {
-    vec = UnitRemoval::InvE * fact * (sca2.getMomentum()-sca1.getMomentum());
+    vec = UnitRemoval::InvE * fact * (sca2.momentum()-sca1.momentum());
   }
   // massless outgoing vector
   else {
     // first the dot product for the second term
     double dot = (sca1.m2()-sca2.m2())/mass2;
     // compute the vector
-    vec = UnitRemoval::InvE * fact * (sca2.getMomentum()-sca1.getMomentum()+dot*pout);
+    vec = UnitRemoval::InvE * fact * (sca2.momentum()-sca1.momentum()+dot*pout);
   }
   return VectorWaveFunction(pout,out,vec);
 }
@@ -88,13 +79,13 @@ ScalarWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca,
 				       Energy mass, Energy width ) {
   // momentum of the particle
-  Lorentz5Momentum pout = sca.getMomentum()+vec.getMomentum(); 
+  Lorentz5Momentum pout = sca.momentum()+vec.momentum(); 
   // calculate the coupling
-  setCoupling(q2,vec.getParticle(),sca.getParticle(),out);
+  setCoupling(q2,vec.particle(),sca.particle(),out);
   // calculate the prefactor
   Energy2 p2   = pout.m2();
-  Complex fact = getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact = norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // compute the wavefunction
-  fact = UnitRemoval::InvE * fact*vec.wave().dot(sca.getMomentum()+pout);
+  fact = UnitRemoval::InvE * fact*vec.wave().dot(sca.momentum()+pout);
   return ScalarWaveFunction(pout,out,fact);
 }

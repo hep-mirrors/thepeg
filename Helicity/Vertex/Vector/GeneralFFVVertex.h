@@ -40,16 +40,9 @@ class GeneralFFVVertex: public AbstractFFVVertex {
 public:
   
   /**
-   * Default constructor.
-   */
-  GeneralFFVVertex();
-  
-  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
-  
-public:
 
   /**
    * Members to calculate the helicity amplitude expressions for vertices
@@ -77,13 +70,11 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				 const SpinorBarWaveFunction & sbar2,
 				 const VectorWaveFunction & vec3,
-				 Energy mass=-GeV, Energy width=-GeV,
-				 DiracRep drep=defaultDRep);
+				 Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Evaluate the off-shell vector coming from the vertex.
@@ -113,12 +104,11 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
 			      const VectorWaveFunction & vec3,
-			      Energy mass=-GeV, Energy width=-GeV,DiracRep drep=defaultDRep);
+			      Energy mass=-GeV, Energy width=-GeV);
   //@}
 
   /**

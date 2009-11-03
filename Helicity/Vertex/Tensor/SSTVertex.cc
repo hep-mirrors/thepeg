@@ -19,12 +19,6 @@
 using namespace ThePEG;
 using namespace Helicity;
 
-SSTVertex::SSTVertex() {
-  setNpoint(3); 
-  setSpin(1,1,5);
-  setName(SST); 
-}
-
 AbstractNoPIOClassDescription<SSTVertex> SSTVertex::initSSTVertex;
 // Definition of the static class description member.
 
@@ -41,14 +35,13 @@ Complex SSTVertex::evaluate(Energy2 q2, const ScalarWaveFunction & sca1,
     				const ScalarWaveFunction & sca2,
     				const TensorWaveFunction & ten) {
   // obtain the coupling
-  setCoupling(q2,sca1.getParticle(),sca2.getParticle(),ten.getParticle());
-  Complex norm=getNorm();
+  setCoupling(q2,sca1.particle(),sca2.particle(),ten.particle());
   Complex ii(0.,1.);
   // evaluate the trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // dot product of the two momenta
-  Energy2 dot = sca1.getMomentum()*sca2.getMomentum();
-  Energy mass = sca1.getParticle()->mass();
+  Energy2 dot = sca1.momentum()*sca2.momentum();
+  Energy mass = sca1.particle()->mass();
   // second term
   complex<Energy2> second = 
     +2.*ten.tt()*sca1.e()*sca2.e()  +2.*ten.xx()*sca1.px()*sca2.px()
@@ -60,9 +53,8 @@ Complex SSTVertex::evaluate(Energy2 q2, const ScalarWaveFunction & sca1,
     +(ten.xz()+ten.zx())*(sca1.pz()*sca2.px()+sca1.px()*sca2.pz())
     +(ten.yz()+ten.zy())*(sca1.pz()*sca2.py()+sca1.py()*sca2.pz());
   // return the answer
-  Complex answer = -0.5*ii*norm*UnitRemoval::InvE2*
+  return -0.5*ii*norm()*UnitRemoval::InvE2*
     (trace*(mass*mass-dot)+second)*sca1.wave()*sca2.wave();
-  return answer;
 }
 // off-shell tensor
 TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
@@ -70,25 +62,25 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca2,
 				       Energy mass, Energy width) {
   // obtain the coupling
-  setCoupling(q2,sca1.getParticle(),sca2.getParticle(),out);
+  setCoupling(q2,sca1.particle(),sca2.particle(),out);
   // array for the tensor
   Complex ten[4][4];
   // calculate the outgoing momentum
-  Lorentz5Momentum pout = sca1.getMomentum()+sca2.getMomentum();
+  Lorentz5Momentum pout = sca1.momentum()+sca2.momentum();
   // prefactor
   if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = 0.5*getNorm()*sca1.wave()*sca2.wave()*
+  Complex fact  = 0.5*norm()*sca1.wave()*sca2.wave()*
     propagator(iopt,p2,out,mass,width);
   // dot products we need
-  Energy2 dot12 = sca1.getMomentum()*sca2.getMomentum();
-  Energy2 dot1  = sca1.getMomentum()*pout;
-  Energy2 dot2  = pout*sca2.getMomentum();
+  Energy2 dot12 = sca1.momentum()*sca2.momentum();
+  Energy2 dot1  = sca1.momentum()*pout;
+  Energy2 dot2  = pout*sca2.momentum();
   // the vectors that we need for the tensor
   LorentzMomentum vec1,vec2;
   double a,b;
-  Energy2 mphi2 = sqr(sca1.getParticle()->mass());
+  Energy2 mphi2 = sqr(sca1.particle()->mass());
   // massive case
   if(mass!=ZERO) {
     double norm1=dot1/mass2;
@@ -96,15 +88,15 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     a = UnitRemoval::InvE2 * ((mphi2+dot12)*(2.*p2/mass2-5)
 			      +4.*(dot12-dot1*dot2/mass2))/3.;
     b = -(-(mphi2+dot12)*(2.+p2/mass2)+4*(dot12-dot1*(dot2/mass2)))/3./mass2;
-    vec1 = sca1.getMomentum() - norm1 * pout;
-    vec2 = sca2.getMomentum() - norm2 * pout;
+    vec1 = sca1.momentum() - norm1 * pout;
+    vec2 = sca2.momentum() - norm2 * pout;
   }
   // massless case
   else {
     a = UnitRemoval::InvE2 * (-5.*(mphi2+dot12)+4.*dot12)/3.;
     b = 0.;
-    vec1 = sca1.getMomentum();
-    vec2 = sca2.getMomentum();
+    vec1 = sca1.momentum();
+    vec2 = sca2.momentum();
   }
   // calculate the wavefunction
   Energy vec1_tmp[4] = {vec1.x(), vec1.y(), vec1.z(), vec1.t()};
@@ -135,18 +127,18 @@ ScalarWaveFunction SSTVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const TensorWaveFunction & ten,
 				       Energy mass, Energy width) {
   // obtain the coupling
-  setCoupling(q2,sca.getParticle(),out,ten.getParticle());
+  setCoupling(q2,sca.particle(),out,ten.particle());
   // calculate the outgoing momentum
-  Lorentz5Momentum pout = sca.getMomentum()+ten.getMomentum();
+  Lorentz5Momentum pout = sca.momentum()+ten.momentum();
   // prefactors
   if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = 0.5*getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact  = 0.5*norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // trace of the tensor
   Complex trace1 = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // dot product of the two momenta
-  Energy2 dot = sca.getMomentum()*pout;
+  Energy2 dot = sca.momentum()*pout;
   // first term
   complex<Energy2> trace = trace1*(mass2-dot);
   // second term

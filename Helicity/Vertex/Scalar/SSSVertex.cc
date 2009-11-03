@@ -18,12 +18,6 @@
 
 using namespace ThePEG;
 using namespace Helicity;
-    
-SSSVertex::SSSVertex() {
-  setNpoint(3);
-  setSpin(1,1,1);
-  setName(SSS);
-}
 
 AbstractNoPIOClassDescription<SSSVertex> SSSVertex::initSSSVertex;
 // Definition of the static class description member.
@@ -41,9 +35,9 @@ Complex SSSVertex::evaluate(Energy2 q2,
 			    const ScalarWaveFunction & sca2,
  			    const ScalarWaveFunction & sca3) {
   // calculate the coupling
-  setCoupling(q2,sca1.getParticle(),sca2.getParticle(),sca3.getParticle());
+  setCoupling(q2,sca1.particle(),sca2.particle(),sca3.particle());
   // return the answer
-  return Complex(0.,1.)*getNorm()*sca1.wave()*sca2.wave()*sca3.wave();
+  return Complex(0.,1.)*norm()*sca1.wave()*sca2.wave()*sca3.wave();
 }
 
 // off-shell scalar
@@ -52,11 +46,11 @@ ScalarWaveFunction SSSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca2,
 				       Energy mass, Energy width) {
   // outgoing momentum 
-  Lorentz5Momentum pout = sca1.getMomentum()+sca2.getMomentum(); 
+  Lorentz5Momentum pout = sca1.momentum()+sca2.momentum(); 
   // calculate the coupling
-  setCoupling(q2,sca1.getParticle(),sca2.getParticle(),out);
+  setCoupling(q2,sca1.particle(),sca2.particle(),out);
   // wavefunction
   Energy2 p2=pout.m2();
-  Complex fact=-getNorm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact=-norm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   return ScalarWaveFunction(pout,out,fact);
 }

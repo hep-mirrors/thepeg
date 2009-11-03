@@ -19,12 +19,6 @@
 
 using namespace ThePEG;
 using namespace Helicity;
-   
-VVSVertex::VVSVertex() {
-  setNpoint(3);
-  setSpin(3,3,1);
-  setName(VVS);
-}
 
 AbstractNoPIOClassDescription<VVSVertex> VVSVertex::initVVSVertex;
 // Definition of the static class description member.
@@ -43,9 +37,9 @@ Complex VVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 			    const VectorWaveFunction & vec2, 
 			    const ScalarWaveFunction & sca) {
   // calculate the coupling
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),sca.getParticle());
+  setCoupling(q2,vec1.particle(),vec2.particle(),sca.particle());
   // evaluate the vertex
-  return Complex(0.,1.)*getNorm()*sca.wave()*vec1.wave().dot(vec2.wave());
+  return Complex(0.,1.)*norm()*sca.wave()*vec1.wave().dot(vec2.wave());
 }
 
 // evaluate an off-shell vector
@@ -54,14 +48,14 @@ VectorWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const ScalarWaveFunction & sca,
 				       Energy mass, Energy width) {
   // outgoing momentum 
-  Lorentz5Momentum pout = vec.getMomentum()+sca.getMomentum();
+  Lorentz5Momentum pout = vec.momentum()+sca.momentum();
   // calculate the coupling
-  setCoupling(q2,out,vec.getParticle(),sca.getParticle());
+  setCoupling(q2,out,vec.particle(),sca.particle());
   // prefactor
   Energy2 p2    = pout.m2();
   if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
-  Complex fact  = getNorm()*sca.wave()*propagator(iopt,p2,out,mass,width);
+  Complex fact  = norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // evaluate the wavefunction
   LorentzPolarizationVector vect;
   // massless case
@@ -82,12 +76,12 @@ ScalarWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const VectorWaveFunction & vec2,
 				       Energy mass, Energy width) {
   // outgoing momentum 
-  Lorentz5Momentum pout = vec1.getMomentum()+vec2.getMomentum();
+  Lorentz5Momentum pout = vec1.momentum()+vec2.momentum();
   // calculate the coupling
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),out);
+  setCoupling(q2,vec1.particle(),vec2.particle(),out);
   // prefactor
   Energy2 p2   =  pout.m2();
-  Complex fact = -getNorm()*propagator(iopt,p2,out,mass,width);
+  Complex fact = -norm()*propagator(iopt,p2,out,mass,width);
   // evaluate the wavefunction
   Complex output = fact*vec1.wave().dot(vec2.wave());
   return ScalarWaveFunction(pout,out,output);

@@ -41,17 +41,6 @@ class VVVVVertex: public AbstractVVVVVertex {
 public:
 
   /**
-   * Default constructor.
-   */
-  VVVVVertex() {
-    // number of external particles
-    setNpoint(4);
-    // spins of external particles
-    setSpin(3,3,3,3);
-    setName(VVVV);
-  }
-
-  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();

@@ -39,11 +39,6 @@ namespace Helicity{
 class VVVVertex: public AbstractVVVVertex {
     
 public:
-  
-  /**
-   * Default constructor.
-   */
-  VVVVertex();
 
   /**
    * Standard Init function used to initialize the interfaces.

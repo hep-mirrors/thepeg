@@ -21,6 +21,12 @@ class AbstractSSTVertex: public VertexBase {
 
 public:
   
+
+  /**
+   * Default constructor
+   */
+  AbstractSSTVertex() : VertexBase(VertexType::SST) {}
+
   /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.

@@ -21,6 +21,13 @@ namespace Helicity {
 class AbstractFFTVertex: public VertexBase {
 
 public:
+
+
+  /**
+   * Default constructor
+   */
+  AbstractFFTVertex() : VertexBase(VertexType::FFT) {}
+
   /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.
@@ -65,13 +72,11 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   virtual SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const SpinorWaveFunction & sp1,
 				      const TensorWaveFunction & ten3,
-				      Energy mass=-GeV, Energy width=-GeV,
-				      DiracRep drep=defaultDRep) = 0;
+				      Energy mass=-GeV, Energy width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -84,13 +89,11 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   virtual SpinorBarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 					 const SpinorBarWaveFunction & sbar2,
 					 const TensorWaveFunction& ten3,
-					 Energy mass=-GeV, Energy width=-GeV,
-					 DiracRep drep=defaultDRep) = 0;
+					 Energy mass=-GeV, Energy width=-GeV) = 0;
   //@}
 
 public:

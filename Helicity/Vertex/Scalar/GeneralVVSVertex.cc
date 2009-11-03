@@ -27,15 +27,13 @@ void GeneralVVSVertex::Init() {
 Complex GeneralVVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 				   const VectorWaveFunction & vec2,
 				   const ScalarWaveFunction & sca) {
-  Lorentz5Momentum pSca = sca.getMomentum();
-  Lorentz5Momentum pvec1 = vec1.getMomentum();
-  Lorentz5Momentum pvec2 = vec2.getMomentum();
+  Lorentz5Momentum pSca = sca.momentum();
+  Lorentz5Momentum pvec1 = vec1.momentum();
+  Lorentz5Momentum pvec2 = vec2.momentum();
   // calculate kinematics
   if(kinematics()) calculateKinematics(pSca,pvec1,pvec2);
   // calculate coupling
-  setCoupling(q2, vec1.getParticle(), vec2.getParticle(), sca.getParticle());
-  // norm factor
-  Complex norm = -getNorm();
+  setCoupling(q2, vec1.particle(), vec2.particle(), sca.particle());
   Complex e1e2(vec1.wave().dot(vec2.wave()));
   complex<Energy> e1p1(vec1.wave().dot(pvec1));
   complex<Energy> e1p2(vec1.wave().dot(pvec2));
@@ -56,9 +54,7 @@ Complex GeneralVVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
                                   +_a22*e1p2*e2p2);
     output += UnitRemoval::InvE2 *_aEp*p1Ep2;
   }
-
-  output *= norm;
-  return Complex(0.,1.) * sca.wave() * output;
+  return -norm()*Complex(0.,1.) * sca.wave() * output;
 }
 
 ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
@@ -66,18 +62,16 @@ ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 					      const VectorWaveFunction & vec2,
 					      Energy mass, Energy width) {
   // pointers to the particle data objects
-  tcPDPtr Pvec1(vec1.getParticle());
-  tcPDPtr Pvec2(vec2.getParticle());
-  Lorentz5Momentum pvec1 = vec1.getMomentum();
-  Lorentz5Momentum pvec2 = vec2.getMomentum();
+  tcPDPtr Pvec1(vec1.particle());
+  tcPDPtr Pvec2(vec2.particle());
+  Lorentz5Momentum pvec1 = vec1.momentum();
+  Lorentz5Momentum pvec2 = vec2.momentum();
   Lorentz5Momentum pout = pvec1 + pvec2;
   pout.rescaleMass();
   // calculate kinematics if needed
   if(kinematics()) calculateKinematics(pout,pvec1,pvec2);
   // calculate coupling
   setCoupling(q2,out,Pvec1,Pvec2);
-  // norm factor
-  Complex norm = -getNorm();
   // propagator
   Complex prop = propagator(iopt,q2,out,mass,width);
   // lorentz part
@@ -100,7 +94,7 @@ ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
                                   +_a22*e1p2*e2p2);
     output += UnitRemoval::InvE2 *_aEp*p1Ep2;
   }
-  output *= norm*prop;
+  output *=  -norm()*prop;
   return ScalarWaveFunction(pout,out,output);
 }
 

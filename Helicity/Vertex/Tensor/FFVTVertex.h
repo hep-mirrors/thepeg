@@ -43,12 +43,7 @@ namespace Helicity {
 class FFVTVertex: public AbstractFFVTVertex {
       
 public:
-  
-  /**
-   * Default constructor.
-   */
-  FFVTVertex();
-  
+
   /**
    * Standard Init function used to initialize the interfaces.
    */
@@ -123,14 +118,12 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   SpinorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
 			      const VectorWaveFunction & vec3,
 			      const TensorWaveFunction & ten4,
-			      Energy mass=-GeV, Energy width=-GeV,
-			      DiracRep drep=defaultDRep);
+			      Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -144,14 +137,12 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   SpinorBarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				 const SpinorBarWaveFunction & sbar2,
 				 const VectorWaveFunction & vec3,
 				 const TensorWaveFunction & ten4,
-				 Energy mass=-GeV, Energy width=-GeV,
-				 DiracRep drep=defaultDRep);
+				 Energy mass=-GeV, Energy width=-GeV);
   //@}
 
   /**

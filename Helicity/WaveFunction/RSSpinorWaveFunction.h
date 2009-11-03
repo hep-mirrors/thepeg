@@ -29,11 +29,10 @@ namespace Helicity {
  *
  *  In addition to storing the spinor using the LorentzRSSpinor class
  *  it inherits from the <code>WaveFunctionBase</code> class to provide storage of
- *  the momentum and particleData for the fermion.
+ *  the momentum and ParticleData for the fermion.
  *
  *  This class also contains the code which does the actually calculation of the
- *  spinor for an external particle using either of the Dirac matrix representations
- *  currently supported in the <code>HelicityDefinitions</code> class.
+ *  spinor for an external particle.
  *
  *  When calculating the wavefunction the direction of the particle is used,
  *
@@ -63,8 +62,7 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
-   * Constructor, set the momentum and the components of the spinor and Dirac
-   * matrix representation.
+   * Constructor, set the momentum and the components of the spinor.
    * @param p The momentum.
    * @param part The ParticleData pointer.
    * @param xs1 The first  spinor component of the \f$x\f$ vector.
@@ -83,7 +81,6 @@ public:
    * @param ts2 The second spinor component of the \f$t\f$ vector.
    * @param ts3 The third  spinor component of the \f$t\f$ vector.
    * @param ts4 The fourth spinor component of the \f$t\f$ vector.
-   * @param drep The Dirac representation.
    */
   RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
 		       complex<double> xs1, complex<double> xs2,
@@ -93,12 +90,11 @@ public:
 		       complex<double> zs1, complex<double> zs2,
 		       complex<double> zs3, complex<double> zs4,
 		       complex<double> ts1, complex<double> ts2,
-		       complex<double> ts3, complex<double> ts4,
-		       DiracRep drep=defaultDRep) 
+		       complex<double> ts3, complex<double> ts4)
     : WaveFunctionBase(p,part), _wf(xs1,xs2,xs3,xs4,
 				    ys1,ys2,ys3,ys4,
 				    zs1,zs2,zs3,zs4,
-				    ts1,ts2,ts3,ts4,drep)
+				    ts1,ts2,ts3,ts4)
   {
     assert(iSpin()==4);
   }
@@ -127,7 +123,7 @@ public:
   RSSpinorWaveFunction(const tPPtr & p,
 		       const LorentzRSSpinor<SqrtEnergy> & wave,
 		       Direction dir=intermediate) 
-    : WaveFunctionBase(p->momentum(),p->dataPtr(),dir), _wf(wave.Type(),wave.Rep())
+    : WaveFunctionBase(p->momentum(),p->dataPtr(),dir), _wf(wave.Type())
   {
     assert(iSpin()==4);
     for (unsigned int i=0; i<4; ++i)
@@ -136,32 +132,29 @@ public:
   }
 
   /**
-   * Constructor, set the momentum, helicity, direction and Dirac representation.
+   * Constructor, set the momentum, helicity, direction.
    * @param p The momentum.
    * @param part The ParticleData pointer.
    * @param ihel The helicity (0,1,2,3 as described above.)
    * @param dir The direction.
-   * @param drep The Dirac representation.
    */
   RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
-		       unsigned int ihel, Direction dir,DiracRep drep=defaultDRep) 
+		       unsigned int ihel, Direction dir) 
     : WaveFunctionBase(p,part,dir)
   {
     assert(iSpin()==4);
-    calculateWaveFunction(ihel,drep);
+    calculateWaveFunction(ihel);
   }
 
   /**
-   * Constructor, set the momentum, direction and Diracrepresentation, zero the 
+   * Constructor, set the momentum, direction, zero the 
    * wavefunction.
    * @param p The momentum.
    * @param part The ParticleData pointer.
    * @param dir The direction.
-   * @param drep The Dirac representation.
    */
-  RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,Direction dir,
-		       DiracRep drep=defaultDRep) 
-    : WaveFunctionBase(p,part,dir), _wf(drep)
+  RSSpinorWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,Direction dir)
+    : WaveFunctionBase(p,part,dir), _wf()
   {
     assert(iSpin()==4);
   }
@@ -169,8 +162,8 @@ public:
   /**
    * Default constructor
    */
-  RSSpinorWaveFunction(DiracRep dirac=defaultDRep) 
-    : WaveFunctionBase(), _wf(dirac)
+  RSSpinorWaveFunction() 
+    : WaveFunctionBase(), _wf()
   {}
   //@}
 
@@ -280,10 +273,9 @@ public:
   /**
    * Reset the helicity (calculates the new spinor).
    * @param ihel The helicity (0,1,2,3 as described above.)
-   * @param drep The Dirac matrix representation.
    */
-  void reset(unsigned int ihel,DiracRep drep=defaultDRep) {
-    calculateWaveFunction(ihel,drep);
+  void reset(unsigned int ihel) {
+    calculateWaveFunction(ihel);
   }
   //@}
 
@@ -326,9 +318,8 @@ private:
   /**
    * Calcuate the wavefunction.
    * @param ihel The helicity (0,1,2,3 as described above.)
-   * @param drep The Dirac matrix representation.
    */
-  void calculateWaveFunction(unsigned int ihel,DiracRep drep=defaultDRep);
+  void calculateWaveFunction(unsigned int ihel);
 
 private:
 
@@ -339,7 +330,7 @@ private:
 
   /// Return wavefunction as LorentzRSSpinor<SqrtEnergy>
   LorentzRSSpinor<SqrtEnergy> dimensionedWf() {
-    LorentzRSSpinor<SqrtEnergy> temp(_wf.Type(),_wf.Rep());
+    LorentzRSSpinor<SqrtEnergy> temp(_wf.Type());
     for (unsigned int i=0; i<4; ++i)
       for (unsigned int j=0; j<4; ++j)
 	temp(i,j) = _wf(i,j)*UnitRemoval::SqrtE;

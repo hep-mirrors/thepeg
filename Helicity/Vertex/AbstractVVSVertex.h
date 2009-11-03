@@ -19,7 +19,13 @@ namespace Helicity {
 class AbstractVVSVertex: public VertexBase {
 
 public:
-  
+
+
+  /**
+   * Default constructor
+   */
+  AbstractVVSVertex() : VertexBase(VertexType::VVS) {}
+ 
   /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.

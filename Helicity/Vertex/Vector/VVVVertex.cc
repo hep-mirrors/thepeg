@@ -19,12 +19,6 @@
 using namespace ThePEG;
 using namespace Helicity; 
 
-VVVVertex::VVVVertex() {
-  setNpoint(3);
-  setSpin(3,3,3);
-  setName(VVV);
-}
-    
 AbstractNoPIOClassDescription<VVVVertex> VVVVertex::initVVVVertex;
 // Definition of the static class description member.
   
@@ -43,7 +37,7 @@ Complex VVVVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
 			    const VectorWaveFunction & vec2,
 			    const VectorWaveFunction & vec3) {
   // calculate the coupling
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),vec3.getParticle());
+  setCoupling(q2,vec1.particle(),vec2.particle(),vec3.particle());
   complex<Energy> alpha1(ZERO);
   // decide if we need to use special treatment to avoid gauge cancelations
   // first vector
@@ -66,20 +60,20 @@ Complex VVVVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   Complex dot13 = vec1.wave().dot(vec3.wave());
   Complex dot23 = vec3.wave().dot(vec2.wave());
   // dot products of polarization vectors and momentum
-  complex<Energy> dotp13 = vec3.wave().dot(LorentzPolarizationVectorE(vec1.getMomentum())
+  complex<Energy> dotp13 = vec3.wave().dot(LorentzPolarizationVectorE(vec1.momentum())
 					   - alpha1 * vec1.wave());
-  complex<Energy> dotp23 = vec3.wave().dot(LorentzPolarizationVectorE(vec2.getMomentum())
+  complex<Energy> dotp23 = vec3.wave().dot(LorentzPolarizationVectorE(vec2.momentum())
 					   - alpha1 * vec2.wave());
-  complex<Energy> dotp21 = vec1.wave().dot(LorentzPolarizationVectorE(vec2.getMomentum())
+  complex<Energy> dotp21 = vec1.wave().dot(LorentzPolarizationVectorE(vec2.momentum())
 					   - alpha1 * vec2.wave());
-  complex<Energy> dotp31 = vec1.wave().dot(LorentzPolarizationVectorE(vec3.getMomentum())
+  complex<Energy> dotp31 = vec1.wave().dot(LorentzPolarizationVectorE(vec3.momentum())
 					   - alpha1 * vec3.wave());
-  complex<Energy> dotp32 = vec2.wave().dot(LorentzPolarizationVectorE(vec3.getMomentum())
+  complex<Energy> dotp32 = vec2.wave().dot(LorentzPolarizationVectorE(vec3.momentum())
 					   - alpha1 * vec3.wave());
-  complex<Energy> dotp12 = vec2.wave().dot(LorentzPolarizationVectorE(vec1.getMomentum())
+  complex<Energy> dotp12 = vec2.wave().dot(LorentzPolarizationVectorE(vec1.momentum())
 					   - alpha1 * vec1.wave());
   // finally calculate the vertex
-  return Complex(0.,1.)*getNorm()*UnitRemoval::InvE*
+  return Complex(0.,1.)*norm()*UnitRemoval::InvE*
     (dot12*(dotp13-dotp23)+dot23*(dotp21-dotp31)+dot13*(dotp32-dotp12));
 }
   
@@ -89,21 +83,21 @@ VectorWaveFunction VVVVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const VectorWaveFunction & vec2,
 				       Energy mass, Energy width) {
   // output momenta
-  Lorentz5Momentum pout =vec1.getMomentum()+vec2.getMomentum();
+  Lorentz5Momentum pout =vec1.momentum()+vec2.momentum();
   // calculate the coupling
-  setCoupling(q2,out,vec1.getParticle(),vec2.getParticle());
+  setCoupling(q2,out,vec1.particle(),vec2.particle());
   // prefactor
   Energy2 p2    = pout.m2();
-  Complex fact  = getNorm()*propagator(iopt,p2,out,mass,width);
+  Complex fact  = norm()*propagator(iopt,p2,out,mass,width);
   if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   // dot products we need
   Complex dot12 = vec1.wave().dot(vec2.wave());
-  complex<Energy> dota = vec1.wave().dot(pout+vec2.getMomentum());
-  complex<Energy> dotb = vec2.wave().dot(pout+vec1.getMomentum());
+  complex<Energy> dota = vec1.wave().dot(pout+vec2.momentum());
+  complex<Energy> dotb = vec2.wave().dot(pout+vec1.momentum());
   // compute the polarization vector
   LorentzPolarizationVector vect = UnitRemoval::InvE*fact*
-    (dot12*(vec1.getMomentum()-vec2.getMomentum())-dotb*vec1.wave()+dota*vec2.wave());
+    (dot12*(vec1.momentum()-vec2.momentum())-dotb*vec1.wave()+dota*vec2.wave());
   // scalar piece for massive case
   if(mass!=ZERO) {
     complex<InvEnergy> dot = vect.dot(pout)/mass2;

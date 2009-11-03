@@ -37,11 +37,6 @@ class VVSSVertex: public AbstractVVSSVertex {
 public:
   
   /**
-   * Default constructor.
-   */
-  VVSSVertex();
-  
-  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();

@@ -41,11 +41,6 @@ class FFVVertex: public AbstractFFVVertex {
 public:
   
   /**
-   * Default constructor.
-   */
-  FFVVertex();
-  
-  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
@@ -78,13 +73,11 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				 const SpinorBarWaveFunction & sbar2,
 				 const VectorWaveFunction & vec3,
-				 Energy mass=-GeV, Energy width=-GeV,
-				 DiracRep drep=defaultDRep);
+				 Energy mass=-GeV, Energy width=-GeV);
 
   /**
    * Evaluate the off-shell vector coming from the vertex.
@@ -114,12 +107,11 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
-   * @param drep The Dirac matrix representation
    */
   SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
 			      const VectorWaveFunction & vec3,
-			      Energy mass=-GeV, Energy width=-GeV,DiracRep drep=defaultDRep);
+			      Energy mass=-GeV, Energy width=-GeV);
   //@}
 
   /**
@@ -138,12 +130,12 @@ public:
   /**
    * Get the left coupling.
    */
-  const Complex & getLeft() { return _left; }
+  const Complex & left() { return _left; }
 
   /**
    * Get the right coupling.
    */
-  const Complex & getRight() { return _right; }
+  const Complex & right() { return _right; }
   //@}
 
 protected:
@@ -155,12 +147,12 @@ protected:
   /**
    * Set the left coupling.
    */
-  void setLeft(const Complex & in) { _left = in; }
+  void left(const Complex & in) { _left = in; }
 
   /**
    * Set the right coupling.
    */
-  void setRight(const Complex & in) { _right = in; }
+  void right(const Complex & in) { _right = in; }
   //@}
 
 private:

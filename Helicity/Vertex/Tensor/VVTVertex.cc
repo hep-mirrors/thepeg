@@ -18,12 +18,6 @@
 
 using namespace ThePEG;
 using namespace Helicity;
- 
-VVTVertex::VVTVertex() {
-  setNpoint(3);
-  setSpin(3,3,5);
-  setName(VVT);
-}
 
 AbstractNoPIOClassDescription<VVTVertex> VVTVertex::initVVTVertex;
 // Definition of the static class description member.
@@ -32,7 +26,7 @@ void VVTVertex::Init() {
     
   static ClassDocumentation<VVTVertex> documentation
     ("The VVTVertex class is the implementation of"
-     "the vecotr-vector tensor vertices for helicity "
+     "the vector-vector tensor vertices for helicity "
      "amplitude calculations. All such vertices should inherit"
      "from it.");
   
@@ -43,18 +37,16 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
     				const VectorWaveFunction & vec2, 
     				const TensorWaveFunction & ten) {
   // set the couplings
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),ten.getParticle());
-  Complex norm=getNorm();
-  Complex ii(0.,1.);
+  setCoupling(q2,vec1.particle(),vec2.particle(),ten.particle());
   // mass of the vector
-  Energy vmass = vec1.getParticle()->mass();
+  Energy vmass = vec1.particle()->mass();
   // mass+k1.k2
-  Energy2 mdot = vec1.getMomentum()*vec2.getMomentum();
+  Energy2 mdot = vec1.momentum()*vec2.momentum();
   if(vmass!=ZERO) mdot += sqr(vmass);
   // dot product of wavefunctions and momenta
   Complex dotv1v2         = vec1.wave().dot(vec2.wave());
-  complex<Energy> dotk1v2 = vec1.getMomentum()*vec2.wave();
-  complex<Energy> dotk2v1 = vec1.wave()*vec2.getMomentum();
+  complex<Energy> dotk1v2 = vec1.momentum()*vec2.wave();
+  complex<Energy> dotk2v1 = vec1.wave()*vec2.momentum();
   // components of the tensor
   Complex tentx = ten.tx()+ten.xt();
   Complex tenty = ten.ty()+ten.yt();
@@ -102,12 +94,10 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // evaluate the vertex
-  Complex vertex;
-  vertex = -0.5*ii*norm*UnitRemoval::InvE2 *
+  return -0.5*Complex(0.,1.)*norm()*UnitRemoval::InvE2 *
     (trace*(dotk1v2*dotk2v1-dotv1v2*mdot)
      +mdot*tenv1v2-dotk2v1*tenk1v2
      -dotk1v2*tenk2v1+dotv1v2*tenk1k2);
-  return vertex;
 }
 // evaluate an off-shell vector
 VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
@@ -115,16 +105,16 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const TensorWaveFunction & ten,
 				       Energy mass, Energy width) {
   // evaluate the couplings
-  setCoupling(q2,vec.getParticle(),out,ten.getParticle());
+  setCoupling(q2,vec.particle(),out,ten.particle());
   // outgoing momentum
-  Lorentz5Momentum pout = ten.getMomentum()+vec.getMomentum();
+  Lorentz5Momentum pout = ten.momentum()+vec.momentum();
   // normalisation factor
   if(mass < ZERO) mass   = out->mass();
   Energy2 mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = -0.5*getNorm()*propagator(iopt,p2,out,mass,width);
+  Complex fact  = -0.5*norm()*propagator(iopt,p2,out,mass,width);
   // dot product of wavefunctions and momenta
-  complex<Energy2> dotk1k2 = vec.getMomentum()*pout;
+  complex<Energy2> dotk1k2 = vec.momentum()*pout;
   complex<Energy> dotk2v1  = vec.wave()       *pout;
   // mass-k1.k2
   complex<Energy2> mdot = -dotk1k2;
@@ -213,24 +203,24 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const VectorWaveFunction & vec2,
 				       Energy tmass, Energy width) {
   // coupling
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),out);
+  setCoupling(q2,vec1.particle(),vec2.particle(),out);
   // momenta of the outgoing tensor
   // outgoing momentum
-  Lorentz5Momentum pout= vec1.getMomentum()+vec2.getMomentum();
+  Lorentz5Momentum pout= vec1.momentum()+vec2.momentum();
   // overall normalisation
   if(tmass < ZERO) tmass   = out->mass();
   Energy2 tmass2 = sqr(tmass);
-  Energy vmass   = vec1.getParticle()->mass();
+  Energy vmass   = vec1.particle()->mass();
   Energy2 vmass2 = sqr(vmass);
   Energy2 p2     = pout.m2();
-  Complex fact   = 0.5*getNorm()*propagator(iopt,p2,out,tmass,width);
+  Complex fact   = 0.5*norm()*propagator(iopt,p2,out,tmass,width);
   // dot products we need to construct the tensor
-  complex<Energy2> dotk1k2 = vec1.getMomentum()*vec2.getMomentum();
-  complex<Energy> dotv1k2  = vec1.wave()*vec2.getMomentum();
+  complex<Energy2> dotk1k2 = vec1.momentum()*vec2.momentum();
+  complex<Energy> dotv1k2  = vec1.wave()*vec2.momentum();
   Complex dotv1v2          = vec1.wave().dot(vec2.wave());
-  complex<Energy> dotk1v2  = vec1.getMomentum()*vec2.wave();
-  complex<Energy2> dotkk1  = vec1.getMomentum()*pout;
-  complex<Energy2> dotkk2  = vec2.getMomentum()*pout;
+  complex<Energy> dotk1v2  = vec1.momentum()*vec2.wave();
+  complex<Energy2> dotkk1  = vec1.momentum()*pout;
+  complex<Energy2> dotkk2  = vec2.momentum()*pout;
   complex<Energy> dotkv1   = vec1.wave()*pout;
   complex<Energy> dotkv2   = vec2.wave()*pout;
   // dot product ma^2+k1.k2

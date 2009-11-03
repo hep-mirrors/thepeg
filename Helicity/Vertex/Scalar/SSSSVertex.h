@@ -38,11 +38,6 @@ class SSSSVertex: public AbstractSSSVertex {
 public:
   
   /**
-   * Default constructor.
-   */
-  SSSSVertex();
-  
-  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();

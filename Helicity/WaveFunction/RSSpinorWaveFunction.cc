@@ -17,12 +17,12 @@ using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
 // calculate the Wavefunction
-void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dirac) {
+void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
   LorentzRSSpinor<double> news;
   if(direction()==incoming) 
-    news=LorentzRSSpinor<double>(u_spinortype,dirac);
+    news=LorentzRSSpinor<double>(u_spinortype);
   else 
-    news=LorentzRSSpinor<double>(v_spinortype,dirac);
+    news=LorentzRSSpinor<double>(v_spinortype);
   unsigned int ix,iy;
   static double eps=1E-5;
   // check helicity and type
@@ -51,42 +51,19 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
     }
     // decide which definition of the spinors we are using
     SqrtEnergy eplusm,eplusp,upper[2],lower[2];
-    switch(dirac) {
-      // Haber lower energy
-    case HaberDRep:
-      eplusm = sqrt(2.*mass());
-      if(direction()==incoming) {
-	upper[0] = eplusm;
-	upper[1] = eplusm;
-	lower[0] = SqrtEnergy();
-	lower[1] = SqrtEnergy();
-      }
-      else {
-	upper[0] = SqrtEnergy();
-	upper[1] = SqrtEnergy();
-	lower[0] =-eplusm;
-	lower[1] = eplusm;
-      }
-      break;
-    case HELASDRep:
-      // HELAS
-      eplusp = sqrt(mass());
-      if(direction()==incoming) {
-	upper[0] = eplusp;
-	lower[0] = eplusp;
-	upper[1] = eplusp;
-	lower[1] = eplusp;
-      }
-      else {
-	upper[0] =-eplusp;
-	lower[0] = eplusp;
-	upper[1] = eplusp;
-	lower[1] =-eplusp;
-      }
-      break;
-      // invalid choice
-    default:
-      assert(false);
+    // HELAS
+    eplusp = sqrt(mass());
+    if(direction()==incoming) {
+      upper[0] = eplusp;
+      lower[0] = eplusp;
+      upper[1] = eplusp;
+      lower[1] = eplusp;
+    }
+    else {
+      upper[0] =-eplusp;
+      lower[0] = eplusp;
+      upper[1] = eplusp;
+      lower[1] =-eplusp;
     }
     // now construct the spinors
     complex<SqrtEnergy> spinor[4][2];
@@ -152,7 +129,7 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
 	  news(ix,iy)=UnitRemoval::InvSqrtE*vec[ix][2]*spinor[iy][1];
     }
     // boost the spinor to the lab frame
-    Boost boostv = getMomentum().boostVector();
+    Boost boostv = momentum().boostVector();
     if(boostv.mag()>eps) _wf=news.boost(boostv);
     else                 _wf=news;
   }
@@ -246,52 +223,30 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel,DiracRep dira
     }
     // decide which definition of the spinors we are using
     SqrtEnergy eplusm,eminusm,eplusp,eminusp,upper,lower;
-    switch(dirac){
-      // Haber lower energy
-    case HaberDRep:
-      eplusm = sqrt(pee+pmm);
-      eminusm = pabs/eplusm;
-      if(direction()==incoming) {
-	upper = eplusm;
-	if(ihel==3) lower = eminusm;
-	else        lower =-eminusm;
+    // HELAS
+    eplusp = sqrt(pee+pabs);
+    if(pmm!=ZERO) eminusp=pmm/eplusp;
+    else              eminusp=SqrtEnergy();
+    // set up the coefficients for the different cases
+    if(direction()==incoming) {
+      if(ihel==3) {
+	upper = eminusp;
+	lower = eplusp;
       }
       else {
-	upper = eminusm;
-	if(ihel==3) lower =-eplusm;
-	else        lower = eplusm;
+	upper = eplusp;
+	lower = eminusp;
       }
-      break;
-    case HELASDRep:
-      // HELAS
-      eplusp = sqrt(pee+pabs);
-      if(pmm!=ZERO) eminusp=pmm/eplusp;
-      else              eminusp=SqrtEnergy();
-      // set up the coefficients for the different cases
-      if(direction()==incoming) {
-	if(ihel==3) {
-	  upper = eminusp;
-	  lower = eplusp;
-	}
-	else {
-	  upper = eplusp;
-	  lower = eminusp;
-	}
+    }
+    else {
+      if(ihel==3) {
+	upper = -eplusp;
+	lower = eminusp;
       }
       else {
-	if(ihel==3) {
-	  upper = -eplusp;
-	  lower = eminusp;
-	}
-	else {
-	  upper = eminusp;
-	  lower =-eplusp;
-	}
+	upper = eminusp;
+	lower =-eplusp;
       }
-      break;
-      // invalid choice
-    default:
-      assert(false);
     }
     complex<SqrtEnergy> spinor[4]={upper*hel_wf[0],upper*hel_wf[1],
 				   lower*hel_wf[0],lower*hel_wf[1]};

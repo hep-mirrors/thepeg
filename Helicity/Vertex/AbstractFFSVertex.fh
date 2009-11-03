@@ -12,6 +12,11 @@ namespace ThePEG {
 
 class AbstractFFSVertex;
 
+namespace VertexType {
+  typedef unsigned T;
+  const T FFS = 221;
+}
+
   }
 }
 

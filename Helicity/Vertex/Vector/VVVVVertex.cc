@@ -36,12 +36,12 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
 			     const VectorWaveFunction & vec3,
 			     const VectorWaveFunction & vec4) {
   // workout the coupling
-  setCoupling(q2,vec1.getParticle(),vec2.getParticle(),
-	      vec3.getParticle(),vec4.getParticle());
-  Complex norm = getNorm();
+  setCoupling(q2,vec1.particle(),vec2.particle(),
+	      vec3.particle(),vec4.particle());
   Complex vertex,ii(0.,1.);
   // calculate the vertex
   // QCD type vertex
+  assert(_itype>=1&&_itype<=2);
   if(_itype==1) {
     // dot products we need
     Complex dotv1v2 = vec1.wave().dot(vec2.wave());
@@ -55,25 +55,23 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
       // dot products
       Complex dotv1v3 = vec1.wave().dot(vec3.wave());
       Complex dotv2v4 = vec4.wave().dot(vec2.wave());
-      complex<Energy> dotv1p13 = vec1.wave().dot(2.*vec3.getMomentum() +
-						 vec1.getMomentum());
-      complex<Energy> dotv2p24 = vec2.wave().dot(2.*vec4.getMomentum() +
-						 vec2.getMomentum());
-      complex<Energy> dotv3p13 = vec3.wave().dot(2.*vec1.getMomentum() +
-						 vec3.getMomentum());
-      complex<Energy> dotv4p24 = vec4.wave().dot(2.*vec2.getMomentum() +
-						 vec4.getMomentum());
+      complex<Energy> dotv1p13 = vec1.wave().dot(2.*vec3.momentum() +
+						 vec1.momentum());
+      complex<Energy> dotv2p24 = vec2.wave().dot(2.*vec4.momentum() +
+						 vec2.momentum());
+      complex<Energy> dotv3p13 = vec3.wave().dot(2.*vec1.momentum() +
+						 vec3.momentum());
+      complex<Energy> dotv4p24 = vec4.wave().dot(2.*vec2.momentum() +
+						 vec4.momentum());
       LorentzPolarizationVectorE veca = 
 	dotv3p13*vec1.wave() - dotv1p13*vec3.wave() +
-	dotv1v3*(vec3.getMomentum()-vec1.getMomentum());
+	dotv1v3*(vec3.momentum()-vec1.momentum());
       LorentzPolarizationVectorE vecb = 
 	dotv4p24*vec2.wave() - dotv2p24*vec4.wave() +
-	dotv2v4*(vec4.getMomentum()-vec2.getMomentum());
-      InvEnergy2 numerator = 1./(vec1.getMomentum()+vec3.getMomentum()).m2();
+	dotv2v4*(vec4.momentum()-vec2.momentum());
+      InvEnergy2 numerator = 1./(vec1.momentum()+vec3.momentum()).m2();
       vertex += numerator*veca.dot(vecb);
     }
-    // final coupling factors
-    vertex = -ii*norm*vertex;
   }
   // EW type vertex
   else if(_itype==2) {
@@ -99,42 +97,42 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
       if(iopt!=0) {
 	// dot products of momenta and wavefunction
 	complex<Energy> dotv1p13 =
-	  +vec1.wave().dot(vec1.getMomentum() + 2.*vec3.getMomentum() );
+	  +vec1.wave().dot(vec1.momentum() + 2.*vec3.momentum() );
 	complex<Energy> dotv1p14 =
-	  +vec1.wave().dot(vec1.getMomentum() + 2.*vec4.getMomentum() );
+	  +vec1.wave().dot(vec1.momentum() + 2.*vec4.momentum() );
 	complex<Energy> dotv2p23 =
-	  +vec2.wave().dot(vec2.getMomentum() + 2.*vec3.getMomentum() );
+	  +vec2.wave().dot(vec2.momentum() + 2.*vec3.momentum() );
 	complex<Energy> dotv2p24 =
-	  +vec2.wave().dot(vec2.getMomentum() + 2.*vec4.getMomentum() );
+	  +vec2.wave().dot(vec2.momentum() + 2.*vec4.momentum() );
 	complex<Energy> dotv3p31 = 
-	  +vec3.wave().dot(vec3.getMomentum() + 2.*vec1.getMomentum() );
+	  +vec3.wave().dot(vec3.momentum() + 2.*vec1.momentum() );
 	complex<Energy> dotv3p32 = 
-	  +vec3.wave().dot(vec3.getMomentum() + 2.*vec2.getMomentum() );
+	  +vec3.wave().dot(vec3.momentum() + 2.*vec2.momentum() );
 	complex<Energy> dotv4p41 = 
-	  +vec4.wave().dot(vec4.getMomentum() + 2.*vec1.getMomentum() );
+	  +vec4.wave().dot(vec4.momentum() + 2.*vec1.momentum() );
 	complex<Energy> dotv4p42 = 
-	  +vec4.wave().dot(vec4.getMomentum() + 2.*vec2.getMomentum() );
+	  +vec4.wave().dot(vec4.momentum() + 2.*vec2.momentum() );
 	LorentzPolarizationVectorE ja = 
-	  (vec3.getMomentum()-vec1.getMomentum())*dotv1v3
+	  (vec3.momentum()-vec1.momentum())*dotv1v3
 	  +dotv3p31*vec1.wave()-dotv1p13*vec3.wave();
 	LorentzPolarizationVectorE jb =
-	  (vec4.getMomentum()-vec2.getMomentum())*dotv2v4
+	  (vec4.momentum()-vec2.momentum())*dotv2v4
 	  +dotv4p42*vec2.wave()-dotv2p24*vec4.wave(); 
 	LorentzPolarizationVectorE jc =
-	  (vec4.getMomentum()-vec1.getMomentum())*dotv1v4
+	  (vec4.momentum()-vec1.momentum())*dotv1v4
 	  +dotv4p41*vec1.wave()-dotv1p14*vec4.wave();
 	LorentzPolarizationVectorE jd =
-	  (vec3.getMomentum()-vec2.getMomentum())*dotv2v3
+	  (vec3.momentum()-vec2.momentum())*dotv2v3
 	  +dotv3p32*vec2.wave()-dotv2p23*vec3.wave();
 	// dot products of these vectors
 	complex<Energy2> dotjajb = ja.dot(jb);
 	complex<Energy2> dotjcjd = jc.dot(jd);
-	complex<Energy2> dotjaq  = ja.dot(vec1.getMomentum()+vec3.getMomentum());
-	complex<Energy2> dotjbq  = jb.dot(vec1.getMomentum()+vec3.getMomentum());
-	complex<Energy2> dotjck  = jc.dot(vec1.getMomentum()+vec4.getMomentum());
-	complex<Energy2> dotjdk  = jd.dot(vec1.getMomentum()+vec4.getMomentum());
-	Energy2 q2 = (vec1.getMomentum()+vec3.getMomentum()).m2();
-	Energy2 k2 = (vec1.getMomentum()+vec4.getMomentum()).m2();
+	complex<Energy2> dotjaq  = ja.dot(vec1.momentum()+vec3.momentum());
+	complex<Energy2> dotjbq  = jb.dot(vec1.momentum()+vec3.momentum());
+	complex<Energy2> dotjck  = jc.dot(vec1.momentum()+vec4.momentum());
+	complex<Energy2> dotjdk  = jd.dot(vec1.momentum()+vec4.momentum());
+	Energy2 q2 = (vec1.momentum()+vec3.momentum()).m2();
+	Energy2 k2 = (vec1.momentum()+vec4.momentum()).m2();
 	// compute the term we need
 	Energy2 mass2;
 	for(int ix=0;ix<2;++ix) {
@@ -172,42 +170,42 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
       if(iopt!=0) {
 	// dot products of momenta and wavefunction
 	complex<Energy> dotv1p12 =
-	  vec1.wave().dot(vec1.getMomentum() + 2.*vec2.getMomentum() );
+	  vec1.wave().dot(vec1.momentum() + 2.*vec2.momentum() );
 	complex<Energy> dotv1p14 =
-	  vec1.wave().dot(vec1.getMomentum() + 2.*vec4.getMomentum() );
+	  vec1.wave().dot(vec1.momentum() + 2.*vec4.momentum() );
 	complex<Energy> dotv3p32 =
-	  vec3.wave().dot(vec3.getMomentum() + 2.*vec2.getMomentum() );
+	  vec3.wave().dot(vec3.momentum() + 2.*vec2.momentum() );
 	complex<Energy> dotv3p34 =
-	  vec3.wave().dot(vec3.getMomentum() + 2.*vec4.getMomentum() );
+	  vec3.wave().dot(vec3.momentum() + 2.*vec4.momentum() );
 	complex<Energy> dotv2p21 = 
-	  vec2.wave().dot(vec2.getMomentum() + 2.*vec1.getMomentum() );
+	  vec2.wave().dot(vec2.momentum() + 2.*vec1.momentum() );
 	complex<Energy> dotv2p23 = 
-	  vec2.wave().dot(vec2.getMomentum() + 2.*vec3.getMomentum() );
+	  vec2.wave().dot(vec2.momentum() + 2.*vec3.momentum() );
 	complex<Energy> dotv4p41 = 
-	  vec4.wave().dot(vec4.getMomentum() + 2.*vec1.getMomentum() );
+	  vec4.wave().dot(vec4.momentum() + 2.*vec1.momentum() );
 	complex<Energy> dotv4p43 = 
-	  vec4.wave().dot(vec4.getMomentum() + 2.*vec3.getMomentum() );
+	  vec4.wave().dot(vec4.momentum() + 2.*vec3.momentum() );
 	LorentzPolarizationVectorE ja = 
-	  (vec2.getMomentum() - vec1.getMomentum() )*dotv1v2 +
+	  (vec2.momentum() - vec1.momentum() )*dotv1v2 +
 	  dotv2p21*vec1.wave() - dotv1p12*vec2.wave();
 	LorentzPolarizationVectorE jb = 
-	  (vec4.getMomentum() - vec3.getMomentum())*dotv3v4 +
+	  (vec4.momentum() - vec3.momentum())*dotv3v4 +
 	  dotv4p43*vec3.wave() - dotv3p34*vec4.wave();
 	LorentzPolarizationVectorE jc = 
-	  (vec4.getMomentum() - vec1.getMomentum())*dotv1v4 +
+	  (vec4.momentum() - vec1.momentum())*dotv1v4 +
 	  dotv4p41*vec1.wave() - dotv1p14*vec4.wave();
 	LorentzPolarizationVectorE jd = 
-	  (vec2.getMomentum() - vec3.getMomentum())*dotv2v3 + 
+	  (vec2.momentum() - vec3.momentum())*dotv2v3 + 
 	  dotv2p23*vec3.wave() - dotv3p32*vec2.wave();
 	// dot products of these vectors
 	complex<Energy2> dotjajb = ja.dot(jb);
 	complex<Energy2> dotjcjd = jc.dot(jd);
-	complex<Energy2> dotjaq  = ja.dot(vec1.getMomentum()+vec2.getMomentum());
-	complex<Energy2> dotjbq  = jb.dot(vec1.getMomentum()+vec2.getMomentum());
-	complex<Energy2> dotjck  = jc.dot(vec1.getMomentum()+vec4.getMomentum());
-	complex<Energy2> dotjdk  = jd.dot(vec1.getMomentum()+vec4.getMomentum());
-	Energy2 q2 = (vec1.getMomentum()+vec2.getMomentum()).m2();
-	Energy2 k2 = (vec1.getMomentum()+vec4.getMomentum()).m2();
+	complex<Energy2> dotjaq  = ja.dot(vec1.momentum()+vec2.momentum());
+	complex<Energy2> dotjbq  = jb.dot(vec1.momentum()+vec2.momentum());
+	complex<Energy2> dotjck  = jc.dot(vec1.momentum()+vec4.momentum());
+	complex<Energy2> dotjdk  = jd.dot(vec1.momentum()+vec4.momentum());
+	Energy2 q2 = (vec1.momentum()+vec2.momentum()).m2();
+	Energy2 k2 = (vec1.momentum()+vec4.momentum()).m2();
 	// compute the term we need
 	Energy2 mass2;
 	for(int ix=0;ix<2;++ix) {
@@ -245,42 +243,42 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
       if(iopt!=0) {
 	// dot products of momenta and wavefunction
 	complex<Energy> dotv1p12 =
-	  vec1.wave().dot(vec1.getMomentum() + 2.*vec2.getMomentum() );
+	  vec1.wave().dot(vec1.momentum() + 2.*vec2.momentum() );
 	complex<Energy> dotv1p13 =
-	  vec1.wave().dot(vec1.getMomentum() + 2.*vec3.getMomentum() );
+	  vec1.wave().dot(vec1.momentum() + 2.*vec3.momentum() );
 	complex<Energy> dotv2p24 = 
-	  vec2.wave().dot(vec2.getMomentum() + 2.*vec4.getMomentum() );
+	  vec2.wave().dot(vec2.momentum() + 2.*vec4.momentum() );
 	complex<Energy> dotv2p21 = 
-	  vec2.wave().dot(vec2.getMomentum() + 2.*vec1.getMomentum() );
+	  vec2.wave().dot(vec2.momentum() + 2.*vec1.momentum() );
 	complex<Energy> dotv3p31 = 
-	  vec3.wave().dot(vec3.getMomentum() + 2.*vec1.getMomentum() );
+	  vec3.wave().dot(vec3.momentum() + 2.*vec1.momentum() );
 	complex<Energy> dotv3p34 =
-	  vec3.wave().dot(vec3.getMomentum() + 2.*vec4.getMomentum() );
+	  vec3.wave().dot(vec3.momentum() + 2.*vec4.momentum() );
 	complex<Energy> dotv4p43 = 
-	  vec4.wave().dot(vec4.getMomentum() + 2.*vec3.getMomentum() );
+	  vec4.wave().dot(vec4.momentum() + 2.*vec3.momentum() );
 	complex<Energy> dotv4p42 =
-	  vec4.wave().dot(vec4.getMomentum() + 2.*vec2.getMomentum() );
+	  vec4.wave().dot(vec4.momentum() + 2.*vec2.momentum() );
 	LorentzPolarizationVectorE ja = 
-	  (vec2.getMomentum()-vec1.getMomentum())*dotv1v2
+	  (vec2.momentum()-vec1.momentum())*dotv1v2
 	  +dotv2p21*vec1.wave()-dotv1p12*vec2.wave();
 	LorentzPolarizationVectorE jb = 
-	  (vec3.getMomentum()-vec4.getMomentum())*dotv3v4
+	  (vec3.momentum()-vec4.momentum())*dotv3v4
 	  +dotv3p34*vec4.wave()-dotv4p43*vec3.wave();
 	LorentzPolarizationVectorE jc = 
-	  (vec3.getMomentum()-vec1.getMomentum())*dotv1v3
+	  (vec3.momentum()-vec1.momentum())*dotv1v3
 	  +dotv3p31*vec1.wave()-dotv1p13*vec3.wave();
 	LorentzPolarizationVectorE jd = 
-	  (vec2.getMomentum()-vec4.getMomentum())*dotv2v4
+	  (vec2.momentum()-vec4.momentum())*dotv2v4
 	  +dotv2p24*vec4.wave()-dotv4p42*vec2.wave();
 	// dot products of these vectors
 	complex<Energy2> dotjajb = ja.dot(jb);
 	complex<Energy2> dotjcjd = jc.dot(jd);
-	complex<Energy2> dotjaq = ja.dot(vec1.getMomentum()+vec2.getMomentum());
-	complex<Energy2> dotjbq = jb.dot(vec1.getMomentum()+vec2.getMomentum());
-	complex<Energy2> dotjck = jc.dot(vec1.getMomentum()+vec3.getMomentum());
-	complex<Energy2> dotjdk = jd.dot(vec1.getMomentum()+vec3.getMomentum());
-	Energy2 q2 = (vec1.getMomentum()+vec2.getMomentum()).m2();
-	Energy2 k2 = (vec1.getMomentum()+vec3.getMomentum()).m2();
+	complex<Energy2> dotjaq = ja.dot(vec1.momentum()+vec2.momentum());
+	complex<Energy2> dotjbq = jb.dot(vec1.momentum()+vec2.momentum());
+	complex<Energy2> dotjck = jc.dot(vec1.momentum()+vec3.momentum());
+	complex<Energy2> dotjdk = jd.dot(vec1.momentum()+vec3.momentum());
+	Energy2 q2 = (vec1.momentum()+vec2.momentum()).m2();
+	Energy2 k2 = (vec1.momentum()+vec3.momentum()).m2();
 	// compute the term we need
 	Energy2 mass2;
 	for(int ix=0;ix<2;++ix) {
@@ -308,13 +306,7 @@ Complex VVVVVertex::evaluate(Energy2 q2 , int iopt,
       throw HelicityConsistencyError() << "Unknown order of particles in "
 				       << "VVVVVertex::evaluate()"
 				       << Exception::runerror;
-    // final coupling factors
-    vertex = -ii*norm*vertex;
   }
-  else
-    throw HelicityConsistencyError() << "Unknown order of particles in "
-				     << "VVVVVertex::evaluate()"
-				     << Exception::runerror;
   // return the answer
-  return vertex;
+  return  -ii*norm()*vertex;
 }
