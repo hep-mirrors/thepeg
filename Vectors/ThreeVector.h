@@ -91,9 +91,8 @@ public:
   template <typename U>
   Value2 perp2(const ThreeVector<U> & p) const {
     typedef typename BinaryOpTraits<U,U>::MulT pSqType;
-    const pSqType zeroPSq = pSqType();
     const pSqType pMag2 = p.mag2();
-    assert( pMag2 > zeroPSq );
+    assert( pMag2 > pSqType() );
     typename BinaryOpTraits<Value,U>::MulT
       ss = this->dot(p);
     Value2 ret = mag2() - sqr(ss)/pMag2;

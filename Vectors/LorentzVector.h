@@ -235,7 +235,8 @@ public:
   double cosTheta() const 
   {
     Value ptot = rho();
-    return ptot == Value() ? sqrt(-1.0) : double(z()/ptot);
+    assert( ptot > Value() );
+    return z() / ptot;
   }
 
   /// Azimuthal angle.
