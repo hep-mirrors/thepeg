@@ -82,12 +82,10 @@ void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
       hel_wf[1] = denominator*rtppluspz;
     }
   }
-  // decide which definition of the spinors we are using
-  SqrtEnergy eplusm,eminusm,eplusp,eminusp;
-  SqrtEnergy upper=SqrtEnergy(),lower=SqrtEnergy();
-  // HELAS
-  eplusp = sqrt(pee+pabs);
-  eminusp = (pmm!=ZERO) ? pmm/eplusp : SqrtEnergy();
+
+  SqrtEnergy upper,lower;
+  SqrtEnergy eplusp = sqrt(pee+pabs);
+  SqrtEnergy eminusp = ( pmm != ZERO ) ? pmm/eplusp : ZERO;
   // set up the coefficients for the different cases
   if(dir==incoming) {
     if(ihel==1) {

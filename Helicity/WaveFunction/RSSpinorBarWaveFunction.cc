@@ -47,9 +47,9 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
       hel_wf[1][1] = 1.;
     }
     // decide which definition of the spinors we are using
-    SqrtEnergy eplusm,eplusp,upper[2],lower[2];
+    SqrtEnergy upper[2],lower[2];
     // HELAS
-    eplusp = sqrt(mass());
+    SqrtEnergy eplusp = sqrt(mass());
     if(direction()==incoming) {
       upper[0] = eplusp;
       lower[0] =-eplusp;
@@ -217,11 +217,10 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
       }
     }
     // decide which definition of the spinors we are using
-    SqrtEnergy eplusm,eminusm,eplusp,eminusp,upper,lower;
+    SqrtEnergy upper,lower;
     // HELAS
-    eplusp = sqrt(pee+pabs);
-    if(pmm!=ZERO) eminusp=pmm/eplusp;
-    else              eminusp=SqrtEnergy();
+    SqrtEnergy eplusp = sqrt(pee+pabs);
+    SqrtEnergy eminusp = ( pmm == ZERO ) ? ZERO : pmm/eplusp;
     // set up the coefficients for the different cases
     if(direction()==incoming) {
       if(ihel==3) {
