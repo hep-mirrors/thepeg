@@ -115,6 +115,73 @@ public:
   //@}
 
   /**
+   *  Special members for off-shell fermion wavefunctions with massless
+   *  gauge bosons at small angles in the small angle limit for
+   *  numerical accuracy. In order to get sufficient accuracy it is
+   *  assumed that the fermion lies along either the positive or negative z
+   *  axis.
+   */
+  //@{
+  /** Small angle approx for an off-shell spinor
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param iopt Option of the shape of the Breit-Wigner for the off-shell spinor.
+   * @param out The ParticleData pointer for the off-shell spinor.
+   * @param sp1   The wavefunction for the ferimon.
+   * @param vec3  The wavefunction for the vector.
+   * @param fhel Helicity of the fermion
+   * @param vhel Helicity of the vector
+   * @param ctheta   The cosine of the 
+   *                 polar angle of the photon with respect to the fermion
+   * @param phi      The azimuthal angle of the photon with respect to the fermion
+   * @param stheta   The sine of the
+   *                 polar angle of the photon with respect to the fermion
+   * @param includeEikonal Whether or not to include the eikonal piece
+   * @param direction Whether fermion along + or - z direction
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
+   */
+  virtual SpinorWaveFunction evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
+					   const SpinorWaveFunction & sp1,
+					   const VectorWaveFunction & vec3,
+					   unsigned int fhel, unsigned int vhel,
+					   double ctheta, double phi, double stheta,
+					   bool includeEikonal = true,
+					   SmallAngleDirection direction = PostiveZDirection,
+					   Energy mass=-GeV, Energy width=-GeV);
+
+  /** Small angle approx for an off-shell spinor
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param iopt Option of the shape of the Breit-Wigner for the off-shell spinor.
+   * @param out The ParticleData pointer for the off-shell spinor.
+   * @param sbar2 The wavefunction for the antifermion.
+   * @param vec3  The wavefunction for the vector.
+   * @param fhel Helicity of the fermion
+   * @param vhel Helicity of the vector
+   * @param ctheta   The cosine of the 
+   *                 polar angle of the photon with respect to the fermion
+   * @param phi      The azimuthal angle of the photon with respect to the fermion
+   * @param stheta   The sine of the
+   *                 polar angle of the photon with respect to the fermion
+   * @param includeEikonal Whether or not to include the eikonal piece
+   * @param direction Whether fermion along + or - z direction
+   * @param mass The mass of the off-shell particle if not taken from the ParticleData
+   * object
+   * @param width The width of the off-shell particle if not taken from the ParticleData
+   * object
+   */
+  virtual SpinorBarWaveFunction evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
+					      const SpinorBarWaveFunction & sbar2,
+					      const VectorWaveFunction & vec3,
+					      unsigned int fhel, unsigned int vhel,
+					      double ctheta, double phi, double stheta,
+					      bool includeEikonal = true,
+					      SmallAngleDirection direction = PostiveZDirection,
+					      Energy mass=-GeV, Energy width=-GeV);
+  //@}
+
+  /**
    * Calculate the couplings. This method is virtual and must be implemented in 
    * classes inheriting from this.
    * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
@@ -123,6 +190,7 @@ public:
    * @param part3 The ParticleData pointer for the third  particle.
    */
   virtual void setCoupling(Energy2 q2,tcPDPtr part1,tcPDPtr part2,tcPDPtr part3)=0;
+
   /**
    * Get the Couplings 
    */

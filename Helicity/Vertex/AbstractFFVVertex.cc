@@ -20,4 +20,26 @@ void AbstractFFVVertex::Init() {
      " fermion-fermion-vector interactions");
 
 }
+SpinorWaveFunction 
+AbstractFFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
+				 const SpinorWaveFunction & sp1,
+				 const VectorWaveFunction & vec3,
+				 unsigned int , unsigned int ,
+				 double , double , double ,
+				 bool ,
+				 SmallAngleDirection ,
+				 Energy mass, Energy width) {
+  return evaluate(q2,iopt,out,sp1,vec3,mass,width);
+}
 
+SpinorBarWaveFunction 
+AbstractFFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
+				 const SpinorBarWaveFunction & sbar2,
+				 const VectorWaveFunction & vec3,
+				 unsigned int , unsigned int ,
+				 double , double , double ,
+				 bool ,
+				 SmallAngleDirection ,
+				 Energy mass, Energy width) {
+  return evaluate(q2,iopt,out,sbar2,vec3,mass,width);
+}

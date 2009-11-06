@@ -209,3 +209,262 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   }
   return VectorWaveFunction(pout,out,vec[0],vec[1],vec[2],vec[3]);
 }
+
+SpinorWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
+					    const SpinorWaveFunction & sp,
+					    const VectorWaveFunction & vec,
+					    unsigned int fhel, unsigned int vhel,
+					    double ctheta, double phi, double stheta,
+					    bool includeEikonal,
+					    SmallAngleDirection direction,
+					    Energy mass, Energy) {
+  assert(fhel <= 1);
+  assert( vhel == 0 || vhel == 2 );
+  SpinorWaveFunction output;
+  // first calculate the couplings
+  setCoupling(q2,sp.particle(),out,vec.particle());
+  Complex ii(0.,1.);
+  if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
+  Lorentz5Momentum pout = sp.momentum()+vec.momentum();
+  assert(sp.direction()!=intermediate);
+  // helicity of the boson
+  double lam = double(vhel)-1.;
+  // energy of the boson
+  Energy Eg = abs(vec.momentum().e());
+  // energy of the fermion
+  Energy Ef = abs(sp .momentum().e());
+  // energy fraction of photon
+  double x = Eg/Ef;
+  // velocity of the fermon
+  double beta = sqrt(1.-sqr(mass/Ef));
+  // dimensionless versions of the variables
+  double dm  = mass*UnitRemoval::InvE;
+  double dEf =   Ef*UnitRemoval::InvE;
+  double rE = sqrt(.5*dEf);
+  // calculation of propagator accurate as beta->1 and theta -> 0
+  Energy2 dot = 2.*Ef*Eg*(sqr(mass/Ef)/(1.+beta)*ctheta 
+			  + sqr(stheta)/(1.+ctheta) );
+  Complex fact= -norm()*UnitRemoval::E2/dot;
+  // phase factor
+  Complex ephig = cos(phi )+ii*sin(phi );
+  // calculation of the spinor
+  Complex s1(0.),s2(0.),s3(0.),s4(0.);
+  // u-type spinor
+  if(sp.wave().Type()==u_spinortype) {
+    // fermion along +z
+    if(direction==PostiveZDirection) {
+      if(fhel==0) {
+	s1 = +x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s2 =-rE*dEf*sqrt(1.+beta)*stheta*
+	  (+x*(1.+lam)-(includeEikonal ? 2.*beta*lam : 0. ));
+	s3 = +x*rE*dm/ephig*(lam-1.)*(1.+ctheta)/sqrt(1.+beta);
+	s4 = +rE*dm/sqrt(1.+beta)*stheta*
+	   (-x*(1.-lam)+(includeEikonal ? 2.*beta*lam : 0. ));
+      }
+      else if(fhel==1) {     
+	s1 = +rE*dm/sqrt(1.+beta)*stheta*
+	  (+x*(1.+lam)+(includeEikonal ? 2.*beta*lam : 0. ));
+	s2 = -x*rE*dm*ephig*(lam+1.)*(1.+ctheta)/sqrt(1.+beta);
+	s3 = -rE*dEf*sqrt(1.+beta)*stheta*
+	  (-x*(1.-lam)-(includeEikonal ? 2.*beta*lam : 0. ));
+	s4 = -x*rE*dEf*sqrt(1.+beta)*ephig*(lam-1.)*sqr(stheta)/(1.+ctheta);
+      }
+    }
+    // fermion along -z
+    else {
+      if(fhel==0) {
+	s1 = -rE*dEf*sqrt(1.+beta)*stheta*
+	  (+x*(1.+lam)-(includeEikonal ? 2.*beta*lam : 0. ));
+	s2 = -x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s3 = rE*dm/sqrt(1.+beta)*stheta*
+	  (-x*(1.-lam)+(includeEikonal ? 2.*beta*lam : 0. ));
+	s4 = -x*rE*dm/ephig*(-1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+      }
+      else if(fhel==1) { 
+	s1 =-x*rE*dm*ephig*(1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+	s2 =-rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+	s3 = x*rE*dEf*sqrt(1.+beta)*ephig*(1.-lam)*sqr(stheta)/(1.+ctheta);
+	s4 =-rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+      }
+    }
+  }
+  // v-type spinor
+  else if(sp.wave().Type()==v_spinortype) {
+    // fermion along +z
+    if(direction==PostiveZDirection) {
+      if(fhel==0) {
+	s1 = rE*dm/sqrt(1.+beta)*stheta*
+	  (-x*(1.+lam) + ( includeEikonal ? 2.*beta*lam : 0. ));
+	s2 = x*rE*dm*ephig*(lam+1.)*(1.+ctheta)/sqrt(1.+beta);
+	s3 = rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) - ( includeEikonal ? 2.*beta*lam : 0. ));
+	s4 = x*rE*dEf*sqrt(1.+beta)*ephig*(1.-lam)*sqr(stheta)/(1.+ctheta);
+      }
+      else if(fhel==1) {
+	s1 = x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s2 =-rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) + (includeEikonal ? 2.*beta*lam : 0.));
+	s3 = x*rE*dm/ephig*(1.-lam)*(1.+ctheta)/sqrt(1.+beta);
+	s4 = rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+      }
+    }
+    // fermion aling -z
+    else {
+      if(fhel==0) {
+	s1 = x*rE*dm*ephig*(1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+	s2 = rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) - ( includeEikonal ? 2.*beta*lam : 0. ));
+	s3 = x*rE*dEf*sqrt(1.+beta)*ephig*(1.-lam)*sqr(stheta) / (1.+ctheta);
+	s4 =-rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) - ( includeEikonal ? 2.*beta*lam : 0. ));
+
+      }
+      else if(fhel==1) {
+	s1 =-rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) + ( includeEikonal ? 2.*beta*lam : 0. ));
+	s2 =-x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s3 = rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + ( includeEikonal ? 2.*beta*lam : 0. ));
+	s4 =-x*rE*dm/ephig*(1.-lam)*(1.+ctheta)/sqrt(1.+beta);
+      }
+    }
+  }
+  s1 *= -fact;
+  s2 *= -fact;
+  s3 *= -fact;
+  s4 *= -fact;  
+  return SpinorWaveFunction(pout,out,s1,s2,s3,s4);
+}
+
+
+SpinorBarWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
+					       const SpinorBarWaveFunction & sbar,
+					       const VectorWaveFunction & vec,
+					       unsigned int fhel, unsigned int vhel,
+					       double ctheta, double phi, double stheta,
+					       bool includeEikonal,
+					       SmallAngleDirection direction,
+					       Energy mass, Energy) {
+  assert(fhel <= 1);
+  assert( vhel == 0 || vhel == 2 );
+  SpinorBarWaveFunction output;
+  // first calculate the couplings
+  setCoupling(q2,out,sbar.particle(),vec.particle());
+  Complex ii(0.,1.);
+  if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
+  Lorentz5Momentum pout = sbar.momentum()+vec.momentum();
+  assert(sbar.direction()!=intermediate);
+  // extract the momenta of the fermion and boson
+  Lorentz5Momentum pf = -sbar.momentum();
+  Lorentz5Momentum pg = -vec .momentum();
+  // helicity of the boson
+  double lam = double(vhel)-1.;
+  // energies and velocities
+  Energy Ef = abs(sbar.momentum().e());
+  Energy Eg = abs(vec .momentum().e());
+  double x = Eg/Ef;
+  double beta = sqrt(1.-sqr(mass/Ef));
+  // calculation of propagator accurate as beta->1 and theta -> 0
+  Energy2 dot = 2.*Ef*Eg*(sqr(mass/Ef)/(1.+beta)*ctheta 
+			  + sqr(stheta)/(1.+ctheta) );
+  Complex fact= -norm()*UnitRemoval::E2/dot;
+  // calculation of the spinor
+  Complex s1(0.),s2(0.),s3(0.),s4(0.);
+  Complex ephig = cos(phi )+ii*sin(phi );
+  double dm  = mass*UnitRemoval::InvE;
+  double dEf =   Ef*UnitRemoval::InvE;
+  double rE = sqrt(.5*dEf);
+  // u-type spinor
+  if(sbar.wave().Type()==u_spinortype) {
+    // fermion along +z
+    if(direction==PostiveZDirection) {
+      if(fhel==0) {    
+	s1 = x*rE*dm*ephig*(1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+	s2 = rE*dm/sqrt(1.+beta)*stheta*
+	  (+x*(1.+lam) - (includeEikonal ? 2.*beta*lam : 0. ));
+	s3 = -x*rE*dEf*sqrt(1.+beta)*ephig*(1.-lam)*sqr(stheta)/(1.+ctheta);
+	s4 = rE*dEf*sqrt(1.+beta)*stheta*
+	  (+x*(1.-lam) - (includeEikonal ? 2.*beta*lam : 0. ));
+      }
+      else if(fhel==1) {
+	s1 = -rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+	s2 = -x*rE*dEf*sqrt(1.+beta)/ephig*(lam+1.)*sqr(stheta)/(1.+ctheta);
+	s3 =-rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+	s4 = -x*rE*dm/ephig*(lam-1.)*(1.+ctheta)/sqrt(1.+beta);
+
+
+	s4 = rE*dm*(1.+ctheta)/ephig*x*(1.-lam)/sqrt(1.+beta);
+      }
+    }
+    // fermion aling -z
+    else {
+      if(fhel==0) {
+	s1 =  rE*dm/sqrt(1.+beta)*stheta*
+	  (+x*(1.+lam) - (includeEikonal ? 2.*beta*lam : 0. ));
+	s2 = -x*rE*dm*ephig*(1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+	s3 = rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) - (includeEikonal ? 2.*beta*lam : 0. ));
+	s4 = -x*rE*dEf*sqrt(1.+beta)*ephig*(lam-1.)*sqr(stheta)/(1.+ctheta);
+      }
+      else if(fhel==1) {
+	s1 = -x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s2 = rE*dEf*sqrt(1.+beta)*stheta*
+	  (+x*(1.+lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+	s3 =-x*rE*dm/ephig*(lam-1.)*(1.+ctheta)/sqrt(1.+beta);
+	s4 = rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+      }
+    }
+  }
+  // v-type spinor
+  else if(sbar.wave().Type()==v_spinortype) {
+    // anti fermion along +z
+    if(direction==PostiveZDirection) {
+      if(fhel==0) {    
+	s1 = -rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) - (includeEikonal ?  2.*beta*lam : 0. ));
+	s2 = -x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s3 = rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) - (includeEikonal ?  2.*beta*lam : 0. ));
+	s4 =-x*rE*dm/ephig*(1.-lam)*(1.+ctheta)/sqrt(1.+beta);
+      }
+      else if(fhel==1) {
+	s1 =-x*rE*dm*ephig*(1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+	s2 =-rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) + (includeEikonal ?  2.*beta*lam : 0. ));
+	s3 =-x*rE*dEf*sqrt(1.+beta)*ephig*(1.-lam)*sqr(stheta)/(1.+ctheta);
+	s4 = rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + (includeEikonal ?  2.*beta*lam : 0. ));
+      }
+    }
+    // anti fermion aling -z
+    else {
+      if(fhel==0) {
+	s1 = -x*rE*dEf*sqrt(1.+beta)/ephig*(1.+lam)*sqr(stheta)/(1.+ctheta);
+	s2 = rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) - (includeEikonal ? 2.*beta*lam : 0. ));
+	s3 = x*rE*dm/ephig*(-1.+lam)*(1.+ctheta)/sqrt(1.+beta);
+	s4 =-rE*dm/sqrt(1.+beta)*stheta*
+	  (+x*(1.-lam) - (includeEikonal ? 2.*beta*lam : 0. ));
+      }
+      else if(fhel==1) {
+	s1 =-rE*dm/sqrt(1.+beta)*stheta*
+	  ( x*(1.+lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+	s2 = x*rE*dm*ephig*(lam+1.)*(1.+ctheta)/sqrt(1.+beta);
+	s3 = rE*dEf*sqrt(1.+beta)*stheta*
+	  ( x*(1.-lam) + (includeEikonal ? 2.*beta*lam : 0. ));
+	s4 =-x*rE*dEf*sqrt(1.+beta)*ephig*(lam-1.)*sqr(stheta)/(1.+ctheta);
+      }
+    }
+  }
+  s1 *= -fact;
+  s2 *= -fact;
+  s3 *= -fact;
+  s4 *= -fact; 
+  return SpinorBarWaveFunction(pout,out,s1,s2,s3,s4);
+}
