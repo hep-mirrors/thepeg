@@ -313,6 +313,10 @@ void EventGenerator::dofinish() {
 
   theExceptions.clear();
 
+  log() << endl << "Miscellaneous output from modules to the standard output:\n\n"
+	<< theMiscStream.str();
+  theMiscStream.str("");
+
 }
 
 void EventGenerator::finally() {
@@ -719,10 +723,11 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << theQuickParticles << theQuickSize << match << usedset
      << ieve << weightSum << theDebugLevel << printEvent << dumpPeriod << debugEvent
      << maxWarnings << maxErrors << theCurrentEventHandler
-     << theCurrentStepHandler << useStdout;
+     << theCurrentStepHandler << useStdout << theMiscStream.str();
 }
 
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
+  string dummy;
   is >> theDefaultObjects >> theLocalParticles >> theStandardModel
      >> theStrategy >> theRandom >> theEventHandler >> theAnalysisHandlers
      >> theHistogramFactory >> theEventManipulator >> thePath >> theRunName
@@ -730,7 +735,8 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
      >> ieve >> weightSum >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
-     >> theCurrentStepHandler >> useStdout;
+     >> theCurrentStepHandler >> useStdout >> dummy;
+  theMiscStream.str(dummy);
   theObjects.clear();
   for ( ObjectMap::iterator it = theObjectMap.begin();
 	it != theObjectMap.end(); ++it ) theObjects.insert(it->second);

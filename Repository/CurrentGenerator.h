@@ -157,6 +157,43 @@ public:
     return current().getDefault<T>();
   }
 
+public:
+
+  /**
+   * Class used to temporarily redirect a given ostream to the misc()
+   * stream of the current EventGenerator.
+   */
+  class Redirect {
+
+  public:
+
+    /**
+     * Constructor taking the stream to be redirected as input.
+     */
+    Redirect(ostream & os) : theStream(&os), theBuffer(os.rdbuf()) {
+      theStream->rdbuf(current().misc().rdbuf());
+    }
+
+    /**
+     * The destructor which restores the original destination of the
+     * stream.
+     */
+    ~Redirect() {
+      theStream->rdbuf(theBuffer);
+    }
+
+    /**
+     * The stream which is redirected.
+     */
+    ostream * theStream;
+
+    /**
+     * The original buffer of the redirected stream.
+     */
+    std::streambuf * theBuffer;
+
+  };
+
 private:
 
   /**

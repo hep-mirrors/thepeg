@@ -360,6 +360,15 @@ public:
   ostream & log();
 
   /**
+   * Return a reference to a stream to be used to redirect cout for
+   * external modules which prints out messages there. The output will
+   * instead be appended to the log() stream at the end of the run.
+   */
+  ostream & misc() {
+    return theMiscStream;
+  }
+
+  /**
    * Return a reference to the stream connected to the filea for
    * references from used objects. If no file is connected,
    * BaseRepository::cout() will be used instead.
@@ -891,6 +900,13 @@ private:
    * A reference to the reference file stream.
    */
   ofstream theReffile;
+
+  /**
+   * A stream to be used to redirect cout for external modules which
+   * prints out messages there. The output will instead be appended to
+   * the log() stream at the end of the run.
+   */
+  ostringstream theMiscStream;
 
   /**
    * Number of events to be generated in this run.
