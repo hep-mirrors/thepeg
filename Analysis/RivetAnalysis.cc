@@ -13,6 +13,7 @@
 #include "ThePEG/Vectors/HepMCConverter.h"
 #include "ThePEG/Config/HepMCHelper.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
 
@@ -27,6 +28,7 @@ void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int st
   // convert to hepmc
   HepMC::GenEvent * hepmc = ThePEG::HepMCConverter<HepMC::GenEvent>::convert(*event);
   // analyse the event
+  CurrentGenerator::Redirect stdout(cout);
   _rivet->analyze(*hepmc);
   // delete hepmc event
   delete hepmc;
@@ -78,6 +80,7 @@ void RivetAnalysis::Init() {
 
 void RivetAnalysis::dofinish() {
   AnalysisHandler::dofinish();
+  CurrentGenerator::Redirect stdout(cout);
   _rivet->setCrossSection(generator()->integratedXSec()/picobarn);
   _rivet->finalize();
   _rivet->tree().commit();
@@ -90,6 +93,7 @@ void RivetAnalysis::doinitrun() {
 			      << "RivetAnalysis::doinitrun()"
 			      << ThePEG::Exception::runerror;
   // create Rivet analysis handler
+  CurrentGenerator::Redirect stdout(cout);
   string fname = filename;
   if ( fname.empty() ) fname = generator()->runName();
   _rivet = new Rivet::AnalysisHandler(fname);
