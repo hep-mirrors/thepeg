@@ -225,6 +225,17 @@ private:
    */
   void calculateWaveFunction(unsigned int ihel);
 
+
+public:
+
+  /**
+   *  Perform the Lorentz transformation of the wave function
+   */
+  void transform(const LorentzRotation & r) {
+    _wf.transform(r);
+    transformMomentum(r);
+  }
+
 public:
 
   /**

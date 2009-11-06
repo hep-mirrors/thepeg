@@ -154,6 +154,15 @@ public:
   void direction(ThePEG::Helicity::Direction in) {_dir=in;} 
   //@}
 
+protected:
+  
+  /**
+   *  Perform the Lorentz transformation of the wave function
+   */
+  void transformMomentum(const LorentzRotation & r) {
+    _momentum.transform(r);
+  }
+
 private:
 
   /**

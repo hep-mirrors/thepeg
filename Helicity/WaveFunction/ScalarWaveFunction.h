@@ -100,6 +100,12 @@ public:
    */
   const Complex & wave() const {return _wf;}
 
+public:
+
+  void transform(const LorentzRotation & r) {
+    transformMomentum(r);
+  }
+
 private:
 
   /**
