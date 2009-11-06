@@ -1,5 +1,8 @@
 2009-11-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Repository/EventGenerator.cc: log() stream now points at
+	std::cout instead of std::clog when no filename is given.
+
 	* Repository/EventGenerator.h: Added function to get the
 	'useStdout' boolean from the Generator.
 

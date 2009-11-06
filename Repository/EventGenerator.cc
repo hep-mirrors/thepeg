@@ -783,7 +783,7 @@ ostream & EventGenerator::out() {
 }
 
 ostream & EventGenerator::log() {
-  return logfile().is_open()? logfile(): BaseRepository::clog();
+  return logfile().is_open()? logfile(): BaseRepository::cout();
 }
 
 ostream & EventGenerator::ref() {
