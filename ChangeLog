@@ -1,3 +1,8 @@
+2009-11-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* m4/vl_readline.m4: Readline support can be switched off at configure
+	time with '--disable-readline'.
+
 2009-11-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Vectors/LorentzVector.h: Replaced nan with assert in

@@ -2,12 +2,23 @@ dnl http://autoconf-archive.cryp.to/vl_lib_readline.html
 dnl
 dnl Copyright © 2008 Ville Laurikari <vl@iki.fi>
 dnl
+dnl Modifications for ThePEG: 
+dnl Copyright © 2009 D.Grellscheid <herwig@projects.hepforge.org>
+dnl
 dnl Copying and distribution of this file, with or without modification, 
 dnl are permitted in any medium without royalty provided the copyright 
 dnl notice and this notice are preserved. 
 dnl
 
 AC_DEFUN([VL_LIB_READLINE], [
+  AC_ARG_ENABLE(readline,
+  AC_HELP_STRING([--disable-readline],[turns off readline support.]),
+        [],
+        [enable_readline=yes]
+        )
+
+  if test "$enable_readline" = "yes"; then
+
   AC_CACHE_CHECK([for a readline compatible library],
                  vl_cv_lib_readline, [
     ORIG_LIBS="$LIBS"
@@ -48,5 +59,7 @@ AC_DEFUN([VL_LIB_READLINE], [
                 [Define if your readline library has \`add_history'])
       AC_CHECK_HEADERS(history.h readline/history.h)
     fi
+  fi
+
   fi
 ])dnl
