@@ -26,8 +26,8 @@ public:
    *  Enum for the direction in the small angle limit
    */
   enum SmallAngleDirection {
-    NegativeZDirection = -1, /**< Along +z */
-    PostiveZDirection  =  1  /**< Along -z */
+    NegativeZDirection = -1, ///< Along -z 
+    PostiveZDirection  =  1  ///< Along +z 
   };
   
 public:
