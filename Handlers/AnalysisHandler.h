@@ -11,6 +11,7 @@
 // This is the declaration of the AnalysisHandler class.
 
 #include "HandlerBase.h"
+#include "AnalysisHandler.fh"
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Analysis/FactoryBase.h"
 #include "ThePEG/EventRecord/Event.h"

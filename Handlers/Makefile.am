@@ -22,7 +22,7 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
 INCLUDEFILES = $(DOCFILES) HandlerGroup.tcc \
                StandardEventHandler.fh \
                SubProcessHandler.fh EventHandler.fh SamplerBase.fh \
-               ClusterCollapser.fh StandardXComb.fh 
+               ClusterCollapser.fh StandardXComb.fh AnalysisHandler.fh
 
 
 noinst_LTLIBRARIES = libThePEGHandlers.la

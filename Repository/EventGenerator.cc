@@ -561,6 +561,8 @@ void EventGenerator::generateReferences() {
     else if ( dynamic_ptr_cast<cCascHdlPtr>(*it) ) desc = "D " + desc;
     else if ( dynamic_ptr_cast<cHadrHdlPtr>(*it) ) desc = "E " + desc;
     else if ( dynamic_ptr_cast<cStepHdlPtr>(*it) ) desc = "F " + desc;
+    else if ( dynamic_ptr_cast<cDecayerPtr>(*it) ) desc = "Y " + desc;
+    else if ( dynamic_ptr_cast<cAnalysisHdlPtr>(*it) ) desc = "Z " + desc;
     else if ( dynamic_ptr_cast<Ptr<HandlerBase>::const_pointer>(*it) )
       desc = "G " + desc;
     else  desc = "H " + desc;
@@ -584,7 +586,7 @@ void EventGenerator::generateReferences() {
 	<< "\\usepackage{graphics}\n"
 	<< "\\begin{document}\n"
 	<< "\\appendix\n"
-	<< "\\section[xxx]{T\\scalebox{0.8}{HE}PEG\\cite{ThePEG} Run "
+	<< "\\section[xxx]{\\textsc{ThePEG}\\cite{ThePEG} Run "
 	<< "Information}\n" << "Run name: \\textbf{" << runName()
 	<< "}:\\\\\n";
   if ( !stratdesc.empty() )

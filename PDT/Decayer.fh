@@ -10,6 +10,7 @@
 namespace ThePEG {
 
 class Decayer;
+ThePEG_DECLARE_POINTERS(Decayer,DecayerPtr);
 
 }
 
