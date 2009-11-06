@@ -319,6 +319,12 @@ public:
   string path() const { return thePath; }
 
   /**
+   * Has the generator been asked to redirect everything to standard
+   * output?
+   */
+  bool useStdOut() const { return useStdout; }
+
+  /**
    * Open all ouput files.
    */
   void openOutputFiles();
