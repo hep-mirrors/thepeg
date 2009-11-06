@@ -592,6 +592,7 @@ public:
     if ( h1.ax->upperEdge() != h2.ax->upperEdge() ||
 	 h1.ax->lowerEdge() != h2.ax->lowerEdge() ||
 	 h1.ax->bins() != h2.ax->bins() ) return false;
+    if ( h1.fax && h2.fax ) return true;
     for ( int i = 0; i < h1.ax->bins(); ++i ) {
       if ( h1.ax->binUpperEdge(i) != h2.ax->binUpperEdge(i) ||
 	   h1.ax->binLowerEdge(i) != h2.ax->binLowerEdge(i) ) return false;
