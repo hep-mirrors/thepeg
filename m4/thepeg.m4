@@ -63,6 +63,9 @@ if test -n "$LHAPDF_LIBDIR"; then
   if test -e $LHAPDF_LIBDIR/libLHAPDF.so -o -e $LHAPDF_LIBDIR/libLHAPDF.dylib
   then
     LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
+  elif test -e $LHAPDF_LIBDIR/lib/libLHAPDF.so -o -e $LHAPDF_LIBDIR/lib/libLHAPDF.dylib
+  then
+    LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR/lib"
   else
     HAS_LHAPDF="no"
   fi
