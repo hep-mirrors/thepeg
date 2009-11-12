@@ -38,7 +38,7 @@ thepeg: thepeg.install Makefile
 
 
 test: ThePEG.jar
-	$(JAVA) -jar ThePEG.jar ../src/setupThePEG.bin -d 1 -L../lib \
+	$(JAVA) -jar ThePEG.jar ../src/setupThePEG -d 1 -L../lib \
                 -L../../Pythia7/lib -r ../../Pythia7/lib/Pythia7Defaults.rpo
 
 check-local:

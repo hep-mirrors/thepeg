@@ -19,10 +19,10 @@ pdf-local: refman-html
 	if test -d refman-latex; then cd refman-latex; make refman.pdf; fi
 
 AllInterfaces.h: MakeDocs.in
-	$(top_builddir)/src/setupThePEG.bin --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
+	$(top_builddir)/src/setupThePEG --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
 
 MoreInterfaces.h: MakeDocs.in
-	$(top_builddir)/src/setupThePEG.bin --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
+	$(top_builddir)/src/setupThePEG --init --exitonerror -L$(top_builddir)/lib MakeDocs.in
 
 refman-html: refman.conf refman.h AllInterfaces.h MoreInterfaces.h
 	$(srcdir)/fixinterfaces.pl AllInterfaces.h

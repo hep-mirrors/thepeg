@@ -116,8 +116,8 @@ if test -z "$THEPEGPATH"; then
     THEPEGBUILD="yes"
     AC_MSG_RESULT([no (using ../ThePEG)])
     AM_CPPFLAGS="-I\$(top_builddir)/include -I\$(top_builddir)/../ThePEG/include "
-    SETUPTHEPEG="$THEPEGPATH/src/setupThePEG.bin -L $THEPEGPATH/lib"
-    RUNTHEPEG="$THEPEGPATH/src/runThePEG.bin -L $THEPEGPATH/lib"
+    SETUPTHEPEG="$THEPEGPATH/src/setupThePEG -L $THEPEGPATH/lib"
+    RUNTHEPEG="$THEPEGPATH/src/runThePEG -L $THEPEGPATH/lib"
     THEPEGDOC="\$(top_builddir)/../ThePEG/Doc"
     THEPEGLIB="\$(top_builddir)/../ThePEG/lib"
   else
@@ -170,8 +170,8 @@ if test -z "$THEPEGPATH"; then
     THEPEGBUILD="yes"
     AC_MSG_RESULT([no (found ../ThePEG)])
     AM_CPPFLAGS="-I\$(top_builddir)/include -I\$(top_builddir)/../ThePEG/include "
-    SETUPTHEPEG="$THEPEGPATH/src/setupThePEG.bin -L $THEPEGPATH/lib"
-    RUNTHEPEG="$THEPEGPATH/src/runThePEG.bin -L $THEPEGPATH/lib"
+    SETUPTHEPEG="$THEPEGPATH/src/setupThePEG -L $THEPEGPATH/lib"
+    RUNTHEPEG="$THEPEGPATH/src/runThePEG -L $THEPEGPATH/lib"
     THEPEGDOC="\$(top_builddir)/../ThePEG/Doc"
     THEPEGLIB="\$(top_builddir)/../ThePEG/lib"
   else
