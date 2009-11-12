@@ -6,20 +6,27 @@
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
+
+// macro is passed in from -D compile flag
+#ifndef THEPEG_PKGLIBDIR
+#error Makefile.am needs to define THEPEG_PKGLIBDIR
+#endif
+
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
-#include "ThePEG/Utilities/SystemUtils.h"
 #include <config.h>
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
 
   Debug::level = 1;
-  string repo =
-    SystemUtils::getenv("ThePEG_INSTALL_PATH") + "/ThePEGDefaults.rpo";
+
+  // macro is passed in from -D compile flag
+  string repo = string(THEPEG_PKGLIBDIR) + "/ThePEGDefaults.rpo";
+
   string repout;
   string file;
   bool init = false;

@@ -11,6 +11,11 @@
 // functions of the BaseRepository class.
 //
 
+// macro is passed in from -D compile flag
+#ifndef THEPEG_PKGDATADIR
+#error Makefile.am needs to define THEPEG_PKGDATADIR
+#endif
+
 #include "BaseRepository.h"
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
@@ -24,7 +29,6 @@
 #include "ThePEG/Utilities/TypeInfo.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/StringUtils.h"
-#include "ThePEG/Utilities/SystemUtils.h"
 #include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/PDT/DecayMode.h"
 
@@ -92,9 +96,9 @@ stack<string> & BaseRepository::currentReadDirStack() {
 }
 
 vector<string> & BaseRepository::readDirs() {
+  // macro is passed in from -D compile flag
   static vector<string>
-    theReadDirs(1, SystemUtils::getenv("ThePEG_INSTALL_PATH") +
-		"/../../share/ThePEG");
+    theReadDirs(1, THEPEG_PKGDATADIR);
   return theReadDirs;
 }
 

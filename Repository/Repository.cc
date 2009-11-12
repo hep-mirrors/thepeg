@@ -11,6 +11,11 @@
 // functions of the Repository class.
 //
 
+// macro is passed in from -D compile flag
+#ifndef THEPEG_PKGLIBDIR
+#error Makefile.am needs to define THEPEG_PKGLIBDIR
+#endif
+
 #include "Repository.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Handlers/EventHandler.h"
@@ -22,7 +27,6 @@
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/StringUtils.h"
-#include "ThePEG/Utilities/SystemUtils.h"
 
 #include <config.h>
 
@@ -364,8 +368,9 @@ void Repository::load(string filename) {
   PersistentIStream * is = new PersistentIStream(filename);
   if ( !*is ) {
     delete is;
-    is = new PersistentIStream(SystemUtils::getenv("ThePEG_INSTALL_PATH")
-			       + "/" + filename);
+    // macro is passed in from -D compile flag
+    string fullpath = string(THEPEG_PKGLIBDIR) + '/' + filename;
+    is = new PersistentIStream(fullpath);
     if ( !*is ) {
       delete is;
       cerr() << "Error: Could not find repository '" << filename << "'" << endl;

@@ -11,6 +11,14 @@
 // functions of the LHAPDF class.
 //
 
+// macros are passed in from -D compile flag
+#ifndef THEPEG_PKGDATADIR
+#error Makefile.am needs to define THEPEG_PKGDATADIR
+#endif
+#ifndef LHAPDF_PKGDATADIR
+#error Makefile.am needs to define LHAPDF_PKGDATADIR
+#endif
+
 #include "LHAPDF.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
@@ -21,7 +29,6 @@
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/Utilities/EnumIO.h"
 #include "ThePEG/Utilities/Debug.h"
-#include "ThePEG/Utilities/SystemUtils.h"
 #include "ThePEG/Utilities/Throw.h"
 #include "config.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
@@ -211,16 +218,12 @@ std::string LHAPDF::getIndexPath() {
 }
 
 bool LHAPDF::openLHAIndex(ifstream & is) {
-  if(is.is_open()) is.close();
-  is.open(getIndexPath().c_str());
+  if ( is.is_open() ) is.close();
+  is.open( getIndexPath().c_str() );
   if ( is ) return true;
   is.clear();
-  string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
-  is.open((instpath + "/../../share/ThePEG/PDFsets.index").c_str());
-  if ( is ) return true;
-  is.clear();
-  instpath = std::string(THEPEG_PKGDATADIR) + "/PDFsets.index";
-  is.open(instpath.c_str());
+  string instpath = std::string(THEPEG_PKGDATADIR) + "/PDFsets.index";
+  is.open( instpath.c_str() );
   if ( is ) return true;
   is.clear();
   is.open("../PDF/PDFsets.index");

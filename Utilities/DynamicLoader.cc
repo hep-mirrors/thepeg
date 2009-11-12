@@ -11,9 +11,13 @@
 // functions of the DynamicLoader class.
 //
 
+// macro is passed in from -D compile flag
+#ifndef THEPEG_PKGLIBDIR
+#error Makefile.am needs to define THEPEG_PKGLIBDIR
+#endif
+
 #include "DynamicLoader.h"
 #include "ThePEG/Utilities/StringUtils.h"
-#include "ThePEG/Utilities/SystemUtils.h"
 #include "ThePEG/Config/algorithm.h"
 #include "config.h"
 
@@ -22,10 +26,6 @@
 #endif
 
 #include <cstdlib>
-
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "DynamicLoader.tcc"
-#endif
 
 using namespace ThePEG;
 
@@ -137,13 +137,10 @@ string DynamicLoader::lastErrorMessage;
 map<string,string> DynamicLoader::versionMap;
 
 vector<string> DynamicLoader::defaultPaths() {
-  string spaths = SystemUtils::getenv("ThePEG_PATH");
-  vector<string> vpaths = StringUtils::split(spaths, ":");
-  string instpath = SystemUtils::getenv("ThePEG_INSTALL_PATH");
-  if ( vpaths.empty() ) {
-    if ( !instpath.empty() ) vpaths.push_back(instpath);
-  } else
-    replace(vpaths, string("+"), instpath);
+  vector<string> vpaths;
+  // macro is passed in from -D compile flag
+  string instpath = THEPEG_PKGLIBDIR;
+  vpaths.push_back(instpath);
   vpaths.push_back(".");
   return vpaths;
 }
