@@ -100,6 +100,11 @@ public:
   double sin2ThetaW() const { return theSin2ThetaW; }
 
   /**
+   *  The Fermi constant
+   */
+  InvEnergy2 fermiConstant() const {return theGF;}
+
+  /**
    * The neutrino-photon coupling.
    */
   double enu() const { return theEnu; }
@@ -304,6 +309,11 @@ private:
    * The \f$\sin^2(\theta_W)\f$
    */
   double theSin2ThetaW;
+
+  /**
+   * The Fermi contants \f$G_F\f$
+   */
+  InvEnergy2 theGF;
 
   /**
    * Coupling between a fundamental fermion and the photon.

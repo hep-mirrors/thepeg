@@ -24,6 +24,7 @@ using namespace ThePEG;
 
 StandardModelBase::StandardModelBase()
   : theFamilies(3), theAlphaEM(1.0/137.04), theSin2ThetaW(0.232),
+    theGF(1.16637e-5/GeV2),
     theEnu(0.0), theEe(-1.0), theEu(2.0/3.0), theEd(-1.0/3.0),
     theVnu(1.0), theVe(-0.072), theVu(0.3813), theVd(-0.6907),
     theAnu(1.0), theAe(-1.0), theAu(1.0), theAd(-1.0), recalculateEW(1),
@@ -77,14 +78,14 @@ void StandardModelBase::persistentOutput(PersistentOStream & os) const {
   os << theFamilies << theAlphaEM << theRunningAlphaEM << theSin2ThetaW
      << theEnu << theEe << theEu << theEd << theVnu << theVe << theVu << theVd
      << theAnu << theAe << theAu << theAd << recalculateEW << theCKM
-     << theNc << theAlphaS << theRunningAlphaS;
+     << theNc << theAlphaS << theRunningAlphaS << ounit(theGF,1./GeV2);
 }
 
 void StandardModelBase::persistentInput(PersistentIStream & is, int) {
   is >> theFamilies >> theAlphaEM >> theRunningAlphaEM >> theSin2ThetaW
      >> theEnu >> theEe >> theEu >> theEd >> theVnu >> theVe >> theVu >> theVd
      >> theAnu >> theAe >> theAu >> theAd >> recalculateEW >> theCKM
-     >> theNc >> theAlphaS >> theRunningAlphaS;
+     >> theNc >> theAlphaS >> theRunningAlphaS >> iunit(theGF,1./GeV2);
 }
 
 ClassDescription<StandardModelBase> StandardModelBase::initStandardModelBase;
@@ -92,7 +93,9 @@ ClassDescription<StandardModelBase> StandardModelBase::initStandardModelBase;
 void StandardModelBase::Init() {
 
   static ClassDocumentation<StandardModelBase> documentation
-    ("There is no documentation for the ThePEG::StandardModelBase class");
+    ("The ThePEG::StandardModelBase class provides the base class"
+     " for all models and an implementation of the couplings and parameters"
+     " of the Standard Model.");
 
   static Parameter<StandardModelBase,unsigned int> interfaceFamilies
     ("NumberOfFamilies",
@@ -116,6 +119,12 @@ void StandardModelBase::Init() {
     ("EW/Sin2ThetaW",
      "The square of the sine of the weak mixing angel",
      &StandardModelBase::theSin2ThetaW, 0.232, 0.0, 1.0, false, false, true);
+
+  static Parameter<StandardModelBase,InvEnergy2> interfaceFermiConstant
+    ("EW/FermiConstant",
+     "The Fermi constants G_F",
+     &StandardModelBase::theGF, 1./GeV2, 1.16637e-5/GeV2, 1.e-5/GeV2, 2.e-5/GeV2,
+     false, false, Interface::limited);
 
   static Parameter<StandardModelBase,double> interfaceEnu
     ("EW/e_nu",
