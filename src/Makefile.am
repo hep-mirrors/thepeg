@@ -64,7 +64,7 @@ if USELHAPDF
 	./setupThePEG --init --exitonerror -r ThePEGDefaults.rpo -o ThePEGDefaults.rpo LHAPDFDefaults.in
 endif
 
-check-local:
+check-local: ThePEGDefaults.rpo
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 	mv SimpleLEP.out SimpleLEP.cmp
 	time ./runThePEG -d 0 SimpleLEP.run
