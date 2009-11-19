@@ -1,3 +1,12 @@
+2009-11-16  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Repository/Repository.cc: Better message text if input file is
+	not found. We've never signalled an error, but always tried to
+	continue reading.
+
+	* java/Makefile.am: Fixed OS X problem with case-insensitive
+	filenames that I reintroduced earlier.
+
 2009-11-12  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Utilities/DynamicLoader.cc, src/setupThePEG.cc,

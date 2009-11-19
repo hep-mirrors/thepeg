@@ -8,6 +8,100 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.6.0 release: 2009-11-19
+
+** Helicity amplitudes
+   The main change in this release is a streamlining of the helicity
+   amplitude code. If you have self-written vertex classes, you will
+   need to adapt them slightly:
+*** Spinor representation
+    All spinors are now in HELAS representation, the optional
+    representation switching has been removed.
+*** Adding particles to the vertex
+    Instead of calling setList(v1, v2, v3) with three vectors of
+    particles that need to be filled in sync, call 
+    addToList(p1, p2, p3) repeatedly.
+*** Name changes
+    To make them consistent with the rest of ThePEG, the names of
+    functions starting with get...() have changed:
+    getFoo() becomes foo(); setFoo(...) becomes foo(...).
+
+** Vector code changes
+*** Vector3 has been renamed ThreeVector
+    This makes it consistent with the other vector classes.
+*** LorentzVector::mag()/mag2() removed, to reduce confusion
+    Use the equivalent ::m()/m2() instead to get E^2-p^2. 
+    LorentzVector::rho2() == ThreeVector::mag2() == p^2
+*** Calculating with a zero-length vector 
+    Previously, mathematically undefined values were arbitrarily set
+    to 0 in this situation.  Now an assertion failure is triggered in
+    debug mode. Only the azimuthal angle phi() still returns 0.
+
+** Environment variable interpretation removed
+   The programs setupThePEG and runThePEG are not wrapped in shell
+   scripts anymore. All usage of environment variables at runtime has
+   been removed. To influence the behaviour of ThePEG, you will need
+   to use explicit command line flags, or calls to Repository::
+   functions.
+
+** StandardModelBase now provides G_Fermi
+   InvEnergy2 StandardModelBase::fermiConstant() const;
+   provides the PDG 2006 value of G_Fermi.
+
+** Allow particle width cuts to be unset
+   Setting a negative value for the lower or upper width cut removes
+   that bound on the width.
+
+** Ticket #271: Decay mode names are normalized
+   Previously, the ordering of decay products in a decay mode
+   specifier needed to match ThePEG's internal ordering exactly. This
+   is now done automatically.
+
+** Ticket #273: NoPDF and LesHouches reader
+   The LesHouches reader has been fixed for the case where no PDFs are
+   used in the LHE file.
+
+** Ticket #275: doinitrun() ordering
+   The ACDC sampler now ensures that initrun() of all ME objects is
+   run first.
+
+** Ticket #277: Repository command help texts
+   ThePEG's repository command language now includes a 'help'
+   functionality.
+
+** Redirection of various files
+   The log file stream now goes to stdout instead of stderr when
+   EventGenerator:UseStdout is set.
+
+** Readline support can be disabled
+   Using the configure switch '--disable-readline', the linking of
+   libreadline can be suppressed. This can be useful for batch code that
+   will never be used interactively, if the number of linked-in
+   libraries is a problem.
+
+** --with-LHAPDF configure flag
+   Previously, the full LHAPDF path including lib/ needed to be
+   specified. This now also works with the more common usage of just
+   LHAPDF's prefix path.
+
+** Rivet analysis plugin
+   The Rivet analysis output files are now named consistently like the
+   other output from a run, with the run name as prefix. 
+
+** Graphviz event visualization
+   This is now independent of HepMC. The call to
+   void ThePEG::printGraphviz(ostream & os, tcEventPtr event);
+   on any event will output a Graphviz file to the stream,
+   suitable for interpretation with the 'dot' tool. It shows a
+   visualization of the generator's internal event structure, useful
+   for debugging. This is an initial version, feedback is welcome!
+
+** Fixed compatibility with older HepMC versions
+   A problem with rejecting a missing HepMC unit implementation was fixed.
+
+
+
+
 * ThePEG-1.5.0 release: 2009-09-01
 ** New ZERO object
    The ZERO object can be used to set any dimensionful quantity to

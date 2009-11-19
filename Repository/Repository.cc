@@ -421,7 +421,7 @@ void Repository::read(string filename, ostream & os) {
     }
   }
   if ( !is ) {
-    cerr() << "Error: Could not find input file '" << filename << "'" << endl;
+    cerr() << "Warning: Could not find input file '" << filename << "'\n";
     return;
   }
   currentReadDirStack().push(StringUtils::dirname(file));
