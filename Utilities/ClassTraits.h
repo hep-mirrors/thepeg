@@ -127,6 +127,14 @@ template <typename T>
 struct ClassTraits: public ClassTraitsBase<T> {};
 
 /**
+ * ClassTraits specialization for double
+ */
+template<>
+struct ClassTraits<double> : public ClassTraitsBase<double> {
+  static string className() { return "double"; }
+};
+
+/**
  * BaseClassTraits describes the base classes of the templated class.
  * BaseClassTraits should be specialized once for each
  * base class of a class to be described. The specializations should
@@ -147,11 +155,6 @@ struct BaseClassTrait: public ClassTraitsType {
 };
 
 }
-
-// #include "ClassTraits.icc"
-#ifndef ThePEG_TEMPLATES_IN_CC_FILE
-// #include "ClassTraits.tcc"
-#endif
 
 #define ThePEG_DECLARE_BASE_CLASS_TRAITS_1(Class,Base)                     \
 /** This template specialization informs ThePEG about the                  \
