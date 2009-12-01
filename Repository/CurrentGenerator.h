@@ -168,10 +168,17 @@ public:
   public:
 
     /**
-     * Constructor taking the stream to be redirected as input.
+     * Constructor taking the stream to be redirected as input. If the
+     * \a internal flag false the output will be stored in the Event
+     * Generator and written to the log file in the end of the run. If
+     * \internal is true the output is instead stored internally in
+     * this object and is accessible through the str() function until
+     * the object is destroyed.
      */
-    Redirect(ostream & os) : theStream(&os), theBuffer(os.rdbuf()) {
-      theStream->rdbuf(current().misc().rdbuf());
+    Redirect(ostream & os, bool internal = false)
+      : theStream(&os), theBuffer(os.rdbuf()) {
+      if ( internal ) theStream->rdbuf(intStream.rdbuf());
+      else theStream->rdbuf(current().misc().rdbuf());
     }
 
     /**
@@ -183,6 +190,14 @@ public:
     }
 
     /**
+     * If output is stored internally, acces what has been written so
+     * far.
+     */
+    string str() const {
+      return intStream.str();
+    }
+
+    /**
      * The stream which is redirected.
      */
     ostream * theStream;
@@ -191,6 +206,12 @@ public:
      * The original buffer of the redirected stream.
      */
     std::streambuf * theBuffer;
+
+    /**
+     * An internal buffer, the content of which will be discarded when
+     * the this object is destructed.
+     */
+    ostringstream intStream;
 
   };
 
