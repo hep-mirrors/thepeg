@@ -294,7 +294,7 @@ int StandardEventHandler::nBins() const {
 struct Stat {
 
   Stat() : attempted(0), accepted(0), sumw(0.0), sumw2(),
-	   maxXSec(CrossSection()), totsum(0.0) {}
+	   maxXSec(CrossSection()), totsum(0.0), totrerr() {}
   Stat(long att, long acc, double w, double w2, CrossSection x,
        double sumw, double genrerr)
     : attempted(att), accepted(acc), sumw(w), sumw2(w2), maxXSec(x),
