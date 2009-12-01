@@ -88,7 +88,8 @@ public:
   /** A map of integers giving the number of times an exception of the
    *  key type has been thrown. */
   //typedef map<const type_info *, int> ExceptionMap;
-  typedef map<Exception, int, ExceptionComparison > ExceptionMap;
+  //typedef map<Exception, int, ExceptionComparison > ExceptionMap;
+  typedef map<string, pair<Exception::Severity,int> > ExceptionMap;
 
 public:
 

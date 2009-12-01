@@ -1,5 +1,9 @@
 2009-12-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
+	* Repository/EventGenerator.cc (EventGenerator::count): Changed
+	the declaration of ExceptionMap, since the previous version
+	couldn't actually tell the difference between exception classes.
+
 	* Repository/CurrentGenerator.h: Allow for redirecting a stream to
 	an internal buffer (instead of to EventGenerator::misc()) in
 	CurrentGenerator::Redirect.

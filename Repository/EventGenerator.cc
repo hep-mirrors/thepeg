@@ -297,7 +297,7 @@ void EventGenerator::dofinish() {
     for ( ExceptionMap::iterator it = theExceptions.begin();
 	  it != theExceptions.end(); ++it ) {
       string severity;
-      switch ( it->first.severity() ) {
+      switch ( it->second.first ) {
       case Exception::info       : severity="info"; break;
       case Exception::warning    : severity="warning"; break;
       case Exception::setuperror : severity="setuperror"; break;
@@ -307,7 +307,8 @@ void EventGenerator::dofinish() {
       case Exception::abortnow   : severity="abortnow"; break;
       default                    : severity="unknown";
       }
-      log() << typeid(it->first).name() << ' ' << severity << " (" << it->second << " times)" << endl;
+      log() <<it->first << ' ' << severity
+	    << " (" << it->second.second << " times)" << endl;
     }
   }
 
@@ -622,7 +623,8 @@ void EventGenerator::strategy(StrategyPtr s) {
 }
 
 int EventGenerator::count(const Exception & ex) {
-  return ++theExceptions[ex];
+  theExceptions[typeid(ex).name()].first = ex.severity();
+  return ++theExceptions[typeid(ex).name()].second;
 }
 
 void EventGenerator::printException(const Exception & ex) {
