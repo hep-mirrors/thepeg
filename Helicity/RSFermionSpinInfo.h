@@ -116,7 +116,7 @@ public:
   /**
    * Perform a lorentz rotation of the spin information
    */
-  virtual void transform(const LorentzMomentum &,LorentzRotation );
+  virtual void transform(const LorentzMomentum &,const LorentzRotation &);
   //@}
 
 public:

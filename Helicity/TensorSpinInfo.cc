@@ -23,7 +23,8 @@ NoPIOClassDescription<TensorSpinInfo> TensorSpinInfo::initTensorSpinInfo;
 
 void TensorSpinInfo::Init() {}
 
-void TensorSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+void TensorSpinInfo::transform(const LorentzMomentum & m,
+			       const LorentzRotation & r) {
   if(isNear(m)) {
     for(unsigned int ix=0;ix<5;++ix) _currentstates[ix].transform(r.one());
     SpinInfo::transform(m,r);

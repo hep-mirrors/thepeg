@@ -28,7 +28,8 @@ NoPIOClassDescription<VectorSpinInfo> VectorSpinInfo::initVectorSpinInfo;
 
 void VectorSpinInfo::Init() {}
 
-void VectorSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+void VectorSpinInfo::transform(const LorentzMomentum & m,
+			       const LorentzRotation & r) {
   if(isNear(m)) {
     for(unsigned int ix=0;ix<3;++ix) _currentstates[ix].transform(r.one());
     SpinInfo::transform(m,r);

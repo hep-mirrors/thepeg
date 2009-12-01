@@ -53,7 +53,7 @@ public:
    * particle has the given momentum before the boost. This default
    * method does nothing.
    */
-  virtual void transform(const LorentzMomentum &, LorentzRotation) {}
+  virtual void transform(const LorentzMomentum &, const LorentzRotation &) {}
 
 public:
 

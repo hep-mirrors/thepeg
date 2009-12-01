@@ -31,7 +31,8 @@ void RSFermionSpinInfo::Init() {
 
 }
 
-void RSFermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+void RSFermionSpinInfo::transform(const LorentzMomentum & m,
+				  const LorentzRotation & r) {
   if(isNear(m)) {
     for(unsigned int ix=0;ix<4;++ix) _currentstates[ix].transform(r);
     SpinInfo::transform(m,r);

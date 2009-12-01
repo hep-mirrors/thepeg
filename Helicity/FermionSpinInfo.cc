@@ -24,7 +24,8 @@ NoPIOClassDescription<FermionSpinInfo> FermionSpinInfo::initFermionSpinInfo;
 
 void FermionSpinInfo::Init() {}
 
-void FermionSpinInfo::transform(const LorentzMomentum & m, LorentzRotation r) {
+void FermionSpinInfo::transform(const LorentzMomentum & m,
+				const LorentzRotation & r) {
   if(isNear(m)) {
     for(unsigned int ix=0;ix<2;++ix) _currentstates[ix].transform(r);
     SpinInfo::transform(m,r);

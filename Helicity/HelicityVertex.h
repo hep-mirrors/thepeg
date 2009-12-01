@@ -129,13 +129,14 @@ public:
   //@{
   /**
    * Get the rho matrix for the outgoing particle at position \a loc.
+   * @param recursive Recursively calculate up the tree
    */
-  virtual RhoDMatrix getRhoMatrix(int loc) = 0;
+  virtual RhoDMatrix getRhoMatrix(int loc,bool recursive) const = 0;
 
   /**
    * Get the D matrix for the incoming particle at position \a loc.
    */
-  virtual RhoDMatrix getDMatrix(int loc) = 0;
+  virtual RhoDMatrix getDMatrix(int loc) const = 0;
   //@}
 
 private:

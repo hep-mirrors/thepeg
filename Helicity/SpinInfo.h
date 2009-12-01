@@ -63,6 +63,18 @@ class SpinInfo: public SpinBase {
 
 public:
 
+  /**
+   *  Enum to store the status
+   */
+  enum DevelopedStatus {
+    Undeveloped=0,
+    Developed=1,
+    NeedsUpdate=2
+  };
+  
+public:
+
+
   /** @name Standard constructors and destructors. */
   //@{
   /**
@@ -70,7 +82,7 @@ public:
    */
   SpinInfo() 
     : _timelike(false), _prodloc(-1), _decayloc(-1), 
-      _decayed(false), _developed(false) {}
+      _decayed(false), _developed(Undeveloped) {}
 
   /**
    * Standard Constructor.
@@ -82,7 +94,7 @@ public:
 	   const Lorentz5Momentum & p = Lorentz5Momentum(), 
 	   bool time = false)
     : _timelike(time), _prodloc(-1), _decayloc(-1),
-      _decayed(false), _developed(false),
+      _decayed(false), _developed(Undeveloped),
       _rhomatrix(s), _Dmatrix(s), _spin(s),
       _productionmomentum(p), _currentmomentum(p) {}
 
@@ -181,39 +193,23 @@ public:
    * Return true if the decay matrix required to perform the decays of
    * the siblings of a particle has been calculated.
    */
-  bool developed() const { return _developed; }
+  DevelopedStatus developed() const { return _developed; }
+
+  /**
+   *  Needs update
+   */
+  void needsUpdate() const { _developed = NeedsUpdate; }
 
   /**
    * Calculate the rho matrix for the decay if not already done.
    */
-  void decay() const {
-    // if the particle has already been decayed do nothing
-    if(_decayed) return;
-    // otherwise we need to obtain the correct rho matrix
-    _decayed=true;
-    if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc);
-    _decaymomentum = _currentmomentum;
-  }
+  void decay() const;
 
 
   /**
    * Set the developed flag and calculate the D matrix for the decay.
    */
-  void develop() const {
-    // if the particle has already been developed do nothing
-    if(_developed) return; 
-    // otherwise we need to obtain the correct D matrix
-    _developed=true;
-    if(_decay) _Dmatrix= _decay->getDMatrix(_decayloc);
-    else {
-      _Dmatrix=RhoDMatrix(iSpin());
-    }
-  }
-
-  /**
-   * Set the developed variable for the particle.
-   */
-  void setDeveloped(bool b) const { _developed = b; }
+  void develop() const;
 
   /**
    * Return 2s+1 for the particle
@@ -238,6 +234,21 @@ public:
    * Return true if particle is timelike (rather than spacelike).
    */
   bool timelike() const { return _timelike; }
+  //@}
+ 
+  /**
+   *  Access to the locations
+   */
+  //@{
+  /**
+   *  Production Location
+   */
+  int productionLocation() const {return _prodloc;}
+  
+  /**
+   *  Decay Location
+   */
+  int decayLocation() const {return _decayloc;}
   //@}
 
 public:
@@ -289,6 +300,14 @@ private:
 private:
 
   /**
+   * Set the developed flag and calculate the D matrix for the decay,
+   * and all decays further up the chain.
+   */
+  void redevelop() const ;
+  
+private:
+
+  /**
    * Pointer to the production vertex for the particle
    */
   mutable VertexPtr _production;
@@ -325,7 +344,7 @@ private:
    * Has the particle been developed?  (I.e. has the D matrix encoding
    * the info about the decay been calculated)
    */
-  mutable bool _developed;
+  mutable DevelopedStatus _developed;
 
   /**
    * Storage of the rho matrix.

@@ -93,3 +93,50 @@ void SpinInfo::update() const {
     }
   }
 }
+
+void SpinInfo::decay() const {
+  // if the particle has already been decayed do nothing
+  if(_decayed) return;
+  // otherwise we need to obtain the correct rho matrix
+  assert(_developed!=NeedsUpdate);
+  if(_developed==Developed&&iSpin()!=PDT::Spin0) {
+    _developed=NeedsUpdate;
+  }
+  if(_production) 
+    _rhomatrix = _production->getRhoMatrix(_prodloc,_developed==NeedsUpdate);
+  _decaymomentum = _currentmomentum;
+  _decayed=true;
+}
+
+void SpinInfo::redevelop() const {
+  assert(developed()==NeedsUpdate);
+  // update the D matrix of this spininfo
+  _Dmatrix = getDecayVertex()->getDMatrix(decayLocation());
+  _developed = Developed;
+  // update the parent if needed
+  if(getProductionVertex() &&
+     getProductionVertex()->incoming().size()==1) {
+    tcSpinfoPtr parent = 
+      dynamic_ptr_cast<tcSpinfoPtr>(getProductionVertex()->incoming()[0]);
+    if(parent && parent->developed()==NeedsUpdate) 
+      parent->redevelop();
+  }
+}
+
+void SpinInfo::develop() const {
+  // if the particle has already been developed do nothing
+  switch(_developed) {
+  case Developed:
+    return;
+  case NeedsUpdate:
+    redevelop();
+    return;
+  case Undeveloped:
+    if(_decay) _Dmatrix= _decay->getDMatrix(_decayloc);
+    else {
+      _Dmatrix=RhoDMatrix(iSpin());
+    }
+    _developed=Developed;
+    return;
+  }
+}
