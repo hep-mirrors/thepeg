@@ -111,7 +111,8 @@ void SpinInfo::decay() const {
 void SpinInfo::redevelop() const {
   assert(developed()==NeedsUpdate);
   // update the D matrix of this spininfo
-  _Dmatrix = getDecayVertex()->getDMatrix(decayLocation());
+  if(getDecayVertex()) 
+    _Dmatrix = getDecayVertex()->getDMatrix(decayLocation());
   _developed = Developed;
   // update the parent if needed
   if(getProductionVertex() &&
