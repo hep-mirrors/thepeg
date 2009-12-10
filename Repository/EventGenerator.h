@@ -25,19 +25,6 @@
 
 namespace ThePEG {
 
-/** Comparsion for Exceptions */
-struct ExceptionComparison {
-  /** Compare two exceptions.*/
-  bool operator() (const Exception & a, const Exception & b) {
-    if ( typeid(a) == typeid(b) ) {
-      return a.severity() < b.severity();
-    }
-    else {
-      return typeid(a).before(typeid(b));
-    }
-  }
-};
-
 /**
  * The EventGenerator class manages a whole event generator run. It
  * keeps a list of all Interfaced objects which are needed for a
@@ -89,7 +76,7 @@ public:
    *  key type has been thrown. */
   //typedef map<const type_info *, int> ExceptionMap;
   //typedef map<Exception, int, ExceptionComparison > ExceptionMap;
-  typedef map<string, pair<Exception::Severity,int> > ExceptionMap;
+  typedef map<pair<string, Exception::Severity>, int> ExceptionMap;
 
 public:
 
