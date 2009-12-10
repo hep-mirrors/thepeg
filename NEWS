@@ -8,6 +8,14 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.6.1 release: 2009-12-04
+** Ticket #292: Spin correlation fix to stabilize tau decay numerics
+   We have restructured the spin correlation code to stabilize the
+   numerical problems seen in tau decays. 
+
+
+
+
 * ThePEG-1.6.0 release: 2009-11-19
 
 ** Helicity amplitudes
