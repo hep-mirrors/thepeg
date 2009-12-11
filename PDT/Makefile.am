@@ -5,7 +5,7 @@ mySOURCES = ParticleData.cc DecayMode.cc MatcherBase.cc Matcher.cc Decayer.cc \
 
 DOCFILES = CombinedMatcher.h DecayMode.h WidthGenerator.h Decayer.h \
            EnumParticles.h MassGenerator.h Matcher.h MatcherBase.h PDT.h \
-           ParticleData.h StandardMatchers.h DummyDecayer.h \
+           PID.h ParticleData.h StandardMatchers.h DummyDecayer.h \
            ConstituentParticleData.h FlatDecayer.h RemnantData.h \
            RemnantDecayer.h SimpleBaryonRemnantDecayer.h
 
