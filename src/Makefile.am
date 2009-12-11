@@ -103,8 +103,8 @@ endif
 install-exec-hook:
 	cd $(DESTDIR)$(pkglibdir); \
 	rm -f setupThePEG-$(VERSION) runThePEG-$(VERSION); \
-	ln $(DESTDIR)$(bindir)/setupThePEG setupThePEG-$(VERSION); \
-	ln $(DESTDIR)$(bindir)/runThePEG runThePEG-$(VERSION)
+	cp $(DESTDIR)$(bindir)/setupThePEG setupThePEG-$(VERSION); \
+	cp $(DESTDIR)$(bindir)/runThePEG runThePEG-$(VERSION)
 
 install-data-hook:
 	./setupThePEG --init --exitonerror -L$(DESTDIR)$(pkglibdir) -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/ThePEGDefaults.in
