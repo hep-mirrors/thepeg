@@ -97,7 +97,7 @@ public:
    * Get a pointer to the default particle of the given type or
    * generic name.
    */
-  static PDPtr defaultParticle(long id);
+  static PDPtr defaultParticle(PID id);
 
   /**
    * Get a pointer to a particle based on the given path or name. The

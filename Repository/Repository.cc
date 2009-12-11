@@ -313,7 +313,7 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
 
 }
 
-PDPtr Repository::defaultParticle(long id) {
+PDPtr Repository::defaultParticle(PID id) {
   ParticleMap::iterator pit = defaultParticles().find(id);
   return pit == defaultParticles().end()? PDPtr(): pit->second;
 }

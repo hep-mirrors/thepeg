@@ -419,13 +419,13 @@ public:
    * Create a particle instance corresponding to the given \a id
    * number.
    */
-  PPtr getParticle(long id) const;
+  PPtr getParticle(PID id) const;
 
   /**
    * Return a pointer to the ParticleData object corresponding to the
    * given \a id number.
    */
-  PDPtr getParticleData(long id) const;
+  PDPtr getParticleData(PID id) const;
 
   /**
    * Return a reference to the complete list of matchers in this
@@ -933,7 +933,7 @@ private:
    * Only particles with id number less than theQuickSize are
    * available in theQuickParticles.
    */
-  int theQuickSize;
+  long theQuickSize;
 
   /**
    * A flag to tell if we are in the pre-initialization phase where

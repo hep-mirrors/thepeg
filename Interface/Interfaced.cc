@@ -53,12 +53,12 @@ void Interfaced::setUsed() const {
   if ( generator() ) generator()->use(*this);
 }
 
-PPtr Interfaced::getParticle(long newId) const {
+PPtr Interfaced::getParticle(PID newId) const {
   PPtr p(generator()? generator()->getParticle(newId): PPtr());
   return p;
 }
 
-PDPtr Interfaced::getParticleData(long newId) const {
+PDPtr Interfaced::getParticleData(PID newId) const {
   PDPtr p(generator()? generator()->getParticleData(newId):
 	  Repository::defaultParticle(newId));
   return p;

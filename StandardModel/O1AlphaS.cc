@@ -36,7 +36,7 @@ double O1AlphaS::value(Energy2 scale, const StandardModelBase &) const {
 
 vector<Energy2> O1AlphaS::flavourThresholds() const {
   vector<Energy2> thresholds;
-  for ( unsigned long f = 1; f <= theMaxFlav; ++f ) {
+  for ( long f = 1; f <= theMaxFlav; ++f ) {
     PDPtr p = getParticleData(f);
     if ( p ) thresholds.push_back(sqr(p->mass() + p->CC()->mass()));
   }

@@ -44,7 +44,7 @@ ParticleData::ParticleData()
     theDefColour(PDT::ColourUnknown) {}
 
 ParticleData::
-ParticleData(long newId, const string & newPDGName)
+ParticleData(PID newId, const string & newPDGName)
   : theId(newId), thePDGName(newPDGName), theMass(-1.0*GeV), theWidth(-1.0*GeV),
     theWidthUpCut(-1.0*GeV), theWidthLoCut(-1.0*GeV), theCTau(-1.0*mm),
     theCharge(PDT::ChargeUnknown),
@@ -56,12 +56,12 @@ ParticleData(long newId, const string & newPDGName)
 
 ParticleData::~ParticleData() {}
 
-PDPtr ParticleData::Create(long newId, const string & newPDGName) {
+PDPtr ParticleData::Create(PID newId, const string & newPDGName) {
   return new_ptr(ParticleData(newId, newPDGName));
 }
 
 PDPair ParticleData::
-Create(long newId, const string & newPDGName, const string & newAntiPDGName) {
+Create(PID newId, const string & newPDGName, const string & newAntiPDGName) {
   PDPair pap;
   pap.first = new_ptr(ParticleData(newId, newPDGName));
   pap.second = new_ptr(ParticleData(-newId, newAntiPDGName));
@@ -70,9 +70,11 @@ Create(long newId, const string & newPDGName, const string & newAntiPDGName) {
 }
 
 void ParticleData::readSetup(istream & is) {
-  is >> theId >> thePDGName >> iunit(theDefMass, GeV) >> iunit(theDefWidth, GeV)
+  long id;
+  is >> id >> thePDGName >> iunit(theDefMass, GeV) >> iunit(theDefWidth, GeV)
      >> iunit(theDefCut, GeV) >> iunit(theDefCTau, mm) >> ienum(theDefCharge)
      >> ienum(theDefColour) >> ienum(theDefSpin) >> ienum(isStable);
+  theId = id;
   theMass = theDefMass;
   theWidth = theDefWidth;
   theWidthUpCut = theDefCut;
@@ -533,7 +535,7 @@ struct ModeOrdering {
 void ParticleData::persistentOutput(PersistentOStream & os) const {
   multiset<tcDMPtr,ModeOrdering>
     modes(theDecayModes.begin(), theDecayModes.end());
-  os << theId << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
+  os << long(theId) << thePDGName << ounit(theMass, GeV) << ounit(theWidth, GeV)
      << ounit(theWidthUpCut, GeV) << ounit(theWidthLoCut, GeV)
      << ounit(theCTau, mm) << oenum(theCharge) << oenum(theSpin)
      << oenum(theColour);
@@ -545,7 +547,8 @@ void ParticleData::persistentOutput(PersistentOStream & os) const {
 }
 
 void ParticleData::persistentInput(PersistentIStream & is, int) {
-  is >> theId >> thePDGName >> iunit(theMass, GeV) >> iunit(theWidth, GeV)
+  long id;
+  is >> id >> thePDGName >> iunit(theMass, GeV) >> iunit(theWidth, GeV)
      >> iunit(theWidthUpCut, GeV) >> iunit(theWidthLoCut, GeV)
      >> iunit(theCTau, mm) >> ienum(theCharge) >> ienum(theSpin)
      >> ienum(theColour) >> theMassGenerator >> isStable
@@ -554,6 +557,7 @@ void ParticleData::persistentInput(PersistentIStream & is, int) {
      >> iunit(theDefWidth, GeV) >> iunit(theDefCut, GeV)
      >> iunit(theDefCTau, mm) >> ienum(theDefColour) >> ienum(theDefCharge)
      >> ienum(theDefSpin);
+  theId = id;
 }
 
 void ParticleData::Init() {

@@ -1,3 +1,13 @@
+2009-12-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDT/PID.h, PDT/ParticleData, Interface/Interfaced,
+	Repository/EventGenerator, Repository/Repository: Started using
+	particle ID type. At the moment it is almost transparent and will
+	convert from 'int' and 'long', and to 'long'. Only the problematic
+	conversion from unsigned types will lead to a compile error.
+
+	* StandardModel/O1AlphaS.cc: Fixed unsigned PID compile error.
+
 2009-12-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Repository/EventGenerator.cc: Third version of the ExceptionMap

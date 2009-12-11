@@ -50,6 +50,11 @@ public:
     return t;
   }
 
+  /**
+   * The negation operator
+   */
+  PID operator-() const;
+
 private:
   /**
    * The particle id.
@@ -60,6 +65,9 @@ private:
 /// Specialized constructor for 'long'
 template <> inline PID::PID(long t) : id(t) {} 
 
+/// Specialized constructor for 'int'
+template <> inline PID::PID(int t) : id(t) {} 
+
 /// Specialized constructor for Particle Code enum
 template <> inline PID::PID(ParticleID::ParticleCodes t) : id(t) {} 
 
@@ -68,6 +76,13 @@ template <> inline PID::operator long() { return id; }
 
 /// Specialized cast for 'const long'
 template <> inline PID::operator long() const { return id; }
+
+/**
+ * The negation operator
+ */
+inline PID PID::operator-() const {
+  return -id;
+}
 
 }
 

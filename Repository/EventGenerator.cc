@@ -259,7 +259,8 @@ void EventGenerator::doinitrun() {
 
 }
 
-PDPtr EventGenerator::getParticleData(long newId) const {
+PDPtr EventGenerator::getParticleData(PID id) const {
+  long newId = id;
   if ( abs(newId) < theQuickSize && theQuickParticles.size() )
     return theQuickParticles[newId+theQuickSize];
   ParticleMap::const_iterator it = theParticles.find(newId);
@@ -267,7 +268,7 @@ PDPtr EventGenerator::getParticleData(long newId) const {
   return it->second;
 }
 
-PPtr EventGenerator::getParticle(long newId) const {
+PPtr EventGenerator::getParticle(PID newId) const {
   tcPDPtr pd = getParticleData(newId);
   if ( !pd ) return PPtr();
   return pd->produceParticle();
@@ -1174,7 +1175,7 @@ void EventGenerator::Init() {
      &EventGenerator::maxErrors,
      10, 1, 100000, true, false, Interface::lowerlim);
 
-  static Parameter<EventGenerator,int> interfaceQuickSize
+  static Parameter<EventGenerator,long> interfaceQuickSize
     ("QuickSize",
      "The max absolute id number of particle data objects which are accessed "
      "quickly through a vector indexed by the id number.",

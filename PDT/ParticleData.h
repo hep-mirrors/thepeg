@@ -12,6 +12,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/PDT/PDT.h"
+#include "ThePEG/PDT/PID.h"
 #include "ThePEG/Vectors/LorentzVector.h"
 #include "ThePEG/Vectors/ThreeVector.h"
 #include "ThePEG/Interface/Interfaced.h"
@@ -69,12 +70,12 @@ public:
   /**
    * Create a Particle which is its own anti-particle.
    */
-  static PDPtr Create(long newId, const string & newPDGName);
+  static PDPtr Create(PID newId, const string & newPDGName);
 
   /**
    * Create a particle - anti particle pair.
    */
-  static PDPair Create(long newId, const string & newPDGName, const string & newAntiPDGName);
+  static PDPair Create(PID newId, const string & newPDGName, const string & newAntiPDGName);
   //@}
 
 public:
@@ -462,7 +463,7 @@ protected:
    * Protected constructor only to be used by subclasses or by the
    * Create method.
    */
-  ParticleData(long newId, const string & newPDGName);
+  ParticleData(PID newId, const string & newPDGName);
 
   /**
    * Read setup info from a standard stream. The following information
@@ -541,7 +542,7 @@ private:
   /**
    * Id number according to the STDHEP/PDG standard.
    */
-  long theId;
+  PID theId;
 
   /**
    * Name and Id number according to the STDHEP/PDG standard.

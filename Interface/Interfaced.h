@@ -12,6 +12,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "InterfacedBase.h"
+#include "ThePEG/PDT/PID.h"
 
 namespace ThePEG {
 
@@ -72,13 +73,13 @@ public:
   /**
    * Create a new Particle instance given a id number.
    */
-  PPtr getParticle(long) const;
+  PPtr getParticle(PID) const;
 
   /**
    * Return a pointer to the ParticleData object corresponding to the
    * given id number.
    */
-  PDPtr getParticleData(long) const;
+  PDPtr getParticleData(PID) const;
 
   /**
    * Returns true if this object has actally been used.
