@@ -181,8 +181,9 @@ pair<bool,Length> MixedParticleData::generateLifeTime() const {
   Length ct;
   double zi(_z.imag()),zr(_z.real()),zabs(sqr(zi)+sqr(zr)),
     root(1.-zabs);
+  Length ctau = hbarc/(width()-0.5*abs(_deltagamma));
   do {
-    ct = UseRandom::rndExp(cTau());
+    ct = UseRandom::rndExp(ctau);
     double gt = ct/cTau();
     wgt=1.;
     if(id()>0) {
@@ -203,6 +204,7 @@ pair<bool,Length> MixedParticleData::generateLifeTime() const {
 	wgt = 0.5*root*sqr(abs(_pq))*(cosh(_y*gt)-cos(_x*gt));
       }
     }
+    wgt *= exp(-gt+ct/ctau);
   }
   while(UseRandom::rnd()>wgt);
   return make_pair(mix,ct);
