@@ -246,7 +246,7 @@ generate(PartonBinInstance & pb, const double * r,
     return false;
   pb.remnantWeight(1.0);
   pb.parton()->setMomentum
-    (pb.remnantHandler()->generate(pb, r, pb.scale(), shat,
+    (pb.remnantHandler()->generate(pb, r + pb.bin()->pdfDim(), pb.scale(), shat,
 				   pb.particle()->momentum()));
   if ( pb.remnantWeight() <= 0.0 ) return false;
   partonBinInstances[pb.parton()] = &pb;
