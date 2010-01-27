@@ -1,3 +1,7 @@
+2010-01-27  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Vectors/ThreeVector.h: Fixed rotate() function to be units-aware.
+
 2009-12-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* PDT/PID.h, PDT/ParticleData, Interface/Interfaced,

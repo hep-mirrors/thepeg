@@ -179,15 +179,16 @@ public:
    * @param angle Rotation angle in radians.
    * @param axis Rotation axis.
    */
-  ThreeVector<Value> & rotate(double angle, const ThreeVector<double> & axis) {
+  template <typename U>
+  ThreeVector<Value> & rotate(double angle, const ThreeVector<U> & axis) {
     if (angle == 0.0) 
       return *this;
-    const double ll = axis.mag();
-    assert(ll > 0.0);
+    const U ll = axis.mag();
+    assert( ll > U() );
 
     const double sa = sin(angle), ca = cos(angle);
     const double dx = axis.x()/ll, dy = axis.y()/ll, dz = axis.z()/ll;
-    const double xx  = x(), yy = y(), zz = z(); 
+    const Value  xx  = x(), yy = y(), zz = z(); 
 
     setX((ca+(1-ca)*dx*dx)     * xx
 	 +((1-ca)*dx*dy-sa*dz) * yy
