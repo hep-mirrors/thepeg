@@ -34,13 +34,13 @@ PDFCuts(const Cuts & kc, bool first, const SInterval & S,
   x2max = min(xmax,x2max);
   if ( first ) {
     double x1min = max(xmin*exp(2.*kc.yHatMin()), kc.x1Min());
-    x1min = max(xmin,x1min);
+    x1min = max(sqr(xmin),x1min);
     theSMax = x2max*S.upper();
     theL = Interval<double>(log(1.0/x1max), log(1.0/x1min));
   } 
   else {
     double x2min = max(xmin*exp(-2.*kc.yHatMax()), kc.x2Min());
-    x2min = max(xmin,x2min);
+    x2min = max(sqr(xmin),x2min);
     theSMax = x1max*S.upper();
     theL = Interval<double>(-log(x2max), -log(x2min));
   }
@@ -58,13 +58,13 @@ PDFCuts(const Cuts & kc, bool first, Energy maxEnergy) {
   x2max = min(xmax,x2max);
   if ( first ) {
     double x1min = max(xmin*exp(2.*kc.yHatMin()), kc.x1Min());
-    x1min = max(xmin,x1min);
+    x1min = max(sqr(xmin),x1min);
     theSMax = x2max*sqr(maxEnergy);
     theL = Interval<double>(-log(x1max), -log(x1min));
   } 
   else {
     double x2min = max(xmin*exp(-2.*kc.yHatMax()), kc.x2Min());
-    x2min = max(xmin,x2min);
+    x2min = max(sqr(xmin),x2min);
     theSMax = x1max*sqr(maxEnergy);
     theL = Interval<double>(-log(x2max), -log(x2min));
   }
