@@ -630,7 +630,12 @@ bool LesHouchesReader::checkPartonBin() {
       curr = curr->incoming();
       --icurr;
     }
-    if ( curr || icurr >= 0 ) continue;
+    if(!(!partonBins()[i].first->incoming() &&
+	 !partonBins()[i].first->particle() &&  
+	 partonBins()[i].first->parton()->id () == ids.first[0] &&
+	 ( inc.first.size()==1 ||
+	   (inc.first.size()==2 && ids.first[0]==ids.first[1]))) &&
+       ( curr || icurr >= 0 ) ) continue;
 
     curr = partonBins()[i].second;
     icurr = inc.second.size() - 1;
@@ -639,7 +644,12 @@ bool LesHouchesReader::checkPartonBin() {
       curr = curr->incoming();
       --icurr;
     }
-    if ( curr || icurr >= 0 ) continue;
+    if(!(!partonBins()[i].second->incoming() &&
+	 !partonBins()[i].second->particle() &&  
+	 partonBins()[i].second->parton()->id () == ids.second[0] &&
+	 ( inc.second.size()==1 ||
+	   (inc.second.size()==2 && ids.second[0]==ids.second[1]))) &&
+       ( curr || icurr >= 0 ) ) continue;
 
     pbp = partonBins()[i];
   }
