@@ -21,7 +21,7 @@ namespace ThePEG {
  * The ReweightBase class is the base class of all objects
  * representing external biases to matrix elements. These can be used
  * to enhance certain matrix elements or certain phase space
- * regions. They can be used in to ways, either to completely change
+ * regions. They can be used in two ways, either to completely change
  * the matrix element (re-weight), in which case the total cross
  * section will be affected or, when using weighted events in an
  * EventHandler, to pre-weight certain events but leaving the cross

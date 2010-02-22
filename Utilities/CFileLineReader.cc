@@ -47,14 +47,16 @@ void CFileLineReader::open(string filename) {
   }
 #ifdef ThePEG_GZREAD_FILE
   else if ( filename.substr(filename.length()-3,3) == ".gz" ) {
-    filename = ThePEG_GZREAD_FILE " " + filename;
+    //    filename = ThePEG_GZREAD_FILE " " + filename;
+    filename = ThePEG_GZREAD_FILE " " + filename + " 2>/dev/null";
     file = popen(filename.c_str(), "r");
     type = pipe;
   }
 #endif
 #ifdef ThePEG_BZ2READ_FILE
   else if ( filename.substr(filename.length()-4,4) == ".bz2" ) {
-    filename = ThePEG_BZ2READ_FILE " " + filename;
+    //    filename = ThePEG_BZ2READ_FILE " " + filename;
+    filename = ThePEG_BZ2READ_FILE " " + filename + " 2>/dev/null";
     file = popen(filename.c_str(), "r");
     type = pipe;
   }

@@ -894,7 +894,8 @@ bool LesHouchesReader::compressedCache() const {
 void LesHouchesReader::openReadCacheFile() {
   if ( cacheFile() != NULL ) closeCacheFile();
   if ( compressedCache() ) {
-    string cmd = ThePEG_GZREAD_FILE " " + cacheFileName();
+    //    string cmd = ThePEG_GZREAD_FILE " " + cacheFileName();
+    string cmd = ThePEG_GZREAD_FILE " " + cacheFileName() + " 2>/dev/null";
     theCacheFile = popen(cmd.c_str(), "r");
   } else {
     theCacheFile = fopen(cacheFileName().c_str(), "r");
