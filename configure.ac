@@ -44,9 +44,9 @@ THEPEG_SEARCH_LHAPDF
 THEPEG_CHECK_HEPMC
 THEPEG_CHECK_RIVET
 
-AX_CHECK_ZLIB
+dnl AX_CHECK_ZLIB
 
-AX_CHECK_BZ2LIB
+dnl AX_CHECK_BZ2LIB
 
 THEPEG_DEFINE_ENVDEFAULT(ThePEG_GZREAD_FILE,GZREAD_FILE,gunzip -c,[The command which, taking the name of a gzipped file as argument, unzips it and prints it to stdout. Default is "gunzip -c"])
 
