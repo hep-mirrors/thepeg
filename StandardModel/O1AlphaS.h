@@ -71,7 +71,7 @@ public:
   /**
    * Return the maximum number of active flavours.
    */
-  unsigned int getMaxFlav() const { return theMaxFlav; }
+  int getMaxFlav() const { return theMaxFlav; }
 
 public:
 
@@ -127,12 +127,12 @@ private:
   /**
    * The number of flavours for which theLambdaQCD is given.
    */
-  unsigned int theLambdaFlavour;
+  int theLambdaFlavour;
 
   /**
    * The maximum number of active flavours.
    */
-  unsigned int theMaxFlav;
+  int theMaxFlav;
 
   /**
    * The scale below which \f$\alpha_S\f$ is frozen.
