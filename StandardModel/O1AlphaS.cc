@@ -49,16 +49,24 @@ vector<Energy> O1AlphaS::LambdaQCDs() const {
   vector<Energy2> thresholds = flavourThresholds();
   lambdas[theLambdaFlavour] = theLambdaQCD;
   for ( int f = theLambdaFlavour - 1; f >= 0; --f ) {
-    lambdas[f] =
-      sqrt(thresholds[f]*
-	   exp(-log(thresholds[f]/sqr(lambdas[f + 1]))*
-	       (33.0-2.0*(f+1))/(33.0-2.0*f)));
+    if ( thresholds[f] > ZERO ) {
+      lambdas[f] =
+	sqrt(thresholds[f]*
+	     exp(-log(thresholds[f]/sqr(lambdas[f + 1]))*
+		 (33.0-2.0*(f+1))/(33.0-2.0*f)));
+    } else {
+      lambdas[f] = lambdas[f + 1];
+    }
   }
-  for ( unsigned int f = theLambdaFlavour; f < theMaxFlav; ++f ) {
-    lambdas[f + 1] =
-      sqrt(thresholds[f]*
-	   exp(-log(thresholds[f]/sqr(lambdas[f]))*
-	       (33.0-2.0*f)/(33.0-2.0*(f+1))));
+  for ( int f = theLambdaFlavour; f < theMaxFlav; ++f ) {
+    if ( thresholds[f] > ZERO ) {
+      lambdas[f + 1] =
+	sqrt(thresholds[f]*
+	     exp(-log(thresholds[f]/sqr(lambdas[f]))*
+		 (33.0-2.0*f)/(33.0-2.0*(f+1))));
+    } else {
+      lambdas[f + 1] = lambdas[f];
+    }
   }
   return lambdas;
 }  
@@ -95,15 +103,15 @@ void O1AlphaS::Init() {
       &O1AlphaS::theLambdaQCD, GeV, 0.25*GeV, ZERO, ZERO,
       false, false, Interface::lowerlim);
 
-   static Parameter<O1AlphaS,unsigned int> interfaceMaxFlav
+   static Parameter<O1AlphaS,int> interfaceMaxFlav
      ("MaxFlav",
       "The maximum number of flavours used to calculate \\f$\\alpha_S\\f$.",
       &O1AlphaS::theMaxFlav, 6, 3, 8,
       false, false, true);
 
-  typedef void (ThePEG::O1AlphaS::*IFN)(unsigned int);
+  typedef void (ThePEG::O1AlphaS::*IFN)(int);
 
-  static Parameter<O1AlphaS,unsigned int> interfaceLambdaFlavour
+  static Parameter<O1AlphaS,int> interfaceLambdaFlavour
     ("LambdaFlav",
      "The number of active flavours for which LambdaQCD is specified.",
      &O1AlphaS::theLambdaFlavour, 4, 3, 8,

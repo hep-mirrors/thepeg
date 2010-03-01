@@ -1,3 +1,11 @@
+2010-03-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* StandardModel/O1AlphaS.*: Changed the behavior of the thresholds
+	in case quarks are exactly massless. Also changed the
+	theLambdaFlavour and theMaxFlav variables to be signed to avoid
+	warnings when compared to PID objects. (in response to
+	herwig:ticket:303)
+
 2010-01-27  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Vectors/ThreeVector.h: Fixed rotate() function to be units-aware.
