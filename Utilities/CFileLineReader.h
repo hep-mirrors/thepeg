@@ -14,6 +14,7 @@
 
 #include "ThePEG/Config/ThePEG.h"
 #include "CFileLineReader.fh"
+#include "CFile.h"
 #include <cstdio>
 #include <string>
 
@@ -50,13 +51,6 @@ public:
   CFileLineReader();
 
   /**
-   * Constructor taking a c-file \a f opened from the outside as
-   * argument. Optionally the size \a len of the line buffer can be
-   * specified.
-   */
-  CFileLineReader(FILE * f, int len = defsize);
-
-  /**
    * Constructor taking a \a filename as argument. Optionally the size
    * \a len of the line buffer can be specified. If \a filename ends
    * with <code>.gz</code> a pipe is opened where the file is read by
@@ -74,11 +68,6 @@ public:
 
   /** @name Initialization functions. */
   //@{
-  /**
-   * Initialize with a c-file \a f opened from the outside.
-   */
-  void open(FILE * f);
-
   /**
    * Initialize with a \a filename. If \a filename ends with
    * <code>.gz</code> a pipe is opened where the file is read by
@@ -114,7 +103,7 @@ public:
   /**
    * Return the underlying c-file.
    */
-  FILE * cfile() const;
+  CFile cFile() const;
 
   /**
    * Return null if a previous read failed.
@@ -184,17 +173,9 @@ public:
 private:
 
   /**
-   * Enumerate different kinds of c-files.
-   */
-  enum StreamType { unknown,   /**< Unknown type opened from the outside. */
-		    plainfile, /**< A plain file opened with fopen(). */
-		    pipe       /**< A pipe opened with popen(). */
-  };
-
-  /**
    * The c-file to be read from.
    */
-  FILE * file;
+  CFile file;
 
   /**
    * The length of the line buffer.
@@ -215,11 +196,6 @@ private:
    * The current state is bad if a read has failed.
    */
   bool bad;
-
-  /**
-   * The type of the c-file used.
-   */
-  StreamType type;
 
   /**
    * The default size of the buffer.

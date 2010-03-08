@@ -42,7 +42,7 @@ public:
   /**
    * Default constructor.
    */
-  LesHouchesFileReader() : neve(0), ieve(0), theFile(NULL) {}
+  LesHouchesFileReader() : neve(0), ieve(0) {}
 
   /**
    * Copy-constructor. Note that a file which is opened in the object
@@ -90,11 +90,6 @@ public:
    * Return the name of the file from where to read events.
    */
   string filename() const { return theFileName; }
-
-  /**
-   * The file handle to read from.
-   */
-  FILE * file() { return theFile; }
 
 public:
 
@@ -196,11 +191,6 @@ protected:
   map<string,string> eventAttributes;
 
 private:
-
-  /**
-   * The file handle from which derived classes should read.
-   */
-  FILE * theFile;
 
   /**
    * The name of the file from where to read events.

@@ -35,7 +35,7 @@ using namespace ThePEG;
 
 LesHouchesReader::LesHouchesReader(bool active)
   : theNEvents(0), position(0), reopened(0), theMaxScan(-1), scanning(false),
-    isActive(active), theCacheFileName(""), doCutEarly(true), theCacheFile(NULL),
+    isActive(active), theCacheFileName(""), doCutEarly(true),
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
     weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0),
@@ -52,7 +52,7 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     theCacheFileName(x.theCacheFileName), doCutEarly(x.doCutEarly),
     stats(x.stats), statmap(x.statmap),
     thePartonBinInstances(x.thePartonBinInstances),
-    theCacheFile(NULL), reweights(x.reweights), preweights(x.preweights),
+    reweights(x.reweights), preweights(x.preweights),
     preweight(x.preweight), reweightPDF(x.reweightPDF),
     doInitPDFs(x.doInitPDFs),
     theMaxMultCKKW(x.theMaxMultCKKW), theMinMultCKKW(x.theMinMultCKKW),
@@ -282,7 +282,7 @@ long LesHouchesReader::scan() {
 
   // If the open() has not already gotten information about subprocesses
   // and cross sections we have to scan through the events.
-  if ( !heprup.NPRUP || cacheFile() != NULL || abs(heprup.IDWTUP) != 1 ) { // why scan if IDWTUP != 1?
+  if ( !heprup.NPRUP || cacheFile() || abs(heprup.IDWTUP) != 1 ) { // why scan if IDWTUP != 1?
 
     HoldFlag<> isScanning(scanning);
 
@@ -310,7 +310,7 @@ long LesHouchesReader::scan() {
       ++neve;
       ++oldeve[id];
       oldsum += hepeup.XWGTUP;
-      if ( cacheFile() != NULL ) {
+      if ( cacheFile() ) {
  	if ( eventWeight() == 0.0 ) {
  	  ++cuteve;
 	  continue;
@@ -360,7 +360,7 @@ long LesHouchesReader::scan() {
     }
   }
 
-  if ( cacheFile() != NULL ) closeCacheFile();
+  if ( cacheFile() ) closeCacheFile();
 
   if ( negw ) heprup.IDWTUP = min(-abs(heprup.IDWTUP), -1);
 
@@ -449,7 +449,7 @@ void LesHouchesReader::reopen() {
       << "Reopening LesHouchesReader '" << name()
       << "' after accessing " << stats.attempts() << " events out of "
       << NEvents() << Exception::warning);
-  if ( cacheFile() != NULL ) {
+  if ( cacheFile() ) {
     closeCacheFile();
     openReadCacheFile();
     if ( !uncacheEvent() ) Throw<LesHouchesReopenError>()
@@ -481,7 +481,7 @@ bool LesHouchesReader::readEvent() {
   // anything fancy.
   if ( skipping ) return true;
 
-  if ( cacheFile() != NULL && !scanning ) return true;
+  if ( cacheFile() && !scanning ) return true;
 
   // Reweight according to the re- and pre-weights objects in the
   // LesHouchesReader base class.
@@ -534,7 +534,7 @@ bool LesHouchesReader::readEvent() {
 }
 
 double LesHouchesReader::getEvent() {
-  if ( cacheFile() != NULL ) {
+  if ( cacheFile() ) {
     if ( !uncacheEvent() ) reopen();
   } else {
     if ( !readEvent() ) reopen();
@@ -569,7 +569,7 @@ double LesHouchesReader::reweight() {
   }
 
   // If we are caching events we do not want to do CKKW reweighting.
-  if ( cacheFile() != NULL ) return weight;
+  if ( cacheFile() ) return weight;
 
   if ( CKKWHandler() && maxMultCKKW() > 0 && maxMultCKKW() > minMultCKKW() ) {
     CKKWHandler()->setXComb(lastXCombPtr());
@@ -878,50 +878,24 @@ void LesHouchesReader::connectMothers() {
   }
 }
 
-bool LesHouchesReader::compressedCache() const {
-#ifdef ThePEG_GZREAD_FILE
-#ifdef ThePEG_GZWRITE_FILE
-  return cacheFileName().length() > 3 &&
-    cacheFileName().substr(cacheFileName().length()-3,3) == ".gz";
-#else
-  return false;
-#endif
-#else
-  return false;
-#endif
-}
-
 void LesHouchesReader::openReadCacheFile() {
-  if ( cacheFile() != NULL ) closeCacheFile();
-  if ( compressedCache() ) {
-    //    string cmd = ThePEG_GZREAD_FILE " " + cacheFileName();
-    string cmd = ThePEG_GZREAD_FILE " " + cacheFileName() + " 2>/dev/null";
-    theCacheFile = popen(cmd.c_str(), "r");
-  } else {
-    theCacheFile = fopen(cacheFileName().c_str(), "r");
-  }
+  if ( cacheFile() ) closeCacheFile();
+  cacheFile().open(cacheFileName(), "r");
   position = 0;
 }
 
 void LesHouchesReader::openWriteCacheFile() {
-  if ( cacheFile() != NULL ) closeCacheFile();
-  if ( compressedCache() ) {
-    string cmd = ThePEG_GZWRITE_FILE " " + cacheFileName();
-    theCacheFile = popen(cmd.c_str(), "w");
-  } else {
-    theCacheFile = fopen(cacheFileName().c_str(), "w");
-  }
+  if ( cacheFile() ) closeCacheFile();
+  cacheFile().open(cacheFileName(), "w");
 }
 
 void LesHouchesReader::closeCacheFile() {
-  if ( compressedCache() ) pclose(cacheFile());
-  else fclose(cacheFile());
-  theCacheFile = NULL;
+  cacheFile().close();
 }
 
 void LesHouchesReader::cacheEvent() const {
   static vector<char> buff;
-  fwrite(&hepeup.NUP, sizeof(hepeup.NUP), 1, cacheFile());
+  cacheFile().write(&hepeup.NUP, sizeof(hepeup.NUP));
   buff.resize(eventSize(hepeup.NUP));
   char * pos = &buff[0];
   pos = mwrite(pos, hepeup.IDPRUP);
@@ -940,16 +914,16 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mwrite(pos, lastweight);
   pos = mwrite(pos, preweight);
-  fwrite(&buff[0], buff.size(), 1, cacheFile());
+  cacheFile().write(&buff[0], buff.size(), 1);
 }
 
 bool LesHouchesReader::uncacheEvent() {
   reset();
   static vector<char> buff;
-  if ( fread(&hepeup.NUP, sizeof(hepeup.NUP), 1, cacheFile()) != 1 )
+  if ( cacheFile().read(&hepeup.NUP, sizeof(hepeup.NUP)) != 1 )
     return false;
   buff.resize(eventSize(hepeup.NUP));
-  if ( fread(&buff[0], buff.size(), 1, cacheFile()) != 1 ) return false;
+  if ( cacheFile().read(&buff[0], buff.size()) != 1 ) return false;
   const char * pos = &buff[0];
   pos = mread(pos, hepeup.IDPRUP);
   pos = mread(pos, hepeup.XWGTUP);

@@ -20,6 +20,7 @@
 #include "ThePEG/MatrixElement/ReweightBase.h"
 #include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
+#include "ThePEG/Utilities/CFile.h"
 #include <cstdio>
 #include <cstring>
 
@@ -79,11 +80,6 @@ class LesHouchesReader: public HandlerBase, public LastXCombInfo<> {
    * LesHouchesEventHandler should have access to our private parts.
    */
   friend class LesHouchesEventHandler;
-
-  /**
-   * Alias for standard C file streams.
-   */
-  typedef FILE * CFile;
 
   /**
    * Map for accumulating statistics of cross sections per process
@@ -449,11 +445,6 @@ protected:
    * Close the cache file;
    */
   void closeCacheFile();
-
-  /**
-   * Returns true if the cache file is compressed.
-   */
-  bool compressedCache() const;
 
   /**
    * Write the current event to the cache file.

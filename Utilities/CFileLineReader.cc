@@ -18,18 +18,10 @@
 using namespace ThePEG;
 
 CFileLineReader::CFileLineReader()
-  : file(NULL), bufflen(defsize), buff(new char[defsize]), pos(buff),
-    bad(false), type(unknown) {}
-
-CFileLineReader::CFileLineReader(FILE * f, int len)
-  : file(NULL), bufflen(len), buff(new char[len]), pos(buff), bad(false),
-    type(unknown) {
-  open(f);
-}
+  : bufflen(defsize), buff(new char[defsize]), pos(buff), bad(false) {}
 
 CFileLineReader::CFileLineReader(string filename, int len)
-  : file(NULL), bufflen(len), buff(new char[len]), pos(buff), bad(false),
-    type(unknown) {
+  : bufflen(len), buff(new char[len]), pos(buff), bad(false) {
   open(filename);
 }
 
@@ -39,53 +31,18 @@ CFileLineReader::~CFileLineReader() {
 
 void CFileLineReader::open(string filename) {
   close();
+  file = CFile(filename, "r");
   pos = buff;
-  if ( filename[filename.length()-1] == '|' ) {
-    filename = filename.substr(0, filename.length() - 1);
-    file = popen(filename.c_str(), "r");
-    type = pipe;
-  }
-#ifdef ThePEG_GZREAD_FILE
-  else if ( filename.substr(filename.length()-3,3) == ".gz" ) {
-    //    filename = ThePEG_GZREAD_FILE " " + filename;
-    filename = ThePEG_GZREAD_FILE " " + filename + " 2>/dev/null";
-    file = popen(filename.c_str(), "r");
-    type = pipe;
-  }
-#endif
-#ifdef ThePEG_BZ2READ_FILE
-  else if ( filename.substr(filename.length()-4,4) == ".bz2" ) {
-    //    filename = ThePEG_BZ2READ_FILE " " + filename;
-    filename = ThePEG_BZ2READ_FILE " " + filename + " 2>/dev/null";
-    file = popen(filename.c_str(), "r");
-    type = pipe;
-  }
-#endif
-  else {
-    file = std::fopen(filename.c_str(), "r");
-    type = plainfile;
-  }
-  bad = ( file == NULL );
-}
-
-void CFileLineReader::open(FILE * f) {
-  close();
-  file = f;
-  pos = buff;
-  bad = false;
-  type = unknown;
+  bad = !file;
 }
 
 void CFileLineReader::close() {
-  if ( file != NULL ) {
-    if ( type == plainfile ) fclose(file);
-    if ( type == pipe ) pclose(file);
-  }
-  file = NULL;
+  file.close();
+  bad = true;
 }
 
 bool CFileLineReader::readline() {
-  bad = ( std::fgets(buff, bufflen, file) == NULL );
+  bad =  ( file.gets(buff, bufflen) == 0 );
   pos = buff;
   return !bad;
 }
@@ -178,7 +135,7 @@ CFileLineReader & CFileLineReader::operator>>(std::string & s) {
   return *this;
 }
 
-FILE * CFileLineReader::cfile() const {
+CFile CFileLineReader::cFile() const {
   return file;
 }
 

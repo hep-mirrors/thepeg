@@ -27,7 +27,7 @@ LesHouchesFileReader(const LesHouchesFileReader & x)
     headerBlock(x.headerBlock), initComments(x.initComments),
     initAttributes(x.initAttributes), eventComments(x.eventComments),
     eventAttributes(x.eventAttributes),
-    theFile(NULL), theFileName(x.theFileName) {}
+    theFileName(x.theFileName) {}
 
 LesHouchesFileReader::~LesHouchesFileReader() {}
 
@@ -55,8 +55,7 @@ void LesHouchesFileReader::open() {
       << "Use 'set " << name() << ":FileName'."
       << Exception::runerror;
   cfile.open(filename());
-  theFile = cfile.cfile();
-  if ( ( theFile = cfile.cfile() ) == NULL )
+  if ( !cfile )
     throw LesHouchesFileError()
       << "The LesHouchesFileReader '" << name() << "' could not open the "
       << "event file called '" << theFileName << "'."
@@ -189,7 +188,6 @@ bool LesHouchesFileReader::doReadEvent() {
 
 void LesHouchesFileReader::close() {
   cfile.close();
-  theFile = NULL;
 }
 
 void LesHouchesFileReader::persistentOutput(PersistentOStream & os) const {
