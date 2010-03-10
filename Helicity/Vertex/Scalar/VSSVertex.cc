@@ -52,18 +52,19 @@ VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the coupling
   setCoupling(q2,out,sca1.particle(),sca2.particle());
   // mass and width
-  if(mass < ZERO) mass   = out->mass();
+  if(mass < ZERO)  mass   = out->mass();
+  if(width < ZERO) width = out->width();
   Energy2 mass2 = sqr(mass);
   // calculate the prefactor
   Energy2 p2    = pout.m2();
   Complex fact = norm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   // compute the vector
   LorentzPolarizationVector vec;
-  // massive outgoing vector
-  if(mass!=ZERO) {
+  // massless outgoing vector
+  if(mass==ZERO) {
     vec = UnitRemoval::InvE * fact * (sca2.momentum()-sca1.momentum());
   }
-  // massless outgoing vector
+  // massive outgoing vector
   else {
     // first the dot product for the second term
     double dot = (sca1.m2()-sca2.m2())/mass2;
