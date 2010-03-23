@@ -132,8 +132,8 @@ public:
    * initSubProcess must have been called before. Also the types of
    * the incoming partons, \a t1 and \a t2, may be given if availible.
    */
-  bool passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
-		tcPDPtr t1 = tcPDPtr(), tcPDPtr t2 = tcPDPtr()) const;
+  virtual bool passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
+			tcPDPtr t1 = tcPDPtr(), tcPDPtr t2 = tcPDPtr()) const;
 
   /**
    * Check if the outgoing particles from a sub-process passes the
