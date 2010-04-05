@@ -84,7 +84,7 @@ void SpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
   }
 
   SqrtEnergy upper,lower;
-  SqrtEnergy eplusp = sqrt(pee+pabs);
+  SqrtEnergy eplusp  = sqrt(max(pee+pabs,ZERO));
   SqrtEnergy eminusp = ( pmm != ZERO ) ? pmm/eplusp : ZERO;
   // set up the coefficients for the different cases
   if(dir==incoming) {

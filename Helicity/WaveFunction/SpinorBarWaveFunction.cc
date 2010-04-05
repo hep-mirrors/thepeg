@@ -31,7 +31,7 @@ void SpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
     << "Invalid Helicity = " << ihel << " requested for SpinorBar" 
     << Exception::abortnow;
   // extract the momentum components
-  double fact=-1.; if(dir==incoming){fact=1.;}
+  double fact = dir==incoming ? 1. : -1.;
   Energy ppx=fact*px(),ppy=fact*py(),ppz=fact*pz(),pee=fact*e(),pmm=mass();
   // define and calculate some kinematic quantities
   Energy2 ptran2  = ppx*ppx+ppy*ppy;
@@ -82,9 +82,8 @@ void SpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
       hel_wf[1] = denominator*rtppluspz;
     }
   }
-
   SqrtEnergy upper, lower;
-  SqrtEnergy eplusp  = sqrt(pee+pabs);
+  SqrtEnergy eplusp  = sqrt(max(pee+pabs,ZERO));
   SqrtEnergy eminusp = ( pmm!=ZERO ) ? pmm/eplusp : ZERO;
   // set up the coefficients for the different cases
   if(dir==outgoing) {
