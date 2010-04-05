@@ -47,8 +47,8 @@ void StandardModelBase::doinit() {
     theAd = theEd < 0? -1.0: 1.0;
     theAu = theEu < 0? -1.0: 1.0;
     theVnu = theAnu - 4.0*theEnu*sin2ThetaW();
-    theVe = theAe - 4.0*theEe*sin2ThetaW();;
-    theVd = theAd - 4.0*theEd*sin2ThetaW();;
+    theVe = theAe - 4.0*theEe*sin2ThetaW();
+    theVd = theAd - 4.0*theEd*sin2ThetaW();
     theVu = theAu - 4.0*theEu*sin2ThetaW();
   }
   theRunningAlphaEM->init();
