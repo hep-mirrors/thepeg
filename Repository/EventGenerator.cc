@@ -247,11 +247,13 @@ void EventGenerator::doinitrun() {
   // standard model and the strategy.
   standardModel()->initrun();
   if ( strategy() ) strategy()->initrun();
-  eventHandler()->initrun();
-
   // initialize particles first
   for(ParticleMap::const_iterator pit = particles().begin();
-      pit != particles().end(); ++pit) pit->second->initrun();
+      pit != particles().end(); ++pit) {
+    pit->second->initrun();
+  }
+  eventHandler()->initrun();
+
   
   for_each(objects(), mem_fun(&InterfacedBase::initrun));
 
