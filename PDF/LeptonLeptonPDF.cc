@@ -48,17 +48,23 @@ double LeptonLeptonPDF::
 xfl(tcPDPtr particle, tcPDPtr  parton, Energy2 partonScale, double l,
     Energy2) const {
   using namespace Constants;
-  if ( parton != particle || l <= 0.0 ) return 0.0;
   static const double gf = 3.0/4.0 - EulerGamma;
+  static const double cut = 1.0e-300;
+  static const double del = 1000.0*cut;
+  if ( parton != particle || l <= cut ) return 0.0;
   const double x = exp(-l);
   const double eps = Math::exp1m(-l);
   const double lx = -l;
   const double l1x = log(eps);
   const double beta2 =
     SM().alphaEM()*(log(partonScale/sqr(particle->mass()))-1.0)/pi;
+  double corr = 0.0;
+  double integral = exp(beta2*gf)*pow(cut,beta2)/Math::gamma(beta2+1.0)
+                    - beta2*cut*(4.0 - 3.0*beta2 + 4.0*beta2*log(cut))/4.0;
+  if ( l < cut + del ) corr = integral/del;
   return x*(exp(l1x*(beta2 - 1.0) + log(beta2) + gf*beta2)/Math::gamma(beta2+1.0)
 	    - 0.5*beta2*(1.0+x) + sqr(beta2)*((1.0+x)*(-4.0*l1x+3.0*lx)
-					      - 4.0*lx/eps - 5.0 - x)/8.0);
+					   - 4.0*lx/eps - 5.0 - x)/8.0) + corr;
 }
 
 double LeptonLeptonPDF::
