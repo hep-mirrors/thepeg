@@ -39,9 +39,15 @@ void ACDCSampler::initialize() {
   theSampler.nTry(2);
   theSampler.maxTry(eventHandler()->maxLoop());
   bool nozero = false;
+
+
   for ( int i = 0, N = eventHandler()->nBins(); i < N; ++i ) {
     nozero |= theSampler.addFunction(eventHandler()->nDim(i), eventHandler());
   }
+  if( eventHandler()->nBins() ==0 ) Throw<EventInitNoXSec>()
+    << "The event handler '" << eventHandler()->name()
+    << "' cannot be initialized because there are no selected subprocesses"
+    << Exception::maybeabort;
   if ( !nozero ) Throw<EventInitNoXSec>()
     << "The event handler '" << eventHandler()->name()
     << "' cannot be initialized because the cross-section for the selected "
