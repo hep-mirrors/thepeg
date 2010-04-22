@@ -1,8 +1,9 @@
 mySOURCES = PartonExtractor.cc PDFBase.cc RemnantHandler.cc \
-            BeamParticleData.cc PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc \
-            PartonBinInstance.cc SoftRemnantHandler.cc
+            BeamParticleData.cc PolarizedBeamParticleData.cc \
+            PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc \
+            PartonBinInstance.cc SoftRemnantHandler.cc 
 
-DOCFILES = BeamParticleData.h \
+DOCFILES = BeamParticleData.h PolarizedBeamParticleData.h \
            NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
            PartonBin.h PartonExtractor.h RemnantHandler.h \
            PDF.h PartonBinInstance.h SoftRemnantHandler.h
@@ -10,7 +11,7 @@ DOCFILES = BeamParticleData.h \
 INCLUDEFILES = $(DOCFILES) BeamParticleData.xh \
                PDFBase.xh PartonExtractor.fh \
                PartonExtractor.xh RemnantHandler.xh \
-               PDF.fh PartonBin.fh
+               PDF.fh PartonBin.fh PolarizedBeamParticleData.fh
 
 INPUTFILES = PDFsets.index
 
