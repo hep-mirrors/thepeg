@@ -228,8 +228,8 @@ void MultiEventGenerator::Init() {
     ("RemoveInterface",
      "If arguments are given on the form 'object-name:interface-name' and "
      "the same interface and object was previously with an "
-     "\\interface{AddInterface}, the corresponding arguments are removed "
-     "and the interfaced will be left unchanged during the generation.",
+     "<interface>AddInterface</interface>}, the corresponding arguments are "
+     "removed and the interfaced will be left unchanged during the generation.",
      &MultiEventGenerator::removeInterface);
 
   interfaceAddInterface.rank(10.7);
