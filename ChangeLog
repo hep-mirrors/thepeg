@@ -1,3 +1,8 @@
+2010-05-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Utilities/StringUtils.*: Fixed whitespace definition to include
+	CR in addition to LF. Fixes herwig:ticket:302.
+
 2010-04-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LeptonLeptonPDF.cc (xfl): Fixed numerical issue when

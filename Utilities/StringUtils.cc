@@ -50,9 +50,9 @@ string StringUtils::cdr(string s, string ws) {
 }
 
 string StringUtils::stripws(string str) {
-  string::size_type i = str.find_first_not_of(" \t\n");
+  string::size_type i = str.find_first_not_of(" \t\r\n");
   if ( i != string::npos ) str = str.substr(i);
-  i = str.find_last_not_of(" \t\n");
+  i = str.find_last_not_of(" \t\r\n");
   return str.substr(0, i + 1);
 }
 
@@ -71,10 +71,10 @@ xmlAttributes(string tag, string line, string::size_type curr) {
     pos_t close = line.find(">", curr);
 
     // Now skip some white space to see if we can find an attribute.
-    curr = line.find_first_not_of(" \t\n", curr);
+    curr = line.find_first_not_of(" \t\r\n", curr);
     if ( curr == end || curr >= close ) return ret;
 
-    pos_t tend = line.find_first_of("= \t\n", curr);
+    pos_t tend = line.find_first_of("= \t\r\n", curr);
     if ( tend == end || tend >= close ) return ret;
 
     string name = line.substr(curr, tend - curr);

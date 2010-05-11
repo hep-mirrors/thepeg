@@ -32,21 +32,21 @@ public:
    * by the separating characters in ws (the ws characters are not
    * included in the substrings.
    */
-  static StringVector split(string s, string ws = " \t\n");
+  static StringVector split(string s, string ws = " \t\r\n");
 
   /**
    * Return the first substring of s, defined by the separating
    * characters in ws (the ws characters are not included in the
    * substrings.
    */
-  static string car(string s, string ws = " \t\n");
+  static string car(string s, string ws = " \t\r\n");
 
   /**
    * Return s after removing the first substring, defined by the
    * separating characters in ws (the ws characters are not included
    * in the substrings.
    */
-  static string cdr(string s, string ws = " \t\n");
+  static string cdr(string s, string ws = " \t\r\n");
 
   /**
    * Return the string \a str stripped from leading and trailing white
