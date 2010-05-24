@@ -34,12 +34,13 @@ void VVTVertex::Init() {
 
 // function to evaluate the vertex
 Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
-    				const VectorWaveFunction & vec2, 
-    				const TensorWaveFunction & ten) {
+			    const VectorWaveFunction & vec2, 
+			    const TensorWaveFunction & ten,
+			    Energy vmass) {
   // set the couplings
   setCoupling(q2,vec1.particle(),vec2.particle(),ten.particle());
   // mass of the vector
-  Energy vmass = vec1.particle()->mass();
+  if(vmass<ZERO) vmass = vec1.particle()->mass();
   // mass+k1.k2
   Energy2 mdot = vec1.momentum()*vec2.momentum();
   if(vmass!=ZERO) mdot += sqr(vmass);
@@ -47,50 +48,19 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   Complex dotv1v2         = vec1.wave().dot(vec2.wave());
   complex<Energy> dotk1v2 = vec1.momentum()*vec2.wave();
   complex<Energy> dotk2v1 = vec1.wave()*vec2.momentum();
-  // components of the tensor
-  Complex tentx = ten.tx()+ten.xt();
-  Complex tenty = ten.ty()+ten.yt();
-  Complex tentz = ten.tz()+ten.zt();
-  Complex tenxy = ten.xy()+ten.yx();
-  Complex tenxz = ten.xz()+ten.zx();
-  Complex tenyz = ten.yz()+ten.zy();
   // dot product of wavefunctions and momenta with the tensor
-  Complex tenv1v2 =
-    2.*(+ten.tt()*vec1.t()*vec2.t()+ten.xx()*vec1.x()*vec2.x()
-        +ten.yy()*vec1.y()*vec2.y()+ten.zz()*vec1.z()*vec2.z())
-    -tentx*(vec1.t()*vec2.x()+vec1.x()*vec2.t())
-    -tenty*(vec1.t()*vec2.y()+vec1.y()*vec2.t())
-    -tentz*(vec1.t()*vec2.z()+vec1.z()*vec2.t())
-    +tenxy*(vec1.x()*vec2.y()+vec1.y()*vec2.x())
-    +tenxz*(vec1.x()*vec2.z()+vec1.z()*vec2.x())
-    +tenyz*(vec1.y()*vec2.z()+vec1.z()*vec2.y());
+  LorentzPolarizationVector  tv1 = ten.wave().postDot(vec1.wave());
+  LorentzPolarizationVector  tv2 = ten.wave().postDot(vec2.wave());
+  LorentzPolarizationVectorE tk1 = ten.wave().postDot(vec1.momentum());
+  LorentzPolarizationVectorE tk2 = ten.wave().postDot(vec2.momentum());
+  Complex tenv1v2 = 
+    vec1.wave    ().dot(tv2) + vec2.wave    ().dot(tv1);
   complex<Energy> tenk1v2 =
-    2.*(+ten.tt()*vec1.e()*vec2.t() +ten.xx()*vec1.px()*vec2.x()
-        +ten.yy()*vec1.py()*vec2.y()+ten.zz()*vec1.pz()*vec2.z())
-    -tentx*(vec1.e()*vec2.x() +vec1.px()*vec2.t())
-    -tenty*(vec1.e()*vec2.y() +vec1.py()*vec2.t())
-    -tentz*(vec1.e()*vec2.z() +vec1.pz()*vec2.t())
-    +tenxy*(vec1.px()*vec2.y()+vec1.py()*vec2.x())
-    +tenxz*(vec1.px()*vec2.z()+vec1.pz()*vec2.x())
-    +tenyz*(vec1.py()*vec2.z()+vec1.pz()*vec2.y());
+    vec1.momentum().dot(tv2) + vec2.wave    ().dot(tk1);
   complex<Energy> tenk2v1 =
-    2.*(+ten.tt()*vec1.t()*vec2.e() +ten.xx()*vec1.x()*vec2.px()
-        +ten.yy()*vec1.y()*vec2.py()+ten.zz()*vec1.z()*vec2.pz())
-    -tentx*(vec1.t()*vec2.px()+vec1.x()*vec2.e())
-    -tenty*(vec1.t()*vec2.py()+vec1.y()*vec2.e())
-    -tentz*(vec1.t()*vec2.pz()+vec1.z()*vec2.e())
-    +tenxy*(vec1.x()*vec2.py()+vec1.y()*vec2.px())
-    +tenxz*(vec1.x()*vec2.pz()+vec1.z()*vec2.px())
-    +tenyz*(vec1.y()*vec2.pz()+vec1.z()*vec2.py());
-   complex<Energy2> tenk1k2 =
-    2.*(+ten.tt()*vec1.e()*vec2.e()  +ten.xx()*vec1.px()*vec2.px()
-        +ten.yy()*vec1.py()*vec2.py()+ten.zz()*vec1.pz()*vec2.pz())
-    -tentx*(vec1.e()*vec2.px() +vec1.px()*vec2.e())
-    -tenty*(vec1.e()*vec2.py() +vec1.py()*vec2.e())
-    -tentz*(vec1.e()*vec2.pz() +vec1.pz()*vec2.e())
-    +tenxy*(vec1.px()*vec2.py()+vec1.py()*vec2.px())
-    +tenxz*(vec1.px()*vec2.pz()+vec1.pz()*vec2.px())
-    +tenyz*(vec1.py()*vec2.pz()+vec1.pz()*vec2.py());
+    vec2.momentum().dot(tv1) + vec1.wave    ().dot(tk2);
+  complex<Energy2> tenk1k2 =
+    vec2.momentum().dot(tk1) + vec1.momentum().dot(tk2);
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // evaluate the vertex
@@ -99,6 +69,7 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
      +mdot*tenv1v2-dotk2v1*tenk1v2
      -dotk1v2*tenk2v1+dotv1v2*tenk1k2);
 }
+
 // evaluate an off-shell vector
 VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const VectorWaveFunction & vec,
@@ -197,10 +168,12 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   for(int ix=0;ix<4;++ix){vec1[ix]=vec1[ix]*fact;}
   return VectorWaveFunction(pout,out,vec1[0],vec1[1],vec1[2],vec1[3]);
 }
-// offs-shell tensor
+
+// off-shell tensor
 TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const VectorWaveFunction & vec1,
 				       const VectorWaveFunction & vec2,
+				       Energy vmass,
 				       Energy tmass, Energy width) {
   // coupling
   setCoupling(q2,vec1.particle(),vec2.particle(),out);
@@ -210,7 +183,7 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   // overall normalisation
   if(tmass < ZERO) tmass   = out->mass();
   Energy2 tmass2 = sqr(tmass);
-  Energy vmass   = vec1.particle()->mass();
+  if(vmass<ZERO) vmass = vec1.particle()->mass();
   Energy2 vmass2 = sqr(vmass);
   Energy2 p2     = pout.m2();
   Complex fact   = 0.5*norm()*propagator(iopt,p2,out,tmass,width);

@@ -45,6 +45,11 @@ class FFVTVertex: public AbstractFFVTVertex {
 public:
 
   /**
+   *  Default constructor
+   */
+  FFVTVertex() : left_(1.), right_(1.) {}
+
+  /**
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
@@ -156,6 +161,31 @@ public:
    */
   virtual void setCoupling(Energy2 q2,tcPDPtr part1,tcPDPtr part2,
 			   tcPDPtr part3, tcPDPtr part4)=0;
+
+  /**
+   *  Left and right couplings
+   */
+  //@{
+  /**
+   *  Get left
+   */
+  Complex left() const {return left_;}
+
+  /**
+   *  Set left
+   */
+  void left(Complex in) {left_ = in;}
+
+  /**
+   *  Get right
+   */
+  Complex right() const {return right_;}
+
+  /**
+   *  Set right
+   */
+  void right(Complex in) {right_ = in;}
+  //@}
     
 private:
   
@@ -169,6 +199,18 @@ private:
    */
   FFVTVertex & operator=(const FFVTVertex &);
   
+private:
+
+  /**
+   *  Left coupling
+   */
+  Complex left_;
+
+  /**
+   *  Right coupling
+   */
+  Complex right_;
+
 };
 }
 

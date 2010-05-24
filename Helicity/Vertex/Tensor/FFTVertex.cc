@@ -34,47 +34,26 @@ void FFTVertex::Init() {
 
 // function to evaluate the vertex
 Complex FFTVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
-				    const SpinorBarWaveFunction & sbar,
-				    const TensorWaveFunction & ten) {
+			    const SpinorBarWaveFunction & sbar,
+			    const TensorWaveFunction & ten) {
   // set the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),ten.particle());
-  // first calculate the spinor vector 
-  // low energy convention
-  Complex aspin[4],ii(0.,1.);
-  LorentzSpinorBar<double> sbart=sbar.wave();
-  LorentzSpinor<double>    spt  =sp.wave();
-  aspin[3] = sbart.s1()*spt.s3()+sbart.s2()*spt.s4()
-            +sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
-  // spatial components are the same in both conventions
-  aspin[0] =     +sbart.s1()*spt.s4()+sbart.s2()*spt.s3()
-                 -sbart.s3()*spt.s2()-sbart.s4()*spt.s1();
-  aspin[1] = ii*(-sbart.s1()*spt.s4()+sbart.s2()*spt.s3()
-		 +sbart.s3()*spt.s2()-sbart.s4()*spt.s1());
-  aspin[2] =     +sbart.s1()*spt.s3()-sbart.s2()*spt.s4()
-                 -sbart.s3()*spt.s1()+sbart.s4()*spt.s2();
-  // difference of spinor momenta
-  Energy diff[4]={sp.px()-sbar.px(),sp.py()-sbar.py(),
-		  sp.pz()-sbar.pz(),sp.e() -sbar.e()};
+  // vector current
+  LorentzPolarizationVector as = sp.wave().vectorCurrent(sbar.wave());
+  // momentum difference
+  Lorentz5Momentum vdiff = sp.momentum()-sbar.momentum();
+  // first term
+  LorentzPolarizationVectorE test 
+    = ten.wave().postDot(vdiff) + ten.wave().preDot(vdiff);
+  complex<Energy> term1 = as.dot(test);
   // trace of polarization tensor
-  Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
+  Complex trace = ten.wave().trace();
   // dot products with polarization tensor
-  complex<Energy> dot[4];
-  for(int ix=0;ix<4;++ix) {
-    dot[ix] = 
-      +ten(ix,3)*diff[3]-ten(ix,0)*diff[0]
-      -ten(ix,1)*diff[1]-ten(ix,2)*diff[2]
-      +ten(3,ix)*diff[3]-ten(0,ix)*diff[0]
-      -ten(1,ix)*diff[1]-ten(2,ix)*diff[2]
-      -2.*trace*diff[ix];
-  }
   // product of spinors
-  Complex ffbar=  sbar.s1()*sp.s1()+sbar.s2()*sp.s2()
-                 +sbar.s3()*sp.s3()+sbar.s4()*sp.s4();
+  Complex ffbar=  sp.wave().scalar(sbar.wave());
   // put everything together
-  return -0.125*ii*norm()*UnitRemoval::InvE*
-    ( aspin[3]*dot[3] - aspin[0]*dot[0]-
-      aspin[1]*dot[1] - aspin[2]*dot[2]
-      +4.0*(sp.particle()->mass())*trace*ffbar);
+  return -0.125*Complex(0.,1.)*norm()*UnitRemoval::InvE*
+    ( term1 + 4.0*(sp.particle()->mass())*trace*ffbar );
 }
 
 // member function to evaluate an off-shell spinor

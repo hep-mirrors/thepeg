@@ -40,7 +40,8 @@ public:
    */
   virtual Complex evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 			   const VectorWaveFunction & vec2,
-			   const TensorWaveFunction & ten3) = 0;
+			   const TensorWaveFunction & ten3,
+			   Energy vmass=-GeV) = 0;
 
   /**
    * Evaluate the off-shell tensor coming from the vertex.
@@ -57,6 +58,7 @@ public:
   virtual TensorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				      const VectorWaveFunction & vec1,
 				      const VectorWaveFunction & vec2,
+				      Energy vmass=-GeV,
 				      Energy mass=-GeV, Energy width=-GeV) = 0;
 
   /**

@@ -67,7 +67,9 @@ public:
    * @param ten3  The wavefunction for the tensor.
    */
   Complex evaluate(Energy2 q2,const VectorWaveFunction & vec1,
-		   const VectorWaveFunction & vec2, const TensorWaveFunction & ten3);
+		   const VectorWaveFunction & vec2,
+		   const TensorWaveFunction & ten3,
+		   Energy vmass=-GeV);
 
   /**
    * Evaluate the off-shell tensor coming from the vertex.
@@ -84,6 +86,7 @@ public:
   TensorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const VectorWaveFunction & vec1,
 			      const VectorWaveFunction & vec2,
+			      Energy vmass=-GeV,
 			      Energy mass=-GeV, Energy width=-GeV);
 
   /**
