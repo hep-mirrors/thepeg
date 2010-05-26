@@ -68,6 +68,8 @@ PersistentOStream::outputPointer(tcBPtr obj) {
   if ( !good() ) return *this;
   if ( !obj ) return operator<<(0);
   // It it's the  null pointer, just print a zero.
+  int oid = 0;
+  const ClassDescriptionBase * desc = 0;
 
   try {
 
@@ -83,13 +85,22 @@ PersistentOStream::outputPointer(tcBPtr obj) {
     // with a number, then the class information, and finally let it write
     // itself on the stream.
     beginObject();
-    int oid = writtenObjects.size()+1;
+    oid = writtenObjects.size()+1;
     writtenObjects[obj] = oid;
     *this << oid;
-    const ClassDescriptionBase * desc = writeClassId(obj);
+    desc = writeClassId(obj);
     *this << obj->uniqueId;
     putObjectPart(obj, desc);
     endObject();
+  }
+  catch (Exception & e) {
+      e.handle();
+      string classname = "<UNKNOWN>";
+      if ( desc ) classname = desc->name();
+      throw WriteError()
+	<< "While writing object number " << oid << " of class "
+	<< classname << ":\n" << e.message() << Exception::runerror;
+    setBadState();
   }
   catch (...) {
     setBadState();

@@ -1,3 +1,9 @@
+2010-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Persistency/PersistentOStream.*: Output of real numbers now
+	throws an exception if a NaN or an Inf is encountered. The
+	resulting file would anyway be useless.
+
 2010-05-11  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Utilities/StringUtils.*: Fixed whitespace definition to include

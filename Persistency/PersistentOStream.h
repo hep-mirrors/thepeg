@@ -13,6 +13,7 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/Exception.h"
+#include "ThePEG/Utilities/Debug.h"
 #include "PersistentOStream.fh"
 #include "PersistentOStream.xh"
 
@@ -218,6 +219,10 @@ public:
    * Write a double.
    */
   PersistentOStream & operator<<(double d) {
+    if ( isnan(d) || isinf(d) )
+      throw WriteError()
+	<< "Tried to write a NaN or Inf double to a persistent stream."
+	<< Exception::runerror;
     os() << setprecision(18) << d;
     put(tSep);
     return *this;
@@ -227,6 +232,10 @@ public:
    * Write a float.
    */
   PersistentOStream & operator<<(float f) {
+    if ( isnan(f) || isinf(f) )
+      throw WriteError()
+	<< "Tried to write a NaN or Inf float to a persistent stream."
+	<< Exception::runerror;
     os() << setprecision(9) << f;
     put(tSep);
     return *this;
@@ -333,6 +342,10 @@ private:
    * Internal exception class.
    */
   struct MissingClass: public Exception {};
+  /** @ingroup Persistency
+   * Internal exception class.
+   */
+  struct WriteError: public Exception {};
   /** @endcond */
 
   /**
