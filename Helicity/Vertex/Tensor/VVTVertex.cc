@@ -201,7 +201,7 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   // vectors to help construct the tensor
   Complex vecv1[4],vecv2[4];
   complex<Energy> veck1[4],veck2[4];
-  InvEnergy2 tmass2inv = 1/tmass2;
+  InvEnergy2 tmass2inv = tmass>ZERO ? 1/tmass2 : ZERO;
   vecv1[0]=vec1.x() -pout.x()*dotkv1*tmass2inv;
   vecv2[0]=vec2.x() -pout.x()*dotkv2*tmass2inv;
   veck1[0]=vec1.px()-pout.x()*dotkk1*tmass2inv;
