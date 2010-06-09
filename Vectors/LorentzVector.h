@@ -462,6 +462,40 @@ public:
     return *this;
   }
   
+  /** 
+   * Apply a rotation.
+   * @param angle Rotation angle in radians.
+   * @param axis Rotation axis.
+   */
+  template <typename U>
+  LorentzVector<Value> & rotate(double angle, const ThreeVector<U> & axis) {
+    if (angle == 0.0) 
+      return *this;
+    const U ll = axis.mag();
+    assert( ll > U() );
+
+    const double sa = sin(angle), ca = cos(angle);
+    const double dx = axis.x()/ll, dy = axis.y()/ll, dz = axis.z()/ll;
+    const Value  xx  = x(), yy = y(), zz = z(); 
+
+    setX((ca+(1-ca)*dx*dx)     * xx
+	 +((1-ca)*dx*dy-sa*dz) * yy
+	 +((1-ca)*dx*dz+sa*dy) * zz
+	 );
+    setY(((1-ca)*dy*dx+sa*dz)  * xx
+	 +(ca+(1-ca)*dy*dy)    * yy
+	 +((1-ca)*dy*dz-sa*dx) * zz
+	 );
+    setZ(((1-ca)*dz*dx-sa*dy)  * xx
+	 +((1-ca)*dz*dy+sa*dx) * yy
+	 +(ca+(1-ca)*dz*dz)    * zz
+	 );
+    return *this;
+  }
+
+
+
+
 public:
   /// @name Mathematical assignment operators.
   //@{
