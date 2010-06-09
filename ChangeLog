@@ -1,5 +1,8 @@
 2010-06-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Helicity/Vertex/{AbstractSSSSVertex.*,Scalar/SSSSVertex.*}: 
+	Fixed SSSS Vertex inheritance
+
 	* Vectors/LorentzVector.h: Implemented rotate(angle,axis) for
 	LorentzVector, too.
 

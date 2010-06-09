@@ -7,6 +7,7 @@ AbstractFFSVertex.h  AbstractFFSVertex.fh  AbstractFFSVertex.cc  \
 AbstractFFVVertex.h  AbstractFFVVertex.fh  AbstractFFVVertex.cc  \
 AbstractVVVVertex.h  AbstractVVVVertex.fh  AbstractVVVVertex.cc  \
 AbstractSSSVertex.h  AbstractSSSVertex.fh  AbstractSSSVertex.cc  \
+AbstractSSSSVertex.h AbstractSSSSVertex.fh AbstractSSSSVertex.cc  \
 AbstractVSSVertex.h  AbstractVSSVertex.fh  AbstractVSSVertex.cc  \
 AbstractFFTVertex.h  AbstractFFTVertex.fh  AbstractFFTVertex.cc  \
 AbstractVVTVertex.h  AbstractVVTVertex.fh  AbstractVVTVertex.cc  \
