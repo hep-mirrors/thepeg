@@ -24,6 +24,8 @@
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/PDF/NoPDF.h"
 #include "ThePEG/Cuts/Cuts.h"
+#include "ThePEG/EventRecord/TmpTransform.h"
+#include "ThePEG/Utilities/UtilityBase.h"
 #include "ThePEG/Handlers/XComb.h"
 #include "ThePEG/Handlers/CascadeHandler.h"
 #include "LesHouchesEventHandler.h"
@@ -527,7 +529,9 @@ bool LesHouchesReader::readEvent() {
     if ( !cuts().initSubProcess((incoming().first->momentum() +
 				 incoming().second->momentum()).m2(),
 				0.5*log(x1/x2)) ) lastweight = 0.0;
-    if ( !cuts().passCuts(*getSubProcess()) ) lastweight = 0.0;
+    tSubProPtr sub = getSubProcess();
+    TmpTransform<tSubProPtr> tmp(sub, Utilities::getBoostToCM(sub->incoming()));
+    if ( !cuts().passCuts(*sub) ) lastweight = 0.0;
   }
 
   return true;

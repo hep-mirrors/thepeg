@@ -8,6 +8,10 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+** Ticket #286: Implementation of Cuts in LesHouchesReader
+   Les Houches events are given in the lab frame, but QCDCuts expects to
+   be given momenta in the parton-parton cmf.  Boost added.
+
 * ThePEG-1.6.1 release: 2009-12-11
 ** Ticket #292: Spin correlation fix to stabilize tau decay numerics
    We have restructured the spin correlation code to stabilize the
