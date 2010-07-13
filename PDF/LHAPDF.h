@@ -509,6 +509,10 @@ struct ClassTraits<LHAPDF>
   : public ClassTraitsBase<LHAPDF> {
   /** Return a platform-independent class name */
   static string className() { return "ThePEG::LHAPDF"; }
+  /** Return the name of the shared library be loaded to get access to
+   *  the LeptonLeptonPDF class and every other class it uses (except
+   *  the base class). */
+  static string library() { return "ThePEGLHAPDF.so"; }
 };
 
 /** @endcond */

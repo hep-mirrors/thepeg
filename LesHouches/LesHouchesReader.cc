@@ -116,7 +116,8 @@ void LesHouchesReader::initPDFs() {
   string remhname;
   if ( heprup.PDFSUP.first && !inPDF.first) {
     inPDF.first = dynamic_ptr_cast<PDFPtr>
-      (generator()->preinitCreate("ThePEG::LHAPDF", fullName() + "/PDFA"));
+      (generator()->preinitCreate("ThePEG::LHAPDF", fullName() + "/PDFA",
+				  "ThePEGLHAPDF.so"));
     if ( !inPDF.first ) {
       Throw<InitException>()
 	<< "LesHouchesReader '" << name() << "' could not use information "
@@ -145,7 +146,8 @@ void LesHouchesReader::initPDFs() {
 
   if ( heprup.PDFSUP.second && !inPDF.second) {
     inPDF.second = dynamic_ptr_cast<PDFPtr>
-      (generator()->preinitCreate("ThePEG::LHAPDF", fullName() + "/PDFB"));
+      (generator()->preinitCreate("ThePEG::LHAPDF", fullName() + "/PDFB",
+				  "ThePEGLHAPDF.so"));
     if ( !inPDF.second ) {
       Throw<InitException>()
 	<< "LesHouchesReader '" << name() << "' could not use information "
