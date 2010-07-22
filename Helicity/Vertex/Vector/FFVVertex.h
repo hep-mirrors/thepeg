@@ -198,12 +198,12 @@ public:
   /**
    * Get the left coupling.
    */
-  const Complex & left() { return _left; }
+  const Complex & left() const { return _left; }
 
   /**
    * Get the right coupling.
    */
-  const Complex & right() { return _right; }
+  const Complex & right() const { return _right; }
   //@}
 
 protected:
