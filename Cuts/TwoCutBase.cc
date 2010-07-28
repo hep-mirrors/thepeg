@@ -30,11 +30,11 @@ bool TwoCutBase::passCuts(tcCutsPtr parent, tcPDPtr pitype, tcPDPtr pjtype,
 			  bool inci, bool incj) const {
   if ( inci && incj ) return true;
   else if ( inci ) {
-    if ( (pj - pi).m2() <= minTij(pitype, pjtype) ) return false;
+    if ( -(pj - pi).m2() <= minTij(pitype, pjtype) ) return false;
     if ( pj.perp() <= minKTClus(tcPDPtr(), pjtype) ) return false;
   }
   else if ( incj ) {
-    if ( (pi - pj).m2() <= minTij(pjtype, pitype) ) return false;
+    if ( -(pi - pj).m2() <= minTij(pjtype, pitype) ) return false;
     if ( pi.perp() <= minKTClus(tcPDPtr(), pitype) ) return false;
   }
   else {

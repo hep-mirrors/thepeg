@@ -1,3 +1,8 @@
+2010-07-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Cuts/TwoCutBase.cc (passCuts): Fixed bug noticed by Simon where
+	t instead of -t was checked against
+
 2010-06-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Helicity/Vertex/{AbstractSSSSVertex.*,Scalar/SSSSVertex.*}: 
