@@ -241,7 +241,8 @@ void ThePEG::printGraphviz(ostream & os, tcEventPtr ev) {
     os << startnode(p) << " -> " << endnode(p) 
        << " [label=\"" << p->number() << ' '
        << p->PDGName() << "\\n"
-       << p->momentum().e()/GeV
+       << p->momentum().e()/GeV << "\\n"
+       << p->momentum().mass()/GeV
        << "\"";
 
     if ( p->hasColourInfo() &&
