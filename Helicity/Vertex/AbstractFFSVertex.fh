@@ -8,16 +8,19 @@
 #include "ThePEG/Config/Pointers.h"
 
 namespace ThePEG {
-  namespace Helicity {
+namespace Helicity {
 
 class AbstractFFSVertex;
 
 namespace VertexType {
   typedef unsigned T;
+  /**
+   *  Enum for this Lorentz structure
+   */
   const T FFS = 221;
 }
 
-  }
+}
 }
 
 namespace ThePEG {

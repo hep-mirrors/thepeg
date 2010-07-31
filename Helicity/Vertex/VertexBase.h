@@ -27,6 +27,9 @@ namespace Helicity {
  */
 namespace VertexType {
   typedef unsigned T;
+  /**
+   *  Undefined Enum for the Lorentz structures
+   */
   const T UNDEFINED = 0;
 }
 
@@ -55,7 +58,7 @@ public:
   //@{
   /**
    * Constructor for \f$n\f$-point vertices.
-   * @param npoint The number of external particles.
+   * @param name The type of vertex
    * @param kine Whether the kinematic invariants should be calculated.
    */
   VertexBase(VertexType::T name, bool kine=false);
@@ -261,9 +264,6 @@ protected:
   /**
    * Set up the lists of outer particles for the vertex.
    * @param ids A vector of PDG codes for the particles.
-   * @param idb The PDG codes for the second set of particles.
-   * @param idc The PDG codes for the third  set of particles.
-   * @param idd The PDG codes for the fourth set of particles.
    */
   void addToList(const vector<long> & ids);
 

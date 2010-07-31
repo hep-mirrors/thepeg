@@ -14,6 +14,9 @@ class AbstractVVSVertex;
 
 namespace VertexType {
   typedef unsigned T;
+  /**
+   *  Enum for this Lorentz structure
+   */
   const T VVS = 331;
 }
 

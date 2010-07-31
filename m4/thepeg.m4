@@ -53,6 +53,7 @@ AC_DEFUN([THEPEG_SEARCH_LHAPDF],
 AC_MSG_CHECKING([if LHAPDF is present and works])
 HAS_LHAPDF="yes"
 LHAPDF_LIBDIR=""
+LOAD_LHAPDF=""
 AC_ARG_WITH(LHAPDF,[  --without-LHAPDF        do not use LHAPDF package (requires g77 compiler)
                           (included by default --with-LHAPDF=path to specify
                           where the LHAPDF shared library is located)], [if test -n "$with_LHAPDF" -a "x$with_LHAPDF" != "xyes" -a "x$with_LHAPDF" != "xno"; then LHAPDF_LIBDIR="$with_LHAPDF"; elif test "x$with_LHAPDF" == "xno"; then HAS_LHAPDF="no"; fi])
@@ -91,6 +92,7 @@ LDFLAGS="$oldLDFLAGS"
 if test "$HAS_LHAPDF" == "yes"; then
   AC_MSG_RESULT([yes])
   LHAPDF_PKGDATADIR="$LHAPDF_LIBDIR/../share/lhapdf"
+  LOAD_LHAPDF="library ThePEGLHAPDF.so"
   dnl don't need to check for existence of LHAPDF_PKGDATADIR
   dnl if this location is invalid, we'll use ThePEG's index file anyway
 elif test "x$with_LHAPDF" == "xno" -o "x$with_LHAPDF" == "x"; then
@@ -100,6 +102,7 @@ else
 fi
 
 AC_SUBST(LHAPDF_LIBS)
+AC_SUBST(LOAD_LHAPDF)
 AC_SUBST(LHAPDF_LDFLAGS)
 AC_SUBST(LHAPDF_PKGDATADIR)
 AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])

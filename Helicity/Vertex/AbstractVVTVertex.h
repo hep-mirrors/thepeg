@@ -37,6 +37,7 @@ public:
    * @param vec1  The wavefunction for the first  vector.
    * @param vec2  The wavefunction for the second vector.
    * @param ten3  The wavefunction for the tensor.
+   * @param vmass The mass of the vector boson
    */
   virtual Complex evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 			   const VectorWaveFunction & vec2,
@@ -54,6 +55,7 @@ public:
    * object
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
+   * @param vmass The mass of the vector boson
    */
   virtual TensorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				      const VectorWaveFunction & vec1,

@@ -4,6 +4,7 @@ AC_DEFUN([THEPEG_CHECK_RIVET],
 AC_REQUIRE([THEPEG_CHECK_HEPMC])
 AC_MSG_CHECKING([for Rivet location])
 RIVETINCLUDE=""
+LOAD_RIVET=""
 RIVETLIBS="-lRivet"
 
 AC_ARG_WITH(rivet,
@@ -35,6 +36,7 @@ else
 fi
 
 if test "x$with_rivet" != "xno"; then
+        LOAD_RIVET="library RivetAnalysis.so"
 	# Now lets see if the libraries work properly
 	oldLIBS="$LIBS"
 	oldLDFLAGS="$LDFLAGS"
@@ -49,6 +51,7 @@ if test "x$with_rivet" != "xno"; then
 ]],[[Rivet::GenEvent();]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
 	AC_MSG_RESULT([No. Use '--with-rivet=' to set a path'.])
 	with_rivet="no"
+	LOAD_RIVET=""
 	])
 
 	LIBS="$oldLIBS"
@@ -59,4 +62,5 @@ fi
 AM_CONDITIONAL(HAVE_RIVET,[test "x$with_rivet" != "xno"])
 AC_SUBST(RIVETINCLUDE)
 AC_SUBST(RIVETLIBS)
+AC_SUBST(LOAD_RIVET)
 ])

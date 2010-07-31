@@ -40,6 +40,7 @@ library XSecCheck.so
 library LWHFactory.so
 library GraphvizPlot.so
 library HepMCAnalysis.so
-
+@LOAD_LHAPDF@
+@LOAD_RIVET@
 doxygendump ThePEG:: AllInterfaces.h
 doxygendump Helicity:: MoreInterfaces.h

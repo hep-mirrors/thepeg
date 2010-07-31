@@ -36,7 +36,7 @@ public:
    * @param sca1 The wavefunction for the first  scalar.
    * @param sca2 The wavefunction for the second scalar.
    * @param sca3 The wavefunction for the third  scalar.
-   * @param sca3 The wavefunction for the fourth scalar.
+   * @param sca4 The wavefunction for the fourth scalar.
    */
   virtual Complex evaluate(Energy2 q2,const ScalarWaveFunction & sca1,
 			   const ScalarWaveFunction & sca2,
@@ -50,10 +50,7 @@ public:
    * @param out The ParticleData pointer for the off-shell scalar.
    * @param sca1 The wavefunction for the first  scalar.
    * @param sca2 The wavefunction for the second scalar.
-   * @param mass The mass of the off-shell particle if not taken from the ParticleData
-   * object
-   * @param width The width of the off-shell particle if not taken from the ParticleData
-   * object
+   * @param sca3 The wavefunction for the third  scalar.
    */
   virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out, 
 				      const ScalarWaveFunction & sca1,

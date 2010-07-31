@@ -114,6 +114,7 @@ StandardModel/Makefile
 Cuts/Makefile
 Analysis/Makefile
 Doc/Makefile
+Doc/MakeDocs.in
 Doc/refman.h
 Doc/refman.conf
 java/Makefile
