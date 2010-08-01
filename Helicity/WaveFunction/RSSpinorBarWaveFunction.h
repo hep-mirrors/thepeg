@@ -323,6 +323,12 @@ public:
   static void constructSpinInfo(const vector<LorentzRSSpinorBar<SqrtEnergy> > & waves,
 				tPPtr part,Direction dir, bool time);
 
+  /**
+   *  Construct the SpinInfo object
+   */
+  static void constructSpinInfo(const vector<RSSpinorBarWaveFunction> & waves,
+				tPPtr part,Direction dir, bool time);
+
 private:
 
   /**
@@ -339,7 +345,7 @@ private:
   LorentzRSSpinorBar<double> _wf;
 
   /// Return wavefunction as LorentzRSSpinorBar<SqrtEnergy>
-  LorentzRSSpinorBar<SqrtEnergy> dimensionedWf() {
+  LorentzRSSpinorBar<SqrtEnergy> dimensionedWf() const {
     LorentzRSSpinorBar<SqrtEnergy> temp(_wf.Type());
     for (unsigned int i=0; i<4; ++i)
       for (unsigned int j=0; j<4; ++j)

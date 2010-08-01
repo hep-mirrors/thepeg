@@ -24,234 +24,127 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
   else 
     news=LorentzRSSpinor<double>(v_spinortype);
   unsigned int ix,iy;
-  static double eps=1E-5;
   // check helicity and type
   assert(direction()!=intermediate);
   assert(ihel<=3);
   // massive
-  if(mass()>ZERO) {
-    // extract the momentum components
-    // compute the normal spinors to construct the RS spinor
-    Complex hel_wf[2][2];
-    if(direction()==incoming) {
-      // the + spinor
-      hel_wf[0][0] = 1.;
-      hel_wf[1][0] = 0.;
-      // the - spinor
-      hel_wf[0][1] = 0.;
-      hel_wf[1][1] = 1.;
-    }
-    else {
-      // the + spinor
-      hel_wf[0][0] = 0.;
-      hel_wf[1][0] = 1.;
-      // the - spinor
-      hel_wf[0][1] = 1.;
-      hel_wf[1][1] = 0.;
-    }
-    // decide which definition of the spinors we are using
-    SqrtEnergy upper[2],lower[2];
-    // HELAS
-    SqrtEnergy eplusp = sqrt(mass());
-    if(direction()==incoming) {
-      upper[0] = eplusp;
-      lower[0] = eplusp;
-      upper[1] = eplusp;
-      lower[1] = eplusp;
-    }
-    else {
-      upper[0] =-eplusp;
-      lower[0] = eplusp;
-      upper[1] = eplusp;
-      lower[1] =-eplusp;
-    }
-    // now construct the spinors
-    complex<SqrtEnergy> spinor[4][2];
-    for(ix=0;ix<2;++ix) {
-      spinor[0][ix] = upper[ix]*hel_wf[0][ix];
-      spinor[1][ix] = upper[ix]*hel_wf[1][ix];
-      spinor[2][ix] = lower[ix]*hel_wf[0][ix];
-      spinor[3][ix] = lower[ix]*hel_wf[1][ix];
-    } 
-    // compute the polarization vectors to construct the RS spinor
-    Complex vec[4][3],ii(0.,1.);
-    double ort=1./sqrt(2.);
-    if(direction()==incoming) {
-      vec[0][0] =-ort;
-      vec[1][0] =-ort*ii;
-      vec[2][0] = 0.;
-      vec[3][0] = 0.;
-      vec[0][1] = 0.;
-      vec[1][1] = 0.;
-      vec[2][1] = 1.;
-      vec[3][1] = 0.;
-      vec[0][2] = ort;
-      vec[1][2] =-ort*ii;
-      vec[2][2] = 0.;
-      vec[3][2] = 0.;
-    }
-    else {
-      vec[0][0] = ort;
-      vec[1][0] =-ort*ii;
-      vec[2][0] = 0.;
-      vec[3][0] = 0.;
-      vec[0][1] = 0.;
-      vec[1][1] = 0.;
-      vec[2][1] =-1.;
-      vec[3][1] = 0.;
-      vec[0][2] =-ort;
-      vec[1][2] =-ort*ii;
-      vec[2][2] = 0.;
-      vec[3][2] = 0.;
-    }
-    // now we can put the bits together to compute the RS spinor
-    double or3(sqrt(1./3.)),tor3(sqrt(2./3.));
-    if(ihel==0) {
-      for(ix=0;ix<4;++ix)
-	for(iy=0;iy<4;++iy)
-	  news(ix,iy)=UnitRemoval::InvSqrtE*vec[ix][0]*spinor[iy][0];
-    }
-    else if(ihel==1) {
-      for(ix=0;ix<4;++ix)
-	for(iy=0;iy<4;++iy)
-	  news(ix,iy)=UnitRemoval::InvSqrtE*
-	    (or3*vec[ix][0]*spinor[iy][1]+tor3*vec[ix][1]*spinor[iy][0]);
-    }
-    else if(ihel==2) {
-      for(ix=0;ix<4;++ix)
-	for(iy=0;iy<4;++iy)
-	  news(ix,iy)=UnitRemoval::InvSqrtE*
-	    (or3*vec[ix][2]*spinor[iy][0]+tor3*vec[ix][1]*spinor[iy][1]);
-    }
-    else if(ihel==3) {
-      for(ix=0;ix<4;++ix)
-	for(iy=0;iy<4;++iy)
-	  news(ix,iy)=UnitRemoval::InvSqrtE*vec[ix][2]*spinor[iy][1];
-    }
-    // boost the spinor to the lab frame
-    Boost boostv = momentum().boostVector();
-    if(boostv.mag()>eps) _wf=news.boost(boostv);
-    else                 _wf=news;
+  // only two valid helicities in massless case
+  assert( mass()>ZERO || ( ihel == 0 || ihel==3 ) );
+  // extract the momentum components
+  // compute the normal spinors to construct the RS spinor
+  Complex hel_wf[2][2];
+  if(direction()==incoming) {
+    // the + spinor
+    hel_wf[0][0] = 1.;
+    hel_wf[0][1] = 0.;
+    // the - spinor
+    hel_wf[1][0] = 0.;
+    hel_wf[1][1] = 1.;
   }
-  // special for the massless case in the lab frame rather than the rest frame
   else {
-    // only two valid helicities in this case
-    assert(ihel==0||ihel==3);
-    // extract the momentum components
-    double fact=-1.;
-    if(direction()==incoming){fact=1.;}
-    Energy ppx=fact*px(),ppy=fact*py(),ppz=fact*pz(),pee=fact*e(),pmm=mass();
-    // define and calculate some kinematic quantities
-    Energy2 ptran2  = ppx*ppx+ppy*ppy;
-    Energy pabs   = sqrt(ptran2+ppz*ppz);
-    Energy ptran  = sqrt(ptran2);
-    Complex hel_wf[2],vec[4],ii(0.,1.);
-    double root = 1./sqrt(2.);
-    // positve 3/2 helicity spinor
-    if((direction()==incoming && ihel==3)||(direction()==outgoing &&ihel==0)) {
-      // the polarization vector
-      // first the no pt case
-      if(ptran==ZERO) {
-	double sgnz;
-	if(ppz<ZERO){sgnz=-1.;}
-	else{sgnz=1.;}
-	vec[0]=-root;
-	vec[1]=-sgnz*root*ii;
-	vec[2]=0.;
-	vec[3]=0.;
-	if(ppz>=ZERO) {
-	  hel_wf[0] = 1;
-	  hel_wf[1] = 0;
-	}
-	else {
-	  hel_wf[0] = 0;
-	  hel_wf[1] = 1;
-	}
-      }
-      else {
-	InvEnergy opabs=1./pabs;
-	InvEnergy opt  =1./ptran;
-	vec[0]=root*Complex(-ppz*ppx*opabs*opt,ppy*opt);
-	vec[1]=root*Complex(-ppz*ppy*opabs*opt,-ppx*opt);
-	vec[2]=ptran*opabs*root;
-	vec[3]=0.;
-	InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
-	SqrtEnergy rtppluspz;
-	if(ppz>=ZERO) rtppluspz = sqrt(pabs+ppz);
-	else              rtppluspz = ptran/sqrt(pabs-ppz); 
-	hel_wf[0] = denominator*rtppluspz;
-	hel_wf[1] = denominator/rtppluspz*complex<Energy>(ppx,ppy);
-      }
-    }
-    // negative 3/2 helicity spinor
-    else {
-      // the polarization vector
-      // first the no pt case
-      if(ptran==ZERO) {
-	double sgnz;
-	if(ppz<ZERO){sgnz=-1.;}
-	else{sgnz=1.;}
-	vec[0]= root;
-	vec[1]= -sgnz*root*ii;
-	vec[2]=0.;
-	vec[3]=0.;
-	if(ppz>=ZERO) {
-	  hel_wf[0] = 0;
-	  hel_wf[1] = 1;
-	}
-	// transverse momentum 
-	else {
-	  hel_wf[0] = -1;
-	  hel_wf[1] =  0;
-	}
-      }
-      else {
-	InvEnergy opabs=1./pabs;
-	InvEnergy opt  =1./ptran;
-	vec[0]=root*Complex(ppz*ppx*opabs*opt,ppy*opt);
-	vec[1]=root*Complex(ppz*ppy*opabs*opt,-ppx*opt);
-	vec[2]=-ptran*opabs*root;
-	vec[3]=0.;
-	InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
-	SqrtEnergy rtppluspz;
-	if(ppz>=ZERO) rtppluspz = sqrt(pabs+ppz);
-	else              rtppluspz = ptran/sqrt(pabs-ppz);
-	hel_wf[0] = denominator/rtppluspz*
-	  complex<Energy>(-ppx,ppy);
-	hel_wf[1] = denominator*rtppluspz;
-      }
-    }
-    // decide which definition of the spinors we are using
-    SqrtEnergy upper,lower;
-    // HELAS
-    SqrtEnergy eplusp = sqrt(pee+pabs);
-    SqrtEnergy eminusp = ( pmm == ZERO ) ? ZERO : pmm/eplusp;
-    // set up the coefficients for the different cases
-    if(direction()==incoming) {
-      if(ihel==3) {
-	upper = eminusp;
-	lower = eplusp;
-      }
-      else {
-	upper = eplusp;
-	lower = eminusp;
-      }
-    }
-    else {
-      if(ihel==3) {
-	upper = -eplusp;
-	lower = eminusp;
-      }
-      else {
-	upper = eminusp;
-	lower =-eplusp;
-      }
-    }
-    complex<SqrtEnergy> spinor[4]={upper*hel_wf[0],upper*hel_wf[1],
-				   lower*hel_wf[0],lower*hel_wf[1]};
-    for(ix=0;ix<4;++ix) 
+    // the + spinor
+    hel_wf[0][0] = 0.;
+    hel_wf[0][1] = 1.;
+    // the - spinor
+    hel_wf[1][0] = 1.;
+    hel_wf[1][1] = 0.;
+  }
+  // prefactors
+  double fact = direction()==incoming ? 1. : -1.;
+  Energy pmm=mass(),pee=fact*e();
+  Energy pabs   = sqrt(sqr(px())+sqr(py())+sqr(pz()));
+  SqrtEnergy eplusp = sqrt(pee+pabs);
+  SqrtEnergy eminusp = ( pmm == ZERO ) ? ZERO : pmm/eplusp;
+  SqrtEnergy upper[2],lower[2];
+  if(direction()==incoming) {
+    upper[0] = eminusp;
+    lower[0] = eplusp ;
+    upper[1] = eplusp ;
+    lower[1] = eminusp;
+  }
+  else {
+    upper[0] =-eplusp ;
+    lower[0] = eminusp;
+    upper[1] = eminusp;
+    lower[1] =-eplusp ;
+  }
+  // now construct the spinors
+  complex<SqrtEnergy> spinor[2][4];
+  for(ix=0;ix<2;++ix) {
+    spinor[ix][0] = upper[ix]*hel_wf[ix][0];
+    spinor[ix][1] = upper[ix]*hel_wf[ix][1];
+    spinor[ix][2] = lower[ix]*hel_wf[ix][0];
+    spinor[ix][3] = lower[ix]*hel_wf[ix][1];
+  }
+  // compute the polarization vectors to construct the RS spinor
+  Complex vec[3][4],ii(0.,1.);
+  double ort = sqrt(0.5);
+  double r1 = ( pmm == ZERO ) ? 0. : double(pee /pmm);
+  double r2 = ( pmm == ZERO ) ? 0. : double(pabs/pmm);
+  if(direction()==incoming) {
+    vec[0][0] =-ort;
+    vec[0][1] =-ort*ii;
+    vec[0][2] = 0.;
+    vec[0][3] = 0.;
+    vec[1][0] = 0.;
+    vec[1][1] = 0.;
+    vec[1][2] = r1;
+    vec[1][3] = r2;
+    vec[2][0] = ort;
+    vec[2][1] =-ort*ii;
+    vec[2][2] = 0.;
+    vec[2][3] = 0.;
+  }
+  else {
+    vec[0][0] = ort;
+    vec[0][1] =-ort*ii;
+    vec[0][2] = 0.;
+    vec[0][3] = 0.;
+    vec[1][0] = 0.;
+    vec[1][1] = 0.;
+    vec[1][2] =-r1;
+    vec[1][3] =-r2;
+    vec[2][0] =-ort;
+    vec[2][1] =-ort*ii;
+    vec[2][2] = 0.;
+    vec[2][3] = 0.;
+  }
+  // now we can put the bits together to compute the RS spinor
+  double or3(sqrt(1./3.)),tor3(sqrt(2./3.));
+  if(ihel==3) {
+    for(ix=0;ix<4;++ix)
       for(iy=0;iy<4;++iy)
-	news(ix,iy) = UnitRemoval::InvSqrtE*vec[ix]*spinor[iy];
+	news(ix,iy)=UnitRemoval::InvSqrtE*vec[0][ix]*spinor[0][iy];
+  }
+  else if(ihel==2) {
+    for(ix=0;ix<4;++ix)
+      for(iy=0;iy<4;++iy)
+	news(ix,iy)=UnitRemoval::InvSqrtE*
+	  (or3*vec[0][ix]*spinor[1][iy]+tor3*vec[1][ix]*spinor[0][iy]);
+  }
+  else if(ihel==1) {
+    for(ix=0;ix<4;++ix)
+      for(iy=0;iy<4;++iy)
+	news(ix,iy)=UnitRemoval::InvSqrtE*
+	  (or3*vec[2][ix]*spinor[0][iy]+tor3*vec[1][ix]*spinor[1][iy]);
+  }
+  else if(ihel==0) {
+    for(ix=0;ix<4;++ix)
+      for(iy=0;iy<4;++iy)
+	news(ix,iy)=UnitRemoval::InvSqrtE*vec[2][ix]*spinor[1][iy];
+  }
+  // spinor is currently along the z axis, rotate so in right direction
+  if(pabs/pmm>1e-10) {
+    Axis axis;
+    axis.setX(fact*momentum().x()/pabs);
+    axis.setY(fact*momentum().y()/pabs);
+    axis.setZ(fact*momentum().z()/pabs);
+    LorentzRotation rot;
+    double sinth(sqrt(sqr(axis.x())+sqr(axis.y())));
+    rot.setRotate(acos(axis.z()),Axis(-axis.y()/sinth,axis.x()/sinth,0.));
+    _wf= news.transform(rot); 
+  }
+  else {
     _wf=news;
   }
 }
@@ -401,5 +294,25 @@ constructSpinInfo(const vector<LorentzRSSpinor<SqrtEnergy> > & waves,
     for(unsigned int ix=0;ix<4;++ix)
       if(dir==outgoing) temp->setBasisState(ix,waves[ix]);
       else              temp->setDecayState(ix,waves[ix]);
+  }
+}
+
+void RSSpinorWaveFunction::
+constructSpinInfo(const vector<RSSpinorWaveFunction> & waves,
+		  tPPtr particle,Direction dir,bool time) {
+  assert(waves.size()==4);
+  tRSFermionSpinPtr inspin = !particle->spinInfo() ? tRSFermionSpinPtr() :
+    dynamic_ptr_cast<tRSFermionSpinPtr>(particle->spinInfo());
+  if(inspin) {
+    for(unsigned int ix=0;ix<4;++ix)
+      if(dir==outgoing) inspin->setBasisState(ix,waves[ix].dimensionedWf());
+      else              inspin->setDecayState(ix,waves[ix].dimensionedWf());
+  }
+  else {
+    RSFermionSpinPtr temp = new_ptr(RSFermionSpinInfo(particle->momentum(),time));
+    particle->spinInfo(temp);
+    for(unsigned int ix=0;ix<4;++ix)
+      if(dir==outgoing) temp->setBasisState(ix,waves[ix].dimensionedWf());
+      else              temp->setDecayState(ix,waves[ix].dimensionedWf());
   }
 }
