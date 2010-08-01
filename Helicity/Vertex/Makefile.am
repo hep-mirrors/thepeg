@@ -16,7 +16,9 @@ AbstractSSTVertex.h  AbstractSSTVertex.fh  AbstractSSTVertex.cc  \
 AbstractVVSSVertex.h AbstractVVSSVertex.fh AbstractVVSSVertex.cc \
 AbstractFFVTVertex.h AbstractFFVTVertex.fh AbstractFFVTVertex.cc \
 AbstractVVVTVertex.h AbstractVVVTVertex.fh AbstractVVVTVertex.cc \
-AbstractVVVVVertex.h AbstractVVVVVertex.fh AbstractVVVVVertex.cc
+AbstractVVVVVertex.h AbstractVVVVVertex.fh AbstractVVVVVertex.cc \
+AbstractRFSVertex.h  AbstractRFSVertex.fh  AbstractRFSVertex.cc \
+AbstractRFVVertex.h  AbstractRFVVertex.fh  AbstractRFVVertex.cc 
 libThePEGVertex_la_LIBADD = Scalar/libThePEGSVertex.la \
-	Vector/libThePEGVVertex.la \
-	Tensor/libThePEGTVertex.la
+	                    Vector/libThePEGVVertex.la \
+	                    Tensor/libThePEGTVertex.la
