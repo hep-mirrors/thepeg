@@ -132,15 +132,25 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
     }
   }
   // spinor is currently along the z axis, rotate so in right direction
-  if(pabs/pmm>1e-10) {
+  if(pabs/pmm>1e-8) {
     Axis axis;
     axis.setX(fact*momentum().x()/pabs);
     axis.setY(fact*momentum().y()/pabs);
     axis.setZ(fact*momentum().z()/pabs);
-    LorentzRotation rot;
     double sinth(sqrt(sqr(axis.x())+sqr(axis.y())));
-    rot.setRotate(acos(axis.z()),Axis(-axis.y()/sinth,axis.x()/sinth,0.));
-    _wf= news.transform(rot); 
+    if(sinth>1e-8) {
+      LorentzRotation rot;
+      rot.setRotate(acos(axis.z()),Axis(-axis.y()/sinth,axis.x()/sinth,0.));
+      _wf = news.transform(rot);
+    }
+    else if (axis.z()<0.) {
+      LorentzRotation rot;
+      rot.setRotateX(Constants::pi);
+      _wf = news.transform(rot);
+    }
+    else {
+      _wf = news;
+    }
   }
   else {
     _wf=news;
