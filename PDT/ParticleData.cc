@@ -713,6 +713,12 @@ void ParticleData::Init() {
      "interger giving three times the unit charge, or 'unknown', "
      "'charged', 'positive' or 'negative'", &ParticleData::ssetCharge);
 
+  static Command<ParticleData> interfaceSwitchAllDecayModes
+    ("SwitchAllDecayModes",
+     "Command to turn on/off all decay modes of a particle,"
+     " the argument should be either On or Off.",
+     &ParticleData::switchAllDecayModes, false);
+
   static Parameter<ParticleData, int> interfaceSpin
     ("Spin",
      "The spin quantim number of this particle on the form 2j+1.",
@@ -858,5 +864,25 @@ void ParticleData::doinitrun() {
   if( theWidthGenerator ) theWidthGenerator->initrun();
 }
 
+string ParticleData::switchAllDecayModes(string arg) {
+  arg=StringUtils::stripws(arg);
+  if(arg=="On") {
+    for(DecaySet::const_iterator it=theDecayModes.begin();
+	it!=theDecayModes.end();++it) {
+      (**it).switchOn();
+    }
+    return "";
+  }
+  else if(arg=="Off") {
+    for(DecaySet::const_iterator it=theDecayModes.begin();
+	it!=theDecayModes.end();++it) {
+      (**it).switchOff();
+    }
+    return "";
+  }
+  else {
+    return "Invalid command " + arg + "for " + fullName() + 
+      ":SwitchAllDecayModes\n";
+  }
 }
-
+}

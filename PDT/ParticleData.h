@@ -859,6 +859,12 @@ private:
   vector<DMPtr> getDecayModes() const;
 
   /**
+   *  Switch all decay modes on or off
+   * @param arg The option On or Off
+   */
+  string switchAllDecayModes(string arg);
+
+  /**
    * Describe a concrete class with persistent data.
    */
   static ClassDescription<ParticleData> initParticleData;
