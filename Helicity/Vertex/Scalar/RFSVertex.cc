@@ -54,49 +54,49 @@ Complex RFSVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
 }
 
 
-SpinorWaveFunction RFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				       const RSSpinorWaveFunction & sp1, 
-				       const ScalarWaveFunction & sca3,
-				       Energy mass, Energy width) {
+SpinorWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+				       const RSSpinorWaveFunction & , 
+				       const ScalarWaveFunction & ,
+				       Energy , Energy ) {
   assert(false);
   return SpinorWaveFunction();
 }
 
-RSSpinorWaveFunction RFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-					 const SpinorWaveFunction & sp1, 
-					 const ScalarWaveFunction & sca3,
-					 Energy mass, Energy width) {
+RSSpinorWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+					 const SpinorWaveFunction & , 
+					 const ScalarWaveFunction & ,
+					 Energy , Energy ) {
   assert(false);
   return RSSpinorWaveFunction();
 }
 
-SpinorBarWaveFunction RFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-					  const RSSpinorBarWaveFunction & sbar2,
-					  const ScalarWaveFunction & sca3,
-					  Energy mass, Energy width) {
+SpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+					  const RSSpinorBarWaveFunction & ,
+					  const ScalarWaveFunction & ,
+					  Energy , Energy ) {
   assert(false);
 }
 
-RSSpinorBarWaveFunction RFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-					    const SpinorBarWaveFunction & sbar2,
-					    const ScalarWaveFunction & sca3,
-					    Energy mass, Energy width) {
+RSSpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+					    const SpinorBarWaveFunction & ,
+					    const ScalarWaveFunction & ,
+					    Energy , Energy ) {
   assert(false);
   return RSSpinorBarWaveFunction();
 }
 
-ScalarWaveFunction RFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				       const RSSpinorWaveFunction & sp1, 
-				       const SpinorBarWaveFunction & sbar2,
-				       Energy mass, Energy width) {
+ScalarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+				       const RSSpinorWaveFunction & , 
+				       const SpinorBarWaveFunction & ,
+				       Energy , Energy ) {
   assert(false);
   return ScalarWaveFunction();
 }
 
-ScalarWaveFunction RFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				       const SpinorWaveFunction & sp1, 
-				       const RSSpinorBarWaveFunction & sbar2,
-				       Energy mass, Energy width) {
+ScalarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+				       const SpinorWaveFunction & , 
+				       const RSSpinorBarWaveFunction & ,
+				       Energy , Energy ) {
   assert(false);
   return ScalarWaveFunction();
 }

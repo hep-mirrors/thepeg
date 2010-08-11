@@ -73,50 +73,50 @@ Complex RFVVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
      lS3*left()[2]+rS3*right()[2]);
 }
 
-SpinorBarWaveFunction RFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-					  const RSSpinorBarWaveFunction & sbar2,
-					  const VectorWaveFunction & vec3,
-					  Energy mass, Energy width) {
+SpinorBarWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+					  const RSSpinorBarWaveFunction & ,
+					  const VectorWaveFunction & ,
+					  Energy , Energy ) {
   assert(false);
   return SpinorBarWaveFunction();
 }
 
-RSSpinorBarWaveFunction RFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-					    const SpinorBarWaveFunction & sbar2,
-					    const VectorWaveFunction & vec3,
-					    Energy mass, Energy width) {
+RSSpinorBarWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+					    const SpinorBarWaveFunction & ,
+					    const VectorWaveFunction & ,
+					    Energy , Energy ) {
   assert(false);
   return RSSpinorBarWaveFunction();
 }
 
-VectorWaveFunction RFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				       const RSSpinorWaveFunction & sp1,
-				       const SpinorBarWaveFunction & sbar2,
-				       Energy mass, Energy width) {
+VectorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+				       const RSSpinorWaveFunction & ,
+				       const SpinorBarWaveFunction & ,
+				       Energy , Energy ) {
   assert(false);
   return VectorWaveFunction();
 }
 
-VectorWaveFunction RFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				       const SpinorWaveFunction & sp1,
-				       const RSSpinorBarWaveFunction & sbar2,
-				       Energy mass, Energy width) {
+VectorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+				       const SpinorWaveFunction & ,
+				       const RSSpinorBarWaveFunction & ,
+				       Energy , Energy ) {
   assert(false);
   return VectorWaveFunction();
 }
 
-RSSpinorWaveFunction RFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-					 const SpinorWaveFunction & sp1,
-					 const VectorWaveFunction & vec3,
-					 Energy mass, Energy width) {
+RSSpinorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+					 const SpinorWaveFunction & ,
+					 const VectorWaveFunction & ,
+					 Energy , Energy ) {
   assert(false);
   return RSSpinorWaveFunction();
 }
 
-SpinorWaveFunction RFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				       const RSSpinorWaveFunction & sp1,
-				       const VectorWaveFunction & vec3,
-				       Energy mass, Energy width) {
+SpinorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
+				       const RSSpinorWaveFunction & ,
+				       const VectorWaveFunction & ,
+				       Energy , Energy ) {
   assert(false);
   return SpinorWaveFunction();
 }
