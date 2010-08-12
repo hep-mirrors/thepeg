@@ -823,7 +823,9 @@ void ParticleData::Init() {
   static Command<ParticleData> interfaceSelectDecayModes
     ("SelectDecayModes",
      "Only the decay modes which are given as (white-space separated) "
-     "decay tags will be switched on, all others will be switched off.",
+     "decay tags will be switched on, all others will be switched off. "
+     "If no argument is given, all decay modes are switched off. "
+     "If the argument is 'all', all decay modes are switched on.",
      &ParticleData::doSelectDecayModes, false);
 
 
@@ -845,6 +847,10 @@ string ParticleData::doSelectDecayModes(string args) {
   DecaySet on;
   while ( !args.empty() ) {
     string arg = StringUtils::car(args);
+    if ( arg == "all" ) {
+      on = decayModes();
+      break;
+    }
     string name = arg;
     args = StringUtils::cdr(args);
     if ( arg.empty() ) continue;
