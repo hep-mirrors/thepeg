@@ -116,7 +116,7 @@ PersistentOStream::writeClassId(tcBPtr obj) {
     throw MissingClass()
       << "PersistentOStream could not find the ClassDescription object "
       << "corresponding to the class " << typeid(*obj).name()
-      << ". Please chack that the class has a properly instantiated "
+      << ". Please check that the class has a properly instantiated "
       << "ClassDescription object." << Exception::runerror;
   }
   writeClassDescription(db);

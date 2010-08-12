@@ -9,6 +9,7 @@
 #ifndef Physical_Qty_H
 #define Physical_Qty_H
 #include "TemplateTools.h"
+#include <sstream>
 
 /** @file 
  *
@@ -84,6 +85,20 @@ private:
   Qty(double val) : rawValue_(val) {}
 
 public:
+  static std::string className() {
+    std::ostringstream os;
+    os << "Qty<" 
+       <<  L << ','
+       <<  E << ','
+       <<  Q << ','
+       << DL << ','
+       << DE << ','
+       << DQ << '>';
+      
+    return os.str();
+  }
+
+
   /// The squared type.
   typedef Qty<2*L,2*E,2*Q,DL,DE,DQ> Squared;
 
