@@ -16,6 +16,7 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Rebinder.h"
+#include "ThePEG/Utilities/StringUtils.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
@@ -818,6 +819,14 @@ void ParticleData::Init() {
      &ParticleData::insDecayModes, &ParticleData::delDecayModes,
      &ParticleData::getDecayModes);
 
+
+  static Command<ParticleData> interfaceSelectDecayModes
+    ("SelectDecayModes",
+     "Only the decay modes which are given as (white-space separated) "
+     "decay tags will be switched on, all others will be switched off.",
+     &ParticleData::doSelectDecayModes, false);
+
+
   interfaceStable.rank(14);
   interfaceDecayModes.rank(13);
   interfaceMass.rank(12);
@@ -830,6 +839,32 @@ void ParticleData::Init() {
   interfaceWidthLoCut.rank(-0.1);
 
 
+}
+
+string ParticleData::doSelectDecayModes(string args) {
+  DecaySet on;
+  while ( !args.empty() ) {
+    string arg = StringUtils::car(args);
+    string name = arg;
+    args = StringUtils::cdr(args);
+    if ( arg.empty() ) continue;
+    if ( arg[0] != '/' ) arg = fullName() + "/" + arg;
+    DMPtr dm = Repository::GetPtr<DMPtr>(arg);
+    if ( !dm ) return "Error: No decay mode with tag '" + name + "' exists.";
+    on.insert(dm);
+  }
+  for ( DecaySet::iterator it = decayModes().begin();
+	it != decayModes().end(); ++it ) {
+    if ( on.find(*it) != on.end() ) {
+      (**it).switchOn();
+      on.erase(*it);
+    } else {
+      (**it).switchOff();
+    }
+  }
+  if ( !on.empty() )
+    return "Error: decay mode '" + (**on.begin()).tag() + "'was not available.";
+  return "";
 }
 
 void ParticleData::insDecayModes(DMPtr dm, int) {

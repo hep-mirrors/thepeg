@@ -865,6 +865,11 @@ private:
   string switchAllDecayModes(string arg);
 
   /**
+   * Utility function for the interface.
+   */
+  string doSelectDecayModes(string);
+
+  /**
    * Describe a concrete class with persistent data.
    */
   static ClassDescription<ParticleData> initParticleData;

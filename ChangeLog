@@ -1,3 +1,9 @@
+2010-08-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* PDT/ParticleData.*: Added interface to switch on a given set of
+	decay modes, while switching off all others. In response to
+	herwig:ticket:319
+
 2010-07-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/TwoCutBase.cc (passCuts): Fixed bug noticed by Simon where
