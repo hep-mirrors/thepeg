@@ -714,12 +714,6 @@ void ParticleData::Init() {
      "interger giving three times the unit charge, or 'unknown', "
      "'charged', 'positive' or 'negative'", &ParticleData::ssetCharge);
 
-  static Command<ParticleData> interfaceSwitchAllDecayModes
-    ("SwitchAllDecayModes",
-     "Command to turn on/off all decay modes of a particle,"
-     " the argument should be either On or Off.",
-     &ParticleData::switchAllDecayModes, false);
-
   static Parameter<ParticleData, int> interfaceSpin
     ("Spin",
      "The spin quantim number of this particle on the form 2j+1.",
@@ -824,9 +818,15 @@ void ParticleData::Init() {
     ("SelectDecayModes",
      "Only the decay modes which are given as (white-space separated) "
      "decay tags will be switched on, all others will be switched off. "
-     "If no argument is given, all decay modes are switched off. "
+     "If no argument or 'none' is given, all decay modes are switched off. "
      "If the argument is 'all', all decay modes are switched on.",
      &ParticleData::doSelectDecayModes, false);
+
+
+  static Command<ParticleData> interfacePrintDecayModes
+    ("PrintDecayModes",
+     "Print all decay modes of this particle.",
+     &ParticleData::doPrintDecayModes, true);
 
 
   interfaceStable.rank(14);
@@ -843,12 +843,31 @@ void ParticleData::Init() {
 
 }
 
+string ParticleData::doPrintDecayModes(string) {
+  multimap<double,tDMPtr, greater<double> > sorted;
+  for ( DecaySet::iterator it = decayModes().begin();
+	it != decayModes().end(); ++it )
+    sorted.insert(make_pair((**it).brat(), *it));
+  ostringstream os;
+  for ( multimap<double,tDMPtr, greater<double> >::iterator it = sorted.begin();
+	it != sorted.end(); ++it )
+    os << it->second->tag()
+       << (it->second->on()? " ": " (off) ")
+       << it->first << endl;
+  return os.str();
+}
+
+
 string ParticleData::doSelectDecayModes(string args) {
   DecaySet on;
   while ( !args.empty() ) {
     string arg = StringUtils::car(args);
     if ( arg == "all" ) {
       on = decayModes();
+      break;
+    }
+    if ( arg == "none" ) {
+      on.clear();
       break;
     }
     string name = arg;
@@ -905,25 +924,4 @@ void ParticleData::doinitrun() {
   if( theWidthGenerator ) theWidthGenerator->initrun();
 }
 
-string ParticleData::switchAllDecayModes(string arg) {
-  arg=StringUtils::stripws(arg);
-  if(arg=="On") {
-    for(DecaySet::const_iterator it=theDecayModes.begin();
-	it!=theDecayModes.end();++it) {
-      (**it).switchOn();
-    }
-    return "";
-  }
-  else if(arg=="Off") {
-    for(DecaySet::const_iterator it=theDecayModes.begin();
-	it!=theDecayModes.end();++it) {
-      (**it).switchOff();
-    }
-    return "";
-  }
-  else {
-    return "Invalid command " + arg + "for " + fullName() + 
-      ":SwitchAllDecayModes\n";
-  }
-}
 }

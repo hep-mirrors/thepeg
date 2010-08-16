@@ -859,15 +859,14 @@ private:
   vector<DMPtr> getDecayModes() const;
 
   /**
-   *  Switch all decay modes on or off
-   * @param arg The option On or Off
+   * Utility function for the interface.
    */
-  string switchAllDecayModes(string arg);
+  string doSelectDecayModes(string);
 
   /**
    * Utility function for the interface.
    */
-  string doSelectDecayModes(string);
+  string doPrintDecayModes(string);
 
   /**
    * Describe a concrete class with persistent data.
