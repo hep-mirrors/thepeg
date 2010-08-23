@@ -62,9 +62,9 @@ ScalarWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // calculate kinematics if needed
   if(kinematics()) calculateKinematics(pout,pvec1,pvec2);
   // calculate coupling
-  setCoupling(q2,out,Pvec1,Pvec2);
+  setCoupling(q2,Pvec1,Pvec2,out);
   // propagator
-  Complex prop = propagator(iopt,q2,out,mass,width);
+  Complex prop = propagator(iopt,pout.m2(),out,mass,width);
   // lorentz part
   Complex e1e2(vec1.wave().dot(vec2.wave()));
   complex<Energy> e1p1(vec1.wave().dot(pvec1));
