@@ -1,5 +1,9 @@
 2010-09-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* Vectors/HepMCConverter.tcc: Bugfix for herwig:ticket:323:
+	HepMC converter ignores event weight when using pre-existing event
+	objects.
+
 	* PDF/*: Added support for diffractive physics:
 	WeizsackerWilliamsPDF extended; LeptonLeptonRemnant renamed to
 	UnResolvedRemnant; PDF override options added to PartonExtractor;

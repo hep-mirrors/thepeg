@@ -653,10 +653,10 @@ void StandardEventHandler::Init() {
      &StandardEventHandler::weightedEvents, true, false);
   static SwitchOption interfaceWeightedTrue
     (interfaceWeighted, "On",
-     "This EventHandeler produces weighted events.", true);
+     "This EventHandler produces weighted events.", true);
   static SwitchOption interfaceWeightedFalse
     (interfaceWeighted, "Off",
-     "This EventHandeler produces unweighted events.", false);
+     "This EventHandler produces unweighted events.", false);
 
   static Reference<StandardEventHandler,SamplerBase> interfaceSampler
     ("Sampler",

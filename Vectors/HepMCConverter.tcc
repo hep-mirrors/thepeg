@@ -70,6 +70,9 @@ HepMCConverter(const Event & ev, GenEvent & gev, bool nocopies,
   : energyUnit(eunit), lengthUnit(lunit) {
 
   geneve = &gev;
+  geneve->set_event_number( ev.number() );
+  geneve->weights().clear();
+  geneve->weights().push_back( ev.weight() );
 
   init(ev, nocopies);
 

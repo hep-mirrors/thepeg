@@ -198,7 +198,7 @@ public:
    * Exception class used to inform about inability to work with some
    * weighted event files.
    */
-  struct WeightedExcetion: public Exception {};
+  struct WeightedException: public Exception {};
 
 private:
 
