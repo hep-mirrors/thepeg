@@ -50,6 +50,7 @@ PartonBinInstance::PartonBinInstance(tPPtr part, tcPBPtr pb, Energy2 scale)
   theIncoming = new_ptr(PartonBinInstance(particle(), pb->incoming(), P2));
   theX = xi()*incoming()->x();
   theL = li() + incoming()->li();
+  theEps =  Math::exp1m(-li());
 }
 
 PartonBinInstance::~PartonBinInstance() {}
