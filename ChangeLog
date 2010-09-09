@@ -1,3 +1,8 @@
+2010-09-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Vectors/HepMCConverter.tcc: Converted David fix for
+	herwig:ticket:323 to properly use the traits class.
+
 2010-09-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Vectors/HepMCConverter.tcc: Bugfix for herwig:ticket:323:

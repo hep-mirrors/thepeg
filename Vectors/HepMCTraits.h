@@ -68,6 +68,13 @@ struct HepMCTraitsBase {
     return e;
   }
 
+  /** Reset event weight and number of a re-used GenEvent. */
+  static void resetEvent(EventT * e, long evno, double weight) {
+    e->set_event_number(evno);
+    e->weights().clear();
+    e->weights().push_back(weight);
+  }
+
   /**
    * Return true if this version of HepMC accept user-defined units.
    */
