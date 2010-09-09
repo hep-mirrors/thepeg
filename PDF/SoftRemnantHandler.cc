@@ -47,7 +47,7 @@ canHandle(tcPDPtr particle, const cPDVector & partons) const {
 Lorentz5Momentum SoftRemnantHandler::
 generate(PartonBinInstance & pb, const double *,
 	 Energy2, const LorentzMomentum & parent) const {
-  LorentzMomentum p = lightCone((parent.rho() + parent.e())*pb.x(), Energy());
+  LorentzMomentum p = lightCone((parent.rho() + parent.e())*pb.xi(), Energy());
   p.rotateY(parent.theta());
   p.rotateZ(parent.phi());
   pb.parton()->setMomentum(p);

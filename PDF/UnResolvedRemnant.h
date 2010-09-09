@@ -1,28 +1,29 @@
 // -*- C++ -*-
 //
-// LeptonLeptonRemnant.h is a part of ThePEG - Toolkit for HEP Event Generation
+// UnResolvedRemnant.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
-#ifndef ThePEG_LeptonLeptonRemnant_H
-#define ThePEG_LeptonLeptonRemnant_H
+#ifndef ThePEG_UnResolvedRemnant_H
+#define ThePEG_UnResolvedRemnant_H
 
 #include "ThePEG/PDF/RemnantHandler.h"
 
 namespace ThePEG {
 
 /**
- * LeptonLeptonRemnant inherits from the RemnantHandler and implements
- * the generation of a single collinear photon remnant when a lepton
- * is extracted from a lepton.
+ * UnResolvedRemnant inherits from the RemnantHandler and implements
+ * the generation of either the incoming particle as the remnant
+ * with the emission of a photon, pomeron or reggeon, or
+ * a photon remnant for the particle entering the hard process.
  *
- * @see \ref LeptonLeptonRemnantInterfaces "The interfaces"
- * defined for LeptonLeptonRemnant.
- * @see LeptonLeptonPDF
+ * @see \ref UnResolvedRemnantInterfaces "The interfaces"
+ * defined for UnResolvedRemnant.
+ * @see UnResolvedPDF
  */
-class LeptonLeptonRemnant: public RemnantHandler {
+class UnResolvedRemnant: public RemnantHandler {
 
 public:
 
@@ -31,7 +32,7 @@ public:
   /**
    * Default constructor.
    */
-  LeptonLeptonRemnant();
+  UnResolvedRemnant();
   //@}
 
 public:
@@ -181,50 +182,50 @@ private:
   double minX;
 
   /**
-   * Easy access to a proton data object.
+   * Easy access to a photon data object.
    */
-  tPDPtr photon;
+  tPDPtr thePhoton;
 
 private:
 
   /**
    * Describe a concrete class with persistent data.
    */
-  static ClassDescription<LeptonLeptonRemnant> initLeptonLeptonRemnant;
+  static ClassDescription<UnResolvedRemnant> initUnResolvedRemnant;
 
   /**
    *  Private and non-existent assignment operator.
    */
-  LeptonLeptonRemnant & operator=(const LeptonLeptonRemnant &);
+  UnResolvedRemnant & operator=(const UnResolvedRemnant &);
 
 };
 
 /** @cond TRAITSPECIALIZATIONS */
 
 /** This template specialization informs ThePEG about the
- *  base classes of LeptonLeptonRemnant. */
+ *  base classes of UnResolvedRemnant. */
 template <>
-struct BaseClassTrait<LeptonLeptonRemnant,1>: public ClassTraitsType {
-  /** Typedef of the first base class of LeptonLeptonRemnant. */
+struct BaseClassTrait<UnResolvedRemnant,1>: public ClassTraitsType {
+  /** Typedef of the first base class of UnResolvedRemnant. */
   typedef RemnantHandler NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of the
- *  LeptonLeptonRemnant class and the shared object where it is
+ *  UnResolvedRemnant class and the shared object where it is
  *  defined. */
 template <>
-struct ClassTraits<LeptonLeptonRemnant>:
-    public ClassTraitsBase<LeptonLeptonRemnant> {
+struct ClassTraits<UnResolvedRemnant>:
+    public ClassTraitsBase<UnResolvedRemnant> {
   /** Return a platform-independent class name */
-  static string className() { return "ThePEG::LeptonLeptonRemnant"; }
+  static string className() { return "ThePEG::UnResolvedRemnant"; }
   /** Return the name of the shared library be loaded to get access to
-   *  the LeptonLeptonRemnant class and every other class it uses
+   *  the UnResolvedRemnant class and every other class it uses
    *  (except the base class). */
-  static string library() { return "LeptonLeptonRemnant.so"; }
+  static string library() { return "UnResolvedRemnant.so"; }
 };
 
 /** @endcond */
 
 }
 
-#endif /* ThePEG_LeptonLeptonRemnant_H */
+#endif /* ThePEG_UnResolvedRemnant_H */

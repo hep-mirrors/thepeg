@@ -55,12 +55,12 @@ getPartons(Energy maxEnergy, const cPDPair & incoming,
   PDFCuts cuts1(kc, true, maxEnergy);
   PBPtr p1 =
     new_ptr(PartonBin(PDPtr(), PBPtr(), incoming.first, PDFPtr(), cuts1));
-  addPartons(p1, cuts1, first);
+  addPartons(p1, cuts1,  theFirstPDF, first);
   PartonVector second;
   PDFCuts cuts2(kc, false, maxEnergy);
   PBPtr p2 =
     new_ptr(PartonBin(PDPtr(), PBPtr(), incoming.second, PDFPtr(), cuts2));
-  addPartons(p2, cuts2, second);
+  addPartons(p2, cuts2, theSecondPDF, second);
   for ( PartonVector::iterator it1 = first.begin();
 	it1 != first.end(); ++it1 )
     for ( PartonVector::iterator it2 = second.begin();
@@ -74,8 +74,9 @@ getPartons(Energy maxEnergy, const cPDPair & incoming,
 }
 
 void PartonExtractor::
-addPartons(tPBPtr incoming, const PDFCuts & cuts, PartonVector & pbins) const {
-  tcPDFPtr pdf = getPDF(incoming->parton());
+addPartons(tPBPtr incoming, const PDFCuts & cuts, tcPDFPtr pdf,
+	   PartonVector & pbins) const {
+  if(!pdf) pdf = getPDF(incoming->parton());
   if ( dynamic_ptr_cast<Ptr<NoPDF>::tcp>(pdf) ||
        incoming->parton() == incoming->particle() ) {
     pbins.push_back(incoming);
@@ -86,7 +87,7 @@ addPartons(tPBPtr incoming, const PDFCuts & cuts, PartonVector & pbins) const {
     PBPtr pb =
       new_ptr(PartonBin(incoming->parton(), incoming, partons[i], pdf, cuts));
     incoming->addOutgoing(pb);
-    addPartons(pb, cuts, pbins);
+    addPartons(pb, cuts, PDFPtr(), pbins);
   }
 
 }
@@ -147,14 +148,13 @@ Energy2 PartonExtractor::newScale() {
 }
 
 pair<int,int> PartonExtractor::nDims(const PBPair & pbins) {
-  // if photon from a lepton generate scale
+  // if photon from a lepton or proton generate scale
   bool genscale[2]={false,false};
   for(unsigned int ix=0;ix<2;++ix) {
     PBPtr bin = ix==0 ? pbins.first : pbins.second;
     if (!bin || !bin->particle() || !bin->parton()) continue;
-    int id = abs(bin->particle()->id()); 
-    if( ( id==ParticleID::eminus || id==ParticleID::muminus ) &&
-	bin->parton()->id()==ParticleID::gamma )
+    if(bin->pdf()->partons(bin->particle()).size()==1 &&
+       bin->particle()->id()!=bin->parton()->id())
       genscale[ix]=true;
   }
   return make_pair(pbins.first ->nDim(genscale[0]),
@@ -540,12 +540,12 @@ addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step) {
 
 void PartonExtractor::persistentOutput(PersistentOStream & os) const {
   os << theLastXComb << theSpecialDensities << theNoPDF << theMaxTries
-     << flatSHatY;
+     << flatSHatY << theFirstPDF << theSecondPDF;
 }
 
 void PartonExtractor::persistentInput(PersistentIStream & is, int) {
   is >> theLastXComb >> theSpecialDensities >> theNoPDF >> theMaxTries
-     >> flatSHatY;
+     >> flatSHatY >> theFirstPDF >> theSecondPDF;
 }
 
 ClassDescription<PartonExtractor> PartonExtractor::initPartonExtractor;
@@ -588,6 +588,16 @@ void PartonExtractor::Init() {
   static SwitchOption interfaceFlatSHatY1
     (interfaceFlatSHatY,
      "On", "Generate flat rapidity and \\f$\\log(\\hat{s})\\f$", true);
+
+  static Reference<PartonExtractor,PDFBase> interfaceFirstPDF
+    ("FirstPDF",
+     "PDF to override the default PDF for the first beam particle",
+     &PartonExtractor::theFirstPDF, false, false, true, true, false);
+
+  static Reference<PartonExtractor,PDFBase> interfaceSecondPDF
+    ("SecondPDF",
+     "PDF to override the default PDF for the second beam particle",
+     &PartonExtractor::theSecondPDF, false, false, true, true, false);
 
 }
 

@@ -91,7 +91,7 @@ xfsl(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale, double l,
 double PDFBase::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
 			 double z, double & jacobian) const {
   jacobian *= c.lMax() - c.lMin();
-  return c.lMin() + z*jacobian;
+  return c.lMin() + z*(c.lMax() - c.lMin());
 }
 
 double PDFBase::

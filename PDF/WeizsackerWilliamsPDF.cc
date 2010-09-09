@@ -17,7 +17,7 @@
 using namespace ThePEG;
 
 WeizsackerWilliamsPDF::WeizsackerWilliamsPDF() 
-  : _q2min(ZERO), _q2max(4.*GeV2)
+  : _q2min(ZERO), _q2max(4.*GeV2), _a(0.8)
 {}
 
 bool WeizsackerWilliamsPDF::canHandleParticle(tcPDPtr particle) const {
@@ -67,6 +67,13 @@ void WeizsackerWilliamsPDF::Init() {
      &WeizsackerWilliamsPDF::_q2max, GeV2, 4.0*GeV2, ZERO, 100.0*GeV2,
      false, false, Interface::limited);
 
+
+  static Parameter<WeizsackerWilliamsPDF,double> interfaceJacobianParameter
+    ("JacobianParameter",
+     "Relative contribution for the 1/x and flat term in sampling x ",
+     &WeizsackerWilliamsPDF::_a, 0.8, 0.0, 1.0,
+     false, false, Interface::limited);
+
 }
 
 double WeizsackerWilliamsPDF::
@@ -79,23 +86,36 @@ flattenScale(tcPDPtr a, tcPDPtr, const PDFCuts & c,
     jacobian = 0.;
     return 0.;
   }
-  double low(log(qqmin/c.scaleMaxL(l))),upp(log(qqmax/c.scaleMaxL(l)));
+  double low = log(qqmin/c.scaleMaxL(l));
+  double upp = log(qqmax/c.scaleMaxL(l));
+  double ret = exp(low+z*(upp-low));
   // jacobian factor
   jacobian *= log(qqmax/qqmin);
-  return exp(low+z*(upp-low));
+  return ret;
 }
 
 double WeizsackerWilliamsPDF::flattenL(tcPDPtr, tcPDPtr, const PDFCuts & c,
-			 double z, double & jacobian) const {
-  jacobian *= c.lMax() - c.lMin();
-  return c.lMin() + z*(c.lMax() - c.lMin());
+				       double z, double & jacobian) const {
+  double xmin = exp(-c.lMax());
+  double xmax = exp(-c.lMin());
+  double x;
+  if(z<=_a) {
+    z /=_a;
+    x = exp(-(c.lMin() + z*(c.lMax() - c.lMin())));
+  }
+  else {
+    z = (z-_a)/(1.-_a);
+    x = xmin+z*(xmax-xmin);
+  }
+  jacobian /= _a/(c.lMax() - c.lMin()) + (1.-_a)*x/(xmax-xmin);
+  return -log(x);
 }
 
 void WeizsackerWilliamsPDF::persistentOutput(PersistentOStream & os) const {
-  os << ounit(_q2min,GeV2) << ounit(_q2max,GeV2);
+  os << ounit(_q2min,GeV2) << ounit(_q2max,GeV2) << _a;
 }
 
 void WeizsackerWilliamsPDF::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(_q2min,GeV2) >> iunit(_q2max,GeV2);
+  is >> iunit(_q2min,GeV2) >> iunit(_q2max,GeV2) >> _a;
 }
 

@@ -1,8 +1,8 @@
 // -*- C++ -*-
-#ifndef THEPEG_WeizsackerWilliamsPDF_H
-#define THEPEG_WeizsackerWilliamsPDF_H
+#ifndef THEPEG_BudnevPDF_H
+#define THEPEG_BudnevPDF_H
 //
-// This is the declaration of the WeizsackerWilliamsPDF class.
+// This is the declaration of the BudnevPDF class.
 //
 
 #include "ThePEG/PDF/PDFBase.h"
@@ -12,19 +12,19 @@ namespace ThePEG {
 using namespace ThePEG;
 
 /**
- * Here is the documentation of the WeizsackerWilliamsPDF class.
+ * Here is the documentation of the BudnevPDF class.
  *
- * @see \ref WeizsackerWilliamsPDFInterfaces "The interfaces"
- * defined for WeizsackerWilliamsPDF.
+ * @see \ref BudnevPDFInterfaces "The interfaces"
+ * defined for BudnevPDF.
  */
-class WeizsackerWilliamsPDF: public PDFBase {
+class BudnevPDF: public PDFBase {
 
 public:
 
   /**
    *  Default constructor
    */
-  WeizsackerWilliamsPDF();
+  BudnevPDF();
 
   /** @name Virtual functions to be overridden by sub-classes. */
   //@{
@@ -72,10 +72,12 @@ public:
    * \f$Q^2_{\min}\f$ is zero, \f$Q^2/Q^2_{\max} = z\f$ (where the
    * limits are set by \a cut).
    */
+  
   virtual double flattenScale(tcPDPtr particle, tcPDPtr parton,
 			       const PDFCuts & cut, double l, double z,
 			       double & jacobian) const;
 
+  
   /**
    * Generate a momentum fraction. If the PDF contains strange peaks
    * which can be difficult to handle, this function may be
@@ -139,13 +141,13 @@ private:
    * The static object used to initialize the description of this class.
    * Indicates that this is an concrete class without persistent data.
    */
-  static ClassDescription<WeizsackerWilliamsPDF> initWeizsackerWilliamsPDF;
+  static ClassDescription<BudnevPDF> initBudnevPDF;
 
   /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  WeizsackerWilliamsPDF & operator=(const WeizsackerWilliamsPDF &);
+  BudnevPDF & operator=(const BudnevPDF &);
 
 private:
 
@@ -160,9 +162,31 @@ private:
   Energy2 _q2max;
 
   /**
-   *  Parameter for the jacobian mapping of \f$z\f$
+   *  Fitted scale \f$Q{_0}{^2}=0.71GeV^2\f$ 
    */
-  double _a;
+  const Energy2 _q02;
+
+  /**
+   *  Magenetic moment of the proton \f$ \mu_{p}^2 = 7.78  
+   */
+
+  const double _mup2;
+    
+
+  /**
+   * Helper function for magnetic a electric form factors in Budnev flux
+   */  
+
+  double gm2(Energy2 q2) const; 
+  
+
+  /**
+   * Helper function for magnetic a electric form factors in Budnev flux
+   */
+
+  double ge2(Energy2 q2) const; 
+  
+
 };
 
 }
@@ -174,32 +198,32 @@ namespace ThePEG {
 /** @cond TRAITSPECIALIZATIONS */
 
 /** This template specialization informs ThePEG about the
- *  base classes of WeizsackerWilliamsPDF. */
+ *  base classes of BudnevPDF. */
 template <>
-struct BaseClassTrait<WeizsackerWilliamsPDF,1> {
-  /** Typedef of the first base class of WeizsackerWilliamsPDF. */
+struct BaseClassTrait<BudnevPDF,1> {
+  /** Typedef of the first base class of BudnevPDF. */
   typedef PDFBase NthBase;
 };
 
 /** This template specialization informs ThePEG about the name of
- *  the WeizsackerWilliamsPDF class and the shared object where it is defined. */
+ *  the BudnevPDF class and the shared object where it is defined. */
 template <>
-struct ClassTraits<WeizsackerWilliamsPDF>
-  : public ClassTraitsBase<WeizsackerWilliamsPDF> {
+struct ClassTraits<BudnevPDF>
+  : public ClassTraitsBase<BudnevPDF> {
   /** Return a platform-independent class name */
-  static string className() { return "ThePEG::WeizsackerWilliamsPDF"; }
+  static string className() { return "ThePEG::BudnevPDF"; }
   /**
    * The name of a file containing the dynamic library where the class
-   * WeizsackerWilliamsPDF is implemented. It may also include several, space-separated,
-   * libraries if the class WeizsackerWilliamsPDF depends on other classes (base classes
+   * BudnevPDF is implemented. It may also include several, space-separated,
+   * libraries if the class BudnevPDF depends on other classes (base classes
    * excepted). In this case the listed libraries will be dynamically
    * linked in the order they are specified.
    */
-  static string library() { return "WeizsackerWilliamsPDF.so"; }
+  static string library() { return "BudnevPDF.so"; }
 };
 
 /** @endcond */
 
 }
 
-#endif /* THEPEG_WeizsackerWilliamsPDF_H */
+#endif /* THEPEG_BudnevPDF_H */

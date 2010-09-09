@@ -9,7 +9,7 @@ library GRV94L.so
 library GRV94M.so
 library KTClus.so
 library LeptonLeptonPDF.so
-library LeptonLeptonRemnant.so
+library UnResolvedRemnant.so
 library LesHouches.so
 library libThePEG.so
 library MadGraphReader.so

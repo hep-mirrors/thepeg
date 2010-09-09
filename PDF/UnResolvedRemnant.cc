@@ -1,6 +1,6 @@
 // -*- C++ -*-
 //
-// LeptonLeptonRemnant.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// UnResolvedRemnant.cc is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
@@ -8,10 +8,10 @@
 //
 //
 // This is the implementation of the non-inlined, non-templated member
-// functions of the LeptonLeptonRemnant class.
+// functions of the UnResolvedRemnant class.
 //
 
-#include "LeptonLeptonRemnant.h"
+#include "UnResolvedRemnant.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/ParticleData.h"
@@ -25,44 +25,50 @@
 
 using namespace ThePEG;
 
-IBPtr LeptonLeptonRemnant::clone() const {
+IBPtr UnResolvedRemnant::clone() const {
   return new_ptr(*this);
 }
 
-IBPtr LeptonLeptonRemnant::fullclone() const {
+IBPtr UnResolvedRemnant::fullclone() const {
   return new_ptr(*this);
 }
 
-LeptonLeptonRemnant::LeptonLeptonRemnant()
+UnResolvedRemnant::UnResolvedRemnant()
   : minX(1.0e-10) {}
 
-void LeptonLeptonRemnant::doinit() {
-  photon = getParticleData(ParticleID::gamma);
+void UnResolvedRemnant::doinit() {
+  thePhoton = getParticleData(ParticleID::gamma);
   RemnantHandler::doinit();
 }
 
-bool LeptonLeptonRemnant::
+bool UnResolvedRemnant::
 canHandle(tcPDPtr particle, const cPDVector & partons) const {
-  for ( cPDVector::const_iterator it = partons.begin(); it != partons.end(); ++it ) {
+  for ( cPDVector::const_iterator it = partons.begin();
+	it != partons.end(); ++it ) {
     if ( (**it).id() != particle->id()    &&
-	 (**it).id() != ParticleID::gamma ) return false;
+	 ( (**it).id() != ParticleID::gamma &&
+	   (**it).id() != ParticleID::pomeron &&
+	   (**it).id() != ParticleID::reggeon) ) return false;
   }
   return true;
 }
 
-int LeptonLeptonRemnant::nDim(const PartonBin &, bool) const {
+int UnResolvedRemnant::nDim(const PartonBin &, bool) const {
   return 1;
 }
 
-Lorentz5Momentum LeptonLeptonRemnant::
+Lorentz5Momentum UnResolvedRemnant::
 generate(PartonBinInstance & pb, const double *r,
 	 Energy2 scale, const LorentzMomentum & parent) const {
   // photon into hard process and lepton remnant
-  if ( pb.particleData() != pb.partonData() && 
-       pb.partonData()->id() == ParticleID::gamma) {
+  if ( pb.particleData() != pb.partonData()) {
     scale = abs(scale);
     Energy  ppl = pb.xi()*(abs(parent.z())+parent.t());
     Energy2 qt2 = pb.eps()*scale-sqr(pb.xi()*parent.m());
+    if(qt2<ZERO) {
+      pb.remnantWeight(-1.0);
+      return Lorentz5Momentum();
+    }
     Energy  pmi = (qt2-scale)/ppl;
     Lorentz5Momentum pgam;
     pgam.setMass(-sqrt(scale));
@@ -78,7 +84,7 @@ generate(PartonBinInstance & pb, const double *r,
     pb.remnants(PVector(1, rem));
     return pgam;
   }
-  else if( pb.particleData() == pb.partonData() ) {
+  else {
     if ( pb.eps() < minX ) {
       pb.remnants(PVector());
       return parent;
@@ -95,32 +101,24 @@ generate(PartonBinInstance & pb, const double *r,
     LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
     prem.rotateY(parent.theta());
     prem.rotateZ(parent.phi());
-    PPtr rem = photon->produceParticle(prem, ZERO);
+    PPtr rem = thePhoton->produceParticle(prem, ZERO);
     pb.remnants(PVector(1, rem));
     return parent - rem->momentum();
   }
-  else {
-    if ( pb.particleData() != pb.partonData() )
-      throw RemnantHandlerException
-	(pb.particleData()->name(), pb.partonData()->name(), name(),
-	 "The remnant handler can only extract leptons from "
-	 "leptons of the same type or photons.");
-    else
-      throw RemnantHandlerException
-	(pb.particleData()->name(), pb.partonData()->name(), name(),
-	 "Should not get here.");
-  }
 }
 
-Lorentz5Momentum LeptonLeptonRemnant::
+Lorentz5Momentum UnResolvedRemnant::
 generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
 	 const LorentzMomentum & parent) const {
   // photon into hard process and lepton remnant
-  if ( pb.particleData() != pb.partonData() && 
-       pb.partonData()->id() == ParticleID::gamma) {
+  if ( pb.particleData() != pb.partonData()) {
     scale = abs(scale);
     Energy  ppl = pb.xi()*(abs(parent.z())+parent.t());
     Energy2 qt2 = pb.eps()*scale-sqr(pb.xi()*parent.m());
+    if(qt2<ZERO) {
+      pb.remnantWeight(-1.0);
+      return Lorentz5Momentum();
+    }
     Energy  pmi = (qt2-scale)/ppl;
     Lorentz5Momentum pgam;
     pgam.setMass(-sqrt(scale));
@@ -136,7 +134,7 @@ generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
     pb.remnants(PVector(1, rem));
     return pgam;
   }
-  else if ( pb.particleData() == pb.partonData() ) {
+  else {
     if ( pb.eps() < minX ) {
       pb.remnants(PVector());
       return parent;
@@ -153,46 +151,36 @@ generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
     LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
     prem.rotateY(parent.theta());
     prem.rotateZ(parent.phi());
-    PPtr rem = photon->produceParticle(prem, ZERO);
+    PPtr rem = thePhoton->produceParticle(prem, ZERO);
     pb.remnants(PVector(1, rem));
     return parent - rem->momentum();
   }
-  else {
-    if ( pb.particleData() != pb.partonData() )
-      throw RemnantHandlerException
-	(pb.particleData()->name(), pb.partonData()->name(), name(),
-	 "The remnant handler can only extract leptons from "
-	 "leptons of the same type or photons.");
-    else
-      throw RemnantHandlerException
-	(pb.particleData()->name(), pb.partonData()->name(), name(),
-	 "Should not get here.");
-  }
 }
 
-void LeptonLeptonRemnant::persistentOutput(PersistentOStream & os) const {
-  os << photon << minX;
+void UnResolvedRemnant::persistentOutput(PersistentOStream & os) const {
+  os << minX << thePhoton;
 }
 
-void LeptonLeptonRemnant::persistentInput(PersistentIStream & is, int) {
-  is >> photon >> minX;
+void UnResolvedRemnant::persistentInput(PersistentIStream & is, int) {
+  is >> minX >> thePhoton;
 }
 
-ClassDescription<LeptonLeptonRemnant>
-LeptonLeptonRemnant::initLeptonLeptonRemnant;
+ClassDescription<UnResolvedRemnant>
+UnResolvedRemnant::initUnResolvedRemnant;
 
-void LeptonLeptonRemnant::Init() {
+void UnResolvedRemnant::Init() {
 
-  static ClassDocumentation<LeptonLeptonRemnant> documentation
-    ("LeptonLeptonRemnant inherits from the RemnantHandler and implements "
-     "the generation of a single collinear photon remnant when a lepton is "
-     "extracted from a lepton.");
+  static ClassDocumentation<UnResolvedRemnant> documentation
+    ("UnResolvedRemnant inherits from the RemnantHandler and implements"
+     "the generation of either the incoming particle as the remnant"
+     "with the emission of a photon, pomeron or reggeon, or"
+     "a photon remnant for the particle entering the hard process.");
 
-  static Parameter<LeptonLeptonRemnant,double> interfaceMinX
+  static Parameter<UnResolvedRemnant,double> interfaceMinX
     ("MinX",
      "The minimum energy fraction allowed for a photon remnant. "
      "If less than this no remnant will be emitted.",
-     &LeptonLeptonRemnant::minX, 1.0e-10, 0.0, 1.0,
+     &UnResolvedRemnant::minX, 1.0e-10, 0.0, 1.0,
      true, false, true);
 
   interfaceMinX.rank(10);
@@ -200,7 +188,7 @@ void LeptonLeptonRemnant::Init() {
 }
 
 
-bool LeptonLeptonRemnant::
+bool UnResolvedRemnant::
 recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
 		 Energy2 scale, const LorentzMomentum & p,
 		 const PVector & prev) const {
@@ -220,7 +208,7 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
   return true;
 }  
 
-bool LeptonLeptonRemnant::
+bool UnResolvedRemnant::
 recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
 		 Energy2 scale, Energy2 shat,
 		 const LorentzMomentum & p, const PVector & prev) const {

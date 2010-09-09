@@ -312,7 +312,7 @@ protected:
    * specified cuts.
    */
   virtual void addPartons(tPBPtr incoming ,const PDFCuts & cuts,
-		  PartonVector & pbins) const;
+			  tcPDFPtr pdf ,PartonVector & pbins) const;
 
   /**
    * The NoPDF object.
@@ -374,6 +374,16 @@ private:
    * A list of special PDFBase objects to be used.
    */
   vector<PDFPtr> theSpecialDensities;
+
+  /**
+   *  PDFBase object to override  first PDF
+   */
+  PDFPtr theFirstPDF;
+
+  /**
+   *  PDFBase object to override second PDF
+   */
+  PDFPtr theSecondPDF;
 
   /**
    * The NoPDF object.

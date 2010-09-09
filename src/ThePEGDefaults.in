@@ -69,7 +69,7 @@ cd /Defaults/Partons
 create ThePEG::NoRemnants NoRemnants
 create ThePEG::NoPDF NoPDF
 set NoPDF:RemnantHandler NoRemnants
-create ThePEG::LeptonLeptonRemnant SimpleLeptonRemnants LeptonLeptonRemnant.so
+create ThePEG::UnResolvedRemnant SimpleLeptonRemnants UnResolvedRemnant.so
 create ThePEG::LeptonLeptonPDF SimpleLeptonPDF LeptonLeptonPDF.so
 set SimpleLeptonPDF:RemnantHandler SimpleLeptonRemnants
 set /Defaults/Particles/e-:PDF SimpleLeptonPDF

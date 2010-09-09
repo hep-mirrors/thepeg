@@ -1,3 +1,10 @@
+2010-09-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDF/*: Added support for diffractive physics:
+	WeizsackerWilliamsPDF extended; LeptonLeptonRemnant renamed to
+	UnResolvedRemnant; PDF override options added to PartonExtractor;
+	BudnevPDF added.
+
 2010-08-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.*: Added interface to switch on a given set of
@@ -11,7 +18,7 @@
 
 2010-06-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
-	* Helicity/Vertex/{AbstractSSSSVertex.*,Scalar/SSSSVertex.*}: 
+	* Helicity/Vertex/{AbstractSSSSVertex.*,Scalar/SSSSVertex.*}:
 	Fixed SSSS Vertex inheritance
 
 	* Vectors/LorentzVector.h: Implemented rotate(angle,axis) for

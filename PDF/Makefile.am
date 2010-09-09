@@ -18,8 +18,9 @@ INPUTFILES = PDFsets.index
 CLEANFILES = done-all-links
 
 noinst_LTLIBRARIES = libThePEGPDF.la
-pkglib_LTLIBRARIES = LeptonLeptonPDF.la LeptonLeptonRemnant.la \
-          GRVBase.la GRV94L.la GRV94M.la WeizsackerWilliamsPDF.la
+pkglib_LTLIBRARIES = LeptonLeptonPDF.la UnResolvedRemnant.la \
+          GRVBase.la GRV94L.la GRV94M.la WeizsackerWilliamsPDF.la \
+          BudnevPDF.la
 
 if USELHAPDF
 pkglib_LTLIBRARIES += ThePEGLHAPDF.la
@@ -49,8 +50,14 @@ WeizsackerWilliamsPDF_la_SOURCES = WeizsackerWilliamsPDF.cc WeizsackerWilliamsPD
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-LeptonLeptonRemnant_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-LeptonLeptonRemnant_la_SOURCES = LeptonLeptonRemnant.cc LeptonLeptonRemnant.h
+BudnevPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+BudnevPDF_la_SOURCES = BudnevPDF.cc BudnevPDF.h
+
+
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+UnResolvedRemnant_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+UnResolvedRemnant_la_SOURCES = UnResolvedRemnant.cc UnResolvedRemnant.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
