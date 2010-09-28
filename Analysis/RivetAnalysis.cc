@@ -83,7 +83,7 @@ void RivetAnalysis::dofinish() {
   CurrentGenerator::Redirect stdout(cout);
   _rivet->setCrossSection(generator()->integratedXSec()/picobarn);
   _rivet->finalize();
-  _rivet->tree().commit();
+  _rivet->writeData(generator()->runName()+".aida"); 
 }
 
 void RivetAnalysis::doinitrun() {
