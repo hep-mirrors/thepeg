@@ -13,11 +13,10 @@
 // Author: Peter Richardson
 //
 
+#include "SpinInfo.h"
 #include "HelicityVertex.h"
-#include "ThePEG/Helicity/SpinInfo.h"
 
 using namespace ThePEG;
-using namespace ThePEG::Helicity;
 
 AbstractNoPIOClassDescription<HelicityVertex>
 HelicityVertex::initHelicityVertex;

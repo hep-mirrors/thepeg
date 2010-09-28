@@ -16,7 +16,7 @@
 #include <ThePEG/Helicity/LorentzTensor.h>
 #include <ThePEG/Helicity/TensorSpinInfo.h>
 #include <ThePEG/EventRecord/Particle.h>
-#include <ThePEG/Helicity/RhoDMatrix.h>
+#include <ThePEG/EventRecord/RhoDMatrix.h>
 
 namespace ThePEG {
 namespace Helicity {

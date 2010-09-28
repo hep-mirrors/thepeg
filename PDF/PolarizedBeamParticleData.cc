@@ -66,12 +66,12 @@ void PolarizedBeamParticleData::Init() {
 
 }
 
-Helicity::RhoDMatrix PolarizedBeamParticleData::rhoMatrix() const {
+RhoDMatrix PolarizedBeamParticleData::rhoMatrix() const {
   if(iSpin()!=PDT::Spin1Half) {
     throw Exception() << "Polarizaed Beams are currently only available for fermions\n"
 		      << Exception::runerror;
   }
-  Helicity::RhoDMatrix output(PDT::Spin1Half);
+  RhoDMatrix output(PDT::Spin1Half);
   if(id()>0) {
     output(0,0) = 0.5*(1.-theLongPolarization);
     output(1,1) = 0.5*(1.+theLongPolarization);

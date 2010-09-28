@@ -15,7 +15,7 @@
 #include <ThePEG/Helicity/LorentzSpinor.h>
 #include <ThePEG/Helicity/FermionSpinInfo.h>
 #include <ThePEG/EventRecord/Particle.h>
-#include <ThePEG/Helicity/RhoDMatrix.h>
+#include <ThePEG/EventRecord/RhoDMatrix.h>
 
 namespace ThePEG {
 

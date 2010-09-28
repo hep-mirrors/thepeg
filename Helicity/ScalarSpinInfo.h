@@ -10,7 +10,7 @@
 #define ThePEG_ScalarSpinInfo_H
 // This is the declaration of the ScalarSpinInfo class.
 
-#include "SpinInfo.h"
+#include "ThePEG/EventRecord/SpinInfo.h"
 #include "ScalarSpinInfo.fh"
 
 namespace ThePEG {
@@ -95,7 +95,7 @@ template <>
 struct BaseClassTrait<ThePEG::Helicity::ScalarSpinInfo,1>
   : public ClassTraitsType {
   /** Typedef of the base class of ScalarSpinInfo. */
-  typedef ThePEG::Helicity::SpinInfo NthBase;
+  typedef ThePEG::SpinInfo NthBase;
 };
 
 /**

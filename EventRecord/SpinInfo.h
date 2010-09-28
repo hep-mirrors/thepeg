@@ -10,20 +10,16 @@
 #define ThePEG_SpinInfo_H
 // This is the declaration of the SpinInfo class.
 
-#include "ThePEG/EventRecord/SpinBase.h"
+#include "ThePEG/EventRecord/EventInfoBase.h"
 #include "ThePEG/PDT/PDT.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-#include "ThePEG/Helicity/HelicityVertex.h"
-#include "SpinInfo.fh"
-// #include "SpinInfo.xh"
+#include "HelicityVertex.h"
 
 namespace ThePEG {
-namespace Helicity {
 
 /**
  *   The SpinInfo is the base class for the spin information for the
- *   spin correlation algorithm. It inherits from ThePEG
- *   SpinBase class and in turn the implementations for different spin
+ *   spin correlation algorithm. The implementations for different spin
  *   states inherit from this.
  *
  *   The class contains pointers to the vertex where the particle is
@@ -59,21 +55,17 @@ namespace Helicity {
  * @author Peter Richardson
  *
  */
-class SpinInfo: public SpinBase {
+class SpinInfo: public EventInfoBase {
 
 public:
 
-  /**
-   *  Enum to store the status
-   */
   enum DevelopedStatus {
     Undeveloped=0,
     Developed=1,
     NeedsUpdate=2
   };
-  
-public:
 
+public:
 
   /** @name Standard constructors and destructors. */
   //@{
@@ -103,6 +95,24 @@ public:
    */
   SpinInfo(const SpinInfo &);
   //@}
+
+public:
+
+  /**
+   * Returns true if the polarization() has been implemented in a
+   * subclass. This default version returns false.
+   */
+  virtual bool hasPolarization() const { return false; }
+
+  /**
+   * Return the angles of the polarization vector as a pair of
+   * doubles. first is the polar angle and second is the azimuth
+   * wrt. the particles direction. This default version of the
+   * function returns 0,0, and if a subclass implements a proper
+   * function it should also implement 'hasPolarization()' to return
+   * true.
+   */
+  virtual DPair polarization() const { return DPair(); }
 
 public:
 
@@ -144,7 +154,7 @@ public:
   /**
    * Set the vertex at which the particle was produced.
    */
-  void setProductionVertex(VertexPtr in) const {
+  void productionVertex(VertexPtr in) const {
     _production=in;
     // add to the list of outgoing if timelike
     int temp;
@@ -157,12 +167,12 @@ public:
   /**
    * Get the vertex at which the particle was produced.
    */
-  tcVertexPtr getProductionVertex() const { return _production; }
+  tcVertexPtr productionVertex() const { return _production; }
 
   /**
    * Set the vertex at which the particle decayed or branched.
    */
-  void setDecayVertex(VertexPtr in) const {
+  void decayVertex(VertexPtr in) const {
     _decay=in;
     int temp;
     in->addIncoming(this,temp);
@@ -174,7 +184,7 @@ public:
   /**
    * Get the vertex at which the particle decayed or branched.
    */
-  tcVertexPtr getDecayVertex() const { return _decay; }
+  tcVertexPtr decayVertex() const { return _decay; }
   //@}
 
   /** @name Access information about the associated particle. */
@@ -196,20 +206,19 @@ public:
   DevelopedStatus developed() const { return _developed; }
 
   /**
-   *  Needs update
-   */
-  void needsUpdate() const { _developed = NeedsUpdate; }
-
-  /**
    * Calculate the rho matrix for the decay if not already done.
    */
-  void decay() const;
-
+  void decay() const ;
 
   /**
    * Set the developed flag and calculate the D matrix for the decay.
    */
-  void develop() const;
+  void develop() const ;
+
+  /**
+   *  Needs update
+   */
+  void needsUpdate() const {_developed=NeedsUpdate;}
 
   /**
    * Return 2s+1 for the particle
@@ -235,7 +244,7 @@ public:
    */
   bool timelike() const { return _timelike; }
   //@}
- 
+
   /**
    *  Access to the locations
    */
@@ -244,7 +253,7 @@ public:
    *  Production Location
    */
   int productionLocation() const {return _prodloc;}
-  
+
   /**
    *  Decay Location
    */
@@ -304,7 +313,7 @@ private:
    * and all decays further up the chain.
    */
   void redevelop() const ;
-  
+
 private:
 
   /**
@@ -384,7 +393,6 @@ private:
 };
 
 }
-}
 
 
 namespace ThePEG {
@@ -396,9 +404,9 @@ namespace ThePEG {
  * SpinInfo.
  */
 template <>
-struct BaseClassTrait<ThePEG::Helicity::SpinInfo,1>: public ClassTraitsType {
+struct BaseClassTrait<ThePEG::SpinInfo,1>: public ClassTraitsType {
   /** Typedef of the base class of SpinInfo. */
-  typedef SpinBase NthBase;
+  typedef EventInfoBase NthBase;
 };
 
 /**
@@ -406,12 +414,12 @@ struct BaseClassTrait<ThePEG::Helicity::SpinInfo,1>: public ClassTraitsType {
  * SpinInfo class and the shared object where it is defined.
  */
 template <>
-struct ClassTraits<ThePEG::Helicity::SpinInfo>
-  : public ClassTraitsBase<ThePEG::Helicity::SpinInfo> {
+struct ClassTraits<ThePEG::SpinInfo>
+  : public ClassTraitsBase<ThePEG::SpinInfo> {
   /**
    * Return the class name.
    */
-  static string className() { return "ThePEG::Helicity::SpinInfo"; }
+  static string className() { return "ThePEG::SpinInfo"; }
 };
 
 /** @endcond */

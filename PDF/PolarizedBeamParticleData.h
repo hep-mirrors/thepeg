@@ -11,7 +11,7 @@
 // This is the declaration of the PolarizedBeamParticleData class.
 
 #include "BeamParticleData.h"
-#include "ThePEG/Helicity/RhoDMatrix.h"
+#include "ThePEG/EventRecord/RhoDMatrix.h"
 #include "PolarizedBeamParticleData.fh"
 
 namespace ThePEG {
@@ -56,7 +56,7 @@ public:
   /**
    *  Set-up the spin density matrix
    */
-  Helicity::RhoDMatrix rhoMatrix() const;
+  RhoDMatrix rhoMatrix() const;
 
   /**
    *  The longitudinal polarization

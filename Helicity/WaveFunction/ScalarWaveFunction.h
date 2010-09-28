@@ -14,7 +14,7 @@
 #include "WaveFunctionBase.h"
 #include <ThePEG/Helicity/ScalarSpinInfo.h>
 #include <ThePEG/EventRecord/Particle.h>
-#include <ThePEG/Helicity/RhoDMatrix.h>
+#include <ThePEG/EventRecord/RhoDMatrix.h>
 
 namespace ThePEG {
 namespace Helicity {

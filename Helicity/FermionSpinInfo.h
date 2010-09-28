@@ -10,10 +10,9 @@
 #define ThePEG_FermionSpinInfo_H
 // This is the declaration of the FermionSpinInfo class.
 
-#include "SpinInfo.h"
+#include "ThePEG/EventRecord/SpinInfo.h"
 #include "ThePEG/Helicity/LorentzSpinor.h"
 #include "FermionSpinInfo.fh"
-// #include "FermionSpinInfo.xh"
 
 namespace ThePEG {
 namespace Helicity {
@@ -189,7 +188,7 @@ template <>
 struct BaseClassTrait<ThePEG::Helicity::FermionSpinInfo,1>
   : public ClassTraitsType {
   /** Typedef of the base class of FermionSpinInfo. */
-  typedef ThePEG::Helicity::SpinInfo NthBase;
+  typedef ThePEG::SpinInfo NthBase;
 };
 
 /**

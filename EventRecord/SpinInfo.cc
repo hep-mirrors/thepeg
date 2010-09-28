@@ -15,12 +15,11 @@
 #include "SpinInfo.h"
 
 using namespace ThePEG;
-using namespace ThePEG::Helicity;
 
-const double SpinInfo::_eps=1.0e-7;
+const double SpinInfo::_eps=1.0e-8;
 
 SpinInfo::SpinInfo(const SpinInfo & x)
-  : SpinBase(x), _production(x._production), _decay(x._decay),
+  : EventInfoBase(x), _production(x._production), _decay(x._decay),
     _timelike(x._timelike),
     _prodloc(x._prodloc), _decayloc(x._decayloc),
     _decayed(x._decayed), _developed(x._developed),_rhomatrix(x._rhomatrix),
@@ -48,7 +47,7 @@ EIPtr SpinInfo::clone() const {
 void SpinInfo::rebind(const EventTranslationMap & trans) {
   if(_production) _production = trans.translate(_production);
   if(_decay)      _decay      = trans.translate(_decay);
-  SpinBase::rebind(trans);
+  EventInfoBase::rebind(trans);
 }
 
 
@@ -101,9 +100,11 @@ void SpinInfo::decay() const {
   assert(_developed!=NeedsUpdate);
   if(_developed==Developed&&iSpin()!=PDT::Spin0) {
     _developed=NeedsUpdate;
+    if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc,true);
   }
-  if(_production) 
-    _rhomatrix = _production->getRhoMatrix(_prodloc,_developed==NeedsUpdate);
+  else {
+    if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc,false);
+  }
   _decaymomentum = _currentmomentum;
   _decayed=true;
 }
@@ -111,15 +112,13 @@ void SpinInfo::decay() const {
 void SpinInfo::redevelop() const {
   assert(developed()==NeedsUpdate);
   // update the D matrix of this spininfo
-  if(getDecayVertex()) 
-    _Dmatrix = getDecayVertex()->getDMatrix(decayLocation());
+  _Dmatrix = decayVertex()->getDMatrix(decayLocation());
   _developed = Developed;
   // update the parent if needed
-  if(getProductionVertex() &&
-     getProductionVertex()->incoming().size()==1) {
-    tcSpinfoPtr parent = 
-      dynamic_ptr_cast<tcSpinfoPtr>(getProductionVertex()->incoming()[0]);
-    if(parent && parent->developed()==NeedsUpdate) 
+  if(productionVertex() &&
+     productionVertex()->incoming().size()==1) {
+    tcSpinPtr parent = productionVertex()->incoming()[0];
+    if(parent->developed()==NeedsUpdate) 
       parent->redevelop();
   }
 }

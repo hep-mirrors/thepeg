@@ -15,7 +15,7 @@
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/EventRecord/ColourBase.h"
-#include "ThePEG/EventRecord/SpinBase.h"
+#include "ThePEG/EventRecord/SpinInfo.h"
 #include "ThePEG/PDT/ParticleData.h"
 
 namespace ThePEG {

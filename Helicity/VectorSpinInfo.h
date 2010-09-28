@@ -10,7 +10,7 @@
 #define THEPEG_VectorSpinInfo_H
 // This is the declaration of the VectorSpinInfo class.
 
-#include "SpinInfo.h"
+#include "ThePEG/EventRecord/SpinInfo.h"
 #include "ThePEG/Helicity/LorentzPolarizationVector.h"
 #include "VectorSpinInfo.fh"
 
@@ -182,7 +182,7 @@ template <>
 struct BaseClassTrait<ThePEG::Helicity::VectorSpinInfo,1>
   : public ClassTraitsType {
   /** Typedef of the base class of VectorSpinInfo. */
-  typedef ThePEG::Helicity::SpinInfo NthBase;
+  typedef ThePEG::SpinInfo NthBase;
 };
 
 /**

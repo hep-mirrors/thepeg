@@ -10,7 +10,7 @@
 #define THEPEG_TensorSpinInfo_H
 // This is the declaration of the TensorSpinInfo class.
 
-#include "SpinInfo.h"
+#include "ThePEG/EventRecord/SpinInfo.h"
 #include "ThePEG/Helicity/LorentzTensor.h"
 #include "TensorSpinInfo.fh"
 // #include "TensorSpinInfo.xh"
@@ -182,7 +182,7 @@ template <>
 struct BaseClassTrait<ThePEG::Helicity::TensorSpinInfo,1>
   : public ClassTraitsType {
   /** Typedef of the base class of ScalarSpinInfo. */
-  typedef ThePEG::Helicity::SpinInfo NthBase;
+  typedef ThePEG::SpinInfo NthBase;
 };
 
 /**

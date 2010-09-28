@@ -1,21 +1,21 @@
 SUBDIRS = WaveFunction Vertex
 
-mySOURCES = HelicityVertex.cc LorentzSpinor.cc \
-          LorentzSpinorBar.cc LorentzTensor.cc SpinInfo.cc \
+mySOURCES = LorentzSpinor.cc \
+          LorentzSpinorBar.cc LorentzTensor.cc \
           FermionSpinInfo.cc VectorSpinInfo.cc ScalarSpinInfo.cc TensorSpinInfo.cc \
           LorentzRSSpinor.cc LorentzRSSpinorBar.cc RSFermionSpinInfo.cc
 
-DOCFILES = HelicityVertex.h LorentzPolarizationVector.h LorentzSpinor.h \
-           LorentzSpinorBar.h LorentzTensor.h RhoDMatrix.h SpinInfo.h \
+DOCFILES = LorentzPolarizationVector.h LorentzSpinor.h \
+           LorentzSpinorBar.h LorentzTensor.h \
            FermionSpinInfo.h VectorSpinInfo.h ScalarSpinInfo.h TensorSpinInfo.h \
            LorentzRSSpinor.h LorentzRSSpinorBar.h RSFermionSpinInfo.h \
 	   epsilon.h
 
-INCLUDEFILES = $(DOCFILES) HelicityVertex.fh \
+INCLUDEFILES = $(DOCFILES) \
                LorentzSpinor.fh LorentzSpinor.tcc LorentzSpinorBar.tcc \
                LorentzSpinorBar.fh \
                FermionSpinInfo.fh \
-               SpinInfo.fh LorentzTensor.fh \
+               LorentzTensor.fh \
                VectorSpinInfo.fh \
                ScalarSpinInfo.fh \
                TensorSpinInfo.fh LorentzTensor.tcc \

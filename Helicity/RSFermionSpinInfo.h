@@ -10,7 +10,7 @@
 #define THEPEG_RSFermionSpinInfo_H
 // This is the declaration of the RSFermionSpinInfo class.
 
-#include "SpinInfo.h"
+#include "ThePEG/EventRecord/SpinInfo.h"
 #include "ThePEG/Helicity/LorentzRSSpinor.h"
 #include "RSFermionSpinInfo.fh"
 
@@ -184,7 +184,7 @@ namespace ThePEG {
 template <>
 struct BaseClassTrait<ThePEG::Helicity::RSFermionSpinInfo,1> {
   /** Typedef of the base class of RSFermionSpinInfo. */
-  typedef ThePEG::Helicity::SpinInfo NthBase;
+  typedef ThePEG::SpinInfo NthBase;
 };
 
 /**

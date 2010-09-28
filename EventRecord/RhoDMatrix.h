@@ -15,7 +15,6 @@
 #include <cassert>
 
 namespace ThePEG {
-namespace Helicity {
 
 /**
  *  The RhoDMatrix class is designed to implement the storage of the
@@ -141,8 +140,6 @@ inline ostream & operator<<(ostream & os, const RhoDMatrix & rd) {
   return os;
 }
 
-
-}
 }
 
 #endif /* ThePEG_RhoDMatrix_H */

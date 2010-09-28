@@ -14,7 +14,7 @@
 #include "WaveFunctionBase.h"
 #include <ThePEG/Helicity/LorentzPolarizationVector.h>
 #include <ThePEG/Helicity/VectorSpinInfo.h>
-#include <ThePEG/Helicity/RhoDMatrix.h>
+#include <ThePEG/EventRecord/RhoDMatrix.h>
 #include <ThePEG/EventRecord/Particle.h>
 
 namespace ThePEG {

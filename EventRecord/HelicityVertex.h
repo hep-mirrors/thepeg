@@ -10,19 +10,14 @@
 #define ThePEG_HelicityVertex_H
 // This is the declaration of the HelicityVertex class.
 
+#include "HelicityVertex.fh"
 #include "ThePEG/EventRecord/EventConfig.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "RhoDMatrix.h"
-#include "ThePEG/EventRecord/EventInfoBase.h"
 #include "ThePEG/Utilities/Rebinder.h"
-#include "ThePEG/EventRecord/SpinBase.h"
 #include "ThePEG/Helicity/HelicityDefinitions.h"
-#include "HelicityVertex.fh"
-
-// #include "HelicityVertex.xh"
 
 namespace ThePEG {
-namespace Helicity {
 
 /**
  *  The HelicityVertex class is designed to store the helicity
@@ -129,14 +124,11 @@ public:
   //@{
   /**
    * Get the rho matrix for the outgoing particle at position \a loc.
-   * @param loc The location of the particle
-   * @param recursive Recursively calculate up the tree
    */
   virtual RhoDMatrix getRhoMatrix(int loc,bool recursive) const = 0;
 
   /**
    * Get the D matrix for the incoming particle at position \a loc.
-   * @param loc The location of the particle
    */
   virtual RhoDMatrix getDMatrix(int loc) const = 0;
   //@}
@@ -183,7 +175,6 @@ inline ostream & operator<<(ostream & os, const HelicityVertex & vert) {
 }
   
 }
-}
 
 
 namespace ThePEG {
@@ -195,7 +186,7 @@ namespace ThePEG {
    * base class of HelicityVertex.
    */
   template <>
-  struct BaseClassTrait<ThePEG::Helicity::HelicityVertex,1>
+  struct BaseClassTrait<ThePEG::HelicityVertex,1>
     : public ClassTraitsType {
   /** Typedef of the base class of HelicityVertex. */
     typedef EventInfoBase NthBase;
@@ -206,12 +197,12 @@ namespace ThePEG {
    * the HelicityVertex class and the shared object where it is defined.
    */
 template <>
-struct ClassTraits<ThePEG::Helicity::HelicityVertex>
-  : public ClassTraitsBase<ThePEG::Helicity::HelicityVertex> {
+struct ClassTraits<ThePEG::HelicityVertex>
+  : public ClassTraitsBase<ThePEG::HelicityVertex> {
   /**
    * Return the class name.
    */
-  static string className() { return "ThePEG::Helicity::HelicityVertex"; }
+  static string className() { return "ThePEG::HelicityVertex"; }
 };
 
 /** @endcond */

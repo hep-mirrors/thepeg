@@ -8,11 +8,9 @@
 #include "ThePEG/Config/Pointers.h"
 
 namespace ThePEG {
-namespace Helicity {
 
 ThePEG_DECLARE_CLASS_POINTERS(HelicityVertex,VertexPtr);
 
-}
 }
 
 #endif
