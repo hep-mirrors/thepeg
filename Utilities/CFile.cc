@@ -15,6 +15,8 @@
 #include "config.h"
 #include <cstdlib>
 #include <cstdio>
+#include "Throw.h"
+#include <cstring>
 
 #ifdef HAVE_LIBZ
 #include <zlib.h>
@@ -87,9 +89,18 @@ void CFile::open(string filename, string mode) {
     file = fopen(filename.c_str(), mode.c_str());
     fileType = plain;
   }
+  if ( !file ) {
+    Throw<FileError>() 
+      << std::strerror(errno) << ": " << filename 
+      << Exception::runerror;
+  }
 }
 
 void CFile::close() {
+  if ( !file ) {
+    fileType = undefined;
+    return;
+  }
   switch ( fileType ) {
   case plain:
     fclose((FILE*)file);

@@ -5,7 +5,7 @@
 // This is the declaration of the CFile class.
 //
 
-#include "ThePEG/Config/ThePEG.h"
+#include "Exception.h"
 
 namespace ThePEG {
 
@@ -40,7 +40,7 @@ public:
   /**
    * The destructor.
    */
-  virtual ~CFile() {}
+  ~CFile() {}
   //@}
 
 
@@ -76,7 +76,12 @@ private:
 
   FileType fileType;
 
+public:
 
+  /** @cond EXCEPTIONCLASSES */
+  /** Exception class used by CFile if reading a file fails. */
+  class FileError: public Exception {};
+  /** @endcond */
 
 };
 
