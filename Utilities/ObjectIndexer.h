@@ -11,14 +11,17 @@
 // This is the declaration of the ObjectIndexer class.
 
 #include "ThePEG/Config/ThePEG.h"
+#include <limits>
 
 namespace ThePEG {
 
 /**
  * This is a templated class which dynamically associates (reference
- * counted) objects to indices.
+ * counted) objects to integer indices. By default, all indices will
+ * be non-negative, but explicit usage of negative indices is
+ * allowed as long as they do not include NoIndex.
  */
-template <typename IntT, typename ObjT>
+template <typename IntT, typename ObjT, IntT NoIndex = static_cast<IntT>(-1)>
 class ObjectIndexer {
 
 public:
@@ -34,14 +37,18 @@ public:
 public:
 
   /**
+   * Empty constructor.
+   */
+  ObjectIndexer(): next(0) {}
+
+  /**
    * Return the index for the given object. If the object is not known,
    * a new index will be created.
    */
   IntT operator()(tTPtr o) {
     typename ObjectIndexMap::iterator it = objectIndex.find(o);
     if ( it == objectIndex.end() ) {
-      IntT i = 0;
-      while ( indexObject.find(i) != indexObject.end() ) ++i;
+      IntT i = next++;
       objectIndex[o] = i;
       indexObject[i] = o;
       return i;
@@ -50,15 +57,34 @@ public:
   }
 
   /**
+   * Return the index for the given object. If the object is not known,
+   * NoIndex will be returned.
+   */
+  IntT operator()(tTPtr o) const {
+    return find(o);
+  }
+
+  /**
+   * Return the index for the given object. If the object is not known,
+   * NoIndex will be returned.
+   */
+  IntT find(tTPtr o) const {
+    typename ObjectIndexMap::const_iterator it = objectIndex.find(o);
+    return it == objectIndex.end()? NoIndex: it->second;
+  }
+
+  /**
    * Return the object for the given index. If the index is not known,
    * a new object will be (default) created.
    */
   tTPtr operator()(IntT i) {
+    if ( i == NoIndex ) return tTPtr();
     typename IndexObjectMap::iterator it = indexObject.find(i);
     if ( it == indexObject.end() ) {
       TPtr o = new_ptr<ObjT>();
       objectIndex[o] = i;
       indexObject[i] = o;
+      next = max(next, i + 1);
       return o;
     } 
     else
@@ -84,15 +110,18 @@ public:
 
   /**
    * Associate the given object with the given index. Possible other
-   * associations involving the index or the object is removed.
+   * associations involving the index or the object is removed. If the
+   * given index is NoIndex, this function does nothing.
    */
   void operator()(IntT i, tTPtr o) {
+    if ( i == NoIndex ) return;
     typename IndexObjectMap::iterator iit = indexObject.find(i);
     if ( iit != indexObject.end() ) objectIndex.erase(iit->second);
     typename ObjectIndexMap::iterator oit = objectIndex.find(o);
     if ( oit != objectIndex.end() ) indexObject.erase(oit->second);
     objectIndex[o] = i;
     indexObject[i] = o;
+    next = max(next, i + 1);
   }
 
   /**
@@ -135,6 +164,11 @@ private:
    * All known indices keyed by the corresponding objects.
    */
   ObjectIndexMap objectIndex;
+
+  /**
+   * The next index to be used.
+   */
+  IntT next;
 
 private:
 
