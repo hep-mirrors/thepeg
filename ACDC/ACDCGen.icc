@@ -376,7 +376,7 @@ inline double ACDCGen<Rnd,FncPtr>::integralErr(FncPtrType f) const {
       sumw += theSumW[i];
     }
   if ( f ) return maxInt()*sqrt(sumw2)/N();
-  return maxInt()*sqrt(sumw2 - sumw*sumw/N())/N();
+  return maxInt()*sqrt(max(0.,sumw2 - sumw*sumw/N()))/N();
 }
 
 template <typename Rnd, typename FncPtr>
