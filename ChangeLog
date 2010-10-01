@@ -1,3 +1,8 @@
+2010-10-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* EventRecord/Event.cc: Added energy non-conservation indicators to
+	Graphviz output.
+
 2010-09-29  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Utilities/CFile.*: Early throw of exception in case of

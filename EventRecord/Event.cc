@@ -198,14 +198,15 @@ ostream & ThePEG::operator<<(ostream & os, const Event & e) {
   return os;
 }
 
+// Helpers for the Graphviz output
 namespace {
   static const string header = "digraph test {\nrankdir=LR;\nranksep=1.5;\n";
 
-  inline unsigned long startnode(tcPPtr p) {
+  inline long startnode(tcPPtr p) {
     return p->parents().empty() ? -p->uniqueId : p->parents()[0]->uniqueId;
   }
 
-  inline unsigned long endnode(tcPPtr p) {
+  inline long endnode(tcPPtr p) {
     return p->children().empty() ? p->uniqueId : startnode( p->children()[0] );
   }
 
@@ -220,6 +221,22 @@ namespace {
     "darkolivegreen",
     "cyan"
   };
+
+  struct Vertex {
+    tcParticleSet in;
+    tcParticleSet out;
+  };
+
+  typedef map<long, Vertex> VertexMap;
+
+  template<typename Iter>
+  Lorentz5Momentum sumP(Iter a, Iter b) {
+    Lorentz5Momentum sum;
+    for ( Iter it = a; it != b; ++it ) {
+      sum += (*it)->momentum();
+    }
+    return sum;
+  }
 }
 
 void ThePEG::Event::printGraphviz() const {
@@ -234,11 +251,18 @@ void ThePEG::printGraphviz(ostream & os, tcEventPtr ev) {
   tcParticleSet all;
   ev->select(inserter(all), SelectAll());
 
+  VertexMap vertices;
   for (tcParticleSet::const_iterator it = all.begin();
        it != all.end(); ++it) {
     tcPPtr p = (*it);
 
-    os << startnode(p) << " -> " << endnode(p) 
+    long start = startnode(p);
+    long end = endnode(p);
+
+    vertices[start].out.insert(p);
+    vertices[end  ].in .insert(p);
+
+    os << start << " -> " << end
        << " [label=\"" << p->number() << ' '
        << p->PDGName() << "\\n"
        << p->momentum().e()/GeV << "\\n"
@@ -264,35 +288,38 @@ void ThePEG::printGraphviz(ostream & os, tcEventPtr ev) {
       os << '"';
     }
     os << "];\n";
+  }
 
-//   if ( !momentumOK(this) )
-//     os << endnode(this) << " [color=red,width=0.2,height=0.2];\n";
+  int label = 0;
+  for ( VertexMap::const_iterator v = vertices.begin();
+	v != vertices.end(); ++v ) {
+
+    const long vertexId = v->first;
+    const tcParticleSet & in  = v->second.in;
+    const tcParticleSet & out = v->second.out;
+
+    if ( in.empty() || out.empty() ) 
+      continue;
+
+    Lorentz5Momentum diff 
+      = sumP(out.begin(), out.end()) - sumP(in.begin(), in.end());
+
+    if ( abs(diff.e()) > 1.0*GeV ) {
+      ++label;
+      stringstream tail;
+      tail << " [label=\"" << std::setprecision(4) 
+	   << abs(diff.e()/GeV)
+	   << " GeV\",arrowsize=3,penwidth=5,"
+	   << "color=\"#ff000010\",fontcolor=\"#ff000010\"];\n";
+      if ( diff.e() > ZERO )
+	os << "mom" << label << " -> " << vertexId << tail.str();
+      else
+	os << vertexId << " -> " << "mom" << label << tail.str();
+    }
   }
 
   os << '}' << endl;
 }
-
-
-
-// namespace {
-
-//   inline bool momentumOK(const Particle * p) {
-//     if ( p->children().empty() ) return true;
-//     LorentzMomentum mom = -p->momentum();
-//     cerr << p->uniqueId << ' ' << mom/MeV << '\n';
-//     for ( size_t i = 0; i < p->children().size(); ++i ) {
-//       mom += p->children()[i]->momentum();
-//     }
-//     cerr << p->uniqueId << ' ' << mom/MeV << "\n\n";
-//     return sqr(mom.x()/MeV) < 1.0e-6 
-//       && sqr(mom.y()/MeV) < 1.0e-6 
-//       && sqr(mom.z()/MeV) < 1.0e-6 
-//       && sqr(mom.e()/MeV) < 1.0e-6;
-//   }
-// }
-
-
-
 
 void Event::debugme() const {
   cerr << *this;
