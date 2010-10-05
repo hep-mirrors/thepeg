@@ -308,6 +308,8 @@ public:
        << "\"\n    title=\"" << title()
        << "\" path=\"" << path
        << "\" dimension=\"" << dimension() << "\">\n";
+    for ( int d = 0; d < dimension(); ++d )
+      os << "    <dimension dim=\"" << d << "\" title=\"unknown\" />\n";
     for ( int i = 0, N = size(); i < N; ++i ) {
       os << "    <dataPoint>\n";
       for ( int j = 0, M = dimension(); j < M; ++j )

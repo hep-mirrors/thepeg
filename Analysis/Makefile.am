@@ -1,10 +1,10 @@
-AIDAWRAPPERS = AIAnalysisFactory.h AIAxis.h AIHistogram1D.h \
+AIDAWRAPPERS = AIAnalysisFactory.h AIAxis.h AIHistogram1D.h AIHistogram2D.h \
                AIHistogramFactory.h AITree.h AITreeFactory.h \
                AIManagedObject.h AIDataPoint.h AIDataPointSet.h \
                AIDataPointSetFactory.h AIMeasurement.h
 
 LWHHEADERS = AnalysisFactory.h Axis.h Tree.h TreeFactory.h \
-             Histogram1D.h HistogramFactory.h ManagedObject.h \
+             Histogram1D.h Histogram2D.h HistogramFactory.h ManagedObject.h \
              VariAxis.h DataPoint.h DataPointSet.h DataPointSetFactory.h \
              Measurement.h
 

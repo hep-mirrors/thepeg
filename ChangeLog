@@ -1,3 +1,18 @@
+2010-10-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Analysis/Histogram2D.h (LWH): Added two-dimensional histograms
+	in LWH.
+
+	* Handlers/AnalysisHandler.*: Changed default virtual functions so
+	that analyze(vector<tPPtr>,double) and analyze(tPPtr,double) takes
+	an event weight as argument. The old functions are still there but
+	are deprecated. Also the transform functions was flawed. It could
+	in principle transform the whole event and then the final-state
+	particles would br transformed again. Added transform(tcEventPtr)
+	which is used insted of transform(tEventPtr) which is now
+	deprecated. This could break some code, but since that code woud
+	be flawed anyway, it is not a big deal.
+
 2010-10-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Repository/EventGenerator.cc: tic prints out 'init' message

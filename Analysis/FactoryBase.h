@@ -20,6 +20,7 @@
 #include "AITree.h"
 #include "AIHistogramFactory.h"
 #include "AIHistogram1D.h"
+#include "AIHistogram2D.h"
 #include "AIAxis.h"
 #include "AIDataPointSetFactory.h"
 #include "AIDataPointSet.h"
@@ -58,6 +59,16 @@ public:
    * Convenient typedef for pointer to const AIDA::IHistogram1D.
    */
   typedef const AIDA::IHistogram1D * tcH1DPtr;
+
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram2D.
+   */
+  typedef AIDA::IHistogram2D * tH2DPtr;
+
+  /**
+   * Convenient typedef for pointer to const AIDA::IHistogram2D.
+   */
+  typedef const AIDA::IHistogram2D * tcH2DPtr;
 
   /**
    * Convenient typedef for pointer to AIDA::IHistogram1D.
@@ -180,6 +191,14 @@ public:
 
   /**
    * Rescale the given \a histogram so that the integral over the bins
+   * will give the correct integrated cross section for the observable
+   * in the given \a unit.
+   */
+  virtual void
+  normalizeToXSec(tH2DPtr histogram, CrossSection unit = picobarn) const = 0;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
    * gives the fraction of the total cross section generated which is
    * contained in the bins.
    */
@@ -187,9 +206,22 @@ public:
 
   /**
    * Rescale the given \a histogram so that the integral over the bins
+   * gives the fraction of the total cross section generated which is
+   * contained in the bins.
+   */
+  virtual void normalizeToXSecFraction(tH2DPtr histogram) const = 0;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
    * gives one.
    */
   virtual void normalizeToUnity(tH1DPtr histogram) const = 0;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * gives one.
+   */
+  virtual void normalizeToUnity(tH2DPtr histogram) const = 0;
   //@}
 
   /** @name Access the underlying AIDA objects. */
@@ -290,6 +322,76 @@ public:
   tH1DPtr createHistogram1D(const string & path, const string & title,
 			    const std::vector<double> & edges) {
     return histogramFactory().createHistogram1D(path, title, edges);
+  }
+
+  /**
+   * Create and return a AIDA::IHistogram2D object in the underlying
+   * AIDA histogram factory. Note that the histogram factory is
+   * responsible for deleting this histogram.
+   * @param path the full path of where the histogram should be placed
+   * in the underlying AIDA tree (on the form
+   * "/dir/subdir/histogramname"). Not that the directory part of the
+   * path typically must already exist in the tree. The directories
+   * can be created with mkdir(string) or mkdirs(string).
+   * The title of the histogram will be set to the name part of the path.
+   * @param nbx the number of x-bins in the histogram.
+   * @param xlo the lower x-edge of the histogram.
+   * @param xup the upper x-edge of the histogram.
+   * @param nbx the number of y-bins in the histogram.
+   * @param xlo the lower y-edge of the histogram.
+   * @param xup the upper y-edge of the histogram.
+   * @return a pointer to the created AIDA::IHistogram1D object.
+   */
+  tH2DPtr createHistogram2D(const string & path,
+			    int nbx, double xlo, double xup,
+			    int nby, double ylo, double yup) {
+    return histogramFactory().createHistogram2D(path, nbx, xlo, xup,
+						      nby, ylo, yup);
+  }
+
+  /**
+   * Create and return a AIDA::IHistogram2D object in the underlying
+   * AIDA histogram factory. Note that the histogram factory is
+   * responsible for deleting this histogram.
+   * @param path the full path of where the histogram should be placed
+   * in the underlying AIDA tree (on the form
+   * "/dir/subdir/histogramname"). Not that the directory part of the
+   * path typically must already exist in the tree. The directories
+   * can be created with mkdir(string) or mkdirs(string).
+   * @param title the title of the histogram.
+   * @param nbx the number of x-bins in the histogram.
+   * @param xlo the lower x-edge of the histogram.
+   * @param xup the upper x-edge of the histogram.
+   * @param nby the number of y-bins in the histogram.
+   * @param ylo the lower y-edge of the histogram.
+   * @param yup the upper y-edge of the histogram.
+   * @return a pointer to the created AIDA::IHistogram1D object.
+   */
+  tH2DPtr createHistogram2D(const string & path, const string & title,
+			    int nbx, double xlo, double xup,
+			    int nby, double ylo, double yup) {
+    return histogramFactory().createHistogram2D(path, title,
+						nbx, xlo, xup, nby, ylo, yup);
+  }
+
+  /**
+   * Create and return a AIDA::IHistogram2D object in the underlying
+   * AIDA histogram factory. Note that the histogram factory is
+   * responsible for deleting this histogram.
+   * @param path the full path of where the histogram should be placed
+   * in the underlying AIDA tree (on the form
+   * "/dir/subdir/histogramname"). Not that the directory part of the
+   * path typically must already exist in the tree. The directories
+   * can be created with mkdir(string) or mkdirs(string).
+   * @param title the title of the histogram.
+   * @param xedges A vector of bin edges specifying the x-bins.
+   * @param yedges A vector of bin edges specifying the y-bins.
+   * @return a pointer to the created AIDA::IHistogram1D object.
+   */
+  tH2DPtr createHistogram2D(const string & path, const string & title,
+			    const std::vector<double> & xedges,
+			    const std::vector<double> & yedges) {
+    return histogramFactory().createHistogram2D(path, title, xedges, yedges);
   }
 
   /**

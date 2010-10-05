@@ -58,13 +58,14 @@ IBPtr AnalysisHandler::fullclone() const {
 
 void AnalysisHandler::analyze(tEventPtr event, long, int loop, int state) {
   if ( loop > 0 || state != 0 || !event ) return;
-  LorentzRotation r = transform(event);
+  tcEventPtr cevent = event;
+  LorentzRotation r = transform(cevent);
   tPVector particles;
   event->selectFinalState(back_inserter(particles));
   Utilities::transform(particles, r);
-  analyze(particles);
+  analyze(particles, event->weight());
   for ( int i = 0, N = theSlaves.size(); i < N; ++i )
-    theSlaves[i]->analyze(particles);
+    theSlaves[i]->analyze(particles, event->weight());
   r.invert();
   Utilities::transform(particles, r);
 }
@@ -73,11 +74,23 @@ LorentzRotation AnalysisHandler::transform(tEventPtr) const {
   return LorentzRotation();
 }
 
+LorentzRotation AnalysisHandler::transform(tcEventPtr) const {
+  return LorentzRotation();
+}
+
 void AnalysisHandler::analyze(const tPVector & particles) {
   for ( int i = 0, N = particles.size(); i < N; ++i ) analyze(particles[i]);
 }
 
+void AnalysisHandler::analyze(const tPVector & particles, double weight) {
+  analyze(particles);
+  for ( int i = 0, N = particles.size(); i < N; ++i )
+    analyze(particles[i], weight);
+}
+
 void AnalysisHandler::analyze(tPPtr) {}
+
+void AnalysisHandler::analyze(tPPtr, double) {}
 
 void AnalysisHandler::persistentOutput(PersistentOStream & os) const {
   os << theSlaves;

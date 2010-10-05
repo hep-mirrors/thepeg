@@ -52,6 +52,16 @@ public:
    */
   typedef FactoryBase::tcH1DPtr tcH1DPtr;
 
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef FactoryBase::tH2DPtr tH2DPtr;
+
+  /**
+   * Convenient typedef for pointer to AIDA::IHistogram1D.
+   */
+  typedef FactoryBase::tcH2DPtr tcH2DPtr;
+
 public:
 
   /** @name Virtual functions required by the AnalysisHandler class. */
@@ -81,21 +91,48 @@ public:
    * corresponding LorentzRotation.
    * @param event a pointer to the Event to be transformed.
    * @return the LorentzRotation used in the transformation.
+   * @deprecated Use transform(tcEventPtr) instead. This method is no
+   *    longer used automatically.
    */
   virtual LorentzRotation transform(tEventPtr event) const;
+
+  /**
+   * Return a LorentzTransform which would put the event in the
+   * desired Lorentz frame.
+   * @param event a pointer to the Event to be considered.
+   * @return the LorentzRotation used in the transformation.
+   */
+  virtual LorentzRotation transform(tcEventPtr event) const;
 
   /**
    * Analyze the given vector of particles. The default version calls
    * analyze(tPPtr) for each of the particles.
    * @param particles the vector of pointers to particles to be analyzed
+   * @deprecated Use analyze(const tPVector &, double) instead.
    */
   virtual void analyze(const tPVector & particles);
 
   /**
+   * Analyze the given vector of particles. The default version calls
+   * analyze(tPPtr) for each of the particles.
+   * @param particles the vector of pointers to particles to be analyzed
+   * @param weight the weight of the current event.
+   */
+  virtual void analyze(const tPVector & particles, double weight);
+
+  /**
    * Analyze the given particle.
    * @param particle pointer to the particle to be analyzed.
+   * @deprecated us analyze(tPPtr, double) instead.
    */
   virtual void analyze(tPPtr particle);
+
+  /**
+   * Analyze the given particle.
+   * @param particle pointer to the particle to be analyzed.
+   * @param weight the weight of the current event.
+   */
+  virtual void analyze(tPPtr particle, double weight);
 
   //@}
 
@@ -117,6 +154,14 @@ public:
    * Access the HistogramFactory from the EventGenerator.
    */
   const FactoryBase & histogramFactory() const;
+
+  /**
+   * Access the underlying AIDA::IHistogramFactory in the
+   * HistogramFactory from the EventGenerator.
+   */
+  AIDA::IHistogramFactory & iHistogramFactory() const {
+    return histogramFactory().histogramFactory();
+  }
 
   /**
    * Normalize the histogran \a h using the collected statistics from

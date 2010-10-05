@@ -47,6 +47,23 @@ void LWHFactory::normalizeToUnity(tH1DPtr histogram) const {
   if ( h ) h->normalize(1.0);
 }
 
+void LWHFactory::normalizeToXSec(tH2DPtr histogram, CrossSection unit) const {
+  LWH::Histogram2D * h = dynamic_cast<LWH::Histogram2D *>(histogram);
+  if ( h )
+    h->normalize(h->sumAllBinHeights()*generator()->integratedXSec()/
+		 (generator()->sumWeights()*unit));
+}
+
+void LWHFactory::normalizeToXSecFraction(tH2DPtr histogram) const {
+  LWH::Histogram2D * h = dynamic_cast<LWH::Histogram2D *>(histogram);
+  if ( h ) h->normalize(h->sumAllBinHeights()/generator()->sumWeights());
+}
+
+void LWHFactory::normalizeToUnity(tH2DPtr histogram) const {
+  LWH::Histogram2D * h = dynamic_cast<LWH::Histogram2D *>(histogram);
+  if ( h ) h->normalize(1.0);
+}
+
 void LWHFactory::persistentOutput(PersistentOStream &) const {}
 
 void LWHFactory::persistentInput(PersistentIStream &, int) {}

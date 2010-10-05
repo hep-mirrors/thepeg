@@ -51,6 +51,54 @@ public:
   virtual IHistogram1D * divide(const std::string &, const IHistogram1D &,
 			const IHistogram1D &) = 0;
 
+
+  virtual IHistogram2D *
+  createHistogram2D(const std::string & path, const std::string & title,
+		    int nx, double xlo, double xup,
+		    int ny, double ylo, double yup,
+		    const std::string & = "") = 0;
+
+  virtual IHistogram2D *
+  createHistogram2D(const std::string & pathAndTitle,
+		    int nx, double xlo, double xup,
+		    int ny, double ylo, double yup) = 0;
+
+  virtual IHistogram2D *
+  createHistogram2D(const std::string & path, const std::string & title,
+		    const std::vector<double> & xedges,
+		    const std::vector<double> & yedges,
+		    const std::string & = "") = 0;
+
+  virtual IHistogram2D *
+  createCopy(const std::string & path, const IHistogram2D & hist) = 0;
+  
+  virtual IHistogram2D * add(const std::string &,
+			     const IHistogram2D &, const IHistogram2D &) = 0;
+  virtual IHistogram2D * subtract(const std::string &, const IHistogram2D &,
+				  const IHistogram2D &) = 0;
+  virtual IHistogram2D * multiply(const std::string &, const IHistogram2D &,
+			  const IHistogram2D &) = 0;
+  virtual IHistogram2D * divide(const std::string &, const IHistogram2D &,
+			const IHistogram2D &) = 0;
+
+  virtual IHistogram1D *
+  projectionX(const std::string &, const IHistogram2D &) = 0;
+
+  virtual IHistogram1D *
+  projectionY(const std::string &, const IHistogram2D &) = 0;
+
+  virtual IHistogram1D *
+  sliceX(const std::string &, const IHistogram2D &, int) = 0;
+
+  virtual IHistogram1D *
+  sliceY(const std::string &, const IHistogram2D &, int) = 0;
+
+  virtual IHistogram1D *
+  sliceX(const std::string &, const IHistogram2D &, int, int) = 0;
+
+  virtual IHistogram1D *
+  sliceY(const std::string &, const IHistogram2D &, int, int) = 0;
+
 };
 
 }

@@ -59,6 +59,27 @@ public:
    * gives one.
    */
   virtual void normalizeToUnity(tH1DPtr histogram) const;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * will give the correct integrated cross section for the observable
+   * in the given \a unit.
+   */
+  virtual void
+  normalizeToXSec(tH2DPtr histogram, CrossSection unit = picobarn) const;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * gives the fraction of the total cross section generated which is
+   * contained in the bins.
+   */
+  virtual void normalizeToXSecFraction(tH2DPtr histogram) const;
+
+  /**
+   * Rescale the given \a histogram so that the integral over the bins
+   * gives one.
+   */
+  virtual void normalizeToUnity(tH2DPtr histogram) const;
   //@}
 
 public:

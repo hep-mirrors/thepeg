@@ -478,7 +478,7 @@ public:
        << " " << ax->bins() << " " << ax->upperEdge()
        << " \"" << title() << " \"" << std::endl;
     for ( int i = 2; i < ax->bins() + 2; ++i )
-      os << binMean(i - 2) << " "
+      os << 0.5*(ax->binLowerEdge(i - 2) + ax->binUpperEdge(i - 2)) << " "
 	 << sumw[i] << " " << sqrt(sumw2[i]) << " " << sum[i] << std::endl;
     os << std::endl;
     return true;
