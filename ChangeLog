@@ -1,3 +1,7 @@
+2010-10-05  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Repository/EventGenerator.cc: tic prints out 'init' message
+
 2010-10-01  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* EventRecord/Event.cc: Added energy non-conservation indicators to

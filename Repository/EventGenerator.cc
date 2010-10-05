@@ -500,6 +500,8 @@ void EventGenerator::doGo(long next, long maxevent, bool tics) {
   if ( maxevent >= 0 ) N(maxevent);
 
   if ( next >= 0 ) {
+    if ( tics ) 
+      cerr << "tic> " << setw(9) << "init\r" << flush;
     initialize();
     ieve = next-1;
   } else {
