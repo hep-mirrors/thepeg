@@ -449,7 +449,6 @@ void LesHouchesReader::reopen() {
   if ( frac*double(reopened + 1)/double(reopened) > 1.0 &&
     NEvents() - stats.attempts() <
        generator()->N() - generator()->currentEventNumber() ) {
-    cerr << "\n\ntesting in the file " << theReOpenAllowed << "\n\n\n";
     if(theReOpenAllowed)
       generator()->logWarning(LesHouchesReopenWarning()
 			      << "Reopening LesHouchesReader '" << name()
