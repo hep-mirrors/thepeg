@@ -41,7 +41,7 @@ LesHouchesReader::LesHouchesReader(bool active)
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
     weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0),
-    useWeightWarnings(true) {}
+    useWeightWarnings(true),theReOpenAllowed(true) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -62,7 +62,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     weightScale(x.weightScale), xSecWeights(x.xSecWeights),
     maxWeights(x.maxWeights), skipping(x.skipping),
     theMomentumTreatment(x.theMomentumTreatment),
-    useWeightWarnings(x.useWeightWarnings) {}
+    useWeightWarnings(x.useWeightWarnings),
+    theReOpenAllowed(x.theReOpenAllowed) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -447,12 +448,19 @@ void LesHouchesReader::reopen() {
   double frac = double(stats.attempts())/double(NEvents());
   if ( frac*double(reopened + 1)/double(reopened) > 1.0 &&
     NEvents() - stats.attempts() <
-       generator()->N() - generator()->currentEventNumber() )
-    generator()->logWarning(
-      LesHouchesReopenWarning()
-      << "Reopening LesHouchesReader '" << name()
-      << "' after accessing " << stats.attempts() << " events out of "
-      << NEvents() << Exception::warning);
+       generator()->N() - generator()->currentEventNumber() ) {
+    cerr << "\n\ntesting in the file " << theReOpenAllowed << "\n\n\n";
+    if(theReOpenAllowed)
+      generator()->logWarning(LesHouchesReopenWarning()
+			      << "Reopening LesHouchesReader '" << name()
+			      << "' after accessing " << stats.attempts() 
+			      << " events out of "
+			      << NEvents() << Exception::warning);
+    else
+      throw LesHouchesReopenWarning()
+	<< "More events requested than available in LesHouchesReader "
+	<< name() << Exception::runerror;
+  }
   if ( cacheFile() ) {
     closeCacheFile();
     openReadCacheFile();
@@ -985,7 +993,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
      << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
      << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
-     << theMomentumTreatment << useWeightWarnings;
+     << theMomentumTreatment << useWeightWarnings << theReOpenAllowed;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -1005,7 +1013,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
      >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
      >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
-     >> theMomentumTreatment >> useWeightWarnings;
+     >> theMomentumTreatment >> useWeightWarnings >> theReOpenAllowed;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -1235,6 +1243,20 @@ void LesHouchesReader::Init() {
      "in the Les Houches common block and the requested weight treatment.",
      false);
 
+  static Switch<LesHouchesReader,bool> interfaceAllowedTopReOpen
+    ("AllowedToReOpen",
+     "Can the file be reopened if more events are requested than the file contains?",
+     &LesHouchesReader::theReOpenAllowed, true, false, false);
+  static SwitchOption interfaceAllowedTopReOpenYes
+    (interfaceAllowedTopReOpen,
+     "Yes",
+     "Allowed to reopen the file",
+     true);
+  static SwitchOption interfaceAllowedTopReOpenNo
+    (interfaceAllowedTopReOpen,
+     "No",
+     "Not allowed to reopen the file",
+     false);
 
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);

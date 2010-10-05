@@ -843,6 +843,11 @@ protected:
    */
   bool useWeightWarnings;
 
+  /**
+   *  Option to allow reopening of the file
+   */
+  bool theReOpenAllowed;
+
 private:
 
   /** Access function for the interface. */
