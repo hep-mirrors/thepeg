@@ -10,7 +10,7 @@ LWHHEADERS = AnalysisFactory.h Axis.h Tree.h TreeFactory.h \
 
 mySOURCES = LWHFactory.cc
 
-pkglib_LTLIBRARIES = LWHFactory.la XSecCheck.la
+pkglib_LTLIBRARIES = LWHFactory.la XSecCheck.la ProgressLog.la
 
 if HAVE_RIVET
   DOCFILES = RivetAnalysis.h 
@@ -31,6 +31,9 @@ LWHFactory_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 XSecCheck_la_SOURCES = XSecCheck.cc XSecCheck.h
 XSecCheck_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+
+ProgressLog_la_SOURCES = ProgressLog.cc ProgressLog.h
+ProgressLog_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 
 noinst_LTLIBRARIES = libThePEGHist.la
 libThePEGHist_la_SOURCES = FactoryBase.cc FactoryBase.fh FactoryBase.h 
