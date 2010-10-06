@@ -26,6 +26,8 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	       "ThePEG/Interface/Interfaced.h")
 	      ((string-equal base "HandlerBase")
 	       "ThePEG/Handlers/HandlerBase.h")
+	      ((string-equal base "AnalysisHandler")
+	       "ThePEG/Handlers/AnalysisHandler.h")
 	      ((string-equal base "StepHandler")
 	       "ThePEG/Handlers/StepHandler.h")
 	      ((string-equal base "CascadeHandler")
@@ -41,7 +43,8 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	      ((string-equal base "PDFBase")
 	       "ThePEG/PDF/PDFBase.h")
 	      (t (concat namespace "/"
-			 (car (reverse (split-string default-directory "/")))
+			 (car ( cdr (reverse
+				     (split-string default-directory "/"))))
 			 "/" base ".h"))))
   (setq baseheader (read-from-minibuffer "#include file for the base class: "
 					 baseheader))
@@ -214,6 +217,9 @@ AbstractNoPIOClassDescription<THECLASS> THECLASS::initTHECLASS;")))))
 
 #include \"THECLASS.h\"
 #include \"ThePEG/Interface/ClassDocumentation.h\"
+#include \"ThePEG/EventRecord/Particle.h\"
+#include \"ThePEG/Repository/UseRandom.h\"
+#include \"ThePEG/Repository/EventGenerator.h\"
 
 " pioinclude "
 
@@ -997,25 +1003,27 @@ public:
   virtual void analyze(tEventPtr event, long ieve, int loop, int state);
 
   /**
-   * Transform the event to the desired Lorentz frame and return the
-   * corresponding LorentzRotation.
-   * @param event a pointer to the Event to be transformed.
+   * Return a LorentzTransform which would put the event in the
+   * desired Lorentz frame.
+   * @param event a pointer to the Event to be considered.
    * @return the LorentzRotation used in the transformation.
    */
-  virtual LorentzRotation transform(tEventPtr event) const;
+  virtual LorentzRotation transform(tcEventPtr event) const;
 
   /**
    * Analyze the given vector of particles. The default version calls
    * analyze(tPPtr) for each of the particles.
    * @param particles the vector of pointers to particles to be analyzed
+   * @param weight the weight of the current event.
    */
-  virtual void analyze(const tPVector & particles);
+  virtual void analyze(const tPVector & particles, double weight);
 
   /**
    * Analyze the given particle.
    * @param particle pointer to the particle to be analyzed.
+   * @param weight the weight of the current event.
    */
-  virtual void analyze(tPPtr particle);
+  virtual void analyze(tPPtr particle, double weight);
   //@}
 "))
 
@@ -1026,17 +1034,17 @@ void " class "::analyze(tEventPtr event, long ieve, int loop, int state) {
   // Rotate to CMS, extract final state particles and call analyze(particles).
 }
 
-LorentzRotation " class "::transform(tEventPtr event) const {
+LorentzRotation " class "::transform(tcEventPtr event) const {
   return LorentzRotation();
   // Return the Rotation to the frame in which you want to perform the analysis.
 }
 
-void " class "::analyze(const tPVector & particles) {
+void " class "::analyze(const tPVector & particles, double weight) {
   " base "::analyze(particles);
   // Calls analyze() for each particle.
 }
 
-void " class "::analyze(tPPtr) {}
+void " class "::analyze(tPPtr, double weight) {}
 "))
 
 (defun thepeg-Decayer-declare (class base)
