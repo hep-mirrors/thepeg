@@ -1,3 +1,10 @@
+2010-10-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Repository/EventGenerator.cc (persistentInput): After reading
+	the misc stream from persistent input, we need to seek to the end
+	of the stream explicitly. Otherwise, new content will overwrite
+	existing lines.
+
 2010-10-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/Histogram2D.h (LWH): Added two-dimensional histograms

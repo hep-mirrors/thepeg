@@ -749,6 +749,7 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
      >> theCurrentStepHandler >> useStdout >> dummy;
   theMiscStream.str(dummy);
+  theMiscStream.seekp(0, std::ios::end);
   theObjects.clear();
   for ( ObjectMap::iterator it = theObjectMap.begin();
 	it != theObjectMap.end(); ++it ) theObjects.insert(it->second);
