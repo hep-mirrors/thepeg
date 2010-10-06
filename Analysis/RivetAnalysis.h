@@ -139,6 +139,11 @@ private:
    *  The RivetAnalysisHandler
    */
   Rivet::AnalysisHandler * _rivet;
+
+  /**
+   *  Event count
+   */
+  unsigned long _nevent;
 };
 
 }

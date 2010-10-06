@@ -19,10 +19,11 @@
 
 using namespace ThePEG;
 
-RivetAnalysis::RivetAnalysis() : _rivet() 
+RivetAnalysis::RivetAnalysis() : _rivet(), _nevent(0) 
 {}
 
 void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int state) {
+  ++_nevent;
   AnalysisHandler::analyze(event, ieve, loop, state);
   // Rotate to CMS, extract final state particles and call analyze(particles).
   // convert to hepmc
@@ -80,10 +81,12 @@ void RivetAnalysis::Init() {
 
 void RivetAnalysis::dofinish() {
   AnalysisHandler::dofinish();
-  CurrentGenerator::Redirect stdout(cout);
-  _rivet->setCrossSection(generator()->integratedXSec()/picobarn);
-  _rivet->finalize();
-  _rivet->writeData(generator()->runName()+".aida"); 
+  if(_nevent>0) {
+    CurrentGenerator::Redirect stdout(cout);
+    _rivet->setCrossSection(generator()->integratedXSec()/picobarn);
+    _rivet->finalize();
+    _rivet->writeData(generator()->runName()+".aida");
+  }
 }
 
 void RivetAnalysis::doinitrun() {
