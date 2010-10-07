@@ -125,7 +125,8 @@ void ProgressLog::doinitrun() {
   os.setf(ios::left, ios::adjustfield);
   os << generator()->N();
   os.setf(ios::right, ios::adjustfield);
-  os << " " << host << ":" << pid << endl << flush;
+  os << " Initializing...                "
+     << host << ":" << pid << endl << flush;
 }
 
 
@@ -147,7 +148,13 @@ void ProgressLog::Init() {
      " it will write out a progress status on the standard log file. By"
      " default it will write on event 1, 2, 5, 10, 20, 50, ... etc. But"
      " optionally it can in addition also write out every given number of"
-     " seconds.");
+     " seconds.\n\n"
+     "The status line which is written out contains the current date "
+     "and time, the number of events processed so far and the total number"
+     "of events to be generated, two estimates of the time of completion "
+     "(one based on the current cpu usage and one based on the average "
+     "cpu usage [the usage is given in brackets]), and the host on which "
+     "the program is running, together with its process number.");
 
 
   static Parameter<ProgressLog,int> interfaceInterval

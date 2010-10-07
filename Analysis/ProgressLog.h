@@ -16,6 +16,13 @@ namespace ThePEG {
  * optionally it can in addition also write out every given number of
  * seconds.
  *
+ * The status line which is written out contains the current date and
+ * time, the number of events processed so far and the total number of
+ * events to be generated, two estimates of the time of completion
+ * (one based on the current cpu usage and one based on the average
+ * cpu usage [the usage is given in brackets]), and the host on which
+ * the program is running, together with its process number.
+ *
  * @see \ref ProgressLogInterfaces "The interfaces"
  * defined for ProgressLog.
  */
