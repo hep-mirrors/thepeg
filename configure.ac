@@ -25,7 +25,8 @@ case "${host}" in
 esac
 
 AC_LANG(C++)
-AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 -Wall]) 
+AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 -Wall])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 dnl also include std-options once --version and --help exist
 
 dnl Checks for programs.

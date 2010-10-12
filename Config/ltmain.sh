@@ -1,6 +1,6 @@
 # Generated from ltmain.m4sh.
 
-# libtool (GNU libtool) 2.2.8
+# libtool (GNU libtool) 2.2.10
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006,
@@ -70,7 +70,7 @@
 #         compiler:		$LTCC
 #         compiler flags:		$LTCFLAGS
 #         linker:		$LD (gnu? $with_gnu_ld)
-#         $progname:	(GNU libtool) 2.2.8
+#         $progname:	(GNU libtool) 2.2.10
 #         automake:	$automake_version
 #         autoconf:	$autoconf_version
 #
@@ -78,9 +78,9 @@
 
 PROGRAM=libtool
 PACKAGE=libtool
-VERSION=2.2.8
+VERSION=2.2.10
 TIMESTAMP=""
-package_revision=1.3169
+package_revision=1.3175
 
 # Be Bourne compatible
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
@@ -124,10 +124,6 @@ export LANGUAGE LC_ALL
 $lt_unset CDPATH
 
 
-
-
-
-
 # Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
 # is ksh but when the shell is invoked as "sh" and the current value of
 # the _XPG environment variable is not equal to 1 (one), the special
@@ -139,15 +135,15 @@ progpath="$0"
 
 : ${CP="cp -f"}
 test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
-: ${EGREP="/bin/grep -E"}
-: ${FGREP="/bin/grep -F"}
-: ${GREP="/bin/grep"}
+: ${EGREP="grep -E"}
+: ${FGREP="grep -F"}
+: ${GREP="grep"}
 : ${LN_S="ln -s"}
 : ${MAKE="make"}
 : ${MKDIR="mkdir"}
 : ${MV="mv -f"}
 : ${RM="rm -f"}
-: ${SED="/bin/sed"}
+: ${SED="sed"}
 : ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 : ${Xsed="$SED -e 1s/^X//"}
 
@@ -655,7 +651,6 @@ func_show_eval_locale ()
 }
 
 
-
 # func_version
 # Echo version message to standard output and exit.
 func_version ()
@@ -664,7 +659,7 @@ func_version ()
 	:more
 	/\./!{
 	  N
-	  s/\n# //
+	  s/\n# / /
 	  b more
 	}
 	:go
@@ -5095,10 +5090,8 @@ func_mode_link ()
       # -p, -pg, --coverage, -fprofile-*  profiling flags for GCC
       # @file                GCC response files
       # -tp=*                Portland pgcc target processor selection
-      # -O*, -flto*, -fwhopr, -fuse-linker-plugin GCC link-time optimization
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*| \
-      -O*|-flto*|-fwhopr|-fuse-linker-plugin)
+      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
         func_append compile_command " $arg"
