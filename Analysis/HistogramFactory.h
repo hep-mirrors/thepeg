@@ -613,8 +613,8 @@ public:
   }
 
   inline bool _neq(double a, double b, double eps = 1e-5) const {
-    if (a == 0 && b == 0) return false;
-    if (fabs(a-b) < eps*(a+b)) return false;
+    if ( a == 0 && b == 0 ) return false;
+    if ( abs(a-b) < eps*(abs(a) + abs(b)) ) return false;
     return true;
   }
 
@@ -643,6 +643,7 @@ public:
     if (_neq( h1.yax->upperEdge(), h2.yax->upperEdge()) ||
         _neq( h1.yax->lowerEdge(), h2.yax->lowerEdge()) ||
         h1.yax->bins() != h2.yax->bins() ) return false;
+    if ( h1.xfax && h2.xfax && h1.yfax && h2.yfax ) return true;
     for ( int i = 0; i < h1.xax->bins(); ++i ) {
       if ( _neq(h1.xax->binUpperEdge(i), h2.xax->binUpperEdge(i)) ||
            _neq(h1.xax->binLowerEdge(i), h2.xax->binLowerEdge(i)) )

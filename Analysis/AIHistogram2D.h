@@ -186,6 +186,10 @@ public:
      *
      */
     virtual bool add(const IHistogram2D & hist) = 0;
+
+  virtual bool scale(double scaleFactor) = 0;
+
+
 }; // class
 } // namespace AIDA
 /** @endcond */
