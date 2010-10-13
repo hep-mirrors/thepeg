@@ -777,7 +777,7 @@ namespace LWH {
         }
         bins[nbins] = vax->binEdges(nbins-1).second; //take last bin right border
         hist1d = new TH1D(name.c_str(), title().c_str(), nbins, bins);
-        delete bins;
+        delete [] bins;
       }
 
 
