@@ -68,7 +68,7 @@ public:
    * all its dependencies in this header.
    */
   template <typename PDFT>
-  PDFT pdf(tcPPtr parton) const { return PDFT(lastExtractor()->partonBinInstance(parton)); }
+  PDFT pdf(tcPPtr parton) const;
 
   /**
    * A reference to the currently used kinematical cuts.
