@@ -34,17 +34,7 @@ public:
    * Casting to generic types is disallowed.
    */
   template <typename T>
-  operator T() { 
-    T t; 
-    t.ERROR_only_use_long_as_Particle_ID_type(); 
-    return t;
-  }
-
-  /**
-   * Casting to generic const types is disallowed.
-   */
-  template <typename T>
-  operator T() const { 
+  operator T() const {
     T t; 
     t.ERROR_only_use_long_as_Particle_ID_type(); 
     return t;
@@ -72,9 +62,6 @@ template <> inline PID::PID(int t) : id(t) {}
 template <> inline PID::PID(ParticleID::ParticleCodes t) : id(t) {} 
 
 /// Specialized cast for 'long'
-template <> inline PID::operator long() { return id; }
-
-/// Specialized cast for 'const long'
 template <> inline PID::operator long() const { return id; }
 
 /**

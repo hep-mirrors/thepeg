@@ -235,84 +235,35 @@ Qty<P*L,P*E,P*Q,R*DL,R*DE,R*DQ> pow(Qty<L,E,Q,DL,DE,DQ> q) {
   return RetT(std::pow(q.rawValue(),double(P)/double(R))*RetT::baseunit());
 }
   
-
-// max(qty,qty)
-template<int L, int E, int Q, int DL, int DE, int DQ, int DL2, int DE2, int DQ2>
-inline Qty<L,E,Q,DL,DE,DQ> 
-max(Qty<L,E,Q,DL,DE,DQ> q1, 
-    Qty<QtyInt<L,DL,DL2>::I,
-    QtyInt<E,DE,DE2>::I,
-    QtyInt<Q,DQ,DQ2>::I, 
-    DL2,DE2,DQ2> q2) {
-  return q1.rawValue() < q2.rawValue() ? Qty<L,E,Q,DL,DE,DQ>(q2) : q1;
-}
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline Qty<L,E,Q,DL,DE,DQ> 
-max(Qty<L,E,Q,DL,DE,DQ> q1, 
-    Qty<L,E,Q,DL,DE,DQ> q2) { 
-  return q1.rawValue() < q2.rawValue() ? q2 : q1;
-}
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline Qty<L,E,Q,DL,DE,DQ> 
-max(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
-  return q1.rawValue() < 0.0 ? ZERO : q1;
-}
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline Qty<L,E,Q,DL,DE,DQ> 
-max(ZeroUnit, Qty<L,E,Q,DL,DE,DQ> q1) {
-  return q1.rawValue() < 0.0 ? ZERO : q1;
-}
-template<int DL, int DE, int DQ>
-inline double
-max(double q1, 
-    Qty<0,0,0,DL,DE,DQ> q2) { 
-  return q1 < q2.rawValue() ? double(q2) : q1;
-}
-template<int DL, int DE, int DQ>
-inline double
-max(Qty<0,0,0,DL,DE,DQ> q1, 
-    double q2) { 
-  return q1.rawValue() < q2 ? q2 : double(q1);
+// max for T,U types
+template<typename T, typename U>
+inline
+const T & max(const T & t, const U & u) {
+  return std::max(t, static_cast<T>(u));
 }
 
-// min(qty,qty)
-template<int L, int E, int Q, int DL, int DE, int DQ, int DL2, int DE2, int DQ2>
-inline Qty<L,E,Q,DL,DE,DQ> 
-min(Qty<L,E,Q,DL,DE,DQ> q1, 
-    Qty<QtyInt<L,DL,DL2>::I,
-    QtyInt<E,DE,DE2>::I,
-    QtyInt<Q,DQ,DQ2>::I, 
-    DL2,DE2,DQ2> q2) {
-  return q1.rawValue() < q2.rawValue() ? q1 : Qty<L,E,Q,DL,DE,DQ>(q2);
+// ZeroUnit in front should take U type
+template<typename U>
+inline
+const U & max(const ZeroUnit & t, const U & u) {
+  return std::max(static_cast<U>(t), u);
 }
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline Qty<L,E,Q,DL,DE,DQ> 
-min(Qty<L,E,Q,DL,DE,DQ> q1, 
-    Qty<L,E,Q,DL,DE,DQ> q2) { 
-  return q1.rawValue() < q2.rawValue() ? q1 : q2;
+
+// min for T,U types
+template<typename T, typename U>
+inline
+const T & min(const T & t, const U & u) {
+  return std::min(t, static_cast<T>(u));
 }
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline Qty<L,E,Q,DL,DE,DQ> 
-min(Qty<L,E,Q,DL,DE,DQ> q1, ZeroUnit) {
-  return q1.rawValue() > 0.0 ? ZERO : q1;
+
+// ZeroUnit in front should take U type
+template<typename U>
+inline
+const U & min(const ZeroUnit & t, const U & u) {
+  return std::min(static_cast<U>(t), u);
 }
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline Qty<L,E,Q,DL,DE,DQ> 
-min(ZeroUnit, Qty<L,E,Q,DL,DE,DQ> q1) {
-  return q1.rawValue() > 0.0 ? ZERO : q1;
-}
-template<int DL, int DE, int DQ>
-inline double
-min(double q1, 
-    Qty<0,0,0,DL,DE,DQ> q2) { 
-  return q1 < q2.rawValue() ? q1 : double(q2);
-}
-template<int DL, int DE, int DQ>
-inline double
-min(Qty<0,0,0,DL,DE,DQ> q1, 
-    double q2) { 
-  return q1.rawValue() < q2 ? double(q1) : q2;
-}
+
+
 //@}
 }
 
