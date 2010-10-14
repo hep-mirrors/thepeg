@@ -311,7 +311,7 @@ protected:
   /**
    * Set antipartner.
    */
-  void setCC(tPMPtr pm, tPMPtr apm) const {
+  static void setCC(tPMPtr pm, tPMPtr apm) {
     pm->theAntiPartner = apm;
     apm->theAntiPartner = pm;
   }

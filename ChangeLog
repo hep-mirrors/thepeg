@@ -1,3 +1,13 @@
+2010-10-14  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* configure.ac, m4/ax_compiler_vendor.m4: Initial support for
+	Intel warning flags. Adjust the ignore set over time.
+
+	* various: Fixes for intel compiler warnings
+
+	* Config/PhysicalQtyOps.h, PDT/PID.h: Simplified template
+	overloading
+
 2010-10-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Repository/EventGenerator.cc (persistentInput): After reading

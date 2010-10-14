@@ -871,7 +871,7 @@ struct PtrTraits< RCPtr<T> >: public PtrTraitsType {
   /**
    * Destroy the object pointed to.
    */
-  static void destroy(pointer tp) {}
+  static void destroy(pointer) {}
 
   /**
    * Cast dynamically.
@@ -952,7 +952,7 @@ struct PtrTraits< ConstRCPtr<T> >: public PtrTraitsType {
   /**
    * Destroy the object pointed to.
    */
-  static void destroy(const_pointer tp) {}
+  static void destroy(const_pointer) {}
 
   /**
    * Cast dynamically.
@@ -1019,7 +1019,7 @@ struct PtrTraits< TransientRCPtr<T> >: public PtrTraitsType {
   /**
    * Destroy the object pointed to.
    */
-  static void destroy(transient_pointer tp) {}
+  static void destroy(transient_pointer) {}
 
   /**
    * Cast dynamically.
@@ -1085,7 +1085,7 @@ struct PtrTraits< TransientConstRCPtr<T> >: public PtrTraitsType {
   /**
    * Destroy the object pointed to.
    */
-  static void destroy(transient_const_pointer tp) {}
+  static void destroy(transient_const_pointer) {}
 
   /**
    * Cast dynamically.

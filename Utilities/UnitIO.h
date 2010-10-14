@@ -18,8 +18,10 @@
 #include <cmath>
 
 // Workarounds for OS X
+#if defined __APPLE__ && defined __MACH__
 extern "C" int isnan(double) throw();
 extern "C" int isinf(double) throw();
+#endif
 
 namespace ThePEG {
 

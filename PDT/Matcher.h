@@ -88,7 +88,7 @@ protected:
   /**
    * Set antipartner.
    */
-  void setCC(tPMPtr pm, tPMPtr apm) const { MatcherBase::setCC(pm,apm); }
+  static void setCC(tPMPtr pm, tPMPtr apm) { MatcherBase::setCC(pm,apm); }
 
 private:
 

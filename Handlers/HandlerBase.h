@@ -12,6 +12,7 @@
 
 #include "ThePEG/Interface/Interfaced.h"
 #include "ThePEG/Repository/UseRandom.fh"
+#include "ThePEG/Repository/EventGenerator.h"
 #include <stdexcept>
 
 namespace ThePEG {
