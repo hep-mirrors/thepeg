@@ -65,9 +65,17 @@ THEPEG_CHECK_FPUCONTROL
 THEPEG_CHECK_AIDA
 
 AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
-if test "$GCC" = "yes"; then
-   AM_CXXFLAGS="-ansi -pedantic -Wall -W"
-fi
+
+AX_COMPILER_VENDOR
+
+case "${ax_cv_cxx_compiler_vendor}" in
+     gnu)
+	AM_CXXFLAGS="-ansi -pedantic -Wall -W"
+	;;
+     intel)
+	AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980" 
+	;;
+esac
 
 THEPEG_CHECK_ABS_BUG
 
