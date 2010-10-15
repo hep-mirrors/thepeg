@@ -8,6 +8,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/ParVector.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Vectors/HepMCConverter.h"
@@ -16,10 +17,11 @@
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
+#include "Rivet/Tools/Logging.hh"
 
 using namespace ThePEG;
 
-RivetAnalysis::RivetAnalysis() : _rivet(), _nevent(0) 
+RivetAnalysis::RivetAnalysis() :  debug(false), _rivet(), _nevent(0) 
 {}
 
 void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int state) {
@@ -30,7 +32,7 @@ void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int st
   HepMC::GenEvent * hepmc = ThePEG::HepMCConverter<HepMC::GenEvent>::convert(*event);
   // analyse the event
   CurrentGenerator::Redirect stdout(cout);
-  _rivet->analyze(*hepmc);
+  _rivet && _rivet->analyze(*hepmc);
   // delete hepmc event
   delete hepmc;
 }
@@ -44,11 +46,11 @@ ThePEG::IBPtr RivetAnalysis::fullclone() const {
 }
 
 void RivetAnalysis::persistentOutput(ThePEG::PersistentOStream & os) const {
-  os << _analyses << filename;
+  os << _analyses << filename << debug;
 }
 
 void RivetAnalysis::persistentInput(ThePEG::PersistentIStream & is, int) {
-  is >> _analyses >> filename;
+  is >> _analyses >> filename >> debug;
 }
 
 ThePEG::ClassDescription<RivetAnalysis> RivetAnalysis::initRivetAnalysis;
@@ -75,35 +77,56 @@ void RivetAnalysis::Init() {
      &RivetAnalysis::filename, "", true, false);
 
 
+  static Switch<RivetAnalysis,bool> interfaceDebug
+    ("Debug",
+     "Enable debug information from Rivet",
+     &RivetAnalysis::debug, false, true, false);
+  static SwitchOption interfaceDebugNo
+    (interfaceDebug,
+     "No",
+     "Disable debug information.",
+     false);
+  static SwitchOption interfaceDebugYes
+    (interfaceDebug,
+     "Yes",
+     "Enable debug information from Rivet.",
+     true);
+
+
   interfaceAnalyses.rank(10);
 
 }
 
 void RivetAnalysis::dofinish() {
   AnalysisHandler::dofinish();
-  if(_nevent>0) {
+  if( _nevent > 0 && _rivet ) {
     CurrentGenerator::Redirect stdout(cout);
     _rivet->setCrossSection(generator()->integratedXSec()/picobarn);
     _rivet->finalize();
-    _rivet->writeData(generator()->runName()+".aida");
+
+    string fname = filename;
+    if ( fname.empty() ) fname = generator()->runName() + ".aida";
+    _rivet->writeData(fname);
   }
+  delete _rivet;
+  _rivet = 0;
 }
 
-void RivetAnalysis::doinitrun() {
-  AnalysisHandler::doinitrun();
+void RivetAnalysis::doinit() {
+  AnalysisHandler::doinit();
   if(_analyses.empty()) 
     throw ThePEG::Exception() << "Must have at least one analysis loaded in "
 			      << "RivetAnalysis::doinitrun()"
 			      << ThePEG::Exception::runerror;
+}
+
+void RivetAnalysis::doinitrun() {
+  AnalysisHandler::doinitrun();
   // create Rivet analysis handler
   CurrentGenerator::Redirect stdout(cout);
-  string fname = filename;
-  if ( fname.empty() ) fname = generator()->runName();
-  _rivet = new Rivet::AnalysisHandler(fname);
-  // specify the analyses to be used
-  for(unsigned int ix=0;ix<_analyses.size();++ix) {
-    _rivet->addAnalysis(_analyses[ix]);
-  }
-  // initialize the rivet analysis handler
+  _rivet = new Rivet::AnalysisHandler; //(fname);
+  _rivet->addAnalyses(_analyses);
   _rivet->init();
+  if ( debug )
+    Rivet::Log::setLevel("Rivet",Rivet::Log::DEBUG);
 }

@@ -97,6 +97,11 @@ protected:
   /** @name Standard Interfaced functions. */
   //@{
   /**
+   * Initialize this object. Called in the read phase.
+   */
+  virtual void doinit();
+
+  /**
    * Initialize this object. Called in the run phase just before
    * a run begins.
    */
@@ -134,6 +139,11 @@ private:
    * The base name of the output file.
    */
   string filename;
+
+  /**
+   * Enable debugging information from Rivet
+   */
+  bool debug;
 
   /**
    *  The RivetAnalysisHandler
