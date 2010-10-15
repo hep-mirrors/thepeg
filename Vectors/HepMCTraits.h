@@ -127,7 +127,7 @@ struct HepMCTraitsBase {
    */
   static Length lengthUnit(const EventT & e) {
 #ifdef HEPMC_HAS_UNITS   
-    return e.momentum_unit() == HepMC::Units::CM? centimeter: millimeter;
+    return e.length_unit() == HepMC::Units::CM? centimeter: millimeter;
 #else
     return millimeter;
 #endif
