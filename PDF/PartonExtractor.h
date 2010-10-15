@@ -437,12 +437,6 @@ struct ClassTraits<PartonExtractor>: public ClassTraitsBase<PartonExtractor> {
 
 /** @endcond */
 
-template <typename XC>
-template <typename PDFT>
-PDFT LastXCombInfo<XC>::pdf(tcPPtr parton) const {
-  return PDFT(lastExtractor()->partonBinInstance(parton)); 
-}
-
 }
 
 #endif /* ThePEG_PartonExtractor_H */

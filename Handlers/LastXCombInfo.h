@@ -68,7 +68,9 @@ public:
    * all its dependencies in this header.
    */
   template <typename PDFT>
-  PDFT pdf(tcPPtr parton) const;
+  PDFT pdf(tcPPtr parton) const {
+    return PDFT(lastXComb().partonBinInstance(parton));
+  }
 
   /**
    * A reference to the currently used kinematical cuts.

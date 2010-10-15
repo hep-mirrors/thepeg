@@ -32,7 +32,7 @@ void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int st
   HepMC::GenEvent * hepmc = ThePEG::HepMCConverter<HepMC::GenEvent>::convert(*event);
   // analyse the event
   CurrentGenerator::Redirect stdout(cout);
-  _rivet && _rivet->analyze(*hepmc);
+  if ( _rivet ) _rivet->analyze(*hepmc);
   // delete hepmc event
   delete hepmc;
 }

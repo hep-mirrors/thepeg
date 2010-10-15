@@ -136,6 +136,9 @@ void XComb::lastE1E2(pair<double,double> ee) {
   theLastX1X2 = make_pair(1.0 - ee.first, 1.0 - ee.second);
 }
 
+tPBIPtr XComb::partonBinInstance(tcPPtr p) const {
+  return pExtractor()->partonBinInstance(p);
+}
 
 void XComb::Init() {}
 

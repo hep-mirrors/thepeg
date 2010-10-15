@@ -172,6 +172,12 @@ public:
   const PBIPair & partonBinInstances() const { return thePartonBinInstances; }
 
   /**
+   * Return the corresponding parton bin instance for a given
+   * extracted parton.
+   */
+  tPBIPtr partonBinInstance(tcPPtr) const;
+
+  /**
    * The last generated total energy squared of the incoming particles.
    */
   Energy2 lastS() const { return theLastS; }
