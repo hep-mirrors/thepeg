@@ -361,40 +361,11 @@ private:
 private:
 
   /**
-   * Describe an abstract class without persistent data.
-   */
-  static AbstractNoPIOClassDescription<GRVBase> initGRVBase;
-
-  /**
    *  Private and non-existent assignment operator.
    */
   GRVBase & operator=(const GRVBase &);
 
 };
-
-/** @cond TRAITSPECIALIZATIONS */
-
-/** This template specialization informs ThePEG about the
- *  base classes of GRVBase. */
-template <>
-struct BaseClassTrait<GRVBase,1>: public ClassTraitsType {
-  /** Typedef of the first base class of GRVBase. */
-  typedef PDFBase NthBase;
-};
-
-/** This template specialization informs ThePEG about the name of the
- *  GRVBase class and the shared object where it is defined. */
-template <>
-struct ClassTraits<GRVBase>: public ClassTraitsBase<GRVBase> {
-  /** Return a platform-independent class name */
-  static string className() { return "ThePEG::GRVBase"; }
-  /** Return the name of the shared library be loaded to get access to
-   *  the GRVBase class and every other class it uses (except
-   *  the base class). */
-  static string library() { return "GRVBase.so"; }
-};
-
-/** @endcond */
 
 }
 

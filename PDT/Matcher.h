@@ -123,7 +123,7 @@ template <typename T>
 struct ClassTraits< Matcher<T> >: public ClassTraitsBase< Matcher<T> > {
   /** Return a platform-independent class name */
   static string className() {
-    return "ThePEG::Matcher<" + ClassTraits<T>::className() + ">";
+    return "ThePEG::Matcher<" + T::className() + ">";
   }
 };
 

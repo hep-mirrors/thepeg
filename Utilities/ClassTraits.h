@@ -17,7 +17,7 @@
 // #include "ClassTraits.xh"
 #include "ThePEG/Persistency/PersistentOStream.fh"
 #include "ThePEG/Persistency/PersistentIStream.fh"
-
+#include "DescriptionList.h"
 
 namespace ThePEG {
 
@@ -62,12 +62,17 @@ struct ClassTraitsBase: public ClassTraitsType {
   /**
    * Return the name of class T.
    */
-  static string className() { return T::className(); }
+  //  static string className() { return T::className(); }
+  static string className() {
+    return DescriptionList::className(typeid(T));
+  }
 
   /**
    * Return the version of class T
    */
-  static int version() { return 0; }
+  static int version() {
+    return DescriptionList::version(typeid(T));
+  }
 
 
   /**
@@ -77,7 +82,9 @@ struct ClassTraitsBase: public ClassTraitsType {
    * excepted). In this case the listed libraries will be dynamically
    * linked in the order they are specified.
    */
-  static string library() { return ""; }
+  static string library() {
+    return DescriptionList::library(typeid(T));
+  }
 
   /**
    * Write the T part of an object to a persistent stream.

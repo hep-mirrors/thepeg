@@ -18,6 +18,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Utilities/Maths.h"
+#include "ThePEG/Utilities/DescribeClass.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 
 using namespace ThePEG;
@@ -160,12 +161,13 @@ setup(double l, Energy2 scale, Energy2 mu2, Energy2 lam2) const {
   }
 }
 
-AbstractNoPIOClassDescription<GRVBase> GRVBase::initGRVBase;
+DescribeAbstractNoPIOClass<GRVBase,PDFBase>
+describeGRVBase("ThePEG::GRVBase", "GRVBase.so");
 
 void GRVBase::Init() {
 
   static ClassDocumentation<GRVBase> documentation
-    ("THis is the base class used by different GRV PDF parameterizations.");
+    ("This is the base class used by different GRV PDF parameterizations.");
 
 }
 

@@ -1,3 +1,15 @@
+2010-10-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/DescribeClass.h: Added a simplified interface to the
+	type information system in ThePEG. For simle classes there is no
+	need to specialize the ClassTraits and BaseClassTrait classes and
+	to have a static member variable of ClassDescription in the
+	class (as in the full ThePEG type info system). Instead it is
+	enough to have one statically initialized variable of one of the
+	DescraibeClass classes for each class. The Abstract and NoPIO
+	versions of this class should be used for abstract classes and
+	classes without persistent I/O functions respectively.
+
 2010-10-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/LastXCombInfo.h (and friends): Included implementation

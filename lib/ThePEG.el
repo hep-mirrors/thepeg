@@ -84,7 +84,7 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 
   (setq persist (y-or-n-p "Will this class be persistent "))
   (setq concrete (y-or-n-p "Will this class be concrete "))
-  (thepeg-sourcefile namespace class persist interfaced concrete implementations)
+  (thepeg-sourcefile namespace class base persist interfaced concrete implementations)
 ;  (thepeg-iheaderfile namespace class base interfaced concrete)
 ;  (thepeg-fheaderfile namespace class)
   (thepeg-headerfile namespace class base baseheader interfaced
@@ -132,7 +132,7 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 
   (setq implement (funcall implfn class base))
 
-  (thepeg-sourcefile namespace class persist interfaced concrete implement)
+  (thepeg-sourcefile namespace class base persist interfaced concrete implement)
 ;  (thepeg-iheaderfile namespace class base interfaced concrete)
 ;  (thepeg-fheaderfile namespace class)
   (thepeg-headerfile namespace class base baseheader
@@ -150,18 +150,18 @@ The class may or may not be INTERFACED, PERSISTENT and/or CONCRETE."
 	 (car (cdr (split-string class "::"))))
 	(t class)))
 
-(defun thepeg-sourcefile (namespace class persistent interfaced concrete specialfn)
+(defun thepeg-sourcefile (namespace class baseclass persistent interfaced concrete specialfn)
   "Create a file suitable for the implementation of a class CLASS.
 The class may or may not be PERSISTENT and/or CONCRETE. SPECIALFN may be
 used to include special function definitions"
   (find-file (concat class ".cc"))
   (c++-mode)
   (cond ((> (buffer-size) 0))
-	(t (insert-string (thepeg-source namespace class persistent
+	(t (insert-string (thepeg-source namespace class baseclass persistent
 					 interfaced concrete specialfn))
 	   (beginning-of-buffer))))
 
-(defun thepeg-source (namespace class persistent interfaced concrete specialfn)
+(defun thepeg-source (namespace class baseclass persistent interfaced concrete specialfn)
   "Return a skeleton suitable for the implementation file of a class CLASS.
 The class may or may not be PERSISTENT and/or CONCRETE. SPECIALFN may be
 used to include special function definitions"
@@ -201,15 +201,22 @@ void THECLASS::persistentInput(PersistentIStream & is, int) {
 			(t "")))
 
   (setq description (cond (persistent (cond (concrete "
-ClassDescription<THECLASS> THECLASS::initTHECLASS;")
+DescribeClass<THECLASS,THEBASE>
+  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")
 					    (t "
-AbstractClassDescription<THECLASS> THECLASS::initTHECLASS;")))
+DescribeAbstractClass<THECLASS,THEBASE>
+  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")))
 			  (t (cond (concrete "
-NoPIOClassDescription<THECLASS> THECLASS::initTHECLASS;")
+DescribeNoPIOClass<THECLASS,THEBASE>
+  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")
 				   (t "
-AbstractNoPIOClassDescription<THECLASS> THECLASS::initTHECLASS;")))))
+DescribeAbstractNoPIOClass<THECLASS,THEBASE>
+  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")))))
 
-  (thepeg-replace "THECLASS" class (concat "// -*- C++ -*-
+  (thepeg-replace
+   "THECLASS" class
+   (thepeg-replace
+    "THEBASE" baseclass (concat "// -*- C++ -*-
 //
 // This is the implementation of the non-inlined, non-templated member
 // functions of the THECLASS class.
@@ -220,6 +227,7 @@ AbstractNoPIOClassDescription<THECLASS> THECLASS::initTHECLASS;")))))
 #include \"ThePEG/EventRecord/Particle.h\"
 #include \"ThePEG/Repository/UseRandom.h\"
 #include \"ThePEG/Repository/EventGenerator.h\"
+#include \"ThePEG/Utilities/DescribeClass.h\"
 
 " pioinclude "
 
@@ -228,8 +236,13 @@ using namespace " namespace ";
 THECLASS::THECLASS() {}
 
 THECLASS::~THECLASS() {}
-" specialfn interface piostring description "
-// Definition of the static class description member.
+" specialfn interface piostring "
+
+// *** Attention *** The following static variable is needed for the type
+// description system in ThePEG. Please check that the template arguments
+// are correct (the class and its base class), and that the constructor
+// arguments are correct (the class name and the name of the dynamically
+// loadable library where the class implementation can be found)." description "
 
 void THECLASS::Init() {
 
@@ -238,7 +251,7 @@ void THECLASS::Init() {
 
 }
 
-")))
+"))))
 
 (defun thepeg-iheaderfile (namespace class base interfaced concrete)
   "Create a icc-header file suitable for the inline function definitions
@@ -251,6 +264,42 @@ may not be INTERFACED and/or CONCRETE."
 					  interfaced concrete))
 	   (beginning-of-buffer))))
 
+(defconst thepeg-typetraits-decl "
+#include \"ThePEG/Utilities/ClassTraits.h\"
+
+namespace ThePEG {
+
+/** @cond TRAITSPECIALIZATIONS */
+
+/** This template specialization informs ThePEG about the
+ *  base classes of THECLASS. */
+template <>
+struct BaseClassTrait<THEFULLCLASS,1> {
+  /** Typedef of the first base class of THECLASS. */
+  typedef THEBASE NthBase;
+};
+
+/** This template specialization informs ThePEG about the name of
+ *  the THECLASS class and the shared object where it is defined. */
+template <>
+struct ClassTraits<THEFULLCLASS>
+  : public ClassTraitsBase<THEFULLCLASS> {
+  /** Return a platform-independent class name */
+  static string className() { return \"THEFULLCLASS\"; }
+  /**
+   * The name of a file containing the dynamic library where the class
+   * THECLASS is implemented. It may also include several, space-separated,
+   * libraries if the class THECLASS depends on other classes (base classes
+   * excepted). In this case the listed libraries will be dynamically
+   * linked in the order they are specified.
+   */
+  static string library() { return \"THECLASS.so\"; }
+};
+
+/** @endcond */
+
+}
+")
 
 (defconst thepeg-interfaced-impl "
 void THECLASS::doupdate() {
@@ -498,6 +547,24 @@ protected:
 				 (thepeg-replace "THECLASS" class
 						 thepeg-interfaced-impl))))
 
+(defun ThePEG-typetraits-decl ()
+  "Insert default declarations of the standard ThePEG type description system."
+  (interactive)
+  (setq fullclass (read-from-minibuffer "Class Name: "
+					(file-name-sans-extension
+					 (file-name-nondirectory
+					  (buffer-file-name)))))
+  (setq base (read-from-minibuffer "Base class Name: "))
+  (setq class (thepeg-get-class fullclass))
+  
+  (insert-string (thepeg-replace
+		  "THEFULLCLASS" fullclass
+		  (thepeg-replace
+		   "THEBASE" base
+		   (thepeg-replace
+		    "THECLASS" class
+		    thepeg-typetraits-decl)))))
+
 (defun thepeg-header (namespace class base baseheader persistent
 				concrete interfaced specialfn)
   "Return a skeleton suitable for the header file of a class CLASS
@@ -527,30 +594,6 @@ SPECIALFN may be used to include special function definitions"
 		      (t (concat "
 public:
 " specialfn))))
-  (setq description (cond (persistent (cond (concrete "
-  /**
-   * The static object used to initialize the description of this class.
-   * Indicates that this is a concrete class with persistent data.
-   */
-  static ClassDescription<THECLASS> initTHECLASS;")
-					    (t "
-  /**
-   * The static object used to initialize the description of this class.
-   * Indicates that this is an abstract class with persistent data.
-   */
-  static AbstractClassDescription<THECLASS> initTHECLASS;")))
-			  (t (cond (concrete "
-  /**
-   * The static object used to initialize the description of this class.
-   * Indicates that this is an concrete class without persistent data.
-   */
-  static NoPIOClassDescription<THECLASS> initTHECLASS;")
-				   (t "
-  /**
-   * The static object used to initialize the description of this class.
-   * Indicates that this is an abstract class without persistent data.
-   */
-  static AbstractNoPIOClassDescription<THECLASS> initTHECLASS;")))))
   
   (setq using (cond ((string-match namespace "ThePEG") "")
 		    (t "
@@ -565,8 +608,7 @@ using namespace ThePEG;
   (setq basedeclare (cond ((string-equal base "") "")
 			  (t (concat ": public " base))))
   
-  (thepeg-replace "THECLASS" class (thepeg-replace "THEBASE" base
-					 (concat "// -*- C++ -*-
+  (thepeg-replace "THECLASS" class (concat "// -*- C++ -*-
 #ifndef " NAMESPACE "_THECLASS_H
 #define " NAMESPACE "_THECLASS_H
 //
@@ -608,7 +650,6 @@ public:
   static void Init();
 " cloning interface "
 private:
-" description "
 
   /**
    * The assignment operator is private and must never be called.
@@ -620,43 +661,8 @@ private:
 
 }
 
-#include \"ThePEG/Utilities/ClassTraits.h\"
-
-namespace ThePEG {
-
-/** @cond TRAITSPECIALIZATIONS */
-
-/** This template specialization informs ThePEG about the
- *  base classes of THECLASS. */
-template <>
-struct BaseClassTrait<" namespacequalifyer "THECLASS,1> {
-  /** Typedef of the first base class of THECLASS. */
-  typedef THEBASE NthBase;
-};
-
-/** This template specialization informs ThePEG about the name of
- *  the THECLASS class and the shared object where it is defined. */
-template <>
-struct ClassTraits<" namespacequalifyer "THECLASS>
-  : public ClassTraitsBase<" namespacequalifyer "THECLASS> {
-  /** Return a platform-independent class name */
-  static string className() { return \"" namespace "::THECLASS\"; }
-  /**
-   * The name of a file containing the dynamic library where the class
-   * THECLASS is implemented. It may also include several, space-separated,
-   * libraries if the class THECLASS depends on other classes (base classes
-   * excepted). In this case the listed libraries will be dynamically
-   * linked in the order they are specified.
-   */
-  static string library() { return \"THECLASS.so\"; }
-};
-
-/** @endcond */
-
-}
-
 #endif /* " NAMESPACE "_THECLASS_H */
-"))))
+")))
 
 (defun thepeg-replace (regexp newtext string)
   (dired-string-replace-match regexp string newtext t t))

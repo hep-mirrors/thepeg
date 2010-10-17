@@ -47,14 +47,29 @@ public:
    */
   static inline const ClassDescriptionBase * find(const type_info & ti) {
 #ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
-  DescriptionMap::const_iterator it =  descriptionMap().find(&ti);
+    DescriptionMap::const_iterator it =  descriptionMap().find(&ti);
 #else
-  DescriptionMap::const_iterator it =  descriptionMap().find(ti.name());
+    DescriptionMap::const_iterator it =  descriptionMap().find(ti.name());
 #endif
-  if ( it == descriptionMap().end() ) return 0;
-  return (*it).second;
-}
+    if ( it == descriptionMap().end() ) return 0;
+    return (*it).second;
+  }
 
+  /**
+   * Return the name of the class corresponding to the given type_info object.
+   */
+  static string className(const type_info & ti);
+
+  /**
+   * Return the version of the class corresponding to the given type_info object.
+   */
+  static int version(const type_info & ti);
+
+  /**
+   * Return the dynamic library of the class corresponding to the
+   * given type_info object.
+   */
+  static string library(const type_info & ti);
 
   /**
    * Get the description of a class giving its name.

@@ -37,6 +37,21 @@ DescriptionList::StringMap & DescriptionList::stringMap() {
   return theStringMap;
 }
 
+string DescriptionList::className(const type_info & ti) {
+  const ClassDescriptionBase * d = find(ti);
+  return d? d->name(): string();
+}
+
+int DescriptionList::version(const type_info & ti) {
+  const ClassDescriptionBase * d = find(ti);
+  return d? d->version(): 0;
+}
+
+string DescriptionList::library(const type_info & ti) {
+  const ClassDescriptionBase * d = find(ti);
+  return d? d->library(): string();
+}
+
 void DescriptionList::insert(ClassDescriptionBase & pb) {
 #ifndef THEPEG_DYNAMIC_TYPE_INFO_BUG
   descriptionMap()[&(pb.info())] = &pb;
