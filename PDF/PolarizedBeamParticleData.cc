@@ -20,7 +20,7 @@
 using namespace ThePEG;
 
 PolarizedBeamParticleData::PolarizedBeamParticleData(long newId, string newPDGName)
-  : ParticleData(newId, newPDGName) {}
+  : BeamParticleData(newId, newPDGName), theLongPolarization(0.0) {}
 
 PDPtr PolarizedBeamParticleData::
 Create(long newId, string newPDGName) {
@@ -68,17 +68,11 @@ void PolarizedBeamParticleData::Init() {
 
 RhoDMatrix PolarizedBeamParticleData::rhoMatrix() const {
   if(iSpin()!=PDT::Spin1Half) {
-    throw Exception() << "Polarizaed Beams are currently only available for fermions\n"
+    throw Exception() << "Polarized Beams are currently only available for fermions\n"
 		      << Exception::runerror;
   }
   RhoDMatrix output(PDT::Spin1Half);
-  if(id()>0) {
-    output(0,0) = 0.5*(1.-theLongPolarization);
-    output(1,1) = 0.5*(1.+theLongPolarization);
-  }
-  else {
-    output(0,0) = 0.5*(1.-theLongPolarization);
-    output(1,1) = 0.5*(1.+theLongPolarization);
-  }
+  output(0,0) = 0.5*(1.-theLongPolarization);
+  output(1,1) = 0.5*(1.+theLongPolarization);
   return output;
 }

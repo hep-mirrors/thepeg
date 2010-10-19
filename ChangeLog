@@ -1,5 +1,8 @@
 2010-10-19  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
+	* PDF/PolarizedBeamParticleData.h: Added default initializers in
+	constructor.
+
 	* m4/rivet.m4: Require Rivet >= 1.3
 
 2010-10-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>

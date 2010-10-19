@@ -34,7 +34,7 @@ public:
   /**
    * Default constructor.
    */
-  PolarizedBeamParticleData() {}
+  PolarizedBeamParticleData() : theLongPolarization(0.0) {}
   //@}
 
   /** @name The Create methods are special interfaces for ParticleData
