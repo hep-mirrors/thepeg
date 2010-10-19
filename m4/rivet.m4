@@ -23,10 +23,10 @@ elif test "x$with_rivet" = "xsystem"; then
         AC_MSG_RESULT([in system libraries])
 	oldlibs="$LIBS"
 	LIBS="$LIBS $HEPMCLIBS"
-	AC_CHECK_LIB(Rivet,main,
+	AC_CHECK_LIB(Rivet,writeData,
 		[],
 		[with_rivet=no
-		 AC_MSG_WARN([Rivet not found in system libraries])
+		 AC_MSG_WARN([Rivet >= 1.3 not found in system libraries])
 		])
 	RIVETLIBS="$LIBS"
 	LIBS=$oldlibs
@@ -49,8 +49,8 @@ if test "x$with_rivet" != "xno"; then
 	# check Rivet
 	AC_MSG_CHECKING([that Rivet works])
 	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <Rivet/AnalysisHandler.hh>
-]],[[Rivet::GenEvent();]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
-	AC_MSG_RESULT([No. Use '--with-rivet=' to set a path'.])
+]],[[Rivet::AnalysisHandler foo; foo.writeData("foo");]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
+	AC_MSG_RESULT([No. Use '--with-rivet=' to set a path to Rivet >= 1.3'.])
 	with_rivet="no"
 	LOAD_RIVET=""
 	])
