@@ -2,7 +2,7 @@
 
 	* Utilities/Exception.h: Added noabort flag. When set, all
 	abortnow and maybeabort severities are converted to runerror. The
-	flag is set by the EventGenerator after the initrun phase unless
+	flag is set by the EventGenerator after the initrun phase if
 	Debug::level is zero. In response to herwig:ticket:325.
 
 2010-10-19  David Grellscheid  <David.Grellscheid@durham.ac.uk>
