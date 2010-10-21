@@ -88,6 +88,13 @@ public:
   }
 
   /**
+   * Return a reference to the currently chosen object.
+   */
+  T & operator*() const {
+    return *theStack.back();
+  }
+
+  /**
    * Return a pointer to the currently chosen object.
    */
   T * operator->() const {

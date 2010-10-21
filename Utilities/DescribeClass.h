@@ -108,7 +108,7 @@ struct DescribeClassPIOHelper<T,true> {
 };
 
 /** 
- * Helper class used y DescribeClassT for transparent handling of
+ * Helper class used by DescribeClassT for transparent handling of
  * abstract and concrete classes.
  */
 template <typename T, bool abstract>

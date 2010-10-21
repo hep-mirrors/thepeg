@@ -493,6 +493,8 @@ void EventGenerator::doInitialize() {
   init();
   initrun();
 
+  if ( !ThePEG_DEBUG_LEVEL ) Exception::noabort = true;
+
 }
 
 void EventGenerator::doGo(long next, long maxevent, bool tics) {

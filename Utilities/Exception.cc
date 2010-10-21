@@ -73,6 +73,8 @@ Veto::Veto() {
 Exception::Exception(const string & newMessage, Severity newSeverity)
   : theMessage(newMessage), handled(false), theSeverity(newSeverity) {
   breakThePEG();
+  if ( noabort && ( theSeverity == abortnow || theSeverity == maybeabort ) )
+       theSeverity = runerror;
   if ( theSeverity == abortnow ) {
     writeMessage();
     abort();
@@ -88,6 +90,8 @@ Exception::~Exception() throw() {
 
 void Exception::severity(Severity newSeverity) {
   theSeverity = newSeverity;
+  if ( noabort && ( theSeverity == abortnow || theSeverity == maybeabort ) )
+       theSeverity = runerror;
   if ( theSeverity == abortnow ) {
     writeMessage(cerr);
     abort();
@@ -134,5 +138,7 @@ void Exception::writeMessage(ostream & os) const {
 }
 
 ostream * Exception::errstream = &cerr;
+
+bool Exception::noabort = false;
 
 }

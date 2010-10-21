@@ -204,6 +204,14 @@ private:
    */
   static ostream * errstream;
 
+public:
+
+  /**
+   * If this flag is set, all abortnow and maybeabort severities will
+   * be treated as runerror.
+   */
+  static bool noabort;
+
 };
 
 }
