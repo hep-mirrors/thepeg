@@ -1,3 +1,11 @@
+2010-10-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/Debug.h: There was an inconsistency before where
+	whatever you say about debugging at the command-line of runThePEG
+	and setupThePEG was ignored in favour of the debug level set in
+	the EventGenerator. Now the EventGenerator will only set its own
+	debug level if none has been set before by Debug::setDebug().
+
 2010-10-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Exception.h: Added noabort flag. When set, all

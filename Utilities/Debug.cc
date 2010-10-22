@@ -21,6 +21,8 @@ using namespace ThePEG;
 
 int Debug::level = 0;
 
+bool Debug::isset = false;
+
 std::vector<bool> Debug::debugItems;
 
 void Debug::debugItem(int item, bool on) {
@@ -31,7 +33,10 @@ void Debug::debugItem(int item, bool on) {
 
 void Debug::setDebug(int ilev) {
   if ( ilev < 0 ) debugItem(-ilev, true);
-  else level = ilev;
+  else {
+    level = ilev;
+    isset = true;
+  }
 }
 
 void Debug::unmaskFpuErrors() {

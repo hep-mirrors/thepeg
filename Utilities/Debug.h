@@ -38,6 +38,13 @@ public:
   static int level;
 
   /**
+   * If true, the debug level has been set from the outside from the
+   * calling program. This would then override any debug settings in
+   * the event generator.
+   */
+  static bool isset;
+
+  /**
    * A vector of switches indicating whether a given <i>debug item</i>
    * is switched on or not. The index of a debug item has no special
    * meaning. An implementor may assume that a given number

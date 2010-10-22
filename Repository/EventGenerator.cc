@@ -140,6 +140,7 @@ EventGenerator::setup(string newRunName,
 		      ObjectSet & newObjects,
 		      ParticleMap & newParticles,
 		      MatcherSet & newMatchers) {
+  HoldFlag<int> debug(Debug::level, Debug::isset? Debug::level: theDebugLevel);
   theRunName = newRunName;
   theObjects.swap(newObjects);
   theParticles.swap(newParticles);
@@ -183,6 +184,8 @@ void EventGenerator::closeOutputFiles() {
 }
 
 void EventGenerator::doinit() {
+
+  HoldFlag<int> debug(Debug::level, Debug::isset? Debug::level: theDebugLevel);
 
   // First initialize base class and random number generator.
   Interfaced::doinit();
@@ -234,6 +237,9 @@ void EventGenerator::doinit() {
 }
 
 void EventGenerator::doinitrun() {
+
+  HoldFlag<int> debug(Debug::level, Debug::isset? Debug::level: theDebugLevel);
+
   signal(SIGHUP, thepegSignalHandler);
   signal(SIGINT, thepegSignalHandler);
   signal(SIGTERM,thepegSignalHandler);
@@ -284,6 +290,8 @@ void EventGenerator::finalize() {
 }
 
 void EventGenerator::dofinish() {
+
+  HoldFlag<int> debug(Debug::level, Debug::isset? Debug::level: theDebugLevel);
 
   // first write out statistics from the event handler.
   eventHandler()->statistics(out());
@@ -376,7 +384,7 @@ EventPtr EventGenerator::shoot() {
 EventPtr EventGenerator::doShoot() {
   EventPtr event;
   if ( N() >= 0 && ++ieve > N() ) return event;
-  HoldFlag<int> debug(Debug::level, theDebugLevel);
+  HoldFlag<int> debug(Debug::level, Debug::isset? Debug::level: theDebugLevel);
   do { 
     int state = 0;
     int loop = 1;
