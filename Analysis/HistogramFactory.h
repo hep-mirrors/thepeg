@@ -833,7 +833,7 @@ public:
    * along its x axis.
    */
   Histogram1D * projectionX(const std::string & path, const Histogram2D & h) {
-    return sliceX(path, h, h.xax->bins() - 1);
+    return sliceX(path, h, h.yax->bins() - 1);
   }
 
   /**
@@ -849,7 +849,7 @@ public:
    * along its y axis.
    */
   Histogram1D * projectionY(const std::string & path, const Histogram2D & h) {
-    return sliceY(path, h, h.yax->bins() - 1);
+    return sliceY(path, h, h.xax->bins() - 1);
   }
 
   /**
