@@ -184,8 +184,11 @@ protected:
    *  Strong coupling
    */
   double strongCoupling(Energy2 q2) const {
-    if(_coupopt==0)
-      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaS(q2));
+    if(_coupopt==0) {
+      double val = 4.0*Constants::pi*generator()->standardModel()->alphaS(q2);
+      assert(val>=0.);
+      return sqrt(val);
+    }
     else if(_coupopt==1)
       return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaS());
     else
