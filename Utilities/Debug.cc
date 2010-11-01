@@ -16,6 +16,9 @@
 #ifdef ThePEG_HAS_FPU_CONTROL
 #include <fpu_control.h>
 #endif
+#ifdef ThePEG_HAS_FENV
+#include <fenv.h>
+#endif
 
 using namespace ThePEG;
 
@@ -47,47 +50,67 @@ void Debug::unmaskFpuErrors() {
 }
 
 void Debug::unmaskFpuOverflow() {
+#ifdef ThePEG_HAS_FENV
+  feenableexcept(FE_OVERFLOW);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw &= ~(_FPU_MASK_OM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::unmaskFpuUnderflow() {
+#ifdef ThePEG_HAS_FENV
+  feenableexcept(FE_UNDERFLOW);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw &= ~(_FPU_MASK_UM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::unmaskFpuDivZero() {
+#ifdef ThePEG_HAS_FENV
+  feenableexcept(FE_DIVBYZERO);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw &= ~(_FPU_MASK_ZM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::unmaskFpuDenorm() {
+#ifdef ThePEG_HAS_FENV
+  feenableexcept(FE_INEXACT);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw &= ~(_FPU_MASK_DM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::unmaskFpuInvalid()  {
+#ifdef ThePEG_HAS_FENV
+  feenableexcept(FE_INVALID);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw &= ~(_FPU_MASK_IM);
   _FPU_SETCW(cw);
+#endif
 #endif
 }
 
@@ -99,47 +122,67 @@ void Debug::maskFpuErrors() {
 }
 
 void Debug::maskFpuOverflow() {
+#ifdef ThePEG_HAS_FENV
+  fedisableexcept(FE_OVERFLOW);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw |= (_FPU_MASK_OM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::maskFpuUnderflow() {
+#ifdef ThePEG_HAS_FENV
+  fedisableexcept(FE_UNDERFLOW);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw |= (_FPU_MASK_UM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::maskFpuDivZero() {
+#ifdef ThePEG_HAS_FENV
+  fedisableexcept(FE_DIVBYZERO);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw |= (_FPU_MASK_ZM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::maskFpuDenorm() {
+#ifdef ThePEG_HAS_FENV
+  fedisableexcept(FE_INEXACT);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw |= (_FPU_MASK_DM);
   _FPU_SETCW(cw);
 #endif
+#endif
 }
 
 void Debug::maskFpuInvalid() {
+#ifdef ThePEG_HAS_FENV
+  fedisableexcept(FE_INVALID);
+#else
 #ifdef ThePEG_HAS_FPU_CONTROL
   fpu_control_t cw;
   _FPU_GETCW(cw);
   cw |= (_FPU_MASK_IM);
   _FPU_SETCW(cw);
+#endif
 #endif
 }
 
