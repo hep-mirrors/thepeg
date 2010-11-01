@@ -232,6 +232,9 @@ bool LHAPDF::openLHAIndex(ifstream & is) {
   is.open("../../ThePEG/PDF/PDFsets.index");
   if ( is ) return true;
   is.clear();
+  is.open("./PDFsets.index");
+  if ( is ) return true;
+  is.clear(); 
   return false;
 }
 
