@@ -697,7 +697,7 @@ public:
       for ( int iy = 0; iy < h->yax->bins() + 2; ++iy ) {
 	h->sum[ix][iy] += h2.sum[ix][iy];
 	h->sumw[ix][iy] -= h2.sumw[ix][iy];
-	h->sumw2[ix][iy] -= h2.sumw2[ix][iy];
+	h->sumw2[ix][iy] += h2.sumw2[ix][iy];
 	h->sumxw[ix][iy] -= h2.sumxw[ix][iy];
 	h->sumx2w[ix][iy] -= h2.sumx2w[ix][iy];
 	h->sumyw[ix][iy] -= h2.sumyw[ix][iy];
