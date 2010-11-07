@@ -43,25 +43,28 @@ public:
    * The default constructor.
    */
   XSecStat() 
-    : theMaxXSec(ZERO), theAttempts(0), theAccepted(0),
-      theSumWeights(0.0), theSumWeights2(0.0) {}
+    : theMaxXSec(ZERO), theAttempts(0), theAccepted(0), theVetoed(0),
+      theSumWeights (vector<double>(3,0.0)),
+      theSumWeights2(vector<double>(3,0.0)) {}
 
   /**
    * Constructor taking the overestimated cross section, \a xsecmax,
    * as argument.
    */
   XSecStat(CrossSection xsecmax) 
-    : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0),
-      theSumWeights(0.0), theSumWeights2(0.0) {}
+    : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0), theVetoed(0),
+      theSumWeights (vector<double>(3,0.0)),
+      theSumWeights2(vector<double>(3,0.0)) {}
 
   /**
    * The assignment operator.
    */
   XSecStat & operator=(const XSecStat & x) {
-    theMaxXSec = x.theMaxXSec;
-    theAttempts = x.theAttempts;
-    theAccepted = x.theAccepted;
-    theSumWeights = x.theSumWeights;
+    theMaxXSec     = x.theMaxXSec;
+    theAttempts    = x.theAttempts;
+    theAccepted    = x.theAccepted;
+    theVetoed      = x.theVetoed;
+    theSumWeights  = x.theSumWeights;
     theSumWeights2 = x.theSumWeights2;
     return *this;
   }
@@ -70,11 +73,14 @@ public:
    * Add the contents of another XSecStat.
    */
   XSecStat & operator+=(const XSecStat & x) {
-    theMaxXSec += x.theMaxXSec;
-    theAttempts += x.theAttempts;
-    theAccepted += x.theAccepted;
-    theSumWeights += x.theSumWeights;
-    theSumWeights2 += x.theSumWeights2;
+    theMaxXSec     += x.theMaxXSec;
+    theAttempts    += x.theAttempts;
+    theAccepted    += x.theAccepted;
+    theVetoed      += x.theVetoed;
+    for(unsigned int ix=0;ix<3;++ix) {
+      theSumWeights [ix] += x.theSumWeights [ix];
+      theSumWeights2[ix] += x.theSumWeights2[ix];
+    }
     return *this;
   }
 
@@ -82,8 +88,8 @@ public:
    * Reset the statistics.
    */
   void reset() {
-    theAttempts = theAccepted = 0;
-    theSumWeights = theSumWeights2 = 0.0;
+    theAttempts = theAccepted = theVetoed = 0;
+    theSumWeights = theSumWeights2 = vector<double>(3,0.0);
   }
 
   //@}
@@ -97,7 +103,11 @@ public:
    * An event of the corresponding class has been accepted. The
    * select() method must have been called before.
    */
-  void accept() { ++theAccepted; }
+  void accept() { 
+    ++theAccepted;
+    theSumWeights [1] += 1.;
+    theSumWeights2[1] += 1.;
+  }
 
   /**
    * An event of the corresponding class has been attempted. It will
@@ -105,8 +115,8 @@ public:
    */
   void select(double weight) {
     ++theAttempts;
-    theSumWeights += weight;
-    theSumWeights2 += sqr(weight);
+    theSumWeights [0] +=     weight ;
+    theSumWeights2[0] += sqr(weight);
   }
 
   /**
@@ -118,9 +128,11 @@ public:
    * w)\f$.
    */
   void reject(double weight = 1.0) {
-    theSumWeights -= weight;
-    theSumWeights2 -= sqr(weight);
-    --theAccepted;
+    theSumWeights [1] -=     weight ;
+    theSumWeights2[1] -= sqr(weight);
+    theSumWeights [2] +=     weight ;
+    theSumWeights2[2] += sqr(weight);
+    ++theVetoed;
   }
 
   /**
@@ -129,9 +141,8 @@ public:
    * be returned.
    */
   CrossSection xSec() const {
-    return attempts() ? maxXSec()*sumWeights()/attempts() : maxXSec();
+    return attempts() ? maxXSec()*(theSumWeights[0]-theSumWeights[2])/attempts() : maxXSec();
   }
-
 
   /**
    * The current estimate of the error in the cross section for the
@@ -139,7 +150,8 @@ public:
    * maxXSec() will be returned.
    */
   CrossSection xSecErr() const {
-    return attempts() ? maxXSec()*sqrt(sumWeights2())/attempts() : maxXSec();
+    return attempts() ? maxXSec()*sqrt(theSumWeights2[0]+
+				       theSumWeights2[2])/attempts() : maxXSec();
   }
 
   /**
@@ -150,12 +162,12 @@ public:
   /**
    * The sum of the weights so far.
    */
-  double sumWeights() const { return theSumWeights; }
+  double sumWeights() const { return theSumWeights[0] - theSumWeights[2]; }
 
   /**
    * The sum of the squared weights so far.
    */
-  double sumWeights2() const { return theSumWeights2; }
+  double sumWeights2() const { return theSumWeights2[0] + theSumWeights2[2]; }
 
   /**
    * Number of attempts so far.
@@ -165,7 +177,7 @@ public:
   /**
    * Number of attempts so far.
    */
-  long accepted() const { return theAccepted; }
+  long accepted() const { return theAccepted-theVetoed; }
 
   /**
    * Set the overestimated cross section.
@@ -206,14 +218,19 @@ private:
   long theAccepted;
 
   /**
+   * Number of events vetoed after being accepted
+   */
+  long theVetoed;
+
+  /**
    * The sum of the weights so far.
    */
-  double theSumWeights;
+  vector<double> theSumWeights;
 
   /**
    * The sum of the squared weights so far.
    */
-  double theSumWeights2;
+  vector<double> theSumWeights2;
 
 };
 

@@ -367,7 +367,11 @@ void StandardEventHandler::statistics(ostream & os) const {
      << "                                       "
      << "   events     attempts             (nb)\n";
 
-  os << line << "Total:" << setw(42) << tot.accepted << setw(13)
+  os << line << "Total (from   weighted events): including vetoed events" << setw(23)
+     << ouniterr(sampler()->integratedXSec(), 
+		 sampler()->integratedXSecErr(), nanobarn)
+     << endl;
+  os << line << "Total (from unweighted events):" << setw(17) << tot.accepted << setw(13)
      << tot.attempted << setw(17)
      << ouniterr(tot.xSec(),tot.xSecErr() , nanobarn)
      << endl << line;
