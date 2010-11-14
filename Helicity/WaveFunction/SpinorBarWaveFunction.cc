@@ -141,8 +141,15 @@ calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
     }
     else {
       inspin->decay();
-      waves[0] = inspin->getDecayBasisState(0).bar();
-      waves[1] = inspin->getDecayBasisState(1).bar();
+      if( (particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) || 
+	  (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+	waves[0] = inspin->getDecayBasisState(0).conjugate().bar();
+	waves[1] = inspin->getDecayBasisState(1).conjugate().bar();
+      }
+      else {
+	waves[0] = inspin->getDecayBasisState(0).bar();
+	waves[1] = inspin->getDecayBasisState(1).bar();
+      }
     }
   }
   // do the calculation
@@ -172,10 +179,17 @@ calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
     }
     else {
       inspin->decay();
-      for(unsigned int ix=0;ix<2;++ix)
-	waves[ix] = SpinorBarWaveFunction(particle,
-					  inspin->getDecayBasisState(ix).bar(),
-					  dir);
+      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) ||
+	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+	for(unsigned int ix=0;ix<2;++ix)
+	  waves[ix] = SpinorBarWaveFunction(particle,
+					    inspin->getDecayBasisState(ix).conjugate().bar(),dir);
+      }
+      else {
+	for(unsigned int ix=0;ix<2;++ix)
+	  waves[ix] = SpinorBarWaveFunction(particle,
+					    inspin->getDecayBasisState(ix).bar(),dir);
+      }
     }
   }
   // do the calculation
@@ -205,8 +219,15 @@ calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
     }
     else {
       inspin->decay();
-      waves[0] = inspin->getDecayBasisState(0).bar();
-      waves[1] = inspin->getDecayBasisState(1).bar();
+      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) ||
+	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+	waves[0] = inspin->getDecayBasisState(0).conjugate().bar();
+	waves[1] = inspin->getDecayBasisState(1).conjugate().bar();
+      }
+      else {
+	waves[0] = inspin->getDecayBasisState(0).bar();
+	waves[1] = inspin->getDecayBasisState(1).bar();
+      }
       rho = inspin->rhoMatrix();
     }
   }
@@ -240,10 +261,17 @@ calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
     }
     else {
       inspin->decay();
-      for(unsigned int ix=0;ix<2;++ix)
-	waves[ix] = SpinorBarWaveFunction(particle,
-					  inspin->getDecayBasisState(ix).bar(),
-					  dir);
+      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) ||
+	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+	for(unsigned int ix=0;ix<2;++ix)
+	  waves[ix] = SpinorBarWaveFunction(particle,
+					    inspin->getDecayBasisState(ix).conjugate().bar(),dir);
+      }
+      else {
+	for(unsigned int ix=0;ix<2;++ix)
+	  waves[ix] = SpinorBarWaveFunction(particle,
+					    inspin->getDecayBasisState(ix).bar(),dir);
+      }
       rho = inspin->rhoMatrix();
     }
   }
