@@ -733,8 +733,6 @@ void LesHouchesReader::createParticles() {
   theIncoming = PPair();
   theOutgoing = PVector();
   theIntermediates = PVector();
-  set<int> oklines;
-  oklines.insert(0);
   for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
     if ( !hepeup.IDUP[i] ) continue;
     Lorentz5Momentum mom(hepeup.PUP[i][0]*GeV, hepeup.PUP[i][1]*GeV,
@@ -756,46 +754,6 @@ void LesHouchesReader::createParticles() {
     if ( c ) c->addColoured(p);
     c = colourIndex(hepeup.ICOLUP[i].second);
     if ( c ) c->addAntiColoured(p);
-
-    // Check colour-line consistency.
-    if ( ThePEG_DEBUG_LEVEL && abs(hepeup.ISTUP[i]) == 1 &&
-	 oklines.find(hepeup.ICOLUP[i].first) == oklines.end() ) {
-      int ends = 0;
-      for ( int j = i + 1; j < N; ++j ) {
-	if ( hepeup.ISTUP[j] == -hepeup.ISTUP[i] ) {
-	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].first ) ++ends;
-	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].first ) ends = -N;
-	} else if ( hepeup.ISTUP[j] == hepeup.ISTUP[i] ) {
-	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].first ) ++ends;
-	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].first ) ends = -N;
-	}
-      }
-      if ( ends != 1 ) Throw<LesHouchesInconsistencyError>()
-	<< "LesHouchesReader '" << name() << "' found inconsistent colour "
-	<< "flow in Les Houches common block structure. See colour line "
-	<< hepeup.ICOLUP[i].first << " in event looking like:\n"
-	<< hepeup << Exception::runerror;
-      oklines.insert(hepeup.ICOLUP[i].first);
-    }
-    if ( ThePEG_DEBUG_LEVEL && abs(hepeup.ISTUP[i]) == 1 &&
-	 oklines.find(hepeup.ICOLUP[i].second) == oklines.end() ) {
-      int ends = 0;
-      for ( int j = i + 1; j < N; ++j ) {
-	if ( hepeup.ISTUP[j] == -hepeup.ISTUP[i] ) {
-	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].second ) ++ends;
-	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].second ) ends = -N;
-	} else if ( hepeup.ISTUP[j] == hepeup.ISTUP[i] ) {
-	  if ( hepeup.ICOLUP[j].first == hepeup.ICOLUP[i].second ) ++ends;
-	  if ( hepeup.ICOLUP[j].second == hepeup.ICOLUP[i].second ) ends = -N;
-	}
-      }
-      if ( ends != 1 ) Throw<LesHouchesInconsistencyError>()
-	<< "LesHouchesReader '" << name() << "' found inconsistent colour "
-	<< "flow in Les Houches common block structure. See colour line "
-	<< hepeup.ICOLUP[i].second << " in event looking like:\n"
-	<< hepeup << Exception::runerror;
-      oklines.insert(hepeup.ICOLUP[i].second);
-    }
 
     particleIndex(i + 1, p);
     switch ( hepeup.ISTUP[i] ) {
@@ -832,6 +790,151 @@ void LesHouchesReader::createParticles() {
 	<< "Unknown status code (" << hepeup.ISTUP[i]
 	<< ") in the LesHouchesReader '" << name() << "'."
 	<< Exception::runerror;
+    }
+  }
+  // check the colour flows, and if necessary create any sources/sinks
+  // hard process
+  // get the particles in the hard process
+  PVector external;
+  for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
+    unsigned int moth; 
+    switch ( hepeup.ISTUP[i] ) {
+    case -1:
+      external.push_back(particleIndex.find(i+1));
+      break;
+    case 1: case 2: case 3:
+      moth = hepeup.MOTHUP[i].first;
+      if(moth!=0 && (hepeup.ISTUP[moth]==-1||hepeup.ISTUP[moth]==-2||
+		   hepeup.ISTUP[moth]==-9))
+	external.push_back(particleIndex.find(i+1));
+      moth = hepeup.MOTHUP[i].second;
+      if(moth!=0 && (hepeup.ISTUP[moth]==-1||hepeup.ISTUP[moth]==-2||
+		     hepeup.ISTUP[moth]==-9))
+	external.push_back(particleIndex.find(i+1));
+      break;
+    case -2: case -9: default: 
+      break;
+    }
+  }
+  // check the incoming/outgoing lines match
+  vector<tColinePtr> unMatchedColour,unMatchedAntiColour;
+  for(unsigned int ix=0;ix<external.size();++ix) {
+    tColinePtr col  = external[ix]->    colourLine();
+    tColinePtr anti = external[ix]->antiColourLine();
+    if(hepeup.ISTUP[particleIndex(external[ix])-1]<0)
+      swap(col,anti);
+    if(col) {
+      bool matched=false;
+      for(unsigned int iy=0;iy<external.size();++iy) {
+	if(hepeup.ISTUP[particleIndex(external[iy])-1]<0 &&
+	   external[iy]->colourLine()==col )
+	  matched = true;
+        else if(hepeup.ISTUP[particleIndex(external[iy])-1]>0 &&
+		external[iy]->antiColourLine()==col )
+	  matched = true;
+	if(matched) break;
+      }
+      if(!matched) unMatchedColour.push_back(col);
+    }
+    if(anti) {
+      bool matched=false;
+      for(unsigned int iy=0;iy<external.size();++iy) {
+	if(hepeup.ISTUP[particleIndex(external[iy])-1]<0 &&
+	   external[iy]->antiColourLine()==anti)
+	  matched = true;
+        else if(hepeup.ISTUP[particleIndex(external[iy])-1]>0 &&
+		external[iy]->colourLine()==anti)
+	  matched = true;
+	if(matched) break;
+      }
+      if(!matched) unMatchedAntiColour.push_back(anti);
+    }
+  }
+  // might have source/sink
+  if( unMatchedColour.size() + unMatchedAntiColour.size() != 0) {
+    if(unMatchedColour.size() == 3 ) {
+      unMatchedColour[0]->setSourceNeighbours(unMatchedColour[1],
+					      unMatchedColour[2]);
+    }
+    else if(unMatchedColour.size() != 0 && ThePEG_DEBUG_LEVEL) {
+      Throw<LesHouchesInconsistencyError>()
+ 	<< "LesHouchesReader '" << name() << "' found inconsistent colour "
+ 	<< "flow in Les Houches common block structure for hard process.\n"
+ 	<< hepeup << Exception::runerror;
+    }
+    if(unMatchedAntiColour.size() == 3 ) {
+      unMatchedAntiColour[0]->setSinkNeighbours(unMatchedAntiColour[1],
+						unMatchedAntiColour[2]);
+    }
+    else if(unMatchedAntiColour.size() != 0 && ThePEG_DEBUG_LEVEL) {
+      Throw<LesHouchesInconsistencyError>()
+ 	<< "LesHouchesReader '" << name() << "' found inconsistent colour "
+ 	<< "flow in Les Houches common block structure for hard process.\n"
+ 	<< hepeup << Exception::runerror;
+    }
+  }
+  // any subsequent decays
+  for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
+    if(hepeup.ISTUP[i] !=2 && hepeup.ISTUP[i] !=3) continue;
+    PVector external;
+    external.push_back(particleIndex.find(i+1));
+    for ( int j = 0; j < N; ++j ) {
+      if(hepeup.MOTHUP[j].first==i+1||  hepeup.MOTHUP[j].second==i+1)
+	external.push_back(particleIndex.find(j+1));
+    }
+    // check the incoming/outgoing lines match
+    vector<tColinePtr> unMatchedColour,unMatchedAntiColour;
+    for(unsigned int ix=0;ix<external.size();++ix) {
+      tColinePtr col  = external[ix]->    colourLine();
+      tColinePtr anti = external[ix]->antiColourLine();
+      if(ix==0) swap(col,anti);
+      if(col) {
+	bool matched=false;
+	for(unsigned int iy=0;iy<external.size();++iy) {
+	  if(iy==0 && external[iy]->colourLine()==col )
+	    matched = true;
+	  else if(iy>0 && external[iy]->antiColourLine()==col )
+	    matched = true;
+	  if(matched) break;
+	}
+	if(!matched) unMatchedColour.push_back(col);
+      }
+      if(anti) {
+	bool matched=false;
+	for(unsigned int iy=0;iy<external.size();++iy) {
+	  if(iy==0 && external[iy]->antiColourLine()==anti)
+	    matched = true;
+	  else if(iy>0 &&external[iy]->colourLine()==anti)
+	    matched = true;
+	  if(matched) break;
+	}
+	if(!matched) unMatchedAntiColour.push_back(anti);
+      }
+    }
+    // might have source/sink
+    if( unMatchedColour.size() + unMatchedAntiColour.size() != 0) {
+      if(unMatchedColour.size() == 3 ) {
+	unMatchedColour[0]->setSourceNeighbours(unMatchedColour[1],
+						unMatchedColour[2]);
+      }
+      else if(unMatchedColour.size() != 0 && ThePEG_DEBUG_LEVEL) {
+	Throw<LesHouchesInconsistencyError>()
+	  << "LesHouchesReader '" << name() << "' found inconsistent colour "
+	  << "flow in Les Houches common block structure for decay of \n"
+	  << *external[0] << "\n"
+	  << hepeup << Exception::runerror;
+      }
+      if(unMatchedAntiColour.size() == 3 ) {
+	unMatchedAntiColour[0]->setSinkNeighbours(unMatchedAntiColour[1],
+						  unMatchedAntiColour[2]);
+      }
+      else if(unMatchedAntiColour.size() != 0 && ThePEG_DEBUG_LEVEL) {
+	Throw<LesHouchesInconsistencyError>()
+	  << "LesHouchesReader '" << name() << "' found inconsistent colour "
+	  << "flow in Les Houches common block structure for decay of\n"
+	  << *external[0] << "\n"
+	  << hepeup << Exception::runerror;
+      }
     }
   }
 }
