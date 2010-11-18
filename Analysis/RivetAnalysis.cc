@@ -118,6 +118,18 @@ void RivetAnalysis::doinit() {
     throw ThePEG::Exception() << "Must have at least one analysis loaded in "
 			      << "RivetAnalysis::doinitrun()"
 			      << ThePEG::Exception::runerror;
+
+  // check that analysis list is available
+  _rivet = new Rivet::AnalysisHandler; //(fname);
+  _rivet->addAnalyses(_analyses);
+  if ( _rivet->analysisNames().size() != _analyses.size() ) {
+    throw ThePEG::Exception() 
+      << "Rivet could not find all requested analyses.\n"
+      << "Use 'rivet --list-analyses' to check availability.\n"
+      << ThePEG::Exception::runerror;
+  }
+  delete _rivet;
+  _rivet = 0;
 }
 
 void RivetAnalysis::doinitrun() {
@@ -126,6 +138,13 @@ void RivetAnalysis::doinitrun() {
   CurrentGenerator::Redirect stdout(cout);
   _rivet = new Rivet::AnalysisHandler; //(fname);
   _rivet->addAnalyses(_analyses);
+  // check that analysis list is still available
+  if ( _rivet->analysisNames().size() != _analyses.size() ) {
+    throw ThePEG::Exception() 
+      << "Rivet could not find all requested analyses.\n"
+      << "Use 'rivet --list-analyses' to check availability.\n"
+      << ThePEG::Exception::runerror;
+  }
   _rivet->init();
   if ( debug )
     Rivet::Log::setLevel("Rivet",Rivet::Log::DEBUG);
