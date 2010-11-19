@@ -246,7 +246,7 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
   }
   else {
     switch (iopt) {
-    case 1: case 2:
+    case 1: case 2: case 7:
       masswidth = ii * mass * width;         
       break;
     case 3: 
