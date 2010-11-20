@@ -434,9 +434,6 @@ public:
 
 protected:
 
-
-protected:
-
   /** @name Clone Methods. */
   //@{
   /**
