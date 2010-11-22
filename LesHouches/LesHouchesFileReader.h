@@ -12,6 +12,7 @@
 
 #include "ThePEG/LesHouches/LesHouchesReader.h"
 #include "LesHouchesFileReader.fh"
+#include "ThePEG/PDT/Decayer.h"
 #include "ThePEG/Utilities/CFileLineReader.h"
 #include <stdio.h>
 
@@ -42,7 +43,7 @@ public:
   /**
    * Default constructor.
    */
-  LesHouchesFileReader() : neve(0), ieve(0) {}
+  LesHouchesFileReader() : neve(0), ieve(0), theQNumbers(false) {}
 
   /**
    * Copy-constructor. Note that a file which is opened in the object
@@ -131,6 +132,22 @@ protected:
   virtual IBPtr fullclone() const;
   //@}
 
+  /** @name Standard (and non-standard) Interfaced functions. */
+  //@{
+  /**
+   * Initialize this object after the setup phase before saving an
+   * EventGenerator to disk.
+   * @throws InitException if object could not be initialized properly.
+   */
+  virtual void doinit();
+
+  /**
+   * Return true if this object needs to be initialized before all
+   * other objects because it needs to extract PDFs from the event file.
+   */
+  virtual bool preInitialize() const;
+  //@
+
 protected:
 
   /**
@@ -196,6 +213,16 @@ private:
    * The name of the file from where to read events.
    */
   string theFileName;
+
+  /**
+   *  Whether or not to search for QNUMBERS stuff
+   */
+  bool theQNumbers;
+
+  /**
+   *  Decayer for any decay modes read from the file
+   */
+  DecayerPtr theDecayer;
 
 private:
 
