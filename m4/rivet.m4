@@ -23,7 +23,7 @@ elif test "x$with_rivet" = "xsystem"; then
         AC_MSG_RESULT([in system libraries])
 	oldlibs="$LIBS"
 	LIBS="$LIBS $HEPMCLIBS"
-	AC_CHECK_LIB(Rivet,writeData,
+	AC_CHECK_LIB(Rivet,main,
 		[],
 		[with_rivet=no
 		 AC_MSG_WARN([Rivet >= 1.3 not found in system libraries])
