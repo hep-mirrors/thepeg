@@ -175,15 +175,13 @@ void Event::rebind(const EventTranslationMap & trans) {
 }
   
 ostream & ThePEG::operator<<(ostream & os, const Event & e) {
-  os << "***************************************"
-     << "***************************************" << endl
+  os << string(78, '*') << endl
      << "Event number " << e.number() << " (id: " << e.name() << ") ";
   if ( e.handler() ) os << "performed by "
 			<<  EventConfig::nameHandler(e.handler());
   os << endl;
   for ( unsigned int i = 0; i < e.collisions().size(); ++i ) {
-    os << "======================================="
-       << "=======================================" << endl;
+    os << string(78, '=') << endl;
     if ( e.collisions().size() != 1 ) {
       if ( i ) {
 	os << "Secondary Collision " << i;

@@ -174,6 +174,8 @@ void EventGenerator::openOutputFiles() {
     logfile().open((filename() + ".log").c_str());
     outfile().open((filename() + ".out").c_str());
   }
+  out() << Repository::banner() << endl;
+  log() << Repository::banner() << endl;
 }
 
 void EventGenerator::closeOutputFiles() {
@@ -606,8 +608,9 @@ void EventGenerator::generateReferences() {
 	<< "\\usepackage{graphics}\n"
 	<< "\\begin{document}\n"
 	<< "\\appendix\n"
-	<< "\\section[xxx]{\\textsc{ThePEG}\\cite{ThePEG} Run "
-	<< "Information}\n" << "Run name: \\textbf{" << runName()
+	<< "\\section[xxx]{\\textsc{ThePEG} version " << Repository::version()
+	<< " \\cite{ThePEG} Run Information}\n"
+	<< "Run name: \\textbf{" << runName()
 	<< "}:\\\\\n";
   if ( !stratdesc.empty() )
     ref() << "This run was generated using " << stratdesc 

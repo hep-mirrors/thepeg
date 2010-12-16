@@ -407,9 +407,7 @@ ostream & ThePEG::operator<<(ostream & os, const Step & s) {
     sumy += sqr((**it).momentum().y());
     sumz += sqr((**it).momentum().z());
   }
-  os << "---------------------------------------"
-     << "---------------------------------------" << endl
-     << "     Sum of momenta:        ";
+  os << string(78, '-') << endl  << "     Sum of momenta:        ";
   int oldprecision = os.precision();
   Energy sumx1
     = ( sqr(sum.x()) > Constants::epsilon*sumx ? 

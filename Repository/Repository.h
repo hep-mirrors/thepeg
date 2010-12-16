@@ -221,6 +221,16 @@ public:
   static string exec(string cmd, ostream &);
   //@}
 
+  /**
+   * Return the version number of ThePEG.
+   */
+  static string version();
+
+  /**
+   * Return a string with a ThePEG banner.
+   */
+  static string banner();
+
 private:
 
   /**

@@ -166,8 +166,7 @@ ostream & ThePEG::operator<<(ostream & os, const Collision & c) {
     const Step & s = *c.steps()[i];
     for ( SubProcessVector::const_iterator it = s.subProcesses().begin();
 	  it != s.subProcesses().end(); ++it ) {
-      os << "---------------------------------------"
-	 << "---------------------------------------" << endl;
+      os << string(78, '-') << endl;
       if ( !isub ) {
 	os << "Primary sub-process";
 	++isub;
@@ -178,9 +177,7 @@ ostream & ThePEG::operator<<(ostream & os, const Collision & c) {
 	   << endl;
       os << **it;
     }
-    os << "---------------------------------------"
-       << "---------------------------------------" << endl
-       << "Step " << i+1;
+    os << string(78, '-') << endl << "Step " << i+1;
     if ( s.handler() )
       os << " performed by " << EventConfig::nameHandler(s.handler());
     os << endl << s;
