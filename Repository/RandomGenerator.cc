@@ -166,6 +166,7 @@ void RandomGenerator::Init() {
      "If set to -1, the default build-in seed will be used. If set to zero, no seed will "
      "be set.",
      &RandomGenerator::theSeed, -1, -1, 100000000, true, false, false);
+  interfaceSeed.setHasDefault(false);
 
   interfaceSize.rank(10);
   interfaceSeed.rank(9);

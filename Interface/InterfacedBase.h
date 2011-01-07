@@ -47,6 +47,9 @@ class InterfacedBase: public PersistentBase, public Named {
   /** The BaseRepository is a close friend. */
   friend class BaseRepository;
 
+  /** The InterfaceBase is a close friend. */
+  friend class InterfaceBase;
+
   /** The EventGenerator is a friend. */
   friend class EventGenerator;
 
@@ -361,7 +364,8 @@ protected:
    */
   InterfacedBase(const InterfacedBase & i)
     : Base(i), Named(i), isLocked(false), isTouched(true), 
-      initState(uninitialized), theComment(i.theComment) {}
+      initState(uninitialized), theComment(i.theComment),
+      objectDefaults(i.objectDefaults) {}
 
 private:
 
@@ -415,6 +419,11 @@ private:
    * A comment assigned to this object.
    */
   string theComment;
+
+  /**
+   * A map listing object-specific defaults set for the given interfaces.
+   */
+  map<string,string> objectDefaults;
 
 public:
 

@@ -972,6 +972,13 @@ protected:
 private:
 
   /**
+   * List all modified interfaces in the log file. If positive always
+   * do this, if negative never do it. If zero, only do it if
+   * debugging is turned on.
+   */
+  int logNonDefault;
+
+  /**
    * If the debug level is higher than 0, print the first 'printEvent'
    * events to the logfile.
    */

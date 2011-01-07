@@ -219,6 +219,9 @@ void V2LeptonsCut::Init() {
 
   interfaceMinM.rank(10);
   interfaceMaxM.rank(9);
-
+  interfaceMinM.setHasDefault(false);
+  interfaceMaxM.setHasDefault(false);
+  interfaceCComb.setHasDefault(false);
+  interfaceFamilies.setHasDefault(false);
 }
 

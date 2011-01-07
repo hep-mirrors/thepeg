@@ -32,12 +32,14 @@ bool InterfacedBase::preInitialize() const {
 }
 
 void InterfacedBase::persistentOutput(PersistentOStream & os) const {
-  os << fullName() << isLocked << isTouched << oenum(initState) << theComment;
+  os << fullName() << isLocked << isTouched << oenum(initState) << theComment
+     << objectDefaults;
 }
 
 void InterfacedBase::persistentInput(PersistentIStream & is, int) {
   string n;
-  is >> n >> isLocked >> isTouched >> ienum(initState) >> theComment;
+  is >> n >> isLocked >> isTouched >> ienum(initState) >> theComment
+     >> objectDefaults;
   name(n);
 }
 
@@ -61,6 +63,7 @@ void InterfacedBase::Init() {
     ("Comment",
      "A comment assigned to this object.",
      &InterfacedBase::theComment, "", true, false);
+  interfaceComment.setHasDefault(false);
 
   static Command<InterfacedBase> interfaceAddComment
     ("AddComment",

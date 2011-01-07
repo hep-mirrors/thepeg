@@ -435,7 +435,7 @@ void EventHandler::Init() {
      "This EventHandler is either complete or no warning should be emitted "
      "in either case.",
      false);
-
+  interfaceWarnIncomplete.setHasDefault(false);
 
   static Switch<EventHandler,ConsistencyLevel> interfaceConsistencyLevel
     ("ConsistencyLevel",
@@ -469,6 +469,7 @@ void EventHandler::Init() {
      "Every step is checked for consistency. If an inconsistency is "
      "found, the event is printed to the log file.",
      clPrintStep);
+  interfaceConsistencyLevel.setHasDefault(false);
 
   static Parameter<EventHandler,double> interfaceConsistencyEpsilon
     ("ConsistencyEpsilon",

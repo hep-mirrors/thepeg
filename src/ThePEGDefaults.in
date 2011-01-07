@@ -102,7 +102,7 @@ set /Defaults/Particles/h0:Spin 1
 cd /Defaults/Handlers
 create ThePEG::PartonExtractor StandardExtractor
 set StandardExtractor:NoPDF /Defaults/Partons/NoPDF
-set StandardExtractor:FlatSHatY 1
+newdef StandardExtractor:FlatSHatY 1
 create ThePEG::PartonExtractor EEExtractor
 set EEExtractor:NoPDF /Defaults/Partons/NoPDF
 

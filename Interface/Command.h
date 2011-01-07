@@ -73,7 +73,9 @@ public:
   CommandBase(string newName, string newDescription, string newClassName,
 		     const type_info & newTypeInfo, bool depSafe)
     : InterfaceBase(newName, newDescription, newClassName, 
-		    newTypeInfo, depSafe, false) {}
+		    newTypeInfo, depSafe, false) {
+    hasDefault = false;
+  }
 
   /**
    * The general interface method overriding the one in

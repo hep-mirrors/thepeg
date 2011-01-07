@@ -26,9 +26,9 @@ StandardModelBase::StandardModelBase()
   : theFamilies(3), theAlphaEM(1.0/137.04), theSin2ThetaW(0.232),
     theGF(1.16637e-5/GeV2),
     theEnu(0.0), theEe(-1.0), theEu(2.0/3.0), theEd(-1.0/3.0),
-    theVnu(1.0), theVe(-0.072), theVu(0.3813), theVd(-0.6907),
+    theVnu(1.0), theVe(-0.072), theVu(0.381333333), theVd(-0.690666666),
     theAnu(1.0), theAe(-1.0), theAu(1.0), theAd(-1.0), recalculateEW(1),
-    theNc(3), theAlphaS(0.3) {}
+    theNc(3), theAlphaS(0.2) {}
 
 StandardModelBase::~StandardModelBase() {}
 
@@ -100,7 +100,7 @@ void StandardModelBase::Init() {
   static Parameter<StandardModelBase,unsigned int> interfaceFamilies
     ("NumberOfFamilies",
      "The number of families assumed in the Standard model.",
-     &StandardModelBase::theFamilies, 0, 3, 5,
+     &StandardModelBase::theFamilies, 3, 0, 5,
      false, false, true);
 
   static Parameter<StandardModelBase,double> interfaceAlphaEM
@@ -156,12 +156,12 @@ void StandardModelBase::Init() {
     ("EW/v_u",
      "The vector coupling between an up-type quark and a Z^0. "
      "See also command interface <interface>EW/RecalculateEW</interface>",
-     &StandardModelBase::theVu, 0.3813, 0.0, 0.0, false, false, false);
+     &StandardModelBase::theVu, 0.381333333, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceVd
     ("EW/v_d",
      "The vector coupling between a down-type quark and a Z^0. "
      "See also command interface <interface>EW/RecalculateEW</interface>",
-     &StandardModelBase::theVd, -0.6907, 0.0, 0.0, false, false, false);
+     &StandardModelBase::theVd, -0.690666666, 0.0, 0.0, false, false, false);
   static Parameter<StandardModelBase,double> interfaceAnu
     ("EW/a_nu",
      "The axial coupling between a neutrino and a Z^0. "
@@ -211,7 +211,7 @@ void StandardModelBase::Init() {
   static Parameter<StandardModelBase,unsigned int> interfaceNc
     ("QCD/Nc",
      "The number of colours assumed in the Standard model.",
-     &StandardModelBase::theNc, 0, 3, 10,
+     &StandardModelBase::theNc, 3, 0, 10,
      false, false, true);
 
   static Parameter<StandardModelBase,double> interfaceAlphaS

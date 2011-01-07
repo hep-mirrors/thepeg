@@ -142,7 +142,7 @@ void LesHouchesReader::initPDFs() {
 				    "set", os.str());
     }
     generator()->preinitInterface(inPDF.first, "RangeException",
-				    "set", "Freeze");
+				    "newdef", "Freeze");
   }
 
   if ( heprup.PDFSUP.second && !inPDF.second) {
@@ -174,7 +174,7 @@ void LesHouchesReader::initPDFs() {
 				    "set", os.str());
     }
     generator()->preinitInterface(inPDF.second, "RangeException",
-				    "set", "Freeze");
+				    "newdef", "Freeze");
   }
   
   if ( ! ( inPDF.first && inPDF.second ) ) Throw<InitException>()
@@ -1368,6 +1368,13 @@ void LesHouchesReader::Init() {
   interfaceEBeamB.rank(2);
   interfaceMaxMultCKKW.rank(1.5);
   interfaceMinMultCKKW.rank(1.0);
+
+  interfaceBeamA.setHasDefault(false);
+  interfaceBeamB.setHasDefault(false);
+  interfaceEBeamA.setHasDefault(false);
+  interfaceEBeamB.setHasDefault(false);
+  interfaceMaxMultCKKW.setHasDefault(false);
+  interfaceMinMultCKKW.setHasDefault(false);
 
 }
 

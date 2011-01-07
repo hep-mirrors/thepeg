@@ -359,6 +359,7 @@ void Cuts::Init() {
      &Cuts::theMHatMin, GeV, 2.0*GeV, ZERO, Constants::MaxEnergy,
      true, false, Interface::limited,
      0, 0, 0, &Cuts::maxMHatMin, 0);
+  interfaceMHatMin.setHasDefault(false);
 
   static Parameter<Cuts,Energy> interfaceMHatMax
     ("MHatMax",
@@ -367,6 +368,7 @@ void Cuts::Init() {
      true, false, Interface::lowerlim,
      0, 0,
      &Cuts::minMHatMax, 0, 0);
+  interfaceMHatMax.setHasDefault(false);
 
   static Parameter<Cuts,Energy2> interfaceScaleMin
     ("ScaleMin",
@@ -375,6 +377,7 @@ void Cuts::Init() {
      &Cuts::theScaleMin, GeV2, ZERO, ZERO, Constants::MaxEnergy2,
      true, false, Interface::limited,
      0, 0, 0, &Cuts::maxScaleMin, 0);
+  interfaceScaleMin.setHasDefault(false);
 
   static Parameter<Cuts,Energy2> interfaceScaleMax
     ("ScaleMax",
@@ -384,6 +387,7 @@ void Cuts::Init() {
      true, false, Interface::lowerlim,
      0, 0,
      &Cuts::minScaleMax, 0, 0);
+  interfaceScaleMax.setHasDefault(false);
 
   static Parameter<Cuts,double> interfaceYHatMin
     ("YHatMin",
@@ -392,6 +396,7 @@ void Cuts::Init() {
      &Cuts::theYHatMin, -10.0, 0.0, Constants::MaxRapidity,
      true, false, Interface::upperlim,
      (ISFN)0, (IGFN)0, (IGFN)0, &Cuts::maxYHatMin, (IGFN)0);
+  interfaceYHatMin.setHasDefault(false);
 
   static Parameter<Cuts,double> interfaceYHatMax
     ("YHatMax",
@@ -400,7 +405,7 @@ void Cuts::Init() {
      &Cuts::theYHatMax, 10.0, -Constants::MaxRapidity, 0.0,
      true, false, Interface::lowerlim,
      (ISFN)0, (IGFN)0, &Cuts::minYHatMax, (IGFN)0, (IGFN)0);
-
+  interfaceYHatMax.setHasDefault(false);
 
   static Parameter<Cuts,double> interfaceX1Min
     ("X1Min",
@@ -409,6 +414,7 @@ void Cuts::Init() {
      &Cuts::theX1Min, 0.0, 0.0, 1.0,
      true, false, Interface::limited,
      (ISFN)0, (IGFN)0, (IGFN)0, &Cuts::maxX1Min, (IGFN)0);
+  interfaceX1Min.setHasDefault(false);
 
   static Parameter<Cuts,double> interfaceX1Max
     ("X1Max",
@@ -417,6 +423,7 @@ void Cuts::Init() {
      &Cuts::theX1Max, 0.0, 0.0, 1.0,
      true, false, Interface::limited,
      (ISFN)0, (IGFN)0, &Cuts::minX1Max, (IGFN)0, (IGFN)0);
+  interfaceX1Max.setHasDefault(false);
 
   static Parameter<Cuts,double> interfaceX2Min
     ("X2Min",
@@ -425,6 +432,7 @@ void Cuts::Init() {
      &Cuts::theX2Min, 0.0, 0.0, 1.0,
      true, false, Interface::limited,
      (ISFN)0, (IGFN)0, (IGFN)0, &Cuts::maxX2Min, (IGFN)0);
+  interfaceX2Min.setHasDefault(false);
 
   static Parameter<Cuts,double> interfaceX2Max
     ("X2Max",
@@ -433,7 +441,7 @@ void Cuts::Init() {
      &Cuts::theX2Max, 0.0, 0.0, 1.0,
      true, false, Interface::limited,
      (ISFN)0, (IGFN)0, &Cuts::minX2Max, (IGFN)0, (IGFN)0);
-
+  interfaceX2Max.setHasDefault(false);
 
   static RefVector<Cuts,OneCutBase> interfaceOneCuts
     ("OneCuts",

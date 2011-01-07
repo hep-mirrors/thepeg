@@ -45,19 +45,34 @@ string ReferenceBase::exec(InterfacedBase & i, string action,
     cIBPtr ref = get(i);
     if ( ref ) ret << ref->fullName();
     else ret << "*** NULL Reference ***";
-  } else if ( action == "set" ) {
-    string name;
-    arg >> name;
+  }
+  else if ( action == "set" || action == "newdef" || action == "setdef" ) {
+    string refname;
+    arg >> refname;
+    if ( action == "setdef" ) {
+      if ( objectDefaults(i).find(name()) == objectDefaults(i).end() )
+	return "Error: No default value defined for this object.";
+      refname = objectDefaults(i)[name()];
+    }
     IBPtr ip;
-    if ( name.size() && name != "NULL") {
+    if ( refname.size() && refname != "NULL") {
       Interfaced * ii = dynamic_cast<Interfaced *>(&i);
       if ( ii && ii->generator() )
-	ip = ii->generator()->getObject<Interfaced>(name);
+	ip = ii->generator()->getObject<Interfaced>(refname);
       else
-	ip = BaseRepository::TraceObject(name);
+	ip = BaseRepository::TraceObject(refname);
     }
     set(i, ip);
-  } else
+    if ( action == "newdef" )
+      objectDefaults(i)[name()] = get(i)? get(i)->fullName(): string("NULL");
+  }
+  else if ( action == "notdef" ) {
+    if ( objectDefaults(i).find(name()) == objectDefaults(i).end() ) return "";
+    string curr = get(i)? get(i)->fullName(): string("NULL");
+    if ( curr == objectDefaults(i)[name()] ) return "";
+    return curr + "  (" + objectDefaults(i)[name()] + ")";
+  }
+  else 
     throw InterExUnknown(*this, i);
   return ret.str();
 }

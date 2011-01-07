@@ -66,4 +66,17 @@ typename Ptr<T>::pointer BaseRepository::fullclone(const T & t) {
   return ret;
 }
 
+template <typename Cont>
+vector< pair<IBPtr, const InterfaceBase *> >
+BaseRepository::getNonDefaultInterfaces(const Cont & c) {
+  vector< pair<IBPtr, const InterfaceBase *> > ret;
+  for ( typename Cont::const_iterator it = c.begin(); it != c.end(); ++it ) {
+    InterfaceMap im = getInterfaces(typeid(**it));
+    for ( InterfaceMap::iterator iit = im.begin(); iit != im.end(); ++iit )
+      if ( iit->second->notDefault(**it) )
+	ret.push_back(make_pair(*it, iit->second));
+  }
+  return ret;
+}
+
 }

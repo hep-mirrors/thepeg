@@ -23,9 +23,25 @@ InterfaceBase::InterfaceBase(string newName,
 			     const type_info & newTypeInfo, bool depSafe,
 			     bool readonly)
   : Named(newName), theDescription(newDescription),
-    theClassName(newClassName), theRank(-1.0), isDependencySafe(depSafe),
-    isReadOnly(readonly) {
+    theClassName(newClassName), theRank(-1.0), hasDefault(true),
+    isDependencySafe(depSafe), isReadOnly(readonly) {
   BaseRepository::Register(*this, newTypeInfo);
+}
+
+string InterfaceBase::tag(int pos) const {
+  if ( pos == -1 ) return name();
+  ostringstream os;
+  os << name() << "[" << pos << "]";
+  return os.str();
+}
+
+
+bool InterfaceBase::notDefault(InterfacedBase & ib) const {
+  return exec(ib, "notdef", "") != "" ;
+}
+
+map<string,string> & InterfaceBase::objectDefaults(InterfacedBase & ib) const {
+  return ib.objectDefaults;
 }
 
 string InterfaceBase::fullDescription(const InterfacedBase &) const {
@@ -93,7 +109,9 @@ RefInterfaceBase(string newName, string newDescription, string newClassName,
   : InterfaceBase(newName, newDescription, newClassName, newTypeInfo, depSafe,
 		  readonly), theRefClassName(newRefClassName),
   theRefTypeInfo(newRefTypeInfo), dontRebind(norebind),
-  isNullable(nullable), theDefaultIfNull(defnull) {}
+  isNullable(nullable), theDefaultIfNull(defnull) {
+  hasDefault = false;
+}
 
 
 }

@@ -69,6 +69,7 @@ void GraphvizPlot::Init() {
      "The number of the event that should be drawn.",
      &GraphvizPlot::_eventNumber, 1, 1, 1,
      false, false, Interface::lowerlim);
+  interfaceEventNumber.setHasDefault(false);
 
   static Switch<GraphvizPlot,bool> interfaceQuiet
     ("Quiet",
@@ -85,6 +86,7 @@ void GraphvizPlot::Init() {
      "Quiet",
      "Prevent output.",
      true);
+  interfaceQuiet.setHasDefault(false);
 
 }
 

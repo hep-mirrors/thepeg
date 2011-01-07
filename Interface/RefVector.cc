@@ -44,7 +44,7 @@ string RefVectorBase::exec(InterfacedBase & i, string action,
   ostringstream ret;
   if ( action == "get" ) {
     IVector refvec = get(i);
-    if ( place >= 0 ) {
+    if ( place >= 0 && unsigned(place) < refvec.size() ) {
       if ( refvec[place] ) return refvec[place]->fullName();
       else return "*** NULL Reference ***";
     }
@@ -53,22 +53,48 @@ string RefVectorBase::exec(InterfacedBase & i, string action,
       if ( refvec[j] ) ret << refvec[j]->fullName();
       else ret << "*** NULL Reference ***";
     }
-  } else if ( action == "erase" ) {
+  }
+  else if ( action == "erase" ) {
     erase(i, place);
-  } else if ( action == "set" || action == "insert" ) {
-    string name;
-    arg >> name;
+  }
+  else if ( action == "set" || action == "insert" ||
+	      action == "newdef" || action == "setdef" ) {
+    string refname;
+    arg >> refname;
+    if ( action == "setdef" ) {
+      if ( objectDefaults(i).find(tag(place)) == objectDefaults(i).end() )
+	return "Error: No default value defined for this object.";
+      refname = objectDefaults(i)[tag(place)];
+    }
     IBPtr ip;
-    if ( name.size() && name != "NULL") {
+    if ( refname.size() && refname != "NULL") {
       Interfaced * ii = dynamic_cast<Interfaced *>(&i);
       if ( ii && ii->generator() )
-	ip = ii->generator()->getObject<Interfaced>(name);
+	ip = ii->generator()->getObject<Interfaced>(refname);
       else
-	ip = BaseRepository::TraceObject(name);
+	ip = BaseRepository::TraceObject(refname);
     }
-    if ( action == "set" ) set(i, ip, place);
-    else insert(i, ip, place);
-  } else
+    if ( action == "insert" ) insert(i, ip, place);
+    else set(i, ip, place);
+    if ( action == "newdef" ) {
+      IVector refvec = get(i);
+      if ( place >= 0 && unsigned(place) < refvec.size() )
+	objectDefaults(i)[tag(place)] =
+	  refvec[place]? refvec[place]->fullName(): string("NULL");
+    }
+  }
+  else if ( action == "notdef" ) {
+    IVector refvec = get(i);
+    for ( place = 0; unsigned(place) < refvec.size(); ++place ) {
+      if ( objectDefaults(i).find(tag(place)) == objectDefaults(i).end() )
+	continue;
+      string refname = refvec[place]? refvec[place]->fullName(): string("NULL");
+      if ( refname == objectDefaults(i)[tag(place)] ) continue;
+      ret << "[" << place << "] " << refname
+	  << " (" << objectDefaults(i)[tag(place)] << ") ";
+    }
+  }
+  else
     throw InterExUnknown(*this, i);
   return ret.str();
 }

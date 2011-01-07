@@ -35,22 +35,44 @@ exec(InterfacedBase & i, string action, string arguments) const
       if ( it != v.begin() ) ret << ", ";
       ret << *it;
     }
-  } else if ( action == "erase" ) {
+  }
+  else if ( action == "erase" ) {
     erase(i, place);
-  } else if ( action == "min" ) {
+  }
+  else if ( action == "min" ) {
     return minimum(i, place);
-  } else if ( action == "max" ) {
+  }
+  else if ( action == "max" ) {
     return maximum(i, place);
-  } else if ( action == "def" ) {
+  }
+  else if ( action == "def" ) {
     return def(i, place);
-  } else if ( action == "setdef" ) {
-    setDef(i, place);
-  } else if ( action == "set" || action == "insert" ) {
+  }
+  else if ( action == "setdef" ) {
+    if ( objectDefaults(i).find(tag(place)) == objectDefaults(i).end() )
+      setDef(i, place);
+    else
+      set(i, objectDefaults(i)[tag(place)], place);
+  }
+  else if ( action == "set" || action == "insert" || action == "newdef") {
     string val;
     arg >> val;
-    if ( action == "set" ) set(i, val, place);
-    else insert(i, val, place);
-  } else
+    if ( action == "insert" ) insert(i, val, place);
+    else set(i, val, place);
+    if ( action == "newdef" ) objectDefaults(i)[tag(place)] = get(i)[place];
+  }
+  else if ( action == "notdef" ) {
+    StringVector v = get(i);
+    for ( place = 0; unsigned(place) < v.size(); ++place ) {
+      string deflt = def(i, place);
+      if ( objectDefaults(i).find(tag(place)) != objectDefaults(i).end() )
+	deflt = objectDefaults(i)[tag(place)];
+      else if ( !hasDefault ) continue;
+      if ( v[place] == deflt ) continue;
+      ret << "[" << place << "] " << v[place] << " (" << deflt << ") ";
+    }
+  }
+  else
     throw InterExUnknown(*this, i);
   return ret.str();
 }

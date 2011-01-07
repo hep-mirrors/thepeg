@@ -113,6 +113,7 @@ void KTClus::Init() {
      "single outgoing parton.",
      &KTClus::theCut, GeV, 10.0*GeV, ZERO, ZERO,
      true, false, Interface::lowerlim);
+  interfaceCut.setHasDefault(false);
 
   static Switch<KTClus,bool> interfaceOnlyJets
     ("OnlyJets",
@@ -128,6 +129,7 @@ void KTClus::Init() {
      "All",
      "The cut is applied to all particle types.",
      false);
+  interfaceOnlyJets.setHasDefault(false);
 
   interfaceCut.rank(10);
   interfaceOnlyJets.rank(9);

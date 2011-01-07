@@ -57,7 +57,7 @@ FixedCMSLuminosity::initFixedCMSLuminosity;
      (Energy(FixedCMSLuminosity::*)()const)(0),
      (Energy(FixedCMSLuminosity::*)()const)(0),
      (Energy(FixedCMSLuminosity::*)()const)(0));
-
+  interfaceEnergy.setHasDefault(false);
   interfaceEnergy.rank(11);
 
 }

@@ -653,7 +653,7 @@ void StandardEventHandler::Init() {
   static Switch<StandardEventHandler,bool> interfaceWeighted
     ("Weighted",
      "If switched on, this event Handler will produce weighted events",
-     &StandardEventHandler::weightedEvents, true, false);
+     &StandardEventHandler::weightedEvents, false, false);
   static SwitchOption interfaceWeightedTrue
     (interfaceWeighted, "On",
      "This EventHandler produces weighted events.", true);

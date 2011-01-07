@@ -93,7 +93,7 @@ MultiLEP.out: runThePEG MultiLEP.run
 	time ./runThePEG -d 0 MultiLEP.run
 
 if USELHAPDF
-TestLHAPDF.run: done-all-links setupThePEG ThePEGDefaults.rpo TestLHAPDF.in 
+TestLHAPDF.run: done-all-links setupThePEG ThePEGDefaults.rpo TestLHAPDF.in TestLHAPDF.la
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 
 TestLHAPDF.out: runThePEG TestLHAPDF.run

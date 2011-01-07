@@ -351,6 +351,15 @@ public:
    * <code>pos</code> part or empty string if not present.
    */
   static string getPosArgFromNoun(string noun);
+
+  /**
+   * Return a list of the interfaces which do not have their default
+   * values for the given objects.
+   */
+  template <typename Cont>
+  static vector< pair<IBPtr, const InterfaceBase *> >
+  getNonDefaultInterfaces(const Cont &);
+
   //@}
 
   /** @name Manipulate objects in the repository. */

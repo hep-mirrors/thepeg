@@ -91,6 +91,12 @@ public:
   virtual ~InterfaceBase() {}
 
   /**
+   * Create a tag for this interface using its name and optional
+   * poisitional argument.
+   */
+  string tag(int pos = -1) const;
+
+  /**
    * Manipulate an object of the corresponding class. Execute the \a
    * action command with the given \a arguments for the given object
    * \a ib.
@@ -103,6 +109,17 @@ public:
    * Return a code for the type of this interface.
    */
   virtual string type() const = 0;
+
+  /**
+   * Returns true if the setting for this interface has been changed
+   * from its default value.
+   */
+  virtual bool notDefault(InterfacedBase &) const;
+
+  /**
+   * Returns the map of objectDefaults of the given object.
+   */
+  map<string,string> & objectDefaults(InterfacedBase &) const;
 
   /**
    * Rebind all references in ib according to the translation
@@ -203,6 +220,13 @@ public:
   void rank(double r) { theRank = r; } 
 
   /**
+   * Indicate that this interface has a default value.
+   */
+  void setHasDefault(bool b) {
+    hasDefault = b;
+  }
+
+  /**
    * If set to true, all read-only interfaces can be changed.
    */
   static bool NoReadOnly;
@@ -226,6 +250,11 @@ private:
   double theRank;
 
 protected:
+
+  /**
+   * A flag indicating whether this interface has a default setting.
+   */
+  bool hasDefault;
 
   /**
    * The flag saying whether changing an object with this interface

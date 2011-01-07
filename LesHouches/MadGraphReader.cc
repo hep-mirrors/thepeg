@@ -554,6 +554,7 @@ void MadGraphReader::Init() {
      "is used instead.",
      &MadGraphReader::fixedScale, GeV, 91.188*GeV, ZERO, 1000.0*GeV,
      true, false, true);
+  interfaceFixedScale.setHasDefault(false);
 
   static Parameter<MadGraphReader,double> interfaceFixedAlphaEM
     ("FixedAlphaEM",
@@ -561,6 +562,7 @@ void MadGraphReader::Init() {
      "the value of \\f$\\alpha_{EM}\\f$. In this case this is used instead.",
      &MadGraphReader::fixedAEM, 0.007546772, 0.0, 1.0,
      true, false, true);
+  interfaceFixedAlphaEM.setHasDefault(false);
 
   static Parameter<MadGraphReader,double> interfaceFixedAlphaS
     ("FixedAlphaS",
@@ -568,6 +570,7 @@ void MadGraphReader::Init() {
      "the value of \\f$\\alpha_S\\f$. In this case this is used instead.",
      &MadGraphReader::fixedAS, 0.12, 0.0, 1.0,
      true, false, true);
+  interfaceFixedAlphaS.setHasDefault(false);
 
   static Command<MadGraphReader> interfaceScanCuts
     ("ScanCuts",

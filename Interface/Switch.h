@@ -215,6 +215,11 @@ public:
    */
   virtual string doxygenType() const;
 
+  /**
+   * Return a string with the option index and its associated tag.
+   */
+  string opttag(long opt) const;
+
 protected:
 
   /**

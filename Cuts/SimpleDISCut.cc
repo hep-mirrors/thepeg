@@ -181,5 +181,10 @@ void SimpleDISCut::Init() {
   interfaceMinQ2.rank(10);
   interfaceMaxQ2.rank(9);
   interfaceCurrent.rank(8);
+  interfaceMinQ2.setHasDefault(false);
+  interfaceMaxQ2.setHasDefault(false);
+  interfaceMinW2.setHasDefault(false);
+  interfaceMaxW2.setHasDefault(false);
+  interfaceCurrent.setHasDefault(false);
 }
 

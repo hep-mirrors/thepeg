@@ -1,3 +1,15 @@
+2011-01-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.* Repository/BaseRepository.*
+	Interface/InterfacedBase.* Interface/InterfaceBase.* (and several
+	sub-classes): Added option LogNonDefault in EventGenerator to
+	print out all interfaces which are not at their default
+	value. Also added possibility in InterfaceBase to flag an
+	interface as having no default value (and will therefore not be
+	checked in LogNonDefault). Furthermore, added possibility to
+	specify a default value on a per-object basis in
+	BaseRepository (the 'newdef' command).
+
 2010-12-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.h: Added member to return version number

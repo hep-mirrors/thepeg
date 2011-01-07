@@ -68,6 +68,7 @@ void KTRapidityCut::Init() {
      &KTRapidityCut::theMinKT, GeV, 10.0*GeV, ZERO, Constants::MaxEnergy,
      true, false, Interface::limited,
      (ISFNK)0, (IGFNK)0, (IGFNK)0, &KTRapidityCut::maxKTMin, (IGFNK)0);
+  interfaceMinKT.setHasDefault(false);
 
   static Parameter<KTRapidityCut,Energy> interfaceMaxKT
     ("MaxKT",
@@ -77,6 +78,7 @@ void KTRapidityCut::Init() {
      &KTRapidityCut::theMaxKT, GeV, Constants::MaxEnergy, ZERO, ZERO,
      true, false, Interface::lowerlim,
      (ISFNK)0, (IGFNK)0,  &KTRapidityCut::minKTMax, (IGFNK)0, (IGFNK)0);
+  interfaceMaxKT.setHasDefault(false);
 
   static Parameter<KTRapidityCut,double> interfaceMinRapidity
     ("MinRapidity",
@@ -86,6 +88,7 @@ void KTRapidityCut::Init() {
      -Constants::MaxRapidity, 0, Constants::MaxRapidity,
      true, false, Interface::upperlim,
      (ISFN)0, (IGFN)0, (IGFN)0, &KTRapidityCut::maxRapidityMin, (IGFN)0);
+  interfaceMinRapidity.setHasDefault(false);
 
   static Parameter<KTRapidityCut,double> interfaceMaxRapidity
     ("MaxRapidity",
@@ -95,6 +98,7 @@ void KTRapidityCut::Init() {
      Constants::MaxRapidity, -Constants::MaxRapidity, 0,
      true, false, Interface::lowerlim,
      (ISFN)0, (IGFN)0,  &KTRapidityCut::minRapidityMax, (IGFN)0, (IGFN)0);
+  interfaceMaxRapidity.setHasDefault(false);
 
   static Reference<KTRapidityCut,MatcherBase> interfaceMatcher
     ("Matcher",

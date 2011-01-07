@@ -726,6 +726,7 @@ void LHAPDF::Init() {
      "Photon",
      "Photon densities.",
      photonType);
+  interfacePType.setHasDefault(false);
 
   static Parameter<LHAPDF,string> interfacePDFName
     ("PDFName",
@@ -733,7 +734,7 @@ void LHAPDF::Init() {
      "the <code>.LHpdf</code> or <code>.LHgrid</code> suffix.",
      &LHAPDF::thePDFName, "cteq6ll.LHpdf", true, false,
      &LHAPDF::setPDFName);
-
+  interfacePDFName.setHasDefault(false);
 
   static Parameter<LHAPDF,int> interfacePDFNumber
     ("PDFNumber",
@@ -743,6 +744,7 @@ void LHAPDF::Init() {
      &LHAPDF::setPDFNumber, &LHAPDF::getPDFNumber,
      (int(LHAPDF::*)()const)(0), (int(LHAPDF::*)()const)(0),
      (int(LHAPDF::*)()const)(0));
+  interfacePDFNumber.setHasDefault(false);
 
   static Parameter<LHAPDF,int> interfaceMember
     ("Member",
@@ -752,6 +754,7 @@ void LHAPDF::Init() {
      &LHAPDF::setPDFMember, (int(LHAPDF::*)()const)(0),
      (int(LHAPDF::*)()const)(0), &LHAPDF::getMaxMember,
      (int(LHAPDF::*)()const)(0));
+  interfaceMember.setHasDefault(false);
 
   static Command<LHAPDF> interfacePDFLIBNumbers
     ("PDFLIBNumbers",
@@ -852,7 +855,7 @@ void LHAPDF::Init() {
      "Normal output from the LHAPDF library "
      "(unfortunately to the standard output).",
      1);
-
+  interfaceVerboseLevel.setHasDefault(false);
 
   static Parameter<LHAPDF,int> interfaceMaxFlav
     ("MaxFlav",

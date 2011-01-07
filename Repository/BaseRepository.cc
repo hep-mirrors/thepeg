@@ -789,8 +789,11 @@ string BaseRepository::exec(string command, ostream &) {
     if ( verb == "set" || verb == "setdef" || verb == "insert" ||
 	 verb == "do" || verb == "get" || verb == "def" || verb == "min" ||
 	 verb == "max" || verb == "describe" || verb == "fulldescribe" ||
-	 verb == "erase" || verb == "send"  ) {
+	 verb == "erase" || verb == "send" || verb == "newdef" ) {
       if ( verb == "send" ) verb = "do";
+      if ( verb == "newdef" && !InterfaceBase::NoReadOnly )
+	return "Error: The default value of an interface is a read-only "
+	  "entity. Use the command 'DISABLEREADONLY' to override.";
       string noun = StringUtils::car(command);
       string arguments = getPosArgFromNoun(noun) + " "
 	+ StringUtils::cdr(command);
@@ -839,7 +842,8 @@ string BaseRepository::exec(string command, ostream &) {
 	  ret << (**it).type() << " " << (**it).name() << endl;
 	}
 	return ret.str();
-      } else
+      }
+      else
 	return ifb->exec(*ip, verb, arguments);
     }
     if ( verb == "baseclasses" ) {

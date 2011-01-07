@@ -19,34 +19,37 @@ namespace ThePEG {
 
 SwitchOption::SwitchOption(SwitchBase & theSwitch, string newName,
 			   string newDescription, long newValue)
-  : Named(newName), theDescription(newDescription), theValue(newValue) 
-{
+  : Named(newName), theDescription(newDescription), theValue(newValue) {
   theSwitch.registerOption(*this);
 }
-  
+
+string SwitchBase::opttag(long opt) const {
+  ostringstream ret;
+  ret << opt;
+  OptionMap::const_iterator oit = theOptions.find(opt);
+  if ( oit ==  theOptions.end() )
+    ret << " [Not a registered option] ";
+  else
+    ret << " [" << (oit->second).name() << "]";
+  return ret.str();
+}
+
 string SwitchBase::exec(InterfacedBase & i, string action,
 		    string arguments) const {
   ostringstream ret;
-  istringstream arg(arguments);
+
   if ( action == "get" ) {
-    long opt = get(i);
-    ret << opt;
-    OptionMap::const_iterator oit = theOptions.find(opt);
-    if ( oit ==  theOptions.end() )
-      ret << " (Not a registered option) ";
-    else
-      ret << " (" << (oit->second).name() << ")";
-  } else if ( action == "def" ) {
-    long opt = def(i);
-    ret << opt;
-    OptionMap::const_iterator oit = theOptions.find(opt);
-    if ( oit ==  theOptions.end() )
-      ret << " (Not a registered option) ";
-    else
-      ret << " (" << (oit->second).name() << ")";
-  } else if ( action == "setdef" ) {
+    return opttag(get(i));
+  }
+  else if ( action == "def" ) {
+    return opttag(def(i));
+  }
+  else if ( action == "setdef" &&
+	    objectDefaults(i).find(name()) == objectDefaults(i).end() ) {
     setDef(i);
-  } else if ( action == "set" ) {
+  } else if ( action == "set" || action == "newdef"  || action == "setdef" ) {
+    if ( action == "setdef" ) arguments = objectDefaults(i)[name()];
+    istringstream arg(arguments);
     long val;
     arg >> val;
     if ( !arg || theOptions.find(val) == theOptions.end() ) {
@@ -70,6 +73,7 @@ string SwitchBase::exec(InterfacedBase & i, string action,
     }
     try {
       set(i, val);
+      if ( action == "newdef" ) objectDefaults(i)[name()] = opttag(val);
       return ret.str();
     }
     catch ( Exception & ex ) {
@@ -81,7 +85,16 @@ string SwitchBase::exec(InterfacedBase & i, string action,
     StringMap::const_iterator optit = theOptionNames.find(sval);
     if ( optit != theOptionNames.end() ) val = optit->second.value();
     set(i, val);
-  } else
+    if ( action == "newdef" ) objectDefaults(i)[name()] = opttag(val);
+  }
+  else if ( action == "notdef" ) {
+    string deflt = opttag(def(i));
+    if ( objectDefaults(i).find(name()) != objectDefaults(i).end() )
+      deflt = objectDefaults(i)[name()];
+    else if ( !hasDefault ) return "";
+    if ( deflt != opttag(get(i)) ) return opttag(get(i)) + " (" + deflt + ")";
+  }
+  else
     throw InterExUnknown(*this, i);
   return ret.str();
 }

@@ -229,6 +229,7 @@ void QuarksToHadronsDecayer::Init() {
   interfaceFixedN.rank(10);
   interfaceMinN.rank(9);
   interfaceFlavourGenerator.rank(8);
+  interfaceMinN.setHasDefault(false);;
 
 }
 

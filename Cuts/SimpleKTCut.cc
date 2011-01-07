@@ -161,6 +161,10 @@ void SimpleKTCut::Init() {
   interfaceMinEta.rank(9);
   interfaceMaxEta.rank(8);
   interfaceMatcher.rank(7);
+  interfaceMinKT.setHasDefault(false);
+  interfaceMaxKT.setHasDefault(false);
+  interfaceMinEta.setHasDefault(false);
+  interfaceMaxEta.setHasDefault(false);
 
 }
 

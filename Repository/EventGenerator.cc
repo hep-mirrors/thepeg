@@ -77,8 +77,8 @@ void EventGenerator::checkSignalState() {
 EventGenerator::EventGenerator()
   : thePath("."), theNumberOfEvents(1000), theQuickSize(7000),
     preinitializing(false), ieve(0), weightSum(0.0),
-    theDebugLevel(0), printEvent(0), dumpPeriod(0), debugEvent(0),
-    maxWarnings(10), maxErrors(10), theCurrentRandom(0),
+    theDebugLevel(0), logNonDefault(-1), printEvent(0), dumpPeriod(0),
+    debugEvent(0), maxWarnings(10), maxErrors(10), theCurrentRandom(0),
     theCurrentGenerator(0), useStdout(false) {}
 
 EventGenerator::EventGenerator(const EventGenerator & eg)
@@ -97,7 +97,7 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     theQuickSize(eg.theQuickSize), preinitializing(false),
     theMatchers(eg.theMatchers),
     usedObjects(eg.usedObjects), ieve(eg.ieve), weightSum(eg.weightSum),
-    theDebugLevel(eg.theDebugLevel),
+    theDebugLevel(eg.theDebugLevel), logNonDefault(eg.logNonDefault),
     printEvent(eg.printEvent), dumpPeriod(eg.dumpPeriod),
     debugEvent(eg.debugEvent),
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
@@ -264,6 +264,23 @@ void EventGenerator::doinitrun() {
 
   
   for_each(objects(), mem_fun(&InterfacedBase::initrun));
+
+  if ( logNonDefault > 0 || ( ThePEG_DEBUG_LEVEL && logNonDefault == 0 ) ) {
+    vector< pair<IBPtr, const InterfaceBase *> > changed =
+      Repository::getNonDefaultInterfaces(objects());
+    if ( changed.size() ) {
+      log() << string(78, '=') << endl
+	    << "The following interfaces have non-default values (default):"
+	    << endl << string(78, '-') << endl;
+      for ( int i = 0, N = changed.size(); i < N; ++i ) {
+	log() << changed[i].first->fullName() << ":"
+	      << changed[i].second->name() << " = "
+	      << changed[i].second->exec(*changed[i].first, "notdef", "")
+	      << endl;
+      }
+      log() << string(78,'=') << endl;
+    }
+  }
 
   weightSum = 0.0;
 
@@ -746,7 +763,8 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << theHistogramFactory << theEventManipulator << thePath << theRunName
      << theNumberOfEvents << theObjectMap << theParticles
      << theQuickParticles << theQuickSize << match << usedset
-     << ieve << weightSum << theDebugLevel << printEvent << dumpPeriod << debugEvent
+     << ieve << weightSum << theDebugLevel << logNonDefault << printEvent
+     << dumpPeriod << debugEvent
      << maxWarnings << maxErrors << theCurrentEventHandler
      << theCurrentStepHandler << useStdout << theMiscStream.str();
 }
@@ -758,7 +776,8 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> theHistogramFactory >> theEventManipulator >> thePath >> theRunName
      >> theNumberOfEvents >> theObjectMap >> theParticles
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
-     >> ieve >> weightSum >> theDebugLevel >> printEvent >> dumpPeriod >> debugEvent
+     >> ieve >> weightSum >> theDebugLevel >> logNonDefault >> printEvent
+     >> dumpPeriod >> debugEvent
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
      >> theCurrentStepHandler >> useStdout >> dummy;
   theMiscStream.str(dummy);
@@ -1240,6 +1259,27 @@ void EventGenerator::Init() {
      "Use log files.",
      false);
   
+
+  static Switch<EventGenerator,int> interfaceLogNonDefault
+    ("LogNonDefault",
+     "Controls the printout of important interfaces which has been changed from their default values.",
+     &EventGenerator::logNonDefault, -1, true, false);
+  static SwitchOption interfaceLogNonDefaultYes
+    (interfaceLogNonDefault,
+     "Yes",
+     "Always print changed interfaces.",
+     1);
+  static SwitchOption interfaceLogNonDefaultOnDebug
+    (interfaceLogNonDefault,
+     "OnDebug",
+     "Only print changed interfaces if debugging is turned on.",
+     0);
+  static SwitchOption interfaceLogNonDefaultNo
+    (interfaceLogNonDefault,
+     "No",
+     "Don't print changed interfaces.",
+     -1);
+  interfaceLogNonDefault.setHasDefault(false);
 
 }
 

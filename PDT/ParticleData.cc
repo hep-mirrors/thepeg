@@ -386,7 +386,8 @@ void ParticleData::setCut(Energy ci) {
 }
 
 Energy ParticleData::getCut() const {
-  return widthCut();
+  return (theWidthUpCut >= ZERO && theWidthLoCut >= ZERO)?
+    max(theWidthUpCut, theWidthLoCut): min(theWidthUpCut, theWidthLoCut);
 }
 
 Energy ParticleData::defCut() const {
@@ -398,7 +399,7 @@ void ParticleData::setUpCut(Energy ci) {
 }
 
 Energy ParticleData::getUpCut() const {
-  return widthUpCut();
+  return theWidthUpCut;
 }
 
 void ParticleData::setLoCut(Energy ci) {
@@ -406,7 +407,7 @@ void ParticleData::setLoCut(Energy ci) {
 }
 
 Energy ParticleData::getLoCut() const {
-  return widthLoCut();
+  return theWidthLoCut;
 }
 
 void ParticleData::setCTau(Length ti) {
@@ -586,6 +587,7 @@ void ParticleData::Init() {
      "particle.",
      &ParticleData::theDefMass, GeV, ZERO, ZERO, Constants::MaxEnergy,
      false, true, Interface::lowerlim);
+  interfaceDefMass.setHasDefault(false);
 
   static Parameter<ParticleData,Energy> interfaceWidth
     ("Width",
@@ -600,6 +602,7 @@ void ParticleData::Init() {
      "The default width of the particle in GeV.",
      &ParticleData::theDefWidth, GeV, ZERO, ZERO, Constants::MaxEnergy,
      false, true, Interface::lowerlim);
+  interfaceDefWidth.setHasDefault(false);
 
   static Parameter<ParticleData,Energy> interfaceWidthUpCut
     ("WidthUpCut",
@@ -639,6 +642,7 @@ void ParticleData::Init() {
      "upper and lower cut can be set separately.",
      &ParticleData::theDefCut, GeV, ZERO, ZERO, Constants::MaxEnergy,
      false, true, Interface::lowerlim);
+  interfaceDefWidthCut.setHasDefault(false);
   
   static Parameter<ParticleData,Length> interfaceCTau
     ("LifeTime",
@@ -650,6 +654,7 @@ void ParticleData::Init() {
      false, false, Interface::lowerlim,
      &ParticleData::setCTau, &ParticleData::getCTau,
      0, 0, &ParticleData::defCTau);
+  interfaceCTau.setHasDefault(false);
 
   static Parameter<ParticleData,Length> interfaceDefCTau
     ("DefaultLifeTime",
@@ -659,6 +664,7 @@ void ParticleData::Init() {
      "object associated with the particle.",
      &ParticleData::theDefCTau, mm, ZERO, ZERO, Constants::MaxLength,
      false, true, Interface::lowerlim);
+  interfaceDefCTau.setHasDefault(false);
 
   static Switch<ParticleData> interfaceColour
     ("Colour",
@@ -692,7 +698,8 @@ void ParticleData::Init() {
      "This particle is a colour anti-triplet.", -3);
   static SwitchOption interfaceDefColour8
     (interfaceDefColour, "Octet", "This particle is a colour octet.", 8);
-  
+  interfaceDefColour.setHasDefault(false);  
+
   static Parameter<ParticleData, int> interfaceCharge
     ("Charge",
      "The charge of this particle in units of e/3. "
@@ -707,6 +714,7 @@ void ParticleData::Init() {
      "See also the command interface <interface>SetCharge</interface>.",
      &ParticleData::theDefCharge, PDT::Charge(0), PDT::Charge(-24),
      PDT::Charge(24), false, true, true);
+  interfaceDefCharge.setHasDefault(false);
 
   static Command<ParticleData> interfaceSetCharge
     ("SetCharge",
@@ -726,6 +734,7 @@ void ParticleData::Init() {
      "The default spin quantim number of this particle on the form 2j+1.",
      &ParticleData::theDefSpin, PDT::Spin(0), PDT::Spin(0), PDT::Spin(9),
      false, true, true);
+  interfaceDefSpin.setHasDefault(false);
 
   static Switch<ParticleData> interfaceStable
     ("Stable",
@@ -742,6 +751,7 @@ void ParticleData::Init() {
      "Unstable",
      "This particle is not stable",
      0);
+  interfaceStable.setHasDefault(false);
 
   static Switch<ParticleData> interfaceVariableRatio
     ("VariableRatio",
@@ -782,6 +792,7 @@ void ParticleData::Init() {
      "Changes to this particle will propagate to its "
      "anti-partner",
      0);
+  interfaceSync.setHasDefault(false);
 
   static Command<ParticleData> interfaceSynchronize
     ("Synchronize",

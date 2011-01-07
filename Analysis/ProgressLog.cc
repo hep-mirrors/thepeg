@@ -163,6 +163,7 @@ void ProgressLog::Init() {
      "given number of seconds.",
      &ProgressLog::secstep, 0, 0, 0,
      true, false, Interface::lowerlim);
+  interfaceInterval.setHasDefault(false);
 
 
 }

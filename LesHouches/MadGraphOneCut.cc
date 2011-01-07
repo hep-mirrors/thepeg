@@ -162,6 +162,9 @@ void MadGraphOneCut::Init() {
   interfaceCut.rank(10);
   interfaceCutType.rank(9);
   interfaceParticleType.rank(8);
+  interfaceCut.setHasDefault(false);
+  interfaceCutType.setHasDefault(false);
+  interfaceParticleType.setHasDefault(false);
 
 }
 

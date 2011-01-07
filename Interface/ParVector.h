@@ -101,7 +101,9 @@ public:
 		bool depSafe, bool readonly, int limits) 
     : InterfaceBase(newName, newDescription, newClassName, 
 		    newTypeInfo, depSafe,
-		    readonly), limit(limits), theSize(newSize) {}
+		    readonly), limit(limits), theSize(newSize) {
+    hasDefault = false;
+  }
 
   /**
    * Destructor.

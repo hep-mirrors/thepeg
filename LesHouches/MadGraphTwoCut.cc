@@ -234,6 +234,9 @@ void MadGraphTwoCut::Init() {
   interfaceCut.rank(10);
   interfaceCutType.rank(9);
   interfacePairType.rank(8);
+  interfaceCut.setHasDefault(false);
+  interfaceCutType.setHasDefault(false);
+  interfacePairType.setHasDefault(false);
 
 }
 

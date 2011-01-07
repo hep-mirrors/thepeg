@@ -642,6 +642,8 @@ void DecayMode::Init() {
      "the decaying particle may change this branching ratio if it has a "
      "ThePEG::WidthGenerator object assigned to it. ",
      &DecayMode::theBrat, 0.0, 0.0, 1.0, false, false, true);
+  interfaceBrat.setHasDefault(false);
+
   static Switch<DecayMode> interfaceOn
     ("OnOff",
      "Indicates if the decay mode is switched on or off.",
@@ -650,6 +652,7 @@ void DecayMode::Init() {
     (interfaceOn, "On", "The decay channel is switched on.", 1);
   static SwitchOption interfaceOnNo
     (interfaceOn, "Off", "The decay channel is switched off.", 0);
+  interfaceOn.setHasDefault(false);
 
   static Reference<DecayMode,Decayer> interfaceDecayer
     ("Decayer",

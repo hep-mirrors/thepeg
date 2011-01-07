@@ -21,21 +21,35 @@ ParameterBase::~ParameterBase() {}
 
 string ParameterBase::exec(InterfacedBase & i, string action,
 			   string arguments) const  {
-  ostringstream ret;
-  istringstream arg(arguments.c_str());
   if ( action == "get" ) {
     return get(i);
-  } else if ( action == "min" ) {
+  }
+  else if ( action == "min" ) {
     return minimum(i);
-  } else if ( action == "max" ) {
+  }
+  else if ( action == "max" ) {
     return maximum(i);
-  } else if ( action == "def" ) {
+  }
+  else if ( action == "def" ) {
     return def(i);
-  } else if ( action == "setdef" ) {
-    setDef(i);
-  } else if ( action == "set" ) {
+  }
+  else if ( action == "setdef" ) {
+    if ( objectDefaults(i).find(name()) == objectDefaults(i).end() )
+      setDef(i);
+    else
+      set(i, objectDefaults(i)[name()]);
+  }
+  else if ( action == "set" || action == "newdef" ) {
     set(i, arguments);
-  } else
+    if ( action == "newdef" ) objectDefaults(i)[name()] = get(i);
+  } else if ( action == "notdef" ) {
+    string deflt = def(i);
+    if ( objectDefaults(i).find(name()) != objectDefaults(i).end() )
+      deflt = objectDefaults(i)[name()];
+    else if ( !hasDefault ) return "";
+    if ( deflt != get(i) ) return get(i) + " (" + deflt + ")";
+  }
+  else
     throw InterExUnknown(*this, i);
   return "";
 }

@@ -101,6 +101,18 @@ public:
     return theStack.back();
   }
 
+  static T * ptr() {
+    return theStack.back();
+  }
+
+  operator bool() const {
+    return ptr();
+  }
+
+  bool operator!() const {
+    return !ptr();
+  }
+
 private:
 
   /**

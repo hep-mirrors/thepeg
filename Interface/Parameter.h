@@ -827,7 +827,9 @@ public:
 		 bool depSafe, bool readonly)
     : ParameterBase(newName, newDescription, 
 		    newClassName, newTypeInfo, depSafe,
-		    readonly, false), isFileType(NoFile) {}
+		    readonly, false), isFileType(NoFile) {
+    hasDefault = false;
+  }
 
   /**
    * Destructor.

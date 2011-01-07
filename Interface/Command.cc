@@ -16,8 +16,9 @@
 
 using namespace ThePEG;
 
-string CommandBase::exec(InterfacedBase & i, string,
+string CommandBase::exec(InterfacedBase & i, string action,
 			 string arguments) const {
+  if ( action != "do" ) return "";
   return cmd(i, arguments);
 }
 

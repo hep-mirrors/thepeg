@@ -105,6 +105,8 @@ void LuminosityFunction::Init() {
 
   interfaceBeamEMaxA.rank(10);
   interfaceBeamEMaxB.rank(9);
+  interfaceBeamEMaxA.setHasDefault(false);
+  interfaceBeamEMaxB.setHasDefault(false);
 
 }
 
