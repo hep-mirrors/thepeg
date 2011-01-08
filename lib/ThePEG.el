@@ -1558,7 +1558,7 @@ void " class "::persistentInput(PersistentIStream & is, int) {
 	"EXITONERROR"		"mmin"			"set"
 	"fulldescribe"		"msend"			"setdef"
 	"get"			"mset"			"setup"
-	"globallibrary"		"msetdef"
+	"globallibrary"		"msetdef"               "newdef"
 	"insert"		"mv"
 	)
 ;; Further Regex highlighting
