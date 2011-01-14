@@ -634,6 +634,7 @@ void ParticleData::Init() {
      false, false, Interface::lowerlim,
      &ParticleData::setCut, &ParticleData::getCut,
      0, 0, &ParticleData::defCut);
+  interfaceWidthCut.setHasDefault(false);
   
   static Parameter<ParticleData,Energy> interfaceDefWidthCut
     ("DefaultWidthCut",
