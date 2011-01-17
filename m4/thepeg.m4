@@ -372,7 +372,7 @@ echo "${ECHO_T}yes" 1>&6
 AC_DEFUN([THEPEG_CHECK_FENV],
 [echo $ECHO_N "checking for <fenv.h>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fenv.h>
-]], [[feraiseexcept(FE_DIVBYZERO|FE_OVERFLOW|FE_INVALID);]])],[AC_DEFINE(ThePEG_HAS_FENV,1,define if fenv is available)
+]], [[feenableexcept(FE_DIVBYZERO|FE_OVERFLOW|FE_INVALID);]])],[AC_DEFINE(ThePEG_HAS_FENV,1,define if fenv is available)
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 

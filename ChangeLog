@@ -1,3 +1,9 @@
+2011-01-17  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* m4/thepeg.m4: Fixed test for fenv.h to check for
+	feenableexcept(), which doesn't exist on OS X.
+	Fixes herwig:ticket:328
+
 2011-01-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.* Repository/BaseRepository.*
