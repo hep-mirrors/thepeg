@@ -75,7 +75,8 @@ protected:
   /**
    * Write out header for each sub-run.
    */
-  void heading(ostream &, long, const vector<const InterfaceBase *> &, string) const;
+  void heading(ostream &, long,
+	       const vector<const InterfaceBase *> &, string) const;
 
 public:
 

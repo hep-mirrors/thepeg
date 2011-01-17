@@ -318,6 +318,11 @@ public:
   void openOutputFiles();
 
   /**
+   * Flush the content of the internal output string stream to the .out file.
+   */
+  void flushOutputFile();
+
+  /**
    * Close all ouput files.
    */
   void closeOutputFiles();
@@ -340,15 +345,18 @@ public:
   ofstream & reffile() { return theReffile; }
 
   /**
-   * Return a reference to the stream connected to the file for
-   * general output. If no file is connected, the
-   * BaseRepository::cout() will be used instead.
+   * This stream should be used for output of information and
+   * statistics of an EventGenerator run in the finish() phase, after
+   * the actual generation has finished. When used at other times, the
+   * output will be cashed internally before written out in the
+   * finish() phase. This is then written to the .out file, or if
+   * useStdOut() is true, to BaseRepository::cout().
    */
   ostream & out();
 
   /**
    * Return a reference to the stream connected to the file for logging
-   * information. If no file is connected, BaseRepository::clog() will
+   * information. If no file is connected, BaseRepository::cout() will
    * be used instead.
    */
   ostream & log();
@@ -876,7 +884,7 @@ private:
   string thePath;
 
   /**
-   * THe name of this run.
+   * The name of this run.
    */
   string theRunName;
 
@@ -901,6 +909,21 @@ private:
    * the log() stream at the end of the run.
    */
   ostringstream theMiscStream;
+
+  /**
+   * A string stream used as a buffer for messages written to the .out
+   * file. The .out file should in rinciple only be written to in the
+   * end of a run, during the finish() phase, but if anything is
+   * written before that, it will be cashed in this string stream
+   * before written out properly in the end of the run.
+   */
+  ostringstream theOutStream;
+
+  /**
+   * Remember the name of the file where the output should be
+   * sent. This is set int openOutputFiles().
+   */
+  string theOutFileName;
 
   /**
    * Number of events to be generated in this run.

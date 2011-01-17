@@ -172,17 +172,28 @@ IBPtr EventGenerator::getPointer(string name) const {
 void EventGenerator::openOutputFiles() {
   if ( !useStdout ) {
     logfile().open((filename() + ".log").c_str());
-    outfile().open((filename() + ".out").c_str());
+    theOutFileName = filename() + ".out";
+    outfile().open(theOutFileName.c_str());
+    outfile().close();
+    theOutStream.str("");
   }
   out() << Repository::banner() << endl;
   log() << Repository::banner() << endl;
 }
 
 void EventGenerator::closeOutputFiles() {
+  flushOutputFile();
+  if ( !useStdout ) logfile().close();
+}
+
+void EventGenerator::flushOutputFile() {
   if ( !useStdout ) {
+    outfile().open(theOutFileName.c_str(), ios::out|ios::app);
+    outfile() << theOutStream.str();
     outfile().close();
-    logfile().close();
-  }
+  } else
+    BaseRepository::cout() << theOutStream.str();
+  theOutStream.str("");
 }
 
 void EventGenerator::doinit() {
@@ -351,6 +362,8 @@ void EventGenerator::dofinish() {
 	  << msg;
     theMiscStream.str("");
   }
+
+  flushOutputFile();
 
 }
 
@@ -824,7 +837,7 @@ string EventGenerator::defPath() const {
 }
 
 ostream & EventGenerator::out() {
-  return outfile().is_open()? outfile(): BaseRepository::cout();
+  return theOutStream;
 }
 
 ostream & EventGenerator::log() {

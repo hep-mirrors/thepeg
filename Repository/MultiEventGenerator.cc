@@ -148,9 +148,9 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
       finish();
       throw;
     }
-   finish();
+    finish();
 
- }
+  }
 
   runName(baseName);
 
@@ -158,13 +158,14 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
 
 }
 
-void MultiEventGenerator::heading(ostream & os, long iargs,
-				  const vector<const InterfaceBase *> & interfaces,
-				  string baseName) const {
+void MultiEventGenerator::
+heading(ostream & os, long iargs,
+	const vector<const InterfaceBase *> & interfaces,
+	string baseName) const {
     long div = 1;
     if ( iargs > 0 ) os << endl;
       
-    os << baseName << " sub-run number " << iargs + 1
+    os << ">> " << baseName << " sub-run number " << iargs + 1
        << " using the following interface values:" << endl;
 
     for ( string::size_type i = 0; i < theObjects.size(); ++i ) {
@@ -177,6 +178,7 @@ void MultiEventGenerator::heading(ostream & os, long iargs,
       os << " " << theValues[i][iarg] << endl;
       div *= theValues[i].size();
     }
+    os << endl;
 }  
 
 void MultiEventGenerator::persistentOutput(PersistentOStream & os) const {
