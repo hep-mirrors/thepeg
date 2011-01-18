@@ -14,6 +14,9 @@ class AbstractRFSVertex;
 
 namespace VertexType {
   typedef unsigned T;
+  /**
+   *  Enum for this Lorentz structure
+   */
   const T RFS = 421;
 }
 

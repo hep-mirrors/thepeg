@@ -167,9 +167,8 @@ private:
   const Energy2 _q02;
 
   /**
-   *  Magenetic moment of the proton \f$ \mu_{p}^2 = 7.78  
+   *  Magenetic moment of the proton \f$ \mu_{p}^2 = 7.78\f$  
    */
-
   const double _mup2;
     
 

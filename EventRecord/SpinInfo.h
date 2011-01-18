@@ -59,10 +59,13 @@ class SpinInfo: public EventInfoBase {
 
 public:
 
+  /**
+   *  Status for the implementation of spin correlations
+   */
   enum DevelopedStatus {
-    Undeveloped=0,
-    Developed=1,
-    NeedsUpdate=2
+    Undeveloped=0, /**< Not developed. */
+    Developed=1,   /**< Developed. */
+    NeedsUpdate=2  /**< Developed but needs recalculating due to some change. */
   };
 
 public:

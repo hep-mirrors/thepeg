@@ -85,6 +85,8 @@ private:
   Qty(double val) : rawValue_(val) {}
 
 public:
+
+  /// The name of the class for persistent IO
   static std::string className() {
     std::ostringstream os;
     os << "Qty<" 

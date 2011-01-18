@@ -101,14 +101,23 @@ public:
     return theStack.back();
   }
 
+  /**
+   *  Pointer to the stack
+   */
   static T * ptr() {
     return theStack.back();
   }
 
+  /**
+   * Test for existance
+   */
   operator bool() const {
     return ptr();
   }
 
+  /**
+   * Test for existance
+   */
   bool operator!() const {
     return !ptr();
   }

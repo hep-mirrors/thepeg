@@ -16,6 +16,9 @@ class CFile {
 
 public:
 
+  /**
+   *  Type of the file
+   */
   enum FileType {
     undefined, plain, pipe, gzip, bzip2
   };
@@ -43,37 +46,75 @@ public:
   ~CFile() {}
   //@}
 
-
+  /**
+   * Open the file
+   */
   void open(string filename, string mode);
 
+  /**
+   *  Close the file
+   */
   void close();
 
+  /**
+   *  Pointer to the file
+   */
   operator void * () const {
     return fileType != undefined? file: 0;
   }
 
+  /**
+   *  Exist for file existance
+   */
   bool operator!() const {
     return !(operator void * ());
   }
 
+  /**
+   *  Get characters
+   */
   char * gets(char * s, int size);
 
+  /**
+   *  Set characters
+   */
   int puts(const char * s);
 
+  /**
+   *  Get the current character
+   */
   int getc();
 
+  /**
+   *  Set the current character
+   */
   int putc(int c);
 
+  /** Pushes the byte specified by \a c (converted to an unsigned char)
+   *  back onto the stream
+   */
   int ungetc(int c);
 
+  /**
+   *  Read
+   */
   size_t read(void *ptr, size_t size, size_t nmemb = 1);
 
+  /**
+   *   Write
+   */
   size_t write(const void *ptr, size_t size, size_t nmemb = 1);
 
 private:
 
+  /**
+   * Pointer to the file
+   */
   void * file;
 
+  /**
+   *  Type of the file
+   */
   FileType fileType;
 
 public:
