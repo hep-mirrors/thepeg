@@ -145,7 +145,8 @@ public:
   /**
    * Perform a lorentz rotation of the spin information
    */
-  virtual void transform(const LorentzMomentum &, const LorentzRotation & r) {
+  virtual void transform(const LorentzMomentum & m, const LorentzRotation & r) {
+    _currentmomentum = m;
     _currentmomentum.transform(r);
   }
 
