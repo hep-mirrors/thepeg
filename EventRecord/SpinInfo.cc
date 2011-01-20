@@ -13,6 +13,9 @@
 // Author: Peter Richardson
 //
 #include "SpinInfo.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
+#include "ThePEG/Repository/EventGenerator.h"
+#include "Event.h"
 
 using namespace ThePEG;
 
@@ -112,7 +115,7 @@ void SpinInfo::decay() const {
 void SpinInfo::redevelop() const {
   assert(developed()==NeedsUpdate);
   // update the D matrix of this spininfo
-  _Dmatrix = decayVertex()->getDMatrix(decayLocation());
+  _Dmatrix = decayVertex() ? decayVertex()->getDMatrix(decayLocation()) : RhoDMatrix(iSpin());
   _developed = Developed;
   // update the parent if needed
   if(productionVertex() &&
