@@ -1,3 +1,14 @@
+2011-01-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/BaseRepository.cc: "." can now be used as a directory
+	in 'mset' and friends.
+
+2011-01-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/MaxCmp.h: Extended the functionality to include index
+	caching and a comparison class. Also added a MinCmp class as a
+	specialization.
+
 2011-01-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/*EventGenerator.* (flushOutputFile): The .out file is

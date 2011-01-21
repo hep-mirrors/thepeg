@@ -143,6 +143,7 @@ void BaseRepository::Register(IBPtr ip) {
 }
 
 void BaseRepository::DirectoryAppend(string & name) {
+  if ( name == "." ) name = directoryStack().back();
   if ( name[0] != '/' ) name = directoryStack().back() + name;
 }  
 
