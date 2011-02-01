@@ -202,21 +202,23 @@ void THECLASS::persistentInput(PersistentIStream & is, int) {
 
   (setq description (cond (persistent (cond (concrete "
 DescribeClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")
+  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")
 					    (t "
 DescribeAbstractClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")))
+  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")))
 			  (t (cond (concrete "
 DescribeNoPIOClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")
+  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")
 				   (t "
 DescribeAbstractNoPIOClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THECLASS\", \"THECLASS.so\");")))))
+  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")))))
 
   (thepeg-replace
-   "THECLASS" class
+   "THENAMESPACE" namespace
    (thepeg-replace
-    "THEBASE" baseclass (concat "// -*- C++ -*-
+    "THECLASS" class
+    (thepeg-replace
+     "THEBASE" baseclass (concat "// -*- C++ -*-
 //
 // This is the implementation of the non-inlined, non-templated member
 // functions of the THECLASS class.
@@ -251,7 +253,7 @@ void THECLASS::Init() {
 
 }
 
-"))))
+")))))
 
 (defun thepeg-iheaderfile (namespace class base interfaced concrete)
   "Create a icc-header file suitable for the inline function definitions
@@ -397,7 +399,7 @@ of a class CLASS."
   "Return a skeleton suitable for the fh-header file for the forward
 declarations of a class CLASS."
 
-  (setq NAMESPACE (upcase namespace))
+  (setq NAMESPACE namespace)
   
   (thepeg-replace "THECLASS" class
 		  (concat "// -*- C++ -*-
@@ -600,7 +602,7 @@ public:
 using namespace ThePEG;
 ")))
   
-  (setq NAMESPACE (upcase namespace))
+  (setq NAMESPACE  namespace)
   
   (setq namespacequalifyer (cond ((string-match namespace "ThePEG") "")
 				 (t (concat namespace "::"))))
