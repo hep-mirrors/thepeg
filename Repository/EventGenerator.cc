@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // EventGenerator.cc is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2007 Leif Lonnblad
+// Copyright (C) 1999-2011 Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -543,7 +543,7 @@ void EventGenerator::doGo(long next, long maxevent, bool tics) {
 
   if ( next >= 0 ) {
     if ( tics ) 
-      cerr << "tic> " << setw(9) << "init\r" << flush;
+      cerr << "event> " << setw(9) << "init\r" << flush;
     initialize();
     ieve = next-1;
   } else {
@@ -577,7 +577,7 @@ void EventGenerator::tic(long currev, long totev) const {
   while ( skip && i >= 10 && !(i%10) ) i /= 10;
   if ( i == 1 || i == 2 || i == 5 ) skip = false;
   if ( skip ) return;
-  cerr << "tic> " << setw(8) << currev << " " << setw(8) << totev << "\r";
+  cerr << "event> " << setw(8) << currev << " " << setw(8) << totev << "\r";
   cerr.flush();
   if ( currev == totev ) cerr << endl;
 }

@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // PhysicalQty.h is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 2006-2007 David Grellscheid, Leif Lonnblad
+// Copyright (C) 2006-2011 David Grellscheid, Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.

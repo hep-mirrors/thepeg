@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // FactoryBase.h is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2007 Leif Lonnblad
+// Copyright (C) 1999-2011 Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -12,20 +12,18 @@
 // This is the declaration of the FactoryBase class.
 //
 
-#include "ThePEG/Config/LWH.h"
 #include "ThePEG/Interface/Interfaced.h"
 #include "FactoryBase.fh"
-#include "AIAnalysisFactory.h"
-#include "AITreeFactory.h"
-#include "AITree.h"
-#include "AIHistogramFactory.h"
-#include "AIHistogram1D.h"
-#include "AIHistogram2D.h"
-#include "AIAxis.h"
-#include "AIDataPointSetFactory.h"
-#include "AIDataPointSet.h"
-#include "AIDataPoint.h"
-#include "AIMeasurement.h"
+
+namespace AIDA {
+  class IHistogram1D;
+  class IHistogram2D;
+  class IDataPointSet;
+  class IAnalysisFactory;
+  class ITree;
+  class IHistogramFactory;
+  class IDataPointSetFactory;
+}
 
 namespace ThePEG {
 
@@ -236,36 +234,32 @@ public:
   /**
    * Access the underlying AIDA::ITree object.
    */
-  AIDA::ITree & tree() const { return *theTree; }
+  AIDA::ITree & tree() const;
 
   /**
    * A pointer to the underlying AIDA::IHistogramFactory object.
    */
-  AIDA::IHistogramFactory & histogramFactory() const {
-    return *theHistogramFactory;
-  }
+  AIDA::IHistogramFactory & histogramFactory() const;
 
   /**
    * A pointer to the underlying AIDA::IDataPointSetFactory object.
    */
-  AIDA::IDataPointSetFactory & dataSetFactory() const {
-    return *theDataSetFactory;
-  }
+  AIDA::IDataPointSetFactory & dataSetFactory() const;
 
   /**
    * Create a new directory in the underlying AIDA tree.
    */
-  void mkdir(const string & path) { tree().mkdir(path); }
+  void mkdir(const string & path);
 
   /**
    * Create a new directory in the underlying AIDA tree.
    */
-  void mkdirs(const string & path) { tree().mkdirs(path); }
+  void mkdirs(const string & path);
 
   /**
    * Set the default working directory for the underlying AIDA tree.
    */
-  void cd(const string & path) { tree().cd(path); }
+  void cd(const string & path);
 
   /**
    * Create and return a AIDA::IHistogram1D object in the underlying
@@ -282,9 +276,7 @@ public:
    * @param up the upper edge of the histogram.
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
-  tH1DPtr createHistogram1D(const string & path, int nb, double lo, double up) {
-    return histogramFactory().createHistogram1D(path, nb, lo, up);
-  }
+  tH1DPtr createHistogram1D(const string & path, int nb, double lo, double up);
 
   /**
    * Create and return a AIDA::IHistogram1D object in the underlying
@@ -302,9 +294,7 @@ public:
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
   tH1DPtr createHistogram1D(const string & path, const string & title, int nb,
-			    double lo, double up) {
-    return histogramFactory().createHistogram1D(path, title, nb, lo, up);
-  }
+			    double lo, double up);
 
   /**
    * Create and return a AIDA::IHistogram1D object in the underlying
@@ -320,9 +310,7 @@ public:
    * @return a pointer to the created AIDA::IHistogram1D object.
    */
   tH1DPtr createHistogram1D(const string & path, const string & title,
-			    const std::vector<double> & edges) {
-    return histogramFactory().createHistogram1D(path, title, edges);
-  }
+			    const std::vector<double> & edges);
 
   /**
    * Create and return a AIDA::IHistogram2D object in the underlying
@@ -344,10 +332,7 @@ public:
    */
   tH2DPtr createHistogram2D(const string & path,
 			    int nbx, double xlo, double xup,
-			    int nby, double ylo, double yup) {
-    return histogramFactory().createHistogram2D(path, nbx, xlo, xup,
-						      nby, ylo, yup);
-  }
+			    int nby, double ylo, double yup);
 
   /**
    * Create and return a AIDA::IHistogram2D object in the underlying
@@ -369,10 +354,7 @@ public:
    */
   tH2DPtr createHistogram2D(const string & path, const string & title,
 			    int nbx, double xlo, double xup,
-			    int nby, double ylo, double yup) {
-    return histogramFactory().createHistogram2D(path, title,
-						nbx, xlo, xup, nby, ylo, yup);
-  }
+			    int nby, double ylo, double yup);
 
   /**
    * Create and return a AIDA::IHistogram2D object in the underlying
@@ -390,9 +372,7 @@ public:
    */
   tH2DPtr createHistogram2D(const string & path, const string & title,
 			    const std::vector<double> & xedges,
-			    const std::vector<double> & yedges) {
-    return histogramFactory().createHistogram2D(path, title, xedges, yedges);
-  }
+			    const std::vector<double> & yedges);
 
   /**
    * Create a IDataPointSet with the given \a path and \a title and
@@ -401,9 +381,7 @@ public:
    * facilitate the addition of data points to the set or be converted
    * to a pointer to the created IDataPointSet.
    */
-  DataFiller createDataSet(const string & path, const string & title, int dim) {
-    return DataFiller(dataSetFactory().create(path, title, dim));
-  }
+  DataFiller createDataSet(const string & path, const string & title, int dim);
 
   /**
    * Used by a \a client object to indicate that he has required
@@ -412,10 +390,7 @@ public:
    * committed and the AIDA::IHistogramFactory is deleted together
    * with all histograms.
    */
-  void registerClient(tIPtr client) {
-    initrun();
-    clients.insert(client);
-  }
+  void registerClient(tIPtr client);
   //@}
 
 protected:

@@ -5,7 +5,7 @@ AC_INIT([ThePEG],[SVN],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
 
-THEPEG_LIBTOOL_VERSION_INFO(9,0,0)
+THEPEG_LIBTOOL_VERSION_INFO(11,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
 AC_CONFIG_HEADERS([Config/config.h Config/LWH.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
@@ -82,6 +82,17 @@ THEPEG_CHECK_ABS_BUG
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CXXFLAGS)
+
+dnl do an actual capability check on ld instead of this workaround
+case "${host}" in
+  *-darwin*) 
+     ;;
+  *)
+     AM_LDFLAGS="-Wl,--enable-new-dtags"
+     ;;
+esac
+
+AC_SUBST(AM_LDFLAGS)
 
 THEPEG_EMPTY_SUBST
 

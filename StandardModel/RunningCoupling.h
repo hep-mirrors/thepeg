@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // RunningCoupling.h is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2007 Leif Lonnblad, (C) 2009 Simon Platzer
+// Copyright (C) 1999-2011 Leif Lonnblad, (C) 2009 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.

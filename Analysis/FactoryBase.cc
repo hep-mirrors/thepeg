@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // FactoryBase.cc is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2007 Leif Lonnblad
+// Copyright (C) 1999-2011 Leif Lonnblad
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -18,6 +18,8 @@
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+
+#include "AIDA_helper.h"
 
 using namespace ThePEG;
 
@@ -121,3 +123,76 @@ void FactoryBase::Init() {
 
 }
 
+inline 
+AIDA::ITree & FactoryBase::tree() const { 
+  return *theTree; 
+}
+
+inline 
+AIDA::IHistogramFactory & FactoryBase::histogramFactory() const {
+  return *theHistogramFactory;
+}
+
+inline 
+AIDA::IDataPointSetFactory & FactoryBase::dataSetFactory() const {
+  return *theDataSetFactory;
+}
+
+void FactoryBase::mkdir(const string & path) { 
+  tree().mkdir(path); 
+}
+
+void FactoryBase::mkdirs(const string & path) { 
+  tree().mkdirs(path); 
+}
+
+void FactoryBase::cd(const string & path) { 
+  tree().cd(path); 
+}
+
+FactoryBase::tH1DPtr FactoryBase::createHistogram1D(const string & path, 
+				       int nb, double lo, double up) {
+  return histogramFactory().createHistogram1D(path, nb, lo, up);
+}
+
+FactoryBase::tH1DPtr FactoryBase::createHistogram1D(const string & path, 
+				       const string & title, int nb,
+				       double lo, double up) {
+  return histogramFactory().createHistogram1D(path, title, nb, lo, up);
+}
+
+FactoryBase::tH1DPtr FactoryBase::createHistogram1D(const string & path, 
+				       const string & title,
+			  const std::vector<double> & edges) {
+  return histogramFactory().createHistogram1D(path, title, edges);
+}
+
+FactoryBase::tH2DPtr FactoryBase::createHistogram2D(const string & path,
+						    int nbx, double xlo, double xup,
+						    int nby, double ylo, double yup) {
+  return histogramFactory().createHistogram2D(path, nbx, xlo, xup,
+					      nby, ylo, yup);
+}
+
+FactoryBase::tH2DPtr FactoryBase::createHistogram2D(const string & path, const string & title,
+						    int nbx, double xlo, double xup,
+						    int nby, double ylo, double yup) {
+  return histogramFactory().createHistogram2D(path, title,
+					      nbx, xlo, xup, nby, ylo, yup);
+}
+
+FactoryBase::tH2DPtr FactoryBase::createHistogram2D(const string & path, const string & title,
+						    const std::vector<double> & xedges,
+						    const std::vector<double> & yedges) {
+  return histogramFactory().createHistogram2D(path, title, xedges, yedges);
+}
+
+FactoryBase::DataFiller FactoryBase::createDataSet(const string & path, 
+						   const string & title, int dim) {
+  return DataFiller(dataSetFactory().create(path, title, dim));
+}
+
+void FactoryBase::registerClient(tIPtr client) {
+  initrun();
+  clients.insert(client);
+}

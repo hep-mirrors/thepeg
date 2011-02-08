@@ -8,11 +8,99 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-** Ticket #286: Implementation of Cuts in LesHouchesReader
-   Les Houches events are given in the lab frame, but QCDCuts expects to
-   be given momenta in the parton-parton cmf.  Boost added.
+* ThePEG-1.7.0 release: 2011-02-08
+
+** Behaviour
+*** Cross-section information
+    The .out file contains a better estimate of the cross-section
+    directly from the phase space sampler. It should be reliable if
+    not too many events were vetoed during the later phases of the
+    production.
+*** Simpler decay mode selection
+    Instead of having to turn off every mode individually, the new
+    'SelectDecayModes' interface allows commands such as
+      tbar:SelectDecayModes none 
+      tbar:SelectDecayModes tbar->nu_ebar,e-,bbar; tbar->nu_mubar,mu-,bbar;
+    Use 'PrintDecayModes' to list the available choices.
+*** Rivet interface
+    The interface will check before the run if all chosen analyses are
+    actually available in Rivet, and will only call finalize() if any
+    events have been generated. Event weights are now passed correctly
+    into Rivet.
+*** Les Houches QNUMBER support
+    QNUMBER particle creation support has been added to the Les
+    Houches reader.
+*** Debug level
+    If a debug level is set on the command line, it will always be used.
+*** Abort preserves events
+    A hard abort exception during event generation will try to finalize as
+    best as it can, thus preserving information about the run until this
+    point.
+*** Progress log
+    There is a new ThePEG::ProgressLog analysis handler, which prints
+    timing information about the run to screen. 
+*** Graphviz
+    The event graph can show missing momentum information.
+*** CRLF line endings (Windows-style)
+    File readers can now cope with files that have CRLF (Windows) and CR
+    (Mac) line endings.
+
+
+** Structure
+*** Diffraction support
+    To provide support for the simulation of diffractive events, the
+    LeptonLeptonRemnant class was renamed to UnresolvedRemnant, the
+    WeizsackerWilliams PDF extended, BudnevPDF added, and PartonExtractor
+    modified to allow separate override PDFs for each beam.
+*** Polarized beams
+    The PolarizedBeamParticleData class permits a spin polarization choice
+    on the incoming particles.
+*** Mixing particles
+    The MixedParticleData class supports mixed particle states.
+*** SpinBase
+    The SpinBase class has been removed, SpinInfo is now the base class. 
+*** Vertex classes
+    Several new vertices were added for BSM physics, and some minor bugs
+    fixed with existing classes.
+*** PID type
+    Particle IDs now have their own type, 'PID'. It can only be converted
+    to 'long' to avoid unsigned int overflow errors on 64bit machines.
+*** ClassDescription
+    There is a simpler way to register ClassDescription information with
+    the Repository: the DescribeClass<> template. No information is needed
+    in the class headers anymore, reducing build dependencies. New code
+    will use this method now, older classes will be migrated in future.
+*** LWH histogramming
+    The built-in implementation of AIDA histogramming has been
+    restructured slightly to decouple the implementation from the
+    interface.
+
+** Build system
+*** Silent build rules
+    'make' now builds silently, to improve readability. To get the old
+    behaviour, run 'make V=1'
+*** zlib
+    Integrated zlib to read compressed files, such as Les Houches events.
+*** Libtool 2.4
+    Will fix some issues on OS X. 
+*** gsl check
+    This check now also works with Rivet
+
+
+** Bug fixes
+*** Ticket #286: Implementation of Cuts in LesHouchesReader
+    Les Houches events are given in the lab frame, but QCDCuts expects to
+    be given momenta in the parton-parton cmf.  Boost added.
+*** Ticket #303: AlphaS thresholds
+    AlphaS thresholds were fixed for exactly massless quarks. 
+*** Ticket #304: Length units in HepMC
+*** Ticket #309: Particle initialization order
+*** Ticket #310: LeptonLeptonPDF fix
+
+   
 
 * ThePEG-1.6.1 release: 2009-12-11
+
 ** Ticket #292: Spin correlation fix to stabilize tau decay numerics
    We have restructured the spin correlation code to stabilize the
    numerical problems seen in tau decays. 

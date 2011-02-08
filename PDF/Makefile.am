@@ -29,7 +29,7 @@ LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h
 LHAPDF_CPPFLAGS = \
 -DLHAPDF_PKGDATADIR="\"$(LHAPDF_PKGDATADIR)\"" \
 -DTHEPEG_PKGDATADIR="\"$(pkgdatadir)\""
-ThePEGLHAPDF_la_LDFLAGS =  -module $(LHAPDF_LDFLAGS)
+ThePEGLHAPDF_la_LDFLAGS =  $(AM_LDFLAGS) -module $(LHAPDF_LDFLAGS) $(LIBTOOLVERSIONINFO)
 ThePEGLHAPDF_la_LIBADD = $(LHAPDF_LIBS)
 ThePEGLHAPDF_la_SOURCES = $(LHAPDF_SOURCES)
 ThePEGLHAPDF_la_CPPFLAGS = $(AM_CPPFLAGS) $(LHAPDF_CPPFLAGS)
@@ -40,38 +40,38 @@ libThePEGPDF_la_CPPFLAGS = $(AM_CPPFLAGS)
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-LeptonLeptonPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+LeptonLeptonPDF_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 LeptonLeptonPDF_la_SOURCES = LeptonLeptonPDF.cc LeptonLeptonPDF.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-WeizsackerWilliamsPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+WeizsackerWilliamsPDF_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 WeizsackerWilliamsPDF_la_SOURCES = WeizsackerWilliamsPDF.cc WeizsackerWilliamsPDF.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-BudnevPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+BudnevPDF_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 BudnevPDF_la_SOURCES = BudnevPDF.cc BudnevPDF.h
 
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-UnResolvedRemnant_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+UnResolvedRemnant_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 UnResolvedRemnant_la_SOURCES = UnResolvedRemnant.cc UnResolvedRemnant.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-GRVBase_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+GRVBase_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 GRVBase_la_SOURCES = GRVBase.cc GRVBase.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-GRV94L_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+GRV94L_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 GRV94L_la_SOURCES = GRV94L.cc GRV94L.h
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-GRV94M_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+GRV94M_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 GRV94M_la_SOURCES = GRV94M.cc GRV94M.h
 
 dist_pkgdata_DATA = PDFsets.index

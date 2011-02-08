@@ -8,22 +8,22 @@ myLDFLAGS = -export-dynamic
 
 runThePEG_SOURCES = runThePEG.cc
 runThePEG_LDADD = $(myLDADD) $(GSLLIBS)
-runThePEG_LDFLAGS = $(myLDFLAGS)
+runThePEG_LDFLAGS = $(AM_LDFLAGS) $(myLDFLAGS)
 
 runEventLoop_SOURCES = runEventLoop.cc
 runEventLoop_LDADD = -lHepMC $(myLDADD) $(GSLLIBS)
-runEventLoop_LDFLAGS = $(myLDFLAGS)
+runEventLoop_LDFLAGS = $(AM_LDFLAGS) $(myLDFLAGS)
 
 setupThePEG_SOURCES = setupThePEG.cc
 setupThePEG_LDADD = $(myLDADD) $(GSLLIBS)
-setupThePEG_LDFLAGS = $(myLDFLAGS)
+setupThePEG_LDFLAGS = $(AM_LDFLAGS) $(myLDFLAGS)
 setupThePEG_CPPFLAGS = $(AM_CPPFLAGS) \
 -DTHEPEG_PKGLIBDIR="\"$(pkglibdir)\""
 
 if USELHAPDF
 pkglib_LTLIBRARIES = TestLHAPDF.la
 TestLHAPDF_la_SOURCES = TestLHAPDF.cc TestLHAPDF.h
-TestLHAPDF_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+TestLHAPDF_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 endif
 
 dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in MultiLEP.in

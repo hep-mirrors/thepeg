@@ -32,19 +32,17 @@ To compile and install ThePEG follow these steps:
 	SimpleLEP.out, SimpleLEP.log and SimpleLEP.tex.
 
 3: Install ThePEG with 'make install'. This will put all the shared
-   libraries in the lib/ThePEG directory under the install path. There
-   will also be placed the default repository file
-   'ThePEGDefaults.rpo' and the two executables 'setupThePEG.exe' and
-   'runThePEG.exe'. The two executables are run indirectly from the
-   scripts 'setupThePEG' and 'runThePEG' which are installed in the
-   bin directory under the install path. In the bin directory is also
-   installed a java-based setup program called 'thepeg' which enables
-   you to setup and run event generators using a GUI. Also all header
-   files will be installed in the 'include/ThePEG' directory under the
-   install path, and some sample setup files and a sample makefile is
-   installed in the 'share/ThePEG' directory together with an emacs
-   lisp file 'ThePEG.el' with some functions for creating skeletons
-   of new ThePEG classes.
+   libraries in the lib/ThePEG directory under the install path. The
+   default repository file 'ThePEGDefaults.rpo' will also be placed
+   there. The executables 'setupThePEG' and 'runThePEG' are installed
+   in the bin directory under the install path. In the bin directory
+   is also installed a java-based setup program called 'thepeg' which
+   enables you to setup and run event generators using a GUI. All
+   header files will be installed in the 'include/ThePEG' directory
+   under the install path, and some sample setup files and a sample
+   makefile is installed in the 'share/ThePEG' directory together with
+   an emacs lisp file 'ThePEG.el' with some functions for creating
+   skeletons of new ThePEG classes.
 
 Note that ThePEG is a framework for implementing event generator
 models, and by itself it does not contain enough physics models to
@@ -81,7 +79,7 @@ Briefly, the running of ThePEG is divided into two steps:
 ===========================================================================
 
     Toolkit for High Energy Physics Event Generation - ThePEG
-    Copyright (C) 1999-2009 Leif Lonnblad
+    Copyright (C) 1999-2011 Leif Lonnblad
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2 as 
