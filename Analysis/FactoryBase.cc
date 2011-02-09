@@ -123,17 +123,14 @@ void FactoryBase::Init() {
 
 }
 
-inline 
 AIDA::ITree & FactoryBase::tree() const { 
   return *theTree; 
 }
 
-inline 
 AIDA::IHistogramFactory & FactoryBase::histogramFactory() const {
   return *theHistogramFactory;
 }
 
-inline 
 AIDA::IDataPointSetFactory & FactoryBase::dataSetFactory() const {
   return *theDataSetFactory;
 }
