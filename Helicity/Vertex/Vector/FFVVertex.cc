@@ -244,7 +244,7 @@ SpinorWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
   // calculation of propagator accurate as beta->1 and theta -> 0
   Energy2 dot = 2.*Ef*Eg*(sqr(mass/Ef)/(1.+beta)*ctheta 
 			  + sqr(stheta)/(1.+ctheta) );
-  Complex fact= -norm()*UnitRemoval::E2/dot;
+  Complex fact=  norm()*(0.5*left()+0.5*right())*UnitRemoval::E2/dot;
   // phase factor
   Complex ephig = cos(phi )+ii*sin(phi );
   // calculation of the spinor
@@ -370,7 +370,7 @@ SpinorBarWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
   // calculation of propagator accurate as beta->1 and theta -> 0
   Energy2 dot = 2.*Ef*Eg*(sqr(mass/Ef)/(1.+beta)*ctheta 
 			  + sqr(stheta)/(1.+ctheta) );
-  Complex fact= -norm()*UnitRemoval::E2/dot;
+  Complex fact=  norm()*(0.5*left()+0.5*right())*UnitRemoval::E2/dot;
   // calculation of the spinor
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
   Complex ephig = cos(phi )+ii*sin(phi );
