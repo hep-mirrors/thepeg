@@ -127,10 +127,25 @@ inline bool member(const vector<T> & v, const Key & k) {
   // return find(v.begin(), v.end(), k) != v.end();
 }
 
-/** Return a insert iterator for a given container. */
+/** Return an insert iterator for a given container. */
 template <typename Cont>
 inline std::insert_iterator<Cont> inserter(Cont & c) {
   return std::insert_iterator<Cont>(c, c.end());
+}
+
+
+/** Return an insert iterator for a given vector. Overrides the
+ *  general version. */
+template <typename T, typename A>
+inline std::back_insert_iterator< vector<T,A> > inserter(vector<T,A> & v) {
+  return back_inserter(v);
+}
+
+/** Return an insert iterator for a given vector. Overrides the
+ *  general version. */
+template <typename T, typename A>
+inline std::back_insert_iterator< deque<T,A> > inserter(deque<T,A> & v) {
+  return back_inserter(v);
 }
 
 /** Stream manipulator setting an ostream to left-adjust its ouput. */
