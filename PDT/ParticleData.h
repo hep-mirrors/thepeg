@@ -257,12 +257,14 @@ public:
 
   /**
    * Get the life time cTau cTau. If no life time is specified, it is
-   * calculated from the width.
+   * calculated from the width. If the width is also not specified,
+   * the lifetime is assumed to be zero for ustable particles and
+   * infinite for stable ones.
    */
   Length cTau() const {
     return theCTau > Length() ? theCTau :
       ( theWidth > ZERO ? hbarc/theWidth :
-	( theWidth == ZERO ? Constants::MaxLength : Length() ) );
+	( stable() ? Constants::MaxLength : Length() ) );
   }
 
   /**
