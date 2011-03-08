@@ -27,6 +27,10 @@
 
 #include <cstdlib>
 
+#ifdef ThePEG_HAS_FENV
+#include <fenv.h>
+#endif
+
 using namespace ThePEG;
 
 void DynamicLoader::dlname(string sofile) {
@@ -67,11 +71,17 @@ string DynamicLoader::dlnameversion(string libs) {
 bool DynamicLoader::loadcmd(string file) {
 #ifdef ThePEG_HAS_DLOPEN
   dlname(file);
+#ifdef ThePEG_HAS_FENV
+  int oldfpe = fegetexcept();
+#endif
   bool ret = dlopen(file.c_str(), RTLD_LAZY|RTLD_GLOBAL) != 0;
+#ifdef ThePEG_HAS_FENV
+  feenableexcept(oldfpe);
+#endif
   if ( !ret ) lastErrorMessage += string(dlerror()) + string("\n");
   return ret;
 #else
-#error ThePEG can only be run on platforms which supports
+#error ThePEG can only be run on platforms which support
 #error dynamic loading.
   return false;
 #endif

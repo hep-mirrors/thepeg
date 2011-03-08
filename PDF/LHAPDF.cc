@@ -37,6 +37,9 @@
 #ifdef ThePEG_HAS_FPU_CONTROL
 #include <fpu_control.h>
 #endif
+#ifdef ThePEG_HAS_FENV
+#include <fenv.h>
+#endif
 
 using namespace ThePEG;
 
@@ -78,9 +81,20 @@ struct TmpMaskFpuDenorm {
     }
   }
 #else
+#ifdef ThePEG_HAS_FENV
+  int oldexcept;
+  TmpMaskFpuDenorm() {
+    oldexcept = fegetexcept();
+    fedisableexcept(FE_INEXACT);
+  }
+  ~TmpMaskFpuDenorm() {
+    feenableexcept(oldexcept);
+  }
+#else  
   TmpMaskFpuDenorm() {
     Debug::maskFpuDenorm();
   }
+#endif
 #endif
 };
 
