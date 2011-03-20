@@ -717,10 +717,13 @@ void EventGenerator::logWarning(const Exception & ex) {
   if ( ex.severity() != Exception::info &&
        ex.severity() != Exception::warning ) throw ex;
   ex.handle();  
-  if ( count(ex) > maxWarnings ) return;
+  int c = count(ex);
+  if ( c > maxWarnings ) return;
   printException(ex);
+  if ( c == maxWarnings )
+    log() << "No more warnings of this kind will be reported." << endl;
 }
-
+ 
 bool EventGenerator::
 logException(const Exception & ex, tcEventPtr event) {
   bool noEvent = !event;
