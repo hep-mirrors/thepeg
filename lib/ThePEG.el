@@ -202,16 +202,16 @@ void THECLASS::persistentInput(PersistentIStream & is, int) {
 
   (setq description (cond (persistent (cond (concrete "
 DescribeClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")
+  describeTHENAMESPACETHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")
 					    (t "
 DescribeAbstractClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")))
+  describeTHENAMESPACETHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")))
 			  (t (cond (concrete "
 DescribeNoPIOClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")
+  describeTHENAMESPACETHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")
 				   (t "
 DescribeAbstractNoPIOClass<THECLASS,THEBASE>
-  describeTHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")))))
+  describeTHENAMESPACETHECLASS(\"THENAMESPACE::THECLASS\", \"THECLASS.so\");")))))
 
   (thepeg-replace
    "THENAMESPACE" namespace
@@ -567,6 +567,44 @@ protected:
 		    "THECLASS" class
 		    thepeg-typetraits-decl)))))
 
+(defconst thepeg-type-desc "
+// Static variable needed for the type description system in ThePEG.
+#include \"ThePEG/Utilities/DescribeClass.h\"
+DescribeABSTRACTNOPIOClass<THECLASS,THEBASE>
+  describeTHENAMESPACETHECLASS(\"THENAMESPACE::THECLASS\", \"THELIBRARY.so\");
+")
+
+(defun ThePEG-type-desc ()
+  "Insert default declarations of the standard ThePEG type description system."
+  (interactive)
+  (setq fullclass (read-from-minibuffer "Class Name: "
+					(file-name-sans-extension
+					 (file-name-nondirectory
+					  (buffer-file-name)))))
+  (setq base (read-from-minibuffer "Base class Name: "))
+  (setq persist (y-or-n-p "Will this class be persistent "))
+  (setq concrete (y-or-n-p "Will this class be concrete "))
+  (setq mainlib (y-or-n-p "Will this class be in a main library file "))
+  (setq class (thepeg-get-class fullclass))
+  (setq namespace (thepeg-get-namespace fullclass))
+  (setq abstract (cond (concrete "") (t "Abstract")))
+  (setq nopio (cond (persist "") (t "NoPIO")))
+  (setq library (cond (mainlib (concat "lib" namespace)) (t class)))
+
+  (insert-string (thepeg-replace
+		  "THELIBRARY" library
+		  (thepeg-replace
+		   "ABSTRACT" abstract
+		   (thepeg-replace
+		    "NOPIO" nopio
+		    (thepeg-replace
+		     "THENAMESPACE" namespace
+		     (thepeg-replace
+		      "THEBASE" base
+		      (thepeg-replace
+		       "THECLASS" class
+		       thepeg-type-desc))))))))
+		 
 (defun thepeg-header (namespace class base baseheader persistent
 				concrete interfaced specialfn)
   "Return a skeleton suitable for the header file of a class CLASS
