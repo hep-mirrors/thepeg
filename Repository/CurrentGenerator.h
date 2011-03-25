@@ -178,7 +178,8 @@ public:
     Redirect(ostream & os, bool internal = false)
       : theStream(&os), theBuffer(os.rdbuf()) {
       if ( internal ) theStream->rdbuf(intStream.rdbuf());
-      else theStream->rdbuf(current().misc().rdbuf());
+      else if ( !current().useStdOut() )
+	theStream->rdbuf(current().misc().rdbuf());
     }
 
     /**

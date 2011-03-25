@@ -62,7 +62,12 @@ public:
   /**
    * Return the largest value so far.
    */
-  operator const T & () const { return max; }
+  operator const T & () const { return value(); }
+
+  /**
+   * Return the largest value so far.
+   */
+  const T & value() const { return max; }
 
   /**
    * Return the index of the largest object seen so far.
