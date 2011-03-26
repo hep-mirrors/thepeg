@@ -1,3 +1,10 @@
+2011-03-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* src/runThePEG.cc, Repository/EventGenerator.h: Aded possibility
+	to add a tag when running so that one .run file can be run
+	eg. with different seeds which then also can result in different
+	output files.
+
 2011-03-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h: Added value() function for situations where

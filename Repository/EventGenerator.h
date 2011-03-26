@@ -532,6 +532,15 @@ protected:
    */
   void runName(string f) { theRunName = f; }
 
+public:
+
+  /**
+   * Append a tag to the run name.
+   */
+  void addTag(string tag) {
+    runName(runName() + tag);
+  }
+
 private:
 
   /**

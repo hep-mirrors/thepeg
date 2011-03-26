@@ -25,6 +25,7 @@ int main(int argc, char * argv[]) {
   bool tics = false;
   bool resume = false;
   bool keepid = false;
+  string tag = "";
 
   for ( int iarg = 1; iarg < argc; ++iarg ) {
     string arg = argv[iarg];
@@ -48,6 +49,9 @@ int main(int argc, char * argv[]) {
     else if ( arg == "--tics" || arg == "-tics" ) tics = true;
     else if ( arg == "--resume" ) resume = true;
     else if ( arg == "--keepid" ) keepid = true;
+    else if ( arg == "-t" ) tag = argv[++iarg];
+    else if ( arg.substr(0,2) == "-t" ) tag = arg.substr(2);
+    else if ( arg.substr(0,6) == "--tag=" ) tag = arg.substr(6);
     else if ( arg == "--help" || arg == "-h" ) {
     cerr << "Usage: " << argv[0] << " [-d {debuglevel|-debugitem}] "
 	 << "[-l load-path] [-L first-load-path] run-file" << endl;
@@ -82,11 +86,12 @@ int main(int argc, char * argv[]) {
     breakThePEG();
 
     if ( !eg ) {
-      std::cout << "eg = nil" << endl;
+      cout << "Could not find or read the requested EventGenerator." << endl;
       return 1;
     }
 
     if ( seed > 0 ) eg->setSeed(seed);
+    if ( !tag.empty() ) eg->addTag(tag);
     if ( !mainclass.empty() ) {
       Main::arguments(vector<string>(argv + 1, argv + argc));
       Main::N(N);
