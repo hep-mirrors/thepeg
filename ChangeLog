@@ -1,3 +1,8 @@
+2011-03-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Vectors/LorentzVector.h: Fixed bug where dirPlus, dirMinus and
+	dirZ returned double rather than templated value type.
+
 2011-03-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runThePEG.cc, Repository/EventGenerator.h: Aded possibility

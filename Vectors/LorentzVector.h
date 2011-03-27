@@ -636,21 +636,21 @@ inline ostream & operator<< (ostream & os, const LorentzVector<double> & v) {
 /** Return the positive light-cone component. Or negative if the
  *  current Direction<0> is reversed. */
 template <typename Value>
-inline double dirPlus(const LorentzVector<Value> & p) {
+inline Value dirPlus(const LorentzVector<Value> & p) {
   return Direction<0>::pos()? p.plus(): p.minus();
 }
 
 /** Return the negative light-cone component. Or positive if the
  *  current Direction<0> is reversed. */
 template <typename Value>
-inline double dirMinus(const LorentzVector<Value> & p) {
+inline Value dirMinus(const LorentzVector<Value> & p) {
   return Direction<0>::neg()? p.plus(): p.minus();
 }
 
 /** Return the component along the positive z-axis. Or the negative
  *  z-axis if the current Direction<0> is reversed. */
 template <typename Value>
-inline double dirZ(const LorentzVector<Value> & p) {
+inline Value dirZ(const LorentzVector<Value> & p) {
   return Direction<0>::dir()*p.z();
 }
 
