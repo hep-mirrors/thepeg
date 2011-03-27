@@ -45,7 +45,7 @@ int main(int argc, char * argv[]) {
       Debug::setDebug(atoi(arg.substr(2).c_str()));
     else if ( arg == "-N" ) N = atoi(argv[++iarg]);
     else if ( arg.substr(0,2) == "-N" ) N = atoi(arg.substr(2).c_str());
-    else if ( arg == "--seed" || arg == "-seed" ) seed = atoi(argv[++iarg]);
+    else if ( arg == "--seed" || arg == "-seed" ) seed = atol(argv[++iarg]);
     else if ( arg == "--tics" || arg == "-tics" ) tics = true;
     else if ( arg == "--resume" ) resume = true;
     else if ( arg == "--keepid" ) keepid = true;
