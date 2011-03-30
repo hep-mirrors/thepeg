@@ -17,11 +17,14 @@ DebugItem::DebugItem(string itemname, int level): debug(false) {
     if ( ticker() >= it->second ) debug = true;
     else itemtics().insert(make_pair(it->second, this));
   } else {
-    itemname = itemname.substr(0, itemname.rfind("::")) + "::all";
-    it = nametics().find(itemname);
-    if ( it != nametics().end() ) {
-      if ( ticker() >= it->second ) debug = true;
-      else itemtics().insert(make_pair(it->second, this));
+    while ( itemname.rfind("::") != string::npos ) {
+      itemname = itemname.substr(0, itemname.rfind("::")) + "::all";
+      it = nametics().find(itemname);
+      if ( it != nametics().end() ) {
+	if ( ticker() >= it->second ) debug = true;
+	else itemtics().insert(make_pair(it->second, this));
+      }
+      itemname = itemname.substr(0, itemname.rfind("::"));
     }
   }
 }
