@@ -27,16 +27,20 @@ public:
   //@{
   /**
    * The only relevant constructor. The string should typically be on
-   * the form "namspace::class::function".
+   * the form "namspace::class::function". If the Debug::level is
+   * larger than or equal to the given \a level this DebugItem will be
+   * turned on.
    */
-  DebugItem(string itemname);
+  DebugItem(string itemname, int level = 100);
   //@}
 
 public:
 
   /**
    * Switch on all DebugItem objects matching the given string. If \a
-   * after is positive delay the DebugItem until that number of tics.
+   * after is positive delay the DebugItem until that number of
+   * tics. If the string is on the form "<name>=<int>" the integer
+   * will be taken as the delay.
    */
   static void setDebugItem(string itemname, long after = 0);
 
@@ -71,7 +75,7 @@ private:
   /**
    * The DebugItem objects registered, indexed by their name.
    */
-  static map<string,DebugItem*> & items();
+  static multimap<string,DebugItem*> & items();
 
   /**
    * The DebugItem objects registered, indexed by the tic at which

@@ -17,6 +17,7 @@
 #include "Repository.h"
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Debug.h"
+#include "ThePEG/Utilities/DebugItem.h"
 #include "ThePEG/Interface/Interfaced.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
@@ -405,11 +406,14 @@ void EventGenerator::go(long next, long maxevent, bool tics) {
 }
 
 EventPtr EventGenerator::shoot() {
+  static DebugItem debugfpu("ThePEG::FPU", 1);
+  if ( debugfpu ) Debug::unmaskFpuErrors();
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
   checkSignalState();
   EventPtr event = doShoot();
   if ( event ) weightSum += event->weight();
+  DebugItem::tic();
   return event;
 }
 

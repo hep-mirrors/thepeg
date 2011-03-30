@@ -9,8 +9,9 @@
 
 using namespace ThePEG;
 
-DebugItem::DebugItem(string itemname): debug(false) {
-  items()[itemname] = this;
+DebugItem::DebugItem(string itemname, int level): debug(false) {
+  if ( level <= Debug::level ) debug = true;
+  items().insert(make_pair(itemname, this));
   map<string,long>::iterator it = nametics().find(itemname);
   if ( it != nametics().end() ) {
     if ( ticker() >= it->second ) debug = true;
@@ -34,15 +35,20 @@ void DebugItem::tic() {
 }
 
 void DebugItem::setDebugItem(string itemname, long after) {
+  typedef multimap<string,DebugItem*>::iterator ItemIt;
+  if ( itemname.rfind('=') != string::npos ) {
+    after =  atoi(itemname.substr(itemname.rfind('=') + 1).c_str());
+    itemname = itemname.substr(0, itemname.rfind('='));
+  }
   nametics()[itemname] = after;
-  map<string,DebugItem*>::iterator it = items().find(itemname);
-  if ( it != items().end() ) {
-    if ( ticker() >= after ) it->second->debug = true;
-    else itemtics().insert(make_pair(after, it->second));
-  } else if ( itemname.substr(itemname.length() - 5) == "::all" ) {
+  pair<ItemIt,ItemIt> range = items().equal_range(itemname);
+  while ( range.first != range.second ) {
+    if ( ticker() >= after ) (range.first++)->second->debug = true;
+    else itemtics().insert(make_pair(after, (range.first++)->second));
+  }
+  if ( itemname.substr(itemname.length() - 5) == "::all" ) {
     itemname = itemname.substr(itemname.length() - 3);
-    for ( map<string,DebugItem*>::iterator it = items().begin();
-	  it != items().end(); ++it )
+    for ( ItemIt it = items().begin(); it != items().end(); ++it )
       if ( it->first.substr(0, itemname.length()) == itemname ) {
 	if ( ticker() >= after ) it->second->debug = true;
 	else itemtics().insert(make_pair(after, it->second));
@@ -55,8 +61,8 @@ long & DebugItem::ticker() {
   return tics;
 }
 
-map<string,DebugItem*> & DebugItem::items() {
-  static map<string,DebugItem*> itemmap;
+multimap<string,DebugItem*> & DebugItem::items() {
+  static multimap<string,DebugItem*> itemmap;
   return itemmap;
 }
 

@@ -10,6 +10,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/PDT/StandardMatchers.h"
 #include "ThePEG/Utilities/Debug.h"
+#include "ThePEG/Utilities/DebugItem.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Repository/Main.h"
@@ -43,6 +44,7 @@ int main(int argc, char * argv[]) {
     else if ( arg == "-d" ) Debug::setDebug(atoi(argv[++iarg]));
     else if ( arg.substr(0,2) == "-d" )
       Debug::setDebug(atoi(arg.substr(2).c_str()));
+    else if ( arg.substr(0,2) == "-D" ) DebugItem::setDebugItem(arg.substr(2));
     else if ( arg == "-N" ) N = atoi(argv[++iarg]);
     else if ( arg.substr(0,2) == "-N" ) N = atoi(arg.substr(2).c_str());
     else if ( arg == "--seed" || arg == "-seed" ) seed = atol(argv[++iarg]);
