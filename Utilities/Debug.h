@@ -72,7 +72,7 @@ public:
   {
     if ( level == noDebug ) return false;
     if ( level == full ) return true;
-    return ( item < 0 || size_t(item) >= debugItems.size() )? false:
+    return ( item < 0 || std::size_t(item) >= debugItems.size() )? false:
       debugItems[item];
   }
 

@@ -357,9 +357,6 @@ SpinorBarWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
   if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
   Lorentz5Momentum pout = sbar.momentum()+vec.momentum();
   assert(sbar.direction()!=intermediate);
-  // extract the momenta of the fermion and boson
-  Lorentz5Momentum pf = -sbar.momentum();
-  Lorentz5Momentum pg = -vec .momentum();
   // helicity of the boson
   double lam = double(vhel)-1.;
   // energies and velocities

@@ -33,7 +33,8 @@ if test "x$with_hepmc" != "xno"; then
 	oldLIBS="$LIBS"
 	oldLDFLAGS="$LDFLAGS"
 	oldCPPFLAGS="$CPPFLAGS"
-	LIBS="$LIBS $HEPMCLIBS"
+	LIBS="$LIBS `echo $HEPMCLIBS | sed -e 's!-R.* ! !'`"
+	echo $LIBS
 	LDFLAGS="$LDFLAGS"
 	CPPFLAGS="$CPPFLAGS $HEPMCINCLUDE"
 
