@@ -174,7 +174,7 @@ public:
   unsigned int orderInGs() const { return _ordergS; }
   //@}
 
-protected:
+public:
 
   /**
    * @name Calculation of the strong, electromagnetic and weak couplings
