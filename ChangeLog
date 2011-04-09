@@ -1,3 +1,8 @@
+2011-04-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/MaxCmp.h: Fixed ininitialized index value in
+	constructor.
+
 2011-03-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/DebugItem.*: Introduced new class to enable selective

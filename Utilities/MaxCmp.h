@@ -35,12 +35,12 @@ public:
   /**
    * The default constructor.
    */
-  MaxCmp() : init(false), max(T()) {}
+  MaxCmp() : init(false), max(T()), indx(Indx()) {}
 
   /**
    * Constructor specifying an initial maximum value, \a t.
    */
-  MaxCmp(const T & t) : init(true), max(t) {}
+  MaxCmp(const T & t, Indx in = Indx()) : init(true), max(t), indx(in) {}
 
 public:
 
@@ -116,7 +116,7 @@ public:
   /**
    * Constructors are not inherited.
    */
-  MinCmp(const T & t) : MaxCmp<T, Indx, less<T> >(t) {}
+  MinCmp(const T & t, Indx in = Indx()) : MaxCmp<T, Indx, less<T> >(t, in) {}
   
 };
 
