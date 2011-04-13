@@ -1230,7 +1230,7 @@ void EventGenerator::Init() {
      "The maximum number of errors of each type which will be tolerated. "
      "If more errors are reported, the run will be aborted.",
      &EventGenerator::maxErrors,
-     10, 1, 100000, true, false, Interface::lowerlim);
+     10, -1, 100000, true, false, Interface::lowerlim);
 
   static Parameter<EventGenerator,long> interfaceQuickSize
     ("QuickSize",

@@ -1017,7 +1017,7 @@ private:
   int printEvent;
 
   /**
-   * If the dubug level is higher than 0, dump the complete state of
+   * If the debug level is higher than 0, dump the complete state of
    * this run to the default dump file every 'dumpPeriod' events.
    * If 'dumpPeriod' is -1, dumping is disabled completely,
    * even when runs are aborted.
@@ -1025,7 +1025,7 @@ private:
   long dumpPeriod;
 
   /**
-   * If the dubug level is higher than 0, step up to the highest debug
+   * If the debug level is higher than 0, step up to the highest debug
    * level just before the event with number debugEvent is performed.
    */
   long debugEvent;
@@ -1040,7 +1040,7 @@ private:
   /**
    * The maximum number of warnings and errors reported of each
    * type. If more than maxErrors errors is reported for one type the
-   * run will be aborted.
+   * run will be aborted. Disable the check by setting to -1.
    */
   int maxErrors;
 
