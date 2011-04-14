@@ -82,6 +82,41 @@ public:
   }
 
   /**
+   * Return a reference to the currently chosen object.
+   */
+  EventGenerator & operator*() const {
+    return *theGeneratorStack.back();
+  }
+
+  /**
+   * Return a pointer to the currently chosen object.
+   */
+  EventGenerator * operator->() const {
+    return theGeneratorStack.back();
+  }
+
+  /**
+   *  Pointer to the stack
+   */
+  static EventGenerator * ptr() {
+    return theGeneratorStack.back();
+  }
+
+  /**
+   * Test for existance
+   */
+  operator bool() const {
+    return ptr();
+  }
+
+  /**
+   * Test for existance
+   */
+  bool operator!() const {
+    return !ptr();
+  }
+
+  /**
    * Return a pointer to the standard model parameters used by the
    * current generator.
    */
