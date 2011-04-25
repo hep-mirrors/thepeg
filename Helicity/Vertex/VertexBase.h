@@ -200,9 +200,9 @@ public:
    */
   double electroMagneticCoupling(Energy2 q2) const {
     if(_coupopt==0)
-      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM(q2));
+      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEMME(q2));
     else if(_coupopt==1)
-      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM());
+      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEMMZ());
     else
       return _ee;
   }
@@ -212,10 +212,10 @@ public:
    */
   double weakCoupling(Energy2 q2) const {
     if( _coupopt == 0 )
-      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM(q2)/
+      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEMME(q2)/
 		  generator()->standardModel()->sin2ThetaW());
     else if( _coupopt == 1 )
-      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEM()/
+      return sqrt(4.0*Constants::pi*generator()->standardModel()->alphaEMMZ()/
 		  generator()->standardModel()->sin2ThetaW());
     else
       return _ee/_sw;

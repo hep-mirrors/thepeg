@@ -23,12 +23,13 @@
 using namespace ThePEG;
 
 StandardModelBase::StandardModelBase()
-  : theFamilies(3), theAlphaEM(1.0/137.04), theSin2ThetaW(0.232),
-    theGF(1.16637e-5/GeV2),
+  : theFamilies(3), theAlphaEM(1.0/137.04), theAlphaEMMZ(1.0/128.91),
+    theSin2ThetaW(0.232), theGF(1.16637e-5/GeV2),
     theEnu(0.0), theEe(-1.0), theEu(2.0/3.0), theEd(-1.0/3.0),
     theVnu(1.0), theVe(-0.072), theVu(0.381333333), theVd(-0.690666666),
     theAnu(1.0), theAe(-1.0), theAu(1.0), theAd(-1.0), recalculateEW(1),
-    theNc(3), theAlphaS(0.2) {}
+    theNc(3), theAlphaS(0.2), theElectroWeakScheme(0),
+    theBosonWidthOption(0) {}
 
 StandardModelBase::~StandardModelBase() {}
 
@@ -41,6 +42,44 @@ IBPtr StandardModelBase::fullclone() const {
 }
 
 void StandardModelBase::doinit() {
+  // calculation of the electroweak parameters
+  // get the default values
+  PDPtr Wplus = getParticleData(ParticleID::Wplus);
+  PDPtr Z0    = getParticleData(ParticleID::Z0   );
+  Energy mw    = Wplus->mass(), mz    = Z0->mass();
+  double sw2   = sin2ThetaW();
+  double alpha = theAlphaEMMZ;
+  // recalculate if needed
+  if(theElectroWeakScheme==1) {
+    sw2   = 1.-sqr(mw/mz);
+    alpha = sqrt(2.)*fermiConstant()*sqr(mw)*sw2/Constants::pi;
+  }
+  else if(theElectroWeakScheme==2) {
+    sw2   = 1.-sqr(mw/mz);
+  }
+  else if(theElectroWeakScheme==3) {
+    mw = sqrt(4.*Constants::pi*alpha/4./sqrt(2.)/fermiConstant()/sw2);
+    mz = mw/sqrt(1.-sw2);
+  }
+  else if(theElectroWeakScheme==4) {
+    mz = mw/sqrt(1.-sw2);
+    alpha = 4.*sqrt(2.)*fermiConstant()*sqr(mw)*sw2/4./Constants::pi;
+  }
+  else  if(theElectroWeakScheme==5) {
+    mw = mz*sqrt(1.-sw2);
+  }
+  // reset if needed
+  if(theElectroWeakScheme!=0) {
+    recalculateEW = true;
+    theSin2ThetaW = sw2;
+    theAlphaEMMZ  = alpha;
+    ostringstream os;
+    os << mw/GeV;
+    generator()->preinitInterface(Wplus, "NominalMass", "set", os .str());
+    ostringstream os2;
+    os2 << mz/GeV;
+    generator()->preinitInterface(Z0   , "NominalMass", "set", os2.str());
+  }
   if ( recalculateEW ) {
     theAnu = theEnu < 0? -1.0: 1.0;
     theAe = theEe < 0? -1.0: 1.0;
@@ -55,11 +94,28 @@ void StandardModelBase::doinit() {
   theCKM->init();
   theRunningAlphaS->init();
   theCKM2Matrix = theCKM->getMatrix(families());
+  // calculate W/Z widths if needed
+  if(theBosonWidthOption!=0) {
+    InvEnergy2 GF = 4.*Constants::pi*alpha/4./sqrt(2.)/sqr(mw)/sw2;
+    double aSpi = theBosonWidthOption > 1 ? .1184/Constants::pi : 0.;
+    double C = 1.+aSpi + sqr(aSpi)*(1.409-12.77*aSpi-80.0*sqr(aSpi));
+    Energy widthW = GF*pow<3,1>(mw)/(6.*sqrt(2.)*Constants::pi)*
+      3.*(1.+C*(CKM(1,1)+CKM(1,2)+CKM(1,3)+CKM(2,1)+CKM(2,2)+CKM(2,3)));
+    Energy widthZ = 0.25*GF*pow<3,1>(mz)/(6.*sqrt(2.)*Constants::pi)*
+      (3.  *(sqr(theVnu)+sqr(theAnu)) + 3.  *(sqr(theVe )+sqr(theAe )) +
+       9.*C*(sqr(theVd )+sqr(theAd )) + 6.*C*(sqr(theVu )+sqr(theAu )));
+    ostringstream os;
+    os << widthW/GeV;
+    generator()->preinitInterface(Wplus, "Width"       , "set", os .str());
+    ostringstream os2;
+    os2 << widthZ/GeV;
+    generator()->preinitInterface(Z0   , "Width"       , "set", os2.str());
+  }
   Interfaced::doinit();
 }
 
 double StandardModelBase::CKM(unsigned int uFamily,
-				     unsigned int dFamily) const {
+			      unsigned int dFamily) const {
   if ( theCKM2Matrix.empty() ) theCKM2Matrix = theCKM->getMatrix(families());
   if ( uFamily >= theCKM2Matrix.size() ) return 0.0;
   const vector<double> & row = theCKM2Matrix[uFamily];
@@ -75,17 +131,21 @@ double StandardModelBase::CKM(const ParticleData & uType,
 }
 
 void StandardModelBase::persistentOutput(PersistentOStream & os) const {
-  os << theFamilies << theAlphaEM << theRunningAlphaEM << theSin2ThetaW
+  os << theFamilies << theAlphaEM << theAlphaEMMZ
+     << theRunningAlphaEM << theSin2ThetaW
      << theEnu << theEe << theEu << theEd << theVnu << theVe << theVu << theVd
      << theAnu << theAe << theAu << theAd << recalculateEW << theCKM
-     << theNc << theAlphaS << theRunningAlphaS << ounit(theGF,1./GeV2);
+     << theNc << theAlphaS << theRunningAlphaS << ounit(theGF,1./GeV2)
+     << theElectroWeakScheme << theBosonWidthOption;
 }
 
 void StandardModelBase::persistentInput(PersistentIStream & is, int) {
-  is >> theFamilies >> theAlphaEM >> theRunningAlphaEM >> theSin2ThetaW
+  is >> theFamilies >> theAlphaEM >> theAlphaEMMZ
+     >> theRunningAlphaEM >> theSin2ThetaW
      >> theEnu >> theEe >> theEu >> theEd >> theVnu >> theVe >> theVu >> theVd
      >> theAnu >> theAe >> theAu >> theAd >> recalculateEW >> theCKM
-     >> theNc >> theAlphaS >> theRunningAlphaS >> iunit(theGF,1./GeV2);
+     >> theNc >> theAlphaS >> theRunningAlphaS >> iunit(theGF,1./GeV2)
+     >> theElectroWeakScheme >> theBosonWidthOption;
 }
 
 ClassDescription<StandardModelBase> StandardModelBase::initStandardModelBase;
@@ -106,7 +166,13 @@ void StandardModelBase::Init() {
   static Parameter<StandardModelBase,double> interfaceAlphaEM
     ("EW/AlphaEM",
      "The electro-magnetic coupling constant at zero momentum transfer.",
-     &StandardModelBase::theAlphaEM, 1.0/137.04, 0.0, 100.0,
+     &StandardModelBase::theAlphaEM, 1.0/137.04, 0.0, 1.0,
+     false, false, true);
+
+  static Parameter<StandardModelBase,double> interfaceAlphaEMMZ
+    ("EW/AlphaEMMZ",
+     "The electro-magnetic coupling constant at the Z mass.",
+     &StandardModelBase::theAlphaEMMZ, 1.0/128.91, 0.0, 1.0,
      false, false, true);
 
   static Reference<StandardModelBase,AlphaEMBase> interfaceRunningAlphaEM
@@ -207,6 +273,61 @@ void StandardModelBase::Init() {
      "Reference to an object capable of calculating the square of the "
      "elements of the Cabibbo-Kobayashi-Maskawa flavour mixing matrix",
      &StandardModelBase::theCKM, false, false, true, false);
+  
+  static Switch<StandardModelBase,unsigned int> interfaceElectroWeakScheme
+    ("EW/Scheme",
+     "Option for the definition of the electroweak parameters",
+     &StandardModelBase::theElectroWeakScheme, 0, false, false);
+  static SwitchOption interfaceElectroWeakSchemeDefault
+    (interfaceElectroWeakScheme,
+     "Default",
+     "Use the best values for all the electroweak parameters, which can be inconsistent.",
+     0);
+  static SwitchOption interfaceElectroWeakSchemeGMuScheme
+    (interfaceElectroWeakScheme,
+     "GMuScheme",
+     "Use the G_mu scheme, input parameters mW,mZ and GF",
+     1);
+  static SwitchOption interfaceElectroWeakSchemealphaMZScheme
+    (interfaceElectroWeakScheme,
+     "alphaMZScheme",
+     "Use the alpha_MZ scheme, input parameters mW, mZ and alpha(mZ)",
+     2);
+  static SwitchOption interfaceElectroWeakSchemeNoMass
+    (interfaceElectroWeakScheme,
+     "NoMass",
+     "Input parameters alpha(mZ),GF,sin2thetaW",
+     3);
+  static SwitchOption interfaceElectroWeakSchememW
+    (interfaceElectroWeakScheme,
+     "mW",
+     "Input parameters mW, GF and sin2thetaW",
+     4);
+  static SwitchOption interfaceElectroWeakSchememZ
+    (interfaceElectroWeakScheme,
+     "mZ",
+     "Input parameters mZ, alphaEM and sin2thetaW",
+     5);
+
+  static Switch<StandardModelBase,unsigned int> interfaceEWBosonWidth
+    ("EW/BosonWidth",
+     "Option for the calculation of the W and Z boson widths",
+     &StandardModelBase::theBosonWidthOption, 0, false, false);
+  static SwitchOption interfaceEWBosonWidthExperiment
+    (interfaceEWBosonWidth,
+     "Experiment",
+     "Use the values from the ParticleData objects",
+     0);
+  static SwitchOption interfaceEWBosonWidthLeadingOrder
+    (interfaceEWBosonWidth,
+     "LeadingOrder",
+     "Calculate them using leading-order formulae",
+     1);
+  static SwitchOption interfaceEWBosonWidthHigherOrder
+    (interfaceEWBosonWidth,
+     "HigherOrder",
+     "Calculate them including higher order QCD corrections",
+     2);
 
   static Parameter<StandardModelBase,unsigned int> interfaceNc
     ("QCD/Nc",

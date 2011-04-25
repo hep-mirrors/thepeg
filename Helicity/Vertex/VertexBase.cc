@@ -147,7 +147,7 @@ void VertexBase::Init() {
   static Parameter<VertexBase,double> interfaceElectroMagneticCoupling
     ("ElectroMagneticCoupling",
      "The fixed value of the electromagnetic coupling to use",
-     &VertexBase::_ee, sqrt(4.*Constants::pi/137.04), 0.0, 10.0,
+     &VertexBase::_ee, sqrt(4.*Constants::pi/128.91), 0.0, 10.0,
      false, false, Interface::limited);
 
   static Parameter<VertexBase,double> interfaceSinThetaW

@@ -78,12 +78,30 @@ public:
   /** @name Functions accessing electro-weak parameters. */
   //@{
   /**
-   * Running \f$\alpha_{EM}\f$.
+   * Constant \f$\alpha_{EM}(q^2=0)\f$.
    */
   double alphaEM() const { return theAlphaEM; }
 
   /**
-   * Constant \f$\alpha_{EM}\f$.
+   * Constant \f$\alpha_{EM}(q^2=m_Z^2)\f$.
+   */
+  double alphaEMMZ() const { return theAlphaEMMZ; }
+
+  /**
+   *  The electromagnetic coupling for vertex classes
+   *  in a well defined self-consistent EW scheme if requested
+   */
+  double alphaEMME(Energy2 scale) {
+    if(theElectroWeakScheme==0)
+      return alphaEM(scale);
+    else if(scale>1e-6*GeV2)
+      return theAlphaEMMZ;
+    else
+      return theAlphaEMMZ;
+  }
+
+  /**
+   * Running \f$\alpha_{EM}\f$.
    */
   double alphaEM(Energy2 scale) const {
     return theRunningAlphaEM->value(scale, *this);
@@ -256,6 +274,13 @@ public:
    */
   static void Init();
 
+  /**
+   * Overloaded function from Interfaced
+   */
+  virtual bool preInitialize() const {
+    return true;
+  }
+
 protected:
 
   /** @name Clone Methods. */
@@ -298,6 +323,11 @@ private:
    * The constant \f$\alpha_{EM}\f$.
    */
   double theAlphaEM;
+
+  /**
+   * The constant \f$\alpha_{EM}\f$.
+   */
+  double theAlphaEMMZ;
 
   /**
    * Pointer to an object capable of calculating the running
@@ -408,6 +438,15 @@ private:
    */
   ASPtr theRunningAlphaS;
 
+  /**
+   *  Electroweak scheme
+   */
+  unsigned int theElectroWeakScheme;
+
+  /**
+   *  Option for the calculation of the W/Z widths
+   */
+  unsigned int theBosonWidthOption;
 
 private:
 
