@@ -17,9 +17,13 @@ using namespace ThePEG;
 
 Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
 {
+  const Energy2 eps = 10.0*s*Constants::epsilon;
+  if ( m1 < ZERO && sqr(m1) < eps ) m1 = ZERO;
+  if ( m2 < ZERO && sqr(m2) < eps ) m2 = ZERO;
   if ( m1 >= ZERO && m2 >= ZERO ) {
     Energy2 aa = s - sqr(m1+m2);
-    if ( aa < Energy2() ) throw ImpossibleKinematics();
+    if ( aa < ZERO && aa > -eps ) return ZERO;
+    if ( aa < ZERO ) throw ImpossibleKinematics();
     return 0.5*sqrt(aa*(s-sqr(m1-m2))/s);
   }
   Energy2 m12 = m1 < ZERO? -sqr(m1): sqr(m1);

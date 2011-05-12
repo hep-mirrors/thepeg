@@ -1,3 +1,8 @@
+2011-05-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Utilities/SimplePhaseSpace.cc (getMagnitude): Made the function
+	safer against throwing exceptions due to rounding errors.
+
 2011-04-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/CurrentGenerator.h: Slight functionality enhancement
