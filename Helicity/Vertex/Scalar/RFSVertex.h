@@ -91,7 +91,7 @@ public:
   SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const RSSpinorWaveFunction & sp1, 
 			      const ScalarWaveFunction & sca3,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell spinor coming from the vertex.
@@ -108,7 +108,7 @@ public:
   RSSpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				const SpinorWaveFunction & sp1, 
 				const ScalarWaveFunction & sca3,
-				Energy mass=-GeV, Energy width=-GeV);
+				complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -125,7 +125,7 @@ public:
   SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				 const RSSpinorBarWaveFunction & sbar2,
 				 const ScalarWaveFunction & sca3,
-				 Energy mass=-GeV, Energy width=-GeV);
+				 complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -142,7 +142,7 @@ public:
   RSSpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				   const SpinorBarWaveFunction & sbar2,
 				   const ScalarWaveFunction & sca3,
-				   Energy mass=-GeV, Energy width=-GeV);
+				   complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -159,7 +159,7 @@ public:
   ScalarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const RSSpinorWaveFunction & sp1, 
 			      const SpinorBarWaveFunction & sbar2,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -176,7 +176,7 @@ public:
   ScalarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1, 
 			      const RSSpinorBarWaveFunction & sbar2,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
   //@}
 
   /**

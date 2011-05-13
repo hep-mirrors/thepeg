@@ -60,7 +60,8 @@ Complex FFTVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
 SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const SpinorWaveFunction & sp,
 				       const TensorWaveFunction & ten,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // momentum of the outgoing fermion
   Lorentz5Momentum pout = ten.momentum()+sp.momentum();
   // set the couplings
@@ -69,7 +70,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // mass of the fermion
-  if(mass < ZERO) mass = out->mass();
+  if(mass.real() < ZERO) mass = out->mass();
   // overall factor
   Energy2 p2 = pout.m2();
   Complex fact = 0.125*norm()*propagator(iopt,p2,out,mass,width);
@@ -95,7 +96,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   vec.setY(a0p3*spt.s4()-a1p2*spt.s3());
   vec.setZ(a0p3*spt.s1()+a1m2*spt.s2());
   vec.setT(a0m3*spt.s2()+a1p2*spt.s1());
-  if(mass!=ZERO) {
+  if(mass.real()!=ZERO) {
     complex<Energy> dot = 4.*mass*trace;
     vec.setX(vec.x() + dot*spt.s1()); 
     vec.setY(vec.y() + dot*spt.s2());
@@ -113,7 +114,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   ferm[1] = UnitRemoval::InvE2 * fact*(-p1p2*vec.z()+p0p3*vec.t());
   ferm[2] = UnitRemoval::InvE2 * fact*( p0p3*vec.x()+p1m2*vec.y());
   ferm[3] = UnitRemoval::InvE2 * fact*( p1p2*vec.x()+p0m3*vec.y());
-  if(mass!=ZERO) {
+  if(mass.real()!=ZERO) {
     ferm[0] += UnitRemoval::InvE2 * fact*(mass*vec.x());
     ferm[1] += UnitRemoval::InvE2 * fact*(mass*vec.y());
     ferm[2] += UnitRemoval::InvE2 * fact*(mass*vec.z());
@@ -128,7 +129,8 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 					  const SpinorBarWaveFunction & sbar,
 					  const TensorWaveFunction & ten,
-					  Energy mass, Energy width) {
+					  complex<Energy> mass,
+					  complex<Energy> width) {
   // momentum of the outgoing fermion
   Lorentz5Momentum pout = ten.momentum()+sbar.momentum();
   // set the couplings
@@ -137,7 +139,7 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // trace of the tensor
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // mass of the fermion
-  if(mass < ZERO) mass = out->mass();
+  if(mass.real() < ZERO) mass = out->mass();
       // overall factor
   Energy2 p2 = pout.m2();
   Complex fact=0.125*norm()*propagator(iopt,p2,out,mass,width);
@@ -163,7 +165,7 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   vec.setY(a0m3*sbart.s4()+a1m2*sbart.s3());
   vec.setZ(a0m3*sbart.s1()-a1p2*sbart.s2());
   vec.setT(a0p3*sbart.s2()-a1m2*sbart.s1());
-  if(mass!=ZERO) {
+  if(mass.real()!=ZERO) {
     complex<Energy> dot = 4.*mass*trace;
     vec.setX(vec.x() + dot*sbart.s1()); 
     vec.setY(vec.y() + dot*sbart.s2());
@@ -181,7 +183,7 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   ferm[1] = UnitRemoval::InvE2 * fact*(-p1m2*vec.z()-p0m3*vec.t());
   ferm[2] = UnitRemoval::InvE2 * fact*(-p0m3*vec.x()+p1p2*vec.y());
   ferm[3] = UnitRemoval::InvE2 * fact*( p1m2*vec.x()-p0p3*vec.y());
-  if(mass!=ZERO) {
+  if(mass.real()!=ZERO) {
     ferm[0] += UnitRemoval::InvE2 * fact*mass*vec.x();
     ferm[1] += UnitRemoval::InvE2 * fact*mass*vec.y();
     ferm[2] += UnitRemoval::InvE2 * fact*mass*vec.z();
@@ -195,7 +197,8 @@ SpinorBarWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const SpinorWaveFunction & sp,
 				       const SpinorBarWaveFunction & sbar,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // calculating the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),out);
   Complex ii(0.,1.);
@@ -204,8 +207,8 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the prefactor
   Energy2 p2   = pout.m2();
   Complex fact = 0.125*norm()*propagator(iopt,p2,out,mass,width);
-  if(mass < ZERO) mass  = out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass  = out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   // spinor vector
   Complex aspin[4];
   LorentzSpinorBar<double> sbart=sbar.wave();
@@ -238,7 +241,7 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   complex<Energy2> diff=sp.m2()-sbar.m2();
   complex<InvEnergy> dotkam=dotka/mass2;
   Complex diffm =diff/mass2;
-  double p2m = p2/mass2;
+  Complex p2m = p2/mass2;
   // construct the vectors for the first two terms
   Complex veca[4],vecb[4];
 

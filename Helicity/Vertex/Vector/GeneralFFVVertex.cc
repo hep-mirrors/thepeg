@@ -34,9 +34,9 @@ void GeneralFFVVertex::Init() {
 
 // evalulate the full vertex
 Complex GeneralFFVVertex::evaluate(Energy2 q2,
-			    const SpinorWaveFunction & sp, 
-			    const SpinorBarWaveFunction & sbar,
-			    const VectorWaveFunction & vec) {
+				   const SpinorWaveFunction & sp, 
+				   const SpinorBarWaveFunction & sbar,
+				   const VectorWaveFunction & vec) {
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),vec.particle());
   Complex ii(0.,1.);
@@ -88,9 +88,10 @@ Complex GeneralFFVVertex::evaluate(Energy2 q2,
 
 // evaluate an off-shell spinor
 SpinorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
-				       const SpinorWaveFunction & sp,
-				       const VectorWaveFunction &vec,
-				       Energy mass, Energy width) {
+					      const SpinorWaveFunction & sp,
+					      const VectorWaveFunction &vec,
+					      complex<Energy> mass,
+					      complex<Energy> width) {
   // extract the pointers to the particle data objects
   tcPDPtr  Psp=sp.particle();
   tcPDPtr  Pvec=vec.particle();
@@ -109,7 +110,7 @@ SpinorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
+  if(mass.real() < ZERO) mass  = iopt==5 ? ZERO : out->mass();
   complex<Energy> p0p3 = pout.e() +    pout.z();
   complex<Energy> p0m3 = pout.e() -    pout.z();
   complex<Energy> p1p2 = pout.x() + ii*pout.y();
@@ -174,9 +175,10 @@ SpinorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   
 // evaluate an off-shell SpinorBar
 SpinorBarWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
-					  const SpinorBarWaveFunction & sbar,
-					  const VectorWaveFunction & vec,
-					  Energy mass, Energy width) {
+						 const SpinorBarWaveFunction & sbar,
+						 const VectorWaveFunction & vec,
+						 complex<Energy> mass,
+						 complex<Energy> width) {
   // first calculate the couplings
   setCoupling(q2,out,sbar.particle(),vec.particle());
   Complex ii(0.,1.);
@@ -192,7 +194,7 @@ SpinorBarWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  ou
   Energy2 p2 = pout.m2();
   Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
+  if(mass.real() < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
   complex<Energy> p1p2=pout.x() + ii*pout.y();
   complex<Energy> p1m2=pout.x() - ii*pout.y();
   complex<Energy> p0p3=pout.e() +    pout.z();
@@ -256,9 +258,10 @@ SpinorBarWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  ou
 
 // off-shell vector
 VectorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
-				       const SpinorWaveFunction & sp,
-				       const SpinorBarWaveFunction & sbar,
-				       Energy mass, Energy width) {
+					      const SpinorWaveFunction & sp,
+					      const SpinorBarWaveFunction & sbar,
+					      complex<Energy> mass,
+					      complex<Energy> width) {
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),out);
   Complex ii(0.,1.);
@@ -268,8 +271,8 @@ VectorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact = normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   // the vector for the fermion-antifermion
   Complex vec[4];
   complex<Energy> p1p2=pout.x() + ii*pout.y();
@@ -321,7 +324,7 @@ VectorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
        +sp.s4()*sbar.s4()*(p0p3-p0m3)-2.*sp.s4()*sbar.s3()*p1m2);
   }
   // massless boson
-  if(mass==ZERO) {
+  if(mass.real()==ZERO) {
     for(int ix=0;ix<4;++ix){vec[ix]*=fact;}
   }
   // massive boson

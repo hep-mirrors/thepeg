@@ -60,7 +60,7 @@ TensorWaveFunction FFVTVertex::evaluate(Energy2,int , tcPDPtr ,
 					const SpinorWaveFunction & ,
 					const SpinorBarWaveFunction & ,
 					const VectorWaveFunction & ,
-					Energy, Energy) {
+					complex<Energy>, complex<Energy>) {
   throw Exception() << "FFVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"
@@ -71,7 +71,7 @@ VectorWaveFunction FFVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					const SpinorWaveFunction & ,
 					const SpinorBarWaveFunction & , 
 					const TensorWaveFunction &  ,
-					Energy, Energy) {
+					complex<Energy>, complex<Energy>) {
   throw Exception() << "FFVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"
@@ -82,7 +82,7 @@ SpinorWaveFunction FFVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					const SpinorWaveFunction & ,
 					const VectorWaveFunction & ,
 					const TensorWaveFunction &  ,
-					Energy, Energy) {
+					complex<Energy>, complex<Energy>) {
   throw Exception() << "FFVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"
@@ -93,7 +93,7 @@ SpinorBarWaveFunction FFVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					   const SpinorBarWaveFunction & ,
 					   const VectorWaveFunction & ,
 					   const TensorWaveFunction &  ,
-					   Energy, Energy) {
+					   complex<Energy>, complex<Energy>) {
   throw Exception() << "FFVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"

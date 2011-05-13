@@ -57,7 +57,7 @@ Complex RFSVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
 SpinorWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 				       const RSSpinorWaveFunction & , 
 				       const ScalarWaveFunction & ,
-				       Energy , Energy ) {
+				       complex<Energy> , complex<Energy> ) {
   assert(false);
   return SpinorWaveFunction();
 }
@@ -65,7 +65,7 @@ SpinorWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 RSSpinorWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					 const SpinorWaveFunction & , 
 					 const ScalarWaveFunction & ,
-					 Energy , Energy ) {
+					 complex<Energy> , complex<Energy> ) {
   assert(false);
   return RSSpinorWaveFunction();
 }
@@ -73,14 +73,14 @@ RSSpinorWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 SpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					  const RSSpinorBarWaveFunction & ,
 					  const ScalarWaveFunction & ,
-					  Energy , Energy ) {
+					  complex<Energy> , complex<Energy> ) {
   assert(false);
 }
 
 RSSpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					    const SpinorBarWaveFunction & ,
 					    const ScalarWaveFunction & ,
-					    Energy , Energy ) {
+					    complex<Energy> , complex<Energy> ) {
   assert(false);
   return RSSpinorBarWaveFunction();
 }
@@ -88,7 +88,7 @@ RSSpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 ScalarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 				       const RSSpinorWaveFunction & , 
 				       const SpinorBarWaveFunction & ,
-				       Energy , Energy ) {
+				       complex<Energy> , complex<Energy> ) {
   assert(false);
   return ScalarWaveFunction();
 }
@@ -96,7 +96,7 @@ ScalarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 ScalarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 				       const SpinorWaveFunction & , 
 				       const RSSpinorBarWaveFunction & ,
-				       Energy , Energy ) {
+				       complex<Energy> , complex<Energy> ) {
   assert(false);
   return ScalarWaveFunction();
 }

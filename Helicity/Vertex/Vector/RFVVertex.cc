@@ -76,7 +76,7 @@ Complex RFVVertex::evaluate(Energy2 q2,const SpinorWaveFunction & sp,
 SpinorBarWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					  const RSSpinorBarWaveFunction & ,
 					  const VectorWaveFunction & ,
-					  Energy , Energy ) {
+					  complex<Energy> , complex<Energy> ) {
   assert(false);
   return SpinorBarWaveFunction();
 }
@@ -84,7 +84,7 @@ SpinorBarWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 RSSpinorBarWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					    const SpinorBarWaveFunction & ,
 					    const VectorWaveFunction & ,
-					    Energy , Energy ) {
+					    complex<Energy> , complex<Energy> ) {
   assert(false);
   return RSSpinorBarWaveFunction();
 }
@@ -92,7 +92,7 @@ RSSpinorBarWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 VectorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 				       const RSSpinorWaveFunction & ,
 				       const SpinorBarWaveFunction & ,
-				       Energy , Energy ) {
+				       complex<Energy> , complex<Energy> ) {
   assert(false);
   return VectorWaveFunction();
 }
@@ -100,7 +100,7 @@ VectorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 VectorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 				       const SpinorWaveFunction & ,
 				       const RSSpinorBarWaveFunction & ,
-				       Energy , Energy ) {
+				       complex<Energy> , complex<Energy> ) {
   assert(false);
   return VectorWaveFunction();
 }
@@ -108,7 +108,7 @@ VectorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 RSSpinorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					 const SpinorWaveFunction & ,
 					 const VectorWaveFunction & ,
-					 Energy , Energy ) {
+					 complex<Energy> , complex<Energy> ) {
   assert(false);
   return RSSpinorWaveFunction();
 }
@@ -116,7 +116,7 @@ RSSpinorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 SpinorWaveFunction RFVVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 				       const RSSpinorWaveFunction & ,
 				       const VectorWaveFunction & ,
-				       Energy , Energy ) {
+				       complex<Energy> , complex<Energy> ) {
   assert(false);
   return SpinorWaveFunction();
 }

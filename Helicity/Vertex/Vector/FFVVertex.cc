@@ -62,7 +62,8 @@ Complex FFVVertex::evaluate(Energy2 q2,
 SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
 				       const SpinorWaveFunction & sp,
 				       const VectorWaveFunction &vec,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // extract the pointers to the particle data objects
   tcPDPtr  Psp=sp.particle();
   tcPDPtr  Pvec=vec.particle();
@@ -81,7 +82,7 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
+  if(mass.real() < ZERO) mass  = iopt==5 ? ZERO : out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex nos for for the spinor
@@ -115,7 +116,8 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
 SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 					  const SpinorBarWaveFunction & sbar,
 					  const VectorWaveFunction & vec,
-					  Energy mass, Energy width) {
+					  complex<Energy> mass,
+					  complex<Energy> width) {
   // first calculate the couplings
   setCoupling(q2,out,sbar.particle(),vec.particle());
   Complex ii(0.,1.);
@@ -131,7 +133,7 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact=-normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
+  if(mass.real() < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
   complex<Energy> p1p2=pout.x()+ii*pout.y();
   complex<Energy> p1m2=pout.x()-ii*pout.y();
   // complex numbers for the spinor
@@ -164,7 +166,8 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 				       const SpinorWaveFunction & sp,
 				       const SpinorBarWaveFunction & sbar,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),out);
   Complex ii(0.,1.);
@@ -174,8 +177,8 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
   Energy2 p2 = pout.m2();
   Complex fact = normPropagator(iopt,p2,out,mass,width);
   // momentum components
-  if(mass < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass  = (iopt==5) ? ZERO : out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   // the vector for the fermion-antifermion
   Complex vec[4];
   // left coupling
@@ -193,7 +196,7 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
     vec[3] +=    +_right*(sbar.s1()*sp.s3()+sbar.s2()*sp.s4());
   }
   // massless boson
-  if(mass==ZERO) {
+  if(mass.real()==ZERO) {
     for(int ix=0;ix<4;++ix){vec[ix]*=fact;}
   }
   // massive boson
@@ -224,7 +227,7 @@ SpinorWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
   // first calculate the couplings
   setCoupling(q2,sp.particle(),out,vec.particle());
   Complex ii(0.,1.);
-  if(mass < ZERO) mass  = iopt==5 ? ZERO : out->mass();
+  if(mass < ZERO) mass = iopt==5 ? ZERO : out->mass();
   Lorentz5Momentum pout = sp.momentum()+vec.momentum();
   assert(sp.direction()!=intermediate);
   // helicity of the boson

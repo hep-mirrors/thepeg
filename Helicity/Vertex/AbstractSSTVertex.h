@@ -58,7 +58,7 @@ public:
   virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const ScalarWaveFunction & sca1,
 				      const TensorWaveFunction & ten3,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell tensor coming from the vertex.
@@ -75,7 +75,7 @@ public:
   virtual TensorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const ScalarWaveFunction & sca1,
 				      const ScalarWaveFunction & sca2,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
   //@}
 
 public:

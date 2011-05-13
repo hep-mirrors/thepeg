@@ -74,14 +74,15 @@ Complex VVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
 VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const VectorWaveFunction & vec,
 				       const TensorWaveFunction & ten,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // evaluate the couplings
   setCoupling(q2,vec.particle(),out,ten.particle());
   // outgoing momentum
   Lorentz5Momentum pout = ten.momentum()+vec.momentum();
   // normalisation factor
-  if(mass < ZERO) mass   = out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass   = out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
   Complex fact  = -0.5*norm()*propagator(iopt,p2,out,mass,width);
   // dot product of wavefunctions and momenta
@@ -89,7 +90,7 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   complex<Energy> dotk2v1  = vec.wave()       *pout;
   // mass-k1.k2
   complex<Energy2> mdot = -dotk1k2;
-  if(mass!=ZERO) mdot += mass2;
+  if(mass.real()!=ZERO) mdot += mass2;
   // components of the tensor
   Complex tentx = ten.tx()+ten.xt();
   Complex tenty = ten.ty()+ten.yt();
@@ -155,7 +156,7 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
      +dotk2v1*(+2.*ten.tt()*vec.e() -    tentx*  vec.px()
 	       -   tenty*   vec.py()-    tentz*  vec.pz()));
   // now add the piece for massive bosons
-  if(mass!=ZERO) {
+  if(mass.real()!=ZERO) {
     // DGRELL unit problem?
     Complex dot = tenk2v1 * UnitRemoval::InvE 
       -  dotk1k2 * trace  * UnitRemoval::InvE2;
@@ -174,15 +175,16 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const VectorWaveFunction & vec1,
 				       const VectorWaveFunction & vec2,
 				       Energy vmass,
-				       Energy tmass, Energy width) {
+				       complex<Energy> tmass,
+				       complex<Energy> width) {
   // coupling
   setCoupling(q2,vec1.particle(),vec2.particle(),out);
   // momenta of the outgoing tensor
   // outgoing momentum
   Lorentz5Momentum pout= vec1.momentum()+vec2.momentum();
   // overall normalisation
-  if(tmass < ZERO) tmass   = out->mass();
-  Energy2 tmass2 = sqr(tmass);
+  if(tmass.real() < ZERO) tmass   = out->mass();
+  complex<Energy2> tmass2 = sqr(tmass);
   if(vmass<ZERO) vmass = vec1.particle()->mass();
   Energy2 vmass2 = sqr(vmass);
   Energy2 p2     = pout.m2();
@@ -201,7 +203,8 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   // vectors to help construct the tensor
   Complex vecv1[4],vecv2[4];
   complex<Energy> veck1[4],veck2[4];
-  InvEnergy2 tmass2inv = tmass>ZERO ? 1/tmass2 : ZERO;
+  complex<InvEnergy2> tmass2inv(ZERO);
+  if(tmass.real()> ZERO) tmass2inv =  1./tmass2;
   vecv1[0]=vec1.x() -pout.x()*dotkv1*tmass2inv;
   vecv2[0]=vec2.x() -pout.x()*dotkv2*tmass2inv;
   veck1[0]=vec1.px()-pout.x()*dotkk1*tmass2inv;

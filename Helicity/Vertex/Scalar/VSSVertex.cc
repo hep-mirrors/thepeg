@@ -46,30 +46,32 @@ Complex VSSVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec,
 VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca1,
 				       const ScalarWaveFunction & sca2,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // outgoing momentum 
   Lorentz5Momentum pout(sca1.momentum()+sca2.momentum());
   // calculate the coupling
   setCoupling(q2,out,sca1.particle(),sca2.particle());
   // mass and width
-  if(mass < ZERO)  mass   = out->mass();
-  if(width < ZERO) width = out->width();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO)  mass   = out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   // calculate the prefactor
   Energy2 p2    = pout.m2();
   Complex fact = norm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   // compute the vector
   LorentzPolarizationVector vec;
   // massless outgoing vector
-  if(mass==ZERO) {
+  if(mass.real()==ZERO) {
     vec = UnitRemoval::InvE * fact * (sca2.momentum()-sca1.momentum());
   }
   // massive outgoing vector
   else {
     // first the dot product for the second term
-    double dot = (sca1.m2()-sca2.m2())/mass2;
+    Complex dot = (sca1.m2()-sca2.m2())/mass2;
     // compute the vector
-    vec = UnitRemoval::InvE * fact * (sca2.momentum()-sca1.momentum()+dot*pout);
+    vec = fact * 
+      (LorentzPolarizationVector(UnitRemoval::InvE * (sca2.momentum()-sca1.momentum()))
+       +dot*UnitRemoval::InvE * pout);
   }
   return VectorWaveFunction(pout,out,vec);
 }
@@ -78,7 +80,8 @@ VectorWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 ScalarWaveFunction VSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const VectorWaveFunction & vec,
 				       const ScalarWaveFunction & sca,
-				       Energy mass, Energy width ) {
+				       complex<Energy> mass,
+				       complex<Energy> width ) {
   // momentum of the particle
   Lorentz5Momentum pout = sca.momentum()+vec.momentum(); 
   // calculate the coupling

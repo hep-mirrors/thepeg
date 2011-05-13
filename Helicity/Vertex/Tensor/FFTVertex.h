@@ -79,7 +79,7 @@ public:
   TensorWaveFunction evaluate(Energy2 q2, int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
 			      const SpinorBarWaveFunction & sbar2,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell spinor coming from the vertex.
@@ -96,7 +96,7 @@ public:
   SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 			      const SpinorWaveFunction & sp1,
 			      const TensorWaveFunction & ten3,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -113,7 +113,7 @@ public:
   SpinorBarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				 const SpinorBarWaveFunction & sbar2,
 				 const TensorWaveFunction& ten3,
-				 Energy mass=-GeV, Energy width=-GeV);
+				 complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
   //@}
 
   /**

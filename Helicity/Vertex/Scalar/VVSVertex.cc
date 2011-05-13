@@ -46,20 +46,21 @@ Complex VVSVertex::evaluate(Energy2 q2,const VectorWaveFunction & vec1,
 VectorWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const VectorWaveFunction & vec,
 				       const ScalarWaveFunction & sca,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // outgoing momentum 
   Lorentz5Momentum pout = vec.momentum()+sca.momentum();
   // calculate the coupling
   setCoupling(q2,out,vec.particle(),sca.particle());
   // prefactor
   Energy2 p2    = pout.m2();
-  if(mass < ZERO) mass   = out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass   = out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   Complex fact  = norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // evaluate the wavefunction
   LorentzPolarizationVector vect;
   // massless case
-  if(mass==ZERO) {
+  if(mass.real()==ZERO) {
     vect = fact*vec.wave();
   }
   // massive case
@@ -74,7 +75,8 @@ VectorWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 ScalarWaveFunction VVSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out, 
 				       const VectorWaveFunction & vec1,
 				       const VectorWaveFunction & vec2,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // outgoing momentum 
   Lorentz5Momentum pout = vec1.momentum()+vec2.momentum();
   // calculate the coupling

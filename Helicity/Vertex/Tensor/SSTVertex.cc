@@ -60,7 +60,7 @@ Complex SSTVertex::evaluate(Energy2 q2, const ScalarWaveFunction & sca1,
 TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca1,
 				       const ScalarWaveFunction & sca2,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass, complex<Energy> width) {
   // obtain the coupling
   setCoupling(q2,sca1.particle(),sca2.particle(),out);
   // array for the tensor
@@ -68,8 +68,8 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   // calculate the outgoing momentum
   Lorentz5Momentum pout = sca1.momentum()+sca2.momentum();
   // prefactor
-  if(mass < ZERO) mass   = out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass   = out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
   Complex fact  = 0.5*norm()*sca1.wave()*sca2.wave()*
     propagator(iopt,p2,out,mass,width);
@@ -78,18 +78,20 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   Energy2 dot1  = sca1.momentum()*pout;
   Energy2 dot2  = pout*sca2.momentum();
   // the vectors that we need for the tensor
-  LorentzMomentum vec1,vec2;
-  double a,b;
+  LorentzPolarizationVectorE vec1,vec2;
+  Complex a,b;
   Energy2 mphi2 = sqr(sca1.particle()->mass());
   // massive case
-  if(mass!=ZERO) {
-    double norm1=dot1/mass2;
-    double norm2=dot2/mass2;
-    a = UnitRemoval::InvE2 * ((mphi2+dot12)*(2.*p2/mass2-5)
+  if(mass.real()!=ZERO) {
+    Complex norm1=dot1/mass2;
+    Complex norm2=dot2/mass2;
+    a = UnitRemoval::InvE2 * ((mphi2+dot12)*(Complex(2.*p2/mass2)-5.)
 			      +4.*(dot12-dot1*dot2/mass2))/3.;
     b = -(-(mphi2+dot12)*(2.+p2/mass2)+4*(dot12-dot1*(dot2/mass2)))/3./mass2;
-    vec1 = sca1.momentum() - norm1 * pout;
-    vec2 = sca2.momentum() - norm2 * pout;
+    vec1 = LorentzPolarizationVectorE(sca1.momentum()) - 
+      LorentzPolarizationVectorE(norm1 * pout);
+    vec2 = LorentzPolarizationVectorE(sca2.momentum()) - 
+      LorentzPolarizationVectorE(norm2 * pout);
   }
   // massless case
   else {
@@ -99,13 +101,13 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     vec2 = sca2.momentum();
   }
   // calculate the wavefunction
-  Energy vec1_tmp[4] = {vec1.x(), vec1.y(), vec1.z(), vec1.t()};
-  Energy vec2_tmp[4] = {vec2.x(), vec2.y(), vec2.z(), vec2.t()};
-  Energy pout_tmp[4] = {pout.x(), pout.y(), pout.z(), pout.t()};
+  complex<Energy> vec1_tmp[4] = {vec1.x(), vec1.y(), vec1.z(), vec1.t()};
+  complex<Energy> vec2_tmp[4] = {vec2.x(), vec2.y(), vec2.z(), vec2.t()};
+  complex<Energy> pout_tmp[4] = {pout.x(), pout.y(), pout.z(), pout.t()};
   for(int ix=0;ix<4;++ix) {
     for(int iy=0;iy<4;++iy) {
-      Energy2 temp = -2.*( vec1_tmp[ix]*vec2_tmp[iy]
-			   +vec1_tmp[ix]*vec2_tmp[iy])
+      complex<Energy2> temp = -2.*( vec1_tmp[ix]*vec2_tmp[iy] +
+				    vec1_tmp[ix]*vec2_tmp[iy])
 	-b*pout_tmp[ix]*pout_tmp[iy];
       ten[ix][iy]= UnitRemoval::InvE2 * temp;
     }
@@ -125,14 +127,14 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
 ScalarWaveFunction SSTVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				       const ScalarWaveFunction & sca,
 				       const TensorWaveFunction & ten,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass, complex<Energy> width) {
   // obtain the coupling
   setCoupling(q2,sca.particle(),out,ten.particle());
   // calculate the outgoing momentum
   Lorentz5Momentum pout = sca.momentum()+ten.momentum();
   // prefactors
-  if(mass < ZERO) mass   = out->mass();
-  Energy2 mass2 = sqr(mass);
+  if(mass.real() < ZERO) mass   = out->mass();
+  complex<Energy2> mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
   Complex fact  = 0.5*norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // trace of the tensor

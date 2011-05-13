@@ -64,7 +64,7 @@ public:
 				      const SpinorWaveFunction & sp1,
 				      const SpinorBarWaveFunction & sbar2,
 				      const VectorWaveFunction & vec3,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell vector coming from the vertex.
@@ -83,7 +83,7 @@ public:
 				      const SpinorWaveFunction & sp1,
 				      const SpinorBarWaveFunction & sbar2, 
 				      const TensorWaveFunction & ten4,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell spinor coming from the vertex.
@@ -102,7 +102,7 @@ public:
 				      const SpinorWaveFunction & sp1,
 				      const VectorWaveFunction & vec3,
 				      const TensorWaveFunction & ten4,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -121,7 +121,7 @@ public:
 					 const SpinorBarWaveFunction & sbar2,
 					 const VectorWaveFunction & vec3,
 					 const TensorWaveFunction & ten4,
-					 Energy mass=-GeV, Energy width=-GeV) = 0;
+					 complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
   //@}
 
 public:

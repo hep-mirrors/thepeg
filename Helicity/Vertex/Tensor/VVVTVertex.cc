@@ -32,9 +32,9 @@ void VVVTVertex::Init() {
 
 // function to evaluate the vertex
 Complex VVVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
-    				 const VectorWaveFunction & vec2,
-    				 const VectorWaveFunction & vec3,
-    				 const TensorWaveFunction & ten) {
+			     const VectorWaveFunction & vec2,
+			     const VectorWaveFunction & vec3,
+			     const TensorWaveFunction & ten) {
   // set the couplings
   setCoupling(q2,vec1.particle(),vec2.particle(),
 	      vec3.particle(),ten.particle());
@@ -133,7 +133,7 @@ TensorWaveFunction VVVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					const VectorWaveFunction & ,
 					const VectorWaveFunction & ,
 					const VectorWaveFunction &,
-					Energy, Energy ) {
+					complex<Energy>, complex<Energy> ) {
   throw Exception() << "VVVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"
@@ -144,7 +144,7 @@ VectorWaveFunction VVVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
 					const VectorWaveFunction & ,
 					const VectorWaveFunction & ,
 					const TensorWaveFunction &,
-					Energy, Energy  ) {
+					complex<Energy>, complex<Energy> ) {
   throw Exception() << "VVVTVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "not the off-shell wavefunctions"

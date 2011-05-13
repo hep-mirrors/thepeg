@@ -220,11 +220,11 @@ ostream & ThePEG::Helicity::operator<<(ostream & os, const VertexBase & in) {
 
 // calculate the propagator for a diagram
 Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
-			       Energy mass, Energy width) {
-  if(mass < ZERO) mass = part->mass();
-  const Energy2 mass2 = sqr(mass);
+			       complex<Energy> mass, complex<Energy> width) {
+  if(mass.real() < ZERO) mass = part->mass();
+  const complex<Energy2> mass2 = sqr(mass);
 
-  if(width < ZERO) {
+  if(width.real() < ZERO) {
     const tcWidthGeneratorPtr widthgen = part->widthGenerator();
     width = widthgen && (iopt==2 || iopt==6 ) ? 
       widthgen->width(*part,sqrt(p2)) : part->width();

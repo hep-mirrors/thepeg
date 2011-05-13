@@ -301,7 +301,8 @@ protected:
    * @param width The width if not to be taken from the ParticleData object
    */
   virtual Complex propagator(int iopt, Energy2 q2,tcPDPtr part,
-			     Energy mass=-GeV, Energy width=-GeV);
+			     complex<Energy> mass=-GeV,
+			     complex<Energy> width=-GeV);
 
   /**
    * Calculate propagator multiplied by coupling.
@@ -312,7 +313,8 @@ protected:
    * @param width The width if not to be taken from the ParticleData object
    */
   Complex normPropagator(int iopt, Energy2 q2,tcPDPtr part,
-			 Energy mass=-GeV, Energy width=-GeV) {
+			 complex<Energy> mass=-GeV, 
+			 complex<Energy> width=-GeV) {
     return _norm*propagator(iopt,q2,part,mass,width);
   }
   //@}    

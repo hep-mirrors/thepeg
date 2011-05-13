@@ -89,7 +89,7 @@ public:
 			      const VectorWaveFunction & vec1,
 			      const VectorWaveFunction & vec2,
 			      Energy vmass=-GeV,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell vector coming from the vertex.
@@ -106,7 +106,7 @@ public:
   VectorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const VectorWaveFunction & vec1,
 			      const TensorWaveFunction & ten3,
-			      Energy mass=-GeV, Energy width=-GeV);
+			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
   //@}
 
   /**

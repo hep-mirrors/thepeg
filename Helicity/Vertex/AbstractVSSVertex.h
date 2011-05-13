@@ -57,7 +57,7 @@ public:
   virtual VectorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const ScalarWaveFunction & sca2,
 				      const ScalarWaveFunction & sca3,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -74,7 +74,7 @@ public:
   virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				      const VectorWaveFunction & vec1,
 				      const ScalarWaveFunction & sca2,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
   //@}
 
 public:

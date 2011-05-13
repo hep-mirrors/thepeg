@@ -47,7 +47,8 @@ Complex FFSVertex::evaluate(Energy2 q2, const SpinorWaveFunction & sp,
 ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out, 
 				       const SpinorWaveFunction & sp,
 				       const SpinorBarWaveFunction & sbar,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.momentum()+sp.momentum();
   // first calculate the couplings
@@ -65,7 +66,8 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
 SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 				       const SpinorWaveFunction & sp,
 				       const ScalarWaveFunction & sca,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sp.momentum()+sca.momentum();
   // first calculate the couplings
@@ -74,7 +76,7 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   Complex fact = -norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // useful combinations of the momenta
-  if(mass < ZERO) mass  = out->mass();
+  if(mass.real() < ZERO) mass  = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
@@ -96,7 +98,8 @@ SpinorWaveFunction FFSVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
 SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
 					  const SpinorBarWaveFunction & sbar,
 					  const ScalarWaveFunction & sca,
-					  Energy mass, Energy width) {
+					  complex<Energy> mass,
+					  complex<Energy> width) {
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.momentum()+sca.momentum();
   // first calculate the couplings
@@ -105,7 +108,7 @@ SpinorBarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   Complex fact = -norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   Complex ii(0.,1.);
   // momentum components
-  if(mass < ZERO) mass = out->mass();
+  if(mass.real() < ZERO) mass = out->mass();
   complex<Energy> p1p2 = pout.x()+ii*pout.y();
   complex<Energy> p1m2 = pout.x()-ii*pout.y();
   // complex numbers for the spinor

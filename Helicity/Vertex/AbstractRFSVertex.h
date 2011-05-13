@@ -70,7 +70,7 @@ public:
   virtual SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const RSSpinorWaveFunction & sp1, 
 				      const ScalarWaveFunction & sca3,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell RS spinor coming from the vertex.
@@ -87,7 +87,7 @@ public:
   virtual RSSpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 					const SpinorWaveFunction & sp1, 
 					const ScalarWaveFunction & sca3,
-					Energy mass=-GeV, Energy width=-GeV) = 0;
+					complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -104,7 +104,7 @@ public:
   virtual SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 					 const RSSpinorBarWaveFunction & sbar2,
 					 const ScalarWaveFunction & sca3,
-					 Energy mass=-GeV, Energy width=-GeV) = 0;
+					 complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell barred RS spinor coming from the vertex.
@@ -121,7 +121,7 @@ public:
   virtual RSSpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 					   const SpinorBarWaveFunction & sbar2,
 					 const ScalarWaveFunction & sca3,
-					   Energy mass=-GeV, Energy width=-GeV) = 0;
+					   complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -138,7 +138,7 @@ public:
   virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const RSSpinorWaveFunction & sp1, 
 				      const SpinorBarWaveFunction & sbar2,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -155,7 +155,7 @@ public:
   virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
 				      const SpinorWaveFunction & sp1, 
 				      const RSSpinorBarWaveFunction & sbar2,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
   //@}
 
 public:

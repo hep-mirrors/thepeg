@@ -61,7 +61,7 @@ public:
 				      const VectorWaveFunction & vec2,
 				      const ScalarWaveFunction & sca3,
 				      const ScalarWaveFunction & sca4,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
 
   /**
    * Evaluate the off-shell scalar coming from the vertex.
@@ -80,7 +80,7 @@ public:
 				      const VectorWaveFunction & vec1,
 				      const VectorWaveFunction & vec2,
 				      const ScalarWaveFunction & sca3,
-				      Energy mass=-GeV, Energy width=-GeV) = 0;
+				      complex<Energy> mass=-GeV, complex<Energy> width=-GeV) = 0;
   //@}
 
 public:

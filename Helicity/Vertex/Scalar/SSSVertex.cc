@@ -44,7 +44,8 @@ Complex SSSVertex::evaluate(Energy2 q2,
 ScalarWaveFunction SSSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out, 
 				       const ScalarWaveFunction & sca1,
 				       const ScalarWaveFunction & sca2,
-				       Energy mass, Energy width) {
+				       complex<Energy> mass,
+				       complex<Energy> width) {
   // outgoing momentum 
   Lorentz5Momentum pout = sca1.momentum()+sca2.momentum(); 
   // calculate the coupling
