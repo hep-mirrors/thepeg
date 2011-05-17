@@ -37,6 +37,7 @@ Complex FFVVertex::evaluate(Energy2 q2,
 			    const SpinorBarWaveFunction & sbar,
 			    const VectorWaveFunction & vec) {
   // first calculate the couplings
+  if(kinematics()) calculateKinematics(sp.momentum(),sbar.momentum(),vec.momentum());
   setCoupling(q2,sp.particle(),sbar.particle(),vec.particle());
   Complex ii(0.,1.);
   // useful combinations of the polarization vector components
@@ -67,12 +68,12 @@ SpinorWaveFunction FFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   // extract the pointers to the particle data objects
   tcPDPtr  Psp=sp.particle();
   tcPDPtr  Pvec=vec.particle();
-  // first calculate the couplings
-  setCoupling(q2,Psp,out,Pvec);
-  Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sp.momentum()+vec.momentum(); 
-  // now evaluate the contribution
+  // first calculate the couplings
+  if(kinematics()) calculateKinematics(sp.momentum(),pout,vec.momentum());
+  setCoupling(q2,Psp,out,Pvec);
+  Complex ii(0.,1.);  // now evaluate the contribution
   // polarization components
   Complex e0p3 = vec.t() +  vec.z();
   Complex e0m3 = vec.t() -  vec.z();
@@ -118,11 +119,12 @@ SpinorBarWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 					  const VectorWaveFunction & vec,
 					  complex<Energy> mass,
 					  complex<Energy> width) {
-  // first calculate the couplings
-  setCoupling(q2,out,sbar.particle(),vec.particle());
-  Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.momentum()+vec.momentum();
+  // first calculate the couplings
+  if(kinematics()) calculateKinematics(pout,sbar.momentum(),vec.momentum());
+  setCoupling(q2,out,sbar.particle(),vec.particle());
+  Complex ii(0.,1.);
   // now evaluate the contribution
   // polarization components
   Complex e0p3=vec.t() +  vec.z();
@@ -168,11 +170,12 @@ VectorWaveFunction FFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 				       const SpinorBarWaveFunction & sbar,
 				       complex<Energy> mass,
 				       complex<Energy> width) {
-  // first calculate the couplings
-  setCoupling(q2,sp.particle(),sbar.particle(),out);
-  Complex ii(0.,1.);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.momentum()+sp.momentum();
+  // first calculate the couplings
+  if(kinematics()) calculateKinematics(sp.momentum(),sbar.momentum(),pout);
+  setCoupling(q2,sp.particle(),sbar.particle(),out);
+  Complex ii(0.,1.);
   // overall factor
   Energy2 p2 = pout.m2();
   Complex fact = normPropagator(iopt,p2,out,mass,width);

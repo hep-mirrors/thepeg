@@ -59,8 +59,9 @@ public:
    * @param sbar2 The wavefunction for the antifermion.
    * @param vec3  The wavefunction for the vector.
    */
-  Complex evaluate(Energy2 q2,const SpinorWaveFunction & sp1,
-		   const SpinorBarWaveFunction & sbar2,const VectorWaveFunction & vec3);
+  virtual Complex evaluate(Energy2 q2,const SpinorWaveFunction & sp1,
+			   const SpinorBarWaveFunction & sbar2,
+			   const VectorWaveFunction & vec3);
 
   /**
    * Evaluate the off-shell barred spinor coming from the vertex.
@@ -74,10 +75,11 @@ public:
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
    */
-  SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
-				 const SpinorBarWaveFunction & sbar2,
-				 const VectorWaveFunction & vec3,
-				 complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
+  virtual SpinorBarWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
+					 const SpinorBarWaveFunction & sbar2,
+					 const VectorWaveFunction & vec3,
+					 complex<Energy> mass=-GeV,
+					 complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell vector coming from the vertex.
@@ -91,10 +93,11 @@ public:
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
    */
-  VectorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
-			      const SpinorWaveFunction & sp1,
-			      const SpinorBarWaveFunction & sbar2,
-			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
+  virtual VectorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
+				      const SpinorWaveFunction & sp1,
+				      const SpinorBarWaveFunction & sbar2,
+				      complex<Energy> mass=-GeV,
+				      complex<Energy> width=-GeV);
 
   /**
    * Evaluate the off-shell spinor coming from the vertex.
@@ -108,10 +111,11 @@ public:
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
    */
-  SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
-			      const SpinorWaveFunction & sp1,
-			      const VectorWaveFunction & vec3,
-			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
+  virtual SpinorWaveFunction evaluate(Energy2 q2,int iopt,tcPDPtr out,
+				      const SpinorWaveFunction & sp1,
+				      const VectorWaveFunction & vec3,
+				      complex<Energy> mass=-GeV,
+				      complex<Energy> width=-GeV);
   //@}
 
   /**

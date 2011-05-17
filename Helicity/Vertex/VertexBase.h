@@ -337,8 +337,8 @@ public:
    *  Calculate the kinematics for a 3-point vertex
    */
   void calculateKinematics(const Lorentz5Momentum & p0,
-			   const Lorentz5Momentum & p2,
-			   const Lorentz5Momentum & p1) {
+			   const Lorentz5Momentum & p1,
+			   const Lorentz5Momentum & p2) {
     _kine[0][0]=p0*p0;
     _kine[1][1]=p1*p1;
     _kine[2][2]=p2*p2;
