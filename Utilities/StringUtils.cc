@@ -121,3 +121,22 @@ string StringUtils::suffix(string file) {
   if ( pos == string::npos ) return file;
   return file.substr(pos + 1);
 }
+
+string StringUtils::typeName(const type_info & t) {
+  string ret;
+  string name = t.name();
+  if ( name[0] != 'N' ) return name;
+
+  string::size_type pos = 1;
+  while ( pos < name.length() && name[pos] != 'E' ) {
+    int size = 0;
+    while ( pos < name.length() && isdigit(name[pos]) )
+      size = size*10 + int(name[pos++] - '0');
+    if ( size == 0 ) return name;
+    if ( !ret.empty() ) ret += "::";
+    ret += name.substr(pos, size);
+    pos += size;
+  }
+  return ret;
+}
+

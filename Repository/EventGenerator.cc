@@ -679,7 +679,8 @@ void EventGenerator::strategy(StrategyPtr s) {
 }
 
 int EventGenerator::count(const Exception & ex) {
-  return ++theExceptions[make_pair(typeid(ex).name(),ex.severity())];
+  return ++theExceptions[make_pair(StringUtils::typeName(typeid(ex)),
+				   ex.severity())];
 }
 
 void EventGenerator::printException(const Exception & ex) {
@@ -708,7 +709,8 @@ void EventGenerator::printException(const Exception & ex) {
     break;
   }
   if ( ieve > 0 )
-    log() << " exception occurred while generating event number "
+    log() << " exception of type " << StringUtils::typeName(typeid(ex))
+	  << " occurred while generating event number "
 	  << ieve << ": \n" << ex.message() << endl;
   else
     log() << " exception occurred in the initialization of "

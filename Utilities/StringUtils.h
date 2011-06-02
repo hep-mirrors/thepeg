@@ -88,6 +88,12 @@ public:
 				       string::size_type curr = 0);
 
   /**
+   * Try to return a human-readable class name given a type_info
+   * object. Currently only works for simple classes compiled by g++.
+   */
+  static string typeName(const type_info & t);
+
+  /**
    * Convenient typdef.
    */
   typedef string::size_type pos_t;
