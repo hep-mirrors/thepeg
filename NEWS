@@ -8,6 +8,42 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.7.1 release: 2011-06-??
+** Ticket #238: Self-consistent electroweak schemes
+   The default behaviour of Herwig++ is to use the best values for all
+   the electroweak parameters, which can be inconsistent. Optionally
+   now, a self-consistent electroweak scheme can be chosen in the
+   parameter Model:EW/Scheme. Note that values of 'EW/Scheme' away
+   from the default have not received the same amount of testing.
+
+** Ticket #338: Fixed reporting of floating point exceptions
+   This was an issue whenever LHAPDF libraries were linked in.
+
+** Fixed cTau() behaviour
+   The new behavior is that if both width and lifetime are zero,
+   cTau() returns zero for unstable particles and MaxLength for
+   stable ones.
+
+** MaxErrors
+   The cutoff can be disabled by setting MaxErrors to -1.
+
+** StdOut redirect
+   CurrentGenerator::Redirect now does not redirect to to the internal
+   stream in EventGenerator if the useStdout flag has been set.
+
+** Run name tags
+   Aded possibility to add a tag to the run name when running with the
+   '-t' option. One run file can thus be run with different seeds and
+   result in different output files.
+
+** Exception names
+   EventGenerator tries to convert exception type names into
+   human-readable form. Currently this only works for gcc-compatible
+   compilers.
+
+** gcc-4.6
+   The build has now also been tested with gcc 4.6.0.
+
 * ThePEG-1.7.0 release: 2011-02-08
 
 ** Behaviour
