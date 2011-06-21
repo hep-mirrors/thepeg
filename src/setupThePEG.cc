@@ -87,22 +87,28 @@ int main(int argc, char * argv[]) {
     if ( init ) {
       breakThePEG();
       if ( repout.empty() ) repout = repo;
-      else repository.load(repo);
+      else {
+	string msg = repository.load(repo);
+	if ( ! msg.empty() ) cerr << msg << '\n';
+      }
       {
 	HoldFlag<> setup(InterfaceBase::NoReadOnly);
 	if ( file.empty() ) file = "ThePEGDefaults.in";
-	repository.read(file, cout);
+	string msg = repository.read(file, cout);
+	if ( ! msg.empty() ) cerr << msg << '\n';
 	repository.update();
       }
       repository.save(repout);
     } else {
-      repository.load(repo);
+      string msg = repository.load(repo);
+      if ( ! msg.empty() ) cerr << msg << '\n';
       breakThePEG();
       if ( file.size() && file != "-" ) {
 	if ( file == "--java" || file == "-java" )
 	  repository.read(cin, cout, "-*-ready-*-\n");
 	else {
-	  repository.read(file, cout);
+	  string msg = repository.read(file, cout);
+	  if ( ! msg.empty() ) cerr << msg << '\n';
 	}
       } else {
 	repository.read(cin, cout, "ThePEG> ");

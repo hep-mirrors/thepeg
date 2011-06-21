@@ -8,7 +8,7 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.7.1 release: 2011-06-??
+* ThePEG-1.7.1 release: 2011-06-20
 ** Ticket #238: Self-consistent electroweak schemes
    The default behaviour of Herwig++ is to use the best values for all
    the electroweak parameters, which can be inconsistent. Optionally
@@ -40,6 +40,15 @@ or at http:///projects.hepforge.org/herwig/versions
    EventGenerator tries to convert exception type names into
    human-readable form. Currently this only works for gcc-compatible
    compilers.
+
+** Repository API changes
+   Instead of printing an error message to cerr, the
+   Repository::load() and Repository::read(filename,os) commands now
+   behave like the other repo commands and return an error string.
+   This allows --exitonerror to work correctly for load() and read().
+   Users of these functions need to send the string to cerr themselves
+   if the old output behaviour is required. 
+   Repository::read(is, os, prompt) is unchanged.
 
 ** gcc-4.6
    The build has now also been tested with gcc 4.6.0.

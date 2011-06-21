@@ -27,7 +27,8 @@
 using namespace ThePEG;
 
 HepMCFile::HepMCFile() 
-  : _eventNumber(1), _format(1), _filename(), _unitchoice() {}
+  : _eventNumber(1), _format(1), _filename(), _unitchoice(),
+    _geneventPrecision(16) {}
 
 // Cannot copy streams. 
 // Let doinitrun() take care of their initialization.
@@ -35,7 +36,8 @@ HepMCFile::HepMCFile(const HepMCFile & x)
   : AnalysisHandler(x), 
     _eventNumber(x._eventNumber), _format(x._format), 
     _filename(x._filename), _hepmcio(), _hepmcdump(), 
-    _unitchoice(x._unitchoice) {}
+    _unitchoice(x._unitchoice), 
+    _geneventPrecision(x._geneventPrecision) {}
 
 IBPtr HepMCFile::clone() const {
   return new_ptr(*this);
@@ -55,6 +57,7 @@ void HepMCFile::doinitrun() {
   switch ( _format ) {
   default: 
     _hepmcio = new HepMC::IO_GenEvent(_filename.c_str(), ios::out); 
+    dynamic_cast<HepMC::IO_GenEvent *>(_hepmcio)->precision(_geneventPrecision);
     break;
   case 2: 
     _hepmcio = new HepMC::IO_AsciiParticles(_filename.c_str(), ios::out); 
@@ -100,11 +103,13 @@ void HepMCFile::analyze(tEventPtr event, long, int, int) {
 }
 
 void HepMCFile::persistentOutput(PersistentOStream & os) const {
-  os << _eventNumber << _format << _filename << _unitchoice;
+  os << _eventNumber << _format << _filename 
+     << _unitchoice << _geneventPrecision;
 }
 
 void HepMCFile::persistentInput(PersistentIStream & is, int) {
-  is >> _eventNumber >> _format >> _filename >> _unitchoice;
+  is >> _eventNumber >> _format >> _filename 
+     >> _unitchoice >> _geneventPrecision;
 }
 
 
@@ -134,7 +139,7 @@ void HepMCFile::Init() {
   static SwitchOption interfaceFormatAsciiParticles
     (interfaceFormat,
      "AsciiParticles",
-     "IO_AsciiParticles format",
+     "Deprecated (IO_AsciiParticles format)",
      2);
   static SwitchOption interfaceFormatDump
     (interfaceFormat,
@@ -146,6 +151,12 @@ void HepMCFile::Init() {
     ("Filename", "Name of the output file",
      &HepMCFile::_filename, "");
 
+  static Parameter<HepMCFile,unsigned int> interfacePrecision
+    ("Precision",
+     "Choice of output precision for the GenEvent format "
+     " (as number of digits).",
+     &HepMCFile::_geneventPrecision, 16, 6, 16,
+     false, false, Interface::limited);
   
   static Switch<HepMCFile,int> interfaceUnits
     ("Units",

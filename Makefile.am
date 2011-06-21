@@ -13,7 +13,7 @@ pkglib_SCRIPTS = libtool
 
 EXTRA_DIST = GUIDELINES
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks
+DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks --without-LHAPDF
 
 ACLOCAL_AMFLAGS = -I m4
 

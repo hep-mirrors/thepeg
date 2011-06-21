@@ -172,6 +172,11 @@ private:
    * Selector for the choice of units
    */
   int _unitchoice;
+
+  /**
+   * Choice of output precision in GenEvent format
+   */
+  unsigned int _geneventPrecision;
 };
 
 }

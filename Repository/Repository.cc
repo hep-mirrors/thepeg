@@ -361,7 +361,7 @@ void Repository::save(string filename) {
 	   << " directories) done" << endl;
 }
 
-void Repository::load(string filename) {
+string Repository::load(string filename) {
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "loading '" << filename << "'... " << flush;
   currentFileName() = filename;
@@ -373,8 +373,7 @@ void Repository::load(string filename) {
     is = new PersistentIStream(fullpath);
     if ( !*is ) {
       delete is;
-      cerr() << "Error: Could not find repository '" << filename << "'" << endl;
-      return;
+      return "Error: Could not find repository '" + filename + "'.";
     }
   }
   *is >> allObjects() >> defaultParticles()
@@ -394,6 +393,7 @@ void Repository::load(string filename) {
 
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "done" << endl;
+  return "";
 }
 
 void Repository::stats(ostream & os) {
@@ -403,7 +403,7 @@ void Repository::stats(ostream & os) {
   os << "number of matchers:         " << setw(6) << matchers().size() << endl;
 }
 
-void Repository::read(string filename, ostream & os) {
+string Repository::read(string filename, ostream & os) {
   ifstream is;
   string file = filename;
   if ( file[0] == '/' ) is.open(file.c_str());
@@ -421,8 +421,7 @@ void Repository::read(string filename, ostream & os) {
     }
   }
   if ( !is ) {
-    cerr() << "Warning: Could not find input file '" << filename << "'\n";
-    return;
+    return "Error: Could not find input file '" + filename + "'";
   }
   currentReadDirStack().push(StringUtils::dirname(file));
   try {
@@ -433,6 +432,7 @@ void Repository::read(string filename, ostream & os) {
     currentReadDirStack().pop();
     throw;
   }
+  return "";
 }
 
 void Repository::execAndCheckReply(string line, ostream & os) {
@@ -666,12 +666,10 @@ string Repository::exec(string command, ostream & os) {
     }
     if ( verb == "read" ) {
       string filename = StringUtils::car(command);
-      read(filename, os);
-      return "";
+      return read(filename, os);
     }
     if ( verb == "load" ) {
-      load(StringUtils::car(command));
-      return "";
+      return load(StringUtils::car(command));
     }      
     if ( verb == "save" ) {
       save(StringUtils::car(command));

@@ -1,3 +1,14 @@
+2011-06-20  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Analysis/HepMCFile.cc: Added Interface for HepMC precision
+	setting.
+
+	* Repository/Repository.{h,cc}, src/setupThePEG.cc: Instead of
+	printing an error message to cerr, the Repository::load() and
+	Repository::read(filename) commands now behave like the other repo
+	commands and return an error string.  This allows --exitonerror to
+	work correctly for load() and read().
+
 2011-06-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.h: Added function to write out class names

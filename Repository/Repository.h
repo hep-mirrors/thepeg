@@ -150,9 +150,10 @@ public:
   //@{
   /**
    * Load a whole repository from the given file. All objects
-   * previously in the Repository are discarded.
+   * previously in the Repository are discarded. Any errors will be
+   * reported in the returned string.
    */
-  static void load(string filename);
+  static string load(string filename);
 
   /**
    * Save the repository to the given file.
@@ -207,10 +208,12 @@ public:
    * Passes the call through to read(istream, ostream), but also sets
    * currentReadDirStack() correctly.
    *
+   * Returns possible messages.
+   *
    * @param filename the file from which to read commands.
    * @param os the stream where output is written.
    */
-  static void read(string filename, ostream & os);
+  static string read(string filename, ostream & os);
 
   /**
    * Interpret the command in \a cmd and return possible
