@@ -50,6 +50,10 @@ or at http:///projects.hepforge.org/herwig/versions
    if the old output behaviour is required. 
    Repository::read(is, os, prompt) is unchanged.
 
+** HepMC precision
+   The precision() option for HepMC GenEvent is now available as an
+   interface in the HepMCFile analysis handler.
+
 ** gcc-4.6
    The build has now also been tested with gcc 4.6.0.
 
