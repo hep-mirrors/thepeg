@@ -32,7 +32,7 @@ elif test "x$with_rivet" = "xsystem"; then
 	LIBS=$oldlibs
 else
 	AC_MSG_RESULT([$with_rivet])
-	RIVETINCLUDE=-I$with_rivet/include
+	RIVETINCLUDE=$( $with_rivet/bin/rivet-config --cppflags )
 	RIVETLIBS="-L$with_rivet/lib -R$with_rivet/lib -lRivet"
 fi
 
