@@ -759,6 +759,14 @@ public:
    * @param version the version number of the object when written.
    */
   void persistentInput(PersistentIStream & is, int version);
+
+  /**
+   * The global libraries needed for objects used in this EventGenerator.
+   */
+  const vector<string> & globalLibraries() const {
+    return theGlobalLibraries;
+  }
+
   //@}
 
   /**
@@ -1115,6 +1123,10 @@ private:
    */
   bool useStdout;
 
+  /**
+   * The global libraries needed for objects used in this EventGenerator.
+   */
+  vector<string> theGlobalLibraries;
 
 private:
 

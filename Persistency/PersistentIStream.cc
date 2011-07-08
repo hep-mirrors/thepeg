@@ -50,11 +50,10 @@ void PersistentIStream::init() {
       DynamicLoader::prependPath(paths[i]);
   }
   if ( version > 0 || subVersion > 1 ) {
-    vector<string> libs;
-    *this >> libs;
+    *this >> theGlobalLibraries;
     string loaderror;
-    for ( int i = 0, N = libs.size(); i < N; ++i ) {
-      istringstream is(libs[i]);
+    for ( int i = 0, N = theGlobalLibraries.size(); i < N; ++i ) {
+      istringstream is(theGlobalLibraries[i]);
       string library;
       while ( is >> library ) {
 	DynamicLoader::load(library);

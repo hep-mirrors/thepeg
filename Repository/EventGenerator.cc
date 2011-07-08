@@ -589,7 +589,7 @@ void EventGenerator::tic(long currev, long totev) const {
 
 void EventGenerator::dump() const {
   if ( dumpPeriod > -1 ) {
-    PersistentOStream file((filename() + ".dump").c_str());
+    PersistentOStream file(filename() + ".dump", globalLibraries());
     file << tcEGPtr(this);
   }
 }
@@ -793,6 +793,7 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
 
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
   string dummy;
+  theGlobalLibraries = is.globalLibraries();
   is >> theDefaultObjects >> theLocalParticles >> theStandardModel
      >> theStrategy >> theRandom >> theEventHandler >> theAnalysisHandlers
      >> theHistogramFactory >> theEventManipulator >> thePath >> theRunName

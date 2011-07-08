@@ -1,3 +1,11 @@
+2011-07-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/EventGenerator.* Persistency/PersistentIStream.* : A
+	persistent input stream now remembers the globally loaded
+	libraries in the initilalization. This is used by The
+	EventGenerator to ensure that a dumped generator state gets the
+	right libraries. In response to herwig:ticket:355
+
 2011-06-20  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Analysis/HepMCFile.cc: Added Interface for HepMC precision

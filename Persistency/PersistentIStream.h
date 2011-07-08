@@ -330,6 +330,13 @@ public:
    */
   bool pedantic() const { return isPedantic; }
 
+  /**
+   * The global libraries loaded on initialization.
+   */
+  const vector<string> & globalLibraries() const {
+    return theGlobalLibraries;
+  }
+
 private:
 
   /** @cond EXCEPTIONCLASSES */
@@ -464,6 +471,11 @@ private:
    * objects were created will be kept.
    */
   bool keepId;
+
+  /**
+   * Global libraries loaded in the initialization.
+   */
+  vector<string> theGlobalLibraries;
 
   /** @name Special marker characters */
   //@{
