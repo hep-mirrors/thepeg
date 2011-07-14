@@ -304,7 +304,7 @@ void ThePEG::printGraphviz(ostream & os, tcEventPtr ev) {
 
     if ( abs(diff.e()) > 1.0*GeV ) {
       ++label;
-      stringstream tail;
+      std::stringstream tail;
       tail << " [label=\"" << std::setprecision(4) 
 	   << abs(diff.e()/GeV)
 	   << " GeV\",arrowsize=3,penwidth=5,"

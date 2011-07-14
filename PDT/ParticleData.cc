@@ -856,12 +856,13 @@ void ParticleData::Init() {
 }
 
 string ParticleData::doPrintDecayModes(string) {
-  multimap<double,tDMPtr, greater<double> > sorted;
+  multimap<double,tDMPtr, std::greater<double> > sorted;
   for ( DecaySet::iterator it = decayModes().begin();
 	it != decayModes().end(); ++it )
     sorted.insert(make_pair((**it).brat(), *it));
   ostringstream os;
-  for ( multimap<double,tDMPtr, greater<double> >::iterator it = sorted.begin();
+  for ( multimap<double,tDMPtr, 
+	  std::greater<double> >::iterator it = sorted.begin();
 	it != sorted.end(); ++it )
     os << it->second->tag()
        << (it->second->on()? " ": " (off) ")

@@ -25,8 +25,6 @@ extern "C" int isinf(double) throw();
 
 namespace ThePEG {
 
-using namespace std;
-
 /**
  * The OUnit< class is used to
  * facilitate output of unitful numbers to a
