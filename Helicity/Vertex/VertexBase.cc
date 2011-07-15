@@ -20,6 +20,7 @@
 #include "ThePEG/Utilities/Rebinder.h"
 #include <ThePEG/PDT/ParticleData.h>
 #include <ThePEG/PDT/WidthGenerator.h>
+#include <iterator>
 
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
@@ -53,13 +54,24 @@ void VertexBase::addToList(long ida, long idb, long idc, long idd) {
 void VertexBase::addToList(const vector<long> & ids) {
   assert( ids.size() == _npoint );
   vector<PDPtr> tmp;
+  int chargeSum = 0;
   for (vector<long>::const_iterator it = ids.begin();
        it != ids.end(); ++it) {
     tPDPtr p = getParticleData(*it);
-    if ( !p ) return;
+    if ( !p ) return; // needed e.g. to deal with chi_5 in MSSM
     tmp.push_back(p);
+    chargeSum += p->iCharge();
   }
   assert( tmp.size() == _npoint );
+  if ( chargeSum != 0 ) {
+    cerr << "Problem with the addToList() calls in "
+	 << fullName() << ":\n"
+	 << "Vertex particles ";
+    copy (ids.begin(), ids.end(),
+          std::ostream_iterator<long>(cerr," "));
+    cerr << "have non-zero electric charge " << chargeSum << "/3.\n";
+    assert( false );
+  }
   _particles.push_back(tmp);
 }
 
