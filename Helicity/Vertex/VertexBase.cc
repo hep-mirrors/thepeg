@@ -89,7 +89,15 @@ void VertexBase::doinit() {
       _inpart.insert( cc ? cc : p );
       _outpart.insert(p);
     }
-  } 
+  }
+  // check the couplings
+  assert(_npoint<=2+_ordergEM+_ordergS);
+  if(Debug::level>1&&_npoint<2+_ordergEM+_ordergS)
+    generator()->log() << fullName() << " has inconsistent number of "
+		       << "external particles and coupling order QED = " 
+		       << _ordergEM << " QCD = " << _ordergS << " for"
+		       << " a perturbative intteraction, either its an"
+		       << " effective vertex or something is wrong.\n";
 }
 
     
@@ -275,8 +283,7 @@ Complex VertexBase::propagator(int iopt, Energy2 p2,tcPDPtr part,
   return Complex(UnitRemoval::E2/(p2-mass2+masswidth));
 }
 
-void VertexBase::rebind(const TranslationMap & trans)
-{
+void VertexBase::rebind(const TranslationMap & trans) {
   vector<vector<PDPtr> >::iterator cit;
   vector<PDPtr>::iterator cjt;
   for (cit =  _particles.begin(); cit != _particles.end(); ++cit) {
