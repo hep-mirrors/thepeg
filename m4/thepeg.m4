@@ -264,8 +264,8 @@ else
     fi
   fi
 fi
-AC_ARG_VAR($1,$5)
-AC_ARG_VAR($2,$6)
+AC_ARG_VAR($1,[$5])
+AC_ARG_VAR($2,[$6])
 ])
 
 AC_DEFUN([THEPEG_CHECK_PREFIXDIR],
@@ -286,7 +286,7 @@ if test -z "$$1"; then
 else
   AC_MSG_RESULT([yes ($$1)])
 fi
-AC_ARG_VAR($1,$3)
+AC_ARG_VAR($1,[$3])
 ])
 
 
@@ -298,7 +298,7 @@ if test -z "$$1"; then
 else
   AC_MSG_RESULT([yes ($$1)])
 fi
-AC_ARG_VAR($1,$3)
+AC_ARG_VAR($1,[$3])
 ])
 
 AC_DEFUN([THEPEG_DEFINE_ENVDEFAULT],
@@ -309,7 +309,7 @@ if test -z "$$2"; then
 else
   AC_MSG_RESULT([yes ($$2)])
 fi
-AC_ARG_VAR($2,$4)
+AC_ARG_VAR($2,[$4])
 AC_DEFINE_UNQUOTED($1,"$$2",[$4])
 ])
 
