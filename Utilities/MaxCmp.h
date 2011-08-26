@@ -27,7 +27,7 @@ namespace ThePEG {
  * maximum: MaxCmp<double, int, less<double> > will keep track of the
  * smallest value.
  */
-template <typename T = double, typename Indx = int, typename Cmp = greater<T> >
+template <typename T = double, typename Indx = int, typename Cmp = std::greater<T> >
 class MaxCmp {
 
 public:
