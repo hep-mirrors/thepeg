@@ -240,11 +240,7 @@ public:
   }
 
   /// Azimuthal angle.
-  double phi()   const 
-  {
-    if ( x() == Value() && y() == Value() )
-      return 0.;
-    //    assert(!(x() == Value() && y() == Value()));
+  double phi()   const {
     return atan2(y(),x()) ;
   }
   //@}

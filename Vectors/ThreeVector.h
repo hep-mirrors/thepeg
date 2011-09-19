@@ -117,9 +117,6 @@ public:
 
   /// Azimuthal angle.
   double phi()   const {
-    if ( x() == Value() && y() == Value() )
-      return 0.;
-    //    assert (!(x() == Value() && y() == Value()));
     return atan2(y(),x());
   }
 
