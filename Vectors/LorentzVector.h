@@ -17,7 +17,6 @@
  */
 
 #include "LorentzVector.fh"
-#include "Transverse.h"
 #include "ThePEG/Utilities/Direction.h"
 #include "ThePEG/Utilities/UnitIO.h"
 #include "LorentzRotation.h"
@@ -693,6 +692,17 @@ lightCone(Value plus, Value minus) {
 			 0.5*(plus-minus), 0.5*(plus+minus));
   return r;
 }
+
+}
+
+
+// delayed header inclusion to break inclusion loop:
+// LorentzVec -> Transverse -> Lorentz5Vec -> LorentzVec
+#include "Transverse.h"
+
+
+
+namespace ThePEG {
 
 /** Create a LorentzVector giving its light-cone and transverse
  *  components. */

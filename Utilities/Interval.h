@@ -155,28 +155,28 @@ public:
    * included in this interval.
    */
   template <typename Iterator>
-  static bool check(Iterator first, Iterator last);
+  bool check(Iterator first, Iterator last);
 
   /**
    * Check if all of the values in the given iterator range is
    * included in this interval.
    */
   template <typename Iterator>
-  static bool checkAll(Iterator first, Iterator last);
+  bool checkAll(Iterator first, Iterator last);
 
   /**
    * If x is in the given interval, split the given interval in two,
    * otherwise return an empty list.
    */
-  static std::vector< Interval<T,CMP> > split(Interval<T,CMP>, T x);
+  std::vector< Interval<T,CMP> > split(Interval<T,CMP>, T x);
   
   /**
    * For each value in the given range is in the given interval, split
    * the interval in two, otherwise return an empty list.
    */
   template<typename Iterator>
-  static std::vector< Interval<T,CMP> > split(Interval<T,CMP>,
-					      Iterator first, Iterator last);
+  std::vector< Interval<T,CMP> > split(Interval<T,CMP>,
+				       Iterator first, Iterator last);
 
 private:
 

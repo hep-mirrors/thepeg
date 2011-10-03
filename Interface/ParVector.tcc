@@ -298,16 +298,16 @@ template <typename T, typename Type>
 void ParVector<T,Type>::doxygenDescription(ostream & os) const {
   ParVectorTBase<Type>::doxygenDescription(os);
   os << "<b>Default value:</b> ";
-  putUnit(os, theDef);
+  this->putUnit(os, theDef);
   if ( theDefFn ) os << " (May be changed by member function.)";
   if ( ParVectorBase::lowerLimit() ) {
     os << "<br>\n<b>Minimum value:</b> ";
-    putUnit(os, theMin);
+    this->putUnit(os, theMin);
     if ( theMinFn ) os << " (May be changed by member function.)";
   }
   if ( ParVectorBase::upperLimit() ) {
     os << "<br>\n<b>Maximum value:</b> ";
-    putUnit(os, theMax);
+    this->putUnit(os, theMax);
     if ( theMaxFn ) os << " (May be changed by member function.)";
   }
   os << "<br>\n";

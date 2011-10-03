@@ -72,7 +72,7 @@ bool ColourSinglet::
 fill(Index s0, bool forward, tcColinePtr cl, tcParticleSet & left) {
   tcColinePtr first = cl;
   tcPPtr p;
-  while ( p = cl->getColouredParticle(left.begin(), left.end(), !forward) ) {
+  while ( (p = cl->getColouredParticle(left.begin(), left.end(), !forward)) ) {
     left.erase(p);
     if ( forward ) piece(s0).push_back(p);
     else piece(s0).push_front(p);

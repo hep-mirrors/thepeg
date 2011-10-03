@@ -18,12 +18,38 @@
 #include "Matcher.tcc"
 #endif
 
+
+
+#define THEPEG_MATCH_DESC(T)                           \
+/**                                                    \
+ * This template specialization registers the Matcher  \
+ */                                                    \
+template <>                                            \
+NoPIOClassDescription<T> T::initMatcher                \
+ = NoPIOClassDescription<T>();                         \
+
+
+
+namespace ThePEG {
+  THEPEG_MATCH_DESC(MatchAny)
+  THEPEG_MATCH_DESC(MatchStandardQCDParton)
+  THEPEG_MATCH_DESC(MatchLightAntiQuark)
+  THEPEG_MATCH_DESC(MatchLightQuark)
+  THEPEG_MATCH_DESC(MatchLepton)
+  THEPEG_MATCH_DESC(MatchDiquark)
+  THEPEG_MATCH_DESC(MatchMeson)
+  THEPEG_MATCH_DESC(MatchBaryon)
+  THEPEG_MATCH_DESC(MatchNegative)
+  THEPEG_MATCH_DESC(MatchNeutral)
+  THEPEG_MATCH_DESC(MatchPositive)
+  THEPEG_MATCH_DESC(MatchCharged)
+}
+
 using namespace ThePEG;
 
 namespace {
 
 void dummy() {
-
   static MatchAny m00;
   static MatchStandardQCDParton m01;
   static MatchLightAntiQuark m02;
