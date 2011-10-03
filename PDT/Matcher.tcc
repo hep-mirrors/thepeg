@@ -19,6 +19,9 @@ Matcher<T>::~Matcher() {
 } 
 
 template <class T>
+NoPIOClassDescription< Matcher<T> > Matcher<T>::initMatcher;
+
+template <class T>
 PMPtr Matcher<T>::Create(const string & newName, string antiName) {
   typedef typename Ptr< Matcher<T> >::pointer MatcherPtr;
   typedef typename Ptr< Matcher<typename T::CC> >::pointer AMatcherPtr;
