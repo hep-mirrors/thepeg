@@ -1099,7 +1099,7 @@ protected:
    * The ClassTraits<Particle> class must be a friend to be able to
    * use the private default constructor.
    */
-  friend class ClassTraits<Particle>;
+  friend struct ClassTraits<Particle>;
 
 private:
 

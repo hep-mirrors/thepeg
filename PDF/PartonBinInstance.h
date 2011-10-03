@@ -440,7 +440,8 @@ private:
 
 /** Empty base class. A RemnantHandler may use sub-classes to store
     information about the generation of remnants. */
-struct RemInfoBase: public Base {
+class RemInfoBase: public Base {
+public:
   /** The descructor. */
   virtual ~RemInfoBase() {}
 };

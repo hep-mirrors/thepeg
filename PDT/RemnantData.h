@@ -173,7 +173,7 @@ protected:
    * The ClassTraits<RemnantData> class must be a friend to be able to
    * use the private default constructor.
    */
-  friend class ClassTraits<RemnantData>;
+  friend struct ClassTraits<RemnantData>;
 
 private:
 

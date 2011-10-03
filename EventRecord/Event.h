@@ -387,7 +387,7 @@ private:
    * The ClassTraits<Event> class must be a friend to be able to
    * use the private default constructor.
    */
-  friend class ClassTraits<Event>;
+  friend struct ClassTraits<Event>;
 
   /**
    * The assignment operator is private and not implemented.

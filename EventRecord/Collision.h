@@ -369,7 +369,7 @@ private:
    * The ClassTraits<Collision> class must be a friend to be able to
    * use the private default constructor.
    */
-  friend class ClassTraits<Collision>;
+  friend struct ClassTraits<Collision>;
 
   /**
    * The assignment operator is private and not implemented.
