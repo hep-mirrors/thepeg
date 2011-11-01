@@ -172,8 +172,10 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   matrixElement()->setKinematics();
   CrossSection xsec = matrixElement()->dSigHatDR() * pdf;
 
-  lastAlphaS(matrixElement()->alphaS());
-  lastAlphaEM(matrixElement()->alphaEM());
+  lastAlphaS (matrixElement()->orderInAlphaS () >0 ?
+	      matrixElement()->alphaS()  : -1.);
+  lastAlphaEM(matrixElement()->orderInAlphaEW() >0 ?
+	      matrixElement()->alphaEM() : -1.);
 
   subProcess(SubProPtr());
   if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
