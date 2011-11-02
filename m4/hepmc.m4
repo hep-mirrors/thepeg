@@ -34,9 +34,15 @@ if test "x$with_hepmc" != "xno"; then
 	oldLDFLAGS="$LDFLAGS"
 	oldCPPFLAGS="$CPPFLAGS"
 	LIBS="$LIBS `echo $HEPMCLIBS | sed -e 's!-R.* ! !'`"
-	echo $LIBS
 	LDFLAGS="$LDFLAGS"
 	CPPFLAGS="$CPPFLAGS $HEPMCINCLUDE"
+
+	AC_CHECK_HEADERS([HepMC/HepMCDefs.h],[],[AC_MSG_WARN([
+
+*********************************************************************
+* HepMC versions before 2.05 may still work, but are not supported. *
+*********************************************************************
+])])
 
 	# check HepMC
 	AC_MSG_CHECKING([that HepMC works])
@@ -45,12 +51,13 @@ if test "x$with_hepmc" != "xno"; then
 	AC_MSG_ERROR([Use '--with-hepmc=' to set a path or use '--without-hepmc'.])
 	])
 
-	AC_CHECK_HEADERS([HepMC/PdfInfo.h],[],[AC_MSG_ERROR([Need HepMC with PdfInfo support.])],[
+       AC_CHECK_HEADERS([HepMC/PdfInfo.h],[],[AC_MSG_ERROR([Need HepMC with PdfInfo support.])],[
 #include <algorithm>
 #include <ostream>
 #include <istream>
 ])
-	AC_CHECK_HEADERS([HepMC/IO_GenEvent.h],[],[AC_MSG_ERROR([Need HepMC with GenEvent support.])])
+       AC_CHECK_HEADERS([HepMC/IO_GenEvent.h],[],[AC_MSG_ERROR([Need HepMC with GenEvent support.])])
+
 
 	LIBS="$oldLIBS"
 	LDFLAGS="$oldLDFLAGS"

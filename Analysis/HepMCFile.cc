@@ -55,10 +55,13 @@ void HepMCFile::doinitrun() {
     _filename = generator()->filename() + ".hepmc";
 
   switch ( _format ) {
-  default: 
-    _hepmcio = new HepMC::IO_GenEvent(_filename.c_str(), ios::out); 
-    dynamic_cast<HepMC::IO_GenEvent *>(_hepmcio)->precision(_geneventPrecision);
+  default: {
+    HepMC::IO_GenEvent * tmpio 
+      = new HepMC::IO_GenEvent(_filename.c_str(), ios::out);
+    tmpio->precision(_geneventPrecision);
+    _hepmcio = tmpio;
     break;
+  }
   case 2: 
     _hepmcio = new HepMC::IO_AsciiParticles(_filename.c_str(), ios::out); 
     break;

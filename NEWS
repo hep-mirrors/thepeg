@@ -8,7 +8,31 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.7.2 release: 2011-11-01
+
+** HepMC configuration
+   Clarified at configure time that HepMC versions before 2.05 are not
+   officially supported.
+
+** Rivet configuration
+   Rivet builds with external header dependencies are now correctly
+   recognized.
+
+** Helicity vertex consistency
+   To help debugging, the addToList() function for registering
+   particle lines connected to a vertex now checks for electric charge
+   conservation at the vertex. Additionally, the specified QED/QCD
+   order of the interaction is checked.
+
+** Ticket #355: Global library list for resume functionality
+   The list of global libraries is now correctly included in the dump
+   file, to fix the functionality of resuming a run from regular
+   checkpoints.
+
+
+
 * ThePEG-1.7.1 release: 2011-06-20
+
 ** Ticket #238: Self-consistent electroweak schemes
    The default behaviour of Herwig++ is to use the best values for all
    the electroweak parameters, which can be inconsistent. Optionally
@@ -56,6 +80,8 @@ or at http:///projects.hepforge.org/herwig/versions
 
 ** gcc-4.6
    The build has now also been tested with gcc 4.6.0.
+
+
 
 * ThePEG-1.7.0 release: 2011-02-08
 

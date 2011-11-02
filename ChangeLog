@@ -15,6 +15,11 @@
 	EventGenerator to ensure that a dumped generator state gets the
 	right libraries. In response to herwig:ticket:355
 
+2011-06-28  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Analysis/HepMCFile.cc, m4/hepmc.m4 : Clarified HepMC version
+	support in configure step. Removed superfluous dynamic_cast.
+
 2011-06-20  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Analysis/HepMCFile.cc: Added Interface for HepMC precision
