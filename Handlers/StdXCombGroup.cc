@@ -1,19 +1,19 @@
 // -*- C++ -*-
 //
-// StandardXComb.cc is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2011 Leif Lonnblad
-// Copyright (C) 2009-2011 Simon Platzer
+// StdXCombGroup.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 1999-2007 Leif Lonnblad
+// Copyright (C) 2009-2010 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 //
 // This is the implementation of the non-inlined, non-templated member
-// functions of the StandardXComb class.
+// functions of the StdXCombGroup class.
 //
 
-#include "StandardXComb.h"
 #include "StdXCombGroup.h"
+#include "ThePEG/MatrixElement/MEGroup.h"
 #include "ThePEG/Handlers/StandardEventHandler.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
 #include "ThePEG/Cuts/Cuts.h"
@@ -35,95 +35,33 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/EventRecord/TmpTransform.h"
 
-#ifdef ThePEG_TEMPLATES_IN_CC_FILE
-#include "StandardXComb.tcc"
-#endif
-
 using namespace ThePEG;
 
-StandardXComb::StandardXComb()
-  : XComb(), isMirror(false), theNDim(0),
-    partonDims(make_pair(0, 0)), theLastDiagramIndex(0), theLastPDFWeight(0.0),
-    theLastCrossSection(ZERO), theLastJacobian(1.0), theLastME2(-1.0), 
-    theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0) {}
+StdXCombGroup::StdXCombGroup(Energy newMaxEnergy, const cPDPair & inc,
+			     tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+			     tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
+			     const PBPair & newPartonBins, tCutsPtr newCuts, tMEGroupPtr newME,
+			     const DiagramVector & newDiagrams, bool mir)
+  : StandardXComb(newMaxEnergy,inc,newEventHandler,newSubProcessHandler,
+		  newExtractor, newCKKW, newPartonBins, newCuts,
+		  newME, newDiagrams, mir), 
+    theMEGroup(newME), theDependent(), theLastHeadCrossSection(ZERO) {}
 
-StandardXComb::
-StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
-	      tEHPtr newEventHandler, tSubHdlPtr newSubProcessHandler,
-	      tPExtrPtr newExtractor, tCascHdlPtr newCKKW,
-	      const PBPair & newPartonBins, tCutsPtr newCuts,
-	      tMEPtr newME, const DiagramVector & newDiagrams, bool mir,
-	      tStdXCombPtr newHead)
-  : XComb(newMaxEnergy, inc, newEventHandler,
-	  newExtractor, newCKKW, newPartonBins, newCuts),
-    theSubProcessHandler(newSubProcessHandler), theME(newME),
-    theDiagrams(newDiagrams), isMirror(mir),  theLastDiagramIndex(0),
-    theLastPDFWeight(0.0), 
-    theLastCrossSection(ZERO), theLastME2(-1.0), theLastMECrossSection(ZERO), 
-    theLastMEPDFWeight(1.0), theHead(newHead) {
-  partonDims = pExtractor()->nDims(partonBins());
-  if ( matrixElement()->haveX1X2() ) {
-    partonDims.first = 0;
-    partonDims.second = 0;
+StdXCombGroup::StdXCombGroup()
+  : StandardXComb(), theDependent() {}
+
+void StdXCombGroup::build(const PartonPairVec& allPBins) {
+  for ( MEVector::const_iterator me = theMEGroup->dependent().begin();
+	me != theMEGroup->dependent().end(); ++me ) {
+    StdDependentXCombPtr dep = 
+      theMEGroup->makeDependentXComb(this,diagrams().front()->partons(),*me,allPBins);
+    theDependent.push_back(dep);
   }
-  theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
-  mePartonData() = lastDiagram()->partons();
 }
 
-StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
-			     DiagramIndex indx)
-  : theME(me), isMirror(false), theNDim(0), partonDims(make_pair(0, 0)),
-    theLastDiagramIndex(0), theLastPDFWeight(0.0), theLastCrossSection(ZERO),
-    theLastME2(-1.0), theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0) {
-  
-  subProcess(new_ptr(SubProcess(make_pair(parts[0], parts[1]),
-				tCollPtr(), me)));
-  for ( int i = 0, N = parts.size(); i < N; ++i ) {
-    subProcess()->addOutgoing(parts[i], false);
-    theMEPartonData.push_back(parts[i]->dataPtr());
-    theMEMomenta.push_back(parts[i]->momentum());
-  }
-  lastSHat((meMomenta()[0] + meMomenta()[1]).m2());
-  string tag = me->diagrams()[indx]->getTag();
-  for ( int i = 0, N = me->diagrams().size(); i < N; ++i )
-    if ( me->diagrams()[i]->getTag() == tag )
-      theDiagrams.push_back(me->diagrams()[i]);
-}
+StdXCombGroup::~StdXCombGroup() { }
 
-StandardXComb::~StandardXComb() {}
-
-bool StandardXComb::checkInit() {
-  Energy summin = ZERO;
-  for ( int i = 2, N = mePartonData().size(); i < N; ++i ) {
-    summin += mePartonData()[i]->massMin();
-  }
-  return ( summin < min(maxEnergy(), cuts()->mHatMax()) );
-}
-
-bool StandardXComb::willPassCuts() const {
-
-  cuts()->initSubProcess(lastSHat(), lastY(), mirror());
-
-  tcPDVector outdata(mePartonData().begin()+2,mePartonData().end());
-  vector<LorentzMomentum> outmomenta(meMomenta().begin()+2,meMomenta().end());
-  Boost tocm = (meMomenta()[0]+meMomenta()[1]).findBoostToCM();
-  if ( tocm.mag2() > Constants::epsilon ) {
-    for ( vector<LorentzMomentum>::iterator p = outmomenta.begin();
-	  p != outmomenta.end(); ++p ) {
-      p->boost(tocm);
-    }
-  }
-
-  if ( !cuts()->passCuts(outdata,outmomenta,mePartonData()[0],mePartonData()[1]) ) {
-    return false;
-  }
-
-  return true;
-
-}
-
-CrossSection StandardXComb::
-dSigDR(const pair<double,double> ll, int nr, const double * r) {
+CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   matrixElement()->flushCaches();
 
@@ -293,106 +231,136 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   }
   matrixElement()->setKinematics();
   CrossSection xsec = matrixElement()->dSigHatDR() * lastPDFWeight();
-  if ( xsec == ZERO ) {
-    lastCrossSection(ZERO);
-    return ZERO;
-  }
 
-  lastAlphaS (matrixElement()->orderInAlphaS () >0 ?
-	      matrixElement()->alphaS()  : -1.);
-  lastAlphaEM(matrixElement()->orderInAlphaEW() >0 ?
-	      matrixElement()->alphaEM() : -1.);
+  bool noHeadPass = !willPassCuts() || xsec == ZERO;
+  if ( noHeadPass )
+    lastCrossSection(ZERO);
+
+  lastAlphaS(matrixElement()->alphaS());
+  lastAlphaEM(matrixElement()->alphaEM());
 
   subProcess(SubProPtr());
   if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
        matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
-    newSubProcess();
+    newSubProcess(theMEGroup->subProcessGroups());
     CKKWHandler()->setXComb(this);
     xsec *= CKKWHandler()->reweightCKKW(matrixElement()->minMultCKKW(),
 					matrixElement()->maxMultCKKW());
   }
 
   if ( matrixElement()->reweighted() ) {
-    newSubProcess();
+    newSubProcess(theMEGroup->subProcessGroups());
     xsec *= matrixElement()->reWeight() * matrixElement()->preWeight();
   }
 
+  lastHeadCrossSection(xsec);
+
+  CrossSection depxsec = ZERO;
+
+  if ( !theMEGroup->mcSumDependent() ) {
+    for ( StdDepXCVector::const_iterator dep = theDependent.begin();
+	  dep != theDependent.end(); ++dep ) {
+      if ( !(*dep) )
+	continue;
+      if ( !(**dep).matrixElement()->apply() )
+	continue;
+      if ( noHeadPass && (**dep).matrixElement()->headCuts() )
+	continue;
+      depxsec += (**dep).dSigDR();
+    }
+  } else {
+    if ( !noHeadPass || !theMEGroup->lastDependentXComb()->matrixElement()->headCuts() )
+      depxsec = theDependent.size()*theMEGroup->lastDependentXComb()->dSigDR();
+  }
+
+  if ( xsec != ZERO ) {
+    double rw = 1.0 + depxsec/xsec;
+    xsec *= rw;
+  } else {
+    xsec = depxsec;
+  }
+
   lastCrossSection(xsec);
+
+  if ( xsec != ZERO )
+    theMEGroup->lastEventStatistics();
+
+  if ( !theMEGroup->subProcessGroups() ) {
+    lastHeadCrossSection(xsec);
+  }
 
   return xsec;
 
 }
 
-void StandardXComb::newSubProcess(bool group) {
-  if ( subProcess() ) return;
+void StdXCombGroup::newSubProcess(bool) {
 
-  if ( !group )
-    subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), matrixElement())));
-  else
-    subProcess(new_ptr(SubProcessGroup(lastPartons(), tCollPtr(), matrixElement())));
-  lastDiagramIndex(matrixElement()->diagram(diagrams()));
-  const ColourLines & cl = matrixElement()->selectColourGeometry(lastDiagram());
-  Lorentz5Momentum p1 = lastPartons().first->momentum();
-  Lorentz5Momentum p2 = lastPartons().second->momentum();
-  tPPair inc = lastPartons();
-  if ( mirror() ) swap(inc.first, inc.second);
-  if ( matrixElement()->wantCMS() &&
-       !matrixElement()->haveX1X2() ) {
-    LorentzRotation r =  Utilities::boostToCM(inc);
-    lastDiagram()->construct(subProcess(), *this, cl);
-    subProcess()->transform(r.inverse());
-    lastPartons().first->set5Momentum(p1);
-    lastPartons().second->set5Momentum(p2);
-  } else {
-    lastDiagram()->construct(subProcess(), *this, cl);
+  // subprocess selection goes here
+  // if me group returns an associated
+  // selector
+
+  StandardXComb::newSubProcess(theMEGroup->subProcessGroups());
+
+  if ( !theMEGroup->subProcessGroups() )
+    return;
+
+  subProcess()->groupWeight(lastHeadCrossSection()/lastCrossSection());
+
+  Ptr<SubProcessGroup>::tptr group = 
+    dynamic_ptr_cast<Ptr<SubProcessGroup>::tptr>(subProcess());
+  assert(group);
+
+  for ( StdDepXCVector::iterator dep = theDependent.begin();
+	dep != theDependent.end(); ++dep ) {
+    if ( !(*dep) )
+      continue;
+    if ( (**dep).lastCrossSection() == ZERO ||
+	 !(**dep).matrixElement()->apply() )
+      continue;
+    tSubProPtr ds;
+    try {
+      ds = (**dep).construct();
+    } catch(Veto&) {
+      continue;
+    }
+    if ( ds )
+      group->add(ds);
   }
-  lastPartons().first ->scale(partonBinInstances().first ->scale());
-  lastPartons().second->scale(partonBinInstances().second->scale());
-  for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
-    subProcess()->outgoing()[i]->scale(lastScale());
-  // construct the spin information for the interaction
-  matrixElement()->constructVertex(subProcess());
-  // set veto scales
-  matrixElement()->setVetoScales(subProcess());
+
 }
 
-tSubProPtr StandardXComb::construct() {
+tSubProPtr StdXCombGroup::construct() {
+
+  if ( !theMEGroup->subProcessGroups() )
+    return StandardXComb::construct();
 
   matrixElement()->setXComb(this);
-  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
 
   setPartonBinInfo();
   matrixElement()->setKinematics();
 
-  newSubProcess();
+  newSubProcess(true);
 
   TmpTransform<tSubProPtr>
     tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
-  if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
+  if ( !cuts()->passCuts(*subProcess()) ) {
+    subProcess()->groupWeight(0.0);
+  }
 
   return subProcess();
 
 }
 
-void StandardXComb::Init() {}
 
-void StandardXComb::persistentOutput(PersistentOStream & os) const {
-  os << theSubProcessHandler << theME << theStats
-     << theDiagrams << isMirror << theNDim << partonDims
-     << theLastDiagramIndex << theMEInfo << theLastRandomNumbers << theMEPartonData
-     << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
-     << theLastME2 << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight
-     << theHead;
+void StdXCombGroup::Init() {}
+
+void StdXCombGroup::persistentOutput(PersistentOStream & os) const {
+  os << theDependent << theMEGroup << ounit(theLastHeadCrossSection,nanobarn);
 }
 
-void StandardXComb::persistentInput(PersistentIStream & is, int) {
-  is >> theSubProcessHandler >> theME >> theStats
-     >> theDiagrams >> isMirror >> theNDim >> partonDims
-     >> theLastDiagramIndex >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
-     >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
-     >> theLastME2 >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight
-     >> theHead;
+void StdXCombGroup::persistentInput(PersistentIStream & is, int) {
+  is >> theDependent >> theMEGroup >> iunit(theLastHeadCrossSection,nanobarn);
 }
 
-ClassDescription<StandardXComb> StandardXComb::initStandardXComb;
+ClassDescription<StdXCombGroup> StdXCombGroup::initStdXCombGroup;
 

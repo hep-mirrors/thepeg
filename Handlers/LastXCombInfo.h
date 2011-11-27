@@ -48,6 +48,20 @@ public:
    * Return a pointer to the last selected XComb.
    */
   tXCPtr lastXCombPtr() const { return theLastXComb; }
+
+  /**
+   * If the last selected XComb object belongs to a
+   * group of XComb's return a reference to the head 
+   * XComb object for this group.
+   */
+  const XC& lastHeadXComb() const { return *lastXComb().head(); }
+
+  /**
+   * If the last selected XComb object belongs to a
+   * group of XComb's return a pointer to the head 
+   * XComb object for this group.
+   */
+  tXCPtr lastHeadXCombPtr() const { return lastXComb().head(); }
   //@}
 
   /** @name Access the objects used by the XComb object. */
@@ -196,6 +210,34 @@ public:
    * TreeDiagram objects given by the matrix element.
    */
   const vector<Lorentz5Momentum> & meMomenta() const { return lastXComb().meMomenta(); }
+
+  /**
+   * Return the matrix element squared as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  double lastME2() const { return lastXComb().lastME2(); }
+
+  /**
+   * Get the last jacobian obtained when generating the kinematics
+   * for the call to dSigHatDR.
+   */
+  double jacobian() const { return lastXComb().jacobian(); }
+
+  /**
+   * Return the partonic cross section as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  CrossSection lastMECrossSection() const { return lastXComb().lastMECrossSection(); }
+
+  /**
+   * Return the PDF weight as calculated
+   * for the last phase space point, if the matrix
+   * element does supply PDF weights. This may optionally
+   * be used by a matrix element for caching.
+   */
+  double lastMEPDFWeight() const { return lastXComb().lastMEPDFWeight(); }
 
   /**
    * Return the SubProcess object corresponding to the last generated

@@ -170,10 +170,59 @@ public:
   virtual bool generateKinematics(const double * r) = 0;
 
   /**
+   * Return true, if this matrix element expects
+   * the incoming partons in their center-of-mass system
+   */
+  virtual bool wantCMS() const { return true; }
+
+  /**
+   * If this is a dependent matrix element in a ME group, return true,
+   * if cuts should be inherited from the head matrix element, i.e. no
+   * cut is being applied to the dependent matrix element if the head
+   * configuration has passed the cuts.
+   */
+  virtual bool headCuts() const { return false; }
+
+  /**
+   * If this is a dependent matrix element in a ME group, return true,
+   * if it applies to the process set in lastXComb()
+   */
+  virtual bool apply() const { return true; }
+
+  /**
    * Return the matrix element squared differential in the variables
    * given by the last call to generateKinematics().
    */
   virtual CrossSection dSigHatDR() const = 0;
+
+  /**
+   * Return true, if this matrix element will generate momenta for the
+   * incoming partons itself.  The matrix element is required to store
+   * the incoming parton momenta in meMomenta()[0,1]. No mapping in
+   * tau and y is performed by the PartonExtractor object, if a
+   * derived class returns true here. The phase space jacobian is to
+   * include a factor 1/(x1 x2).
+   */
+  virtual bool haveX1X2() const { return false; }
+
+  /**
+   * Return true, if this matrix element provides the PDF
+   * weight for the first incoming parton itself.
+   */
+  virtual bool havePDFWeight1() const { return false; }
+
+  /**
+   * Return true, if this matrix element provides the PDF
+   * weight for the second incoming parton itself.
+   */
+  virtual bool havePDFWeight2() const { return false; }
+
+  /**
+   * Return true, if the XComb steering this matrix element
+   * should keep track of the random numbers used to generate
+   * the last phase space point
+   */
+  virtual bool keepRandomNumbers() const { return false; }
 
   /**
    * Comlete a SubProcess object using the internal degrees of freedom
@@ -194,6 +243,15 @@ public:
    * Add all possible diagrams with the add() function.
    */
   virtual void getDiagrams() const = 0;
+
+  /**
+   * Return true, if this matrix element does not want to
+   * make use of mirroring processes; in this case all
+   * possible partonic subprocesses with a fixed assignment
+   * of incoming particles need to be provided through the diagrams
+   * added with the add(...) method.
+   */
+  virtual bool noMirror () const { return false; }
 
   /**
    * Return all possible diagrams.
@@ -275,6 +333,11 @@ public:
    * is not available.
    */
   Ptr<Amplitude>::pointer amplitude() const { return theAmplitude; }
+
+  /**
+   * Set the amplitude associated with this matrix element.
+   */
+  void amplitude(Ptr<Amplitude>::pointer amp) { theAmplitude = amp; }
   //@}
 
 public:
@@ -291,6 +354,13 @@ public:
    * pre-weighted.
    */
   double preweight() const { return lastPreweight; }
+
+  /**
+   * Inform this matrix element that a new phase space
+   * point is about to be generated, so all caches should
+   * be flushed.
+   */
+  virtual void flushCaches() {}
 
   /**
    * Set the XComb object to be used in the next call to
@@ -325,6 +395,13 @@ public:
    * the group.
    */
   int minMultCKKW() const { return theMinMultCKKW; }
+
+  /**
+   * Set veto scales on the particles at the given
+   * SubProcess which has been generated using this
+   * matrix element.
+   */
+  virtual void setVetoScales(tSubProPtr) const {}
   //@}
 
 public:
@@ -365,16 +442,49 @@ protected:
   using LastXCombInfo<StandardXComb>::meMomenta;
 
   /**
-   * Get the last jacobian obtained when generating the kinematics
-   * for the call to dSigHatDR.
+   * Set the matrix element squared as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
    */
-  double jacobian() const { return theLastJacobian; }
+  void lastME2(double v) const;
+  using LastXCombInfo<StandardXComb>::lastME2;
+
+  /**
+   * Set the partonic cross section as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  void lastMECrossSection(CrossSection v) const;
+  using LastXCombInfo<StandardXComb>::lastMECrossSection;
+
+  /**
+   * Set the PDF weight as calculated
+   * for the last phase space point, if the matrix
+   * element does supply PDF weights. This may optionally
+   * be used by a matrix element for caching.
+   */
+  void lastMEPDFWeight(double v) const;
+  using LastXCombInfo<StandardXComb>::lastMEPDFWeight;
 
   /**
    * Set the last jacobian obtained when generating the kinematics for
    * the call to dSigHatDR.
    */
-  void jacobian(double j) { theLastJacobian = j; }
+  void jacobian(double j);
+  using LastXCombInfo<StandardXComb>::jacobian;
+
+  /**
+   * Initialize all member variables from another
+   * MEBase object.
+   *
+   * @TODO remove?
+   */
+  void use(tcMEPtr other);
+
+  /**
+   * Initialize the diagrams from another MEBase object.
+   */
+  void useDiagrams(tcMEPtr other) const;
 
 private:
 
@@ -407,12 +517,6 @@ private:
    * The amplitude associated with this matrix element.
    */
   Ptr<Amplitude>::pointer theAmplitude;
-
-  /**
-   * Save the last jacobian obtained when generating the kinematics for
-   * the call to dSigHatDR.
-   */
-  double theLastJacobian;
 
   /**
    * If this matrix element is to be used together with others for

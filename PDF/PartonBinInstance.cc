@@ -53,6 +53,21 @@ PartonBinInstance::PartonBinInstance(tPPtr part, tcPBPtr pb, Energy2 scale)
   theEps =  Math::exp1m(-li());
 }
 
+PartonBinInstance::PartonBinInstance(tPPtr Part, tPPtr part, tcPBPtr pb, Energy2 scale)
+  : theBin(pb), theJacobian(1.0), theParton(part), theXi(1.0), theEps(0.0),
+    theLi(0.0), theX(1.0), theL(0.0), theScale(scale),
+    theRemnantWeight(1.0) {
+  if ( !pb->incoming() ) return;
+  particle(Part);
+  Energy2 P2 = max(-particle()->momentum().m2(), ZERO);
+  theXi = parton()->momentum().dirPlus()/particle()->momentum().dirPlus();
+  theLi = -log(xi());
+  theIncoming = new_ptr(PartonBinInstance(particle(), pb->incoming(), P2));
+  theX = xi()*incoming()->x();
+  theL = li() + incoming()->li();
+  theEps =  Math::exp1m(-li());
+}
+
 PartonBinInstance::~PartonBinInstance() {}
 
 tPBIPtr PartonBinInstance::getFirst() {
@@ -106,15 +121,6 @@ void PartonBinInstance::generate(const double * r) {
   l(li() + incoming()->l());
 }
 
-// TAKE AWAY ?
-double PartonBinInstance::fullFn(Energy2 newScale) {
-  if ( !incoming() ) return 1.0;
-  if ( newScale > ZERO ) scale(newScale);
-  return incoming()->fullFn() * jacobian() *
-    pdf()->xfl(particleData(), partonData(),
-	       scale(), li(), incoming()->scale());
-}
-  
 void PartonBinInstance::persistentOutput(PersistentOStream & os) const {
   os << theBin << theBins << theIncoming << theJacobian << theParticle
      << theParton << thePartons << theXi << theEps << theLi << theX << theL

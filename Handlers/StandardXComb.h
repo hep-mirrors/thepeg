@@ -2,6 +2,7 @@
 //
 // StandardXComb.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2011 Leif Lonnblad
+// Copyright (C) 2009-2011 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -47,6 +48,7 @@ namespace ThePEG {
  * @see ParonExtractor
  * @see MEBase
  * @see Cuts
+ * @see StdXCombGroup
  */
 class StandardXComb: public XComb {
 
@@ -72,7 +74,8 @@ public:
 		tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
 		tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
 		const PBPair & newPartonBins, tCutsPtr newCuts, tMEPtr newME,
-		const DiagramVector & newDiagrams, bool mir);
+		const DiagramVector & newDiagrams, bool mir,
+		tStdXCombPtr newHead = tStdXCombPtr());
 
   /**
    * Default constructor.
@@ -82,7 +85,7 @@ public:
   /**
    * Destructor.
    */
-  ~StandardXComb();
+  virtual ~StandardXComb();
 
   /**
    * Constructor used by MEBase to create a temporary object to store info.
@@ -103,6 +106,18 @@ public:
    * The matrix element to be used.
    */
   tMEPtr matrixElement() const { return theME; }
+
+  /**
+   * Return a pointer to the head XComb this XComb
+   * depends on. May return NULL, if this is not a
+   * member of a XComb group.
+   */
+  tStdXCombPtr head() const { return theHead; }
+
+  /**
+   * Set the head XComb pointer.
+   */
+  void head(tStdXCombPtr headXC) { theHead = headXC; }
   //@}
 
   /** @name Main functions used for the generation. */
@@ -119,16 +134,31 @@ public:
   int nDim() const { return theNDim; }
 
   /**
+   * Return true, if the current configuration will pass the cuts
+   */
+  bool willPassCuts() const;
+
+  /**
    * Generate a phase space point from a vector \a r of \a nr numbers
    * in the interval ]0,1[ and return the corresponding differential
    * cross section.
    */
-  CrossSection dSigDR(const pair<double,double> ll, int nr, const double * r);
+  virtual CrossSection dSigDR(const pair<double,double> ll, int nr, const double * r);
+
+  /**
+   * Return the PDF weight used in the last call to dSigDR
+   */
+  double lastPDFWeight() const { return theLastPDFWeight; }
+
+  /**
+   * Return the cross section calculated in the last call to dSigDR
+   */
+  CrossSection lastCrossSection() const { return theLastCrossSection; }
 
   /**
    * Construct a sub-process object from the information available.
    */
-  tSubProPtr construct();
+  virtual tSubProPtr construct();
   //@}
 
   /** @name Functions used for collecting statistics. */
@@ -136,30 +166,30 @@ public:
   /**
    * The statistics object for this XComb.
    */
-  const XSecStat & stats() const { return theStats; }
+  virtual const XSecStat & stats() const { return theStats; }
 
   /**
    * Select the current event. It will later be rejected with a
    * probability given by \a weight.
    */
-  void select(double weight) { theStats.select(weight); }
+  virtual void select(double weight) { theStats.select(weight); }
 
   /**
    * Accept the current event assuming it was previously selcted.
    */
-  void accept() { theStats.accept(); }
+  virtual void accept() { theStats.accept(); }
 
   /**
    * Reject the current event assuming it was previously accepted. If
    * weighted events are produced, the \a weight should be the same as
    * the previous call to select(double).
    */
-  void reject(double weight = 1.0) { theStats.reject(weight); }
+  virtual void reject(double weight = 1.0) { theStats.reject(weight); }
 
   /**
    * Reset statistics.
    */
-  void reset() { theStats.reset(); }
+  virtual void reset() { theStats.reset(); }
   //@}
 
   /** @name Access information used by the MEBase object. */
@@ -212,6 +242,41 @@ public:
    * colour flow.
    */
   void meInfo(const DVector & info) { theMEInfo = info; }
+
+  /**
+   * Return the random numbers used to generate the
+   * last phase space point, if the matrix element
+   * requested so.
+   */
+  const DVector& lastRandomNumbers() const { return theLastRandomNumbers; }
+
+  /**
+   * Get the last jacobian obtained when generating the kinematics
+   * for the call to dSigHatDR.
+   */
+  double jacobian() const { return theLastJacobian; }
+
+  /**
+   * Return the matrix element squared as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  double lastME2() const { return theLastME2; }
+
+  /**
+   * Return the partonic cross section as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  CrossSection lastMECrossSection() const { return theLastMECrossSection; }
+
+  /**
+   * Return the PDF weight as calculated
+   * for the last phase space point, if the matrix
+   * element does supply PDF weights. This may optionally
+   * be used by a matrix element for caching.
+   */
+  double lastMEPDFWeight() const { return theLastMEPDFWeight; }
   //@}
 
 protected:
@@ -220,7 +285,7 @@ protected:
    * Construct the corresponding SubProcess object if it hasn't been
    * done before.
    */
-  void newSubProcess();
+  virtual void newSubProcess(bool group = false);
 
   /**
    * Return the momenta of the partons to be used by the matrix
@@ -228,6 +293,13 @@ protected:
    * given by the matrix element.
    */
   vector<Lorentz5Momentum> & meMomenta() { return theMEMomenta; }
+
+  /**
+   * Access the random numbers used to generate the
+   * last phase space point, if the matrix element
+   * requested so.
+   */
+  DVector& lastRandomNumbers() { return theLastRandomNumbers; }
 
   /**
    * Return the parton types to be used by the matrix element object,
@@ -240,6 +312,44 @@ protected:
    * Set the last selected diagram.
    */
   void lastDiagramIndex(DiagramIndex i) { theLastDiagramIndex = i; }
+
+  /**
+   * Set the PDF weight used in the last call to dSigDR
+   */
+  void lastPDFWeight(double w) { theLastPDFWeight = w; }
+
+  /**
+   * Set the cross section calculated in the last call to dSigDR
+   */
+  void lastCrossSection(CrossSection s) { theLastCrossSection = s; }
+
+  /**
+   * Set the last jacobian obtained when generating the kinematics for
+   * the call to dSigHatDR.
+   */
+  void jacobian(double j) { theLastJacobian = j; }
+
+  /**
+   * Set the matrix element squared as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  void lastME2(double v) { theLastME2 = v; }
+
+  /**
+   * Set the partonic cross section as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  void lastMECrossSection(CrossSection v) { theLastMECrossSection = v; }
+
+  /**
+   * Set the PDF weight as calculated
+   * for the last phase space point, if the matrix
+   * element does supply PDF weights. This may optionally
+   * be used by a matrix element for caching.
+   */
+  void lastMEPDFWeight(double v) { theLastMEPDFWeight = v; }
 
 public:
 
@@ -298,11 +408,15 @@ private:
    */
   int theNDim;
 
+protected:
+
   /**
    * The number of dimensions of the phase space used for each of the
    * incoming partons.
    */
   pair<int,int> partonDims;
+
+private:
 
   /**
    * The momenta of the partons to be used by the matrix element
@@ -329,6 +443,58 @@ private:
    * flow.
    */
   DVector theMEInfo;
+
+  /**
+   * The random numbers used to generate the
+   * last phase space point, if the matrix element
+   * requested so.
+   */
+  DVector theLastRandomNumbers;
+
+  /**
+   * The PDF weight used in the last call to dSigDR
+   */
+  double theLastPDFWeight;
+
+  /**
+   * The cross section calculated in the last call to dSigDR
+   */
+  CrossSection theLastCrossSection;
+
+  /**
+   * Save the last jacobian obtained when generating the kinematics for
+   * the call to dSigHatDR.
+   */
+  double theLastJacobian;
+
+  /**
+   * The matrix element squared as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  double theLastME2;
+
+  /**
+   * The partonic cross section as calculated
+   * for the last phase space point. This may optionally
+   * be used by a matrix element for caching.
+   */
+  CrossSection theLastMECrossSection;
+
+  /**
+   * The PDF weight as calculated
+   * for the last phase space point, if the matrix
+   * element does supply PDF weights. This may optionally
+   * be used by a matrix element for caching.
+   */
+  double theLastMEPDFWeight;
+
+  /**
+   * A pointer to the head XComb this XComb
+   * depends on. May return NULL, if this is not a
+   * member of a XComb group.
+   */
+  tStdXCombPtr theHead;
 
 private:
 

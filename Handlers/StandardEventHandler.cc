@@ -13,6 +13,7 @@
 
 #include "StandardEventHandler.h"
 #include "ThePEG/Handlers/StandardXComb.h"
+#include "ThePEG/Handlers/StdXCombGroup.h"
 #include "ThePEG/Handlers/SubProcessHandler.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Reference.h"
@@ -26,6 +27,7 @@
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/MatrixElement/MEBase.h"
+#include "ThePEG/MatrixElement/MEGroup.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Handlers/LuminosityFunction.h"
 #include "ThePEG/Handlers/SamplerBase.h"
@@ -89,7 +91,8 @@ IBPtr StandardEventHandler::fullclone() const {
 
 void StandardEventHandler::
 addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tCutsPtr cuts,
-      tCascHdlPtr ckkw, tMEPtr me, const PBPair & pBins) {
+      tCascHdlPtr ckkw, tMEPtr me, const PBPair & pBins,
+      const PartonPairVec& allPBins) {
   typedef MEBase::DiagramVector DiagramVector;
   typedef map<string,DiagramVector> DiagramMap;
   cPDPair pin(pBins.first->parton(), pBins.second->parton());
@@ -98,19 +101,32 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tCutsPtr cuts,
   DiagramMap tmdiag;
   for ( int i = 0, N = diag.size(); i < N; ++i ) {
     cPDPair din(diag[i]->partons()[0], diag[i]->partons()[1]);
-    if ( din.first->id() < din.second->id() ) swap(din.first, din.second);
+    if (!me->noMirror())
+      if ( din.first->id() < din.second->id() ) swap(din.first, din.second); 
     if ( din == pin ) tdiag[diag[i]->getTag()].push_back(diag[i]);
-    if ( din.first == pin.second && din.second == pin.first )
-      tmdiag[diag[i]->getTag()].push_back(diag[i]);
+    if (!me->noMirror())
+      if ( din.first == pin.second && din.second == pin.first )
+	tmdiag[diag[i]->getTag()].push_back(diag[i]);
   }
 
   if ( tdiag.empty() ) tdiag = tmdiag;
   for ( DiagramMap::iterator dit = tdiag.begin(); dit != tdiag.end(); ++dit ) {
     cPDPair din(dit->second.back()->partons()[0],
 		dit->second.back()->partons()[1]);
-    StdXCombPtr xcomb =
-      new_ptr(StandardXComb(maxEnergy, incoming(), this, sub, extractor,
-			    ckkw, pBins, cuts, me, dit->second, din != pin));
+    // check
+    assert(me->noMirror() ? din == pin : true);
+    StdXCombPtr xcomb;
+    tMEGroupPtr megroup = dynamic_ptr_cast<tMEGroupPtr>(me);
+    if (!megroup)
+      xcomb = new_ptr(StandardXComb(maxEnergy, incoming(), this, sub, extractor,
+				    ckkw, pBins, cuts, me, dit->second, din != pin));
+    else {
+      StdXCombGroupPtr xcgroup = 
+	new_ptr(StdXCombGroup(maxEnergy, incoming(), this, sub, extractor,
+			      ckkw, pBins, cuts, megroup, dit->second, din != pin));
+      xcgroup->build(allPBins);
+      xcomb = xcgroup;
+    }
     if ( xcomb->checkInit() ) xCombs().push_back(xcomb);
     else generator()->logWarning(
       StandardEventHandlerInitError() << "The matrix element '"
@@ -187,8 +203,9 @@ void StandardEventHandler::initialize() {
     for ( PartonPairVec::iterator ppit = vpc.begin();
 	  ppit != vpc.end(); ++ppit )
       for ( MEVector::const_iterator meit = (**sit).MEs().begin();
-	    meit != (**sit).MEs().end(); ++meit )
-	addME(maxEnergy, *sit, pextract, kincuts, ckkw, *meit, *ppit);
+	    meit != (**sit).MEs().end(); ++meit ) {
+	addME(maxEnergy, *sit, pextract, kincuts, ckkw, *meit, *ppit,vpc);
+      }
   }
   xSecs().resize(xCombs().size());
 
@@ -570,6 +587,11 @@ EventPtr StandardEventHandler::continueEvent() {
     throw;
   }
   return currentEvent(); 
+}
+
+void StandardEventHandler::select(tXCombPtr newXComb) {
+  EventHandler::select(newXComb);
+  lastExtractor()->select(newXComb);
 }
 
 void StandardEventHandler::dofinish() {

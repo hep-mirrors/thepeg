@@ -131,6 +131,16 @@ public:
   virtual EventPtr continueEvent();
 
   /**
+   * Return the vector of StandardXComb objects.
+   */
+  const XVector & xCombs() const { return theXCombs; }
+
+  /**
+   * Change the XComb object
+   */
+  virtual void select(tXCombPtr newXComb);
+
+  /**
    * Return the boost needed to transform the current event from the
    * CMS system to the lab system.
    */
@@ -212,9 +222,11 @@ protected:
    * @param me a pointer to the MEBase object.
    * @param pBins a pair of <code>PartonBin</code>s describing the
    * partons extracted from the particles
+   * @param allPBins all available parton bins at the given energy
    */
   void addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor,
-	     tCutsPtr cuts, tCascHdlPtr ckkw, tMEPtr me, const PBPair & pBins);
+	     tCutsPtr cuts, tCascHdlPtr ckkw, tMEPtr me, const PBPair & pBins,
+	     const PartonPairVec& allPBins);
 
   /**
    * For the sub-procss and phase-space point selected in the previous
@@ -243,11 +255,6 @@ protected:
    * Set information about the current sub-process.
    */
   void setScale(Energy2);
-
-  /**
-   * Return the vector of StandardXComb objects.
-   */
-  const XVector & xCombs() const { return theXCombs; }
 
   /**
    * Return the vector of StandardXComb objects.

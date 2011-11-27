@@ -94,6 +94,16 @@ public:
    * type of incoming and outgoing partons.
    */
   string getTag() const;
+
+  /**
+   * Compare this diagram to another one modulo
+   * the ids of the diagrams.
+   */
+  virtual bool isSame (tcDiagPtr other) const {
+    return 
+      nIncoming() == other->nIncoming() &&
+      partons() == other->partons();
+  }
   //@}
 
 protected:

@@ -1,10 +1,10 @@
-mySOURCES = Event.cc Collision.cc SubProcess.cc Step.cc Particle.cc \
+mySOURCES = Event.cc Collision.cc SubProcess.cc SubProcessGroup.cc Step.cc Particle.cc \
           EventInfoBase.cc ColourLine.cc ColourBase.cc SpinInfo.cc \
           EventConfig.cc ColourSinglet.cc RemnantParticle.cc MultiColour.cc \
 	  HelicityVertex.cc
 
 DOCFILES = EventConfig.h Collision.h Event.h Particle.h ParticleTraits.h \
-           SelectorBase.h StandardSelectors.h Step.h SubProcess.h \
+           SelectorBase.h StandardSelectors.h Step.h SubProcess.h SubProcessGroup.h \
            EventInfoBase.h ColourLine.h ColourBase.h SpinInfo.h \
            ColourSinglet.h TmpTransform.h RemnantParticle.h MultiColour.h \
 	   HelicityVertex.h RhoDMatrix.h

@@ -144,12 +144,6 @@ public:
   const PDFCuts & cuts() const { return theCuts; }
 
   /**
-   * Return the parton density for this and parent particles. If the
-   * argument is positive, this scale should be used.
-   */
-  double fullFn(Energy2 newScale = -1.0*GeV2);
-
-  /**
    * Return the parton bin corresponding to the first incoming particle.
    */
   tPBPtr getFirst();

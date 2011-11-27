@@ -336,6 +336,20 @@ public:
   void scale(Energy2 q2) { rep().theScale = q2; }
 
   /**
+   * Get the scale above which this particle should
+   * not radiate.
+   */
+  Energy2 vetoScale() const { 
+    return hasRep() ? rep().theVetoScale : -1.0*GeV2;
+  }
+
+  /**
+   * Set the scale above which this particle should
+   * not radiate.
+   */
+  void vetoScale(Energy2 q2) { rep().theVetoScale = q2; }
+
+  /**
    * Return the transverse mass (squared), calculated from the energy
    * and the longitudinal momentum.
    */
@@ -1004,7 +1018,7 @@ public:
     /**
      * Default constructor.
      */
-    ParticleRep() : theScale(-1.0*GeV2), theNumber(0) {}
+    ParticleRep() : theScale(-1.0*GeV2), theVetoScale(-1.0*GeV2), theNumber(0) {}
 
     /**
      * Copy constructor.
@@ -1056,6 +1070,11 @@ public:
      * the resolution scale.
      */
     Energy2 theScale;
+
+    /**
+     * the veto scale.
+     */
+    Energy2 theVetoScale;
 
     /**
      * The order-number for this particle in the current event.

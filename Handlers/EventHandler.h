@@ -146,6 +146,11 @@ public:
   void clearEvent();
 
   /**
+   * Change the XComb object
+   */
+  virtual void select(tXCombPtr newXComb);
+
+  /**
    * Returns true if there are no step handlers left to apply to the
    * current event;
    */

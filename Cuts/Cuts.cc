@@ -14,6 +14,7 @@
 #include "Cuts.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/PDT/ParticleData.h"
 #include "ThePEG/EventRecord/Particle.h"
@@ -85,7 +86,7 @@ bool Cuts::initSubProcess(Energy2 shat, double yhat, bool mirror) const {
   theSubMirror = mirror;
   theCurrentSHat = shat;
   theCurrentYHat = yhat;
-  if ( shat <= sHatMin() || shat > sHatMax()*(1.0 + 10.0*Constants::epsilon) ) return false;
+  if ( shat <= sHatMin() || shat > sHatMax()*(1.0 + 1000.0*Constants::epsilon) ) return false;
   if ( yhat <= yHatMin() || yhat >= yHatMax() ) return false;
   double x1 = min(1.0, sqrt(shat/SMax())*exp(yhat));
   if ( x1 <= x1Min() || x1 > x1Max() ) return false;
@@ -103,6 +104,15 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
     HoldFlag<> nomir(theSubMirror, false);
     return passCuts(ptype, pmir, t1, t2);
   }
+
+  if ( jetFinder() )
+    if ( ptype.size() >= jetFinder()->minOutgoing() ) {
+      vector<LorentzMomentum> jets = p;
+      tcPDVector jettype = ptype;
+      if ( jetFinder()->cluster(jettype,jets,this,t1,t2) ){
+	return passCuts(jettype,jets,t1,t2);
+      }
+    }
 
   for ( int i = 0, N = p.size(); i < N; ++i )
     for ( int j = 0, M = theOneCuts.size(); j < M; ++j )
@@ -276,13 +286,27 @@ double Cuts::maxYStar(tcPDPtr p) const {
   }
 }
 
+double Cuts::minRapidityMax(tcPDPtr p) const {
+  double minRapidityMax = -Constants::MaxRapidity;
+  for ( int i = 0, N = theOneCuts.size(); i < N; ++i )
+    minRapidityMax = max(minRapidityMax, theOneCuts[i]->minRapidityMax(p));
+  return minRapidityMax;
+}
+
+double Cuts::maxRapidityMin(tcPDPtr p) const {
+  double maxRapidityMin = Constants::MaxRapidity;
+  for ( int i = 0, N = theOneCuts.size(); i < N; ++i )
+    maxRapidityMin = min(maxRapidityMin, theOneCuts[i]->maxRapidityMin(p));
+  return maxRapidityMin;
+}
+
 void Cuts::persistentOutput(PersistentOStream & os) const {
   os << ounit(theSMax, GeV2) << theY << ounit(theCurrentSHat, GeV2)
      << theCurrentYHat << ounit(theMHatMin, GeV) << ounit(theMHatMax, GeV)
      << theYHatMin << theYHatMax
      << theX1Min << theX1Max << theX2Min << theX2Max << ounit(theScaleMin, GeV2)
      << ounit(theScaleMax, GeV2) << theOneCuts << theTwoCuts << theMultiCuts
-     << theSubMirror;
+     << theJetFinder << theSubMirror;
 }
 
 void Cuts::persistentInput(PersistentIStream & is, int) {
@@ -291,7 +315,7 @@ void Cuts::persistentInput(PersistentIStream & is, int) {
      >> theYHatMin >> theYHatMax
      >> theX1Min >> theX1Max >> theX2Min >> theX2Max >> iunit(theScaleMin, GeV2)
      >> iunit(theScaleMax, GeV2) >> theOneCuts >> theTwoCuts >> theMultiCuts
-     >> theSubMirror;
+     >> theJetFinder >> theSubMirror;
 }
 
 ClassDescription<Cuts> Cuts::initCuts;
@@ -460,6 +484,14 @@ void Cuts::Init() {
      "The objects defining cuts on sets of outgoing particles from the "
      "hard sub-process.",
      &Cuts::theMultiCuts, -1, true, false, true, false, false);
+
+
+  static Reference<Cuts,JetFinder> interfaceJetFinder
+    ("JetFinder",
+     "Set a JetFinder object used to define cuts on the"
+     "level of reconstructed jets as needed for higher order corrections.",
+     &Cuts::theJetFinder, false, false, true, true, false);
+
 
   interfaceX1Min.rank(10);
   interfaceX1Max.rank(9);

@@ -156,6 +156,251 @@ void Tree2toNDiagram::check() {
   parts.insert(parts.end(), out.begin(), out.end());
   partons(2, parts, nextOrig + 1);
 }
+
+bool Tree2toNDiagram::isSame (tcDiagPtr diag) const {
+  Ptr<Tree2toNDiagram>::tcptr cmp = 
+    dynamic_ptr_cast<Ptr<Tree2toNDiagram>::tcptr>( diag );
+  if ( !cmp )
+    return false;
+  return equals(cmp) && external() == cmp->external();
+}
+
+bool Tree2toNDiagram::isSame (tcDiagPtr diag, map<int,int>& remap) const {
+  Ptr<Tree2toNDiagram>::tcptr cmp = 
+    dynamic_ptr_cast<Ptr<Tree2toNDiagram>::tcptr>( diag );
+  if ( !cmp )
+    return false;
+  remap.clear();
+  remap[0] = 0;
+  return equals(cmp,remap);
+}
+
+bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag, 
+			     int start, int startCmp) const {
+
+  if ( start < 0 && startCmp < 0 )
+    return true;
+
+  if ( allPartons()[start] != diag->allPartons()[startCmp] )
+    return false;
+
+  pair<int,int> ch = children(start);
+  pair<int,int> chCmp = diag->children(startCmp);
+
+  return
+    equals(diag,ch.first,chCmp.first) &&
+    equals(diag,ch.second,chCmp.second);
+
+}
+
+bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag, 
+			     map<int,int>& remap,
+			     int start, int startCmp) const {
+
+  if ( start < 0 && startCmp < 0 )
+    return true;
+
+  if ( allPartons()[start] != diag->allPartons()[startCmp] )
+    return false;
+
+  pair<int,int> ch = children(start);
+  pair<int,int> chCmp = diag->children(startCmp);
+
+  if ( ch.first < 0 && chCmp.first < 0 ) {
+    remap[externalId(start)] = diag->externalId(startCmp);
+  }
+
+  return
+    equals(diag,remap,ch.first,chCmp.first) &&
+    equals(diag,remap,ch.second,chCmp.second);
+
+}
+
+int Tree2toNDiagram::externalId(int id) const {
+  if ( id < 0 )
+    return -1;
+  if ( id == 0 )
+    return 0;
+  if ( id == nSpace() - 1 )
+    return 1;
+  int k = 1;
+  for ( size_type i = nSpace(); i < allPartons().size(); ++i ) {
+    if ( children(i).first < 0 ) ++k;
+    if ( i == size_type(id) )
+      break;
+  }
+  return k;
+}
+
+int Tree2toNDiagram::diagramId(int id) const {
+  if ( id < 0 )
+    return -1;
+  if ( id == 0 ) return 0;
+  if ( id == 1 ) return nSpace() - 1;
+  int k = 1;
+  size_type i = nSpace();
+  for ( ; i < allPartons().size(); ++i ) {
+    if ( children(i).first < 0 ) ++k;
+    if ( k == id )
+      break;
+  }
+  return i;
+}
+
+int Tree2toNDiagram::mergeEmission(int emitter, int id, map<int,int>& remap) {
+
+  if ( id < 2 )
+    return -1;
+
+  if ( remap.find(emitter) != remap.end() ) {
+    remap.erase(emitter);
+  }
+  if ( remap.find(id) != remap.end() ) {
+    remap.erase(id);
+  }
+
+  for ( map<int,int>::iterator rm = remap.begin();
+	rm != remap.end(); ++rm ) {
+    if ( rm->first == 0 || rm->first == 1 ) {
+      rm->second = rm->first;
+    } else {
+      rm->second = diagramId(rm->first);
+    }
+  }
+
+  // translate to diagram id
+  int did = diagramId(id);
+  int demitter = diagramId(emitter);
+
+  if ( children(did) != make_pair(-1,-1) )
+    return -1;
+
+  // now get the parent
+  int p = parent(did);
+
+  int npos = -1;
+  if ( p == 0 || p == nSpace() - 2 ) {
+    npos = ( p == 0 ? 0 : 1 );
+  } else if ( p >= nSpace() ) {
+    if ( id > emitter )
+      npos = emitter;
+    else
+      npos = emitter - 1;
+  }
+
+  pair<int,int> remove;
+
+  size_type theNSpaceBackup = theNSpace;
+  int theNOutgoingBackup = theNOutgoing;
+  int nextOrigBackup = nextOrig;
+  cPDVector thePartonsBackup = thePartons;
+  vector<int> theParentsBackup = theParents;
+
+  int deltaFlow = 0;
+  if ( npos == 1 ) {
+    if ( thePartons[did]->CC() )
+      deltaFlow -= ( thePartons[did]->id() < 0 ? -1 : 1 );
+    if ( thePartons[nSpace()-1]->CC() )
+      deltaFlow += ( thePartons[nSpace()-1]->id() < 0 ? -1 : 1 );
+  }
+
+  // emitted from spacelike
+  if ( p == 0 || p == nSpace() - 2 ) {
+    if ( p == 0 && p != demitter )
+      return -1;
+    if ( p == nSpace() - 2 && demitter != nSpace()-1 )
+      return -1;
+    if ( p == 0 )
+      remove = make_pair(p,did);
+    else
+      remove = make_pair(nSpace()-1,did);
+    --theNSpace;
+    --theNOutgoing;
+  } else if ( p >= nSpace() ) {
+    remove = children(p);
+    if ( remove.first != demitter )
+      swap(remove.first,remove.second);
+    if ( remove != make_pair(demitter,did) )
+      return -1;
+    --theNOutgoing;
+  } else {
+    return -1;
+  }
+
+  if ( remove.first > remove.second )
+    swap(remove.first,remove.second);
+
+  for ( map<int,int>::iterator rm = remap.begin();
+	rm != remap.end(); ++rm ) {
+    if ( rm->first > 1 ) {
+      if ( rm->second > remove.first &&
+	   rm->second < remove.second )
+	rm->second -= 1;
+      else if ( rm->second > remove.second )
+	rm->second -= 2;
+    }
+  }
+
+  for ( unsigned int k = remove.first + 1; k < theParents.size(); ++k ) {
+    if ( theParents[k] >= remove.first && 
+	 theParents[k] < remove.second &&
+	 theParents[k] >= 0 )
+      theParents[k] -= 1;
+    else if ( theParents[k] > remove.second && theParents[k] > 0 )
+      theParents[k] -= 2;
+  }
+  thePartons.erase(thePartons.begin() + remove.second);
+  theParents.erase(theParents.begin() + remove.second);
+  thePartons.erase(thePartons.begin() + remove.first);
+  theParents.erase(theParents.begin() + remove.first);
+
+  if ( npos > 1 )
+    if ( npos != externalId(p) ) {
+      pair<int,int> swapDiagIds(p,diagramId(npos));
+      swap(thePartons[swapDiagIds.first],thePartons[swapDiagIds.second]);
+      swap(theParents[swapDiagIds.first],theParents[swapDiagIds.second]);
+      for ( map<int,int>::iterator rm = remap.begin();
+	    rm != remap.end(); ++rm ) {
+	if ( rm->first > 1 ) {
+	  if ( rm->second == swapDiagIds.first ) {
+	    rm->second = swapDiagIds.second;
+	  } else if ( rm->second == swapDiagIds.second ) {
+	    rm->second = swapDiagIds.first;
+	  }
+	}
+      }
+    }
+
+  for ( map<int,int>::iterator rm = remap.begin();
+	rm != remap.end(); ++rm ) {
+    if ( rm->first > 1 ) {
+      rm->second = externalId(rm->second);
+    }
+  }
+
+  if ( npos == 1 ) {
+    if ( thePartons[nSpace()-1]->CC() )
+      deltaFlow -= ( thePartons[nSpace()-1]->id() < 0 ? -1 : 1 );
+
+    if ( deltaFlow != 0 )
+      thePartons[nSpace()-1] = thePartons[nSpace()-1]->CC();
+
+  }
+
+  try {
+    check();
+  } catch (Tree2toNDiagramError&) {
+    theNSpace = theNSpaceBackup;
+    theNOutgoing = theNOutgoingBackup;
+    nextOrig = nextOrigBackup;
+    thePartons = thePartonsBackup;
+    theParents = theParentsBackup;
+    return -1;
+  }
+
+  return npos;
+
+}
  
 ClassDescription<Tree2toNDiagram> Tree2toNDiagram::initTree2toNDiagram;
 

@@ -7,7 +7,7 @@ mySOURCES = EventHandler.cc SubProcessHandler.cc \
             StandardEventHandler.cc  \
             SamplerBase.cc  ClusterCollapser.cc \
             PtGenerator.cc ZGenerator.cc   \
-            StandardXComb.cc
+            StandardXComb.cc StdDependentXComb.cc StdXCombGroup.cc
 
 DOCFILES = AnalysisHandler.h CascadeHandler.h \
            DecayHandler.h EventHandler.h EventManipulator.h \
@@ -17,12 +17,14 @@ DOCFILES = AnalysisHandler.h CascadeHandler.h \
            MultipleInteractionHandler.h StandardEventHandler.h \
            StepHandler.h SubProcessHandler.h XComb.h LastXCombInfo.h \
            SamplerBase.h  ClusterCollapser.h \
-           PtGenerator.h ZGenerator.h StandardXComb.h
+           PtGenerator.h ZGenerator.h StandardXComb.h StdDependentXComb.h \
+	   StdXCombGroup.h
 
 INCLUDEFILES = $(DOCFILES) HandlerGroup.tcc \
                StandardEventHandler.fh \
                SubProcessHandler.fh EventHandler.fh SamplerBase.fh \
-               ClusterCollapser.fh StandardXComb.fh AnalysisHandler.fh
+               ClusterCollapser.fh StandardXComb.fh StdDependentXComb.fh \
+	       StdXCombGroup.fh AnalysisHandler.fh
 
 
 noinst_LTLIBRARIES = libThePEGHandlers.la

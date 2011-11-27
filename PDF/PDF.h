@@ -146,6 +146,25 @@ public:
    */
   tcPDPtr particle() const { return theParticle; }
 
+  /**
+   * Compare for equality.
+   */
+  bool operator==(const PDF& x) const {
+    return
+      pdf() == x.pdf() &&
+      particle() == x.particle();
+  }
+
+  /**
+   * Compare for ordering.
+   */
+  bool operator<(const PDF& x) const {
+    return
+      pdf() == x.pdf() ?
+      particle() < x.particle() :
+      pdf() < x.pdf();
+  }
+
 private:
 
   /**

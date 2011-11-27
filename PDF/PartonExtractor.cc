@@ -200,16 +200,19 @@ generateL(const PBIPair & pbins, const double * r1, const double * r2) {
 
 Energy2 PartonExtractor::
 generateSHat(Energy2, const PBIPair & pbins,
-	     const double * r1, const double * r2) {
+	     const double * r1, const double * r2,
+	     bool haveMEPartons) {
   Direction<0> dir(true);
   if(pbins.first->bin()->pdfDim()<=1) pbins.first->scale(-lastScale());
   if ( !generate(*pbins.first, r1, lastSHat(),
-		 pbins.first->getFirst()->parton()->momentum()) )
+		 pbins.first->getFirst()->parton()->momentum(),
+		 haveMEPartons) )
     return -1.0*GeV2;
   dir.reverse();
   if(pbins.second->bin()->pdfDim()<=1) pbins.second->scale(-lastScale());
   if ( !generate(*pbins.second, r2, lastSHat(),
-		 pbins.second->getFirst()->parton()->momentum()) )
+		 pbins.second->getFirst()->parton()->momentum(),
+		 haveMEPartons) )
     return -1.0*GeV2;
   
   return (pbins.first->parton()->momentum() +
@@ -223,7 +226,9 @@ generateL(PartonBinInstance & pb, const double * r) {
   pb.parton(pb.partonData()->produceParticle(Lorentz5Momentum()));
   generateL(*pb.incoming(), r + pb.bin()->pdfDim() + pb.bin()->remDim());
   pb.particle(pb.incoming()->parton());
+
   if ( pb.li() >= 0 ) return;
+
   double jac = 1.0;
   if ( pb.bin()->pdfDim() )
     pb.li(pb.pdf()->flattenL(pb.particleData(), pb.partonData(),
@@ -239,7 +244,8 @@ generateL(PartonBinInstance & pb, const double * r) {
 
 bool PartonExtractor::
 generate(PartonBinInstance & pb, const double * r,
-	 Energy2 shat, const Lorentz5Momentum & first) {
+	 Energy2 shat, const Lorentz5Momentum & first,
+	 bool haveMEPartons) {
   if ( !pb.incoming() ) return true;
   if ( !generate(*pb.incoming(), r + pb.bin()->pdfDim() + pb.bin()->remDim(),
 		 shat/pb.xi(), first) )
@@ -247,7 +253,7 @@ generate(PartonBinInstance & pb, const double * r,
   pb.remnantWeight(1.0);
   pb.parton()->setMomentum
     (pb.remnantHandler()->generate(pb, r + pb.bin()->pdfDim(), pb.scale(), shat,
-				   pb.particle()->momentum()));
+				   pb.particle()->momentum(),haveMEPartons));
   if ( pb.remnantWeight() <= 0.0 ) return false;
   partonBinInstances[pb.parton()] = &pb;
   return true;
@@ -403,6 +409,12 @@ boostRemnants(PBIPair & bins, LorentzMomentum k1, LorentzMomentum k2,
 void PartonExtractor::
 transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
 		  const LorentzMomentum & k, const LorentzMomentum & P) const {
+  // don't do this for very soft remnants, as
+  // we may run into numerical troubles; threshold
+  // needs to become a parameter at some point
+  if ( Pr.vect().mag2()/k.vect().mag2() < 1e-10 &&
+       sqr(Pr.e()/k.e()) < 1e-10 )
+    return;
   TransverseMomentum pt = Pr;
   try {
     if ( Direction<0>::pos() )
@@ -421,15 +433,21 @@ transformRemnants(LorentzMomentum & Ph, LorentzMomentum & Pr,
 }
 
 
-double PartonExtractor::fullFn(const PBIPair & pbins, Energy2 scale) {
+double PartonExtractor::fullFn(const PBIPair & pbins, Energy2 scale,
+			       pair<bool,bool> noLastPDF) {
   if(pbins.first->bin()->pdfDim()<=1) pbins.first->scale(scale);
   if(pbins.second->bin()->pdfDim()<=1) pbins.second->scale(scale);
-  return fullFn(*pbins.first)*fullFn(*pbins.second);
+  return fullFn(*pbins.first,noLastPDF.first)*fullFn(*pbins.second,noLastPDF.second);
 }
 
-double PartonExtractor::fullFn(const PartonBinInstance & pb) {
+double PartonExtractor::fullFn(const PartonBinInstance & pb,
+			       bool noLastPDF) {
   if ( !pb.incoming() ) return 1.0;
-  return fullFn(*pb.incoming()) * pb.jacobian() * pb.remnantWeight() *
+  if (noLastPDF)
+    return 
+      fullFn(*pb.incoming(),false) * pb.jacobian() * 
+      pb.remnantWeight() * exp(-pb.li());
+  return fullFn(*pb.incoming(),false) * pb.jacobian() * pb.remnantWeight() *
     pb.pdf()->xfl(pb.particleData(), pb.partonData(), pb.scale(),
 		  pb.li(), pb.incoming()->scale());
 }

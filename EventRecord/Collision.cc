@@ -12,6 +12,7 @@
 //
 #include "Collision.h"
 #include "ThePEG/EventRecord/SubProcess.h"
+#include "ThePEG/EventRecord/SubProcessGroup.h"
 #include "ThePEG/EventRecord/ParticleTraits.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Config/algorithm.h"
@@ -169,9 +170,15 @@ ostream & ThePEG::operator<<(ostream & os, const Collision & c) {
       os << string(78, '-') << endl;
       if ( !isub ) {
 	os << "Primary sub-process";
+	if ( dynamic_ptr_cast<Ptr<SubProcessGroup>::ptr>(*it) )
+	  os << " group";
 	++isub;
-      } else
-	os << "Secondary sub-process " << isub++;
+      } else {
+	os << "Secondary sub-process ";
+	if ( dynamic_ptr_cast<Ptr<SubProcessGroup>::ptr>(*it) )
+	  os << "group ";
+	os << isub++;
+      }
       if ( (**it).handler() )
 	os << " performed by " << EventConfig::nameHandler((**it).handler())
 	   << endl;

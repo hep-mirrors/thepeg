@@ -173,6 +173,13 @@ bool EventHandler::empty() const {
   return true;
 }
 
+void EventHandler::select(tXCombPtr newXComb) {
+  theLastXComb = newXComb;
+  lumiFn().select(newXComb);
+  if ( CKKWHandler() )
+    CKKWHandler()->setXComb(newXComb);
+}
+
 void EventHandler::
 performStep(tStepHdlPtr handler, tHintPtr hint) {
   if ( !lastXCombPtr() ) theLastXComb = new_ptr(XComb());

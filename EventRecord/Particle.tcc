@@ -22,7 +22,7 @@ struct ParticleNumLess {
 template <typename Iterator>
 void Particle::
 PrintParticles(ostream & os, Iterator first, Iterator last, tcStepPtr step) {
-  typedef set<PPtr,ParticleNumLess> NumSet;
+  typedef multiset<PPtr,ParticleNumLess> NumSet;
   NumSet pset(first, last);
   for ( NumSet::iterator i = pset.begin(); i != pset.end(); ++i )
     (**i).print(os, step);

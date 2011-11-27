@@ -126,16 +126,28 @@ public:
 			 const double * r1, const double * r2);
 
   /**
+   * Used by generateL() for each of the final parton
+   * bins. Direction<0> is set to positive(negative) for the
+   * first(second) final bin.
+   */
+  virtual void generateL(PartonBinInstance & pb, const double * r);
+
+  /**
    * Generate the rest of the degrees of freedom to calculate
    * \f$\hat{s}\f$ and the product of all densitiy functions.
    */
   virtual Energy2 generateSHat(Energy2 s, const PBIPair & pbins,
-			       const double * r1, const double * r2);
+			       const double * r1, const double * r2,
+			       bool mepartons = false);
 
   /**
-   * Return the product of all density functions.
+   * Return the product of all density functions. If noLastPDF.first
+   * (.second) is true, then the PDF value multiplied by the momentum 
+   * fraction for the last extracted parton from the first (second) 
+   * incoming particle will be excluded.
    */
-  virtual double fullFn(const PBIPair & pbins, Energy2 scale);
+  virtual double fullFn(const PBIPair & pbins, Energy2 scale,
+			pair<bool,bool> noLastPDF = make_pair(false,false));
 
   /**
    * Construct remnants and add them to the step.
@@ -204,12 +216,6 @@ protected:
   /** @name Functions used by the main virtual functions. Some of
       these may be overridden in sub-classes. */
   //@{
-  /**
-   * Used by generateL() for each of the final parton
-   * bins. Direction<0> is set to positive(negative) for the
-   * first(second) final bin.
-   */
-  virtual void generateL(PartonBinInstance & pb, const double * r);
 
   /**
    * Used by generateSHat() for each of the final parton
@@ -225,12 +231,14 @@ protected:
    * @return false if no remnants could be generated.
    */
   virtual bool generate(PartonBinInstance & pb, const double * r,
-			Energy2 shat, const Lorentz5Momentum & first);
+			Energy2 shat, const Lorentz5Momentum & first,
+			bool haveMEPartons = false);
 
   /**
    * Used by the public fullFn() for each of the final parton bins.
    */
-  virtual double fullFn(const PartonBinInstance & pb);
+  virtual double fullFn(const PartonBinInstance & pb,
+			bool noLastPDF = false);
 
   /**
    * Used by the public construct() for each of the final parton

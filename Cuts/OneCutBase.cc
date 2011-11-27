@@ -65,6 +65,14 @@ double OneCutBase::maxEta(tcPDPtr) const {
   return Constants::MaxRapidity;
 }
 
+double OneCutBase::minRapidityMax(tcPDPtr) const {
+  return -Constants::MaxRapidity;
+}
+
+double OneCutBase::maxRapidityMin(tcPDPtr) const {
+  return Constants::MaxRapidity;
+}
+
 AbstractNoPIOClassDescription<OneCutBase> OneCutBase::initOneCutBase;
 // Definition of the static class description member.
 

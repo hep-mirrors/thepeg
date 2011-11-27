@@ -143,6 +143,20 @@ private:
    */
   double minRapidityMax() const;
 
+  /**
+   * Return the minimum allowed rapidity of an outgoing parton
+   * of the given type. The rapidity is measured in the lab
+   * system.
+   */
+  virtual double minRapidityMax(tcPDPtr p) const;
+
+  /**
+   * Return the maximum allowed rapidity of an outgoing parton
+   * of the given type. The rapidity is measured in the lab
+   * system.
+   */
+  virtual double maxRapidityMin(tcPDPtr p) const;
+
 private:
 
   /**

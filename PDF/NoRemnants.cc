@@ -28,7 +28,7 @@ IBPtr NoRemnants::fullclone() const {
 
 Lorentz5Momentum NoRemnants::
 generate(PartonBinInstance & pb, const double *,
-	 Energy2, const LorentzMomentum & p) const {
+	 Energy2, const LorentzMomentum & p, bool) const {
   if ( pb.particleData() != pb.partonData() || pb.li() > 0.0 )
     throw RemnantHandlerException
       (pb.particleData()->name(), pb.partonData()->name(), name(),
@@ -38,7 +38,7 @@ generate(PartonBinInstance & pb, const double *,
 
 Lorentz5Momentum NoRemnants::
 generate(PartonBinInstance & pb, const double *, Energy2,
-	 Energy2, const LorentzMomentum & p) const {
+	 Energy2, const LorentzMomentum & p, bool) const {
   if ( pb.particleData() != pb.partonData() || pb.li() > 0.0 )
     throw RemnantHandlerException
       (pb.particleData()->name(), pb.partonData()->name(), name(),

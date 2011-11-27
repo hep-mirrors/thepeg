@@ -118,6 +118,13 @@ public:
    */
   Lorentz5Vector(const LorentzVector<Value> & p)
     : LorentzVector<Value>(p) { rescaleMass(); } 
+
+  /**
+   * Construct from value type U convertible to Value.
+   */
+  template<class U>
+  Lorentz5Vector(const Lorentz5Vector<U> & p)
+    : LorentzVector<Value>(p), mm(p.m) {}
   //@}
 
   /** @name Assignment and set functions. */

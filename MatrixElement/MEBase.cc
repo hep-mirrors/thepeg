@@ -28,10 +28,29 @@
 using namespace ThePEG;
 
 MEBase::MEBase()
-  : theLastSHat(-1.0*GeV2), lastPreweight(1.0), theLastJacobian(1.0),
+  : theLastSHat(-1.0*GeV2), lastPreweight(1.0),
     theMaxMultCKKW(0), theMinMultCKKW(0) {}
 
 MEBase::~MEBase() {}
+
+void MEBase::use(tcMEPtr other) {
+  if (other == this)
+    return;
+  theDiagrams = other->theDiagrams;
+  theLastSHat = other->theLastSHat;
+  reweights = other->reweights;
+  preweights = other->preweights;
+  lastPreweight = other->lastPreweight;
+  theAmplitude = other->theAmplitude;
+  theMaxMultCKKW = other->theMaxMultCKKW;
+  theMinMultCKKW = other->theMinMultCKKW;
+}
+
+void MEBase::useDiagrams(tcMEPtr other) const {
+  if (other == this)
+    return;
+  theDiagrams = other->theDiagrams;
+}
 
 void MEBase::addReweighter(tReweightPtr rw) {
   if ( rw && find(reweights.begin(), reweights.end(), rw) == reweights.end() )
@@ -121,6 +140,14 @@ vector<Lorentz5Momentum> & MEBase::meMomenta() {
   return lastXCombPtr()->meMomenta();
 }
 
+void MEBase::lastME2(double v) const { lastXCombPtr()->lastME2(v); }
+
+void MEBase::lastMECrossSection(CrossSection v) const { lastXCombPtr()->lastMECrossSection(v); }
+
+void MEBase::lastMEPDFWeight(double v) const { lastXCombPtr()->lastMEPDFWeight(v); }
+
+void MEBase::jacobian(double j) { lastXCombPtr()->jacobian(j); }
+
 double MEBase::reWeight() const {
   double w = 1.0;
   for ( int i = 0, N = reweights.size(); i < N; ++i ) {
@@ -159,13 +186,13 @@ double MEBase::alphaEM() const {
 
 void MEBase::persistentOutput(PersistentOStream & os) const {
   os << theDiagrams << ounit(theLastSHat, GeV2) << reweights << preweights
-     << lastPreweight << theAmplitude << theLastXComb << theLastJacobian
+     << lastPreweight << theAmplitude << theLastXComb
      << theMaxMultCKKW << theMinMultCKKW;
 }
 
 void MEBase::persistentInput(PersistentIStream & is, int) {
   is >> theDiagrams >> iunit(theLastSHat, GeV2) >> reweights >> preweights
-     >> lastPreweight >> theAmplitude >> theLastXComb >> theLastJacobian
+     >> lastPreweight >> theAmplitude >> theLastXComb
      >> theMaxMultCKKW >> theMinMultCKKW;
 }
 

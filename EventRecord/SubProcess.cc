@@ -2,6 +2,7 @@
 //
 // SubProcess.cc is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2011 Leif Lonnblad
+// Copyright (C) 2009-2011 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -27,9 +28,11 @@ using namespace ThePEG;
 
 SubProcess::
 SubProcess(const PPair & newIncoming,
- 	   tCollPtr newCollision, tcEventBasePtr newHandler)
+ 	   tCollPtr newCollision, tcEventBasePtr newHandler,
+	   tSubProPtr newHead, double newGroupWeight)
   : theHandler(newHandler), theCollision(newCollision),
-    theIncoming(newIncoming), isDecayed(false) {}
+    theIncoming(newIncoming), isDecayed(false),
+    theHead(newHead), theGroupWeight(newGroupWeight) {}
 
 SubProcess::~SubProcess() {}
 
@@ -110,14 +113,18 @@ void SubProcess::transform(const LorentzRotation & r) {
   for_each(outgoing(), Transformer(r));
 }
 
-ostream & ThePEG::operator<<(ostream & os, const SubProcess & sp) {
+void SubProcess::printMe(ostream& os) const {
   os << "--- incoming:" << endl
-     << *sp.incoming().first << *sp.incoming().second;
-  if ( !sp.intermediates().empty() ) os << "--- intermediates:" << endl;
-  Particle::PrintParticles(os, sp.intermediates().begin(),
-			   sp.intermediates().end());
+     << *incoming().first << *incoming().second;
+  if ( !intermediates().empty() ) os << "--- intermediates:" << endl;
+  Particle::PrintParticles(os, intermediates().begin(),
+			   intermediates().end());
   os << "--- outgoing:" << endl;
-  Particle::PrintParticles(os, sp.outgoing().begin(), sp.outgoing().end());
+  Particle::PrintParticles(os, outgoing().begin(), outgoing().end());
+}
+
+ostream & ThePEG::operator<<(ostream & os, const SubProcess & sp) {
+  sp.printMe(os);
   return os;
 }
 
@@ -129,13 +136,13 @@ void SubProcess::debugme() const {
 void SubProcess::persistentOutput(PersistentOStream & os) const {
   EventConfig::putHandler(os, theHandler);
   os << theCollision << theIncoming << theIntermediates << theOutgoing
-     << isDecayed;
+     << isDecayed << theHead << theGroupWeight;
 }
 
 void SubProcess::persistentInput(PersistentIStream & is, int) {
   EventConfig::getHandler(is, theHandler);
   is >> theCollision >> theIncoming >> theIntermediates >> theOutgoing
-     >> isDecayed;
+     >> isDecayed >> theHead >> theGroupWeight;
 }
 
 ClassDescription<SubProcess> SubProcess::initSubProcess;

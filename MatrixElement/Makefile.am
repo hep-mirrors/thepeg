@@ -1,14 +1,14 @@
 mySOURCES = Amplitude.cc ColourLines.cc DiagramBase.cc Tree2toNDiagram.cc \
-            MEBase.cc ReweightBase.cc ME2to2Base.cc ME2to2QCD.cc
+            MEBase.cc MEGroup.cc ReweightBase.cc ME2to2Base.cc ME2to2QCD.cc
 
 myQCDSOURCES = 
 
 DOCFILES = Amplitude.h ColourLines.h DiagramBase.h Tree2toNDiagram.h MEBase.h \
-           ReweightBase.h ME2to2Base.h ME2to2QCD.h
+           MEGroup.h ReweightBase.h ME2to2Base.h ME2to2QCD.h
 
 INCLUDEFILES = $(DOCFILES) ColourLines.xh \
                DiagramBase.xh DiagramBase.fh \
-               Tree2toNDiagram.xh MEBase.fh
+               Tree2toNDiagram.xh MEBase.fh MEGroup.fh
 
 noinst_LTLIBRARIES = libThePEGME.la
 pkglib_LTLIBRARIES = MEQCD.la MEee2gZ2qq.la MENCDIS.la \

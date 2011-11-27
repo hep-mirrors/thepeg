@@ -129,6 +129,20 @@ double KTRapidityCut::minRapidityMax() const {
   return theMinRapidity;
 }
 
+double KTRapidityCut::maxRapidityMin(tcPDPtr p) const {
+  if ( theMatcher )
+    if ( !theMatcher->matches(*p) ) 
+      return Constants::MaxRapidity;
+  return theMaxRapidity;
+}
+
+double KTRapidityCut::minRapidityMax(tcPDPtr p) const {
+  if ( theMatcher )
+    if ( !theMatcher->matches(*p) ) 
+      return -Constants::MaxRapidity;
+  return theMinRapidity;
+}
+
 Energy KTRapidityCut::minKT(tcPDPtr p) const {
   if ( theMatcher && !theMatcher->matches(*p) ) return ZERO;
   return theMinKT;

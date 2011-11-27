@@ -35,7 +35,8 @@ Particle::ParticleRep::ParticleRep(const ParticleRep & p)
     thePrevious(p.thePrevious), theNext(p.theNext),
     theBirthStep(p.theBirthStep), theVertex(p.theVertex),
     theLifeLength(p.theLifeLength), theScale(p.theScale),
-    theNumber(p.theNumber), theExtraInfo(p.theExtraInfo.size()) {
+    theVetoScale(p.theVetoScale), theNumber(p.theNumber), 
+    theExtraInfo(p.theExtraInfo.size()) {
   if ( p.theColourInfo )
     theColourInfo = dynamic_ptr_cast<CBPtr>(p.theColourInfo->clone());
   if ( p.theSpinInfo )
@@ -495,7 +496,8 @@ void Particle::persistentOutput(PersistentOStream & os) const {
   os << rep().theParents << rep().theChildren
      << rep().thePrevious << rep().theNext << rep().theBirthStep
      << ounit(rep().theVertex, mm) << ounit(rep().theLifeLength, mm)
-     << ounit(rep().theScale, GeV2) << rep().theNumber << rep().theDecayMode
+     << ounit(rep().theScale, GeV2) << ounit(rep().theVetoScale, GeV2) 
+     << rep().theNumber << rep().theDecayMode
      << rep().theColourInfo << rep().theSpinInfo << rep().theExtraInfo;
 }
 
@@ -509,7 +511,8 @@ void Particle::persistentInput(PersistentIStream & is, int) {
   is >> rep().theParents >> rep().theChildren
      >> rep().thePrevious >> rep().theNext >> rep().theBirthStep
      >> iunit(rep().theVertex, mm) >> iunit(rep().theLifeLength, mm)
-     >> iunit(rep().theScale, GeV2) >> rep().theNumber >> rep().theDecayMode
+     >> iunit(rep().theScale, GeV2) >> iunit(rep().theVetoScale, GeV2) 
+     >> rep().theNumber >> rep().theDecayMode
      >> rep().theColourInfo >> rep().theSpinInfo >> rep().theExtraInfo;
 }
 

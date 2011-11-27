@@ -71,6 +71,16 @@ public:
    */
   PartonBinInstance(tPPtr parton, tcPBPtr pb, Energy2 scale = ZERO);
 
+  /**
+   * Constructor using a parton which is to be extracted from the
+   * given particle, but no mother-child relations exist, yet. This
+   * will also initialize the x, and scale values. To calculate the
+   * momentum fractions, a Direction<0> object must have been properly
+   * initialized.
+   */
+  PartonBinInstance(tPPtr particle, tPPtr parton, tcPBPtr pb, 
+		    Energy2 scale = ZERO);
+
   //@}
 
 public:
@@ -145,12 +155,6 @@ public:
    * Generate l and Q2 of this and parent bins.
    */
   void generate(const double * r);
-
-  /**
-   * Return the parton density for this and parent particles. If the
-   * argument is positive, this scale should be used.
-   */
-  double fullFn(Energy2 newScale = -GeV2);
 
   /**
    * Get the jacobian associated with the phase space point generated.

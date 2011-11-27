@@ -17,6 +17,7 @@
 #include "OneCutBase.h"
 #include "TwoCutBase.h"
 #include "MultiCutBase.h"
+#include "JetFinder.h"
 
 namespace ThePEG {
 
@@ -237,6 +238,22 @@ public:
   double maxEta(tcPDPtr p) const;
 
   /**
+   * Return the minimum allowed rapidity of an outgoing parton
+   * of the given type. The rapidity is measured in the lab
+   * system. Simply returns the maximum of the results from calling
+   * the corresponding function in the OneCutBase objects.
+   */
+  double minRapidityMax(tcPDPtr p) const;
+
+  /**
+   * Return the maximum allowed rapidity of an outgoing parton
+   * of the given type. The rapidity is measured in the lab
+   * system. Simply returns the minimum of the results from calling
+   * the corresponding function in the OneCutBase objects.
+   */
+  double maxRapidityMin(tcPDPtr p) const;
+
+  /**
    * Return the minimum allowed rapidity of an outgoing parton of the
    * given type in the center-of-mass system of the hard sub-process.
    * Only available after initSubProcess() has been called.
@@ -294,6 +311,29 @@ public:
   template <typename T>
   vector<typename Ptr<T>::transient_const_pointer>
   multiCutObjects() const;
+
+  /**
+   * Return the objects defining cuts on single outgoing partons from the
+   * hard sub-process.
+   */
+  const OneCutVector& oneCuts() const { return theOneCuts; }
+
+  /**
+   * Return the objects defining cuts on pairs of particles in the hard
+   * sub-process.
+   */
+  const TwoCutVector& twoCuts() const { return theTwoCuts; }
+
+  /**
+   * Return the objects defining cuts on sets of outgoing particles from the
+   * hard sub-process.
+   */
+  const MultiCutVector& multiCuts() const { return theMultiCuts; }
+
+  /**
+   * Return the jet finder
+   */
+  Ptr<JetFinder>::tptr jetFinder() const { return theJetFinder; }
 
   /**
    * Add a OneCutBase object.
@@ -359,7 +399,7 @@ public:
    * Check if the given \f$\hat{s}\f$ is within the cuts.
    */
   bool sHat(Energy2 sh) const { 
-    return sh > sHatMin() && sh <= sHatMax()*(1.0 + 10.0*Constants::epsilon);
+    return sh > sHatMin() && sh <= sHatMax()*(1.0 + 1000.0*Constants::epsilon);
   }
 
   /**
@@ -662,6 +702,12 @@ private:
    * hard sub-process.
    */
   MultiCutVector theMultiCuts;
+
+  /**
+   * An optional jet finder used to define cuts on the level of
+   * reconstructed jets.
+   */
+  Ptr<JetFinder>::ptr theJetFinder;
 
   /**
    * Set to true if a matrix element is should be using this cut and is

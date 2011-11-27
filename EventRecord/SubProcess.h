@@ -2,6 +2,7 @@
 //
 // SubProcess.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2011 Leif Lonnblad
+// Copyright (C) 2009-2011 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -16,6 +17,8 @@
 
 namespace ThePEG {
 
+  class SubProcessGroup;
+
 /**
  * A SubProcess object represents a hard \f$2\rightarrow n\f$
  * sub-process in a collision. It carries information about the
@@ -25,6 +28,7 @@ namespace ThePEG {
  *
  * @see Event
  * @see Particle
+ * @see SubProcessGroup
  */
 class SubProcess: public EventRecordBase {
 
@@ -34,6 +38,8 @@ public:
   friend class Step;
   /** Most of the Event classes are friends with each other. */
   friend class Collision;
+  /** Most of the Event classes are friends with each other. */
+  friend class SubProcessGroup;
 
 public:
 
@@ -45,7 +51,9 @@ public:
    */
   SubProcess(const PPair & newIncoming,
 	     tCollPtr newCollision = tCollPtr(),
-	     tcEventBasePtr newHandler = tcEventBasePtr());
+	     tcEventBasePtr newHandler = tcEventBasePtr(),
+	     tSubProPtr newHead = tSubProPtr(),
+	     double newGroupWeight = 1.0);
 
   /**
    * Destructor.
@@ -116,7 +124,7 @@ public:
   /**
    * Return a clone of this sub process.
    */
-  SubProPtr clone() const;
+  virtual SubProPtr clone() const;
 
   /**
    * True if a perturbative cascade has been applied to this sub
@@ -130,6 +138,32 @@ public:
    */
   void decayed(bool x) { isDecayed = x; }
 
+  /**
+   * Return the head SubProcess, if this SubProcess
+   * object belongs to a SubProcessGroup. Return NULL
+   * if head of a SubProcessGroup or not member of
+   * a SubProcessGroup at all.
+   */
+  tSubProPtr head() const { return theHead; }
+
+  /**
+   * Set the head SubProcess
+   */
+  void head(tSubProPtr newHead) { theHead = newHead; }
+
+  /**
+   * If this SubProcess belongs to a SubProcessGroup,
+   * return its relative weight w.r.t. the head's
+   * weight.
+   */
+  double groupWeight() const { return theGroupWeight; }
+
+  /**
+   * If this SubProcess belongs to a SubProcessGroup,
+   * set its relative weight w.r.t. the head's
+   * weight.
+   */
+  void groupWeight(double w) { theGroupWeight = w; }
 
 protected:
 
@@ -140,7 +174,7 @@ protected:
    * pointers in the cloned SubProcess points to the cloned
    * <code>Particle</code>s etc.
    */
-  void rebind(const EventTranslationMap & trans);
+  virtual void rebind(const EventTranslationMap & trans);
 
 
 public:
@@ -149,7 +183,7 @@ public:
    * Perform a LorentzTransformation of all particles in the sub
    * process.
    */
-  void transform(const LorentzRotation &);
+  virtual void transform(const LorentzRotation &);
 
   /**
    * Return the value of the Mandelstam variable \f$\hat{s}\f$ in this
@@ -226,6 +260,21 @@ private:
    */
   bool isDecayed;
 
+  /**
+   * The head SubProcess, if this SubProcess
+   * object belongs to a SubProcessGroup. NULL
+   * if head of a SubProcessGroup or not member of
+   * a SubProcessGroup at all.
+   */
+  tSubProPtr theHead;
+
+  /**
+   * If this SubProcess belongs to a SubProcessGroup,
+   * this gives its relative weight w.r.t. the head's
+   * weight.
+   */
+  double theGroupWeight;
+
 public:
 
   /**
@@ -234,18 +283,22 @@ public:
    */
   virtual void debugme() const;
 
+  /**
+   * Put to ostream
+   */
+  virtual void printMe(ostream&) const;
+
 private:
+
+  /**
+   * Default constructor
+   */
+  SubProcess() : isDecayed(false), theGroupWeight(1.0) {}
 
   /**
    * Describe concrete class with persistent data.
    */
   static ClassDescription<SubProcess> initSubProcess;
-
-  /**
-   * Private default constructor must only be used by the
-   * PersistentIStream class via the ClassTraits<SubProcess> class .
-   */
-  SubProcess() : isDecayed(false) {}
 
   /**
    * The ClassTraits<SubProcess> class must be a friend to be able to

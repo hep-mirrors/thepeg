@@ -84,6 +84,21 @@ typedef vector<tPPtr> tPVector;
 /** A vector of transient pointers to const Particle objects. */
 typedef vector<tcPPtr> tcPVector;
 
+/** A list of pointers to Particle objects. */
+typedef list<PPtr> ParticleList;
+
+/** A list of pointers to Particle objects. */
+typedef list<PPtr> PList;
+
+/** A list of pointers to const Particle objects. */
+typedef list<cPPtr> cPList;
+
+/** A list of transient pointers to Particle objects. */
+typedef list<tPPtr> tPList;
+
+/** A list of transient pointers to const Particle objects. */
+typedef list<tcPPtr> tcPList;
+
 /** A map relating character strings to bare pointers to InterfaceBase objects */
 ThePEG_DECLARE_MAP(string,const InterfaceBase *,InterfaceMap);
 

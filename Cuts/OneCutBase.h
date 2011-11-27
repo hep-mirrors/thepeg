@@ -78,6 +78,20 @@ public:
   virtual double maxEta(tcPDPtr p) const = 0;
 
   /**
+   * Return the minimum allowed rapidity of an outgoing parton
+   * of the given type. The rapidity is measured in the lab
+   * system.
+   */
+  virtual double minRapidityMax(tcPDPtr p) const;
+
+  /**
+   * Return the maximum allowed rapidity of an outgoing parton
+   * of the given type. The rapidity is measured in the lab
+   * system.
+   */
+  virtual double maxRapidityMin(tcPDPtr p) const;
+
+  /**
    * Return the minimum allowed value of the transverse momentum of
    * the outgoing parton with the lagrest transverse momentum. This
    * version simply returns minKt().

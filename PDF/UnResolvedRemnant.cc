@@ -59,7 +59,14 @@ int UnResolvedRemnant::nDim(const PartonBin &, bool) const {
 
 Lorentz5Momentum UnResolvedRemnant::
 generate(PartonBinInstance & pb, const double *r,
-	 Energy2 scale, const LorentzMomentum & parent) const {
+	 Energy2 scale, const LorentzMomentum & parent,
+	 bool fixedPartonMomentum) const {
+  if ( fixedPartonMomentum ) {
+    throw 
+      Exception()
+      << "missing implementation in UnResolvedRemnant::generate(...)"
+      << Exception::abortnow;
+  }
   // photon into hard process and lepton remnant
   if ( pb.particleData() != pb.partonData()) {
     scale = abs(scale);
@@ -109,7 +116,14 @@ generate(PartonBinInstance & pb, const double *r,
 
 Lorentz5Momentum UnResolvedRemnant::
 generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
-	 const LorentzMomentum & parent) const {
+	 const LorentzMomentum & parent,
+	 bool fixedPartonMomentum) const {
+  if ( fixedPartonMomentum ) {
+    throw 
+      Exception()
+      << "missing implementation in UnResolvedRemnant::generate(...)"
+      << Exception::abortnow;
+  }
   // photon into hard process and lepton remnant
   if ( pb.particleData() != pb.partonData()) {
     scale = abs(scale);

@@ -78,7 +78,8 @@ public:
    */
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale,
-				    const LorentzMomentum & parent) const = 0;
+				    const LorentzMomentum & parent,
+				    bool fixedPartonMomentum = false) const = 0;
 
   /**
    * Generate the momentum of the extracted parton with the \a parent
@@ -96,7 +97,8 @@ public:
    */
   virtual Lorentz5Momentum generate(PartonBinInstance & pb, const double * r,
 				    Energy2 scale, Energy2 shat,
-				    const LorentzMomentum & parent) const = 0;
+				    const LorentzMomentum & parent,
+				    bool fixedPartonMomentum = false) const = 0;
 
   /**
    * Boost the generated remnants to the proper momentum given the

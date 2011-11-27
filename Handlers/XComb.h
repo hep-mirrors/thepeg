@@ -14,6 +14,7 @@
 #include "ThePEG/PDF/PartonExtractor.fh"
 #include "ThePEG/PDF/PartonBin.h"
 #include "ThePEG/PDF/PartonBinInstance.h"
+#include "ThePEG/Utilities/AnyReference.h"
 #include "ThePEG/Utilities/VSelector.h"
 #include "ThePEG/Utilities/ClassDescription.h"
 #include "ThePEG/Utilities/Maths.h"
@@ -60,7 +61,7 @@ public:
   /**
    * Destructor.
    */
-  ~XComb();
+  virtual ~XComb();
   //@}
 
 
@@ -71,6 +72,11 @@ public:
    * Return a reference to the corresponding collision handler
    */
   const EventHandler & eventHandler() const { return *theEventHandler; }
+
+  /**
+   * Return a pointer to the corresponding collision handler
+   */
+  tEHPtr eventHandlerPtr() const { return theEventHandler; }
 
   /**
    * A pointer to the parton extractor.
@@ -170,6 +176,11 @@ public:
    * Additional information about the incoming partons.
    */
   const PBIPair & partonBinInstances() const { return thePartonBinInstances; }
+
+  /**
+   * Additional information about the incoming partons.
+   */
+  PBIPair & partonBinInstances() { return thePartonBinInstances; }
 
   /**
    * Return the corresponding parton bin instance for a given
@@ -319,6 +330,38 @@ public:
   void lastAlphaEM(double a) { theLastAlphaEM = a; }
   //@}
 
+public:
+
+  /**
+   * Check for meta information
+   */
+  bool hasMeta(int id) const {
+    return theMeta.find(id) != theMeta.end();
+  }
+
+  /**
+   * Set meta information.
+   */
+  template<class T>
+  void meta(int id, T& ref) {
+    theMeta[id] = AnyReference(ref);
+  }
+
+  /**
+   * Erase meta information.
+   */
+  void eraseMeta(int id) {
+    theMeta.erase(id);
+  }
+
+  /**
+   * Retrieve meta information.
+   */
+  template<class T>
+  T& meta(int id) const {
+    return theMeta.find(id)->second.cast<T>();
+  }
+
 protected:
 
   /**
@@ -353,6 +396,18 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
+
+protected:
+
+  /**
+   * Set the pair of incoming particle instances.
+   */
+  void lastParticles(const PPair & p) { theLastParticles = p; }
+
+  /**
+   * Set information about currently generated partons.
+   */
+  void resetPartonBinInstances(const PBIPair & newBins) { thePartonBinInstances = newBins; }
 
 private:
 
@@ -481,6 +536,11 @@ private:
    * sub-process.
    */
   SubProPtr theSub;
+
+  /**
+   * The meta information
+   */
+  map<int,AnyReference> theMeta;
 
 private:
 

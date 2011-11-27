@@ -46,11 +46,14 @@ canHandle(tcPDPtr particle, const cPDVector & partons) const {
 
 Lorentz5Momentum SoftRemnantHandler::
 generate(PartonBinInstance & pb, const double *,
-	 Energy2, const LorentzMomentum & parent) const {
-  LorentzMomentum p = lightCone((parent.rho() + parent.e())*pb.xi(), Energy());
-  p.rotateY(parent.theta());
-  p.rotateZ(parent.phi());
-  pb.parton()->setMomentum(p);
+	 Energy2, const LorentzMomentum & parent,
+	 bool fixedPartonMomentum) const {
+  if ( !fixedPartonMomentum ) {
+    LorentzMomentum p = lightCone((parent.rho() + parent.e())*pb.xi(), Energy());
+    p.rotateY(parent.theta());
+    p.rotateZ(parent.phi());
+    pb.parton()->setMomentum(p);
+  }
   RemPPtr rem = new_ptr(RemnantParticle(*pb.particle(), remdec, pb.parton()));
   if ( rem->extracted().empty() ) pb.remnantWeight(0.0);
   pb.remnants(PVector(1, rem));
@@ -84,8 +87,8 @@ recreateRemnants(PartonBinInstance & pb, tPPtr oldp, tPPtr newp, double,
 
 Lorentz5Momentum SoftRemnantHandler::
 generate(PartonBinInstance & pb, const double *, Energy2, Energy2,
-	 const LorentzMomentum & parent) const {
-  return generate(pb, 0, ZERO, parent);
+	 const LorentzMomentum & parent, bool fixedPartonMomentum) const {
+  return generate(pb, 0, ZERO, parent, fixedPartonMomentum);
 }
 
 bool SoftRemnantHandler::
