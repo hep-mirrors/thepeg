@@ -97,6 +97,8 @@ public:
     Coloured = 1,         /**< Coloured */
     Colour3 = 3,          /**< Colour-triplet */
     Colour3bar = -3,      /**< Colour-anti-triplet */
+    Colour6 = 6,          /**< Colour-sextet */
+    Colour6bar = -6,      /**< Colour-anti-sextet */
     Colour8 = 8           /**< Colour-octet */
   };
 
@@ -133,6 +135,7 @@ public:
    */
   static Colour antiColour(Colour c) {
     if ( c == Colour3 || c == Colour3bar ) return Colour(-c);
+    if ( c == Colour6 || c == Colour6bar ) return Colour(-c);
     return c;
   }
 

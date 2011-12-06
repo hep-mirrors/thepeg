@@ -335,14 +335,16 @@ public:
    */
   bool hasColour(bool anti = false) const {
     return anti? hasAntiColour():
-      ( iColour() == PDT::Colour3 || iColour() == PDT::Colour8 );
+      ( iColour() == PDT::Colour3 || iColour() == PDT::Colour6 ||
+	iColour() == PDT::Colour8 );
   }
 
   /**
    * Return true if anti coloured or colour-octet.
    */
   bool hasAntiColour() const {
-    return iColour() == PDT::Colour3bar || iColour() == PDT::Colour8;
+    return iColour() == PDT::Colour3bar || iColour() == PDT::Colour6bar || 
+      iColour() == PDT::Colour8;
   }
 
   /**

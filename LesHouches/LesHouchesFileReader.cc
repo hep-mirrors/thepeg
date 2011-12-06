@@ -178,7 +178,7 @@ void LesHouchesFileReader::doinit() {
 				   "/Herwig/Particles/"+newParticle.first->PDGName());
       // set the antiparticle properties
       if(newParticle.second) {
-	if(colour==3) colour = -3;
+	if(colour==3||colour==6) colour *= -1;
 	charge = -charge;
 	newParticle.second->iColour(PDT::Colour(colour));
 	newParticle.second->iSpin  (PDT::Spin  (spin  ));

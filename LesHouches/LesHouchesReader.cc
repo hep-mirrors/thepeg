@@ -750,11 +750,24 @@ void LesHouchesReader::createParticles() {
 	<< Exception::runerror;
     }
     PPtr p = pd->produceParticle(mom);
-    tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
-    if ( c ) c->addColoured(p);
-    c = colourIndex(hepeup.ICOLUP[i].second);
-    if ( c ) c->addAntiColoured(p);
-
+    if(hepeup.ICOLUP[i].first>=0 && hepeup.ICOLUP[i].second >=0) {
+      tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
+      if ( c ) c->addColoured(p);
+      c = colourIndex(hepeup.ICOLUP[i].second);
+      if ( c ) c->addAntiColoured(p);
+    }
+    else {
+      tColinePtr c1 = colourIndex(abs(hepeup.ICOLUP[i].first ));
+      tColinePtr c2 = colourIndex(abs(hepeup.ICOLUP[i].second));
+      if(pd->hasColour()) {
+	c1->addColouredIndexed(p,1);
+	c2->addColouredIndexed(p,2);
+      }
+      else {
+	c1->addAntiColouredIndexed(p,1);
+	c2->addAntiColouredIndexed(p,2);
+      }
+    }
     particleIndex(i + 1, p);
     switch ( hepeup.ISTUP[i] ) {
     case -9:
@@ -819,35 +832,59 @@ void LesHouchesReader::createParticles() {
   // check the incoming/outgoing lines match
   vector<tColinePtr> unMatchedColour,unMatchedAntiColour;
   for(unsigned int ix=0;ix<external.size();++ix) {
-    tColinePtr col  = external[ix]->    colourLine();
-    tColinePtr anti = external[ix]->antiColourLine();
+    vector<tcColinePtr> 
+      col  = external[ix]->colourInfo()->    colourLines();
+    vector<tcColinePtr> 
+      anti = external[ix]->colourInfo()->antiColourLines();
     if(hepeup.ISTUP[particleIndex(external[ix])-1]<0)
       swap(col,anti);
-    if(col) {
-      bool matched=false;
-      for(unsigned int iy=0;iy<external.size();++iy) {
-	if(hepeup.ISTUP[particleIndex(external[iy])-1]<0 &&
-	   external[iy]->colourLine()==col )
-	  matched = true;
-        else if(hepeup.ISTUP[particleIndex(external[iy])-1]>0 &&
-		external[iy]->antiColourLine()==col )
-	  matched = true;
-	if(matched) break;
+    if(!col.empty()) {
+      for(unsigned int ic1=0;ic1<col.size();++ic1) {
+	bool matched=false;
+	for(unsigned int iy=0;iy<external.size();++iy) {
+	  vector<tcColinePtr> col2;
+	  if(hepeup.ISTUP[particleIndex(external[iy])-1]<0) {
+	    if(external[iy]->colourInfo()->colourLines().empty()) continue;
+	    col2 = external[iy]->colourInfo()->colourLines();
+	  } 
+	  else if(hepeup.ISTUP[particleIndex(external[iy])-1]>0) {
+	    if(external[iy]->colourInfo()->antiColourLines().empty()) continue;
+	    col2 = external[iy]->colourInfo()->antiColourLines();
+	  }
+	  for(unsigned int ic2=0;ic2<col2.size();++ic2) {
+	    if(col[ic1]=col2[ic2]) {
+	      matched=true;
+	      break;
+	    }
+	  }
+	  if(matched) break;
+	}
+	if(!matched) unMatchedColour.push_back(const_ptr_cast<tColinePtr>(col[ic1]));
       }
-      if(!matched) unMatchedColour.push_back(col);
     }
-    if(anti) {
-      bool matched=false;
-      for(unsigned int iy=0;iy<external.size();++iy) {
-	if(hepeup.ISTUP[particleIndex(external[iy])-1]<0 &&
-	   external[iy]->antiColourLine()==anti)
-	  matched = true;
-        else if(hepeup.ISTUP[particleIndex(external[iy])-1]>0 &&
-		external[iy]->colourLine()==anti)
-	  matched = true;
-	if(matched) break;
+    if(!anti.empty()) {
+      for(unsigned int ic1=0;ic1<col.size();++ic1) {
+	bool matched=false;
+	for(unsigned int iy=0;iy<external.size();++iy) {
+	  vector<tcColinePtr> anti2;
+	  if(hepeup.ISTUP[particleIndex(external[iy])-1]<0) {
+	    if(external[iy]->colourInfo()->colourLines().empty()) continue;
+	    anti2 = external[iy]->colourInfo()->antiColourLines();
+	  } 
+	  else if(hepeup.ISTUP[particleIndex(external[iy])-1]>0) {
+	    if(external[iy]->colourInfo()->antiColourLines().empty()) continue;
+	    anti2 = external[iy]->colourInfo()->colourLines();
+	  }
+	  for(unsigned int ic2=0;ic2<anti2.size();++ic2) {
+	    if(col[ic1]=anti2[ic2]) {
+	      matched=true;
+	      break;
+	    }
+	  }
+	  if(matched) break;
+	}
+	if(!matched) unMatchedAntiColour.push_back(const_ptr_cast<tColinePtr>(anti[ic1]));
       }
-      if(!matched) unMatchedAntiColour.push_back(anti);
     }
   }
   // might have source/sink
@@ -885,30 +922,58 @@ void LesHouchesReader::createParticles() {
     // check the incoming/outgoing lines match
     vector<tColinePtr> unMatchedColour,unMatchedAntiColour;
     for(unsigned int ix=0;ix<external.size();++ix) {
-      tColinePtr col  = external[ix]->    colourLine();
-      tColinePtr anti = external[ix]->antiColourLine();
+      vector<tcColinePtr> 
+	col  = external[ix]->colourInfo()->    colourLines();
+      vector<tcColinePtr> 
+	anti = external[ix]->colourInfo()->antiColourLines();
       if(ix==0) swap(col,anti);
-      if(col) {
-	bool matched=false;
-	for(unsigned int iy=0;iy<external.size();++iy) {
-	  if(iy==0 && external[iy]->colourLine()==col )
-	    matched = true;
-	  else if(iy>0 && external[iy]->antiColourLine()==col )
-	    matched = true;
-	  if(matched) break;
+      if(!col.empty()) {
+	for(unsigned int ic1=0;ic1<col.size();++ic1) {
+	  bool matched=false;
+	  for(unsigned int iy=0;iy<external.size();++iy) {
+	    vector<tcColinePtr> col2;
+	    if(iy==0) {
+	      if(external[iy]->colourInfo()->colourLines().empty()) continue;
+	      col2 = external[iy]->colourInfo()->colourLines();
+	    } 
+	    else {
+	      if(external[iy]->colourInfo()->antiColourLines().empty()) continue;
+	      col2 = external[iy]->colourInfo()->antiColourLines();
+	    }
+	    for(unsigned int ic2=0;ic2<col2.size();++ic2) {
+	      if(col[ic1]=col2[ic2]) {
+		matched=true;
+		break;
+	      }
+	    }
+	    if(matched) break;
+	  }
+	  if(!matched) unMatchedColour.push_back(const_ptr_cast<tColinePtr>(col[ic1]));
 	}
-	if(!matched) unMatchedColour.push_back(col);
       }
-      if(anti) {
-	bool matched=false;
-	for(unsigned int iy=0;iy<external.size();++iy) {
-	  if(iy==0 && external[iy]->antiColourLine()==anti)
-	    matched = true;
-	  else if(iy>0 &&external[iy]->colourLine()==anti)
-	    matched = true;
-	  if(matched) break;
+      if(!anti.empty()) {
+	for(unsigned int ic1=0;ic1<col.size();++ic1) {
+	  bool matched=false;
+	  for(unsigned int iy=0;iy<external.size();++iy) {
+	    vector<tcColinePtr> anti2;
+	    if(iy==0) {
+	      if(external[iy]->colourInfo()->colourLines().empty()) continue;
+	      anti2 = external[iy]->colourInfo()->antiColourLines();
+	    } 
+	    else {
+	      if(external[iy]->colourInfo()->antiColourLines().empty()) continue;
+	      anti2 = external[iy]->colourInfo()->colourLines();
+	    }
+	    for(unsigned int ic2=0;ic2<anti2.size();++ic2) {
+	      if(col[ic1]=anti2[ic2]) {
+		matched=true;
+		break;
+	      }
+	    }
+	    if(matched) break;
+	  }
+	  if(!matched) unMatchedAntiColour.push_back(const_ptr_cast<tColinePtr>(anti[ic1]));
 	}
-	if(!matched) unMatchedAntiColour.push_back(anti);
       }
     }
     // might have source/sink

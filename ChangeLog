@@ -1,3 +1,13 @@
+2011-12-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* EventRecord/ColourLine.cc, EventRecord/ColourLine.h,
+	EventRecord/MultiColour.cc, EventRecord/Particle.h,
+	EventRecord/MultiColour.h, PDT/ParticleData.cc, PDT/PDT.h,
+	PDT/ParticleData.h, LesHouches/LesHouchesFileReader.cc,
+	LesHouches/LesHouchesReader.cc, MatrixElement/ColourLines.h,
+	MatrixElement/ColourLines.xh, MatrixElement/ColourLines.cc:
+	Merged sextet branch from hg up to 728953b6f091.
+
 2011-08-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h (ThePEG): Put explicit std:: on greater function.

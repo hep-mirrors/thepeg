@@ -22,7 +22,7 @@ namespace ThePEG {
 struct ColourGeometryException: public Exception {
   /** Standard constructor. */
   ColourGeometryException(const tPVector &,
-			  const vector<int> & = vector<int>());
+                          const vector<pair<int,int> > & );
 };
 /** @endcond */
 

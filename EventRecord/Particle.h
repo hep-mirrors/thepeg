@@ -14,7 +14,7 @@
 #include "ThePEG/Vectors/Lorentz5Vector.h"
 #include "ThePEG/Vectors/LorentzRotation.h"
 #include "ThePEG/Utilities/ClassDescription.h"
-#include "ThePEG/EventRecord/ColourBase.h"
+#include "ThePEG/EventRecord/MultiColour.h"
 #include "ThePEG/EventRecord/SpinInfo.h"
 #include "ThePEG/PDT/ParticleData.h"
 
@@ -680,7 +680,16 @@ public:
    * Get the ColourBase object.
    */
   tCBPtr colourInfo() {
-    if ( !rep().theColourInfo ) rep().theColourInfo = new_ptr(ColourBase());
+    if ( !rep().theColourInfo ) {
+      switch(theData->iColour()) {
+      case PDT::Colour6: 
+      case PDT::Colour6bar:
+	rep().theColourInfo = new_ptr(MultiColour());
+	break;
+      default:
+	rep().theColourInfo = new_ptr(ColourBase());
+      }
+    }
     return rep().theColourInfo;
   }
 

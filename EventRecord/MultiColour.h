@@ -47,10 +47,22 @@ public:
   virtual void colourLine(tColinePtr line, bool anti = false);
 
   /**
+   * Add the given (\a anti-) colour \a line to the particle. If the base
+   * class has no (anti-) colour line, it will also be set.
+   */
+  virtual void colourLine(tColinePtr line, int index, bool anti = false);
+
+  /**
    * Add the given anti-colour \a line to the particle. If the base
    * class has no anti-colour line, it will also be set.
    */
   virtual void antiColourLine(tColinePtr line);
+
+  /**
+   * Add the given anti-colour \a line to the particle. If the base
+   * class has no anti-colour line, it will also be set.
+   */
+  virtual void antiColourLine(tColinePtr line, int index);
 
   /**
    * Remove the given (\a anti-) colour \a line from the particle. If
@@ -108,12 +120,12 @@ private:
   /**
    * The set of colour lines to which a particle is attached.
    */
-  set<cColinePtr> theColourLines;
+  list<cColinePtr> theColourLines;
 
   /**
    * The set of anti-colour lines to which a particle is attached.
    */
-  set<cColinePtr> theAntiColourLines;
+  list<cColinePtr> theAntiColourLines;
 
 private:
 

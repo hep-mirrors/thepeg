@@ -25,7 +25,7 @@ class ColourLines: public Base {
 public:
 
   /** A single colour line */
-  typedef vector<int> Line;
+  typedef vector<pair<int,int> > Line;
   /** A vector of colour lines. */
   typedef vector<Line> LineVector;
   /** A vector of <code>ColourLine</code>. */
@@ -48,8 +48,9 @@ public:
    * indicates a colour line and the integer represents a parton
    * connected to it. If the integer is negative, it means that the
    * line is the corresponding partons anti-colour. Note that the
-   * partons are numbered from 1: The first incoming is 1, the second
-   * is 2 and the internal and outgoing are numbered 3 and upwards.
+   * partons are numbered from 1: The first spacelike particle is 1, the second
+   * is 2 and the internal time-like and outgoing are numbered after all
+   * the spacelike particles.
    */
   ColourLines(string s);
   //@}

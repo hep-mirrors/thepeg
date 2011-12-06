@@ -124,6 +124,18 @@ public:
   void addColoured(tPPtr p, bool anti = false);
 
   /**
+   * Add a particle having this as a anti-colour line at a given index.
+   */
+  void addAntiColouredIndexed(tPPtr p, int index);
+
+  /**
+   * Add a particle having this as a (anti-)colour line at a given index.
+   * @param p the particle to be connected.
+   * @param anti if true, this is the anti-colour line of \a p.
+   */
+  void addColouredIndexed(tPPtr p, int index, bool anti=false);
+
+  /**
    * Remove a particle having this as an anti-colour line.
    */
   void removeAntiColoured(tPPtr);

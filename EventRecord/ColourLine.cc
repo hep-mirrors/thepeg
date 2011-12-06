@@ -68,6 +68,24 @@ tPPtr ColourLine::endParticle() const {
   return tPPtr();
 }
 
+void ColourLine::addAntiColouredIndexed(tPPtr p, int index) {
+  theAntiColoured.push_back(p);
+  Ptr<MultiColour>::pointer colour = 
+    dynamic_ptr_cast<Ptr<MultiColour>::pointer>
+    (p->colourInfo());
+  colour->antiColourLine(this, index);
+}
+void ColourLine::addColouredIndexed(tPPtr p, int index, bool anti) {
+  if ( anti ) addAntiColouredIndexed(p, index);
+  else {
+    theColoured.push_back(p);
+    Ptr<MultiColour>::pointer colour = 
+      dynamic_ptr_cast<Ptr<MultiColour>::pointer>
+      (p->colourInfo());
+    colour->colourLine(this, index);
+  }
+}
+
 void ColourLine::addAntiColoured(tPPtr p) {
   theAntiColoured.push_back(p);
   p->colourInfo()->antiColourLine(this);

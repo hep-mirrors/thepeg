@@ -681,6 +681,11 @@ void ParticleData::Init() {
   static SwitchOption interfaceColour3bar
     (interfaceColour, "AntiTriplet",
      "This particle is a colour anti-triplet.", -3);
+  static SwitchOption interfaceColour6
+    (interfaceColour, "Sextet", "This particle is a colour sextet.", 6);
+  static SwitchOption interfaceColour6bar
+    (interfaceColour, "AntiSextet",
+     "This particle is a colour anti-sextet.", -6);
   static SwitchOption interfaceColour8
     (interfaceColour, "Octet", "This particle is a colour octet.", 8);
   
@@ -697,6 +702,11 @@ void ParticleData::Init() {
   static SwitchOption interfaceDefColour3bar
     (interfaceDefColour, "AntiTriplet",
      "This particle is a colour anti-triplet.", -3);
+  static SwitchOption interfaceDefColour6
+    (interfaceDefColour, "Sextet", "This particle is a colour sextet.", 6);
+  static SwitchOption interfaceDefColour6bar
+    (interfaceDefColour, "AntiSextet",
+     "This particle is a colour anti-sextet.", -6);
   static SwitchOption interfaceDefColour8
     (interfaceDefColour, "Octet", "This particle is a colour octet.", 8);
   interfaceDefColour.setHasDefault(false);  
