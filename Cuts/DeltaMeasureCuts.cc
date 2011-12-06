@@ -40,7 +40,7 @@ IBPtr DeltaMeasureCuts::fullclone() const {
   return new_ptr(*this);
 }
 
-Energy DeltaMeasureCuts::minDeltaMeasureCuts(tcPDPtr pi, tcPDPtr pj) const {
+Energy DeltaMeasureCuts::minDeltaMeasureCuts(tcPDPtr, tcPDPtr) const {
   return ZERO;
 }
 
