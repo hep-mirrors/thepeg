@@ -285,10 +285,6 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   if ( xsec != ZERO )
     theMEGroup->lastEventStatistics();
 
-  if ( !theMEGroup->subProcessGroups() ) {
-    lastHeadCrossSection(xsec);
-  }
-
   return xsec;
 
 }

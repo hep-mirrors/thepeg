@@ -21,6 +21,11 @@
 using namespace ThePEG;
 
 ColourLines::ColourLines(string s) {
+  reset(s); 
+} 
+
+void ColourLines::reset(string s) { 
+  theLines.clear(); 
   while ( true ) {
     string line = StringUtils::car(s, ",");
     line = StringUtils::stripws(line);

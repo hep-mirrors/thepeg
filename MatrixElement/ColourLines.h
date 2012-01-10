@@ -55,6 +55,17 @@ public:
   ColourLines(string s);
   //@}
 
+  /** 
+   * Reset this ColourLines object. The string \a s should contain a 
+   * comma-separated sequence of integers. Each sequence of numbers 
+   * indicates a colour line and the integer represents a parton 
+   * connected to it. If the integer is negative, it means that the 
+   * line is the corresponding partons anti-colour. Note that the 
+   * partons are numbered from 1: The first incoming is 1, the second 
+   * is 2 and the internal and outgoing are numbered 3 and upwards. 
+   */ 
+  void reset(string s); 
+
 public:
 
   /**

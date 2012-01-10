@@ -63,6 +63,11 @@ public:
   virtual CrossSection dSigDR(const pair<double,double> ll, int nr, const double * r);
 
   /**
+   * Return the cross section calculated from the head matrix element
+   */
+  CrossSection lastHeadCrossSection() const { return theLastHeadCrossSection; }
+
+  /**
    * Visit the dependent XComb objects
    */
   const StdDepXCVector& dependent() const { return theDependent; }
@@ -120,11 +125,6 @@ protected:
    * Set the cross section calculated from the head matrix element
    */
   void lastHeadCrossSection(CrossSection xs) { theLastHeadCrossSection = xs; }
-
-  /**
-   * Return the cross section calculated from the head matrix element
-   */
-  CrossSection lastHeadCrossSection() const { return theLastHeadCrossSection; }
 
 private:
 
