@@ -26,6 +26,9 @@ else
 	AC_MSG_RESULT([$with_hepmc])
 	HEPMCINCLUDE=-I$with_hepmc/include
 	HEPMCLIBS="-L$with_hepmc/lib -R$with_hepmc/lib -lHepMC"
+	if test "${host_cpu}" == "x86_64" -a -e $with_hepmc/lib64/libHepMC.so ; then
+	  HEPMCLIBS="-L$with_hepmc/lib64 -R$with_hepmc/lib64 -lHepMC"
+	fi
 fi
 
 if test "x$with_hepmc" != "xno"; then

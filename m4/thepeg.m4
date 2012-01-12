@@ -64,6 +64,9 @@ if test -n "$LHAPDF_LIBDIR"; then
   if test -e $LHAPDF_LIBDIR/libLHAPDF.so -o -e $LHAPDF_LIBDIR/libLHAPDF.dylib
   then
     LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
+  elif test "${host_cpu}" == "x86_64" -a -e $LHAPDF_LIBDIR/lib64/libLHAPDF.so
+  then
+    LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR/lib64"
   elif test -e $LHAPDF_LIBDIR/lib/libLHAPDF.so -o -e $LHAPDF_LIBDIR/lib/libLHAPDF.dylib
   then
     LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR/lib"
