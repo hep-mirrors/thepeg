@@ -185,6 +185,12 @@ public:
 
   /**
    * If this is a dependent matrix element in a ME group, return true,
+   * if cuts should be ignored.
+   */
+  virtual bool ignoreCuts() const { return false; }
+
+  /**
+   * If this is a dependent matrix element in a ME group, return true,
    * if it applies to the process set in lastXComb()
    */
   virtual bool apply() const { return true; }

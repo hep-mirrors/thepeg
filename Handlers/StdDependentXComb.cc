@@ -135,7 +135,9 @@ CrossSection StdDependentXComb::dSigDR() {
   lastAlphaS(head()->lastAlphaS());
   lastAlphaEM(head()->lastAlphaEM());
 
-  if ( (!willPassCuts() && !matrixElement()->headCuts()) ||
+  if ( (!willPassCuts() && 
+	!matrixElement()->headCuts() &&
+	!matrixElement()->ignoreCuts()) ||
        !matrixElement()->apply() ) {
     subProcess(SubProPtr());
     lastCrossSection(ZERO);
