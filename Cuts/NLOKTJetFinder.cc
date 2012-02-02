@@ -180,7 +180,8 @@ bool NLOKTJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
 LorentzMomentum NLOKTJetFinder::recombine(const LorentzMomentum& pi,
 					  const LorentzMomentum& pj) const {
 
-  if ( theMeasure == e ) {
+  if ( ( theRecombination == recoDefault && theMeasure == e ) 
+       || theRecombination == recoE ) {
     return pi + pj;
   }
 
@@ -290,6 +291,27 @@ void NLOKTJetFinder::Init() {
      "E",
      "Use the Durham variant.",
      e);  
+
+  static Switch<NLOKTJetFinder,int> interfaceRecombination
+    ("RecombinationScheme",
+     "The recombination scheme to use.",
+     &NLOKTJetFinder::theRecombination, recoDefault, false, false);
+  static SwitchOption interfaceRecombinationdefault
+    (interfaceRecombination,
+     "Default",
+     "Use the scheme according to the defined measure",
+     recoDefault);
+  static SwitchOption interfaceRecombinationPt
+    (interfaceRecombination,
+     "Pt",
+     "Add transverse momenta",
+     recoPt);
+  static SwitchOption interfaceRecombinationE
+    (interfaceRecombination,
+     "E",
+     "Add the four-momenta",
+     recoE);  
+
 
   static Switch<NLOKTJetFinder,bool> interfaceRemoveOutOfRange
     ("RemoveOutOfRange",

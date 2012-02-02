@@ -151,7 +151,7 @@ private:
 
   /**
    * The possible measures. Also triggers the choice of recombination
-   * scheme.
+   * scheme by default.
    */
   enum measures {
     pt = 1,
@@ -162,6 +162,21 @@ private:
    * The measure
    */
   int theMeasure;
+
+  /**
+   * The possible recombination schemes.
+   */
+  enum recombinations {
+    recoDefault = 1,
+    recoPt = 2,
+    recoE = 3
+  };
+
+  /**
+   * The recombination scheme
+   */
+  int theRecombination;
+
 
   /**
    * Choose to not consider partons as jets which are out of in terms
