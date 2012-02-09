@@ -110,6 +110,20 @@ public:
    */
   virtual CrossSection integratedXSecErr() const;
 
+  /**
+   * The estimated total integrated cross section of the processes
+   * generated in this run, excluding reweighting.
+   * @return 0 if no integrated cross section could be estimated.
+   */
+  virtual CrossSection integratedXSecNoReweight() const;
+
+  /**
+   * The estimated error int total integrated cross section of the
+   * processes generated in this run, excluding reweighting. 
+   * @return 0 if no integrated cross section error could be estimated.
+   */
+  virtual CrossSection integratedXSecErrNoReweight() const;
+
   /** @name Functions used for the actual generation */
   //@{
   /**
@@ -129,6 +143,11 @@ public:
    * before finishing.
    */
   virtual EventPtr continueEvent();
+
+  /**
+   * Reweight a partially generated event.
+   */
+  void reweight(double factor) const;
 
   /**
    * Return the vector of StandardXComb objects.

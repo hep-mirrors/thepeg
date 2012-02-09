@@ -44,8 +44,8 @@ public:
    */
   XSecStat() 
     : theMaxXSec(ZERO), theAttempts(0), theAccepted(0), theVetoed(0),
-      theSumWeights (vector<double>(3,0.0)),
-      theSumWeights2(vector<double>(3,0.0)) {}
+      theSumWeights (vector<double>(5,0.0)),
+      theSumWeights2(vector<double>(5,0.0)), theLastWeight(0.0) {}
 
   /**
    * Constructor taking the overestimated cross section, \a xsecmax,
@@ -53,8 +53,8 @@ public:
    */
   XSecStat(CrossSection xsecmax) 
     : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0), theVetoed(0),
-      theSumWeights (vector<double>(3,0.0)),
-      theSumWeights2(vector<double>(3,0.0)) {}
+      theSumWeights (vector<double>(5,0.0)),
+      theSumWeights2(vector<double>(5,0.0)), theLastWeight(0.0) {}
 
   /**
    * The assignment operator.
@@ -66,6 +66,7 @@ public:
     theVetoed      = x.theVetoed;
     theSumWeights  = x.theSumWeights;
     theSumWeights2 = x.theSumWeights2;
+    theLastWeight  = x.theLastWeight;
     return *this;
   }
 
@@ -77,10 +78,11 @@ public:
     theAttempts    += x.theAttempts;
     theAccepted    += x.theAccepted;
     theVetoed      += x.theVetoed;
-    for(unsigned int ix=0;ix<3;++ix) {
+    for(unsigned int ix=0;ix<5;++ix) {
       theSumWeights [ix] += x.theSumWeights [ix];
       theSumWeights2[ix] += x.theSumWeights2[ix];
     }
+    theLastWeight = 0.0;
     return *this;
   }
 
@@ -89,7 +91,8 @@ public:
    */
   void reset() {
     theAttempts = theAccepted = theVetoed = 0;
-    theSumWeights = theSumWeights2 = vector<double>(3,0.0);
+    theSumWeights = theSumWeights2 = vector<double>(5,0.0);
+    theLastWeight = 0.0;
   }
 
   //@}
@@ -117,6 +120,17 @@ public:
     ++theAttempts;
     theSumWeights [0] +=     weight ;
     theSumWeights2[0] += sqr(weight);
+    theSumWeights [3] +=     weight ;
+    theSumWeights2[3] += sqr(weight);
+    theLastWeight = weight;
+  }
+
+  /**
+   * Reweight a selected and accepted event.
+   */
+  void reweight(double oldWeight, double newWeight) {
+    theSumWeights [0] +=     newWeight  -     oldWeight ;
+    theSumWeights2[0] += sqr(newWeight) - sqr(oldWeight);
   }
 
   /**
@@ -128,10 +142,12 @@ public:
    * w)\f$.
    */
   void reject(double weight = 1.0) {
-    theSumWeights [1] -=     weight ;
-    theSumWeights2[1] -= sqr(weight);
-    theSumWeights [2] +=     weight ;
-    theSumWeights2[2] += sqr(weight);
+    theSumWeights [1] -=            weight ;
+    theSumWeights2[1] -=        sqr(weight);
+    theSumWeights [2] +=            weight ;
+    theSumWeights2[2] +=        sqr(weight);
+    theSumWeights [4] +=     theLastWeight ;
+    theSumWeights2[4] += sqr(theLastWeight);
     ++theVetoed;
   }
 
@@ -155,6 +171,25 @@ public:
   }
 
   /**
+   * The current estimate of the cross section for the corresponding
+   * class of events, excluding reweighting. If no events have been
+   * generated, maxXSec() will be returned.
+   */
+  CrossSection xSecNoReweight() const {
+    return attempts() ? maxXSec()*(theSumWeights[3]-theSumWeights[4])/attempts() : maxXSec();
+  }
+
+  /**
+   * The current estimate of the error in the cross section for the
+   * corresponding class of events, excluding reweighting. If no
+   * events have been generated, maxXSec() will be returned.
+   */
+  CrossSection xSecErrNoReweight() const {
+    return attempts() ? maxXSec()*sqrt(theSumWeights2[3]+
+				       theSumWeights2[4])/attempts() : maxXSec();
+  }
+
+  /**
    * The overestimated cross section.
    */
   CrossSection maxXSec() const { return theMaxXSec; }
@@ -168,6 +203,16 @@ public:
    * The sum of the squared weights so far.
    */
   double sumWeights2() const { return theSumWeights2[0] + theSumWeights2[2]; }
+
+  /**
+   * The sum of the weights so far, excluding reweighting.
+   */
+  double sumWeightsNoReweight() const { return theSumWeights[3] - theSumWeights[4]; }
+
+  /**
+   * The sum of the squared weights so far, excluding reweighting.
+   */
+  double sumWeights2NoReweight() const { return theSumWeights2[3] + theSumWeights2[4]; }
 
   /**
    * Number of attempts so far.
@@ -231,6 +276,11 @@ private:
    * The sum of the squared weights so far.
    */
   vector<double> theSumWeights2;
+
+  /**
+   * The last selected weight, ignoring reweighting.
+   */
+  double theLastWeight;
 
 };
 

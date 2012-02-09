@@ -180,6 +180,13 @@ public:
   virtual void accept() { theStats.accept(); }
 
   /**
+   * Reweight a selected and accepted event.
+   */
+  void reweight(double oldWeight, double newWeight) {
+    theStats.reweight(oldWeight,newWeight);
+  }
+
+  /**
    * Reject the current event assuming it was previously accepted. If
    * weighted events are produced, the \a weight should be the same as
    * the previous call to select(double).

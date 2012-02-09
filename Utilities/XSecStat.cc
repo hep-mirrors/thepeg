@@ -33,11 +33,11 @@ using namespace ThePEG;
 
 void XSecStat::output(PersistentOStream & os) const {
   os << ounit(theMaxXSec,picobarn) << theAttempts << theAccepted
-     << theSumWeights << theSumWeights2;
+     << theSumWeights << theSumWeights2 << theLastWeight;
 }
 
 void XSecStat::input(PersistentIStream & is) {
   is >> iunit(theMaxXSec,picobarn) >> theAttempts >> theAccepted
-     >> theSumWeights >> theSumWeights2;
+     >> theSumWeights >> theSumWeights2 >> theLastWeight;
 }
 

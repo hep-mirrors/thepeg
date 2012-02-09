@@ -53,6 +53,15 @@ void StandardEventHandler::reject(double w) {
   last->reject(w);
 }
 
+void StandardEventHandler::reweight(double factor) const {
+  tStdXCombPtr last = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
+  if ( !currentEvent() || !last )
+    return;
+  double weight = currentEvent()->weight();
+  last->reweight(weight,factor*weight);
+  currentEvent()->weight(factor*weight);
+}
+
 void StandardEventHandler::doupdate() {
   EventHandler::doupdate();
   bool redo = touched();
@@ -505,6 +514,43 @@ CrossSection StandardEventHandler::integratedXSecErr() const {
 
 }
 
+CrossSection StandardEventHandler::integratedXSecNoReweight() const {
+  if ( sampler()->integratedXSec() == ZERO )
+    return sampler()->maxXSec();
+
+  Stat tot;
+  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
+    const StandardXComb & x = *xCombs()[i];
+    Stat s;
+    s = Stat(x.stats().attempts(), x.stats().accepted(),
+	     x.stats().sumWeightsNoReweight(), x.stats().sumWeights2NoReweight(),
+	     sampler()->integratedXSec(), sampler()->sumWeights(), 1.0);
+    tot += s;
+  }
+
+  return tot.xSec();
+}
+
+CrossSection StandardEventHandler::integratedXSecErrNoReweight() const {
+  if ( sampler()->integratedXSec() == ZERO )
+    return sampler()->maxXSec();
+
+  Stat tot;
+  double genrerr = sampler()->integratedXSecErr()/sampler()->integratedXSec();
+  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
+    const StandardXComb & x = *xCombs()[i];
+    Stat s;
+    s = Stat(x.stats().attempts(), x.stats().accepted(),
+	     x.stats().sumWeightsNoReweight(), x.stats().sumWeights2NoReweight(),
+	     sampler()->integratedXSec(), sampler()->sumWeights(), genrerr);
+    tot += s;
+  }
+
+  return tot.xSecErr();
+
+}
+
+
 void StandardEventHandler::doinitrun() {
   EventHandler::doinitrun();
   for ( SubHandlerList::iterator sit = subProcesses().begin();
@@ -557,13 +603,13 @@ EventPtr StandardEventHandler::generateEvent() {
 
     }
     catch (Veto) {
-      reject(weight);
+      reject(currentEvent()->weight());
     }
     catch (Stop) {
       break;
     }
     catch (Exception &) {
-      reject(weight);
+      reject(currentEvent()->weight());
       throw;
     }
   }
