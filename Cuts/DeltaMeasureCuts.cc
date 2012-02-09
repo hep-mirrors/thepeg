@@ -81,11 +81,11 @@ bool DeltaMeasureCuts::passCuts(tcCutsPtr, tcPDPtr pitype, tcPDPtr pjtype,
 }
 
 void DeltaMeasureCuts::persistentOutput(PersistentOStream & os) const {
-  os << theMinDeltaEta << theMinDeltaR;
+  os << theMinDeltaEta << theMinDeltaR << theMatcher;
 }
 
 void DeltaMeasureCuts::persistentInput(PersistentIStream & is, int) {
-  is >> theMinDeltaEta >> theMinDeltaR;
+  is >> theMinDeltaEta >> theMinDeltaR >> theMatcher;
 }
 
 ClassDescription<DeltaMeasureCuts> DeltaMeasureCuts::initDeltaMeasureCuts;
