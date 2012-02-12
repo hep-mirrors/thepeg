@@ -199,12 +199,12 @@ LorentzMomentum NLOKTJetFinder::recombine(const LorentzMomentum& pi,
 
 void NLOKTJetFinder::persistentOutput(PersistentOStream & os) const {
   os << ounit(theDCut,GeV2) << theConeRadius << theVariant << theMode << theMeasure 
-     << theRemoveOutOfRange;
+     << theRemoveOutOfRange << theRecombination;
 }
 
 void NLOKTJetFinder::persistentInput(PersistentIStream & is, int) {
   is >> iunit(theDCut,GeV2) >> theConeRadius >> theVariant >> theMode >> theMeasure 
-     >> theRemoveOutOfRange;
+     >> theRemoveOutOfRange >> theRecombination;
 }
 
 
