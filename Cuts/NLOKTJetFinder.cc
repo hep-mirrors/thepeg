@@ -31,7 +31,7 @@ using namespace ThePEG;
 NLOKTJetFinder::NLOKTJetFinder() 
   : theDCut(ZERO), theConeRadius(0.7), 
     theVariant(kt), theMode(inclusive), theMeasure(pt),
-    theRemoveOutOfRange(false) {}
+    theRecombination(recoDefault), theRemoveOutOfRange(false) {}
 
 NLOKTJetFinder::~NLOKTJetFinder() {}
 
