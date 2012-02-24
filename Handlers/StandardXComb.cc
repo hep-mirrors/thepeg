@@ -102,6 +102,10 @@ bool StandardXComb::checkInit() {
 
 bool StandardXComb::willPassCuts() const {
 
+  if ( lastSHat() <= cuts()->sHatMin() ||
+       lastSHat() > cuts()->sHatMax() )
+    return false;
+
   cuts()->initSubProcess(lastSHat(), lastY(), mirror());
 
   tcPDVector outdata(mePartonData().begin()+2,mePartonData().end());
