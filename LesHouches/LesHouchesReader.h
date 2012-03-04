@@ -848,6 +848,11 @@ protected:
    */
   bool theReOpenAllowed;
 
+  /**
+   *  Use the spin information
+   */
+  bool theIncludeSpin;
+
 private:
 
   /** Access function for the interface. */

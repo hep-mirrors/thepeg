@@ -32,6 +32,7 @@
 #include "ThePEG/Utilities/Throw.h"
 #include "ThePEG/Utilities/HoldFlag.h"
 #include "ThePEG/Utilities/Debug.h"
+#include "ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h"
 
 using namespace ThePEG;
 
@@ -41,7 +42,7 @@ LesHouchesReader::LesHouchesReader(bool active)
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
     weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0),
-    useWeightWarnings(true),theReOpenAllowed(true) {}
+    useWeightWarnings(true),theReOpenAllowed(true), theIncludeSpin(false) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -63,7 +64,8 @@ LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
     maxWeights(x.maxWeights), skipping(x.skipping),
     theMomentumTreatment(x.theMomentumTreatment),
     useWeightWarnings(x.useWeightWarnings),
-    theReOpenAllowed(x.theReOpenAllowed) {}
+    theReOpenAllowed(x.theReOpenAllowed),
+    theIncludeSpin(x.theIncludeSpin) {}
 
 LesHouchesReader::~LesHouchesReader() {}
 
@@ -804,6 +806,17 @@ void LesHouchesReader::createParticles() {
 	<< ") in the LesHouchesReader '" << name() << "'."
 	<< Exception::runerror;
     }
+    if( theIncludeSpin && hepeup.SPINUP[i] !=0) {
+      if(pd->iSpin() == PDT::Spin1Half ) {
+	vector<Helicity::SpinorWaveFunction> wave;
+	Helicity::SpinorWaveFunction(wave,p,Helicity::outgoing,true);
+	RhoDMatrix rho(pd->iSpin(),true);
+	rho(0,0) = 0.5*(1.-hepeup.SPINUP[i]);
+	rho(1,1) = 0.5*(1.+hepeup.SPINUP[i]);
+	p->spinInfo()->rhoMatrix(rho);
+	p->spinInfo()->  DMatrix(rho);
+      }
+    }
   }
   // check the colour flows, and if necessary create any sources/sinks
   // hard process
@@ -1160,7 +1173,8 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
      << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
      << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
-     << theMomentumTreatment << useWeightWarnings << theReOpenAllowed;
+     << theMomentumTreatment << useWeightWarnings << theReOpenAllowed
+     << theIncludeSpin;
 }
 
 void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
@@ -1180,7 +1194,8 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
      >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
      >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
-     >> theMomentumTreatment >> useWeightWarnings >> theReOpenAllowed;
+     >> theMomentumTreatment >> useWeightWarnings >> theReOpenAllowed
+     >> theIncludeSpin;
 }
 
 AbstractClassDescription<LesHouchesReader>
@@ -1423,6 +1438,21 @@ void LesHouchesReader::Init() {
     (interfaceAllowedTopReOpen,
      "No",
      "Not allowed to reopen the file",
+     false);
+
+  static Switch<LesHouchesReader,bool> interfaceIncludeSpin
+    ("IncludeSpin",
+     "Use the spin information present in the evetn file",
+     &LesHouchesReader::theIncludeSpin, false, false, false);
+  static SwitchOption interfaceIncludeSpinYes
+    (interfaceIncludeSpin,
+     "Yes",
+     "Use the spin information",
+     true);
+  static SwitchOption interfaceIncludeSpinNo
+    (interfaceIncludeSpin,
+     "No",
+     "Don't use the spin information",
      false);
 
   interfaceCuts.rank(8);
