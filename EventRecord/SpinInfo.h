@@ -289,6 +289,19 @@ public:
   RhoDMatrix & DMatrix() { return _Dmatrix; }
   //@}
 
+  /** @name Set the rho and D matrics */
+  //@{
+  /**
+   *  Set the rho matrix
+   */
+  void rhoMatrix(RhoDMatrix & rho) { _rhomatrix=rho;}
+
+  /**
+   *  Set the D matrix
+   */
+  void DMatrix(RhoDMatrix & D) { _Dmatrix = D;}
+  //@}
+
 protected:
 
   /**
