@@ -806,15 +806,16 @@ void LesHouchesReader::createParticles() {
 	<< ") in the LesHouchesReader '" << name() << "'."
 	<< Exception::runerror;
     }
-    if( theIncludeSpin && hepeup.SPINUP[i] !=0) {
+    if( theIncludeSpin && abs(pd->id()) == ParticleID::tauminus && 
+	hepeup.SPINUP[i] !=0) {
       if(pd->iSpin() == PDT::Spin1Half ) {
 	vector<Helicity::SpinorWaveFunction> wave;
 	Helicity::SpinorWaveFunction(wave,p,Helicity::outgoing,true);
 	RhoDMatrix rho(pd->iSpin(),true);
 	rho(0,0) = 0.5*(1.-hepeup.SPINUP[i]);
 	rho(1,1) = 0.5*(1.+hepeup.SPINUP[i]);
-	p->spinInfo()->rhoMatrix(rho);
-	p->spinInfo()->  DMatrix(rho);
+	p->spinInfo()->rhoMatrix() = rho;
+	p->spinInfo()->  DMatrix() = rho;
       }
     }
   }
@@ -1442,7 +1443,8 @@ void LesHouchesReader::Init() {
 
   static Switch<LesHouchesReader,bool> interfaceIncludeSpin
     ("IncludeSpin",
-     "Use the spin information present in the evetn file",
+     "Use the spin information present in the event file, for tau leptons"
+     " only as this is the only case which makes any sense",
      &LesHouchesReader::theIncludeSpin, false, false, false);
   static SwitchOption interfaceIncludeSpinYes
     (interfaceIncludeSpin,
