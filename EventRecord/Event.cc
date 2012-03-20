@@ -61,6 +61,18 @@ void Event::setInfo(tcEventBasePtr newHandler, string newName,
   theWeight = weight;
 }
 
+double Event::optionalWeight(const string& name) const {
+  map<string,double>::const_iterator w =
+    theOptionalWeights.find(name);
+  if ( w == theOptionalWeights.end() )
+    return 0.;
+  return w->second;
+}
+
+void Event::optionalWeight(const string& name, double value) {
+  theOptionalWeights[name] = value;
+}
+
 tCollPtr Event::newCollision() {
   theCollisions.push_back(new_ptr(Collision(incoming(), this)));
   return theCollisions.back();
@@ -326,13 +338,15 @@ void Event::debugme() const {
 
 void Event::persistentOutput(PersistentOStream & os) const {
   os << theIncoming << theCollisions << allSteps << allSubProcesses
-     << allParticles << theNumber << theWeight << theParticleNumber;
+     << allParticles << theNumber << theWeight << theOptionalWeights 
+     << theParticleNumber;
   EventConfig::putHandler(os, theHandler);
 }
 
 void Event::persistentInput(PersistentIStream & is, int) {
   is >> theIncoming >> theCollisions >> allSteps >> allSubProcesses
-     >> allParticles >> theNumber >> theWeight >> theParticleNumber;
+     >> allParticles >> theNumber >> theWeight >> theOptionalWeights
+     >> theParticleNumber;
   EventConfig::getHandler(is, theHandler);
 }
 

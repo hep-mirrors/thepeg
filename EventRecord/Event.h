@@ -215,6 +215,17 @@ public:
   double weight() const { return theWeight; }
 
   /**
+   * Return an optional named weight associated to this event. Returns
+   * 0, if no weight identified by this name is present.
+   */
+  double optionalWeight(const string& name) const;
+
+  /**
+   * Return the optional named weights associated to this event.
+   */
+  const map<string,double>& optionalWeights() const { return theOptionalWeights; }
+
+  /**
    * Print this Event in Graphviz format on the standard output.
    */
   void printGraphviz() const;
@@ -223,6 +234,16 @@ public:
    * Set the weight associated with this event.
    */
   void weight(double w) { theWeight = w; }
+
+  /**
+   * Set an optional named weight associated to this event.
+   */
+  void optionalWeight(const string& name, double value);
+
+  /**
+   * Access the optional named weights associated to this event.
+   */
+  map<string,double>& optionalWeights() { return theOptionalWeights; }
 
   /**
    * Set event info.
@@ -356,6 +377,11 @@ private:
    * The weight associated with this event.
    */
   double theWeight;
+
+  /**
+   * Optional named weights
+   */
+  map<string,double> theOptionalWeights;
 
   /**
    * Counter to keep track of particle numbering.
