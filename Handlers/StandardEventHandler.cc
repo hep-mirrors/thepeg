@@ -60,6 +60,10 @@ void StandardEventHandler::reweight(double factor) const {
   double weight = currentEvent()->weight();
   last->reweight(weight,factor*weight);
   currentEvent()->weight(factor*weight);
+  for ( map<string,double>::iterator w = 
+	  currentEvent()->optionalWeights().begin();
+	w != currentEvent()->optionalWeights().end(); ++w )
+    w->second *= factor;
 }
 
 void StandardEventHandler::doupdate() {
