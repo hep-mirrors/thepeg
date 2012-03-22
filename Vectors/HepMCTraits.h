@@ -61,18 +61,28 @@ struct HepMCTraitsBase {
   typedef HepMCPdfInfoT PdfInfoT;
 
   /** Create an event object with number \a evno and \a weight. */
-  static EventT * newEvent(long evno, double weight) {
+  static EventT * newEvent(long evno, double weight,
+			   const map<string,double>& optionalWeights) {
     EventT * e = new EventT();
     e->set_event_number(evno);
     e->weights().push_back(weight);
+    for ( map<string,double>::const_iterator w = optionalWeights.begin();
+	  w != optionalWeights.end(); ++w ) {
+      e->weights().push_back(w->second);
+    }
     return e;
   }
 
   /** Reset event weight and number of a re-used GenEvent. */
-  static void resetEvent(EventT * e, long evno, double weight) {
+  static void resetEvent(EventT * e, long evno, double weight,
+			 const map<string,double>& optionalWeights) {
     e->set_event_number(evno);
     e->weights().clear();
     e->weights().push_back(weight);
+    for ( map<string,double>::const_iterator w = optionalWeights.begin();
+	  w != optionalWeights.end(); ++w ) {
+      e->weights().push_back(w->second);
+    }
   }
 
   /**
