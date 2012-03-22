@@ -1108,6 +1108,7 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.VTIMUP[0], hepeup.NUP);
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mwrite(pos, lastweight);
+  pos = mwrite(pos, optionalWeights);
   pos = mwrite(pos, preweight);
   cacheFile().write(&buff[0], buff.size(), 1);
 }
@@ -1142,6 +1143,7 @@ bool LesHouchesReader::uncacheEvent() {
   hepeup.SPINUP.resize(hepeup.NUP);
   pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mread(pos, lastweight);
+  pos = mread(pos, optionalWeights);
   pos = mread(pos, preweight);
 
   // If we are skipping, we do not have to do anything else.
@@ -1172,7 +1174,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
-     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight
+     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight << optionalWeights
      << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
      << theMomentumTreatment << useWeightWarnings << theReOpenAllowed
      << theIncludeSpin;
@@ -1193,7 +1195,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
-     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight
+     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight >> optionalWeights
      >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
      >> theMomentumTreatment >> useWeightWarnings >> theReOpenAllowed
      >> theIncludeSpin;

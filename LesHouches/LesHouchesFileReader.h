@@ -207,11 +207,6 @@ protected:
    */
   map<string,string> eventAttributes;
 
-  /**
-   * The optional weights encountered in the last event tag.
-   */
-  map<string,double> optionalWeights;
-
 private:
 
   /**

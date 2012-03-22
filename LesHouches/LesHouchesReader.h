@@ -270,6 +270,11 @@ public:
   double eventWeight() const { return hepeup.XWGTUP*lastweight; }
 
   /**
+   * Return the optional named weights associated to the current event.
+   */
+  const map<string,double>& optionalEventWeights() const { return optionalWeights; }
+
+  /**
    * The pair of PartonBinInstance objects describing the current
    * incoming partons in the event.
    */
@@ -802,6 +807,11 @@ protected:
    * objects.
    */
   double lastweight;
+
+  /**
+   * The optional weights associated to the last read events.
+   */
+  map<string,double> optionalWeights;
 
   /**
    * If the maximum cross section of this reader has been increased

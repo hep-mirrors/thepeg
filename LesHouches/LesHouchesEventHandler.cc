@@ -205,6 +205,7 @@ EventPtr LesHouchesEventHandler::generateEvent() {
 
       currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
 				 generator()->currentEventNumber(), weight)));
+      currentEvent()->optionalWeights() = currentReader()->optionalEventWeights();
       performCollision();
 
       if ( !currentCollision() ) throw Veto();
