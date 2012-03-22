@@ -552,9 +552,39 @@ bool LesHouchesFileReader::doReadEvent() {
 	<< Exception::eventerror;
   }
 
-  // Now read any additional comments.
-  while ( cfile.readline() && !cfile.find("</event>") )
+  // Now read any additional comments and named weights.
+  optionalWeights.clear();
+  while ( cfile.readline() && !cfile.find("</event>") ) {
+    // parse weightinfo elements
+    if ( cfile.find("<weightinfo") ) {
+      map<string,string> weightAttributes =
+	StringUtils::xmlAttributes("weightinfo",cfile.getline());
+      if ( !cfile.readline() ) return false;
+      double weightValue; cfile >> weightValue;
+      if ( !cfile.readline() ) return false;
+      if ( !cfile.find("</weightinfo>") ) {
+	throw LesHouchesFileError()
+	  << "error while parsing weight information in "
+	  << theFileName << Exception::eventerror;
+      }
+      // ignore the single unnamed weight, but warn if multiple of the
+      // same name
+      map<string,string>::const_iterator weightName = weightAttributes.find("name");
+      if ( weightName != weightAttributes.end() ) {
+	map<string,double>::iterator wit =
+	  optionalWeights.find(weightName->second);
+	if ( wit == optionalWeights.end() ) {
+	  optionalWeights[weightName->second] = weightValue;
+	} else {
+	  throw LesHouchesFileError()
+	    << "multiple weights of the same name in "
+	    << theFileName << Exception::eventerror;
+	}
+      }
+      continue;
+    }
     eventComments += cfile.getline() + "\n";
+  }
 
   if ( !cfile ) return false;
   return true;
