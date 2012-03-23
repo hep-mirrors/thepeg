@@ -16,6 +16,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 
 #include <sys/times.h>
+#include <unistd.h>
 
 using namespace ThePEG;
 
