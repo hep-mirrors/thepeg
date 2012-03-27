@@ -238,29 +238,33 @@ Qty<P*L,P*E,P*Q,R*DL,R*DE,R*DQ> pow(Qty<L,E,Q,DL,DE,DQ> q) {
 // max for T,U types
 template<typename T, typename U>
 inline
-const T & max(const T & t, const U & u) {
-  return std::max(t, static_cast<T>(u));
+T max(const T & t, const U & u) {
+  const T & utmp = u;
+  return std::max(t, utmp);
 }
 
 // ZeroUnit in front should take U type
 template<typename U>
 inline
-const U & max(const ZeroUnit & t, const U & u) {
-  return std::max(static_cast<U>(t), u);
+U max(const ZeroUnit & t, const U & u) {
+  const U & ttmp = t;
+  return std::max(ttmp, u);
 }
 
 // min for T,U types
 template<typename T, typename U>
 inline
-const T & min(const T & t, const U & u) {
-  return std::min(t, static_cast<T>(u));
+T min(const T & t, const U & u) {
+  const T & utmp = u;
+  return std::min(t, utmp);
 }
 
 // ZeroUnit in front should take U type
 template<typename U>
 inline
-const U & min(const ZeroUnit & t, const U & u) {
-  return std::min(static_cast<U>(t), u);
+U min(const ZeroUnit & t, const U & u) {
+  const U & ttmp = t;
+  return std::min(ttmp, u);
 }
 
 
