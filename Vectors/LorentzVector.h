@@ -547,6 +547,11 @@ operator/(const LorentzVector<Value> & v, Value a) {
   return LorentzVector<double>(v.x()/a, v.y()/a, v.z()/a, v.t()/a);
 }
 
+inline LorentzVector<Complex>
+operator/(const LorentzVector<Complex> & v, Complex a) {
+  return LorentzVector<Complex>(v.x()/a, v.y()/a, v.z()/a, v.t()/a);
+}
+
 template <typename Value>
 inline LorentzVector<Value> operator-(const LorentzVector<Value> & v) {
   return LorentzVector<Value>(-v.x(),-v.y(),-v.z(),-v.t());
