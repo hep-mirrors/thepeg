@@ -115,6 +115,13 @@ CFileLineReader & CFileLineReader::operator>>(double & d) {
   d = std::strtod(pos, &next);
   bad = ( next == pos );
   pos = next;
+  // fortran formatted doubles
+  if(!bad && ( *pos == 'd' || *pos == 'D')) {
+    ++pos;
+    int exp;
+    *this >> exp;
+    d *= pow(10.,exp);
+  }
   return *this;
 }
 
@@ -123,6 +130,13 @@ CFileLineReader & CFileLineReader::operator>>(float & f) {
   f = float(std::strtod(pos, &next));
   bad = ( next == pos );
   pos = next;
+  // fortran formatted doubles
+  if(!bad && ( *pos == 'd' || *pos == 'D')) {
+    ++pos;
+    int exp;
+    *this >> exp;
+    f *= pow(10.,exp);
+  }
   return *this;
 }
 
