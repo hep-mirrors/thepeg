@@ -501,11 +501,6 @@ double LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   using namespace ThePEG::ParticleID;
   using namespace LHAPDFIndex;
   checkUpdate(x, partonScale, particleScale);
-  lastXF[upb ] = 0.;
-  lastXF[dowb] = 0.;
-  lastXF[str ] = 0.;
-  lastXF[strb] = 0.;
-  lastXF[cha ] = 0.;
   switch ( parton->id() ) {
   case t:
     return maxFlav() < 6? 0.0: lastXF[top];
@@ -576,11 +571,7 @@ double LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   using namespace ThePEG::ParticleID;
   using namespace LHAPDFIndex;
   checkUpdate(x, partonScale, particleScale);
-  lastXF[upb ] = 0.;
-  lastXF[dowb] = 0.;
-  lastXF[str ] = 0.;
-  lastXF[strb] = 0.;
-  lastXF[cha ] = 0.;
+
   switch ( parton->id() ) {
   case t:
   case tbar:
@@ -636,11 +627,6 @@ double LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
   using namespace ThePEG::ParticleID;
   using namespace LHAPDFIndex;
   checkUpdate(x, partonScale, particleScale);
-  lastXF[upb ] = 0.;
-  lastXF[dowb] = 0.;
-  lastXF[str ] = 0.;
-  lastXF[strb] = 0.;
-  lastXF[cha ] = 0.;
 
   switch ( parton->id() ) {
   case t:
