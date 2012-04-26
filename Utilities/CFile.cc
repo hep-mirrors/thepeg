@@ -110,7 +110,7 @@ void CFile::close() {
     break;
 #ifdef HAVE_LIBZ
   case gzip:
-    gzclose(file);
+    gzclose((gzFile)file);
     break;
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
@@ -130,7 +130,7 @@ char * CFile::gets(char * s, int size) {
   case plain:
   case pipe: return fgets(s, size, (FILE*)file);
 #ifdef HAVE_LIBZ
-  case gzip: return gzgets(file, s, size);
+  case gzip: return gzgets((gzFile)file, s, size);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
   case bzip2: // don't know what to do here
@@ -145,7 +145,7 @@ int CFile::puts(const char * s) {
   case plain:
   case pipe: return fputs(s, (FILE*)file);
 #ifdef HAVE_LIBZ
-  case gzip: return gzputs(file, s);
+  case gzip: return gzputs((gzFile)file, s);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
   case bzip2: // don't know what to do here
@@ -160,7 +160,7 @@ int CFile::getc() {
   case plain:
   case pipe: return fgetc((FILE*)file);
 #ifdef HAVE_LIBZ
-    case gzip: return gzgetc(file);
+  case gzip: return gzgetc((gzFile)file);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
     case bzip2:// don't know what to do here
@@ -175,7 +175,7 @@ int CFile::putc(int c) {
   case plain:
   case pipe: return fputc(c, (FILE*)file);
 #ifdef HAVE_LIBZ
-  case gzip: return gzputc(file, c);
+  case gzip: return gzputc((gzFile)file, c);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
   case bzip2: // don't know what to do here
@@ -190,7 +190,7 @@ int CFile::ungetc(int c) {
   case plain:
   case pipe: return std::ungetc(c, (FILE*)file);
 #ifdef HAVE_LIBZ
-  case gzip: return gzungetc(c, file);
+  case gzip: return gzungetc(c, (gzFile)file);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
   case bzip2: // don't know what to do here
@@ -205,7 +205,7 @@ size_t CFile::read(void *ptr, size_t size, size_t nmemb) {
   case plain:
   case pipe: return fread(ptr, size, nmemb, (FILE*)file);
 #ifdef HAVE_LIBZ
-  case gzip: return gzread(file, ptr, size);
+  case gzip: return gzread((gzFile)file, ptr, size);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
   case bzip2: return BZ2_bzread(file, ptr, size);
@@ -220,7 +220,7 @@ size_t CFile::write(const void *ptr, size_t size, size_t nmemb) {
   case plain:
   case pipe: return fwrite(ptr, size, nmemb, (FILE*)file);
 #ifdef HAVE_LIBZ
-  case gzip:  return gzwrite(file, ptr, size);
+  case gzip:  return gzwrite((gzFile)file, ptr, size);
 #endif
 #ifdef HAVE_LIBBZ2_NEVER
   case bzip2: return BZ2_bzwrite(file, ptr, size);
