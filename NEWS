@@ -8,6 +8,22 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.8.0 release: 2012-05-01
+
+** NLO support TODO TODO TODO
+
+** Support for SU(3)-sextet colour lines
+
+** Named weights support, also in HepMC
+
+** complex masses
+
+** Smaller fixes and enhancements
+ 
+
+
+
+
 * ThePEG-1.7.3 release: 2012-03-05
 
   The only changes are in LesHouches.so, now at version 14.
