@@ -28,7 +28,8 @@ endif
 
 dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in MultiLEP.in
 
-nodist_pkglib_DATA = ThePEGDefaults.rpo
+rpodir = $(pkglibdir)
+nodist_rpo_DATA = ThePEGDefaults.rpo
 
 CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex \
              MultiLEP.log MultiLEP.out MultiLEP.run MultiLEP.tex \

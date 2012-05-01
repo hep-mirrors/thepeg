@@ -6,7 +6,7 @@ doc_DATA = refman.conf refman.h
 
 dist_doc_DATA = repository.hlp MakeDocs.in
 
-doc_SCRIPTS = fixinterfaces.pl
+dist_noinst_SCRIPTS = fixinterfaces.pl
 
 clean-local: html-clean
 

@@ -9,8 +9,6 @@ DIST_SUBDIRS = $(MAINDIRS) java
 
 SUBDIRS = $(MAINDIRS) $(JAVADIR)
 
-pkglib_SCRIPTS = libtool
-
 EXTRA_DIST = GUIDELINES
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks --without-LHAPDF
