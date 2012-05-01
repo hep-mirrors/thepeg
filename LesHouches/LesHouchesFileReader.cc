@@ -550,6 +550,13 @@ bool LesHouchesFileReader::doReadEvent() {
       throw Exception() 
 	<< "nan's as momenta in Les Houches file "
 	<< Exception::eventerror;
+    if(hepeup.MOTHUP[i].first -1==i || 
+       hepeup.MOTHUP[i].second-1==i) {
+      throw Exception()
+	<< "Particle has itself as a mother in Les Houches "
+	<< "file, this is not allowed\n"
+	<< Exception::eventerror;
+    } 
   }
 
   // Now read any additional comments and named weights.

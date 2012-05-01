@@ -132,7 +132,9 @@ public:
    * Return the error message.
    */
   virtual const char* what() const throw() {
-    return message().c_str();
+    static string str;
+    str = message();
+    return str.c_str();
   }
 
   /**

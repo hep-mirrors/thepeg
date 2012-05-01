@@ -1071,7 +1071,11 @@ DMPtr EventGenerator::constructDecayMode(string & tag) {
   pd->addDecayMode(rdm);
   if ( !preinitRegister(rdm, pd->fullName() + "/" + rdm->tag()) )
     return DMPtr();
-  if ( adm ) preinitRegister(adm, pd->CC()->fullName() + "/" + adm->tag());
+  if ( adm ) {
+    preinitRegister(adm, pd->CC()->fullName() + "/" + adm->tag());
+    rdm->CC(adm);
+    adm->CC(rdm);
+  }
 
   return rdm;
 }

@@ -42,7 +42,7 @@ LesHouchesReader::LesHouchesReader(bool active)
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
     theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
     weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0),
-    useWeightWarnings(true),theReOpenAllowed(true), theIncludeSpin(false) {}
+    useWeightWarnings(true),theReOpenAllowed(true), theIncludeSpin(true) {}
 
 LesHouchesReader::LesHouchesReader(const LesHouchesReader & x)
   : HandlerBase(x), LastXCombInfo<>(x), heprup(x.heprup), hepeup(x.hepeup),
@@ -1447,7 +1447,7 @@ void LesHouchesReader::Init() {
     ("IncludeSpin",
      "Use the spin information present in the event file, for tau leptons"
      " only as this is the only case which makes any sense",
-     &LesHouchesReader::theIncludeSpin, false, false, false);
+     &LesHouchesReader::theIncludeSpin, true, false, false);
   static SwitchOption interfaceIncludeSpinYes
     (interfaceIncludeSpin,
      "Yes",

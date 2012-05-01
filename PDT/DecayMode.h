@@ -429,6 +429,12 @@ protected:
    */
   ParticleMSet & excluded() { return theExcluded; }
 
+  /**
+   *  Set the pointer to the corresponding decaymode for the
+   * antiparticle decay.
+   */
+  void CC(tDMPtr cc) {theAntiPartner = cc;}
+
 private:
 
   /**

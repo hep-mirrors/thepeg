@@ -8,6 +8,8 @@
 	MatrixElement/ColourLines.xh, MatrixElement/ColourLines.cc:
 	Merged sextet branch from hg up to 728953b6f091.
 
+	* Utilities/Exception.h (ThePEG): Fixed out-of-scope error in what().
+
 2011-08-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h (ThePEG): Put explicit std:: on greater function.

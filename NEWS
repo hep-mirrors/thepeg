@@ -8,6 +8,18 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.7.3 release: 2012-03-05
+
+  The only changes are in LesHouches.so, now at version 14.
+
+** Spin information
+   Spin correlation information will now be set up correctly for tau
+   leptons. To go back to the old behaviour, set
+   LesHouchesReader:IncludeSpin No
+
+** Consistency checks
+   Catch broken input where mother-daughter relations are circular.
+
 * ThePEG-1.7.2 release: 2011-11-01
 
 ** HepMC configuration
