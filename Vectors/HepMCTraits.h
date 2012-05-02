@@ -68,7 +68,11 @@ struct HepMCTraitsBase {
     e->weights().push_back(weight);
     for ( map<string,double>::const_iterator w = optionalWeights.begin();
 	  w != optionalWeights.end(); ++w ) {
+#ifdef HEPMC_HAS_NAMED_WEIGHTS
+      e->weights()[w->first] = w->second;
+#else
       e->weights().push_back(w->second);
+#endif
     }
     return e;
   }
@@ -81,7 +85,11 @@ struct HepMCTraitsBase {
     e->weights().push_back(weight);
     for ( map<string,double>::const_iterator w = optionalWeights.begin();
 	  w != optionalWeights.end(); ++w ) {
+#ifdef HEPMC_HAS_NAMED_WEIGHTS
+      e->weights()[w->first] = w->second;
+#else
       e->weights().push_back(w->second);
+#endif
     }
   }
 
