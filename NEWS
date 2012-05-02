@@ -10,11 +10,48 @@ or at http:///projects.hepforge.org/herwig/versions
 
 * ThePEG-1.8.0 release: 2012-05-01
 
-** NLO support TODO TODO TODO
+** NLO support
+
+***    ThePEG now includes structures to ease implementing next-to-leading
+       order (NLO) calculations as well as for interfacing external
+       matrix element codes through runtime interfaces. Particularly,
+       the newly introduced MEGroup and accompanying StdXCombGroup,
+       StdDependentXComb and SubProcessGroup classes provide the
+       functionality required by subtraction approaches to higher
+       orders. A general interface for cutting on reconstructed jets
+       as required by higher-order calculations is included, along
+       with an implementation of kt, Cambridge-Aachen and anti-kt jet
+       finding as relevant for NLO calculations. Hard process
+       implementations deriving from MEBase are no longer limited to
+       the evaluation of PDFs by PartonExtractor objects, thus
+       allowing for a more flexible and more stable implementation of
+       finite collinear contributioins appearing in the context of
+       higher order corrections.
+
+***    The generation of phasespace points
+       for the hard subprocess has been made more flexible,
+       particularly to allow generation of incoming parton momenta by
+       the hard matrix element as is typically done by phasespace
+       generators provided with fixed-order codes. Along with this
+       change, generation of the phasespace point does not need to
+       take place in the centre-of-mass system of the incoming
+       partons.
+
+***    Various helpers have been added to MEBase and dependent 
+       code along with the improvements described above, including
+       simple functionality required for caching intermediate results.
+
+***    Tree2toNDiagram supports merging of two external legs, 
+       yielding another Tree2toNDiagram object to assist in
+       determining subtraction terms required for a particular process
 
 ** Support for SU(3)-sextet colour lines
 
 ** Named weights support, also in HepMC
+   Named, optional weights on top of the usual event weight are now
+   fully supported; this includes their communication to HepMC events
+   as well as their parsing from the extented Les Houches file format
+   drafted at the Les Houches workshop 2009.
 
 ** complex masses
 
