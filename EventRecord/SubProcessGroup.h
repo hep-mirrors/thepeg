@@ -128,7 +128,7 @@ private:
    * The ClassTraits<SubProcessGroup> class must be a friend to be able to
    * use the private default constructor.
    */
-  friend class ClassTraits<SubProcessGroup>;
+  friend struct ClassTraits<SubProcessGroup>;
 
   /**
    * Assignment is forbidden.

@@ -122,11 +122,11 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
       // case the lines are mapped to an integer and set in the
       // GenParticle's Flow info.
       tcColinePtr l;
-      if ( l = p->colourLine() ) {
+      if ( (l = p->colourLine()) ) {
 	if ( !member(flowmap, l) ) flowmap[l] = flowmap.size() + 500;
 	Traits::setColourLine(*gp, 1, flowmap[l]);
       }
-      if ( l = p->antiColourLine() ) {
+      if ( (l = p->antiColourLine()) ) {
 	if ( !member(flowmap, l) ) flowmap[l] = flowmap.size() + 500;
 	Traits::setColourLine(*gp, 2, flowmap[l]);
       }

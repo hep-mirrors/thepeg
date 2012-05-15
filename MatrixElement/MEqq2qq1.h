@@ -75,7 +75,7 @@ protected:
   double colA() const 
   {
     return (sqr(tHat()) + sqr(uHat()))/sqr(sHat()) +
-      interference()? -double(sqr(uHat())/(3.0*sHat()*tHat())): 0.0;
+      (interference()? -double(sqr(uHat())/(3.0*sHat()*tHat())): 0.0);
   }
 
   /**
@@ -85,7 +85,7 @@ protected:
   double colB() const
   {
     return (sqr(uHat()) + sqr(sHat()))/sqr(tHat()) +
-      interference()? -double(sqr(uHat())/(3.0*sHat()*tHat())): 0.0;
+      (interference()? -double(sqr(uHat())/(3.0*sHat()*tHat())): 0.0);
   }
   //@}
 
