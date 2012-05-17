@@ -8,7 +8,7 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.8.0 release: 2012-05-01
+* ThePEG-1.8.0 release: 2012-05-18
 
 ** NLO support
 
@@ -53,9 +53,9 @@ or at http:///projects.hepforge.org/herwig/versions
    as well as their parsing from the extented Les Houches file format
    drafted at the Les Houches workshop 2009.
 
-** complex masses
+** Complex masses supported in Helicity code
 
-** Smaller fixes and enhancements
+** Several minor fixes and enhancements
  
 
 
