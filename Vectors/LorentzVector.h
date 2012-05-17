@@ -22,17 +22,13 @@
 #include "LorentzRotation.h"
 #include "ThreeVector.h"
 
-namespace {
-  /// Debug helper function
+/// Debug helper function
 #ifdef NDEBUG
-  inline void errorIf(bool, const std::string &) {}
+#define ERROR_IF true
 #else
-  inline void errorIf(bool condition, const std::string & message) {
-    if ( condition )
-      throw ThePEG::Exception(message, ThePEG::Exception::eventerror);
-  }
+#define ERROR_IF(condition,message) \
+  if ( (condition) ) throw ThePEG::Exception( (message) , ThePEG::Exception::eventerror)
 #endif
-}
 
 namespace ThePEG {
 
@@ -246,11 +242,10 @@ public:
 
   /// Pseudorapidity of spatial part.
   double eta() const {
-    static const string 
-      em("Pseudorapidity for 3-vector along z-axis undefined.");
     Value m = rho();
     if ( m ==  Value() ) return  0.0;
-    errorIf(m == z() || m == -z(),em);
+    ERROR_IF(m == z() || m == -z(),
+	     "Pseudorapidity for 3-vector along z-axis undefined.");
     return 0.5 * log( (m+z()) / (m-z()) );
   }
 
@@ -262,24 +257,19 @@ public:
 
   /// Rapidity \f$\frac{1}{2}\ln\frac{t+z}{t-z} \f$
   double rapidity() const {
-    static const string em1("rapidity for 4-vector with |E| = |Pz| -- infinite result");
-    static const string em2("rapidity for spacelike 4-vector with |E| < |Pz| -- undefined");
-    errorIf(abs(t()) == abs(z()),em1);
-    errorIf(abs(t()) < abs(z()) ,em2);
+    ERROR_IF(abs(t()) == abs(z()),"rapidity for 4-vector with |E| = |Pz| -- infinite result");
+    ERROR_IF(abs(t()) < abs(z()) ,"rapidity for spacelike 4-vector with |E| < |Pz| -- undefined");
     double q = (t() + z()) / (t() - z());
     return 0.5 * log(q);
   }
 
   /// Rapidity with respect to another vector
   double rapidity(const Axis & ref) const {
-    static const string em1("A zero vector used as reference to LorentzVector rapidity");
-    static const string em2("rapidity for 4-vector with |E| = |Pu| -- infinite result");
-    static const string em3("rapidity for spacelike 4-vector with |E|<|P*ref| undefined");
     double r = ref.mag2();
-    errorIf(r == 0,em1);
+    ERROR_IF(r == 0,"A zero vector used as reference to LorentzVector rapidity");
     Value vdotu = vect().dot(ref)/sqrt(r);
-    errorIf(abs(t()) == abs(vdotu),em2);
-    errorIf(abs(t()) < abs(vdotu),em3);
+    ERROR_IF(abs(t()) == abs(vdotu),"rapidity for 4-vector with |E| = |Pu| -- infinite result");
+    ERROR_IF(abs(t()) < abs(vdotu),"rapidity for spacelike 4-vector with |E|<|P*ref| undefined");
     double q = (t() + vdotu) / (t() - vdotu);
     return 0.5 * log(q);
   }
@@ -289,17 +279,14 @@ public:
    * frame: \f$\frac{\vec{x}}{t}\f$.
    */
   Boost boostVector() const {
-    static const string em1("boostVector computed for LorentzVector with t=0"
-		     " -- infinite result");
-    static const string em2("boostVector computed for a non-timelike LorentzVector");
     if (t() == Value()) {
       if (rho2() == Value2()) 
 	return Boost();
       else 
-	errorIf(true,em1);
+	ERROR_IF(true,"boostVector computed for LorentzVector with t=0 -- infinite result");
     }
     // result will make analytic sense but is physically meaningless
-    errorIf(m2() <= Value2(),em2);
+    ERROR_IF(m2() <= Value2(),"boostVector computed for a non-timelike LorentzVector");
     return vect() * (1./t());
   }
   
@@ -788,5 +775,5 @@ struct BinaryOpTraits<T, LorentzVector<U> > {
 
 }
 
-
+#undef ERROR_IF
 #endif /* ThePEG_LorentzVector_H */

@@ -75,7 +75,8 @@ case "${ax_cv_cxx_compiler_vendor}" in
 	AM_CXXFLAGS="-ansi -pedantic -Wall -W"
 	;;
      clang)
-	AM_CXXFLAGS="-ansi -pedantic -Wall"
+	AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
+dnl  -Wno-unneeded-internal-declaration 
 	;;
      intel)
 	AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980" 
