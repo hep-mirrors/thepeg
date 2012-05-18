@@ -75,6 +75,7 @@ SpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
 					  const ScalarWaveFunction & ,
 					  complex<Energy> , complex<Energy> ) {
   assert(false);
+  return SpinorBarWaveFunction();
 }
 
 RSSpinorBarWaveFunction RFSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
