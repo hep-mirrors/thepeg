@@ -24,7 +24,7 @@
 
 /// Debug helper function
 #ifdef NDEBUG
-#define ERROR_IF true
+#define ERROR_IF(condition,message)
 #else
 #define ERROR_IF(condition,message) \
   if ( (condition) ) throw ThePEG::Exception( (message) , ThePEG::Exception::eventerror)
