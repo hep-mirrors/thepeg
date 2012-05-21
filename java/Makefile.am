@@ -11,7 +11,8 @@ JAVASOURCES = SetupThePEG.java ObjectFrame.java \
 
 CLEANFILES = ThePEG.jar thepeg.sh
 
-nodist_pkglib_DATA = ThePEG.jar
+jardir = $(pkglibdir)
+nodist_jar_DATA = ThePEG.jar
 
 dist_noinst_DATA = $(JAVASOURCES) jar-manifest
 

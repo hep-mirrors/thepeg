@@ -5,7 +5,7 @@ AC_INIT([ThePEG],[SVN],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
 
-THEPEG_LIBTOOL_VERSION_INFO(13,0,0)
+THEPEG_LIBTOOL_VERSION_INFO(15,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
 AC_CONFIG_HEADERS([Config/config.h Config/LWH.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
@@ -26,8 +26,9 @@ esac
 
 AC_LANG(C++)
 AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 -Wall])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 dnl also include std-options once --version and --help exist
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 dnl Checks for programs.
 AC_PROG_CXX
@@ -72,6 +73,10 @@ AX_COMPILER_VENDOR
 case "${ax_cv_cxx_compiler_vendor}" in
      gnu)
 	AM_CXXFLAGS="-ansi -pedantic -Wall -W"
+	;;
+     clang)
+	AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
+dnl  -Wno-unneeded-internal-declaration 
 	;;
      intel)
 	AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980" 

@@ -866,7 +866,7 @@ void LesHouchesReader::createParticles() {
 	    col2 = external[iy]->colourInfo()->antiColourLines();
 	  }
 	  for(unsigned int ic2=0;ic2<col2.size();++ic2) {
-	    if(col[ic1]=col2[ic2]) {
+	    if(col[ic1]==col2[ic2]) {
 	      matched=true;
 	      break;
 	    }
@@ -890,7 +890,7 @@ void LesHouchesReader::createParticles() {
 	    anti2 = external[iy]->colourInfo()->colourLines();
 	  }
 	  for(unsigned int ic2=0;ic2<anti2.size();++ic2) {
-	    if(col[ic1]=anti2[ic2]) {
+	    if(col[ic1]==anti2[ic2]) {
 	      matched=true;
 	      break;
 	    }
@@ -955,7 +955,7 @@ void LesHouchesReader::createParticles() {
 	      col2 = external[iy]->colourInfo()->antiColourLines();
 	    }
 	    for(unsigned int ic2=0;ic2<col2.size();++ic2) {
-	      if(col[ic1]=col2[ic2]) {
+	      if(col[ic1]==col2[ic2]) {
 		matched=true;
 		break;
 	      }
@@ -979,7 +979,7 @@ void LesHouchesReader::createParticles() {
 	      anti2 = external[iy]->colourInfo()->colourLines();
 	    }
 	    for(unsigned int ic2=0;ic2<anti2.size();++ic2) {
-	      if(col[ic1]=anti2[ic2]) {
+	      if(col[ic1]==anti2[ic2]) {
 		matched=true;
 		break;
 	      }
