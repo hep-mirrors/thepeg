@@ -366,12 +366,13 @@ void LesHouchesFileReader::doinit() {
 	    inpart->stable(false);
 	    tag.replace(tag.size() - 1, 1, ";");
 	    DMPtr dm = generator()->findDecayMode(tag);
+	    if(!theDecayer) Throw<SetupException>()
+			      << "LesHouchesFileReader::doinit() Decayer must be set using the "
+			      << "LesHouchesFileReader:Decayer"
+			      << " must be set to allow the creation of new"
+			      << " decay modes."
+			      << Exception::runerror;
 	    if(!dm) {
- 	      if(!theDecayer) Throw<SetupException>()
- 				<< "LesHouchesFileReader::doinit() Decayer"
- 				<< " must be set to allow the creation of new"
-				<< " decay modes"
- 				<< Exception::runerror;
 	      dm = generator()->preinitCreateDecayMode(tag);
 	      if(!dm)
 		Throw<SetupException>()  
