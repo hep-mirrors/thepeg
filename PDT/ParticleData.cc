@@ -107,12 +107,14 @@ IBPtr ParticleData::fullclone() const {
   Repository::Register(pd);
   pd->theDecaySelector.clear();
   pd->theDecayModes.clear();
+  pd->isStable = true;
   PDPtr apd;
   if ( CC() ) {
     apd = CC()->pdclone();
     Repository::Register(apd);
     apd->theDecaySelector.clear();
     apd->theDecayModes.clear();
+    apd->isStable = true;
     pd->theAntiPartner = apd;
     apd->theAntiPartner = pd;
     pd->syncAnti = syncAnti;
@@ -189,19 +191,23 @@ void ParticleData::addDecayMode(tDMPtr dm) {
     dm = dm->clone(this);
   }
   theDecayModes.insert(dm);
+  isStable = false;
   theDecaySelector.insert(dm->brat(), dm);
   if ( CC() ) {
     if ( !synchronized() ) dm->CC()->switchOff();
     CC()->theDecayModes.insert(dm->CC());
+    CC()->isStable = false;
     CC()->theDecaySelector.insert(dm->CC()->brat(), dm->CC());
   }
 }
 
 void ParticleData::removeDecayMode(tDMPtr dm) {
   theDecayModes.erase(theDecayModes.find(dm));
+  if(theDecayModes.empty()) isStable = true;
   theDecaySelector.erase(dm);
   if ( !CC() ) return;
   CC()->theDecayModes.erase(dm->CC());
+  if(CC()->theDecayModes.empty()) CC()->isStable = true;
   CC()->theDecaySelector.erase(dm->CC());
 }
 

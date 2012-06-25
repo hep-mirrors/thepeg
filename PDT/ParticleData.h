@@ -358,7 +358,7 @@ public:
    * table is empty the function always returns true, even if the
    * member variable is false.
    */
-  bool stable() const { return isStable || theDecayModes.empty(); }
+  bool stable() const { return isStable; }
 
   /**
    * Get the pointer to the corresponding anti partner.

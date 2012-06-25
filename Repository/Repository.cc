@@ -518,11 +518,13 @@ string Repository::copyParticle(tPDPtr p, string newname) {
   Register(pd, newdir + newname);
   pd->theDecaySelector.clear();
   pd->theDecayModes.clear();
+  pd->isStable = true;
   if ( p->CC() ) {
     PDPtr apd = p->CC()->pdclone();
     Register(apd, newdir + apd->name());
     apd->theDecaySelector.clear();
     apd->theDecayModes.clear();
+    apd->isStable = true;
     pd->theAntiPartner = apd;
     apd->theAntiPartner = pd;
     pd->syncAnti = p->syncAnti;
