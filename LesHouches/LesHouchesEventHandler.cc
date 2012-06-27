@@ -60,7 +60,7 @@ void LesHouchesEventHandler::initialize() {
     << "The LuminosityFunction '" << lumiFnPtr()->name()
     << "' assigned to the LesHouchesEventHandler '" << name()
     << "' will not be active in this run. Instead the incoming "
-    << "particles will be determined by the used LesHouchesReader objects."
+    << "particles will be determined by the used LesHouchesReader objects.\n"
     << Exception::warning;
 
   if ( readers().empty() )
