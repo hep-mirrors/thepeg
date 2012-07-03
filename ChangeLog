@@ -1,3 +1,9 @@
+2012-07-03  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Analysis/RivetAnalysis.cc (doinitrun): Removed obsolete call to
+	Rivet::AnalysisHandler::init. Initialization now happens
+	automatically on Event 1.
+
 2011-12-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* EventRecord/ColourLine.cc, EventRecord/ColourLine.h,

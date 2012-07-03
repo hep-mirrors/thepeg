@@ -145,7 +145,6 @@ void RivetAnalysis::doinitrun() {
       << "Use 'rivet --list-analyses' to check availability.\n"
       << ThePEG::Exception::runerror;
   }
-  _rivet->init();
   if ( debug )
     Rivet::Log::setLevel("Rivet",Rivet::Log::DEBUG);
 }
