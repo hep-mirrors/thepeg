@@ -54,11 +54,11 @@ HepMC::GenEvent * NLOHepMCFile::makeEvent(tEventPtr event, tSubProPtr sub, long 
   HepMC::GenParticle * r1 =
     HepMCTraits<HepMC::GenEvent>::newParticle(beam.first->momentum() - 
 					      sub->incoming().first->momentum(),
-					      82,1,eUnit);
+					      _remnantId,1,eUnit);
   HepMC::GenParticle * r2 =
     HepMCTraits<HepMC::GenEvent>::newParticle(beam.second->momentum() - 
 					      sub->incoming().second->momentum(),
-					      82,1,eUnit);
+					      _remnantId,1,eUnit);
 
   // generate outgoing particles
   vector<HepMC::GenParticle*> outgoing;
