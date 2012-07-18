@@ -187,10 +187,20 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
   pair<int,int> ch = children(start);
   pair<int,int> chCmp = diag->children(startCmp);
 
-  return
+  bool match =
     equals(diag,ch.first,chCmp.first) &&
     equals(diag,ch.second,chCmp.second);
 
+  // also try swapped external legs on same vertex
+  if ( !match &&
+       children(ch.first).first < 0 && children(ch.second).first < 0 &&
+       diag->children(chCmp.first).first < 0 && diag->children(chCmp.second).first < 0 )
+    match = 
+      equals(diag,ch.first,chCmp.second) &&
+      equals(diag,ch.second,chCmp.first);
+
+  return match;
+    
 }
 
 bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag, 
@@ -210,9 +220,19 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
     remap[externalId(start)] = diag->externalId(startCmp);
   }
 
-  return
+  bool match =
     equals(diag,remap,ch.first,chCmp.first) &&
     equals(diag,remap,ch.second,chCmp.second);
+
+  // also try swapped external legs on same vertex
+  if ( !match &&
+       children(ch.first).first < 0 && children(ch.second).first < 0 &&
+       diag->children(chCmp.first).first < 0 && diag->children(chCmp.second).first < 0 )
+    match = 
+      equals(diag,remap,ch.first,chCmp.second) &&
+      equals(diag,remap,ch.second,chCmp.first);
+
+  return match;
 
 }
 
