@@ -33,9 +33,9 @@ elif test "x$with_rivet" = "xsystem"; then
 else
 	AC_MSG_RESULT([$with_rivet])
 	RIVETINCLUDE="$( $with_rivet/bin/rivet-config --cppflags )"
-	RIVETLIBS="-L$with_rivet/lib -R$with_rivet/lib -lRivet"
+	RIVETLIBS="-L$with_rivet/lib -Wl,-rpath,$with_rivet/lib -lRivet"
 	if test "${host_cpu}" == "x86_64" -a -e $with_rivet/lib64/libRivet.so ; then
-	  RIVETLIBS="-L$with_rivet/lib64 -R$with_rivet/lib64 -lRivet"
+	  RIVETLIBS="-L$with_rivet/lib64 -Wl,-rpath,$with_rivet/lib64 -lRivet"
 	fi
 fi
 
