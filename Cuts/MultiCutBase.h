@@ -42,14 +42,14 @@ public:
    * a set of outgoing partons of the given types. Typically used to
    * cut off the tails of the mass of a resonance for efficiency.
    */
-  virtual Energy2 minS(const tcPDVector & pv) const = 0;
+  virtual Energy2 minS(const tcPDVector & pv) const;
 
   /**
    * Return the maximum allowed value of the squared invariant mass of
    * a set of outgoing partons of the given types. Typically used to
    * cut off the tails of the mass of a resonance for efficiency.
    */
-  virtual Energy2 maxS(const tcPDVector & pv) const = 0;
+  virtual Energy2 maxS(const tcPDVector & pv) const;
 
   /**
    * Return true if a set of outgoing particles with typea \a ptype

@@ -11,8 +11,7 @@ noinst_LTLIBRARIES = libThePEGCuts.la
 libThePEGCuts_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 pkglib_LTLIBRARIES = SimpleKTCut.la KTClus.la V2LeptonsCut.la SimpleDISCut.la \
-                     KTRapidityCut.la NLOKTJetFinder.la \
-		     DeltaMeasureCuts.la
+                     KTRapidityCut.la KTJetFinder.la DeltaMeasureCuts.la JetCuts.la
 
 SimpleKTCut_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 SimpleKTCut_la_SOURCES = SimpleKTCut.cc SimpleKTCut.h
@@ -29,8 +28,11 @@ V2LeptonsCut_la_SOURCES = V2LeptonsCut.cc V2LeptonsCut.h
 SimpleDISCut_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 SimpleDISCut_la_SOURCES = SimpleDISCut.cc SimpleDISCut.h
 
-NLOKTJetFinder_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-NLOKTJetFinder_la_SOURCES = NLOKTJetFinder.cc NLOKTJetFinder.h
+KTJetFinder_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+KTJetFinder_la_SOURCES = KTJetFinder.cc KTJetFinder.h
+
+JetCuts_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
+JetCuts_la_SOURCES = OneJetCut.h OneJetCut.cc NJetsCut.h NJetsCut.cc
 
 DeltaMeasureCuts_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 DeltaMeasureCuts_la_SOURCES = DeltaMeasureCuts.cc DeltaMeasureCuts.h

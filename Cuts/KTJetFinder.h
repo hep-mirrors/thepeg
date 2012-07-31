@@ -1,16 +1,16 @@
 // -*- C++ -*-
 //
-// NLOKTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
+// KTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
-// Copyright (C) 2009-2011 Simon Platzer
+// Copyright (C) 2009-2012 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
-#ifndef THEPEG_NLOKTJetFinder_H
-#define THEPEG_NLOKTJetFinder_H
+#ifndef THEPEG_KTJetFinder_H
+#define THEPEG_KTJetFinder_H
 //
-// This is the declaration of the NLOKTJetFinder class.
+// This is the declaration of the KTJetFinder class.
 //
 
 #include "ThePEG/Cuts/JetFinder.h"
@@ -18,15 +18,13 @@
 namespace ThePEG {
 
 /**
- * NLOKTJetFinder implements the class of longitudinally invariant kt
- * jet clustering algorithms, as relevant for cuts on the real
- * emission contribution to a NLO calculation. Recombination is
- * exclusively performed using the pt scheme.
+ * KTJetFinder implements the class of longitudinally invariant kt
+ * jet clustering algorithms.
  *
- * @see \ref NLOKTJetFinderInterfaces "The interfaces"
- * defined for NLOKTJetFinder.
+ * @see \ref KTJetFinderInterfaces "The interfaces"
+ * defined for KTJetFinder.
  */
-class NLOKTJetFinder: public JetFinder {
+class KTJetFinder: public JetFinder {
 
 public:
 
@@ -35,12 +33,12 @@ public:
   /**
    * The default constructor.
    */
-  NLOKTJetFinder();
+  KTJetFinder();
 
   /**
    * The destructor.
    */
-  virtual ~NLOKTJetFinder();
+  virtual ~KTJetFinder();
   //@}
 
 public:
@@ -53,6 +51,15 @@ public:
   virtual bool cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
 		       tcCutsPtr parent, tcPDPtr t1 = tcPDPtr(),
 		       tcPDPtr t2 = tcPDPtr()) const;
+
+  /**
+   * Perform jet clustering on the given outgoing particles.
+   * Optionally, information on the incoming particles is provided.
+   * Return true, if a clustering has been performed.
+   */
+  bool oneCluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
+		  tcCutsPtr parent, tcPDPtr t1 = tcPDPtr(),
+		  tcPDPtr t2 = tcPDPtr()) const;
 
 public:
 
@@ -177,23 +184,16 @@ private:
    */
   int theRecombination;
 
-
-  /**
-   * Choose to not consider partons as jets which are out of in terms
-   * or rapidity or transverse momentum
-   */
-  bool theRemoveOutOfRange;
-
 private:
 
   /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  NLOKTJetFinder & operator=(const NLOKTJetFinder &);
+  KTJetFinder & operator=(const KTJetFinder &);
 
 };
 
 }
 
-#endif /* THEPEG_NLOKTJetFinder_H */
+#endif /* THEPEG_KTJetFinder_H */
