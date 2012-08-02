@@ -751,6 +751,16 @@ void LesHouchesReader::createParticles() {
 	<< "You need to define the new particle in an input file.\n"
 	<< Exception::runerror;
     }
+    if ( ! pd->coloured() 
+	 && ( hepeup.ICOLUP[i].first != 0 || hepeup.ICOLUP[i].second != 0 ) ) {
+      Throw<LesHouchesInconsistencyError>()
+	<< "LesHouchesReader " << name() << ": " << pd->PDGName() 
+	<< " is not a coloured particle.\nIt should not have "
+	<< "(anti-)colour lines " << hepeup.ICOLUP[i].first
+	<< ' ' << hepeup.ICOLUP[i].second
+	<< " set; the event file needs to be fixed."
+	<< Exception::runerror;
+    }
     PPtr p = pd->produceParticle(mom);
     if(hepeup.ICOLUP[i].first>=0 && hepeup.ICOLUP[i].second >=0) {
       tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
@@ -806,14 +816,27 @@ void LesHouchesReader::createParticles() {
 	<< ") in the LesHouchesReader '" << name() << "'."
 	<< Exception::runerror;
     }
-    if( theIncludeSpin && abs(pd->id()) == ParticleID::tauminus && 
-	hepeup.SPINUP[i] !=0) {
+
+    // value 9 is defined as "Unknown or unpolarized particles"
+    double spinup = hepeup.SPINUP[i];
+    if ( abs(spinup - 9) < 1.0e-3 )
+      spinup = 0.;
+    if ( spinup < -1. || spinup > 1. ) {
+      Throw<LesHouchesInconsistencyError>()
+	<< "Polarization must be between -1 and 1, not "
+	<< spinup << " as found in the "
+	<< "LesHouches event file.\nThe event file needs to be fixed." 
+	<< Exception::runerror;
+    }
+    if( theIncludeSpin 
+	&& abs(pd->id()) == ParticleID::tauminus 
+	&& spinup !=0) {
       if(pd->iSpin() == PDT::Spin1Half ) {
 	vector<Helicity::SpinorWaveFunction> wave;
 	Helicity::SpinorWaveFunction(wave,p,Helicity::outgoing,true);
 	RhoDMatrix rho(pd->iSpin(),true);
-	rho(0,0) = 0.5*(1.-hepeup.SPINUP[i]);
-	rho(1,1) = 0.5*(1.+hepeup.SPINUP[i]);
+	rho(0,0) = 0.5*(1.-spinup);
+	rho(1,1) = 0.5*(1.+spinup);
 	p->spinInfo()->rhoMatrix() = rho;
 	p->spinInfo()->  DMatrix() = rho;
       }

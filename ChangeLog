@@ -4,6 +4,13 @@
 	Rivet::AnalysisHandler::init. Initialization now happens
 	automatically on Event 1.
 
+2012-06-27  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* LesHouches/LesHouchesReader.cc (createParticles): SPINUP=9 now
+	maps to SPINUP=0, as intended in LesHouches standard.  Runerrors
+	for two more inconsistencies: Colour line specified on
+	colour-neutral object, and helicity values outside of [-1,1] or 9.
+
 2011-12-06  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* EventRecord/ColourLine.cc, EventRecord/ColourLine.h,
