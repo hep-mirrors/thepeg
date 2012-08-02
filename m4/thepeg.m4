@@ -470,11 +470,11 @@ if test "x$with_gsl" = "xsystem"; then
 else
 	if test "`uname -m`" = "x86_64" -a -e "$with_gsl/lib64/libgsl.a" -a -d "$with_gsl/include/gsl"; then
 		AC_MSG_RESULT([found in $with_gsl])
-		GSLLIBS="-L$with_gsl/lib64 -Wl,-rpath,$with_gsl/lib64 -lgsl -lgslcblas"
+		GSLLIBS="-L$with_gsl/lib64 -R$with_gsl/lib64 -lgsl -lgslcblas"
 		GSLINCLUDE="-I$with_gsl/include"
 	elif test -e "$with_gsl/lib/libgsl.a" -a -d "$with_gsl/include/gsl"; then
 		AC_MSG_RESULT([found in $with_gsl])
-		GSLLIBS="-L$with_gsl/lib -Wl,-rpath,$with_gsl/lib -lgsl -lgslcblas"
+		GSLLIBS="-L$with_gsl/lib -R$with_gsl/lib -lgsl -lgslcblas"
 		GSLINCLUDE="-I$with_gsl/include"
 	else
 		AC_MSG_RESULT([not found])
