@@ -97,7 +97,7 @@ public:
     else if(scale>1e-6*GeV2)
       return theAlphaEMMZ;
     else
-      return theAlphaEMMZ;
+      return theAlphaEM;
   }
 
   /**
