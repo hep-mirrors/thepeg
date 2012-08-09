@@ -16,6 +16,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Command.h"
 #include "ThePEG/Interface/ParVector.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/EventGenerator.h"
@@ -29,8 +30,6 @@ using namespace ThePEG;
 
 JetRegion::JetRegion()
   : thePtMin(0.*GeV), thePtMax(Constants::MaxEnergy),
-    theYMin(-Constants::MaxRapidity), theYMax(Constants::MaxRapidity),
-    theEtaMin(-Constants::MaxRapidity), theEtaMax(Constants::MaxRapidity),
     theDidMatch(false), theLastNumber(0) {}
 
 JetRegion::~JetRegion() {}
@@ -41,6 +40,26 @@ IBPtr JetRegion::clone() const {
 
 IBPtr JetRegion::fullclone() const {
   return new_ptr(*this);
+}
+
+string JetRegion::doYRange(string in) {
+  istringstream ins(in);
+  double first, second;
+  ins >> first >> second;
+  if ( first > second )
+    swap(first,second);
+  theYRanges.push_back(make_pair(first,second));
+  return "";
+}
+
+string JetRegion::doEtaRange(string in) {
+  istringstream ins(in);
+  double first, second;
+  ins >> first >> second;
+  if ( first > second )
+    swap(first,second);
+  theEtaRanges.push_back(make_pair(first,second));
+  return "";
 }
 
 void JetRegion::describe() const {
@@ -63,9 +82,17 @@ void JetRegion::describe() const {
   CurrentGenerator::log() << " within:\n";
 
   CurrentGenerator::log() 
-    << "pt  = " << ptMin()/GeV << " .. " << ptMax()/GeV << " GeV\n"
-    << "y   = " << yMin() << " .. " << yMax() << "\n"
-    << "eta   = " << etaMin() << " .. " << etaMax() << "\n";
+    << "pt  = " << ptMin()/GeV << " .. " << ptMax()/GeV << " GeV\n";
+
+  for ( vector<pair<double,double> >::const_iterator r = yRanges().begin();
+	r != yRanges().end(); ++r ) {
+    CurrentGenerator::log() << "y   = " << r->first << " .. " << r->second << "\n";
+  }
+
+  for ( vector<pair<double,double> >::const_iterator r = etaRanges().begin();
+	r != etaRanges().end(); ++r ) {
+    CurrentGenerator::log() << "eta = " << r->first << " .. " << r->second << "\n";
+  }
 
 }
 
@@ -78,9 +105,29 @@ bool JetRegion::matches(int n, const LorentzMomentum& p) {
   if ( find(accepts().begin(),accepts().end(),n) == accepts().end() )
     return false;
 
-  if ( p.perp() < ptMin() || p.perp() > ptMax() ||
-       p.rapidity() < yMin() || p.rapidity() > yMax() ||
-       p.eta() < etaMin() || p.eta() > etaMax() )
+  if ( p.perp() < ptMin() || p.perp() > ptMax() )
+    return false;
+
+  bool inRange = false || yRanges().empty();
+  for ( vector<pair<double,double> >::const_iterator r = yRanges().begin();
+	r != yRanges().end(); ++r ) {
+    if ( p.rapidity() > r->first && p.rapidity() < r->second ) {
+      inRange = true;
+      break;
+    }
+  }
+  if ( !inRange )
+    return false;
+
+  inRange = false || etaRanges().empty();
+  for ( vector<pair<double,double> >::const_iterator r = etaRanges().begin();
+	r != etaRanges().end(); ++r ) {
+    if ( p.eta() > r->first && p.eta() < r->second ) {
+      inRange = true;
+      break;
+    }
+  }
+  if ( !inRange )
     return false;
 
   theDidMatch = true;
@@ -97,15 +144,13 @@ bool JetRegion::matches(int n, const LorentzMomentum& p) {
 
 void JetRegion::persistentOutput(PersistentOStream & os) const {
   os << ounit(thePtMin,GeV) << ounit(thePtMax,GeV)
-     << theYMin << theYMax 
-     << theEtaMin << theEtaMax 
+     << theYRanges << theEtaRanges
      << theAccepts;
 }
 
 void JetRegion::persistentInput(PersistentIStream & is, int) {
   is >> iunit(thePtMin,GeV) >> iunit(thePtMax,GeV)
-     >> theYMin >> theYMax 
-     >> theEtaMin >> theEtaMax 
+     >> theYRanges >> theEtaRanges
      >> theAccepts;
 }
 
@@ -136,29 +181,15 @@ void JetRegion::Init() {
      &JetRegion::thePtMax, GeV, Constants::MaxEnergy, 0.0*GeV, 0*GeV,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetRegion,double> interfaceYMin
-    ("YMin",
-     "The minimum rapidity required.",
-     &JetRegion::theYMin, -Constants::MaxRapidity, 0, 0,
-     false, false, Interface::nolimits);
- 
-  static Parameter<JetRegion,double> interfaceYMax
-    ("YMax",
-     "The maximum rapidity required.",
-     &JetRegion::theYMax, Constants::MaxRapidity, 0, 0,
-     false, false, Interface::nolimits);
+  static Command<JetRegion> interfaceYRange
+    ("YRange",
+     "Insert a rapidity range.",
+     &JetRegion::doYRange, false);
 
-  static Parameter<JetRegion,double> interfaceEtaMin
-    ("EtaMin",
-     "The minimum pseudo-rapidity required.",
-     &JetRegion::theEtaMin, -Constants::MaxRapidity, 0, 0,
-     false, false, Interface::nolimits);
- 
-  static Parameter<JetRegion,double> interfaceEtaMax
-    ("EtaMax",
-     "The maximum pseudo-rapidity required.",
-     &JetRegion::theEtaMax, Constants::MaxRapidity, 0, 0,
-     false, false, Interface::nolimits);
+  static Command<JetRegion> interfaceEtaRange
+    ("EtaRange",
+     "Insert a pseudo-rapidity range.",
+     &JetRegion::doEtaRange, false);
 
   static ParVector<JetRegion,int> interfaceAccepts
     ("Accepts",

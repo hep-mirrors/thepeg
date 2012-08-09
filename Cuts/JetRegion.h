@@ -58,24 +58,14 @@ public:
   Energy ptMax() const { return thePtMax; }
 
   /**
-   * Return the minimum rapidity.
+   * Return the rapidity ranges.
    */
-  double yMin() const { return theYMin; }
+  const vector<pair<double,double> >& yRanges() const { return theYRanges; }
 
   /**
-   * Return the maximum rapidity.
+   * Return the pseudo-rapidity ranges.
    */
-  double yMax() const { return theYMax; }
-
-  /**
-   * Return the minimum pseudo-rapidity.
-   */
-  double etaMin() const { return theEtaMin; }
-
-  /**
-   * Return the maximum pseudo-rapidity.
-   */
-  double etaMax() const { return theEtaMax; }
+  const vector<pair<double,double> >& etaRanges() const { return theEtaRanges; }
 
   /**
    * Return the jets accepted by this region (with respect to the
@@ -167,6 +157,16 @@ protected:
 private:
 
   /**
+   * Command to insert a rapidity range
+   */
+  string doYRange(string);
+
+  /**
+   * Command to insert a pseudo-rapidity range
+   */
+  string doEtaRange(string);
+
+  /**
    * The minimum pt.
    */
   Energy thePtMin;
@@ -177,24 +177,14 @@ private:
   Energy thePtMax;
 
   /**
-   * The minimum rapidity.
+   * The rapidity ranges.
    */
-  double theYMin;
+  vector<pair<double,double> > theYRanges;
 
   /**
-   * The maximum rapidity.
+   * The pseudo-rapidity ranges.
    */
-  double theYMax;
-
-  /**
-   * The minimum pseudo-rapidity.
-   */
-  double theEtaMin;
-
-  /**
-   * The maximum pseudo-rapidity.
-   */
-  double theEtaMax;
+  vector<pair<double,double> > theEtaRanges;
 
   /**
    * The jets accepted by this region (with respect to the ordering
