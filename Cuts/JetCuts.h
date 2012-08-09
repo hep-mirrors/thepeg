@@ -77,6 +77,11 @@ public:
   const vector<Ptr<JetRegion>::ptr>& jetRegions() const { return theJetRegions; }
 
   /**
+   * Return the jet veto regions to check.
+   */
+  const vector<Ptr<JetRegion>::ptr>& jetVetoRegions() const { return theJetVetoRegions; }
+
+  /**
    * Return the jet pair regions to match.
    */
   const vector<Ptr<JetPairRegion>::ptr>& jetPairRegions() const { return theJetPairRegions; }
@@ -149,6 +154,11 @@ private:
    * The jet regions to match.
    */
   vector<Ptr<JetRegion>::ptr> theJetRegions;
+
+  /**
+   * The jet veto regions to check
+   */
+  vector<Ptr<JetRegion>::ptr> theJetVetoRegions;
 
   /**
    * The jet pair regions to match.

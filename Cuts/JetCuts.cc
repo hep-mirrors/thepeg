@@ -55,11 +55,15 @@ IBPtr JetCuts::fullclone() const {
 }      
 
 void JetCuts::persistentOutput(PersistentOStream & os) const {
-  os << theUnresolvedMatcher << theJetRegions << theJetPairRegions << theOrdering;
+  os << theUnresolvedMatcher 
+     << theJetRegions << theJetVetoRegions 
+     << theJetPairRegions << theOrdering;
 }
 
 void JetCuts::persistentInput(PersistentIStream & is, int) {
-  is >> theUnresolvedMatcher >> theJetRegions >> theJetPairRegions >> theOrdering;
+  is >> theUnresolvedMatcher 
+     >> theJetRegions >> theJetVetoRegions 
+     >> theJetPairRegions >> theOrdering;
 }
 
 struct PtLarger {
@@ -104,11 +108,15 @@ bool JetCuts::passCuts(tcCutsPtr, const tcPDVector & ptype,
 	r != jetRegions().end(); ++r )
     (**r).reset();
 
+  set<int> matchedJets;
+
   for ( size_t k = 0; k < jets.size(); ++k ) {
     for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetRegions().begin();
 	  r != jetRegions().end(); ++r ) {
-      if ( (**r).matches(k+1,jets[k]) )
+      if ( (**r).matches(k+1,jets[k]) ) {
+	matchedJets.insert(k+1);
 	break;
+      }
     }
   }
 
@@ -121,6 +129,18 @@ bool JetCuts::passCuts(tcCutsPtr, const tcPDVector & ptype,
 	r != jetPairRegions().end(); ++r )
     if ( !(**r).matches() )
       return false;
+
+  if ( !jetVetoRegions().empty() ) {
+    for ( size_t k = 0; k < jets.size(); ++k ) {
+      if ( matchedJets.find(k+1) != matchedJets.end() )
+	continue;
+      for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetVetoRegions().begin();
+	    r != jetVetoRegions().end(); ++r ) {
+	if ( (**r).matches(k+1,jets[k]) )
+	  return false;
+      }
+    }
+  }
 
   return true;
 
@@ -144,6 +164,11 @@ void JetCuts::Init() {
     ("JetRegions",
      "The jet regions to be used.",
      &JetCuts::theJetRegions, -1, false, false, true, false, false);
+
+  static RefVector<JetCuts,JetRegion> interfaceJetVetoRegions
+    ("JetVetoRegions",
+     "The jet veto regions to be used.",
+     &JetCuts::theJetVetoRegions, -1, false, false, true, false, false);
 
   static RefVector<JetCuts,JetPairRegion> interfaceJetPairRegions
     ("JetPairRegions",

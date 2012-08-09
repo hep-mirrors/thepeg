@@ -102,7 +102,7 @@ bool JetRegion::matches(int n, const LorentzMomentum& p) {
   if ( didMatch() )
     return false;
 
-  if ( find(accepts().begin(),accepts().end(),n) == accepts().end() )
+  if ( !accepts().empty() && find(accepts().begin(),accepts().end(),n) == accepts().end() )
     return false;
 
   if ( p.perp() < ptMin() || p.perp() > ptMax() )
@@ -193,7 +193,7 @@ void JetRegion::Init() {
 
   static ParVector<JetRegion,int> interfaceAccepts
     ("Accepts",
-     "The jet numbers accepted.",
+     "The jet numbers accepted. If empty, any jets are accepted.",
      &JetRegion::theAccepts, -1, 1, 1, 0,
      false, false, Interface::upperlim);
 
