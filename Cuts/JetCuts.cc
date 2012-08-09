@@ -44,6 +44,12 @@ void JetCuts::describe() const {
 	  r != jetPairRegions().end(); ++r )
       (**r).describe();
   }
+  if ( !jetVetoRegions().empty() ) {
+    CurrentGenerator::log() << "vetoing jets inside:\n";
+    for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetVetoRegions().begin();
+	  r != jetVetoRegions().end(); ++r )
+      (**r).describe();
+  }
 }
 
 IBPtr JetCuts::clone() const {
