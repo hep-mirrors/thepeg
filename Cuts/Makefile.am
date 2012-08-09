@@ -32,7 +32,10 @@ KTJetFinder_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 KTJetFinder_la_SOURCES = KTJetFinder.cc KTJetFinder.h
 
 JetCuts_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
-JetCuts_la_SOURCES = OneJetCut.h OneJetCut.cc NJetsCut.h NJetsCut.cc
+JetCuts_la_SOURCES = \
+OneJetCut.h OneJetCut.cc NJetsCut.h NJetsCut.cc \
+JetRegion.h JetRegion.cc JetPairRegion.h JetPairRegion.cc \
+JetCuts.h JetCuts.cc
 
 DeltaMeasureCuts_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 DeltaMeasureCuts_la_SOURCES = DeltaMeasureCuts.cc DeltaMeasureCuts.h
