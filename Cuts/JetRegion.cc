@@ -194,7 +194,7 @@ void JetRegion::Init() {
   static ParVector<JetRegion,int> interfaceAccepts
     ("Accepts",
      "The jet numbers accepted. If empty, any jets are accepted.",
-     &JetRegion::theAccepts, -1, 1, 1, 0,
+     &JetRegion::theAccepts, -1, 1, 1, 10,
      false, false, Interface::upperlim);
 
 }
