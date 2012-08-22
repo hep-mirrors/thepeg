@@ -31,6 +31,8 @@ include/ThePEG
 Doc/MakeDocs.in
 Doc/refman.conf
 Doc/refman.h
+java/ThePEG
+java/thepeg.sh
 PDF/done-all-links
 lib/ThePEGDefaults.rpo
 src/runThePEG
