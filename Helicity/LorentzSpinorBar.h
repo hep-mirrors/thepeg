@@ -180,6 +180,44 @@ public:
   SpinorType Type() const {return _type;}
   //@}
 
+  /**
+   *  @name Functions to apply the projection operator
+   */
+  //@{
+  /**
+   *   Apply \f$p\!\!\!\!\!\not\,\,\,+m\f$
+   */
+  template<typename ValueB> 
+  LorentzSpinorBar<typename BinaryOpTraits<Value,ValueB>::MulT>
+  projectionOperator(const LorentzVector<ValueB> & p, const ValueB & m) const {
+    typedef typename BinaryOpTraits<Value,ValueB>::MulT ResultT;
+    LorentzSpinorBar<ResultT> spin;
+    static const Complex ii(0.,1.);
+    complex<ValueB> p0pp3=p.t()+p.z();
+    complex<ValueB> p0mp3=p.t()-p.z();
+    complex<ValueB> p1pp2=p.x()+ii*p.y();
+    complex<ValueB> p1mp2=p.x()-ii*p.y();
+    spin.setS1(m*s1()+p0pp3*s3()+p1pp2*s4());
+    spin.setS2(m*s2()+p0mp3*s4()+p1mp2*s3());
+    spin.setS3(m*s3()+p0mp3*s1()-p1pp2*s2());
+    spin.setS4(m*s4()+p0pp3*s2()-p1mp2*s1());
+    return spin;
+  }
+
+  /**
+   *  Apply \f$g^LP_L+g^RP_R\f$
+   */
+  LorentzSpinorBar
+  helicityProjectionOperator(const Complex & gL, const Complex & gR) const {
+    LorentzSpinorBar spin;
+    spin.setS1(gL*s1());
+    spin.setS2(gL*s2());
+    spin.setS3(gR*s3());
+    spin.setS4(gR*s4());
+    return spin;
+  }
+  //@}
+
 private:
   /**
    * Type of spinor
