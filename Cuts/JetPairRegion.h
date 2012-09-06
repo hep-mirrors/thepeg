@@ -208,6 +208,11 @@ private:
   double theDeltaEtaMax;
 
   /**
+   * Should the jets go into opposite detector hemispheres?
+   */
+  bool theOppositeHemispheres;
+
+  /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */

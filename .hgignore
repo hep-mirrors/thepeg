@@ -31,6 +31,9 @@ include/ThePEG
 Doc/MakeDocs.in
 Doc/refman.conf
 Doc/refman.h
+java/ThePEG
+java/thepeg.sh
+java/thepeg
 PDF/done-all-links
 lib/ThePEGDefaults.rpo
 src/runThePEG
@@ -40,3 +43,4 @@ libtool
 INSTALL
 Makefile
 Makefile.in
+src/TestDecayMode.in

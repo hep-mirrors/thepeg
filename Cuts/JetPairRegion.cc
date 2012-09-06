@@ -16,6 +16,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/EventGenerator.h"
@@ -31,7 +32,8 @@ JetPairRegion::JetPairRegion()
   : theMassMin(0.*GeV), theMassMax(Constants::MaxEnergy),
     theDeltaRMin(0.0), theDeltaRMax(Constants::MaxRapidity),
     theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity), 
-    theDeltaEtaMin(0.0), theDeltaEtaMax(Constants::MaxRapidity) {}
+    theDeltaEtaMin(0.0), theDeltaEtaMax(Constants::MaxRapidity),
+    theOppositeHemispheres(false) {}
 
 JetPairRegion::~JetPairRegion() {}
 
@@ -85,6 +87,10 @@ bool JetPairRegion::matches() const {
   if ( dy < deltaYMin() || dy > deltaYMax() )
     return false;
 
+  double peta = pi.eta() * pj.eta();
+  if ( theOppositeHemispheres && peta > 0.0 )
+    return false;
+
   return true;
 
 }
@@ -98,7 +104,8 @@ void JetPairRegion::persistentOutput(PersistentOStream & os) const {
      << ounit(theMassMin,GeV) << ounit(theMassMax,GeV)
      << theDeltaRMin << theDeltaRMax 
      << theDeltaYMin << theDeltaYMax 
-     << theDeltaEtaMin << theDeltaEtaMax;
+     << theDeltaEtaMin << theDeltaEtaMax
+     << theOppositeHemispheres;
 }
 
 void JetPairRegion::persistentInput(PersistentIStream & is, int) {
@@ -106,7 +113,8 @@ void JetPairRegion::persistentInput(PersistentIStream & is, int) {
      >> iunit(theMassMin,GeV) >> iunit(theMassMax,GeV)
      >> theDeltaRMin >> theDeltaRMax 
      >> theDeltaYMin >> theDeltaYMax 
-     >> theDeltaEtaMin >> theDeltaEtaMax;
+     >> theDeltaEtaMin >> theDeltaEtaMax
+     >> theOppositeHemispheres;
 }
 
 
@@ -182,5 +190,19 @@ void JetPairRegion::Init() {
      &JetPairRegion::theDeltaEtaMax, Constants::MaxRapidity, 0, 0,
      false, false, Interface::lowerlim);
 
+  static Switch<JetPairRegion,bool> interfaceOppositeHemispheres
+    ("OppositeHemispheres",
+     "Should the jets go into opposite detector hemispheres?",
+     &JetPairRegion::theOppositeHemispheres, false, true, false);
+  static SwitchOption interfaceOppositeHemispheresTrue
+    (interfaceOppositeHemispheres,
+     "True",
+     "Require jets to be in different hemispheres",
+     true);
+  static SwitchOption interfaceOppositeHemispheresFalse
+    (interfaceOppositeHemispheres,
+     "False",
+     "Do not require jets to be in different hemispheres",
+     false);
 }
 
