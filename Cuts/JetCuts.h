@@ -17,6 +17,7 @@
 #include "ThePEG/PDT/MatcherBase.h"
 #include "ThePEG/Cuts/JetRegion.h"
 #include "ThePEG/Cuts/JetPairRegion.h"
+#include "ThePEG/Cuts/MultiJetRegion.h"
 
 namespace ThePEG {
 
@@ -85,6 +86,11 @@ public:
    * Return the jet pair regions to match.
    */
   const vector<Ptr<JetPairRegion>::ptr>& jetPairRegions() const { return theJetPairRegions; }
+
+  /**
+   * Return the multi jet regions to match.
+   */
+  const vector<Ptr<MultiJetRegion>::ptr>& multiJetRegions() const { return theMultiJetRegions; }
 
   /**
    * Enumerate the ordering to apply on jets
@@ -164,6 +170,11 @@ private:
    * The jet pair regions to match.
    */
   vector<Ptr<JetPairRegion>::ptr> theJetPairRegions;
+
+  /**
+   * The multi jet regions to match.
+   */
+  vector<Ptr<MultiJetRegion>::ptr> theMultiJetRegions;
 
   /**
    * Types of the ordering to apply on jets

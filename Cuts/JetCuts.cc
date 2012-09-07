@@ -43,6 +43,9 @@ void JetCuts::describe() const {
     for ( vector<Ptr<JetPairRegion>::ptr>::const_iterator r = jetPairRegions().begin();
 	  r != jetPairRegions().end(); ++r )
       (**r).describe();
+    for ( vector<Ptr<MultiJetRegion>::ptr>::const_iterator r = multiJetRegions().begin();
+	  r != multiJetRegions().end(); ++r )
+      (**r).describe();
   }
   if ( !jetVetoRegions().empty() ) {
     CurrentGenerator::log() << "vetoing jets inside:\n";
@@ -63,13 +66,13 @@ IBPtr JetCuts::fullclone() const {
 void JetCuts::persistentOutput(PersistentOStream & os) const {
   os << theUnresolvedMatcher 
      << theJetRegions << theJetVetoRegions 
-     << theJetPairRegions << theOrdering;
+     << theJetPairRegions << theMultiJetRegions << theOrdering;
 }
 
 void JetCuts::persistentInput(PersistentIStream & is, int) {
   is >> theUnresolvedMatcher 
      >> theJetRegions >> theJetVetoRegions 
-     >> theJetPairRegions >> theOrdering;
+     >> theJetPairRegions >> theMultiJetRegions >> theOrdering;
 }
 
 struct PtLarger {
@@ -136,6 +139,11 @@ bool JetCuts::passCuts(tcCutsPtr, const tcPDVector & ptype,
     if ( !(**r).matches() )
       return false;
 
+  for ( vector<Ptr<MultiJetRegion>::ptr>::const_iterator r = multiJetRegions().begin();
+	r != multiJetRegions().end(); ++r )
+    if ( !(**r).matches() )
+      return false;
+
   if ( !jetVetoRegions().empty() ) {
     for ( size_t k = 0; k < jets.size(); ++k ) {
       if ( matchedJets.find(k+1) != matchedJets.end() )
@@ -180,6 +188,11 @@ void JetCuts::Init() {
     ("JetPairRegions",
      "The jet pair regions to be used.",
      &JetCuts::theJetPairRegions, -1, false, false, true, false, false);
+
+  static RefVector<JetCuts,MultiJetRegion> interfaceMultiJetRegions
+    ("MultiJetRegions",
+     "The multi jet regions to be used.",
+     &JetCuts::theMultiJetRegions, -1, false, false, true, false, false);
 
 
   static Switch<JetCuts,int> interfaceOrdering
