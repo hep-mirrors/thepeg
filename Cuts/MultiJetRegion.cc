@@ -1,6 +1,6 @@
 // -*- C++ -*-
 //
-// JetPairRegion.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// MultiJetRegion.cc is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
 // Copyright (C) 2009-2012 Simon Platzer
 //
@@ -9,12 +9,13 @@
 //
 //
 // This is the implementation of the non-inlined, non-templated member
-// functions of the JetPairRegion class.
+// functions of the MultiJetRegion class.
 //
 
-#include "JetPairRegion.h"
+#include "MultiJetRegion.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Reference.h"
+#include "ThePEG/Interface/RefVector.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/EventRecord/Particle.h"
@@ -28,29 +29,34 @@
 
 using namespace ThePEG;
 
-JetPairRegion::JetPairRegion()
+MultiJetRegion::MultiJetRegion()
   : theMassMin(0.*GeV), theMassMax(Constants::MaxEnergy),
     theDeltaRMin(0.0), theDeltaRMax(Constants::MaxRapidity),
     theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity), 
-    theDeltaEtaMin(0.0), theDeltaEtaMax(Constants::MaxRapidity),
-    theOppositeHemispheres(false) {}
+    theDeltaEtaMin(0.0), theDeltaEtaMax(Constants::MaxRapidity) {}
 
-JetPairRegion::~JetPairRegion() {}
+MultiJetRegion::~MultiJetRegion() {}
 
-IBPtr JetPairRegion::clone() const {
+IBPtr MultiJetRegion::clone() const {
   return new_ptr(*this);
 }
 
-IBPtr JetPairRegion::fullclone() const {
+IBPtr MultiJetRegion::fullclone() const {
   return new_ptr(*this);
 }
 
-void JetPairRegion::describe() const {
+void MultiJetRegion::describe() const {
 
   CurrentGenerator::log()
-    << "JetPairRegion '" << name() << "' matching "
-    << " JetRegions '" << firstRegion()->name()
-    << "' and '" << secondRegion()->name() << "' with\n";
+    << "MultiJetRegion '" << name() << "' matching JetRegions:\n";
+
+  for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = regions().begin();
+	r != regions().end(); ++r ) {
+    CurrentGenerator::log()
+      << "'" << (**r).name() << "'\n";
+  }
+
+  CurrentGenerator::log() << "with\n";
 
   CurrentGenerator::log()
     << "m    = " << massMin()/GeV << " .. " << massMax()/GeV << " GeV\n"
@@ -60,14 +66,27 @@ void JetPairRegion::describe() const {
 
 }
 
-bool JetPairRegion::matches() const {
+bool MultiJetRegion::matches() const {
+
+  int n = regions().size();
+
+  for ( int i = 0; i < n; ++i )
+    for ( int j = i+1; j < n; ++j )
+      if ( !matches(i,j) )
+	return false;
+
+  return true;
+
+}
+
+bool MultiJetRegion::matches(int i, int j) const {
   
-  if ( !firstRegion()->didMatch() ||
-       !secondRegion()->didMatch() )
+  if ( !regions()[i]->didMatch() ||
+       !regions()[j]->didMatch() )
     return false;
 
-  const LorentzMomentum& pi = firstRegion()->lastMomentum();
-  const LorentzMomentum& pj = secondRegion()->lastMomentum();
+  const LorentzMomentum& pi = regions()[i]->lastMomentum();
+  const LorentzMomentum& pj = regions()[j]->lastMomentum();
 
   Energy m = (pi+pj).m();
   if ( m < massMin() || m > massMax() )
@@ -87,10 +106,6 @@ bool JetPairRegion::matches() const {
   if ( dy < deltaYMin() || dy > deltaYMax() )
     return false;
 
-  double peta = pi.eta() * pj.eta();
-  if ( theOppositeHemispheres && peta > 0.0 )
-    return false;
-
   return true;
 
 }
@@ -99,22 +114,20 @@ bool JetPairRegion::matches() const {
 // in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
 
 
-void JetPairRegion::persistentOutput(PersistentOStream & os) const {
-  os << theFirstRegion << theSecondRegion
+void MultiJetRegion::persistentOutput(PersistentOStream & os) const {
+  os << theRegions
      << ounit(theMassMin,GeV) << ounit(theMassMax,GeV)
      << theDeltaRMin << theDeltaRMax 
      << theDeltaYMin << theDeltaYMax 
-     << theDeltaEtaMin << theDeltaEtaMax
-     << theOppositeHemispheres;
+     << theDeltaEtaMin << theDeltaEtaMax;
 }
 
-void JetPairRegion::persistentInput(PersistentIStream & is, int) {
-  is >> theFirstRegion >> theSecondRegion
+void MultiJetRegion::persistentInput(PersistentIStream & is, int) {
+  is >> theRegions
      >> iunit(theMassMin,GeV) >> iunit(theMassMax,GeV)
      >> theDeltaRMin >> theDeltaRMax 
      >> theDeltaYMin >> theDeltaYMax 
-     >> theDeltaEtaMin >> theDeltaEtaMax
-     >> theOppositeHemispheres;
+     >> theDeltaEtaMin >> theDeltaEtaMax;
 }
 
 
@@ -123,86 +136,67 @@ void JetPairRegion::persistentInput(PersistentIStream & is, int) {
 // are correct (the class and its base class), and that the constructor
 // arguments are correct (the class name and the name of the dynamically
 // loadable library where the class implementation can be found).
-DescribeClass<JetPairRegion,HandlerBase>
-  describeThePEGJetPairRegion("ThePEG::JetPairRegion", "JetCuts.so");
+DescribeClass<MultiJetRegion,HandlerBase>
+  describeThePEGMultiJetRegion("ThePEG::MultiJetRegion", "JetCuts.so");
 
-void JetPairRegion::Init() {
+void MultiJetRegion::Init() {
 
-  static ClassDocumentation<JetPairRegion> documentation
-    ("JetPairRegion implements constraints on jets matching two jet regions.");
+  static ClassDocumentation<MultiJetRegion> documentation
+    ("MultiJetRegion implements pairwise constraints on jets matching several jet regions.");
 
-  
-  static Reference<JetPairRegion,JetRegion> interfaceFirstRegion
-    ("FirstRegion",
-     "The first region to act on.",
-     &JetPairRegion::theFirstRegion, false, false, true, false, false);
 
-  static Reference<JetPairRegion,JetRegion> interfaceSecondRegion
-    ("SecondRegion",
-     "The second region to act on.",
-     &JetPairRegion::theSecondRegion, false, false, true, false, false);
+  static RefVector<MultiJetRegion,JetRegion> interfaceRegions
+    ("Regions",
+     "The jet regions to act on.",
+     &MultiJetRegion::theRegions, -1, false, false, true, false, false);
 
-  static Parameter<JetPairRegion,Energy> interfaceMassMin
+  static Parameter<MultiJetRegion,Energy> interfaceMassMin
     ("MassMin",
      "The minimum jet-jet invariant mass.",
-     &JetPairRegion::theMassMin, GeV, 0.0*GeV, 0.0*GeV, 0*GeV,
+     &MultiJetRegion::theMassMin, GeV, 0.0*GeV, 0.0*GeV, 0*GeV,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,Energy> interfaceMassMax
+  static Parameter<MultiJetRegion,Energy> interfaceMassMax
     ("MassMax",
      "The maximum jet-jet invariant mass.",
-     &JetPairRegion::theMassMax, GeV, Constants::MaxEnergy, 0.0*GeV, 0*GeV,
+     &MultiJetRegion::theMassMax, GeV, Constants::MaxEnergy, 0.0*GeV, 0*GeV,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,double> interfaceDeltaRMin
+  static Parameter<MultiJetRegion,double> interfaceDeltaRMin
     ("DeltaRMin",
      "The minimum jet-jet lego-plot separation.",
-     &JetPairRegion::theDeltaRMin, 0.0, 0.0, 0,
+     &MultiJetRegion::theDeltaRMin, 0.0, 0.0, 0,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,double> interfaceDeltaRMax
+  static Parameter<MultiJetRegion,double> interfaceDeltaRMax
     ("DeltaRMax",
      "The maximum jet-jet lego-plot separation.",
-     &JetPairRegion::theDeltaRMax, Constants::MaxRapidity, 0, 0,
+     &MultiJetRegion::theDeltaRMax, Constants::MaxRapidity, 0, 0,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,double> interfaceDeltaYMin
+  static Parameter<MultiJetRegion,double> interfaceDeltaYMin
     ("DeltaYMin",
      "The minimum jet-jet rapidity separation.",
-     &JetPairRegion::theDeltaYMin, 0.0, 0.0, 0,
+     &MultiJetRegion::theDeltaYMin, 0.0, 0.0, 0,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,double> interfaceDeltaYMax
+  static Parameter<MultiJetRegion,double> interfaceDeltaYMax
     ("DeltaYMax",
      "The maximum jet-jet rapidity separation.",
-     &JetPairRegion::theDeltaYMax, Constants::MaxRapidity, 0, 0,
+     &MultiJetRegion::theDeltaYMax, Constants::MaxRapidity, 0, 0,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,double> interfaceDeltaEtaMin
+  static Parameter<MultiJetRegion,double> interfaceDeltaEtaMin
     ("DeltaEtaMin",
      "The minimum jet-jet pseudo-rapidity separation.",
-     &JetPairRegion::theDeltaEtaMin, 0.0, 0.0, 0,
+     &MultiJetRegion::theDeltaEtaMin, 0.0, 0.0, 0,
      false, false, Interface::lowerlim);
 
-  static Parameter<JetPairRegion,double> interfaceDeltaEtaMax
+  static Parameter<MultiJetRegion,double> interfaceDeltaEtaMax
     ("DeltaEtaMax",
      "The maximum jet-jet pseudo-rapidity separation.",
-     &JetPairRegion::theDeltaEtaMax, Constants::MaxRapidity, 0, 0,
+     &MultiJetRegion::theDeltaEtaMax, Constants::MaxRapidity, 0, 0,
      false, false, Interface::lowerlim);
 
-  static Switch<JetPairRegion,bool> interfaceOppositeHemispheres
-    ("OppositeHemispheres",
-     "Should the jets go into opposite detector hemispheres?",
-     &JetPairRegion::theOppositeHemispheres, false, true, false);
-  static SwitchOption interfaceOppositeHemispheresTrue
-    (interfaceOppositeHemispheres,
-     "True",
-     "Require jets to be in different hemispheres",
-     true);
-  static SwitchOption interfaceOppositeHemispheresFalse
-    (interfaceOppositeHemispheres,
-     "False",
-     "Do not require jets to be in different hemispheres",
-     false);
 }
 
