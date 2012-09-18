@@ -15,6 +15,7 @@
 
 #include "ThePEG/Handlers/HandlerBase.h"
 #include "ThePEG/EventRecord/Particle.h"
+#include "ThePEG/Cuts/Cuts.h"
 
 namespace ThePEG {
 
@@ -84,7 +85,7 @@ public:
   /**
    * Return true, if the given jet matches this region.
    */
-  virtual bool matches(int n, const LorentzMomentum& p);
+  virtual bool matches(tcCutsPtr parent, int n, const LorentzMomentum& p);
 
   /**
    * Return true, if this region matched a jet in the last call to matches().

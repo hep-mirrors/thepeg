@@ -96,7 +96,7 @@ struct EtaLess {
   }
 };
 
-bool JetCuts::passCuts(tcCutsPtr, const tcPDVector & ptype,
+bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
 		       const vector<LorentzMomentum> & p) const {
 
   vector<LorentzMomentum> jets;
@@ -122,7 +122,7 @@ bool JetCuts::passCuts(tcCutsPtr, const tcPDVector & ptype,
   for ( size_t k = 0; k < jets.size(); ++k ) {
     for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetRegions().begin();
 	  r != jetRegions().end(); ++r ) {
-      if ( (**r).matches(k+1,jets[k]) ) {
+      if ( (**r).matches(parent,k+1,jets[k]) ) {
 	matchedJets.insert(k+1);
 	break;
       }
@@ -150,7 +150,7 @@ bool JetCuts::passCuts(tcCutsPtr, const tcPDVector & ptype,
 	continue;
       for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetVetoRegions().begin();
 	    r != jetVetoRegions().end(); ++r ) {
-	if ( (**r).matches(k+1,jets[k]) )
+	if ( (**r).matches(parent,k+1,jets[k]) )
 	  return false;
       }
     }

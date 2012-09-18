@@ -96,7 +96,7 @@ void JetRegion::describe() const {
 
 }
 
-bool JetRegion::matches(int n, const LorentzMomentum& p) {
+bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
 
   // one jet region can only contain one jet
   if ( didMatch() )
@@ -111,7 +111,7 @@ bool JetRegion::matches(int n, const LorentzMomentum& p) {
   bool inRange = false || yRanges().empty();
   for ( vector<pair<double,double> >::const_iterator r = yRanges().begin();
 	r != yRanges().end(); ++r ) {
-    if ( p.rapidity() > r->first && p.rapidity() < r->second ) {
+    if ( p.rapidity() + parent->currentYHat() > r->first && p.rapidity() + parent->currentYHat() < r->second ) {
       inRange = true;
       break;
     }
@@ -122,7 +122,7 @@ bool JetRegion::matches(int n, const LorentzMomentum& p) {
   inRange = false || etaRanges().empty();
   for ( vector<pair<double,double> >::const_iterator r = etaRanges().begin();
 	r != etaRanges().end(); ++r ) {
-    if ( p.eta() > r->first && p.eta() < r->second ) {
+    if ( p.eta() + parent->currentYHat() > r->first && p.eta() + parent->currentYHat() < r->second ) {
       inRange = true;
       break;
     }
