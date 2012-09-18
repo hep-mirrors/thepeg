@@ -1,16 +1,16 @@
 // -*- C++ -*-
 //
-// JetPairRegion.h is a part of ThePEG - Toolkit for HEP Event Generation
+// MultiJetRegion.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
 // Copyright (C) 2009-2012 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
-#ifndef ThePEG_JetPairRegion_H
-#define ThePEG_JetPairRegion_H
+#ifndef ThePEG_MultiJetRegion_H
+#define ThePEG_MultiJetRegion_H
 //
-// This is the declaration of the JetPairRegion class.
+// This is the declaration of the MultiJetRegion class.
 //
 
 #include "ThePEG/Cuts/JetRegion.h"
@@ -18,15 +18,15 @@
 namespace ThePEG {
 
 /**
- * JetPairRegion implements constraints on jets matching two jet regions.
+ * MultiJetRegion implements pairwise constraints on jets matching several jet regions.
  *
  * @see JetRegion
  * @see JetCuts
  *
- * @see \ref JetPairRegionInterfaces "The interfaces"
- * defined for JetPairRegion.
+ * @see \ref MultiJetRegionInterfaces "The interfaces"
+ * defined for MultiJetRegion.
  */
-class JetPairRegion: public HandlerBase {
+class MultiJetRegion: public HandlerBase {
 
 public:
 
@@ -35,25 +35,20 @@ public:
   /**
    * The default constructor.
    */
-  JetPairRegion();
+  MultiJetRegion();
 
   /**
    * The destructor.
    */
-  virtual ~JetPairRegion();
+  virtual ~MultiJetRegion();
   //@}
 
 public:
 
   /**
-   * Return the first jet region to act on.
+   * Return the jet regions to act on.
    */
-  Ptr<JetRegion>::tptr firstRegion() const { return theFirstRegion; }
-
-  /**
-   * Return the second jet region to act on.
-   */
-  Ptr<JetRegion>::tptr secondRegion() const { return theSecondRegion; }
+  const vector<Ptr<JetRegion>::ptr>& regions() const { return theRegions; }
 
   /**
    * Return the minimum jet-jet invariant mass.
@@ -107,6 +102,11 @@ public:
    */
   virtual bool matches() const;
 
+  /**
+   * Return true, if the requirements on two jet regions are fullfilled.
+   */
+  virtual bool matches(int i, int j) const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */
@@ -158,14 +158,9 @@ protected:
 private:
 
   /**
-   * The first jet region to act on.
+   * The jet regions to act on.
    */
-  Ptr<JetRegion>::ptr theFirstRegion;
-
-  /**
-   * The second jet region to act on.
-   */
-  Ptr<JetRegion>::ptr theSecondRegion;
+  vector<Ptr<JetRegion>::ptr> theRegions;
 
   /**
    * The minimum jet-jet invariant mass.
@@ -208,18 +203,13 @@ private:
   double theDeltaEtaMax;
 
   /**
-   * Should the jets go into opposite detector hemispheres?
-   */
-  bool theOppositeHemispheres;
-
-  /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  JetPairRegion & operator=(const JetPairRegion &);
+  MultiJetRegion & operator=(const MultiJetRegion &);
 
 };
 
 }
 
-#endif /* ThePEG_JetPairRegion_H */
+#endif /* ThePEG_MultiJetRegion_H */

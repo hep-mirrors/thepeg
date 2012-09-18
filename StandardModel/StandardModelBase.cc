@@ -74,10 +74,10 @@ void StandardModelBase::doinit() {
     theSin2ThetaW = sw2;
     theAlphaEMMZ  = alpha;
     ostringstream os;
-    os << mw/GeV;
+    os << setprecision(12) << mw/GeV;
     generator()->preinitInterface(Wplus, "NominalMass", "set", os .str());
     ostringstream os2;
-    os2 << mz/GeV;
+    os2 << setprecision(12) << mz/GeV;
     generator()->preinitInterface(Z0   , "NominalMass", "set", os2.str());
   }
   if ( recalculateEW ) {
@@ -308,6 +308,11 @@ void StandardModelBase::Init() {
      "mZ",
      "Input parameters mZ, alphaEM and sin2thetaW",
      5);
+  static SwitchOption interfaceElectroWeakIndependent
+    (interfaceElectroWeakScheme,
+     "Independent",
+     "All values input but fixed scale in ME calculations",
+     6);
 
   static Switch<StandardModelBase,unsigned int> interfaceEWBosonWidth
     ("EW/BosonWidth",
