@@ -11,7 +11,8 @@ noinst_LTLIBRARIES = libThePEGCuts.la
 libThePEGCuts_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 pkglib_LTLIBRARIES = SimpleKTCut.la KTClus.la V2LeptonsCut.la SimpleDISCut.la \
-                     KTRapidityCut.la KTJetFinder.la DeltaMeasureCuts.la JetCuts.la
+                     KTRapidityCut.la KTJetFinder.la DeltaMeasureCuts.la JetCuts.la \
+                     FastJetFinder.la	
 
 SimpleKTCut_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 SimpleKTCut_la_SOURCES = SimpleKTCut.cc SimpleKTCut.h
@@ -39,6 +40,14 @@ MultiJetRegion.h MultiJetRegion.cc JetCuts.h JetCuts.cc
 
 DeltaMeasureCuts_la_LDFLAGS = -module $(LIBTOOLVERSIONINFO)
 DeltaMeasureCuts_la_SOURCES = DeltaMeasureCuts.cc DeltaMeasureCuts.h
+
+if WANT_LIBFASTJET
+FastJetFinder_la_CPPFLAGS = $(AM_CPPFLAGS) $(FASTJETINCLUDE) \
+-I$(FASTJETPATH)
+FastJetFinder_la_LIBADD = $(FASTJETLIBS) 
+FastJetFinder_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+FastJetFinder_la_SOURCES = FastJetFinder.cc FastJetFinder.h
+endif
 
 include $(top_srcdir)/Config/Makefile.aminclude
 
