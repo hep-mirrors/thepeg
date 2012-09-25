@@ -18,6 +18,7 @@
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
 #include "Rivet/Tools/Logging.hh"
+#include <config.h>
 
 using namespace ThePEG;
 
@@ -71,9 +72,17 @@ void RivetAnalysis::Init() {
 
   static Parameter<RivetAnalysis,string> interfaceFilename
     ("Filename",
+#if ThePEG_RIVET_VERSION == 1
      "The name of the file where the AIDA histograms are put. If empty, "
      "the run name will be used instead. '.aida' will in any case be "
      "appended to the file name.",
+#elif ThePEG_RIVET_VERSION > 1
+     "The name of the file where the YODA histograms are put. If empty, "
+     "the run name will be used instead. '.yoda' will in any case be "
+     "appended to the file name.",
+#else
+#error "Unknown ThePEG_RIVET_VERSION"
+#endif
      &RivetAnalysis::filename, "", true, false);
 
 
@@ -105,7 +114,13 @@ void RivetAnalysis::dofinish() {
     _rivet->finalize();
 
     string fname = filename;
+#if ThePEG_RIVET_VERSION == 1
     if ( fname.empty() ) fname = generator()->runName() + ".aida";
+#elif ThePEG_RIVET_VERSION > 1
+    if ( fname.empty() ) fname = generator()->runName() + ".yoda";
+#else
+#error "Unknown ThePEG_RIVET_VERSION"
+#endif
     _rivet->writeData(fname);
   }
   delete _rivet;
@@ -145,7 +160,6 @@ void RivetAnalysis::doinitrun() {
       << "Use 'rivet --list-analyses' to check availability.\n"
       << ThePEG::Exception::runerror;
   }
-  _rivet->init();
   if ( debug )
     Rivet::Log::setLevel("Rivet",Rivet::Log::DEBUG);
 }
