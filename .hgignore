@@ -40,3 +40,6 @@ libtool
 INSTALL
 Makefile
 Makefile.in
+java/.*\.(java|class)
+java/ThePEG
+java/thepeg.sh
