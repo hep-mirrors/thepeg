@@ -35,10 +35,19 @@ double O1AlphaS::value(Energy2 scale, const StandardModelBase &) const {
 }
 
 vector<Energy2> O1AlphaS::flavourThresholds() const {
+  if ( !quarkMasses().empty() ) {
+    int nMasses = quarkMasses().size();
+    if ( nMasses != theMaxFlav )
+      throw InitException() << "External masses set in O1AlphaS but not for all flavours.";
+  }
   vector<Energy2> thresholds;
   for ( long f = 1; f <= theMaxFlav; ++f ) {
-    PDPtr p = getParticleData(f);
-    if ( p ) thresholds.push_back(sqr(p->mass() + p->CC()->mass()));
+    if ( quarkMasses().empty() ) {
+      PDPtr p = getParticleData(f);
+      if ( p ) thresholds.push_back(sqr((p->mass() + p->CC()->mass())/2.));
+    } else {
+      thresholds.push_back(sqr(quarkMasses()[f-1]));
+    }
   }
   std::sort(thresholds.begin(), thresholds.end());
   return thresholds;

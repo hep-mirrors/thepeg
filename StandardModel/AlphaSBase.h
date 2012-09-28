@@ -69,6 +69,13 @@ public:
   Energy LambdaQCD(Energy2 scale) const { return theLambdaQCDs[Nf(scale)]; }
   //@}
 
+  /**
+   * Return the quark masses to be used; if not empty these masses
+   * should be considered instead of the ones set in the particle data
+   * objects.
+   */
+  const vector<Energy>& quarkMasses() const { return theQuarkMasses; }
+
 public:
 
   /** @name Functions used by the persistent I/O system. */
@@ -107,6 +114,13 @@ protected:
   //@}
 
 private:
+
+  /**
+   * The quark masses to be used; if not empty these masses
+   * should be considered instead of the ones set in the particle data
+   * objects.
+   */
+  vector<Energy> theQuarkMasses;
 
   /**
    * Flavour thresholds, set from the virtual functions in the
