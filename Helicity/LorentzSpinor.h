@@ -16,6 +16,7 @@
 #include "LorentzSpinor.fh"
 #include "LorentzSpinorBar.h"
 #include "LorentzPolarizationVector.h"
+#include "LorentzTensor.h"
 
 namespace ThePEG{
 namespace Helicity{
@@ -362,6 +363,41 @@ public:
          + right*(fb.s3()*s3()+fb.s4()*s4());
   }
   //@}
+
+  /**
+   *  Calculate the product with \f$\sigma^{\mu\nu}\f$, i.e.
+   *  \f$\bar{f}\sigma^{\mu\nu}f\f$
+   */
+  template<typename ValueB>
+  LorentzTensor<typename BinaryOpTraits<Value,ValueB>::MulT>
+  sigma(const LorentzSpinorBar<ValueB>& fb) const {
+    typedef typename BinaryOpTraits<Value,ValueB>::MulT ResultT;
+    LorentzTensor<ResultT> output;
+    complex<ResultT> s11(fb.s1()*s1()),s22(fb.s2()*s2()),
+      s33(fb.s3()*s3()),s44(fb.s4()*s4()),
+      s12(fb.s1()*s2()),s21(fb.s2()*s1()),
+      s34(fb.s3()*s4()),s43(fb.s4()*s3());
+    Complex ii(0.,1.);
+    complex<ResultT> zero;
+    zero = ZERO;
+    output.setTT(         zero         );
+    output.setTX(-ii*( s12+s21-s34-s43));
+    output.setTY(     -s12+s21+s34-s43 );
+    output.setTZ(-ii*( s11-s22-s33+s44));
+    output.setXT(      -output.tx()    );
+    output.setXX(         zero         );
+    output.setXY(      s11-s22+s33-s44 );
+    output.setXZ(-ii*(-s12+s21-s34+s43));
+    output.setYT(     -output.ty()     );
+    output.setYX(     -output.xy()     );
+    output.setYY(         zero         );
+    output.setYZ(      s12+s21+s34+s43 );
+    output.setZT(     -output.tz()     );
+    output.setZX(     -output.xz()     );
+    output.setZY(     -output.yz()     );
+    output.setZZ(         zero         );
+    return output;
+  }
 
 private:
   /**
