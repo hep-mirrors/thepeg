@@ -355,7 +355,7 @@ void Repository::save(string filename) {
   for ( ObjectMap::iterator it = objects().begin();
 	it != objects().end(); ++it ) os << it->second;
   os << defaultParticles() << part << match << generators()
-     << directories() << directoryStack() << globalLibraries();
+     << directories() << directoryStack() << globalLibraries() << readDirs();
   if ( ThePEG_DEBUG_ITEM(3) )
     clog() << "(" << objects().size() << " objects in " << directories().size()
 	   << " directories) done" << endl;
@@ -378,7 +378,7 @@ string Repository::load(string filename) {
   }
   *is >> allObjects() >> defaultParticles()
       >> particles() >> matchers() >> generators()
-      >> directories() >> directoryStack() >> globalLibraries();
+      >> directories() >> directoryStack() >> globalLibraries() >> readDirs();
   delete is;
   objects().clear();
   for ( ObjectSet::iterator it = allObjects().begin();

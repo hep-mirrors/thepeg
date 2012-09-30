@@ -233,8 +233,10 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   CrossSection xsec = matrixElement()->dSigHatDR() * lastPDFWeight();
 
   bool noHeadPass = !willPassCuts() || xsec == ZERO;
-  if ( noHeadPass )
+  if ( noHeadPass ) {
+    xsec = ZERO;
     lastCrossSection(ZERO);
+  }
 
   lastAlphaS(matrixElement()->alphaS());
   lastAlphaEM(matrixElement()->alphaEM());

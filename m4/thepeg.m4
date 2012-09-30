@@ -504,6 +504,7 @@ cat << _THEPEG_EOF_ > config.thepeg
 *** LHAPDF:		$with_LHAPDF
 *** HepMC:		$with_hepmc
 *** Rivet:		$with_rivet
+*** FastJet:		$with_fastjet
 ***
 *** Host:		$host
 *** CXX:		$CXXSTRING

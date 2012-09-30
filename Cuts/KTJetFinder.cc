@@ -61,7 +61,7 @@ bool KTJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
 }
 
 bool KTJetFinder::oneCluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
-			     tcCutsPtr parent, tcPDPtr t1, tcPDPtr t2) const {
+			     tcCutsPtr, tcPDPtr t1, tcPDPtr t2) const {
 
   bool is = 
     unresolvedMatcher()->check(*t1) ||
@@ -167,7 +167,7 @@ bool KTJetFinder::oneCluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
 }
 
 LorentzMomentum KTJetFinder::recombine(const LorentzMomentum& pi,
-					  const LorentzMomentum& pj) const {
+				       const LorentzMomentum& pj) const {
 
   if ( ( theRecombination == recoDefault && theMeasure == e ) 
        || theRecombination == recoE ) {
