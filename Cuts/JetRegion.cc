@@ -52,16 +52,6 @@ string JetRegion::doYRange(string in) {
   return "";
 }
 
-string JetRegion::doEtaRange(string in) {
-  istringstream ins(in);
-  double first, second;
-  ins >> first >> second;
-  if ( first > second )
-    swap(first,second);
-  theEtaRanges.push_back(make_pair(first,second));
-  return "";
-}
-
 void JetRegion::describe() const {
 
   CurrentGenerator::log()
@@ -89,11 +79,6 @@ void JetRegion::describe() const {
     CurrentGenerator::log() << "y   = " << r->first << " .. " << r->second << "\n";
   }
 
-  for ( vector<pair<double,double> >::const_iterator r = etaRanges().begin();
-	r != etaRanges().end(); ++r ) {
-    CurrentGenerator::log() << "eta = " << r->first << " .. " << r->second << "\n";
-  }
-
 }
 
 bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
@@ -119,17 +104,6 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
   if ( !inRange )
     return false;
 
-  inRange = false || etaRanges().empty();
-  for ( vector<pair<double,double> >::const_iterator r = etaRanges().begin();
-	r != etaRanges().end(); ++r ) {
-    if ( p.eta() + parent->currentYHat() > r->first && p.eta() + parent->currentYHat() < r->second ) {
-      inRange = true;
-      break;
-    }
-  }
-  if ( !inRange )
-    return false;
-
   theDidMatch = true;
   theLastNumber = n;
   theLastMomentum = p;
@@ -144,14 +118,12 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
 
 void JetRegion::persistentOutput(PersistentOStream & os) const {
   os << ounit(thePtMin,GeV) << ounit(thePtMax,GeV)
-     << theYRanges << theEtaRanges
-     << theAccepts;
+     << theYRanges << theAccepts;
 }
 
 void JetRegion::persistentInput(PersistentIStream & is, int) {
   is >> iunit(thePtMin,GeV) >> iunit(thePtMax,GeV)
-     >> theYRanges >> theEtaRanges
-     >> theAccepts;
+     >> theYRanges >> theAccepts;
 }
 
 
@@ -185,11 +157,6 @@ void JetRegion::Init() {
     ("YRange",
      "Insert a rapidity range.",
      &JetRegion::doYRange, false);
-
-  static Command<JetRegion> interfaceEtaRange
-    ("EtaRange",
-     "Insert a pseudo-rapidity range.",
-     &JetRegion::doEtaRange, false);
 
   static ParVector<JetRegion,int> interfaceAccepts
     ("Accepts",

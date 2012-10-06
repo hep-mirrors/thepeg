@@ -64,11 +64,6 @@ public:
   const vector<pair<double,double> >& yRanges() const { return theYRanges; }
 
   /**
-   * Return the pseudo-rapidity ranges.
-   */
-  const vector<pair<double,double> >& etaRanges() const { return theEtaRanges; }
-
-  /**
    * Return the jets accepted by this region (with respect to the
    * ordering imposed by the JetCuts object). If empty, any jet will
    * be accepted.
@@ -163,11 +158,6 @@ private:
   string doYRange(string);
 
   /**
-   * Command to insert a pseudo-rapidity range
-   */
-  string doEtaRange(string);
-
-  /**
    * The minimum pt.
    */
   Energy thePtMin;
@@ -181,11 +171,6 @@ private:
    * The rapidity ranges.
    */
   vector<pair<double,double> > theYRanges;
-
-  /**
-   * The pseudo-rapidity ranges.
-   */
-  vector<pair<double,double> > theEtaRanges;
 
   /**
    * The jets accepted by this region (with respect to the ordering
