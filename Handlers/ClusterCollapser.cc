@@ -399,7 +399,7 @@ collapse2(tStepPtr newStep, const ColourSinglet & cs) const {
   // was not enough energy.
   LorentzMomentum pc = cs.momentum();
   Energy2 s = pc.m2();
-  if ( h[0]->mass() + h[1]->mass() >= Energy(sqrt(s)) ) return false;
+  if ( sqr(h[0]->mass() + h[1]->mass()) >= s ) return false;
 
   // Now set the momenta of the hadrons (distributed isotropically in
   // the cluster cm system).
@@ -452,7 +452,7 @@ tcPDPair ClusterCollapser::getHadrons(const ColourSinglet & cs) const {
     tcPDPtr q1 = pickFlavour();
     tcPDPtr q2 = pickFlavour();
     ret.first = flavGen->getHadron(q1, q2->CC());
-    ret.second = flavGen->getHadron(q1, q2->CC());
+    ret.second = flavGen->getHadron(q1->CC(), q2);
   }
 
   else {

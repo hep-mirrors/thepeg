@@ -1,3 +1,11 @@
+2012-10-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/ClusterCollapser.cc: Fixed bug in collapsing of gluon
+	rings.
+
+	* EventRecord/Particle.cc: Fixed problem with setting the lifetime
+	of stable particles.
+
 2012-09-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, Repository/Repository.cc: The search paths
