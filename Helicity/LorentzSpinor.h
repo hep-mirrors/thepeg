@@ -16,6 +16,7 @@
 #include "LorentzSpinor.fh"
 #include "LorentzSpinorBar.h"
 #include "LorentzPolarizationVector.h"
+#include "LorentzTensor.h"
 
 namespace ThePEG{
 namespace Helicity{
@@ -213,6 +214,44 @@ public:
   SpinorType Type() const {return _type;}
   //@}
 
+  /**
+   *  @name Functions to apply the projection operator
+   */
+  //@{
+  /**
+   *   Apply \f$p\!\!\!\!\!\not\,\,\,+m\f$
+   */
+  template<typename ValueB> 
+  LorentzSpinor<typename BinaryOpTraits<Value,ValueB>::MulT>
+  projectionOperator(const LorentzVector<ValueB> & p, const ValueB & m) const {
+    typedef typename BinaryOpTraits<Value,ValueB>::MulT ResultT;
+    LorentzSpinor<ResultT> spin;
+    static const Complex ii(0.,1.);
+    complex<ValueB> p0pp3=p.t()+p.z();
+    complex<ValueB> p0mp3=p.t()-p.z();
+    complex<ValueB> p1pp2=p.x()+ii*p.y();
+    complex<ValueB> p1mp2=p.x()-ii*p.y();
+    spin.setS1(m*s1()+p0mp3*s3()-p1mp2*s4());
+    spin.setS2(m*s2()+p0pp3*s4()-p1pp2*s3());
+    spin.setS3(m*s3()+p0pp3*s1()+p1mp2*s2());
+    spin.setS4(m*s4()+p0mp3*s2()+p1pp2*s1());
+    return spin;
+  }
+
+  /**
+   *  Apply \f$g^LP_L+g^RP_R\f$
+   */
+  LorentzSpinor
+  helicityProjectionOperator(const Complex & gL, const Complex & gR) const {
+    LorentzSpinor spin;
+    spin.setS1(gL*s1());
+    spin.setS2(gL*s2());
+    spin.setS3(gR*s3());
+    spin.setS4(gR*s4());
+    return spin;
+  }
+  //@}
+
 
   /** @name Functions to calculate certain currents. */
   //@{
@@ -362,6 +401,41 @@ public:
          + right*(fb.s3()*s3()+fb.s4()*s4());
   }
   //@}
+
+  /**
+   *  Calculate the product with \f$\sigma^{\mu\nu}\f$, i.e.
+   *  \f$\bar{f}\sigma^{\mu\nu}f\f$
+   */
+  template<typename ValueB>
+  LorentzTensor<typename BinaryOpTraits<Value,ValueB>::MulT>
+  sigma(const LorentzSpinorBar<ValueB>& fb) const {
+    typedef typename BinaryOpTraits<Value,ValueB>::MulT ResultT;
+    LorentzTensor<ResultT> output;
+    complex<ResultT> s11(fb.s1()*s1()),s22(fb.s2()*s2()),
+      s33(fb.s3()*s3()),s44(fb.s4()*s4()),
+      s12(fb.s1()*s2()),s21(fb.s2()*s1()),
+      s34(fb.s3()*s4()),s43(fb.s4()*s3());
+    Complex ii(0.,1.);
+    complex<ResultT> zero;
+    zero = ZERO;
+    output.setTT(         zero         );
+    output.setTX(-ii*( s12+s21-s34-s43));
+    output.setTY(     -s12+s21+s34-s43 );
+    output.setTZ(-ii*( s11-s22-s33+s44));
+    output.setXT(      -output.tx()    );
+    output.setXX(         zero         );
+    output.setXY(      s11-s22+s33-s44 );
+    output.setXZ(-ii*(-s12+s21-s34+s43));
+    output.setYT(     -output.ty()     );
+    output.setYX(     -output.xy()     );
+    output.setYY(         zero         );
+    output.setYZ(      s12+s21+s34+s43 );
+    output.setZT(     -output.tz()     );
+    output.setZX(     -output.xz()     );
+    output.setZY(     -output.yz()     );
+    output.setZZ(         zero         );
+    return output;
+  }
 
 private:
   /**

@@ -331,12 +331,12 @@ struct Stat {
       totsum(sumw), totrerr(genrerr) {}
 
   inline CrossSection xSec() const {
-    return totsum >0.0? maxXSec*sumw/totsum: maxXSec;
+    return totsum != 0.0? maxXSec*sumw/totsum: maxXSec;
   }
 
   inline CrossSection xSecErr() const {
-    if ( totsum <= 0.0 ) return maxXSec;
-    if ( sumw <= 0.0 ) return xSec();
+    if ( totsum == 0.0 ) return maxXSec;
+    if ( sumw == 0.0 ) return xSec();
     return xSec()*sqrt(sqr(totrerr) + sumw2/sqr(sumw));
   }
 
@@ -354,7 +354,7 @@ struct Stat {
     sumw += s.sumw;
     sumw2 += s.sumw2;
     totsum = max(totsum, s.totsum);
-    if ( totsum > 0.0 )
+    if ( totsum != 0.0 )
       maxXSec = max(maxXSec, s.maxXSec);
     else
       maxXSec += s.maxXSec;

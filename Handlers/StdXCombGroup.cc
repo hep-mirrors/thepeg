@@ -233,25 +233,13 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   CrossSection xsec = matrixElement()->dSigHatDR() * lastPDFWeight();
 
   bool noHeadPass = !willPassCuts() || xsec == ZERO;
-  if ( noHeadPass )
+  if ( noHeadPass ) {
+    xsec = ZERO;
     lastCrossSection(ZERO);
+  }
 
   lastAlphaS(matrixElement()->alphaS());
   lastAlphaEM(matrixElement()->alphaEM());
-
-  subProcess(SubProPtr());
-  if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
-       matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
-    newSubProcess(theMEGroup->subProcessGroups());
-    CKKWHandler()->setXComb(this);
-    xsec *= CKKWHandler()->reweightCKKW(matrixElement()->minMultCKKW(),
-					matrixElement()->maxMultCKKW());
-  }
-
-  if ( matrixElement()->reweighted() ) {
-    newSubProcess(theMEGroup->subProcessGroups());
-    xsec *= matrixElement()->reWeight() * matrixElement()->preWeight();
-  }
 
   lastHeadCrossSection(xsec);
 
@@ -284,6 +272,20 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
 
   if ( xsec != ZERO )
     theMEGroup->lastEventStatistics();
+
+  subProcess(SubProPtr());
+  if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
+       matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
+    newSubProcess(theMEGroup->subProcessGroups());
+    CKKWHandler()->setXComb(this);
+    xsec *= CKKWHandler()->reweightCKKW(matrixElement()->minMultCKKW(),
+					matrixElement()->maxMultCKKW());
+  }
+
+  if ( matrixElement()->reweighted() ) {
+    newSubProcess(theMEGroup->subProcessGroups());
+    xsec *= matrixElement()->reWeight() * matrixElement()->preWeight();
+  }
 
   return xsec;
 

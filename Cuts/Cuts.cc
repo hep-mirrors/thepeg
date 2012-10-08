@@ -106,7 +106,7 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
   }
 
   if ( jetFinder() )
-    if ( ptype.size() >= jetFinder()->minOutgoing() ) {
+    if ( ptype.size() > jetFinder()->minOutgoing() ) {
       vector<LorentzMomentum> jets = p;
       tcPDVector jettype = ptype;
       if ( jetFinder()->cluster(jettype,jets,this,t1,t2) ){

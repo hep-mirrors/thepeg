@@ -1,16 +1,16 @@
 // -*- C++ -*-
 //
-// NLOKTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
+// FastJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
-// Copyright (C) 2009-2011 Simon Platzer
+// Copyright (C) 2009-2012 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
-#ifndef THEPEG_NLOKTJetFinder_H
-#define THEPEG_NLOKTJetFinder_H
+#ifndef THEPEG_FastJetFinder_H
+#define THEPEG_FastJetFinder_H
 //
-// This is the declaration of the NLOKTJetFinder class.
+// This is the declaration of the FastJetFinder class.
 //
 
 #include "ThePEG/Cuts/JetFinder.h"
@@ -18,15 +18,13 @@
 namespace ThePEG {
 
 /**
- * NLOKTJetFinder implements the class of longitudinally invariant kt
- * jet clustering algorithms, as relevant for cuts on the real
- * emission contribution to a NLO calculation. Recombination is
- * exclusively performed using the pt scheme.
+ * FastJetFinder implements the class of longitudinally invariant kt
+ * jet clustering algorithms.
  *
- * @see \ref NLOKTJetFinderInterfaces "The interfaces"
- * defined for NLOKTJetFinder.
+ * @see \ref FastJetFinderInterfaces "The interfaces"
+ * defined for FastJetFinder.
  */
-class NLOKTJetFinder: public JetFinder {
+class FastJetFinder: public JetFinder {
 
 public:
 
@@ -35,12 +33,12 @@ public:
   /**
    * The default constructor.
    */
-  NLOKTJetFinder();
+  FastJetFinder();
 
   /**
    * The destructor.
    */
-  virtual ~NLOKTJetFinder();
+  virtual ~FastJetFinder();
   //@}
 
 public:
@@ -104,14 +102,6 @@ protected:
 private:
 
   /**
-   * Perform pt scheme recombination.
-   */
-  LorentzMomentum recombine(const LorentzMomentum& pi,
-			    const LorentzMomentum& pj) const;
-
-private:
-
-  /**
    * The resolution cut. Ignored, if algorithm is to act inclusively.
    */
   Energy2 theDCut;
@@ -150,26 +140,11 @@ private:
   int theMode;
 
   /**
-   * The possible measures. Also triggers the choice of recombination
-   * scheme by default.
-   */
-  enum measures {
-    pt = 1,
-    e = 2
-  };
-
-  /**
-   * The measure
-   */
-  int theMeasure;
-
-  /**
    * The possible recombination schemes.
    */
   enum recombinations {
-    recoDefault = 1,
-    recoPt = 2,
-    recoE = 3
+    recoPt = 1,
+    recoE = 2
   };
 
   /**
@@ -177,23 +152,16 @@ private:
    */
   int theRecombination;
 
-
-  /**
-   * Choose to not consider partons as jets which are out of in terms
-   * or rapidity or transverse momentum
-   */
-  bool theRemoveOutOfRange;
-
 private:
 
   /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  NLOKTJetFinder & operator=(const NLOKTJetFinder &);
+  FastJetFinder & operator=(const FastJetFinder &);
 
 };
 
 }
 
-#endif /* THEPEG_NLOKTJetFinder_H */
+#endif /* THEPEG_FastJetFinder_H */

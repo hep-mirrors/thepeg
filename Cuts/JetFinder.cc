@@ -27,7 +27,7 @@
 using namespace ThePEG;
 
 JetFinder::JetFinder() 
-  : theMinOutgoing(3) {}
+  : theMinOutgoing(1) {}
 
 JetFinder::~JetFinder() {}
 
@@ -69,7 +69,7 @@ void JetFinder::Init() {
   static Parameter<JetFinder,unsigned int> interfaceMinOutgoing
     ("MinOutgoing",
      "The minimum number of outgoing partons to be clustered.",
-     &JetFinder::theMinOutgoing, 3, 1, 0,
+     &JetFinder::theMinOutgoing, 1, 1, 0,
      false, false, Interface::lowerlim);
 
 }

@@ -15,6 +15,7 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Interface/ParVector.h"
 
 using namespace ThePEG;
 
@@ -25,11 +26,13 @@ void AlphaSBase::doinit() {
 }
 
 void AlphaSBase::persistentOutput(PersistentOStream & os) const {
-  os << ounit(theFlavourThresholds, GeV2) << ounit(theLambdaQCDs, GeV);
+  os << ounit(theQuarkMasses,GeV) 
+     << ounit(theFlavourThresholds, GeV2) << ounit(theLambdaQCDs, GeV);
 }
 
 void AlphaSBase::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(theFlavourThresholds, GeV2) >> iunit(theLambdaQCDs, GeV);
+  is >> iunit(theQuarkMasses,GeV) 
+     >> iunit(theFlavourThresholds, GeV2) >> iunit(theLambdaQCDs, GeV);
 }
 
 AbstractClassDescription<AlphaSBase> AlphaSBase::initAlphaSBase;
@@ -39,6 +42,13 @@ void AlphaSBase::Init() {
   static ClassDocumentation<AlphaSBase> documentation
     ("An abstract base class used by the StandardModelBase to implement the "
      "QCD coupling.");
+
+
+  static ParVector<AlphaSBase,Energy> interfaceQuarkMasses
+    ("QuarkMasses",
+     "The quark masses to be used instead of the masses set in the particle data.",
+     &AlphaSBase::theQuarkMasses, GeV, -1, 0.0*GeV, 0.0*GeV, 0*GeV,
+     false, false, Interface::lowerlim);
 
 }
 

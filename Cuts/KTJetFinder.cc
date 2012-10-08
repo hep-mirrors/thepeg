@@ -1,18 +1,18 @@
 // -*- C++ -*-
 //
-// NLOKTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
+// KTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
-// Copyright (C) 2009-2011 Simon Platzer
+// Copyright (C) 2009-2012 Simon Platzer
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 //
 // This is the implementation of the non-inlined, non-templated member
-// functions of the NLOKTJetFinder class.
+// functions of the KTJetFinder class.
 //
 
-#include "NLOKTJetFinder.h"
+#include "KTJetFinder.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
@@ -28,26 +28,40 @@
 
 using namespace ThePEG;
 
-NLOKTJetFinder::NLOKTJetFinder() 
+KTJetFinder::KTJetFinder() 
   : theDCut(ZERO), theConeRadius(0.7), 
     theVariant(kt), theMode(inclusive), theMeasure(pt),
-    theRecombination(recoDefault), theRemoveOutOfRange(false) {}
+    theRecombination(recoDefault) {}
 
-NLOKTJetFinder::~NLOKTJetFinder() {}
+KTJetFinder::~KTJetFinder() {}
 
-IBPtr NLOKTJetFinder::clone() const {
+IBPtr KTJetFinder::clone() const {
   return new_ptr(*this);
 }
 
-IBPtr NLOKTJetFinder::fullclone() const {
+IBPtr KTJetFinder::fullclone() const {
   return new_ptr(*this);
 }
 
-bool NLOKTJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
-			     tcCutsPtr parent, tcPDPtr t1, tcPDPtr t2) const {
+bool KTJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
+			  tcCutsPtr parent, tcPDPtr t1, tcPDPtr t2) const {
 
-  if ( ptype.size() < minOutgoing() )
-    return true;
+  if ( ptype.size() <= minOutgoing() )
+    return false;
+
+  if ( !oneCluster(ptype,p,parent,t1,t2) )
+    return false;
+
+  while ( ptype.size() > minOutgoing() )
+    if ( !oneCluster(ptype,p,parent,t1,t2) )
+      break;
+
+  return true;
+
+}
+
+bool KTJetFinder::oneCluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
+			     tcCutsPtr, tcPDPtr t1, tcPDPtr t2) const {
 
   bool is = 
     unresolvedMatcher()->check(*t1) ||
@@ -148,37 +162,12 @@ bool NLOKTJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
     }
   }
 
-  if ( theRemoveOutOfRange ) {
-    tcPDVector::iterator dx = ptype.begin();
-    vector<LorentzMomentum>::iterator px = p.begin(); 
-    for ( ; dx != ptype.end(); ++dx, ++px ) {
-      if ( !unresolvedMatcher()->check(**dx) )
-	continue;
-      if ( px->perp() < parent->minKT(*dx) ) {
-	ptype.erase(dx); 
-	p.erase(px);
-	return true;
-      }
-      if ( abs(px->rapidity() + parent->Y() + parent->currentYHat()) 
-	   < parent->minRapidityMax(*dx) ) {
-	ptype.erase(dx);
-	p.erase(px); 
-	return true;
-      }
-      if ( abs(px->rapidity() + parent->Y() + parent->currentYHat()) 
-	   > parent->maxRapidityMin(*dx) ) { 
-	ptype.erase(dx);
-	p.erase(px); 
-	return true;
-      }
-    }
-  }
   return false;
 
 }
 
-LorentzMomentum NLOKTJetFinder::recombine(const LorentzMomentum& pi,
-					  const LorentzMomentum& pj) const {
+LorentzMomentum KTJetFinder::recombine(const LorentzMomentum& pi,
+				       const LorentzMomentum& pj) const {
 
   if ( ( theRecombination == recoDefault && theMeasure == e ) 
        || theRecombination == recoE ) {
@@ -197,14 +186,14 @@ LorentzMomentum NLOKTJetFinder::recombine(const LorentzMomentum& pi,
 // in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
 
 
-void NLOKTJetFinder::persistentOutput(PersistentOStream & os) const {
+void KTJetFinder::persistentOutput(PersistentOStream & os) const {
   os << ounit(theDCut,GeV2) << theConeRadius << theVariant << theMode << theMeasure 
-     << theRemoveOutOfRange << theRecombination;
+     << theRecombination;
 }
 
-void NLOKTJetFinder::persistentInput(PersistentIStream & is, int) {
+void KTJetFinder::persistentInput(PersistentIStream & is, int) {
   is >> iunit(theDCut,GeV2) >> theConeRadius >> theVariant >> theMode >> theMeasure 
-     >> theRemoveOutOfRange >> theRecombination;
+     >> theRecombination;
 }
 
 
@@ -213,38 +202,38 @@ void NLOKTJetFinder::persistentInput(PersistentIStream & is, int) {
 // are correct (the class and its base class), and that the constructor
 // arguments are correct (the class name and the name of the dynamically
 // loadable library where the class implementation can be found).
-DescribeClass<NLOKTJetFinder,JetFinder>
-  describeNLOKTJetFinder("ThePEG::NLOKTJetFinder", "NLOKTJetFinder.so");
+DescribeClass<KTJetFinder,JetFinder>
+  describeKTJetFinder("ThePEG::KTJetFinder", "KTJetFinder.so");
 
-void NLOKTJetFinder::Init() {
+void KTJetFinder::Init() {
 
-  static ClassDocumentation<NLOKTJetFinder> documentation
-    ("NLOKTJetFinder implements the class of longitudinally invariant kt "
+  static ClassDocumentation<KTJetFinder> documentation
+    ("KTJetFinder implements the class of longitudinally invariant kt "
      "jet clustering algorithms, as relevant for cuts on the real "
      "emission contribution to a NLO calculation. Recombination is "
      "exclusively performed using the pt scheme.");
 
 
-  static Parameter<NLOKTJetFinder,Energy2> interfaceDCut
+  static Parameter<KTJetFinder,Energy2> interfaceDCut
     ("DCut",
      "The distance cut, when acting exclusively. "
      "The inverse is taken for the anti-kt algorithm, "
      "while for the Cambridge/Aachen variant dCut/GeV2 is used.",
-     &NLOKTJetFinder::theDCut, GeV2, 0.0*GeV2, 0.0*GeV2, 0*GeV2,
+     &KTJetFinder::theDCut, GeV2, 0.0*GeV2, 0.0*GeV2, 0*GeV2,
      false, false, Interface::lowerlim);
 
 
-  static Parameter<NLOKTJetFinder,double> interfaceConeRadius
+  static Parameter<KTJetFinder,double> interfaceConeRadius
     ("ConeRadius",
      "The cone radius R used in inclusive mode.",
-     &NLOKTJetFinder::theConeRadius, 0.7, 0.0, 1.0,
+     &KTJetFinder::theConeRadius, 0.7, 0.0, 1.0,
      false, false, Interface::limited);
 
 
-  static Switch<NLOKTJetFinder,int> interfaceVariant
+  static Switch<KTJetFinder,int> interfaceVariant
     ("Variant",
      "The variant to use.",
-     &NLOKTJetFinder::theVariant, kt, false, false);
+     &KTJetFinder::theVariant, kt, false, false);
   static SwitchOption interfaceVariantKt
     (interfaceVariant,
      "Kt",
@@ -262,10 +251,10 @@ void NLOKTJetFinder::Init() {
      antikt);
 
 
-  static Switch<NLOKTJetFinder,int> interfaceMode
+  static Switch<KTJetFinder,int> interfaceMode
     ("Mode",
      "The mode to use.",
-     &NLOKTJetFinder::theMode, inclusive, false, false);
+     &KTJetFinder::theMode, inclusive, false, false);
   static SwitchOption interfaceModeInclusive
     (interfaceMode,
      "Inclusive",
@@ -277,10 +266,10 @@ void NLOKTJetFinder::Init() {
      "Find exclusive jets.",
      exclusive);
 
-  static Switch<NLOKTJetFinder,int> interfaceMeasure
+  static Switch<KTJetFinder,int> interfaceMeasure
     ("Measure",
      "The measure and recombination scheme to use.",
-     &NLOKTJetFinder::theMeasure, pt, false, false);
+     &KTJetFinder::theMeasure, pt, false, false);
   static SwitchOption interfaceMeasurePt
     (interfaceMeasure,
      "Pt",
@@ -292,10 +281,10 @@ void NLOKTJetFinder::Init() {
      "Use the Durham variant.",
      e);  
 
-  static Switch<NLOKTJetFinder,int> interfaceRecombination
+  static Switch<KTJetFinder,int> interfaceRecombination
     ("RecombinationScheme",
      "The recombination scheme to use.",
-     &NLOKTJetFinder::theRecombination, recoDefault, false, false);
+     &KTJetFinder::theRecombination, recoDefault, false, false);
   static SwitchOption interfaceRecombinationdefault
     (interfaceRecombination,
      "Default",
@@ -310,24 +299,7 @@ void NLOKTJetFinder::Init() {
     (interfaceRecombination,
      "E",
      "Add the four-momenta",
-     recoE);  
-
-
-  static Switch<NLOKTJetFinder,bool> interfaceRemoveOutOfRange
-    ("RemoveOutOfRange",
-     "Set to true to remove partons from cuts which are out of"
-     "rapidity or pT range and not consider them as jets",
-     &NLOKTJetFinder::theRemoveOutOfRange, false, false, false);
-  static SwitchOption interfaceRemoveOutOfRangeTrue
-    (interfaceRemoveOutOfRange,
-     "True",
-     "Remove",
-     true);
-  static SwitchOption interfaceRemoveOutOfRangeFalse
-    (interfaceRemoveOutOfRange,
-     "False",
-     "Keep",
-     false);
+     recoE);
 
 }
 

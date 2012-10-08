@@ -191,12 +191,10 @@ void ParticleData::addDecayMode(tDMPtr dm) {
     dm = dm->clone(this);
   }
   theDecayModes.insert(dm);
-  isStable = false;
   theDecaySelector.insert(dm->brat(), dm);
   if ( CC() ) {
     if ( !synchronized() ) dm->CC()->switchOff();
     CC()->theDecayModes.insert(dm->CC());
-    CC()->isStable = false;
     CC()->theDecaySelector.insert(dm->CC()->brat(), dm->CC());
   }
 }

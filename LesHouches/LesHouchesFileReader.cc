@@ -57,6 +57,7 @@ void LesHouchesFileReader::doinit() {
   string line  = "";
   bool readingSLHA = false;
   int (*pf)(int) = tolower;
+  unsigned int newNumber(0);
   do {
     line  = StringUtils::car(block,"\r\n");
     block = StringUtils::cdr(block,"\r\n");
@@ -76,7 +77,16 @@ void LesHouchesFileReader::doinit() {
       if(split[0].find("block qnumbers")==string::npos)
 	continue;
       // get name from comment
-      string name = StringUtils::stripws(split[1]);
+      string name;
+      if(split.size()>=2) {
+	name = StringUtils::stripws(split[1]);
+      }
+      else {
+	++newNumber;
+	ostringstream tname;
+	tname << "NP" << newNumber;
+	name = tname.str();
+      }
       // extract the PDG code
       split = StringUtils::split(split[0]," ");
       istringstream is(split[2]);

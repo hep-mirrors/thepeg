@@ -30,6 +30,9 @@ int main(int argc, char * argv[]) {
   string repout;
   string file;
   bool init = false;
+  vector<string> globlib;
+  vector<string> preread;
+  vector<string> appread;
 
   Repository repository;
 
@@ -48,10 +51,12 @@ int main(int argc, char * argv[]) {
     else if ( arg == "-s" ) {
       DynamicLoader::load(argv[++iarg]);
       repository.globalLibraries().push_back(argv[iarg]);
+      globlib.push_back(argv[iarg]);
     }
     else if ( arg.substr(0,2) == "-s" ) {
       DynamicLoader::load(arg.substr(2));
       repository.globalLibraries().push_back(arg.substr(2));
+      globlib.push_back(arg.substr(2));
     }
     else if ( arg == "-l" ) DynamicLoader::appendPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-l" )
@@ -59,13 +64,22 @@ int main(int argc, char * argv[]) {
     else if ( arg == "-L" ) DynamicLoader::prependPath(argv[++iarg]);
     else if ( arg.substr(0,2) == "-L" )
       DynamicLoader::prependPath(arg.substr(2));
-    else if ( arg == "-i" ) Repository::appendReadDir(argv[++iarg]);
-    else if ( arg.substr(0,2) == "-i" )
+    else if ( arg == "-i" ) {
+      Repository::appendReadDir(argv[++iarg]);
+      appread.push_back(argv[iarg]);
+    }
+    else if ( arg.substr(0,2) == "-i" ) {
       Repository::appendReadDir(arg.substr(2));
-    else if ( arg == "-I" )
+      appread.push_back(arg.substr(2));
+    }
+    else if ( arg == "-I" ) {
       Repository::prependReadDir(argv[++iarg]);
-    else if ( arg.substr(0,2) == "-I" )
+      preread.push_back(argv[iarg]);
+    }
+    else if ( arg.substr(0,2) == "-I" ) {
       Repository::prependReadDir(arg.substr(2));
+      preread.push_back(arg.substr(2));
+    }
     else if ( arg == "-h" || arg == "--help" ) {
       cerr << "Usage: " << argv[0]
 	 << " {cmdfile} [-d {debuglevel|-debugitem}] [-r input-repository-file]"
@@ -90,6 +104,12 @@ int main(int argc, char * argv[]) {
       else {
 	string msg = repository.load(repo);
 	if ( ! msg.empty() ) cerr << msg << '\n';
+	for ( unsigned int i = 0; i < globlib.size(); ++i )
+	  repository.globalLibraries().push_back(globlib[i]);
+	for ( unsigned int i = 0; i < appread.size(); ++i )
+	  Repository::appendReadDir(appread[i]);
+	for ( unsigned int i = 0; i < preread.size(); ++i )
+	  Repository::prependReadDir(preread[i]);
       }
       {
 	HoldFlag<> setup(InterfaceBase::NoReadOnly);
@@ -102,6 +122,12 @@ int main(int argc, char * argv[]) {
     } else {
       string msg = repository.load(repo);
       if ( ! msg.empty() ) cerr << msg << '\n';
+      for ( unsigned int i = 0; i < globlib.size(); ++i )
+	repository.globalLibraries().push_back(globlib[i]);
+      for ( unsigned int i = 0; i < appread.size(); ++i )
+	Repository::appendReadDir(appread[i]);
+      for ( unsigned int i = 0; i < preread.size(); ++i )
+	Repository::prependReadDir(preread[i]);
       breakThePEG();
       if ( file.size() && file != "-" ) {
 	if ( file == "--java" || file == "-java" )

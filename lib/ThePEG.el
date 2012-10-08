@@ -1071,10 +1071,34 @@ public:
    */
   virtual void analyze(tPPtr particle, double weight);
   //@}
+
+protected:
+
+  /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  virtual void doinitrun();
+
+  /**
+   * Finalize this object. Called in the run phase just after a
+   * run has ended. Used eg. to write out statistics.
+   */
+  virtual void dofinish();
+
 "))
 
 (defun thepeg-AnalysisHandler-implement (class base)
   (concat "
+
+
+#ifndef LWH_AIAnalysisFactory_H
+#ifndef LWH 
+#define LWH ThePEGLWH
+#endif
+#include \"ThePEG/Analysis/LWH/AnalysisFactory.h\"
+#endif
+
 void " class "::analyze(tEventPtr event, long ieve, int loop, int state) {
   " base "::analyze(event, ieve, loop, state);
   // Rotate to CMS, extract final state particles and call analyze(particles).
@@ -1091,6 +1115,18 @@ void " class "::analyze(const tPVector & particles, double weight) {
 }
 
 void " class "::analyze(tPPtr, double weight) {}
+
+void " class "::dofinish() {
+  " base "::dofinish();
+  // *** ATTENTION *** Normalize and post-process histograms here.
+}
+
+void " class "::doinitrun() {
+  " base "::doinitrun();
+  // *** ATTENTION *** histogramFactory().registerClient(this); // Initialize histograms.
+  // *** ATTENTION *** histogramFactory().mkdirs(\"/SomeDir\"); // Put histograms in specal directory.
+}
+
 "))
 
 (defun thepeg-Decayer-declare (class base)
