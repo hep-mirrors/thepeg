@@ -68,15 +68,15 @@ void Particle::initFull() {
   theRep = new ParticleRep;
 
   Energy width = data().generateWidth(mass());
-  Time lifetime = data().generateLifeTime(mass(), width);
 
-  theRep->theLifeLength.setTau(lifetime);
-
-  theRep->theLifeLength.
-    setVect((momentum().vect()*(lifetime /
+  if ( width > ZERO ) {
+    Time lifetime = data().generateLifeTime(mass(), width);
+    theRep->theLifeLength.setTau(lifetime);
+    theRep->theLifeLength.
+      setVect((momentum().vect()*(lifetime /
 				max(mass(), Constants::epsilon*GeV))));
-
-  theRep->theLifeLength.rescaleEnergy();
+    theRep->theLifeLength.rescaleEnergy();
+  }
 }
 
 PPtr Particle::clone() const {
