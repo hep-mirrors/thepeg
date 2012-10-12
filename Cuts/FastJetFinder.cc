@@ -76,17 +76,15 @@ bool FastJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
     recomb_scheme = fastjet::pt_scheme;
   else assert(false);
 
-  fastjet::JetAlgorithm jet_algorithm;
-  if ( theVariant == kt ) {
-    jet_algorithm = fastjet::kt_algorithm;
-  } else if ( theVariant == ca ) {
+  fastjet::JetAlgorithm jet_algorithm = fastjet::kt_algorithm;
+  if ( theVariant == ca ) {
     jet_algorithm = fastjet::cambridge_algorithm;
   } else if ( theVariant == antikt ) {
     jet_algorithm = fastjet::antikt_algorithm;
   }
-  fastjet::JetDefinition jet_def(fastjet::kt_algorithm, theConeRadius, recomb_scheme, strategy);
+  fastjet::JetDefinition jet_def(jet_algorithm, theConeRadius, recomb_scheme, strategy);
   fastjet::ClusterSequence clust_seq(recombinables, jet_def);
-  
+
   double dcut = 0.0;
   
   if ( theVariant != antikt ) {
