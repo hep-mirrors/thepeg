@@ -93,9 +93,9 @@ void VertexBase::doinit() {
   // check the couplings
   if(Debug::level>1&&_npoint!=2+_ordergEM+_ordergS)
     generator()->log() << fullName() << " has inconsistent number of "
-		       << "external particles and coupling order QED = " 
+		       << "external particles and coupling order\nQED = " 
 		       << _ordergEM << " QCD = " << _ordergS << " for"
-		       << " a perturbative intteraction, either its an"
+		       << " a perturbative interaction. Either it's an"
 		       << " effective vertex or something is wrong.\n";
   assert(_npoint<=2+_ordergEM+_ordergS);
 }
