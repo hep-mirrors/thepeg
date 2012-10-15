@@ -8,6 +8,60 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.8.1 release: 2012-10-15
+
+** Repository changes
+
+*** Stable flag
+    The behaviour of the 'Particle:Stable' flag has changed slightly. When
+    all decaymodes are removed from a particle, the flag will be
+    automatically set to stable. However, it still needs to be set unstable
+    by hand when new decaymodes are added to a formerly stable particle.
+
+*** Search paths
+    The search paths for reading input files are now saved in the
+    repository.
+
+** Rivet analysis YODA capable
+   The configure time check for Rivet will now detect the version to
+   check if it is YODA capable.
+
+** NLOHepMCFile
+   An AnalysisHandler, similar to the standard HepMCFile has been
+   added to allow analysing plain NLO calculations by communicating
+   each member of a subprocess group (typically real emission and
+   subtraction contributions) to a HepMC file; until Rivet supports
+   the correct treatment of errors in this case, the subprocess group
+   members are written out as events independent of each other.
+
+** Jet cuts
+   A more flexible framework for cuts on jets has been added,
+   including jet finders (either builtin or via an optional link to
+   fastjet). All kinds of exclusive and inclusive jet cuts, as well as
+   jet vetoes on the level of the hard process are now supported.
+
+** Tree2toNDiagram
+   A bug has been fixed in Tree2toNDiagram::isSame(tcDiagPtr,
+   map<int,int>&) method to take into account symmetries when swapping
+   two external legs attached to the same vertex
+
+** Quark thresholds in alphaS
+   Support for setting quark masses for threshold matching in
+   couplings deriving from AlphaSBase independently of masses used in
+   ParticleData objects has been added. The O1AlphaS implementation is
+   fully aware of this enhancement.
+
+** LesHouches reader fixes
+   The LesHouches readers have been improved, and will spot many more
+   consistency errors, such as coloured Standard Model leptons, or helicity
+   values outside of [-1,1] and 9.
+
+** Spinor enhancements
+   The LorentzSpinor class has gained member functions for projection operations
+   and the contraction with the sigma-mu-nu commutator.
+
+
+
 * ThePEG-1.8.0 release: 2012-05-21
 
 ** NLO support

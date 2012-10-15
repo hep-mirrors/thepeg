@@ -406,7 +406,10 @@ void Repository::stats(ostream & os) {
 string Repository::read(string filename, ostream & os) {
   ifstream is;
   string file = filename;
-  if ( file[0] == '/' ) is.open(file.c_str());
+  if ( file[0] == '/' ) {
+    if ( ThePEG_DEBUG_LEVEL > 1 ) os << "(= trying " << file << " =)" << endl;
+    is.open(file.c_str());
+  }
   else {
     vector<string> dirs(readDirs().rbegin(), readDirs().rend());
     dirs.push_back(currentReadDirStack().top());
@@ -415,6 +418,7 @@ string Repository::read(string filename, ostream & os) {
       if ( dir != "" && dir[dir.length() -1] != '/' ) dir += '/';
       file = dir + filename;
       is.clear();
+      if ( ThePEG_DEBUG_LEVEL > 1 ) os << "(= trying " << file << " =)" << endl;
       is.open(file.c_str());
       if ( is ) break;
       dirs.pop_back();
