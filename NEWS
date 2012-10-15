@@ -8,20 +8,23 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.8.1 release: 2012-10-??
+* ThePEG-1.8.1 release: 2012-10-15
 
 ** Repository changes
 
+*** Stable flag
+    The behaviour of the 'Particle:Stable' flag has changed slightly. When
+    all decaymodes are removed from a particle, the flag will be
+    automatically set to stable. However, it still needs to be set unstable
+    by hand when new decaymodes are added to a formerly stable particle.
+
 *** Search paths
     The search paths for reading input files are now saved in the
-    repository. TODO DG usage?
+    repository.
 
-*** Stable flag
-    TODO DG if decay mode added / removed -> not automatically unstable
-
-
-
-** TODO DG Rivet analysis YODA capable
+** Rivet analysis YODA capable
+   The configure time check for Rivet will now detect the version to
+   check if it is YODA capable.
 
 ** NLOHepMCFile
    An AnalysisHandler, similar to the standard HepMCFile has been
@@ -34,7 +37,7 @@ or at http:///projects.hepforge.org/herwig/versions
 ** Jet cuts
    A more flexible framework for cuts on jets has been added,
    including jet finders (either builtin or via an optional link to
-   fastjet). All kinds of excluive and inclusive jet cuts, as well as
+   fastjet). All kinds of exclusive and inclusive jet cuts, as well as
    jet vetoes on the level of the hard process are now supported.
 
 ** Tree2toNDiagram
@@ -48,10 +51,14 @@ or at http:///projects.hepforge.org/herwig/versions
    ParticleData objects has been added. The O1AlphaS implementation is
    fully aware of this enhancement.
 
-** TODO DG LesHouches reader fixes, errors for lepton colines, helicity outside -1,1
+** LesHouches reader fixes
+   The LesHouches readers have been improved, and will spot many more
+   consistency errors, such as coloured Standard Model leptons, or helicity
+   values outside of [-1,1] and 9.
 
-** TODO DG sigma munu spinor contractions
-
+** Spinor enhancements
+   The LorentzSpinor class has gained member functions for projection operations
+   and the contraction with the sigma-mu-nu commutator.
 
 
 
