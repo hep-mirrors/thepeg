@@ -235,6 +235,38 @@ public:
   virtual void setXComb(tStdXCombPtr);
 
   /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  virtual int maxMultCKKW() const { return head()->maxMultCKKW(); }
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this should give the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  virtual int minMultCKKW() const { return head()->minMultCKKW(); }
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this will set the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  virtual void maxMultCKKW(int mult) { head()->maxMultCKKW(mult); }
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this will set the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  virtual void minMultCKKW(int mult) { head()->minMultCKKW(mult); }
+
+  /**
    * Inform this matrix element that a new phase space
    * point is about to be generated, so all caches should
    * be flushed.

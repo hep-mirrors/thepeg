@@ -392,7 +392,7 @@ public:
    * outgoing particles in the highest multiplicity matrix element in
    * the group.
    */
-  int maxMultCKKW() const { return theMaxMultCKKW; }
+  virtual int maxMultCKKW() const { return theMaxMultCKKW; }
 
   /**
    * If this matrix element is to be used together with others for
@@ -400,7 +400,23 @@ public:
    * outgoing particles in the lowest multiplicity matrix element in
    * the group.
    */
-  int minMultCKKW() const { return theMinMultCKKW; }
+  virtual int minMultCKKW() const { return theMinMultCKKW; }
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this will set the multiplicity of
+   * outgoing particles in the highest multiplicity matrix element in
+   * the group.
+   */
+  virtual void maxMultCKKW(int mult) { theMaxMultCKKW = mult; }
+
+  /**
+   * If this matrix element is to be used together with others for
+   * CKKW reweighting and veto, this will set the multiplicity of
+   * outgoing particles in the lowest multiplicity matrix element in
+   * the group.
+   */
+  virtual void minMultCKKW(int mult) { theMinMultCKKW = mult; }
 
   /**
    * Set veto scales on the particles at the given
