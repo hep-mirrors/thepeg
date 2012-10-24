@@ -19,9 +19,8 @@
 
 namespace ThePEG {
 
-PersistentIStream::PersistentIStream(string file, bool keepid) 
-  : theIStream(0), isPedantic(true), allocStream(true), badState(false),
-    keepId(keepid) {
+PersistentIStream::PersistentIStream(string file) 
+  : theIStream(0), isPedantic(true), allocStream(true), badState(false) {
 //    if ( file[0] == '|' )
 //      theIStream = new ipfstream(file.substr(1).c_str());
 //    else if ( file.substr(file.length()-3, file.length()) == ".gz" )
@@ -162,9 +161,9 @@ PersistentIStream::BPtr PersistentIStream::getObject() {
     unsigned long uid = ReferenceCounted::objectCounter + 1;
     if ( version > 0 || subVersion >= 3 ) *this >> uid;
     unsigned long saveid = ReferenceCounted::objectCounter;
-    if ( keepId ) ReferenceCounted::objectCounter = uid - 1;
+    ReferenceCounted::objectCounter = uid - 1;
     obj = pid->create();
-    if ( keepId ) ReferenceCounted::objectCounter = max(saveid, uid);
+    ReferenceCounted::objectCounter = max(saveid, uid);
     readObjects.erase(readObjects.begin() + (oid - 1), readObjects.end());
     readObjects.push_back(obj);
     getObjectPart(obj, pid);

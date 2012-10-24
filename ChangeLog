@@ -1,3 +1,8 @@
+2012-10-24  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Persistency/PersistentIStream.cc, src/runThePEG.cc: keepId flag
+	removed, always taken as true now.
+
 2012-10-23  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Repository/EventGenerator.cc: Added option for keeping
