@@ -467,9 +467,15 @@ EventPtr EventGenerator::doShoot() {
 	     ieve < printEvent ) && event ) log() << *event;
       if ( debugEvent > 0 && ieve + 1 >= debugEvent )
 	Debug::level = Debug::full;
-      if ( dumpPeriod > 0 && ieve%dumpPeriod == 0 ) dump();
     }
   } while ( !event );
+
+  // If scheduled, dump a clean state between events
+  if ( ThePEG_DEBUG_LEVEL && dumpPeriod > 0 && ieve%dumpPeriod == 0 ) {
+    eventHandler()->clearEvent();
+    eventHandler()->clean();
+    dump();
+  }
 
   return event;
 }
