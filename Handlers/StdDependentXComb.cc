@@ -30,14 +30,18 @@ StdDependentXComb::StdDependentXComb(tStdXCombPtr newHead,
 		  const_ptr_cast<tSubHdlPtr>(newHead->subProcessHandler()),
 		  newHead->pExtractor(),newHead->CKKWHandler(),
 		  newPartonBins,newHead->cuts(),newME,newDiagrams,newHead->mirror(),
-		  newHead), resetIncoming(true) {}
+		  newHead) {}
 
 StdDependentXComb::StdDependentXComb()
-  : StandardXComb(), resetIncoming(true) {}
+  : StandardXComb() {}
 
 StdDependentXComb::~StdDependentXComb() { }
 
 tSubProPtr StdDependentXComb::construct() {
+  matrixElement()->setXComb(this);
+  if ( !matrixElement()->apply() )
+    return tSubProPtr();
+  matrixElement()->setKinematics();
   // first get the meMomenta in their CMS, as this may
   // not be the case
   Boost cm = (meMomenta()[0] + meMomenta()[1]).findBoostToCM();
@@ -78,11 +82,6 @@ void StdDependentXComb::setPartonBinInstances(Energy2 scale) {
 }
 
 void StdDependentXComb::setIncomingPartons() {
-
-  if ( !resetIncoming )
-    return;
-
-  resetIncoming = false;
 
   clean();
   createPartonBinInstances();
@@ -126,8 +125,25 @@ void StdDependentXComb::setIncomingPartons() {
 
 }
 
-CrossSection StdDependentXComb::dSigDR() {
+CrossSection StdDependentXComb::dSigDR(const double * r) {
 
+  matrixElement()->flushCaches();
+
+  matrixElement()->setXComb(this);
+
+  if ( !matrixElement()->apply() ) {
+    subProcess(SubProPtr());
+    lastCrossSection(ZERO);
+    return ZERO;
+  }
+
+  if ( !matrixElement()->generateKinematics(r) ) {
+    subProcess(SubProPtr());
+    lastCrossSection(ZERO);
+    return ZERO;
+  }
+
+  remakeIncoming();
   setProcess();
   setIncomingPartons();
 
@@ -146,6 +162,7 @@ CrossSection StdDependentXComb::dSigDR() {
 
   lastPDFWeight(head()->lastPDFWeight());
 
+  matrixElement()->setKinematics();
   CrossSection xsec = matrixElement()->dSigHatDR() * lastPDFWeight();
 
   subProcess(SubProPtr());

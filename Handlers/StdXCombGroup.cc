@@ -53,9 +53,9 @@ StdXCombGroup::StdXCombGroup()
 void StdXCombGroup::build(const PartonPairVec& allPBins) {
   for ( MEVector::const_iterator me = theMEGroup->dependent().begin();
 	me != theMEGroup->dependent().end(); ++me ) {
-    StdDependentXCombPtr dep = 
-      theMEGroup->makeDependentXComb(this,diagrams().front()->partons(),*me,allPBins);
-    theDependent.push_back(dep);
+    StdDepXCVector dep = 
+      theMEGroup->makeDependentXCombs(this,diagrams().front()->partons(),*me,allPBins);
+    copy(dep.begin(),dep.end(),back_inserter(theDependent));
   }
 }
 
@@ -248,17 +248,17 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   if ( !theMEGroup->mcSumDependent() ) {
     for ( StdDepXCVector::const_iterator dep = theDependent.begin();
 	  dep != theDependent.end(); ++dep ) {
-      if ( !(*dep) )
-	continue;
-      if ( !(**dep).matrixElement()->apply() )
-	continue;
       if ( noHeadPass && (**dep).matrixElement()->headCuts() )
 	continue;
-      depxsec += (**dep).dSigDR();
+      depxsec += (**dep).dSigDR(r + theMEGroup->dependentOffset((**dep).matrixElement()));
     }
   } else {
-    if ( !noHeadPass || !theMEGroup->lastDependentXComb()->matrixElement()->headCuts() )
-      depxsec = theDependent.size()*theMEGroup->lastDependentXComb()->dSigDR();
+    if ( theMEGroup->lastDependentXComb() ) {
+      tStdDependentXCombPtr dxc = theMEGroup->lastDependentXComb();
+      if ( !(noHeadPass && dxc->matrixElement()->headCuts()) )
+	depxsec = theDependent.size()*
+	  dxc->dSigDR(r + theMEGroup->dependentOffset(dxc->matrixElement()));
+    }
   }
 
   if ( xsec != ZERO ) {
@@ -310,10 +310,7 @@ void StdXCombGroup::newSubProcess(bool) {
 
   for ( StdDepXCVector::iterator dep = theDependent.begin();
 	dep != theDependent.end(); ++dep ) {
-    if ( !(*dep) )
-      continue;
-    if ( (**dep).lastCrossSection() == ZERO ||
-	 !(**dep).matrixElement()->apply() )
+    if ( (**dep).lastCrossSection() == ZERO )
       continue;
     tSubProPtr ds;
     try {

@@ -60,7 +60,7 @@ public:
    * previously supplied. The PDF weight is taken from the
    * lastPDFWeight supplied by the head XComb object.
    */
-  CrossSection dSigDR();
+  CrossSection dSigDR(const double * r);
 
   /**
    * Setup information on incoming partons depending
@@ -74,9 +74,9 @@ public:
 
   /**
    * Indicate that information on incoming partons
-   * has to be collected.
+   * has to be collected. @TODO remove
    */
-  void remakeIncoming() { resetIncoming = true; }
+  void remakeIncoming() {}
 
   /**
    * Set the process as selected by the dependent matrix element.
@@ -148,13 +148,6 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
-
-private:
-
-  /**
-   * Wether or not we have to reset the incoming partons
-   */
-  bool resetIncoming;
 
 private:
 

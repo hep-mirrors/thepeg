@@ -87,38 +87,53 @@ int MEGroup::dependentOffset(tMEPtr dep) const {
   return it->second;
 }
 
-StdDependentXCombPtr MEGroup::makeDependentXComb (tStdXCombPtr xcHead,
-						  const cPDVector& proc,
-						  tMEPtr depME,
-						  const PartonPairVec& pbs) const {
+StdDepXCVector MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
+					    const cPDVector& proc,
+					    tMEPtr depME,
+					    const PartonPairVec& pbs) const {
   
   MEBase::DiagramVector depDiags = dependentDiagrams(proc,depME);
 
   if ( depDiags.empty() )
-    return StdDependentXCombPtr();
+    return StdDepXCVector();
 
-  PartonPairVec::const_iterator ppit = pbs.begin();
-  for ( ; ppit != pbs.end(); ++ppit ) {
-    if ( ppit->first->parton() == depDiags.front()->partons()[0] &&
-	 ppit->second->parton() == depDiags.front()->partons()[1] )
-      break;
+  map<cPDVector,MEBase::DiagramVector> depProcs;
+
+  for ( MEBase::DiagramVector::const_iterator d = depDiags.begin();
+	d != depDiags.end(); ++d ) {
+    depProcs[(**d).partons()].push_back(*d);
   }
 
-  if ( ppit == pbs.end() ) {
-    generator()->logWarning(
-      Exception() 
-      << "Could not create a dependent XComb object"
-      << " for the MEGroup '"
-      << name() 
-      << "' since the dependent matrix element '"
-      << depME->name() 
-      << "' did not match any of the incoming partons."
-      << Exception::warning);
-    return StdDependentXCombPtr();
-  }
+  StdDepXCVector ret;
 
-  StdDependentXCombPtr ret = 
-    new_ptr(StdDependentXComb(xcHead,*ppit,depME,depDiags));
+  for ( map<cPDVector,MEBase::DiagramVector>::const_iterator pr =
+	  depProcs.begin(); pr != depProcs.end(); ++pr ) {
+
+
+    PartonPairVec::const_iterator ppit = pbs.begin();
+    for ( ; ppit != pbs.end(); ++ppit ) {
+      if ( ppit->first->parton() == pr->second.front()->partons()[0] &&
+	   ppit->second->parton() == pr->second.front()->partons()[1] )
+	break;
+    }
+
+    if ( ppit == pbs.end() ) {
+      generator()->logWarning(
+			      Exception() 
+			      << "Could not create a dependent XComb object"
+			      << " for the MEGroup '"
+			      << name() 
+			      << "' since the dependent matrix element '"
+			      << depME->name() 
+			      << "' did not match any of the incoming partons."
+			      << Exception::warning);
+      continue;
+    }
+
+    StdDependentXCombPtr dxc = new_ptr(StdDependentXComb(xcHead,*ppit,depME,pr->second));
+    ret.push_back(dxc);
+
+  }
 
   return ret;
 
@@ -127,62 +142,16 @@ StdDependentXCombPtr MEGroup::makeDependentXComb (tStdXCombPtr xcHead,
 bool MEGroup::generateKinematics(const double * r) {
   if (!head()->generateKinematics(r))
     return false;
-  MEVector::const_iterator me = dependent().begin();
-  tStdXCombGroupPtr xcgroup = dynamic_ptr_cast<tStdXCombGroupPtr>(lastXCombPtr());
-  StdDepXCVector::const_iterator depxc = xcgroup->dependent().begin();
-  assert(xcgroup);
-  if ( !mcSumDependent() ) {
-    for ( ; depxc != xcgroup->dependent().end(); ++depxc, ++me ) {
-      if ( !(*depxc) )
-	continue;
-      if ( !(**depxc).matrixElement()->apply() )
-	continue;
-      (**depxc).remakeIncoming();
-      (**me).generateKinematics(r + dependentOffset(*me));
+  if ( mcSumDependent() ) {
+    tStdXCombGroupPtr xcgroup = dynamic_ptr_cast<tStdXCombGroupPtr>(lastXCombPtr());
+    if ( xcgroup->dependent().empty() ) {
+      lastDependentXComb(tStdDependentXCombPtr());
+      return true;
     }
-  } else {
-    size_t i = size_t(r[nDim()-1]*dependent().size());
-    if ( !xcgroup->dependent()[i] )
-      return false;
-    if ( !xcgroup->dependent()[i]->matrixElement()->apply() )
-      return false;
-    xcgroup->dependent()[i]->remakeIncoming();
+    size_t i = size_t(r[nDim()-1]*xcgroup->dependent().size());
     lastDependentXComb(xcgroup->dependent()[i]);
-    dependent()[i]->generateKinematics(r + dependentOffset(dependent()[i]));
   }
   return true;
-}
-
-void MEGroup::flushCaches() {
-  head()->flushCaches();
-  for ( MEVector::const_iterator dep = dependent().begin();
-	dep != dependent().end(); ++dep )
-    (**dep).flushCaches();
-}
-
-void MEGroup::setXComb(tStdXCombPtr xc) {
-  MEBase::setXComb(xc);
-  head()->setXComb(xc);
-  tStdXCombGroupPtr xcgroup = dynamic_ptr_cast<tStdXCombGroupPtr>(xc);
-  if ( !xcgroup )
-    return;
-  MEVector::const_iterator depme = dependent().begin();
-  StdDepXCVector::const_iterator depxc = xcgroup->dependent().begin();
-  for ( ; depxc != xcgroup->dependent().end(); ++depxc, ++depme ) {
-    if ( !(*depxc) )
-      continue;
-    (**depme).setXComb(*depxc);
-  }
-}
-
-void MEGroup::setKinematics() {
-  MEBase::setKinematics();
-  head()->setKinematics();
-  for ( MEVector::iterator me = theDependent.begin();
-	me != theDependent.end(); ++me ) {
-    if ( (**me).apply() && (**me).lastXCombPtr() )
-      (**me).setKinematics();
-  }
 }
 
 void MEGroup::clearKinematics() {

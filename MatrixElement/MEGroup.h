@@ -96,7 +96,10 @@ public:
    * overridden in a sub class the new function must call the base
    * class one first.
    */
-  virtual void setKinematics();
+  virtual void setKinematics() {
+    MEBase::setKinematics();
+    head()->setKinematics();
+  }
 
   /**
    * construct the spin information for the interaction
@@ -232,7 +235,10 @@ public:
    * Set the XComb object to be used in the next call to
    * generateKinematics() and dSigHatDR().
    */
-  virtual void setXComb(tStdXCombPtr);
+  virtual void setXComb(tStdXCombPtr xc) {
+    MEBase::setXComb(xc);
+    head()->setXComb(xc);
+  }
 
   /**
    * If this matrix element is to be used together with others for
@@ -271,7 +277,7 @@ public:
    * point is about to be generated, so all caches should
    * be flushed.
    */
-  virtual void flushCaches();
+  virtual void flushCaches() { head()->flushCaches(); }
 
   /**
    * Collect information on the last evaluated phasespace
@@ -316,10 +322,10 @@ public:
    * for the given process steered bythe head object and 
    * dependent matrix element.
    */
-  StdDependentXCombPtr makeDependentXComb (tStdXCombPtr xcHead,
-					   const cPDVector& proc,
-					   tMEPtr depME,
-					   const PartonPairVec& allPBins) const;
+  StdDepXCVector makeDependentXCombs(tStdXCombPtr xcHead,
+				     const cPDVector& proc,
+				     tMEPtr depME,
+				     const PartonPairVec& allPBins) const;
 
   /**
    * Return true, if SubProcessGroups should be
