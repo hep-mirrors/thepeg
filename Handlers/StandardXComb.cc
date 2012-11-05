@@ -90,7 +90,100 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
       theDiagrams.push_back(me->diagrams()[i]);
 }
 
+StandardXComb::StandardXComb(tStdXCombPtr newHead,
+			     const PBPair & newPartonBins, tMEPtr newME,
+			     const DiagramVector & newDiagrams) 
+  : XComb(newHead->maxEnergy(), newHead->particles(), 
+	  newHead->eventHandlerPtr(), newHead->pExtractor(),
+	  newHead->CKKWHandler(), newPartonBins, newHead->cuts()),
+    theSubProcessHandler(const_ptr_cast<tSubHdlPtr>(newHead->subProcessHandler())), 
+    theME(newME), theDiagrams(newDiagrams), isMirror(newHead->mirror()),  
+    theLastDiagramIndex(0), theLastPDFWeight(0.0), 
+    theLastCrossSection(ZERO), theLastME2(-1.0), theLastMECrossSection(ZERO), 
+    theLastMEPDFWeight(1.0), theHead(newHead) {
+  partonDims = pExtractor()->nDims(partonBins());
+  if ( matrixElement()->haveX1X2() ) {
+    partonDims.first = 0;
+    partonDims.second = 0;
+  }
+  theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
+  mePartonData() = lastDiagram()->partons();
+  /* // wait for C++11
+     StandardXComb(newHead->maxEnergy(),newHead->particles(),
+     newHead->eventHandlerPtr(),
+     const_ptr_cast<tSubHdlPtr>(newHead->subProcessHandler()),
+     newHead->pExtractor(),newHead->CKKWHandler(),
+     newPartonBins,newHead->cuts(),newME,newDiagrams,newHead->mirror(),
+     newHead);
+  */
+}
+
 StandardXComb::~StandardXComb() {}
+
+void StandardXComb::recreatePartonBinInstances(Energy2 scale) {
+
+  PBIPair newBins;
+
+  Direction<0> dir(true);
+  newBins.first =
+    new_ptr(PartonBinInstance(lastPartons().first,partonBins().first,scale));
+
+  dir.reverse();
+  newBins.second =
+    new_ptr(PartonBinInstance(lastPartons().second,partonBins().second,scale));
+
+  resetPartonBinInstances(newBins);
+  setPartonBinInfo();
+
+  lastPartons().first->scale(partonBinInstances().first->scale());
+  lastPartons().second->scale(partonBinInstances().second->scale());
+
+}
+
+void StandardXComb::setIncomingPartons() {
+
+  if ( lastPartons().first )
+    return;
+
+  createPartonBinInstances();
+  lastParticles(head()->lastParticles());
+  setPartonBinInfo();
+
+  lastPartons(make_pair(mePartonData()[0]->produceParticle(Lorentz5Momentum()),
+			mePartonData()[1]->produceParticle(Lorentz5Momentum())));
+
+  Lorentz5Momentum pFirst = meMomenta()[0];
+  Lorentz5Momentum pSecond = meMomenta()[1];
+
+  if ( head()->matrixElement()->wantCMS() ) {
+    Boost toLab = (head()->lastPartons().first->momentum() + 
+		   head()->lastPartons().second->momentum()).boostVector();
+    if ( toLab.mag2() > Constants::epsilon ) {
+      pFirst.boost(toLab);
+      pSecond.boost(toLab);
+    }
+  }
+
+  lastPartons().first->set5Momentum(pFirst);
+  lastPartons().second->set5Momentum(pSecond);
+
+  lastS((lastParticles().first->momentum() +
+	 lastParticles().second->momentum()).m2());
+  lastSHat((lastPartons().first->momentum() +
+	    lastPartons().second->momentum()).m2());
+  lastP1P2(make_pair(0.0, 0.0));
+
+  double x1 = 
+    lastPartons().first->momentum().plus()/
+    lastParticles().first->momentum().plus();
+  double x2 = 
+    lastPartons().second->momentum().minus()/
+    lastParticles().second->momentum().minus();
+
+  lastX1X2(make_pair(x1,x2));
+  lastY(log(lastX1()/lastX2())*0.5);
+
+}
 
 bool StandardXComb::checkInit() {
   Energy summin = ZERO;
@@ -363,16 +456,38 @@ void StandardXComb::newSubProcess(bool group) {
 tSubProPtr StandardXComb::construct() {
 
   matrixElement()->setXComb(this);
-  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
+  if ( !head() ) {
+    if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
+  } else {
+    if ( !matrixElement()->apply() )
+      return tSubProPtr();
+  }
 
   setPartonBinInfo();
   matrixElement()->setKinematics();
 
+  if ( head() ) {
+    // first get the meMomenta in their CMS, as this may
+    // not be the case
+    Boost cm = (meMomenta()[0] + meMomenta()[1]).findBoostToCM();
+    if ( cm.mag2() > Constants::epsilon ) {
+      for ( vector<Lorentz5Momentum>::iterator m = meMomenta().begin();
+	    m != meMomenta().end(); ++m ) {
+	*m = m->boost(cm);
+      }
+    }
+  }
+
   newSubProcess();
 
-  TmpTransform<tSubProPtr>
-    tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
-  if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
+  if ( !head() ) {
+    TmpTransform<tSubProPtr>
+      tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
+    if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
+  } else {
+    subProcess()->head(head()->subProcess());
+    subProcess()->groupWeight(lastCrossSection()/head()->lastCrossSection());
+  }
 
   return subProcess();
 

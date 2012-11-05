@@ -62,39 +62,6 @@ public:
    */
   CrossSection dSigDR(const double * r);
 
-  /**
-   * Setup information on incoming partons depending
-   * on the information previously supplied through the
-   * choice of diagram and incoming momenta in the first
-   * two entries of meMomenta(). Partons are not actually
-   * extracted from the incoming particles, though a subprocess
-   * detached from the current Event may be created.
-   */
-  void setIncomingPartons();
-
-  /**
-   * Indicate that information on incoming partons
-   * has to be collected. @TODO remove
-   */
-  void remakeIncoming() {}
-
-  /**
-   * Set the process as selected by the dependent matrix element.
-   */
-  void setProcess();
-
-  /**
-   * Construct a sub-process object from the information available.
-   */
-  virtual tSubProPtr construct();
-
-  /**
-   * Properly setup the PartonBinInstance objects
-   * provided a sub process has been constructed
-   * using this XComb.
-   */
-  void setPartonBinInstances(Energy2 scale = ZERO);
-
   /** @name Functions used for collecting statistics. */
   //@{
   /**

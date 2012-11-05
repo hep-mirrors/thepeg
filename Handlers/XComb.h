@@ -133,7 +133,7 @@ public:
   /**
    * Reset all saved data about last generated phasespace point;
    */
-  void clean();
+  virtual void clean();
 
   /**
    * Set information about currently generated partons.

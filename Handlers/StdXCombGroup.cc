@@ -61,6 +61,13 @@ void StdXCombGroup::build(const PartonPairVec& allPBins) {
 
 StdXCombGroup::~StdXCombGroup() { }
 
+void StdXCombGroup::clean() {
+  XComb::clean();
+  for ( StdDepXCVector::const_iterator dep = theDependent.begin();
+	dep != theDependent.end(); ++dep )
+    (**dep).clean();
+}
+
 CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   matrixElement()->flushCaches();
