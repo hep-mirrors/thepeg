@@ -333,19 +333,16 @@ void StdXCombGroup::newSubProcess(bool) {
 
 tSubProPtr StdXCombGroup::construct() {
 
-  if ( !theMEGroup->subProcessGroups() )
-    return StandardXComb::construct();
-
   matrixElement()->setXComb(this);
 
   setPartonBinInfo();
   matrixElement()->setKinematics();
 
-  newSubProcess(true);
+  newSubProcess(theMEGroup->subProcessGroups());
 
   TmpTransform<tSubProPtr>
     tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
-  if ( !cuts()->passCuts(*subProcess()) ) {
+  if ( !cuts()->passCuts(*subProcess()) && theMEGroup->subProcessGroups() ) {
     subProcess()->groupWeight(0.0);
   }
 
