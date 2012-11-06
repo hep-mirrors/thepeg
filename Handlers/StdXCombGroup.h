@@ -12,7 +12,6 @@
 // This is the declaration of the StdXCombGroup class.
 
 #include "StandardXComb.h"
-#include "StdDependentXComb.h"
 #include "StdXCombGroup.fh"
 #include "ThePEG/MatrixElement/MEGroup.fh"
 
@@ -22,7 +21,6 @@ namespace ThePEG {
  * The StdXCombGroup class represents a 'head' XComb object
  * in association with a group of dependent XComb objects.
  *
- * @see StdDependendXComb
  * @see MEGroup
  */
 class StdXCombGroup: public StandardXComb {
@@ -75,7 +73,7 @@ public:
   /**
    * Visit the dependent XComb objects
    */
-  const StdDepXCVector& dependent() const { return theDependent; }
+  const vector<StdXCombPtr>& dependent() const { return theDependent; }
 
   /**
    * Return the matrix element group steered by this
@@ -141,7 +139,7 @@ private:
   /**
    * The dependent XComb objects
    */
-  StdDepXCVector theDependent;
+  vector<StdXCombPtr> theDependent;
 
   /**
    * The cross section calculated from the head matrix element

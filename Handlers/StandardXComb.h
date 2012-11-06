@@ -175,6 +175,14 @@ public:
   virtual CrossSection dSigDR(const pair<double,double> ll, int nr, const double * r);
 
   /**
+   * If this XComb has a head XComb, return the cross section
+   * differential in the variables previously supplied. The PDF weight
+   * is taken from the lastPDFWeight supplied by the head XComb
+   * object.
+   */
+  CrossSection dSigDR(const double * r);
+
+  /**
    * Return the PDF weight used in the last call to dSigDR
    */
   double lastPDFWeight() const { return theLastPDFWeight; }

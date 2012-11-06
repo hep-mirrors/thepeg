@@ -219,6 +219,53 @@ bool StandardXComb::willPassCuts() const {
 
 }
 
+CrossSection StandardXComb::dSigDR(const double * r) {
+
+  matrixElement()->flushCaches();
+
+  matrixElement()->setXComb(this);
+
+  if ( !matrixElement()->apply() ) {
+    subProcess(SubProPtr());
+    lastCrossSection(ZERO);
+    return ZERO;
+  }
+
+  meMomenta().resize(mePartonData().size());
+
+  if ( !matrixElement()->generateKinematics(r) ) {
+    subProcess(SubProPtr());
+    lastCrossSection(ZERO);
+    return ZERO;
+  }
+
+  setIncomingPartons();
+
+  lastScale(head()->lastScale());
+  lastAlphaS(head()->lastAlphaS());
+  lastAlphaEM(head()->lastAlphaEM());
+
+  if ( (!willPassCuts() && 
+	!matrixElement()->headCuts() &&
+	!matrixElement()->ignoreCuts()) ||
+       !matrixElement()->apply() ) {
+    subProcess(SubProPtr());
+    lastCrossSection(ZERO);
+    return ZERO;
+  }
+
+  lastPDFWeight(head()->lastPDFWeight());
+
+  matrixElement()->setKinematics();
+  CrossSection xsec = matrixElement()->dSigHatDR() * lastPDFWeight();
+
+  subProcess(SubProPtr());
+  lastCrossSection(xsec);
+
+  return xsec;
+
+}
+
 CrossSection StandardXComb::
 dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
@@ -456,12 +503,12 @@ void StandardXComb::newSubProcess(bool group) {
 tSubProPtr StandardXComb::construct() {
 
   matrixElement()->setXComb(this);
-  if ( !head() ) {
-    if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
-  } else {
+
+  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
+
+  if ( head() )
     if ( !matrixElement()->apply() )
       return tSubProPtr();
-  }
 
   setPartonBinInfo();
   matrixElement()->setKinematics();
@@ -480,11 +527,11 @@ tSubProPtr StandardXComb::construct() {
 
   newSubProcess();
 
-  if ( !head() ) {
-    TmpTransform<tSubProPtr>
-      tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
-    if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
-  } else {
+  TmpTransform<tSubProPtr>
+    tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
+  if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
+
+  if ( head() ) {
     subProcess()->head(head()->subProcess());
     subProcess()->groupWeight(lastCrossSection()/head()->lastCrossSection());
   }

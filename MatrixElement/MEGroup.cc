@@ -22,7 +22,6 @@
 #include "ThePEG/PDF/PartonBin.h"
 #include "ThePEG/PDF/PartonExtractor.h"
 #include "ThePEG/Repository/EventGenerator.h"
-#include "ThePEG/Handlers/StdDependentXComb.h"
 #include "ThePEG/Handlers/StdXCombGroup.h"
 
 using namespace ThePEG;
@@ -87,15 +86,15 @@ int MEGroup::dependentOffset(tMEPtr dep) const {
   return it->second;
 }
 
-StdDepXCVector MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
-					    const cPDVector& proc,
-					    tMEPtr depME,
-					    const PartonPairVec& pbs) const {
+vector<StdXCombPtr> MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
+						 const cPDVector& proc,
+						 tMEPtr depME,
+						 const PartonPairVec& pbs) const {
   
   MEBase::DiagramVector depDiags = dependentDiagrams(proc,depME);
 
   if ( depDiags.empty() )
-    return StdDepXCVector();
+    return vector<StdXCombPtr>();
 
   map<cPDVector,MEBase::DiagramVector> depProcs;
 
@@ -104,7 +103,7 @@ StdDepXCVector MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
     depProcs[(**d).partons()].push_back(*d);
   }
 
-  StdDepXCVector ret;
+  vector<StdXCombPtr> ret;
 
   for ( map<cPDVector,MEBase::DiagramVector>::const_iterator pr =
 	  depProcs.begin(); pr != depProcs.end(); ++pr ) {
@@ -130,7 +129,7 @@ StdDepXCVector MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
       continue;
     }
 
-    StdDependentXCombPtr dxc = new_ptr(StdDependentXComb(xcHead,*ppit,depME,pr->second));
+    StdXCombPtr dxc = new_ptr(StandardXComb(xcHead,*ppit,depME,pr->second));
     ret.push_back(dxc);
 
   }
@@ -145,7 +144,7 @@ bool MEGroup::generateKinematics(const double * r) {
   if ( mcSumDependent() ) {
     tStdXCombGroupPtr xcgroup = dynamic_ptr_cast<tStdXCombGroupPtr>(lastXCombPtr());
     if ( xcgroup->dependent().empty() ) {
-      lastDependentXComb(tStdDependentXCombPtr());
+      lastDependentXComb(tStdXCombPtr());
       return true;
     }
     size_t i = size_t(r[nDim()-1]*xcgroup->dependent().size());

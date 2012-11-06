@@ -12,7 +12,6 @@
 // This is the declaration of the MEGroup class.
 
 #include "ThePEG/MatrixElement/MEBase.h"
-#include "ThePEG/Handlers/StdDependentXComb.fh"
 #include "ThePEG/Cuts/Cuts.fh"
 #include "MEGroup.fh"
 
@@ -26,7 +25,6 @@ namespace ThePEG {
  * StdXCombGroup object.
  *
  * @see StdXCombGroup
- * @see StdDependentXComb
  * 
  */
 class MEGroup: public MEBase {
@@ -318,14 +316,14 @@ public:
   int dependentOffset(tMEPtr dep) const;
 
   /**
-   * Create an StdDependentXComb object to be used
+   * Create a dependent xcomb object to be used
    * for the given process steered bythe head object and 
    * dependent matrix element.
    */
-  StdDepXCVector makeDependentXCombs(tStdXCombPtr xcHead,
-				     const cPDVector& proc,
-				     tMEPtr depME,
-				     const PartonPairVec& allPBins) const;
+  vector<StdXCombPtr> makeDependentXCombs(tStdXCombPtr xcHead,
+					  const cPDVector& proc,
+					  tMEPtr depME,
+					  const PartonPairVec& allPBins) const;
 
   /**
    * Return true, if SubProcessGroups should be
@@ -345,7 +343,7 @@ public:
    * Return a pointer to the dependent xcomb object selected
    * if mcSumDependent returned true.
    */
-  tStdDependentXCombPtr lastDependentXComb() const { return theLastDependentXComb; }
+  tStdXCombPtr lastDependentXComb() const { return theLastDependentXComb; }
 
 protected:
 
@@ -353,7 +351,7 @@ protected:
    * Set a pointer to the dependent xcomb object selected
    * if mcSumDependent returned true.
    */
-  void lastDependentXComb(tStdDependentXCombPtr xc) { theLastDependentXComb = xc; }
+  void lastDependentXComb(tStdXCombPtr xc) { theLastDependentXComb = xc; }
 
 public:
 
@@ -369,8 +367,8 @@ public:
    * return a list of diagrams which should be considered for
    * the given dependent matrix element.
    */
-  virtual MEBase::DiagramVector dependentDiagrams (const cPDVector& proc,
-						   tMEPtr depME) const = 0;
+  virtual MEBase::DiagramVector dependentDiagrams(const cPDVector& proc,
+						  tMEPtr depME) const = 0;
 
 public:
 
@@ -452,7 +450,7 @@ private:
    * A pointer to the dependent xcomb object selected
    * if mcSumDependent returned true.
    */
-  tStdDependentXCombPtr theLastDependentXComb;
+  tStdXCombPtr theLastDependentXComb;
 
 private:
 

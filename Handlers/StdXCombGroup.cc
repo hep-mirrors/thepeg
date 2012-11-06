@@ -53,7 +53,7 @@ StdXCombGroup::StdXCombGroup()
 void StdXCombGroup::build(const PartonPairVec& allPBins) {
   for ( MEVector::const_iterator me = theMEGroup->dependent().begin();
 	me != theMEGroup->dependent().end(); ++me ) {
-    StdDepXCVector dep = 
+    vector<StdXCombPtr> dep = 
       theMEGroup->makeDependentXCombs(this,diagrams().front()->partons(),*me,allPBins);
     copy(dep.begin(),dep.end(),back_inserter(theDependent));
   }
@@ -63,7 +63,7 @@ StdXCombGroup::~StdXCombGroup() { }
 
 void StdXCombGroup::clean() {
   XComb::clean();
-  for ( StdDepXCVector::const_iterator dep = theDependent.begin();
+  for ( vector<StdXCombPtr>::const_iterator dep = theDependent.begin();
 	dep != theDependent.end(); ++dep )
     (**dep).clean();
 }
@@ -253,7 +253,7 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   CrossSection depxsec = ZERO;
 
   if ( !theMEGroup->mcSumDependent() ) {
-    for ( StdDepXCVector::const_iterator dep = theDependent.begin();
+    for ( vector<StdXCombPtr>::const_iterator dep = theDependent.begin();
 	  dep != theDependent.end(); ++dep ) {
       if ( noHeadPass && (**dep).matrixElement()->headCuts() )
 	continue;
@@ -261,7 +261,7 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     }
   } else {
     if ( theMEGroup->lastDependentXComb() ) {
-      tStdDependentXCombPtr dxc = theMEGroup->lastDependentXComb();
+      tStdXCombPtr dxc = theMEGroup->lastDependentXComb();
       if ( !(noHeadPass && dxc->matrixElement()->headCuts()) )
 	depxsec = theDependent.size()*
 	  dxc->dSigDR(r + theMEGroup->dependentOffset(dxc->matrixElement()));
@@ -315,7 +315,7 @@ void StdXCombGroup::newSubProcess(bool) {
     dynamic_ptr_cast<Ptr<SubProcessGroup>::tptr>(subProcess());
   assert(group);
 
-  for ( StdDepXCVector::iterator dep = theDependent.begin();
+  for ( vector<StdXCombPtr>::iterator dep = theDependent.begin();
 	dep != theDependent.end(); ++dep ) {
     if ( (**dep).lastCrossSection() == ZERO )
       continue;
