@@ -418,6 +418,11 @@ private:
   CutsPtr theCuts;
 
   /**
+   * True if cuts on collision objects should be performed
+   */
+  bool collisionCuts;
+
+  /**
    * The StandardXComb objects.
    */
   XVector theXCombs;

@@ -40,7 +40,7 @@
 using namespace ThePEG;
 
 StandardEventHandler::StandardEventHandler()
-  : EventHandler(false), theBinStrategy(2), weightedEvents(false),
+  : EventHandler(false), collisionCuts(true), theBinStrategy(2), weightedEvents(false),
     theLumiDim(0) {
   setupGroups();
 }
@@ -172,7 +172,8 @@ tCollPtr StandardEventHandler::performCollision() {
   currentStep()->addSubProcess(lastXC->construct());
 
   lastExtractor()->construct(lastXC->partonBinInstances(), currentStep());
-  if ( !lastCuts().passCuts(*currentCollision()) ) throw Veto();
+  if ( collisionCuts )
+    if ( !lastCuts().passCuts(*currentCollision()) ) throw Veto();
   initGroups();
   if ( ThePEG_DEBUG_ITEM(1) ) {
     if ( currentEvent() )    
@@ -696,6 +697,21 @@ void StandardEventHandler::Init() {
      "may be overidden in individual sub-process handlers.",
      &StandardEventHandler::theCuts, false, false, true, false);
 
+  static Switch<StandardEventHandler,bool> interfaceCollisionCuts
+    ("CollisionCuts",
+     "Switch on or off cuts on collision objects",
+     &StandardEventHandler::collisionCuts, true, false, false);
+  static SwitchOption interfaceCollisionCutsOn
+    (interfaceCollisionCuts,
+     "On",
+     "Switch on cuts on collision objects",
+     true);
+  static SwitchOption interfaceCollisionCutsOff
+    (interfaceCollisionCuts,
+     "Off",
+     "Switch off cuts on collision cuts",
+     false);
+
   static Switch<StandardEventHandler,int> interfaceBinStrategy
     ("BinStrategy",
      "The strategy to be used when sampling different ThePEG::XComb "
@@ -746,7 +762,7 @@ void StandardEventHandler::Init() {
 }
 
 void StandardEventHandler::persistentOutput(PersistentOStream & os) const {
-  os << theIncomingA << theIncomingB << theSubProcesses << theCuts
+  os << theIncomingA << theIncomingB << theSubProcesses << theCuts << collisionCuts
      << theXCombs << ounit(theXSecs, nanobarn)
      << theBinStrategy << theMaxDims << theMEXMap
      << weightedEvents
@@ -754,7 +770,7 @@ void StandardEventHandler::persistentOutput(PersistentOStream & os) const {
 }
 
 void StandardEventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theIncomingA >> theIncomingB >> theSubProcesses >> theCuts
+  is >> theIncomingA >> theIncomingB >> theSubProcesses >> theCuts >> collisionCuts
      >> theXCombs >> iunit(theXSecs, nanobarn)
      >> theBinStrategy >> theMaxDims>> theMEXMap
      >> weightedEvents
