@@ -131,6 +131,27 @@ int MEBase::nDim() const {
   return 0;
 }
 
+StdXCombPtr MEBase::makeXComb(Energy newMaxEnergy, const cPDPair & inc,
+			      tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+			      tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
+			      const PBPair & newPartonBins, tCutsPtr newCuts,
+			      const DiagramVector & newDiagrams, bool mir,
+			      const PartonPairVec&,
+			      tStdXCombPtr newHead) {
+  return new_ptr(StandardXComb(newMaxEnergy, inc,
+			       newEventHandler, newSubProcessHandler,
+			       newExtractor, newCKKW,
+			       newPartonBins, newCuts, this,
+			       newDiagrams, mir,
+			       newHead));
+}
+
+StdXCombPtr MEBase::makeXComb(tStdXCombPtr newHead,
+			      const PBPair & newPartonBins,
+			      const DiagramVector & newDiagrams) {
+  return new_ptr(StandardXComb(newHead, newPartonBins, this, newDiagrams));
+}
+
 void MEBase::setXComb(tStdXCombPtr xc) {
   theLastXComb = xc;
   theLastSHat = lastSHat();

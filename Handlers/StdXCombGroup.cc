@@ -41,10 +41,10 @@ StdXCombGroup::StdXCombGroup(Energy newMaxEnergy, const cPDPair & inc,
 			     tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
 			     tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
 			     const PBPair & newPartonBins, tCutsPtr newCuts, tMEGroupPtr newME,
-			     const DiagramVector & newDiagrams, bool mir)
+			     const DiagramVector & newDiagrams, bool mir, tStdXCombPtr newHead)
   : StandardXComb(newMaxEnergy,inc,newEventHandler,newSubProcessHandler,
 		  newExtractor, newCKKW, newPartonBins, newCuts,
-		  newME, newDiagrams, mir), 
+		  newME, newDiagrams, mir, newHead), 
     theMEGroup(newME), theDependent(), theLastHeadCrossSection(ZERO) {}
 
 StdXCombGroup::StdXCombGroup()

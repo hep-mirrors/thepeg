@@ -86,6 +86,23 @@ int MEGroup::dependentOffset(tMEPtr dep) const {
   return it->second;
 }
 
+StdXCombPtr MEGroup::makeXComb(Energy newMaxEnergy, const cPDPair & inc,
+			       tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+			       tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
+			       const PBPair & newPartonBins, tCutsPtr newCuts,
+			       const DiagramVector & newDiagrams, bool mir,
+			       const PartonPairVec& allPBins,
+			       tStdXCombPtr newHead) {
+  StdXCombGroupPtr res =  new_ptr(StdXCombGroup(newMaxEnergy, inc,
+						newEventHandler, newSubProcessHandler,
+						newExtractor, newCKKW,
+						newPartonBins, newCuts, this,
+						newDiagrams, mir,
+						newHead));
+  res->build(allPBins);
+  return res;
+}
+
 vector<StdXCombPtr> MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
 						 const cPDVector& proc,
 						 tMEPtr depME,
@@ -129,7 +146,7 @@ vector<StdXCombPtr> MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
       continue;
     }
 
-    StdXCombPtr dxc = new_ptr(StandardXComb(xcHead,*ppit,depME,pr->second));
+    StdXCombPtr dxc = depME->makeXComb(xcHead,*ppit,pr->second);
     ret.push_back(dxc);
 
   }

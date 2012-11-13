@@ -19,6 +19,11 @@
 #include "ThePEG/Handlers/StandardXComb.fh"
 #include "ReweightBase.h"
 
+#include "ThePEG/Handlers/EventHandler.fh"
+#include "ThePEG/Handlers/StandardEventHandler.fh"
+#include "ThePEG/Handlers/SubProcessHandler.fh"
+#include "ThePEG/PDF/PartonBin.fh"
+
 #include "MEBase.fh"
 
 namespace ThePEG {
@@ -367,6 +372,26 @@ public:
    * be flushed.
    */
   virtual void flushCaches() {}
+
+  /**
+   * For the given event generation setup return a xcomb object
+   * appropriate to this matrix element.
+   */
+  virtual StdXCombPtr makeXComb(Energy newMaxEnergy, const cPDPair & inc,
+				tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+				tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
+				const PBPair & newPartonBins, tCutsPtr newCuts,
+				const DiagramVector & newDiagrams, bool mir,
+				const PartonPairVec& allPBins,
+				tStdXCombPtr newHead = tStdXCombPtr());
+
+  /**
+   * For the given event generation setup return a dependent xcomb object
+   * appropriate to this matrix element.
+   */
+  virtual StdXCombPtr makeXComb(tStdXCombPtr newHead,
+				const PBPair & newPartonBins,
+				const DiagramVector & newDiagrams);
 
   /**
    * Set the XComb object to be used in the next call to

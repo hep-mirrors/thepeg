@@ -39,7 +39,8 @@ public:
 		tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
 		tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
 		const PBPair & newPartonBins, tCutsPtr newCuts, tMEGroupPtr newME,
-		const DiagramVector & newDiagrams, bool mir);
+		const DiagramVector & newDiagrams, bool mir,
+		tStdXCombPtr newHead = tStdXCombPtr());
 
   /**
    * Default constructor.

@@ -128,18 +128,9 @@ addME(Energy maxEnergy, tSubHdlPtr sub, tPExtrPtr extractor, tCutsPtr cuts,
 		dit->second.back()->partons()[1]);
     // check
     assert(me->noMirror() ? din == pin : true);
-    StdXCombPtr xcomb;
-    tMEGroupPtr megroup = dynamic_ptr_cast<tMEGroupPtr>(me);
-    if (!megroup)
-      xcomb = new_ptr(StandardXComb(maxEnergy, incoming(), this, sub, extractor,
-				    ckkw, pBins, cuts, me, dit->second, din != pin));
-    else {
-      StdXCombGroupPtr xcgroup = 
-	new_ptr(StdXCombGroup(maxEnergy, incoming(), this, sub, extractor,
-			      ckkw, pBins, cuts, megroup, dit->second, din != pin));
-      xcgroup->build(allPBins);
-      xcomb = xcgroup;
-    }
+    StdXCombPtr xcomb = me->makeXComb(maxEnergy, incoming(), this, sub, extractor,
+				      ckkw, pBins, cuts, dit->second, din != pin,
+				      allPBins);
     if ( xcomb->checkInit() ) xCombs().push_back(xcomb);
     else generator()->logWarning(
       StandardEventHandlerInitError() << "The matrix element '"

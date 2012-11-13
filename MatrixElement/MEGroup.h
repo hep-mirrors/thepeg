@@ -316,14 +316,26 @@ public:
   int dependentOffset(tMEPtr dep) const;
 
   /**
+   * For the given event generation setup return an xcomb object
+   * appropriate to this matrix element.
+   */
+  virtual StdXCombPtr makeXComb(Energy newMaxEnergy, const cPDPair & inc,
+				tEHPtr newEventHandler,tSubHdlPtr newSubProcessHandler,
+				tPExtrPtr newExtractor,	tCascHdlPtr newCKKW,
+				const PBPair & newPartonBins, tCutsPtr newCuts,
+				const DiagramVector & newDiagrams, bool mir,
+				const PartonPairVec& allPBins,
+				tStdXCombPtr newHead = tStdXCombPtr());
+
+  /**
    * Create a dependent xcomb object to be used
    * for the given process steered bythe head object and 
    * dependent matrix element.
    */
-  vector<StdXCombPtr> makeDependentXCombs(tStdXCombPtr xcHead,
-					  const cPDVector& proc,
-					  tMEPtr depME,
-					  const PartonPairVec& allPBins) const;
+  virtual vector<StdXCombPtr> makeDependentXCombs(tStdXCombPtr xcHead,
+						  const cPDVector& proc,
+						  tMEPtr depME,
+						  const PartonPairVec& allPBins) const;
 
   /**
    * Return true, if SubProcessGroups should be
