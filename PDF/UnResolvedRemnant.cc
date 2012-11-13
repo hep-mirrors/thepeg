@@ -61,12 +61,6 @@ Lorentz5Momentum UnResolvedRemnant::
 generate(PartonBinInstance & pb, const double *r,
 	 Energy2 scale, const LorentzMomentum & parent,
 	 bool fixedPartonMomentum) const {
-  if ( fixedPartonMomentum ) {
-    throw 
-      Exception()
-      << "missing implementation in UnResolvedRemnant::generate(...)"
-      << Exception::abortnow;
-  }
   // photon into hard process and lepton remnant
   if ( pb.particleData() != pb.partonData()) {
     scale = abs(scale);
@@ -78,14 +72,18 @@ generate(PartonBinInstance & pb, const double *r,
     }
     Energy  pmi = (qt2-scale)/ppl;
     Lorentz5Momentum pgam;
-    pgam.setMass(-sqrt(scale));
-    pgam.setT(0.5*(ppl+pmi));
-    pgam.setZ(0.5*(ppl-pmi));
-    double phi = r[0]*Constants::twopi;
-    pgam.setX(sqrt(qt2)*cos(phi));
-    pgam.setY(sqrt(qt2)*sin(phi));
-    pgam.rotateY(parent.theta());
-    pgam.rotateZ(parent.phi());
+    if ( !fixedPartonMomentum ) {
+      pgam.setMass(-sqrt(scale));
+      pgam.setT(0.5*(ppl+pmi));
+      pgam.setZ(0.5*(ppl-pmi));
+      double phi = r[0]*Constants::twopi;
+      pgam.setX(sqrt(qt2)*cos(phi));
+      pgam.setY(sqrt(qt2)*sin(phi));
+      pgam.rotateY(parent.theta());
+      pgam.rotateZ(parent.phi());
+    } else {
+      pgam = pb.parton()->momentum();
+    }
     Lorentz5Momentum prem=parent-pgam;
     PPtr rem = pb.particleData()->produceParticle(prem, pb.particleData()->mass());
     pb.remnants(PVector(1, rem));
@@ -105,9 +103,14 @@ generate(PartonBinInstance & pb, const double *r,
       qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
     }
     Energy pl = p.plus()*pb.eps();
-    LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
-    prem.rotateY(parent.theta());
-    prem.rotateZ(parent.phi());
+    LorentzMomentum prem;
+    if ( !fixedPartonMomentum ) {
+      prem = lightCone(pl, qt2/pl, qt);
+      prem.rotateY(parent.theta());
+      prem.rotateZ(parent.phi());
+    } else {
+      prem = parent - pb.parton()->momentum();
+    }
     PPtr rem = thePhoton->produceParticle(prem, ZERO);
     pb.remnants(PVector(1, rem));
     return parent - rem->momentum();
@@ -118,12 +121,6 @@ Lorentz5Momentum UnResolvedRemnant::
 generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
 	 const LorentzMomentum & parent,
 	 bool fixedPartonMomentum) const {
-  if ( fixedPartonMomentum ) {
-    throw 
-      Exception()
-      << "missing implementation in UnResolvedRemnant::generate(...)"
-      << Exception::abortnow;
-  }
   // photon into hard process and lepton remnant
   if ( pb.particleData() != pb.partonData()) {
     scale = abs(scale);
@@ -135,14 +132,18 @@ generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
     }
     Energy  pmi = (qt2-scale)/ppl;
     Lorentz5Momentum pgam;
-    pgam.setMass(-sqrt(scale));
-    pgam.setT(0.5*(ppl+pmi));
-    pgam.setZ(0.5*(ppl-pmi));
-    double phi = r[0]*Constants::twopi;
-    pgam.setX(sqrt(qt2)*cos(phi));
-    pgam.setY(sqrt(qt2)*sin(phi));
-    pgam.rotateY(parent.theta());
-    pgam.rotateZ(parent.phi());
+    if ( !fixedPartonMomentum ) {
+      pgam.setMass(-sqrt(scale));
+      pgam.setT(0.5*(ppl+pmi));
+      pgam.setZ(0.5*(ppl-pmi));
+      double phi = r[0]*Constants::twopi;
+      pgam.setX(sqrt(qt2)*cos(phi));
+      pgam.setY(sqrt(qt2)*sin(phi));
+      pgam.rotateY(parent.theta());
+      pgam.rotateZ(parent.phi());
+    } else {
+      pgam = pb.parton()->momentum();
+    }
     Lorentz5Momentum prem=parent-pgam;
     PPtr rem = pb.particleData()->produceParticle(prem, pb.particleData()->mass());
     pb.remnants(PVector(1, rem));
@@ -162,9 +163,14 @@ generate(PartonBinInstance & pb, const double *r, Energy2 scale, Energy2,
       qt = TransverseMomentum(sqrt(qt2)*cos(phi), sqrt(qt2)*sin(phi));
     }
     Energy pl = p.plus()*pb.eps();
-    LorentzMomentum prem = lightCone(pl, qt2/pl, qt);
-    prem.rotateY(parent.theta());
-    prem.rotateZ(parent.phi());
+    LorentzMomentum prem;
+    if ( !fixedPartonMomentum ) {
+      prem = lightCone(pl, qt2/pl, qt);
+      prem.rotateY(parent.theta());
+      prem.rotateZ(parent.phi());
+    } else {
+      prem = parent - pb.parton()->momentum();
+    }
     PPtr rem = thePhoton->produceParticle(prem, ZERO);
     pb.remnants(PVector(1, rem));
     return parent - rem->momentum();
