@@ -167,6 +167,20 @@ void PartonExtractor::prepare(const PBIPair & pbins) {
   pbins.second->prepare();
 }
 
+void PartonExtractor::updatePartonBinInstances(const PBIPair & pbins) {
+  partonBinInstances.clear();
+  tPBIPtr current = pbins.first;
+  while ( current->incoming() ) {
+    partonBinInstances[current->parton()] = current;
+    current = current->incoming();
+  }
+  current = pbins.second;
+  while ( current->incoming() ) {
+    partonBinInstances[current->parton()] = current;
+    current = current->incoming();
+  }
+}
+
 bool PartonExtractor::
 generateL(const PBIPair & pbins, const double * r1, const double * r2) {
   Direction<0> dir(true);

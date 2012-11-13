@@ -394,6 +394,12 @@ public:
 				const DiagramVector & newDiagrams);
 
   /**
+   * Fill the projectors object of xcombs to choose subprocesses
+   * different than the one currently integrated.
+   */
+  virtual void fillProjectors() { }
+
+  /**
    * Set the XComb object to be used in the next call to
    * generateKinematics() and dSigHatDR().
    */

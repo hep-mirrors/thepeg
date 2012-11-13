@@ -174,7 +174,10 @@ void StandardXComb::setIncomingPartons() {
 	 lastParticles().second->momentum()).m2());
   lastSHat((lastPartons().first->momentum() +
 	    lastPartons().second->momentum()).m2());
-  lastP1P2(make_pair(0.0, 0.0));
+  if ( head() )
+    lastP1P2(make_pair(head()->lastP1(),head()->lastP2()));
+  else
+    lastP1P2(make_pair(0.0, 0.0));
 
   double x1 = 
     lastPartons().first->momentum().plus()/
@@ -230,6 +233,8 @@ void StandardXComb::clean() {
   theLastME2 = 0.0;
   theLastMECrossSection = ZERO;
   theLastMEPDFWeight = 0.0;
+  theProjectors.clear();
+  theProjector = StdXCombPtr();
 }
 
 CrossSection StandardXComb::dSigDR(const double * r) {
@@ -460,6 +465,11 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   lastAlphaEM(matrixElement()->orderInAlphaEW() >0 ?
 	      matrixElement()->alphaEM() : -1.);
 
+  matrixElement()->fillProjectors();
+  if ( !projectors().empty() ) {
+    lastProjector(projectors().select(UseRandom::rnd()));
+  }
+
   subProcess(SubProPtr());
   if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
        matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
@@ -482,35 +492,68 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
 void StandardXComb::newSubProcess(bool group) {
   if ( subProcess() ) return;
-
-  if ( !group )
-    subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), matrixElement())));
-  else
-    subProcess(new_ptr(SubProcessGroup(lastPartons(), tCollPtr(), matrixElement())));
-  lastDiagramIndex(matrixElement()->diagram(diagrams()));
-  const ColourLines & cl = matrixElement()->selectColourGeometry(lastDiagram());
-  Lorentz5Momentum p1 = lastPartons().first->momentum();
-  Lorentz5Momentum p2 = lastPartons().second->momentum();
-  tPPair inc = lastPartons();
-  if ( mirror() ) swap(inc.first, inc.second);
-  if ( matrixElement()->wantCMS() &&
-       !matrixElement()->haveX1X2() ) {
-    LorentzRotation r =  Utilities::boostToCM(inc);
-    lastDiagram()->construct(subProcess(), *this, cl);
-    subProcess()->transform(r.inverse());
-    lastPartons().first->set5Momentum(p1);
-    lastPartons().second->set5Momentum(p2);
-  } else {
-    lastDiagram()->construct(subProcess(), *this, cl);
+  if ( head() ) {
+    // first get the meMomenta in their CMS, as this may
+    // not be the case
+    Boost cm = (meMomenta()[0] + meMomenta()[1]).findBoostToCM();
+    if ( cm.mag2() > Constants::epsilon ) {
+      for ( vector<Lorentz5Momentum>::iterator m = meMomenta().begin();
+	    m != meMomenta().end(); ++m ) {
+	*m = m->boost(cm);
+      }
+    }
   }
-  lastPartons().first ->scale(partonBinInstances().first ->scale());
-  lastPartons().second->scale(partonBinInstances().second->scale());
-  for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
-    subProcess()->outgoing()[i]->scale(lastScale());
-  // construct the spin information for the interaction
-  matrixElement()->constructVertex(subProcess());
-  // set veto scales
-  matrixElement()->setVetoScales(subProcess());
+  if ( !lastProjector() ) {
+    if ( !group )
+      subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), matrixElement())));
+    else
+      subProcess(new_ptr(SubProcessGroup(lastPartons(), tCollPtr(), matrixElement())));
+    lastDiagramIndex(matrixElement()->diagram(diagrams()));
+    const ColourLines & cl = matrixElement()->selectColourGeometry(lastDiagram());
+    Lorentz5Momentum p1 = lastPartons().first->momentum();
+    Lorentz5Momentum p2 = lastPartons().second->momentum();
+    tPPair inc = lastPartons();
+    if ( mirror() ) swap(inc.first, inc.second);
+    if ( matrixElement()->wantCMS() &&
+	 !matrixElement()->haveX1X2() ) {
+      LorentzRotation r =  Utilities::boostToCM(inc);
+      lastDiagram()->construct(subProcess(), *this, cl);
+      subProcess()->transform(r.inverse());
+      lastPartons().first->set5Momentum(p1);
+      lastPartons().second->set5Momentum(p2);
+    } else {
+      lastDiagram()->construct(subProcess(), *this, cl);
+    }
+    lastPartons().first ->scale(partonBinInstances().first ->scale());
+    lastPartons().second->scale(partonBinInstances().second->scale());
+    for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
+      subProcess()->outgoing()[i]->scale(lastScale());
+    // construct the spin information for the interaction
+    matrixElement()->constructVertex(subProcess());
+    // set veto scales
+    matrixElement()->setVetoScales(subProcess());
+  } else {
+    lastProjector()->newSubProcess();
+    subProcess(lastProjector()->subProcess());
+    lastPartons(lastProjector()->lastPartons());
+    lastSHat((lastPartons().first->momentum() +
+	      lastPartons().second->momentum()).m2());
+    lastX1X2(make_pair(lastPartons().first->momentum().plus()/
+		       lastParticles().first->momentum().plus(),
+		       lastPartons().second->momentum().minus()/
+		       lastParticles().second->momentum().minus()));
+    lastY(log(lastX1()/lastX2())*0.5);
+    partonBinInstances().first->parton(lastPartons().first);
+    partonBinInstances().second->parton(lastPartons().second);
+    if ( !matrixElement()->keepRandomNumbers() )
+      throw Exception() << "Matrix element needs to request random number storage "
+			<< "for creating projected subprocesses."
+			<< Exception::runerror;
+    const double * r = &lastRandomNumbers()[0];
+    pExtractor()->generateSHat(lastS(), partonBinInstances(),
+			       r, r + nDim() - partonDims.second,true);
+    pExtractor()->updatePartonBinInstances(partonBinInstances());
+  }
 }
 
 tSubProPtr StandardXComb::construct() {
@@ -525,18 +568,6 @@ tSubProPtr StandardXComb::construct() {
 
   setPartonBinInfo();
   matrixElement()->setKinematics();
-
-  if ( head() ) {
-    // first get the meMomenta in their CMS, as this may
-    // not be the case
-    Boost cm = (meMomenta()[0] + meMomenta()[1]).findBoostToCM();
-    if ( cm.mag2() > Constants::epsilon ) {
-      for ( vector<Lorentz5Momentum>::iterator m = meMomenta().begin();
-	    m != meMomenta().end(); ++m ) {
-	*m = m->boost(cm);
-      }
-    }
-  }
 
   newSubProcess();
 
@@ -561,7 +592,7 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
      << theLastDiagramIndex << theMEInfo << theLastRandomNumbers << theMEPartonData
      << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
      << theLastME2 << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight
-     << theHead;
+     << theHead << theProjectors << theProjector;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
@@ -570,7 +601,7 @@ void StandardXComb::persistentInput(PersistentIStream & is, int) {
      >> theLastDiagramIndex >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
      >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
      >> theLastME2 >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight
-     >> theHead;
+     >> theHead >> theProjectors >> theProjector;
 }
 
 ClassDescription<StandardXComb> StandardXComb::initStandardXComb;

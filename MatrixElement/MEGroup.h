@@ -338,6 +338,12 @@ public:
 						  const PartonPairVec& allPBins) const;
 
   /**
+   * Fill the projectors object of xcombs to choose subprocesses
+   * different than the one currently integrated.
+   */
+  virtual void fillProjectors() { head()->fillProjectors(); }
+
+  /**
    * Return true, if SubProcessGroups should be
    * setup from this MEGroup. If not, a single SubProcess
    * is constructed from the data provided by the

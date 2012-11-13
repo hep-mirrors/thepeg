@@ -120,6 +120,11 @@ public:
   virtual void prepare(const PBIPair & pbins);
 
   /**
+   * Update information on the given parton bin instances
+   */
+  virtual void updatePartonBinInstances(const PBIPair & pbins);
+
+  /**
    * Generate \f$l=\log(1/x)\f$ for all parton extractions.
    */
   virtual bool generateL(const PBIPair & pbins,

@@ -281,6 +281,11 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   if ( xsec != ZERO )
     theMEGroup->lastEventStatistics();
 
+  matrixElement()->fillProjectors();
+  if ( !projectors().empty() ) {
+    lastProjector(projectors().select(UseRandom::rnd()));
+  }
+
   subProcess(SubProPtr());
   if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
        matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
@@ -300,10 +305,6 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
 }
 
 void StdXCombGroup::newSubProcess(bool) {
-
-  // subprocess selection goes here
-  // if me group returns an associated
-  // selector
 
   StandardXComb::newSubProcess(theMEGroup->subProcessGroups());
 

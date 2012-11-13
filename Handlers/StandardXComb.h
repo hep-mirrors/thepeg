@@ -147,6 +147,25 @@ public:
    * Set the head XComb pointer.
    */
   void head(tStdXCombPtr headXC) { theHead = headXC; }
+
+  /**
+   * Return a selector object of xcombs to choose subprocesses
+   * different than the one currently integrated.
+   */
+  Selector<tStdXCombPtr>& projectors() { return theProjectors; }
+
+  /**
+   * Return a pointer to a projector xcomb which will generate a subprocess
+   * different from the one just integrated.
+   */
+  tStdXCombPtr lastProjector() const { return theProjector; }
+
+  /**
+   * Set a pointer to a projector xcomb which will generate a subprocess
+   * different from the one just integrated.
+   */
+  void lastProjector(tStdXCombPtr pxc) { theProjector = pxc; }
+
   //@}
 
   /** @name Main functions used for the generation. */
@@ -544,6 +563,18 @@ private:
    * member of a XComb group.
    */
   tStdXCombPtr theHead;
+
+  /**
+   * A selector object of xcombs to choose subprocesses
+   * different than the one currently integrated.
+   */
+  Selector<tStdXCombPtr> theProjectors;
+
+  /**
+   * A pointer to a projector xcomb which will generate a subprocess
+   * different from the one just integrated.
+   */
+  tStdXCombPtr theProjector;
 
 private:
 
