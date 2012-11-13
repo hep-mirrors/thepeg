@@ -62,7 +62,8 @@ void StdXCombGroup::build(const PartonPairVec& allPBins) {
 StdXCombGroup::~StdXCombGroup() { }
 
 void StdXCombGroup::clean() {
-  XComb::clean();
+  StandardXComb::clean();
+  theLastHeadCrossSection = ZERO;
   for ( vector<StdXCombPtr>::const_iterator dep = theDependent.begin();
 	dep != theDependent.end(); ++dep )
     (**dep).clean();

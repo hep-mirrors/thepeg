@@ -167,6 +167,9 @@ void StandardXComb::setIncomingPartons() {
   lastPartons().first->set5Momentum(pFirst);
   lastPartons().second->set5Momentum(pSecond);
 
+  partonBinInstances().first->parton(lastPartons().first);
+  partonBinInstances().second->parton(lastPartons().second);
+
   lastS((lastParticles().first->momentum() +
 	 lastParticles().second->momentum()).m2());
   lastSHat((lastPartons().first->momentum() +
@@ -217,6 +220,16 @@ bool StandardXComb::willPassCuts() const {
 
   return true;
 
+}
+
+void StandardXComb::clean() {
+  XComb::clean();
+  theLastPDFWeight = 0.0;
+  theLastCrossSection = ZERO;
+  theLastJacobian = 0.0;
+  theLastME2 = 0.0;
+  theLastMECrossSection = ZERO;
+  theLastMEPDFWeight = 0.0;
 }
 
 CrossSection StandardXComb::dSigDR(const double * r) {
