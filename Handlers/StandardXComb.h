@@ -155,6 +155,12 @@ public:
   Selector<tStdXCombPtr>& projectors() { return theProjectors; }
 
   /**
+   * Return a selector object of xcombs to choose subprocesses
+   * different than the one currently integrated.
+   */
+  const Selector<tStdXCombPtr>& projectors() const { return theProjectors; }
+
+  /**
    * Return a pointer to a projector xcomb which will generate a subprocess
    * different from the one just integrated.
    */
