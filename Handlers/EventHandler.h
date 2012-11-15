@@ -403,9 +403,7 @@ protected:
    * run has ended. Used eg. to write out statistics.
    */
   virtual void dofinish() {
-    currentEvent(tEventPtr());
-    currentCollision(tCollPtr());
-    currentStep(tStepPtr());
+    clean();
     HandlerBase::dofinish();
   }
 

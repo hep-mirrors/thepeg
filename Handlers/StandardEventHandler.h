@@ -299,6 +299,11 @@ protected:
    */
   int binStrategy() const { return theBinStrategy; }
 
+  /**
+   * Throw away the last generated event before generating a new one.
+   */
+  virtual void clean();
+
 private:
 
   /**

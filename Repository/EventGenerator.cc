@@ -79,6 +79,7 @@ EventGenerator::EventGenerator()
   : thePath("."), theNumberOfEvents(1000), theQuickSize(7000),
     preinitializing(false), ieve(0), weightSum(0.0),
     theDebugLevel(0), logNonDefault(-1), printEvent(0), dumpPeriod(0),
+    keepAllDumps(false),
     debugEvent(0), maxWarnings(10), maxErrors(10), theCurrentRandom(0),
     theCurrentGenerator(0), useStdout(false) {}
 
@@ -100,6 +101,7 @@ EventGenerator::EventGenerator(const EventGenerator & eg)
     usedObjects(eg.usedObjects), ieve(eg.ieve), weightSum(eg.weightSum),
     theDebugLevel(eg.theDebugLevel), logNonDefault(eg.logNonDefault),
     printEvent(eg.printEvent), dumpPeriod(eg.dumpPeriod),
+    keepAllDumps(eg.keepAllDumps),
     debugEvent(eg.debugEvent),
     maxWarnings(eg.maxWarnings), maxErrors(eg.maxErrors), theCurrentRandom(0),
     theCurrentGenerator(0),
@@ -465,9 +467,15 @@ EventPtr EventGenerator::doShoot() {
 	     ieve < printEvent ) && event ) log() << *event;
       if ( debugEvent > 0 && ieve + 1 >= debugEvent )
 	Debug::level = Debug::full;
-      if ( dumpPeriod > 0 && ieve%dumpPeriod == 0 ) dump();
     }
   } while ( !event );
+
+  // If scheduled, dump a clean state between events
+  if ( ThePEG_DEBUG_LEVEL && dumpPeriod > 0 && ieve%dumpPeriod == 0 ) {
+    eventHandler()->clearEvent();
+    eventHandler()->clean();
+    dump();
+  }
 
   return event;
 }
@@ -589,7 +597,15 @@ void EventGenerator::tic(long currev, long totev) const {
 
 void EventGenerator::dump() const {
   if ( dumpPeriod > -1 ) {
-    PersistentOStream file(filename() + ".dump", globalLibraries());
+    string dumpfile;
+    if ( keepAllDumps ) {
+      ostringstream number;
+      number << ieve;
+      dumpfile = filename() + "-" + number.str() + ".dump";
+    }
+    else
+      dumpfile = filename() + ".dump";
+    PersistentOStream file(dumpfile, globalLibraries());
     file << tcEGPtr(this);
   }
 }
@@ -786,7 +802,7 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << theNumberOfEvents << theObjectMap << theParticles
      << theQuickParticles << theQuickSize << match << usedset
      << ieve << weightSum << theDebugLevel << logNonDefault << printEvent
-     << dumpPeriod << debugEvent
+     << dumpPeriod << keepAllDumps << debugEvent
      << maxWarnings << maxErrors << theCurrentEventHandler
      << theCurrentStepHandler << useStdout << theMiscStream.str();
 }
@@ -800,7 +816,7 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> theNumberOfEvents >> theObjectMap >> theParticles
      >> theQuickParticles >> theQuickSize >> theMatchers >> usedObjects
      >> ieve >> weightSum >> theDebugLevel >> logNonDefault >> printEvent
-     >> dumpPeriod >> debugEvent
+     >> dumpPeriod >> keepAllDumps >> debugEvent
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
      >> theCurrentStepHandler >> useStdout >> dummy;
   theMiscStream.str(dummy);
@@ -1218,6 +1234,21 @@ void EventGenerator::Init() {
      "'DumpPeriod' events. Set it to -1 to disable dumping even in the case of errors.",
      &EventGenerator::dumpPeriod, 0, -1, Constants::MaxInt,
      true, false, Interface::lowerlim);
+
+  static Switch<EventGenerator,bool> interfaceKeepAllDumps
+    ("KeepAllDumps",
+     "Whether all dump files should be kept, labelled by event number.",
+     &EventGenerator::keepAllDumps, false, true, false);
+  static SwitchOption interfaceKeepAllDumpsYes
+    (interfaceKeepAllDumps,
+     "Yes",
+     "Keep all dump files, labelled by event number.",
+     true);
+  static SwitchOption interfaceKeepAllDumpsNo
+    (interfaceKeepAllDumps,
+     "No",
+     "Keep only the latest dump file.",
+     false);
 
   static Parameter<EventGenerator,long> interfaceDebugEvent
     ("DebugEvent",

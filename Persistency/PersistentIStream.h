@@ -60,13 +60,11 @@ public:
 
   /**
    * Constuctor giving an input stream to be used as an underlying
-   * istream. If keepid is true, the order in which the original
-   * objects were created will be kept.
+   * istream.
    */
-  PersistentIStream(istream & is, bool keepid = false) 
+  PersistentIStream(istream & is) 
     : theIStream(&is), isPedantic(true), 
-      allocStream(false), badState(false),
-      keepId(keepid) 
+      allocStream(false), badState(false)
   {
     init();
   }
@@ -77,11 +75,9 @@ public:
    * Constuctor giving a file name to read from. If the first
    * character in the string is a '|', the corresponding program is
    * run and its standard output is used instead. If the filename ends
-   * in ".gz" the file is uncompressed with gzip. If keepid is true,
-   * the order in which the original objects were created will be
-   * kept.
+   * in ".gz" the file is uncompressed with gzip.
    */
-  PersistentIStream(string, bool keepid = false);
+  PersistentIStream(string);
 
   /**
    * The destructor.
@@ -465,12 +461,6 @@ private:
   /** Subversion number of the PersistentOStream which has written the
    *  file being read. */
   int subVersion;
-
-  /**
-   * If keepId is true, the order in which the original
-   * objects were created will be kept.
-   */
-  bool keepId;
 
   /**
    * Global libraries loaded in the initialization.

@@ -575,7 +575,7 @@ EventPtr StandardEventHandler::generateEvent() {
   while (1) {
     loopGuard();
 
-    clean();
+    EventHandler::clean();
 
     double weight = sampler()->generate();
 
@@ -636,8 +636,15 @@ void StandardEventHandler::select(tXCombPtr newXComb) {
   lastExtractor()->select(newXComb);
 }
 
-void StandardEventHandler::dofinish() {
+void StandardEventHandler::clean() {
   if ( theLastXComb ) theLastXComb->clean();
+  for (size_t i=0; i < theXCombs.size(); ++i )
+    if ( theXCombs[i] ) theXCombs[i]->clean();
+  EventHandler::clean();
+}
+
+void StandardEventHandler::dofinish() {
+  clean();
   EventHandler::dofinish();
 }
 

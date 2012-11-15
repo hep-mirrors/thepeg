@@ -1033,6 +1033,12 @@ private:
   long dumpPeriod;
 
   /**
+   * If this flag is true, keep all dump files of the run, 
+   * labelled by event number.
+   */
+  bool keepAllDumps;
+
+  /**
    * If the debug level is higher than 0, step up to the highest debug
    * level just before the event with number debugEvent is performed.
    */

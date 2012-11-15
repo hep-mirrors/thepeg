@@ -143,7 +143,6 @@ tPBIPtr XComb::partonBinInstance(tcPPtr p) const {
 void XComb::Init() {}
 
 void XComb::persistentOutput(PersistentOStream & os) const {
-
   os << theEventHandler << thePartonExtractor << theCKKW
      << theCuts << theParticles << thePartons << thePartonBins
      << theParticleBins << thePartonBinInstances

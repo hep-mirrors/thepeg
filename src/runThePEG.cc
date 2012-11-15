@@ -25,7 +25,6 @@ int main(int argc, char * argv[]) {
   string mainclass;
   bool tics = false;
   bool resume = false;
-  bool keepid = false;
   string tag = "";
 
   for ( int iarg = 1; iarg < argc; ++iarg ) {
@@ -50,7 +49,6 @@ int main(int argc, char * argv[]) {
     else if ( arg == "--seed" || arg == "-seed" ) seed = atol(argv[++iarg]);
     else if ( arg == "--tics" || arg == "-tics" ) tics = true;
     else if ( arg == "--resume" ) resume = true;
-    else if ( arg == "--keepid" ) keepid = true;
     else if ( arg == "-t" ) tag = argv[++iarg];
     else if ( arg.substr(0,2) == "-t" ) tag = arg.substr(2);
     else if ( arg.substr(0,6) == "--tag=" ) tag = arg.substr(6);
@@ -78,10 +76,10 @@ int main(int argc, char * argv[]) {
 
     EGPtr eg;
     if ( run == "-" ) {
-      PersistentIStream is(cin, keepid);
+      PersistentIStream is(cin);
       is >> eg;
     } else {
-      PersistentIStream is(run, keepid);
+      PersistentIStream is(run);
       is >> eg;
     }
 

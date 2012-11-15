@@ -45,3 +45,4 @@ INSTALL
 Makefile
 Makefile.in
 src/TestDecayMode.in
+ThePEG.*\.tar\.(bz2|gz)
