@@ -253,12 +253,16 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
 
   CrossSection depxsec = ZERO;
 
+  vector<tStdXCombPtr> activeXCombs;
+
   if ( !theMEGroup->mcSumDependent() ) {
     for ( vector<StdXCombPtr>::const_iterator dep = theDependent.begin();
 	  dep != theDependent.end(); ++dep ) {
       if ( noHeadPass && (**dep).matrixElement()->headCuts() )
 	continue;
       depxsec += (**dep).dSigDR(r + theMEGroup->dependentOffset((**dep).matrixElement()));
+      if ( theMEGroup->groupReweighted() )
+	activeXCombs.push_back(*dep);
     }
   } else {
     if ( theMEGroup->lastDependentXComb() ) {
@@ -266,6 +270,8 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
       if ( !(noHeadPass && dxc->matrixElement()->headCuts()) )
 	depxsec = theDependent.size()*
 	  dxc->dSigDR(r + theMEGroup->dependentOffset(dxc->matrixElement()));
+      if ( theMEGroup->groupReweighted() )
+	activeXCombs.push_back(dxc);
     }
   }
 
@@ -284,6 +290,21 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   matrixElement()->fillProjectors();
   if ( !projectors().empty() ) {
     lastProjector(projectors().select(UseRandom::rnd()));
+  }
+
+  if ( theMEGroup->groupReweighted() ) {
+    xsec = theMEGroup->reweightHead()*lastHeadCrossSection();
+    depxsec = ZERO;
+    for ( vector<tStdXCombPtr>::const_iterator dep = activeXCombs.begin();
+	  dep != activeXCombs.end(); ++dep ) {
+      depxsec += theMEGroup->reweightDependent(*dep)*(**dep).lastCrossSection();
+    }
+    if ( xsec != ZERO ) {
+      double rw = 1.0 + depxsec/xsec;
+      xsec *= rw;
+    } else {
+      xsec = depxsec;
+    }
   }
 
   subProcess(SubProPtr());

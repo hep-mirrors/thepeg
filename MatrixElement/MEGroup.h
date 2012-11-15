@@ -344,6 +344,22 @@ public:
   virtual void fillProjectors() { head()->fillProjectors(); }
 
   /**
+   * Return true, if this MEGroup will reweight the contributing cross
+   * sections.
+   */
+  virtual bool groupReweighted() const { return false; }
+
+  /**
+   * Reweight the head cross section
+   */
+  virtual double reweightHead() { return 1.; }
+
+  /**
+   * Reweight the dependent cross section
+   */
+  virtual double reweightDependent(tStdXCombPtr) { return 1.; }
+
+  /**
    * Return true, if SubProcessGroups should be
    * setup from this MEGroup. If not, a single SubProcess
    * is constructed from the data provided by the
