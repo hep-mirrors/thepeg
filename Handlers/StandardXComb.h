@@ -198,6 +198,16 @@ public:
   virtual void clean();
 
   /**
+   * Return true, if kinematics have already been generated
+   */
+  bool kinematicsGenerated() const  { return theKinematicsGenerated; }
+
+  /**
+   * Indicate that kinematics have been generated
+   */
+  void didGenerateKinematics() { theKinematicsGenerated = true; }
+
+  /**
    * Generate a phase space point from a vector \a r of \a nr numbers
    * in the interval ]0,1[ and return the corresponding differential
    * cross section.
@@ -491,6 +501,11 @@ protected:
   pair<int,int> partonDims;
 
 private:
+
+  /**
+   * True, if kinematics have already been generated
+   */
+  bool theKinematicsGenerated;
 
   /**
    * The momenta of the partons to be used by the matrix element
