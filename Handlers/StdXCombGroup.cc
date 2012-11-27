@@ -293,11 +293,11 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   }
 
   if ( theMEGroup->groupReweighted() ) {
-    xsec = theMEGroup->reweightHead()*lastHeadCrossSection();
+    xsec = theMEGroup->reweightHead(activeXCombs)*lastHeadCrossSection();
     depxsec = ZERO;
     for ( vector<tStdXCombPtr>::const_iterator dep = activeXCombs.begin();
 	  dep != activeXCombs.end(); ++dep ) {
-      depxsec += theMEGroup->reweightDependent(*dep)*(**dep).lastCrossSection();
+      depxsec += theMEGroup->reweightDependent(*dep,activeXCombs)*(**dep).lastCrossSection();
     }
     if ( xsec != ZERO ) {
       double rw = 1.0 + depxsec/xsec;

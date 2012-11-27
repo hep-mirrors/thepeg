@@ -352,12 +352,12 @@ public:
   /**
    * Reweight the head cross section
    */
-  virtual double reweightHead() { return 1.; }
+  virtual double reweightHead(const vector<tStdXCombPtr>&) { return 1.; }
 
   /**
    * Reweight the dependent cross section
    */
-  virtual double reweightDependent(tStdXCombPtr) { return 1.; }
+  virtual double reweightDependent(tStdXCombPtr, const vector<tStdXCombPtr>&) { return 1.; }
 
   /**
    * Return true, if SubProcessGroups should be
