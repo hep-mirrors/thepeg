@@ -292,7 +292,7 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     lastProjector(projectors().select(UseRandom::rnd()));
   }
 
-  if ( theMEGroup->groupReweighted() ) {
+  if ( theMEGroup->groupReweighted() && !activeXCombs.empty() ) {
     xsec = theMEGroup->reweightHead(activeXCombs)*lastHeadCrossSection();
     depxsec = ZERO;
     for ( vector<tStdXCombPtr>::const_iterator dep = activeXCombs.begin();
