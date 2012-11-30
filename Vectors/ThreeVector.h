@@ -226,6 +226,29 @@ public:
     return *this;
   }
 
+  /**
+   * Rotate from a reference frame to the z-axis.
+   */
+  ThreeVector<Value> & rotateUzBack (const Axis & axis) {
+    Axis ax = axis.unit();
+    double u1 = ax.x();
+    double u2 = ax.y();
+    double u3 = ax.z();
+    double up = u1*u1 + u2*u2;
+    if (up>0) {
+      up = sqrt(up);
+      Value px = x(),  py = y(),  pz = z();
+      setX( ( u1*u3*px + u2*u3*py)/up - up*pz );
+      setY( (-u2*px    + u1*py)/up );
+      setZ(   u1*px    + u2*py        + u3*pz );
+    }
+    else if (u3 < 0.) {
+      setX(-x());
+      setZ(-z()); 
+    }
+    return *this;
+  }
+
   /// Vector cross-product
   template <typename U>
   ThreeVector<typename BinaryOpTraits<Value,U>::MulT>
