@@ -188,6 +188,11 @@ public:
   int nDim() const { return theNDim; }
 
   /**
+   * Return the parton extraction dimensions
+   */
+  const pair<int,int>& partonDimensions() const { return partonDims; }
+
+  /**
    * Return true, if the current configuration will pass the cuts
    */
   bool willPassCuts() const;
