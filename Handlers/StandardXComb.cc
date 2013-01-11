@@ -193,6 +193,37 @@ void StandardXComb::setIncomingPartons() {
 
 }
 
+void StandardXComb::fill(const PPair& newParticles,
+			 const PPair& newPartons,
+			 const vector<Lorentz5Momentum>& newMEMomenta,
+			 const DVector& newLastRandomNumbers) {
+
+  lastParticles(newParticles);
+
+  lastP1P2(make_pair(0.0, 0.0));
+  lastS((lastParticles().first->momentum() +
+	 lastParticles().second->momentum()).m2());
+
+  lastPartons(newPartons);
+  lastSHat((lastPartons().first->momentum() +
+	    lastPartons().second->momentum()).m2());
+  lastX1X2(make_pair(lastPartons().first->momentum().plus()/
+		     lastParticles().first->momentum().plus(),
+		     lastPartons().second->momentum().minus()/
+		     lastParticles().second->momentum().minus()));
+  lastY((lastPartons().first->momentum() +
+	 lastPartons().second->momentum()).rapidity());
+
+  meMomenta().resize(newMEMomenta.size());
+  copy(newMEMomenta.begin(),newMEMomenta.end(),
+       meMomenta().begin());
+
+  lastRandomNumbers().resize(newLastRandomNumbers.size());
+  copy(newLastRandomNumbers.begin(),newLastRandomNumbers.end(),
+       lastRandomNumbers().begin());
+
+}
+
 bool StandardXComb::checkInit() {
   Energy summin = ZERO;
   for ( int i = 2, N = mePartonData().size(); i < N; ++i ) {

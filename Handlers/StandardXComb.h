@@ -121,6 +121,14 @@ public:
    */
   void setIncomingPartons();
 
+  /**
+   * Fill phase space information as far as possible
+   */
+  void fill(const PPair& newParticles,
+	    const PPair& newPartons,
+	    const vector<Lorentz5Momentum>& newMEMomenta,
+	    const DVector& newLastRandomNumbers = DVector());
+
   //@}
 
   /** @name Access the assigned objects used in the generation. */
