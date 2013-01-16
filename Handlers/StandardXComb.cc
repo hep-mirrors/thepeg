@@ -269,6 +269,7 @@ void StandardXComb::clean() {
   theProjectors.clear();
   theProjector = StdXCombPtr();
   theKinematicsGenerated = false;
+  matrixElement()->flushCaches();
 }
 
 CrossSection StandardXComb::dSigDR(const double * r) {
