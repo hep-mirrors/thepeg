@@ -294,8 +294,8 @@ void LesHouchesFileReader::doinit() {
 	// read any decay modes
 	line = StringUtils::car(block,"\r\n");
 	while(line[0] != 'D' && line[0] != 'B' &&
-	      line[0] != 'd' && line[0] != 'b' &&
-	      line    != "") {
+	      line[0] != 'd' && line[0] != 'b' && 
+	      line[0] != '<' && line    != "") {
 	  // skip comments
 	  if(line[0] == '#') {
 	    block = StringUtils::cdr(block,"\r\n");
