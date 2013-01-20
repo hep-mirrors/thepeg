@@ -142,13 +142,16 @@ void StandardXComb::recreatePartonBinInstances(Energy2 scale) {
 
 }
 
-void StandardXComb::setIncomingPartons() {
+void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
 
   if ( lastPartons().first )
     return;
 
+  if ( !labHead )
+    labHead = head();
+
   createPartonBinInstances();
-  lastParticles(head()->lastParticles());
+  lastParticles(labHead->lastParticles());
   setPartonBinInfo();
 
   lastPartons(make_pair(mePartonData()[0]->produceParticle(Lorentz5Momentum()),
@@ -157,9 +160,9 @@ void StandardXComb::setIncomingPartons() {
   Lorentz5Momentum pFirst = meMomenta()[0];
   Lorentz5Momentum pSecond = meMomenta()[1];
 
-  if ( head()->matrixElement()->wantCMS() ) {
-    Boost toLab = (head()->lastPartons().first->momentum() + 
-		   head()->lastPartons().second->momentum()).boostVector();
+  if ( labHead->matrixElement()->wantCMS() ) {
+    Boost toLab = (labHead->lastPartons().first->momentum() + 
+		   labHead->lastPartons().second->momentum()).boostVector();
     if ( toLab.mag2() > Constants::epsilon ) {
       pFirst.boost(toLab);
       pSecond.boost(toLab);
@@ -176,10 +179,7 @@ void StandardXComb::setIncomingPartons() {
 	 lastParticles().second->momentum()).m2());
   lastSHat((lastPartons().first->momentum() +
 	    lastPartons().second->momentum()).m2());
-  if ( head() )
-    lastP1P2(make_pair(head()->lastP1(),head()->lastP2()));
-  else
-    lastP1P2(make_pair(0.0, 0.0));
+  lastP1P2(make_pair(labHead->lastP1(),labHead->lastP2()));
 
   double x1 = 
     lastPartons().first->momentum().plus()/
