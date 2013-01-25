@@ -47,11 +47,11 @@ ThePEG::IBPtr RivetAnalysis::fullclone() const {
 }
 
 void RivetAnalysis::persistentOutput(ThePEG::PersistentOStream & os) const {
-  os << _analyses << filename << debug;
+  os << _analyses << _paths << filename << debug;
 }
 
 void RivetAnalysis::persistentInput(ThePEG::PersistentIStream & is, int) {
-  is >> _analyses >> filename >> debug;
+  is >> _analyses >> _paths >> filename >> debug;
 }
 
 ThePEG::ClassDescription<RivetAnalysis> RivetAnalysis::initRivetAnalysis;
@@ -69,6 +69,11 @@ void RivetAnalysis::Init() {
      &RivetAnalysis::_analyses, -1, "", "","" "",
      false, false, ThePEG::Interface::nolimits);
 
+  static ThePEG::ParVector<RivetAnalysis,string> interfacePaths
+    ("Paths",
+     "The directory paths where Rivet should look for analyses.",
+     &RivetAnalysis::_paths, -1, "", "","" "",
+     false, false, ThePEG::Interface::nolimits);
 
   static Parameter<RivetAnalysis,string> interfaceFilename
     ("Filename",
@@ -136,6 +141,7 @@ void RivetAnalysis::doinit() {
 
   // check that analysis list is available
   _rivet = new Rivet::AnalysisHandler; //(fname);
+  for ( int i = 0, N = _paths.size(); i < N; ++i ) Rivet::addAnalysisLibPath(_paths[i]);
   _rivet->addAnalyses(_analyses);
   if ( _rivet->analysisNames().size() != _analyses.size() ) {
     throw ThePEG::Exception() 
@@ -152,6 +158,7 @@ void RivetAnalysis::doinitrun() {
   // create Rivet analysis handler
   CurrentGenerator::Redirect stdout(cout);
   _rivet = new Rivet::AnalysisHandler; //(fname);
+  for ( int i = 0, N = _paths.size(); i < N; ++i ) Rivet::addAnalysisLibPath(_paths[i]);
   _rivet->addAnalyses(_analyses);
   // check that analysis list is still available
   if ( _rivet->analysisNames().size() != _analyses.size() ) {
