@@ -136,6 +136,11 @@ private:
   vector<string> _analyses;
 
   /**
+   * Search paths for finding rivet analyses. 
+   */
+  vector<string> _paths;
+
+  /**
    * The base name of the output file.
    */
   string filename;
