@@ -294,9 +294,9 @@ CrossSection StandardXComb::dSigDR(const double * r) {
 
   setIncomingPartons();
 
-  lastScale(head()->lastScale());
-  lastAlphaS(head()->lastAlphaS());
-  lastAlphaEM(head()->lastAlphaEM());
+  lastScale(matrixElement()->scale());
+  lastAlphaS(matrixElement()->alphaS());
+  lastAlphaEM(matrixElement()->alphaEM());
 
   if ( (!willPassCuts() && 
 	!matrixElement()->headCuts() &&
