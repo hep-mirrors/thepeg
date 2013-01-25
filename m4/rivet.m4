@@ -64,7 +64,9 @@ if test "x$with_rivet" != "xno"; then
 fi
 
 rivetversion=1
-if test "x$with_rivet" != "xno"; then
+if test "x$with_rivet" = "xsystem"; then
+   echo $( rivet-config --version ) | grep -q '^1\.' || rivetversion=2
+elif test "x$with_rivet" != "xno"; then
    echo $( "$with_rivet/bin/rivet-config" --version ) | grep -q '^1\.' || rivetversion=2
 fi
 
