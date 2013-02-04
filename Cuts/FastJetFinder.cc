@@ -77,17 +77,34 @@ bool FastJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
   else assert(false);
 
   fastjet::JetAlgorithm jet_algorithm = fastjet::kt_algorithm;
-  if ( theVariant == ca ) {
+  if ( theVariant == CA ) {
     jet_algorithm = fastjet::cambridge_algorithm;
-  } else if ( theVariant == antikt ) {
+  } else if ( theVariant == antiKt ) {
     jet_algorithm = fastjet::antikt_algorithm;
+  } else if ( theVariant > 3 ) {
+    jet_algorithm = fastjet::ee_genkt_algorithm;
   }
-  fastjet::JetDefinition jet_def(jet_algorithm, theConeRadius, recomb_scheme, strategy);
+
+  fastjet::JetDefinition jet_def;
+  if ( theVariant < 4 ) {
+    jet_def = fastjet::JetDefinition(jet_algorithm, theConeRadius, recomb_scheme, strategy);
+  } else {
+    int power = 1;
+    if ( theVariant == sphericalCA ) {
+      power = 0;
+    }
+    if ( theVariant == sphericalAntiKt ) {
+      power = -1;
+    }
+    jet_def = fastjet::JetDefinition(jet_algorithm, theConeRadius, power, recomb_scheme, strategy);
+  }
+
   fastjet::ClusterSequence clust_seq(recombinables, jet_def);
 
   double dcut = 0.0;
   
-  if ( theVariant != antikt ) {
+  if ( theVariant != antiKt &&
+       theVariant != sphericalAntiKt ) {
     dcut = theDCut/GeV2;
   } else {
     dcut = GeV2/theDCut;
@@ -185,13 +202,27 @@ void FastJetFinder::Init() {
     (interfaceVariant,
      "CA",
      "Cambridge/Aachen algorithm.",
-     ca);
+     CA);
   static SwitchOption interfaceVariantAntiKt
     (interfaceVariant,
      "AntiKt",
      "Anti kt algorithm.",
-     antikt);
-
+     antiKt);
+  static SwitchOption interfaceVariantSphericalKt
+    (interfaceVariant,
+     "SphericalKt",
+     "Spherical kt algorithm.",
+     sphericalKt);
+  static SwitchOption interfaceVariantSphericalCA
+    (interfaceVariant,
+     "SphericalCA",
+     "Spherical Cambridge/Aachen algorithm.",
+     sphericalCA);
+  static SwitchOption interfaceVariantSphericalAntiKt
+    (interfaceVariant,
+     "SphericalAntiKt",
+     "Spherical anti kt algorithm.",
+     sphericalAntiKt);
 
   static Switch<FastJetFinder,int> interfaceMode
     ("Mode",

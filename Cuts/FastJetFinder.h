@@ -102,13 +102,12 @@ protected:
 private:
 
   /**
-   * The resolution cut. Ignored, if algorithm is to act inclusively.
+   * The resolution cut.
    */
   Energy2 theDCut;
 
   /**
-   * The `cone radius' R. Ignored (R=1), if algorithm is to act
-   * exclusively.
+   * The `cone radius' R.
    */
   double theConeRadius;
 
@@ -117,8 +116,11 @@ private:
    */
   enum variants {
     kt = 1,
-    ca = 2,
-    antikt = 3
+    CA = 2,
+    antiKt = 3,
+    sphericalKt = 4,
+    sphericalCA = 5,
+    sphericalAntiKt = 6
   };
 
   /**
