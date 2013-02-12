@@ -186,7 +186,7 @@ void FastJetFinder::Init() {
   static Parameter<FastJetFinder,double> interfaceConeRadius
     ("ConeRadius",
      "The cone radius R used in inclusive mode.",
-     &FastJetFinder::theConeRadius, 0.7, 0.0, 1.0,
+     &FastJetFinder::theConeRadius, 0.7, 0.0, 10.0,
      false, false, Interface::limited);
 
   static Switch<FastJetFinder,int> interfaceVariant
