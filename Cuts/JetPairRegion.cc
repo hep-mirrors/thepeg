@@ -60,7 +60,7 @@ void JetPairRegion::describe() const {
 
 }
 
-bool JetPairRegion::matches() const {
+bool JetPairRegion::matches(tcCutsPtr parent) const {
   
   if ( !firstRegion()->didMatch() ||
        !secondRegion()->didMatch() )
@@ -87,7 +87,9 @@ bool JetPairRegion::matches() const {
   if ( dy < deltaYMin() || dy > deltaYMax() )
     return false;
 
-  double peta = pi.eta() * pj.eta();
+  double peta = 
+    (pi.rapidity() + parent->currentYHat()) * 
+    (pj.rapidity() + parent->currentYHat());
   if ( theOppositeHemispheres && peta > 0.0 )
     return false;
 

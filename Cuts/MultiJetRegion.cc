@@ -98,7 +98,7 @@ bool MultiJetRegion::matches(int i, int j) const {
 
   double dphi = abs(pi.phi() - pj.phi());
   if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
-  double dR = sqrt(sqr(deta)-sqr(dphi));
+  double dR = sqrt(sqr(deta)+sqr(dphi));
   if ( dR < deltaRMin() || dR > deltaRMax() )
     return false;
 

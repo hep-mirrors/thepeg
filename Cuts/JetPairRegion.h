@@ -105,7 +105,7 @@ public:
   /**
    * Return true, if the requirements on the jet regions are fullfilled.
    */
-  virtual bool matches() const;
+  virtual bool matches(tcCutsPtr parent) const;
 
 public:
 

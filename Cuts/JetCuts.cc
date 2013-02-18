@@ -136,7 +136,7 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
 
   for ( vector<Ptr<JetPairRegion>::ptr>::const_iterator r = jetPairRegions().begin();
 	r != jetPairRegions().end(); ++r )
-    if ( !(**r).matches() )
+    if ( !(**r).matches(parent) )
       return false;
 
   for ( vector<Ptr<MultiJetRegion>::ptr>::const_iterator r = multiJetRegions().begin();
