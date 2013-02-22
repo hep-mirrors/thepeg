@@ -13,7 +13,7 @@
 	* Repository/EventGenerator.cc: Added option for keeping
 	all dump files of a run, labelled by event number.
 
-2012-10-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2012-10-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ClusterCollapser.cc: Fixed bug in collapsing of gluon
 	rings.
@@ -21,12 +21,12 @@
 	* EventRecord/Particle.cc: Fixed problem with setting the lifetime
 	of stable particles.
 
-2012-09-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2012-09-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, Repository/Repository.cc: The search paths
 	for reading input files are now saved in the repository.
 
-2012-09-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2012-09-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.cc (ThePEG): Removed statements which
         automatically flagged a particle unstable if a decay mode was
@@ -57,7 +57,7 @@
 
 	* Utilities/Exception.h (ThePEG): Fixed out-of-scope error in what().
 
-2011-08-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-08-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h (ThePEG): Put explicit std:: on greater function.
 
@@ -66,7 +66,7 @@
 	* Helicity/Vertex/VertexBase.cc: Explicit checking for charge
 	consistency in addToList(). For now, electric charge only.
 
-2011-07-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-07-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.*, Persistency/PersistentIStream.* : A
 	persistent input stream now remembers the globally loaded
@@ -90,18 +90,18 @@
 	commands and return an error string.  This allows --exitonerror to
 	work correctly for load() and read().
 
-2011-06-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-06-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.h: Added function to write out class names
 	from type_info in a readable form. Used in EventGenerator for the
 	exception classes.
 
-2011-05-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-05-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/SimplePhaseSpace.cc (getMagnitude): Made the function
 	safer against throwing exceptions due to rounding errors.
 
-2011-04-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-04-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/CurrentGenerator.h: Slight functionality enhancement
 	to be more similar to Current<>.
@@ -111,30 +111,30 @@
 	* Repository/EventGenerator.cc: Allow MaxErrors to be negative in
 	the interface definition. The handling already allows it.
 
-2011-04-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-04-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h: Fixed ininitialized index value in
 	constructor.
 
-2011-03-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-03-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/DebugItem.*: Introduced new class to enable selective
 	debugging. It is activated for runThePEG, but should be considered
 	experimental.
 
-2011-03-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-03-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/LorentzVector.h: Fixed bug where dirPlus, dirMinus and
 	dirZ returned double rather than templated value type.
 
-2011-03-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-03-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runThePEG.cc, Repository/EventGenerator.h: Aded possibility
 	to add a tag when running so that one .run file can be run
 	eg. with different seeds which then also can result in different
 	output files.
 
-2011-03-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-03-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h: Added value() function for situations where
 	implicit cast does not work.
@@ -149,7 +149,7 @@
 	correct FPE handling when Fortran libraries are
 	present (herwig:ticket:338).
 
-2011-03-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-03-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.h (cTau): Fixed problem where cTau() reported
 	infinite lifetime in case both width and lifetime were set to
@@ -160,24 +160,24 @@
 	width and lifetime are zero, cTau() returns zero for unstable
 	particles and MaxLength for stable ones.
 
-2011-03-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-03-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/std.h (inserter): Specialized the inserter function for
 	vector and deque as the normal inserter function was not safe for
 	such containters.
 
-2011-01-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-01-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/BaseRepository.cc: "." can now be used as a directory
 	in 'mset' and friends.
 
-2011-01-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-01-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h: Extended the functionality to include index
 	caching and a comparison class. Also added a MinCmp class as a
 	specialization.
 
-2011-01-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-01-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/*EventGenerator.* (flushOutputFile): The .out file is
 	now only opened and written in finish(), before that any output is
@@ -189,7 +189,7 @@
 	feenableexcept(), which doesn't exist on OS X.
 	Fixes herwig:ticket:328
 
-2011-01-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2011-01-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.* Repository/BaseRepository.*
 	Interface/InterfacedBase.* Interface/InterfaceBase.* (and several
@@ -201,12 +201,12 @@
 	specify a default value on a per-object basis in
 	BaseRepository (the 'newdef' command).
 
-2010-12-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-12-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.h: Added member to return version number
 	and a banner.
 
-2010-12-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-12-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* m4/rivet.m4: Fixed check if Rivet is in system libraries.
 
@@ -214,14 +214,14 @@
 
 	* Analysis/RivetAnalysis.cc: Runerror if not all analyses are found.
 
-2010-11-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-11-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Debug.cc: For some reason, the old procedure for
 	enabling the signalling of floating-point exceptions, does not
 	work anymore. I have included an alternative based on the fenv.h
 	system header which seems to work.
 
-2010-10-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-10-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Debug.h: There was an inconsistency before where
 	whatever you say about debugging at the command-line of runThePEG
@@ -229,7 +229,7 @@
 	the EventGenerator. Now the EventGenerator will only set its own
 	debug level if none has been set before by Debug::setDebug().
 
-2010-10-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-10-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Exception.h: Added noabort flag. When set, all
 	abortnow and maybeabort severities are converted to runerror. The
@@ -243,7 +243,7 @@
 
 	* m4/rivet.m4: Require Rivet >= 1.3
 
-2010-10-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-10-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/DescribeClass.h: Added a simplified interface to the
 	type information system in ThePEG. For simle classes there is no
@@ -255,7 +255,7 @@
 	versions of this class should be used for abstract classes and
 	classes without persistent I/O functions respectively.
 
-2010-10-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-10-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/LastXCombInfo.h (and friends): Included implementation
 	of pdf<> function again in the headerfile and removed it from
@@ -279,7 +279,7 @@
 	of the stream explicitly. Otherwise, new content will overwrite
 	existing lines.
 
-2010-10-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-10-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/Histogram2D.h (LWH): Added two-dimensional histograms
 	in LWH.
@@ -315,7 +315,7 @@
 	EventRecord. This removes the need for frequent dynamic_casts from
 	the base to the derived class.
 
-2010-09-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-09-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCConverter.tcc: Converted David fix for
 	herwig:ticket:323 to properly use the traits class.
@@ -331,13 +331,13 @@
 	UnResolvedRemnant; PDF override options added to PartonExtractor;
 	BudnevPDF added.
 
-2010-08-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-08-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.*: Added interface to switch on a given set of
 	decay modes, while switching off all others. In response to
 	herwig:ticket:319
 
-2010-07-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-07-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/TwoCutBase.cc (passCuts): Fixed bug noticed by Simon where
 	t instead of -t was checked against
@@ -350,7 +350,7 @@
 	* Vectors/LorentzVector.h: Implemented rotate(angle,axis) for
 	LorentzVector, too.
 
-2010-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-05-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentOStream.*: Output of real numbers now
 	throws an exception if a NaN or an Inf is encountered. The
@@ -361,19 +361,19 @@
 	* Utilities/StringUtils.*: Fixed whitespace definition to include
 	CR in addition to LF. Fixes herwig:ticket:302.
 
-2010-04-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-04-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LeptonLeptonPDF.cc (xfl): Fixed numerical issue when
 	x->1 (see herwig:ticket:224 and herwig:ticket:310).
 
-2010-03-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-03-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFile.*: Added class to be able to use zlib (and in
 	the future bzlib) for C-style i/o, especially in CFileLineReader
 	and LesHouchesReader. Checking for zlib.h is still switched off in
 	configure script.
 
-2010-03-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2010-03-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* StandardModel/O1AlphaS.*: Changed the behavior of the thresholds
 	in case quarks are exactly massless. Also changed the
@@ -404,7 +404,7 @@
 	* Repository/EventGenerator.cc: Small change to the misc printout:
 	the introductory line is only printed when there is any content.
 
-2009-12-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-12-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc (EventGenerator::count): Changed
 	the declaration of ExceptionMap, since the previous version
@@ -433,7 +433,7 @@
 	'setupThePEG' and 'runThePEG' are not wrapped in scripts anymore
 	and execute directly.
 
-2009-11-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-11-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistogramFactory.h: When checking that two histograms
 	have the same bins, only check individual bins if the axis are
@@ -450,7 +450,7 @@
 	* Repository/EventGenerator.h: Added function to get the
 	'useStdout' boolean from the Generator.
 
-2009-11-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-11-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/RivetAnalysis.cc: Redirect standard output from Rivet
 	to the end of the log file.
@@ -477,7 +477,7 @@
 	* Helicity/*: Fixed helicity direction bug and cleaned up lots of
 	redundant code.
 
-2009-10-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/ColourSinglet.cc (ColourSinglet::addJunction): Fixed
 	bug in connecting junctions.
@@ -485,7 +485,7 @@
 	* EventRecord/ColourLine.*: Added create function to connect four
 	colour lines with a fifth, giving a source and a sink junction.
 
-2009-10-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/RemnantData.*: Allow access to the decayer object.
 
@@ -496,7 +496,7 @@
 	EventRecord/RemnantParticle.*: The RemnantParticle now asks if the
 	RemnantDecayer feels it is OK to extract a given parton instance.
 
-2009-10-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/RemnantDecayer.*: Added option to respect DIS kinematics but
 	to silently change scattered lepton if it doesn't work.
@@ -504,19 +504,19 @@
 	* src/ThePEGParticles.in: Set fourth generation neutrinos massive
 	by default.
 
-2009-10-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/ObjectIndexer.h: Added find function synonymous to
 	'operator()(IntT) const'.
 
-2009-10-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.*, Handlers/StandardEventHandler.*,
 	Repository/Repository.cc (Repository::makeRun): Fixed problems
 	arising when different particles with the same id was included in
 	the same run.
 
-2009-10-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.*: Allow for negative values of upper and lower
 	cut on the width. Negative values represents no cut.
@@ -535,7 +535,7 @@
 	Added small epsilon to maxSHat comparisons to
 	avoid numerical instability when NoPDF is chosen.
 
-2009-10-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-10-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ACDCSampler.cc, Handlers/StandardEventHandler.cc,
 	Handlers/SubProcessHandler.*,
@@ -548,7 +548,7 @@
 	which hopefully will write out helpful info (in response to
 	herwig:ticket:277).
 
-2009-09-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-09-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Strategy.*, Repository/Repository.cc: Strategy now
 	has a DefaultParticlesDirs interface (ParVector of strings). If
@@ -556,18 +556,18 @@
 	include particles in a run is disabled and only the directories
 	listed are scanned.
 
-2009-09-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-09-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/RivetAnalysis.h: Added filename parameter which
 	defaults to the run name.
 
-2009-09-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-09-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (findParticle): If the name is not
 	found among the default particles, look through also all other
 	particles.
 
-2009-09-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-09-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Event.cc (printGraphviz): Added member function to
 	call ThePEG::printGraphviz to facilitate usage in debugger.
@@ -581,7 +581,7 @@
 	* Analysis/GraphvizPlot.*: Uses new printGraphviz functionality,
 	now independent of HepMC.
 
-2009-09-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-09-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc (LesHouchesReader::createBeams):
 	If there are no PDFs used (and NoPDF's are assigned to the reader),
@@ -608,7 +608,7 @@
 	LesHouches/LesHouchesReader.cc (createPartonBinInstances):
 	Improved error message in LesHouches reader.
 
-2009-08-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-08-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/MEBase.*, Handlers/StandardXComb.*,
 	Handlers/StandardEventHandler.*: Fixed problem with (p)reweighting
@@ -617,13 +617,13 @@
 	properly taken into account in the statistics function in the
 	StandardEventHandler.
 
-2009-08-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-08-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc (EventGenerator::generateReferences):
 	Order the items in the LaTeX file with references according to
 	importance (in response to herwig:ticket:270).
 
-2009-08-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-08-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/AnalysisHandler.h: Added include for Event.h for
 	convenience (herwig:ticket:269).
@@ -639,7 +639,7 @@
 	fixed the determination of start and end particles to only
 	consider ones without coloured children.
 
-2009-08-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-08-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/GraphvizPlot.cc (dofinish): Made the message sent to
 	cout optional.
@@ -675,7 +675,7 @@
 	* PDF/LHAPDF.cc, PDF/Makefile.am: Also look in ThePEG's pkgdatadir
 	for the PDFsets.index file.
 
-2009-06-18 Simon Plätzer <sp@particle.uni-karlsruhe.de>
+2009-06-18 Simon PlÃ¤tzer <sp@particle.uni-karlsruhe.de>
 
 	* StandardModel/*Alpha*, StandardModel/RunningCoupling.*,
 	StandardModel/Makefile.am:
@@ -684,7 +684,7 @@
 	the number of loops entering the beta function to perform
 	consistency checks.
 
-2009-06-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-06-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.*, Handlers/StandardEventHandler.*,
 	Repository/EventGenerator.*,
@@ -697,25 +697,25 @@
 	* configure.ac, m4/thepeg.m4: Added summary output after
 	configure is run.
 
-2009-06-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-06-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc (initStat): Fixed bug where the
 	sum of the maximum weights was calculated instead of the
 	maximum. This will hopefully finally fix herwig:ticket:248
 
-2009-05-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-05-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc: The cross section for
 	different processes in the same LesHouches reader was not reported
 	correctly (herwig:ticket:248). This is now fixed.
 
-2009-05-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-05-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UnitIO.h: herwig:ticket:254 Fixed ouniterr() so that
 	nan's and inf's are written out as such and don't throw nasty
 	exceptions.
 
-2009-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-05-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc (addME): herwig:ticket:253
 	Fixed so that before determining whether or not a diagram should
@@ -723,7 +723,7 @@
 	temporarily ordered so that the first never has a id lower than
 	the second.
 
-2009-05-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-05-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistogramFactory.h: Fixed bug in divide and multiply so
 	that the weighted bin center does not goes wild.
@@ -764,13 +764,13 @@
 	* Vectors/HepMCConverter.tcc: Fixed minor bug leading to incorrect
 	PDFInfo when the two beam particles are different.
 
-2009-02-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-02-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Pointers.h (ThePEG_DECLARE_POINTERS): Changed macro so
 	that they can be used to easily typedef pointers outside the
 	ThePEG namespace.
 
-2009-02-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2009-02-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentOStream.h: Added output operator for
 	c-style strings as requested in ticket #231.
@@ -789,22 +789,22 @@
 	* LesHouches/LesHouchesReader.cc: Fixed several segfaults when
 	LHE file is inconsistent with repository settings.
 
-2008-12-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-12-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Current.h (ThePEG): Added general class for accessing
 	a static default object of a certain class.
 
-2008-12-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-12-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.cc (MadGraphReader::open): Now issues
 	warning if LHE file does not include proper MadGraph header.
 
-2008-11-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-11-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/MultiEventGenerator.* (MultiEventGenerator::doGo):
 	Header with sub-run information is now written also to the log file.
 
-2008-09-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-09-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/Transverse.h: Fixed bug where named arguments were
 	omitted when moving the implementation from the .icc files.
@@ -829,7 +829,7 @@
 
 	* PDT/ParticleData.* : Strings now passed by reference.
 
-2008-09-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-09-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.*: Introduced
 	units for HepMC. By includeing GenEvent.h and checking if the
@@ -851,7 +851,7 @@
 	constant to avoid allocation/deletion overhead was using 1.5% of time when
 	generating LEP events with Herwig++.
 
-2008-09-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-09-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/Transverse.*: Added function to multiply and divide with
 	scalar.
@@ -870,13 +870,13 @@
 	* Helicity/*: Cleaned up RhoDMatrix and SpinInfo after profiling
 	showed inefficiencies.
 
-2008-07-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-07-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/DecayHandler.cc (performDecay): Introduced MaxLifeTime
 	parameter and corresponding variable to prevent particles with
 	longer lifetime than this to decay (herwig:ticket:199).
 
-2008-06-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-06-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/LWHFactory.cc: The LWH namespace is renamed to
 	ThePEGLWH to avoid problems with using the Rivet versions of the
@@ -893,7 +893,7 @@
 	* PDT/DecayMode.*: Made theOrderedProducts a tPDVector to break
 	possible dependency loops.
 
-2008-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, Repository/(Base)Repository.*: Added
 	possibility to specify include directories for looking for .in
@@ -901,7 +901,7 @@
 	search paths. BaseRepository has functions prependReadDir and
 	appendReadDir for the same purpose.
 
-2008-05-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/RandomGenerator.*,
 	Repository/StandardRandom.* (StandardRandom::setSeed): The
@@ -910,7 +910,7 @@
 	that setting Seed to 0 will not give a new seed to the generator,
 	while -1 will give a standard seed.
 
-2008-05-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am, src/MultiLEP.in: Added test of
 	MultiEventGenerator.
@@ -935,7 +935,7 @@
 	include/Makefile.am, Makefile.am: Included libtool 2.2.4 in the
 	tarball. Moved acinclude into m4/thepeg.m4.
 
-2008-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc (StandardEventHandler::statistics):
 	Fixed so that the statistical error on the total cross section is
@@ -944,20 +944,20 @@
 	* ACDC/ACDCGen.icc: Fixed? bug in calculating the statistical
 	error. (herwig:ticket:174).
 
-2008-05-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UnitIO.h: Introduced IUnitErr and iuniterr to read in
 	numbers with error estimates written out by OUnitErr. Also
 	introduced specializations of ouniterr and iuniterr for double
 	without unit argument. In response to herwig:ticket:174.
 
-2008-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (Repository::exec): Fixed bug in
 	creating decay modes for non-synchronized
 	particles (herwig:ticket:182).
 
-2008-05-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc
 	(LesHouchesEventHandler::statistics): Now writes out cross
@@ -978,13 +978,13 @@
 	estimate of the integral and in addition estimates the statistical
 	error.
 
-2008-05-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2Base.cc (ME2to2Base::getCosTheta): Fixed
 	precision problem according to Peters suggestions in
 	herwig:ticket:172.
 
-2008-05-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-05-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc: Preparing for having errors on
 	the statistice output.
@@ -997,7 +997,7 @@
 	sub-processes which are mirrored along the z-axis. This will
 	hopefully fix herwig:ticket:172.
 
-2008-04-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CompSelector.*, LesHouches/LesHouchesEventHandler.*:
 	CompSelector will now only start compensating if a weight is
@@ -1013,19 +1013,19 @@
 	* PDT/ParticleData.cc: Changed readSetup() so that if '-' is given
 	as the PDGName the object name will be used instead.
 
-2008-04-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Strategy.cc (Strategy::setLocalParticlesDir): Allow
 	setting an empty string, to indicate that no directory should be
 	searched.
 
-2008-04-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.cc (MadGraphReader::open): The
 	MadEvent file format has changed (AGAIN!) so things that were
 	previously outside the <header> is now inside.
 
-2008-04-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.*, PDT/DecayMode.cc: Removed
 	Repository::findParticleByPath, findParticle now has the same
@@ -1049,7 +1049,7 @@
 	particle. Otherwise the decay mode will be added to the
 	corresponding default particle.
 
-2008-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (Repository::exec): Changed the
 	behavior of "decaymode" again. Now, if what preceedes the "->" in
@@ -1057,7 +1057,7 @@
 	decay mode will be added to that particle, otherwise the previous
 	behavior is maintained.
 
-2008-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc,
 	PDT/DecayMode.* (DecayMode::constructDecayMode): If "decaymode"
@@ -1084,16 +1084,16 @@
 	* LesHouches/LesHouchesReader.cc (LesHouchesReader::createParticles):
 	Fixed bug in checking for colour-line consistency.
 
-2008-04-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc (LesHouchesReader::scan): Removed
 	unused variable 'xlast'.
 
-2008-04-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.cc: Fixed spelling in error message.
 
-2008-04-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-04-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (Repository::exec): Implemented "rm",
 	"rmdir" and "rrmdir" commands to override the ones in
@@ -1105,7 +1105,7 @@
 	remove() was not checked in "rrmdir" command. ("rrmdir" still
 	unecessesarily slow.)
 
-2008-03-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/SimpleLEP.in, src/Makefile.am: Include a test that the run
 	inside setupThePEG gives exactly the same result as the runs in
@@ -1126,21 +1126,21 @@
 	significant digits when writing out floating point numbers to
 	avoid divergent random number sequences.
 
-2008-03-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.cc: Fixed bug in input function.
 
-2008-03-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LeptonLeptonPDF.cc (xfl): Modified the order of exps and
 	pows to enable l-values closer to zero without overflow.
 
-2008-03-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/ClassDescription.fh: Added forward declarations for
 	all description classes.
 
-2008-03-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Debug.cc (Debug::unmaskFpuErrors): Removed the
 	unmasking of denormalization exceptions, as these are not really
@@ -1157,22 +1157,22 @@
 	* src/Makefile.am, configure.ac, acinclude.m4: Included check for
 	gsl, on which ThePEG now depends.
 
-2008-03-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Merged in changes from LHEF-rewrite branch
 	including a major rewrite of the LesHouches interface and some
 	bug-fixes and improvements.
 
-2008-03-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc: Fixed missing return statements in
 	copyParticle error messages.
 
-2008-03-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/XSecCheck.cc: Fixed to work also on weighted events.
 
-2008-03-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/RandomGenerator.* (RandomGenerator::rndPoisson): Made
 	rndPoisson non-inlined and improved behavior for large averages.
@@ -1180,29 +1180,29 @@
 	* Utilities/CompSelector.icc: Fixed bug in compensating for
 	weights larger than unity.
 
-2008-03-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/XSecCheck.*: Added simple analysis which emits an error
 	if the cross section was not what was expected.
 
-2008-03-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.*, Handlers/StandardXComb.*,
 	Handlers/StandardEventHandler.*, LesHouches/*: Fixed bug in
 	previous fix of XSecStat affecting generation of weighted events.
 
-2008-03-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCConverter.*: Added convert function which fills a
 	given GenEvent rather than creating one internally. This fixes
 	herwig:ticket:160.
 
-2008-03-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-03-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.*: Fixed bug in reject function which could
 	give incorrect statistics.
 
-2008-02-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-02-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.*, src/setupThePEG.cc: Introduce
 	constructor and destructor in the Repository to allow for
@@ -1213,23 +1213,23 @@
 	partonBinInstances, just set the pointers to NULL. Instead create
 	new partonBinInstances in prepare().
 
-2008-01-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-01-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.cc (dSigDR): Moved call to
 	MEBase::dSigHatDR to after call to PDFs and made it contitional to
 	PDFs being non zero. This fixes herwig:ticket:136
 
-2008-01-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-01-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Vectors/HepMCTraits.h, Vectors/HepMCConverter.tcc,
 	Vectors/HepMCConverter.h: Added possibility to choose in which
 	units lengths and energies should be stored in GenEvent.
 
-2008-01-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-01-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesFileReader.*: Made class concrete.
 
-2008-01-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-01-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, Repository/Repository.cc
 	Repository/BaseRepository.*: Added commands to specify global
@@ -1238,20 +1238,20 @@
 	* Persistency/PersistentOStream.cc: global libraries are now
 	outputted with main version number.
 
-2008-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2008-01-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentIStream.cc,
 	Persistency/PersistentOStream.*: Added possibility to specify
 	shared libraries to be loaded before of persistent objects.
 
-2007-12-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-12-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Interface/Deleted.*, Interface/Makefile.am: Introduced new
 	Interface class to be used when an interface is removed to provide
 	a user-friendly message indicating why it was removed and possibly
 	which interface should be used instead. (ticket #124)
 
-2007-12-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-12-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc: Fixed integratedXSec() so that
 	it really returns the overestimated xsec if no events have been
@@ -1261,7 +1261,7 @@
 	Handlers/SamplerBase.h: Added access function to get overestimated
 	cross section.
 
-2007-11-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-11-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Pointer/RCPtr.icc: For consistency also pointer comparison with
 	bare pointer uses uniqueId.
@@ -1270,7 +1270,7 @@
 
 	* Utilities/UtilityBase.tcc: Avoid rotation around a zero vector.
 
-2007-11-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-11-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/Makefile.am: Make sure dynamic libraries in ThePEG/Analysis
 	are properly soft-linked.
@@ -1293,7 +1293,7 @@
 	* PDT/DecayMode.cc: Fixed directory handling in 'decaymode'
 	command.
 
-2007-11-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-11-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc: Disable flatSHatY strategy for
 	generating phase space if PDFs has poles in x=1. Fixes ticket #119
@@ -1302,7 +1302,7 @@
 	PDF/LeptonLeptonPDF.*: Introduced hasPoleIn1() functions to check
 	if a given PDF or parton bin has a pole at x=1. Fixes ticket #119
 
-2007-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-11-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.icc: xSec() and xSecErr() now returns
 	maxXSec() if no attempts have been made.
@@ -1314,7 +1314,7 @@
 	Handlers/StandardEventHandler.h, Handlers/EventHandler.h: Changed
 	documentation.
 
-2007-10-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-10-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.h, PDF/LHAPDF.cc, PDF/PDFsets.index, PDF/Makefile.am,
 	PDF/LHAIndex.txt: Removed old index file and added new one. Also
@@ -1327,12 +1327,12 @@
 	Doc/MakeDocs.in, Makefile.am: AllInterfaces.h now generated from its
 	own input file.
 
-2007-09-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-09-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc: Remember to set
 	theIncoming particles in the EventHandler base class.
 
-2007-09-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-09-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.cc: Only clean() the previous
 	XComb in select() if it is not the newly selected one.
@@ -1415,7 +1415,7 @@
 	Unit checking can be disabled with --disable-unitchecks, note that
 	the code will NOT be backwards compatible either way!
 
-2007-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-06-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/CascadeHandler.*: Added possibility to assign new PDF
 	objects instead of those set in handle().
@@ -1436,7 +1436,7 @@
 	* PDT/RemnantData.*, EventRecord/RemnantParticle.*: Added remove
 	function.
 
-2007-06-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-06-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, src/runThePEG.cc: Added command line option
 	to dynamically load specified libraries before reading persistent
@@ -1453,7 +1453,7 @@
 	was being erased from theParticles even though it was not in
 	there.
 
-2007-06-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-06-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/SubProcess.*, EventRecord/Step.*: Added debugme()
 	function.
@@ -1461,20 +1461,20 @@
 	* EventRecord/RemnantParticle.*: extract() and reextract() now
 	optionally does colour connections. Not quite sure it works yet.
 
-2007-06-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-06-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/RemnantData.cc: Changed the PDGId of the remnant from being
 	the number of the parent particle to 82, which is the convention
 	in Herwig++.
 
-2007-05-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-05-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.*: Added interface to limit the number of flavours
 	which are reported to avoid problems where the remnant handler
 	refuses to handle extracted top quarks. The default maximum is set
 	to 5, which means no top quark densities are given.
 
-2007-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-05-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentIStream.*: The stream now throws an
 	exeption if something goes wrong (if Debug::level != 0).
@@ -1492,7 +1492,7 @@
 
 	* Config/Containers.h: Fixed bad stream output for ounit(std::map<>)
 
-2007-05-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-05-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/HepMCConverter.tcc: Fixed memory leak, where several
 	GenParticle's were created for the same ThePEG::Particle instance.
@@ -1505,12 +1505,12 @@
 
 	* (various files): removed obsolete CLHEP references
 	
-2007-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-05-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentIStream.cc: Added error information from
 	dynamic loader if creating an object fails.
 
-2007-05-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-05-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/UseRandom.*, Repository/StandardRandom.*,
 	Repository/RandomGenerator.*: Modified to no longer use
@@ -1521,13 +1521,13 @@
 	PDT/BreitWignerMass.cc, LesHouches/LesHouchesEventHandler.cc:
 	Fixed to use new RandomGenerator.
 
-2007-05-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-05-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphTwoCut.cc, Cuts/TwoCutBase.cc,
 	Cuts/KTClus.cc: Fixed bug in calculating delta-R where the
 	phi-difference was always zero.
 
-2007-04-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-04-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/TestLHAPDF.cc: Also test that valens densities works
 	properly.
@@ -1538,7 +1538,7 @@
 	* PDF/LHAPDF.h, PDF/LHAPDF.cc: Make sure xfvl calls xfvx rather
 	than the base class xfvl.
 
-2007-03-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-03-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc: Make sure theCurrentEventHandler
 	is set for the initrun() calls.
@@ -1546,7 +1546,7 @@
 	* Handlers/CascadeHandler.*: Removed theEventHandler variable and
 	associated code as this is handled in the StepHandler base class.
 
-2007-03-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-03-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.h: Removed unused and
 	unimplemented 'compensating()' member function.
@@ -1557,23 +1557,23 @@
 	* lib/ThePEG.el: Corrected argument types for template for
 	StepHandler::handle().
 
-2007-03-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-03-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/SimpleKTCut.*: Added a maximum kt cut on popular demand.
 
-2007-02-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-02-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc: Added extra checks to make sure
 	momentum fractions were not larger than unity.
 
-2007-02-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-02-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.cc: If the number of events in a file
 	could not be determined, the XMAXUP was set to zero which
 	prevented running with weighted events. This is now fixed, but the
 	reported cross section will probably not come out right.
 
-2007-02-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-02-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistogramFactory.h: Fixed divide-by-zero in divide
 	function. Also fixed bug in error calculation in divide
@@ -1589,7 +1589,7 @@
 	* Analysis/Histogram1D.h: In normalize(double), do not do anything
 	if the sum of the bins are zero to avoid dividing by zero.
 
-2007-02-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-02-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc: In addNewRemnants, fix so that previous
 	remnants are still the children of the incoming particle, but also
@@ -1599,7 +1599,7 @@
 	* EventRecord/Particle.cc: In printout, order the parents and
 	children to make it more readable.
 
-2007-01-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-01-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/AnalysisHandler.cc, Handlers/AnalysisHandler.h: The
 	documentation of the main analyze() function was inconsistent with
@@ -1622,7 +1622,7 @@
 	* MatrixElement/MENCDIS.cc: Included Z exchange and gamma Z
 	interference in the neutral current DIS matrix element.
 
-2007-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2007-01-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/GRVBase.cc: Remove Timer call.
 
@@ -1644,7 +1644,7 @@
 	* Helicity/LorentzSpinor.cc (Repository): Changes to return correct
 	spinor type after charge conjugation and make bar() method const
 
-2006-12-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/SimpleBaryonRemnantDecayer.h,
 	PDT/SimpleBaryonRemnantDecayer.cc: If momentum shuffling was not
@@ -1669,19 +1669,19 @@
 	* Cuts/Cuts.cc: Make sure that the TwoCutBase::passCuts is called
 	with the incoming partons in the right places.
 
-2006-12-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h, Utilities/MaxCmp.icc, Utilities/Makefile.am:
 	Added new utility class to be used in loops where one would like
 	to keep track of the largest value so far of a certain expression.
 
-2006-12-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4: Ticket #78. Changed LHAPDF options from 'enable'
 	to 'with'. Also, configure will now produce an error if
 	--with-LHAPDF is requested but no library was found.
 
-2006-12-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/SimpleBaryonRemnantDecayer.cc: Fixed problem where only one
 	particle is used to shuffle momentum. Its momentum was before
@@ -1703,17 +1703,17 @@
 	* EventRecord/Particle.cc: If a particle is copied, the parents of
 	the new copy is cleared.
 
-2006-12-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/FactoryBase.cc: Fixed bug where theTree was not
 	properly deleted.
 
-2006-12-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2Base.cc: Fixed bug in jacobian for the new
 	options in getCosTheta.
 
-2006-12-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/Cuts.cc: Fixed bug in passCuts(const Collision &). The
 	documantation states that the collision should be given in its
@@ -1722,12 +1722,12 @@
 	* PDF/LeptonLeptonPDF.cc: Modified flattenL to use the minimum
 	rather than the maximum scale if available.
 
-2006-12-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2Base.cc: Added option in getCosTheta to more
 	efficiently generate DIS-like diagrams.
 
-2006-12-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.cc: Fixed minor inconsistency in dSigDR
 	where the shat was not updated for the Cuts object.
@@ -1738,7 +1738,7 @@
 	* Cuts/Cuts.cc: Fixed bug in passCuts where the momentum of the
 	incoming particles was set incorrectly.
 
-2006-12-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/Decayer.cc: Fixed error message in DecayParticle.
 
@@ -1753,12 +1753,12 @@
 	* MatrixElement/MENCDIS.cc: Implemented the neutral current DIS
 	matrix element.
 
-2006-12-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.cc: Fixed so that checkConsistency() does
 	not dump events if the warning is not printed.
 
-2006-12-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-12-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/Decayer.h PDT/Decayer.cc: Introduced static DecayParticle
 	function to administer the decay of a particle.
@@ -1771,7 +1771,7 @@
 	Utilities/DynamicLoader.cc: Increased error information when
 	dynamic loading fails.
 
-2006-11-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UtilityBase.icc Utilities/UtilityBase.h: Introduced
 	getTransformtoMomentum to replace old (and unreliable)
@@ -1786,7 +1786,7 @@
 	apply the the charge conjugation matrix to turn u spinors into
 	v spinors for use with Majorana fermions
 
-2006-11-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/HepMCConverter.tcc, CLHEPWrap/HepMCConverter.h: Added
 	option to convert() function to not include particles with next()
@@ -1796,12 +1796,12 @@
 	* acinclude.m4: Added macro to check if stand-alone HepMC is
 	installed.
 
-2006-11-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.icc: Fixed bug where the sumWeights2()
 	function returned theSumWeights rather than theSumWeights2.
 
-2006-11-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Particle.icc, EventRecord/Particle.h,
 	EventRecord/Particle.cc: Made sure that connected ColourLine is
@@ -1835,7 +1835,7 @@
 
 	* Analysis/Histogram1D.h: Implemented the normalize function.
 
-2006-11-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/LWHFactory.h, Analysis/LWHFactory.cc,
 	Analysis/FactoryBase.h: Added abstract normalize* functions to be
@@ -1844,7 +1844,7 @@
 	* Analysis/Histogram1D.h: Added normalize function. Not
 	implemented.
 
-2006-11-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.*: Added member variable maxFactor
 	to keep track of how much the maximum cross section has been
@@ -1859,7 +1859,7 @@
 	* LesHouches/MadGraphReader.cc: Added tags for mixed minimum mass
 	cuts anticipating a future change in the MadGraph event files.
 
-2006-11-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.*: Added member variable lastweight
 	to be used when a LesHouchesReader produces unweighted events, but
@@ -1872,7 +1872,7 @@
 	reweighting is not performed, instead theis reweighting is done
 	when an event is read in again.
 
-2006-11-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.cc: Trying to keep up with the
 	constantly changing fileformat of MadGraph.
@@ -1881,7 +1881,7 @@
 	to handle the decay of simple baryon remnants. Not yet
 	implemented.
 
-2006-11-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/MEBase.icc, MatrixElement/MEBase.h,
 	MatrixElement/MEBase.cc, LesHouches/LesHouchesReader.cc,
@@ -1912,7 +1912,7 @@
 	* Interface/Switch.cc: Ticket #58. Made error message more clear
 	when non-existent option is given.
 
-2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Removed unnecessary -L options.
 
@@ -1925,7 +1925,7 @@
 
 	* src/Makefile.am: missing -L../lib added, this replaces $(theENV) 
 
-2006-11-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am, src/ThePEGDefaults.in, src/LHAPDFDefaults.in:
 	Moved the LHAPDF struff from ThePEGDefaults.in to a separate file
@@ -1944,12 +1944,12 @@
 	* Analysis/Histogram1D.h, Analysis/DataPointSet.h: Fixed bug in
 	the output to flat text files in DataPointSet.
 
-2006-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc: Removed conditional compilation
 	depending on ThePEG_HAS_LHAPDF.
 
-2006-11-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/SoftRemnantHandler.*: New remnant handler which will use the
 	new soft RemnantParticle and related classes.
@@ -1959,14 +1959,14 @@
 
 	* PDF/RemnantHandler.h: made isMultiCapable protected.
 
-2006-11-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/FactoryBase.icc, Analysis/FactoryBase.h: Added facility
 	to easily create and fill IDataPointSets.
 
 	* Analysis/DataPointSet.h: Fixed bug in dimension in addPoint().
 
-2006-11-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/FactoryBase.*: Added functions to handle
 	IDataPointSetFactory object.
@@ -1978,7 +1978,7 @@
 	classes to implement sets of datapoints according to the AIDA
 	interface.
 
-2006-11-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-11-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Units.h: Removed MultiplicationTraits and renamed
 	BinaryMultiplicationTraits to BinaryOpTraits with typedefs for
@@ -2011,12 +2011,12 @@
 
 	* Helicity/LorentzSpinor.icc : changes to constnesss of various members 
 
-2006-10-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/ColourLine.cc: Added join function to join two
 	colour lines. *** Not tested ***
 
-2006-10-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/DecayHandler.cc: Now uses new Decayer::decay function
 	for decayers for which needsFullStep() returns true.
@@ -2027,14 +2027,14 @@
 	functions to be used by remnant decayers and others which need
 	access to the current step for the decay.
 
-2006-10-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc, PDF/PartonBinInstance.cc, PDF/PDFBase.*:
 	Changed the unit of PDFBase::flattenScale and its jacobian
 	argument from Energy to double. Fixed related bug in
 	PDFBase::flattenScale.
 
-2006-10-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/ColourLine.cc: Now uses
 	ColourBase::remove(Anti)ColourLine functions insted of explicitly
@@ -2048,7 +2048,7 @@
 
 	* PDT/DecayMode.h: Temprorarily made RemnantData a friend.
 
-2006-10-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.cc, EventRecord/ColourSinglet.cc,
 	EventRecord/ColourLine.icc: Now uses Particle::hasColourLine() to
@@ -2056,7 +2056,7 @@
 
 	* EventRecord/Particle.h: Added virtual hasColourLine() and
 	hasAntiColourLine() to check if a given colour line is
-	present. These are now also used instead of 'colourLine() == liné
+	present. These are now also used instead of 'colourLine() == linÃ©
 	constructs.
 
 	* EventRecord/ColourBase.h: Added virtual hasColourLine() and
@@ -2067,13 +2067,13 @@
 	complicated colour structure which may be connected by several
 	(anti-) colour lines.
 
-2006-10-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/RemnantParticle.*, PDT/RemnantDecayer.*,
 	PDT/RemnantData.*: Started adding RemnantData and RemnantDecayer
 	classes which will be used by the Remnant particle class.
 
-2006-10-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.*: Ticket #58. Set new
 	LuminosityFunction in the initialization to be able to report on
@@ -2088,7 +2088,7 @@
 	* Handlers/EventHandler.h: Ticket #58. Made set function lumiFn
 	protected to be used by LesHouchesEventHandler.
 
-2006-10-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.cc: Added consistencyCheck function which
 	checks charge and energy-momentum conservation. Also added
@@ -2099,14 +2099,14 @@
 
 	* Utilities/Selector.icc: Fixed a bug in swap
 
-2006-10-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4: Fixed output from AC_SEARCH_CLHEP about which
 	environments were set to avoid confusion.
 
 	* Handlers/ClusterCollapser.cc: fixed signed/unsigned warning.
 
-2006-10-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-10-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.cc, EventRecord/Particle.*: Added arguments to
 	the colourNeighbour(bool) and antiColourNeighbour() functions in
@@ -2121,14 +2121,14 @@
 	* *** GLOBAL ***: Merged in relevant changes from the
 	RELEASE_BRANCH_1_0.
 
-2006-09-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/SimpleFlavour.cc: Fixed bug in meson codes.
 
 	* PDT/QuarksToHadronsDecayer.cc: Fixed bug giving infinite loop in
 	getN() if too little energy available. Instead return minN().
 
-2006-09-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ClusterCollapser.cc: Fixed bug in momentum reshuffling
 	when there was only one particle to shuffle with.
@@ -2136,7 +2136,7 @@
 	* MatrixElement/MENCDIS.*: Added MENCDIS class to handle
 	neutral-current DIS matrix elements. Not yet usable.
 
-2006-09-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistogramFactory.h, Analysis/Axis.h: Minor
 	documentation changes.
@@ -2161,12 +2161,12 @@
 	function arguments and some copy constructors that needed the base
 	classes initialized)
 	
-2006-09-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc, Persistency/PersistentIStream.cc:
 	Fixed iterators outside bounds found by David.
 
-2006-09-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Throw.h, StandardModel/StandardModelBase.h,
 	MatrixElement/ME2to2QCD.h, MatrixElement/ME2to2Base.h,
@@ -2182,7 +2182,7 @@
 
 	* Helicity/*.h : Removed library() lines for non-module classes
 
-2006-09-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UtilityBase.*: Added boostToCM(), getBoostToCM() and
 	getBoostFromCM() taking Triplet arguments.
@@ -2190,7 +2190,7 @@
 	* EventRecord/ParticleTraits.h: Added partial specialization for
 	pointer to anything.
 
-2006-09-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/Makefile.am: Removed FixedCMSLuminosity from the main
 	library, since this class is now in a separate module.
@@ -2203,14 +2203,14 @@
 	* LesHouches/MadGraphReader.cc, Handlers/SimpleFlavour.h: fixes
 	for compile warnings
 
-2006-09-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4, configure.ac, */Makefile.am,
 	Config/Makefile.aminclude: The libtool -version-info numbers are
 	now controlled from the configure.ac. Also added an include file
 	with common targets for the Makefiles.
 
-2006-09-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc: Fixed bug when
 	compensating for underestimated maximum.
@@ -2228,7 +2228,7 @@
 
 	* PDF/LHAPDF.cc: Fixed units of Q2Min and Q2Max in persistent I/O.
 
-2006-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc: Fixed bug when writing out progrss
 	with tic() function.
@@ -2252,7 +2252,7 @@
 	to simplify recompiling certain files with debugging, but without
 	optimization.
 
-2006-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-09-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGDefaults.in: Added /LesHouches directory with a half
 	built EventGenerator with a LesHouchesEventHandler.
@@ -2275,12 +2275,12 @@
 	already along the z-axis but lack of precision gave a random
 	phi-angle. This has now been fixed.
 
-2006-08-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Make sure the ../lib/ThePEGDefaults.rpo link is
 	touched so that other packaged are remade if needed.
 
-2006-08-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/FixedCMSLuminosity.*, Handlers/LuminosityFunction.*: To
 	facilitate the implementation of HEPML steering in RivetGun the
@@ -2306,7 +2306,7 @@
 	string for attributes of a given tag assuming we have valid XML
 	code in the string.
 
-2006-08-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.*, PDF/LHAIndex.txt: Index file now also includes (a
 	very limited set of) PDFLIB numbers. Added interface to set
@@ -2322,13 +2322,13 @@
 	optionally rund initPDFs() which created LHAPDF object
 	corresponding to the heprup.PDFSUP and heprup.PDFGUP numbers.
 
-2006-08-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UtilityBase.tcc: Fixed bug in getBoostFromCM() where
 	the phi-rotation was erroneously performed before the
 	theta-rotation.
 
-2006-08-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runEventLoop.cc, src/Makefile.am, CLHEPWrap/Makefile.am,
 	CLHEPWrap/GenEventConverter.*: The new HepMCConverter class now
@@ -2337,7 +2337,7 @@
 	stand-alone HepMC. The old GenEventConverter class is now
 	permanently removed.
 
-2006-08-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc, Interface/Interfaced.h: Fixed
 	preinitRegister() function so that theGenerator is properly
@@ -2348,7 +2348,7 @@
 	* Cuts/V2LeptonsCut.cc (Repository): change so that maxS() returns
 	a large value if not a lepton pair rather than zero
 
-2006-08-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc: Fixed getParticleData() so that it
 	works also if theQuickParticles has not been initialized.
@@ -2362,19 +2362,19 @@
 	* Repository/EventGenerator.cc: Properly register decay modes in
 	the current EventGenerator in constructDecayMode().
 
-2006-08-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/Tree.h, Analysis/FactoryBase.cc: Fixed segfault when
 	creating two histograms with the same path. Now throws an
 	exception instead (should be made cleaner in the future).
 
-2006-08-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/LHAPDF.cc: Now calls setMinMax() in the doinit()
 	function. Also clears the stream in openLHAIndex() if a call to
 	open fails.
 
-2006-08-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc, Repository/EventGenerator.cc: Moved
 	the forced update() of all objects from Repository::makeRun() to
@@ -2386,7 +2386,7 @@
 
 	* Repository/Repository.cc (Repository): fix to ensure Matchers correctly setup
 
-2006-08-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/Cuts.cc: Ticket #48: Fixed bug where maxS always returned
 	zero.
@@ -2396,7 +2396,7 @@
 	* Cuts/Cuts.cc: Fix to correctly used the MultiCuts objects
 	when testing if a phase-space point passes the cuts.
 
-2006-08-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-08-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PDFBase.xh: PDFRange exception class now inherits from
 	Exception rather than from InterfaceException.  +
@@ -2429,7 +2429,7 @@
 	problems with linking the 'main' function several times if
 	gfortran was installed.
 
-2006-07-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.*: Introduced InitCuts Switch. If set
 	the MadGraphReader will be pre-initialized and will extract cut
@@ -2454,7 +2454,7 @@
 
 	* src/Makefile.am: Added valgrind target to do memory checks.
 
-2006-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* java/RunFrame.java: Now uses '--tics' option for runThePEG.
 
@@ -2477,7 +2477,7 @@
 	transient to avoid circular dependence on reference counted
 	pointers.
 
-2006-07-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.h: Changed the behavior of the
 	doinit() function so that objects which returns true from their
@@ -2501,7 +2501,7 @@
 	object may use the special 'preinit' functions in the
 	EventGenerator when executing its doinit() function.
 
-2006-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/HepMCConverter.*, CLHEPWrap/HepMCTraits.h,
 	CLHEPWrap/Makefile.am, src/runEventLoop.cc, src/Makefile.am:
@@ -2546,7 +2546,7 @@
 	double attachment of incoming partons to hadrons and some tests
 	to prevent illegal boosts in CLHEP 
 
-2006-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/TestLHAPDF.*: Added Main class and setup file to test the
 	LHAPDF classes.
@@ -2584,7 +2584,7 @@
 	LHAPDF library. Compiles, and the objects can be set up, but have
 	not tried to run it. DO NOT USE YET.
 
-2006-07-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/SubProcessHandler.h: Declared clone functions
 	non-inlined since they weren't.
@@ -2619,7 +2619,7 @@
 
 	* Analysis/Makefile.am: added VariAxis.h to LWHHEADERS
 
-2006-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/VariAxis.h, Analysis/HistogramFactory.h,
 	Analysis/Histogram1D.h, Analysis/FactoryBase.*,
@@ -2628,7 +2628,7 @@
 	although the resulting AIDA XML file is not interpreted properly
 	by JAS3.
 
-2006-07-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-07-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.cc: Fixed bug where the rapidity reported
 	to eg. the Cuts object was reversed. Also fixed bug where the
@@ -2644,7 +2644,7 @@
 	* configure.ac: more automated OS X variable detection didn't
 	work, back to previous version	
 
-2006-06-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* StandardModel/O1AlphaS.*: flavourThresholds() now returns an
 	ordered set of scales. New interface FreezeScale controlls below
@@ -2668,7 +2668,7 @@
 
 	* configure.ac: more automated OS X variable detection
 	
-2006-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* StandardModel/StandardCKM.cc: Fixed wrong member variable in
 	theta_23 interface.
@@ -2676,7 +2676,7 @@
 	* Repository/EventGenerator.cc, Analysis/Tree.h,
 	Analysis/FactoryBase.h, Analysis/Axis.h: Fixed doxygen comments.
 
-2006-06-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/Tree.h, Analysis/Histogram1D.h: Modified flat output to
 	have title on the end within quotes in the histogram header and
@@ -2700,7 +2700,7 @@
 	* Handlers/StandardEventHandler.h change to get the right Interfaces in the 
 	Doxygen documentation
 
-2006-06-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* java/Makefile.am: Changed the name 'thepeg.sh' to 'thepeg' for
 	the script which is catually installed, while keeping 'thepeg.sh'
@@ -2714,7 +2714,7 @@
 	* java/Makefile.am: Changed name 'thepeg' to 'thepeg.sh' to avoid
 	capitalization clash on OS X. With this, ThePEG works on OS X.
 
-2006-06-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/FactoryBase.*: Added function cd() to change directory
 	in the underlying AIDA::ITree.
@@ -2724,7 +2724,7 @@
 	name from HistogramFactory to Factory base to avoid name clash
 	with updated LWH.
 
-2006-06-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.*: The constructRemnants() function now
 	throws a veto if remnants could not be created.
@@ -2745,11 +2745,11 @@
 	* LesHouches/LesHouchesEventHandler.cc: Renamed interface
 	LesHoushesReaders -> LesHouchesReaders
 
-2006-06-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Analysis/HistFactory.h: Fixed histogram name/title confusion.
 
-2006-06-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/AnalysisHandler.*: Added function to normalize
 	histograms according to the collected cross section statistics.
@@ -2757,7 +2757,7 @@
 	* Analysis (LWH classes): Fixed some bugs and improved output
 	files.
 
-2006-06-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-06-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/AnalysisHandler.: Added utility function to access the
 	HistogramFactory in the current run.
@@ -2774,7 +2774,7 @@
 	interfacing the light-weight histogram package LWH which
 	implements a small part of the AIDA interface.
 	LWH is also included in this directory.
-2006-05-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-05-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.*: Added optional boolean argument for checking
 	the consistency of the parents in the Step in templated
@@ -2782,19 +2782,19 @@
 	child, bool checkfinal). Default is true, which is also the
 	previous behavior.
 
-2006-05-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-05-18  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/StandardRandom.cc, Repository/RandomGenerator.cc:
 	Make sure the cache is flushed when the random generator is
 	initialized or when a new seed is given.
 
-2006-05-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-05-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.cc: Fixed addIntermediate(s) functions to
 	remove the given particle from the list of final state ones if
 	present.
 
-2006-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-05-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.*: Fixed bug by adding argument to internal
 	construct method to determine whether the produced remnants need
@@ -2817,7 +2817,7 @@
 	function. This is required for the automatic Decayer generator in
 	BSM Herwig++.
 
-2006-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-04-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* */*.cc: Ranked interfaces and made minor improvement of
 	ClassDocumentation objects for demonstration at DIS06.
@@ -2825,7 +2825,7 @@
 	* java/Reference.java, java/RefVector.java, java/ObjectFrame.java:
 	Improved look-and-feel for reference interfaces.
 
-2006-03-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-03-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc: Fixed skipEvents() for
 	negative weights (Ticket #31).
@@ -2855,7 +2855,7 @@
 
 	* StandardModel/SimpleAlphaEM.cc (Repository): change so that for small q2 alpha(0) is returned rather than 0.
 
-2006-02-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* java/SetupThePEG.java, java/ObjectFrame.java: Modified to show
 	interfaces better in documentation.
@@ -2867,7 +2867,7 @@
 
 	* MatrixElement/Makefile.am: Cleaned up mixed dependencies.
 
-2006-02-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Joined in changes from the cuts-devel branch.
 
@@ -2884,13 +2884,13 @@
 
 	* PDT/ParticleData.cc: Fixed bug in stable(bool) function.
 
-2006-02-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el, Utilities/ClassTraits.h: Documented better the
 	possibility to list several dynamic libraries in the
 	ClassTraits<T>::library() function.
 
-2006-02-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/BaryonRemnants.*: Implemented defaultInit() function to
 	create default ZGenerator, PtGenerator and FlavourGenerator
@@ -2905,7 +2905,7 @@
 	references. Also introduced reporeg() and setDefaultReference()
 	functions to help sub-classes with this.
 
-2006-02-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.*: Fixed bug in opening plain files
 	(they were never assigned to a file handle). Also fixed bug in
@@ -2918,13 +2918,13 @@
 	automatically deduce which PDFs was used for the generation. Not
 	quite working yet (still need to fix remnant handlers).
 
-2006-02-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesEventHandler.cc,
 	Handlers/StandardEventHandler.cc: Fixed so that theLastXComb is
 	always set for the CKKWHandler().
 
-2006-02-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runThePEG.cc, Repository/EventGenerator.*,
 	EventRecord/Particle.cc: Davids bug fixes to the setting of life
@@ -2936,7 +2936,7 @@
 	* Repository/EventGenerator.cc: Removed the upper limit for
 	MaxErrors altogether. Also did the same for other parameters.
 
-2006-02-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.*: Finished functions for scanning
 	cuts. It now seems to work OK.
@@ -2954,7 +2954,7 @@
 	than one object with the same name. Also renamed the function
 	GetObjectsReferingTo to GetObjectsReferringTo.
 
-2006-02-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphOneCut.*, LesHouches/MadGraphTwoCut.*: New
 	classes to be used by MadGraphReader to implement cuts.
@@ -2964,7 +2964,7 @@
 	* LesHouches/MadGraphReader.cc: Added command interface extracting
 	cuts from MadGraph version 3 event files.
 
-2006-02-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.cc: Preparing for extracting cuts from
 	MadGraph version 3 event files.
@@ -2988,7 +2988,7 @@
 	* EventRecord/Collision.cc: Adding a SubProcess, now sets its
 	pointer to this collision if none was provided before.
 
-2006-02-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-02-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ReweightBase.*, MatrixElement/ReweightConstant.*,
 	MatrixElement/ReweightMinPT.*: Reweighting now only use
@@ -3030,7 +3030,7 @@
 	* PDT/ParticleData.cc, EventRecord/Particle.cc: Bugfixes to
 	correct the setting of life lengths. Displaced vertices now work.
 
-2006-01-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc): Indicated that the Path parameter
 	corresponds to a directory.
@@ -3041,7 +3041,7 @@
 	* Interface/Parameter.*: Added option to indicate that a string
 	parameter corresponds to a file or a directory.
 
-2006-01-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.cc: Modified format of optional
 	printout of event number.
@@ -3049,11 +3049,11 @@
 	* Repository/Repository.*: Added command to save a run to a
 	specific file.
 
-2006-01-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.*: Added command to remove a run.
 
-2006-01-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runThePEG.cc, Repository/MultiEventGenerator.*,
 	Repository/EventGenerator.*: Added run-time option to write out
@@ -3061,7 +3061,7 @@
 	a run file from standard input and to execute runThePEG remotely
 	with ssh.
 
-2006-01-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/EventGenerator.*: Added command interfaces to make
 	and save event generator runs.
@@ -3073,19 +3073,19 @@
 
 	* configure.ac, acinclude.m4: Cleaned up configure script.
 
-2006-01-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Makefile.am, configure.ac: Fixed checks and conditional
 	compilation for the java GUI.
 
-2006-01-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Preliminary fix of the ParVector emacs macro. It
 	now works in a simple case, but it probably needs more testing.
 	... and I did some more testing and slight modifications. It
 	should now be stable.
 
-2006-01-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/BaseRepository.cc: Added commands to append
 	libraries.
@@ -3096,12 +3096,12 @@
 
 	* PDT/DecayMode.cc: Mad the Decayer interface non-nullable.
 
-2006-01-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/BaseRepository.cc: Added "check" command and fixed
 	"rcp" command.
 
-2006-01-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.*, PDT/ConstituentParticleData.*,
 	PDF/BeamParticleData.cc: Added ranking of interfaces and fixed the
@@ -3123,19 +3123,19 @@
 	* Repository/BaseRepository.cc: Added lsclass command to list
 	concrete (sub)classes.
 
-2006-01-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2QCD.cc: Fixed bug where jacobian was applied
 	twice for 2->2 QCD MEs resulting in completely wrong cross
 	sections.
 
-2006-01-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2QCD.cc: Fixed serious bug where the
 	jacobian() was applied twice for QCD matrix elements giving
 	completely wrong results.
 
-2006-01-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.cc: Fixed typos in documentation.
 
@@ -3143,18 +3143,18 @@
 	get() for a read-only switch. Moved the exception to the set()
 	function, where it belongs.
 
-2006-01-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Interface/Switch.*, Interface/Reference.*, Interface/RefVector.*:
 	Implemented fullDescription functions.
 
-2006-01-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/RandomGenerator.cc: Fixed error when compiling with
 	gcc-3.3.1 complaining about different types in call to templated
 	min function in setSize().
 
-2006-01-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2006-01-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Fixed bug when creating .fh file for classes not
 	in the ThePEG namespace.
@@ -3162,7 +3162,7 @@
 	* src/setupThePEG.install: added VERSION="" to avoid problems when
 	VERSION is set during 'make distcheck'.
 
-2005-12-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-12-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Exception.h: Added new Throw class to encapsulate the
 	throwing of exceptions.
@@ -3179,13 +3179,13 @@
 2005-12-12  David Grellscheid <David.Grellscheid@durham.ac.uk>
 	* PDT/DecayMode.h: rebind() is not an inline!
 
-2005-12-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-12-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.h, EventRecord/Particle.h: Fixed the
 	documentation for the colour neighbour methods. Before the
 	documentation had reversed the colour and anti-colour.
 
-2005-11-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-11-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.icc: Fixed bug in skip(), now also
 	skips the character searched for.
@@ -3193,13 +3193,13 @@
 	* LesHouches/MadGraphReader.cc: Fixed bug in spelling 'Number of
 	Events' when scanning MadGraph file header.
 
-2005-11-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-11-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.cc: Fixed bug in open function where
 	the filehandle from the std::fopen call was not stored properly
 	(thanks to Simon Plaetzer).
 
-2005-10-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-10-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Replace old KinematicalCuts classes with new
 	Cuts classes. It all compiles, but still problem with the
@@ -3208,7 +3208,7 @@
 	* Handlers/Two2NCuts.*, Handlers/KinematicalCuts.*,
 	Handlers/KinCutsInit.cc: Removed the old KinematicalCuts classes. 
 
-2005-10-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-10-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/TmpTransform.*: Added wrapper class to make safe
 	temporary Lorentz transforms of objects.
@@ -3217,7 +3217,7 @@
 
 	* acinclude.m4: Fixed #15. Not tested on Mac.
 
-2005-10-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-10-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/setupThePEG.cc, src/runThePEG.cc: Added better handling of
 	catching a ThePEG::Exception to avoid double output.
@@ -3235,7 +3235,7 @@
 	* Repository/Repository.cc: Error message if '.in' file can't be
 	found. Fixes bug #3.
 
-2005-10-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-10-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/*CutBase.*: Added base classes for cuts on one, two and
 	many particles.
@@ -3250,14 +3250,14 @@
 	libThePEGMEQCD.so to MEQCD.so to reflect the fact that it is a
 	module 
 
-2005-09-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-09-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentOStream.*,
 	Persistency/PersistentIStream.*: Let all exception classes inherit
 	from ThePEG::Exception and added informative (?) errormessages
 	when anything goes wrong.
 
-2005-09-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-09-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/ClassTraits.h, lib/ThePEG.el: Modified the comment to
 	the library() function to indicate the possibility to have several
@@ -3289,11 +3289,11 @@
 	* PDF/PDFBase.cc: Fixed 'inline' bug.
 
 
-2005-09-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-09-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/Cuts.*: Fixed buggy doxygen comments.
 
-2005-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-09-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added function ThePEG-cond-section to make a
 	region a conditional section for doxygen.
@@ -3303,7 +3303,7 @@
 	* *** GLOBAL ***: Put all template specializations in conditional
 	doxygen section called TRAITSPECIALIZATIONS.
 
-2005-09-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-09-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Doc/Makefile.am: Fixed typo in dependencies for refman-html
 	target.
@@ -3319,7 +3319,7 @@
 
 	* Helicity/LorentzRSSpinor.icc: fixed bug in the generalCurrent member
 	
-2005-09-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-09-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/BaryonRemnants.*: Added option to always give di-quark when
 	extracting valence flavour. And fixed a stupid bug...
@@ -3349,7 +3349,7 @@
 	synonomous to one(). Introduces multiplication operators for
 	Lorentz(5)Vectors.
 
-2005-06-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Cuts/Cuts.*: Added Cuts base class to implement the new handling
 	of matrix element cuts.
@@ -3357,7 +3357,7 @@
 	* lib/Makefile.am, configure.ac, Makefile.am: Added Cuts
 	directory.
 
-2005-08-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-08-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/UseRandom.*: Added access function to the
 	RandomEngine of the current RandomGenerator.
@@ -3386,7 +3386,7 @@
 	* lib/Makefile.am: Try to avoid linking non-existing shared
 	library files.
 
-2005-08-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-08-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/std.h: Added specialization for std::less template class
 	to handle type_info pointers properly using type_info::before
@@ -3399,16 +3399,16 @@
 	defined, they are now instead indexed by the name() function of
 	the type_info object.
 
-2005-06-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/SimplePhaseSpace.tcc:  Fixed bug in angles of
 	three-body phase space (again).
 
-2005-06-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* configure.ac, Doc/*: Changes to get make distcheck work properly.
 
-2005-06-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Makefile.am: Install libtool in the lib directory (used in the
 	Makefile.common).
@@ -3420,28 +3420,28 @@
 	be used as a template to build additional ThePEG modules. Also
 	installs a Makefile.commin which is included in that Makfile.
 
-2005-06-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4: Corrected the THEPEGDOC path.
 
 	* LesHouches/MadGraphReader.cc, MatrixElement/ME2to2QCD.h,
 	Helicity/LorentzSpinor.h: Doxygen cosmetics.
 
-2005-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Always run check-local.
 
-2005-06-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Fixes to make distcheck work
 	smoothly.
 
-2005-06-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Fixed install, uninstall and installcheck
 	targets.
 
-2005-06-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Fixes to make distcheck work properly. Added
 	versioned executables in installation again.
@@ -3453,7 +3453,7 @@
 
 	* Config/Makefile.am: Cosmetics.
 
-2005-06-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.icc: Introduced simple functions for
 	manipulating filenames.
@@ -3470,7 +3470,7 @@
 	* */Makefile.am, configure.ac: Moved -version-info to the
 	individual _LDFLAGS variables in the Makefiles
 
-2005-06-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Merged with libtool-devel branch.
 
@@ -3495,14 +3495,14 @@
 
 	* Templates/*: Removed, as it didn't have Makefile.am entry.
 	
-2005-06-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Interface/Interfaced.h: Made generator() function public.
 
 	* lib/ThePEG.el: Fixed bug in specifying limited parameters.
 
 
-2005-06-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4: Make sure other packages using AC_CHECK_THEPEG
 	installs their libraries in $(libdir)/ThePEG.
@@ -3510,12 +3510,12 @@
 	* Config/config.h.in: Removed. Automatically generated by
 	autoheader.
 
-2005-06-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* acinclude.m4: Included CLHEP namespace definition in the CLHEP
 	compile test.
 
-2005-06-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* configure.ac, acinclude.m4: Added macros to clean up
 	configure.ac
@@ -3523,12 +3523,12 @@
 	* ACDC/ACDCGen.h: Added an explicit destructor for Slicer class
 	for debugging purposes.
 
-2005-06-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Just fixed so that THePEG-variable-cutnpaste
 	opens in another window - not the one we want to paste into.
 
-2005-06-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* */Makefile.am: Use $(LN_S) instead of ln -s.
 
@@ -3546,11 +3546,11 @@
 	* src/ThePEGDefaults.in: Now loads some non-default libraries to
 	get the documentation of the interfaces correctly.
 
-2005-06-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-06-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* include/Makefile.am: Make it quietly.
 
-2005-05-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/DynamicLoader.cc: Changed the default path to
 	../../ThePEG/lib
@@ -3561,7 +3561,7 @@
 	* *** GLOBAL ***: Change build procedure to use automake and
 	libtool. This affects all Makefiles etc.
 
-2005-05-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.*, Repository/EventGenerator.*,
 	LesHouches/LesHouchesEventHandler.*,
@@ -3578,7 +3578,7 @@
 	section for each XComb is not explicitly known, but it cleaned up
 	the class a bit...
 
-2005-05-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.*: Removed setting of XPDWUP giving
 	the responsibility for that to the base class. Also renamed
@@ -3595,7 +3595,7 @@
 
 	* PDF/PartonExtractor.h: Made the getPDF function public.
 
-2005-05-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ClusterCollapser.cc: Changed to use new transfrom of
 	whole container in ThePEG::UtilityBase.
@@ -3622,7 +3622,7 @@
 	implemented. Also removed the inclusioon of the MEBase.fh header
 	file.
 
-2005-05-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouchesReader.cc: Fixed bug in reading cached
 	files (name of the gzip program and resizing of vectors HEPEUP.
@@ -3645,7 +3645,7 @@
 
 	* PDF/PartonBin.h: Removed declaration of unimplemented functions.
 
-2005-05-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Merged in branch with new EventHandler and
 	EventGenerator classes. Includes also the LesHouches classes.
@@ -3668,25 +3668,25 @@
 	* Handlers/KinCutsInit.cc: Fixed bug in declarations of Parameter
 	interfaces introduced to avoid ambiguities.
 
-2005-05-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/CascadeHandler.cc, Handlers/LastXCombInfo.*: Made the
 	LastXCombInfo::pdf function templated to avoid having to include
 	PDF.h (which in turn includes a lot of stuff) in LastXCombInfo.h.
 
-2005-05-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/LesHouches.*, LesHouches/LesHouchesReader.*: Moved
 	the LesHouches common block variables into struct corresponding
 	to HEPRUP and HEPEUP.
 
-2005-05-11  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-11  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CompSelector.*, LesHouches/*: Added Selector-like
 	class capable of compensating if overestimated cross sections used
 	for selection torns out to be too low.
 
-2005-05-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/XSecStat.cc: Implemented the << and >> operators in
 	the ThePEG namespace (don't understand why that is needed).
@@ -3695,7 +3695,7 @@
 	the statLevel() function and assiciated variables from
 	StandardEventgenerator to Event Generator.
 
-2005-05-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-05-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/RandPoisson.*: New wrapper around the CLHEP
 	RandPoisson class.
@@ -3704,7 +3704,7 @@
 	accepted events and weights. also accumulates squared weights to
 	get an error esitmate.
 
-2005-04-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.*: Removed functions no longer used by the
 	LesHouches classes.
@@ -3712,7 +3712,7 @@
 	* Utilities/XSecStat.*: Added class to collect cross section
 	statistics.
 
-2005-04-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.*: Added functions boostRemnants() and
 	transformRemnants(), which where taken from
@@ -3721,7 +3721,7 @@
 
 	* configure.in: Just cosmetics.
 
-2005-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Math.icc, Config/config.h.in, configure.in: Included
 	check for existence of atanh (ThePEG_HAS_ATANH). This is a
@@ -3730,11 +3730,11 @@
 	neither log1p or atanh is available. If atanh is not available it
 	is included in the Math namespace using log1m.
 
-2005-04-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc: Removed unused variables in construct().
 
-2005-04-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Started to modify interface decalration defuns to
 	use the unums in Interface/Interface.h.
@@ -3752,7 +3752,7 @@
 	* Interface/Interface.h: Added namespace Interface namespace with
 	descriptive enums to be used when declaring interfaces.
 
-2005-04-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.*: Introduced generateRemnants
 	functions. Not yet quite working if scale is zero.
@@ -3763,14 +3763,14 @@
 	* Handlers/XComb.cc: Fixed bug in setPartonBinInstances(), forgot
 	to actually set them.
 
-2005-04-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/XComb.*, Handlers/StandardXComb.cc: Removed unnecessary
 	member theLatOutgoing in XComb, renamed setPartonBinInstances() to
 	createPartonBinInstances(), introduced setPartonBinInstances() for
 	providing instances from the outside.
 
-2005-04-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.cc: Fixed bug in stripws.
 
@@ -3785,7 +3785,7 @@
 	* LesHouches/TestLesHouches.in: Added temporary test setup. To be
 	moved to the test directory.
 
-2005-04-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.h, Handlers/StandardEventHandler.h,
 	Handlers/EventHandler.h, Handlers/SubProcessHandler.fh,
@@ -3793,7 +3793,7 @@
 	Moved declaration of pointers and containers of SubProcessHandler
 	and MEBase to corresponding .fh files.
 
-2005-04-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardEventHandler.h: Now #includes PartonBin.fh.
 
@@ -3804,7 +3804,7 @@
 	declaration of pointers and containers of PartonBins to
 	PartonBin.fh.
 
-2005-04-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/LastXCombInfo.h: Included PDF.h instead of PDF.fh,
 	since gcc-4 insists on trying to compile a templated function even
@@ -3813,7 +3813,7 @@
 	* Persistency/PersistentOStream.icc: Workaround for gcc-4
 	defining tYes and tNo in a strange way.
 
-2005-04-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/ClusterCollapser.*: Simplified the insertion od
 	singlets in map by introducing a static insert() method.
@@ -3827,7 +3827,7 @@
 	behavior of LastXCombInfo so that it is templated on possible
 	sub-classes of XComb.
 
-2005-04-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/FixedSizeAllocator.h: Added include of <memory>.
 
@@ -3838,16 +3838,16 @@
 	disallow to large differences between neighboring cells. Not yet
 	used.
 
-2005-04-06  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-06  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Removed all references to old EventHandler
 	hierarchy. Everything compiles and runs, but not quite tested yet.
 
-2005-04-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches: Changed to use new EventHandler hierarchy.
 
-2005-04-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-04-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/MultiEventGenerator.*: Now inherits from the new
 	EventGenerator class.
@@ -3868,7 +3868,7 @@
 	CollisionHanlder into the new StandardEventHandler class to
 	prepare for new EventHandler hierarchy.
 
-2005-03-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-03-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* ACDC/ACDCGen.*: Changed the procedure for presampling. The
 	initial basic level is set to the minimum sampling, but is never
@@ -3880,24 +3880,24 @@
 	warning. Increased the default number of pre-samplings from 100 to
 	1000.
 
-2005-03-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-03-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement/ME2to2Base.cc: Fixed bug in calculatio of jacobian
 	spotted by David Grellscheid. Only showed up if outgoing partons
 	were produced close to rest in which case the jacobian diverged.
 
-2005-02-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-02-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: CurrentGenerator to OldCurrentGenerator, EGPtr
 	to OEGPtr and EHPtr to OEHPtr to prepare for new EventHandler
 	hierarchy.
 
-2005-02-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-02-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Renamed EventGenerator to OldEventGenerator to
 	prepare for new EventHandler hierarchy.
 
-2005-02-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-02-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.*: Modified EventHandler according to new
 	hierarchy. Also made minor changes to other classes to make it
@@ -3905,17 +3905,17 @@
 	classes are removed and are marked with the comment
 	'*** OldEventHandler ATTENTION ***'.
 
-2005-02-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-02-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Renamed EventHandler to OldEventHandler to
 	prepare for new EventHandler hierarchy.
 
-2005-02-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-02-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/fixCLHEP: Copy libCLHEP.so rather than soft link since the
 	CLHEP versioning system for shared libraries doesn't really work.
 
-2005-01-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2005-01-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StandardXComb.*, PDF/PartonExtractor.h,
 	MatrixElement/MEBase.cc, Handlers/LastXCombInfo.h,
@@ -3924,7 +3924,7 @@
 	with StandardXComb as a sub class implementing the standard
 	ThePEG-specific sub process generation parts of XComb.
 
-2004-12-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-12-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/RandomGenerator.*: Added operator()(long) to conform
 	to the random number generator requirements of the standard
@@ -3934,7 +3934,7 @@
 	* Handlers/EventHandler.*: Added const and non-const access to the
 	pointer to the Luminosity function.
 
-2004-12-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-12-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.cc: Fixed bug in checking if a file is
 	bzip2 format.
@@ -3942,24 +3942,24 @@
 	* configure.in: Fixed default compress commands in
 	ThePEG_BZ2WRITE_FILE and ThePEG_GZWRITE_FILE macros.
 
-2004-12-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-12-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ParticleData.cc: Added initialization for members in default
 	constructor.
 
-2004-12-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-12-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Math.icc: Added 'using namespace std;' in exp1m and
 	log1m to avoid problems with compilers where atanh etc are (not)
 	in std.
 
-2004-10-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-10-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/fixCLHEP: Fixed the script to use g++ instead of ld to
 	create a shared library from the static CLHEP library. This should
 	probably be a configure option in the future.
 
-2004-10-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-10-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/StringUtils.*: Added stripws() function to strip a
 	string from leading and trailing white space.
@@ -3973,7 +3973,7 @@
 	* Interface/Parameter.*: Made (partial) specialization for string
 	parameters to avoid min/max functions and units.
 
-2004-10-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-10-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/BaseRepository.cc, Interface/InterfacedBase.*: Each
 	interfaced object may now be assignrd a unique comment. If an
@@ -3987,14 +3987,14 @@
 	to have continuation lines. If a command line end with a \
 	the next line will be added.
 
-2004-09-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added ThePEG-variable-cutnpaste function to
 	produce templates for including a variable definition and
 	corresponding set/get functions, constructor initialization adn
 	I/O.
 
-2004-09-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added ThePEG-refvector and ThePEG-parvector
 	functions.
@@ -4003,38 +4003,38 @@
 	EventHandler for the LesHouches readers. A reorganization of
 	(Partial)Collision/Event handlers is called for.
 
-2004-09-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* configure.in, Config/config.h.in, Utilities/CFileLineReader.cc:
 	Added facilities to handle .bz2 files as well as .gz files.
 
 	* Utilities/CFileLineReader.*: Bug fixes.
 
-2004-09-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/CFileLineReader.*: Added class to read from C FILE
 	streams.
 
 	* lib/ThePEG.el: Cleaned up comments.
 
-2004-09-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* */Makefile:  Modified to fix installation procedures.
 
-2004-09-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* */Makefile: Modified to fix installation procedures.
 
-2004-09-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Makefile: Modified snapshot target to work with new documentation.
 
-2004-09-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Fixed dummy min/max values for unlimited
 	Parameter objects in ThePEG-parameter function.
 
-2004-09-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-09  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Changed documentation in header file generation.
 
@@ -4048,7 +4048,7 @@
 	* Doc/fixinterfaces.pl: Added script to fix references between
 	interfaces in AllInterfaces.h
 
-2004-09-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Doc/refman.conf: Updated to suit doxygen version 1.3.8.
 
@@ -4058,7 +4058,7 @@
 	* Helicity/HelicityDefinitions.h: Added documentation of Helicity
 	namespace.
 
-2004-09-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Math.*: Added sign transfer function.
 
@@ -4067,12 +4067,12 @@
 	* Handlers/GaussianPtGenerator.*, Handlers/PtGenerator.h:
 	Changed pair of energy for TransverseMomentum.
 	
-2004-09-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile, Makefile: Introduce init target to just initialize
 	the repository. The doc target depends on init.
 
-2004-09-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-09-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Makefile.common.in, Makefile: Modified the doc target to
 	use doxygen.
@@ -4089,21 +4089,21 @@
 	* *** GLOBAL ***: Modified all descriptions in declarations of
 	interfaces to conform to doxygen format.
 
-2004-08-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Fixed various doxygen comment issues.
 
 	* Doc/refman.h: Added file with embryo of mainpage reference
 	manual documentation.
 
-2004-08-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Fixed various doxygen comments.
 
 	* Doc/refman.conf: Added config file for doxygen generation of
 	reference manual.
 
-2004-08-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* *** GLOBAL ***: Changed the last class names from /ThePEG/name
 	to ThePEG::name.
@@ -4111,33 +4111,33 @@
 	* StandardModel (directory): Modified to use new documentation
 	format.
 
-2004-08-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository (directory): Modified to use new documentation
 	format.
 
-2004-08-10  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-10  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT (directory): Modified to use new documentation format.
 
-2004-08-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added functions for creating PDF classes.
 
-2004-08-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-08-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF (directory): Modified to use new documentation format.
 
-2004-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-07-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* MatrixElement (directory): Modified to use new documentation
 	format.
 
-2004-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-07-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Interface (directory): Modified to use new documentation format.
 
-2004-07-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-07-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Particle.icc: Reset pointer to particle
 	representation and particle data for the case a dangling pointer
@@ -4153,7 +4153,7 @@
 	* EventRecord/Event.*: Changed destructor to reset transient
 	pointers in Collisions pointing to the destroyed object.
 
-2004-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-07-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/PartialCollisionHandler.cc: In performStep, if the
 	StepHandler throws an exception, call popStep() to set the correct
@@ -4161,11 +4161,11 @@
 
 	* Helicity (directory): Modified to use new documentation format.
 
-2004-07-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-07-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers (directory): Modified to use new documentation format.
 
-2004-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-06-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/CascadeHandler.icc: Fixed bug in standard setup
 	functions. Before they called the HandlerBase versions, now they
@@ -4175,34 +4175,34 @@
 
 	* Handlers (directory): Modified to use new documentation format.
 
-2004-06-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-06-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord (directory): Modified to use new documentation
 	format.
 
-2004-06-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-06-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord (directory): Modified to use new documentation
 	format.
 
-2004-06-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-06-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* ACDC, CLHEPWrap, Config, Persistency, Pointer, Utilities
 	(directory): Modified to use new documentation format.
 
-2004-06-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-06-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities (directory): Modified to use new
 	documentation format. Also removed unused Integrator class.
 
-2004-06-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-06-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config, Persistency, Pointer (directory): Modified to use new
 	documentation format.
 
 	* lib/ThePEG.el: Modified to use new documentation format.
 
-2004-05-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-05-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGParticles.in: Made also the photon and pi0
 	BeamParticleData since they can have parton densities.
@@ -4223,7 +4223,7 @@
 	* Handlers/GaussianPtGenerator.*: Added simple default
 	implementation of the abstract PtGenerator class.
 
-2004-05-15  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-05-15  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/BreitWignerMass.cc: Now uses the new asymmetric width cuts.
 
@@ -4234,7 +4234,7 @@
 	functions for the width cut now sets both the upper and lower cut
 	and returns the maximum of the two.
 
-2004-05-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-05-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/EventHandler.cc: Added doinitrun implementation to
 	reset the statistics for the XCombs after initializing the phase
@@ -4247,7 +4247,7 @@
 	* Handlers/CollisionHandler.cc: Do not add XComb's which cannot
 	possibly produce events (and issue a warning). 
 
-2004-05-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-05-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* ACDC/ACDCGen.icc: Fixed bug which caused a crash if it was
 	impossible to find a non-zero cross section for a channel.
@@ -4255,7 +4255,7 @@
 	* MatrixElement/ME2to2Base.cc: Added (possibly unnecessary) try
 	block for checking impossible kinematics.
 
-2004-04-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-04-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* LesHouches/MadGraphReader.*:  New class.
 
@@ -4265,7 +4265,7 @@
 	compressed files with popen. (popen turns out not to be in the C++
 	standard, so we may have to look for another solution).
 
-2004-04-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-04-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* configure.in: Changed default optimization flag to -O2
 	(otherwise things get slow with gcc 3.4.0).
@@ -4325,7 +4325,7 @@
 	EventRecord/Particle.cc, EventRecord/Event.cc,
 	Config/Containers.cc: Removed unnecessary semi-colons.
 
-2004-04-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-04-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: ThePEG-class-files now also create a suitable .fh
 	file which is included in the .h file
@@ -4333,7 +4333,7 @@
 	* LesHouches (Directory): Started implementing the Les Houches
 	interface.
 
-2004-04-17  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-04-17  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/KinematicalCuts.cc: Changed the cut methods to use the
 	check methods for induvidual cuts for consistency reasons.
@@ -4342,7 +4342,7 @@
 	pTHat, yStar, maxY, minY, maxEta, minEta. The treatment of <
 	vs. <= is now better. See documentation for respective functions.
 
-2004-03-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Persistency/PersistentOStream.cc: Minor changes to facilitate
 	debugging.
@@ -4360,12 +4360,12 @@
 	XComb objects now also hold reference counted pointers to the bins
 	corresponding to the incoming particles.
 
-2004-03-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Helicity/HelicityDefinitions.h: Removed the
 	HelicityDefinitions class.
 
-2004-03-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Helicity/HelicityDefinitions.h: Changed integers for detrmining
 	dirac representation and spinor type to enums.  Also made
@@ -4382,18 +4382,18 @@
 	* Helicity (Module): Changed the implementation of Direc
 	representation in Lorentz spinors. Also fixed documentation.
 
-2004-03-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Helicity (Module): Changed all 'cerr' error messges to
 	HelicityLogicalError and HelicityConsistencyError exceptions.
 
-2004-03-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Helicity (Module): The helicity classes are now included in the
 	ThePEG structure. They have not been tested in this structure yet,
 	but it compiles and links into ThePEG without any problems.
 
-2004-03-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Helicity (Module): Added Peters helicity classes and started to
 	integrate them into ThePEG.
@@ -4408,19 +4408,19 @@
 	* EventRecord/Particle.cc (Module): Fixed bug in the cloning of
 	the spin information in the ParticleRep copy-tor.
 
-2004-03-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-03-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Complex.h (Module): Added using std::complex int the
 	ThePEG namespace.
 
-2004-02-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2004-02-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Particle.*: Added function 'abandonChild' which will
 	undo the actions of 'addChild', i.e. Remove the child from the
 	list of children and also remove this from the childs list of
 	parents.
 
-2003-11-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-11-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Made sure ClassTraits.h is included before class
 	traits templates are specialized.
@@ -4431,20 +4431,20 @@
 	cygwin. Need to also fix a atanh check but no solution to that for
 	cygwin yet.
 
-2003-11-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-11-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/Makefile, lib/fixCLHEP: If CLHEP is already in a dynamic
 	library, make symbolic links to the corresponding files instead of
 	copying. Also make symbolic links when installing.
 
-2003-11-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-11-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Makefile: Fixed dependencies for setup target.
 
 	* configure.in: Fixed strange behavior when --prefix is not
 	explicitly used.
 
-2003-10-31  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-10-31  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/fixCLHEP: Since CLHEP-2.0 comes with shared libraries, we
 	now look for that before trying to find the static one.
@@ -4465,20 +4465,20 @@
 	* configure.in: Set the default CLHEPPATH to $prefix rather than
 	hardcoded to /usr/local
 
-2003-10-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-10-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* StandardModel/StandardModelBase.*: Changed CKM function to check
 	if theCKM2Matrix has been generated by the CKM object before
 	returning a matrix element.
 
-2003-08-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/runThePEG.cc: If -x argument specifies a dynamic library, it
 	is assumed to contain a class inheriting from Main and which has a
 	static Init() function which runs the event generator instead of
 	simply calling the event generators go() function.
 
-2003-08-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Main.*: Added base class for classes implementing a
 	main steering routine for running an EventGenerator, in case the
@@ -4494,7 +4494,7 @@
 	* ACDC/ACDCGen.icc: Avoid floating exception in efficiency() if no
 	events were generated.
 
-2003-08-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/DecayHandler.cc: Use the StepHandler::newStep()
 	function.
@@ -4510,7 +4510,7 @@
 	* Handlers/StepHandler.cc: createNewStep now sets the handler to
 	this.
 
-2003-08-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/V2PPDecayer.cc: Fixed but in reweight() where the parent and
 	grand parent momenta were not boosted to the parent cms.
@@ -4537,7 +4537,7 @@
 
 	* Makefile: Removed -$(MAKEFLAGS) in recursive calls.
 
-2003-08-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Makefile.common.in: Moved macro for THEPEGLIBS from src/Makefile to Config/Makefile.common
 
@@ -4545,7 +4545,7 @@
 	QuarksToHadronsDecayer also instead of dummies PYDECY11 and
 	PYDECY12. Also using ColourPairDecayer instead of dummy PYDECY32.
 
-2003-08-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/ColourPairDecayer.*: Added class inheriting from FlatDecayer
 	which can handle colour connected pairs of decay products which
@@ -4558,7 +4558,7 @@
 	* PDT/FlatDecayer.*: Added virtual getChildren() functions for
 	sub-classes which need to do special things with the children.
 
-2003-08-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGParticles.in, src/ThePEGDefaults.in: Using
 	QuarksToHadronsDecayer instead of dummy PYDECY13.
@@ -4574,14 +4574,14 @@
 
 	* Handlers/FlavourGenerator.cc: Just changed error messages.
 
-2003-08-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-08-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/FlavourGenerator.*: Added 'always' wrapper functions
 	which call the virtual generateHadron(), getHadron() and
 	getBaryon() functions which throws exceptions if no hadron could
 	be generated.
 
-2003-07-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/QuarksToHadronsDecayer.*: Added class for decay of particles
 	to quarks which are then converted to hadrons distributed
@@ -4594,7 +4594,7 @@
 	spin-1 onia into three gluons or two gluons and a photon. The
 	class has not been properly tested.
 
-2003-07-29  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-29  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/ThePEGDefaults.in: Added a SimpleFlavour object which is
 	used by the BaryonRemnants and ClusterCollapser objects.
@@ -4614,7 +4614,7 @@
 	functions for the FlavourGenerator class to get rid of things that
 	were too much related to the Lund string fragmentation stuff.
 
-2003-07-27  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-27  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/OmegaPhi3PiDecayer.h: Changed the class name in the class
 	description to ThePEG::OmegaPhi3PiDecayer.
@@ -4649,12 +4649,12 @@
 	to specify the full name of the decaying particle (rather than
 	just the PDGName).
 
-2003-07-26  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-26  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/*.fh, CLHEPWrap/*.h: Reordered include paths to
 	prepare for next version of CLHEP which will use namespace CLHEP.
 
-2003-07-25  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-25  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/DecayMode.*: Added new member variable to remember the order
 	in which the decay products were specified. The produceProducts()
@@ -4674,7 +4674,7 @@
 	PDT/DalitzDecayer.*: Added class to perform Dalitz decays into e+
 	e- gamma.
 
-2003-07-24  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-24  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/StandardMatchers.h: Added matcher classes for
 	PseudoScalarMesons and VectorMesons.
@@ -4713,7 +4713,7 @@
 	persistent stream and then tries to write a no longer existent
 	birthStep.
 
-2003-07-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDT/OmegaPhi3PiDecayer.*, src/ThePEGDefaults.in,
 	src/ThePEGParticles.in: Added OmegaPhi3PiDecayer class to handle
@@ -4738,7 +4738,7 @@
 	the specified decay products, so that linked particles come first
 	and consecutively in the returned vector.
 
-2003-07-22  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-22  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* CLHEPWrap/Makefile: Added Matrix.h and Matrix.fh to the dist
 	files.
@@ -4754,18 +4754,18 @@
 	* Makefile: Changed the version number to 1.0ab (between alpha and
 	beta).
 
-2003-07-21  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-21  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* lib/ThePEG.el: Added the parameter and switches functions which
 	were forgotten in the move from skeleton.el
 
-2003-07-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-20  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* EventRecord/Step.*: Added addDecayNoCheck(tPPtr parent, tPPtr
 	child) and, addDecayProduct(tPPtr child) to add decay products
 	which are already linked with their parents.
 
-2003-07-19  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-19  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/RemnantHandler.*, PDF/PartonExtractor.*, PDF/PartonBin.*,
 	PDF/PDF.*, PDF/NoRemnants.*, PDF/LeptonLeptonRemnant.*,
@@ -4774,7 +4774,7 @@
 	all traces of old strategy involving the PartonBinInfo and
 	RemnantInfo classes.
 
-2003-07-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/DynamicLoader.cc: Added the current working directory
 	as a standard search path. Also added '/' between paths and
@@ -4805,7 +4805,7 @@
 	* ../configure: Added top-level configure script which simply runs
 	configure in the sub-directories.
 
-2003-07-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Makefile: Removed config.h from DISTFILES.
 
@@ -4819,7 +4819,7 @@
 	* PDT/FlatDecayer.cc: Fixed precision problems for large boosts of
 	decay products.
 
-2003-07-13  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-13  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Config/Makefile.install: This file is copied to the lib dir in
 	the installation and can be used to compile a users own .so
@@ -4832,7 +4832,7 @@
 	* Config/Makefile.common.in: .o and .so files are no longer
 	automatically soft-linked to the lib directory.
 
-2003-07-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-12  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Templates/ThePEG.el: This elisp file will replace the old
 	skeleton.el. The main difference is the renaming of the p7-*
@@ -4843,7 +4843,7 @@
 	* EventRecord/Step.cc: In addDecayProduct() remove test to see if
 	children are still in the final state.
 
-2003-07-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-08  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/SimplePhaseSpace.cc: Set the momentum of the first
 	particle rather than boosting it to avoid problems with massless
@@ -4875,7 +4875,7 @@
 	* EventRecord/ColourSinglet.*: Introduced ColourSingletException
 	which is thrown if an inconsistent colour flow is detected.
 
-2003-07-07  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-07  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/Exception.cc: Added debug function to print out
 	particle.
@@ -4883,7 +4883,7 @@
 	* Handlers/ClusterCollapser.cc: Fixed bug for the case where mass
 	of compensating particle is 0.
 
-2003-07-05  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-05  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/UtilityBase.tcc: Fixed bug in transformToCMS(): boos
 	was backward.
@@ -4898,7 +4898,7 @@
 
 	* CLHEPWrap/Transverse.icc: Fixed bug in phi() calculation.
 
-2003-07-04  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-04  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc: Messed around with the newRemnants
 	methods.
@@ -4906,7 +4906,7 @@
 	* Utilities/ObjectIndexer.icc: Fixed memory leak in
 	operator()(Int).
 
-2003-07-03  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-03  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/StepHandler.h: Added method and member for getting the
 	current step from the collision handler.
@@ -4918,7 +4918,7 @@
 
 	* EventRecord/Step.*: Added insertCopy method.
 
-2003-07-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-02  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonBin.*: Added information about outgoing bins in
 	addition to the info about the incoming bin.
@@ -4929,12 +4929,12 @@
 
 	* EventRecord/Step.*: Added removeDecayProducts methods.
 
-2003-07-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-07-01  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/XComb.cc: Fixed floating underflow problem due to
 	uninitialized field in constructor.
 
-2003-06-30  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-06-30  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Handlers/XComb.*: Prepared to use the new PartonBinInstance
 	class.
@@ -4953,13 +4953,13 @@
 
 	* CLHEPWrap/Transverse.h: Added units for input/output to streams.
 
-2003-06-28  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-06-28  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* PDF/PartonExtractor.cc: Fixed association beteen partons and
 	parton bins for generated sub-processes (used to find PDFs for
 	partons).
 
-2003-06-23  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-06-23  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/ObjectIndexer.*: Added templated class for dynamical
 	association between (reference counted) objects and indices.
@@ -4982,13 +4982,13 @@
 	* Handlers/DecayHandler.cc: The scale of a particle which has
 	decayed is set to zero.
 
-2003-06-16  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-06-16  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc: Added code so that the load() command
 	will look in the ThePEG_INSTALL_PATH for a .rpo file if the given
 	filename did not exist.
 
-2003-06-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+2003-06-14  Leif LÃ¶nnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* First check-in of ThePEG. This is just what was previously
 	Pythia7 but stripped from any pythia-specific classes.  Pythia7
