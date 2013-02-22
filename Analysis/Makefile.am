@@ -18,7 +18,7 @@ if HAVE_RIVET
   RivetAnalysis_la_CPPFLAGS =  $(RIVETINCLUDE) $(HEPMCINCLUDE) $(AM_CPPFLAGS)
   RivetAnalysis_la_LIBADD = $(HEPMCLIBS) $(RIVETLIBS)
   RivetAnalysis_la_SOURCES = RivetAnalysis.cc $(INCLUDEFILES)
-  RivetAnalysis_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+  RivetAnalysis_la_LDFLAGS = $(AM_LDFLAGS) -module -version-info 16:1:0
 else
   DOCFILES = $(AIDAWRAPPERS) $(LWHHEADERS)
 endif
@@ -43,7 +43,7 @@ libThePEGHist_la_CPPFLAGS = $(AM_CPPFLAGS) $(LWHINCLUDE)
 
 if HAVE_HEPMC
   pkglib_LTLIBRARIES += HepMCAnalysis.la
-  HepMCAnalysis_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+  HepMCAnalysis_la_LDFLAGS = $(AM_LDFLAGS) -module -version-info 16:1:0
   HepMCAnalysis_la_SOURCES = HepMCFile.h    HepMCFile.cc    NLOHepMCFile.h    NLOHepMCFile.cc
   HepMCAnalysis_la_CPPFLAGS = $(AM_CPPFLAGS) $(HEPMCINCLUDE)
   HepMCAnalysis_la_LIBADD = $(HEPMCLIBS)
