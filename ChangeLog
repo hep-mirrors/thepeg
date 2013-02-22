@@ -1,3 +1,8 @@
+2013-02-22  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Vectors/HepMCConverter.tcc: HepMC status code assignment fixed
+	for Herwig++ technical vertices.
+
 2012-10-24  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Persistency/PersistentIStream.cc, src/runThePEG.cc: keepId flag

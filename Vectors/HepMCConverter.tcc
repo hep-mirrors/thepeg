@@ -212,8 +212,9 @@ template <typename HepMCEventT, typename Traits>
 typename HepMCConverter<HepMCEventT,Traits>::GenParticle *
 HepMCConverter<HepMCEventT,Traits>::createParticle(tcPPtr p) const {
   int status = 1;
-  if ( !p->children().empty() || p->next() ) status = 11;
-  if ( !p->children().empty() ) {
+  size_t nChildren = p->children().size();
+  if ( nChildren > 0 || p->next() ) status = 11;
+  if ( nChildren > 1 ) {
     long id = p->data().id();
     if ( BaryonMatcher::Check(id) || MesonMatcher::Check(id) ||
 	 id == ParticleID::muminus || id == ParticleID::muplus ||
