@@ -46,7 +46,8 @@ StandardXComb::StandardXComb()
     partonDims(make_pair(0, 0)), theKinematicsGenerated(false),
     theLastDiagramIndex(0), theLastPDFWeight(0.0),
     theLastCrossSection(ZERO), theLastJacobian(1.0), theLastME2(-1.0), 
-    theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0) {}
+    theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0),
+    checkedCuts(false), passedCuts(false) {}
 
 StandardXComb::
 StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
@@ -61,7 +62,8 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
     theDiagrams(newDiagrams), isMirror(mir),   theKinematicsGenerated(false),
     theLastDiagramIndex(0), theLastPDFWeight(0.0), 
     theLastCrossSection(ZERO), theLastME2(-1.0), theLastMECrossSection(ZERO), 
-    theLastMEPDFWeight(1.0), theHead(newHead) {
+    theLastMEPDFWeight(1.0), theHead(newHead),
+    checkedCuts(false), passedCuts(false) {
   partonDims = pExtractor()->nDims(partonBins());
   if ( matrixElement()->haveX1X2() ) {
     partonDims.first = 0;
@@ -76,7 +78,8 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
   : theME(me), isMirror(false), theNDim(0), partonDims(make_pair(0, 0)),
     theKinematicsGenerated(false),
     theLastDiagramIndex(0), theLastPDFWeight(0.0), theLastCrossSection(ZERO),
-    theLastME2(-1.0), theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0) {
+    theLastME2(-1.0), theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0),
+    checkedCuts(false), passedCuts(false) {
   
   subProcess(new_ptr(SubProcess(make_pair(parts[0], parts[1]),
 				tCollPtr(), me)));
@@ -102,7 +105,8 @@ StandardXComb::StandardXComb(tStdXCombPtr newHead,
     theME(newME), theDiagrams(newDiagrams), isMirror(newHead->mirror()),  
     theKinematicsGenerated(false), theLastDiagramIndex(0), theLastPDFWeight(0.0), 
     theLastCrossSection(ZERO), theLastME2(-1.0), theLastMECrossSection(ZERO), 
-    theLastMEPDFWeight(1.0), theHead(newHead) {
+    theLastMEPDFWeight(1.0), theHead(newHead),
+    checkedCuts(false), passedCuts(false) {
   partonDims = pExtractor()->nDims(partonBins());
   if ( matrixElement()->haveX1X2() ) {
     partonDims.first = 0;
@@ -232,11 +236,18 @@ bool StandardXComb::checkInit() {
   return ( summin < min(maxEnergy(), cuts()->mHatMax()) );
 }
 
-bool StandardXComb::willPassCuts() const {
+bool StandardXComb::willPassCuts() {
+
+  if ( checkedCuts )
+    return passedCuts;
+
+  checkedCuts = true;
 
   if ( lastSHat() <= cuts()->sHatMin() ||
-       lastSHat() > cuts()->sHatMax() )
+       lastSHat() > cuts()->sHatMax() ) {
+    passedCuts = false;
     return false;
+  }
 
   cuts()->initSubProcess(lastSHat(), lastY(), mirror());
 
@@ -251,9 +262,11 @@ bool StandardXComb::willPassCuts() const {
   }
 
   if ( !cuts()->passCuts(outdata,outmomenta,mePartonData()[0],mePartonData()[1]) ) {
+    passedCuts = false;
     return false;
   }
 
+  passedCuts = true;
   return true;
 
 }
@@ -269,6 +282,8 @@ void StandardXComb::clean() {
   theProjectors.clear();
   theProjector = StdXCombPtr();
   theKinematicsGenerated = false;
+  checkedCuts = false;
+  passedCuts = false;
   matrixElement()->flushCaches();
 }
 
@@ -627,7 +642,8 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
      << theLastDiagramIndex << theMEInfo << theLastRandomNumbers << theMEPartonData
      << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
      << theLastME2 << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight
-     << theHead << theProjectors << theProjector << theKinematicsGenerated;
+     << theHead << theProjectors << theProjector << theKinematicsGenerated
+     << checkedCuts << passedCuts;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
@@ -636,7 +652,8 @@ void StandardXComb::persistentInput(PersistentIStream & is, int) {
      >> theLastDiagramIndex >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
      >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
      >> theLastME2 >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight
-     >> theHead >> theProjectors >> theProjector >> theKinematicsGenerated;
+     >> theHead >> theProjectors >> theProjector >> theKinematicsGenerated
+     >> checkedCuts >> passedCuts;
 }
 
 ClassDescription<StandardXComb> StandardXComb::initStandardXComb;

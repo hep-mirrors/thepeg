@@ -203,7 +203,7 @@ public:
   /**
    * Return true, if the current configuration will pass the cuts
    */
-  bool willPassCuts() const;
+  bool willPassCuts();
 
   /**
    * Reset all saved data about last generated phasespace point;
@@ -609,6 +609,16 @@ private:
    * different from the one just integrated.
    */
   tStdXCombPtr theProjector;
+
+  /**
+   * True, if cuts have already been checked
+   */
+  bool checkedCuts;
+
+  /**
+   * The result of the last call to willPassCuts
+   */
+  bool passedCuts;
 
 private:
 
