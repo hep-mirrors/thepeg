@@ -146,6 +146,15 @@ void StandardXComb::recreatePartonBinInstances(Energy2 scale) {
 
 }
 
+void StandardXComb::refillPartonBinInstances(const double* r) {
+
+  pExtractor()->select(this);
+  pExtractor()->updatePartonBinInstances(partonBinInstances());
+  pExtractor()->generateSHat(lastS(), partonBinInstances(),
+			     r, r + nDim() - partonDims.second,true);
+
+}
+
 void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
 
   if ( lastPartons().first )

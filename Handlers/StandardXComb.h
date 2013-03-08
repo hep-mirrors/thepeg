@@ -105,11 +105,18 @@ public:
   //@{
 
   /**
-   * Properly setup the PartonBinInstance objects
-   * provided a sub process has been constructed
-   * using this XComb.
+   * Properly setup the PartonBinInstance objects provided a sub
+   * process has been constructed using this XComb.
    */
   void recreatePartonBinInstances(Energy2 scale);
+
+  /**
+   * Fill the variables needed to generate remnants; momenta will be
+   * used from the partons set in this xcomb, but random numbers need
+   * to be provided to (re)generate variables not fixed by the
+   * incoming partons.
+   */
+  void refillPartonBinInstances(const double* r);
 
   /**
    * Setup information on incoming partons depending
