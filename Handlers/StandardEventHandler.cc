@@ -277,7 +277,9 @@ dSigDR(const pair<double,double> ll, Energy2 maxS,
 
 tStdXCombPtr StandardEventHandler::select(int bin, double & weight) {
 
-  int i = upper_bound(xSecs().begin(), xSecs().end(), rnd()*xSecs().back())
+  int i = 0;
+  if ( binStrategy() != 2 )
+    i = upper_bound(xSecs().begin(), xSecs().end(), rnd()*xSecs().back())
       - xSecs().begin();
   tStdXCombPtr lastXC;
   switch ( binStrategy() ) {
@@ -316,7 +318,7 @@ int StandardEventHandler::nBins() const {
 struct Stat {
 
   Stat() : attempted(0), accepted(0), sumw(0.0), sumw2(),
-	   maxXSec(CrossSection()), totsum(0.0), totrerr() {}
+	   maxXSec(CrossSection()), totsum(0.0), totrerr(0.0) {}
   Stat(long att, long acc, double w, double w2, CrossSection x,
        double sumw, double genrerr)
     : attempted(att), accepted(acc), sumw(w), sumw2(w2), maxXSec(x),
@@ -329,7 +331,7 @@ struct Stat {
   inline CrossSection xSecErr() const {
     if ( totsum == 0.0 ) return maxXSec;
     if ( sumw == 0.0 ) return xSec();
-    return xSec()*sqrt(sqr(totrerr) + sumw2/sqr(sumw));
+    return abs(xSec())*sqrt(sqr(totrerr) + sumw2/sqr(sumw));
   }
 
   long attempted;
@@ -345,11 +347,34 @@ struct Stat {
     accepted += s.accepted;
     sumw += s.sumw;
     sumw2 += s.sumw2;
+
+    // replaced by taking whatever is in the one to be added, see
+    // comments below; SP 2013/03/14
+
+    /*
     totsum = max(totsum, s.totsum);
     if ( totsum != 0.0 )
       maxXSec = max(maxXSec, s.maxXSec);
     else
       maxXSec += s.maxXSec;
+    */
+
+    // whereever Stat is used nothing happens with the above code,
+    // because those quantities are always the same for all Stat
+    // objects involved, so long as cross sections and sum of weights
+    // are positive; but it fails, if we have negative cross sections
+    // (which can happen when running real-subtraction of a NLO
+    // without the Born and virtual contributions). To this extent
+    // it's commented out and replaced by just taking whatever is in
+    // the statistics to be added. There are more issues in the
+    // statistics treatment going on here which urgently need to be
+    // looked at, and the Stat object itself needs to be made much
+    // more transparent and cleaned up from misleading constructions
+    // like this and the old one below the next two lines.
+
+    totsum = s.totsum;
+    maxXSec = s.maxXSec;
+
     totrerr = s.totrerr;
     return *this;
   }
@@ -489,6 +514,7 @@ CrossSection StandardEventHandler::integratedXSec() const {
   }
 
   return tot.xSec();
+
 }
 
 CrossSection StandardEventHandler::integratedXSecErr() const {

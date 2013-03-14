@@ -142,8 +142,8 @@ public:
    * w)\f$.
    */
   void reject(double weight = 1.0) {
-    theSumWeights [1] -=            weight ;
-    theSumWeights2[1] -=        sqr(weight);
+    theSumWeights [1] -=               1.0 ;
+    theSumWeights2[1] -=               1.0 ;
     theSumWeights [2] +=            weight ;
     theSumWeights2[2] +=        sqr(weight);
     theSumWeights [4] +=     theLastWeight ;
