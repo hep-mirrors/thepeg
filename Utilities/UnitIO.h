@@ -178,18 +178,23 @@ inline OUnitErr<double,double> ouniterr(double t, double dt) {
 template <typename OStream, typename T, typename UT>
 OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
   if ( isnan(u.x) || isinf(u.x) ) return os << u.x;
-  if ( isnan(u.dx) || isinf(u.dx) ) return os << u.x << '(' << u.dx << ')';
+  if ( isnan(u.dx) || isinf(u.dx) ) {
+    ostringstream out;
+    out << u.x << '(' << u.dx << ')';
+    return os << out.str();
+  }
   double dx = min(u.dx, abs(u.x));
   if ( dx <= 0.0 ) return os << u.x;
+  double x = abs(u.x);
   ostringstream osse;
   osse << std::scientific << setprecision(0) << dx;
   string sse = osse.str();
   string::size_type ee = sse.find('e');
-  long m = static_cast<long>(round(abs(u.x)/std::pow(10.0,std::atoi(sse.substr(ee + 1).c_str()))));
+  long m = static_cast<long>(round(abs(x)/std::pow(10.0,std::atoi(sse.substr(ee + 1).c_str()))));
   int powx = m <= 0? os.precision(): int(log10(double(m)));
   if ( m <= 0 || powx > os.precision() ) sse[0]='0';  
   ostringstream oss;
-  oss << std::scientific << setprecision(powx) << u.x;
+  oss << std::scientific << setprecision(powx) << x;
   string ss = oss.str();
   string::size_type e = ss.find('e');
   ostringstream out;
@@ -198,7 +203,7 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
     out << ss.substr(0, e) << "(" << sse[0] << ")" << ss.substr(e);
   else if ( (pp - 1)%3 == 0 ) {
     ostringstream oss;
-    oss << std::scientific << setprecision(powx) << u.x/10.0;
+    oss << std::scientific << setprecision(powx) << x/10.0;
     string ss = oss.str();
     string::size_type e = ss.find('e');
     if ( powx == 0 )
@@ -214,7 +219,7 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
   }
   else {
     ostringstream oss;
-    oss << std::scientific << setprecision(powx) << u.x*10.0;
+    oss << std::scientific << setprecision(powx) << x*10.0;
     string ss = oss.str();
     string::size_type e = ss.find('e');
     if ( powx == 0 )
@@ -225,7 +230,10 @@ OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
 	  << "(" << sse[0] << ")" << ss.substr(e);
     }
   }
-  return os << out.str();
+  string res = out.str();
+  if ( u.x < 0.0 )
+    res = "-" + res;
+  return os << res;
 }
 
 /**

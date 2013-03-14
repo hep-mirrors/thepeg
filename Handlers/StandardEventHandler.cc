@@ -417,7 +417,9 @@ void StandardEventHandler::statistics(ostream & os) const {
      << ouniterr(sampler()->integratedXSec(), 
 		 sampler()->integratedXSecErr(), nanobarn)
      << endl;
-  os << line << "Total (from unweighted events):" << setw(17) << tot.accepted << setw(13)
+  os << line << "Total (from "
+     << (weighted() ? "  weighted" : "unweighted") << " events):" 
+     << setw(17) << tot.accepted << setw(13)
      << tot.attempted << setw(17)
      << ouniterr(tot.xSec(),tot.xSecErr() , nanobarn)
      << endl << line;
@@ -514,7 +516,6 @@ CrossSection StandardEventHandler::integratedXSec() const {
   }
 
   return tot.xSec();
-
 }
 
 CrossSection StandardEventHandler::integratedXSecErr() const {
