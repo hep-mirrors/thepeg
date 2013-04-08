@@ -325,7 +325,8 @@ public:
 				const PBPair & newPartonBins, tCutsPtr newCuts,
 				const DiagramVector & newDiagrams, bool mir,
 				const PartonPairVec& allPBins,
-				tStdXCombPtr newHead = tStdXCombPtr());
+				tStdXCombPtr newHead = tStdXCombPtr(),
+				tMEPtr newME = tMEPtr());
 
   /**
    * Create a dependent xcomb object to be used

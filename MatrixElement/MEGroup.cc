@@ -92,11 +92,15 @@ StdXCombPtr MEGroup::makeXComb(Energy newMaxEnergy, const cPDPair & inc,
 			       const PBPair & newPartonBins, tCutsPtr newCuts,
 			       const DiagramVector & newDiagrams, bool mir,
 			       const PartonPairVec& allPBins,
-			       tStdXCombPtr newHead) {
+			       tStdXCombPtr newHead,
+			       tMEPtr newME) {
+  tMEGroupPtr newMEGroup = dynamic_ptr_cast<tMEGroupPtr>(newME);
+  if ( !newMEGroup )
+    newMEGroup = this;
   StdXCombGroupPtr res =  new_ptr(StdXCombGroup(newMaxEnergy, inc,
 						newEventHandler, newSubProcessHandler,
 						newExtractor, newCKKW,
-						newPartonBins, newCuts, this,
+						newPartonBins, newCuts, newMEGroup,
 						newDiagrams, mir,
 						newHead));
   res->build(allPBins);

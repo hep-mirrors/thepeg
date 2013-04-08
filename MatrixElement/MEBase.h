@@ -383,7 +383,8 @@ public:
 				const PBPair & newPartonBins, tCutsPtr newCuts,
 				const DiagramVector & newDiagrams, bool mir,
 				const PartonPairVec& allPBins,
-				tStdXCombPtr newHead = tStdXCombPtr());
+				tStdXCombPtr newHead = tStdXCombPtr(),
+				tMEPtr newME = tMEPtr());
 
   /**
    * For the given event generation setup return a dependent xcomb object
@@ -391,7 +392,8 @@ public:
    */
   virtual StdXCombPtr makeXComb(tStdXCombPtr newHead,
 				const PBPair & newPartonBins,
-				const DiagramVector & newDiagrams);
+				const DiagramVector & newDiagrams,
+				tMEPtr newME = tMEPtr());
 
   /**
    * Fill the projectors object of xcombs to choose subprocesses
