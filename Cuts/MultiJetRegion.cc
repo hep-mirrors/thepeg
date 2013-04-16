@@ -32,8 +32,7 @@ using namespace ThePEG;
 MultiJetRegion::MultiJetRegion()
   : theMassMin(0.*GeV), theMassMax(Constants::MaxEnergy),
     theDeltaRMin(0.0), theDeltaRMax(Constants::MaxRapidity),
-    theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity), 
-    theDeltaEtaMin(0.0), theDeltaEtaMax(Constants::MaxRapidity) {}
+    theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity) {}
 
 MultiJetRegion::~MultiJetRegion() {}
 
@@ -61,8 +60,7 @@ void MultiJetRegion::describe() const {
   CurrentGenerator::log()
     << "m    = " << massMin()/GeV << " .. " << massMax()/GeV << " GeV\n"
     << "dR   = " << deltaRMin() << " .. " << deltaRMax() << "\n"
-    << "dy   = " << deltaYMin() << " .. " << deltaYMax() << "\n"
-    << "deta = " << deltaEtaMin() << " .. " << deltaEtaMax() << "\n";
+    << "dy   = " << deltaYMin() << " .. " << deltaYMax() << "\n";
 
 }
 
@@ -92,18 +90,14 @@ bool MultiJetRegion::matches(int i, int j) const {
   if ( m < massMin() || m > massMax() )
     return false;
 
-  double deta = abs(pi.eta()-pj.eta());
-  if ( deta < deltaEtaMin() || deta > deltaEtaMax() )
+  double dy = abs(pi.rapidity() - pj.rapidity());
+  if ( dy < deltaYMin() || dy > deltaYMax() )
     return false;
 
   double dphi = abs(pi.phi() - pj.phi());
   if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
-  double dR = sqrt(sqr(deta)+sqr(dphi));
+  double dR = sqrt(sqr(dy)+sqr(dphi));
   if ( dR < deltaRMin() || dR > deltaRMax() )
-    return false;
-
-  double dy = abs(pi.rapidity() - pj.rapidity());
-  if ( dy < deltaYMin() || dy > deltaYMax() )
     return false;
 
   return true;
@@ -118,16 +112,14 @@ void MultiJetRegion::persistentOutput(PersistentOStream & os) const {
   os << theRegions
      << ounit(theMassMin,GeV) << ounit(theMassMax,GeV)
      << theDeltaRMin << theDeltaRMax 
-     << theDeltaYMin << theDeltaYMax 
-     << theDeltaEtaMin << theDeltaEtaMax;
+     << theDeltaYMin << theDeltaYMax;
 }
 
 void MultiJetRegion::persistentInput(PersistentIStream & is, int) {
   is >> theRegions
      >> iunit(theMassMin,GeV) >> iunit(theMassMax,GeV)
      >> theDeltaRMin >> theDeltaRMax 
-     >> theDeltaYMin >> theDeltaYMax 
-     >> theDeltaEtaMin >> theDeltaEtaMax;
+     >> theDeltaYMin >> theDeltaYMax;
 }
 
 
@@ -184,18 +176,6 @@ void MultiJetRegion::Init() {
     ("DeltaYMax",
      "The maximum jet-jet rapidity separation.",
      &MultiJetRegion::theDeltaYMax, Constants::MaxRapidity, 0, 0,
-     false, false, Interface::lowerlim);
-
-  static Parameter<MultiJetRegion,double> interfaceDeltaEtaMin
-    ("DeltaEtaMin",
-     "The minimum jet-jet pseudo-rapidity separation.",
-     &MultiJetRegion::theDeltaEtaMin, 0.0, 0.0, 0,
-     false, false, Interface::lowerlim);
-
-  static Parameter<MultiJetRegion,double> interfaceDeltaEtaMax
-    ("DeltaEtaMax",
-     "The maximum jet-jet pseudo-rapidity separation.",
-     &MultiJetRegion::theDeltaEtaMax, Constants::MaxRapidity, 0, 0,
      false, false, Interface::lowerlim);
 
 }

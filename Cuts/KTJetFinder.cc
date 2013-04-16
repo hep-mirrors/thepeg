@@ -95,10 +95,10 @@ bool KTJetFinder::oneCluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
 	continue;      
       double d = Constants::MaxDouble;
       if ( theMeasure == pt ) {
-	double deta2 = sqr(pi->eta() - pj->eta());
+	double dy2 = sqr(pi->rapidity() - pj->rapidity());
 	double dphi = abs(pi->phi() - pj->phi());
 	if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
-	double dr2 = deta2 + sqr(dphi);
+	double dr2 = dy2 + sqr(dphi);
 	if ( theVariant == kt ) {
 	  d = min(pi->perp2()/GeV2,pj->perp2()/GeV2)*dr2/r2;
 	} else if ( theVariant == ca ) {

@@ -85,16 +85,6 @@ public:
    */
   double deltaYMax() const { return theDeltaYMax; }
 
-  /**
-   * Return the minimum jet-jet pseudo-rapidity separation.
-   */
-  double deltaEtaMin() const { return theDeltaEtaMin; }
-
-  /**
-   * Return the maximum jet-jet pseudo-rapidity separation.
-   */
-  double deltaEtaMax() const { return theDeltaEtaMax; }
-
 public:
 
   /**
@@ -196,16 +186,6 @@ private:
    * The maximum jet-jet rapidity separation.
    */
   double theDeltaYMax;
-
-  /**
-   * The minimum jet-jet pseudo-rapidity separation.
-   */
-  double theDeltaEtaMin;
-
-  /**
-   * The maximum jet-jet pseudo-rapidity separation.
-   */
-  double theDeltaEtaMax;
 
   /**
    * Should the jets go into opposite detector hemispheres?

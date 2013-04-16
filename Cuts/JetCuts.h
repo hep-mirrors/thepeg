@@ -97,8 +97,7 @@ public:
    */
   enum Orderings {
     orderPt = 1,
-    orderY = 2,
-    orderEta = 3
+    orderY = 2
   };
 
   /**

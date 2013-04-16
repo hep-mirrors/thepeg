@@ -89,13 +89,6 @@ struct YLess {
   }
 };
 
-struct EtaLess {
-  inline bool operator()(const LorentzMomentum& a,
-			 const LorentzMomentum& b) const {
-    return a.eta() < b.eta();
-  }
-};
-
 bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
 		       const vector<LorentzMomentum> & p) const {
 
@@ -109,8 +102,6 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
     sort(jets.begin(),jets.end(),PtLarger());
   } else if ( ordering() == orderY ) {
     sort(jets.begin(),jets.end(),YLess());
-  } else if ( ordering() == orderEta ) {
-    sort(jets.begin(),jets.end(),EtaLess());
   } else assert(false);
 
   for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetRegions().begin();
@@ -209,11 +200,6 @@ void JetCuts::Init() {
      "OrderY",
      "Order in rapidity.",
      orderY);
-  static SwitchOption interfaceOrderingOrderEta
-    (interfaceOrdering,
-     "OrderEta",
-     "Order in pseudo-rapidity.",
-     orderEta);
 
 }
 
