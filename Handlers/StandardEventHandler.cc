@@ -315,93 +315,104 @@ int StandardEventHandler::nBins() const {
   return -1;
 }
 
-struct Stat {
+struct StatisticsBase {
 
-  Stat() : attempted(0), accepted(0), sumw(0.0), sumw2(),
-	   maxXSec(CrossSection()), totsum(0.0), totrerr(0.0) {}
-  Stat(long att, long acc, double w, double w2, CrossSection x,
-       double sumw, double genrerr)
-    : attempted(att), accepted(acc), sumw(w), sumw2(w2), maxXSec(x),
-      totsum(sumw), totrerr(genrerr) {}
+  double sumWeights;
+  double sumWeights2;
+  CrossSection integratedXSec;
+  CrossSection integratedXSecErr;
 
-  inline CrossSection xSec() const {
-    return totsum != 0.0? maxXSec*sumw/totsum: maxXSec;
-  }
+  double nPointsEffective;
+  CrossSection referenceXSec;
 
-  inline CrossSection xSecErr() const {
-    if ( totsum == 0.0 ) return maxXSec;
-    if ( sumw == 0.0 ) return xSec();
-    return abs(xSec())*sqrt(sqr(totrerr) + sumw2/sqr(sumw));
-  }
+  double sumWeightsGenerated;
+  double sumWeights2Generated;
 
-  long attempted;
-  long accepted;
-  double sumw;
-  double sumw2;
-  CrossSection maxXSec;
-  double totsum;
-  double totrerr;
+  double sumWeightsGeneratedNoReweight;
+  double sumWeights2GeneratedNoReweight;
 
-  const Stat & operator+= (const Stat & s) {
-    attempted += s.attempted;
-    accepted += s.accepted;
-    sumw += s.sumw;
-    sumw2 += s.sumw2;
+  unsigned long nPointsGenerated;
+  unsigned long nPointsAttempted;
 
-    // replaced by taking whatever is in the one to be added, see
-    // comments below; SP 2013/03/14
+  StatisticsBase()
+    : sumWeights(0.0), sumWeights2(0.0),
+      integratedXSec(ZERO), integratedXSecErr(ZERO),
+      nPointsEffective(0.0), referenceXSec(ZERO),
+      sumWeightsGenerated(0.0), sumWeights2Generated(0.0),
+      sumWeightsGeneratedNoReweight(0.0), sumWeights2GeneratedNoReweight(0.0),
+      nPointsGenerated(0), nPointsAttempted(0) {}
 
-    /*
-    totsum = max(totsum, s.totsum);
-    if ( totsum != 0.0 )
-      maxXSec = max(maxXSec, s.maxXSec);
-    else
-      maxXSec += s.maxXSec;
-    */
-
-    // whereever Stat is used nothing happens with the above code,
-    // because those quantities are always the same for all Stat
-    // objects involved, so long as cross sections and sum of weights
-    // are positive; but it fails, if we have negative cross sections
-    // (which can happen when running real-subtraction of a NLO
-    // without the Born and virtual contributions). To this extent
-    // it's commented out and replaced by just taking whatever is in
-    // the statistics to be added. There are more issues in the
-    // statistics treatment going on here which urgently need to be
-    // looked at, and the Stat object itself needs to be made much
-    // more transparent and cleaned up from misleading constructions
-    // like this and the old one below the next two lines.
-
-    totsum = s.totsum;
-    maxXSec = s.maxXSec;
-
-    totrerr = s.totrerr;
+  explicit StatisticsBase(tcSamplerPtr referenceSampler)
+    : sumWeights(referenceSampler->sumWeights()),
+      sumWeights2(referenceSampler->sumWeights2()),
+      integratedXSec(referenceSampler->integratedXSec()),
+      integratedXSecErr(referenceSampler->integratedXSecErr()),
+      nPointsEffective(sumWeights*
+		       (sqr(integratedXSec)-sqr(integratedXSecErr))/
+		       (sumWeights2*sqr(integratedXSec)/sumWeights-sumWeights*sqr(integratedXSecErr))),
+      referenceXSec(nPointsEffective*integratedXSec/sumWeights),
+	    sumWeightsGenerated(0.0), sumWeights2Generated(0.0), 
+	    sumWeightsGeneratedNoReweight(0.0), sumWeights2GeneratedNoReweight(0.0),
+	    nPointsGenerated(0), nPointsAttempted(0) {}
+		 
+  StatisticsBase& operator+=(const XSecStat& xstat) {
+    sumWeightsGenerated += xstat.sumWeights();
+    sumWeights2Generated += xstat.sumWeights2();
+    sumWeightsGeneratedNoReweight += xstat.sumWeightsNoReweight();
+    sumWeights2GeneratedNoReweight += xstat.sumWeights2NoReweight();
+    nPointsGenerated += xstat.accepted();
+    nPointsAttempted += xstat.attempts();
     return *this;
   }
+  
+  CrossSection xSec() const {
+    return integratedXSec*sumWeightsGenerated/sumWeights;
+  }
+
+  CrossSection xSecErr() const {
+    return 
+      integratedXSecErr*
+      (sumWeights2Generated - sqr(sumWeightsGenerated)/nPointsEffective)/
+      (sumWeights2 - sqr(sumWeights)/nPointsEffective);
+  }
+
+  CrossSection xSecNoReweight() const {
+    return integratedXSec*sumWeightsGeneratedNoReweight/sumWeights;
+  }
+
+  CrossSection xSecErrNoReweight() const {
+    return 
+      integratedXSecErr*
+      (sumWeights2GeneratedNoReweight - sqr(sumWeightsGeneratedNoReweight)/nPointsEffective)/
+      (sumWeights2 - sqr(sumWeights)/nPointsEffective);
+  }
+
 };
  
 void StandardEventHandler::statistics(ostream & os) const {
   if ( statLevel() == 0 ) return;
-  map<cPDPair, Stat> partonMap;
-  map<MEPtr, Stat> meMap;
-  map<PExtrPtr, Stat> extractMap;
-  Stat tot;
-  double genrerr = sampler()->integratedXSecErr()/sampler()->integratedXSec();
+  map<cPDPair, StatisticsBase> partonMap;
+  map<MEPtr, StatisticsBase> meMap;
+  map<PExtrPtr, StatisticsBase> extractMap;
+  StatisticsBase tot(sampler());
 
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s(x.stats().attempts(), x.stats().accepted(),
-	   x.stats().sumWeights(), x.stats().sumWeights2(),
-	   sampler()->integratedXSec(), sampler()->sumWeights(), genrerr);
-    partonMap[x.partons()] += s;
-    meMap[x.matrixElement()] += s;
-    extractMap[x.pExtractor()] += s;
-    tot += s;
+    if ( partonMap.find(x.partons()) == partonMap.end() )
+      partonMap[x.partons()] = StatisticsBase(sampler());
+    partonMap[x.partons()] += x.stats();
+    if ( meMap.find(x.matrixElement()) == meMap.end() )
+      meMap[x.matrixElement()] = StatisticsBase(sampler());
+    meMap[x.matrixElement()] += x.stats();
+    if ( extractMap.find(x.pExtractor()) == extractMap.end() )
+      extractMap[x.pExtractor()] = StatisticsBase(sampler());
+    extractMap[x.pExtractor()] += x.stats();
+    tot += x.stats();
   }
 
   string line = string(78, '=') + "\n";
 
-  if ( tot.accepted <= 0 ) {
+  if ( tot.nPointsGenerated <= 0 ) {
     os << line << "No events generated by event handler '" << name() << "'."
        << endl;
       return;
@@ -419,20 +430,20 @@ void StandardEventHandler::statistics(ostream & os) const {
      << endl;
   os << line << "Total (from "
      << (weighted() ? "  weighted" : "unweighted") << " events):" 
-     << setw(17) << tot.accepted << setw(13)
-     << tot.attempted << setw(17)
+     << setw(17) << tot.nPointsGenerated << setw(13)
+     << tot.nPointsAttempted << setw(17)
      << ouniterr(tot.xSec(),tot.xSecErr() , nanobarn)
      << endl << line;
 
   if ( statLevel() == 1 ) return;
 
   os << "Per matrix element breakdown:\n";
-  for ( map<MEPtr, Stat>::iterator i = meMap.begin();
+  for ( map<MEPtr, StatisticsBase>::iterator i = meMap.begin();
 	i != meMap.end(); ++i ) {
     string n = i->first->name();
     n.resize(37, ' ');
-    os << n << setw(11) << i->second.accepted << setw(13)
-       << i->second.attempted << setw(17)
+    os << n << setw(11) << i->second.nPointsGenerated << setw(13)
+       << i->second.nPointsAttempted << setw(17)
        << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn)
        << endl;
   }
@@ -441,24 +452,24 @@ void StandardEventHandler::statistics(ostream & os) const {
   if ( statLevel() == 2 ) return;
 
   os << "Per parton extractor breakdown:\n";
-  for ( map<PExtrPtr, Stat>::iterator i = extractMap.begin();
+  for ( map<PExtrPtr, StatisticsBase>::iterator i = extractMap.begin();
 	i != extractMap.end(); ++i ) {
     string n = i->first->name();
     n.resize(37, ' ');
-    os << n << setw(11) << i->second.accepted << setw(13)
-       << i->second.attempted << setw(17)
+    os << n << setw(11) << i->second.nPointsGenerated << setw(13)
+       << i->second.nPointsAttempted << setw(17)
        << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn)
        << endl;
   }
   os << line;
 
   os << "Per incoming partons breakdown:\n";
-  for ( map<cPDPair, Stat>::iterator i = partonMap.begin();
+  for ( map<cPDPair, StatisticsBase>::iterator i = partonMap.begin();
 	i != partonMap.end(); ++i ) {
     string n = i->first.first->PDGName() + " " + i->first.second->PDGName();
     n.resize(37, ' ');
-    os << n << setw(11) << i->second.accepted << setw(13)
-       << i->second.attempted << setw(17)
+    os << n << setw(11) << i->second.nPointsGenerated << setw(13)
+       << i->second.nPointsAttempted << setw(17)
        << ouniterr(i->second.xSec(), i->second.xSecErr(), nanobarn)
        << endl;
   }
@@ -467,20 +478,19 @@ void StandardEventHandler::statistics(ostream & os) const {
   if ( statLevel() == 3 ) return;
 
   os << "Detailed breakdown:\n";
-  CrossSection xsectot = sampler()->integratedXSec()/sampler()->sumWeights();
 
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
+    StatisticsBase xstat(sampler());
+    xstat += x.stats();
     os << "(" << x.pExtractor()->name() << ") "
        << x.partons().first->PDGName() << " "
        << x.partons().second->PDGName()
-      
        << " (" << x.matrixElement()->name() << " "
        << x.lastDiagram()->getTag() << ") " << endl
-       << setw(48) << x.stats().accepted() << setw(13) << x.stats().attempts()
+       << setw(48) << xstat.nPointsGenerated << setw(13) << xstat.nPointsAttempted
        << setw(17)
-       << ouniterr(x.stats().sumWeights()*xsectot,
-		   sqrt(x.stats().sumWeights2())*xsectot, nanobarn) << endl;
+       << ouniterr(xstat.xSec(), xstat.xSecErr(), nanobarn) << endl;
   }
 
   os << line;
@@ -488,91 +498,57 @@ void StandardEventHandler::statistics(ostream & os) const {
 }
 
 CrossSection StandardEventHandler::histogramScale() const {
-  Stat tot;
+  StatisticsBase tot(sampler());
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s;
-    s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights(), 1.0);
-    tot += s;
+    tot += x.stats();
   }
-
-  return tot.xSec()/tot.sumw;
+  return tot.xSec()/tot.sumWeightsGenerated;
 }
 
 CrossSection StandardEventHandler::integratedXSec() const {
   if ( sampler()->integratedXSec() == ZERO )
     return sampler()->maxXSec();
-
-  Stat tot;
+  StatisticsBase tot(sampler());
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s;
-    s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights(), 1.0);
-    tot += s;
+    tot += x.stats();
   }
-
   return tot.xSec();
 }
 
 CrossSection StandardEventHandler::integratedXSecErr() const {
   if ( sampler()->integratedXSec() == ZERO )
     return sampler()->maxXSec();
-
-  Stat tot;
-  double genrerr = sampler()->integratedXSecErr()/sampler()->integratedXSec();
+  StatisticsBase tot(sampler());
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s;
-    s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeights(), x.stats().sumWeights2(),
-	     sampler()->integratedXSec(), sampler()->sumWeights(), genrerr);
-    tot += s;
+    tot += x.stats();
   }
-
   return tot.xSecErr();
-
 }
 
 CrossSection StandardEventHandler::integratedXSecNoReweight() const {
   if ( sampler()->integratedXSec() == ZERO )
     return sampler()->maxXSec();
-
-  Stat tot;
+  StatisticsBase tot(sampler());
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s;
-    s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeightsNoReweight(), x.stats().sumWeights2NoReweight(),
-	     sampler()->integratedXSec(), sampler()->sumWeights(), 1.0);
-    tot += s;
+    tot += x.stats();
   }
-
-  return tot.xSec();
+  return tot.xSecNoReweight();
 }
 
 CrossSection StandardEventHandler::integratedXSecErrNoReweight() const {
   if ( sampler()->integratedXSec() == ZERO )
     return sampler()->maxXSec();
-
-  Stat tot;
-  double genrerr = sampler()->integratedXSecErr()/sampler()->integratedXSec();
+  StatisticsBase tot(sampler());
   for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
     const StandardXComb & x = *xCombs()[i];
-    Stat s;
-    s = Stat(x.stats().attempts(), x.stats().accepted(),
-	     x.stats().sumWeightsNoReweight(), x.stats().sumWeights2NoReweight(),
-	     sampler()->integratedXSec(), sampler()->sumWeights(), genrerr);
-    tot += s;
+    tot += x.stats();
   }
-
-  return tot.xSecErr();
-
+  return tot.xSecErrNoReweight();
 }
-
 
 void StandardEventHandler::doinitrun() {
   EventHandler::doinitrun();

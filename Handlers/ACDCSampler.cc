@@ -89,6 +89,10 @@ double ACDCSampler::sumWeights() const {
   return theSampler.n();
 }
 
+double ACDCSampler::sumWeights2() const {
+  return theSampler.n();
+}
+
 void ACDCSampler::dofinish() {
   if ( theSampler.n() <= 0 &&
        eventHandler() && eventHandler()->statLevel() > 1 ) {

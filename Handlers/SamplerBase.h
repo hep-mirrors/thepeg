@@ -106,6 +106,12 @@ public:
    * the events that were not rejeted).
    */
   virtual double sumWeights() const = 0;
+
+  /**
+   * Return the sum of the weights squared returned by generate() so far (of
+   * the events that were not rejeted).
+   */
+  virtual double sumWeights2() const = 0;
   //@}
 
 protected:
