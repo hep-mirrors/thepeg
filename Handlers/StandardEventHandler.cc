@@ -347,10 +347,10 @@ struct StatisticsBase {
       sumWeights2(referenceSampler->sumWeights2()),
       integratedXSec(referenceSampler->integratedXSec()),
       integratedXSecErr(referenceSampler->integratedXSecErr()),
-      nPointsEffective(sumWeights*
+      nPointsEffective(sumWeights != 0.0 ? sumWeights*
 		       (sqr(integratedXSec)-sqr(integratedXSecErr))/
-		       (sumWeights2*sqr(integratedXSec)/sumWeights-sumWeights*sqr(integratedXSecErr))),
-      referenceXSec(nPointsEffective*integratedXSec/sumWeights),
+		       (sumWeights2*sqr(integratedXSec)/sumWeights-sumWeights*sqr(integratedXSecErr)) : ZERO),
+      referenceXSec(sumWeights != 0.0 ? nPointsEffective*integratedXSec/sumWeights : ZERO),
 	    sumWeightsGenerated(0.0), sumWeights2Generated(0.0), 
 	    sumWeightsGeneratedNoReweight(0.0), sumWeights2GeneratedNoReweight(0.0),
 	    nPointsGenerated(0), nPointsAttempted(0) {}
@@ -366,25 +366,33 @@ struct StatisticsBase {
   }
   
   CrossSection xSec() const {
+    if ( sumWeights == 0.0 )
+      return integratedXSec;
     return integratedXSec*sumWeightsGenerated/sumWeights;
   }
 
   CrossSection xSecErr() const {
+    if ( sumWeights == 0.0 )
+      return integratedXSec;
     return 
       integratedXSecErr*
-      (sumWeights2Generated - sqr(sumWeightsGenerated)/nPointsEffective)/
-      (sumWeights2 - sqr(sumWeights)/nPointsEffective);
+      sqrt(abs(nPointsEffective*sumWeights2Generated - sqr(sumWeightsGenerated))/
+	   abs(nPointsEffective*sumWeights2 - sqr(sumWeights)));
   }
 
   CrossSection xSecNoReweight() const {
+    if ( sumWeights == 0.0 )
+      return integratedXSec;
     return integratedXSec*sumWeightsGeneratedNoReweight/sumWeights;
   }
 
   CrossSection xSecErrNoReweight() const {
+    if ( sumWeights == 0.0 )
+      return integratedXSec;
     return 
       integratedXSecErr*
-      (sumWeights2GeneratedNoReweight - sqr(sumWeightsGeneratedNoReweight)/nPointsEffective)/
-      (sumWeights2 - sqr(sumWeights)/nPointsEffective);
+      sqrt(abs(nPointsEffective*sumWeights2GeneratedNoReweight - sqr(sumWeightsGeneratedNoReweight))/
+	   abs(nPointsEffective*sumWeights2 - sqr(sumWeights)));
   }
 
 };
