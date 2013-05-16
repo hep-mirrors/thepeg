@@ -130,9 +130,6 @@ void NLOHepMCFile::analyze(tEventPtr event, long, int, int) {
     for ( SubProcessVector::const_iterator s = grp->dependent().begin();
 	  s != grp->dependent().end(); ++s ) {
 
-      // remove this when proper Rivet NLO capabilities are ready
-      ++_eventNumber;
-
       hepmc = makeEvent(event,*s,_eventNumber,eUnit,lUnit,xsec,xsecErr);
       if (_hepmcio)
 	_hepmcio->write_event(hepmc);

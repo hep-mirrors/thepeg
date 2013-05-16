@@ -128,13 +128,8 @@ void NLORivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int
     for ( SubProcessVector::const_iterator s = grp->dependent().begin();
 	  s != grp->dependent().end(); ++s ) {
 
-      // remove this when proper Rivet NLO capabilities are ready
-      ++_nevent;
-
       hepmc = makeEvent(event,*s,_nevent,eUnit,lUnit,xsec,xsecErr);
-      
-     
-     
+
       if ( _rivet ) _rivet->analyze(*hepmc);
       // delete hepmc event
       delete hepmc;
