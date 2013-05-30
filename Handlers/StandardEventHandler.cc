@@ -374,10 +374,14 @@ struct StatisticsBase {
   CrossSection xSecErr() const {
     if ( sumWeights == 0.0 )
       return integratedXSec;
+
+    double denom = abs(nPointsEffective*sumWeights2 - sqr(sumWeights));
+    if ( denom == 0 )
+      return xSec();
+
+    double num = abs(nPointsEffective*sumWeights2Generated - sqr(sumWeightsGenerated));
     return 
-      integratedXSecErr*
-      sqrt(abs(nPointsEffective*sumWeights2Generated - sqr(sumWeightsGenerated))/
-	   abs(nPointsEffective*sumWeights2 - sqr(sumWeights)));
+      integratedXSecErr*sqrt(num/denom);
   }
 
   CrossSection xSecNoReweight() const {
