@@ -244,9 +244,9 @@ public:
   double eta() const {
     Value m = rho();
     if ( m ==  Value() ) return  0.0;
-    ERROR_IF(m == z() || m == -z(),
-	     "Pseudorapidity for 3-vector along z-axis undefined.");
-    return 0.5 * log( (m+z()) / (m-z()) );
+    Value pt = max(Constants::epsilon*m, perp());
+    double rap = log((m + abs(z()))/pt);
+    return z() > ZERO? rap: -rap;
   }
 
   /// Spatial angle with another vector.
@@ -257,10 +257,11 @@ public:
 
   /// Rapidity \f$\frac{1}{2}\ln\frac{t+z}{t-z} \f$
   double rapidity() const {
-    ERROR_IF(abs(t()) == abs(z()),"rapidity for 4-vector with |E| = |Pz| -- infinite result");
-    ERROR_IF(abs(t()) < abs(z()) ,"rapidity for spacelike 4-vector with |E| < |Pz| -- undefined");
-    double q = (t() + z()) / (t() - z());
-    return 0.5 * log(q);
+    if ( z() == ZERO ) return 0.0;
+    ERROR_IF(t() <= ZERO, "Tried to take rapidity of negative-energy Lorentz vector");
+    Value pt = sqrt(max(sqr(t()*Constants::epsilon), perp2() + m2()));
+    double rap = log((t() + abs(z()))/pt);
+    return z() > ZERO? rap: -rap;
   }
 
   /// Rapidity with respect to another vector
@@ -268,10 +269,11 @@ public:
     double r = ref.mag2();
     ERROR_IF(r == 0,"A zero vector used as reference to LorentzVector rapidity");
     Value vdotu = vect().dot(ref)/sqrt(r);
-    ERROR_IF(abs(t()) == abs(vdotu),"rapidity for 4-vector with |E| = |Pu| -- infinite result");
-    ERROR_IF(abs(t()) < abs(vdotu),"rapidity for spacelike 4-vector with |E|<|P*ref| undefined");
-    double q = (t() + vdotu) / (t() - vdotu);
-    return 0.5 * log(q);
+    if ( vdotu == ZERO ) return 0.0;
+    ERROR_IF(t() <= ZERO, "Tried to take rapidity of negative-energy Lorentz vector");
+    Value pt = sqrt(max(sqr(t()*Constants::epsilon), perp2(ref) + m2()));
+    double rap = log((t() + abs(z()))/pt);
+    return z() > ZERO? rap: -rap;
   }
 
   /**
