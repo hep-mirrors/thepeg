@@ -234,6 +234,14 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
   outPDF = make_pair(partonExtractor()->getPDF(inData.first),
 		     partonExtractor()->getPDF(inData.second));
 
+  // SP: re-interpret 3/4 -> 1/2; see discussion w/ Leif and Keith at LH 2013
+
+  if ( abs(heprup.IDWTUP) == 3 )
+    heprup.IDWTUP = heprup.IDWTUP < 0 ? -1 : 1;
+
+  if ( abs(heprup.IDWTUP) == 4 )
+    heprup.IDWTUP = heprup.IDWTUP < 0 ? -2 : 2;
+
   close();
 
   if ( !heprup.IDWTUP && useWeightWarnings )
@@ -242,7 +250,7 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
       << "produced by LesHouchesReader " << name()
       << " may not be sampled correctly." << Exception::warning;
 
-  if ( abs(heprup.IDWTUP) > 1 && useWeightWarnings  )
+  if ( abs(heprup.IDWTUP) > 1 && !eh.weighted() && useWeightWarnings  )
     Throw<LesHouchesInitError>()
       << "LesHouchesReader " << name() << " has the IDWTUP flag set to "
       << heprup.IDWTUP << " which is not supported by this reader, the "
@@ -253,7 +261,7 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
       << "Unset <interface>WeightWarnings</interface> to avoid this message"
       << Exception::warning;
 
-  if ( heprup.IDWTUP !=  eh.weightOption() && abs(heprup.IDWTUP) < 3 &&
+  if ( heprup.IDWTUP != eh.weightOption() && abs(heprup.IDWTUP) < 3 &&
        useWeightWarnings  )
     Throw<LesHouchesInitError>()
       << "LesHouchesReader " << name() << " has the IDWTUP flag set to "

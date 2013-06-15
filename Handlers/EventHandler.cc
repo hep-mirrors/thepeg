@@ -39,16 +39,18 @@
 using namespace ThePEG;
 
 EventHandler::EventHandler(bool warnincomplete)
-: theMaxLoop(100000), theStatLevel(2), theConsistencyLevel(clCollision),
-  theConsistencyEpsilon(sqrt(Constants::epsilon)),
-  warnIncomplete(warnincomplete) {
+  : theMaxLoop(100000), weightedEvents(false), 
+    theStatLevel(2), theConsistencyLevel(clCollision),
+    theConsistencyEpsilon(sqrt(Constants::epsilon)),
+    warnIncomplete(warnincomplete) {
   setupGroups();
 }
 
 EventHandler::
 EventHandler(const EventHandler & x)
   : HandlerBase(x), LastXCombInfo<>(x),
-    theMaxLoop(x.theMaxLoop), theStatLevel(x.theStatLevel),
+    theMaxLoop(x.theMaxLoop), weightedEvents(x.theMaxLoop),
+    theStatLevel(x.theStatLevel),
     theConsistencyLevel(x.theConsistencyLevel),
     theConsistencyEpsilon(x.theConsistencyEpsilon),
     theLumiFn(x.theLumiFn), theCuts(x.theCuts),
@@ -335,7 +337,8 @@ IVector EventHandler::getReferences() {
   return ret;
 }
 void EventHandler::persistentOutput(PersistentOStream & os) const {
-  os << theLastXComb << theMaxLoop << theStatLevel << oenum(theConsistencyLevel)
+  os << theLastXComb << theMaxLoop << weightedEvents 
+     << theStatLevel << oenum(theConsistencyLevel)
      << theConsistencyEpsilon << theLumiFn << theCuts << thePartonExtractor
      << theSubprocessGroup << theCascadeGroup << theMultiGroup
      << theHadronizationGroup << theDecayGroup << theCurrentEvent
@@ -344,7 +347,8 @@ void EventHandler::persistentOutput(PersistentOStream & os) const {
 }
 
 void EventHandler::persistentInput(PersistentIStream & is, int) {
-  is >> theLastXComb >> theMaxLoop >> theStatLevel >> ienum(theConsistencyLevel)
+  is >> theLastXComb >> theMaxLoop >> weightedEvents
+     >> theStatLevel >> ienum(theConsistencyLevel)
      >> theConsistencyEpsilon >> theLumiFn >> theCuts >> thePartonExtractor
      >> theSubprocessGroup >> theCascadeGroup >> theMultiGroup
      >> theHadronizationGroup >> theDecayGroup >> theCurrentEvent
@@ -373,6 +377,17 @@ void EventHandler::Init() {
     ("MaxLoop",
      "The maximum number of attempts per event when selecting a sub-process.",
      &EventHandler::theMaxLoop, 100000, 100, 100000000, true, false, true);
+
+  static Switch<EventHandler,bool> interfaceWeighted
+    ("Weighted",
+     "If switched on, this event Handler will produce weighted events",
+     &EventHandler::weightedEvents, false, false);
+  static SwitchOption interfaceWeightedTrue
+    (interfaceWeighted, "On",
+     "This EventHandler produces weighted events.", true);
+  static SwitchOption interfaceWeightedFalse
+    (interfaceWeighted, "Off",
+     "This EventHandler produces unweighted events.", false);
 
   static Switch<EventHandler,int> interfaceStatLevel
     ("StatLevel",

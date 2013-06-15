@@ -252,6 +252,12 @@ public:
    * Get current step.
    */
   tStepPtr currentStep() const { return theCurrentStep; }
+
+  /**
+   * Return true if this event handler should produce weightes events
+   */
+  bool weighted() const { return weightedEvents; }
+
   /**
    * The level of statistics. Controlls the amount of statistics
    * written out after each run to the <code>EventGenerator</code>s
@@ -464,6 +470,11 @@ private:
    * per event.
    */
   long theMaxLoop;
+
+  /**
+   * True if this event handler should produce weightes events
+   */
+  bool weightedEvents;
 
   /**
    * Controlls the amount of statistics written out after each run to

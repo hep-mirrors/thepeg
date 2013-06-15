@@ -40,7 +40,7 @@
 using namespace ThePEG;
 
 StandardEventHandler::StandardEventHandler()
-  : EventHandler(false), collisionCuts(true), theBinStrategy(2), weightedEvents(false),
+  : EventHandler(false), collisionCuts(true), theBinStrategy(2),
     theLumiDim(0) {
   setupGroups();
 }
@@ -751,17 +751,6 @@ void StandardEventHandler::Init() {
      "All bins are sampled individually.",
      2);
 
-  static Switch<StandardEventHandler,bool> interfaceWeighted
-    ("Weighted",
-     "If switched on, this event Handler will produce weighted events",
-     &StandardEventHandler::weightedEvents, false, false);
-  static SwitchOption interfaceWeightedTrue
-    (interfaceWeighted, "On",
-     "This EventHandler produces weighted events.", true);
-  static SwitchOption interfaceWeightedFalse
-    (interfaceWeighted, "Off",
-     "This EventHandler produces unweighted events.", false);
-
   static Reference<StandardEventHandler,SamplerBase> interfaceSampler
     ("Sampler",
      "The phase space sampler responsible for generating phase space"
@@ -778,7 +767,6 @@ void StandardEventHandler::persistentOutput(PersistentOStream & os) const {
   os << theIncomingA << theIncomingB << theSubProcesses << theCuts << collisionCuts
      << theXCombs << ounit(theXSecs, nanobarn)
      << theBinStrategy << theMaxDims << theMEXMap
-     << weightedEvents
      << theSampler << theLumiDim;
 }
 
@@ -786,7 +774,6 @@ void StandardEventHandler::persistentInput(PersistentIStream & is, int) {
   is >> theIncomingA >> theIncomingB >> theSubProcesses >> theCuts >> collisionCuts
      >> theXCombs >> iunit(theXSecs, nanobarn)
      >> theBinStrategy >> theMaxDims>> theMEXMap
-     >> weightedEvents
      >> theSampler >> theLumiDim;
 }
 

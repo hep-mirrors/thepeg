@@ -188,11 +188,6 @@ public:
   int maxDim(int bin) const { return theMaxDims[bin]; }
 
   /**
-   * Return true if this event handler should produce weightes events
-   */
-  bool weighted() const { return weightedEvents; }
-
-  /**
    * The number of phase space dimensions used by the luminosity
    * function.
    */
@@ -464,11 +459,6 @@ private:
    * system to the lab system.
    */
   LorentzRotation theCurrentEventBoost;
-
-  /**
-   * True if this event handler should produce weightes events
-   */
-  bool weightedEvents;
 
   /**
    * The phase space sampler responsible for generating phase space

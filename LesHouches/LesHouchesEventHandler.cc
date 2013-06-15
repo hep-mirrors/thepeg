@@ -189,11 +189,13 @@ EventPtr LesHouchesEventHandler::generateEvent() {
     select(weight/currentReader()->preweight);
     histStats.select(weight);
 
-    if ( weightOption() == unitweight  || weightOption() == unitnegweight ) {
-      if ( !rndbool(abs(weight)) ) continue;
-      weight = Math::sign(1.0, weight);
-    }
-    else if ( weight == 0.0 ) continue;
+    if ( !weighted() ) {
+      if ( weightOption() == unitweight  || weightOption() == unitnegweight ) {
+	if ( !rndbool(abs(weight)) ) continue;
+	weight = Math::sign(1.0, weight);
+      }
+      else if ( weight == 0.0 ) continue;
+    } else if ( weight == 0.0 ) continue;
 
     accept();
 
