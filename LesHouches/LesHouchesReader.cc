@@ -968,6 +968,7 @@ void LesHouchesReader::createParticles() {
 	for(unsigned int ic1=0;ic1<col.size();++ic1) {
 	  bool matched=false;
 	  for(unsigned int iy=0;iy<external.size();++iy) {
+	    if(iy==ix) continue;
 	    vector<tcColinePtr> col2;
 	    if(iy==0) {
 	      if(external[iy]->colourInfo()->colourLines().empty()) continue;
@@ -989,20 +990,21 @@ void LesHouchesReader::createParticles() {
 	}
       }
       if(!anti.empty()) {
-	for(unsigned int ic1=0;ic1<col.size();++ic1) {
+	for(unsigned int ic1=0;ic1<anti.size();++ic1) {
 	  bool matched=false;
 	  for(unsigned int iy=0;iy<external.size();++iy) {
+	    if(iy==ix) continue;
 	    vector<tcColinePtr> anti2;
 	    if(iy==0) {
-	      if(external[iy]->colourInfo()->colourLines().empty()) continue;
+	      if(external[iy]->colourInfo()->antiColourLines().empty()) continue;
 	      anti2 = external[iy]->colourInfo()->antiColourLines();
 	    } 
 	    else {
-	      if(external[iy]->colourInfo()->antiColourLines().empty()) continue;
+	      if(external[iy]->colourInfo()->colourLines().empty()) continue;
 	      anti2 = external[iy]->colourInfo()->colourLines();
 	    }
 	    for(unsigned int ic2=0;ic2<anti2.size();++ic2) {
-	      if(col[ic1]==anti2[ic2]) {
+	      if(anti[ic1]==anti2[ic2]) {
 		matched=true;
 		break;
 	      }
