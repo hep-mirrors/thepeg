@@ -47,69 +47,6 @@ Update gcc if possible.
 fi
 ])
 
-# Search for LHAPDF and g77 compiler in standard directories
-AC_DEFUN([THEPEG_SEARCH_LHAPDF],
-[
-AC_MSG_CHECKING([if LHAPDF is present and works])
-HAS_LHAPDF="yes"
-LHAPDF_LIBDIR=""
-LOAD_LHAPDF=""
-AC_ARG_WITH(LHAPDF,[  --without-LHAPDF        do not use LHAPDF package (requires g77 compiler)
-                          (included by default --with-LHAPDF=path to specify
-                          where the LHAPDF shared library is located)], [if test -n "$with_LHAPDF" -a "x$with_LHAPDF" != "xyes" -a "x$with_LHAPDF" != "xno"; then LHAPDF_LIBDIR="$with_LHAPDF"; elif test "x$with_LHAPDF" == "xno"; then HAS_LHAPDF="no"; fi])
-
-
-LHAPDF_LDFLAGS=""
-if test -n "$LHAPDF_LIBDIR"; then
-  if test -e $LHAPDF_LIBDIR/libLHAPDF.so -o -e $LHAPDF_LIBDIR/libLHAPDF.dylib
-  then
-    LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR"
-  elif test "${host_cpu}" == "x86_64" -a -e $LHAPDF_LIBDIR/lib64/libLHAPDF.so
-  then
-    LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR/lib64"
-  elif test -e $LHAPDF_LIBDIR/lib/libLHAPDF.so -o -e $LHAPDF_LIBDIR/lib/libLHAPDF.dylib
-  then
-    LHAPDF_LDFLAGS="-L$LHAPDF_LIBDIR/lib"
-  else
-    HAS_LHAPDF="no"
-  fi
-fi
-
-LHAPDF_LIBS="-lLHAPDF"
-
-oldLIB="$LIBS"
-oldLDFLAGS="$LDFLAGS"
-
-if test "$HAS_LHAPDF" == "yes"; then
-dnl Now lets see if the libraries work properly
-  LIBS="$LIBS $LHAPDF_LIBS"
-  LDFLAGS="$LDFLAGS $LHAPDF_LDFLAGS"
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[extern "C" { void initpdf_(int&); }]],
-                                  [[int i = 1; initpdf_(i);]])], ,
-                                  HAS_LHAPDF="no")
-fi
-
-LIBS="$oldLIB"
-LDFLAGS="$oldLDFLAGS"
-
-if test "$HAS_LHAPDF" == "yes"; then
-  AC_MSG_RESULT([yes])
-  LHAPDF_PKGDATADIR="$LHAPDF_LIBDIR/../share/lhapdf"
-  LOAD_LHAPDF="library ThePEGLHAPDF.so"
-  dnl don't need to check for existence of LHAPDF_PKGDATADIR
-  dnl if this location is invalid, we'll use ThePEG's index file anyway
-elif test "x$with_LHAPDF" == "xno" -o "x$with_LHAPDF" == "x"; then
-  AC_MSG_RESULT([no])
-else
-  AC_MSG_ERROR([LHAPDF was requested but the library was not found.])
-fi
-
-AC_SUBST(LHAPDF_LIBS)
-AC_SUBST(LOAD_LHAPDF)
-AC_SUBST(LHAPDF_LDFLAGS)
-AC_SUBST(LHAPDF_PKGDATADIR)
-AM_CONDITIONAL([USELHAPDF], [test "x$HAS_LHAPDF" == "xyes"])
-])
 
 # Check for ThePEG.
 AC_DEFUN([THEPEG_CHECK_THEPEG],
@@ -501,10 +438,10 @@ cat << _THEPEG_EOF_ > config.thepeg
 ***
 *** GSL:		$with_gsl
 ***
-*** LHAPDF:		$with_LHAPDF
+*** LHAPDF:		$lhaconfig
 *** HepMC:		$with_hepmc
 *** Rivet:		$with_rivet
-*** FastJet:		$with_fastjet
+*** FastJet:		$fjconfig
 ***
 *** Host:		$host
 *** CXX:		$CXXSTRING
