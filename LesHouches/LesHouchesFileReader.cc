@@ -244,6 +244,10 @@ void LesHouchesFileReader::doinit() {
 	  // as it can cause problems later on in event generation
 	  if(abs(id)<=6 || (abs(id)>=11 && abs(id)<=16) ||
 	     abs(id)==23 || abs(id)==24) {
+	    // Throw<SetupException>() << "Standard model mass for PID " 
+	    // 			    << id
+	    // 			    << " will not be changed."
+	    // 			    << Exception::warning;
 	    block = StringUtils::cdr(block,"\r\n");
 	    line = StringUtils::car(block,"\r\n");
 	    continue;
@@ -280,6 +284,27 @@ void LesHouchesFileReader::doinit() {
 	    << "LesHouchesFileReader::doinit() - A ParticleData object with the PDG code "
 	    << parent << " does not exist. " << Exception::runerror;
 	  return;
+	}
+	if ( abs(inpart->id()) == 6 || 
+	     abs(inpart->id()) == 15 || 
+	     abs(inpart->id()) == 23 || 
+	     abs(inpart->id()) == 24 || 
+	     abs(inpart->id()) == 25 ) {
+	  Throw<SetupException>() << "\n"
+	    "************************************************************************\n"
+	    "* Your LHE file changes the width of " << inpart->PDGName() << ".\n"
+	    "* This can cause serious problems in the event generation!\n"
+	    "************************************************************************\n"
+	    "\n" << Exception::warning;
+	}
+	else if (inpart->width() > ZERO && width <= ZERO) {
+	  Throw<SetupException>() << "\n"
+	    "************************************************************************\n"
+	    "* Your LHE file zeroes the non-zero width of " << inpart->PDGName() << ".\n"
+	    "* If " << inpart->PDGName() << " is a decaying SM particle,\n"
+	    "*     this can cause serious problems in the event generation!\n"
+	    "************************************************************************\n"
+				  "\n" << Exception::warning;
 	}
 	// set the width
 	inpart->width(width);
