@@ -17,13 +17,13 @@ else
 fi
 
 LOAD_LHAPDF=""
+LHAPDF_PKGDATADIR=""
 
 if test "${lhaconfig}" = "no"; then
    AC_MSG_CHECKING([LHAPDF])
    AC_MSG_RESULT([no]);
    $2
 else
-
    dnl now see if LHAPDF is functional
    save_LDFLAGS="$LDFLAGS"
    save_LIBS="$LIBS"
@@ -46,6 +46,7 @@ else
       LHAPDF_LDFLAGS="-L`${lhaconfig} --libdir`"
       LHAPDF_LIBS="-lLHAPDF"
       LOAD_LHAPDF="library ThePEGLHAPDF.so"
+      LHAPDF_PKGDATADIR="`${lhaconfig} --datadir`"
       AC_MSG_RESULT(yes)
       $1
    else
@@ -55,8 +56,8 @@ else
 fi
 
 AC_SUBST([LHAPDF_LIBS])
-AC_SUBST(LOAD_LHAPDF)
-AC_SUBST(LHAPDF_LDFLAGS)
-AC_SUBST(LHAPDF_PKGDATADIR,[`${lhaconfig} --datadir`])
-AM_CONDITIONAL(USELHAPDF,[test "x$LOAD_LHAPDF" = "xlibrary ThePEGLHAPDF.so"])
+AC_SUBST([LOAD_LHAPDF])
+AC_SUBST([LHAPDF_LDFLAGS])
+AC_SUBST([LHAPDF_PKGDATADIR])
+AM_CONDITIONAL([USELHAPDF],[test "x$LOAD_LHAPDF" = "xlibrary ThePEGLHAPDF.so"])
 ])
