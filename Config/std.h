@@ -104,8 +104,14 @@ using std::min;
 using std::max;
 using std::mem_fun;
 using std::sqrt;
-using std::pow;
+//using std::pow;
 using std::atan2;
+
+/** Powers - standard or non-standard */
+template <class ExponentT>
+double pow(double x, ExponentT p) {
+  return std::pow(x,double(p));
+}
 
 /** Square root of an integer. */
 inline double sqrt(int x) {
