@@ -258,7 +258,8 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
       << "sub-classes of LesHouchesReader to correctly convert to match IDWTUP "
       << "+/- 1. Will try to make intelligent guesses to get "
       << "correct statistics.\nIn most cases this should be sufficient. "
-      << "Unset <interface>WeightWarnings</interface> to avoid this message"
+      << "Unset <interface>WeightWarnings</interface> to avoid this message,"
+      << "or set <interface>Weighted</interface> to on."
       << Exception::warning;
 
   if ( heprup.IDWTUP != eh.weightOption() && abs(heprup.IDWTUP) < 3 &&
