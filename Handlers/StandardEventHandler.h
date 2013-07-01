@@ -295,6 +295,16 @@ protected:
   int binStrategy() const { return theBinStrategy; }
 
   /**
+   * Return the sampler assigned to this event handler.
+   */
+  tSamplerPtr sampler() { return theSampler; }
+
+  /**
+   * Return the sampler assigned to this event handler.
+   */
+  tcSamplerPtr sampler() const { return theSampler; }
+
+  /**
    * Throw away the last generated event before generating a new one.
    */
   virtual void clean();
@@ -383,16 +393,6 @@ protected:
    * @param weight the weight given for the event.
    */
   void reject(double weight);
-
-  /**
-   * Return the sampler assigned to this event handler.
-   */
-  tSamplerPtr sampler() { return theSampler; }
-
-  /**
-   * Return the sampler assigned to this event handler.
-   */
-  tcSamplerPtr sampler() const { return theSampler; }
 
 private:
 
