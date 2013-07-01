@@ -90,6 +90,16 @@ public:
   virtual void statistics(ostream &) const;
 
   /**
+   * Return the sampler assigned to this event handler.
+   */
+  tSamplerPtr sampler() { return theSampler; }
+
+  /**
+   * Return the sampler assigned to this event handler.
+   */
+  tcSamplerPtr sampler() const { return theSampler; }
+
+  /**
    * Histogram scale. A histogram bin which has been filled with the
    * weights associated with the Event objects should be scaled by
    * this factor to give the correct cross section.
@@ -293,16 +303,6 @@ protected:
    * sampled together. 2 if all StandardXComb objects are sampled separately.
    */
   int binStrategy() const { return theBinStrategy; }
-
-  /**
-   * Return the sampler assigned to this event handler.
-   */
-  tSamplerPtr sampler() { return theSampler; }
-
-  /**
-   * Return the sampler assigned to this event handler.
-   */
-  tcSamplerPtr sampler() const { return theSampler; }
 
   /**
    * Throw away the last generated event before generating a new one.
