@@ -65,6 +65,22 @@
 
 #serial 14
 
+#   Define m4_ifblank and m4_ifnblank macros from introduced in
+#   autotools 2.64 m4sugar.m4 if using an earlier autotools.
+
+ifdef([m4_ifblank], [], [
+m4_define([m4_ifblank],
+[m4_if(m4_translit([[$1]],  [ ][	][
+]), [], [$2], [$3])])
+])
+
+
+ifdef([m4_ifnblank], [], [
+m4_define([m4_ifnblank],
+[m4_if(m4_translit([[$1]],  [ ][	][
+]), [], [$3], [$2])])
+])
+ 
 AU_ALIAS([CHECK_ZLIB], [AX_CHECK_ZLIB])
 AC_DEFUN([AX_CHECK_ZLIB],
 #
