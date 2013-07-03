@@ -258,7 +258,10 @@ bool StandardXComb::willPassCuts() {
     return false;
   }
 
-  cuts()->initSubProcess(lastSHat(), lastY(), mirror());
+  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) {
+    passedCuts = false;
+    return false;
+  }
 
   tcPDVector outdata(mePartonData().begin()+2,mePartonData().end());
   vector<LorentzMomentum> outmomenta(meMomenta().begin()+2,meMomenta().end());

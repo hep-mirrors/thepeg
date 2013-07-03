@@ -346,7 +346,9 @@ void StdXCombGroup::newSubProcess(bool) {
     try {
       ds = (**dep).construct();
     } catch(Veto&) {
-      continue;
+      throw Exception() << "A veto was encountered while constructing a dependent sub process.\n"
+			<< "This situation should not have happened. Will veto the event."
+			<< Exception::eventerror;
     }
     if ( ds )
       group->add(ds);
@@ -363,10 +365,10 @@ tSubProPtr StdXCombGroup::construct() {
 
   newSubProcess(theMEGroup->subProcessGroups());
 
-  TmpTransform<tSubProPtr>
-    tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
-  if ( !cuts()->passCuts(*subProcess()) && theMEGroup->subProcessGroups() ) {
-    subProcess()->groupWeight(0.0);
+  if ( !theMEGroup->subProcessGroups() ) {
+    TmpTransform<tSubProPtr>
+      tmp(subProcess(), Utilities::getBoostToCM(subProcess()->incoming()));
+    if ( !cuts()->passCuts(*subProcess()) ) throw Veto();
   }
 
   return subProcess();
