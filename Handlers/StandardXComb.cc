@@ -202,7 +202,9 @@ void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
     lastParticles().second->momentum().minus();
 
   lastX1X2(make_pair(x1,x2));
-  lastY(log(lastX1()/lastX2())*0.5);
+
+  lastY((lastPartons().first->momentum()+
+	 lastPartons().second->momentum()).rapidity());
 
 }
 
@@ -252,15 +254,11 @@ bool StandardXComb::willPassCuts() {
 
   checkedCuts = true;
 
-  if ( lastSHat() <= cuts()->sHatMin() ||
-       lastSHat() > cuts()->sHatMax() ) {
-    passedCuts = false;
-    return false;
-  }
-
-  if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) {
-    passedCuts = false;
-    return false;
+  if ( !head() ) {
+    if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) )
+      return false;
+  } else {
+    cuts()->initSubProcess(lastSHat(), lastY(), mirror());
   }
 
   tcPDVector outdata(mePartonData().begin()+2,mePartonData().end());
@@ -622,7 +620,12 @@ tSubProPtr StandardXComb::construct() {
 
   matrixElement()->setXComb(this);
 
-  if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
+  if ( !head() ) {
+    if ( !cuts()->initSubProcess(lastSHat(), lastY()) ) throw Veto();
+  } else {
+    cuts()->initSubProcess(lastSHat(), lastY());
+  }
+
 
   if ( head() )
     if ( !matrixElement()->apply() )
