@@ -255,8 +255,10 @@ bool StandardXComb::willPassCuts() {
   checkedCuts = true;
 
   if ( !head() ) {
-    if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) )
+    if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) {
+      passedCuts = false;
       return false;
+    }
   } else {
     cuts()->initSubProcess(lastSHat(), lastY(), mirror());
   }
