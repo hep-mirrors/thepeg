@@ -210,21 +210,23 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boostZ(double bz)
 }
 
 // General boost equivalent to LT = Boost(bx,by,bz) * LT
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, double bz, double)
-{
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, double bz, double gamma) {
+  // calculation of gamma and beta
+  double beta(bx*bx+by*by+bz*bz);
+  if(gamma<0.) gamma = 1./sqrt(1.-beta);
+  beta = sqrt(beta);
   // work out beta and chi
   static double eps=1e-10;
-  double beta(sqrt(bx*bx+by*by+bz*bz)),chi(atanh(beta)),chc(cosh(0.5*chi)),shc(0.5);
-  if(beta>eps){shc=sinh(0.5*chi)/beta;}
+  double chc = sqrt(0.5*(1+gamma));
+  double shc = beta>eps ? sqrt(0.5*(gamma-1))/abs(beta) : 0.5;
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by),temp[4][4];
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      temp[0][ix]= (chc-shc*bz)*_mx[0][ix]-shc*nxminy  *_mx[1][ix];
-      temp[1][ix]=-shc*nxplny  *_mx[0][ix]+(chc+shc*bz)*_mx[1][ix];
-      temp[2][ix]= (chc+shc*bz)*_mx[2][ix]+shc*nxminy  *_mx[3][ix];
-      temp[3][ix]= shc*nxplny  *_mx[2][ix]+(chc-shc*bz)*_mx[3][ix];
-    }
+  for(ix=0;ix<4;++ix) {
+    temp[0][ix]= (chc-shc*bz)*_mx[0][ix]-shc*nxminy  *_mx[1][ix];
+    temp[1][ix]=-shc*nxplny  *_mx[0][ix]+(chc+shc*bz)*_mx[1][ix];
+    temp[2][ix]= (chc+shc*bz)*_mx[2][ix]+shc*nxminy  *_mx[3][ix];
+    temp[3][ix]= shc*nxplny  *_mx[2][ix]+(chc-shc*bz)*_mx[3][ix];
+  }
   for(ix=0;ix<4;++ix)
     for(iy=0;iy<4;++iy)
       _mx[ix][iy]=temp[ix][iy];
@@ -232,21 +234,24 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, d
 }
 
 // General boost equivalent to LT = Boost(bv) * LT
-SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b, double) {
-  // work out beta and chi
+SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b, double gamma) {
+  // calculation of gamma and beta
+  double beta(b.mag2());
+  if(gamma<0.) gamma = 1./sqrt(1.-beta);
+  beta = sqrt(beta);
+  // work out chi
   static double eps=1e-10;
   double bx(b.x()),by(b.y()),bz(b.z());
-  double beta(b.mag()),chi(atanh(beta)),chc(cosh(0.5*chi)),shc(0.5);
-  if(beta>eps){shc=sinh(0.5*chi)/beta;}
+  double chc = sqrt(0.5*(1+gamma));
+  double shc = beta>eps ? sqrt(0.5*(gamma-1))/abs(beta) : 0.5;
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by),temp[4][4];
   unsigned int ix,iy;
-  for(ix=0;ix<4;++ix)
-    {
-      temp[0][ix]= (chc-shc*bz)*_mx[0][ix]-shc*nxminy  *_mx[1][ix];
-      temp[1][ix]=-shc*nxplny  *_mx[0][ix]+(chc+shc*bz)*_mx[1][ix];
-      temp[2][ix]= (chc+shc*bz)*_mx[2][ix]+shc*nxminy  *_mx[3][ix];
-      temp[3][ix]= shc*nxplny  *_mx[2][ix]+(chc-shc*bz)*_mx[3][ix];
-    }
+  for(ix=0;ix<4;++ix) {
+    temp[0][ix]= (chc-shc*bz)*_mx[0][ix]-shc*nxminy  *_mx[1][ix];
+    temp[1][ix]=-shc*nxplny  *_mx[0][ix]+(chc+shc*bz)*_mx[1][ix];
+    temp[2][ix]= (chc+shc*bz)*_mx[2][ix]+shc*nxminy  *_mx[3][ix];
+    temp[3][ix]= shc*nxplny  *_mx[2][ix]+(chc-shc*bz)*_mx[3][ix];
+  }
   for(ix=0;ix<4;++ix)
     for(iy=0;iy<4;++iy)
       _mx[ix][iy]=temp[ix][iy];
