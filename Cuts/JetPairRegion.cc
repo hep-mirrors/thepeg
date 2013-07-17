@@ -32,7 +32,7 @@ JetPairRegion::JetPairRegion()
   : theMassMin(0.*GeV), theMassMax(Constants::MaxEnergy),
     theDeltaRMin(0.0), theDeltaRMax(Constants::MaxRapidity),
     theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity), 
-    theOppositeHemispheres(false) {}
+    theOppositeHemispheres(false), theCutWeight(1.0) {}
 
 JetPairRegion::~JetPairRegion() {}
 
@@ -58,33 +58,41 @@ void JetPairRegion::describe() const {
 
 }
 
-bool JetPairRegion::matches(tcCutsPtr parent) const {
+bool JetPairRegion::matches(tcCutsPtr parent) {
   
   if ( !firstRegion()->didMatch() ||
-       !secondRegion()->didMatch() )
+       !secondRegion()->didMatch() ) {
+    theCutWeight = 0.0;
     return false;
+  }
+
+  theCutWeight = 1.0;
 
   const LorentzMomentum& pi = firstRegion()->lastMomentum();
   const LorentzMomentum& pj = secondRegion()->lastMomentum();
 
   Energy m = (pi+pj).m();
-  if ( m < massMin() || m > massMax() )
+  if ( !(firstRegion()->lessThanEnergy(massMin(),m,theCutWeight) &&
+	 firstRegion()->lessThanEnergy(m,massMax(),theCutWeight)) )
     return false;
 
   double dy = abs(pi.rapidity() - pj.rapidity());
-  if ( dy < deltaYMin() || dy > deltaYMax() )
+  if ( !(firstRegion()->lessThanRapidity(deltaYMin(),dy,theCutWeight) &&
+	 firstRegion()->lessThanRapidity(dy,deltaYMax(),theCutWeight)) )
     return false;
 
   double dphi = abs(pi.phi() - pj.phi());
   if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
   double dR = sqrt(sqr(dy)+sqr(dphi));
-  if ( dR < deltaRMin() || dR > deltaRMax() )
+  if ( !(firstRegion()->lessThanRapidity(deltaRMin(),dR,theCutWeight) &&
+	 firstRegion()->lessThanRapidity(dR,deltaRMax(),theCutWeight)) )
     return false;
 
   double py = 
     (pi.rapidity() + parent->currentYHat()) * 
     (pj.rapidity() + parent->currentYHat());
-  if ( theOppositeHemispheres && py > 0.0 )
+  if ( theOppositeHemispheres && 
+       !firstRegion()->lessThanRapidity(py,0.0,theCutWeight) )
     return false;
 
   return true;
@@ -100,7 +108,7 @@ void JetPairRegion::persistentOutput(PersistentOStream & os) const {
      << ounit(theMassMin,GeV) << ounit(theMassMax,GeV)
      << theDeltaRMin << theDeltaRMax 
      << theDeltaYMin << theDeltaYMax 
-     << theOppositeHemispheres;
+     << theOppositeHemispheres << theCutWeight;
 }
 
 void JetPairRegion::persistentInput(PersistentIStream & is, int) {
@@ -108,7 +116,7 @@ void JetPairRegion::persistentInput(PersistentIStream & is, int) {
      >> iunit(theMassMin,GeV) >> iunit(theMassMax,GeV)
      >> theDeltaRMin >> theDeltaRMax 
      >> theDeltaYMin >> theDeltaYMax 
-     >> theOppositeHemispheres;
+     >> theOppositeHemispheres >> theCutWeight;
 }
 
 
@@ -186,5 +194,6 @@ void JetPairRegion::Init() {
      "False",
      "Do not require jets to be in different hemispheres",
      false);
+
 }
 

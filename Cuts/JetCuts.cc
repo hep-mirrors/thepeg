@@ -53,6 +53,7 @@ void JetCuts::describe() const {
 	  r != jetVetoRegions().end(); ++r )
       (**r).describe();
   }
+  CurrentGenerator::log() << "\n";
 }
 
 IBPtr JetCuts::clone() const {
@@ -66,13 +67,15 @@ IBPtr JetCuts::fullclone() const {
 void JetCuts::persistentOutput(PersistentOStream & os) const {
   os << theUnresolvedMatcher 
      << theJetRegions << theJetVetoRegions 
-     << theJetPairRegions << theMultiJetRegions << theOrdering;
+     << theJetPairRegions << theMultiJetRegions 
+     << theOrdering;
 }
 
 void JetCuts::persistentInput(PersistentIStream & is, int) {
   is >> theUnresolvedMatcher 
      >> theJetRegions >> theJetVetoRegions 
-     >> theJetPairRegions >> theMultiJetRegions >> theOrdering;
+     >> theJetPairRegions >> theMultiJetRegions
+     >> theOrdering;
 }
 
 struct PtLarger {
@@ -120,20 +123,38 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
     }
   }
 
+  double cutWeight = 1.0;
+  bool pass = true;
+
   for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetRegions().begin();
-	r != jetRegions().end(); ++r )
-    if ( !(**r).didMatch() )
+	r != jetRegions().end(); ++r ) {
+    pass &= (**r).didMatch();
+    cutWeight *= (**r).cutWeight();
+    if ( !pass ) {
+      parent->lastCutWeight(cutWeight);
       return false;
+    }
+  }
 
   for ( vector<Ptr<JetPairRegion>::ptr>::const_iterator r = jetPairRegions().begin();
-	r != jetPairRegions().end(); ++r )
-    if ( !(**r).matches(parent) )
+	r != jetPairRegions().end(); ++r ) {
+    pass &= (**r).matches(parent);
+    cutWeight *= (**r).cutWeight();
+    if ( !pass ) {
+      parent->lastCutWeight(cutWeight);
       return false;
+    }
+  }
 
   for ( vector<Ptr<MultiJetRegion>::ptr>::const_iterator r = multiJetRegions().begin();
-	r != multiJetRegions().end(); ++r )
-    if ( !(**r).matches() )
+	r != multiJetRegions().end(); ++r ) {
+    pass &= (**r).matches();
+    cutWeight *= (**r).cutWeight();
+    if ( !pass ) {
+      parent->lastCutWeight(cutWeight);
       return false;
+    }
+  }
 
   if ( !jetVetoRegions().empty() ) {
     for ( size_t k = 0; k < jets.size(); ++k ) {
@@ -141,13 +162,19 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
 	continue;
       for ( vector<Ptr<JetRegion>::ptr>::const_iterator r = jetVetoRegions().begin();
 	    r != jetVetoRegions().end(); ++r ) {
-	if ( (**r).matches(parent,k+1,jets[k]) )
+	pass &= !(**r).matches(parent,k+1,jets[k]);
+	cutWeight *= 1. - (**r).cutWeight();
+	if ( !pass ) {
+	  parent->lastCutWeight(cutWeight);
 	  return false;
+	}
       }
     }
   }
 
-  return true;
+  parent->lastCutWeight(cutWeight);
+
+  return pass;
 
 }
 

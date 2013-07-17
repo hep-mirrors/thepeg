@@ -17,6 +17,7 @@
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Command.h"
+#include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/ParVector.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/EventGenerator.h"
@@ -30,7 +31,9 @@ using namespace ThePEG;
 
 JetRegion::JetRegion()
   : thePtMin(0.*GeV), thePtMax(Constants::MaxEnergy),
-    theDidMatch(false), theLastNumber(0) {}
+    theDidMatch(false), theLastNumber(0), 
+    theFuzzy(false), theCutWeight(1.0),
+    theEnergyCutWidth(1.0*GeV), theRapidityCutWidth(0.1) {}
 
 JetRegion::~JetRegion() {}
 
@@ -81,6 +84,50 @@ void JetRegion::describe() const {
 
 }
 
+double step(double r) {
+  if ( r < -0.5 )
+    return 0.0;
+  if ( r > 0.5 )
+    return 1.0;
+  return r+0.5;
+}
+
+bool JetRegion::lessThanEnergy(Energy a, Energy b, double& weight) const {
+  if ( !fuzzy() ) {
+    if ( a < b ) {
+      weight = 1.0;
+      return true;
+    }
+    weight = 0.0;
+    return false;
+  }
+  double w = step((b-a)/theEnergyCutWidth);
+  if ( w == 0.0 ) {
+    weight = 0.0;
+    return false;
+  }
+  weight *= w;
+  return true;
+}
+
+bool JetRegion::lessThanRapidity(double a, double b, double& weight) const {
+  if ( !fuzzy() ) {
+    if ( a < b ) {
+      weight = 1.0;
+      return true;
+    }
+    weight = 0.0;
+    return false;
+  }
+  double w = step((b-a)/theRapidityCutWidth);
+  if ( w == 0.0 ) {
+    weight = 0.0;
+    return false;
+  }
+  weight *= w;
+  return true;
+}
+
 bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
 
   // one jet region can only contain one jet
@@ -90,19 +137,27 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
   if ( !accepts().empty() && find(accepts().begin(),accepts().end(),n) == accepts().end() )
     return false;
 
-  if ( p.perp() < ptMin() || p.perp() > ptMax() )
+  theCutWeight = 1.0;
+
+  if ( !(lessThanEnergy(ptMin(),p.perp(),theCutWeight) &&
+	 lessThanEnergy(p.perp(),ptMax(),theCutWeight)) )
     return false;
 
   bool inRange = false || yRanges().empty();
   for ( vector<pair<double,double> >::const_iterator r = yRanges().begin();
 	r != yRanges().end(); ++r ) {
-    if ( p.rapidity() + parent->currentYHat() > r->first && p.rapidity() + parent->currentYHat() < r->second ) {
+    double rangeWeight = 1.0;
+    if ( lessThanRapidity(r->first,p.rapidity() + parent->currentYHat(),rangeWeight) &&
+	 lessThanRapidity(p.rapidity() + parent->currentYHat(),r->second,rangeWeight) ) {
+      theCutWeight *= rangeWeight;
       inRange = true;
       break;
     }
   }
-  if ( !inRange )
+  if ( !inRange ) {
+    theCutWeight = 0.0;
     return false;
+  }
 
   theDidMatch = true;
   theLastNumber = n;
@@ -118,12 +173,14 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
 
 void JetRegion::persistentOutput(PersistentOStream & os) const {
   os << ounit(thePtMin,GeV) << ounit(thePtMax,GeV)
-     << theYRanges << theAccepts;
+     << theYRanges << theAccepts << theFuzzy << theCutWeight
+     << ounit(theEnergyCutWidth,GeV) << theRapidityCutWidth;
 }
 
 void JetRegion::persistentInput(PersistentIStream & is, int) {
   is >> iunit(thePtMin,GeV) >> iunit(thePtMax,GeV)
-     >> theYRanges >> theAccepts;
+     >> theYRanges >> theAccepts >> theFuzzy >> theCutWeight
+     >> iunit(theEnergyCutWidth,GeV) >> theRapidityCutWidth;
 }
 
 
@@ -163,6 +220,33 @@ void JetRegion::Init() {
      "The jet numbers accepted. If empty, any jets are accepted.",
      &JetRegion::theAccepts, -1, 1, 1, 10,
      false, false, Interface::upperlim);
+
+  static Switch<JetRegion,bool> interfaceFuzzy
+    ("Fuzzy",
+     "Make this jet region a fuzzy cut",
+     &JetRegion::theFuzzy, false, false, false);
+  static SwitchOption interfaceFuzzyOn
+    (interfaceFuzzy,
+     "Yes",
+     "",
+     true);
+  static SwitchOption interfaceFuzzyOff
+    (interfaceFuzzy,
+     "No",
+     "",
+     false);
+
+  static Parameter<JetRegion,Energy> interfaceEnergyCutWidth
+    ("EnergyCutWidth",
+     "The pt cut smearing.",
+     &JetRegion::theEnergyCutWidth, GeV, 1.0*GeV, 0.0*GeV, 0*GeV,
+     false, false, Interface::lowerlim);
+
+  static Parameter<JetRegion,double> interfaceRapidityCutWidth
+    ("RapidityCutWidth",
+     "The rapidity cut smearing.",
+     &JetRegion::theRapidityCutWidth, 0.1, 0.0, 0,
+     false, false, Interface::lowerlim);
 
 }
 

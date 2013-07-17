@@ -37,7 +37,7 @@ Cuts::Cuts(Energy MhatMin)
     theYHatMin(-Constants::MaxRapidity), theYHatMax(Constants::MaxRapidity),
     theX1Min(0.0), theX1Max(1.0), theX2Min(0.0), theX2Max(1.0),
     theScaleMin(ZERO), theScaleMax(Constants::MaxEnergy2),
-    theSubMirror(false) {}
+    theSubMirror(false), theCutWeight(1.0), theLastCutWeight(1.0) {}
 
 Cuts::~Cuts() {}
 
@@ -83,6 +83,8 @@ void Cuts::initEvent() {
 }
 
 bool Cuts::initSubProcess(Energy2 shat, double yhat, bool mirror) const {
+  theCutWeight = 1.0;
+  theLastCutWeight = 1.0;
   theSubMirror = mirror;
   theCurrentSHat = shat;
   theCurrentYHat = yhat;
@@ -105,6 +107,11 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
     return passCuts(ptype, pmir, t1, t2);
   }
 
+  bool pass = true;
+  theCutWeight = 1.0;
+  theLastCutWeight = 1.0;
+
+  // ATTENTION fuzzy jet finding
   if ( jetFinder() )
     if ( ptype.size() > jetFinder()->minOutgoing() ) {
       vector<LorentzMomentum> jets = p;
@@ -115,35 +122,63 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
     }
 
   for ( int i = 0, N = p.size(); i < N; ++i )
-    for ( int j = 0, M = theOneCuts.size(); j < M; ++j )
-      if ( !theOneCuts[j]->passCuts(this, ptype[i], p[i]) ) return false;
+    for ( int j = 0, M = theOneCuts.size(); j < M; ++j ) {
+      pass &= theOneCuts[j]->passCuts(this, ptype[i], p[i]);
+      theCutWeight *= theLastCutWeight;
+      theLastCutWeight = 1.0;
+      if ( !pass )
+	return false;
+    }
 
   for ( int i1 = 0, N1 = p.size() - 1; i1 < N1; ++i1 )
     for ( int i2 = i1 + 1, N2 = p.size(); i2 < N2; ++i2 )
-      for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
-	if ( !theTwoCuts[j]->passCuts(this, ptype[i1], ptype[i2],
-				      p[i1], p[i2]) ) return false;
-  for ( int j = 0, M = theMultiCuts.size(); j < M; ++j )
-    if ( !theMultiCuts[j]->passCuts(this, ptype, p) ) return false;
+      for ( int j = 0, M = theTwoCuts.size(); j < M; ++j ) {
+	pass &= theTwoCuts[j]->passCuts(this, ptype[i1], ptype[i2],
+					p[i1], p[i2]);
+	theCutWeight *= theLastCutWeight;
+	theLastCutWeight = 1.0;
+	if ( !pass )
+	  return false;
+      }
+
+  for ( int j = 0, M = theMultiCuts.size(); j < M; ++j ) {
+    pass &= theMultiCuts[j]->passCuts(this, ptype, p);
+    theCutWeight *= theLastCutWeight;
+    theLastCutWeight = 1.0;
+    if ( !pass )
+      return false;
+  }
+
   if ( t1 ) {
     LorentzMomentum p1(ZERO, ZERO, 0.5*sqrt(currentSHat()),
 		       0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
-      for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
-	if ( !theTwoCuts[j]->passCuts(this, t1, ptype[i], p1, p[i],
-				      true, false) )
+      for ( int j = 0, M = theTwoCuts.size(); j < M; ++j ) {
+	pass &= theTwoCuts[j]->passCuts(this, t1, ptype[i], p1, p[i],
+					true, false);
+	theCutWeight *= theLastCutWeight;
+	theLastCutWeight = 1.0;
+	if ( !pass )
 	  return false;
+      }
   }
+
   if ( t2 ) {
     LorentzMomentum p2(ZERO, ZERO,
 		       -0.5*sqrt(currentSHat()), 0.5*sqrt(currentSHat()));
     for ( int i = 0, N = p.size(); i < N; ++i )
-      for ( int j = 0, M = theTwoCuts.size(); j < M; ++j )
-	if ( !theTwoCuts[j]->passCuts(this, ptype[i], t2, p[i], p2,
-				      false, true) )
+      for ( int j = 0, M = theTwoCuts.size(); j < M; ++j ) {
+	pass &= theTwoCuts[j]->passCuts(this, ptype[i], t2, p[i], p2,
+					false, true);
+	theCutWeight *= theLastCutWeight;
+	theLastCutWeight = 1.0;
+	if ( !pass )
 	  return false;
+      }
   }
-  return true;
+
+  return pass;
+
 }
 
 bool Cuts::passCuts(const tcPVector & p, tcPDPtr t1, tcPDPtr t2) const {
@@ -306,7 +341,8 @@ void Cuts::persistentOutput(PersistentOStream & os) const {
      << theYHatMin << theYHatMax
      << theX1Min << theX1Max << theX2Min << theX2Max << ounit(theScaleMin, GeV2)
      << ounit(theScaleMax, GeV2) << theOneCuts << theTwoCuts << theMultiCuts
-     << theJetFinder << theSubMirror;
+     << theJetFinder << theSubMirror
+     << theCutWeight << theLastCutWeight;
 }
 
 void Cuts::persistentInput(PersistentIStream & is, int) {
@@ -315,7 +351,8 @@ void Cuts::persistentInput(PersistentIStream & is, int) {
      >> theYHatMin >> theYHatMax
      >> theX1Min >> theX1Max >> theX2Min >> theX2Max >> iunit(theScaleMin, GeV2)
      >> iunit(theScaleMax, GeV2) >> theOneCuts >> theTwoCuts >> theMultiCuts
-     >> theJetFinder >> theSubMirror;
+     >> theJetFinder >> theSubMirror
+     >> theCutWeight >> theLastCutWeight;
 }
 
 ClassDescription<Cuts> Cuts::initCuts;

@@ -32,7 +32,8 @@ using namespace ThePEG;
 MultiJetRegion::MultiJetRegion()
   : theMassMin(0.*GeV), theMassMax(Constants::MaxEnergy),
     theDeltaRMin(0.0), theDeltaRMax(Constants::MaxRapidity),
-    theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity) {}
+    theDeltaYMin(0.0), theDeltaYMax(Constants::MaxRapidity),
+    theCutWeight(1.0) {}
 
 MultiJetRegion::~MultiJetRegion() {}
 
@@ -64,7 +65,7 @@ void MultiJetRegion::describe() const {
 
 }
 
-bool MultiJetRegion::matches() const {
+bool MultiJetRegion::matches() {
 
   int n = regions().size();
 
@@ -77,27 +78,34 @@ bool MultiJetRegion::matches() const {
 
 }
 
-bool MultiJetRegion::matches(int i, int j) const {
+bool MultiJetRegion::matches(int i, int j) {
   
   if ( !regions()[i]->didMatch() ||
-       !regions()[j]->didMatch() )
+       !regions()[j]->didMatch() ) {
+    theCutWeight = 0.0;
     return false;
+  }
+
+  theCutWeight = 1.0;
 
   const LorentzMomentum& pi = regions()[i]->lastMomentum();
   const LorentzMomentum& pj = regions()[j]->lastMomentum();
 
   Energy m = (pi+pj).m();
-  if ( m < massMin() || m > massMax() )
+  if ( !(regions()[i]->lessThanEnergy(massMin(),m,theCutWeight) &&
+	 regions()[i]->lessThanEnergy(m,massMax(),theCutWeight)) )
     return false;
 
   double dy = abs(pi.rapidity() - pj.rapidity());
-  if ( dy < deltaYMin() || dy > deltaYMax() )
+  if ( !(regions()[i]->lessThanRapidity(deltaYMin(),dy,theCutWeight) &&
+	 regions()[i]->lessThanRapidity(dy,deltaYMax(),theCutWeight)) )
     return false;
 
   double dphi = abs(pi.phi() - pj.phi());
   if ( dphi > Constants::pi ) dphi = 2.0*Constants::pi - dphi;
   double dR = sqrt(sqr(dy)+sqr(dphi));
-  if ( dR < deltaRMin() || dR > deltaRMax() )
+  if ( !(regions()[i]->lessThanRapidity(deltaRMin(),dR,theCutWeight) &&
+	 regions()[i]->lessThanRapidity(dR,deltaRMax(),theCutWeight)) )
     return false;
 
   return true;
@@ -112,14 +120,14 @@ void MultiJetRegion::persistentOutput(PersistentOStream & os) const {
   os << theRegions
      << ounit(theMassMin,GeV) << ounit(theMassMax,GeV)
      << theDeltaRMin << theDeltaRMax 
-     << theDeltaYMin << theDeltaYMax;
+     << theDeltaYMin << theDeltaYMax << theCutWeight;
 }
 
 void MultiJetRegion::persistentInput(PersistentIStream & is, int) {
   is >> theRegions
      >> iunit(theMassMin,GeV) >> iunit(theMassMax,GeV)
      >> theDeltaRMin >> theDeltaRMax 
-     >> theDeltaYMin >> theDeltaYMax;
+     >> theDeltaYMin >> theDeltaYMax >> theCutWeight;
 }
 
 

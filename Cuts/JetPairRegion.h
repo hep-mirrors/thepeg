@@ -85,6 +85,11 @@ public:
    */
   double deltaYMax() const { return theDeltaYMax; }
 
+  /**
+   * Return the cut weight encountered from the last call to matches()
+   */
+  double cutWeight() const { return theCutWeight; }
+
 public:
 
   /**
@@ -95,7 +100,7 @@ public:
   /**
    * Return true, if the requirements on the jet regions are fullfilled.
    */
-  virtual bool matches(tcCutsPtr parent) const;
+  virtual bool matches(tcCutsPtr parent);
 
 public:
 
@@ -191,6 +196,11 @@ private:
    * Should the jets go into opposite detector hemispheres?
    */
   bool theOppositeHemispheres;
+
+  /**
+   * The cut weight encountered from the last call to matches()
+   */
+  double theCutWeight;
 
   /**
    * The assignment operator is private and must never be called.

@@ -47,7 +47,7 @@ StandardXComb::StandardXComb()
     theLastDiagramIndex(0), theLastPDFWeight(0.0),
     theLastCrossSection(ZERO), theLastJacobian(1.0), theLastME2(-1.0), 
     theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0),
-    checkedCuts(false), passedCuts(false) {}
+    checkedCuts(false), passedCuts(false), theCutWeight(1.0) {}
 
 StandardXComb::
 StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
@@ -257,6 +257,7 @@ bool StandardXComb::willPassCuts() {
   if ( !head() ) {
     if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) {
       passedCuts = false;
+      theCutWeight =  0.0;
       return false;
     }
   } else {
@@ -274,10 +275,12 @@ bool StandardXComb::willPassCuts() {
   }
 
   if ( !cuts()->passCuts(outdata,outmomenta,mePartonData()[0],mePartonData()[1]) ) {
+    theCutWeight = cuts()->cutWeight();
     passedCuts = false;
     return false;
   }
 
+  theCutWeight = cuts()->cutWeight();
   passedCuts = true;
   return true;
 
@@ -296,6 +299,7 @@ void StandardXComb::clean() {
   theKinematicsGenerated = false;
   checkedCuts = false;
   passedCuts = false;
+  theCutWeight = 1.0;
   matrixElement()->flushCaches();
 }
 
@@ -337,7 +341,10 @@ CrossSection StandardXComb::dSigDR(const double * r) {
   lastPDFWeight(head()->lastPDFWeight());
 
   matrixElement()->setKinematics();
+
   CrossSection xsec = matrixElement()->dSigHatDR() * lastPDFWeight();
+
+  xsec *= cutWeight();  
 
   subProcess(SubProPtr());
   lastCrossSection(xsec);
@@ -469,6 +476,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     lastCrossSection(ZERO);
     return ZERO;
   }
+
   if ( !cuts()->initSubProcess(lastSHat(), lastY(), mirror()) ) {
     lastCrossSection(ZERO);
     return ZERO;
@@ -498,11 +506,16 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
       return ZERO;
     }
   }
+
   lastScale(matrixElement()->scale());
   if ( !cuts()->scale(lastScale()) ) {
     lastCrossSection(ZERO);
     return ZERO;
   }
+
+  // get information on cuts; we don't take this into account here for
+  // reasons of backward compatibility but this will change eventually
+  willPassCuts();
 
   pair<bool,bool> evalPDFS = 
     make_pair(matrixElement()->havePDFWeight1(),
@@ -521,6 +534,8 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     lastCrossSection(ZERO);
     return ZERO;
   }
+
+  xsec *= cutWeight();
 
   lastAlphaS (matrixElement()->orderInAlphaS () >0 ?
 	      matrixElement()->alphaS()  : -1.);
@@ -628,7 +643,6 @@ tSubProPtr StandardXComb::construct() {
     cuts()->initSubProcess(lastSHat(), lastY());
   }
 
-
   if ( head() )
     if ( !matrixElement()->apply() )
       return tSubProPtr();
@@ -660,7 +674,7 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
      << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
      << theLastME2 << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight
      << theHead << theProjectors << theProjector << theKinematicsGenerated
-     << checkedCuts << passedCuts;
+     << checkedCuts << passedCuts << theCutWeight;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
@@ -670,7 +684,7 @@ void StandardXComb::persistentInput(PersistentIStream & is, int) {
      >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
      >> theLastME2 >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight
      >> theHead >> theProjectors >> theProjector >> theKinematicsGenerated
-     >> checkedCuts >> passedCuts;
+     >> checkedCuts >> passedCuts >> theCutWeight;
 }
 
 ClassDescription<StandardXComb> StandardXComb::initStandardXComb;

@@ -485,6 +485,17 @@ public:
    * mirrored along the z-axis .
    */
   bool subMirror() const { return theSubMirror; }
+
+  /**
+   * Return the overall cut weight
+   */
+  double cutWeight() const { return theCutWeight; }
+
+  /**
+   * Set the cut weight as appropriate from the call to the last n-cut
+   * object.
+   */
+  void lastCutWeight(double w) const { theLastCutWeight = w; }
   //@}
 
 public:
@@ -714,6 +725,17 @@ private:
    * mirrored along the z-axis .
    */
   mutable bool theSubMirror;
+
+  /**
+   * The overall cut weight
+   */
+  mutable double theCutWeight;
+
+  /**
+   * The cut weight as appropriate from the call to the last n-cut
+   * object.
+   */
+  mutable double theLastCutWeight;
 
 private:
 

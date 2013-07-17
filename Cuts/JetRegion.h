@@ -70,6 +70,26 @@ public:
    */
   const vector<int>& accepts() const { return theAccepts; }
 
+  /**
+   * Return true, if this jet region is fuzzy
+   */
+  bool fuzzy() const { return theFuzzy; }
+
+  /**
+   * Return the cut weight encountered from the last call to matches()
+   */
+  double cutWeight() const { return theCutWeight; }
+
+  /**
+   * Perform a (potentially) fuzzy check on energy-type quantities
+   */
+  bool lessThanEnergy(Energy a, Energy b, double& weight) const;
+
+  /**
+   * Perform a (potentially) fuzzy check on angular-type quantities
+   */
+  bool lessThanRapidity(double a, double b, double& weight) const;
+
 public:
 
   /**
@@ -193,6 +213,26 @@ private:
    * Return the momentum of the last jet matching this region.
    */
   LorentzMomentum theLastMomentum;
+
+  /**
+   * True if this region is fuzzy
+   */
+  bool theFuzzy;
+
+  /**
+   * The cut weight encountered from the last call to matches()
+   */
+  double theCutWeight;
+
+  /**
+   * The smearing width for the pt or mass cuts, if fuzzy
+   */
+  Energy theEnergyCutWidth;
+
+  /**
+   * The smearing width for the rapidity cut, if fuzzy
+   */
+  double theRapidityCutWidth;
 
   /**
    * The assignment operator is private and must never be called.

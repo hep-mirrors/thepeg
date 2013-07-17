@@ -80,6 +80,11 @@ public:
    */
   double deltaYMax() const { return theDeltaYMax; }
 
+  /**
+   * Return the cut weight encountered from the last call to matches()
+   */
+  double cutWeight() const { return theCutWeight; }
+
 public:
 
   /**
@@ -90,12 +95,12 @@ public:
   /**
    * Return true, if the requirements on the jet regions are fullfilled.
    */
-  virtual bool matches() const;
+  virtual bool matches();
 
   /**
    * Return true, if the requirements on two jet regions are fullfilled.
    */
-  virtual bool matches(int i, int j) const;
+  virtual bool matches(int i, int j);
 
 public:
 
@@ -181,6 +186,11 @@ private:
    * The maximum jet-jet rapidity separation.
    */
   double theDeltaYMax;
+
+  /**
+   * The cut weight encountered from the last call to matches()
+   */
+  double theCutWeight;
 
   /**
    * The assignment operator is private and must never be called.

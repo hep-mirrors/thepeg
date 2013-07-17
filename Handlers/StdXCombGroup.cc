@@ -246,6 +246,8 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     lastCrossSection(ZERO);
   }
 
+  xsec *= cutWeight();
+
   lastAlphaS(matrixElement()->alphaS());
   lastAlphaEM(matrixElement()->alphaEM());
 
@@ -275,10 +277,17 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     }
   }
 
-  if ( xsec != ZERO ) {
-    double rw = 1.0 + depxsec/xsec;
-    xsec *= rw;
-  } else {
+  if ( xsec != ZERO &&
+       depxsec != ZERO ) {
+    if ( abs(xsec) < abs(depxsec) ) {
+      volatile double rw = (1.+depxsec/xsec);
+      xsec = xsec*rw;
+    } else {
+      volatile double rw = (1.+xsec/depxsec);
+      xsec = depxsec*rw;
+    }
+  } else if ( xsec == ZERO &&
+	      depxsec != ZERO ) {
     xsec = depxsec;
   }
 

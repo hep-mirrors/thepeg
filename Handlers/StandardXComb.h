@@ -213,6 +213,11 @@ public:
   bool willPassCuts();
 
   /**
+   * Return the cut weight encountered from fuzzy cuts
+   */
+  double cutWeight() const { return theCutWeight; }
+
+  /**
    * Reset all saved data about last generated phasespace point;
    */
   virtual void clean();
@@ -626,6 +631,11 @@ private:
    * The result of the last call to willPassCuts
    */
   bool passedCuts;
+
+  /**
+   * The cut weight encountered from fuzzy cuts
+   */
+  double theCutWeight;
 
 private:
 
