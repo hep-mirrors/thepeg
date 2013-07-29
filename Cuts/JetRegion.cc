@@ -140,8 +140,11 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
   theCutWeight = 1.0;
 
   if ( !(lessThanEnergy(ptMin(),p.perp(),theCutWeight) &&
-	 lessThanEnergy(p.perp(),ptMax(),theCutWeight)) )
+	 lessThanEnergy(p.perp(),ptMax(),theCutWeight)) ) {
+    theCutWeight = 0.0;
+    theDidMatch = false;
     return false;
+  }
 
   bool inRange = false || yRanges().empty();
   for ( vector<pair<double,double> >::const_iterator r = yRanges().begin();
@@ -156,6 +159,7 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
   }
   if ( !inRange ) {
     theCutWeight = 0.0;
+    theDidMatch = false;
     return false;
   }
 

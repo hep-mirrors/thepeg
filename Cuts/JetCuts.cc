@@ -131,7 +131,7 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
     pass &= (**r).didMatch();
     cutWeight *= (**r).cutWeight();
     if ( !pass ) {
-      parent->lastCutWeight(cutWeight);
+      parent->lastCutWeight(0.0);
       return false;
     }
   }
@@ -141,7 +141,7 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
     pass &= (**r).matches(parent);
     cutWeight *= (**r).cutWeight();
     if ( !pass ) {
-      parent->lastCutWeight(cutWeight);
+      parent->lastCutWeight(0.0);
       return false;
     }
   }
@@ -151,7 +151,7 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
     pass &= (**r).matches();
     cutWeight *= (**r).cutWeight();
     if ( !pass ) {
-      parent->lastCutWeight(cutWeight);
+      parent->lastCutWeight(0.0);
       return false;
     }
   }
@@ -165,7 +165,7 @@ bool JetCuts::passCuts(tcCutsPtr parent, const tcPDVector & ptype,
 	pass &= !(**r).matches(parent,k+1,jets[k]);
 	cutWeight *= 1. - (**r).cutWeight();
 	if ( !pass ) {
-	  parent->lastCutWeight(cutWeight);
+	  parent->lastCutWeight(0.0);
 	  return false;
 	}
       }
