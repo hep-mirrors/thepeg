@@ -100,7 +100,8 @@ public:
   /**
    * Return true, if the given jet matches this region.
    */
-  virtual bool matches(tcCutsPtr parent, int n, const LorentzMomentum& p);
+  virtual bool matches(tcCutsPtr parent, int n, const LorentzMomentum& p,
+		       double yHat = 0.0);
 
   /**
    * Return true, if this region matched a jet in the last call to matches().

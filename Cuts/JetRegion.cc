@@ -128,7 +128,8 @@ bool JetRegion::lessThanRapidity(double a, double b, double& weight) const {
   return true;
 }
 
-bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
+bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p,
+			double yHat) {
 
   // one jet region can only contain one jet
   if ( didMatch() )
@@ -146,12 +147,14 @@ bool JetRegion::matches(tcCutsPtr parent, int n, const LorentzMomentum& p) {
     return false;
   }
 
+  double currentY = parent ? parent->currentYHat() : yHat;
+
   bool inRange = false || yRanges().empty();
   for ( vector<pair<double,double> >::const_iterator r = yRanges().begin();
 	r != yRanges().end(); ++r ) {
     double rangeWeight = 1.0;
-    if ( lessThanRapidity(r->first,p.rapidity() + parent->currentYHat(),rangeWeight) &&
-	 lessThanRapidity(p.rapidity() + parent->currentYHat(),r->second,rangeWeight) ) {
+    if ( lessThanRapidity(r->first,p.rapidity() + currentY,rangeWeight) &&
+	 lessThanRapidity(p.rapidity() + currentY,r->second,rangeWeight) ) {
       theCutWeight *= rangeWeight;
       inRange = true;
       break;
