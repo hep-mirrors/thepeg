@@ -15,6 +15,7 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Helicity/LorentzTensor.h"
 
 using namespace ThePEG;
 using namespace Helicity;
@@ -37,6 +38,16 @@ Complex GeneralFFVVertex::evaluate(Energy2 q2,
 				   const SpinorWaveFunction & sp, 
 				   const SpinorBarWaveFunction & sbar,
 				   const VectorWaveFunction & vec) {
+
+
+  //LorentzTensor<double> test = sp.wave().sigma(sbar.wave());
+  LorentzSpinor<SqrtEnergy>      spWave =    sp.dimensionedWave();
+  LorentzSpinorBar<SqrtEnergy> sbarWave =  sbar.dimensionedWave();
+  LorentzTensor<QTY<0,2,0,1,2,1>::Type > test(spWave.sigma(sbarWave));
+  LorentzTensor<QTY<0,2,0,1,2,1>::Type > test2(spWave.sigma(sbarWave));
+
+  complex<Energy2> prod = test*test2;
+
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),vec.particle());
   Complex ii(0.,1.);
