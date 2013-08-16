@@ -16,6 +16,8 @@
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/Switch.h"
+#include "ThePEG/Interface/Command.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/EventGenerator.h"
@@ -27,20 +29,34 @@
 using namespace ThePEG;
 
 JetFinder::JetFinder() 
-  : theMinOutgoing(1) {}
+  : theMinOutgoing(1), theRestrictConstituents(false),
+    theConstituentRapidityRange(Constants::MaxRapidity,Constants::MaxRapidity) {}
 
 JetFinder::~JetFinder() {}
+
+string JetFinder::doYRange(string in) {
+  istringstream ins(in);
+  double first, second;
+  ins >> first >> second;
+  if ( first > second )
+    swap(first,second);
+  theConstituentRapidityRange = make_pair(first,second);
+  return "";
+}
+
 
 
 // If needed, insert default implementations of virtual function defined
 // in the InterfacedBase class here (using ThePEG-interfaced-impl in Emacs).
 
 void JetFinder::persistentOutput(PersistentOStream & os) const {
-  os << theUnresolvedMatcher << theMinOutgoing;
+  os << theUnresolvedMatcher << theMinOutgoing
+     << theRestrictConstituents << theConstituentRapidityRange;
 }
 
 void JetFinder::persistentInput(PersistentIStream & is, int) {
-  is >> theUnresolvedMatcher >> theMinOutgoing;
+  is >> theUnresolvedMatcher >> theMinOutgoing 
+     >> theRestrictConstituents >> theConstituentRapidityRange;
 }
 
 
@@ -71,6 +87,27 @@ void JetFinder::Init() {
      "The minimum number of outgoing partons to be clustered.",
      &JetFinder::theMinOutgoing, 1, 1, 0,
      false, false, Interface::lowerlim);
+
+
+  static Switch<JetFinder,bool> interfaceRestrictConstituents
+    ("RestrictConstituents",
+     "Restrict the constituents for clustering.",
+     &JetFinder::theRestrictConstituents, false, false, false);
+  static SwitchOption interfaceRestrictConstituentsYes
+    (interfaceRestrictConstituents,
+     "Yes",
+     "",
+     true);
+  static SwitchOption interfaceRestrictConstituentsNo
+    (interfaceRestrictConstituents,
+     "No",
+     "",
+     false);
+
+  static Command<JetFinder> interfaceYRange
+    ("ConstituentRapidityRange",
+     "Restrict clustering to a rapidity range.",
+     &JetFinder::doYRange, false);
 
 }
 

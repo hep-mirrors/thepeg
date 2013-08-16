@@ -72,6 +72,30 @@ public:
    */
   unsigned int minOutgoing() const { return theMinOutgoing; }
 
+  /**
+   * Return true, if jets should only be constructed from matching
+   * objects inside a given rapidity interval.
+   */
+  bool restrictConsitutents() const { return theRestrictConstituents; }
+
+  /**
+   * Jets should only be constructed from matching
+   * objects inside a given rapidity interval.
+   */
+  void restrictConsitutents(bool on) { theRestrictConstituents = on; }
+
+  /**
+   * Return the rapidity interval within objects should be considered
+   * for clustering, if appropriate
+   */
+  const pair<double,double>& constituentRapidityRange() const { return theConstituentRapidityRange; }
+
+  /**
+   * Set the rapidity interval within objects should be considered
+   * for clustering, if appropriate
+   */
+  void constituentRapidityRange(const pair<double,double>& r) { theConstituentRapidityRange = r; }
+
 public:
 
   /** @name Functions used by the persistent I/O system. */
@@ -106,6 +130,11 @@ public:
 private:
 
   /**
+   * Command to insert a rapidity range
+   */
+  string doYRange(string);
+
+  /**
    * A matcher for unresolved partons.
    */
   Ptr<MatcherBase>::ptr theUnresolvedMatcher;
@@ -115,6 +144,18 @@ private:
    * should be performed.
    */
   unsigned int theMinOutgoing;
+
+  /**
+   * True, if jets should only be constructed from matching
+   * objects inside a given rapidity interval.
+   */
+  bool theRestrictConstituents;
+
+  /**
+   * The rapidity interval within objects should be considered
+   * for clustering, if appropriate
+   */
+  pair<double,double> theConstituentRapidityRange;
 
   /**
    * The assignment operator is private and must never be called.

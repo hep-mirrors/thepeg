@@ -111,15 +111,35 @@ bool Cuts::passCuts(const tcPDVector & ptype, const vector<LorentzMomentum> & p,
   theCutWeight = 1.0;
   theLastCutWeight = 1.0;
 
-  // ATTENTION fuzzy jet finding
-  if ( jetFinder() )
+  if ( jetFinder() ) {
+
     if ( ptype.size() > jetFinder()->minOutgoing() ) {
-      vector<LorentzMomentum> jets = p;
-      tcPDVector jettype = ptype;
+
+
+      vector<LorentzMomentum> jets;
+      tcPDVector jettype;
+
+      if ( !jetFinder()->restrictConsitutents() ) {
+	jets = p;
+	jettype = ptype;
+      } else {
+	tcPDVector::const_iterator pd = ptype.begin();
+	vector<LorentzMomentum>::const_iterator pm = p.begin();
+	for ( ; pd != ptype.end(); ++pd, ++pm ) {
+	  if ( pm->rapidity() > jetFinder()->constituentRapidityRange().first &&
+	       pm->rapidity() < jetFinder()->constituentRapidityRange().second ) {
+	    jets.push_back(*pm);
+	    jettype.push_back(*pd);
+	  }
+	}
+      }
+
       if ( jetFinder()->cluster(jettype,jets,this,t1,t2) ){
 	return passCuts(jettype,jets,t1,t2);
       }
     }
+
+  }
 
   for ( int i = 0, N = p.size(); i < N; ++i )
     for ( int j = 0, M = theOneCuts.size(); j < M; ++j ) {
