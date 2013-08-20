@@ -386,6 +386,12 @@ public:
    * be used by a matrix element for caching.
    */
   double lastMEPDFWeight() const { return theLastMEPDFWeight; }
+
+  /**
+   * Return the coupling factor as calculated for the lats phase space
+   * point.
+   */
+  double lastMECouplings() const { return theLastMECouplings; }
   //@}
 
 protected:
@@ -459,6 +465,11 @@ protected:
    * be used by a matrix element for caching.
    */
   void lastMEPDFWeight(double v) { theLastMEPDFWeight = v; }
+
+  /**
+   * Set the coupling factor
+   */
+  void lastMECouplings(double v) { theLastMECouplings = v; }
 
 public:
 
@@ -602,6 +613,11 @@ private:
    * be used by a matrix element for caching.
    */
   double theLastMEPDFWeight;
+
+  /**
+   * The coupling factor
+   */
+  double theLastMECouplings;
 
   /**
    * A pointer to the head XComb this XComb

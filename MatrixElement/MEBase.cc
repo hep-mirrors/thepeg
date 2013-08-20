@@ -173,6 +173,8 @@ void MEBase::lastMECrossSection(CrossSection v) const { lastXCombPtr()->lastMECr
 
 void MEBase::lastMEPDFWeight(double v) const { lastXCombPtr()->lastMEPDFWeight(v); }
 
+void MEBase::lastMECouplings(double v) const { lastXCombPtr()->lastMECouplings(v); }
+
 void MEBase::jacobian(double j) { lastXCombPtr()->jacobian(j); }
 
 double MEBase::reWeight() const {

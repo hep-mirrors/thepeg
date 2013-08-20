@@ -522,6 +522,13 @@ protected:
   using LastXCombInfo<StandardXComb>::lastMEPDFWeight;
 
   /**
+   * Set the coupling weight as calculated
+   * for the last phase space point
+   */
+  void lastMECouplings(double v) const;
+  using LastXCombInfo<StandardXComb>::lastMECouplings;
+
+  /**
    * Set the last jacobian obtained when generating the kinematics for
    * the call to dSigHatDR.
    */

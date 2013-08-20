@@ -240,6 +240,12 @@ public:
   double lastMEPDFWeight() const { return lastXComb().lastMEPDFWeight(); }
 
   /**
+   * Return the coupling weight as calculated
+   * for the last phase space point.
+   */
+  double lastMECouplings() const { return lastXComb().lastMECouplings(); }
+
+  /**
    * Return the SubProcess object corresponding to the last generated
    * sub-process.
    */
