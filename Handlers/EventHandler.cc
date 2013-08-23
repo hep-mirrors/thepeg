@@ -49,7 +49,7 @@ EventHandler::EventHandler(bool warnincomplete)
 EventHandler::
 EventHandler(const EventHandler & x)
   : HandlerBase(x), LastXCombInfo<>(x),
-    theMaxLoop(x.theMaxLoop), weightedEvents(x.theMaxLoop),
+    theMaxLoop(x.theMaxLoop), weightedEvents(x.weightedEvents),
     theStatLevel(x.theStatLevel),
     theConsistencyLevel(x.theConsistencyLevel),
     theConsistencyEpsilon(x.theConsistencyEpsilon),
