@@ -660,7 +660,10 @@ tSubProPtr StandardXComb::construct() {
 
   if ( head() ) {
     subProcess()->head(head()->subProcess());
-    subProcess()->groupWeight(lastCrossSection()/head()->lastCrossSection());
+    if(lastCrossSection()!=ZERO&&head()->lastCrossSection()!=ZERO)
+      subProcess()->groupWeight(lastCrossSection()/head()->lastCrossSection());
+    else
+      subProcess()->groupWeight(0.);
   }
 
   return subProcess();
