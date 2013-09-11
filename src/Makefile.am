@@ -115,6 +115,9 @@ if USELHAPDF
 	./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/LHAPDFDefaults.in
 endif
 	cd $(DESTDIR)$(pkglibdir); \
+	if test -n "$(DESTDIR)"; \
+	then sed -i -e "s@$(DESTDIR)@@g" ThePEGDefaults.rpo; \
+	fi ; \
 	cp ThePEGDefaults.rpo ThePEGDefaults-$(VERSION).rpo
 
 uninstall-local:

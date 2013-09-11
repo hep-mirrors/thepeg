@@ -59,8 +59,8 @@ done-all-links: libThePEG.la
 @EMPTY@endif
 
 install-data-local: Makefile.common.install
-	sed -e s:@THEPEGLIB@:$(DESTDIR)$(pkglibdir):g -e s:@THEPEGINCLUDE@:-I$(DESTDIR)$(includedir):g Makefile.common.install > Makefile.common
-	sed -e s:@THEPEGLIB@:$(DESTDIR)$(pkglibdir):g $(srcdir)/Makefile.dist.install > Makefile.dist
+	sed -e s:@THEPEGLIB@:$(pkglibdir):g -e s:@THEPEGINCLUDE@:-I$(includedir):g Makefile.common.install > Makefile.common
+	sed -e s:@THEPEGLIB@:$(pkglibdir):g $(srcdir)/Makefile.dist.install > Makefile.dist
 	test -z "$(pkglibdir)" || $(mkdir_p) "$(DESTDIR)$(pkglibdir)"
 	$(INSTALL_DATA) Makefile.common $(DESTDIR)$(pkglibdir)/Makefile.common
 	$(INSTALL_DATA) Makefile.dist $(DESTDIR)$(pkglibdir)/Makefile
