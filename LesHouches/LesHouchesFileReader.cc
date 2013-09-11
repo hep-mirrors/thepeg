@@ -491,7 +491,7 @@ void LesHouchesFileReader::open() {
       readingHeader = true;
       headerBlock = cfile.getline() + "\n";
     }
-    else if ( cfile.find("<init") ) {
+    else if ( cfile.find("<init ") || cfile.find("<init>") ) {
       // We have hit the init block, so we should expect to find the
       // standard information in the following. But first check for
       // attributes.
