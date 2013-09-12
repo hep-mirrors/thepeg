@@ -54,7 +54,7 @@ ScalarWaveFunction FFSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),out);
   Energy2 p2   = pout.m2();
-  Complex fact = norm()*propagator(iopt,p2,out,mass,width);
+  Complex fact = -norm()*propagator(iopt,p2,out,mass,width);
   Complex output =  _left*(sbar.s1()*sp.s1()+sbar.s2()*sp.s2())
     +_right*(sbar.s3()*sp.s3()+sbar.s4()*sp.s4());
   // final factors and output
