@@ -71,7 +71,7 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   if(mass.real() < ZERO) mass   = out->mass();
   complex<Energy2> mass2 = sqr(mass);
   Energy2 p2    = pout.m2();
-  Complex fact  = 0.5*norm()*sca1.wave()*sca2.wave()*
+  Complex fact  = 0.25*norm()*sca1.wave()*sca2.wave()*
     propagator(iopt,p2,out,mass,width);
   // dot products we need
   Energy2 dot12 = sca1.momentum()*sca2.momentum();
