@@ -165,16 +165,18 @@ void Step::removeEntry(tPPtr p) {
     theParticles.insert(parent);
     allParticles.insert(parent);
   }
-  if ( !p->hasColourInfo() ) return;
-  if ( colourNeighbour(p) )
-    colourNeighbour(p)->antiColourNeighbour(antiColourNeighbour(p));
-  if ( antiColourNeighbour(p) )
-    antiColourNeighbour(p)->colourNeighbour(colourNeighbour(p));
-  if ( p->incomingColour() ) p->outgoingColour(tPPtr());
-  if ( p->incomingAntiColour() ) p->outgoingAntiColour(tPPtr());
+  if ( p->hasColourInfo() ) {
+    if ( colourNeighbour(p) )
+      colourNeighbour(p)->antiColourNeighbour(antiColourNeighbour(p));
+    if ( antiColourNeighbour(p) )
+      antiColourNeighbour(p)->colourNeighbour(colourNeighbour(p));
+    if ( p->incomingColour() ) p->outgoingColour(tPPtr());
+    if ( p->incomingAntiColour() ) p->outgoingAntiColour(tPPtr());
+  }
+
   it = theIntermediates.find(p);
-  if ( it == theIntermediates.end() ) return;
-  theIntermediates.erase(it);
+  if ( it != theIntermediates.end() ) theIntermediates.erase(it);
+
 }
 
 void Step::removeParticle(tPPtr p) {

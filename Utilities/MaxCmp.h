@@ -76,6 +76,13 @@ public:
     return indx;
   }
 
+  /**
+   * Return true if no index has been chosen.
+   */
+  bool operator!() const {
+    return !init;
+  }
+
 private:
 
   /**

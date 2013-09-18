@@ -161,7 +161,7 @@ public:
    */
   struct DecayFailed: public Exception {};
 
-protected:
+public:
 
   /**
    * Return a reference to the object responsible for generating
@@ -205,7 +205,7 @@ protected:
   virtual IBPtr fullclone() const;
   //@}
 
-protected:
+public:
 
   /**
    * Simple struct to store info about baryon quark and di-quark
