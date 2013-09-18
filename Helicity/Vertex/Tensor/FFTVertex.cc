@@ -73,7 +73,7 @@ SpinorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   if(mass.real() < ZERO) mass = out->mass();
   // overall factor
   Energy2 p2 = pout.m2();
-  Complex fact = 0.0625*norm()*propagator(iopt,p2,out,mass,width);
+  Complex fact = 0.125*norm()*propagator(iopt,p2,out,mass,width);
   // compute the vector we need
   complex<Energy> dot[4];
   for(int ix=0;ix<4;++ix) {
@@ -206,7 +206,7 @@ TensorWaveFunction FFTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   Lorentz5Momentum pout = sp.momentum()+sbar.momentum();
   // calculate the prefactor
   Energy2 p2   = pout.m2();
-  Complex fact = 0.125*norm()*propagator(iopt,p2,out,mass,width);
+  Complex fact = 0.0625*norm()*propagator(iopt,p2,out,mass,width);
   if(mass.real() < ZERO) mass  = out->mass();
   complex<Energy2> mass2 = sqr(mass);
   // spinor vector
