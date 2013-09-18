@@ -188,7 +188,7 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   if(vmass<ZERO) vmass = vec1.particle()->mass();
   Energy2 vmass2 = sqr(vmass);
   Energy2 p2     = pout.m2();
-  Complex fact   = 0.5*norm()*propagator(iopt,p2,out,tmass,width);
+  Complex fact   = 0.25*norm()*propagator(iopt,p2,out,tmass,width);
   // dot products we need to construct the tensor
   complex<Energy2> dotk1k2 = vec1.momentum()*vec2.momentum();
   complex<Energy> dotv1k2  = vec1.wave()*vec2.momentum();
