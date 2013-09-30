@@ -200,7 +200,7 @@ public:
    * The number of dimensions of the phase space used to generate this
    * process.
    */
-  int nDim() const { return theNDim; }
+  virtual int nDim() const { return theNDim; }
 
   /**
    * Return the parton extraction dimensions

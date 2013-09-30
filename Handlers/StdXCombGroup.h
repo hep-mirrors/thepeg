@@ -60,6 +60,12 @@ public:
   virtual void clean();
 
   /**
+   * The number of dimensions of the phase space used to generate this
+   * process.
+   */
+  virtual int nDim() const;
+
+  /**
    * Generate a phase space point from a vector \a r of \a nr numbers
    * in the interval ]0,1[ and return the corresponding differential
    * cross section.

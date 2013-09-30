@@ -69,6 +69,12 @@ void StdXCombGroup::clean() {
     (**dep).clean();
 }
 
+int StdXCombGroup::nDim() const { 
+  if ( meGroup()->willProject() )
+    return StandardXComb::nDim() + 1;
+  return StandardXComb::nDim();
+}
+
 CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
   matrixElement()->flushCaches();
@@ -85,6 +91,12 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
 
   meMomenta().resize(mePartonData().size());
   matrixElement()->setXComb(this);
+
+  double rProject = 0.0;
+  if ( meGroup()->willProject() ) {
+    rProject = r[0];
+    ++r;
+  }
 
   PPair partons;
 
@@ -298,7 +310,7 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
 
   matrixElement()->fillProjectors();
   if ( !projectors().empty() ) {
-    lastProjector(projectors().select(UseRandom::rnd()));
+    lastProjector(projectors().select(rProject));
   }
 
   if ( theMEGroup->groupReweighted() && !activeXCombs.empty() ) {
