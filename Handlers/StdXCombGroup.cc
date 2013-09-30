@@ -93,9 +93,10 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
   matrixElement()->setXComb(this);
 
   double rProject = 0.0;
+  size_t shift = 0;
   if ( meGroup()->willProject() ) {
-    rProject = r[0];
-    ++r;
+    rProject = r[partonDims.first];
+    shift = 1;
   }
 
   PPair partons;
@@ -115,7 +116,7 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     meMomenta()[1] = partons.second->momentum();
 
   } else {
-    if ( !matrixElement()->generateKinematics(r + partonDims.first) ) {
+    if ( !matrixElement()->generateKinematics(r + partonDims.first + shift) ) {
       lastCrossSection(ZERO);
       return ZERO;
     }
@@ -185,7 +186,7 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     return ZERO;
   }
 
-  r += partonDims.first;
+  r += partonDims.first + shift;
 
   lastX1X2(make_pair(lastPartons().first->momentum().plus()/
 		     lastParticles().first->momentum().plus(),
