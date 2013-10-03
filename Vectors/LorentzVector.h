@@ -27,7 +27,7 @@
 #define ERROR_IF(condition,message) if (false) {}
 #else
 #define ERROR_IF(condition,message) \
-  if ( (condition) ) throw ThePEG::Exception( (message) , ThePEG::Exception::eventerror)
+  if ( condition ) throw ThePEG::Exception( (message) , ThePEG::Exception::eventerror)
 #endif
 
 namespace ThePEG {
