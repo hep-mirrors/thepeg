@@ -45,7 +45,7 @@ if test "x$with_rivet" != "xno"; then
 	oldLIBS="$LIBS"
 	oldLDFLAGS="$LDFLAGS"
 	oldCPPFLAGS="$CPPFLAGS"
-	LIBS="$LIBS `echo $HEPMCLIBS | sed -e 's!-R.* ! !'` `echo $RIVETLIBS | sed -e 's!-R.* ! !'` `echo $GSLLIBS | sed -e 's!-R.* ! !'`"
+	LIBS="$LIBS `echo $HEPMCLIBS | sed -e 's! -R.* ! !'` `echo $RIVETLIBS | sed -e 's! -R.* ! !'` `echo $GSLLIBS | sed -e 's! -R.* ! !'`"
 	LDFLAGS="$LDFLAGS"
 	CPPFLAGS="$CPPFLAGS $HEPMCINCLUDE $RIVETINCLUDE $GSLINCLUDE"
 
