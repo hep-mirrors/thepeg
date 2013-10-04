@@ -445,6 +445,8 @@ cat << _THEPEG_EOF_ > config.thepeg
 ***
 *** Host:		$host
 *** CXX:		$CXXSTRING
+***
+*** CXXFLAGS:		$CXXFLAGS
 *****************************************************
 _THEPEG_EOF_
 ])

@@ -1,3 +1,11 @@
+2013-10-04  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* configure.ac, m4/ax_cxx_compile_stdcxx_11.m4: Added configure
+	flag to easily enable C++11 everywhere. For now no C++11-specific
+	code is in use anywhere and this flag defaults to off. Test
+	compiles work fine with it switched on, but we need to get more
+	feedback from downstream users for the eventual transition.
+
 2013-09-18  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Utilities/MaxCmp.h (ThePEG): Added operator! to check if nothing
