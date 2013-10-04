@@ -213,7 +213,7 @@ void Particle::deepRotate(double a, const Axis & axis) {
 }
 
 string Particle::outputFormat =
-"%n3%s10%i8 %p[,]0 %c(,) %^^0%vv0 %>>0%<>0 %l{,}0\n"
+"%n3%s10 %i7 %p[,]0 %c(,) %^^0%vv0 %>>0%<>0 %l{,}0\n"
 "                            %x10.3%y10.3%z10.3%e10.3%m10.3\n";
 
 int getNumber(string::const_iterator & pos, int def) {
