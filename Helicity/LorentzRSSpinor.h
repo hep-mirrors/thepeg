@@ -132,12 +132,12 @@ public:
   /**
    * Get second spinor component for the x vector
    */
-  complex<Value> xs2() const {return _spin[0][0];}
+  complex<Value> xs2() const {return _spin[0][1];}
 
   /**
    * Get third  spinor component for the x vector
    */
-  complex<Value> xs3() const {return _spin[0][1];}
+  complex<Value> xs3() const {return _spin[0][2];}
 
   /**
    * Get fourth  spinor component for the x vector
