@@ -8,6 +8,24 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.9.0 release: 2013-10-XX
+
+** Custom XComb objects
+   Matrix element classes can built customized XComb objects.
+
+** Reweighting of SubProcessGroups and projections
+   Matrix element groups can reweight contributions in a
+   SubProcessGroup and select one of the dependent subprocesses to be
+   used as the hard one instead of the group in total.
+
+** Fuzzy cuts
+   Jet cuts in the jet cut framework can be assigned a fuzzy shape to
+   improve the stability of NLO calculations.
+
+** Statistics fixes
+   Various issues for the handling of statistics in the presence of
+   negative weights have been fixed.
+
 * ThePEG-1.8.3 release: 2013-02-22
 
 ** Fixed HepMC status code assignment
