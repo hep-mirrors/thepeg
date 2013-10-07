@@ -212,13 +212,13 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boostZ(double bz)
 // General boost equivalent to LT = Boost(bx,by,bz) * LT
 SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, double bz, double gamma) {
   // calculation of gamma and beta
-  double beta(bx*bx+by*by+bz*bz);
-  if(gamma<0.) gamma = 1./sqrt(1.-beta);
-  beta = sqrt(beta);
+  double b2(bx*bx+by*by+bz*bz);
+  if(gamma<1.) gamma = 1./sqrt(1.-b2);
+  double beta = sqrt(b2);
   // work out beta and chi
-  static double eps=1e-10;
+  static double eps=1e-8;
   double chc = sqrt(0.5*(1+gamma));
-  double shc = beta>eps ? sqrt(0.5*(gamma-1))/abs(beta) : 0.5;
+  double shc = beta>eps ? sqrt(0.5*(gamma-1))/abs(beta) : 0.5+b2*(0.1875+0.12109375+b2);
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by),temp[4][4];
   unsigned int ix,iy;
   for(ix=0;ix<4;++ix) {
@@ -236,14 +236,14 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, d
 // General boost equivalent to LT = Boost(bv) * LT
 SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b, double gamma) {
   // calculation of gamma and beta
-  double beta(b.mag2());
-  if(gamma<0.) gamma = 1./sqrt(1.-beta);
-  beta = sqrt(beta);
+  double b2(b.mag2());
+  if(gamma<1.) gamma = 1./sqrt(1.-b2);
+  double beta = sqrt(b2);
   // work out chi
-  static double eps=1e-10;
+  static double eps=1e-8;
   double bx(b.x()),by(b.y()),bz(b.z());
   double chc = sqrt(0.5*(1+gamma));
-  double shc = beta>eps ? sqrt(0.5*(gamma-1))/abs(beta) : 0.5;
+  double shc = beta>eps ? sqrt(0.5*(gamma-1))/beta : 0.5+b2*(0.1875+0.12109375+b2);
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by),temp[4][4];
   unsigned int ix,iy;
   for(ix=0;ix<4;++ix) {
