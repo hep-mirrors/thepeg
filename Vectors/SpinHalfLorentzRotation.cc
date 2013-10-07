@@ -218,7 +218,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(double bx, double by, d
   // work out beta and chi
   static double eps=1e-8;
   double chc = sqrt(0.5*(1+gamma));
-  double shc = beta>eps ? sqrt(0.5*(gamma-1))/abs(beta) : 0.5+b2*(0.1875+0.12109375+b2);
+  double shc = beta>eps ? sqrt(0.5*(gamma-1))/beta : 0.5+b2*(0.1875+0.12109375*b2);
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by),temp[4][4];
   unsigned int ix,iy;
   for(ix=0;ix<4;++ix) {
@@ -243,7 +243,7 @@ SpinHalfLorentzRotation & SpinHalfLorentzRotation::boost(const Boost & b, double
   static double eps=1e-8;
   double bx(b.x()),by(b.y()),bz(b.z());
   double chc = sqrt(0.5*(1+gamma));
-  double shc = beta>eps ? sqrt(0.5*(gamma-1))/beta : 0.5+b2*(0.1875+0.12109375+b2);
+  double shc = beta>eps ? sqrt(0.5*(gamma-1))/beta : 0.5+b2*(0.1875+0.12109375*b2);
   Complex ii(0.,1.),nxminy(bx-ii*by),nxplny(bx+ii*by),temp[4][4];
   unsigned int ix,iy;
   for(ix=0;ix<4;++ix) {
