@@ -47,6 +47,11 @@ void CascadeHandler::resetPDFs(const pair<tcPDFPtr,tcPDFPtr> & pdfpair) {
   thePDFs.second = PDF(pdfpair.second, thePDFs.second.particle());
 }
 
+void CascadeHandler::resetPDFs(const pair<tcPDFPtr,tcPDFPtr> & pdfpair, PBPair ppair) {
+  thePDFs.first = PDF(pdfpair.first, ppair.first->particle());
+  thePDFs.second = PDF(pdfpair.second, ppair.second->particle());
+}
+
 double CascadeHandler::reweightCKKW(int, int) {
   return 1.0;
 }

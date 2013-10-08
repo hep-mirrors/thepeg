@@ -127,6 +127,11 @@ public:
   void resetPDFs(const pair<tcPDFPtr,tcPDFPtr> & pdfpair);
 
   /**
+   * Set alternative PDFBase objects to be used for cascade.
+   */
+  void resetPDFs(const pair<tcPDFPtr,tcPDFPtr> & pdfpair, PBPair ppair);
+
+  /**
    * Set the XComb object with information about the sub-process
    * generation.
    */
