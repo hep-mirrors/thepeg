@@ -1,3 +1,9 @@
+2013-10-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/MultiEventGenerator.h (ThePEG): Adding a tag of the
+	form "#first-last" when running a MultiEventGenerator now allows to
+	run a subset of the runs
+
 2013-10-04  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* configure.ac, m4/ax_cxx_compile_stdcxx_11.m4: Added configure
