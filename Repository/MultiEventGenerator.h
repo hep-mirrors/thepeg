@@ -38,10 +38,23 @@ public:
   /** @name Standard constructors and destructors. */
   //@{
   /**
+   * Default constructor.
+   */
+  MultiEventGenerator(): firstSubrun(0), lastSubrun(0) {}
+
+  /**
    * Destructor.
    */
   virtual ~MultiEventGenerator();
   //@}
+
+  /**
+   * Append a tag to the run name. Derived classes may put special
+   * meaning to the tags. In this case a tag on the form #n will
+   * select only subrun number n, while #n-m will select subruns n
+   * through m.
+   */
+  virtual void addTag(string tag);
 
 protected:
 
@@ -168,6 +181,16 @@ private:
    * The arguments to be used for each of theInterfaces.
    */
   vector<StringVector> theValues;
+
+  /**
+   * If non zero, the first subrun to be considered.
+   */
+  int firstSubrun;
+
+  /**
+   * If non zero, the last subrun to be considered.
+   */
+  int lastSubrun; 
 
 private:
 

@@ -100,6 +100,21 @@ string MultiEventGenerator::addInterface(string cmd) {
   return "";
 }
 
+void MultiEventGenerator::addTag(string tag) {
+  if ( tag[0] == '#' ) {
+    string::size_type dash = tag.find('-');
+    if ( dash == string::npos )
+      firstSubrun = lastSubrun = atoi(tag.substr(1).c_str());
+    else {
+      firstSubrun = atoi(tag.substr(1, dash - 1).c_str());
+      lastSubrun = atoi(tag.substr(dash + 1).c_str());
+    }
+  }
+  EventGenerator::addTag(tag);
+}
+
+
+
 void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
 
   if ( theObjects.empty() || next < 0 ) {
@@ -123,6 +138,9 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
 
   if ( tics ) tic(next - 1, nargs*N());
   for ( long iargs = 0; iargs < nargs; ++iargs ) {
+
+    if ( firstSubrun > 0 && iargs + 1 < firstSubrun ) continue;
+    if ( lastSubrun > 0 && iargs + 1 > lastSubrun ) continue;
 
     ostringstream subname;
     subname << baseName << ":" << iargs + 1;
@@ -182,11 +200,13 @@ heading(ostream & os, long iargs,
 }  
 
 void MultiEventGenerator::persistentOutput(PersistentOStream & os) const {
-  os << theObjects << theInterfaces << thePosArgs << theValues;
+  os << theObjects << theInterfaces << thePosArgs << theValues
+     << firstSubrun << lastSubrun;
 }
 
 void MultiEventGenerator::persistentInput(PersistentIStream & is, int) {
-  is >> theObjects >> theInterfaces >> thePosArgs >> theValues;
+  is >> theObjects >> theInterfaces >> thePosArgs >> theValues
+     >> firstSubrun >> lastSubrun;
 }
 
 IVector MultiEventGenerator::getReferences() {

@@ -535,9 +535,10 @@ protected:
 public:
 
   /**
-   * Append a tag to the run name.
+   * Append a tag to the run name. Derived classes may put special
+   * meaning to the tags. 
    */
-  void addTag(string tag) {
+  virtual void addTag(string tag) {
     runName(runName() + tag);
   }
 
