@@ -16,6 +16,7 @@
 #include "ThePEG/Handlers/Hint.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include "ThePEG/Utilities/Throw.h"
 #include <algorithm>
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -115,22 +116,51 @@ checkInsert(StepHintVector & handlers, const StepVector & defHandlers) {
   }
 }
 
+namespace
+{
+  void warning(tStepHdlPtr p, const HandlerGroupBase::StepVector & v)
+  {
+    for ( HandlerGroupBase::StepVector::const_iterator i = v.begin();
+	  i != v.end(); ++i) {
+      if ( p == *i )
+	{
+	  Throw<InterfaceException>()
+	    << "\n\nWarning: Double insertion of "
+	    << p->fullName() << ".\n"
+	    << "         Do you intend to run the handler more than once?\n\n"
+	    << Exception::warning;
+	  break;
+	}
+    }
+  }
+}
+
 void HandlerGroupBase::interfaceSetPrehandler(StepHdlPtr p, int i) {
-  if ( i >= 0 && unsigned(i) < preHandlers().size() ) preHandlers()[i] = p;
+  if ( i >= 0 && unsigned(i) < preHandlers().size() && preHandlers()[i] != p ) {
+    warning( p, preHandlers() );
+    preHandlers()[i] = p;
+  }
 }
 
 void HandlerGroupBase::interfaceSetPosthandler(StepHdlPtr p, int i) {
-  if ( i >= 0 && unsigned(i) < postHandlers().size() ) postHandlers()[i] = p;
+  if ( i >= 0 && unsigned(i) < postHandlers().size() && postHandlers()[i] != p ) {
+    warning( p, postHandlers() );
+    postHandlers()[i] = p;
+  }
 }
 
 void HandlerGroupBase::interfaceInsertPrehandler(StepHdlPtr p, int i) {
-  if ( i >= 0 && unsigned(i) <= preHandlers().size() )
+  if ( i >= 0 && unsigned(i) <= preHandlers().size() ) {
+    warning( p, preHandlers() );
     preHandlers().insert(preHandlers().begin() + i, p);
+  }
 }
 
 void HandlerGroupBase::interfaceInsertPosthandler(StepHdlPtr p, int i) {
-  if ( i >= 0 && unsigned(i) <= postHandlers().size() )
+  if ( i >= 0 && unsigned(i) <= postHandlers().size() ) {
+    warning( p, postHandlers() );
     postHandlers().insert(postHandlers().begin() + i, p);
+  }
 }
 
 void HandlerGroupBase::interfaceErasePrehandler(int i) {

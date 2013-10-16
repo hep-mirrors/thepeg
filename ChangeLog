@@ -1,3 +1,8 @@
+2013-10-16  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Handlers/HandlerGroup.cc: Added warning messages if pre- or
+	posthandlers are inserted twice.
+
 2013-10-09  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/MultiEventGenerator.h (ThePEG): Adding a tag of the
