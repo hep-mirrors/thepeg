@@ -49,6 +49,13 @@ or at http:///projects.hepforge.org/herwig/versions
    Jet cuts in the jet cut framework can be assigned a fuzzy shape to
    improve the stability of NLO calculations.
 
+** NLORivetAnalysis, NLOHepMCFile
+   The NLOHepMCFile and NLORivetAnalysis classes have been added to
+   allow Rivet to analyse NLO calculations which perform output for the
+   subtracted real emission matrix elements as ThePEG::SubProcessGroups; 
+   individual subprocesses in these groups are flagged as correlated
+   by being assigned the same event number.
+
 ** C++-11 testing
    To help with the coming transition to C++-11, we provide the new
    --enable-stdcxx11 configure flag. Please try to test builds with
