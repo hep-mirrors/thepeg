@@ -11,7 +11,7 @@ SUBDIRS = $(MAINDIRS) $(JAVADIR)
 
 EXTRA_DIST = GUIDELINES
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks --without-LHAPDF
+DISTCHECK_CONFIGURE_FLAGS = --enable-unitchecks --without-lhapdf
 
 ACLOCAL_AMFLAGS = -I m4
 
