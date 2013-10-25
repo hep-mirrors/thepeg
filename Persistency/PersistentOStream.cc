@@ -149,9 +149,14 @@ writeClassDescription(const ClassDescriptionBase * db) {
 }
 
 PersistentOStream & PersistentOStream::flush() {
-  ObjectMap::const_iterator it = writtenObjects.begin();
+#ifdef _LIBCPP_VERSION
+  typedef ObjectMap::const_iterator Iterator;
+#else
+  typedef ObjectMap::iterator Iterator;
+#endif
+  Iterator it = writtenObjects.begin();
   while ( it != writtenObjects.end() ) {
-    ObjectMap::const_iterator it2 = it++;
+    Iterator it2 = it++;
     if ( (*it2).second > lastSavedObject.top() ) writtenObjects.erase(it2);
   }
   os().flush();
