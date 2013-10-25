@@ -88,7 +88,7 @@ void MEBase::setKinematics(tPPair in, const PVector & out) {
       omap.insert(make_pair(out[j]->dataPtr(), out[j]));
 
     for ( int j = 2, M = diag.partons().size(); j < M; ++j ) {
-      multimap<tcPDPtr,tPPtr>::iterator it = omap.find(diag.partons()[j]);
+      multimap<tcPDPtr,tPPtr>::const_iterator it = omap.find(diag.partons()[j]);
       if ( it == omap.end() ) break;
       parts.push_back(it->second);
       omap.erase(it);

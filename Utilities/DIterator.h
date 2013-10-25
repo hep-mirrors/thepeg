@@ -11,6 +11,7 @@
 // This is the declaration of the DIterator class.
 
 #include <iterator>
+#include "ThePEG/Pointer/PtrTraits.h"
 
 namespace ThePEG {
 
@@ -39,7 +40,7 @@ public:
   /** Forward typedef from underlying iterator */
   typedef typename Traits::value_type 		PtrType;
   /** Forward typedef from underlying iterator */
-  typedef std::iterator_traits<PtrType>         PtrTraits;
+  typedef Pointer::PtrTraits<PtrType>         PtrTraits;
   /** Forward typedef from underlying iterator */
   typedef typename PtrTraits::value_type 	value_type;
   /** Forward typedef from underlying iterator */

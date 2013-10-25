@@ -16,6 +16,7 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/PDT/DecayMode.h"
 
 using namespace ThePEG;
 

@@ -39,7 +39,8 @@ Complex GeneralFFVVertex::evaluate(Energy2 q2,
 				   const VectorWaveFunction & vec) {
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),vec.particle());
-  Complex ii(0.,1.);
+  const Complex ii(0.,1.);
+  const complex<InvEnergy> zero(ZERO,ZERO);
   // useful combinations of the polarization vector components
   Complex e0p3=vec.t()+vec.z();
   Complex e0m3=vec.t()-vec.z();
@@ -62,7 +63,7 @@ Complex GeneralFFVVertex::evaluate(Energy2 q2,
 		      -sbar.s2()*(sp.s3()*e1p2-sp.s4()*e0p3));
   }
   // left sigma piece
-  if(_leftSigma!=0./GeV) {
+  if(_leftSigma!=zero) {
   vertex += -ii * _leftSigma *
     (sbar.s1()*sp.s1()*(-vec. e()*vec.z() + vec.pz()*vec.t() 
 			  -ii*(vec.py()*vec.x()-vec.px()*vec.y()))+
@@ -72,7 +73,7 @@ Complex GeneralFFVVertex::evaluate(Energy2 q2,
 			  -ii*(vec.px()*vec.y()-vec.py()*vec.x())));
   }
   // right sigma piece
-  if(_rightSigma!=0./GeV) {
+  if(_rightSigma!=zero) {
     vertex += ii * _rightSigma *
       (sbar.s3()*sp.s3()*(-vec.e()*vec.z()+vec.pz()*vec.t()
 			    -ii*(vec.px()*vec.y()-vec.py()*vec.x()))+
@@ -97,7 +98,8 @@ SpinorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   tcPDPtr  Pvec=vec.particle();
   // first calculate the couplings
   setCoupling(q2,Psp,out,Pvec);
-  Complex ii(0.,1.);
+  const Complex ii(0.,1.);
+  const complex<InvEnergy> zero(ZERO,ZERO);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sp.momentum()+vec.momentum();
   // now evaluate the contribution
@@ -144,7 +146,7 @@ SpinorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
   complex<Energy> b3 = fact*( sp.s1()*p0p3b + sp.s2()*p1m2b);
   complex<Energy> b4 = fact*( sp.s1()*p1p2b + sp.s2()*p0m3b);
   // left sigma piece
-  if(_leftSigma!=0./GeV) {
+  if(_leftSigma!=zero) {
     s1 += -0.5*ii*UnitRemoval::InvE *mass*_leftSigma*
       ( - a3*p0m3b + a4*p1m2b + b3*e0m3 - b4*e1m2);
     s2 +=  0.5*ii*UnitRemoval::InvE *mass*_leftSigma*
@@ -157,7 +159,7 @@ SpinorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2, int iopt,tcPDPtr  out,
         + p0m3*( - a3*p1p2b + a4*p0p3b + b3*e1p2 - b4*e0p3 ) );
   }
   // right sigma piece
-  if(_rightSigma!=0./GeV) {
+  if(_rightSigma!=zero) {
     s1 +=  0.5*ii*UnitRemoval::InvE *_rightSigma*
       ( + p0m3*( + a1*p0p3b + a2*p1m2b - b1*e0p3 - b2*e1m2 )
 	+ p1m2*( - a1*p1p2b - a2*p0m3b + b1*e1p2 + b2*e0m3 ) );
@@ -181,7 +183,8 @@ SpinorBarWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  ou
 						 complex<Energy> width) {
   // first calculate the couplings
   setCoupling(q2,out,sbar.particle(),vec.particle());
-  Complex ii(0.,1.);
+  const Complex ii(0.,1.);
+  const complex<InvEnergy> zero(ZERO,ZERO);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.momentum()+vec.momentum();
   // now evaluate the contribution
@@ -228,7 +231,7 @@ SpinorBarWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  ou
     s4 += UnitRemoval::InvE*_right*a4*mass; 
   }
   // left sigma piece
-  if(_leftSigma!=0./GeV) {
+  if(_leftSigma!=zero) {
     s1 +=  0.5*ii*UnitRemoval::InvE*_leftSigma*mass*
       ( + a3*p0p3b + a4*p1p2b - b3*e0p3 - b4*e1p2);
     s2 += -0.5*ii*UnitRemoval::InvE*_leftSigma*mass*
@@ -241,7 +244,7 @@ SpinorBarWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  ou
        +p0p3*( - a3*p1m2b - a4*p0m3b + b3*e1m2 + b4*e0m3));
   }
   // right sigma piece
-  if(_rightSigma!=0./GeV) {
+  if(_rightSigma!=zero) {
     s1 += +0.5*ii*UnitRemoval::InvE*_rightSigma*
       (+p0p3*( - a1*p0m3b + a2*p1p2b + b1*e0m3 - b2*e1p2)
        +p1p2*( + a1*p1m2b - a2*p0p3b - b1*e1m2 + b2*e0p3));
@@ -264,7 +267,8 @@ VectorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
 					      complex<Energy> width) {
   // first calculate the couplings
   setCoupling(q2,sp.particle(),sbar.particle(),out);
-  Complex ii(0.,1.);
+  const Complex ii(0.,1.);
+  const complex<InvEnergy> zero(ZERO,ZERO);
   // work out the momentum of the off-shell particle
   Lorentz5Momentum pout = sbar.momentum()+sp.momentum();
   // overall factor
@@ -294,7 +298,7 @@ VectorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
     vec[3] +=    +_right*(sbar.s1()*sp.s3()+sbar.s2()*sp.s4());
   }
   // left sigma
-  if(_leftSigma==0./GeV) {
+  if(_leftSigma==zero) {
     vec[0] += -0.5*ii*_leftSigma*
       (+sp.s1()*sbar.s1()*(p1p2-p1m2)+2.*sp.s1()*sbar.s2()*p0p3
        -sp.s2()*sbar.s2()*(p1p2-p1m2)+2.*sp.s2()*sbar.s1()*p0m3);
@@ -309,7 +313,7 @@ VectorWaveFunction GeneralFFVVertex::evaluate(Energy2 q2,int iopt,tcPDPtr  out,
        +sp.s2()*sbar.s2()*(p0p3-p0m3)-2.*sp.s2()*sbar.s1()*p1m2);
   }
   // right sigma
-  if(_rightSigma==0./GeV) {
+  if(_rightSigma==zero) {
     vec[0] +=  0.5*ii*_rightSigma*
       (-sp.s3()*sbar.s3()*(p1p2-p1m2)+2.*sp.s3()*sbar.s4()*p0m3
        +sp.s4()*sbar.s4()*(p1p2-p1m2)+2.*sp.s4()*sbar.s3()*p0p3);
