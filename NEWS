@@ -8,7 +8,7 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.9.0 release: 2013-10-21
+* ThePEG-1.9.0 release: 2013-10-28
 
 ** Rapidity edge cases
    Changed behavior for vanishing pt in eta() and vanishing mt in
