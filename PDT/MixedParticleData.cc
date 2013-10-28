@@ -12,6 +12,7 @@
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Utilities/Debug.h"
+#include "ThePEG/PDT/DecayMode.h"
 
 using namespace ThePEG;
 

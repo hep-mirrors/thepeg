@@ -8,10 +8,37 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
-* ThePEG-1.9.0 release: 2013-10-XX
+* ThePEG-1.9.0 release: 2013-10-21
+
+** Rapidity edge cases
+   Changed behavior for vanishing pt in eta() and vanishing mt in
+   rapidity(): no error is thrown, but a ridculously large rapidity is
+   returned instead.
+
+** Command line interface
+   Adding a tag of the form "#first-last" when running a
+   MultiEventGenerator now allows to run a subset of the runs
+
+** Pre- and Posthandlers
+   A warning is now issued if the same handler is inserted twice into
+   a pre- or posthandler list.
+
+** Statistics fixes
+   Various issues for the handling of statistics in the presence of
+   negative weights have been fixed.
+
+** Rivet search paths
+   A new interface RivetAnalysis:Paths allows more search paths to be
+   added to the analysis finding routine. This supplements the
+   RIVET_ANALYSIS_PATH environment variable.
+
+** Vertex classes
+   A chain of sign and prefactor fixes has been implemented in the
+   Vertex classes to correct various vertex structures in Herwig++
+   conversions of Feynrules models.
 
 ** Custom XComb objects
-   Matrix element classes can built customized XComb objects.
+   Matrix element classes can built with customized XComb objects.
 
 ** Reweighting of SubProcessGroups and projections
    Matrix element groups can reweight contributions in a
@@ -22,9 +49,22 @@ or at http:///projects.hepforge.org/herwig/versions
    Jet cuts in the jet cut framework can be assigned a fuzzy shape to
    improve the stability of NLO calculations.
 
-** Statistics fixes
-   Various issues for the handling of statistics in the presence of
-   negative weights have been fixed.
+** NLORivetAnalysis, NLOHepMCFile
+   The NLOHepMCFile and NLORivetAnalysis classes have been added to
+   allow Rivet to analyse NLO calculations which perform output for the
+   subtracted real emission matrix elements as ThePEG::SubProcessGroups; 
+   individual subprocesses in these groups are flagged as correlated
+   by being assigned the same event number.
+
+** C++-11 testing
+   To help with the coming transition to C++-11, we provide the new
+   --enable-stdcxx11 configure flag. Please try to test builds with
+   this flag enabled and let us know any problems, but do not use this
+   in production code yet. In future releases, this flag will be on by
+   default.
+
+
+
 
 * ThePEG-1.8.3 release: 2013-02-22
 

@@ -259,7 +259,8 @@ bool LHAPDF::indexLine(istream & is, int & set, int & mem, string & file,
   string dummy;
   is >> set >> pdftyp >> pdfgup >> pdfsup >> file >> mem
      >> q2min >> q2max >> xmin >> xmax;
-  return getline(is,dummy);
+  // workaround for some C++11 implementations
+  return bool(getline(is,dummy));
 }
 
 void LHAPDF::setMinMax() {

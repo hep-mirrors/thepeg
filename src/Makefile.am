@@ -116,7 +116,8 @@ if USELHAPDF
 endif
 	cd $(DESTDIR)$(pkglibdir); \
 	if test -n "$(DESTDIR)"; \
-	then sed -i -e "s@$(DESTDIR)@@g" ThePEGDefaults.rpo; \
+	then sed -i.bak -e "s@$(DESTDIR)@@g" ThePEGDefaults.rpo; \
+	rm -f ThePEGDefaults.rpo.bak; \
 	fi ; \
 	cp ThePEGDefaults.rpo ThePEGDefaults-$(VERSION).rpo
 
