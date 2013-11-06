@@ -78,6 +78,19 @@ protected:
   string addInterface(string);
 
   /**
+   * Used to add an interface of an object a random value each
+   * run. The argument should be given as "object:interface N min max
+   * mean width"
+   */
+  string addRndInterface(string);
+
+  /**
+   * Helper function for addInterface(string) and addRndInterface(string).
+   */
+  string addInterface(string, bool rnd);
+
+
+  /**
    * Used to remove an interface of an object which should be used
    * with a set of different values. The argument should be given as
    * "object:interface arg1, arg2, ..."
@@ -86,10 +99,9 @@ protected:
   //@}
 
   /**
-   * Write out header for each sub-run.
+   * return a header for this sub-run.
    */
-  void heading(ostream &, long,
-	       const vector<const InterfaceBase *> &, string) const;
+  string heading(long, const vector<const InterfaceBase *> &, string) const;
 
 public:
 

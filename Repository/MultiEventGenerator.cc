@@ -58,6 +58,14 @@ string MultiEventGenerator::removeInterface(string cmd) {
 }
 
 string MultiEventGenerator::addInterface(string cmd) {
+  return addInterface(cmd, false);
+}
+
+string MultiEventGenerator::addRndInterface(string cmd) {
+  return addInterface(cmd, true);
+}
+
+string MultiEventGenerator::addInterface(string cmd, bool rnd) {
   breakThePEG();
   string noun = StringUtils::car(cmd);
   IBPtr ip = BaseRepository::getObjectFromNoun(noun);
@@ -66,17 +74,37 @@ string MultiEventGenerator::addInterface(string cmd) {
   string posarg = BaseRepository::getPosArgFromNoun(noun);
   cmd = StringUtils::cdr(cmd);
   if ( cmd.empty() ) return "Error: empty argument list.";
-  StringVector args;
-  do {
-    args.push_back(StringUtils::car(cmd, ","));
-    cmd = StringUtils::cdr(cmd, ",");
-  } while ( !cmd.empty() );
 
   string ret;
   string oldvalue = ifb->exec(*ip, "get", posarg);
+  StringVector args;
   try {
-    for ( string::size_type i = 0; i < args.size(); ++i )
-      ifb->exec(*ip, "set", args[i]);
+    if ( rnd ) {
+      do {
+	args.push_back(StringUtils::car(cmd));
+	cmd = StringUtils::cdr(cmd);
+      } while ( !cmd.empty() );
+      if ( args.size() < 3 ) return "Error: Argument list should be 'N min max mean width'.";
+      int N = atoi(args[0].c_str());
+      string vmin = args[1];
+      string vmax = args[2];
+      string vmean = "0";
+      if ( args.size() > 3 ) vmean = args[3];
+      string vwidth = "0";
+      if ( args.size() > 4 ) vwidth = args[4];
+      string arg = "RND " + vmin + " " + vmax + " " + vmean + " " + vwidth;
+      args = vector<string>(N, arg);
+      ifb->exec(*ip, "set", vmin);
+      ifb->exec(*ip, "set", vmax);
+      ifb->exec(*ip, "set", posarg + " " + oldvalue);
+    } else {
+      do {
+	args.push_back(StringUtils::car(cmd, ","));
+	cmd = StringUtils::cdr(cmd, ",");
+      } while ( !cmd.empty() );
+      for ( string::size_type i = 0; i < args.size(); ++i )
+	ifb->exec(*ip, "set", args[i]);
+    }
   }
   catch (const Exception & e) {
     e.handle();
@@ -88,7 +116,8 @@ string MultiEventGenerator::addInterface(string cmd) {
   for ( string::size_type i = 0; i < theObjects.size(); ++i ) {
     if ( theObjects[i] == ip && theInterfaces[i] == ifb->name() &&
 	 thePosArgs[i] == posarg ) {
-      theValues[i].insert(theValues[i].end(), args.begin(), args.end());
+      if ( rnd || theValues[i][0].substr(0,3) == "RND" ) theValues[i] = args;
+      else theValues[i].insert(theValues[i].end(), args.begin(), args.end());
       return "";
     }
   }
@@ -146,8 +175,9 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
     subname << baseName << ":" << iargs + 1;
     runName(subname.str());
 
-    heading(log(), iargs, interfaces, baseName);
-    heading(out(), iargs, interfaces, baseName);
+    string head = heading(iargs, interfaces, baseName);
+    log() << head;
+    out() << head;
 
     reset();
     for_each(objects(), mem_fun(&InterfacedBase::reset));
@@ -176,28 +206,41 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
 
 }
 
-void MultiEventGenerator::
-heading(ostream & os, long iargs,
-	const vector<const InterfaceBase *> & interfaces,
+string MultiEventGenerator::
+heading(long iargs, const vector<const InterfaceBase *> & interfaces,
 	string baseName) const {
-    long div = 1;
-    if ( iargs > 0 ) os << endl;
+  ostringstream os;
+  long div = 1;
+  if ( iargs > 0 ) os << endl;
       
-    os << ">> " << baseName << " sub-run number " << iargs + 1
-       << " using the following interface values:" << endl;
+  os << ">> " << baseName << " sub-run number " << iargs + 1
+     << " using the following interface values:" << endl;
 
-    for ( string::size_type i = 0; i < theObjects.size(); ++i ) {
-      long iarg = (iargs/div)%theValues[i].size();
-      interfaces[i]->exec(*theObjects[i], "set",
-			  thePosArgs[i] + " " + theValues[i][iarg]);
-      os << "   set " << theObjects[i]->name() << ":" << theInterfaces[i];
-      if ( !thePosArgs[i].empty() ) os << "[" << thePosArgs[i] << "]";
-
-      os << " " << theValues[i][iarg] << endl;
-      div *= theValues[i].size();
+  for ( string::size_type i = 0; i < theObjects.size(); ++i ) {
+    long iarg = (iargs/div)%theValues[i].size();
+    string sval = theValues[i][iarg];
+    if ( theValues[i][iarg].substr(0,3) == "RND" ) {
+      double vmin, vmax, vmean, vwidth;
+      istringstream is(theValues[i][iarg].substr(3));
+      is >> vmin >> vmax >> vmean >> vwidth;
+      double val = random().rnd(vmin, vmax);
+      if ( vwidth > 0.0 ) do {
+	  val = random().rndGauss(vwidth, vmean);
+	} while ( val < vmin || val > vmax );
+      ostringstream ssv;
+      ssv << val;
+      sval = ssv.str();
     }
-    os << endl;
-}  
+    interfaces[i]->exec(*theObjects[i], "set",
+			thePosArgs[i] + " " + sval);
+    os << "   set " << theObjects[i]->name() << ":" << theInterfaces[i];
+    if ( !thePosArgs[i].empty() ) os << "[" << thePosArgs[i] << "]";
+    os << " " << sval << endl;
+    div *= theValues[i].size();
+  }
+  os << endl;
+  return os.str();
+}
 
 void MultiEventGenerator::persistentOutput(PersistentOStream & os) const {
   os << theObjects << theInterfaces << thePosArgs << theValues
@@ -245,6 +288,22 @@ void MultiEventGenerator::Init() {
      "the new arguments will be added to the previously specified list without "
      "checking if any argument is doubled.",
      &MultiEventGenerator::addInterface);
+
+  static Command<MultiEventGenerator> interfaceAddRndInterface
+    ("AddRndInterface",
+     "If arguments are given on the form 'object-name:interface-name N min max "
+     "mean width'"" or 'object-name:vectorinterface-name[pos] N min max mean width' "
+     "the generator will be run N times with the corresonding interface of "
+     "the given object set to a random value between min and max according to a "
+     "Gaussian distribution with the given mean and width (if the width is absent "
+     "or zero a flat distribution between min and max will be used instead) . If "
+     "another interface with e.g. 4 different arguments, the generator will "
+     "be run N*4 times once for each combination of arguments and the specified "
+     "interface will get a new random value each time.. If called with "
+     "an object and interface wich has already been given in a previous call to "
+     "<interface>AddInterface</interface> or <interface>AddRndInterface</interface> "
+     "the previous call will be ignored.",
+     &MultiEventGenerator::addRndInterface);
 
   static Command<MultiEventGenerator> interfaceRemoveInterface
     ("RemoveInterface",
