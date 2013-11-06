@@ -50,3 +50,11 @@ Makefile\.in$
 ^INSTALL$
 ^src/TestDecayMode.in$
 ^ThePEG.*\.tar\.(bz2|gz)$
+
+# added by aHg on Wed Nov  6 08:49:21 2013
+syntax: glob
+src/runThePEG.bin
+
+# added by aHg on Wed Nov  6 08:49:28 2013
+syntax: glob
+src/setupThePEG.bin
