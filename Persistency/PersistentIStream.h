@@ -15,6 +15,7 @@
 #include "PersistentIStream.fh"
 #include "ThePEG/Utilities/Exception.h"
 #include <climits>
+#include <valarray>
 
 namespace ThePEG {
 
@@ -639,6 +640,17 @@ template <typename T, typename A>
 inline PersistentIStream & operator>>(PersistentIStream & is, 
 				      deque<T,A> & d) {
   is.getContainer(d);
+  return is;
+}
+
+/** Input a deque of objects. */
+template <typename T>
+inline PersistentIStream & operator>>(PersistentIStream & is, 
+				      std::valarray<T> & v) {
+  long size;
+  is >> size;
+  v = std::valarray<T>(size);
+  for ( int i = 0; i < size && is.good(); ++i ) is >> v[i];
   return is;
 }
 
