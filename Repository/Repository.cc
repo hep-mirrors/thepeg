@@ -452,7 +452,7 @@ void Repository::execAndCheckReply(string line, ostream & os) {
 
 void Repository::read(istream & is, ostream & os, string prompt) {
 #ifdef HAVE_LIBREADLINE
-  if ( is == std::cin ) {
+  if ( &is == &std::cin ) {
     char * line_read = 0;
     do {
       if ( line_read ) {
