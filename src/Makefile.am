@@ -79,8 +79,8 @@ check-local: ThePEGDefaults.rpo
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo MultiLEP.in
 	time ./runThePEG -d 0 MultiLEP.run
 if USELHAPDF
-	./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
-	time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+	LHAPATH=. ./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
+	LHAPATH=. time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
 SimpleLEP.run: done-all-links setupThePEG ThePEGDefaults.rpo SimpleLEP.in
