@@ -16,6 +16,7 @@
 #include "ThePEG/Utilities/Debug.h"
 #include "PersistentOStream.fh"
 #include "PersistentOStream.xh"
+#include <valarray>
 
 namespace ThePEG {
 
@@ -639,6 +640,17 @@ template <typename T, typename A>
 inline PersistentOStream & operator<<(PersistentOStream & os,
 				      const deque<T,A> & d) {
   os.putContainer(d);
+  return os;
+}
+
+/**
+ * Output a valarray of objects.
+ */
+template <typename T>
+inline PersistentOStream & operator<<(PersistentOStream & os,
+				      const std::valarray<T> & v) {
+  os << v.size();
+  for ( int i = 0, N = v.size(); i < N; ++i ) os << v[i];
   return os;
 }
 //@}
