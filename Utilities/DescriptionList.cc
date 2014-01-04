@@ -78,7 +78,6 @@ void DescriptionList::insert(ClassDescriptionBase & pb) {
 }
 
 void DescriptionList::printHierarchies(ostream & os) {
-  typedef ClassDescriptionBase::DescriptionVector DescVec;
   for ( DescriptionMap::iterator it = descriptionMap().begin();
 	it != descriptionMap().end(); ++it ) {
     os << "Class Name '" << it->second->name() << "'\n ("
