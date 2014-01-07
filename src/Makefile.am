@@ -3,6 +3,8 @@ AUTOMAKE_OPTIONS = -Wno-portability
 bin_PROGRAMS = setupThePEG runThePEG
 EXTRA_PROGRAMS = runEventLoop
 
+EXTRA_DIST = GRV98nlo.LHgrid MRST2001nlo.LHgrid cteq5l.LHgrid cteq6ll.LHpdf
+
 myLDADD = $(top_builddir)/lib/libThePEG.la 
 myLDFLAGS = -export-dynamic
 
@@ -79,8 +81,8 @@ check-local: ThePEGDefaults.rpo
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo MultiLEP.in
 	time ./runThePEG -d 0 MultiLEP.run
 if USELHAPDF
-	LHAPATH=. ./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
-	LHAPATH=. time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+	LHAPATH=$(srcdir) ./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
+	LHAPATH=$(srcdir) time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
 SimpleLEP.run: done-all-links setupThePEG ThePEGDefaults.rpo SimpleLEP.in
