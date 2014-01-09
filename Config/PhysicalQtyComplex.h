@@ -289,14 +289,14 @@ operator*(std::complex<Qty<L,E,Q,DL,DE,DQ> > q1,
   return q2 * q1;
 }
 
-// complex qty *= complex double
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline std::complex<Qty<L,E,Q,DL,DE,DQ> > &
-operator*=(std::complex<Qty<L,E,Q,DL,DE,DQ> > & q1,
-	   std::complex<double> q2) {
-  q1 = q1 * q2;
-  return q1;
-}
+// // complex qty *= complex double
+// template<int L, int E, int Q, int DL, int DE, int DQ>
+// inline std::complex<Qty<L,E,Q,DL,DE,DQ> > &
+// operator*=(std::complex<Qty<L,E,Q,DL,DE,DQ> > & q1,
+// 	   std::complex<double> q2) {
+//   q1 = q1 * q2;
+//   return q1;
+// }
 
 // complex qty *= double
 template<int L, int E, int Q, int DL, int DE, int DQ>
@@ -307,14 +307,14 @@ operator*=(std::complex<Qty<L,E,Q,DL,DE,DQ> > & q1,
   return q1;
 }
 
-// complex qty /= complex double
-template<int L, int E, int Q, int DL, int DE, int DQ>
-inline std::complex<Qty<L,E,Q,DL,DE,DQ> > &
-operator/=(std::complex<Qty<L,E,Q,DL,DE,DQ> > & q1,
-	   std::complex<double> q2) {
-  q1 = q1 / q2;
-  return q1;
-}
+// // complex qty /= complex double
+// template<int L, int E, int Q, int DL, int DE, int DQ>
+// inline std::complex<Qty<L,E,Q,DL,DE,DQ> > &
+// operator/=(std::complex<Qty<L,E,Q,DL,DE,DQ> > & q1,
+// 	   std::complex<double> q2) {
+//   q1 = q1 / q2;
+//   return q1;
+// }
 
 // complex qty /= double
 template<int L, int E, int Q, int DL, int DE, int DQ>
