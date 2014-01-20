@@ -1,3 +1,14 @@
+2014-01-20  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Repository/RandomGenerator.h, Repository/*EventGenerator.*: The
+	use of --seed in runThePEG didn't work for MultiEventgenerator
+	since all object get re-initialized for every subrun. This is
+	fixed by also setting the Seed interface if a --seed is given. In
+	RandomGenerator the saved Gaussian number is now discarded on
+	flush(). In MultiEventGenerator, an optional separate
+	RandomGenerator can be given to generate interface values for each
+	subrun, to ensure reproducibility of interface values.
+
 2013-12-12  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* src/Makefile.am: Quick fix for probelms if LHAPDF does not

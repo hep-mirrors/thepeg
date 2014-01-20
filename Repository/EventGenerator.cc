@@ -138,6 +138,14 @@ CrossSection EventGenerator::integratedXSecErr() const {
   return eventHandler()->integratedXSecErr();
 }
 
+void EventGenerator::setSeed(long seed) {
+  random().setSeed(seed);
+  ostringstream s;
+  s << seed;
+  const InterfaceBase * ifb = BaseRepository::FindInterface(theRandom, "Seed");
+  ifb->exec(*theRandom, "set", s.str());
+}
+
 void
 EventGenerator::setup(string newRunName,
 		      ObjectSet & newObjects,

@@ -103,6 +103,14 @@ protected:
    */
   string heading(long, const vector<const InterfaceBase *> &, string) const;
 
+  /**
+   * A separate random number generator to be used for generating
+   * random parameter values (to ensure reproducable sequences).
+   */
+  RandomGenerator & randomArg() const {
+    return theSeparateRandom? *theSeparateRandom: random();
+  }
+
 public:
 
 
@@ -202,7 +210,13 @@ private:
   /**
    * If non zero, the last subrun to be considered.
    */
-  int lastSubrun; 
+  int lastSubrun;
+
+  /**
+   * A separate random number generator to be used for generating
+   * random parameter values (to ensure reproducable sequences).
+   */
+  RanGenPtr theSeparateRandom;
 
 private:
 

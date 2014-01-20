@@ -14,6 +14,7 @@
 #include "MultiEventGenerator.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Interface/Command.h"
+#include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Repository/BaseRepository.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
@@ -160,6 +161,12 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
     interfaces.push_back(BaseRepository::FindInterface(theObjects[i],
 						       theInterfaces[i]));
   }
+  if ( theSeparateRandom ) {
+    theSeparateRandom->init();
+    theSeparateRandom->initrun();
+    const InterfaceBase * ifb = BaseRepository::FindInterface(theSeparateRandom, "Seed");
+    ifb->exec(*theSeparateRandom, "set", "0"); 
+  }
 
   openOutputFiles();
 
@@ -223,9 +230,9 @@ heading(long iargs, const vector<const InterfaceBase *> & interfaces,
       double vmin, vmax, vmean, vwidth;
       istringstream is(theValues[i][iarg].substr(3));
       is >> vmin >> vmax >> vmean >> vwidth;
-      double val = random().rnd(vmin, vmax);
+      double val = randomArg().rnd(vmin, vmax);
       if ( vwidth > 0.0 ) do {
-	  val = random().rndGauss(vwidth, vmean);
+	  val = randomArg().rndGauss(vwidth, vmean);
 	} while ( val < vmin || val > vmax );
       ostringstream ssv;
       ssv << val;
@@ -244,12 +251,12 @@ heading(long iargs, const vector<const InterfaceBase *> & interfaces,
 
 void MultiEventGenerator::persistentOutput(PersistentOStream & os) const {
   os << theObjects << theInterfaces << thePosArgs << theValues
-     << firstSubrun << lastSubrun;
+     << firstSubrun << lastSubrun << theSeparateRandom;
 }
 
 void MultiEventGenerator::persistentInput(PersistentIStream & is, int) {
   is >> theObjects >> theInterfaces >> thePosArgs >> theValues
-     >> firstSubrun >> lastSubrun;
+     >> firstSubrun >> lastSubrun >> theSeparateRandom;
 }
 
 IVector MultiEventGenerator::getReferences() {
@@ -312,6 +319,14 @@ void MultiEventGenerator::Init() {
      "<interface>AddInterface</interface>}, the corresponding arguments are "
      "removed and the interfaced will be left unchanged during the generation.",
      &MultiEventGenerator::removeInterface);
+
+
+  static Reference<MultiEventGenerator,RandomGenerator> interfaceSeparateRandom
+    ("SeparateRandom",
+     "A separate random number generator used for <interface>AddRndInterface</interface>"
+     " to ensure reproducible sequences of interface values. If null, the standard "
+     "random generator will be used instead.",
+     &MultiEventGenerator::theSeparateRandom, true, false, true, true, false);
 
   interfaceAddInterface.rank(10.7);
   interfaceRemoveInterface.rank(10.5);

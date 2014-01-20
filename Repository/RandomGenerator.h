@@ -288,7 +288,10 @@ public:
    * Discard all random numbers in the cache. Typically used after the
    * internal random engine has been reinitialized for some reason.
    */
-  void flush() { nextNumber = theNumbers.end(); }
+  void flush() {
+    nextNumber = theNumbers.end();
+    gaussSaved = false;
+  }
 
   /**
    * Generate n random numbers between 0 and 1 and put them in the

@@ -243,9 +243,10 @@ public:
   void use(const Interfaced & i);
 
   /**
-   * Set the random seed for the global random number generator.
+   * Set the random seed for the global random number generator. Also
+   * set the interfaced member variable.
    */
-  void setSeed(long seed) { random().setSeed(seed); }
+  void setSeed(long seed);
 
   /**
    * Log a given exception.
