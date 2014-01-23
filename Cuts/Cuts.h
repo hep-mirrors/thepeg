@@ -18,6 +18,7 @@
 #include "TwoCutBase.h"
 #include "MultiCutBase.h"
 #include "JetFinder.h"
+#include "FuzzyTheta.h"
 
 namespace ThePEG {
 
@@ -496,6 +497,53 @@ public:
    * object.
    */
   void lastCutWeight(double w) const { theLastCutWeight = w; }
+
+  /**
+   * Return the fuzziness object
+   */
+  Ptr<FuzzyTheta>::tcptr fuzzy() const { return theFuzzyTheta; }
+
+  /**
+   * Check for value inside the given bounds and update the weight
+   */
+  template<class CutType, class Value>
+  bool isInside(const Value& v, const Value& lower, const Value& upper, double& weight) const {
+    if ( !fuzzy() ) {
+      if ( v >= lower && v <= upper )
+	return true;
+      weight = 0.0;
+      return false;
+    }
+    return fuzzy()->isInside<CutType>(v,lower,upper,weight);
+  }
+
+  /**
+   * Check for value inside the given bounds and update the weight
+   */
+  template<class CutType, class Value>
+  bool isLessThan(const Value& v, const Value& upper, double& weight) const {
+    if ( !fuzzy() ) {
+      if ( v <= upper )
+	return true;
+      weight = 0.0;
+      return false;
+    }
+    return fuzzy()->isLessThan<CutType>(v,upper,weight);
+  }
+
+  /**
+   * Check for value inside the given bounds and update the weight
+   */
+  template<class CutType, class Value>
+  bool isLargerThan(const Value& v, const Value& lower, double& weight) const {
+    if ( !fuzzy() ) {
+      if ( v >= lower )
+	return true;
+      weight = 0.0;
+      return false;
+    }
+    return fuzzy()->isLargerThan<CutType>(v,lower,weight);
+  }
   //@}
 
 public:
@@ -736,6 +784,11 @@ private:
    * object.
    */
   mutable double theLastCutWeight;
+
+  /**
+   * The fuzziness object
+   */
+  Ptr<FuzzyTheta>::ptr theFuzzyTheta;
 
 private:
 

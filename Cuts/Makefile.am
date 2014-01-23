@@ -1,6 +1,6 @@
-mySOURCES = Cuts.cc OneCutBase.cc TwoCutBase.cc MultiCutBase.cc JetFinder.cc
+mySOURCES = Cuts.cc OneCutBase.cc TwoCutBase.cc MultiCutBase.cc JetFinder.cc FuzzyTheta.cc
 
-DOCFILES = Cuts.h OneCutBase.h TwoCutBase.h MultiCutBase.h JetFinder.h
+DOCFILES = Cuts.h OneCutBase.h TwoCutBase.h MultiCutBase.h JetFinder.h FuzzyTheta.h
 
 INCLUDEFILES = $(DOCFILES) Cuts.fh OneCutBase.fh \
                 TwoCutBase.fh MultiCutBase.fh

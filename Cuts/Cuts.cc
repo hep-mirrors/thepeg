@@ -362,7 +362,7 @@ void Cuts::persistentOutput(PersistentOStream & os) const {
      << theX1Min << theX1Max << theX2Min << theX2Max << ounit(theScaleMin, GeV2)
      << ounit(theScaleMax, GeV2) << theOneCuts << theTwoCuts << theMultiCuts
      << theJetFinder << theSubMirror
-     << theCutWeight << theLastCutWeight;
+     << theCutWeight << theLastCutWeight << theFuzzyTheta;
 }
 
 void Cuts::persistentInput(PersistentIStream & is, int) {
@@ -372,7 +372,7 @@ void Cuts::persistentInput(PersistentIStream & is, int) {
      >> theX1Min >> theX1Max >> theX2Min >> theX2Max >> iunit(theScaleMin, GeV2)
      >> iunit(theScaleMax, GeV2) >> theOneCuts >> theTwoCuts >> theMultiCuts
      >> theJetFinder >> theSubMirror
-     >> theCutWeight >> theLastCutWeight;
+     >> theCutWeight >> theLastCutWeight >> theFuzzyTheta;
 }
 
 ClassDescription<Cuts> Cuts::initCuts;
@@ -542,12 +542,16 @@ void Cuts::Init() {
      "hard sub-process.",
      &Cuts::theMultiCuts, -1, true, false, true, false, false);
 
-
   static Reference<Cuts,JetFinder> interfaceJetFinder
     ("JetFinder",
      "Set a JetFinder object used to define cuts on the"
      "level of reconstructed jets as needed for higher order corrections.",
      &Cuts::theJetFinder, false, false, true, true, false);
+
+  static Reference<Cuts,FuzzyTheta> interfaceFuzzy
+    ("Fuzzy",
+     "The fuzziness to be applied to cuts (may not be supported by all cut objects).",
+     &Cuts::theFuzzyTheta, false, false, true, true, false);
 
 
   interfaceX1Min.rank(10);
