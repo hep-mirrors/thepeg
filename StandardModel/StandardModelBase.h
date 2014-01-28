@@ -76,6 +76,11 @@ public:
 
 
   /** @name Functions accessing electro-weak parameters. */
+  /**
+   *  Return the electroweak scheme used
+   */
+  unsigned int ewScheme() const { return theElectroWeakScheme; }
+
   //@{
   /**
    * Constant \f$\alpha_{EM}(q^2=0)\f$.
