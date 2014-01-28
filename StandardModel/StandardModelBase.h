@@ -96,7 +96,7 @@ public:
    *  The electromagnetic coupling for vertex classes
    *  in a well defined self-consistent EW scheme if requested
    */
-  double alphaEMME(Energy2 scale) {
+  double alphaEMME(Energy2 scale) const {
     if(theElectroWeakScheme==0)
       return alphaEM(scale);
     else if(scale>1e-6*GeV2)
