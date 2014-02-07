@@ -721,7 +721,7 @@ string Repository::exec(string command, ostream & os) {
 	os << eg;
 	if ( !os ) return "Save failed! (I/O error)";
       } else {
-	string file = eg->path() + "/" + eg->filename() + ".run";
+	string file = eg->filename() + ".run";
 	PersistentOStream os(file, globalLibraries());
 	os << eg;
 	if ( !os ) return "Save failed! (I/O error)";

@@ -887,7 +887,7 @@ string EventGenerator::doSaveRun(string runname) {
   if ( runname.empty() ) runname = theRunName;
   if ( runname.empty() ) runname = name();
   EGPtr eg = Repository::makeRun(this, runname);
-  string file = eg->path() + "/" + eg->filename() + ".run";
+  string file =  eg->filename() + ".run";
   PersistentOStream os(file);
   os << eg;
   if ( !os ) return "Error: Save failed! (I/O error)";
