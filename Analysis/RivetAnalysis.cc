@@ -17,6 +17,7 @@
 #include "ThePEG/Repository/CurrentGenerator.h"
 #include "HepMC/GenEvent.h"
 #include "Rivet/AnalysisHandler.hh"
+#include "Rivet/Tools/RivetPaths.hh"
 #include "Rivet/Tools/Logging.hh"
 #include <config.h>
 
