@@ -175,14 +175,26 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
   if ( tics ) tic(next - 1, nargs*N());
   for ( long iargs = 0; iargs < nargs; ++iargs ) {
 
-    if ( firstSubrun > 0 && iargs + 1 < firstSubrun ) continue;
-    if ( lastSubrun > 0 && iargs + 1 > lastSubrun ) continue;
-
     ostringstream subname;
     subname << baseName << ":" << iargs + 1;
     runName(subname.str());
 
     string head = heading(iargs, interfaces, baseName);
+
+    if ( ( firstSubrun > 0 && iargs + 1 < firstSubrun ) ||
+	 ( lastSubrun > 0 && iargs + 1 > lastSubrun ) ) {
+      if ( theSeparateRandom ) {
+	// This is needed to ensure the same random settings for a
+	// given sub-run irrespectively if previous sub-runs have been
+	// included or not.
+	theSeparateRandom->reset();
+	theSeparateRandom->init();
+	theSeparateRandom->initrun();
+      }
+      continue;
+    }
+      
+
     log() << head;
     out() << head;
 
