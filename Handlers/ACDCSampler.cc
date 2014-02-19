@@ -77,10 +77,6 @@ CrossSection ACDCSampler::integratedXSecErr() const {
   return theSampler.integralErr()*nanobarn;
 }
 
-CrossSection ACDCSampler::maxXSec() const {
-  return theSampler.maxInt()*nanobarn;
-}
-
 int ACDCSampler::lastBin() const {
   return theSampler.last() - 1;
 }
