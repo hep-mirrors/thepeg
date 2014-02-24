@@ -296,15 +296,6 @@ protected:
   XSVector & xSecs() { return theXSecs; }
 
   /**
-   * Return the strategy to be used when sampling different StandardXComb
-   * objects.
-   * @return 0 if all StandardXComb objects are sampled together. 1 if
-   * all StandardXComb objects which have the same matrix element object are
-   * sampled together. 2 if all StandardXComb objects are sampled separately.
-   */
-  int binStrategy() const { return theBinStrategy; }
-
-  /**
    * Throw away the last generated event before generating a new one.
    */
   virtual void clean();
@@ -432,21 +423,6 @@ private:
    * StandardXComb objects for the last selected phase space point.
    */
   XSVector theXSecs;
-
-  /**
-   * The strategy to be used when sampling different StandardXComb
-   * objects. 0 means all StandardXComb objects are sampled
-   * together. 1 means all StandardXComb objects which have the same
-   * matrix element object are sampled together. 2 means all
-   * StandardXComb objects are sampled separately.
-   */
-  int theBinStrategy;
-
-  /**
-   * The map used to store all XBins with the same matrix element for
-   * option 1 in theBinStrategy.
-   */
-  MEXMap theMEXMap;
 
   /**
    * The number of degrees of freedom needed to generate the phase

@@ -40,8 +40,7 @@
 using namespace ThePEG;
 
 StandardEventHandler::StandardEventHandler()
-  : EventHandler(false), collisionCuts(true), theBinStrategy(2),
-    theLumiDim(0) {
+  : EventHandler(false), collisionCuts(true), theLumiDim(0) {
   setupGroups();
 }
 
@@ -215,30 +214,8 @@ void StandardEventHandler::initialize() {
   xSecs().resize(xCombs().size());
 
   theMaxDims.clear();
-  switch ( binStrategy() ) {
-  case 0: {
-    theMaxDims.push_back(0);
-    for ( int i = 0, N = xCombs().size(); i < N; ++i )
-      theMaxDims[0] = max(theMaxDims[0], xCombs()[i]->nDim());
-    break;
-  }
-  case 1: {
-    for ( int i = 0, N = xCombs().size(); i < N; ++i )
-      theMEXMap[xCombs()[i]->matrixElement()].push_back(xCombs()[i]);
-    MEXMap::const_iterator mei = theMEXMap.begin();
-    for ( int i = 0, N = theMEXMap.size(); i < N; ++i, ++mei) {
-      theMaxDims.push_back(0);
-      for ( int j = 0, M = mei->second.size(); j < M; ++j )
-	theMaxDims[i] = max(theMaxDims[i], mei->second[j]->nDim());
-    }
-    break;
-  }
-  case 2: {
-    for ( int i = 0, N = xCombs().size(); i < N; ++i )
-      theMaxDims.push_back(xCombs()[i]->nDim());
-    break;
-  }
-  }
+  for ( int i = 0, N = xCombs().size(); i < N; ++i )
+    theMaxDims.push_back(xCombs()[i]->nDim());
 
   sampler()->setEventHandler(this);
   sampler()->initialize();
@@ -250,53 +227,13 @@ dSigDR(const pair<double,double> ll, Energy2 maxS,
   PPair inc = make_pair(incoming().first->produceParticle(),
 			incoming().second->produceParticle());
   SimplePhaseSpace::CMS(inc, maxS);
-
-  XVector xv;
-  switch ( binStrategy() ) {
-  case 0:
-    xv = xCombs();
-    break;
-  case 1: {
-    MEXMap::iterator mei = theMEXMap.begin();
-    for ( int i = 0; i < ibin; ++i) ++mei;
-    xv = mei->second;
-    break;
-  }
-  case 2:
-    xv = XVector(1, xCombs()[ibin]);
-    break;
-  }
-    
-  xSecs().resize(xv.size());
-  for ( int i = 0, N = xv.size(); i < N; ++i ) xv[i]->prepare(inc);
-  CrossSection sum = ZERO;
-  for ( int i = 0, N = xv.size(); i < N; ++i )
-    xSecs()[i] = ( sum += xv[i]->dSigDR(ll, nr, r) );
-  return sum;
+  return xCombs()[ibin]->dSigDR(ll, nr, r);
 }
 
 tStdXCombPtr StandardEventHandler::select(int bin, double & weight) {
-
-  int i = 0;
-  if ( binStrategy() != 2 )
-    i = upper_bound(xSecs().begin(), xSecs().end(), rnd()*xSecs().back())
-      - xSecs().begin();
-  tStdXCombPtr lastXC;
-  switch ( binStrategy() ) {
-  case 0:
-    lastXC = xCombs()[i];
-    break;
-  case 1: {
-    MEXMap::iterator mei = theMEXMap.begin();
-    for ( int j = 0; j < bin; ++j) ++mei;
-    lastXC = mei->second[i];
-    break;
-  } 
-  case 2:
-    lastXC = xCombs()[bin];
-    break;
-  }
+  tStdXCombPtr lastXC = xCombs()[bin];
   // clean up the old XComb object before switching to a new one
+  // TODO is this needed here? Already in prepare
   if ( theLastXComb && theLastXComb != lastXC ) theLastXComb->clean();
   theLastXComb = lastXC;
   lastXC->matrixElement()->setXComb(lastXC);
@@ -307,12 +244,7 @@ tStdXCombPtr StandardEventHandler::select(int bin, double & weight) {
 }
 
 int StandardEventHandler::nBins() const {
-  switch ( binStrategy() ) {
-  case 0: return 1;
-  case 1: return theMEXMap.size();
-  case 2: return xCombs().size();
-  }
-  return -1;
+  return xCombs().size();
 }
  
 void StandardEventHandler::statistics(ostream & os) const {
@@ -632,32 +564,6 @@ void StandardEventHandler::Init() {
      "Switch off cuts on collision cuts",
      false);
 
-  static Switch<StandardEventHandler,int> interfaceBinStrategy
-    ("BinStrategy",
-     "The strategy to be used when sampling different ThePEG::XComb "
-     "objects. An ThePEG::XComb objet represents a pair of incoming "
-     "parton types as defined by a THePEG::PartonExtractor and a "
-     "matrix element.",
-     &StandardEventHandler::theBinStrategy, 2, false, false);
-
-  static SwitchOption interfaceBinStrategy0
-    (interfaceBinStrategy,
-     "AllAtOnce",
-     "All bins are sampled together.",
-     0);
-
-  static SwitchOption interfaceBinStrategy1
-    (interfaceBinStrategy,
-     "PerME",
-     "All bins which have the same matrix element object are sampled together.",
-     1);
-
-  static SwitchOption interfaceBinStrategy2
-    (interfaceBinStrategy,
-     "Individual",
-     "All bins are sampled individually.",
-     2);
-
   static Reference<StandardEventHandler,SamplerBase> interfaceSampler
     ("Sampler",
      "The phase space sampler responsible for generating phase space"
@@ -673,14 +579,12 @@ void StandardEventHandler::Init() {
 void StandardEventHandler::persistentOutput(PersistentOStream & os) const {
   os << theIncomingA << theIncomingB << theSubProcesses << theCuts << collisionCuts
      << theXCombs << ounit(theXSecs, nanobarn)
-     << theBinStrategy << theMaxDims << theMEXMap
-     << theSampler << theLumiDim;
+     << theMaxDims << theSampler << theLumiDim;
 }
 
 void StandardEventHandler::persistentInput(PersistentIStream & is, int) {
   is >> theIncomingA >> theIncomingB >> theSubProcesses >> theCuts >> collisionCuts
      >> theXCombs >> iunit(theXSecs, nanobarn)
-     >> theBinStrategy >> theMaxDims>> theMEXMap
-     >> theSampler >> theLumiDim;
+     >> theMaxDims >> theSampler >> theLumiDim;
 }
 
