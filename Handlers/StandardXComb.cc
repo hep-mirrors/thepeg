@@ -45,7 +45,7 @@ StandardXComb::StandardXComb()
   : XComb(), isMirror(false), theNDim(0),
     partonDims(make_pair(0, 0)), theKinematicsGenerated(false),
     theLastDiagramIndex(0), theLastPDFWeight(0.0),
-    theLastCrossSection(ZERO), theLastJacobian(1.0), theLastME2(-1.0), 
+    theLastCrossSection(ZERO), theLastJacobian(1.0), theLastME2(-1.0), theLastPreweight(1.0),
     theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0), theLastMECouplings(1.0),
     checkedCuts(false), passedCuts(false), theCutWeight(1.0) {}
 
@@ -61,7 +61,7 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
     theSubProcessHandler(newSubProcessHandler), theME(newME),
     theDiagrams(newDiagrams), isMirror(mir),   theKinematicsGenerated(false),
     theLastDiagramIndex(0), theLastPDFWeight(0.0), 
-    theLastCrossSection(ZERO), theLastME2(-1.0), theLastMECrossSection(ZERO), 
+    theLastCrossSection(ZERO), theLastME2(-1.0), theLastPreweight(1.0), theLastMECrossSection(ZERO), 
     theLastMEPDFWeight(1.0), theLastMECouplings(1.0), theHead(newHead),
     checkedCuts(false), passedCuts(false) {
   partonDims = pExtractor()->nDims(partonBins());
@@ -78,7 +78,7 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
   : theME(me), isMirror(false), theNDim(0), partonDims(make_pair(0, 0)),
     theKinematicsGenerated(false),
     theLastDiagramIndex(0), theLastPDFWeight(0.0), theLastCrossSection(ZERO),
-    theLastME2(-1.0), theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0), 
+    theLastME2(-1.0), theLastPreweight(1.0), theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0), 
     theLastMECouplings(1.0),
     checkedCuts(false), passedCuts(false) {
   
@@ -105,7 +105,7 @@ StandardXComb::StandardXComb(tStdXCombPtr newHead,
     theSubProcessHandler(const_ptr_cast<tSubHdlPtr>(newHead->subProcessHandler())), 
     theME(newME), theDiagrams(newDiagrams), isMirror(newHead->mirror()),  
     theKinematicsGenerated(false), theLastDiagramIndex(0), theLastPDFWeight(0.0), 
-    theLastCrossSection(ZERO), theLastME2(-1.0), theLastMECrossSection(ZERO), 
+    theLastCrossSection(ZERO), theLastME2(-1.0), theLastPreweight(1.0), theLastMECrossSection(ZERO), 
     theLastMEPDFWeight(1.0), theLastMECouplings(1.0), theHead(newHead),
     checkedCuts(false), passedCuts(false) {
   partonDims = pExtractor()->nDims(partonBins());
@@ -293,6 +293,7 @@ void StandardXComb::clean() {
   theLastCrossSection = ZERO;
   theLastJacobian = 0.0;
   theLastME2 = 0.0;
+  theLastPreweight = 1.0;
   theLastMECrossSection = ZERO;
   theLastMEPDFWeight = 0.0;
   theLastMECouplings = 0.0;
@@ -673,7 +674,8 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
      << theDiagrams << isMirror << theNDim << partonDims
      << theLastDiagramIndex << theMEInfo << theLastRandomNumbers << theMEPartonData
      << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
-     << theLastME2 << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight << theLastMECouplings
+     << theLastME2 << theLastPreweight 
+     << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight << theLastMECouplings
      << theHead << theProjectors << theProjector << theKinematicsGenerated
      << checkedCuts << passedCuts << theCutWeight;
 }
@@ -683,7 +685,8 @@ void StandardXComb::persistentInput(PersistentIStream & is, int) {
      >> theDiagrams >> isMirror >> theNDim >> partonDims
      >> theLastDiagramIndex >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
      >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
-     >> theLastME2 >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight >> theLastMECouplings
+     >> theLastME2 >> theLastPreweight 
+     >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight >> theLastMECouplings
      >> theHead >> theProjectors >> theProjector >> theKinematicsGenerated
      >> checkedCuts >> passedCuts >> theCutWeight;
 }

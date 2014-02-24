@@ -28,8 +28,7 @@
 using namespace ThePEG;
 
 MEBase::MEBase()
-  : theLastSHat(-1.0*GeV2), lastPreweight(1.0),
-    theMaxMultCKKW(0), theMinMultCKKW(0) {}
+  : theMaxMultCKKW(0), theMinMultCKKW(0) {}
 
 MEBase::~MEBase() {}
 
@@ -37,10 +36,8 @@ void MEBase::use(tcMEPtr other) {
   if (other == this)
     return;
   theDiagrams = other->theDiagrams;
-  theLastSHat = other->theLastSHat;
   reweights = other->reweights;
   preweights = other->preweights;
-  lastPreweight = other->lastPreweight;
   theAmplitude = other->theAmplitude;
   theMaxMultCKKW = other->theMaxMultCKKW;
   theMinMultCKKW = other->theMinMultCKKW;
@@ -64,7 +61,6 @@ void MEBase::addPreweighter(tReweightPtr rw) {
 }
 
 void MEBase::setKinematics(tPPair in, const PVector & out) {
-  theLastSHat = -1.0*GeV2;
   theLastXComb = tStdXCombPtr();
   for ( int i = 0, N = diagrams().size(); i < N; ++i ) {
     tPVector parts;
@@ -113,12 +109,7 @@ void MEBase::setKinematics(tPPair in, const PVector & out) {
 
 void MEBase::constructVertex(tSubProPtr) {}
 
-void MEBase::setKinematics() {
-  theLastSHat = lastSHat();
-}
-
 void MEBase::clearKinematics() {
-  theLastSHat = -1.0*GeV2;
   theLastXComb = tStdXCombPtr();
 }
 
@@ -166,7 +157,6 @@ StdXCombPtr MEBase::makeXComb(tStdXCombPtr newHead,
 
 void MEBase::setXComb(tStdXCombPtr xc) {
   theLastXComb = xc;
-  theLastSHat = lastSHat();
 }
 
 vector<Lorentz5Momentum> & MEBase::meMomenta() {
@@ -174,6 +164,8 @@ vector<Lorentz5Momentum> & MEBase::meMomenta() {
 }
 
 void MEBase::lastME2(double v) const { lastXCombPtr()->lastME2(v); }
+
+void MEBase::lastPreweight(double v) const { lastXCombPtr()->lastPreweight(v); }
 
 void MEBase::lastMECrossSection(CrossSection v) const { lastXCombPtr()->lastMECrossSection(v); }
 
@@ -193,12 +185,13 @@ double MEBase::reWeight() const {
 }
 
 double MEBase::preWeight() const {
-  lastPreweight = 1.0;
+  double w = 1.0;
   for ( int i = 0, N = preweights.size(); i < N; ++i ) {
     preweights[i]->setXComb(lastXCombPtr());
-    lastPreweight *= preweights[i]->weight();
+    w *= preweights[i]->weight();
   }
-  return lastPreweight;
+  lastPreweight(w);
+  return lastPreweight();
 }
 
 void MEBase::generateSubCollision(SubProcess &) {}
@@ -220,14 +213,14 @@ double MEBase::alphaEM() const {
 }
 
 void MEBase::persistentOutput(PersistentOStream & os) const {
-  os << theDiagrams << ounit(theLastSHat, GeV2) << reweights << preweights
-     << lastPreweight << theAmplitude << theLastXComb
+  os << theDiagrams << reweights << preweights
+     << theAmplitude << theLastXComb
      << theMaxMultCKKW << theMinMultCKKW;
 }
 
 void MEBase::persistentInput(PersistentIStream & is, int) {
-  is >> theDiagrams >> iunit(theLastSHat, GeV2) >> reweights >> preweights
-     >> lastPreweight >> theAmplitude >> theLastXComb
+  is >> theDiagrams >> reweights >> preweights
+     >> theAmplitude >> theLastXComb
      >> theMaxMultCKKW >> theMinMultCKKW;
 }
 

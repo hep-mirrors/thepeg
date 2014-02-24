@@ -373,6 +373,11 @@ public:
   double lastME2() const { return theLastME2; }
 
   /**
+   * Return the last preweight factor
+   */
+  double lastPreweight() const { return theLastPreweight; }
+
+  /**
    * Return the partonic cross section as calculated
    * for the last phase space point. This may optionally
    * be used by a matrix element for caching.
@@ -450,6 +455,11 @@ protected:
    * be used by a matrix element for caching.
    */
   void lastME2(double v) { theLastME2 = v; }
+
+  /**
+   * Set the last preweight factor
+   */
+  void lastPreweight(double w) { theLastPreweight = w; }
 
   /**
    * Set the partonic cross section as calculated
@@ -598,6 +608,11 @@ private:
    * be used by a matrix element for caching.
    */
   double theLastME2;
+
+  /**
+   * The last preweight factor
+   */
+  double theLastPreweight;
 
   /**
    * The partonic cross section as calculated

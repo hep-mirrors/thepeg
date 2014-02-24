@@ -151,7 +151,7 @@ public:
    * overridden in a sub class the new function must call the base
    * class one first.
    */
-  virtual void setKinematics();
+  virtual void setKinematics() {}
 
   /**
    * construct the spin information for the interaction
@@ -358,13 +358,13 @@ public:
   /**
    * Return the last set invariant mass squared.
    */
-  Energy2 sHat() const { return theLastSHat; }
+  Energy2 sHat() const { return lastSHat(); }
 
   /**
    * Return the factor with which this matrix element was last
    * pre-weighted.
    */
-  double preweight() const { return lastPreweight; }
+  double preweight() const { return lastPreweight(); }
 
   /**
    * Inform this matrix element that a new phase space
@@ -505,6 +505,12 @@ protected:
   using LastXCombInfo<StandardXComb>::lastME2;
 
   /**
+   * Set the last preweight factor
+   */
+  void lastPreweight(double w) const;
+  using LastXCombInfo<StandardXComb>::lastPreweight;
+
+  /**
    * Set the partonic cross section as calculated
    * for the last phase space point. This may optionally
    * be used by a matrix element for caching.
@@ -556,11 +562,6 @@ private:
   mutable DiagramVector theDiagrams;
 
   /**
-   * The last set invariant mass squared.
-   */
-  Energy2 theLastSHat;
-
-  /**
    * The reweight objects modifying this matrix element.
    */
   ReweightVector reweights;
@@ -569,11 +570,6 @@ private:
    * The preweight objects modifying this matrix element.
    */
   ReweightVector preweights;
-
-  /**
-   * The factor with which this matrix element was last pre-weighted.
-   */
-  mutable double lastPreweight;
 
   /**
    * The amplitude associated with this matrix element.

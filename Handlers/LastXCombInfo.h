@@ -219,6 +219,11 @@ public:
   double lastME2() const { return lastXComb().lastME2(); }
 
   /**
+   * Return the last preweight factor
+   */
+  double lastPreweight() const { return lastXComb().lastPreweight(); }
+
+  /**
    * Get the last jacobian obtained when generating the kinematics
    * for the call to dSigHatDR.
    */
