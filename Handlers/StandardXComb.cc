@@ -445,7 +445,6 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     }
   }
 
-  matrixElement()->setXComb(this);
   if ( !matrixElement()->haveX1X2() )
     lastScale(max(lastSHat()/4.0, cuts()->scaleMin()));
 
@@ -499,7 +498,6 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     }
   }
 
-  matrixElement()->setXComb(this);
   if ( !matrixElement()->haveX1X2() ) {
     if ( !matrixElement()->generateKinematics(r) ) {
       lastCrossSection(ZERO);
