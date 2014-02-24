@@ -37,6 +37,16 @@ class XSecStat {
 
 public:
 
+  /**
+   * Enumerate the different weight classes
+   */
+  enum {
+    plainWeights = 0,
+    plainVetoedWeights,
+    reweightedWeights,
+    reweightedVetoedWeights
+  };
+
   /** @name Standard constructors, destructor and assignment operator. */
   //@{
   /**
@@ -44,17 +54,17 @@ public:
    */
   XSecStat() 
     : theMaxXSec(ZERO), theAttempts(0), theAccepted(0), theVetoed(0),
-      theSumWeights (vector<double>(5,0.0)),
-      theSumWeights2(vector<double>(5,0.0)), theLastWeight(0.0) {}
+      theSumWeights (vector<double>(4,0.0)),
+      theSumWeights2(vector<double>(4,0.0)), theLastWeight(0.0) {}
 
   /**
    * Constructor taking the overestimated cross section, \a xsecmax,
    * as argument.
    */
-  XSecStat(CrossSection xsecmax) 
+  explicit XSecStat(CrossSection xsecmax) 
     : theMaxXSec(xsecmax), theAttempts(0), theAccepted(0), theVetoed(0),
-      theSumWeights (vector<double>(5,0.0)),
-      theSumWeights2(vector<double>(5,0.0)), theLastWeight(0.0) {}
+      theSumWeights (vector<double>(4,0.0)),
+      theSumWeights2(vector<double>(4,0.0)), theLastWeight(0.0) {}
 
   /**
    * The assignment operator.
@@ -74,13 +84,16 @@ public:
    * Add the contents of another XSecStat.
    */
   XSecStat & operator+=(const XSecStat & x) {
-    theMaxXSec     += x.theMaxXSec;
+    CrossSection myMax = theMaxXSec;
+    theMaxXSec     = max(theMaxXSec,x.theMaxXSec);
     theAttempts    += x.theAttempts;
     theAccepted    += x.theAccepted;
     theVetoed      += x.theVetoed;
-    for(unsigned int ix=0;ix<5;++ix) {
-      theSumWeights [ix] += x.theSumWeights [ix];
-      theSumWeights2[ix] += x.theSumWeights2[ix];
+    for( unsigned int ix = 0; ix < 4; ++ix ) {
+      theSumWeights [ix] *= myMax/theMaxXSec;
+      theSumWeights [ix] += (x.theMaxXSec/theMaxXSec)*x.theSumWeights [ix];
+      theSumWeights2[ix] *= myMax/theMaxXSec;
+      theSumWeights2[ix] += (x.theMaxXSec/theMaxXSec)*x.theSumWeights2[ix];
     }
     theLastWeight = 0.0;
     return *this;
@@ -91,7 +104,7 @@ public:
    */
   void reset() {
     theAttempts = theAccepted = theVetoed = 0;
-    theSumWeights = theSumWeights2 = vector<double>(5,0.0);
+    theSumWeights = theSumWeights2 = vector<double>(4,0.0);
     theLastWeight = 0.0;
   }
 
@@ -107,9 +120,7 @@ public:
    * select() method must have been called before.
    */
   void accept() { 
-    ++theAccepted;
-    theSumWeights [1] += 1.;
-    theSumWeights2[1] += 1.;
+    theAccepted += 1;
   }
 
   /**
@@ -117,11 +128,11 @@ public:
    * subsequently be accepted with the given \a weight.
    */
   void select(double weight) {
-    ++theAttempts;
-    theSumWeights [0] +=     weight ;
-    theSumWeights2[0] += sqr(weight);
-    theSumWeights [3] +=     weight ;
-    theSumWeights2[3] += sqr(weight);
+    theAttempts += 1;
+    theSumWeights [reweightedWeights] +=     weight ;
+    theSumWeights2[reweightedWeights] += sqr(weight);
+    theSumWeights [plainWeights]      +=     weight ;
+    theSumWeights2[plainWeights]      += sqr(weight);
     theLastWeight = weight;
   }
 
@@ -129,8 +140,8 @@ public:
    * Reweight a selected and accepted event.
    */
   void reweight(double oldWeight, double newWeight) {
-    theSumWeights [0] +=     newWeight  -     oldWeight ;
-    theSumWeights2[0] += sqr(newWeight) - sqr(oldWeight);
+    theSumWeights [reweightedWeights] +=     newWeight  -     oldWeight ;
+    theSumWeights2[reweightedWeights] += sqr(newWeight) - sqr(oldWeight);
   }
 
   /**
@@ -142,51 +153,11 @@ public:
    * w)\f$.
    */
   void reject(double weight = 1.0) {
-    theSumWeights [1] -=               1.0 ;
-    theSumWeights2[1] -=               1.0 ;
-    theSumWeights [2] +=            weight ;
-    theSumWeights2[2] +=        sqr(weight);
-    theSumWeights [4] +=     theLastWeight ;
-    theSumWeights2[4] += sqr(theLastWeight);
-    ++theVetoed;
-  }
-
-  /**
-   * The current estimate of the cross section for the corresponding
-   * class of events. If no events have been generated, maxXSec() will
-   * be returned.
-   */
-  CrossSection xSec() const {
-    return attempts() ? maxXSec()*(theSumWeights[0]-theSumWeights[2])/attempts() : maxXSec();
-  }
-
-  /**
-   * The current estimate of the error in the cross section for the
-   * corresponding class of events. If no events have been generated,
-   * maxXSec() will be returned.
-   */
-  CrossSection xSecErr() const {
-    return attempts() ? maxXSec()*sqrt(theSumWeights2[0]+
-				       theSumWeights2[2])/attempts() : maxXSec();
-  }
-
-  /**
-   * The current estimate of the cross section for the corresponding
-   * class of events, excluding reweighting. If no events have been
-   * generated, maxXSec() will be returned.
-   */
-  CrossSection xSecNoReweight() const {
-    return attempts() ? maxXSec()*(theSumWeights[3]-theSumWeights[4])/attempts() : maxXSec();
-  }
-
-  /**
-   * The current estimate of the error in the cross section for the
-   * corresponding class of events, excluding reweighting. If no
-   * events have been generated, maxXSec() will be returned.
-   */
-  CrossSection xSecErrNoReweight() const {
-    return attempts() ? maxXSec()*sqrt(theSumWeights2[3]+
-				       theSumWeights2[4])/attempts() : maxXSec();
+    theSumWeights [reweightedVetoedWeights] +=            weight ;
+    theSumWeights2[reweightedVetoedWeights] +=        sqr(weight);
+    theSumWeights [plainVetoedWeights]      +=     theLastWeight ;
+    theSumWeights2[plainVetoedWeights]      += sqr(theLastWeight);
+    theVetoed += 1;
   }
 
   /**
@@ -197,32 +168,94 @@ public:
   /**
    * The sum of the weights so far.
    */
-  double sumWeights() const { return theSumWeights[0] - theSumWeights[2]; }
+  double sumWeights() const { 
+    return theSumWeights[reweightedWeights] - theSumWeights[reweightedVetoedWeights];
+  }
 
   /**
    * The sum of the squared weights so far.
    */
-  double sumWeights2() const { return theSumWeights2[0] + theSumWeights2[2]; }
+  double sumWeights2() const {
+    return theSumWeights2[reweightedWeights] + theSumWeights2[reweightedVetoedWeights];
+  }
 
   /**
    * The sum of the weights so far, excluding reweighting.
    */
-  double sumWeightsNoReweight() const { return theSumWeights[3] - theSumWeights[4]; }
+  double sumWeightsNoReweight() const { 
+    return theSumWeights[plainWeights] - theSumWeights[plainVetoedWeights];
+  }
 
   /**
    * The sum of the squared weights so far, excluding reweighting.
    */
-  double sumWeights2NoReweight() const { return theSumWeights2[3] + theSumWeights2[4]; }
+  double sumWeights2NoReweight() const { 
+    return theSumWeights2[plainWeights] + theSumWeights2[plainVetoedWeights];
+  }
+
+  /**
+   * The current estimate of the cross section for the corresponding
+   * class of events. If no events have been generated, maxXSec() will
+   * be returned.
+   */
+  CrossSection xSec(double att = 0) const {
+    double n = max(attempts(),att);
+    return n ? maxXSec()*sumWeights()/n : maxXSec();
+  }
+
+  /**
+   * The current estimate of the error in the cross section for the
+   * corresponding class of events. If no events have been generated,
+   * maxXSec() will be returned.
+   */
+  CrossSection xSecErr(double att = 0) const {
+    double n = max(attempts(),att);
+    if ( n < 2 )
+      return maxXSec();
+    double sw = sumWeights(); double sw2 = sumWeights2();
+    return
+      maxXSec()*sqrt(abs(sw2/n-sqr(sw/n))/(n-1));
+  }
+
+  /**
+   * The current estimate of the cross section for the corresponding
+   * class of events, excluding reweighting. If no events have been
+   * generated, maxXSec() will be returned.
+   */
+  CrossSection xSecNoReweight(double att = 0) const {
+    double n = max(attempts(),att);
+    return n ? maxXSec()*sumWeightsNoReweight()/n : maxXSec();
+  }
+
+  /**
+   * The current estimate of the error in the cross section for the
+   * corresponding class of events, excluding reweighting. If no
+   * events have been generated, maxXSec() will be returned.
+   */
+  CrossSection xSecErrNoReweight(double att = 0) const {
+    double n = max(attempts(),att);
+    if ( n < 2 )
+      return maxXSec();
+    double sw = sumWeightsNoReweight(); 
+    double sw2 = sumWeights2NoReweight();
+    return
+      maxXSec()*sqrt(abs(sw2/n-sqr(sw/n))/(n-1));
+  }
 
   /**
    * Number of attempts so far.
    */
-  long attempts() const { return theAttempts; }
+  double attempts() const { return theAttempts; }
 
   /**
-   * Number of attempts so far.
+   * Number of accepts so far.
    */
-  long accepted() const { return theAccepted-theVetoed; }
+  double accepted() const { return theAccepted-theVetoed; }
+
+  /**
+   * Number of vetoes so far.
+   */
+  double vetoed() const { return theVetoed; }
 
   /**
    * Set the overestimated cross section.
@@ -255,17 +288,17 @@ private:
   /**
    * Number of attempts so far.
    */
-  long theAttempts;
+  double theAttempts;
 
   /**
    * Number of accepted events so far.
    */
-  long theAccepted;
+  double theAccepted;
 
   /**
    * Number of events vetoed after being accepted
    */
-  long theVetoed;
+  double theVetoed;
 
   /**
    * The sum of the weights so far.

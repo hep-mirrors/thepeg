@@ -97,9 +97,30 @@ public:
   virtual CrossSection integratedXSecErr() const = 0;
 
   /**
-   * Return the overestimated integrated cross section.
+   * Return the reference cross section, a.k.a. maximum weight. When
+   * not provided directly, this will be determined effectively from
+   * the sum of weights and sum of weights squared to match up the
+   * standard definition of a Monte Carlo cross section along with the
+   * cross section and error quoted.
    */
-  virtual CrossSection maxXSec() const = 0;
+  virtual CrossSection maxXSec() const {
+    return integratedXSec()*attempts()/sumWeights();
+  }
+
+  /**
+   * Return the number of attempts. When not provided directly, this
+   * will be determined effectively from the sum of weights and sum of
+   * weights squared to match up the standard definition of a Monte
+   * Carlo cross section along with the cross section and error
+   * quoted.
+   */
+  virtual double attempts() const {
+    CrossSection sigma = integratedXSec();
+    CrossSection esigma = integratedXSecErr();
+    double sw = sumWeights(); double sw2 = sumWeights2();
+    return 
+      sqr(sw)*(sqr(esigma)-sqr(sigma))/(sqr(sw)*sqr(esigma) - sw2*sqr(sigma));
+  }
 
   /**
    * Return the sum of the weights returned by generate() so far (of
@@ -108,8 +129,8 @@ public:
   virtual double sumWeights() const = 0;
 
   /**
-   * Return the sum of the weights squared returned by generate() so far (of
-   * the events that were not rejeted).
+   * Return the sum of the weights squared returned by generate() so
+   * far (of the events that were not rejeted).
    */
   virtual double sumWeights2() const = 0;
   //@}
