@@ -358,7 +358,8 @@ CrossSection StandardXComb::dSigDR(const double * r) {
 CrossSection StandardXComb::
 dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
-  matrixElement()->flushCaches();
+  // done by clean()
+  // matrixElement()->flushCaches();
 
   if ( matrixElement()->keepRandomNumbers() ) {
     lastRandomNumbers().resize(nDim());
@@ -371,7 +372,8 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   lastS(sqr(maxEnergy())/exp(lastP1() + lastP2()));
 
   meMomenta().resize(mePartonData().size());
-  matrixElement()->setXComb(this);
+  // done by prepare - or should we remove it there?
+  // matrixElement()->setXComb(this);
 
   PPair partons;
 
