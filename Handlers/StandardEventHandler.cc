@@ -227,13 +227,13 @@ dSigDR(const pair<double,double> ll, Energy2 maxS,
   PPair inc = make_pair(incoming().first->produceParticle(),
 			incoming().second->produceParticle());
   SimplePhaseSpace::CMS(inc, maxS);
+  xCombs()[ibin]->prepare(inc);
   return xCombs()[ibin]->dSigDR(ll, nr, r);
 }
 
 tStdXCombPtr StandardEventHandler::select(int bin, double & weight) {
   tStdXCombPtr lastXC = xCombs()[bin];
   // clean up the old XComb object before switching to a new one
-  // TODO is this needed here? Already in prepare
   if ( theLastXComb && theLastXComb != lastXC ) theLastXComb->clean();
   theLastXComb = lastXC;
   lastXC->matrixElement()->setXComb(lastXC);
