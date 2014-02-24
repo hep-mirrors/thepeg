@@ -77,8 +77,6 @@ int StdXCombGroup::nDim() const {
 
 CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
-  matrixElement()->flushCaches();
-
   if ( matrixElement()->keepRandomNumbers() ) {
     lastRandomNumbers().resize(nDim());
     copy(r,r+nDim(),lastRandomNumbers().begin());
@@ -173,7 +171,6 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     }
   }
 
-  matrixElement()->setXComb(this);
   if ( !matrixElement()->haveX1X2() )
     lastScale(max(lastSHat()/4.0, cuts()->scaleMin()));
 
@@ -226,7 +223,6 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
     }
   }
 
-  matrixElement()->setXComb(this);
   if ( !matrixElement()->haveX1X2() ) {
     if ( !matrixElement()->generateKinematics(r) ) {
       lastCrossSection(ZERO);
