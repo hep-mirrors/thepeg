@@ -19,6 +19,7 @@
 #include "SubProcessHandler.fh"
 #include "StandardXComb.fh"
 #include "StandardEventHandler.fh"
+#include "ThePEG/Utilities/XSecStat.h"
 #include <fstream>
 
 namespace ThePEG {
@@ -286,16 +287,6 @@ protected:
   XVector & xCombs()  { return theXCombs; }
 
   /**
-   * Return the vector of cross sections.
-   */
-  const XSVector & xSecs() const { return theXSecs; }
-
-  /**
-   * Return the vector of cross sections.
-   */
-  XSVector & xSecs() { return theXSecs; }
-
-  /**
    * Throw away the last generated event before generating a new one.
    */
   virtual void clean();
@@ -419,12 +410,6 @@ private:
   XVector theXCombs;
 
   /**
-   * The (incrementally summed) cross sections associated with the
-   * StandardXComb objects for the last selected phase space point.
-   */
-  XSVector theXSecs;
-
-  /**
    * The number of degrees of freedom needed to generate the phase
    * space for the different bins.
    */
@@ -448,6 +433,11 @@ private:
    * function.
    */
   int theLumiDim;
+
+  /**
+   * The overall cross section statistics
+   */
+  mutable XSecStat xSecStats;
 
   /**
    * Standard Initialization object.

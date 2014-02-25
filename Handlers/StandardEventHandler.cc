@@ -50,6 +50,7 @@ void StandardEventHandler::reject(double w) {
   tStdXCombPtr last = dynamic_ptr_cast<tStdXCombPtr>(lastXCombPtr());
   if ( !last ) return;
   last->reject(w);
+  xSecStats.reject(w);
 }
 
 void StandardEventHandler::reweight(double factor) const {
@@ -58,6 +59,7 @@ void StandardEventHandler::reweight(double factor) const {
     return;
   double weight = currentEvent()->weight();
   last->reweight(weight,factor*weight);
+  xSecStats.reweight(weight,factor*weight);
   currentEvent()->weight(factor*weight);
   for ( map<string,double>::iterator w = 
 	  currentEvent()->optionalWeights().begin();
@@ -184,7 +186,6 @@ void StandardEventHandler::initialize() {
   Energy maxEnergy = lumiFn().maximumCMEnergy();
 
   xCombs().clear();
-  xSecs().clear();
 
   cuts()->initialize(sqr(maxEnergy), lumiFn().Y());
 
@@ -211,7 +212,6 @@ void StandardEventHandler::initialize() {
 	addME(maxEnergy, *sit, pextract, kincuts, ckkw, *meit, *ppit,vpc);
       }
   }
-  xSecs().resize(xCombs().size());
 
   theMaxDims.clear();
   for ( int i = 0, N = xCombs().size(); i < N; ++i )
@@ -238,7 +238,9 @@ tStdXCombPtr StandardEventHandler::select(int bin, double & weight) {
   theLastXComb = lastXC;
   weight /= lastXC->matrixElement()->preWeight();
   lastXC->select(weight);
+  xSecStats.select(weight);
   lastXC->accept();
+  xSecStats.accept();
   return lastXC;
 }
 
@@ -355,48 +357,28 @@ void StandardEventHandler::statistics(ostream & os) const {
 }
 
 CrossSection StandardEventHandler::histogramScale() const {
-  XSecStat tot(sampler()->maxXSec());
-  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
-    const StandardXComb & x = *xCombs()[i];
-    tot += x.stats();
-  }
-  return tot.xSec(sampler()->attempts())/tot.sumWeights();
+  xSecStats.maxXSec(sampler()->maxXSec());
+  return xSecStats.xSec(sampler()->attempts())/xSecStats.sumWeights();
 }
 
 CrossSection StandardEventHandler::integratedXSec() const {
-  XSecStat tot(sampler()->maxXSec());
-  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
-    const StandardXComb & x = *xCombs()[i];
-    tot += x.stats();
-  }
-  return tot.xSec(sampler()->attempts());
+  xSecStats.maxXSec(sampler()->maxXSec());
+  return xSecStats.xSec(sampler()->attempts());
 }
 
 CrossSection StandardEventHandler::integratedXSecErr() const {
-  XSecStat tot(sampler()->maxXSec());
-  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
-    const StandardXComb & x = *xCombs()[i];
-    tot += x.stats();
-  }
-  return tot.xSecErr(sampler()->attempts());
+  xSecStats.maxXSec(sampler()->maxXSec());
+  return xSecStats.xSecErr(sampler()->attempts());
 }
 
 CrossSection StandardEventHandler::integratedXSecNoReweight() const {
-  XSecStat tot(sampler()->maxXSec());
-  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
-    const StandardXComb & x = *xCombs()[i];
-    tot += x.stats();
-  }
-  return tot.xSecNoReweight(sampler()->attempts());
+  xSecStats.maxXSec(sampler()->maxXSec());
+  return xSecStats.xSecNoReweight(sampler()->attempts());
 }
 
 CrossSection StandardEventHandler::integratedXSecErrNoReweight() const {
-  XSecStat tot(sampler()->maxXSec());
-  for ( int i = 0, N = xCombs().size(); i < N; ++i ) {
-    const StandardXComb & x = *xCombs()[i];
-    tot += x.stats();
-  }
-  return tot.xSecErrNoReweight(sampler()->attempts());
+  xSecStats.maxXSec(sampler()->maxXSec());
+  return xSecStats.xSecErrNoReweight(sampler()->attempts());
 }
 
 void StandardEventHandler::doinitrun() {
@@ -407,6 +389,7 @@ void StandardEventHandler::doinitrun() {
   sampler()->initrun();
   for ( int i = 0, N = xCombs().size(); i < N; ++i )
     xCombs()[i]->reset();
+  xSecStats.reset();
 }
 
 CrossSection StandardEventHandler::dSigDR(const vector<double> & r) {
@@ -577,13 +560,11 @@ void StandardEventHandler::Init() {
 
 void StandardEventHandler::persistentOutput(PersistentOStream & os) const {
   os << theIncomingA << theIncomingB << theSubProcesses << theCuts << collisionCuts
-     << theXCombs << ounit(theXSecs, nanobarn)
-     << theMaxDims << theSampler << theLumiDim;
+     << theXCombs << theMaxDims << theSampler << theLumiDim << xSecStats;
 }
 
 void StandardEventHandler::persistentInput(PersistentIStream & is, int) {
   is >> theIncomingA >> theIncomingB >> theSubProcesses >> theCuts >> collisionCuts
-     >> theXCombs >> iunit(theXSecs, nanobarn)
-     >> theMaxDims >> theSampler >> theLumiDim;
+     >> theXCombs >> theMaxDims >> theSampler >> theLumiDim >> xSecStats;
 }
 
