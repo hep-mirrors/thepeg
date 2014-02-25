@@ -308,8 +308,6 @@ void StandardXComb::clean() {
 
 CrossSection StandardXComb::dSigDR(const double * r) {
 
-  matrixElement()->flushCaches();
-
   matrixElement()->setXComb(this);
 
   if ( !matrixElement()->apply() ) {
