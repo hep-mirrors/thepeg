@@ -73,12 +73,14 @@ void XComb::clean() {
   theLastP1P2 = theLastL1L2 = theLastX1X2 = theLastE1E2 = DPair(0.0, 0.0);
   theSub = SubProPtr();
   thePartonBinInstances = PBIPair();
+  thePartonBinInstanceMap.clear();
 }
 
 void XComb::prepare(const PPair & inc) {
   clean();
   createPartonBinInstances();
   theLastParticles = inc;
+  pExtractor()->select(this);
   pExtractor()->prepare(partonBinInstances());
 }
 
