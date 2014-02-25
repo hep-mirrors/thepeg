@@ -40,10 +40,10 @@ class V2LeptonsCut: public MultiCutBase {
    * Enumeration of charge combinations.
    */
   enum CComb {
-    posneg, /**< charged lepton anti-lepton pair. */
-    negneu, /**< negative lepton anti-neutrino pair. */
-    posneu, /**< positive lepton anti-neutrino pair. */
-    neuneu  /**< neutrino anti-neutrino pair. */
+    posneg = 1, /**< charged lepton anti-lepton pair. */
+    negneu = 2, /**< negative lepton anti-neutrino pair. */
+    posneu = 4, /**< positive lepton anti-neutrino pair. */
+    neuneu = 8  /**< neutrino anti-neutrino pair. */
   };
 
 public:
