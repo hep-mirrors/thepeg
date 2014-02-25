@@ -54,8 +54,6 @@ void MEGroup::doinit() {
       }
     theNDim += maxadd;
   }
-  if ( mcSumDependent() )
-    theNDim += 1;
 }
 
 void MEGroup::rebind(const TranslationMap & trans) {
@@ -162,15 +160,6 @@ vector<StdXCombPtr> MEGroup::makeDependentXCombs(tStdXCombPtr xcHead,
 bool MEGroup::generateKinematics(const double * r) {
   if (!head()->generateKinematics(r))
     return false;
-  if ( mcSumDependent() ) {
-    tStdXCombGroupPtr xcgroup = dynamic_ptr_cast<tStdXCombGroupPtr>(lastXCombPtr());
-    if ( xcgroup->dependent().empty() ) {
-      lastDependentXComb(tStdXCombPtr());
-      return true;
-    }
-    size_t i = size_t(r[nDim()-1]*xcgroup->dependent().size());
-    lastDependentXComb(xcgroup->dependent()[i]);
-  }
   return true;
 }
 

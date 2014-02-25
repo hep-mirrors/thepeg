@@ -373,26 +373,6 @@ public:
    */
   virtual bool subProcessGroups() const { return true; }
 
-  /**
-   * Return true for MC summation of dependent
-   * matrix elements, if feasible.
-   */
-  virtual bool mcSumDependent() const { return false; }
-
-  /**
-   * Return a pointer to the dependent xcomb object selected
-   * if mcSumDependent returned true.
-   */
-  tStdXCombPtr lastDependentXComb() const { return theLastDependentXComb; }
-
-protected:
-
-  /**
-   * Set a pointer to the dependent xcomb object selected
-   * if mcSumDependent returned true.
-   */
-  void lastDependentXComb(tStdXCombPtr xc) { theLastDependentXComb = xc; }
-
 public:
 
   /**
@@ -485,12 +465,6 @@ private:
    * The total number of random numbers required.
    */
   int theNDim;
-
-  /**
-   * A pointer to the dependent xcomb object selected
-   * if mcSumDependent returned true.
-   */
-  tStdXCombPtr theLastDependentXComb;
 
 private:
 
