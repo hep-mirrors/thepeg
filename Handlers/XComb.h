@@ -172,6 +172,19 @@ public:
    */
   void subProcess(tSubProPtr);
 
+  /** A map of PartonBinInstance objects indexed by the extracted parton. */
+  typedef map<cPPtr,PBIPtr> PartonBinInstanceMap;
+
+  /**
+   * Access the parton bin instance map (used by the parton extractor)
+   */
+  PartonBinInstanceMap& partonBinInstanceMap() { return thePartonBinInstanceMap; }
+
+  /**
+   * Return the parton bin instance map (used by the parton extractor)
+   */
+  const PartonBinInstanceMap& partonBinInstanceMap() const { return thePartonBinInstanceMap; }
+
   /**
    * Additional information about the incoming partons.
    */
@@ -440,6 +453,11 @@ private:
    * The incoming parton types.
    */
   cPDPair thePartons;
+
+  /**
+   * The parton bin instance map (used by the parton extractor)
+   */
+  PartonBinInstanceMap thePartonBinInstanceMap;
 
   /**
    * Additional information about the incoming partons.

@@ -381,7 +381,10 @@ private:
   /**
    * The PartonBinInstance's used mapped to the respective partons.
    */
-  mutable PartonBinInstanceMap partonBinInstances;
+  PartonBinInstanceMap& partonBinInstances() const { 
+    assert(lastXCombPtr());
+    return lastXCombPtr()->partonBinInstanceMap();
+  }
 
   /**
    * A list of special PDFBase objects to be used.

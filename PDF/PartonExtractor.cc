@@ -107,8 +107,8 @@ void PartonExtractor::select(tXCombPtr newXComb) {
 }
 
 tPBIPtr PartonExtractor::partonBinInstance(tcPPtr p) const {
-  PartonBinInstanceMap::const_iterator it = partonBinInstances.find(p);
-  return it == partonBinInstances.end()? PBIPtr(): it->second;
+  PartonBinInstanceMap::const_iterator it = partonBinInstances().find(p);
+  return it == partonBinInstances().end()? PBIPtr(): it->second;
 }
 
 void PartonExtractor::
@@ -162,21 +162,21 @@ pair<int,int> PartonExtractor::nDims(const PBPair & pbins) {
 }
 
 void PartonExtractor::prepare(const PBIPair & pbins) {
-  partonBinInstances.clear();
+  partonBinInstances().clear();
   pbins.first->prepare();
   pbins.second->prepare();
 }
 
 void PartonExtractor::updatePartonBinInstances(const PBIPair & pbins) {
-  partonBinInstances.clear();
+  partonBinInstances().clear();
   tPBIPtr current = pbins.first;
   while ( current->incoming() ) {
-    partonBinInstances[current->parton()] = current;
+    partonBinInstances()[current->parton()] = current;
     current = current->incoming();
   }
   current = pbins.second;
   while ( current->incoming() ) {
-    partonBinInstances[current->parton()] = current;
+    partonBinInstances()[current->parton()] = current;
     current = current->incoming();
   }
 }
@@ -269,13 +269,13 @@ generate(PartonBinInstance & pb, const double * r,
     (pb.remnantHandler()->generate(pb, r + pb.bin()->pdfDim(), pb.scale(), shat,
 				   pb.particle()->momentum(),haveMEPartons));
   if ( pb.remnantWeight() <= 0.0 ) return false;
-  partonBinInstances[pb.parton()] = &pb;
+  partonBinInstances()[pb.parton()] = &pb;
   return true;
 }
 
 void PartonExtractor::
 constructRemnants(const PBIPair & pbins, tSubProPtr sub, tStepPtr step) const {
-  partonBinInstances.clear();
+  partonBinInstances().clear();
   LorentzMomentum k1 = pbins.first->parton()->momentum();
   LorentzMomentum k2 = pbins.second->parton()->momentum();
   LorentzMomentum Ph = k1 + k2;
@@ -338,7 +338,7 @@ constructRemnants(PartonBinInstance & pb, LorentzMomentum & Ph,
 		      << "PartonExtractor::constructRemnants"
 		      << Exception::eventerror;
   }
-  partonBinInstances[pb.parton()] = &pb;
+  partonBinInstances()[pb.parton()] = &pb;
   if ( !pb.incoming()->incoming() ) return;
 
   // We get here if we need to construct remnants recursively.
@@ -563,7 +563,7 @@ addNewRemnants(tPBIPtr oldpb, tPBIPtr newpb, tStepPtr step) {
   }
   tPVector rem(newpb->remnants().begin(), newpb->remnants().end());
   colourConnect(newpb->particle(), newpb->parton(), rem);
-  partonBinInstances[newpb->parton()] = newpb;
+  partonBinInstances()[newpb->parton()] = newpb;
   if ( !step->addDecayProduct(oldpb->remnants().begin(),
 			      oldpb->remnants().end(),
  			      rem.begin(), rem.end()) )
@@ -640,6 +640,6 @@ RemColException::RemColException(const PartonExtractor & pe) {
 }
   
 void PartonExtractor::dofinish() {
-  partonBinInstances.clear();
+  partonBinInstances().clear();
   HandlerBase::dofinish();
 }
