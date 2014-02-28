@@ -34,6 +34,9 @@ MEGroup::~MEGroup() {}
 void MEGroup::doinit() {
   MEBase::doinit();
   head()->init();
+  for ( MEVector::iterator me = theDependent.begin();
+	me != theDependent.end(); ++me )
+    (**me).init();
   use(head());
   theNDim = head()->nDim();
   if (!uniformAdditional()) {
@@ -56,6 +59,14 @@ void MEGroup::doinit() {
   }
   if ( mcSumDependent() )
     theNDim += 1;
+}
+
+void MEGroup::doinitrun() {
+  MEBase::doinitrun();
+  head()->initrun();
+  for ( MEVector::iterator me = theDependent.begin();
+	me != theDependent.end(); ++me )
+    (**me).initrun();
 }
 
 void MEGroup::rebind(const TranslationMap & trans) {

@@ -52,6 +52,26 @@ void MEBase::useDiagrams(tcMEPtr other) const {
   theDiagrams = other->theDiagrams;
 }
 
+void MEBase::doinit() {
+  if ( theAmplitude )
+    theAmplitude->init();
+  for ( ReweightVector::iterator i = reweights.begin();
+	i != reweights.end(); ++i ) (**i).init();
+  for ( ReweightVector::iterator i = preweights.begin();
+	i != preweights.end(); ++i ) (**i).init();
+  HandlerBase::doinit();
+}
+
+void MEBase::doinitrun() {
+  if ( theAmplitude )
+    theAmplitude->initrun();
+  for ( ReweightVector::iterator i = reweights.begin();
+	i != reweights.end(); ++i ) (**i).initrun();
+  for ( ReweightVector::iterator i = preweights.begin();
+	i != preweights.end(); ++i ) (**i).initrun();
+  HandlerBase::doinitrun();
+}
+
 void MEBase::addReweighter(tReweightPtr rw) {
   if ( rw && find(reweights.begin(), reweights.end(), rw) == reweights.end() )
     reweights.push_back(rw);

@@ -445,6 +445,12 @@ protected:
   virtual void doinit();
 
   /**
+   * Initialize this object. Called in the run phase just before
+   * a run begins.
+   */
+  virtual void doinitrun();
+
+  /**
    * Rebind pointer to other Interfaced objects. Called in the setup phase
    * after all objects used in an EventGenerator has been cloned so that
    * the pointers will refer to the cloned objects afterwards.
