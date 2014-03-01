@@ -186,7 +186,6 @@ pair<bool,Length> MixedParticleData::generateLifeTime() const {
   do {
     ct = UseRandom::rndExp(ctau);
     double gt = ct/cTau();
-    wgt=1.;
     if(id()>0) {
       if(!mix) {
 	wgt = 0.5*(1.+zabs)*cosh(_y*gt)+0.5*(1.-zabs)*cos(_x*gt)

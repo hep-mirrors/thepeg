@@ -84,16 +84,12 @@ public:
    * Add the contents of another XSecStat.
    */
   XSecStat & operator+=(const XSecStat & x) {
-    CrossSection myMax = theMaxXSec;
-    theMaxXSec     = max(theMaxXSec,x.theMaxXSec);
     theAttempts    += x.theAttempts;
     theAccepted    += x.theAccepted;
     theVetoed      += x.theVetoed;
     for( unsigned int ix = 0; ix < 4; ++ix ) {
-      theSumWeights [ix] *= myMax/theMaxXSec;
-      theSumWeights [ix] += (x.theMaxXSec/theMaxXSec)*x.theSumWeights [ix];
-      theSumWeights2[ix] *= myMax/theMaxXSec;
-      theSumWeights2[ix] += (x.theMaxXSec/theMaxXSec)*x.theSumWeights2[ix];
+      theSumWeights [ix] += x.theSumWeights [ix];
+      theSumWeights2[ix] += x.theSumWeights2[ix];
     }
     theLastWeight = 0.0;
     return *this;

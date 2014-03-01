@@ -103,7 +103,7 @@ bool V2LeptonsCut::checkTypes(long id1, long id2) const {
   else
     ccomb = neuneu;
 
-  return (theCComb|ccomb);
+  return (theCComb&ccomb);
 }
 
 void V2LeptonsCut::persistentOutput(PersistentOStream & os) const {
