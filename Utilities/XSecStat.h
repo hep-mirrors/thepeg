@@ -195,7 +195,7 @@ public:
    * be returned.
    */
   CrossSection xSec(double att = 0) const {
-    double n = max(attempts(),att);
+    double n = (att == 0.0 ? attempts() : att);
     return n ? maxXSec()*sumWeights()/n : maxXSec();
   }
 
@@ -205,7 +205,7 @@ public:
    * maxXSec() will be returned.
    */
   CrossSection xSecErr(double att = 0) const {
-    double n = max(attempts(),att);
+    double n = (att == 0.0 ? attempts() : att);
     if ( n < 2 )
       return maxXSec();
     double sw = sumWeights(); double sw2 = sumWeights2();
@@ -219,7 +219,7 @@ public:
    * generated, maxXSec() will be returned.
    */
   CrossSection xSecNoReweight(double att = 0) const {
-    double n = max(attempts(),att);
+    double n = (att == 0.0 ? attempts() : att);
     return n ? maxXSec()*sumWeightsNoReweight()/n : maxXSec();
   }
 
@@ -229,7 +229,7 @@ public:
    * events have been generated, maxXSec() will be returned.
    */
   CrossSection xSecErrNoReweight(double att = 0) const {
-    double n = max(attempts(),att);
+    double n = (att == 0.0 ? attempts() : att);
     if ( n < 2 )
       return maxXSec();
     double sw = sumWeightsNoReweight(); 
