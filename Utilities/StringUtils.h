@@ -94,6 +94,12 @@ public:
   static string typeName(const type_info & t);
 
   /**
+   * Replace all occurences of the substring 'from' with the substring
+   * 'to' in the string 'original' and return the new string
+   */
+  static string replace(string original, string from, string to);
+
+  /**
    * Convenient typdef.
    */
   typedef string::size_type pos_t;
