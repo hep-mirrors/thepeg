@@ -132,6 +132,12 @@ public:
     const = 0;
 
   /**
+   * Clear the container of pointers of \a ib.
+   */
+  virtual void clear(InterfacedBase & ib)
+    const = 0;
+
+  /**
    * Return a vector of pointers corresponding to the container of
    * pointers of \a ib.
    */
@@ -350,6 +356,12 @@ public:
    * Remove the \a i'th element of a container of pointers of \a ib.
    */
   virtual void erase(InterfacedBase & ib, int i)
+    const;
+
+  /**
+   * Clear the container of pointers of \a ib.
+   */
+  virtual void clear(InterfacedBase & ib)
     const;
 
   /**

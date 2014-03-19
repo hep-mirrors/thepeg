@@ -140,3 +140,23 @@ string StringUtils::typeName(const type_info & t) {
   return ret;
 }
 
+
+string StringUtils::replace(string original, string from, string to){
+
+  if (from == "" || from == to) return(original);
+
+  string result = original;
+  size_t n = result.length();
+  size_t f;
+
+  for (size_t i=0; i<n;){
+    f = result.find(from,i);
+    if (f == string::npos) return(result);
+    result.replace(f, from.length(), to);
+    i = f + to.length();
+    n += to.length();
+  }
+  return(result);
+
+}
+

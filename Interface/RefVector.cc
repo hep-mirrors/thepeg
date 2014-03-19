@@ -57,6 +57,9 @@ string RefVectorBase::exec(InterfacedBase & i, string action,
   else if ( action == "erase" ) {
     erase(i, place);
   }
+  else if ( action == "clear" ) {
+    clear(i);
+  }
   else if ( action == "set" || action == "insert" ||
 	      action == "newdef" || action == "setdef" ) {
     string refname;

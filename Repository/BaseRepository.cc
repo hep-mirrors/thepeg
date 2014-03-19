@@ -790,7 +790,7 @@ string BaseRepository::exec(string command, ostream &) {
     if ( verb == "set" || verb == "setdef" || verb == "insert" ||
 	 verb == "do" || verb == "get" || verb == "def" || verb == "min" ||
 	 verb == "max" || verb == "describe" || verb == "fulldescribe" ||
-	 verb == "erase" || verb == "send" || verb == "newdef" ) {
+	 verb == "erase" || verb == "clear" || verb == "send" || verb == "newdef" ) {
       if ( verb == "send" ) verb = "do";
       if ( verb == "newdef" && !InterfaceBase::NoReadOnly )
 	return "Error: The default value of an interface is a read-only "
