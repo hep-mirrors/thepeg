@@ -109,6 +109,18 @@ void RefVector<T,R>::erase(InterfacedBase & i, int place) const
 }
 
 template <class T, class R>
+void RefVector<T,R>::clear(InterfacedBase & i) const
+  {
+  if ( readOnly() ) throw InterExReadOnly(*this, i);
+  if ( size() > 0 ) throw RefVExFixed(*this, i);
+  T * t = dynamic_cast<T *>(&i);
+  if ( !t ) throw InterExClass(*this, i);
+  if ( !theMember ) throw RefVExNoDel(*this, i);
+  (t->*theMember).clear();
+  if (  !InterfaceBase::dependencySafe() ) i.touch();
+}
+
+template <class T, class R>
 IVector RefVector<T,R>::get(const InterfacedBase & i) const
   {
   const T * t = dynamic_cast<const T *>(&i);
