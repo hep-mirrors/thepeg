@@ -107,7 +107,7 @@ bool FastJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
        theVariant != sphericalAntiKt ) {
     dcut = theDCut/GeV2;
   } else {
-    dcut = GeV2/theDCut;
+    dcut = theDCut != ZERO ? GeV2/theDCut : ZERO;
   }
 
   vector<fastjet::PseudoJet> recoJets;
