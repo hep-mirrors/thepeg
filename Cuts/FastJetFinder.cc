@@ -1,6 +1,6 @@
 // -*- C++ -*-
 //
-// KTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
+// FastJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
 // Copyright (C) 2009-2012 Simon Platzer
 //
