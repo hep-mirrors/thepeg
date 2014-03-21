@@ -357,7 +357,7 @@ void StdXCombGroup::newSubProcess(bool) {
 	dep != theDependent.end(); ++dep ) {
     if ( !*dep )
       continue;
-    if ( !(**dep).apply() )
+    if ( !(**dep).matrixElement()->apply() )
       continue;
     if ( (**dep).lastCrossSection() == ZERO )
       continue;
