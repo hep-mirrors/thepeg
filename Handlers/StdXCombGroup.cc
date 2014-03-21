@@ -270,24 +270,17 @@ CrossSection StdXCombGroup::dSigDR(const pair<double,double> ll, int nr, const d
 
   vector<tStdXCombPtr> activeXCombs;
 
-  if ( !theMEGroup->mcSumDependent() ) {
-    for ( vector<StdXCombPtr>::const_iterator dep = theDependent.begin();
-	  dep != theDependent.end(); ++dep ) {
-      if ( noHeadPass && (**dep).matrixElement()->headCuts() )
-	continue;
-      depxsec += (**dep).dSigDR(r + theMEGroup->dependentOffset((**dep).matrixElement()));
-      if ( theMEGroup->groupReweighted() )
-	activeXCombs.push_back(*dep);
-    }
-  } else {
-    if ( theMEGroup->lastDependentXComb() ) {
-      tStdXCombPtr dxc = theMEGroup->lastDependentXComb();
-      if ( !(noHeadPass && dxc->matrixElement()->headCuts()) )
-	depxsec = theDependent.size()*
-	  dxc->dSigDR(r + theMEGroup->dependentOffset(dxc->matrixElement()));
-      if ( theMEGroup->groupReweighted() )
-	activeXCombs.push_back(dxc);
-    }
+  for ( vector<StdXCombPtr>::const_iterator dep = theDependent.begin();
+	dep != theDependent.end(); ++dep ) {
+    if ( !*dep )
+      continue;
+    if ( !(**dep).matrixElement()->apply() )
+      continue;
+    if ( noHeadPass && (**dep).matrixElement()->headCuts() )
+      continue;
+    depxsec += (**dep).dSigDR(r + theMEGroup->dependentOffset((**dep).matrixElement()));
+    if ( theMEGroup->groupReweighted() )
+      activeXCombs.push_back(*dep);
   }
 
   if ( xsec != ZERO &&
@@ -362,6 +355,10 @@ void StdXCombGroup::newSubProcess(bool) {
 
   for ( vector<StdXCombPtr>::iterator dep = theDependent.begin();
 	dep != theDependent.end(); ++dep ) {
+    if ( !*dep )
+      continue;
+    if ( !(**dep).apply() )
+      continue;
     if ( (**dep).lastCrossSection() == ZERO )
       continue;
     tSubProPtr ds;
