@@ -394,8 +394,6 @@ public:
   double lastMECouplings() const { return theLastMECouplings; }
   //@}
 
-protected:
-
   /**
    * Construct the corresponding SubProcess object if it hasn't been
    * done before.

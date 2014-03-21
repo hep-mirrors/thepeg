@@ -362,8 +362,6 @@ public:
     return theMeta.find(id)->second.cast<T>();
   }
 
-protected:
-
   /**
    * Set the local parton bin info objects for this XComb.
    */
@@ -373,6 +371,16 @@ protected:
    * Create PartonBinInstance objects for this XComb.
    */
   void createPartonBinInstances();
+
+  /**
+   * Set the pair of incoming particle instances.
+   */
+  void lastParticles(const PPair & p) { theLastParticles = p; }
+
+  /**
+   * Set information about currently generated partons.
+   */
+  void resetPartonBinInstances(const PBIPair & newBins) { thePartonBinInstances = newBins; }
 
 public:
 
@@ -396,18 +404,6 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
-
-protected:
-
-  /**
-   * Set the pair of incoming particle instances.
-   */
-  void lastParticles(const PPair & p) { theLastParticles = p; }
-
-  /**
-   * Set information about currently generated partons.
-   */
-  void resetPartonBinInstances(const PBIPair & newBins) { thePartonBinInstances = newBins; }
 
 private:
 
