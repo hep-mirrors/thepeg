@@ -81,6 +81,11 @@ public:
    */
   unsigned int ewScheme() const { return theElectroWeakScheme; }
 
+  /**
+   *  Set the electroweak scheme used
+   */
+  void ewScheme(unsigned int s) { theElectroWeakScheme = s; }
+
   //@{
   /**
    * Constant \f$\alpha_{EM}(q^2=0)\f$.
