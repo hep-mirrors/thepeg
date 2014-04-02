@@ -9,6 +9,7 @@
 #ifndef ACDCGen_H
 #define ACDCGen_H
 
+#include <algorithm>
 #include "ACDCGenConfig.h"
 #include "ACDCTraits.h"
 #include "ACDCGenCell.h"
