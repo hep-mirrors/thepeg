@@ -1,6 +1,6 @@
 // -*- C++ -*-
 //
-// KTJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
+// FastJetFinder.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 1999-2007 Leif Lonnblad
 // Copyright (C) 2009-2012 Simon Platzer
 //
@@ -107,7 +107,7 @@ bool FastJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
        theVariant != sphericalAntiKt ) {
     dcut = theDCut/GeV2;
   } else {
-    dcut = GeV2/theDCut;
+    dcut = theDCut != ZERO ? GeV2/theDCut : ZERO;
   }
 
   vector<fastjet::PseudoJet> recoJets;

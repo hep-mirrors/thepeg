@@ -98,13 +98,16 @@ public:
    */
   virtual tSubProPtr construct();
 
-protected:
-
   /**
    * Construct the corresponding SubProcess object if it hasn't been
    * done before.
    */
   virtual void newSubProcess(bool);
+
+  /**
+   * Set the cross section calculated from the head matrix element
+   */
+  void lastHeadCrossSection(CrossSection xs) { theLastHeadCrossSection = xs; }
 
 public:
 
@@ -128,13 +131,6 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
-
-protected:
-
-  /**
-   * Set the cross section calculated from the head matrix element
-   */
-  void lastHeadCrossSection(CrossSection xs) { theLastHeadCrossSection = xs; }
 
 private:
 
