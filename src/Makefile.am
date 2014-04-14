@@ -48,7 +48,7 @@ valgrind:
 	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./runThePEG SimpleLEP.run >> /tmp/valgrind.out 2>&1
 
 INPUTFILES = ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in \
-             SimpleLEP.in MultiLEP.in TestLHAPDF.in
+             SimpleLEP.in SimpleLEP.mod MultiLEP.in TestLHAPDF.in
 
 done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
@@ -78,6 +78,7 @@ check-local: ThePEGDefaults.rpo
 	time ./runThePEG --resume -d 0 SimpleLEP.dump
 	diff SimpleLEP.out SimpleLEP.cmp
 	rm SimpleLEP.cmp
+	time ./runThePEG -d 0 -m SimpleLEP.mod SimpleLEP.run
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo MultiLEP.in
 	time ./runThePEG -d 0 MultiLEP.run
 if USELHAPDF

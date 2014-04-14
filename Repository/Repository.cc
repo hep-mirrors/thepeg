@@ -166,8 +166,8 @@ void Repository::saveRun(string EGname, string name, string filename) {
 
 EGPtr Repository::makeRun(tEGPtr eg, string name) {
 
-  // Clone all objects relevant for the OldEventGenerator. This is
-  // the OldEventGenerator itself, all particles and all particle
+  // Clone all objects relevant for the EventGenerator. This is
+  // the EventGenerator itself, all particles and all particle
   // matchers. 'localObject' is the set of all object refered to by
   // the generator particles and matcher and in the end these are
   // cloned as well.
@@ -437,6 +437,33 @@ string Repository::read(string filename, ostream & os) {
     throw;
   }
   return "";
+}
+
+string Repository::
+modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
+  ObjectSet objs = eg.objects();
+  objs.insert(&eg);
+  for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
+    string name = (**it).fullName();
+    if ( name.rfind('/') != string::npos )
+      CreateDirectory(name.substr(0, name.rfind('/') + 1));
+    objects()[name] = *it;
+    allObjects().insert(*it);
+  }
+  
+  string msg = read(filename, os);
+  
+  for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
+    if ( (**it).touched() )
+      msg += "Warning: " + (**it).fullName() +
+	" was modified although it has been flagged with unsafe dependencies.\n";
+  }
+
+  if ( !generators().empty() )
+    msg += "Warning: new generators were initialized while modifying "
+      + eg.fullName() + ".\n";
+
+  return msg;
 }
 
 void Repository::execAndCheckReply(string line, ostream & os) {

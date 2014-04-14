@@ -1,3 +1,15 @@
+2014-04-14  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/SamplerBase.h: Added checks to avoid divide-by-zero in
+	maxXSec() and attempts() functions.
+
+	* src/runThePEG.cc (main): Added option to read in a setup file to
+	modify the interfaced objects to an EventGenerator before running
+	it.
+
+	* Repository/Repository.cc (modifyEventGenerator): Added new
+	function to manipulate an already saved EventGenerator object.
+
 2014-04-02  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* ACDC/ACDCGen.h (ACDCGenerator): Added include of <algorithm> to

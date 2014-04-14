@@ -14,6 +14,7 @@
 #include "ThePEG/Utilities/DynamicLoader.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Repository/Main.h"
+#include "ThePEG/Repository/Repository.h"
 #include <config.h>
 
 int main(int argc, char * argv[]) {
@@ -26,11 +27,13 @@ int main(int argc, char * argv[]) {
   bool tics = false;
   bool resume = false;
   string tag = "";
+  string setupfile = "";
 
   for ( int iarg = 1; iarg < argc; ++iarg ) {
     string arg = argv[iarg];
     if ( arg == "-r" ) run = argv[++iarg];
     else if ( arg == "-x" ) mainclass = argv[++iarg];
+    else if ( arg == "-m" ) setupfile = argv[++iarg];
     else if ( arg == "-s" ) DynamicLoader::load(argv[++iarg]);
     else if ( arg.substr(0,2) == "-s" )
       DynamicLoader::load(arg.substr(2));
@@ -54,7 +57,7 @@ int main(int argc, char * argv[]) {
     else if ( arg.substr(0,6) == "--tag=" ) tag = arg.substr(6);
     else if ( arg == "--help" || arg == "-h" ) {
     cerr << "Usage: " << argv[0] << " [-d {debuglevel|-debugitem}] "
-	 << "[-l load-path] [-L first-load-path] run-file" << endl;
+	 << "[-l load-path] [-L first-load-path] [-m setup-file] run-file" << endl;
       return 3;
     }
     else if ( arg == "-v" || arg == "--version" ) {
@@ -88,6 +91,11 @@ int main(int argc, char * argv[]) {
     if ( !eg ) {
       cout << "Could not find or read the requested EventGenerator." << endl;
       return 1;
+    }
+
+    if ( setupfile.size() ) {
+      string msg = Repository::modifyEventGenerator(*eg, setupfile, cout);
+      if ( ! msg.empty() ) cerr << msg << '\n';
     }
 
     if ( seed > 0 ) eg->setSeed(seed);
