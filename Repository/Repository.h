@@ -222,6 +222,17 @@ public:
    * argument is currently unused.
    */
   static string exec(string cmd, ostream &);
+
+  /**
+   * Insert the given EventGenerator and its dependent Interfaced
+   * objects into the repository and read commands to modify its
+   * interfaces. Any line accepted by the command-line interface will
+   * be executed, but the main purpose of this function is to modify
+   * an already saved and initialized EventGenerator before running
+   * without re-initializing. If an interface which does not have the
+   * dependencySafe() flag set, a warning will be emitted.
+   */
+  static string modifyEventGenerator(EventGenerator & eg, string filename, ostream & os);  
   //@}
 
   /**

@@ -104,6 +104,7 @@ public:
    * cross section and error quoted.
    */
   virtual CrossSection maxXSec() const {
+    if ( sumWeights2() <= 0.0 ) return ZERO;
     return integratedXSec()*attempts()/sumWeights();
   }
 
@@ -118,6 +119,7 @@ public:
     CrossSection sigma = integratedXSec();
     CrossSection esigma = integratedXSecErr();
     double sw = sumWeights(); double sw2 = sumWeights2();
+    if ( sw2 <= 0.0 ) return 0.0;
     return 
       sqr(sw)*(sqr(esigma)-sqr(sigma))/(sqr(sw)*sqr(esigma) - sw2*sqr(sigma));
   }
