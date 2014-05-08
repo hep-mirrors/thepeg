@@ -452,12 +452,9 @@ modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
   }
   
   string msg = read(filename, os);
-  
-  for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
-    if ( (**it).touched() )
-      msg += "Warning: " + (**it).fullName() +
-	" was modified although it has been flagged with unsafe dependencies.\n";
-  }
+ 
+  for_each(objs, mem_fun(&InterfacedBase::reset)); 
+  eg.initialize();
 
   if ( !generators().empty() )
     msg += "Warning: new generators were initialized while modifying "
