@@ -8,6 +8,22 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+
+* ThePEG-1.9.1 release: 2014-04-30
+
+** Build fix for SLC6
+   Fixed problems with a missing <algorithm> header in ACDCGen.h that affected 
+   some builds on SLC6 
+
+** Build fix for Rivet 2.1.1
+   Adapted to Rivet 2.1.1 changed header file layout
+
+** OS X Mavericks build fix for readline
+   The problem of infinite hangs when linking against libreadline 
+   in Mavericks has been resolved.
+
+
+
 * ThePEG-1.9.0 release: 2013-10-28
 
 ** Rapidity edge cases
