@@ -68,6 +68,14 @@ fastjet::PseudoJet pj=fastjet::PtYPhiM(10.0,0.5,1.0,0.0);
    fi
 fi
 
+warnfastjet=""
+if test "$LOAD_FASTJET" = "" ; then
+      AC_MSG_WARN([
+*****************************************************************************
+ Warning: Herwig++ will require ThePEG to be configured with FastJet.
+*****************************************************************************])
+   warnfastjet=" *** Herwig++ will require ThePEG to be configured with fastjet. ***"
+fi
 
 AC_SUBST(FASTJETINCLUDE,[$FASTJET_CXXFLAGS])
 AC_SUBST(CREATE_FASTJET)

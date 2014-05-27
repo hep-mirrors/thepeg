@@ -55,6 +55,15 @@ else
    fi
 fi
 
+warnlhapdf=""
+if test "$LOAD_LHAPDF" = "" ; then
+      AC_MSG_WARN([
+*****************************************************************************
+ Warning: Herwig++ will require ThePEG to be configured with LHAPDF.
+*****************************************************************************])
+   warnlhapdf=" *** Herwig++ will require ThePEG to be configured with LHAPDF. ***"
+fi
+
 AC_SUBST([LHAPDF_LIBS])
 AC_SUBST([LOAD_LHAPDF])
 AC_SUBST([LHAPDF_LDFLAGS])
