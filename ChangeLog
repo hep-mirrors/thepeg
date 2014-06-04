@@ -1,3 +1,13 @@
+2014-06-04  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* Handlers/LastXCombInfo.h, Handlers/StandardEventHandler.cc,
+	Handlers/StandardEventHandler.h, Handlers/StandardXComb.cc,
+	Handlers/StandardXComb.h, Handlers/StdXCombGroup.cc,
+	Handlers/XComb.cc, Handlers/XComb.h, MatrixElement/MEBase.cc,
+	MatrixElement/MEBase.h, PDF/PartonExtractor.cc,
+	PDF/PartonExtractor.h:
+	Merged Simon Plätzer's rewrite of XComb handling.
+
 2014-05-08  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
 
 	* Repository/Repository.cc (modifyEventGenerator): Instead of
