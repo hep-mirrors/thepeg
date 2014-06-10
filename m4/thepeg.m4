@@ -438,7 +438,7 @@ cat << _THEPEG_EOF_ > config.thepeg
 ***
 *** GSL:		$with_gsl
 ***
-*** LHAPDF:		$lhaconfig $warnlhapdf
+*** LHAPDF:		$lhaconfig ($lhapdf_version) $warnlhapdf
 *** HepMC:		$with_hepmc
 *** Rivet:		$with_rivet
 *** FastJet:		$fjconfig $warnfastjet

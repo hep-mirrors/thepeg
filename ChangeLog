@@ -1,3 +1,10 @@
+2014-06-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDF/LHAPDF6.cc, PDF/LHAPDF6.h, PDF/Makefile.am, m4/lhapdf.m4,
+	m4/thepeg.m4, src/TestLHAPDF.cc, src/TestLHAPDF.in: Support for
+	LHAPDFv6 enabled. Test cases adapted to use PDF sets that are
+	available in both v5 and v6.
+
 2014-06-04  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* Handlers/LastXCombInfo.h, Handlers/StandardEventHandler.cc,
