@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
-// LHAPDF.h is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2011 Leif Lonnblad
+// LHAPDF6.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 2014 Leif Lonnblad, David Grellscheid
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -35,14 +35,6 @@ namespace ThePEG {
  * defined for LHAPDF.
  */
 class LHAPDF: public PDFBase {
-
-public:
-
-  /** Enumerate the allowed particle types. */
-//  enum PType { nucleonType = 1, /**< (Anti-) proton or neutron. */
-//	       pionType = 2,    /**< Pion */
-//	       photonType = 3   /** Photon possible with anomalous component. */
-//  };
 
 public:
 
@@ -126,12 +118,11 @@ public:
   /** @name Simple access function. */
   //@{
   /**
-   * The particle type. 1=nucleon, 2=pion, 3=photon. No checking is
-   * done to see if the selected PDF set in LHAPDF actually can handle
-   * this type
+   * The name if the PDF set to be used. The full name including the
+   * <code>.LHpdf</code> or <code>.LHgrid</code> suffix.
    */
-  //PType ptype() const { return thePType; }
-
+  const string & PDFName() const { return thePDFName; }
+ 
   /**
    * The chosen member of the selected PDF set.
    */
@@ -156,20 +147,20 @@ protected:
   void checkUpdate(double x, Energy2 Q2, Energy2 P2) const;
 
   /**
-   * Interface for simple tests.
-   */
-  string doTest(string input);
-  //@}
-
-  /**
    * Used by the interface to select a set according to a file name.
    */
   void setPDFName(string name);
 
   /**
-   * Used by the interface to select a set member.
+   * Used by the interface to select a member in the current set.
    */
-  void setMember(int member);
+  void setPDFMember(int n);
+
+  /**
+   * Interface for simple tests.
+   */
+  string doTest(string input);
+  //@}
 
 public:
 
@@ -267,11 +258,6 @@ private:
   int theMember;
 
   /**
-   * If this PDF allows partonic photons inside a hadron, enable this
-   */
-  const bool enablePartonicGamma;
-
-  /**
    * The verbosity of the output from the LHAPDF library.
    */
   int theVerboseLevel;
@@ -366,7 +352,7 @@ struct ClassTraits<LHAPDF>
   /** Return the name of the shared library be loaded to get access to
    *  the LeptonLeptonPDF class and every other class it uses (except
    *  the base class). */
-  static string library() { return "ThePEGLHAPDF6.so"; }
+  static string library() { return "ThePEGLHAPDF.so"; }
 };
 
 /** @endcond */

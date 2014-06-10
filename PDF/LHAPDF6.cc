@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
-// LHAPDF.cc is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2011 Leif Lonnblad
+// LHAPDF6.cc is a part of ThePEG - Toolkit for HEP Event Generation
+// Copyright (C) 2014 Leif Lonnblad, David Grellscheid
 //
 // ThePEG is licenced under version 2 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -16,13 +16,10 @@
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Command.h"
-#include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Interface/Deleted.h"
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/PDT/ParticleData.h"
-#include "ThePEG/Utilities/EnumIO.h"
-#include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Throw.h"
-#include "config.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "LHAPDF/LHAPDF.h"
@@ -34,13 +31,9 @@ using std::pair;
 using ThePEG::GeV2;
 using ThePEG::cPDVector;
 
-#include "ThePEG/PDT/ParticleData.h"
-#include "ThePEG/PDT/EnumParticles.h"
-
 ThePEG::LHAPDF::LHAPDF()
   : thePDF(), thePDFName("cteq6l1"), 
     theMember(0),
-    enablePartonicGamma(false),
     theVerboseLevel(0), theMaxFlav(5),
     lastQ2(-1.0*GeV2), lastX(-1.0), lastP2(-1.0*GeV2),
     xMin(0.0), xMax(1.0), Q2Min(ZERO), Q2Max(Constants::MaxEnergy2) {}
@@ -49,7 +42,6 @@ ThePEG::LHAPDF::LHAPDF(const LHAPDF & x)
   : PDFBase(x), 
     thePDF(), thePDFName(x.thePDFName), 
     theMember(x.theMember),
-    enablePartonicGamma(false),
     theVerboseLevel(x.theVerboseLevel), theMaxFlav(x.theMaxFlav),
     lastQ2(-1.0*GeV2), lastX(-1.0), lastP2(-1.0*GeV2),
     xMin(x.xMin), xMax(x.xMax), Q2Min(x.Q2Min), Q2Max(x.Q2Max) {}
@@ -94,6 +86,8 @@ void ThePEG::LHAPDF::setPDFName(string name) {
   	name = name.substr(0, name.size() - 6);
   }
 
+  // fix the eternal typo
+  if ( name == "cteq6ll" ) name = "cteq6l1";
 
   if ( ::LHAPDF::contains(::LHAPDF::availablePDFSets(), name) ) {
     thePDFName = name;
@@ -107,7 +101,7 @@ void ThePEG::LHAPDF::setPDFName(string name) {
   }
 }
 
-void ThePEG::LHAPDF::setMember(int member) {
+void ThePEG::LHAPDF::setPDFMember(int member) {
   try {
     ::LHAPDF::PDFInfo * test = 
   	::LHAPDF::mkPDFInfo(thePDFName, member);
@@ -162,16 +156,7 @@ void ThePEG::LHAPDF::checkUpdate(double x, Energy2 Q2, Energy2 P2) const {
 
 bool ThePEG::LHAPDF::canHandleParticle(tcPDPtr particle) const {
   using namespace ParticleID;
-//  switch ( ptype() ) {
-//  case nucleonType:
-    return abs(particle->id()) == pplus || abs(particle->id()) == n0;
-//  case pionType:
-//    return particle->id() == pi0 || particle->id() == ParticleID::gamma;
-//  case photonType:
-//    return particle->id() == ParticleID::gamma;
-//  default:
-//    return false;
-// }
+  return abs(particle->id()) == pplus || abs(particle->id()) == n0;
 }
 
 cPDVector ThePEG::LHAPDF::partons(tcPDPtr particle) const {
@@ -188,9 +173,6 @@ cPDVector ThePEG::LHAPDF::partons(tcPDPtr particle) const {
     for ( size_t i=0; i < flavs.size(); ++i ) {
       ret.push_back(getParticleData(flavs[i]));
     }
-    // special if needed add photon
-    if(enablePartonicGamma) 
-      ret.push_back(getParticleData(ParticleID::gamma));
   }
   assert( ret.size() == flavs.size() );
   return ret;
@@ -260,7 +242,7 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale
   case ParticleID::g:
     return lastXF[glu];
   case ParticleID::gamma:
-    return enablePartonicGamma ? lastXF[photon] : 0.;
+    return 0.;
   }
   return 0.0;
 }
@@ -387,7 +369,7 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScal
   case ParticleID::g:
     return lastXF[glu];
   case ParticleID::gamma:
-    return enablePartonicGamma ? lastXF[photon] : 0.;
+    return 0.;
   }
   return 0.0;
 }
@@ -421,6 +403,10 @@ void ThePEG::LHAPDF::Init() {
      "xfvl() function will only work properly for nucleons. All other "
      "particles will have zero valence densities.");
 
+  static Deleted<LHAPDF> interfacePType
+    ("PType",
+     "The LHAPDFv6 interface currently does not support pi or gamma.");
+
   static Parameter<LHAPDF,string> interfacePDFName
     ("PDFName",
      "The name of the PDF set to be used. Should correspond to "
@@ -428,19 +414,40 @@ void ThePEG::LHAPDF::Init() {
      &ThePEG::LHAPDF::thePDFName, "cteq6l1", true, false,
      &ThePEG::LHAPDF::setPDFName);
 
+  static Deleted<LHAPDF> interfacePDFNumber
+    ("PDFNumber",
+     "Not implemented in the LHAPDFv6 interface. "
+     "Use :PDFName and :Member instead.");
+
   static Parameter<LHAPDF,int> interfaceMember
     ("Member",
      "The chosen member of the selected PDF set.",
      &ThePEG::LHAPDF::theMember, 0, 0, 0, 
      true, false, Interface::lowerlim,
-     &ThePEG::LHAPDF::setMember);
+     &ThePEG::LHAPDF::setPDFMember);
+
+  static Deleted<LHAPDF> interfacePDFLIBNumbers
+    ("PDFLIBNumbers",
+     "Not implemented in the LHAPDFv6 interface. "
+     "Use :PDFName and :Member instead.");
+
+  static Deleted<LHAPDF> interfaceEnablePartonicGamma
+    ("EnablePartonicGamma",
+     "The LHAPDFv6 interface currently does not support pi or gamma.");
+
+  static Deleted<LHAPDF> interfacePhotonOption
+    ("PhotonOption",
+     "The LHAPDFv6 interface currently does not support pi or gamma.");
+
+  static Deleted<LHAPDF> interfaceMaxNSet
+    ("MaxNSet",
+     "Not required in LHAPDFv6.");
 
   static Command<LHAPDF> interfaceTest
     ("Test",
      "Write out the values of the chosen PDF set using the x, Q2 and P2 "
      "parameters supplied.",
      &ThePEG::LHAPDF::doTest, true);
-
 
   static Switch<LHAPDF,int> interfaceVerboseLevel
     ("VerboseLevel",

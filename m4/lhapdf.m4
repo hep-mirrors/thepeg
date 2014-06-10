@@ -18,6 +18,7 @@ fi
 
 LOAD_LHAPDF=""
 LHAPDF_PKGDATADIR=""
+lhapdf_version="0"
 
 if test "${lhaconfig}" = "no"; then
    AC_MSG_CHECKING([LHAPDF])
@@ -48,6 +49,7 @@ else
       LOAD_LHAPDF="library ThePEGLHAPDF.so"
       LHAPDF_PKGDATADIR="`${lhaconfig} --datadir`"
       LHAPDF_CPPFLAGS="`${lhaconfig} --cppflags`"
+      lhapdf_version="`${lhaconfig} --version | cut -d. -f1`"
       AC_MSG_RESULT(yes)
       $1
    else
@@ -61,8 +63,6 @@ AC_SUBST([LOAD_LHAPDF])
 AC_SUBST([LHAPDF_LDFLAGS])
 AC_SUBST([LHAPDF_CPPFLAGS])
 AC_SUBST([LHAPDF_PKGDATADIR])
-lhapdf_version="`${lhaconfig} --version | cut -d. -f1`"
-test -z "$lhapdf_version" && lhapdf_version="0"
 AM_CONDITIONAL([USELHAPDF],[test "x$LOAD_LHAPDF" = "xlibrary ThePEGLHAPDF.so"])
 AM_CONDITIONAL([USELHAPDF5],[test "$lhapdf_version" -eq "5"])
 AM_CONDITIONAL([USELHAPDF6],[test "$lhapdf_version" -ge "6"])
