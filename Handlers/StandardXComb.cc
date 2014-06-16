@@ -265,6 +265,14 @@ bool StandardXComb::willPassCuts() {
     cuts()->initSubProcess(lastSHat(), lastY(), mirror());
   }
 
+  // check for exceptional configurations which may happen in NLO
+  // dijets subtraction with an extremely soft incoming parton giving
+  // rise to about lightlike CM momentum
+  if ( (meMomenta()[0]+meMomenta()[1]).m2() <= ZERO ) {
+    passedCuts = false;
+    return false;
+  }
+
   tcPDVector outdata(mePartonData().begin()+2,mePartonData().end());
   vector<LorentzMomentum> outmomenta(meMomenta().begin()+2,meMomenta().end());
   Boost tocm = (meMomenta()[0]+meMomenta()[1]).findBoostToCM();
