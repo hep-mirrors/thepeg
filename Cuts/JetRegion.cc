@@ -47,11 +47,18 @@ IBPtr JetRegion::fullclone() const {
 
 string JetRegion::doYRange(string in) {
   istringstream ins(in);
-  double first, second;
-  ins >> first >> second;
-  if ( first > second )
-    swap(first,second);
-  theYRanges.push_back(make_pair(first,second));
+  theYRanges.clear();
+  while ( ins ) {
+    double first, second;
+    ins >> first;
+    if ( !ins )
+      throw Exception() << "need an even number n of values to define n/2 rapidity intervals"
+			<< Exception::abortnow;
+    ins >> second;
+    if ( first > second )
+      swap(first,second);
+    theYRanges.push_back(make_pair(first,second));
+  }
   return "";
 }
 
