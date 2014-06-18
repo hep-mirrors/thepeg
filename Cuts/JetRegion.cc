@@ -22,6 +22,7 @@
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/Utilities/DescribeClass.h"
+#include "ThePEG/Utilities/StringUtils.h"
 #include "ThePEG/Repository/CurrentGenerator.h"
 
 #include "ThePEG/Persistency/PersistentOStream.h"
@@ -46,12 +47,12 @@ IBPtr JetRegion::fullclone() const {
 }
 
 string JetRegion::doYRange(string in) {
-  istringstream ins(in);
+  istringstream ins(StringUtils::stripws(in));
   theYRanges.clear();
-  while ( ins ) {
+  while ( !ins.eof() ) {
     double first, second;
     ins >> first;
-    if ( !ins )
+    if ( ins.eof() )
       throw Exception() << "need an even number n of values to define n/2 rapidity intervals"
 			<< Exception::abortnow;
     ins >> second;
