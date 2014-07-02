@@ -640,6 +640,6 @@ RemColException::RemColException(const PartonExtractor & pe) {
 }
   
 void PartonExtractor::dofinish() {
-  partonBinInstances().clear();
+  if ( lastXCombPtr() ) partonBinInstances().clear();
   HandlerBase::dofinish();
 }
