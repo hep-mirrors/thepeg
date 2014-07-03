@@ -301,8 +301,8 @@ getCompensators(Energy mh, const ColourSinglet & cs,
 
     // Add to the temporary vector.
     comp.push_back(*sel);
-    compset.erase(sel);
     pcomp += (**sel).momentum();
+    compset.erase(sel);
 
     // If there was not enough energy, find an additional compensator
     // particle. Also check that compensators have mass to avoid boost

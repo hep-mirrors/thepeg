@@ -37,7 +37,11 @@ erase <object>:<vec-interface-indx> // erase from vector interface
 saverun <run-name> <event-generator-object>
 	// Initialize an event generator and save it to a file.
 
-
+rebind <object> <object-name>
+	// For each object in the repository replce all references to
+	// the given object with references to the object corresponding
+	// to the given object-name (if no such object is found one will
+	// be created as a copy of the given object).
 
 <object> = <object-name>|<object>:<ref-interface>
 <object-name> = <path>/<local-object-name>|<local-object-name>

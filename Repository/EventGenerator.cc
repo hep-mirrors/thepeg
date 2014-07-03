@@ -461,13 +461,13 @@ EventPtr EventGenerator::doShoot() {
       if ( logException(ex, eventHandler()->currentEvent()) ) throw;
     }
     catch (...) {
-      dump();
       event = eventHandler()->currentEvent();
       if ( event )
 	log() << *event;
       else
 	log() << "An exception occurred before any event object was created!";
       log() << endl;
+      dump();
       throw;
     }
     if ( ThePEG_DEBUG_LEVEL ) {
@@ -498,10 +498,10 @@ EventPtr EventGenerator::doGenerateEvent(tEventPtr e) {
     if ( logException(ex, eventHandler()->currentEvent()) ) throw;
   }
   catch (...) {
-    dump();
     event = eventHandler()->currentEvent();
     if ( !event ) event = e;
     log() << *event << endl;
+    dump();
     throw;
   }
   return event;
@@ -517,9 +517,9 @@ EventPtr EventGenerator::doGenerateEvent(tStepPtr s) {
     if ( logException(ex, eventHandler()->currentEvent()) ) throw;
   }
   catch (...) {
-    dump();
     event = eventHandler()->currentEvent();
     if ( event ) log() << *event << endl;
+    dump();
     throw;
   }
   return event;

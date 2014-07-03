@@ -709,6 +709,23 @@ string BaseRepository::exec(string command, ostream &) {
 	Register((**i).clone(), newName + (**i).name());
       return "";
     }
+    if ( verb == "rebind" ) {
+      // For all objects in the repository, replace any references to
+      // the first object given with references to the second
+      // object. The two objects will change names
+     IBPtr ip1 = TraceObject(StringUtils::car(command));
+     string newname = StringUtils::car(StringUtils::cdr(command));
+     DirectoryAppend(newname);
+     IBPtr ip2 = GetPointer(newname);
+     if ( !ip2 ) {
+       ip2 = ip1->fullclone();
+       rename(ip2, newname);
+     }
+     TranslationMap trans;
+     trans[ip1] = ip2;
+     IVector objs = GetObjectsReferringTo(ip1);
+     for ( int i = 0, N = objs.size(); i < N; ++i ) rebind(*objs[i], trans, IVector());
+    }
     if ( verb == "doxygendump" ) {
       string spacename = StringUtils::car(command);
       command = StringUtils::cdr(command);
