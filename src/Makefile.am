@@ -99,10 +99,10 @@ MultiLEP.out: runThePEG MultiLEP.run
 
 if USELHAPDF
 TestLHAPDF.run: done-all-links setupThePEG ThePEGDefaults.rpo TestLHAPDF.in TestLHAPDF.la
-	./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
+	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 
 TestLHAPDF.out: runThePEG TestLHAPDF.run
-	time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
+	LHAPATH=$(srcdir)/testpdfs time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
 install-exec-hook:
@@ -114,7 +114,7 @@ install-exec-hook:
 install-data-hook:
 	./setupThePEG --init --exitonerror -L$(DESTDIR)$(pkglibdir) -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/ThePEGDefaults.in
 if USELHAPDF
-	./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/LHAPDFDefaults.in
+	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/LHAPDFDefaults.in
 endif
 	cd $(DESTDIR)$(pkglibdir); \
 	if test -n "$(DESTDIR)"; \
@@ -140,7 +140,7 @@ diff SimpleLEP.out SimpleLEP.cmp; \
 $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/MultiLEP.in; \
 $(DESTDIR)$(bindir)/runThePEG MultiLEP.run;
 if USELHAPDF
-	cd _test_thepeg_installation_; \
+	export LHAPATH=$$(pwd)/$(srcdir)/testpdfs; cd _test_thepeg_installation_; \
 $(DESTDIR)$(bindir)/setupThePEG --exitonerror $(DESTDIR)$(pkgdatadir)/TestLHAPDF.in; \
 $(DESTDIR)$(bindir)/runThePEG -x $(DESTDIR)$(pkglibdir)/TestLHAPDF.so TestLHAPDF.run
 endif
