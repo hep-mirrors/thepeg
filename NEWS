@@ -8,6 +8,13 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-1.9.2 release: 2014-07-07
+
+** Better support for LHAPDF 6
+   The LHAPDF interface now determines if version 6 is available and
+   makes use of new LHAPDFv6 features.
+
+
 
 * ThePEG-1.9.1 release: 2014-04-30
 

@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.59])
-AC_INIT([ThePEG],[1.9.1],[http://www.thep.lu.se/ThePEG/],[ThePEG])
+AC_INIT([ThePEG],[1.9.2],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
 
