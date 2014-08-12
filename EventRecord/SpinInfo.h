@@ -177,12 +177,17 @@ public:
    * Set the vertex at which the particle decayed or branched.
    */
   void decayVertex(VertexPtr in) const {
-    _decay=in;
-    int temp;
-    in->addIncoming(this,temp);
-    _decayloc=temp;
-    assert(temp==0);
-    //if(temp!=0){cout << "something dodgy here can only decay once" << endl;}
+    if(in) {
+      _decay=in;
+      int temp;
+      in->addIncoming(this,temp);
+      _decayloc=temp;
+      assert(temp==0);
+    }
+    else {
+      _decay=VertexPtr();
+      _decayloc=-1;
+    }
   }
 
   /**
