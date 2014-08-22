@@ -294,16 +294,24 @@ constructSpinInfo(const vector<LorentzSpinorBar<SqrtEnergy> > & waves,
   tFermionSpinPtr inspin = !part->spinInfo() ? tFermionSpinPtr() :
     dynamic_ptr_cast<tFermionSpinPtr>(part->spinInfo());
   if(inspin) {
-    for(unsigned int ix=0;ix<2;++ix)
-      if (dir==outgoing) inspin->setBasisState(ix,waves[ix].bar());
-      else               inspin->setDecayState(ix,waves[ix].bar());
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time))
+	inspin->setBasisState(ix,waves[ix].bar());
+      else
+	inspin->setDecayState(ix,waves[ix].bar());
+    }
   }
   else {
     FermionSpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
     part->spinInfo(temp);
-    for(unsigned int ix=0;ix<2;++ix)
-      if(dir==outgoing) temp->setBasisState(ix,waves[ix].bar());
-      else              temp->setDecayState(ix,waves[ix].bar());
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time))
+	temp->setBasisState(ix,waves[ix].bar());
+      else
+	temp->setDecayState(ix,waves[ix].bar());
+    }
   }
 }
 
@@ -321,8 +329,12 @@ constructSpinInfo(const vector<SpinorBarWaveFunction> & waves,
   else {
     FermionSpinPtr temp = new_ptr(FermionSpinInfo(part->momentum(),time));
     part->spinInfo(temp);
-    for(unsigned int ix=0;ix<2;++ix)
-      if(dir==outgoing) temp->setBasisState(ix,waves[ix].dimensionedWf().bar());
-      else              temp->setDecayState(ix,waves[ix].dimensionedWf().bar());
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time))
+	temp->setBasisState(ix,waves[ix].dimensionedWf().bar());
+      else
+	temp->setDecayState(ix,waves[ix].dimensionedWf().bar());
+    }
   }
 }

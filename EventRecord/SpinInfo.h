@@ -179,10 +179,17 @@ public:
   void decayVertex(VertexPtr in) const {
     if(in) {
       _decay=in;
-      int temp;
-      in->addIncoming(this,temp);
-      _decayloc=temp;
-      assert(temp==0);
+      if(_timelike) {
+	int temp;
+	in->addIncoming(this,temp);
+	_decayloc=temp;
+	assert(temp==0);
+      }
+      else {
+	int temp;
+	in->addOutgoing(this,temp);
+	_decayloc=temp;
+      }
     }
     else {
       _decay=VertexPtr();

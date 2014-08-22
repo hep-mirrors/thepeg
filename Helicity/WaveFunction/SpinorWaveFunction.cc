@@ -290,16 +290,24 @@ constructSpinInfo(const vector<LorentzSpinor<SqrtEnergy> > & waves,
   tFermionSpinPtr inspin = !particle->spinInfo() ? tFermionSpinPtr() :
     dynamic_ptr_cast<tFermionSpinPtr>(particle->spinInfo());
   if(inspin) {
-    for(unsigned int ix=0;ix<2;++ix)
-      if(dir==outgoing) inspin->setBasisState(ix,waves[ix]);
-      else              inspin->setDecayState(ix,waves[ix]);
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time))
+	inspin->setBasisState(ix,waves[ix]);
+      else
+	inspin->setDecayState(ix,waves[ix]);
+    }
   }
   else {
     FermionSpinPtr temp = new_ptr(FermionSpinInfo(particle->momentum(),time));
     particle->spinInfo(temp);
-    for(unsigned int ix=0;ix<2;++ix)
-      if(dir==outgoing) temp->setBasisState(ix,waves[ix]);
-      else              temp->setDecayState(ix,waves[ix]);
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time))
+	temp->setBasisState(ix,waves[ix]);
+      else
+	temp->setDecayState(ix,waves[ix]);
+    }
   }
 }
 
@@ -310,15 +318,23 @@ constructSpinInfo(const vector<SpinorWaveFunction> & waves,
   tFermionSpinPtr inspin = !particle->spinInfo() ? tFermionSpinPtr() :
     dynamic_ptr_cast<tFermionSpinPtr>(particle->spinInfo());
   if(inspin) {
-    for(unsigned int ix=0;ix<2;++ix)
-      if(dir==outgoing) inspin->setBasisState(ix,waves[ix].dimensionedWf());
-      else              inspin->setDecayState(ix,waves[ix].dimensionedWf());
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time)) 
+	inspin->setBasisState(ix,waves[ix].dimensionedWf());
+      else
+	inspin->setDecayState(ix,waves[ix].dimensionedWf());
+    }
   }
   else {
     FermionSpinPtr temp = new_ptr(FermionSpinInfo(particle->momentum(),time));
     particle->spinInfo(temp);
-    for(unsigned int ix=0;ix<2;++ix)
-      if(dir==outgoing) temp->setBasisState(ix,waves[ix].dimensionedWf());
-      else              temp->setDecayState(ix,waves[ix].dimensionedWf());
+    for(unsigned int ix=0;ix<2;++ix) {
+      if(( dir == outgoing &&  time) || 
+	 ( dir == incoming && !time))
+	temp->setBasisState(ix,waves[ix].dimensionedWf());
+      else
+	temp->setDecayState(ix,waves[ix].dimensionedWf());
+    }
   }
 }

@@ -99,14 +99,25 @@ void SpinInfo::update() const {
 void SpinInfo::decay() const {
   // if the particle has already been decayed do nothing
   if(_decayed) return;
-  // otherwise we need to obtain the correct rho matrix
+  // otherwise we need to obtain the correct rho (timelike) or D (spacelike) matrix
   assert(_developed!=NeedsUpdate);
-  if(_developed==Developed&&iSpin()!=PDT::Spin0) {
-    _developed=NeedsUpdate;
-    if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc,true);
+  if(_timelike) {
+    if(_developed==Developed&&iSpin()!=PDT::Spin0) {
+      _developed=NeedsUpdate;
+      if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc,true);
+    }
+    else {
+      if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc,false);
+    }
   }
   else {
-    if(_production) _rhomatrix = _production->getRhoMatrix(_prodloc,false);
+    if(_developed==Developed&&iSpin()!=PDT::Spin0) {
+      _developed=NeedsUpdate;
+      if(_production) _Dmatrix = _production->getDMatrix(_prodloc);
+    }
+    else {
+      if(_production) _Dmatrix = _production->getDMatrix(_prodloc);
+    }
   }
   _decaymomentum = _currentmomentum;
   _decayed=true;
