@@ -76,7 +76,7 @@ public:
    */
   void normalize() {
 #ifndef NDEBUG
-    static const double epsa=1e-30, epsb=1e-10;
+    static const double epsa=1e-40, epsb=1e-10;
 #endif
     Complex norm = 0.;
     for(size_t ix=0; ix<_ispin; ++ix) 
