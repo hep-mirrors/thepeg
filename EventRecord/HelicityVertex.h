@@ -87,8 +87,13 @@ public:
    * @param loc is set to the position in the list of incoming spins.
    */
   void addIncoming(tcSpinPtr spin, int & loc) {
-    _incoming.push_back(spin);
-    loc=_incoming.size()-1;
+    if(loc<0) {
+      _incoming.push_back(spin);
+      loc=_incoming.size()-1;
+    }
+    else {
+      _incoming[loc] = spin;
+    }
   }
 
   /**
@@ -97,8 +102,13 @@ public:
    * @param loc is set to the position in the list of outgoing spins.
    */
   void addOutgoing(tcSpinPtr spin, int & loc) {
-    _outgoing.push_back(spin);
-    loc=_outgoing.size()-1;
+    if(loc<0) {
+      _outgoing.push_back(spin);
+      loc=_outgoing.size()-1;
+    }
+    else {
+      _outgoing[loc]= spin;
+    }
   }
 
   /**

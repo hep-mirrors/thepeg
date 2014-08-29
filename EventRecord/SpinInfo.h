@@ -161,7 +161,7 @@ public:
   void productionVertex(VertexPtr in) const {
     _production=in;
     // add to the list of outgoing if timelike
-    int temp;
+    int temp(-1);
     if(_timelike) in->addOutgoing(this,temp); 
     // or incoming if spacelike
     else          in->addIncoming(this,temp);
@@ -180,13 +180,13 @@ public:
     if(in) {
       _decay=in;
       if(_timelike) {
-	int temp;
+	int temp(-1);
 	in->addIncoming(this,temp);
 	_decayloc=temp;
 	assert(temp==0);
       }
       else {
-	int temp;
+	int temp(-1);
 	in->addOutgoing(this,temp);
 	_decayloc=temp;
       }
