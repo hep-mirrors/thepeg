@@ -224,7 +224,7 @@ public:
   /**
    * Calculate the rho matrix for the decay if not already done.
    */
-  void decay() const ;
+  void decay(bool recursive=false) const ;
 
   /**
    * Set the developed flag and calculate the D matrix for the decay.
@@ -329,6 +329,11 @@ private:
    * and all decays further up the chain.
    */
   void redevelop() const ;
+
+  /**
+   * Recursively recalulate all the rho matrices from the top of the chain
+   */
+  void redecay() const ;
 
 private:
 
