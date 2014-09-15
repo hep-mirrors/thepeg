@@ -125,8 +125,8 @@ void SpinInfo::redevelop() const {
   if(productionVertex() &&
      productionVertex()->incoming().size()==1) {
     tcSpinPtr parent = productionVertex()->incoming()[0];
-    if(parent->developed()==NeedsUpdate) 
-      parent->redevelop();
+    parent->needsUpdate();
+    parent->redevelop();
   }
 }
 
