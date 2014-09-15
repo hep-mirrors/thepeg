@@ -139,9 +139,13 @@ void SpinInfo::develop() const {
     redevelop();
     return;
   case Undeveloped:
-    if(_decay) _Dmatrix= _decay->getDMatrix(_decayloc);
+    if(_timelike) {
+      if(_decay) _Dmatrix = _decay->getDMatrix(_decayloc);
+      else       _Dmatrix = RhoDMatrix(iSpin());
+    }
     else {
-      _Dmatrix=RhoDMatrix(iSpin());
+      if(_decay) _rhomatrix = _decay->getRhoMatrix(_decayloc,false);
+      else       _rhomatrix = RhoDMatrix(iSpin());
     }
     _developed=Developed;
     return;
