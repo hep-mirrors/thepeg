@@ -118,13 +118,22 @@ void SpinInfo::decay(bool recursive) const {
 
 void SpinInfo::redevelop() const {
   assert(developed()==NeedsUpdate);
+  // calculate rho/D matrix
+  if(_timelike) {
+    _Dmatrix   = decayVertex() ? 
+      decayVertex()->getDMatrix(decayLocation()) : RhoDMatrix(iSpin());
+  }
+  else {
+    _rhomatrix = decayVertex() ? 
+      decayVertex()->getRhoMatrix(decayLocation(),false) :  RhoDMatrix(iSpin());
+  }
   // update the D matrix of this spininfo
-  _Dmatrix = decayVertex() ? decayVertex()->getDMatrix(decayLocation()) : RhoDMatrix(iSpin());
   _developed = Developed;
   // update the parent if needed
   if(productionVertex() &&
      productionVertex()->incoming().size()==1) {
-    tcSpinPtr parent = productionVertex()->incoming()[0];
+    tcSpinPtr parent = _timelike ? 
+      productionVertex()->incoming()[0] : productionVertex()->outgoing()[0];
     parent->needsUpdate();
     parent->redevelop();
   }
