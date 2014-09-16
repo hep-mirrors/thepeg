@@ -463,6 +463,23 @@ modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
   return msg;
 }
 
+void Repository::resetEventGenerator(EventGenerator & eg) {
+
+  ObjectSet objs = eg.objects();
+  objs.insert(&eg);
+  for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
+    string name = (**it).fullName();
+    if ( name.rfind('/') != string::npos )
+      CreateDirectory(name.substr(0, name.rfind('/') + 1));
+    objects()[name] = *it;
+    allObjects().insert(*it);
+  }
+  
+  for_each(objs, mem_fun(&InterfacedBase::reset)); 
+  eg.initialize();
+
+}
+
 void Repository::execAndCheckReply(string line, ostream & os) {
   string reply = exec(line, os);
   if ( reply.size() ) 

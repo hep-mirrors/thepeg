@@ -233,6 +233,12 @@ public:
    * dependencySafe() flag set, a warning will be emitted.
    */
   static string modifyEventGenerator(EventGenerator & eg, string filename, ostream & os);  
+
+  /**
+   * Reset the given EventGenerator; equivalent to
+   * modifyEventGenerator without reading an input file.
+   */
+  static void resetEventGenerator(EventGenerator & eg);  
   //@}
 
   /**
