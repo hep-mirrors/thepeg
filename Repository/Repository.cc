@@ -476,7 +476,7 @@ void Repository::resetEventGenerator(EventGenerator & eg) {
   }
   
   for_each(objs, mem_fun(&InterfacedBase::reset)); 
-  eg.initialize();
+  eg.initialize(true);
 
 }
 

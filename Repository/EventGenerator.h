@@ -163,7 +163,7 @@ public:
    * Initialize this generator. This is done automatically if 'go()'
    * is used. Calls the virtual method doInitialize().
    */
-  void initialize();
+  void initialize(bool initOnly = false);
 
   /**
    * Run this EventGenerator session. Calls the virtual method doGo().
@@ -487,7 +487,7 @@ protected:
   /**
    * Initialize this generator. Is called from initialize().
    */
-  virtual void doInitialize();
+  virtual void doInitialize(bool initOnly = false);
 
   /**
    * Generate one event. Is called from shoot().

@@ -38,6 +38,13 @@ public:
 
   /** @name Standard constructors and destructors. */
   //@{
+
+  /**
+   * Constructor
+   */
+  SamplerBase()
+    : Interfaced(), theIntegrationList("") {}
+
   /**
    * Destructor.
    */
@@ -137,6 +144,16 @@ public:
   virtual double sumWeights2() const = 0;
   //@}
 
+  /**
+   * Set a file containing a list of subprocesses to integrate
+   */
+  void integrationList(const string& newIntegrationList) { theIntegrationList = newIntegrationList; }
+
+  /**
+   * Return a file containing a list of subprocesses to integrate
+   */
+  const string& integrationList() const { return theIntegrationList; }
+
 protected:
 
   /**
@@ -183,6 +200,11 @@ private:
    * The last generated phase space point.
    */
   vector<double> theLastPoint;
+
+  /**
+   * A file containing a list of subprocesses to integrate
+   */
+ string theIntegrationList;
 
 private:
 
