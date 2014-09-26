@@ -54,13 +54,18 @@ ThePEG::IBPtr ThePEG::LHAPDF::fullclone() const {
   return new_ptr(*this);
 }
 
-void ThePEG::LHAPDF::doinit() {
-  PDFBase::doinit();
+void ThePEG::LHAPDF::initPDFptr() {
+  if ( thePDF ) return;
   thePDF = ::LHAPDF::mkPDF(thePDFName, theMember);
   xMin = thePDF->xMin();
   xMax = thePDF->xMax();
   Q2Min = thePDF->q2Min() * GeV2;
   Q2Max = thePDF->q2Max() * GeV2;
+}
+
+void ThePEG::LHAPDF::doinit() {
+  PDFBase::doinit();
+  initPDFptr();
 }
 
 void ThePEG::LHAPDF::dofinish() {
@@ -71,11 +76,7 @@ void ThePEG::LHAPDF::dofinish() {
 
 void ThePEG::LHAPDF::doinitrun() {
   PDFBase::doinitrun();
-  thePDF = ::LHAPDF::mkPDF(thePDFName, theMember);
-  xMin = thePDF->xMin();
-  xMax = thePDF->xMax();
-  Q2Min = thePDF->q2Min() * GeV2;
-  Q2Max = thePDF->q2Max() * GeV2;
+  initPDFptr();
 }
 
 void ThePEG::LHAPDF::setPDFName(string name) {
@@ -387,6 +388,7 @@ void ThePEG::LHAPDF::persistentInput(PersistentIStream & is, int) {
   lastQ2 = -1.0*GeV2;
   lastX = -1.0;
   lastP2 = -1.0*GeV2;
+  initPDFptr();
 }
 
 ThePEG::ClassDescription<ThePEG::LHAPDF> ThePEG::LHAPDF::initLHAPDF;
