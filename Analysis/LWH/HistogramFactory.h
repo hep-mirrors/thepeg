@@ -613,6 +613,7 @@ public:
   }
 
   inline bool _neq(double a, double b, double eps = 1e-5) const {
+    using std::abs;
     if ( a == 0 && b == 0 ) return false;
     if ( abs(a-b) < eps*(abs(a) + abs(b)) ) return false;
     return true;
