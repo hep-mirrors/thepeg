@@ -43,7 +43,7 @@ public:
    * Constructor
    */
   SamplerBase()
-    : Interfaced(), theIntegrationList("") {}
+    : Interfaced(), theIntegrationJob(false), theIntegrationList("") {}
 
   /**
    * Destructor.
@@ -145,6 +145,16 @@ public:
   //@}
 
   /**
+   * Indicate that the run is actually an integration job
+   */
+  void isIntegrationJob() { theIntegrationJob = true; }
+
+  /**
+   * Return true, if the run is actually an integration job
+   */
+  bool integrationJob() const { return theIntegrationJob; }
+
+  /**
    * Set a file containing a list of subprocesses to integrate
    */
   void integrationList(const string& newIntegrationList) { theIntegrationList = newIntegrationList; }
@@ -200,6 +210,11 @@ private:
    * The last generated phase space point.
    */
   vector<double> theLastPoint;
+
+  /**
+   * True, if the run is actually an integration job
+   */
+  bool theIntegrationJob;
 
   /**
    * A file containing a list of subprocesses to integrate
