@@ -147,6 +147,12 @@ protected:
   void checkUpdate(double x, Energy2 Q2, Energy2 P2) const;
 
   /**
+   * Initialize the LHAPDF library for the chosen PDF set if it has
+   * not been done before.
+   */
+  void initPDFptr();
+
+  /**
    * Used by the interface to select a set according to a file name.
    */
   void setPDFName(string name);
