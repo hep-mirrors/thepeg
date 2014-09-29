@@ -440,7 +440,8 @@ string Repository::read(string filename, ostream & os) {
 }
 
 string Repository::
-modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
+modifyEventGenerator(EventGenerator & eg, string filename, 
+		     ostream & os, bool initOnly) {
   ObjectSet objs = eg.objects();
   objs.insert(&eg);
   for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
@@ -454,7 +455,7 @@ modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
   string msg = read(filename, os);
  
   for_each(objs, mem_fun(&InterfacedBase::reset)); 
-  eg.initialize();
+  eg.initialize(initOnly);
 
   if ( !generators().empty() )
     msg += "Warning: new generators were initialized while modifying "

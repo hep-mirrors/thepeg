@@ -232,7 +232,8 @@ public:
    * without re-initializing. If an interface which does not have the
    * dependencySafe() flag set, a warning will be emitted.
    */
-  static string modifyEventGenerator(EventGenerator & eg, string filename, ostream & os);  
+  static string modifyEventGenerator(EventGenerator & eg, string filename, 
+				     ostream & os, bool initOnly = false);  
 
   /**
    * Reset the given EventGenerator; equivalent to
