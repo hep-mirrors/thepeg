@@ -100,7 +100,19 @@ public:
   //@}
 
   /**
-   * Calculate the couplings. This method is virtual and must be implemented in 
+   *   Set coupling methods
+   */
+  //@{
+  /**
+   * Dummy for a three point interaction.
+   */
+  virtual void setCoupling(Energy2,tcPDPtr,tcPDPtr,tcPDPtr) {
+    assert(false);
+  }
+
+  /**
+   * Calculate the couplings for a four point interaction.
+   * This method is virtual and must be implemented in 
    * classes inheriting from this.
    * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
    * @param part1 The ParticleData pointer for the first  particle.
@@ -110,6 +122,7 @@ public:
    */
   virtual void setCoupling(Energy2 q2,tcPDPtr part1,tcPDPtr part2,tcPDPtr part3,
 			   tcPDPtr part4)=0;
+  //@}
   
 private:
   
