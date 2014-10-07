@@ -43,7 +43,8 @@ public:
    * Constructor
    */
   SamplerBase()
-    : Interfaced(), theIntegrationJob(false), theIntegrationList("") {}
+    : Interfaced(), theIntegrationJob(false), theIntegrationList(""),
+      theGridDirectory(".") {}
 
   /**
    * Destructor.
@@ -164,6 +165,32 @@ public:
    */
   const string& integrationList() const { return theIntegrationList; }
 
+  /**
+   * Set the directory to be used to store grid information
+   */
+  void gridDirectory(const string& d) { theGridDirectory = d; }
+
+  /**
+   * Return the directory to be used to store grid information
+   */
+  const string& gridDirectory() const { return theGridDirectory; }
+
+  /**
+   * Return true, if initialization should actually be postponed to
+   * the next call of initialize
+   */
+  static bool postponeInitialize() {
+    return thePostponeInitialize();
+  }
+
+  /**
+   * Indicate that initialization should actually be postponed to
+   * the next call of initialize
+   */
+  static void doPostponeInitialize(bool yes = true) {
+    thePostponeInitialize() = yes;
+  }
+
 protected:
 
   /**
@@ -219,7 +246,21 @@ private:
   /**
    * A file containing a list of subprocesses to integrate
    */
- string theIntegrationList;
+  string theIntegrationList;
+
+  /**
+   * The directory to be used to store grid information
+   */
+  string theGridDirectory;
+
+  /**
+   * True, if initialization should actually be postponed to the next
+   * call of initialize
+   */
+  static bool& thePostponeInitialize() {
+    static bool flag = false;
+    return flag;
+  }
 
 private:
 
