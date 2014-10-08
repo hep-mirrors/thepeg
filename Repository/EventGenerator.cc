@@ -391,10 +391,10 @@ void EventGenerator::finally() {
 
 }
 
-void EventGenerator::initialize() {
+void EventGenerator::initialize(bool initOnly) {
   UseRandom currentRandom(theRandom);
   CurrentGenerator currentGenerator(this);
-  doInitialize();
+  doInitialize(initOnly);
 }
 
 bool EventGenerator::loadMain(string file) {
@@ -546,12 +546,15 @@ Energy EventGenerator::maximumCMEnergy() const {
   return eh->lumiFnPtr()? eh->lumiFn().maximumCMEnergy(): ZERO;
 }
 
-void EventGenerator::doInitialize() {
+void EventGenerator::doInitialize(bool initOnly) {
 
-  openOutputFiles();
+  if ( !initOnly )
+    openOutputFiles();
 
   init();
-  initrun();
+
+  if ( !initOnly )
+    initrun();
 
   if ( !ThePEG_DEBUG_LEVEL ) Exception::noabort = true;
 

@@ -440,7 +440,8 @@ string Repository::read(string filename, ostream & os) {
 }
 
 string Repository::
-modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
+modifyEventGenerator(EventGenerator & eg, string filename, 
+		     ostream & os, bool initOnly) {
   ObjectSet objs = eg.objects();
   objs.insert(&eg);
   for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
@@ -454,13 +455,30 @@ modifyEventGenerator(EventGenerator & eg, string filename, ostream & os) {
   string msg = read(filename, os);
  
   for_each(objs, mem_fun(&InterfacedBase::reset)); 
-  eg.initialize();
+  eg.initialize(initOnly);
 
   if ( !generators().empty() )
     msg += "Warning: new generators were initialized while modifying "
       + eg.fullName() + ".\n";
 
   return msg;
+}
+
+void Repository::resetEventGenerator(EventGenerator & eg) {
+
+  ObjectSet objs = eg.objects();
+  objs.insert(&eg);
+  for ( ObjectSet::iterator it = objs.begin(); it != objs.end(); ++it ) {
+    string name = (**it).fullName();
+    if ( name.rfind('/') != string::npos )
+      CreateDirectory(name.substr(0, name.rfind('/') + 1));
+    objects()[name] = *it;
+    allObjects().insert(*it);
+  }
+  
+  for_each(objs, mem_fun(&InterfacedBase::reset)); 
+  eg.initialize(true);
+
 }
 
 void Repository::execAndCheckReply(string line, ostream & os) {

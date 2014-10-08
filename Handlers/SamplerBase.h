@@ -38,6 +38,14 @@ public:
 
   /** @name Standard constructors and destructors. */
   //@{
+
+  /**
+   * Constructor
+   */
+  SamplerBase()
+    : Interfaced(), theIntegrationJob(false), theIntegrationList(""),
+      theGridDirectory(".") {}
+
   /**
    * Destructor.
    */
@@ -137,6 +145,52 @@ public:
   virtual double sumWeights2() const = 0;
   //@}
 
+  /**
+   * Indicate that the run is actually an integration job
+   */
+  void isIntegrationJob() { theIntegrationJob = true; }
+
+  /**
+   * Return true, if the run is actually an integration job
+   */
+  bool integrationJob() const { return theIntegrationJob; }
+
+  /**
+   * Set a file containing a list of subprocesses to integrate
+   */
+  void integrationList(const string& newIntegrationList) { theIntegrationList = newIntegrationList; }
+
+  /**
+   * Return a file containing a list of subprocesses to integrate
+   */
+  const string& integrationList() const { return theIntegrationList; }
+
+  /**
+   * Set the directory to be used to store grid information
+   */
+  void gridDirectory(const string& d) { theGridDirectory = d; }
+
+  /**
+   * Return the directory to be used to store grid information
+   */
+  const string& gridDirectory() const { return theGridDirectory; }
+
+  /**
+   * Return true, if initialization should actually be postponed to
+   * the next call of initialize
+   */
+  static bool postponeInitialize() {
+    return thePostponeInitialize();
+  }
+
+  /**
+   * Indicate that initialization should actually be postponed to
+   * the next call of initialize
+   */
+  static void doPostponeInitialize(bool yes = true) {
+    thePostponeInitialize() = yes;
+  }
+
 protected:
 
   /**
@@ -183,6 +237,30 @@ private:
    * The last generated phase space point.
    */
   vector<double> theLastPoint;
+
+  /**
+   * True, if the run is actually an integration job
+   */
+  bool theIntegrationJob;
+
+  /**
+   * A file containing a list of subprocesses to integrate
+   */
+  string theIntegrationList;
+
+  /**
+   * The directory to be used to store grid information
+   */
+  string theGridDirectory;
+
+  /**
+   * True, if initialization should actually be postponed to the next
+   * call of initialize
+   */
+  static bool& thePostponeInitialize() {
+    static bool flag = false;
+    return flag;
+  }
 
 private:
 

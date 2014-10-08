@@ -78,7 +78,8 @@ void VertexBase::addToList(const vector<long> & ids) {
 void VertexBase::doinit() {
   Interfaced::doinit();
   // set up the incoming and outgoing particles
-  assert( _outpart.empty() && _inpart.empty() );
+  if ( !_outpart.empty() || !_inpart.empty() )
+    return;
   for ( unsigned int ix=0; ix<_particles.size(); ++ix ) {
     for ( vector<PDPtr>::const_iterator it = _particles[ix].begin();
 	  it != _particles[ix].end(); ++it ) {

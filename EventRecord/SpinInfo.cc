@@ -118,15 +118,24 @@ void SpinInfo::decay(bool recursive) const {
 
 void SpinInfo::redevelop() const {
   assert(developed()==NeedsUpdate);
+  // calculate rho/D matrix
+  if(_timelike) {
+    _Dmatrix   = decayVertex() ? 
+      decayVertex()->getDMatrix(decayLocation()) : RhoDMatrix(iSpin());
+  }
+  else {
+    _rhomatrix = decayVertex() ? 
+      decayVertex()->getRhoMatrix(decayLocation(),false) :  RhoDMatrix(iSpin());
+  }
   // update the D matrix of this spininfo
-  _Dmatrix = decayVertex() ? decayVertex()->getDMatrix(decayLocation()) : RhoDMatrix(iSpin());
   _developed = Developed;
   // update the parent if needed
   if(productionVertex() &&
      productionVertex()->incoming().size()==1) {
-    tcSpinPtr parent = productionVertex()->incoming()[0];
-    if(parent->developed()==NeedsUpdate) 
-      parent->redevelop();
+    tcSpinPtr parent = _timelike ? 
+      productionVertex()->incoming()[0] : productionVertex()->outgoing()[0];
+    parent->needsUpdate();
+    parent->redevelop();
   }
 }
 
@@ -139,9 +148,13 @@ void SpinInfo::develop() const {
     redevelop();
     return;
   case Undeveloped:
-    if(_decay) _Dmatrix= _decay->getDMatrix(_decayloc);
+    if(_timelike) {
+      if(_decay) _Dmatrix = _decay->getDMatrix(_decayloc);
+      else       _Dmatrix = RhoDMatrix(iSpin());
+    }
     else {
-      _Dmatrix=RhoDMatrix(iSpin());
+      if(_decay) _rhomatrix = _decay->getRhoMatrix(_decayloc,false);
+      else       _rhomatrix = RhoDMatrix(iSpin());
     }
     _developed=Developed;
     return;

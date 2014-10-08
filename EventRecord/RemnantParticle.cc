@@ -76,7 +76,7 @@ void RemnantParticle::fixColourLines(tPPtr parton) {
     if ( parton->colourLine() )
       parton->colourLine()->addAntiColoured(this);
     else
-      ColourLine::create(parton, this);
+      ColourLine::create(parton, tPPtr(this));
   } 
   if ( parton->hasAntiColour() ) {
     if ( parton->antiColourLine() )

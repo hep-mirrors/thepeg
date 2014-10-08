@@ -1635,7 +1635,7 @@ void " class "::persistentInput(PersistentIStream & is, int) {
 	"fulldescribe"		"msend"			"setdef"
 	"get"			"mset"			"setup"
 	"globallibrary"		"msetdef"               "newdef"
-	"insert"		"mv"
+	"insert"		"mv"                    "clear"
 	)
 ;; Further Regex highlighting
       '(
@@ -1644,6 +1644,8 @@ void " class "::persistentInput(PersistentIStream & is, int) {
 	;; simplest pattern highlight
 	;;("[[:alnum:]]+\\.so" . 'font-lock-function-name-face)
 	("[[:alnum:]]+\\.so" . 'font-lock-type-face)
+	("<[[:alnum:]]+>" . 'font-lock-function-name-face)
+	("([[:alnum:]]+)" . 'font-lock-function-name-face)
 	("\\([[:alnum:]]+::\\)+[[:alnum:]]+" . 'font-lock-type-face)
 
 
