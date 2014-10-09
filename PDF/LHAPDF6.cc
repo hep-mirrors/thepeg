@@ -13,6 +13,7 @@
 
 #include "LHAPDF6.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Utilities/DescribeClass.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/Interface/Switch.h"
 #include "ThePEG/Interface/Command.h"
@@ -32,10 +33,9 @@ using ThePEG::GeV2;
 using ThePEG::cPDVector;
 
 ThePEG::LHAPDF::LHAPDF()
-  : thePDF(), thePDFName("cteq6l1"), 
+  : thePDF(), thePDFName("THEPEG_NO_PDFSET_CHOSEN"), 
     theMember(0),
     theVerboseLevel(0), theMaxFlav(5),
-    lastQ2(-1.0*GeV2), lastX(-1.0), lastP2(-1.0*GeV2),
     xMin(0.0), xMax(1.0), Q2Min(ZERO), Q2Max(Constants::MaxEnergy2) {}
 
 ThePEG::LHAPDF::LHAPDF(const LHAPDF & x)
@@ -43,7 +43,6 @@ ThePEG::LHAPDF::LHAPDF(const LHAPDF & x)
     thePDF(), thePDFName(x.thePDFName), 
     theMember(x.theMember),
     theVerboseLevel(x.theVerboseLevel), theMaxFlav(x.theMaxFlav),
-    lastQ2(-1.0*GeV2), lastX(-1.0), lastP2(-1.0*GeV2),
     xMin(x.xMin), xMax(x.xMax), Q2Min(x.Q2Min), Q2Max(x.Q2Max) {}
 
 ThePEG::IBPtr ThePEG::LHAPDF::clone() const {
@@ -55,7 +54,11 @@ ThePEG::IBPtr ThePEG::LHAPDF::fullclone() const {
 }
 
 void ThePEG::LHAPDF::initPDFptr() {
-  if ( thePDF ) return;
+  if (    thePDF 
+       && thePDF->set().name() == thePDFName 
+       && thePDF->memberID() == theMember ) 
+    return;
+  delete thePDF;
   thePDF = ::LHAPDF::mkPDF(thePDFName, theMember);
   xMin = thePDF->xMin();
   xMax = thePDF->xMax();
@@ -108,6 +111,7 @@ void ThePEG::LHAPDF::setPDFMember(int member) {
   	::LHAPDF::mkPDFInfo(thePDFName, member);
     if ( test )
       theMember = member;
+    delete test;
   }
   catch (::LHAPDF::ReadError & e) {
    Throw<ThePEG::LHAPDF::NotInstalled>()
@@ -121,39 +125,11 @@ string ThePEG::LHAPDF::doTest(string input) {
   Energy2 P2 = ZERO;
   istringstream is(input);
   is >> x >> iunit(Q2, GeV2) >> iunit(P2, GeV2);
-  checkUpdate(x, Q2, P2);
+  initPDFptr();
   ostringstream os;
-  for ( int i = 0; i < 13; ++i ) os << " " << lastXF[i];
+  for ( int i = 0; i < 13; ++i ) os << " " << thePDF->xfxQ2(i,x,Q2/GeV2);
   return os.str();
 }  
-
-void ThePEG::LHAPDF::checkUpdate(double x, Energy2 Q2, Energy2 P2) const {
-  if ( x == lastX && Q2 == lastQ2 && P2 == lastP2 ) return;
-  lastX = x;
-  lastQ2 = Q2;
-  lastP2 = P2;
-
-  assert ( thePDF );
-
-  if ( ! thePDF->inRangeXQ2(x, Q2/GeV2) ) {
-      switch ( rangeException ) {
-      case rangeThrow: Throw<Exception>()
-	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << double(Q2/GeV2)
-	<< " GeV^2) was outside of limits in PDF " << name() << "."
-	<< Exception::eventerror;
-	break;
-      case rangeZero:
-	lastXF = vector<double>(13, 0.0);
-	return;
-      case rangeFreeze:
-	lastX = x = min(max(x, xMin), xMax);
-	lastQ2 = Q2 = min(max(Q2, Q2Min), Q2Max);
-      }
-  } 
-
-  thePDF->xfxQ2(x, Q2/GeV2, lastXF);
-
-}
 
 bool ThePEG::LHAPDF::canHandleParticle(tcPDPtr particle) const {
   using namespace ParticleID;
@@ -166,8 +142,6 @@ cPDVector ThePEG::LHAPDF::partons(tcPDPtr particle) const {
   const vector<int> & flavs = 
     pdfset.get_entry_as< vector<int> >("Flavors");
 
-  assert( !flavs.empty() );
-
   cPDVector ret;
   ret.reserve( flavs.size() );
   if ( canHandleParticle(particle) ) {
@@ -179,69 +153,76 @@ cPDVector ThePEG::LHAPDF::partons(tcPDPtr particle) const {
   return ret;
 }
 
-namespace LHAPDFIndex {
-enum VectorIndices {
-  topb = 0, botb = 1, chab = 2, strb = 3, upb = 4, dowb = 5, glu = 6, dow = 7,
-  up = 8, str = 9, cha = 10, bot = 11, top = 12, photon = 13 };
-}
-
 double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScale,
                       double x, double, Energy2 particleScale) const {
   // Here we should return the actual density.
   using namespace ThePEG::ParticleID;
-  using namespace LHAPDFIndex;
-  checkUpdate(x, partonScale, particleScale);
-  switch ( parton->id() ) {
+
+  double Q2 = partonScale/GeV2;
+
+   if ( ! thePDF->inRangeXQ2(x, Q2) ) {
+       switch ( rangeException ) {
+       case rangeThrow: Throw<Exception>()
+ 	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << Q2
+ 	<< " GeV^2) was outside of limits in PDF " << name() << "."
+ 	<< Exception::eventerror;
+	 break;
+       case rangeZero:
+ 	 return 0.0;
+       case rangeFreeze:
+ 	x = min(max(x, xMin), xMax);
+        Q2 = min(max(Q2, Q2Min/GeV2), Q2Max/GeV2);
+       }
+   } 
+
+   int pid = parton->id();
+   int abspid = abs(pid);
+   
+  switch ( pid ) {
   case t:
-    return maxFlav() < 6? 0.0: lastXF[top];
   case tbar:
-    return maxFlav() < 6? 0.0: lastXF[topb];
   case b:
-    return maxFlav() < 5? 0.0: lastXF[bot];
   case bbar:
-    return maxFlav() < 5? 0.0: lastXF[botb];
   case c:
-    return maxFlav() < 4? 0.0: lastXF[cha];
   case cbar:
-    return maxFlav() < 4? 0.0: lastXF[chab];
-  case ParticleID::s:
-    return lastXF[str];
+    return maxFlav() < abspid ? 0.0 : thePDF->xfxQ2(pid,x,Q2);
+  case s:
   case sbar:
-    return lastXF[strb];
+    return thePDF->xfxQ2(pid,x,Q2);
   case u:
     switch ( particle->id() ) {
-    case n0: return lastXF[dow];
-    case pbarminus: return lastXF[upb];
-    case nbar0: return lastXF[dowb];
+    case n0:        return thePDF->xfxQ2(d   ,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(ubar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(dbar,x,Q2);
     case pplus:
-    default: return lastXF[up];
+    default:        return thePDF->xfxQ2(u   ,x,Q2);
     }
   case ubar:
     switch ( particle->id() ) {
-    case n0: return lastXF[dowb];
-    case pbarminus: return lastXF[up];
-    case nbar0: return lastXF[dow];
+    case n0:        return thePDF->xfxQ2(dbar,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(u   ,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(d   ,x,Q2);
     case pplus:
-    default: return lastXF[upb];
+    default:        return thePDF->xfxQ2(ubar,x,Q2);
     }
   case d:
     switch ( particle->id() ) {
-    case n0: return lastXF[up];
-    case pbarminus: return lastXF[dowb];
-    case nbar0: return lastXF[upb];
+    case n0:        return thePDF->xfxQ2(u   ,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(dbar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(ubar,x,Q2);
     case pplus:
-    default: return lastXF[dow];
+    default:        return thePDF->xfxQ2(d   ,x,Q2);
     }
   case dbar:
     switch ( particle->id() ) {
-    case n0: return lastXF[upb];
-    case pbarminus: return lastXF[dow];
-    case nbar0: return lastXF[up];
+    case n0:        return thePDF->xfxQ2(ubar,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(d   ,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(u   ,x,Q2);
     case pplus:
-    default: return lastXF[dowb];
+    default:        return thePDF->xfxQ2(dbar,x,Q2);
     }
-  case ParticleID::g:
-    return lastXF[glu];
+  case g:
+    return thePDF->xfxQ2(g,x,Q2);
   case ParticleID::gamma:
     return 0.;
   }
@@ -259,8 +240,23 @@ double ThePEG::LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScal
   // Here we should return the actual valence density. This will only
   // work properly for nucleons
   using namespace ThePEG::ParticleID;
-  using namespace LHAPDFIndex;
-  checkUpdate(x, partonScale, particleScale);
+
+  double Q2 = partonScale / GeV2;
+
+   if ( ! thePDF->inRangeXQ2(x, Q2) ) {
+       switch ( rangeException ) {
+       case rangeThrow: Throw<Exception>()
+ 	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << Q2
+ 	<< " GeV^2) was outside of limits in PDF " << name() << "."
+ 	<< Exception::eventerror;
+	 break;
+       case rangeZero:
+ 	 return 0.0;
+       case rangeFreeze:
+ 	x = min(max(x, xMin), xMax);
+        Q2 = min(max(Q2, Q2Min/GeV2), Q2Max/GeV2);
+       }
+   } 
 
   switch ( parton->id() ) {
   case t:
@@ -269,39 +265,39 @@ double ThePEG::LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScal
   case bbar:
   case c:
   case cbar:
-  case ParticleID::s:
+  case s:
   case sbar:
   case ParticleID::gamma:
     return 0.0;
   case u:
     switch ( particle->id() ) {
-    case n0: return lastXF[dow] - lastXF[dowb];
+    case n0:    return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
     case pbarminus: return 0.0;
     case nbar0: return 0.0;
-    case pplus: return lastXF[up] - lastXF[upb];
+    case pplus: return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
     default: return 0.0;
     }
   case ubar:
     switch ( particle->id() ) {
     case n0: return 0.0;
-    case pbarminus: return lastXF[up] - lastXF[upb];
-    case nbar0: return lastXF[dow] - lastXF[dowb];
+    case pbarminus: return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
     case pplus:
     default: return 0.0;
     }
   case d:
     switch ( particle->id() ) {
-    case n0: return lastXF[up] - lastXF[upb];
+    case n0:    return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
     case pbarminus: return 0.0;
     case nbar0: return 0.0;
-    case pplus: return lastXF[dow] - lastXF[dowb];
+    case pplus: return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
     default: return 0.0;
     }
   case dbar:
     switch ( particle->id() ) {
     case n0: return 0.0;
-    case pbarminus: return lastXF[dow] - lastXF[dowb];
-    case nbar0: return lastXF[up] - lastXF[upb];
+    case pbarminus: return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
     case pplus:
     default: return 0.0;
     }
@@ -315,60 +311,71 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScal
 		    double x, double, Energy2 particleScale) const {
   // Here we should return the actual density.
   using namespace ThePEG::ParticleID;
-  using namespace LHAPDFIndex;
-  checkUpdate(x, partonScale, particleScale);
 
-  switch ( parton->id() ) {
+  double Q2 = partonScale / GeV2;
+
+   if ( ! thePDF->inRangeXQ2(x, Q2) ) {
+       switch ( rangeException ) {
+       case rangeThrow: Throw<Exception>()
+ 	<< "Momentum fraction (x=" << x << ") or scale (Q2=" << Q2
+ 	<< " GeV^2) was outside of limits in PDF " << name() << "."
+ 	<< Exception::eventerror;
+	 break;
+       case rangeZero:
+ 	 return 0.0;
+       case rangeFreeze:
+ 	x = min(max(x, xMin), xMax);
+        Q2 = min(max(Q2, Q2Min/GeV2), Q2Max/GeV2);
+       }
+   } 
+   int pid = parton->id();
+   int abspid = abs(pid);
+   
+  switch ( pid ) {
   case t:
-    return maxFlav() < 6? 0.0: lastXF[top];
   case tbar:
-    return maxFlav() < 6? 0.0: lastXF[topb];
   case b:
-    return maxFlav() < 5? 0.0: lastXF[bot];
   case bbar:
-    return maxFlav() < 5? 0.0: lastXF[botb];
   case c:
-    return maxFlav() < 4? 0.0: lastXF[cha];
   case cbar:
-    return maxFlav() < 4? 0.0: lastXF[chab];
-  case ParticleID::s:
-    return lastXF[str];
+    return maxFlav() < abspid ? 0.0 : thePDF->xfxQ2(pid,x,Q2);
+  case s:
   case sbar:
-    return lastXF[strb];
+    return thePDF->xfxQ2(pid,x,Q2);
   case u:
     switch ( particle->id() ) {
-    case n0: return lastXF[dowb];
-    case pbarminus: return lastXF[upb];
-    case nbar0: return lastXF[dowb];
-    case pplus: return lastXF[upb];
-    default: return lastXF[up];
+    case n0:        return thePDF->xfxQ2(dbar,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(ubar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(dbar,x,Q2);
+    case pplus:     return thePDF->xfxQ2(ubar,x,Q2);
+    default:        return thePDF->xfxQ2(u   ,x,Q2);
     }
   case ubar:
     switch ( particle->id() ) {
-    case n0: return lastXF[dowb];
-    case pbarminus: return lastXF[upb];
-    case nbar0: return lastXF[dowb];
-    case pplus: return lastXF[upb];
-    default: return lastXF[upb];
+    case n0:        return thePDF->xfxQ2(dbar,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(ubar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(dbar,x,Q2);
+    case pplus:
+    default:        return thePDF->xfxQ2(ubar,x,Q2);
     }
   case d:
     switch ( particle->id() ) {
-    case n0: return lastXF[upb];
-    case pbarminus: return lastXF[dowb];
-    case nbar0: return lastXF[upb];
-    case pplus: return lastXF[dowb];
-    default: return lastXF[dow];
+    case n0:        return thePDF->xfxQ2(ubar,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(dbar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(ubar,x,Q2);
+    case pplus:     return thePDF->xfxQ2(dbar,x,Q2);
+    default:        return thePDF->xfxQ2(d   ,x,Q2);
     }
   case dbar:
     switch ( particle->id() ) {
-    case n0: return lastXF[upb];
-    case pbarminus: return lastXF[dowb];
-    case nbar0: return lastXF[upb];
-    case pplus: return lastXF[dowb];
-    default: return lastXF[dowb];
+    case n0:        return thePDF->xfxQ2(ubar,x,Q2);
+    case pbarminus: return thePDF->xfxQ2(dbar,x,Q2);
+    case nbar0:     return thePDF->xfxQ2(ubar,x,Q2);
+    case pplus:
+    default:        return thePDF->xfxQ2(dbar,x,Q2);
     }
-  case ParticleID::g:
-    return lastXF[glu];
+  case g:
+    return thePDF->xfxQ2(g,x,Q2);
   case ParticleID::gamma:
     return 0.;
   }
@@ -385,14 +392,11 @@ void ThePEG::LHAPDF::persistentInput(PersistentIStream & is, int) {
   is >> thePDFName >> theMember
      >> theVerboseLevel >> theMaxFlav
      >> xMin >> xMax >> iunit(Q2Min, GeV2) >> iunit(Q2Max, GeV2);
-  lastQ2 = -1.0*GeV2;
-  lastX = -1.0;
-  lastP2 = -1.0*GeV2;
   initPDFptr();
 }
 
-ThePEG::ClassDescription<ThePEG::LHAPDF> ThePEG::LHAPDF::initLHAPDF;
-// Definition of the static class description member.
+ThePEG::DescribeClass<ThePEG::LHAPDF, ThePEG::PDFBase>
+describeLHAPDF("ThePEG::LHAPDF", "ThePEGLHAPDF.so");
 
 void ThePEG::LHAPDF::Init() {
 
@@ -413,7 +417,7 @@ void ThePEG::LHAPDF::Init() {
     ("PDFName",
      "The name of the PDF set to be used. Should correspond to "
      "the LHAPDF v6 name.",
-     &ThePEG::LHAPDF::thePDFName, "cteq6l1", true, false,
+     &ThePEG::LHAPDF::thePDFName, "THEPEG_NO_PDFSET_CHOSEN", true, false,
      &ThePEG::LHAPDF::setPDFName);
 
   static Deleted<LHAPDF> interfacePDFNumber

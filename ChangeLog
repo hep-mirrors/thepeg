@@ -1,3 +1,9 @@
+2014-10-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
+
+	* PDF/LHAPDF6.cc, PDF/LHAPDF6.h: Removed all-flavour caching from
+	xfx calls; LHAPDF object no longer part of default rpo to fix
+	installation issues coming from hard-coded dependency on cteq6l1.
+
 2014-06-10  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* PDF/LHAPDF6.cc, PDF/LHAPDF6.h, PDF/Makefile.am, m4/lhapdf.m4,
