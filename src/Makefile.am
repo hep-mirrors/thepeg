@@ -28,7 +28,7 @@ TestLHAPDF_la_SOURCES = TestLHAPDF.cc TestLHAPDF.h
 TestLHAPDF_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 endif
 
-dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in MultiLEP.in
+dist_pkgdata_DATA = SimpleLEP.in ThePEGDefaults.in ThePEGParticles.in debugItems.txt TestLHAPDF.in MultiLEP.in
 
 rpodir = $(pkglibdir)
 nodist_rpo_DATA = ThePEGDefaults.rpo
@@ -47,7 +47,7 @@ valgrind:
 	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./setupThePEG -r ThePEGDefaults.rpo SimpleLEP.in &> /tmp/valgrind.out
 	valgrind --leak-check=full --num-callers=25 --track-fds=yes --freelist-vol=100000000 --leak-resolution=med --trace-children=yes ./runThePEG SimpleLEP.run >> /tmp/valgrind.out 2>&1
 
-INPUTFILES = ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in \
+INPUTFILES = ThePEGDefaults.in ThePEGParticles.in \
              SimpleLEP.in SimpleLEP.mod MultiLEP.in TestLHAPDF.in
 
 done-all-links:
@@ -62,12 +62,9 @@ done-all-links:
 	@echo "stamp" > done-all-links
 @EMPTY@endif
 
-ThePEGDefaults.rpo: done-all-links setupThePEG ThePEGDefaults.in LHAPDFDefaults.in ThePEGParticles.in
+ThePEGDefaults.rpo: done-all-links setupThePEG ThePEGDefaults.in ThePEGParticles.in
 	./setupThePEG --init --exitonerror -L../lib -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; rm -f ThePEGDefaults.rpo; $(LN_S) -f ../src/ThePEGDefaults.rpo .
-if USELHAPDF
-	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --init --exitonerror -r ThePEGDefaults.rpo -o ThePEGDefaults.rpo LHAPDFDefaults.in
-endif
 
 check-local: ThePEGDefaults.rpo
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
@@ -115,7 +112,7 @@ install-exec-hook:
 install-data-hook:
 	./setupThePEG --init --exitonerror -L$(DESTDIR)$(pkglibdir) -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/ThePEGDefaults.in
 if USELHAPDF
-	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/LHAPDFDefaults.in
+	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo
 endif
 	cd $(DESTDIR)$(pkglibdir); \
 	if test -n "$(DESTDIR)"; \
