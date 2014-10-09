@@ -116,7 +116,7 @@ void VertexBase::persistentInput(PersistentIStream & is, int) {
 
 // Static variable needed for the type description system in ThePEG.
 DescribeAbstractClass<VertexBase,Interfaced>
-describeThePEGVertexBase("ThePEG::VertexBase", "libThePEG.so");
+describeThePEGVertexBase("ThePEG::VertexBase", "");
 
 void VertexBase::Init() {
   
