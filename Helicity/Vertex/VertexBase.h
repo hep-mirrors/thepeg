@@ -229,6 +229,38 @@ public:
   }
   //@}
 
+public:
+
+  /**
+   *   Set coupling methods
+   */
+  //@{
+  /**
+   * Calculate the couplings for a three point interaction.
+   * This method is virtual and must be implemented in 
+   * classes inheriting from this.
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param part1 The ParticleData pointer for the first  particle.
+   * @param part2 The ParticleData pointer for the second particle.
+   * @param part3 The ParticleData pointer for the third  particle.
+   */
+  virtual void setCoupling(Energy2 q2,tcPDPtr part1,
+			   tcPDPtr part2,tcPDPtr part3)=0;
+
+  /**
+   * Calculate the couplings for a four point interaction.
+   * This method is virtual and must be implemented in 
+   * classes inheriting from this.
+   * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
+   * @param part1 The ParticleData pointer for the first  particle.
+   * @param part2 The ParticleData pointer for the second particle.
+   * @param part3 The ParticleData pointer for the third  particle.
+   * @param part4 The ParticleData pointer for the fourth particle.
+   */
+  virtual void setCoupling(Energy2 q2,tcPDPtr part1,tcPDPtr part2,tcPDPtr part3,
+			   tcPDPtr part4)=0;
+  //@}
+
 protected:
 
   /** @name Standard Interfaced functions. */
@@ -498,38 +530,6 @@ private:
 ostream & operator<<(ostream &, const VertexBase &);
   
 }
-}
-
-
-namespace ThePEG {
-
-/** @cond TRAITSPECIALIZATIONS */
-
-/**
- * The following template specialization informs ThePEG about the
- * base class of VertexBase.
- */
-template <>
-struct BaseClassTrait<ThePEG::Helicity::VertexBase,1> {
-  /** Typedef of the base class of VertexBase. */
-  typedef Interfaced NthBase;
-};
-
-/**
- * The following template specialization informs ThePEG about the
- * name of this class and the shared object where it is defined.
- */
-template <>
-struct ClassTraits<ThePEG::Helicity::VertexBase>
-  : public ClassTraitsBase<ThePEG::Helicity::VertexBase> {
-  /**
-   * Return the class name.
-   */
-  static string className() { return "ThePEG::VertexBase"; }
-};
-
-/** @endcond */
-
 }
 
 #endif /* ThePEG_VertexBase_H */
