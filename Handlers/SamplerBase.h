@@ -176,6 +176,16 @@ public:
   const string& gridDirectory() const { return theGridDirectory; }
 
   /**
+   * Set the directory to be used to store parallel integration information
+   */
+  void parallelIntegrationDirectory(const string& d) { theParallelIntegrationDirectory = d; }
+
+  /**
+   * Return the directory to be used to store parallel integration grid information
+   */
+  const string& parallelIntegrationDirectory() const { return theParallelIntegrationDirectory; }
+
+  /**
    * Return true, if initialization should actually be postponed to
    * the next call of initialize
    */
@@ -252,6 +262,11 @@ private:
    * The directory to be used to store grid information
    */
   string theGridDirectory;
+
+  /**
+   * The directory to be used to store parallel integration information
+   */
+  string theParallelIntegrationDirectory;
 
   /**
    * True, if initialization should actually be postponed to the next
