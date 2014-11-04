@@ -201,6 +201,20 @@ public:
     thePostponeInitialize() = yes;
   }
 
+  /**
+   * Return true, if a setupfile is in use
+   */
+  static bool hasSetupFile() {
+    return theHasSetupFile();
+  }
+
+  /**
+   * Indicate that a setupfile is in use.
+   */
+  static void setupFileUsed(bool yes = true) {
+    theHasSetupFile() = yes;
+  }
+
 protected:
 
   /**
@@ -273,6 +287,14 @@ private:
    * call of initialize
    */
   static bool& thePostponeInitialize() {
+    static bool flag = false;
+    return flag;
+  }
+
+  /**
+   * True, if a setupfile is in use
+   */
+  static bool& theHasSetupFile() {
     static bool flag = false;
     return flag;
   }
