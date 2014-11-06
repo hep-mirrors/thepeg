@@ -221,6 +221,22 @@ public:
     theHasSetupFile() = yes;
   }
 
+  /**
+   * Return the seed that has been used for this run to disentangle
+   * grids whihch have been adapted further
+   */
+  static long seed() {
+    return theSeed();
+  }
+
+  /**
+   * Set the seed that has been used for this run to disentangle
+   * grids whihch have been adapted further
+   */
+  static void setSeed(long s) {
+    theSeed() = s;
+  }
+
   //@}
 
 protected:
@@ -299,6 +315,15 @@ private:
   static bool& theHasSetupFile() {
     static bool flag = false;
     return flag;
+  }
+
+  /**
+   * The seed that has been used for this run to disentangle
+   * grids whihch have been adapted further
+   */
+  static long& theSeed() {
+    static s = 0;
+    return s;
   }
 
 private:
