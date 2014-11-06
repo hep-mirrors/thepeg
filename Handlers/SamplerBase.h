@@ -322,7 +322,7 @@ private:
    * grids whihch have been adapted further
    */
   static long& theSeed() {
-    static s = 0;
+    static long s = 0;
     return s;
   }
 
