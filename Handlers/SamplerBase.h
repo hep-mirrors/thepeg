@@ -43,7 +43,8 @@ public:
    * Constructor
    */
   SamplerBase()
-    : Interfaced(), theIntegrationJob(false), theIntegrationList(""),
+    : Interfaced(), 
+      theIntegrationList(""),
       theGridDirectory(".") {}
 
   /**
@@ -145,15 +146,8 @@ public:
   virtual double sumWeights2() const = 0;
   //@}
 
-  /**
-   * Indicate that the run is actually an integration job
-   */
-  void isIntegrationJob() { theIntegrationJob = true; }
-
-  /**
-   * Return true, if the run is actually an integration job
-   */
-  bool integrationJob() const { return theIntegrationJob; }
+  /** @name Controlling of run levels and grid handling*/
+  //@{
 
   /**
    * Set a file containing a list of subprocesses to integrate
@@ -186,19 +180,31 @@ public:
   const string& parallelIntegrationDirectory() const { return theParallelIntegrationDirectory; }
 
   /**
-   * Return true, if initialization should actually be postponed to
-   * the next call of initialize
+   * Enumerate the possible run levels
    */
-  static bool postponeInitialize() {
-    return thePostponeInitialize();
+  enum RunLevels {
+
+    UnknownMode = 0,
+    InitMode,
+    ReadMode,
+    BuildMode,
+    IntegrationMode,
+    RunMode
+
+  };
+
+  /**
+   * Return the run level
+   */
+  static int runLevel() {
+    return theRunLevel();
   }
 
   /**
-   * Indicate that initialization should actually be postponed to
-   * the next call of initialize
+   * Set the run level
    */
-  static void doPostponeInitialize(bool yes = true) {
-    thePostponeInitialize() = yes;
+  static void setRunLevel(int level) {
+    theRunLevel() = level;
   }
 
   /**
@@ -214,6 +220,8 @@ public:
   static void setupFileUsed(bool yes = true) {
     theHasSetupFile() = yes;
   }
+
+  //@}
 
 protected:
 
@@ -263,11 +271,6 @@ private:
   vector<double> theLastPoint;
 
   /**
-   * True, if the run is actually an integration job
-   */
-  bool theIntegrationJob;
-
-  /**
    * A file containing a list of subprocesses to integrate
    */
   string theIntegrationList;
@@ -283,12 +286,11 @@ private:
   string theParallelIntegrationDirectory;
 
   /**
-   * True, if initialization should actually be postponed to the next
-   * call of initialize
+   * The run level
    */
-  static bool& thePostponeInitialize() {
-    static bool flag = false;
-    return flag;
+  static int& theRunLevel() {
+    static int lvl = UnknownMode;
+    return lvl;
   }
 
   /**
