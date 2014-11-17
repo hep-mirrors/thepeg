@@ -237,6 +237,20 @@ public:
     theSeed() = s;
   }
 
+  /**
+   * Return the number of subprocesses to be integrated per job.
+   */
+  static unsigned int integratePerJob() {
+    return theIntegratePerJob();
+  }
+
+  /**
+   * Set the number of subprocesses to be integrated per job.
+   */
+  static void setIntegratePerJob(unsigned int s) {
+    theIntegratePerJob() = s;
+  }
+
   //@}
 
 protected:
@@ -323,6 +337,14 @@ private:
    */
   static long& theSeed() {
     static long s = 0;
+    return s;
+  }
+
+  /**
+   * The number of subprocesses to be integrated per job.
+   */
+  static unsigned int& theIntegratePerJob() {
+    static unsigned int s = 0;
     return s;
   }
 
