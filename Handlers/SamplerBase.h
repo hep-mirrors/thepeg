@@ -251,6 +251,20 @@ public:
     theIntegratePerJob() = s;
   }
 
+  /**
+   * Return the maximum number of integration jobs to be created.
+   */
+  static unsigned int integrationJobs() {
+    return theIntegrationJobs();
+  }
+
+  /**
+   * Set the maximum number of integration jobs to be created.
+   */
+  static void setIntegrationJobs(unsigned int s) {
+    theIntegrationJobs() = s;
+  }
+
   //@}
 
 protected:
@@ -344,6 +358,14 @@ private:
    * The number of subprocesses to be integrated per job.
    */
   static unsigned int& theIntegratePerJob() {
+    static unsigned int s = 0;
+    return s;
+  }
+
+  /**
+   * The maximum number of integration jobs to be created.
+   */
+  static unsigned int& theIntegrationJobs() {
     static unsigned int s = 0;
     return s;
   }
