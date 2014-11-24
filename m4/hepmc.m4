@@ -50,7 +50,7 @@ if test "x$with_hepmc" != "xno"; then
 	# check HepMC
 	AC_MSG_CHECKING([that HepMC works])
 	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <HepMC/GenEvent.h>
-]],[[HepMC::GenEvent();]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
+]],[[HepMC::GenEvent(HepMC::Units::GEV, HepMC::Units::MM);]])],[AC_MSG_RESULT([yes])],[AC_MSG_RESULT([no]) 
 	AC_MSG_ERROR([Use '--with-hepmc=' to set a path or use '--without-hepmc'.])
 	])
 
@@ -59,7 +59,10 @@ if test "x$with_hepmc" != "xno"; then
 #include <ostream>
 #include <istream>
 ])
-       AC_CHECK_HEADERS([HepMC/IO_GenEvent.h],[],[AC_MSG_ERROR([Need HepMC with GenEvent support.])])
+	HEPMCVERSION=2
+       AC_CHECK_HEADERS([HepMC/IO/IO_GenEvent.h],[HEPMCVERSION=3],[AC_CHECK_HEADERS([HepMC/IO_GenEvent.h],[],[AC_MSG_ERROR([Need HepMC with GenEvent support.])])])
+
+       AC_CHECK_HEADERS([HepMC/Version.h],[],[])
 
 
 	LIBS="$oldLIBS"
@@ -67,7 +70,8 @@ if test "x$with_hepmc" != "xno"; then
 	CPPFLAGS="$oldCPPFLAGS"
 fi
 
-AM_CONDITIONAL(HAVE_HEPMC,[test "x$with_hepmc" != "xno"])
+AM_CONDITIONAL(HAVE_HEPMC,[test "x$with_hepmc" != "xno" && test "$HEPMCVERSION" != "3"])
+AM_CONDITIONAL(HAVE_HEPMC3,[test "x$with_hepmc" != "xno" && test "$HEPMCVERSION" == "3"])
 AC_SUBST(HEPMCINCLUDE)
 AC_SUBST(HEPMCLIBS)
 AC_SUBST(CREATE_HEPMC)

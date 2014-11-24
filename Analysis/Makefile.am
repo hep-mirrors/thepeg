@@ -49,6 +49,14 @@ if HAVE_HEPMC
   HepMCAnalysis_la_LIBADD = $(HEPMCLIBS)
 endif
 
+if HAVE_HEPMC3
+  pkglib_LTLIBRARIES += HepMCAnalysis.la
+  HepMCAnalysis_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+  HepMCAnalysis_la_SOURCES = HepMC3File.h    HepMC3File.cc    NLOHepMC3File.h    NLOHepMC3File.cc
+  HepMCAnalysis_la_CPPFLAGS = $(AM_CPPFLAGS) $(HEPMCINCLUDE)
+  HepMCAnalysis_la_LIBADD = $(HEPMCLIBS)
+endif
+
 pkglib_LTLIBRARIES += GraphvizPlot.la
 GraphvizPlot_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 GraphvizPlot_la_SOURCES = GraphvizPlot.h GraphvizPlot.cc
