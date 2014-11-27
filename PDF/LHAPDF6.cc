@@ -34,15 +34,14 @@ using ThePEG::cPDVector;
 
 ThePEG::LHAPDF::LHAPDF()
   : thePDF(), thePDFName("THEPEG_NO_PDFSET_CHOSEN"), 
-    theMember(0),
-    theVerboseLevel(0), theMaxFlav(5),
+    theMember(0), theMaxFlav(5),
     xMin(0.0), xMax(1.0), Q2Min(ZERO), Q2Max(Constants::MaxEnergy2) {}
 
 ThePEG::LHAPDF::LHAPDF(const LHAPDF & x)
   : PDFBase(x), 
     thePDF(), thePDFName(x.thePDFName), 
     theMember(x.theMember),
-    theVerboseLevel(x.theVerboseLevel), theMaxFlav(x.theMaxFlav),
+    theMaxFlav(x.theMaxFlav),
     xMin(x.xMin), xMax(x.xMax), Q2Min(x.Q2Min), Q2Max(x.Q2Max) {}
 
 ThePEG::IBPtr ThePEG::LHAPDF::clone() const {
@@ -54,6 +53,8 @@ ThePEG::IBPtr ThePEG::LHAPDF::fullclone() const {
 }
 
 void ThePEG::LHAPDF::initPDFptr() {
+  ::LHAPDF::setVerbosity(std::max(0, 
+                         ThePEG::Debug::level - 1));
   if (    thePDF 
        && thePDF->set().name() == thePDFName 
        && thePDF->memberID() == theMember ) 
@@ -383,14 +384,12 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton, Energy2 partonScal
 }
 
 void ThePEG::LHAPDF::persistentOutput(PersistentOStream & os) const {
-  os << thePDFName << theMember 
-     << theVerboseLevel << theMaxFlav
+  os << thePDFName << theMember << theMaxFlav
      << xMin << xMax << ounit(Q2Min, GeV2) << ounit(Q2Max, GeV2);
 }
 
 void ThePEG::LHAPDF::persistentInput(PersistentIStream & is, int) {
-  is >> thePDFName >> theMember
-     >> theVerboseLevel >> theMaxFlav
+  is >> thePDFName >> theMember >> theMaxFlav
      >> xMin >> xMax >> iunit(Q2Min, GeV2) >> iunit(Q2Max, GeV2);
   initPDFptr();
 }
@@ -455,23 +454,9 @@ void ThePEG::LHAPDF::Init() {
      "parameters supplied.",
      &ThePEG::LHAPDF::doTest, true);
 
-  static Switch<LHAPDF,int> interfaceVerboseLevel
+  static Deleted<LHAPDF> interfaceVerboseLevel
     ("VerboseLevel",
-     "The verbosity of the output from the LHAPDF library.",
-     &ThePEG::LHAPDF::theVerboseLevel, 0, true, false);
-  static SwitchOption interfaceVerboseLevelSilent
-    (interfaceVerboseLevel,
-     "Silent",
-     "Trying to inhibit all output from the LHAPDF library "
-     "(unfortunately not always possible).",
-     0);
-  static SwitchOption interfaceVerboseLevelNormal
-    (interfaceVerboseLevel,
-     "Normal",
-     "Normal output from the LHAPDF library "
-     "(unfortunately to the standard output).",
-     1);
-  interfaceVerboseLevel.setHasDefault(false);
+     "LHAPDFv6 uses general debug level instead.");
 
   static Parameter<LHAPDF,int> interfaceMaxFlav
     ("MaxFlav",
