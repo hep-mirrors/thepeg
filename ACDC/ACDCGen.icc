@@ -65,7 +65,7 @@ template <typename Rnd, typename FncPtr>
 inline bool ACDCGen<Rnd,FncPtr>::
 addFunction(DimType dim, FncPtrType fnc, double maxrat) {
   if ( maxrat < 0.0 ) maxrat = 1.0/nTry();
-  typedef map<double,DVector> PointMap;
+  typedef multimap<double,DVector> PointMap;
   theLast = theFunctions.size();
   theFunctions.push_back(fnc);
   theNI.push_back(0);
@@ -86,7 +86,7 @@ addFunction(DimType dim, FncPtrType fnc, double maxrat) {
     rnd(dim, x);
     double val = FncTraits::value(fnc, x);
     if ( val > 0.0 ) {
-      pmap[val] = x;
+      pmap.insert(make_pair(val, x));
       itry = 0;
     }
   }

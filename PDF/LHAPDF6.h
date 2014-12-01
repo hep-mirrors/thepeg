@@ -141,12 +141,6 @@ protected:
   /** @name Internal helper functions. */
   //@{
   /**
-   * Retrieve new PDF values for the given parameters if they were
-   * changed since the last call.
-   */
-  void checkUpdate(double x, Energy2 Q2, Energy2 P2) const;
-
-  /**
    * Initialize the LHAPDF library for the chosen PDF set if it has
    * not been done before.
    */
@@ -264,37 +258,11 @@ private:
   int theMember;
 
   /**
-   * The verbosity of the output from the LHAPDF library.
-   */
-  int theVerboseLevel;
-
-  /**
    * The maximum number of flavours for which non-zero densities are
    * reported. The actual number of flavours may be less depending on
    * the chosen PDF set.
    */
   int theMaxFlav;
-
-  /**
-   * Save the last \f$Q^2\f$ value used to avoid recalculation.
-   */
-  mutable Energy2 lastQ2;
-
-  /**
-   * Save the last \f$x\f$ value used to avoid recalculation.
-   */
-  mutable double lastX;
-
-  /**
-   * Save the last \f$P^2\f$ value used for off-shell photon to avoid
-   * recalculation.
-   */
-  mutable Energy2 lastP2;
-
-  /**
-   * Save the last function values returned from the LHAPDF library.
-   */
-  mutable vector<double> lastXF;
 
   /**
    * The minimum \f$x\f$-value for the current PDF set.
@@ -319,49 +287,12 @@ private:
 private:
 
   /**
-   * The static object used to initialize the description of this class.
-   * Indicates that this is a concrete class with persistent data.
-   */
-  static ClassDescription<LHAPDF> initLHAPDF;
-
-  /**
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
   LHAPDF & operator=(const LHAPDF &);
 
 };
-
-}
-
-#include "ThePEG/Utilities/ClassTraits.h"
-
-namespace ThePEG {
-
-/** @cond TRAITSPECIALIZATIONS */
-
-/** This template specialization informs ThePEG about the
- *  base classes of LHAPDF. */
-template <>
-struct BaseClassTrait<LHAPDF,1> {
-  /** Typedef of the first base class of LHAPDF. */
-  typedef PDFBase NthBase;
-};
-
-/** This template specialization informs ThePEG about the name of
- *  the LHAPDF class and the shared object where it is defined. */
-template <>
-struct ClassTraits<LHAPDF>
-  : public ClassTraitsBase<LHAPDF> {
-  /** Return a platform-independent class name */
-  static string className() { return "ThePEG::LHAPDF"; }
-  /** Return the name of the shared library be loaded to get access to
-   *  the LeptonLeptonPDF class and every other class it uses (except
-   *  the base class). */
-  static string library() { return "ThePEGLHAPDF.so"; }
-};
-
-/** @endcond */
 
 }
 

@@ -167,7 +167,7 @@ void MixedParticleData::doinit() throw(InitException) {
     root*(x2+y2)/(2*modqp*zr*(1+x2)*_y+root*(x2+y2)+modqp*(1.+z2)*x2 
 		  - 2*modqp*zi*_x*(1-y2)-modqp*y2*(1-z2)+2*modqp);
   _prob= make_pair(1.-mixprob,mixprob);
-  if( Debug::level ) {
+  if( Debug::level > 1 ) {
     generator()->log() << "Parameters for the mixing of " << PDGName() << " and " 
 		       << CC()->PDGName() << "\n";
     generator()->log() << "x = " << _x << "\t y = " << _y << "\n";

@@ -115,10 +115,14 @@ public:
 			      const SpinorWaveFunction & sp1, 
 			      const SpinorBarWaveFunction & sbar2,
 			      complex<Energy> mass=-GeV, complex<Energy> width=-GeV);
-  //@}
 
   /**
-   * Calculate the couplings. This method is virtual and must be implemented in 
+   *   Set coupling methods
+   */
+  //@{
+  /**
+   * Calculate the couplings for a three point interaction.
+   * This method is virtual and must be implemented in 
    * classes inheriting from this.
    * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
    * @param part1 The ParticleData pointer for the first  particle.
@@ -127,7 +131,17 @@ public:
    */
   virtual void setCoupling(Energy2 q2,tcPDPtr part1,
 			   tcPDPtr part2,tcPDPtr part3)=0;
-  
+
+  /**
+   * Dummy setCouplings for a four point interaction 
+   * This method is virtual and must be implemented in 
+   * classes inheriting from this.
+   */
+  virtual void setCoupling(Energy2,tcPDPtr,tcPDPtr,tcPDPtr,tcPDPtr) {
+    assert(false);
+  }
+  //@}
+
   /**
    *  Get the couplings
    */
