@@ -52,7 +52,7 @@ addDecayProduct(Iterator firstParent, Iterator lastParent, tPPtr child,
       tPPtr parent = const_ptr_cast<tPPtr>((**it).final());
       if ( member(theParticles, parent) ) continue;
       if ( parent->children().empty() ||
-	   !member(theParticles, parent->children()[0]) ) return false;
+	   !member(theParticles, parent->children()[0]->final()) ) return false;
     }
   }
   for ( Iterator it = firstParent; it != lastParent; ++it ) {
@@ -79,7 +79,7 @@ bool Step::addDecayProduct(PIterator firstParent, PIterator lastParent,
     tPPtr parent = const_ptr_cast<tPPtr>((**it).final());
     if ( member(theParticles, parent) ) continue;
     if ( parent->children().empty() ||
-      !member(theParticles, parent->children()[0]) ) return false;
+	 !member(theParticles, parent->children()[0]->final()) ) return false;
   }
   for ( PIterator it = firstParent; it != lastParent; ++it ) {
     tPPtr parent = const_ptr_cast<tPPtr>((**it).final());

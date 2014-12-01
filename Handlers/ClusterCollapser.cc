@@ -57,7 +57,8 @@ collapse(tPVector tagged, tStepPtr newstep) {
 
   // Go through all clusters below the cut.
   while ( !clusters.empty() && clusters.begin()->first < cut() ) {
-    ColourSinglet & cl = clusters.begin()->second;
+    SingletMap::iterator clit = clusters.begin();
+    ColourSinglet & cl = clit->second;
 
     // If a cluster contains too many junctions, split them into
     // several singlets.
@@ -82,9 +83,19 @@ collapse(tPVector tagged, tStepPtr newstep) {
       // If this was a di-diquark cluster, split it into two.
       if ( diDiQuark(cl) ) insert(clusters, splitDiDiQuark(cl, newstep));
 
+    tPVector::iterator it = tagged.begin();
+    set<tPPtr> children;
+    while ( it != tagged.end() ) {
+      *it = (**it).final();
+      if ( (**it).decayed() ) {
+	children.insert((**it).children().begin(), (**it).children().end());
+	it = tagged.erase(it);
+      }
+      else ++it;
+    }
+    tagged.insert(tagged.end(), children.begin(), children.end());
       collapse(newstep, cl, tagged);
     }
-
     // Update the tagged vector and remove partons which have already
     // collapsed and insert their children instead.
     tPVector::iterator it = tagged.begin();
@@ -100,7 +111,7 @@ collapse(tPVector tagged, tStepPtr newstep) {
     tagged.insert(tagged.end(), children.begin(), children.end());
 
     // Remove the collapsed cluster.
-    clusters.erase(clusters.begin());
+    clusters.erase(clit);
 
     // Recalculate masses of the remaining clusters, insert them in a
     // temporary map and swap this map for the old map.
