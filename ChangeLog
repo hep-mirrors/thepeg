@@ -1,3 +1,8 @@
+2014-12-01  Leif Lönnblad  <Leif.Lonnblad@thep.lu.se>
+
+	* Handlers/ClusterCollapser.cc: Fixed errors when handling small
+	diquark-antidiquark clusters.
+
 2014-10-09  David Grellscheid  <David.Grellscheid@durham.ac.uk>
 
 	* PDF/LHAPDF6.cc, PDF/LHAPDF6.h: Removed all-flavour caching from
