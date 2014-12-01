@@ -418,6 +418,17 @@ collapse2(tStepPtr newStep, const ColourSinglet & cs) const {
     h[0] = flavGen->getHadron(qq.first, aqq.first)->produceParticle();
     h[1] = flavGen->getHadron(qq.second, aqq.second)->produceParticle();
   }
+  if ( sqr(h[0]->mass() + h[1]->mass()) >= s && diDiQuark(cs) ) {
+    // In the special case of di-diquars we try to take the flavours
+    // to create a meson pair instead. We begin by finding the quarks
+    PDPair qq = make_pair(getParticleData(cs.piece(1).front()->id()/1000),
+			 getParticleData((cs.piece(1).front()->id()/100)%10));
+    PDPair aqq = make_pair(getParticleData(cs.piece(1).back()->id()/1000),
+			  getParticleData((cs.piece(1).back()->id()/100)%10));
+    if ( UseRandom::rndbool() ) swap(qq.first, qq.second);
+    h[0] = flavGen->getHadron(qq.first, aqq.first)->produceParticle();
+    h[1] = flavGen->getHadron(qq.second, aqq.second)->produceParticle();
+  }
   if ( sqr(h[0]->mass() + h[1]->mass()) >= s ) return false;
 
   // Now set the momenta of the hadrons (distributed isotropically in

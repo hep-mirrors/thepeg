@@ -54,6 +54,10 @@ else
 AC_MSG_RESULT([no])
 fi
 
+dnl check for unistd
+AC_CHECK_HEADER([unistd.h],[],
+      [AC_MSG_ERROR([ThePEG needs "unistd.h". Check your system is POSIX-compliant.])])
+
 dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET

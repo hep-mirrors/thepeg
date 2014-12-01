@@ -19,6 +19,7 @@
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Repository/UseRandom.h"
 #include "ThePEG/Repository/EventGenerator.h"
+#include "ThePEG/Repository/CurrentGenerator.h"
 #include "ThePEG/Utilities/DescribeClass.h"
 #include "ThePEG/Cuts/Cuts.h"
 #include "fastjet/ClusterSequence.hh"
@@ -35,6 +36,16 @@ FastJetFinder::FastJetFinder()
     theRecombination(recoE) {}
 
 FastJetFinder::~FastJetFinder() {}
+
+void FastJetFinder::doinit() {
+  fastjet::ClusterSequence::set_fastjet_banner_stream(0);
+}
+
+void FastJetFinder::doinitrun() {
+  fastjet::ClusterSequence::set_fastjet_banner_stream(& CurrentGenerator::log());
+  // Force banner to be printed right now; suppresses later output.
+  fastjet::ClusterSequence::print_banner();
+}
 
 IBPtr FastJetFinder::clone() const {
   return new_ptr(*this);

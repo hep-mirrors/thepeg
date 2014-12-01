@@ -13,10 +13,11 @@
 
 #include "VertexBase.h"
 #include "ThePEG/Interface/Switch.h"
-#include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Utilities/DescribeClass.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Interface/Parameter.h"
+#include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include <ThePEG/PDT/ParticleData.h>
 #include <ThePEG/PDT/WidthGenerator.h>
@@ -78,7 +79,8 @@ void VertexBase::addToList(const vector<long> & ids) {
 void VertexBase::doinit() {
   Interfaced::doinit();
   // set up the incoming and outgoing particles
-  assert( _outpart.empty() && _inpart.empty() );
+  if ( !_outpart.empty() || !_inpart.empty() )
+    return;
   for ( unsigned int ix=0; ix<_particles.size(); ++ix ) {
     for ( vector<PDPtr>::const_iterator it = _particles[ix].begin();
 	  it != _particles[ix].end(); ++it ) {
@@ -112,10 +114,11 @@ void VertexBase::persistentInput(PersistentIStream & is, int) {
      >> _particles >> _calckinematics
      >> _coupopt >> _gs >> _ee >> _sw;
 }
-    
-AbstractClassDescription<VertexBase> VertexBase::initVertexBase;
-// Definition of the static class description member.
-  
+
+// Static variable needed for the type description system in ThePEG.
+DescribeAbstractClass<VertexBase,Interfaced>
+describeThePEGVertexBase("ThePEG::VertexBase", "");
+
 void VertexBase::Init() {
   
   static Switch<VertexBase,bool> interfaceCalculateKinematics

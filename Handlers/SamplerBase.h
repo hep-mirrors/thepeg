@@ -38,6 +38,15 @@ public:
 
   /** @name Standard constructors and destructors. */
   //@{
+
+  /**
+   * Constructor
+   */
+  SamplerBase()
+    : Interfaced(), 
+      theIntegrationList(""),
+      theGridDirectory(".") {}
+
   /**
    * Destructor.
    */
@@ -137,6 +146,127 @@ public:
   virtual double sumWeights2() const = 0;
   //@}
 
+  /** @name Controlling of run levels and grid handling*/
+  //@{
+
+  /**
+   * Set a file containing a list of subprocesses to integrate
+   */
+  void integrationList(const string& newIntegrationList) { theIntegrationList = newIntegrationList; }
+
+  /**
+   * Return a file containing a list of subprocesses to integrate
+   */
+  const string& integrationList() const { return theIntegrationList; }
+
+  /**
+   * Set the directory to be used to store grid information
+   */
+  void gridDirectory(const string& d) { theGridDirectory = d; }
+
+  /**
+   * Return the directory to be used to store grid information
+   */
+  const string& gridDirectory() const { return theGridDirectory; }
+
+  /**
+   * Set the directory to be used to store parallel integration information
+   */
+  void parallelIntegrationDirectory(const string& d) { theParallelIntegrationDirectory = d; }
+
+  /**
+   * Return the directory to be used to store parallel integration grid information
+   */
+  const string& parallelIntegrationDirectory() const { return theParallelIntegrationDirectory; }
+
+  /**
+   * Enumerate the possible run levels
+   */
+  enum RunLevels {
+
+    UnknownMode = 0,
+    InitMode,
+    ReadMode,
+    BuildMode,
+    IntegrationMode,
+    RunMode
+
+  };
+
+  /**
+   * Return the run level
+   */
+  static int runLevel() {
+    return theRunLevel();
+  }
+
+  /**
+   * Set the run level
+   */
+  static void setRunLevel(int level) {
+    theRunLevel() = level;
+  }
+
+  /**
+   * Return true, if a setupfile is in use
+   */
+  static bool hasSetupFile() {
+    return theHasSetupFile();
+  }
+
+  /**
+   * Indicate that a setupfile is in use.
+   */
+  static void setupFileUsed(bool yes = true) {
+    theHasSetupFile() = yes;
+  }
+
+  /**
+   * Return the seed that has been used for this run to disentangle
+   * grids whihch have been adapted further
+   */
+  static long seed() {
+    return theSeed();
+  }
+
+  /**
+   * Set the seed that has been used for this run to disentangle
+   * grids whihch have been adapted further
+   */
+  static void setSeed(long s) {
+    theSeed() = s;
+  }
+
+  /**
+   * Return the number of subprocesses to be integrated per job.
+   */
+  static unsigned int integratePerJob() {
+    return theIntegratePerJob();
+  }
+
+  /**
+   * Set the number of subprocesses to be integrated per job.
+   */
+  static void setIntegratePerJob(unsigned int s) {
+    theIntegratePerJob() = s;
+  }
+
+  /**
+   * Return the maximum number of integration jobs to be created.
+   */
+  static unsigned int integrationJobs() {
+    return theIntegrationJobs();
+  }
+
+  /**
+   * Set the maximum number of integration jobs to be created.
+   */
+  static void setIntegrationJobs(unsigned int s) {
+    theIntegrationJobs() = s;
+  }
+
+  //@}
+
 protected:
 
   /**
@@ -183,6 +313,62 @@ private:
    * The last generated phase space point.
    */
   vector<double> theLastPoint;
+
+  /**
+   * A file containing a list of subprocesses to integrate
+   */
+  string theIntegrationList;
+
+  /**
+   * The directory to be used to store grid information
+   */
+  string theGridDirectory;
+
+  /**
+   * The directory to be used to store parallel integration information
+   */
+  string theParallelIntegrationDirectory;
+
+  /**
+   * The run level
+   */
+  static int& theRunLevel() {
+    static int lvl = UnknownMode;
+    return lvl;
+  }
+
+  /**
+   * True, if a setupfile is in use
+   */
+  static bool& theHasSetupFile() {
+    static bool flag = false;
+    return flag;
+  }
+
+  /**
+   * The seed that has been used for this run to disentangle
+   * grids whihch have been adapted further
+   */
+  static long& theSeed() {
+    static long s = 0;
+    return s;
+  }
+
+  /**
+   * The number of subprocesses to be integrated per job.
+   */
+  static unsigned int& theIntegratePerJob() {
+    static unsigned int s = 0;
+    return s;
+  }
+
+  /**
+   * The maximum number of integration jobs to be created.
+   */
+  static unsigned int& theIntegrationJobs() {
+    static unsigned int s = 0;
+    return s;
+  }
 
 private:
 
