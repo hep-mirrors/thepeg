@@ -110,9 +110,10 @@ install-exec-hook:
 	cp $(DESTDIR)$(bindir)/runThePEG runThePEG-$(VERSION)
 
 install-data-hook:
+	rm -f $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo
 	./setupThePEG --init --exitonerror -L$(DESTDIR)$(pkglibdir) -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo $(DESTDIR)$(pkgdatadir)/ThePEGDefaults.in
 if USELHAPDF
-	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo
+#	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --init --exitonerror -r $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo -o $(DESTDIR)$(pkglibdir)/ThePEGDefaults.rpo
 endif
 	cd $(DESTDIR)$(pkglibdir); \
 	if test -n "$(DESTDIR)"; \
