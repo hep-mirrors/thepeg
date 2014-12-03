@@ -44,8 +44,7 @@ public:
    */
   SamplerBase()
     : Interfaced(), 
-      theIntegrationList(""),
-      theGridDirectory(".") {}
+      theIntegrationList("") {}
 
   /**
    * Destructor.
@@ -158,26 +157,6 @@ public:
    * Return a file containing a list of subprocesses to integrate
    */
   const string& integrationList() const { return theIntegrationList; }
-
-  /**
-   * Set the directory to be used to store grid information
-   */
-  void gridDirectory(const string& d) { theGridDirectory = d; }
-
-  /**
-   * Return the directory to be used to store grid information
-   */
-  const string& gridDirectory() const { return theGridDirectory; }
-
-  /**
-   * Set the directory to be used to store parallel integration information
-   */
-  void parallelIntegrationDirectory(const string& d) { theParallelIntegrationDirectory = d; }
-
-  /**
-   * Return the directory to be used to store parallel integration grid information
-   */
-  const string& parallelIntegrationDirectory() const { return theParallelIntegrationDirectory; }
 
   /**
    * Enumerate the possible run levels
@@ -318,16 +297,6 @@ private:
    * A file containing a list of subprocesses to integrate
    */
   string theIntegrationList;
-
-  /**
-   * The directory to be used to store grid information
-   */
-  string theGridDirectory;
-
-  /**
-   * The directory to be used to store parallel integration information
-   */
-  string theParallelIntegrationDirectory;
 
   /**
    * The run level
