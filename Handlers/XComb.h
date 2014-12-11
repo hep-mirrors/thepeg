@@ -321,6 +321,21 @@ public:
   void lastScale(Energy2 Q2) { theLastScale = Q2; }
 
   /**
+   * Get the last chosen central scale of the hard scattering.
+   */
+  Energy2 lastCentralScale() const { 
+    return 
+      theLastCentralScale != ZERO ?
+      theLastCentralScale :
+      lastScale(); 
+  }
+
+  /**
+   * Set the last chosen central scale of the hard scattering.
+   */
+  void lastCentralScale(Energy2 Q2) { theLastCentralScale = Q2; }
+
+  /**
    * Get the \f$\alpha_S\f$ used in the hard scattering. Is negative
    * if no value has been set.
    */
@@ -522,6 +537,11 @@ private:
    * The last chosen scale of the hard scattering.
    */
   Energy2 theLastScale;
+
+  /**
+   * The last chosen central scale of the hard scattering.
+   */
+  Energy2 theLastCentralScale;
 
   /**
    * The \f$\alpha_S\f$ used in the hard scattering.
