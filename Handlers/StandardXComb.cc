@@ -611,7 +611,7 @@ void StandardXComb::newSubProcess(bool group) {
     for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
       subProcess()->outgoing()[i]->scale(lastScale());
     // construct the spin information for the interaction
-    matrixElement()->constructVertex(subProcess());
+    matrixElement()->constructVertex(subProcess(),&cl);
     // set veto scales
     matrixElement()->setVetoScales(subProcess());
   } else {

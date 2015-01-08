@@ -105,6 +105,13 @@ public:
   virtual void constructVertex(tSubProPtr sub) { head()->constructVertex(sub); }
 
   /**
+   * construct the spin information for the interaction
+   */
+  virtual void constructVertex(tSubProPtr sub, const ColourLines* cl) {
+    head()->constructVertex(sub,cl);
+  }
+
+  /**
    * The number of internal degreed of freedom used in the matrix
    * element. This default version returns 0;
    */
