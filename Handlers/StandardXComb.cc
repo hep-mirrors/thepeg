@@ -574,7 +574,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
 void StandardXComb::newSubProcess(bool group) {
   if ( subProcess() ) return;
-  if ( head() ) {
+  if ( head() && matrixElement()->wantCMS() ) {
     // first get the meMomenta in their CMS, as this may
     // not be the case
     Boost cm = (meMomenta()[0] + meMomenta()[1]).findBoostToCM();
