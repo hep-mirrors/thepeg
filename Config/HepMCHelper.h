@@ -28,11 +28,11 @@ struct HepMCTraits<HepMC::GenEvent>
 			   HepMC::PdfInfo>
 {
 #ifdef HEPMC_VERSION_CODE
-
+  // This is version 3!
 
   /** Create an event object with number \a evno and \a weight. */
-  static EventT * newEvent(long evno, double weight,
-			   const map<string,double>& optionalWeights) {
+  static EventT * newEvent(long evno, double,
+			   const map<string,double>&) {
     EventT * e = new EventT(HepMC::Units::GEV, HepMC::Units::MM);
     e->set_event_number(evno);
 //     e->weights().push_back(weight);
@@ -88,8 +88,7 @@ struct HepMCTraits<HepMC::GenEvent>
     //    e.set_beam_particles(p1,p2);
     p1->set_status(4);
     p2->set_status(4);
-    e.add_particle(HepMC::GenParticlePtr(p1));
-    e.add_particle(HepMC::GenParticlePtr(p2));
+    e.set_beam_particles(HepMC::GenParticlePtr(p1), HepMC::GenParticlePtr(p2));
   }
 
   /** Create a new particle object with momentum \a p, PDG number \a
