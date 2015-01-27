@@ -57,7 +57,10 @@ collapse(tPVector tagged, tStepPtr newstep) {
 
   // Go through all clusters below the cut.
   while ( !clusters.empty() && clusters.begin()->first < cut() ) {
-    ColourSinglet & cl = clusters.begin()->second;
+
+    SingletMap::iterator clit = clusters.begin();
+
+    ColourSinglet & cl = clit->second;
 
     // If a cluster contains too many junctions, split them into
     // several singlets.
@@ -80,27 +83,17 @@ collapse(tPVector tagged, tStepPtr newstep) {
     if ( ntry == 0 ) {
 
       // If this was a di-diquark cluster, split it into two.
-      if ( diDiQuark(cl) ) insert(clusters, splitDiDiQuark(cl, newstep));
-
+      if ( diDiQuark(cl) ) {
+	insert(clusters, splitDiDiQuark(cl, newstep));
+	updateTagged(tagged);
+      }
       collapse(newstep, cl, tagged);
     }
 
-    // Update the tagged vector and remove partons which have already
-    // collapsed and insert their children instead.
-    tPVector::iterator it = tagged.begin();
-    set<tPPtr> children;
-    while ( it != tagged.end() ) {
-      *it = (**it).final();
-      if ( (**it).decayed() ) {
-	children.insert((**it).children().begin(), (**it).children().end());
-	it = tagged.erase(it);
-      }
-      else ++it;
-    }
-    tagged.insert(tagged.end(), children.begin(), children.end());
+    updateTagged(tagged);
 
     // Remove the collapsed cluster.
-    clusters.erase(clusters.begin());
+    clusters.erase(clit);
 
     // Recalculate masses of the remaining clusters, insert them in a
     // temporary map and swap this map for the old map.
@@ -123,6 +116,21 @@ collapse(tPVector tagged, tStepPtr newstep) {
     clusters.erase(clusters.begin());
   }
   return newTagged;
+
+}
+
+void ClusterCollapser::updateTagged(tPVector & tagged) const {
+  tPVector::iterator it = tagged.begin();
+  set<tPPtr> children;
+  while ( it != tagged.end() ) {
+    *it = (**it).final();
+    if ( (**it).decayed() ) {
+      children.insert((**it).children().begin(), (**it).children().end());
+      it = tagged.erase(it);
+    }
+    else ++it;
+  }
+  tagged.insert(tagged.end(), children.begin(), children.end());
 
 }
 
@@ -399,6 +407,17 @@ collapse2(tStepPtr newStep, const ColourSinglet & cs) const {
   // was not enough energy.
   LorentzMomentum pc = cs.momentum();
   Energy2 s = pc.m2();
+  if ( sqr(h[0]->mass() + h[1]->mass()) >= s && diDiQuark(cs) ) {
+    // In the special case of di-diquars we try to take the flavours
+    // to create a meson pair instead. We begin by finding the quarks
+    PDPair qq = make_pair(getParticleData(cs.piece(1).front()->id()/1000),
+			 getParticleData((cs.piece(1).front()->id()/100)%10));
+    PDPair aqq = make_pair(getParticleData(cs.piece(1).back()->id()/1000),
+			  getParticleData((cs.piece(1).back()->id()/100)%10));
+    if ( UseRandom::rndbool() ) swap(qq.first, qq.second);
+    h[0] = flavGen->getHadron(qq.first, aqq.first)->produceParticle();
+    h[1] = flavGen->getHadron(qq.second, aqq.second)->produceParticle();
+  }
   if ( sqr(h[0]->mass() + h[1]->mass()) >= s ) return false;
 
   // Now set the momenta of the hadrons (distributed isotropically in

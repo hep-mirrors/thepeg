@@ -574,7 +574,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
 void StandardXComb::newSubProcess(bool group) {
   if ( subProcess() ) return;
-  if ( head() ) {
+  if ( head() && matrixElement()->wantCMS() ) {
     // first get the meMomenta in their CMS, as this may
     // not be the case
     Boost cm = (meMomenta()[0] + meMomenta()[1]).findBoostToCM();
@@ -611,7 +611,7 @@ void StandardXComb::newSubProcess(bool group) {
     for ( int i = 0, N = subProcess()->outgoing().size(); i < N; ++i )
       subProcess()->outgoing()[i]->scale(lastScale());
     // construct the spin information for the interaction
-    matrixElement()->constructVertex(subProcess());
+    matrixElement()->constructVertex(subProcess(),&cl);
     // set veto scales
     matrixElement()->setVetoScales(subProcess());
   } else {

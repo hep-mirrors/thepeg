@@ -258,11 +258,6 @@ private:
   int theMember;
 
   /**
-   * The verbosity of the output from the LHAPDF library.
-   */
-  int theVerboseLevel;
-
-  /**
    * The maximum number of flavours for which non-zero densities are
    * reported. The actual number of flavours may be less depending on
    * the chosen PDF set.

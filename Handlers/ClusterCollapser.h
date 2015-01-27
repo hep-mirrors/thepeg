@@ -189,6 +189,12 @@ protected:
    */
   virtual tcPDPair getHadrons(const ColourSinglet & cs) const;
 
+  /**
+   * Uptate the vector of particles and remove partons which have
+   * already collapsed and insert their children instead.
+   */
+  void updateTagged(tPVector & tagged) const;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

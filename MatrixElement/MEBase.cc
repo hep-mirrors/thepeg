@@ -129,6 +129,10 @@ void MEBase::setKinematics(tPPair in, const PVector & out) {
 
 void MEBase::constructVertex(tSubProPtr) {}
 
+void MEBase::constructVertex(tSubProPtr sub, const ColourLines*) {
+  constructVertex(sub);
+}
+
 void MEBase::clearKinematics() {
   theLastXComb = tStdXCombPtr();
 }
