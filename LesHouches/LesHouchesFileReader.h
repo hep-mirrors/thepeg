@@ -10,13 +10,14 @@
 #define THEPEG_LesHouchesFileReader_H
 // This is the declaration of the LesHouchesFileReader class.
 
-#include "ThePEG/LesHouches/LesHouchesReader.h"
+#include "LesHouchesReader.h"
 #include "LesHouchesFileReader.fh"
 #include "ThePEG/PDT/Decayer.h"
 #include "ThePEG/Utilities/CFileLineReader.h"
 #include <stdio.h>
 
 namespace ThePEG {
+
 
 /**
  * LesHouchesFileReader is an base class to be used for objects which
@@ -29,7 +30,7 @@ namespace ThePEG {
  * class is able to read plain event files conforming to the Les
  * Houches Event File accord.
  *
- * @see \ref LesHouchesFileReaderInterfaces "The interfaces"
+ * @see \ref LesHouchesFileReaderInterfaces "Th1e interfaces"
  * defined for LesHouchesFileReader.
  * @see Event
  * @see LesHouchesReader
@@ -78,6 +79,7 @@ public:
    * Close the file from which events have been read.
    */
   virtual void close();
+ 
 
   /**
    * Read the next event from the file or stream into the
@@ -91,6 +93,17 @@ public:
    * Return the name of the file from where to read events.
    */
   string filename() const { return theFileName; }
+
+  /* vector<string> optionalWeightsNames;
+
+     virtual vector<string> optWeightNamesFunc();*/
+
+
+
+  virtual vector<string> optWeightsNamesFunc();
+
+
+ 
 
 public:
 
@@ -223,6 +236,18 @@ private:
    *  Decayer for any decay modes read from the file
    */
   DecayerPtr theDecayer;
+  
+  /**
+   * Further information on the weights
+   */
+  map<string,string> scalemap;
+
+  /**
+   * Temporary holder for optional weights
+   */
+  
+  map<string,double> optionalWeightsTemp;
+
 
 private:
 

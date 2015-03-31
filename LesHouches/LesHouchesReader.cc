@@ -40,7 +40,7 @@ LesHouchesReader::LesHouchesReader(bool active)
   : theNEvents(0), position(0), reopened(0), theMaxScan(-1), scanning(false),
     isActive(active), theCacheFileName(""), doCutEarly(true),
     preweight(1.0), reweightPDF(false), doInitPDFs(false),
-    theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0),
+    theMaxMultCKKW(0), theMinMultCKKW(0), lastweight(1.0), maxFactor(1.0), optionalnpLO(0), optionalnpNLO(0),
     weightScale(1.0*picobarn), skipping(false), theMomentumTreatment(0),
     useWeightWarnings(true),theReOpenAllowed(true), theIncludeSpin(true) {}
 
@@ -337,7 +337,7 @@ long LesHouchesReader::scan() {
       newmax[id] = max(newmax[id], abs(eventWeight()));
       if ( eventWeight() < 0.0 ) negw = true;
     }
-
+    // std::cout << "eventWeight() = " << eventWeight() << endl;
     xSecWeights.resize(oldeve.size(), 1.0);
     for ( int i = 0, N = oldeve.size(); i < N; ++i )
       if ( oldeve[i] ) xSecWeights[i] = double(neweve[i])/double(oldeve[i]);
@@ -448,6 +448,7 @@ void LesHouchesReader::fillEvent() {
   colourIndex(0, tColinePtr());
   createParticles();
   createBeams();
+    
 }
 
 void LesHouchesReader::reopen() {
@@ -501,9 +502,9 @@ bool LesHouchesReader::readEvent() {
 
   // If we are just skipping event we do not need to reweight or do
   // anything fancy.
-  if ( skipping ) return true;
+  if ( skipping ) {  return true; }
 
-  if ( cacheFile() && !scanning ) return true;
+  if ( cacheFile() && !scanning ) { return true;  }
 
   // Reweight according to the re- and pre-weights objects in the
   // LesHouchesReader base class.
@@ -566,6 +567,7 @@ double LesHouchesReader::getEvent() {
   ++position;
 
   double max = maxWeights[hepeup.IDPRUP]*maxFactor;
+  
   return max != 0.0? eventWeight()/max: 0.0;
 
 }
@@ -749,8 +751,10 @@ void LesHouchesReader::createParticles() {
     Lorentz5Momentum mom(hepeup.PUP[i][0]*GeV, hepeup.PUP[i][1]*GeV,
 			 hepeup.PUP[i][2]*GeV, hepeup.PUP[i][3]*GeV,
 			 hepeup.PUP[i][4]*GeV);
+    //   cout << hepeup.PUP[i][0] << " " << hepeup.PUP[i][1] << " " << hepeup.PUP[i][2] << " " << hepeup.PUP[i][3] << " " << hepeup.PUP[i][4] << endl;
     if(theMomentumTreatment == 1)      mom.rescaleEnergy();
     else if(theMomentumTreatment == 2) mom.rescaleMass();
+    // cout << hepeup.PUP[i][0] << " " << hepeup.PUP[i][1] << " " << hepeup.PUP[i][2] << " " << hepeup.PUP[i][3] << " " << hepeup.PUP[i][4] << endl;
     PDPtr pd = getParticleData(hepeup.IDUP[i]);
     if (!pd) {
       Throw<LesHouchesInitError>()
@@ -773,7 +777,9 @@ void LesHouchesReader::createParticles() {
     PPtr p = pd->produceParticle(mom);
     if(hepeup.ICOLUP[i].first>=0 && hepeup.ICOLUP[i].second >=0) {
       tColinePtr c = colourIndex(hepeup.ICOLUP[i].first);
-      if ( c ) c->addColoured(p);
+      if ( c ) {
+	c->addColoured(p);
+      }
       c = colourIndex(hepeup.ICOLUP[i].second);
       if ( c ) c->addAntiColoured(p);
     }
@@ -851,6 +857,7 @@ void LesHouchesReader::createParticles() {
       }
     }
   }
+
   // check the colour flows, and if necessary create any sources/sinks
   // hard process
   // get the particles in the hard process
@@ -933,6 +940,7 @@ void LesHouchesReader::createParticles() {
       }
     }
   }
+    
   // might have source/sink
   if( unMatchedColour.size() + unMatchedAntiColour.size() != 0) {
     if(unMatchedColour.size() == 3 ) {
@@ -956,6 +964,7 @@ void LesHouchesReader::createParticles() {
  	<< hepeup << Exception::runerror;
     }
   }
+
   // any subsequent decays
   for ( int i = 0, N = hepeup.IDUP.size(); i < N; ++i ) {
     if(hepeup.ISTUP[i] !=2 && hepeup.ISTUP[i] !=3) continue;
@@ -1050,6 +1059,7 @@ void LesHouchesReader::createParticles() {
       }
     }
   }
+
 }
 
 void LesHouchesReader::createBeams() {
@@ -1143,6 +1153,11 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mwrite(pos, lastweight);
   pos = mwrite(pos, optionalWeights);
+  for(int ff = 0; ff < optionalWeightsNames.size(); ff++) {
+    pos = mwrite(pos, optionalWeightsNames[ff]);
+  }
+  pos = mwrite(pos, optionalnpLO);
+  pos = mwrite(pos, optionalnpNLO);
   pos = mwrite(pos, preweight);
   cacheFile().write(&buff[0], buff.size(), 1);
 }
@@ -1178,6 +1193,11 @@ bool LesHouchesReader::uncacheEvent() {
   pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mread(pos, lastweight);
   pos = mread(pos, optionalWeights);
+  for(int ff = 0; ff < optionalWeightsNames.size(); ff++) {
+    pos = mread(pos, optionalWeightsNames[ff]);
+  }
+  pos = mread(pos, optionalnpLO);
+  pos = mread(pos, optionalnpNLO);
   pos = mread(pos, preweight);
 
   // If we are skipping, we do not have to do anything else.
@@ -1208,7 +1228,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
-     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight << optionalWeights
+     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight << optionalWeights << optionalnpLO << optionalnpNLO
      << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
      << theMomentumTreatment << useWeightWarnings << theReOpenAllowed
      << theIncludeSpin;
@@ -1229,7 +1249,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
-     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight >> optionalWeights
+     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight >> optionalWeights >> optionalnpLO >> optionalnpNLO
      >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
      >> theMomentumTreatment >> useWeightWarnings >> theReOpenAllowed
      >> theIncludeSpin;
@@ -1492,6 +1512,8 @@ void LesHouchesReader::Init() {
      "No",
      "Don't use the spin information",
      false);
+
+
 
   interfaceCuts.rank(8);
   interfacePartonExtractor.rank(7);

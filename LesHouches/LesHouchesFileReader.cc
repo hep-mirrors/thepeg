@@ -20,6 +20,10 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+#include <sstream>
+#include <iostream>
 
 using namespace ThePEG;
 
@@ -49,6 +53,10 @@ bool LesHouchesFileReader::preInitialize() const {
 
 void LesHouchesFileReader::doinit() {
   LesHouchesReader::doinit();
+  //cout << "theDecayer->fullName() = " << theDecayer->fullName() << endl;
+  //if(theDecayer) {
+  //  cout << "DECAYER RETURNS TRUE" << endl;
+  // }
   // are we using QNUMBERS
   if(!theQNumbers) return;
   // parse the header block and create 
@@ -459,6 +467,9 @@ void LesHouchesFileReader::initialize(LesHouchesEventHandler & eh) {
       << "properly sampled." << Exception::warning;
 }
 
+//vector<string> LesHouchesFileReader::optWeightNamesFunc() { return optionalWeightsNames; }
+vector<string> LesHouchesFileReader::optWeightsNamesFunc() { return optionalWeightsNames; }
+
 void LesHouchesFileReader::open() {
   if ( filename().empty() )
     throw LesHouchesFileError()
@@ -477,21 +488,88 @@ void LesHouchesFileReader::open() {
   map<string,string> attributes =
     StringUtils::xmlAttributes("LesHouchesEvents", cfile.getline());
   LHFVersion = attributes["version"];
+  //cout << LHFVersion << endl;
   if ( LHFVersion.empty() ) return;
 
   bool readingHeader = false;
   bool readingInit = false;
   headerBlock = "";
+  
+  char (cwgtinfo_weights_info[250][15]);
+  string hs;
+  int cwgtinfo_nn(0);
 
+  /* for(int f = 0; f < optionalWeightsNames.size(); f++) {
+    cout << "optionalWeightsNames = " << optionalWeightsNames[f] << endl;
+    }*/
   // Loop over all lines until we hit the </init> tag.
-  while ( cfile.readline() && !cfile.find("</init>") ) {
+  bool readingInitWeights = false, readingInitWeights_sc = false, readingInitWeights_pdf = false;
+  while ( cfile.readline() ) {
+    //cout << cfile.getline() << endl;
+    if(cfile.find("<initrwgt")) { /*cout << "reading weights" << endl;*/ readingInitWeights = true; }
+    if(cfile.find("</initrwgt")) { readingInitWeights = false; readingInitWeights_sc = false; readingInitWeights_pdf = false; continue;}
+    if(cfile.find("</init")) { readingInit = false; break; }
+      
+    if(readingInitWeights) {
+      string scalename = "";
+      if(cfile.find("<weightgroup type='scale_variation'")) { readingInitWeights_sc = true; readingInitWeights_sc = false; /*cout << "reading scale weights" << endl;*/ }
+      if(readingInitWeights_sc && !cfile.find("</weightgroup")) { 
+	  hs = cfile.getline();
+	  std::string xmuR = hs.substr(hs.find("muR")+4,hs.length());
+	  xmuR = xmuR.substr(0,xmuR.find("muF")-1);
+	  std::string xmuF = hs.substr(hs.find("muF")+4,hs.length());
+	  xmuF = xmuF.substr(0,xmuF.find("</w")-1);
+	  double muR = atof(xmuR.c_str());
+	  double muF = atof(xmuF.c_str());
+	  istringstream isc(hs);
+	  int ws = 0;
+	  do {
+	    string sub; isc >> sub;
+	    if(ws==1) { boost::erase_all(sub, ">"); scalename = sub; }
+	    ++ws;
+	  } while (isc);
+	  // cout << scaleinfo.first << "\t" << scaleinfo.second << endl;
+	  std::string xmuRs = boost::lexical_cast<std::string>(muR);
+	  std::string xmuFs = boost::lexical_cast<std::string>(muF);
+	  string scinfo = "SC " + xmuRs + " " + xmuFs;
+	  scalemap[scalename] = scinfo.c_str();
+	  boost::erase_all(scalename, "id=");
+	  boost::erase_all(scalename, "'");
+	  optionalWeightsNames.push_back(scalename);
+      }
+      string pdfname = "";
+      if(cfile.find("<weightgroup type='PDF_variation'") && !cfile.find("</weightgroup"))  { readingInitWeights_pdf = true; readingInitWeights_sc = false; /* cout << "reading pdf weights" << endl; */}
+      if(readingInitWeights_pdf && !cfile.find("</weightgroup")) { 
+	hs = cfile.getline();
+	  std::string PDF = hs.substr(hs.find("pdfset")+8,hs.length());
+	  PDF = PDF.substr(0,PDF.find("</w")-1);
+	  double iPDF = atof(PDF.c_str());
+	  //store the plot label
+	  istringstream isp(hs);
+	  int wp = 0;
+	  do {
+	    string sub; isp >> sub;
+	    if(wp==1) { boost::erase_all(sub, ">"); pdfname = sub; }
+	    ++wp;
+	  } while (isp);
+	  // cout << pdfinfo.first << "\t" << pdfinfo.second << endl;
+	  string scinfo = "PDF " + PDF;
+	  scalename = pdfname;
+	  scalemap[scalename] = scinfo.c_str();
+	  boost::erase_all(pdfname, "id=");
+	  boost::erase_all(pdfname, "'");
+	  optionalWeightsNames.push_back(pdfname);
+      }
+    }
+   
     if ( cfile.find("<header") ) {
       // We have hit the header block, so we should dump this and all
       // following lines to headerBlock until we hit the end of it.
       readingHeader = true;
       headerBlock = cfile.getline() + "\n";
     }
-    else if ( cfile.find("<init ") || cfile.find("<init>") ) {
+    if ( (cfile.find("<init ") && !cfile.find("<initrwgt")) || cfile.find("<init>") ) {
+      //cout << "found init block" << endl;
       // We have hit the init block, so we should expect to find the
       // standard information in the following. But first check for
       // attributes.
@@ -508,7 +586,7 @@ void LesHouchesFileReader::open() {
 	return;
       }
       heprup.resize();
-
+      //  cout << "heprup.NPRUP = " << heprup.NPRUP << endl;
       for ( int i = 0; i < heprup.NPRUP; ++i ) {
 	cfile.readline();
 	if ( !( cfile >> heprup.XSECUP[i] >> heprup.XERRUP[i]
@@ -519,24 +597,29 @@ void LesHouchesFileReader::open() {
 	}
       }
     }
-    else if ( cfile.find("</header") ) {
+    if ( cfile.find("</header") ) {
       readingHeader = false;
       headerBlock += cfile.getline() + "\n";
     }
-    else if ( readingHeader ) {
+    if ( readingHeader ) {
       // We are in the process of reading the header block. Dump the
 	// line to headerBlock.
       headerBlock += cfile.getline() + "\n";
     }
-    else if ( readingInit ) {
+    if ( readingInit ) {
+      // cout << "init 1" << endl;	  
       // Here we found a comment line. Dump it to initComments.
       initComments += cfile.getline() + "\n";
     }
-    else {
+    /*    else {
       // We found some other stuff outside the standard tags.
       outsideBlock += cfile.getline() + "\n";
-    }
+    }*/
   }
+  string central = "central";
+  optionalWeightsNames.push_back(central);
+
+  //  cout << "reading init finished" << endl;
   if ( !cfile ) {
     heprup.NPRUP = -42;
     LHFVersion = "";
@@ -546,7 +629,6 @@ void LesHouchesFileReader::open() {
 }
 
 bool LesHouchesFileReader::doReadEvent() {
-
   if ( !cfile ) return false;
   if ( LHFVersion.empty() ) return false;
   if ( heprup.NPRUP < 0 ) return false;
@@ -554,6 +636,8 @@ bool LesHouchesFileReader::doReadEvent() {
   outsideBlock = "";
   hepeup.NUP = 0;
   hepeup.XPDWUP.first = hepeup.XPDWUP.second = 0.0;
+  optionalWeights.clear();
+  optionalWeightsTemp.clear();
 
   // Keep reading lines until we hit the next event or the end of
   // the event block. Save any inbetween lines. Exit if we didn't
@@ -563,6 +647,24 @@ bool LesHouchesFileReader::doReadEvent() {
 
   // We found an event. First scan for attributes.
   eventAttributes = StringUtils::xmlAttributes("event", cfile.getline());
+  
+  istringstream ievat(cfile.getline());
+  int we(0), npLO(-10), npNLO(-10);
+  do {
+    string sub; ievat >> sub;
+    if(we==2) { npLO = atoi(sub.c_str()); }
+    if(we==5) { npNLO = atoi(sub.c_str()); }
+    ++we;
+  } while (ievat);
+  //cout << "npLO, npNLO = " << npLO << ", " << npNLO << endl;
+  optionalnpLO = npLO;
+  optionalnpNLO = npNLO;
+  std::stringstream npstringstream;
+  npstringstream << "np " << npLO << " " << npNLO;
+  std::string npstrings = npstringstream.str();
+  // cout << npstrings.c_str() << endl;
+  optionalWeights[npstrings.c_str()] = -999; 
+
   if ( !cfile.readline()  ) return false;
 
   // The first line determines how many subsequent particle lines we
@@ -581,6 +683,8 @@ bool LesHouchesFileReader::doReadEvent() {
 	          >> hepeup.PUP[i][3] >> hepeup.PUP[i][4]
         	  >> hepeup.VTIMUP[i] >> hepeup.SPINUP[i] ) )
       return false;
+    //print momenta for debugging
+    // cout << hepeup.PUP[i][0] << " " << hepeup.PUP[i][1] << " " << hepeup.PUP[i][2] << " " << hepeup.PUP[i][3] << " " << hepeup.PUP[i][4] << endl;
     if(isnan(hepeup.PUP[i][0])||isnan(hepeup.PUP[i][1])||
        isnan(hepeup.PUP[i][2])||isnan(hepeup.PUP[i][3])||
        isnan(hepeup.PUP[i][4])) 
@@ -597,38 +701,54 @@ bool LesHouchesFileReader::doReadEvent() {
   }
 
   // Now read any additional comments and named weights.
-  optionalWeights.clear();
-  while ( cfile.readline() && !cfile.find("</event>") ) {
-    // parse weightinfo elements
-    if ( cfile.find("<weightinfo") ) {
-      map<string,string> weightAttributes =
-	StringUtils::xmlAttributes("weightinfo",cfile.getline());
-      if ( !cfile.readline() ) return false;
-      double weightValue; cfile >> weightValue;
-      if ( !cfile.readline() ) return false;
-      if ( !cfile.find("</weightinfo>") ) {
-	throw LesHouchesFileError()
-	  << "error while parsing weight information in "
-	  << theFileName << Exception::eventerror;
-      }
-      // ignore the single unnamed weight, but warn if multiple of the
-      // same name
-      map<string,string>::const_iterator weightName = weightAttributes.find("name");
-      if ( weightName != weightAttributes.end() ) {
-	map<string,double>::iterator wit =
-	  optionalWeights.find(weightName->second);
-	if ( wit == optionalWeights.end() ) {
-	  optionalWeights[weightName->second] = weightValue;
-	} else {
-	  throw LesHouchesFileError()
-	    << "multiple weights of the same name in "
-	    << theFileName << Exception::eventerror;
-	}
-      }
-      continue;
+  // read until the end of rwgt is found
+  bool readingWeights = false, readingaMCFast = false;
+  while ( cfile.readline() && !cfile.find("</event>")) {
+    if(cfile.find("</applgrid")) { readingaMCFast=false; }
+    if(cfile.find("</rwgt")) { readingWeights=false; }
+    if(readingWeights) { 
+      if(!cfile.find("<wgt")) { continue; }
+      istringstream iss(cfile.getline());
+      int wi = 0;
+      double weightValue(0);
+      string weightName = ""; 
+      do {
+	string sub; iss >> sub;
+	if(wi==1) { boost::erase_all(sub, ">"); weightName = sub; }
+	if(wi==2) weightValue = atof(sub.c_str());
+	++wi;
+      } while (iss);
+      // store the optional weights found in the temporary map
+      optionalWeightsTemp[weightName] = weightValue; 
     }
-    eventComments += cfile.getline() + "\n";
+    if(readingaMCFast) {
+      std::stringstream amcfstringstream;
+      amcfstringstream << "aMCFast " << cfile.getline();
+      std::string amcfstrings = amcfstringstream.str();
+      // cout << "amcfstrings = " << amcfstrings.c_str() << endl;
+      optionalWeights[amcfstrings.c_str()] = -111;
+      //      cout << "cfile.getline() = " << cfile.getline() << endl;
+    }
+    if(cfile.find("<applgrid")) { readingaMCFast=true; /*cout << "reading aMCFast" << endl; */}
+    if(cfile.find("<rwgt")) { readingWeights=true; }
   }
+
+  // loop over the optional weights and add the extra information (pdf or scale)
+  for (map<string,double>::const_iterator it=optionalWeightsTemp.begin(); it!=optionalWeightsTemp.end(); ++it){
+    //std::cout << it->first << "  => " << it->second << '\n';
+    for (map<string,string>::const_iterator it2=scalemap.begin(); it2!=scalemap.end(); ++it2){
+      //find the scale id in the scale information and add this information
+      if(it->first==it2->first) { 
+	string info = it2->second + " " + it->first;
+	boost::erase_all(info, "'");
+	boost::erase_all(info, "id=");
+	//set the optional weights
+	optionalWeights[info] = it->second;
+      }
+    }
+  }
+  string central = "central";
+  optionalWeights[central] = hepeup.XWGTUP;
 
   if ( !cfile ) return false;
   return true;

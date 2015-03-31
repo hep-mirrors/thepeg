@@ -49,13 +49,18 @@ IBPtr LesHouchesEventHandler::fullclone() const {
 }
 
 void LesHouchesEventHandler::doinit() {
+
   EventHandler::doinit();
-  for ( int i = 0, N = readers().size(); i < N; ++i )
+  
+  for ( int i = 0, N = readers().size(); i < N; ++i ) {
     readers()[i]->init();
+  }
+
+  ntries = 0;
+ 
 }
 
 void LesHouchesEventHandler::initialize() {
-
   if ( lumiFnPtr() ) Repository::clog()
     << "The LuminosityFunction '" << lumiFnPtr()->name()
     << "' assigned to the LesHouchesEventHandler '" << name()
@@ -75,11 +80,10 @@ void LesHouchesEventHandler::initialize() {
   PDPair incoming;
   Energy MaxEA = ZERO;
   Energy MaxEB = ZERO;
-  
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
     reader.initialize(*this);
-
+    weightnames = reader.optWeightsNamesFunc();
     // Check that the incoming particles are consistent between the
     // readers.
     if ( !incoming.first ) {
@@ -136,10 +140,11 @@ void LesHouchesEventHandler::initialize() {
     }
     selector().insert(reader.stats.maxXSec(), i);
   }
-
   stats.maxXSec(selector().sum());
   histStats.maxXSec(selector().sum());
-
+  for (map<string,XSecStat>::iterator it= optstats.begin(); it!=optstats.end(); ++it){
+     (it->second).maxXSec(selector().sum());
+  }
   // Check that we have any cross section at all.
   if ( stats.maxXSec() <= ZERO )
     throw LesHouchesInitError()
@@ -159,9 +164,23 @@ void LesHouchesEventHandler::doinitrun() {
   stats.reset();
   histStats.reset();
 
-  for ( int i = 0, N = readers().size(); i < N; ++i ) {
+  for ( int i = 0, N = readers().size(); i < N; ++i ) { 
     readers()[i]->initrun();
+    LesHouchesReader & reader = *readers()[i];
+    reader.initialize(*this);
+    weightnames = reader.optWeightsNamesFunc();
   }
+
+  XSecStat* initxsecs = new XSecStat[weightnames.size()];
+  for(int ww = 0; ww < weightnames.size(); ww++){
+    initxsecs[ww].reset();
+    optstats.insert(std::make_pair<string,XSecStat>(weightnames[ww], initxsecs[ww]));			 
+    opthistStats.insert(std::make_pair<string,XSecStat>(weightnames[ww], initxsecs[ww]));
+    CrossSection initxs = 0.*picobarn;
+    optxs.insert(std::make_pair<string,CrossSection>(weightnames[ww], initxs));
+  }
+  ntries = 0;
+
 }
 
 EventPtr LesHouchesEventHandler::generateEvent() {
@@ -200,14 +219,29 @@ EventPtr LesHouchesEventHandler::generateEvent() {
     accept();
 
     // Divide by the bias introduced by the preweights in the reader.
+    
+
     weight /= currentReader()->preweight;
 
+
     try {
+
       theLastXComb = currentReader()->getXComb();
 
       currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
 				 generator()->currentEventNumber(), weight)));
       currentEvent()->optionalWeights() = currentReader()->optionalEventWeights();
+
+
+      //For debugging purposes: print optional weights here
+      /* for (map<string,double>::const_iterator it= currentReader()->optionalEventWeights().begin(); it!=currentReader()->optionalEventWeights().end(); ++it){
+	 std::cout << it->first << "  => " << it->second << '\n';
+      }
+      cout << endl;*/
+      
+      //print npLO and npNLO (FxFx merging)
+      // cout << currentReader()->optionalEventnpLO() << "\t" << currentReader()->optionalEventnpNLO() << endl;
+  
       performCollision();
 
       if ( !currentCollision() ) throw Veto();
@@ -246,7 +280,6 @@ void LesHouchesEventHandler::skipEvents() {
   // number of times.
   double nscan = ceil(xscan);
   double meanskip = nscan/xscan - 1.0;
-
   // Skip an average numer of steps with a Poissonian distribution.
   currentReader()->
     skip(UseRandom::rndPoisson(meanskip)%currentReader()->NEvents());
@@ -255,6 +288,21 @@ void LesHouchesEventHandler::skipEvents() {
 void LesHouchesEventHandler::select(double weight) {
   stats.select(weight);
   currentReader()->select(weight);
+  vector<double> w;
+  for (map<string,double>::const_iterator it= currentReader()->optionalEventWeights().begin(); it!=currentReader()->optionalEventWeights().end(); ++it){
+    w.push_back(it->second);
+  }
+  int ii = 0;
+  for (map<string,XSecStat>::iterator it= opthistStats.begin(); it!=opthistStats.end(); ++it){
+    (it->second).select(w[ii]);   
+    ii++;
+  }
+  ii = 0;
+  for (map<string,XSecStat>::iterator it= optstats.begin(); it!=optstats.end(); ++it){
+    (it->second).select(w[ii]);   
+    ii++;
+  }
+
 }
 
 tCollPtr LesHouchesEventHandler::performCollision() {
@@ -281,7 +329,6 @@ tCollPtr LesHouchesEventHandler::performCollision() {
 }
 
 EventPtr LesHouchesEventHandler::continueEvent() {
-
   try {
     continueCollision();
   }
@@ -397,16 +444,50 @@ void LesHouchesEventHandler::increaseMaxXSec(CrossSection maxxsec) {
 }
 
 void LesHouchesEventHandler::accept() {
+  ntries++;
   stats.accept();
   histStats.accept();
   currentReader()->accept();
+  for (map<string,XSecStat>::iterator it= opthistStats.begin(); it!=opthistStats.end(); ++it){
+    (it->second).accept(); 
+  }
+  for (map<string,XSecStat>::iterator it= optstats.begin(); it!=optstats.end(); ++it){
+    (it->second).accept();  
+  }
 }
 
 void LesHouchesEventHandler::reject(double w) {
+  ntries++;
   stats.reject(w);
   histStats.reject(w);
   currentReader()->reject(w);
+  vector<double> wv;
+  for (map<string,double>::const_iterator it= currentReader()->optionalEventWeights().begin(); it!=currentReader()->optionalEventWeights().end(); ++it){
+    wv.push_back(it->second);
+  }
+  int ii = 0;
+  for (map<string,XSecStat>::iterator it= opthistStats.begin(); it!=opthistStats.end(); ++it){
+    (it->second).reject(wv[ii]);   
+    ii++;
+  }
+  ii = 0;
+  for (map<string,XSecStat>::iterator it= optstats.begin(); it!=optstats.end(); ++it){
+    (it->second).reject(wv[ii]);
+    ii++;
+  }
 }
+
+
+
+map<string,CrossSection> LesHouchesEventHandler::optintegratedXSecMap() const {
+  map<string,CrossSection> result; 
+  for (map<string,XSecStat>::const_iterator it= optstats.begin(); it!=optstats.end(); ++it){
+    result[it->first] = (it->second.sumWeights()/it->second.attempts()) * picobarn;
+  }
+
+  return result;
+}
+
 
 CrossSection LesHouchesEventHandler::histogramScale() const {
   return histStats.xSec()/histStats.sumWeights();
@@ -418,6 +499,10 @@ CrossSection LesHouchesEventHandler::integratedXSec() const {
 
 CrossSection LesHouchesEventHandler::integratedXSecErr() const {
   return histStats.xSecErr();
+}
+
+int LesHouchesEventHandler::ntriesinternal() const { 
+  return stats.attempts();
 }
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {

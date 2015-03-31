@@ -15,10 +15,12 @@
 #include "ThePEG/Handlers/EventHandler.h"
 #include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
+//#include "LesHouchesAnalysis.h"
 #include "ThePEG/Utilities/CompSelector.h"
 #include "ThePEG/Utilities/XSecStat.h"
 
 namespace ThePEG {
+
 
 /**
  * The LesHouchesEventHandler inherits from the general EventHandler
@@ -60,6 +62,9 @@ public:
     varweight = 2,      /**< Varying positive weights. */
     varnegweight = -2   /**< Varying positive or negative weights. */
   };
+
+  friend class LesHouchesHandler;
+
 
 public:
 
@@ -110,12 +115,17 @@ public:
    */
   virtual CrossSection integratedXSec() const;
 
+  virtual int ntriesinternal() const;
+
   /**
    * The estimated error in the total integrated cross section of the
    * processes generated in this run.
    *  @return 0 if no integrated cross section error could be estimated.
    */
   virtual CrossSection integratedXSecErr() const;
+
+  virtual map<string,CrossSection> optintegratedXSecMap() const;
+
   //@}
 
   /** @name Functions used for the actual generation */
@@ -202,6 +212,7 @@ public:
    */
   tLesHouchesReaderPtr currentReader() const { return theCurrentReader; }
 
+
   /**
    * Set the currently selected reader object.
    */
@@ -234,6 +245,11 @@ public:
    * when this class is dynamically loaded.
    */
   static void Init();
+
+  /**
+   * The currently selected reader object.
+   */
+  tLesHouchesReaderPtr theCurrentReader;
 
 protected:
 
@@ -299,11 +315,33 @@ protected:
    */
   XSecStat stats;
 
+  map<string,XSecStat> optstats;
+
+  map<string,CrossSection> optxs;
+  
+  int ntries;
+
+  map<string,XSecStat> OptStatsFunc() { return optstats; }
+
+  map<string,CrossSection> OptXsFunc() { return optxs; }
+
+
   /**
    * Collect statistics for this event handler. To be used for
    * histogram scaling.
    */
   XSecStat histStats;
+
+  map<string,XSecStat> opthistStats;
+
+
+
+
+  /*
+   * The weight identifiers for the events
+   */ 
+  
+  vector<string> weightnames;
 
 private:
 
@@ -329,16 +367,14 @@ private:
    */
   double theUnitTolerance;
 
-  /**
-   * The currently selected reader object.
-   */
-  tLesHouchesReaderPtr theCurrentReader;
 
   /**
    * Warn if the same process number is used in more than one
    * LesHouchesReader.
    */
   bool warnPNum;
+
+
 
 public:
 
@@ -406,4 +442,4 @@ struct ClassTraits<LesHouchesEventHandler>
 
 }
 
-#endif /* THEPEG_LesHouchesEventHandler_H */
+#endif /* HERWIG_LesHouchesEventHandler_H */

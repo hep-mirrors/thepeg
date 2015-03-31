@@ -144,6 +144,19 @@ public:
    * Close the file or stream from which events have been read.
    */
   virtual void close() = 0;
+
+  /**
+   * return the weight names 
+   */
+  virtual vector<string> optWeightsNamesFunc() = 0;
+  vector<string> optionalWeightsNames;
+  /** 
+   * The ID (e.g. 100x, 2001) for the weight
+   */ 
+
+  // vector<string> optionalWeightsNames;
+
+  
   //@}
 
   /** @name Other important function which may be overridden in
@@ -274,6 +287,12 @@ public:
    */
   const map<string,double>& optionalEventWeights() const { return optionalWeights; }
 
+  /**
+   * Return the optional npLO and npNLO
+   */
+  const int& optionalEventnpLO() const { return optionalnpLO; }
+  const int& optionalEventnpNLO() const { return optionalnpNLO; }
+  
   /**
    * The pair of PartonBinInstance objects describing the current
    * incoming partons in the event.
@@ -813,12 +832,23 @@ protected:
    */
   map<string,double> optionalWeights;
 
+ 
   /**
    * If the maximum cross section of this reader has been increased
    * with increaseMaxXSec(), this is the total factor with which it
    * has been increased.
    */
   double maxFactor;
+
+   /**
+   * npLO for LesHouches merging
+   */
+  int optionalnpLO;
+
+ /**
+   * npNLO for LesHouches merging
+   */
+  int optionalnpNLO;
 
   /**
    * The (reweighted) XWGTUP value should be scaled with this cross
