@@ -546,6 +546,7 @@ void LesHouchesFileReader::open() {
 }
 
 bool LesHouchesFileReader::doReadEvent() {
+
   if ( !cfile ) return false;
   if ( LHFVersion.empty() ) return false;
   if ( heprup.NPRUP < 0 ) return false;
