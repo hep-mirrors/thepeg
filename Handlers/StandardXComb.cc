@@ -59,11 +59,12 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
   : XComb(newMaxEnergy, inc, newEventHandler,
 	  newExtractor, newCKKW, newPartonBins, newCuts),
     theSubProcessHandler(newSubProcessHandler), theME(newME),
-    theDiagrams(newDiagrams), isMirror(mir),   theKinematicsGenerated(false),
-    theLastDiagramIndex(0), theLastPDFWeight(0.0), 
-    theLastCrossSection(ZERO), theLastME2(-1.0), theLastPreweight(1.0), theLastMECrossSection(ZERO), 
+    theDiagrams(newDiagrams), isMirror(mir), theNDim(0), partonDims(0,0),
+    theKinematicsGenerated(false), theLastDiagramIndex(0), theLastPDFWeight(0.0), 
+    theLastCrossSection(ZERO), theLastJacobian(0.0), theLastME2(-1.0),
+    theLastPreweight(1.0), theLastMECrossSection(ZERO), 
     theLastMEPDFWeight(1.0), theLastMECouplings(1.0), theHead(newHead),
-    checkedCuts(false), passedCuts(false) {
+    checkedCuts(false), passedCuts(false), theCutWeight(1.0) {
   partonDims = pExtractor()->nDims(partonBins());
   if ( matrixElement()->haveX1X2() ) {
     partonDims.first = 0;
@@ -103,11 +104,12 @@ StandardXComb::StandardXComb(tStdXCombPtr newHead,
 	  newHead->eventHandlerPtr(), newHead->pExtractor(),
 	  newHead->CKKWHandler(), newPartonBins, newHead->cuts()),
     theSubProcessHandler(const_ptr_cast<tSubHdlPtr>(newHead->subProcessHandler())), 
-    theME(newME), theDiagrams(newDiagrams), isMirror(newHead->mirror()),  
-    theKinematicsGenerated(false), theLastDiagramIndex(0), theLastPDFWeight(0.0), 
-    theLastCrossSection(ZERO), theLastME2(-1.0), theLastPreweight(1.0), theLastMECrossSection(ZERO), 
+    theME(newME), theDiagrams(newDiagrams), isMirror(newHead->mirror()), theNDim(0),
+    partonDims(0,0), theKinematicsGenerated(false), theLastDiagramIndex(0), theLastPDFWeight(0.0), 
+    theLastCrossSection(ZERO), theLastJacobian(0.0), theLastME2(-1.0), 
+    theLastPreweight(1.0), theLastMECrossSection(ZERO), 
     theLastMEPDFWeight(1.0), theLastMECouplings(1.0), theHead(newHead),
-    checkedCuts(false), passedCuts(false) {
+    checkedCuts(false), passedCuts(false), theCutWeight(1.0) {
   partonDims = pExtractor()->nDims(partonBins());
   if ( matrixElement()->haveX1X2() ) {
     partonDims.first = 0;
