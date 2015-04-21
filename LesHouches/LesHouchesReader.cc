@@ -1342,7 +1342,7 @@ void LesHouchesReader::Init() {
 
   static Parameter<LesHouchesReader,string> interfaceCacheFileName
     ("CacheFileName",
-     "Name of file used to cache the events form the reader in a fast-readable "
+     "Name of file used to cache the events from the reader in a fast-readable "
      "form. If empty, no cache file will be generated.",
      &LesHouchesReader::theCacheFileName, "",
      true, false);

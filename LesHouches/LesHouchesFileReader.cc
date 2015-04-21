@@ -653,7 +653,7 @@ bool LesHouchesFileReader::doReadEvent() {
    * the npLO and npNLO tags
    */
   istringstream ievat(cfile.getline());
-  int we(0), npLO(-10), npNLO(-10);
+  int we(0), npLO(-99), npNLO(-99);
   do {
     string sub; ievat >> sub;
     if(we==2) { npLO = atoi(sub.c_str()); }
@@ -740,6 +740,7 @@ bool LesHouchesFileReader::doReadEvent() {
       std::stringstream amcfstringstream;
       amcfstringstream << "aMCFast " << cfile.getline();
       std::string amcfstrings = amcfstringstream.str();
+      boost::erase_all(amcfstrings,"\n");
       optionalWeights[amcfstrings.c_str()] = -111; //for the aMCFast we give them a weight -111 for future identification
     }
 
@@ -813,7 +814,7 @@ void LesHouchesFileReader::close() {
 void LesHouchesFileReader::persistentOutput(PersistentOStream & os) const {
   os << neve << LHFVersion << outsideBlock << headerBlock << initComments
      << initAttributes << eventComments << eventAttributes << theFileName
-     << theQNumbers << theDecayer;
+     << theQNumbers << theDecayer ;
 }
 
 void LesHouchesFileReader::persistentInput(PersistentIStream & is, int) {
