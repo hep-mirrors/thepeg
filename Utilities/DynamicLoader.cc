@@ -105,7 +105,7 @@ bool DynamicLoader::load(string name) {
   if ( loaded.find(name) != loaded.end() ) return true;
   loaded.insert(name);
   bool success = false;
-  const string name_dylib = StringUtils::basename(name) + ".dylib";
+  const string name_dylib = StringUtils::remsuf(name) + ".dylib";
   if ( name[0] == '/' ) {
     success = loadcmd(name) || loadcmd(name_dylib);
   }
