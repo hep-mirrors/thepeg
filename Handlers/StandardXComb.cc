@@ -47,7 +47,7 @@ StandardXComb::StandardXComb()
     theLastDiagramIndex(0), theLastPDFWeight(0.0),
     theLastCrossSection(ZERO), theLastJacobian(1.0), theLastME2(-1.0), theLastPreweight(1.0),
     theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0), theLastMECouplings(1.0),
-    checkedCuts(false), passedCuts(false), theCutWeight(1.0) {}
+    checkedCuts(false), passedCuts(false), theCutWeight(1.0), theNeedsReshuffling(false) {}
 
 StandardXComb::
 StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
@@ -64,7 +64,7 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
     theLastCrossSection(ZERO), theLastJacobian(0.0), theLastME2(-1.0),
     theLastPreweight(1.0), theLastMECrossSection(ZERO), 
     theLastMEPDFWeight(1.0), theLastMECouplings(1.0), theHead(newHead),
-    checkedCuts(false), passedCuts(false), theCutWeight(1.0) {
+  checkedCuts(false), passedCuts(false), theCutWeight(1.0), theNeedsReshuffling(false) {
   partonDims = pExtractor()->nDims(partonBins());
   if ( matrixElement()->haveX1X2() ) {
     partonDims.first = 0;
@@ -72,6 +72,7 @@ StandardXComb(Energy newMaxEnergy, const cPDPair & inc,
   }
   theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
   mePartonData() = lastDiagram()->partons();
+  checkReshufflingNeeds();
 }
 
 StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
@@ -81,7 +82,7 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
     theLastDiagramIndex(0), theLastPDFWeight(0.0), theLastCrossSection(ZERO),
     theLastME2(-1.0), theLastPreweight(1.0), theLastMECrossSection(ZERO), theLastMEPDFWeight(1.0), 
     theLastMECouplings(1.0),
-    checkedCuts(false), passedCuts(false) {
+    checkedCuts(false), passedCuts(false), theCutWeight(1.0), theNeedsReshuffling(false) {
   
   subProcess(new_ptr(SubProcess(make_pair(parts[0], parts[1]),
 				tCollPtr(), me)));
@@ -95,6 +96,7 @@ StandardXComb::StandardXComb(tMEPtr me, const tPVector & parts,
   for ( int i = 0, N = me->diagrams().size(); i < N; ++i )
     if ( me->diagrams()[i]->getTag() == tag )
       theDiagrams.push_back(me->diagrams()[i]);
+  checkReshufflingNeeds();
 }
 
 StandardXComb::StandardXComb(tStdXCombPtr newHead,
@@ -109,7 +111,7 @@ StandardXComb::StandardXComb(tStdXCombPtr newHead,
     theLastCrossSection(ZERO), theLastJacobian(0.0), theLastME2(-1.0), 
     theLastPreweight(1.0), theLastMECrossSection(ZERO), 
     theLastMEPDFWeight(1.0), theLastMECouplings(1.0), theHead(newHead),
-    checkedCuts(false), passedCuts(false), theCutWeight(1.0) {
+  checkedCuts(false), passedCuts(false), theCutWeight(1.0), theNeedsReshuffling(false) {
   partonDims = pExtractor()->nDims(partonBins());
   if ( matrixElement()->haveX1X2() ) {
     partonDims.first = 0;
@@ -117,6 +119,7 @@ StandardXComb::StandardXComb(tStdXCombPtr newHead,
   }
   theNDim = matrixElement()->nDim() + partonDims.first + partonDims.second;
   mePartonData() = lastDiagram()->partons();
+  checkReshufflingNeeds();
   /* // wait for C++11
      StandardXComb(newHead->maxEnergy(),newHead->particles(),
      newHead->eventHandlerPtr(),
@@ -640,6 +643,96 @@ void StandardXComb::newSubProcess(bool group) {
   }
 }
 
+void StandardXComb::checkReshufflingNeeds() {
+
+  theNeedsReshuffling = false;
+
+  for ( cPDVector::const_iterator p = mePartonData().begin() + 2;
+	p != mePartonData().end(); ++p ) {
+    theNeedsReshuffling |= ( (**p).mass() != (**p).hardProcessMass() );
+  }
+
+}
+
+double StandardXComb::reshuffleEquation(double k,
+					const vector<pair<Energy2,Energy2> >& coeffs,
+					Energy2 Q2) const {
+  double res = 0.;
+  for ( vector<pair<Energy2,Energy2> >::const_iterator c = coeffs.begin();
+	c != coeffs.end(); ++c ) {
+    double x = sqr(k)*c->first/Q2+c->second/Q2;
+    if ( x < 0.0 )
+      throw Veto();
+    res += sqrt(x);
+  }
+  return res - 1.;
+}
+
+double StandardXComb::solveReshuffleEquation(const vector<pair<Energy2,Energy2> >& coeffs,
+					     Energy2 Q2) const {
+  // shamelessly adapted from Herwig++'s QTildeReconstructor
+  // in principle we could have included the exact solution for two
+  // outgoing particles, but for this to be simple we would require
+  // boosting to the CM so the gain is questionable
+  double k1 = 0.,k2 = 1.,k = 0.; 
+  if ( reshuffleEquation(k1,coeffs,Q2) < 0.0 ) {
+    while ( reshuffleEquation(k2, coeffs, Q2) < 0.0 ) {
+      k1 = k2; 
+      k2 *= 2;       
+    }
+    while ( abs( (k1 - k2)/(k1 + k2) ) > 1.e-10 ) { 
+      if( reshuffleEquation(k2,coeffs,Q2) == 0.0 ) {
+	return k2; 
+      } else {
+	k = (k1+k2)/2.;
+	if ( reshuffleEquation(k,coeffs,Q2) > 0.0 ) {
+	  k2 = k;
+	} else {
+	  k1 = k; 
+	} 
+      }
+    }
+    return k1;
+  }
+  throw Veto();
+  return 1.;
+}
+
+void StandardXComb::reshuffle(vector<Lorentz5Momentum>& pout) const {
+
+  Lorentz5Momentum Q(ZERO,ZERO,ZERO,ZERO);
+  for ( vector<Lorentz5Momentum>::const_iterator p = pout.begin();
+	p != pout.end(); ++p )
+    Q += *p;
+
+  if ( Q.m2() <= ZERO )
+    throw Veto();
+
+  LorentzVector<double> Qhat = Q/sqrt(Q.m2());
+
+  vector<Energy> pQhat;
+  vector<pair<Energy2,Energy2> > coeffs;
+
+  vector<Lorentz5Momentum>::const_iterator p = pout.begin();
+  cPDVector::const_iterator pd = mePartonData().begin() + 2;
+
+  for ( ; p != pout.end(); ++p, ++pd ) {
+    pQhat.push_back((*p)*Qhat);
+    coeffs.push_back(make_pair(sqr(pQhat.back())-sqr((**pd).hardProcessMass()),
+			       sqr((**pd).mass())));
+  }
+
+  double k = solveReshuffleEquation(coeffs,Q.m2());
+
+  vector<Lorentz5Momentum>::iterator px = pout.begin();
+  vector<Energy>::const_iterator pQ = pQhat.begin();
+  vector<pair<Energy2,Energy2> >::const_iterator coeff = coeffs.begin();
+
+  for ( ; px != pout.end(); ++px, ++pQ, ++coeff )
+    *px = k*((*p) - (*pQ) * Qhat) + sqrt(sqr(k)*coeff->first + coeff->second)*Qhat;
+
+}
+
 tSubProPtr StandardXComb::construct() {
 
   matrixElement()->setXComb(this);
@@ -685,7 +778,7 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
      << theLastME2 << theLastPreweight 
      << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight << theLastMECouplings
      << theHead << theProjectors << theProjector << theKinematicsGenerated
-     << checkedCuts << passedCuts << theCutWeight;
+     << checkedCuts << passedCuts << theCutWeight << theNeedsReshuffling;
 }
 
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
@@ -696,7 +789,7 @@ void StandardXComb::persistentInput(PersistentIStream & is, int) {
      >> theLastME2 >> theLastPreweight 
      >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight >> theLastMECouplings
      >> theHead >> theProjectors >> theProjector >> theKinematicsGenerated
-     >> checkedCuts >> passedCuts >> theCutWeight;
+     >> checkedCuts >> passedCuts >> theCutWeight >> theNeedsReshuffling;
 }
 
 ClassDescription<StandardXComb> StandardXComb::initStandardXComb;
