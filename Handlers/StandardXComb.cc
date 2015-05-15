@@ -728,8 +728,10 @@ void StandardXComb::reshuffle(vector<Lorentz5Momentum>& pout) const {
   vector<Energy>::const_iterator pQ = pQhat.begin();
   vector<pair<Energy2,Energy2> >::const_iterator coeff = coeffs.begin();
 
-  for ( ; px != pout.end(); ++px, ++pQ, ++coeff )
+  for ( ; px != pout.end(); ++px, ++pQ, ++coeff ) {
     *px = k*((*px) - (*pQ) * Qhat) + sqrt(sqr(k)*coeff->first + coeff->second)*Qhat;
+    px->rescaleMass();
+  }
 
 }
 
