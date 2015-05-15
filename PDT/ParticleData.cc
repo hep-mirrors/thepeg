@@ -397,6 +397,18 @@ void ParticleData::setHardProcessWidth(Energy mi) {
   }
 }
 
+string ParticleData::doUnsetHardProcessMass(string) {
+  hardProcessMassSet = false;  
+  theHardProcessMass = -1.*GeV;
+  return "";
+}
+  
+string ParticleData::doUnsetHardProcessWidth(string) {
+  hardProcessWidthSet = false;  
+  theHardProcessWidth = -1.*GeV;
+  return "";
+}
+
 Energy ParticleData::defMass() const {
   return theDefMass;
 }
@@ -900,6 +912,17 @@ void ParticleData::Init() {
      "Print all decay modes of this particle.",
      &ParticleData::doPrintDecayModes, true);
 
+
+
+  static Command<ParticleData> interfaceUnsetHardProcessMass
+    ("UnsetHardProcessMass",
+     "Unset a previously set hard process mass.",
+     &ParticleData::doUnsetHardProcessMass, false);
+
+  static Command<ParticleData> interfaceUnsetHardProcessWidth
+    ("UnsetHardProcessWidth",
+     "Unset a previously set hard process width.",
+     &ParticleData::doUnsetHardProcessWidth, false);
 
   interfaceStable.rank(14);
   interfaceDecayModes.rank(13);

@@ -721,6 +721,11 @@ private:
   void setHardProcessMass(Energy);
 
   /**
+   * Reset the hard process mass
+   */
+  string doUnsetHardProcessMass(string);
+
+  /**
    * Utility function for the interface.
    */
   Energy defMass() const;
@@ -734,6 +739,11 @@ private:
    * Utility function for the interface.
    */
   void setHardProcessWidth(Energy);
+
+  /**
+   * Reset the hard process mass
+   */
+  string doUnsetHardProcessWidth(string);
 
   /**
    * Utility function for the interface.
