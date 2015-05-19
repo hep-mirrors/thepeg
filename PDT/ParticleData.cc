@@ -402,6 +402,12 @@ string ParticleData::doUnsetHardProcessMass(string) {
   theHardProcessMass = -1.*GeV;
   return "";
 }
+
+string ParticleData::doAdjustNominalMass(string) {
+  if ( hardProcessMassSet )
+    setMass(theHardProcessMass);
+  return "";
+}
   
 string ParticleData::doUnsetHardProcessWidth(string) {
   hardProcessWidthSet = false;  
@@ -918,6 +924,11 @@ void ParticleData::Init() {
     ("UnsetHardProcessMass",
      "Unset a previously set hard process mass.",
      &ParticleData::doUnsetHardProcessMass, false);
+
+  static Command<ParticleData> interfaceAdjustNominalMass
+    ("AdjustNominalMass",
+     "Unset a previously set hard process mass.",
+     &ParticleData::doAdjustNominalMass, false);
 
   static Command<ParticleData> interfaceUnsetHardProcessWidth
     ("UnsetHardProcessWidth",

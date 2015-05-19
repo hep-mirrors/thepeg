@@ -726,6 +726,12 @@ private:
   string doUnsetHardProcessMass(string);
 
   /**
+   * Adjust the nominal mass to the hard process mass if a reshuffling
+   * is not desirable.
+   */
+  string doAdjustNominalMass(string);
+
+  /**
    * Utility function for the interface.
    */
   Energy defMass() const;
