@@ -20,8 +20,6 @@
 #include "ThePEG/PDT/DecayMode.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 #include <sstream>
 #include <iostream>
 
@@ -528,15 +526,17 @@ void LesHouchesFileReader::open() {
 	weightinfo = cfile.getline();
 	/* to make it shorter, erase some stuff
 	 */
-	boost::erase_all(weightinfo, "<weightgroup");
-	boost::erase_all(weightinfo, ">");
-	boost::erase_all(weightinfo, "\n");
+	string str_weightgroup = "<weightgroup";
+	string str_arrow = ">";
+	string str_newline = "\n";
+	erase_substr(weightinfo, str_weightgroup);
+	erase_substr(weightinfo, str_arrow);
+	erase_substr(weightinfo, str_newline);
       }
       /* if we are reading a new weightgroup, go on 
        * until we find the end of it
        */
       if(readingInitWeights_sc && !cfile.find("</weightgroup")) {
-	//	cout << "weightinfo = " << weightinfo << endl;
 	hs = cfile.getline();
 	istringstream isc(hs);
 	int ws = 0;
@@ -544,7 +544,7 @@ void LesHouchesFileReader::open() {
 	 */
 	do {
 	  string sub; isc >> sub;
-	  if(ws==1) { boost::erase_all(sub, ">"); scalename = sub; }
+	  if(ws==1) { string str_arrow =  ">"; erase_substr(sub, str_arrow); scalename = sub; }
 	  ++ws;
 	} while (isc);
 	/* now get the relevant information
@@ -555,16 +555,18 @@ void LesHouchesFileReader::open() {
 	unsigned firstLim = hs.find(startDEL); //find start of delimiter
 	unsigned lastLim = hs.find(stopDEL); //find end of delimitr
 	string scinfo = hs.substr(firstLim); //define the information for the scale
-	boost::erase_all(scinfo,stopDEL);
-	boost::erase_all(scinfo,startDEL);
+	erase_substr(scinfo,stopDEL);
+	erase_substr(scinfo,startDEL);
 	scinfo = weightinfo + scinfo;
 	/* fill in the map 
 	 * indicating the information to be appended to each scale
 	 * i.e. scinfo for each scalname
 	 */
 	scalemap[scalename] = scinfo.c_str();
-	boost::erase_all(scalename, "id=");
-	boost::erase_all(scalename, "'");
+	string str_id = "id=";
+	string str_prime = "'";
+	erase_substr(scalename, str_id);
+	erase_substr(scalename, str_prime);
 	optionalWeightsNames.push_back(scalename);
       }
     }
@@ -726,7 +728,7 @@ bool LesHouchesFileReader::doReadEvent() {
       // we need to put the actual weight value into a double
       do {
 	string sub; iss >> sub;
-	if(wi==1) { boost::erase_all(sub, ">"); weightName = sub; }
+	if(wi==1) { string str_arrow = ">" ; erase_substr(sub, str_arrow); weightName = sub; }
 	if(wi==2) weightValue = atof(sub.c_str());
 	++wi;
       } while (iss);
@@ -740,7 +742,8 @@ bool LesHouchesFileReader::doReadEvent() {
       std::stringstream amcfstringstream;
       amcfstringstream << "aMCFast " << cfile.getline();
       std::string amcfstrings = amcfstringstream.str();
-      boost::erase_all(amcfstrings,"\n");
+      string str_newline = "\n";
+      erase_substr(amcfstrings,str_newline);
       optionalWeights[amcfstrings.c_str()] = -111; //for the aMCFast we give them a weight -111 for future identification
     }
 
@@ -754,10 +757,12 @@ bool LesHouchesFileReader::doReadEvent() {
       unsigned firstLim = hs.find(startDEL); //find start of delimiter
       //   unsigned lastLim = hs.find(stopDEL); //find end of delimitr
       string mg5clusinfo = hs.substr(firstLim); //define the information for the scale
-      boost::erase_all(mg5clusinfo,stopDEL);
-      boost::erase_all(mg5clusinfo,startDEL);
-      boost::erase_all(mg5clusinfo,">");
-      boost::erase_all(mg5clusinfo,"\"");
+      erase_substr(mg5clusinfo,stopDEL);
+      erase_substr(mg5clusinfo,startDEL);
+      string str_arrow = ">";
+      erase_substr(mg5clusinfo,str_arrow);
+      string str_quotation = "\"";
+      erase_substr(mg5clusinfo,str_quotation);
       optionalWeights[mg5clusinfo.c_str()] = -222; //for the mg5 scale info weights we give them a weight -222 for future identification
     }
     
@@ -769,9 +774,10 @@ bool LesHouchesFileReader::doReadEvent() {
       unsigned firstLim = hs.find(startDEL); //find start of delimiter
       //    unsigned lastLim = hs.find(stopDEL); //find end of delimitr
       string mg5scinfo = hs.substr(firstLim); //define the information for the scale
-      boost::erase_all(mg5scinfo,stopDEL);
-      boost::erase_all(mg5scinfo,startDEL);
-      boost::erase_all(mg5scinfo,">");
+      erase_substr(mg5scinfo,stopDEL);
+      erase_substr(mg5scinfo,startDEL);
+      string str_arrow = ">";
+      erase_substr(mg5scinfo,str_arrow);
       optionalWeights[mg5scinfo.c_str()] = -333; //for the mg5 scale info weights we give them a weight -333 for future identification
     }
 
@@ -788,7 +794,8 @@ bool LesHouchesFileReader::doReadEvent() {
       //find the scale id in the scale information and add this information
       if(it->first==it2->first) { 
 	string info = it2->second + " " + it->first;
-	boost::erase_all(info, "\n");
+	string str_newline = "\n";
+	erase_substr(info, str_newline);
 	//set the optional weights
 	optionalWeights[info] = it->second;
 	/*cout << "info = " << info << endl;
@@ -872,3 +879,9 @@ void LesHouchesFileReader::Init() {
 
 }
 
+void LesHouchesFileReader::erase_substr(std::string& subject, const std::string& search) {
+    size_t pos = 0;
+    while((pos = subject.find(search, pos)) != std::string::npos) {
+      subject.erase( pos, search.length() );
+    }
+}

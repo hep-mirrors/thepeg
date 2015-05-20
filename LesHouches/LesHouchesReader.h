@@ -149,14 +149,13 @@ public:
    * return the weight names 
    */
   virtual vector<string> optWeightsNamesFunc() = 0;
-  vector<string> optionalWeightsNames;
-  /** 
-   * The ID (e.g. 100x, 2001) for the weight
-   */ 
 
-  // vector<string> optionalWeightsNames;
-
+  /**
+   * vector with the optional weights names
+   */
   
+  vector<string> optionalWeightsNames;
+
   //@}
 
   /** @name Other important function which may be overridden in

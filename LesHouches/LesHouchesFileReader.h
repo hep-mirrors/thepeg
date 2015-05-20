@@ -14,6 +14,7 @@
 #include "LesHouchesFileReader.fh"
 #include "ThePEG/PDT/Decayer.h"
 #include "ThePEG/Utilities/CFileLineReader.h"
+#include <string>
 #include <stdio.h>
 
 namespace ThePEG {
@@ -94,16 +95,12 @@ public:
    */
   string filename() const { return theFileName; }
 
-  /* vector<string> optionalWeightsNames;
-
-     virtual vector<string> optWeightNamesFunc();*/
-
-
+  /** 
+   * Return the optional weights information string ("Names")
+   */
 
   virtual vector<string> optWeightsNamesFunc();
-
-
- 
+  
 
 public:
 
@@ -127,6 +124,14 @@ public:
    * Standard Init function used to initialize the interfaces.
    */
   static void Init();
+
+
+  /** 
+   * Erases all occurences of a substring from a string 
+   */
+  
+  void erase_substr(std::string& subject, const std::string& search);
+
 
 protected:
 

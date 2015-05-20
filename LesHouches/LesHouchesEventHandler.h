@@ -115,6 +115,10 @@ public:
    */
   virtual CrossSection integratedXSec() const;
 
+  /**
+   * The number of attempts inside the statistics object
+   */
+ 
   virtual int ntriesinternal() const;
 
   /**
@@ -123,6 +127,10 @@ public:
    *  @return 0 if no integrated cross section error could be estimated.
    */
   virtual CrossSection integratedXSecErr() const;
+
+  /**
+   * Map to aid the calculation of the optional weights' integrated cross section
+   */
 
   virtual map<string,CrossSection> optintegratedXSecMap() const;
 
@@ -315,13 +323,32 @@ protected:
    */
   XSecStat stats;
 
+  /* 
+   * Collect statistics for the optional weights
+   */ 
   map<string,XSecStat> optstats;
 
+  /* 
+   * Calculate the cross section for the optional weights
+   */
+
   map<string,CrossSection> optxs;
+
+  /*
+   * Counter for the number of tries for the purpose of statistics
+   */
   
   int ntries;
 
+  /* 
+   * Return the optional weights' statistics 
+   */ 
+  
   map<string,XSecStat> OptStatsFunc() { return optstats; }
+
+  /*
+   * Return the optional weights' cross sections
+   */
 
   map<string,CrossSection> OptXsFunc() { return optxs; }
 
@@ -332,10 +359,12 @@ protected:
    */
   XSecStat histStats;
 
+    /**
+   * Collect statistics for this event handler's optional weights. To be used for
+   * histogram scaling.
+   */
+
   map<string,XSecStat> opthistStats;
-
-
-
 
   /*
    * The weight identifiers for the events
