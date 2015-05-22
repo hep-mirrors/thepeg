@@ -467,4 +467,4 @@ struct ClassTraits<LesHouchesEventHandler>
 
 }
 
-#endif /* HERWIG_LesHouchesEventHandler_H */
+#endif /* THEPEG_LesHouchesEventHandler_H */
