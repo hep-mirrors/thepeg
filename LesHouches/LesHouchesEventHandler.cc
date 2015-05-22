@@ -57,6 +57,7 @@ void LesHouchesEventHandler::doinit() {
   }
 
   ntries = 0;
+ 
 }
 
 void LesHouchesEventHandler::initialize() {
@@ -80,17 +81,17 @@ void LesHouchesEventHandler::initialize() {
   PDPair incoming;
   Energy MaxEA = ZERO;
   Energy MaxEB = ZERO;
+  weightnames.clear();
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
     reader.initialize(*this);
 
-
-    // TODO check if loop similarity check is needed
-
-    weightnames = reader.optWeightsNamesFunc();
-
-
-
+    if ( i == 0 )
+      weightnames = reader.optWeightsNamesFunc();
+    else if ( reader.optWeightsNamesFunc() != weightnames )
+      throw LesHouchesInitError()
+        << "the optional weights names for the LesHouchesEventHandler do not match '"
+        << name() << "'" << Exception::warning;
 
     // Check that the incoming particles are consistent between the
     // readers.
