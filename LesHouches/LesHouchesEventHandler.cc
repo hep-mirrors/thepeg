@@ -80,10 +80,12 @@ void LesHouchesEventHandler::initialize() {
   PDPair incoming;
   Energy MaxEA = ZERO;
   Energy MaxEB = ZERO;
+  //temporary holder for weightnames: to check that they are the same between all readers
+  vector<vector<string> > weightnames_tmp; 
   for ( int i = 0, N = readers().size(); i < N; ++i ) {
     LesHouchesReader & reader = *readers()[i];
     reader.initialize(*this);
-    weightnames = reader.optWeightsNamesFunc();
+    weightnames_tmp.push_back(reader.optWeightsNamesFunc());    
     // Check that the incoming particles are consistent between the
     // readers.
     if ( !incoming.first ) {
@@ -140,6 +142,31 @@ void LesHouchesEventHandler::initialize() {
     }
     selector().insert(reader.stats.maxXSec(), i);
   }
+  // Check that all the weightnames are equal amongst readers
+  if(readers().size() > 1) { 
+    for ( int i = 1, N = readers().size(); i < N; ++i ) {
+      // already throw exception if the weightnames are not the same size
+      if(weightnames_tmp[0].size() != weightnames_tmp[i].size()) { 
+	throw LesHouchesInitError()
+	  << "the optional weights names for the LesHouchesEventHandler do not match '"
+	  << name() << "'" << Exception::warning;
+      }
+      for(int j = 0; j < weightnames_tmp[0].size(); j++) {
+	if(weightnames_tmp[0][j] !=  weightnames_tmp[i][j]) {
+	  throw LesHouchesInitError()
+	    << "the optional weights names for the LesHouchesEventHandler do not match '"
+	    << name() << "'" << Exception::warning;
+	}
+      }
+    }
+  }
+  
+  // Now set the weight names to that of the first reader
+  LesHouchesReader & reader = *readers()[0];    
+  weightnames = reader.optWeightsNamesFunc();
+  
+
+  
   stats.maxXSec(selector().sum());
   histStats.maxXSec(selector().sum());
   for (map<string,XSecStat>::iterator it= optstats.begin(); it!=optstats.end(); ++it){
