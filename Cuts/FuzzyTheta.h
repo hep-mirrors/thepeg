@@ -102,7 +102,7 @@ public:
    * upper bounds.
    */
   double overlap(double x,
-		 const pair<double,double>& box,
+		 pair<double,double> box,
 		 const pair<double,double>& support) const {
     box.first = max(box.first,support.first);
     box.second = min(box.second,support.second);
