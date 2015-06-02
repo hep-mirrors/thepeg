@@ -104,7 +104,8 @@ public:
   double overlap(double x,
 		 const pair<double,double>& box,
 		 const pair<double,double>& support) const {
-    assert(box.first >= support.first && box.second <= support.second);
+    box.first = max(box.first,support.first);
+    box.second = min(box.second,support.second);
     assert(x >= support.first && x <= support.second);
     assert(support.second - support.first >= 1.);
     if ( x - 0.5 < support.first )
