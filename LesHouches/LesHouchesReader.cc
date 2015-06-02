@@ -1153,7 +1153,7 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mwrite(pos, lastweight);
   pos = mwrite(pos, optionalWeights);
-  for(int ff = 0; ff < optionalWeightsNames.size(); ff++) {
+  for(size_t ff = 0; ff < optionalWeightsNames.size(); ff++) {
     pos = mwrite(pos, optionalWeightsNames[ff]);
   }
   pos = mwrite(pos, optionalnpLO);
@@ -1193,7 +1193,7 @@ bool LesHouchesReader::uncacheEvent() {
   pos = mread(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mread(pos, lastweight);
   pos = mread(pos, optionalWeights);
-  for(int ff = 0; ff < optionalWeightsNames.size(); ff++) {
+  for(size_t ff = 0; ff < optionalWeightsNames.size(); ff++) {
     pos = mread(pos, optionalWeightsNames[ff]);
   }
   pos = mread(pos, optionalnpLO);
