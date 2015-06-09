@@ -235,12 +235,12 @@ void LesHouchesReader::initialize(LesHouchesEventHandler & eh) {
 		     partonExtractor()->getPDF(inData.second));
 
   // SP: re-interpret 3/4 -> 1/2; see discussion w/ Leif and Keith at LH 2013
-
-  if ( abs(heprup.IDWTUP) == 3 )
+ 
+  /*  if ( abs(heprup.IDWTUP) == 3 )
     heprup.IDWTUP = heprup.IDWTUP < 0 ? -1 : 1;
 
   if ( abs(heprup.IDWTUP) == 4 )
-    heprup.IDWTUP = heprup.IDWTUP < 0 ? -2 : 2;
+  heprup.IDWTUP = heprup.IDWTUP < 0 ? -2 : 2;*/
 
   close();
 
@@ -307,6 +307,9 @@ long LesHouchesReader::scan() {
     vector<double> newmax;
     vector<long> oldeve;
     vector<long> neweve;
+    vector<double> sumlprup;
+    vector<double> sumsqlprup;	
+    vector<long> nscanned;
     for ( int i = 0; ( maxScan() < 0 || i < maxScan() ) && readEvent(); ++i ) {
       if ( !checkPartonBin() ) Throw<LesHouchesInitError>()
 	<< "Found event in LesHouchesReader '" << name()
@@ -320,12 +323,18 @@ long LesHouchesReader::scan() {
 	newmax.push_back(0.0);
 	neweve.push_back(0);
 	oldeve.push_back(0);
+	sumlprup.push_back(0.);
+        sumsqlprup.push_back(0.);        
+	nscanned.push_back(0);
       } else {
 	id = idit - lprup.begin();
       }
       ++neve;
       ++oldeve[id];
       oldsum += hepeup.XWGTUP;
+      sumlprup[id] += hepeup.XWGTUP;
+      sumsqlprup[id] += sqr(hepeup.XWGTUP);
+      ++nscanned[id];
       if ( cacheFile() ) {
  	if ( eventWeight() == 0.0 ) {
  	  ++cuteve;
@@ -336,8 +345,11 @@ long LesHouchesReader::scan() {
       ++neweve[id];
       newmax[id] = max(newmax[id], abs(eventWeight()));
       if ( eventWeight() < 0.0 ) negw = true;
-    }
-    // std::cout << "eventWeight() = " << eventWeight() << endl;
+    } //end of scanning events
+    /*cout << "cross section estimates for different subproc:" << endl;
+    for(int jj = 0; jj < lprup.size(); jj++) {
+      cout << jj << " " << sumlprup[jj]/nscanned[jj] << endl;
+    }*/
     xSecWeights.resize(oldeve.size(), 1.0);
     for ( int i = 0, N = oldeve.size(); i < N; ++i )
       if ( oldeve[i] ) xSecWeights[i] = double(neweve[i])/double(oldeve[i]);
@@ -368,10 +380,17 @@ long LesHouchesReader::scan() {
 	heprup.LPRUP[id] = lprup[id];
 	heprup.XMAXUP[id] = newmax[id];
       }
-    } else if ( abs(heprup.IDWTUP) != 1 ) {
+    }
+    if ( abs(heprup.IDWTUP) != 1 ) {
       // Try to fix things if abs(heprup.IDWTUP) != 1.
       double sumxsec = 0.0;
-      for ( int id = 0; id < heprup.NPRUP; ++id ) sumxsec += heprup.XSECUP[id];
+      for ( int id = 0; id < heprup.NPRUP; ++id )  {
+	//set the cross section directly from the event weights read
+	heprup.XSECUP[id] = sumlprup[id]/nscanned[id];
+	heprup.XERRUP[id] = sqrt( (sumsqlprup[id]/nscanned[id] - sqr(sumlprup[id]/nscanned[id])) / nscanned[id] );
+	heprup.XMAXUP[id] = newmax[id];
+	sumxsec += heprup.XSECUP[id];
+      }
       weightScale = picobarn*neve*sumxsec/oldsum;
     }
   }
@@ -379,7 +398,7 @@ long LesHouchesReader::scan() {
   if ( cacheFile() ) closeCacheFile();
 
   if ( negw ) heprup.IDWTUP = min(-abs(heprup.IDWTUP), -1);
-
+ 
   return neve;
 
 }
@@ -502,14 +521,14 @@ bool LesHouchesReader::readEvent() {
 
   // If we are just skipping event we do not need to reweight or do
   // anything fancy.
-  if ( skipping ) {  return true; }
+  if ( skipping ) { return true; }
 
   if ( cacheFile() && !scanning ) { return true;  }
 
   // Reweight according to the re- and pre-weights objects in the
   // LesHouchesReader base class.
   lastweight = reweight();
-
+  
   if ( !reweightPDF && !cutEarly() ) return true;
   // We should try to reweight the PDFs or make early cuts here.
 
@@ -567,9 +586,7 @@ double LesHouchesReader::getEvent() {
   ++position;
 
   double max = maxWeights[hepeup.IDPRUP]*maxFactor;
-  
-  return max != 0.0? eventWeight()/max: 0.0;
-
+  return max != 0.0? eventWeight()/max: 0.0; 
 }
 
 void LesHouchesReader::skip(long n) {

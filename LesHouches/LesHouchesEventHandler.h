@@ -15,7 +15,6 @@
 #include "ThePEG/Handlers/EventHandler.h"
 #include "LesHouchesEventHandler.fh"
 #include "LesHouchesReader.fh"
-//#include "LesHouchesAnalysis.h"
 #include "ThePEG/Utilities/CompSelector.h"
 #include "ThePEG/Utilities/XSecStat.h"
 
@@ -62,9 +61,6 @@ public:
     varweight = 2,      /**< Varying positive weights. */
     varnegweight = -2   /**< Varying positive or negative weights. */
   };
-
-  friend class LesHouchesHandler;
-
 
 public:
 
@@ -132,7 +128,7 @@ public:
    * Map to aid the calculation of the optional weights' integrated cross section
    */
 
-  virtual map<string,CrossSection> optintegratedXSecMap() const;
+  virtual const map<string,CrossSection> & optintegratedXSecMap() const;
 
   //@}
 
@@ -323,54 +319,54 @@ protected:
    */
   XSecStat stats;
 
-  /* 
-   * Collect statistics for the optional weights
-   */ 
-  map<string,XSecStat> optstats;
-
-  /* 
-   * Calculate the cross section for the optional weights
-   */
-
-  map<string,CrossSection> optxs;
-
-  /*
-   * Counter for the number of tries for the purpose of statistics
-   */
-  
-  int ntries;
-
-  /* 
-   * Return the optional weights' statistics 
-   */ 
-  
-  map<string,XSecStat> OptStatsFunc() { return optstats; }
-
-  /*
-   * Return the optional weights' cross sections
-   */
-
-  map<string,CrossSection> OptXsFunc() { return optxs; }
-
-
   /**
    * Collect statistics for this event handler. To be used for
    * histogram scaling.
    */
   XSecStat histStats;
 
-    /**
-   * Collect statistics for this event handler's optional weights. To be used for
-   * histogram scaling.
-   */
-
-  map<string,XSecStat> opthistStats;
-
-  /*
+  /**
    * The weight identifiers for the events
    */ 
   
   vector<string> weightnames;
+
+  /**
+   * Collect statistics for this event handler's optional weights.
+   */
+  struct OptWeight {
+ 
+    /**
+     * Collect statistics for the optional weights
+     */ 
+    XSecStat stats;
+
+    /** 
+     * Calculate the cross section for the optional weights
+     */
+    CrossSection xs;
+    
+    /**
+     * Collect statistics for this event handler's optional weights. To be used for
+     * histogram scaling.
+     */
+    XSecStat histStats;
+  };
+
+  /** Map statistics to weight name strings */
+  map <string,OptWeight> opt;
+
+  /**
+   * Counter for the number of tries for the purpose of statistics
+   */
+  
+  int ntries;
+
+  /** 
+   * Return the optional weights' statistics 
+   */ 
+  
+  const map<string,OptWeight> & optWeights() const { return opt; }
 
 private:
 
@@ -471,4 +467,4 @@ struct ClassTraits<LesHouchesEventHandler>
 
 }
 
-#endif /* HERWIG_LesHouchesEventHandler_H */
+#endif /* THEPEG_LesHouchesEventHandler_H */
