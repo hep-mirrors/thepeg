@@ -263,7 +263,9 @@ EventPtr LesHouchesEventHandler::generateEvent() {
 }
 
 void LesHouchesEventHandler::skipEvents() {
-
+ 
+  if ( weightOption() == 2 || weightOption() == -2 ) return; //does it make sense to skip events if we are using varying weights?
+  
   // Don't do this for readers which seem to generate events on the fly.
   if ( currentReader()->active() || currentReader()->NEvents() <= 0 ) return;
 
