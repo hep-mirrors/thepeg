@@ -630,6 +630,7 @@ void StandardXComb::newSubProcess(bool group) {
 		       lastPartons().second->momentum().minus()/
 		       lastParticles().second->momentum().minus()));
     lastY(log(lastX1()/lastX2())*0.5);
+    lastCentralScale(lastProjector()->lastCentralScale());
     partonBinInstances().first->parton(lastPartons().first);
     partonBinInstances().second->parton(lastPartons().second);
     if ( !matrixElement()->keepRandomNumbers() )
