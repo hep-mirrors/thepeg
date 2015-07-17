@@ -15,7 +15,7 @@ pkglib_LTLIBRARIES = LWHFactory.la XSecCheck.la ProgressLog.la
 if HAVE_RIVET
   DOCFILES = RivetAnalysis.h NLORivetAnalysis.h
   pkglib_LTLIBRARIES += RivetAnalysis.la
-  RivetAnalysis_la_CPPFLAGS =  $(RIVETINCLUDE) $(HEPMCINCLUDE) $(AM_CPPFLAGS)
+  RivetAnalysis_la_CPPFLAGS = $(AM_CPPFLAGS) $(RIVETINCLUDE) $(HEPMCINCLUDE)
   RivetAnalysis_la_LIBADD = $(HEPMCLIBS) $(RIVETLIBS)
   RivetAnalysis_la_SOURCES = RivetAnalysis.cc NLORivetAnalysis.cc $(INCLUDEFILES)
   RivetAnalysis_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
