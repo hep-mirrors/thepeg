@@ -493,9 +493,9 @@ void LesHouchesFileReader::open() {
   bool readingInit = false;
   headerBlock = "";
   
-  char (cwgtinfo_weights_info[250][15]);
+//  char (cwgtinfo_weights_info[250][15]);
   string hs;
-  int cwgtinfo_nn(0);
+//  int cwgtinfo_nn(0);
 
   // Loop over all lines until we hit the </init> tag.
   bool readingInitWeights = false, readingInitWeights_sc = false;
@@ -553,7 +553,7 @@ void LesHouchesFileReader::open() {
 	string startDEL = "'>"; //starting delimiter
 	string stopDEL = "</weight>"; //end delimiter
 	unsigned firstLim = hs.find(startDEL); //find start of delimiter
-	unsigned lastLim = hs.find(stopDEL); //find end of delimitr
+//	unsigned lastLim = hs.find(stopDEL); //find end of delimitr
 	string scinfo = hs.substr(firstLim); //define the information for the scale
 	erase_substr(scinfo,stopDEL);
 	erase_substr(scinfo,startDEL);
