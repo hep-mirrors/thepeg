@@ -259,6 +259,17 @@ public:
 		    x()*a.y()-y()*a.x());
   }
   
+  public:  
+  /// @name Comparison operators.
+  //@{
+  bool operator==(const ThreeVector<Value> & a) {
+    return (theX == a.x() && theY == a.y() && theZ == a.z());
+  }
+    bool operator!=(const ThreeVector<Value> & a) {
+    return !(*this == a);
+  }
+     //@}
+  
 public:  
   /// @name Mathematical assignment operators.
   //@{
