@@ -262,10 +262,10 @@ public:
   public:  
   /// @name Comparison operators.
   //@{
-  bool operator==(const ThreeVector<Value> & a) {
+  bool operator==(const ThreeVector<Value> & a) const {
     return (theX == a.x() && theY == a.y() && theZ == a.z());
   }
-    bool operator!=(const ThreeVector<Value> & a) {
+  bool operator!=(const ThreeVector<Value> & a) const {
     return !(*this == a);
   }
      //@}
