@@ -20,6 +20,7 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/UnitIO.h"
 #include <cassert>
+#include <cmath>
 
 namespace ThePEG {
 
@@ -267,6 +268,12 @@ public:
   }
   bool operator!=(const ThreeVector<Value> & a) const {
     return !(*this == a);
+  }
+  bool almostEqual(const ThreeVector<Value> & a, double threshold = 1e-04) const {
+    return ((std::abs(theX - a.x()) < threshold) && (std::abs(theY - a.y()) < threshold) && (std::abs(theZ - a.z()) < threshold));
+  }
+  bool almostUnequal(const ThreeVector<Value> & a, double threshold = 1e-04) const {
+    return !(*this.almostEqual(a, threshold));
   }
      //@}
   
