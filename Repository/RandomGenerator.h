@@ -190,20 +190,36 @@ public:
   template <typename Unit>
   Unit rndExp(Unit mean) { return mean*rndExp(); }
 
+    /**
+   * Return two numbers distributed according to a Gaussian distribution
+   * with zero mean and unit variance.
+   * 
+   * @param[out] First random number
+   * @param[out] Second random number
+   */
+  void rndGaussTwoNumbers(double & randomNumberOne, double & randomNumberTwo) { 
+    double r = sqrt(-2.0*log(rnd()));
+    double phi = rnd()*2.0*Constants::pi;
+    randomNumberOne = r*sin(phi);
+    randomNumberTwo = r*cos(phi);
+  }
+  
   /**
    * Return a number distributed according to a Gaussian distribution
-   * with zero mean and unit variance.
+   * with zero mean and unit variance. 
+   * A second number is cached and returned the next time.
+   * This function calls the rndGaussTwoNumbers function which returns two numbers at once.
    */
   double rndGauss() { 
     if ( gaussSaved ) {
       gaussSaved = false;
       return savedGauss;
     }
-    double r = sqrt(-2.0*log(rnd()));
-    double phi = rnd()*2.0*Constants::pi;
-    savedGauss = r*cos(phi);
+    double  randomNumberOne, randomNumberTwo;
+    rndGaussTwoNumbers(randomNumberOne, randomNumberTwo);
+    savedGauss = randomNumberTwo;
     gaussSaved = true;
-    return r*sin(phi);
+    return randomNumberOne;
   }
 
   /**
@@ -215,6 +231,17 @@ public:
     return mean + sigma*rndGauss();
   }
 
+  /**
+   * Return two numbers distributed according to a Gaussian distribution
+   * with a given standard deviation, \a sigma, and a given \a mean.
+   */
+  template <typename Unit>
+  void rndGaussTwoNumbers(double & randomNumberOne, double & randomNumberTwo, Unit sigma, Unit mean = Unit()) {
+    rndGaussTwoNumbers(randomNumberOne, randomNumberTwo);
+    randomNumberOne = mean + sigma * randomNumberOne;
+    randomNumberTwo = mean + sigma * randomNumberTwo;
+  }
+  
   /**
    * Return a positive number distributed according to a
    * non-relativistic Breit-Wigner with a given width, \a gamma, and a
