@@ -18,6 +18,95 @@
 #include <fstream>
 
 
+
+/*
+ * Helper class to test generated random numbers
+ * 
+ * The class checks how many random numbers are inside a pre-defined interval and how many outside
+ * This class is e.g. useful to check random numbers produced by a gaussian distribution
+ */
+template <typename Unit>
+class HelperRandomNumberBinningCheck {
+  private:
+    // Do not accept missing interval limits
+    HelperRandomNumberBinningCheck() {}
+  public:
+    // Define interval limits
+    HelperRandomNumberBinningCheck(Unit intervalLowerLimit, Unit intervalUpperLimit) 
+      : m_intervalLowerLimit(intervalLowerLimit), m_intervalUpperLimit(intervalUpperLimit), m_numbersInsideInterval(0), m_numbersOutsideInterval(0) {}
+    ~HelperRandomNumberBinningCheck() {}
+    
+    int numbersInsideInterval() {return m_numbersInsideInterval;}
+    int numbersOutsideInterval() {return m_numbersOutsideInterval;}
+    int numbersTotal() {return m_numbersOutsideInterval + m_numbersInsideInterval;}
+    // Check if random number is inside / outside interval and increase corresponding counter
+    void add(Unit randomNumber) {
+      if(randomNumber >= m_intervalLowerLimit && randomNumber <= m_intervalUpperLimit) {
+	m_numbersInsideInterval++;
+      } else {
+	m_numbersOutsideInterval++;
+      }
+    }
+    // Reset counters
+    void resetCounters() {m_numbersInsideInterval = 0; m_numbersOutsideInterval = 0;}
+  
+  private:
+    Unit m_intervalLowerLimit, m_intervalUpperLimit;
+    int m_numbersInsideInterval, m_numbersOutsideInterval; 
+};
+typedef HelperRandomNumberBinningCheck<double> HelperDoubleBinningCheck;
+
+/*
+ * Start of BOOST unit tests for Helper class
+ * 
+ */
+BOOST_AUTO_TEST_SUITE(HelperRandomNumberBinning)
+
+BOOST_AUTO_TEST_CASE(HelperDoubleBinning)
+{
+  HelperDoubleBinningCheck* doubleBinningCheckObject = new HelperDoubleBinningCheck(0, 1);
+  doubleBinningCheckObject->add(-1.1);
+  doubleBinningCheckObject->add(-0.1);
+  doubleBinningCheckObject->add(0.1);
+  doubleBinningCheckObject->add(0.5);
+  doubleBinningCheckObject->add(0.8);
+  doubleBinningCheckObject->add(1.1);
+  doubleBinningCheckObject->add(100);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObject->numbersTotal(), 7);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObject->numbersInsideInterval(), 3);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObject->numbersOutsideInterval(), 4);
+  
+  doubleBinningCheckObject->resetCounters();
+  BOOST_CHECK_EQUAL(doubleBinningCheckObject->numbersTotal(), 0);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObject->numbersInsideInterval(), 0);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObject->numbersOutsideInterval(), 0);
+  
+  
+  HelperDoubleBinningCheck* doubleBinningCheckObjectTwo = new HelperDoubleBinningCheck(-1.5, 0.5);
+  doubleBinningCheckObjectTwo->add(-1.1);
+  doubleBinningCheckObjectTwo->add(-0.1);
+  doubleBinningCheckObjectTwo->add(0.1);
+  doubleBinningCheckObjectTwo->add(0.5);
+  doubleBinningCheckObjectTwo->add(0.8);
+  doubleBinningCheckObjectTwo->add(1.1);
+  doubleBinningCheckObjectTwo->add(100);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObjectTwo->numbersTotal(), 7);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObjectTwo->numbersInsideInterval(), 4);
+  BOOST_CHECK_EQUAL(doubleBinningCheckObjectTwo->numbersOutsideInterval(), 3);
+}
+
+/* 
+ * End of BOOST unit tests for Helper class
+ * 
+ */
+BOOST_AUTO_TEST_SUITE_END()
+
+
+
+/*
+ * Local fix to provide randomGenerator object
+ * 
+ */
 struct FixLocal1 {
   FixLocal1() {
     BOOST_TEST_MESSAGE( "setup local fixture for repositoryTestRandomGenerator" ); 
@@ -43,12 +132,57 @@ BOOST_FIXTURE_TEST_SUITE(repositoryRandomGenerator, FixLocal1)
  */
 BOOST_AUTO_TEST_CASE(rndZeroToOne)
 {
-  unsigned int numberOfTrials = 1000;
-  for(unsigned int i = 0; i < numberOfTrials; ++i) {
-    double randomNumber = randomNumberStandardGenerator->rnd();
-    BOOST_CHECK(randomNumber > 0);
-    BOOST_CHECK(randomNumber < 1);
+  int numberOfTrials = 1000;
+  // Check for whole interval 
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperDoubleBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndFirstQuarter = new HelperDoubleBinningCheck(0, 0.25);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenSecondAndThirdQuarter = new HelperDoubleBinningCheck(0.5, 0.75);
+  
+  // rnd function
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->rnd());
+    allRandomNumbersBetweenZeroAndFirstQuarter->add(randomNumberStandardGenerator->rnd());
+    allRandomNumbersBetweenSecondAndThirdQuarter->add(randomNumberStandardGenerator->rnd());
   }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.25
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersInsideInterval(), 0.25 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersOutsideInterval(), 0.75 * numberOfTrials, 5);
+  
+  // Prob laying inside of interval should be 0.25
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersInsideInterval(), 0.25 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersOutsideInterval(), 0.75 * numberOfTrials, 5);
+  
+  
+  // repeat for operator()
+  allRandomNumbersBetweenZeroAndOne->resetCounters();
+  allRandomNumbersBetweenZeroAndFirstQuarter->resetCounters();
+  allRandomNumbersBetweenSecondAndThirdQuarter->resetCounters();
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->operator()());
+    allRandomNumbersBetweenZeroAndFirstQuarter->add(randomNumberStandardGenerator->operator()());
+    allRandomNumbersBetweenSecondAndThirdQuarter->add(randomNumberStandardGenerator->operator()());
+  }
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+    // Prob laying inside of interval should be 0.25
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersInsideInterval(), 0.25 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersOutsideInterval(), 0.75 * numberOfTrials, 5);
+  
+  // Prob laying inside of interval should be 0.25
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersInsideInterval(), 0.25 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersOutsideInterval(), 0.75 * numberOfTrials, 5);
 }
 
 BOOST_AUTO_TEST_CASE(rndZeroToIntervalUpperLimit)
@@ -59,6 +193,13 @@ BOOST_AUTO_TEST_CASE(rndZeroToIntervalUpperLimit)
     double randomNumber = randomNumberStandardGenerator->rnd(intervalUpperLimit);
     BOOST_CHECK(randomNumber > 0);
     BOOST_CHECK(randomNumber < intervalUpperLimit);
+  }
+  
+  long intervalUpperLimitTwo = 3;
+  for(unsigned int i = 0; i < numberOfTrials; ++i) {
+    long randomNumber = randomNumberStandardGenerator->operator()(intervalUpperLimitTwo);
+    BOOST_CHECK(randomNumber >= 0);
+    BOOST_CHECK(randomNumber <= intervalUpperLimitTwo);
   }
 }
 
@@ -73,6 +214,33 @@ BOOST_AUTO_TEST_CASE(rndIntervallLowerLimitToIntervalUpperLimit)
     BOOST_CHECK(randomNumber < intervalUpperLimit);
   }
 }
+
+BOOST_AUTO_TEST_CASE(rndZeroToOneVector)
+{
+  unsigned int numberOfTrials = 10;
+  unsigned int lengthOfRandomVector = 10;
+  for(unsigned int i = 0; i < numberOfTrials; ++i) {
+    std::vector<double> randomNumberVector = randomNumberStandardGenerator->rndvec(lengthOfRandomVector);
+    BOOST_CHECK_EQUAL(randomNumberVector.size(), lengthOfRandomVector);
+    for(unsigned int j = 0; j < randomNumberVector.size(); ++j) {
+      BOOST_CHECK(randomNumberVector[j] > 0);
+      BOOST_CHECK(randomNumberVector[j] < 1);
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(rndBoolSingleProbability)
+{
+  unsigned int numberOfTrials = 1000;
+  for(unsigned int i = 0; i < numberOfTrials; ++i) {
+    double randomNumber = randomNumberStandardGenerator->rnd();
+    BOOST_CHECK(randomNumber > 0);
+    BOOST_CHECK(randomNumber < 1);
+  }
+}
+
+
+
 
 BOOST_AUTO_TEST_CASE(azimuthalSmearing)
 {
