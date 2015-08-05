@@ -14,8 +14,6 @@
 
 #include "ThePEG/Repository/RandomGenerator.h"
 #include <StandardRandom.h>
-#include <iostream>
-#include <fstream>
 
 
 
@@ -724,6 +722,138 @@ BOOST_AUTO_TEST_CASE(rnd4)
   BOOST_CHECK_CLOSE(allRandomNumbersWithThree->numbersInsideInterval(), 0.5/1.4 * numberOfTrials, 10);
   BOOST_CHECK_CLOSE(allRandomNumbersWithThree->numbersOutsideInterval(), 0.9/1.4 * numberOfTrials, 10);
 }
+
+BOOST_AUTO_TEST_CASE(rndExp)
+{
+  int numberOfTrials = 1000;
+  // Check for whole interval 
+  HelperDoubleBinningCheck* allRandomNumbersBetweenMinusInftyAndPlusInfty = new HelperDoubleBinningCheck(DBL_MIN, DBL_MAX);
+  // Check for median
+  HelperDoubleBinningCheck* allRandomNumbersBetweenMinusInftyAndFirstHalf = new HelperDoubleBinningCheck(DBL_MIN, log(2));
+  HelperDoubleBinningCheck* allRandomNumbersBetweenSecondHalfandPlusInfty = new HelperDoubleBinningCheck(log(2), DBL_MAX);
+  // Check for increasing probability
+  HelperDoubleBinningCheck* allRandomNumbersBetweenMinusKAndZero = new HelperDoubleBinningCheck(-1000, 0);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndPlusK = new HelperDoubleBinningCheck(0, 1000);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenMinusInftyAndPlusInfty->add(randomNumberStandardGenerator->rndExp());
+    allRandomNumbersBetweenMinusInftyAndFirstHalf->add(randomNumberStandardGenerator->rndExp());
+    allRandomNumbersBetweenSecondHalfandPlusInfty->add(randomNumberStandardGenerator->rndExp());
+    allRandomNumbersBetweenMinusKAndZero->add(randomNumberStandardGenerator->rndExp());
+    allRandomNumbersBetweenZeroAndPlusK->add(randomNumberStandardGenerator->rndExp());
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+  
+    // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+  
+  // Increasing probability
+  BOOST_CHECK(allRandomNumbersBetweenMinusKAndZero->numbersInsideInterval() <= allRandomNumbersBetweenZeroAndPlusK->numbersInsideInterval());  
+}
+
+BOOST_AUTO_TEST_CASE(rndExpMean)
+{
+  int numberOfTrials = 1000;
+  double meanValue = 5;
+  // Check for whole interval 
+  HelperDoubleBinningCheck* allRandomNumbersBetweenMinusInftyAndPlusInfty = new HelperDoubleBinningCheck(DBL_MIN, DBL_MAX);
+  // Check for median
+  HelperDoubleBinningCheck* allRandomNumbersBetweenMinusInftyAndFirstHalf = new HelperDoubleBinningCheck(DBL_MIN, log(2) * meanValue);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenSecondHalfandPlusInfty = new HelperDoubleBinningCheck(log(2) * meanValue, DBL_MAX);
+  // Check for increasing probability
+  HelperDoubleBinningCheck* allRandomNumbersBetweenMinusKAndZero = new HelperDoubleBinningCheck(-1000, 0);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndPlusK = new HelperDoubleBinningCheck(0, 1000);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenMinusInftyAndPlusInfty->add(randomNumberStandardGenerator->rndExp(meanValue));
+    allRandomNumbersBetweenMinusInftyAndFirstHalf->add(randomNumberStandardGenerator->rndExp(meanValue));
+    allRandomNumbersBetweenSecondHalfandPlusInfty->add(randomNumberStandardGenerator->rndExp(meanValue));
+    allRandomNumbersBetweenMinusKAndZero->add(randomNumberStandardGenerator->rndExp(meanValue));
+    allRandomNumbersBetweenZeroAndPlusK->add(randomNumberStandardGenerator->rndExp(meanValue));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+  
+    // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+  
+  // Increasing probability
+  BOOST_CHECK(allRandomNumbersBetweenMinusKAndZero->numbersInsideInterval() <= allRandomNumbersBetweenZeroAndPlusK->numbersInsideInterval());  
+}
+
+BOOST_AUTO_TEST_CASE(rndGaussMeanSigma)
+{
+  int numberOfTrials = 1000;
+  
+  for(double gaussianMean = 1; gaussianMean < 2; gaussianMean += 1) {
+    for(double gaussianSigma = 0.25; gaussianSigma < 0.35; gaussianSigma += 0.1) {
+      // Check for whole interval 
+      HelperDoubleBinningCheck* allRandomNumbersBetweenMinusInftyAndPlusInfty = new HelperDoubleBinningCheck(DBL_MIN, DBL_MAX);
+      // Check for median
+      HelperDoubleBinningCheck* allRandomNumbersBetweenMinusInftyAndFirstHalf = new HelperDoubleBinningCheck(DBL_MIN, gaussianMean);
+      HelperDoubleBinningCheck* allRandomNumbersBetweenSecondHalfandPlusInfty = new HelperDoubleBinningCheck(gaussianMean, DBL_MAX);
+      // Check for increasing probability
+      HelperDoubleBinningCheck* allRandomNumbersBetweenMinus1SigmaAndPlus1Sigma = new HelperDoubleBinningCheck(gaussianMean - gaussianSigma, gaussianMean + gaussianSigma);
+      HelperDoubleBinningCheck* allRandomNumbersBetweenMinus3SigmaAndPlus3Sigma = new HelperDoubleBinningCheck(gaussianMean -  3 * gaussianSigma, gaussianMean + 3 * gaussianSigma);
+      HelperDoubleBinningCheck* allRandomNumbersBetweenMinus8SigmaAndPlus8Sigma = new HelperDoubleBinningCheck(gaussianMean - 8 * gaussianSigma, gaussianMean + 8 * gaussianSigma);
+	  
+      for(int i = 0; i < numberOfTrials; ++i) {
+	allRandomNumbersBetweenMinusInftyAndPlusInfty->add(randomNumberStandardGenerator->rndGauss(gaussianSigma, gaussianMean));
+	allRandomNumbersBetweenMinusInftyAndFirstHalf->add(randomNumberStandardGenerator->rndGauss(gaussianSigma, gaussianMean));
+	allRandomNumbersBetweenSecondHalfandPlusInfty->add(randomNumberStandardGenerator->rndGauss(gaussianSigma, gaussianMean));
+	allRandomNumbersBetweenMinus1SigmaAndPlus1Sigma->add(randomNumberStandardGenerator->rndGauss(gaussianSigma, gaussianMean));
+	allRandomNumbersBetweenMinus3SigmaAndPlus3Sigma->add(randomNumberStandardGenerator->rndGauss(gaussianSigma, gaussianMean));
+	allRandomNumbersBetweenMinus8SigmaAndPlus8Sigma->add(randomNumberStandardGenerator->rndGauss(gaussianSigma, gaussianMean));
+      }
+      
+      // Prob laying inside of interval should be 1
+      BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersTotal(), numberOfTrials);
+      BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersInsideInterval(), numberOfTrials);
+      BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndPlusInfty->numbersOutsideInterval(), 0);
+      
+      // Prob laying inside of interval should be 0.5
+      BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersTotal(), numberOfTrials);
+      BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+      BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinusInftyAndFirstHalf->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+      
+	// Prob laying inside of interval should be 0.5
+      BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersTotal(), numberOfTrials);
+      BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+      BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfandPlusInfty->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+      
+      	// Prob laying inside of interval should be 0.68
+      BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinus1SigmaAndPlus1Sigma->numbersTotal(), numberOfTrials);
+      BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinus1SigmaAndPlus1Sigma->numbersInsideInterval(), 0.68 * numberOfTrials, 15);
+      BOOST_CHECK_CLOSE(allRandomNumbersBetweenMinus1SigmaAndPlus1Sigma->numbersOutsideInterval(), 0.32 * numberOfTrials, 15);
+  
+  
+  
+  
+  
+    }
+  }  
+}
+
+
 
 BOOST_AUTO_TEST_CASE(azimuthalSmearing)
 {
