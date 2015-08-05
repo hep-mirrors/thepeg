@@ -55,6 +55,7 @@ class HelperRandomNumberBinningCheck {
     int m_numbersInsideInterval, m_numbersOutsideInterval; 
 };
 typedef HelperRandomNumberBinningCheck<double> HelperDoubleBinningCheck;
+typedef HelperRandomNumberBinningCheck<long> HelperLongBinningCheck;
 
 /*
  * Start of BOOST unit tests for Helper class
@@ -187,60 +188,542 @@ BOOST_AUTO_TEST_CASE(rndZeroToOne)
 
 BOOST_AUTO_TEST_CASE(rndZeroToIntervalUpperLimit)
 {
-  unsigned int numberOfTrials = 1000;
-  double intervalUpperLimit = 2.65;
-  for(unsigned int i = 0; i < numberOfTrials; ++i) {
-    double randomNumber = randomNumberStandardGenerator->rnd(intervalUpperLimit);
-    BOOST_CHECK(randomNumber > 0);
-    BOOST_CHECK(randomNumber < intervalUpperLimit);
-  }
+  int numberOfTrials = 1000;
+  double intervalUpperLimit = 2.5;
+    // Check for whole interval 
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndIntervalUpperLimit = new HelperDoubleBinningCheck(0, 2.5);
+  // Check for flat distribution
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndFirstQuarter = new HelperDoubleBinningCheck(0, 0.5);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenSecondAndThirdQuarter = new HelperDoubleBinningCheck(1.5, 2.0);
   
-  long intervalUpperLimitTwo = 3;
-  for(unsigned int i = 0; i < numberOfTrials; ++i) {
-    long randomNumber = randomNumberStandardGenerator->operator()(intervalUpperLimitTwo);
-    BOOST_CHECK(randomNumber >= 0);
-    BOOST_CHECK(randomNumber <= intervalUpperLimitTwo);
+  // rnd function
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndIntervalUpperLimit->add(randomNumberStandardGenerator->rnd(intervalUpperLimit));
+    allRandomNumbersBetweenZeroAndFirstQuarter->add(randomNumberStandardGenerator->rnd(intervalUpperLimit));
+    allRandomNumbersBetweenSecondAndThirdQuarter->add(randomNumberStandardGenerator->rnd(intervalUpperLimit));
   }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersInsideInterval(), 0.2 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersOutsideInterval(), 0.8 * numberOfTrials, 5);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersInsideInterval(), 0.2 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersOutsideInterval(), 0.8 * numberOfTrials, 5);
+  
+  
+  // repeat for operator(), note it is generally requiring a long!
+  allRandomNumbersBetweenZeroAndIntervalUpperLimit->resetCounters();
+  allRandomNumbersBetweenZeroAndFirstQuarter->resetCounters();
+  allRandomNumbersBetweenSecondAndThirdQuarter->resetCounters();
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndIntervalUpperLimit->add(randomNumberStandardGenerator->operator()(intervalUpperLimit));
+    allRandomNumbersBetweenZeroAndFirstQuarter->add(randomNumberStandardGenerator->operator()(intervalUpperLimit));
+    allRandomNumbersBetweenSecondAndThirdQuarter->add(randomNumberStandardGenerator->operator()(intervalUpperLimit));
+  }
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersOutsideInterval(), 0);
+  
+    // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersInsideInterval(), 0.2 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersOutsideInterval(), 0.8 * numberOfTrials, 5);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersInsideInterval(), 0.2 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersOutsideInterval(), 0.8 * numberOfTrials, 5);
+  
+  // repeat for operator(), note it is requiring a long!
+  long intervalUpperLimitTwo = 3;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndIntervalUpperLimitTwo = new HelperLongBinningCheck(0, intervalUpperLimitTwo);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstQuarterTwo = new HelperLongBinningCheck(1, 1);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondAndThirdQuarterTwo = new HelperLongBinningCheck(2, 2);
+  
+  // operator()(long N)
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndIntervalUpperLimitTwo->add(randomNumberStandardGenerator->operator()(intervalUpperLimitTwo));
+    allRandomNumbersBetweenZeroAndFirstQuarterTwo->add(randomNumberStandardGenerator->operator()(intervalUpperLimitTwo));
+    allRandomNumbersBetweenSecondAndThirdQuarterTwo->add(randomNumberStandardGenerator->operator()(intervalUpperLimitTwo));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimitTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimitTwo->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimitTwo->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.333
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarterTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarterTwo->numbersInsideInterval(), 0.333 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarterTwo->numbersOutsideInterval(), 0.666 * numberOfTrials, 5);
+  
+  // Prob laying inside of interval should be 0.333
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarterTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarterTwo->numbersInsideInterval(), 0.333 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarterTwo->numbersOutsideInterval(), 0.666 * numberOfTrials, 5);  
 }
 
 BOOST_AUTO_TEST_CASE(rndIntervallLowerLimitToIntervalUpperLimit)
 {
-  unsigned int numberOfTrials = 1000;
-  double intervalLowerLimit = -1.25;
-  double intervalUpperLimit = 2.65;
-  for(unsigned int i = 0; i < numberOfTrials; ++i) {
-    double randomNumber = randomNumberStandardGenerator->rnd(intervalLowerLimit, intervalUpperLimit);
-    BOOST_CHECK(randomNumber > intervalLowerLimit);
-    BOOST_CHECK(randomNumber < intervalUpperLimit);
+  int numberOfTrials = 1000;
+  double intervalLowerLimit = -1.5;
+  double intervalUpperLimit = 2.5;
+  // Check for whole interval 
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndIntervalUpperLimit = new HelperDoubleBinningCheck(intervalLowerLimit, intervalUpperLimit);
+  // Check for flat distribution
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndFirstQuarter = new HelperDoubleBinningCheck(-0.5, 0.5);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenSecondAndThirdQuarter = new HelperDoubleBinningCheck(1.5, 2.5);
+  
+  // rnd function
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndIntervalUpperLimit->add(randomNumberStandardGenerator->rnd(intervalLowerLimit, intervalUpperLimit));
+    allRandomNumbersBetweenZeroAndFirstQuarter->add(randomNumberStandardGenerator->rnd(intervalLowerLimit, intervalUpperLimit));
+    allRandomNumbersBetweenSecondAndThirdQuarter->add(randomNumberStandardGenerator->rnd(intervalLowerLimit, intervalUpperLimit));
   }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndIntervalUpperLimit->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.25
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersInsideInterval(), 0.25 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersOutsideInterval(), 0.75 * numberOfTrials, 5);
+  
+  // Prob laying inside of interval should be 0.25
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarter->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersInsideInterval(), 0.25 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersOutsideInterval(), 0.75 * numberOfTrials, 5);
 }
 
 BOOST_AUTO_TEST_CASE(rndZeroToOneVector)
 {
-  unsigned int numberOfTrials = 10;
-  unsigned int lengthOfRandomVector = 10;
-  for(unsigned int i = 0; i < numberOfTrials; ++i) {
+  int numberOfTrials = 10;
+  int lengthOfRandomVector = 10;
+    // Check for whole interval 
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperDoubleBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperDoubleBinningCheck* allRandomNumbersBetweenZeroAndFirstQuarter = new HelperDoubleBinningCheck(0, 0.25);
+  HelperDoubleBinningCheck* allRandomNumbersBetweenSecondAndThirdQuarter = new HelperDoubleBinningCheck(0.5, 0.75);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->resetCounters();
+    allRandomNumbersBetweenZeroAndFirstQuarter->resetCounters();
+    allRandomNumbersBetweenSecondAndThirdQuarter->resetCounters();
+    
     std::vector<double> randomNumberVector = randomNumberStandardGenerator->rndvec(lengthOfRandomVector);
-    BOOST_CHECK_EQUAL(randomNumberVector.size(), lengthOfRandomVector);
-    for(unsigned int j = 0; j < randomNumberVector.size(); ++j) {
-      BOOST_CHECK(randomNumberVector[j] > 0);
-      BOOST_CHECK(randomNumberVector[j] < 1);
+    BOOST_CHECK_EQUAL(static_cast<int>(randomNumberVector.size()), lengthOfRandomVector);
+    for(int j = 0; j < static_cast<int>(randomNumberVector.size()); ++j) {
+      allRandomNumbersBetweenZeroAndOne->add(randomNumberVector[j]);
+      allRandomNumbersBetweenZeroAndFirstQuarter->add(randomNumberVector[j]);
+      allRandomNumbersBetweenSecondAndThirdQuarter->add(randomNumberVector[j]);
     }
+    // Prob laying inside of interval should be 1
+    BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+    BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+    BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+    
+    // Prob laying inside of interval should be 0.25
+    BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstQuarter->numbersTotal(), numberOfTrials);
+    BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersInsideInterval(), 0.25 * lengthOfRandomVector, 300);
+    BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstQuarter->numbersOutsideInterval(), 0.75 * lengthOfRandomVector, 300);
+    
+    // Prob laying inside of interval should be 0.25
+    BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondAndThirdQuarter->numbersTotal(), numberOfTrials);
+    BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersInsideInterval(), 0.25 * lengthOfRandomVector, 300);
+    BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondAndThirdQuarter->numbersOutsideInterval(), 0.75 * lengthOfRandomVector, 300);
   }
 }
 
 BOOST_AUTO_TEST_CASE(rndBoolSingleProbability)
 {
-  unsigned int numberOfTrials = 1000;
-  for(unsigned int i = 0; i < numberOfTrials; ++i) {
-    double randomNumber = randomNumberStandardGenerator->rnd();
-    BOOST_CHECK(randomNumber > 0);
-    BOOST_CHECK(randomNumber < 1);
+  int numberOfTrials = 1000;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstHalf = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondHalfAndOne = new HelperLongBinningCheck(1, 1);
+  
+  // rndbool function, prob should be 0.5
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->rndbool());
+    allRandomNumbersBetweenZeroAndFirstHalf->add(randomNumberStandardGenerator->rndbool());
+    allRandomNumbersBetweenSecondHalfAndOne->add(randomNumberStandardGenerator->rndbool());
   }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstHalf->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersInsideInterval(), 0.5 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersOutsideInterval(), 0.5 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersInsideInterval(), 0.5 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersOutsideInterval(), 0.5 * numberOfTrials, 10);
+  
+  
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOneTwo = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstHalfTwo = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondHalfAndOneTwo = new HelperLongBinningCheck(1, 1);
+  
+  // rndbool function, prob should be now 0.4
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOneTwo->add(randomNumberStandardGenerator->rndbool(0.4));
+    allRandomNumbersBetweenZeroAndFirstHalfTwo->add(randomNumberStandardGenerator->rndbool(0.4));
+    allRandomNumbersBetweenSecondHalfAndOneTwo->add(randomNumberStandardGenerator->rndbool(0.4));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOneTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOneTwo->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOneTwo->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.6
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstHalfTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalfTwo->numbersInsideInterval(), 0.6 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalfTwo->numbersOutsideInterval(), 0.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.4
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfAndOneTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOneTwo->numbersInsideInterval(), 0.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOneTwo->numbersOutsideInterval(), 0.6 * numberOfTrials, 10);
 }
 
+BOOST_AUTO_TEST_CASE(prndBoolSingleProbability)
+{
+  int numberOfTrials = 1000;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstHalf = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondHalfAndOne = new HelperLongBinningCheck(1, 1);
+  
+  // rndbool function, prob should be 0.5
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->prndbool());
+    allRandomNumbersBetweenZeroAndFirstHalf->add(randomNumberStandardGenerator->prndbool());
+    allRandomNumbersBetweenSecondHalfAndOne->add(randomNumberStandardGenerator->prndbool());
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstHalf->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+  
+  // Prob laying inside of interval should be 0.5
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersInsideInterval(), 0.5 * numberOfTrials, 15);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersOutsideInterval(), 0.5 * numberOfTrials, 15);
+  
+  
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOneTwo = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstHalfTwo = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondHalfAndOneTwo = new HelperLongBinningCheck(1, 1);
+  
+  // rndbool function, prob should be now 0.4
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOneTwo->add(randomNumberStandardGenerator->prndbool(0.4));
+    allRandomNumbersBetweenZeroAndFirstHalfTwo->add(randomNumberStandardGenerator->prndbool(0.4));
+    allRandomNumbersBetweenSecondHalfAndOneTwo->add(randomNumberStandardGenerator->prndbool(0.4));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOneTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOneTwo->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOneTwo->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.6
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstHalfTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalfTwo->numbersInsideInterval(), 0.6 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalfTwo->numbersOutsideInterval(), 0.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.4
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfAndOneTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOneTwo->numbersInsideInterval(), 0.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOneTwo->numbersOutsideInterval(), 0.6 * numberOfTrials, 10);
+}
 
+BOOST_AUTO_TEST_CASE(rndBoolTwoProbabilities)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.2;
+  double probabilityTwo = 0.3;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstHalf = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondHalfAndOne = new HelperLongBinningCheck(1, 1);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->rndbool(probabilityOne, probabilityTwo));
+    allRandomNumbersBetweenZeroAndFirstHalf->add(randomNumberStandardGenerator->rndbool(probabilityOne, probabilityTwo));
+    allRandomNumbersBetweenSecondHalfAndOne->add(randomNumberStandardGenerator->rndbool(probabilityOne, probabilityTwo));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.6
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstHalf->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersInsideInterval(), 0.6 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersOutsideInterval(), 0.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2/0.5 = 0.4
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersInsideInterval(), 0.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersOutsideInterval(), 0.6 * numberOfTrials, 10);
+}
 
+BOOST_AUTO_TEST_CASE(prndBoolTwoProbabilities)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.2;
+  double probabilityTwo = 0.3;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndFirstHalf = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersBetweenSecondHalfAndOne = new HelperLongBinningCheck(1, 1);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->prndbool(probabilityOne, probabilityTwo));
+    allRandomNumbersBetweenZeroAndFirstHalf->add(randomNumberStandardGenerator->prndbool(probabilityOne, probabilityTwo));
+    allRandomNumbersBetweenSecondHalfAndOne->add(randomNumberStandardGenerator->prndbool(probabilityOne, probabilityTwo));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.6
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndFirstHalf->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersInsideInterval(), 0.6 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenZeroAndFirstHalf->numbersOutsideInterval(), 0.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2/0.5 = 0.4
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenSecondHalfAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersInsideInterval(), 0.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersBetweenSecondHalfAndOne->numbersOutsideInterval(), 0.6 * numberOfTrials, 10);
+}
+
+BOOST_AUTO_TEST_CASE(rndSign)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.4;
+  double probabilityTwo = 0.2;
+  double probabilityThree = 0.3;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenMinusOneAndOne = new HelperLongBinningCheck(-1, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersWithMinusOne = new HelperLongBinningCheck(-1, -1);
+  HelperLongBinningCheck* allRandomNumbersWithZero = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersWithOne = new HelperLongBinningCheck(1, 1);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenMinusOneAndOne->add(randomNumberStandardGenerator->rndsign(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithMinusOne->add(randomNumberStandardGenerator->rndsign(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithZero->add(randomNumberStandardGenerator->rndsign(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithOne->add(randomNumberStandardGenerator->rndsign(probabilityOne, probabilityTwo, probabilityThree));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusOneAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusOneAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusOneAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.4
+  BOOST_CHECK_EQUAL(allRandomNumbersWithMinusOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithMinusOne->numbersInsideInterval(), 0.4/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithMinusOne->numbersOutsideInterval(), 0.5/0.9 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersWithZero->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersInsideInterval(), 0.2/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersOutsideInterval(), 0.7/0.9 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersWithOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersInsideInterval(), 0.3/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersOutsideInterval(), 0.6/0.9 * numberOfTrials, 10);
+}
+
+BOOST_AUTO_TEST_CASE(prndSign)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.4;
+  double probabilityTwo = 0.2;
+  double probabilityThree = 0.3;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenMinusOneAndOne = new HelperLongBinningCheck(-1, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersWithMinusOne = new HelperLongBinningCheck(-1, -1);
+  HelperLongBinningCheck* allRandomNumbersWithZero = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersWithOne = new HelperLongBinningCheck(1, 1);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenMinusOneAndOne->add(randomNumberStandardGenerator->prndsign(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithMinusOne->add(randomNumberStandardGenerator->prndsign(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithZero->add(randomNumberStandardGenerator->prndsign(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithOne->add(randomNumberStandardGenerator->prndsign(probabilityOne, probabilityTwo, probabilityThree));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusOneAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusOneAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenMinusOneAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.4
+  BOOST_CHECK_EQUAL(allRandomNumbersWithMinusOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithMinusOne->numbersInsideInterval(), 0.4/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithMinusOne->numbersOutsideInterval(), 0.5/0.9 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersWithZero->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersInsideInterval(), 0.2/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersOutsideInterval(), 0.7/0.9 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2
+  BOOST_CHECK_EQUAL(allRandomNumbersWithOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersInsideInterval(), 0.3/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersOutsideInterval(), 0.6/0.9 * numberOfTrials, 10);
+}
+
+BOOST_AUTO_TEST_CASE(rnd2)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.4;
+  double probabilityTwo = 0.2;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndOne = new HelperLongBinningCheck(0, 1);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersWithZero = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersWithOne = new HelperLongBinningCheck(1, 1);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndOne->add(randomNumberStandardGenerator->rnd2(probabilityOne, probabilityTwo));
+    allRandomNumbersWithZero->add(randomNumberStandardGenerator->rnd2(probabilityOne, probabilityTwo));
+    allRandomNumbersWithOne->add(randomNumberStandardGenerator->rnd2(probabilityOne, probabilityTwo));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndOne->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.666
+  BOOST_CHECK_EQUAL(allRandomNumbersWithZero->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersInsideInterval(), 0.666 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersOutsideInterval(), 0.333 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.333
+  BOOST_CHECK_EQUAL(allRandomNumbersWithOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersInsideInterval(), 0.333 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersOutsideInterval(), 0.666 * numberOfTrials, 10);
+}
+
+BOOST_AUTO_TEST_CASE(rnd3)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.4;
+  double probabilityTwo = 0.2;
+  double probabilityThree = 0.3;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndTwo = new HelperLongBinningCheck(0, 2);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersWithZero = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersWithOne = new HelperLongBinningCheck(1, 1);
+  HelperLongBinningCheck* allRandomNumbersWithTwo = new HelperLongBinningCheck(2, 2);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndTwo->add(randomNumberStandardGenerator->rnd3(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithZero->add(randomNumberStandardGenerator->rnd3(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithOne->add(randomNumberStandardGenerator->rnd3(probabilityOne, probabilityTwo, probabilityThree));
+    allRandomNumbersWithTwo->add(randomNumberStandardGenerator->rnd3(probabilityOne, probabilityTwo, probabilityThree));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndTwo->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndTwo->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.4 / 0.9
+  BOOST_CHECK_EQUAL(allRandomNumbersWithZero->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersInsideInterval(), 0.4/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersOutsideInterval(), 0.5/0.9 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2 / 0.9
+  BOOST_CHECK_EQUAL(allRandomNumbersWithOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersInsideInterval(), 0.2/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersOutsideInterval(), 0.7/0.9 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.3 / 0.9
+  BOOST_CHECK_EQUAL(allRandomNumbersWithTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithTwo->numbersInsideInterval(), 0.3/0.9 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithTwo->numbersOutsideInterval(), 0.6/0.9 * numberOfTrials, 10);
+}
+
+BOOST_AUTO_TEST_CASE(rnd4)
+{
+  int numberOfTrials = 1000;
+  double probabilityOne = 0.4;
+  double probabilityTwo = 0.2;
+  double probabilityThree = 0.3;
+  double probabilityFour = 0.5;
+  // Check for whole interval 
+  HelperLongBinningCheck* allRandomNumbersBetweenZeroAndThree = new HelperLongBinningCheck(0, 3);
+  // Check for flat distribution
+  HelperLongBinningCheck* allRandomNumbersWithZero = new HelperLongBinningCheck(0, 0);
+  HelperLongBinningCheck* allRandomNumbersWithOne = new HelperLongBinningCheck(1, 1);
+  HelperLongBinningCheck* allRandomNumbersWithTwo = new HelperLongBinningCheck(2, 2);
+  HelperLongBinningCheck* allRandomNumbersWithThree = new HelperLongBinningCheck(3, 3);
+  
+  for(int i = 0; i < numberOfTrials; ++i) {
+    allRandomNumbersBetweenZeroAndThree->add(randomNumberStandardGenerator->rnd4(probabilityOne, probabilityTwo, probabilityThree, probabilityFour));
+    allRandomNumbersWithZero->add(randomNumberStandardGenerator->rnd4(probabilityOne, probabilityTwo, probabilityThree, probabilityFour));
+    allRandomNumbersWithOne->add(randomNumberStandardGenerator->rnd4(probabilityOne, probabilityTwo, probabilityThree, probabilityFour));
+    allRandomNumbersWithTwo->add(randomNumberStandardGenerator->rnd4(probabilityOne, probabilityTwo, probabilityThree, probabilityFour));
+    allRandomNumbersWithThree->add(randomNumberStandardGenerator->rnd4(probabilityOne, probabilityTwo, probabilityThree, probabilityFour));
+  }
+  // Prob laying inside of interval should be 1
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndThree->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndThree->numbersInsideInterval(), numberOfTrials);
+  BOOST_CHECK_EQUAL(allRandomNumbersBetweenZeroAndThree->numbersOutsideInterval(), 0);
+  
+  // Prob laying inside of interval should be 0.4 / 1.4
+  BOOST_CHECK_EQUAL(allRandomNumbersWithZero->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersInsideInterval(), 0.4/1.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithZero->numbersOutsideInterval(), 1.0/1.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.2 / 1.4
+  BOOST_CHECK_EQUAL(allRandomNumbersWithOne->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersInsideInterval(), 0.2/1.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithOne->numbersOutsideInterval(), 1.2/1.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.3 / 1.4
+  BOOST_CHECK_EQUAL(allRandomNumbersWithTwo->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithTwo->numbersInsideInterval(), 0.3/1.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithTwo->numbersOutsideInterval(), 1.1/1.4 * numberOfTrials, 10);
+  
+  // Prob laying inside of interval should be 0.5 / 1.4
+  BOOST_CHECK_EQUAL(allRandomNumbersWithThree->numbersTotal(), numberOfTrials);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithThree->numbersInsideInterval(), 0.5/1.4 * numberOfTrials, 10);
+  BOOST_CHECK_CLOSE(allRandomNumbersWithThree->numbersOutsideInterval(), 0.9/1.4 * numberOfTrials, 10);
+}
 
 BOOST_AUTO_TEST_CASE(azimuthalSmearing)
 {

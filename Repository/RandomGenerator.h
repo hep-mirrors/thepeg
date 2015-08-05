@@ -110,6 +110,14 @@ public:
    */
   double operator()() { return rnd(); }
 
+    /**
+   * Return a (possibly cached) flat integer random number in the
+   * interval \f$[0,N[\f$.
+   * Function was introduced since otherwise operator()() is used if a double is given
+   * resulting in a \f$]0,1[\f$ distribution.
+   */
+  double operator()(double N) { return double(rnd() * N); }
+  
   /**
    * Return a (possibly cached) flat integer random number in the
    * interval \f$[0,N[\f$.
