@@ -244,10 +244,11 @@ public:
    * with a given standard deviation, \a sigma, and a given \a mean.
    */
   template <typename Unit>
-  void rndGaussTwoNumbers(double & randomNumberOne, double & randomNumberTwo, Unit sigma, Unit mean = Unit()) {
-    rndGaussTwoNumbers(randomNumberOne, randomNumberTwo);
-    randomNumberOne = mean + sigma * randomNumberOne;
-    randomNumberTwo = mean + sigma * randomNumberTwo;
+  void rndGaussTwoNumbers(Unit & randomNumberOne, Unit & randomNumberTwo, Unit sigma, Unit mean = Unit()) {
+    double r1,r2;
+    rndGaussTwoNumbers(r1,r2);
+    randomNumberOne = mean + sigma * r1;
+    randomNumberTwo = mean + sigma * r2;
   }
   
   /**
