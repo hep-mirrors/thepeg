@@ -221,11 +221,21 @@ public:
    * Add a directory to readDirs().
    */
   static void prependReadDir(string);
+  
+    /**
+   * Add a string vector with directories to readDirs().
+   */
+  static void prependReadDir(const std::vector<std::string>& dirs);
 
   /**
    * Add a directory to readDirs().
    */
   static void appendReadDir(string);
+  
+    /**
+   * Add a string vector with directories to readDirs().
+   */
+  static void appendReadDir(const std::vector<std::string>& dirs);
 
   //@}
 
