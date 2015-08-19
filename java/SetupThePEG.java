@@ -165,7 +165,7 @@ public class SetupThePEG extends JFrame implements ActionListener {
     cmdarray[0] = args[0];
     cmdarray[1] = "--java";
 
-    debug = true;
+    debug = false;
 
     for ( int i = 1; i < args.length; ++i ) {
       cmdarray[i + 1] = args[i];

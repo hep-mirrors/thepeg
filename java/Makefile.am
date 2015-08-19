@@ -30,7 +30,7 @@ ThePEG:
            cd ThePEG; $(LN_S) ../$(srcdir)/$$file $$file; cd ..; done
 
 ThePEG.jar: ThePEG $(JAVASOURCES)
-	$(JAVAC) -source 1.4 `for file in $(JAVASOURCES); do echo ThePEG/$$file; done`
+	$(JAVAC) `for file in $(JAVASOURCES); do echo ThePEG/$$file; done`
 	$(JAR) cmf ThePEG/jar-manifest ThePEG.jar ThePEG/*.class
 
 thepeg.sh: thepeg.install Makefile
