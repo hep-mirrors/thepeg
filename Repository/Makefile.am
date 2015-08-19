@@ -47,7 +47,7 @@ if COND_BOOSTTEST
  check_PROGRAMS += repository_test
  repository_test_SOURCES += tests/repositoryTestsMain.cc \
  tests/repositoryTestsGlobalFixture.h \
- tests/repositoryTestsRandomGenerator.h
+ tests/repositoryTestRandomGenerator.h
  repository_test_LDADD += $(BOOST_UNIT_TEST_FRAMEWORK_LIBS) $(THEPEGLDADD) $(GSLLIBS) 
  repository_test_LDFLAGS += $(AM_LDFLAGS) -export-dynamic $(BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS) 
  repository_test_CPPFLAGS += $(AM_CPPFLAGS) $(BOOST_CPPFLAGS) -DTHEPEG_PKGLIBDIR="\"$(pkglibdir)\"" -DTHEPEG_PKGDATADIR="\"$(pkgdatadir)\""
