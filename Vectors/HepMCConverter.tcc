@@ -11,7 +11,6 @@
 // functions of the HepMCConverter class.
 //
 
-#include "HepMCConverter.h"
 #include "ThePEG/StandardModel/StandardModelBase.h"
 #include "ThePEG/Repository/EventGenerator.h"
 #include "ThePEG/EventRecord/Particle.h"
