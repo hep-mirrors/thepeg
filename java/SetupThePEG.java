@@ -165,7 +165,7 @@ public class SetupThePEG extends JFrame implements ActionListener {
     cmdarray[0] = args[0];
     cmdarray[1] = "--java";
 
-    debug = false;
+    debug = true;
 
     for ( int i = 1; i < args.length; ++i ) {
       cmdarray[i + 1] = args[i];
@@ -295,6 +295,7 @@ public class SetupThePEG extends JFrame implements ActionListener {
 	if ( debug ) System.err.println("< " + s);
 	if ( s.length() >= 6 && s.substring(0,6).equals("Error:") )
 	  error = true;
+	if ( ret.size() == 0 && s.equals(cmd) ) continue;
 	ret.add(s);
       }
       if ( s == null ) lostProcess();
