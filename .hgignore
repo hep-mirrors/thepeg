@@ -29,6 +29,7 @@ Makefile\.in$
 ^Config/LWH.h$
 ^Config/ThePEG_Qty.h$
 ^Config/config.guess$
+^Config/test-driver$
 ^Doc/fixinterfaces.pl$
 ^include/ThePEG$
 ^Doc/MakeDocs.in$
