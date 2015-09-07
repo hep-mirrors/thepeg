@@ -273,7 +273,7 @@ public:
     return ((std::abs(theX - a.x()) < threshold) && (std::abs(theY - a.y()) < threshold) && (std::abs(theZ - a.z()) < threshold));
   }
   bool almostUnequal(const ThreeVector<Value> & a, double threshold = 1e-04) const {
-    return !(*this.almostEqual(a, threshold));
+    return ! this->almostEqual(a, threshold);
   }
      //@}
   
