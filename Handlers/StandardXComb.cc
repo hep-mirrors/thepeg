@@ -596,7 +596,8 @@ void StandardXComb::newSubProcess(bool group) {
       subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), matrixElement())));
     else
       subProcess(new_ptr(SubProcessGroup(lastPartons(), tCollPtr(), matrixElement())));
-    lastDiagramIndex(matrixElement()->diagram(diagrams()));
+    if ( !theExternalDiagram )
+      lastDiagramIndex(matrixElement()->diagram(diagrams()));
     const ColourLines & cl = matrixElement()->selectColourGeometry(lastDiagram());
     Lorentz5Momentum p1 = lastPartons().first->momentum();
     Lorentz5Momentum p2 = lastPartons().second->momentum();
