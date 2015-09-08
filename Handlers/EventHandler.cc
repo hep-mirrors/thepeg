@@ -102,7 +102,7 @@ void EventHandler::initGroups() {
     groups()[i]->init(*optGroups[i]);
 }
 
-tCascHdlPtr EventHandler::CKKWHandler() const {
+tCascHdlPtr EventHandler::cascadeHandler() const {
   return dynamic_ptr_cast<tCascHdlPtr>(theCascadeGroup.defaultHandler());
 }
 

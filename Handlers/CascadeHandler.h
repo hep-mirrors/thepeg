@@ -136,6 +136,12 @@ public:
    * generation.
    */
   void setXComb(tXCombPtr xc);
+
+  /**
+   * Return true, if this cascade handler will perform reshuffling from hard
+   * process masses.
+   */
+  virtual bool isReshuffling() const { return false; }
   //@}
 
 public:

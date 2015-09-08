@@ -316,6 +316,7 @@ void StandardXComb::clean() {
   checkedCuts = false;
   passedCuts = false;
   theCutWeight = 1.0;
+  theExternalDiagram = tcDiagPtr();
   matrixElement()->flushCaches();
 }
 
@@ -648,6 +649,11 @@ void StandardXComb::checkReshufflingNeeds() {
 
   theNeedsReshuffling = false;
 
+  if ( eventHandler().cascadeHandler() ) {
+    if ( eventHandler().cascadeHandler()->isReshuffling() )
+      return;
+  }
+
   for ( cPDVector::const_iterator p = mePartonData().begin() + 2;
 	p != mePartonData().end(); ++p ) {
     theNeedsReshuffling |= ( (**p).mass() != (**p).hardProcessMass() );
@@ -776,7 +782,8 @@ void StandardXComb::Init() {}
 void StandardXComb::persistentOutput(PersistentOStream & os) const {
   os << theSubProcessHandler << theME << theStats
      << theDiagrams << isMirror << theNDim << partonDims
-     << theLastDiagramIndex << theMEInfo << theLastRandomNumbers << theMEPartonData
+     << theLastDiagramIndex << theExternalDiagram 
+     << theMEInfo << theLastRandomNumbers << theMEPartonData
      << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
      << theLastME2 << theLastPreweight 
      << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight << theLastMECouplings
@@ -787,7 +794,8 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
   is >> theSubProcessHandler >> theME >> theStats
      >> theDiagrams >> isMirror >> theNDim >> partonDims
-     >> theLastDiagramIndex >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
+     >> theLastDiagramIndex >> theExternalDiagram
+     >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
      >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
      >> theLastME2 >> theLastPreweight 
      >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight >> theLastMECouplings
