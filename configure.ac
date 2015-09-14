@@ -103,6 +103,16 @@ case "${ax_cv_cxx_compiler_vendor}" in
 	AM_CXXFLAGS="-ansi -pedantic -Wall -W"
 	;;
      clang)
+        case "${host}" in
+	     *linux*)
+		AC_MSG_WARN([
+*****************************************************************************
+ WARNING
+ Usage of clang on Linux is currently not recommended.
+ Please use a different compiler if possible.
+*****************************************************************************])
+	     ;;
+	esac	
 	AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
 dnl  -Wno-unneeded-internal-declaration 
 	;;
