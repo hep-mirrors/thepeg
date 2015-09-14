@@ -38,16 +38,16 @@ libThePEG_la_LIBADD = \
 	-ldl $(LIBS) \
 	$(GSLLIBS)
 
-all-local: done-all-links
+all-local: .done-all-links
 
-done-all-links: libThePEG.la
+.done-all-links: libThePEG.la
 @EMPTY@ifdef SHOWCOMMAND
 	for dir in $(LINKDIRS); do \
 	  for sofile in ../$$dir/.libs/*.so* ../$$dir/.libs/*.la; \
             do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done; done
 	for sofile in .libs/*.so*; \
             do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done
-	echo "stamp" > done-all-links
+	echo "stamp" > .done-all-links
 @EMPTY@else
 	@echo "Sym-linking all shared libraries ..."
 	@for dir in $(LINKDIRS); do \
@@ -55,7 +55,7 @@ done-all-links: libThePEG.la
             do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done; done
 	@for sofile in .libs/*.so*; \
             do if test -f $$sofile; then $(LN_S) -f $$sofile .; fi; done
-	@echo "stamp" > done-all-links
+	@echo "stamp" > .done-all-links
 @EMPTY@endif
 
 install-data-local: Makefile.common.install
@@ -69,4 +69,4 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkglibdir)/Makefile.common $(DESTDIR)$(pkglibdir)/Makefile
 
 clean-local:
-	rm -f *.so* *.la *.rpo done-all-links
+	rm -f *.so* *.la *.rpo .done-all-links

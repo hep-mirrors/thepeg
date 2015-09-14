@@ -15,7 +15,7 @@ INCLUDEFILES = $(DOCFILES) BeamParticleData.xh \
 
 INPUTFILES = PDFsets.index
 
-CLEANFILES = done-all-links
+CLEANFILES = .done-all-links
 
 noinst_LTLIBRARIES = libThePEGPDF.la
 pkglib_LTLIBRARIES = LeptonLeptonPDF.la UnResolvedRemnant.la \
@@ -81,18 +81,18 @@ GRV94M_la_SOURCES = GRV94M.cc GRV94M.h
 
 dist_pkgdata_DATA = PDFsets.index
 
-all-local: done-all-links
+all-local: .done-all-links
 
-done-all-links:
+.done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
 	for file in $(INPUTFILES); do \
 	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
-	echo "stamp" > done-all-links
+	echo "stamp" > .done-all-links
 @EMPTY@else
 	@echo "sym-linking input files files..."
 	@for file in $(INPUTFILES); do \
 	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
-	@echo "stamp" > done-all-links
+	@echo "stamp" > .done-all-links
 @EMPTY@endif
 
 include $(top_srcdir)/Config/Makefile.aminclude

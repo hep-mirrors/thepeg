@@ -1,4 +1,4 @@
-BUILT_SOURCES = done-all-links
+BUILT_SOURCES = .done-all-links
 
 AUTOMAKE_OPTIONS = -Wno-portability
 
@@ -34,16 +34,16 @@ CONFIGHEADERS = $(top_srcdir)/Config/Complex.h \
 		$(top_srcdir)/Config/HepMCHelper.h \
 		$(top_srcdir)/Config/std.h
 
-CLEANFILES = done-all-links 
+CLEANFILES = .done-all-links
 
-done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
+.done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 @EMPTY@ifdef SHOWCOMMAND
 	mkdir -p ThePEG/Config
 	$(LN_S) -f $(addprefix ../, $(DIRLINKS)) ThePEG
 	$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
 	$(LN_S) -f ../../../Config/ThePEG_Qty.h ThePEG/Config
 	$(LN_S) -f ../../../Config/LWH.h ThePEG/Config
-	touch done-all-links
+	touch .done-all-links
 @EMPTY@else
 	@echo "sym-linking header files..."
 	@mkdir -p ThePEG/Config
@@ -51,7 +51,7 @@ done-all-links: $(DIRLINKS) $(CONFIGHEADERS)
 	@$(LN_S) -f $(addprefix ../../, $(CONFIGHEADERS)) ThePEG/Config
 	@$(LN_S) -f ../../../Config/ThePEG_Qty.h ThePEG/Config
 	@$(LN_S) -f ../../../Config/LWH.h ThePEG/Config
-	@touch done-all-links
+	@touch .done-all-links
 @EMPTY@endif
 
 install-data-local:
