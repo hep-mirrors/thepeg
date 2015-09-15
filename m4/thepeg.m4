@@ -305,18 +305,32 @@ echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_CHECK_FPUCONTROL],
-[echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
+[
+AC_REQUIRE([AX_COMPILER_VENDOR])
+echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fpu_control.h>
 ]], [[fpu_control_t cw; _FPU_GETCW(cw); cw &= ~(_FPU_MASK_IM|_FPU_MASK_DM|_FPU_MASK_ZM|_FPU_MASK_OM); _FPU_SETCW(cw);
-]])],[AC_DEFINE(ThePEG_HAS_FPU_CONTROL,1,define if fpucontrol is available)
+]])],[
+if test "${ax_cv_cxx_compiler_vendor}" == "clang"; then
+echo "${ECHO_T}not useable with clang/llvm" 1>&6
+else
+AC_DEFINE(ThePEG_HAS_FPU_CONTROL,1,define if fpucontrol is available)
 echo "${ECHO_T}yes" 1>&6
+fi
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_CHECK_FENV],
-[echo $ECHO_N "checking for <fenv.h>... $ECHO_C" 1>&6
+[
+AC_REQUIRE([AX_COMPILER_VENDOR])
+echo $ECHO_N "checking for <fenv.h>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fenv.h>
-]], [[feenableexcept(FE_DIVBYZERO|FE_OVERFLOW|FE_INVALID);]])],[AC_DEFINE(ThePEG_HAS_FENV,1,define if fenv is available)
+]], [[feenableexcept(FE_DIVBYZERO|FE_OVERFLOW|FE_INVALID);]])],[
+if test "${ax_cv_cxx_compiler_vendor}" == "clang"; then
+echo "${ECHO_T}not useable with clang/llvm" 1>&6
+else
+AC_DEFINE(ThePEG_HAS_FENV,1,define if fenv is available)
 echo "${ECHO_T}yes" 1>&6
+fi
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_ADD_THEPEG_PATH],
