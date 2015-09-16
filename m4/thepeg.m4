@@ -404,15 +404,18 @@ if test "x$with_gsl" = "xsystem"; then
 		     )
 	GSLLIBS="$LIBS"
 	LIBS=$oldlibs
+	GSLPATH="$with_gsl"
 else
 	if test "`uname -m`" = "x86_64" -a -e "$with_gsl/lib64/libgsl.a" -a -d "$with_gsl/include/gsl"; then
 		AC_MSG_RESULT([found in $with_gsl])
 		GSLLIBS="-L$with_gsl/lib64 -R$with_gsl/lib64 -lgsl -lgslcblas"
 		GSLINCLUDE="-I$with_gsl/include"
+	        GSLPATH="$with_gsl"
 	elif test -e "$with_gsl/lib/libgsl.a" -a -d "$with_gsl/include/gsl"; then
 		AC_MSG_RESULT([found in $with_gsl])
 		GSLLIBS="-L$with_gsl/lib -R$with_gsl/lib -lgsl -lgslcblas"
 		GSLINCLUDE="-I$with_gsl/include"
+	        GSLPATH="$with_gsl"
 	else
 		AC_MSG_RESULT([not found])
 		AC_MSG_ERROR([Can't find $with_gsl/lib/libgsl.a or the headers in $with_gsl/include])
@@ -422,7 +425,28 @@ fi
 dnl AM_CONDITIONAL(HAVE_GSL,[test "x$with_HepMC" != "xno"])
 AC_SUBST(GSLINCLUDE)
 AC_SUBST(GSLLIBS)
+AC_SUBST(GSLPATH)
 ])
+
+AC_DEFUN([THEPEG_BOOST_UNIT_TEST],
+[
+AC_REQUIRE([BOOST_REQUIRE])
+if test "x$BOOST_NOT_FOUND" = "xtrue"; then
+	BOOSTMESSAGE="Deactived, BOOST was not found."
+	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[false])
+elif test -z "$BOOST_UNIT_TEST_FRAMEWORK_LDPATH"; then 
+	BOOSTMESSAGE="Deactivated, BOOST unit test libs were not found."
+	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[false])
+	AC_SUBST([BOOST_NOT_FOUND],[false])
+else
+	BOOSTMESSAGE="Activated, BOOST unit test libs found at $BOOST_UNIT_TEST_FRAMEWORK_LDPATH"
+	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[true])
+	AC_SUBST([BOOST_NOT_FOUND],[false])
+fi
+AC_SUBST(BOOSTMESSAGE)
+AM_CONDITIONAL([COND_BOOSTTEST], [test "x$BOOST_ACTIVATE_UNIT_TESTS" = "xtrue"])
+])
+
 
 AC_DEFUN([THEPEG_OVERVIEW],
 [
@@ -442,6 +466,8 @@ cat << _THEPEG_EOF_ > config.thepeg
 *** HepMC:		$with_hepmc
 *** Rivet:		$with_rivet
 *** FastJet:		$fjconfig $warnfastjet
+***
+*** Boost Unit Tests:	${BOOSTMESSAGE}
 ***
 *** Host:		$host
 *** CXX:		$CXXSTRING

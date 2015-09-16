@@ -175,6 +175,10 @@ java/Makefile
 Makefile])
 AC_CONFIG_FILES([Doc/fixinterfaces.pl],[chmod +x Doc/fixinterfaces.pl])
 
+BOOST_REQUIRE([1.41],[AC_SUBST([BOOST_NOT_FOUND],[true])])
+BOOST_TEST()
+THEPEG_BOOST_UNIT_TEST
+
 THEPEG_OVERVIEW
 
 AC_CONFIG_COMMANDS([summary],[cat config.thepeg])

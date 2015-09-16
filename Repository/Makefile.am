@@ -34,3 +34,22 @@ MultiEventGenerator_la_SOURCES = MultiEventGenerator.cc MultiEventGenerator.h
 
 include $(top_srcdir)/Config/Makefile.aminclude
 
+# Compile and use Boost unit tests only if boost unit test libs are available
+check_PROGRAMS =
+repository_test_SOURCES =
+repository_test_LDADD =
+repository_test_LDFLAGS =
+repository_test_CPPFLAGS =
+TESTS =
+
+if COND_BOOSTTEST
+ THEPEGLDADD = $(top_builddir)/lib/libThePEG.la 
+ check_PROGRAMS += repository_test
+ repository_test_SOURCES += tests/repositoryTestsMain.cc \
+ tests/repositoryTestsGlobalFixture.h \
+ tests/repositoryTestRandomGenerator.h
+ repository_test_LDADD += $(BOOST_UNIT_TEST_FRAMEWORK_LIBS) $(THEPEGLDADD) $(GSLLIBS) 
+ repository_test_LDFLAGS += $(AM_LDFLAGS) -export-dynamic $(BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS) 
+ repository_test_CPPFLAGS += $(AM_CPPFLAGS) $(BOOST_CPPFLAGS) -DTHEPEG_PKGLIBDIR="\"$(pkglibdir)\"" -DTHEPEG_PKGDATADIR="\"$(pkgdatadir)\""
+ TESTS += repository_test
+endif

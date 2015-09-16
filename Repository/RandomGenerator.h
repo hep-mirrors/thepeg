@@ -110,6 +110,14 @@ public:
    */
   double operator()() { return rnd(); }
 
+    /**
+   * Return a (possibly cached) flat integer random number in the
+   * interval \f$[0,N[\f$.
+   * Function was introduced since otherwise operator()() is used if a double is given
+   * resulting in a \f$]0,1[\f$ distribution.
+   */
+  double operator()(double N) { return double(rnd() * N); }
+  
   /**
    * Return a (possibly cached) flat integer random number in the
    * interval \f$[0,N[\f$.
@@ -190,20 +198,36 @@ public:
   template <typename Unit>
   Unit rndExp(Unit mean) { return mean*rndExp(); }
 
+    /**
+   * Return two numbers distributed according to a Gaussian distribution
+   * with zero mean and unit variance.
+   * 
+   * @param[out] First random number
+   * @param[out] Second random number
+   */
+  void rndGaussTwoNumbers(double & randomNumberOne, double & randomNumberTwo) { 
+    double r = sqrt(-2.0*log(rnd()));
+    double phi = rnd()*2.0*Constants::pi;
+    randomNumberOne = r*sin(phi);
+    randomNumberTwo = r*cos(phi);
+  }
+  
   /**
    * Return a number distributed according to a Gaussian distribution
-   * with zero mean and unit variance.
+   * with zero mean and unit variance. 
+   * A second number is cached and returned the next time.
+   * This function calls the rndGaussTwoNumbers function which returns two numbers at once.
    */
   double rndGauss() { 
     if ( gaussSaved ) {
       gaussSaved = false;
       return savedGauss;
     }
-    double r = sqrt(-2.0*log(rnd()));
-    double phi = rnd()*2.0*Constants::pi;
-    savedGauss = r*cos(phi);
+    double  randomNumberOne, randomNumberTwo;
+    rndGaussTwoNumbers(randomNumberOne, randomNumberTwo);
+    savedGauss = randomNumberTwo;
     gaussSaved = true;
-    return r*sin(phi);
+    return randomNumberOne;
   }
 
   /**
@@ -215,6 +239,18 @@ public:
     return mean + sigma*rndGauss();
   }
 
+  /**
+   * Return two numbers distributed according to a Gaussian distribution
+   * with a given standard deviation, \a sigma, and a given \a mean.
+   */
+  template <typename Unit>
+  void rndGaussTwoNumbers(Unit & randomNumberOne, Unit & randomNumberTwo, Unit sigma, Unit mean = Unit()) {
+    double r1,r2;
+    rndGaussTwoNumbers(r1,r2);
+    randomNumberOne = mean + sigma * r1;
+    randomNumberTwo = mean + sigma * r2;
+  }
+  
   /**
    * Return a positive number distributed according to a
    * non-relativistic Breit-Wigner with a given width, \a gamma, and a

@@ -106,8 +106,16 @@ void BaseRepository::prependReadDir(string dir) {
   readDirs().insert(readDirs().begin(), dir);
 }
 
+void BaseRepository::prependReadDir(const std::vector<std::string>& dirs) {
+  readDirs().insert(readDirs().begin(), dirs.begin(), dirs.end());
+}
+
 void BaseRepository::appendReadDir(string dir) {
   readDirs().push_back(dir);
+}
+
+void BaseRepository::appendReadDir(const std::vector<std::string>& dirs) {
+  readDirs().insert(readDirs().end(), dirs.begin(), dirs.end());
 }
 
 BaseRepository::StringVector & BaseRepository::directoryStack() {

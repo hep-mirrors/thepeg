@@ -20,6 +20,7 @@
 #include "ThePEG/Config/ThePEG.h"
 #include "ThePEG/Utilities/UnitIO.h"
 #include <cassert>
+#include <cmath>
 
 namespace ThePEG {
 
@@ -258,6 +259,23 @@ public:
 		   -x()*a.z()+z()*a.x(),
 		    x()*a.y()-y()*a.x());
   }
+  
+  public:  
+  /// @name Comparison operators.
+  //@{
+  bool operator==(const ThreeVector<Value> & a) const {
+    return (theX == a.x() && theY == a.y() && theZ == a.z());
+  }
+  bool operator!=(const ThreeVector<Value> & a) const {
+    return !(*this == a);
+  }
+  bool almostEqual(const ThreeVector<Value> & a, double threshold = 1e-04) const {
+    return ((std::abs(theX - a.x()) < threshold) && (std::abs(theY - a.y()) < threshold) && (std::abs(theZ - a.z()) < threshold));
+  }
+  bool almostUnequal(const ThreeVector<Value> & a, double threshold = 1e-04) const {
+    return !(*this.almostEqual(a, threshold));
+  }
+     //@}
   
 public:  
   /// @name Mathematical assignment operators.

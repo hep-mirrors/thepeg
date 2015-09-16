@@ -52,3 +52,6 @@ Makefile\.in$
 ^ThePEG.*\.tar\.(bz2|gz)$
 ^src/runThePEG.bin$
 ^src/setupThePEG.bin$
+^Repository/repository_test$
+^ThePEG-default.kdev4$
+^src/SimpleLEP.cmp$
