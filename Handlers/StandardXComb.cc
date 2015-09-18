@@ -161,10 +161,10 @@ void StandardXComb::refillPartonBinInstances(const double* r) {
 
 }
 
-void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
+bool StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
 
   if ( lastPartons().first )
-    return;
+    return true;
 
   if ( !labHead )
     labHead = head();
@@ -206,12 +206,13 @@ void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
   double x2 = 
     lastPartons().second->momentum().minus()/
     lastParticles().second->momentum().minus();
-
+  if(x1<=0. || x2 <= 0. ) return false;
   lastX1X2(make_pair(x1,x2));
 
   lastY((lastPartons().first->momentum()+
 	 lastPartons().second->momentum()).rapidity());
 
+  return true;
 }
 
 void StandardXComb::fill(const PPair& newParticles,

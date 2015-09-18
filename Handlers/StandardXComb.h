@@ -126,7 +126,7 @@ public:
    * extracted from the incoming particles, though a subprocess
    * detached from the current Event may be created.
    */
-  void setIncomingPartons(tStdXCombPtr labHead = tStdXCombPtr());
+  bool setIncomingPartons(tStdXCombPtr labHead = tStdXCombPtr());
 
   /**
    * Fill phase space information as far as possible
