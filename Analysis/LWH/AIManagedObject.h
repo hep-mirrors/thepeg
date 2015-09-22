@@ -9,7 +9,7 @@
 #ifndef LWH_AIManagedObject_H
 #define LWH_AIManagedObject_H
 
-#ifndef LWH_USING_AIDA
+
 
 #include <string>
 
@@ -34,8 +34,8 @@ public:
 
 /** @endcond */
 
-#else
-#include "AIDA/IManagedObject.h"
-#endif
+
+
+
 
 #endif /* LWH_AIManagedObject_H */

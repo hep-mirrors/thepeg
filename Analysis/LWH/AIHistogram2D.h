@@ -9,7 +9,7 @@
 #ifndef LWH_AIHistogram2D_H
 #define LWH_AIHistogram2D_H
 
-#ifndef LWH_USING_AIDA
+
 
 /** @cond DONT_DOCUMENT_STRIPPED_DOWN_AIDA_INTERFACES */
 
@@ -194,9 +194,9 @@ public:
 } // namespace AIDA
 /** @endcond */
 
-#else
-#include "AIDA/IHistogram2D.h"
-#endif
+
+
+
 
 #endif /* LWH_AIHistogram2D_H */
 

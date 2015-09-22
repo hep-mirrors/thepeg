@@ -26,7 +26,6 @@ Makefile\.in$
 ^Config/missing$
 ^Config/stamp-h.$
 ^Config/ar-lib$
-^Config/LWH.h$
 ^Config/ThePEG_Qty.h$
 ^Config/config.guess$
 ^Config/test-driver$

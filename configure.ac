@@ -8,7 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 THEPEG_LIBTOOL_VERSION_INFO(18,1,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
-AC_CONFIG_HEADERS([Config/config.h Config/LWH.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
+AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
 
 AC_CANONICAL_HOST
 
@@ -106,8 +106,6 @@ case "${ax_cv_cxx_compiler_vendor}" in
 esac
 THEPEG_CHECK_FPUCONTROL
 THEPEG_CHECK_FENV
-
-THEPEG_CHECK_AIDA
 
 AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
 

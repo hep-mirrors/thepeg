@@ -269,24 +269,6 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cmath>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([THEPEG_CHECK_AIDA],
-[
-AC_REQUIRE([THEPEG_CHECK_RIVET])
-echo $ECHO_N "checking for installed AIDA headers... $ECHO_C" 1>&6
-dnl if test "x$with_rivet" != "xno"; then
-dnl    echo "using rivet aida"
-dnl    LWHINCLUDE="\$(RIVETINCLUDE)/LWH"
-dnl else
-LWHINCLUDE="-I\$(top_builddir)/include/ThePEG/Analysis/LWH"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include "AIDA/IAnalysisFactory.h"
-]], [[AIDA::IAnalysisFactory * af;
-]])],[AC_DEFINE(LWH_USING_AIDA,1,define if AIDA headers are installed)
-echo "${ECHO_T}yes" 1>&6
-],[echo "${ECHO_T}no" 1>&6])
-dnl fi
-AC_SUBST([LWHINCLUDE])
-])
-
 AC_DEFUN([THEPEG_CHECK_DLOPEN],
 [echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
 # do this with libtool!

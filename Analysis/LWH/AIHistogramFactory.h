@@ -9,7 +9,7 @@
 #ifndef LWH_AIHistogramFactory_H
 #define LWH_AIHistogramFactory_H
 
-#ifndef LWH_USING_AIDA
+
 
 /** @cond DONT_DOCUMENT_STRIPPED_DOWN_AIDA_INTERFACES */
 
@@ -105,8 +105,8 @@ public:
 
 /** @endcond */
 
-#else
-#include "AIDA/IHistogramFactory.h"
-#endif
+
+
+
 
 #endif /* LWH_AIHistogramFactory_H */
