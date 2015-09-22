@@ -466,6 +466,9 @@ modifyEventGenerator(EventGenerator & eg, string filename,
   }
   
   string msg = read(filename, os);
+
+  if ( !msg.empty() )
+    return msg;
  
   for_each(objs, mem_fun(&InterfacedBase::reset)); 
   eg.initialize(initOnly);
