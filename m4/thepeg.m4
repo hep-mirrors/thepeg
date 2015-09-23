@@ -428,14 +428,14 @@ AC_DEFUN([THEPEG_BOOST_UNIT_TEST],
 [
 AC_REQUIRE([BOOST_REQUIRE])
 if test "x$BOOST_NOT_FOUND" = "xtrue"; then
-	BOOSTMESSAGE="Deactived, BOOST was not found."
+	BOOSTMESSAGE="Boost not found."
 	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[false])
 elif test -z "$BOOST_UNIT_TEST_FRAMEWORK_LDPATH"; then 
-	BOOSTMESSAGE="Deactivated, BOOST unit test libs were not found."
+	BOOSTMESSAGE="Boost unit test libs not found."
 	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[false])
 	AC_SUBST([BOOST_NOT_FOUND],[false])
 else
-	BOOSTMESSAGE="Activated, BOOST unit test libs found at $BOOST_UNIT_TEST_FRAMEWORK_LDPATH"
+	BOOSTMESSAGE="$BOOST_UNIT_TEST_FRAMEWORK_LDPATH"
 	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[true])
 	AC_SUBST([BOOST_NOT_FOUND],[false])
 fi
