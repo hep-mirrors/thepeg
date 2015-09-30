@@ -102,6 +102,10 @@ vector<string> & BaseRepository::readDirs() {
   return theReadDirs;
 }
 
+const vector<string> & BaseRepository::listReadDirs() {
+  return BaseRepository::readDirs();
+}
+
 void BaseRepository::prependReadDir(string dir) {
   readDirs().insert(readDirs().begin(), dir);
 }
