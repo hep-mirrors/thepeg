@@ -191,10 +191,8 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
     equals(diag,ch.first,chCmp.first) &&
     equals(diag,ch.second,chCmp.second);
 
-  // also try swapped outgoing legs on same vertex
-  if ( !match && start > nSpace() - 1 &&
-       children(ch.first).first < 0 && children(ch.second).first < 0 &&
-       diag->children(chCmp.first).first < 0 && diag->children(chCmp.second).first < 0 )
+  // also try swapped legs on same vertex
+  if ( !match && start > nSpace() - 1 )
     match = 
       equals(diag,ch.first,chCmp.second) &&
       equals(diag,ch.second,chCmp.first);
@@ -224,10 +222,8 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
     equals(diag,remap,ch.first,chCmp.first) &&
     equals(diag,remap,ch.second,chCmp.second);
 
-  // also try swapped outgoing legs on same vertex
-  if ( !match && start > nSpace() - 1 &&
-       children(ch.first).first < 0 && children(ch.second).first < 0 &&
-       diag->children(chCmp.first).first < 0 && diag->children(chCmp.second).first < 0 )
+  // also try swapped legs on same vertex
+  if ( !match && start > nSpace() - 1 )
     match = 
       equals(diag,remap,ch.first,chCmp.second) &&
       equals(diag,remap,ch.second,chCmp.first);
