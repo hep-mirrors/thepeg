@@ -355,8 +355,8 @@ public:
   boost(double bx, double by, double bz, double gamma=-1.) 
   {
     const double b2 = bx*bx + by*by + bz*bz;
+    if ( b2 == 0.0 ) return *this;
     if ( gamma < 0.0 ) {
-	if ( b2 == 0.0 ) return *this;
     	gamma = 1.0 / sqrt(1.0 - b2);
     }
     const Value bp = bx*x() + by*y() + bz*z();
