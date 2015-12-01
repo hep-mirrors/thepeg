@@ -5,7 +5,7 @@ AC_INIT([ThePEG],[2.0.0],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
 
-THEPEG_LIBTOOL_VERSION_INFO(18,1,0)
+THEPEG_LIBTOOL_VERSION_INFO(20,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
 AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
@@ -13,15 +13,15 @@ AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Con
 AC_CANONICAL_HOST
 
 case "${host}" in
-  *-darwin[[0156]].*) 
+  *-darwin[[0156]].*)
     AC_MSG_ERROR([ThePEG requires OS X 10.3 or later])
     ;;
-  *-darwin7.*) 
-    if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then 
+  *-darwin7.*)
+    if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then
        AC_MSG_ERROR(
-       [Please export the MACOSX_DEPLOYMENT_TARGET variable, set to 10.3]) 
-    fi 
-    ;;  
+       [Please export the MACOSX_DEPLOYMENT_TARGET variable, set to 10.3])
+    fi
+    ;;
 esac
 
 AC_LANG(C++)
@@ -98,7 +98,7 @@ case "${ax_cv_cxx_compiler_vendor}" in
             *linux*)
                 AC_MSG_WARN([
 *****************************************************************************
- clang/LLVM ignores the CPU floating-point environment. 
+ clang/LLVM ignores the CPU floating-point environment.
  All floating point exception trapping will be disabled.
 *****************************************************************************])
                 ;;
@@ -115,10 +115,10 @@ case "${ax_cv_cxx_compiler_vendor}" in
     ;;
      clang)
     AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
-dnl  -Wno-unneeded-internal-declaration 
+dnl  -Wno-unneeded-internal-declaration
     ;;
      intel)
-    AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980" 
+    AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980"
     ;;
 esac
 
@@ -129,7 +129,7 @@ AC_SUBST(AM_CXXFLAGS)
 
 dnl do an actual capability check on ld instead of this workaround
 case "${host}" in
-  *-darwin*) 
+  *-darwin*)
      ;;
   *)
      AM_LDFLAGS="-Wl,--enable-new-dtags"

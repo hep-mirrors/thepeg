@@ -1,7 +1,7 @@
 mySOURCES = PartonExtractor.cc PDFBase.cc RemnantHandler.cc \
             BeamParticleData.cc PolarizedBeamParticleData.cc \
             PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc \
-            PartonBinInstance.cc SoftRemnantHandler.cc 
+            PartonBinInstance.cc SoftRemnantHandler.cc
 
 DOCFILES = BeamParticleData.h PolarizedBeamParticleData.h \
            NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
@@ -26,7 +26,7 @@ if USELHAPDF
 pkglib_LTLIBRARIES += ThePEGLHAPDF.la
 LHAPDF_SOURCES = LHAPDF6.cc LHAPDF6.h
 
-ThePEGLHAPDF_la_LDFLAGS =  $(AM_LDFLAGS) -module $(LHAPDF_LDFLAGS) -version-info 19:0:0
+ThePEGLHAPDF_la_LDFLAGS =  $(AM_LDFLAGS) -module $(LHAPDF_LDFLAGS) $(LIBTOOLVERSIONINFO)
 ThePEGLHAPDF_la_LIBADD = $(LHAPDF_LIBS)
 ThePEGLHAPDF_la_SOURCES = $(LHAPDF_SOURCES)
 ThePEGLHAPDF_la_CPPFLAGS = $(AM_CPPFLAGS) $(LHAPDF_CPPFLAGS)
@@ -88,4 +88,3 @@ all-local: .done-all-links
 @EMPTY@endif
 
 include $(top_srcdir)/Config/Makefile.aminclude
-
