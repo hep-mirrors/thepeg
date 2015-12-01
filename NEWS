@@ -10,7 +10,35 @@ or at http:///projects.hepforge.org/herwig/versions
 
 * ThePEG-2.0.0 release: 2015-12-04
 
+** Improvements for NLO
+   A number of improvements and bug fixes have been made in the course of
+   (Herwig 7) NLO development.
 
+** Improvements for spin correlations
+   A number of improvements have been made to handle spin correlations in the
+   parton shower.
+
+** Setup file mechanism
+   An isolated event generator can now be modified prior to generating events
+   by providing an additional input file; also support for re-initalizing
+   isolated event generators has been added in this course to support Herwig
+   7's parallel integration modes.
+
+** Handling of weighted LHE events
+   The handling of LHE events with variable weight (codes 3 and 4) has now
+   been enabled, along with the full handling of multiple event weights down
+   to the HepMC output.
+
+** LHAPDF6 handling
+   A problem in initializing LHAPDF6 has been fixed.
+
+** Heavy ion collisions
+   A dedicated HepMC interface for heavy ion collisions has been introduced.
+
+** First steps for unit testing
+   Unit testing has been introduced for a number of components based on
+   boost's unittesting framework. They are only enabled, when configured
+   --with-boost .
 
 * ThePEG-1.9.2 release: 2014-07-07
 
