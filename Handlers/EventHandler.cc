@@ -102,7 +102,7 @@ void EventHandler::initGroups() {
     groups()[i]->init(*optGroups[i]);
 }
 
-tCascHdlPtr EventHandler::CKKWHandler() const {
+tCascHdlPtr EventHandler::cascadeHandler() const {
   return dynamic_ptr_cast<tCascHdlPtr>(theCascadeGroup.defaultHandler());
 }
 
@@ -304,23 +304,45 @@ void EventHandler::checkConsistency() const {
     cf += (**it).data().iCharge();
   }
 
-  if ( cf != ci ) Throw<ConsistencyException>()
-    << "Event handler '" << name() << "' found charge non-conservation by "
-    << cf - ci << "/3 units after generating step number " << c.steps().size()
-    << ". Dump of event follows: \n\n" <<  *currentEvent() << "\n"
-    << Exception::warning;
+  if ( cf != ci ) {
+    if(consistencyLevel() == clPrintStep || consistencyLevel() == clPrintCollision) {
+      Throw<ConsistencyException>()
+	<< "Event handler '" << name() << "' found charge non-conservation by "
+	<< cf - ci << "/3 units after generating step number " << c.steps().size()
+	<< ". Dump of event follows: \n\n" <<  *currentEvent() << "\n"
+	<< Exception::warning;
+    }
+    else {
+      Throw<ConsistencyException>()
+	<< "Event handler '" << name() << "' found charge non-conservation by "
+	<< cf - ci << "/3 units after generating step number " << c.steps().size() << ".\n"
+	<< Exception::warning;
+    }
+  }
 
   Energy eps = consistencyEpsilon()*pi.m()*sqrt(double(fs.size()));
   pf -= pi;
   if ( abs(pf.x()) > eps || abs(pf.y()) > eps || abs(pf.z()) > eps ||
-       abs(pf.e()) > eps )
-    Throw<ConsistencyException>()
-      << "Event handler '" << name() << "' found energy-momentum non-"
-      << "conservation by (" << pf.x()/GeV << "," << pf.y()/GeV << ","
-      << pf.z()/GeV << ";" << pf.e()/GeV
-      << ") GeV after generating step number " << c.steps().size()
-      << ". Dump of event follows: \n\n" <<  *currentEvent() << "\n"
-      << Exception::warning;
+       abs(pf.e()) > eps ) {
+    if(consistencyLevel() == clPrintStep || consistencyLevel() == clPrintCollision) {
+      Throw<ConsistencyException>()
+	<< "Event handler '" << name() << "' found energy-momentum non-"
+	<< "conservation by (" << pf.x()/GeV << "," << pf.y()/GeV << ","
+	<< pf.z()/GeV << ";" << pf.e()/GeV
+	<< ") GeV after generating step number " << c.steps().size()
+	<< ". Dump of event follows: \n\n" <<  *currentEvent() << "\n"
+	<< Exception::warning;
+    }
+    else {
+      Throw<ConsistencyException>()
+	<< "Event handler '" << name() << "' found energy-momentum non-"
+	<< "conservation by (" << pf.x()/GeV << "," << pf.y()/GeV << ","
+	<< pf.z()/GeV << ";" << pf.e()/GeV
+	<< ") GeV after generating step number " << c.steps().size()
+	<< ".\n"
+	<< Exception::warning;
+    }
+  }
 }
 
 

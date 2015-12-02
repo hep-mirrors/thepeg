@@ -9,7 +9,7 @@
 #ifndef LWH_AIDataPointSet_H
 #define LWH_AIDataPointSet_H
 
-#ifndef LWH_USING_AIDA
+
 
 /** @cond DONT_DOCUMENT_STRIPPED_DOWN_AIDA_INTERFACES */
 
@@ -56,8 +56,8 @@ public:
 
 /** @endcond */
 
-#else
-#include "AIDA/IDataPointSet.h"
-#endif
+
+
+
 
 #endif /* LWH_AIDataPointSet_H */

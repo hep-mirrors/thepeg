@@ -126,7 +126,7 @@ public:
    * extracted from the incoming particles, though a subprocess
    * detached from the current Event may be created.
    */
-  void setIncomingPartons(tStdXCombPtr labHead = tStdXCombPtr());
+  bool setIncomingPartons(tStdXCombPtr labHead = tStdXCombPtr());
 
   /**
    * Fill phase space information as far as possible
@@ -342,7 +342,11 @@ public:
   /**
    * Return the last selected diagram.
    */
-  tcDiagPtr lastDiagram() const { return diagrams()[lastDiagramIndex()]; }
+  tcDiagPtr lastDiagram() const { 
+    if ( !theExternalDiagram )
+      return diagrams()[lastDiagramIndex()];
+    return theExternalDiagram;
+  }
 
   /**
    * Return the parton types to be used by the matrix element object,
@@ -443,6 +447,12 @@ public:
    * matrix element.
    */
   cPDVector & mePartonData() { return theMEPartonData; }
+
+  /**
+   * Set a diagram to be used instead of the one selected by the matrix
+   * element.
+   */
+  void externalDiagram(tcDiagPtr diag) { theExternalDiagram = diag; }
 
   /**
    * Set the last selected diagram.
@@ -582,6 +592,11 @@ private:
    * element.
    */
   cPDVector theMEPartonData;
+
+  /**
+   * A diagram to be used instead of the one selected by the matrix element.
+   */
+  tcDiagPtr theExternalDiagram;
 
   /**
    * The last selected tree diagram.

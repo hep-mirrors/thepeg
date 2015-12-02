@@ -354,11 +354,13 @@ public:
   LorentzVector<Value> & 
   boost(double bx, double by, double bz, double gamma=-1.) 
   {
-    double b2 = bx*bx + by*by + bz*bz;
-    if(gamma < 0.) 
-      gamma = 1.0 / sqrt(1.0 - b2);
-    Value bp = bx*x() + by*y() + bz*z();
-    double gamma2 = b2 > 0 ? (gamma - 1.0)/b2 : 0.0;
+    const double b2 = bx*bx + by*by + bz*bz;
+    if ( b2 == 0.0 ) return *this;
+    if ( gamma < 0.0 ) {
+    	gamma = 1.0 / sqrt(1.0 - b2);
+    }
+    const Value bp = bx*x() + by*y() + bz*z();
+    const double gamma2 = (gamma - 1.0)/b2;
     
     setX(x() + gamma2*bp*bx + gamma*bx*t());
     setY(y() + gamma2*bp*by + gamma*by*t());

@@ -372,27 +372,22 @@ string DecayMode::makeTag() const {
   LinkVector dlinks = links();
 
   ret = theParent->PDGName() + "->";
-  OrderedParticles prod(products().begin(), products().end());
-  while ( !prod.empty() ) {
-    OrderedParticles::iterator pit = prod.begin();
-    for ( int i = 0, N = dlinks.size(); i < N; ++i ) {
-      if ( *pit == dlinks[i].second ) swap(dlinks[i].first, dlinks[i].second);
-      if ( *pit == dlinks[i].first ) {
-	ret +=  (**pit).PDGName() + "=";
-	prod.erase(pit);
-	pit = prod.end();	
-	OrderedParticles::iterator pitl = prod.find(dlinks[i].second);
-	ret +=  (**pitl).PDGName() + ",";
-	prod.erase(pitl);
-	dlinks.erase(dlinks.begin() + i);
-	break;
-      }
-    }
-    if ( pit != prod.end() ) {
+  if ( dlinks.empty() ) {
+    OrderedParticles prod(products().begin(), products().end());
+    for (OrderedParticles::iterator pit = prod.begin();
+	 pit != prod.end(); ++pit )
       ret += (**pit).PDGName() + ",";
-      prod.erase(pit);
+  } else {
+    unsigned int dl = 0;
+    for ( int i = 0, N = orderedProducts().size(); i < N; ++i ) {
+      if ( dl < dlinks.size() && orderedProducts()[i] == dlinks[dl].first ) {
+	ret +=  orderedProducts()[i]->PDGName() + "=";
+	++dl;
+      } else 
+	ret +=  orderedProducts()[i]->PDGName() + ",";
     }
   }
+
   OrderedModes casc(cascadeProducts().begin(), cascadeProducts().end());
   for ( OrderedModes::iterator dmit = casc.begin();dmit != casc.end(); ++dmit )
     ret += "[" + (**dmit).tag() + "],";

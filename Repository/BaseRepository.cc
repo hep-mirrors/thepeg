@@ -102,6 +102,10 @@ vector<string> & BaseRepository::readDirs() {
   return theReadDirs;
 }
 
+const vector<string> & BaseRepository::listReadDirs() {
+  return BaseRepository::readDirs();
+}
+
 void BaseRepository::prependReadDir(string dir) {
   readDirs().insert(readDirs().begin(), dir);
 }
@@ -142,7 +146,8 @@ void BaseRepository::Register(IBPtr ip, string newName) {
 
 void BaseRepository::Register(IBPtr ip) {
   if ( !ip || member(allObjects(), ip) ) return;
-  while ( member(objects(), ip->fullName()) ) ip->name(ip->fullName() + "#");
+  if ( member(objects(), ip->fullName()) )
+    throw RepoNameExistsException(ip->fullName());
   objects()[ip->fullName()] = ip;
   allObjects().insert(ip);
   ip->clear();
@@ -945,6 +950,13 @@ RepoNameException::RepoNameException(string name) {
 	     << "under a different name. This means that the name of the "
 	     << "object has been illegally changed outside of the Repository.";
   severity(abortnow);
+}
+
+RepoNameExistsException::RepoNameExistsException(string name) {
+  theMessage
+    << "The object '" << name
+    << "' was not created as another object with that name already exists.";
+  severity(warning);
 }
 
 RepositoryNoDirectory::RepositoryNoDirectory(string name) {

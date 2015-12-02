@@ -39,6 +39,13 @@ struct RepoNameException: public InterfaceException {
   RepoNameException(string);
 };
 
+/** Exception class used by BaseRepository if creating an object with
+    a name that already exists in the repository.. */
+struct RepoNameExistsException: public InterfaceException {
+  /** Standard constructor. */
+  RepoNameExistsException(string);
+};
+
 /** Exception class used by BaseRepository when trying to access a
     non-existing directory. */
 struct RepositoryNoDirectory: public InterfaceException {

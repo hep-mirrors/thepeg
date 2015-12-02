@@ -1,7 +1,7 @@
 mySOURCES = PartonExtractor.cc PDFBase.cc RemnantHandler.cc \
             BeamParticleData.cc PolarizedBeamParticleData.cc \
             PartonBin.cc NoPDF.cc NoRemnants.cc PDFCuts.cc \
-            PartonBinInstance.cc SoftRemnantHandler.cc 
+            PartonBinInstance.cc SoftRemnantHandler.cc
 
 DOCFILES = BeamParticleData.h PolarizedBeamParticleData.h \
            NoPDF.h NoRemnants.h PDFBase.h PDFCuts.h \
@@ -15,7 +15,7 @@ INCLUDEFILES = $(DOCFILES) BeamParticleData.xh \
 
 INPUTFILES = PDFsets.index
 
-CLEANFILES = done-all-links
+CLEANFILES = .done-all-links
 
 noinst_LTLIBRARIES = libThePEGPDF.la
 pkglib_LTLIBRARIES = LeptonLeptonPDF.la UnResolvedRemnant.la \
@@ -24,17 +24,9 @@ pkglib_LTLIBRARIES = LeptonLeptonPDF.la UnResolvedRemnant.la \
 
 if USELHAPDF
 pkglib_LTLIBRARIES += ThePEGLHAPDF.la
-
-if USELHAPDF5
-LHAPDF_SOURCES = LHAPDF.cc LHAPDF.h
-LHAPDF_CPPFLAGS += \
--DLHAPDF_PKGDATADIR="\"$(LHAPDF_PKGDATADIR)\"" \
--DTHEPEG_PKGDATADIR="\"$(pkgdatadir)\""
-endif
-if USELHAPDF6
 LHAPDF_SOURCES = LHAPDF6.cc LHAPDF6.h
-endif
-ThePEGLHAPDF_la_LDFLAGS =  $(AM_LDFLAGS) -module $(LHAPDF_LDFLAGS) -version-info 19:0:0
+
+ThePEGLHAPDF_la_LDFLAGS =  $(AM_LDFLAGS) -module $(LHAPDF_LDFLAGS) $(LIBTOOLVERSIONINFO)
 ThePEGLHAPDF_la_LIBADD = $(LHAPDF_LIBS)
 ThePEGLHAPDF_la_SOURCES = $(LHAPDF_SOURCES)
 ThePEGLHAPDF_la_CPPFLAGS = $(AM_CPPFLAGS) $(LHAPDF_CPPFLAGS)
@@ -81,19 +73,18 @@ GRV94M_la_SOURCES = GRV94M.cc GRV94M.h
 
 dist_pkgdata_DATA = PDFsets.index
 
-all-local: done-all-links
+all-local: .done-all-links
 
-done-all-links:
+.done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
 	for file in $(INPUTFILES); do \
 	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
-	echo "stamp" > done-all-links
+	echo "stamp" > .done-all-links
 @EMPTY@else
 	@echo "sym-linking input files files..."
 	@for file in $(INPUTFILES); do \
 	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
-	@echo "stamp" > done-all-links
+	@echo "stamp" > .done-all-links
 @EMPTY@endif
 
 include $(top_srcdir)/Config/Makefile.aminclude
-

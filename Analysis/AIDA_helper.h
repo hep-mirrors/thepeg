@@ -1,5 +1,3 @@
-#include "ThePEG/Config/LWH.h"
-
 #include "AIAnalysisFactory.h"
 #include "AITreeFactory.h"
 #include "AITree.h"

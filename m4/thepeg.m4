@@ -269,24 +269,6 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <cmath>
 echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
-AC_DEFUN([THEPEG_CHECK_AIDA],
-[
-AC_REQUIRE([THEPEG_CHECK_RIVET])
-echo $ECHO_N "checking for installed AIDA headers... $ECHO_C" 1>&6
-dnl if test "x$with_rivet" != "xno"; then
-dnl    echo "using rivet aida"
-dnl    LWHINCLUDE="\$(RIVETINCLUDE)/LWH"
-dnl else
-LWHINCLUDE="-I\$(top_builddir)/include/ThePEG/Analysis/LWH"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include "AIDA/IAnalysisFactory.h"
-]], [[AIDA::IAnalysisFactory * af;
-]])],[AC_DEFINE(LWH_USING_AIDA,1,define if AIDA headers are installed)
-echo "${ECHO_T}yes" 1>&6
-],[echo "${ECHO_T}no" 1>&6])
-dnl fi
-AC_SUBST([LWHINCLUDE])
-])
-
 AC_DEFUN([THEPEG_CHECK_DLOPEN],
 [echo $ECHO_N "checking for dlopen... $ECHO_C" 1>&6
 # do this with libtool!
@@ -305,18 +287,32 @@ echo "${ECHO_T}yes" 1>&6
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_CHECK_FPUCONTROL],
-[echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
+[
+AC_REQUIRE([AX_COMPILER_VENDOR])
+echo $ECHO_N "checking for <fpu_control>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fpu_control.h>
 ]], [[fpu_control_t cw; _FPU_GETCW(cw); cw &= ~(_FPU_MASK_IM|_FPU_MASK_DM|_FPU_MASK_ZM|_FPU_MASK_OM); _FPU_SETCW(cw);
-]])],[AC_DEFINE(ThePEG_HAS_FPU_CONTROL,1,define if fpucontrol is available)
+]])],[
+if test "${ax_cv_cxx_compiler_vendor}" == "clang"; then
+echo "${ECHO_T}not useable with clang/llvm" 1>&6
+else
+AC_DEFINE(ThePEG_HAS_FPU_CONTROL,1,define if fpucontrol is available)
 echo "${ECHO_T}yes" 1>&6
+fi
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_CHECK_FENV],
-[echo $ECHO_N "checking for <fenv.h>... $ECHO_C" 1>&6
+[
+AC_REQUIRE([AX_COMPILER_VENDOR])
+echo $ECHO_N "checking for <fenv.h>... $ECHO_C" 1>&6
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <fenv.h>
-]], [[feenableexcept(FE_DIVBYZERO|FE_OVERFLOW|FE_INVALID);]])],[AC_DEFINE(ThePEG_HAS_FENV,1,define if fenv is available)
+]], [[feenableexcept(FE_DIVBYZERO|FE_OVERFLOW|FE_INVALID);]])],[
+if test "${ax_cv_cxx_compiler_vendor}" == "clang"; then
+echo "${ECHO_T}not useable with clang/llvm" 1>&6
+else
+AC_DEFINE(ThePEG_HAS_FENV,1,define if fenv is available)
 echo "${ECHO_T}yes" 1>&6
+fi
 ],[echo "${ECHO_T}no" 1>&6])])
 
 AC_DEFUN([THEPEG_ADD_THEPEG_PATH],
@@ -432,14 +428,14 @@ AC_DEFUN([THEPEG_BOOST_UNIT_TEST],
 [
 AC_REQUIRE([BOOST_REQUIRE])
 if test "x$BOOST_NOT_FOUND" = "xtrue"; then
-	BOOSTMESSAGE="Deactived, BOOST was not found."
+	BOOSTMESSAGE="Boost not found."
 	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[false])
 elif test -z "$BOOST_UNIT_TEST_FRAMEWORK_LDPATH"; then 
-	BOOSTMESSAGE="Deactivated, BOOST unit test libs were not found."
+	BOOSTMESSAGE="Boost unit test libs not found."
 	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[false])
 	AC_SUBST([BOOST_NOT_FOUND],[false])
 else
-	BOOSTMESSAGE="Activated, BOOST unit test libs found at $BOOST_UNIT_TEST_FRAMEWORK_LDPATH"
+	BOOSTMESSAGE="$BOOST_UNIT_TEST_FRAMEWORK_LDPATH"
 	AC_SUBST([BOOST_ACTIVATE_UNIT_TESTS],[true])
 	AC_SUBST([BOOST_NOT_FOUND],[false])
 fi

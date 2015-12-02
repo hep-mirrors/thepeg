@@ -218,6 +218,11 @@ protected:
 public:
 
   /**
+   * Access to list of directories to search for files for the "read" command.
+   */
+  static const vector<string> & listReadDirs();
+
+  /**
    * Add a directory to readDirs().
    */
   static void prependReadDir(string);

@@ -5,27 +5,27 @@ AC_INIT([ThePEG],[devel],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
 
-THEPEG_LIBTOOL_VERSION_INFO(18,1,0)
+THEPEG_LIBTOOL_VERSION_INFO(20,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
-AC_CONFIG_HEADERS([Config/config.h Config/LWH.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
+AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
 
 AC_CANONICAL_HOST
 
 case "${host}" in
-  *-darwin[[0156]].*) 
+  *-darwin[[0156]].*)
     AC_MSG_ERROR([ThePEG requires OS X 10.3 or later])
     ;;
-  *-darwin7.*) 
-    if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then 
+  *-darwin7.*)
+    if test "x$MACOSX_DEPLOYMENT_TARGET" != "x10.3"; then
        AC_MSG_ERROR(
-       [Please export the MACOSX_DEPLOYMENT_TARGET variable, set to 10.3]) 
-    fi 
-    ;;	
+       [Please export the MACOSX_DEPLOYMENT_TARGET variable, set to 10.3])
+    fi
+    ;;
 esac
 
 AC_LANG(C++)
-AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 -Wall])
+AM_INIT_AUTOMAKE([1.9 gnu dist-bzip2 subdir-objects -Wall])
 dnl also include std-options once --version and --help exist
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
@@ -37,7 +37,7 @@ dnl this block can go once we decide to have C++11 always on
 AC_MSG_CHECKING([whether to include C++11 flag for testing])
 AC_ARG_ENABLE(stdcxx11,
         AC_HELP_STRING([--enable-stdcxx11],
-	[turn on C++11 flag (only for testing, do not use in production!)]),
+    [turn on C++11 flag (only for testing, do not use in production!)]),
         [],
         [enable_stdcxx11=no]
         )
@@ -90,25 +90,36 @@ THEPEG_DEFINE_ENVDEFAULT(ThePEG_BZ2WRITE_FILE,BZ2WRITE_FILE,[bzip2 -c > ],[The c
 THEPEG_CHECK_EXPM1
 THEPEG_CHECK_LOG1P
 THEPEG_CHECK_DLOPEN
+
+AX_COMPILER_VENDOR
+case "${ax_cv_cxx_compiler_vendor}" in
+    clang)
+        case "${host}" in
+            *linux*)
+                AC_MSG_WARN([
+*****************************************************************************
+ clang/LLVM ignores the CPU floating-point environment.
+ All floating point exception trapping will be disabled.
+*****************************************************************************])
+                ;;
+        esac
+esac
 THEPEG_CHECK_FPUCONTROL
 THEPEG_CHECK_FENV
-THEPEG_CHECK_AIDA
 
 AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
 
-AX_COMPILER_VENDOR
-
 case "${ax_cv_cxx_compiler_vendor}" in
      gnu)
-	AM_CXXFLAGS="-ansi -pedantic -Wall -W"
-	;;
+    AM_CXXFLAGS="-ansi -pedantic -Wall -W"
+    ;;
      clang)
-	AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
-dnl  -Wno-unneeded-internal-declaration 
-	;;
+    AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
+dnl  -Wno-unneeded-internal-declaration
+    ;;
      intel)
-	AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980" 
-	;;
+    AM_CXXFLAGS="-strict-ansi -Wall -wd13000,1418,981,444,383,1599,1572,2259,980"
+    ;;
 esac
 
 THEPEG_CHECK_ABS_BUG
@@ -118,7 +129,7 @@ AC_SUBST(AM_CXXFLAGS)
 
 dnl do an actual capability check on ld instead of this workaround
 case "${host}" in
-  *-darwin*) 
+  *-darwin*)
      ;;
   *)
      AM_LDFLAGS="-Wl,--enable-new-dtags"

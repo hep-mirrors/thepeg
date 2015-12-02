@@ -161,10 +161,10 @@ void StandardXComb::refillPartonBinInstances(const double* r) {
 
 }
 
-void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
+bool StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
 
   if ( lastPartons().first )
-    return;
+    return true;
 
   if ( !labHead )
     labHead = head();
@@ -206,12 +206,13 @@ void StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
   double x2 = 
     lastPartons().second->momentum().minus()/
     lastParticles().second->momentum().minus();
-
+  if(x1<=0. || x2 <= 0. ) return false;
   lastX1X2(make_pair(x1,x2));
 
   lastY((lastPartons().first->momentum()+
 	 lastPartons().second->momentum()).rapidity());
 
+  return true;
 }
 
 void StandardXComb::fill(const PPair& newParticles,
@@ -316,6 +317,7 @@ void StandardXComb::clean() {
   checkedCuts = false;
   passedCuts = false;
   theCutWeight = 1.0;
+  theExternalDiagram = tcDiagPtr();
   matrixElement()->flushCaches();
 }
 
@@ -595,7 +597,8 @@ void StandardXComb::newSubProcess(bool group) {
       subProcess(new_ptr(SubProcess(lastPartons(), tCollPtr(), matrixElement())));
     else
       subProcess(new_ptr(SubProcessGroup(lastPartons(), tCollPtr(), matrixElement())));
-    lastDiagramIndex(matrixElement()->diagram(diagrams()));
+    if ( !theExternalDiagram )
+      lastDiagramIndex(matrixElement()->diagram(diagrams()));
     const ColourLines & cl = matrixElement()->selectColourGeometry(lastDiagram());
     Lorentz5Momentum p1 = lastPartons().first->momentum();
     Lorentz5Momentum p2 = lastPartons().second->momentum();
@@ -647,6 +650,11 @@ void StandardXComb::newSubProcess(bool group) {
 void StandardXComb::checkReshufflingNeeds() {
 
   theNeedsReshuffling = false;
+
+  if ( eventHandler().cascadeHandler() ) {
+    if ( eventHandler().cascadeHandler()->isReshuffling() )
+      return;
+  }
 
   for ( cPDVector::const_iterator p = mePartonData().begin() + 2;
 	p != mePartonData().end(); ++p ) {
@@ -776,7 +784,8 @@ void StandardXComb::Init() {}
 void StandardXComb::persistentOutput(PersistentOStream & os) const {
   os << theSubProcessHandler << theME << theStats
      << theDiagrams << isMirror << theNDim << partonDims
-     << theLastDiagramIndex << theMEInfo << theLastRandomNumbers << theMEPartonData
+     << theLastDiagramIndex << theExternalDiagram 
+     << theMEInfo << theLastRandomNumbers << theMEPartonData
      << theLastPDFWeight << ounit(theLastCrossSection,nanobarn) << theLastJacobian
      << theLastME2 << theLastPreweight 
      << ounit(theLastMECrossSection,nanobarn) << theLastMEPDFWeight << theLastMECouplings
@@ -787,7 +796,8 @@ void StandardXComb::persistentOutput(PersistentOStream & os) const {
 void StandardXComb::persistentInput(PersistentIStream & is, int) {
   is >> theSubProcessHandler >> theME >> theStats
      >> theDiagrams >> isMirror >> theNDim >> partonDims
-     >> theLastDiagramIndex >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
+     >> theLastDiagramIndex >> theExternalDiagram
+     >> theMEInfo >> theLastRandomNumbers >> theMEPartonData
      >> theLastPDFWeight >> iunit(theLastCrossSection,nanobarn) >> theLastJacobian
      >> theLastME2 >> theLastPreweight 
      >> iunit(theLastMECrossSection,nanobarn) >> theLastMEPDFWeight >> theLastMECouplings
