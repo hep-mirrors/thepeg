@@ -100,8 +100,8 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
 
     // Get general event info if present.
     Traits::setScaleAndAlphas(*geneve, eh->lastScale(),
-			      eh->SM().alphaS(eh->lastScale()),
-			      eh->SM().alphaEM(eh->lastScale()), energyUnit);
+			      eh->lastAlphaS(),eh->lastAlphaEM(),
+			      energyUnit);
   }
 
   // Extract all particles and order them.
