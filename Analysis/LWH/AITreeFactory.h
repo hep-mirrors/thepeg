@@ -9,7 +9,7 @@
 #ifndef LWH_AITreeFactory_H
 #define LWH_AITreeFactory_H
 
-#ifndef LWH_USING_AIDA
+
 
 #include <string>
 
@@ -35,8 +35,8 @@ public:
 
 /** @endcond */
 
-#else
-#include "AIDA/ITreeFactory.h"
-#endif
+
+
+
 
 #endif /* LWH_AITreeFactory_H */

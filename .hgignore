@@ -8,10 +8,10 @@ Makefile\.in$
 \.o$
 ~$
 \.orig$
-^include/done-all-links$
-^lib/done-all-links$
+^include/.done-all-links$
+^lib/.done-all-links$
 ^src/.*\.(run|tex|out|log|rpo|spc|top|dump|dot|aux|pdf|ps|png|svg|hepmc)$
-^src/done-all-links$
+^src/.done-all-links$
 ^autom4te.cache$
 ^config.thepeg$
 ^config.log$
@@ -26,9 +26,9 @@ Makefile\.in$
 ^Config/missing$
 ^Config/stamp-h.$
 ^Config/ar-lib$
-^Config/LWH.h$
 ^Config/ThePEG_Qty.h$
 ^Config/config.guess$
+^Config/test-driver$
 ^Doc/fixinterfaces.pl$
 ^include/ThePEG$
 ^Doc/MakeDocs.in$
@@ -39,7 +39,7 @@ Makefile\.in$
 ^java/ThePEG.jar$
 ^java/thepeg.sh$
 ^java/thepeg$
-^PDF/done-all-links$
+^PDF/.done-all-links$
 ^lib/ThePEGDefaults.rpo$
 ^lib/Makefile.common
 ^lib/Makefile.dist$
@@ -52,6 +52,16 @@ Makefile\.in$
 ^ThePEG.*\.tar\.(bz2|gz)$
 ^src/runThePEG.bin$
 ^src/setupThePEG.bin$
-^Repository/repository_test$
 ^ThePEG-default.kdev4$
 ^src/SimpleLEP.cmp$
+^Repository/repository_test(.log|.trs)?$
+^Repository/test-suite.log$
+^Repository/tests/.dirstamp$
+
+# added by aHg on Wed Jan 13 13:27:00 2016
+syntax: glob
+Config/LWH.h
+PDF/done-all-links
+include/done-all-links
+lib/done-all-links
+src/done-all-links

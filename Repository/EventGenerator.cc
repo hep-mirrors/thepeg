@@ -824,11 +824,13 @@ void EventGenerator::persistentOutput(PersistentOStream & os) const {
      << ieve << weightSum << theDebugLevel << logNonDefault << printEvent
      << dumpPeriod << keepAllDumps << debugEvent
      << maxWarnings << maxErrors << theCurrentEventHandler
-     << theCurrentStepHandler << useStdout << theIntermediateOutput << theMiscStream.str();
+     << theCurrentStepHandler << useStdout << theIntermediateOutput << theMiscStream.str()
+     << Repository::listReadDirs();
 }
 
 void EventGenerator::persistentInput(PersistentIStream & is, int) {
   string dummy;
+  vector<string> readdirs;
   theGlobalLibraries = is.globalLibraries();
   is >> theDefaultObjects >> theLocalParticles >> theStandardModel
      >> theStrategy >> theRandom >> theEventHandler >> theAnalysisHandlers
@@ -838,12 +840,14 @@ void EventGenerator::persistentInput(PersistentIStream & is, int) {
      >> ieve >> weightSum >> theDebugLevel >> logNonDefault >> printEvent
      >> dumpPeriod >> keepAllDumps >> debugEvent
      >> maxWarnings >> maxErrors >> theCurrentEventHandler
-     >> theCurrentStepHandler >> useStdout >> theIntermediateOutput >> dummy;
+     >> theCurrentStepHandler >> useStdout >> theIntermediateOutput >> dummy
+     >> readdirs;
   theMiscStream.str(dummy);
   theMiscStream.seekp(0, std::ios::end);
   theObjects.clear();
   for ( ObjectMap::iterator it = theObjectMap.begin();
 	it != theObjectMap.end(); ++it ) theObjects.insert(it->second);
+  Repository::appendReadDir(readdirs);
 }
 
 void EventGenerator::setLocalParticles(PDPtr pd, int) {

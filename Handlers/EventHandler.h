@@ -231,12 +231,17 @@ public:
    */
   tPExtrPtr partonExtractor() const { return thePartonExtractor; }
 
+  /**
+   * Return a pointer (possibly null) to the assigned main
+   * CascadeHandler.
+   */
+  tCascHdlPtr cascadeHandler() const;
 
   /**
    * Return a pointer (possibly null) to the assigned main
    * CascadeHandler to be used as CKKW-reweighter.
    */
-  tCascHdlPtr CKKWHandler() const;
+  tCascHdlPtr CKKWHandler() const { return cascadeHandler(); }
 
   /**
    * Gget current event.

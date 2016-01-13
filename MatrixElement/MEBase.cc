@@ -139,7 +139,11 @@ void MEBase::clearKinematics() {
 
 MEBase::DiagramIndex MEBase::diagram(const DiagramVector & dv) const {
   Selector<DiagramIndex> sel = diagrams(dv);
-  return sel.empty()? DiagramIndex(rnd(dv.size())): sel.select(rnd());
+  if ( sel.size() > 1 )
+    return sel.select(rnd());
+  if ( sel.size() == 1 )
+    return sel.begin()->second;
+  return DiagramIndex(rnd(dv.size()));
 }
 
 const ColourLines & MEBase::

@@ -9,7 +9,7 @@
 #ifndef LWH_AITree_H
 #define LWH_AITree_H
 
-#ifndef LWH_USING_AIDA
+
 
 /** @cond DONT_DOCUMENT_STRIPPED_DOWN_AIDA_INTERFACES */
 
@@ -44,8 +44,8 @@ public:
 
 /** @endcond */
 
-#else
-#include "AIDA/ITree.h"
-#endif
+
+
+
 
 #endif /* LWH_AITree_H */

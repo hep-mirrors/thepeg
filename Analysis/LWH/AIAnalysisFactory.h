@@ -9,7 +9,7 @@
 #ifndef LWH_AIAnalysisFactory_H
 #define LWH_AIAnalysisFactory_H
 
-#ifndef LWH_USING_AIDA
+
 
 #include <string>
 
@@ -48,8 +48,8 @@ public:
 
 /** @endcond */
 
-#else
-#include "AIDA/IAnalysisFactory.h"
-#endif
+
+
+
 
 #endif /* LWH_AIAnalysisFactory_H */

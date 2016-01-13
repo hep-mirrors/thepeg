@@ -26,6 +26,8 @@ DOCFILES += LWHFactory.h
 
 INCLUDEFILES = $(DOCFILES) 
 
+LWHINCLUDE = -I$(top_builddir)/include/ThePEG/Analysis/LWH
+
 LWHFactory_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 LWHFactory_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 LWHFactory_la_CPPFLAGS = $(AM_CPPFLAGS) $(LWHINCLUDE)

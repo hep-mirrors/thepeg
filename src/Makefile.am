@@ -35,7 +35,7 @@ nodist_rpo_DATA = ThePEGDefaults.rpo
 
 CLEANFILES = SimpleLEP.log SimpleLEP.out SimpleLEP.run SimpleLEP.tex \
              MultiLEP.log MultiLEP.out MultiLEP.run MultiLEP.tex \
-             ThePEGDefaults.rpo done-all-links \
+             ThePEGDefaults.rpo .done-all-links \
              TestLHAPDF.log TestLHAPDF.out TestLHAPDF.run TestLHAPDF.tex \
              .runThePEG.timer.TestLHAPDF.run SimpleLEP.dump MultiLEP.dump 
 
@@ -50,19 +50,19 @@ valgrind:
 INPUTFILES = ThePEGDefaults.in ThePEGParticles.in \
              SimpleLEP.in SimpleLEP.mod MultiLEP.in TestLHAPDF.in
 
-done-all-links:
+.done-all-links:
 @EMPTY@ifdef SHOWCOMMAND
 	for file in $(INPUTFILES); do \
 	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
-	echo "stamp" > done-all-links
+	echo "stamp" > .done-all-links
 @EMPTY@else
 	@echo "sym-linking input files files..."
 	@for file in $(INPUTFILES); do \
 	  if test ! -f $$file; then $(LN_S) $(srcdir)/$$file $$file; fi; done
-	@echo "stamp" > done-all-links
+	@echo "stamp" > .done-all-links
 @EMPTY@endif
 
-ThePEGDefaults.rpo: done-all-links setupThePEG ThePEGDefaults.in ThePEGParticles.in
+ThePEGDefaults.rpo: .done-all-links setupThePEG ThePEGDefaults.in ThePEGParticles.in
 	./setupThePEG --init --exitonerror -L../lib -r ThePEGDefaults.rpo ThePEGDefaults.in
 	cd ../lib; rm -f ThePEGDefaults.rpo; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 
@@ -83,20 +83,20 @@ if USELHAPDF
 	LHAPATH=$(srcdir)/testpdfs time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
 endif
 
-SimpleLEP.run: done-all-links setupThePEG ThePEGDefaults.rpo SimpleLEP.in
+SimpleLEP.run: .done-all-links setupThePEG ThePEGDefaults.rpo SimpleLEP.in
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo SimpleLEP.in
 
 SimpleLEP.out: runThePEG SimpleLEP.run
 	time ./runThePEG -d 0 SimpleLEP.run
 
-MultiLEP.run: done-all-links setupThePEG ThePEGDefaults.rpo MultiLEP.in
+MultiLEP.run: .done-all-links setupThePEG ThePEGDefaults.rpo MultiLEP.in
 	./setupThePEG --exitonerror -r ThePEGDefaults.rpo MultiLEP.in
 
 MultiLEP.out: runThePEG MultiLEP.run
 	time ./runThePEG -d 0 MultiLEP.run
 
 if USELHAPDF
-TestLHAPDF.run: done-all-links setupThePEG ThePEGDefaults.rpo TestLHAPDF.in TestLHAPDF.la
+TestLHAPDF.run: .done-all-links setupThePEG ThePEGDefaults.rpo TestLHAPDF.in TestLHAPDF.la
 	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 
 TestLHAPDF.out: runThePEG TestLHAPDF.run
@@ -145,7 +145,7 @@ $(DESTDIR)$(bindir)/runThePEG -x $(DESTDIR)$(pkglibdir)/TestLHAPDF.so TestLHAPDF
 endif
 	rm -rf _test_thepeg_installation_
 
-%.run: %.in done-all-links ThePEGDefaults.rpo
+%.run: %.in .done-all-links ThePEGDefaults.rpo
 	./setupThePEG --exitonerror -L .libs -r ../lib/ThePEGDefaults.rpo $<
 
 %.out: %.run

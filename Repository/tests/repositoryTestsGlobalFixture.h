@@ -16,17 +16,18 @@
 #include "ThePEG/Config/Unitsystem.h"
 
 struct FixGlobal1 {
-  FixGlobal1() {
+  ThePEG::StandardRandom srng;
+  ThePEG::UseRandom urng;
+
+  FixGlobal1() : srng(), urng(&srng) {
     BOOST_TEST_MESSAGE( "setup global fixture for repositoryTest" ); 
-    
-    // Initialize randomNumberGenerator
-    ThePEG::StandardRandom* randomNumberStandardGenerator = new ThePEG::StandardRandom();
-    new ThePEG::UseRandom(randomNumberStandardGenerator);
   }
   
-  ~FixGlobal1()  { BOOST_TEST_MESSAGE( "teardown global fixture for repositoryTest" ); }
+  ~FixGlobal1() { 
+  	BOOST_TEST_MESSAGE( "teardown global fixture for repositoryTest" ); 
+  }
 };
 
-BOOST_GLOBAL_FIXTURE(FixGlobal1)
+BOOST_GLOBAL_FIXTURE(FixGlobal1);
 
-#endif /* ThePEG_Repository_Tests_GlobalFixture_H */
+#endif

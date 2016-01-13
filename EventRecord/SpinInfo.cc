@@ -175,5 +175,8 @@ void SpinInfo::redecay() const {
     }
     parent->redecay();
   }
-  _rhomatrix = productionVertex()->getRhoMatrix(_prodloc,true);
+  if(timelike())
+    _rhomatrix = productionVertex()->getRhoMatrix(_prodloc,true);
+  else
+    _Dmatrix   = productionVertex()->getDMatrix(_prodloc);
 }
