@@ -107,7 +107,7 @@ void StandardModelBase::doinit() {
   // calculate W/Z widths if needed
   if(theBosonWidthOption!=0) {
     //@TODO: Do we want theGF here?  
-    GF = Constants::pi*alpha/sqrt(2.)/sqr(mw)/sw2;           
+    InvEnergy2 GF = Constants::pi*alpha/sqrt(2.)/sqr(mw)/sw2;           
     double aSpi = theBosonWidthOption > 1 ? .1184/Constants::pi : 0.;
     double C = 1.+aSpi + sqr(aSpi)*(1.409-12.77*aSpi-80.0*sqr(aSpi));
     Energy widthW = GF*pow<3,1>(mw)/(6.*sqrt(2.)*Constants::pi)*
