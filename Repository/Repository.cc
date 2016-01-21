@@ -1096,7 +1096,7 @@ string Repository::version() {
 string Repository::banner() {
   string line = ">>>> Toolkit for HEP Event Generation - "
     + Repository::version() + " ";
-  line += string(max(0,78 - line.size()), '<');
+  line += string(max(0,78 - int(line.size())), '<');
   return string(78, '>') + "\n" + line + "\n" + string(78, '<') + "\n";
 }
 
