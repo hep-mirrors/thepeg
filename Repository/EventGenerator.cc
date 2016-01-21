@@ -277,7 +277,13 @@ void EventGenerator::doinitrun() {
   // Then call the init method for all objects. Start with the
   // standard model and the strategy.
   standardModel()->initrun();
-  if ( strategy() ) strategy()->initrun();
+  if ( strategy() ) { 
+    strategy()->initrun();
+    if ( ! strategy()->versionstring().empty() ) {
+      out() << ">> " << strategy()->versionstring() << '\n' << endl;
+      log() << ">> " << strategy()->versionstring() << '\n' << endl;
+    }
+  }
   // initialize particles first
   for(ParticleMap::const_iterator pit = particles().begin();
       pit != particles().end(); ++pit) {
