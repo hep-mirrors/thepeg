@@ -49,6 +49,8 @@ void StandardModelBase::doinit() {
   Energy mw    = Wplus->mass(), mz    = Z0->mass();
   double sw2   = sin2ThetaW();
   double alpha = theAlphaEMMZ;
+  InvEnergy2 GF = theGF;
+
   // recalculate if needed
   if(theElectroWeakScheme==1) {
     sw2   = 1.-sqr(mw/mz);
@@ -56,6 +58,7 @@ void StandardModelBase::doinit() {
   }
   else if(theElectroWeakScheme==2) {
     sw2   = 1.-sqr(mw/mz);
+    GF = Constants::pi*alpha/sqrt(2.)/sqr(mw)/sw2;
   }
   else if(theElectroWeakScheme==3) {
     mw = sqrt(4.*Constants::pi*alpha/4./sqrt(2.)/fermiConstant()/sw2);
@@ -67,9 +70,11 @@ void StandardModelBase::doinit() {
   }
   else  if(theElectroWeakScheme==5) {
     mw = mz*sqrt(1.-sw2);
+    GF = Constants::pi*alpha/sqrt(2.)/sqr(mw)/sw2;
   }
   else  if(theElectroWeakScheme==7) {
-    mw = mz*sqrt(1.-sw2);
+    mw =  sqrt(sqr(mz)/2.+sqrt(sqr(mz)*sqr(mz)/4.
+          -Constants::pi*alpha*sqr(mz)/sqrt(2.)/fermiConstant()));
     sw2 = 1.-sqr(mw/mz);
   }
   // reset if needed
@@ -77,6 +82,7 @@ void StandardModelBase::doinit() {
     recalculateEW = true;
     theSin2ThetaW = sw2;
     theAlphaEMMZ  = alpha;
+    theGF=GF;
     ostringstream os;
     os << setprecision(12) << mw/GeV;
     generator()->preinitInterface(Wplus, "NominalMass", "set", os .str());
@@ -100,7 +106,8 @@ void StandardModelBase::doinit() {
   theCKM2Matrix = theCKM->getMatrix(families());
   // calculate W/Z widths if needed
   if(theBosonWidthOption!=0) {
-    InvEnergy2 GF = 4.*Constants::pi*alpha/4./sqrt(2.)/sqr(mw)/sw2;
+    //@TODO: Do we want theGF here?  
+    InvEnergy2 GF = Constants::pi*alpha/sqrt(2.)/sqr(mw)/sw2;           
     double aSpi = theBosonWidthOption > 1 ? .1184/Constants::pi : 0.;
     double C = 1.+aSpi + sqr(aSpi)*(1.409-12.77*aSpi-80.0*sqr(aSpi));
     Energy widthW = GF*pow<3,1>(mw)/(6.*sqrt(2.)*Constants::pi)*

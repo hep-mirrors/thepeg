@@ -11,6 +11,7 @@
 // This is the declaration of the ThePEGStrategy class.
 
 #include "ThePEG/Repository/Strategy.h"
+#include <string>
 
 namespace ThePEG {
 
@@ -30,6 +31,11 @@ public:
    * Standard Init function used to initialize the interface.
    */
   static void Init();
+
+  /**
+   * Version string
+   */
+  virtual const std::string versionstring() const;
 
 protected:
 

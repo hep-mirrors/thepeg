@@ -20,12 +20,24 @@ libThePEGRepo_la_CPPFLAGS = $(AM_CPPFLAGS) \
 -DTHEPEG_PKGLIBDIR="\"$(pkglibdir)\"" \
 -DTHEPEG_PKGDATADIR="\"$(pkgdatadir)\""
 
+nodist_libThePEGRepo_la_SOURCES = versionstamp.inc
+BUILT_SOURCES = versionstamp.inc
+CLEANFILES = versionstamp.inc
+
+AUTOMAKE_OPTIONS = -Wno-portability
+
+VERSIONSTAMP := $(shell hg -R $(top_srcdir) parents --template '"ThePEG {node|short} ({branch})"' 2> /dev/null || echo \"$(PACKAGE_STRING)\" || true )
+
+.PHONY: update_versionstamp
+versionstamp.inc: update_versionstamp
+	@[ -f $@ ] || touch $@
+	@echo '$(VERSIONSTAMP)' | cmp -s $@ - || echo '$(VERSIONSTAMP)' > $@
+
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-ThePEGStrategy_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+ThePEGStrategy_la_LDFLAGS = $(AM_LDFLAGS) -module -version-info 20:1:0
 ThePEGStrategy_la_SOURCES = ThePEGStrategy.cc  ThePEGStrategy.h
-
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

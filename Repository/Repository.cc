@@ -1083,14 +1083,20 @@ Repository::~Repository() {
 
 int Repository::ninstances = 0;
 
+namespace {
+static string version_ =
+#include "versionstamp.inc"
+"";
+}
+
 string Repository::version() {
-  return PACKAGE_VERSION;
+  return ::version_;
 }
 
 string Repository::banner() {
-  string line = ">>>>>>>>> ThePEG - Toolkit for HEP Event Generation - version "
+  string line = ">>>> Toolkit for HEP Event Generation - "
     + Repository::version() + " ";
-  line += string(78 - line.size(), '<');
+  line += string(max(0,78 - line.size()), '<');
   return string(78, '>') + "\n" + line + "\n" + string(78, '<') + "\n";
 }
 

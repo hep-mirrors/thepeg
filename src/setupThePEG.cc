@@ -17,7 +17,6 @@
 #include "ThePEG/Utilities/Debug.h"
 #include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Utilities/DynamicLoader.h"
-#include <config.h>
 
 int main(int argc, char * argv[]) {
   using namespace ThePEG;
@@ -87,7 +86,7 @@ int main(int argc, char * argv[]) {
       return 3;
     }
     else if ( arg == "-v" || arg == "--version" ) {
-      cout << PACKAGE_VERSION << endl;
+      cout << Repository::version() << endl;
       return 0;
     }
     else

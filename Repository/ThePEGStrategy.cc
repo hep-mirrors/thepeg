@@ -14,8 +14,13 @@
 #include "ThePEGStrategy.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
 #include "ThePEG/PDT/ParticleData.h"
+#include "Repository.h"
 
 using namespace ThePEG;
+
+const std::string ThePEGStrategy::versionstring() const {
+	return Repository::version();
+}
 
 IBPtr ThePEGStrategy::clone() const {
   return new_ptr(*this);

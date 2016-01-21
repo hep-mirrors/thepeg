@@ -119,7 +119,20 @@ void NLORivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int
  
 
   CurrentGenerator::Redirect stdout(cout);
-  if ( _rivet ) _rivet->analyze(*hepmc);
+  if(_rivet){
+#if ThePEG_RIVET_VERSION == 1
+    _rivet->analyze(*hepmc);
+#elif ThePEG_RIVET_VERSION > 1
+    try {
+      _rivet->analyze(*hepmc);
+    } catch (const YODA::Exception & e) {
+      Throw<Exception>() << "Warning: Rivet/Yoda got the exception: "<< e.what()<<"\n"
+                         << Exception::warning;
+    }
+#else
+#error "Unknown ThePEG_RIVET_VERSION"
+#endif
+  }
   // delete hepmc event
   delete hepmc;
   
@@ -130,7 +143,20 @@ void NLORivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int
 
       hepmc = makeEvent(event,*s,_nevent,eUnit,lUnit,xsec,xsecErr);
 
-      if ( _rivet ) _rivet->analyze(*hepmc);
+      if ( _rivet ){
+#if ThePEG_RIVET_VERSION == 1
+        _rivet->analyze(*hepmc);
+#elif ThePEG_RIVET_VERSION > 1
+        try {
+          _rivet->analyze(*hepmc);
+        } catch (const YODA::Exception & e) {
+          Throw<Exception>() << "Warning: Rivet/Yoda got the exception: "<< e.what()<<"\n"
+                             << Exception::warning;
+        }
+#else
+#error "Unknown ThePEG_RIVET_VERSION"
+#endif
+      }
       // delete hepmc event
       delete hepmc;
       
