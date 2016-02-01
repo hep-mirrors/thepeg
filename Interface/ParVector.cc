@@ -39,6 +39,9 @@ exec(InterfacedBase & i, string action, string arguments) const
   else if ( action == "erase" ) {
     erase(i, place);
   }
+  else if ( action == "clear" ) {
+    clear(i);
+  }
   else if ( action == "min" ) {
     return minimum(i, place);
   }
