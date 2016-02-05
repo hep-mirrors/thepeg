@@ -131,6 +131,12 @@ IBPtr ParticleData::fullclone() const {
   return pd;
 }
 
+Energy ParticleData::mass(Energy mi) {
+  theMass = mi;
+  if ( synchronized() && CC() ) CC()->theMass = theMass;
+  return theMass;
+}
+
 Energy ParticleData::width(Energy wi) {
   theWidth = wi;
   if ( synchronized() && CC() ) CC()->theWidth = theWidth;
@@ -372,9 +378,7 @@ produceParticle(Energy plus, Energy minus, Energy px, Energy py) const {
 }
 
 void ParticleData::setMass(Energy mi) {
-  theMass = mi;
-  ParticleData * apd = CC().operator->();
-  if ( synchronized() && apd ) apd->theMass = theMass;
+  mass(mi);
 }
 
 void ParticleData::setHardProcessMass(Energy mi) {
