@@ -178,6 +178,11 @@ public:
   //@}
 
   /**
+   * Set the nominal mass
+   */
+  Energy mass(Energy);
+
+  /**
    * Return the nominal mass.
    */
   Energy mass() const { return theMass; }

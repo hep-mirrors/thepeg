@@ -147,7 +147,7 @@ public:
    * Return the bounds for a rapidity-type cut
    */
   pair<double,double> bounds(const CutTypes::Rapidity&) const {
-    return make_pair(-Constants::MaxDouble,Constants::MaxDouble);
+    return make_pair(-Constants::MaxRapidity,Constants::MaxRapidity);
   }
 
   /**

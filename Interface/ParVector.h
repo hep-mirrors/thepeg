@@ -152,6 +152,12 @@ public:
     const = 0;
 
   /**
+   * Clear the container of pointers of \a ib.
+   */
+  virtual void clear(InterfacedBase & ib)
+    const = 0;
+
+  /**
    * Return the values of a container of member variables of \a ib.
    */
   virtual StringVector get(const InterfacedBase & ib) const
@@ -891,6 +897,12 @@ public:
    * member variables of \a ib.
    */
   virtual void erase(InterfacedBase & ib, int i)
+    const;
+
+  /**
+   * Clear the container of pointers of \a ib.
+   */
+  virtual void clear(InterfacedBase & ib)
     const;
 
   /**

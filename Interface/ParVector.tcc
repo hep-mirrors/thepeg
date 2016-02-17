@@ -235,6 +235,17 @@ erase(InterfacedBase & i, int place) const {
   if ( !InterfaceBase::dependencySafe() && oldVector != tget(i) ) i.touch();
 }
 
+template <class T, class R>
+void ParVector<T,R>::clear(InterfacedBase & i) const
+  {
+  if ( ParVectorBase::readOnly() ) throw InterExReadOnly(*this, i);
+  if ( ParVectorBase::size() > 0 ) throw ParVExFixed(*this, i);
+  T * t = dynamic_cast<T *>(&i);
+  if ( !t ) throw InterExClass(*this, i);
+  (t->*theMember).clear();
+  if (  !InterfaceBase::dependencySafe() ) i.touch();
+}
+
 template <typename T, typename Type>
 typename ParVector<T,Type>::TypeVector ParVector<T,Type>::
 tget(const InterfacedBase & i) const {
