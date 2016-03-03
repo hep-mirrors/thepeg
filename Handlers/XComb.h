@@ -336,6 +336,21 @@ public:
   void lastCentralScale(Energy2 Q2) { theLastCentralScale = Q2; }
 
   /**
+   * Get the last chosen shower scale.
+   */
+  Energy2 lastShowerScale() const { 
+    return 
+      theLastShowerScale != ZERO ?
+      theLastShowerScale :
+      lastCentralScale(); 
+  }
+
+  /**
+   * Set the last chosen showr scale.
+   */
+  void lastShowerScale(Energy2 Q2) { theLastShowerScale = Q2; }
+
+  /**
    * Get the \f$\alpha_S\f$ used in the hard scattering. Is negative
    * if no value has been set.
    */
@@ -542,6 +557,11 @@ private:
    * The last chosen central scale of the hard scattering.
    */
   Energy2 theLastCentralScale;
+
+  /**
+   * The last chosen shower scale.
+   */
+  Energy2 theLastShowerScale;
 
   /**
    * The \f$\alpha_S\f$ used in the hard scattering.
