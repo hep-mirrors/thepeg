@@ -226,7 +226,6 @@ HepMCConverter<HepMCEventT,Traits>::createParticle(tcPPtr p) const {
 	}
       }
       if ( !child ) {
-	status = 2;
 	if(p->data().widthCut()!=ZERO) {
 	  if(p->mass() <= p->data().massMax() &&
 	     p->mass() >= p->data().massMin() )
