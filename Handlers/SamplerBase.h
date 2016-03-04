@@ -70,6 +70,12 @@ public:
   virtual void initialize() = 0;
 
   /**
+   * An external hook to prepare the sampler for generating events, e.g. by
+   * combining grid files from parallel integration runs.
+   */
+  virtual void prepare() {}
+
+  /**
    * Generarate a new phase space point and return a weight associated
    * with it. This weight should preferably be 1.
    */
