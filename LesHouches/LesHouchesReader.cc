@@ -372,23 +372,28 @@ long LesHouchesReader::scan() {
     if ( abs(heprup.IDWTUP) != 1 ) {
       // Try to fix things if abs(heprup.IDWTUP) != 1.
       double sumxsec = 0.0;
-      for ( int id = 0; id < heprup.NPRUP; ++id )  {
-        //set the cross section directly from the event weights read
-        heprup.XSECUP[id] = sumlprup[id]/nscanned[id];
-	heprup.XERRUP[id] = (sumsqlprup[id]/nscanned[id] - sqr(sumlprup[id]/nscanned[id])) / nscanned[id];
-	if(heprup.XERRUP[id] < 0.) {
-	  if( heprup.XERRUP[id]/(sumsqlprup[id]/nscanned[id])>-1e-10)
-	    heprup.XERRUP[id] = 0.;
-	  else {
-	    Throw<LesHouchesInitError>()
-	      << "Negative error when scanning events in LesHouschesReader '" << name()
-	      << Exception::warning;
-	    heprup.XERRUP[id] = 0.;
+      if(abs(heprup.IDWTUP)==3) {
+	for ( int id = 0; id < heprup.NPRUP; ++id ) sumxsec += heprup.XSECUP[id];
+      }
+      else {
+	for ( int id = 0; id < heprup.NPRUP; ++id )  {
+	  //set the cross section directly from the event weights read
+	  heprup.XSECUP[id] = sumlprup[id]/nscanned[id];
+	  heprup.XERRUP[id] = (sumsqlprup[id]/nscanned[id] - sqr(sumlprup[id]/nscanned[id])) / nscanned[id];
+	  if(heprup.XERRUP[id] < 0.) {
+	    if( heprup.XERRUP[id]/(sumsqlprup[id]/nscanned[id])>-1e-10)
+	      heprup.XERRUP[id] = 0.;
+	    else {
+	      Throw<LesHouchesInitError>()
+		<< "Negative error when scanning events in LesHouschesReader '" << name()
+		<< Exception::warning;
+	      heprup.XERRUP[id] = 0.;
+	    }
 	  }
+	  heprup.XERRUP[id] = sqrt( heprup.XERRUP[id] );
+	  heprup.XMAXUP[id] = newmax[id];
+	  sumxsec += heprup.XSECUP[id];
 	}
-        heprup.XERRUP[id] = sqrt( heprup.XERRUP[id] );
-        heprup.XMAXUP[id] = newmax[id];
-        sumxsec += heprup.XSECUP[id];
       }
       weightScale = picobarn*neve*sumxsec/oldsum;
     }
