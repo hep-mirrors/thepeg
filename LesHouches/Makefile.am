@@ -19,7 +19,7 @@ MadGraphReader_la_SOURCES = MadGraphReader.cc MadGraphReader.h \
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed
-LesHouches_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+LesHouches_la_LDFLAGS = $(AM_LDFLAGS) -module -version-info 20:1:0
 LesHouches_la_SOURCES = $(mySOURCES) $(INCLUDEFILES)
 
 include $(top_srcdir)/Config/Makefile.aminclude
