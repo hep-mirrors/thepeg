@@ -8,6 +8,11 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-2.0.2 release: 2016-04-27
+
+** LesHouches reader
+   Fixed cross-section issue for LH event files using weight scheme 3
+
 * ThePEG-2.0.1 release: 2016-02-17
 
 ** Electroweak scheme fixes
