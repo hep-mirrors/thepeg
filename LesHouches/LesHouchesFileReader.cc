@@ -33,6 +33,8 @@ LesHouchesFileReader(const LesHouchesFileReader & x)
     initAttributes(x.initAttributes), eventComments(x.eventComments),
     eventAttributes(x.eventAttributes),
     theFileName(x.theFileName), theQNumbers(x.theQNumbers),
+    theIncludeFxFxTags(x.theIncludeFxFxTags),
+    theIncludeCentral(x.theIncludeCentral),
     theDecayer(x.theDecayer) {}
 
 LesHouchesFileReader::~LesHouchesFileReader() {}
@@ -620,7 +622,7 @@ void LesHouchesFileReader::open() {
     }
   }
   string central = "central";
-  optionalWeightsNames.push_back(central);
+  if (theIncludeCentral) optionalWeightsNames.push_back(central);
 
   //  cout << "reading init finished" << endl;
   if ( !cfile ) {
@@ -671,7 +673,8 @@ bool LesHouchesFileReader::doReadEvent() {
    * becomes part of the optionalWeights, labelled -999 
    * for future reference
    */
-  optionalWeights[npstrings.c_str()] = -999; 
+
+  if(theIncludeFxFxTags) optionalWeights[npstrings.c_str()] = -999;
 
   if ( !cfile.readline()  ) return false;
 
@@ -798,16 +801,14 @@ bool LesHouchesFileReader::doReadEvent() {
 	erase_substr(info, str_newline);
 	//set the optional weights
 	optionalWeights[info] = it->second;
-	/*cout << "info = " << info << endl;
-	  std::cout << it->first << "  => " << it->second << '\n';*/
-	}
+      }
     }
   }
   /* additionally, we set the "central" scale
    * this is actually the default event weight 
    */
   string central = "central";
-  optionalWeights[central] = hepeup.XWGTUP;
+  if (theIncludeCentral) optionalWeights[central] = hepeup.XWGTUP;
   
   if ( !cfile ) return false;
   return true;
@@ -821,13 +822,13 @@ void LesHouchesFileReader::close() {
 void LesHouchesFileReader::persistentOutput(PersistentOStream & os) const {
   os << neve << LHFVersion << outsideBlock << headerBlock << initComments
      << initAttributes << eventComments << eventAttributes << theFileName
-     << theQNumbers << theDecayer ;
+     << theQNumbers << theIncludeFxFxTags << theIncludeCentral << theDecayer ;
 }
 
 void LesHouchesFileReader::persistentInput(PersistentIStream & is, int) {
   is >> neve >> LHFVersion >> outsideBlock >> headerBlock >> initComments
      >> initAttributes >> eventComments >> eventAttributes >> theFileName
-     >> theQNumbers >> theDecayer;
+     >> theQNumbers >> theIncludeFxFxTags >> theIncludeCentral >> theDecayer;
   ieve = 0;
 }
 
@@ -871,6 +872,38 @@ void LesHouchesFileReader::Init() {
      "No",
      "Don't use QNUMBERS",
      false);
+
+    static Switch<LesHouchesFileReader,bool> interfaceIncludeFxFxTags
+    ("IncludeFxFxTags",
+     "Include FxFx tags",
+     &LesHouchesFileReader::theIncludeFxFxTags, false, true, false);
+  static SwitchOption interfaceIncludeFxFxTagsYes
+    (interfaceIncludeFxFxTags,
+     "Yes",
+     "Use the FxFx tags",
+     true);
+  static SwitchOption interfaceIncludeFxFxTagsNo
+    (interfaceIncludeFxFxTags,
+     "No",
+     "Don't use the FxFx tags",
+     false);
+
+  static Switch<LesHouchesFileReader,bool> interfaceIncludeCentral
+    ("IncludeCentral",
+     "Include definition of central weight",
+     &LesHouchesFileReader::theIncludeCentral, false, true, false);
+  static SwitchOption interfaceIncludeCentralYes
+    (interfaceIncludeCentral,
+     "Yes",
+     "include definition of central weight",
+     true);
+  static SwitchOption interfaceIncludeCentralNo
+    (interfaceIncludeCentral,
+     "No",
+     "Don't include definition of central weight",
+     false);
+
+
 
   static Reference<LesHouchesFileReader,Decayer> interfaceDecayer
     ("Decayer",
