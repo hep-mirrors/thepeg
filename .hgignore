@@ -34,6 +34,10 @@ Makefile\.in$
 ^Doc/MakeDocs.in$
 ^Doc/refman.conf$
 ^Doc/refman.h$
+^Doc/refman-html$
+^Doc/AllInterfaces.h$
+^Doc/MoreInterfaces.h$
+^Doc/ThePEG-refman.tag$
 ^java/.*\.(java|class)$
 ^java/ThePEG$
 ^java/ThePEG.jar$
