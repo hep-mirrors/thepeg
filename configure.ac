@@ -111,10 +111,10 @@ AM_CPPFLAGS="-I\$(top_builddir)/include \$(GSLINCLUDE)"
 
 case "${ax_cv_cxx_compiler_vendor}" in
      gnu)
-    AM_CXXFLAGS="-ansi -pedantic -Wall -W"
+    AM_CXXFLAGS="-pedantic -Wall -W"
     ;;
      clang)
-    AM_CXXFLAGS="-ansi -pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
+    AM_CXXFLAGS="-pedantic -Wall -Wno-overloaded-virtual -Wno-unused-function"
 dnl  -Wno-unneeded-internal-declaration
     ;;
      intel)
