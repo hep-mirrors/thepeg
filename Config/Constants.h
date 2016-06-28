@@ -64,6 +64,21 @@ const double epsilon = DBL_EPSILON;
 
 /** The Euler gamma */
 const double EulerGamma = 0.5772156649015329;
+
+/** \f$\zeta(2)\f$. */
+const double zeta2 = pi*pi/6.;
+
+/** \f$\zeta(3)\f$. */
+const double zeta3 = 1.2020569031595943;
+
+/** \f$\zeta(4)\f$. */
+const double zeta4 = 0.4*zeta2*zeta2;
+
+/** \f$\zeta(5)\f$. */
+const double zeta5 = 1.0369277551433699;
+
+/** \f$\zeta(6)\f$. */
+const double zeta6 = 4.*zeta2*zeta4/7.;
 }
 
 }
