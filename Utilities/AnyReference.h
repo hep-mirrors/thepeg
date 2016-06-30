@@ -161,7 +161,7 @@ namespace ThePEG {
      * Reset to not keep track of any reference.
      */
     void reset() {
-      if ( holder ) delete holder; holder = 0;
+      if ( holder ) { delete holder; holder = 0; }
     }
 
   public:

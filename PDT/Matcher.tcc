@@ -15,7 +15,7 @@ namespace ThePEG {
 
 template <class T>
 Matcher<T>::~Matcher() {
-  if ( !initMatcher.check() ) throw int();
+  assert ( initMatcher.check() );
 } 
 
 template <class T>

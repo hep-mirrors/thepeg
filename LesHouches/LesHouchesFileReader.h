@@ -238,6 +238,16 @@ private:
   bool theQNumbers;
 
   /**
+   * Include/Read FxFx tags
+   */
+  bool theIncludeFxFxTags;
+
+  /**
+   * Include central weight (for backup use)
+   */
+  bool theIncludeCentral;
+
+  /**
    *  Decayer for any decay modes read from the file
    */
   DecayerPtr theDecayer;

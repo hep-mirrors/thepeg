@@ -289,6 +289,14 @@ bool StandardXComb::willPassCuts() {
     }
   }
 
+  for ( vector<LorentzMomentum>::iterator p = outmomenta.begin();
+	p != outmomenta.end(); ++p )
+    if ( !std::isfinite(double(p->x()/GeV)) || !std::isfinite(double(p->y()/GeV)) ||
+	 !std::isfinite(double(p->z()/GeV)) || !std::isfinite(double(p->t()/GeV)) )
+      throw Exception()
+	<< "Event momenta contain an invalid entry: " << (*p)/GeV
+	<< Exception::eventerror;
+
   if ( !cuts()->passCuts(outdata,outmomenta,mePartonData()[0],mePartonData()[1]) ) {
     theCutWeight = cuts()->cutWeight();
     passedCuts = false;
