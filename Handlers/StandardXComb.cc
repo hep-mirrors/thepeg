@@ -295,7 +295,7 @@ bool StandardXComb::willPassCuts() {
 	 !std::isfinite(double(p->z()/GeV)) || !std::isfinite(double(p->t()/GeV)) )
       throw Exception()
 	<< "Event momenta contain an invalid entry: " << (*p)/GeV
-	<< Exception::eventerror;
+	<< Exception::runerror;
 
   if ( !cuts()->passCuts(outdata,outmomenta,mePartonData()[0],mePartonData()[1]) ) {
     theCutWeight = cuts()->cutWeight();
