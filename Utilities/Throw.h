@@ -82,7 +82,7 @@ struct Throw {
   /**
    * The destructor will throw the exception if it has not been handled.
    */
-  ~Throw() {
+  ~Throw() throw (Ex) {
     if ( !handled ) throw ex;
   }
 
