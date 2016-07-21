@@ -114,9 +114,7 @@ namespace ThePEG {
      * The destructor.
      */
     ~AnyReference() {
-      if ( holder ) {
-	delete holder; holder = 0;
-      }
+    	delete holder; holder = 0;
     }
 
   public:
@@ -161,7 +159,7 @@ namespace ThePEG {
      * Reset to not keep track of any reference.
      */
     void reset() {
-      if ( holder ) { delete holder; holder = 0; }
+      delete holder; holder = 0;
     }
 
   public:
