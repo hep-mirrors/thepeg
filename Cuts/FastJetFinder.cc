@@ -55,6 +55,34 @@ IBPtr FastJetFinder::fullclone() const {
   return new_ptr(*this);
 }
 
+void FastJetFinder::describe() const {
+  generator()->log()
+    << "'" << name() << "' clustering jets from constituents matched by '"
+    << unresolvedMatcher()->name() << "'\n"
+    << "into " << (theMode == inclusive ? "inclusive" : "exclusive")
+    << " jets recombining with the "
+    << (theRecombination == recoPt ? "pt" : "E")
+    << " scheme\n";
+  generator()->log() << "The measure used is ";
+  switch(theVariant) {
+  case 1: generator()->log() << "kt"; break;
+  case 2: generator()->log() << "CA"; break;
+  case 3: generator()->log() << "antiKt"; break;
+  case 4: generator()->log() << "sphericalKt"; break;
+  case 5: generator()->log() << "sphericalCA"; break;
+  case 6: generator()->log() << "sphericalAntiKt"; break;
+  default: assert(false);
+  }
+  generator()->log() << "\n";
+  generator()->log() << "The cone radius is R = "
+		     << theConeRadius << "\n";
+  if ( theMode == exclusive ) {
+    generator()->log() << "The exclusive resolution scale in GeV is D = "
+		       << sqrt(theDCut/GeV2) << "\n";
+  }
+  generator()->log() << flush;
+}
+
 bool FastJetFinder::cluster(tcPDVector & ptype, vector<LorentzMomentum> & p,
 			  tcCutsPtr, tcPDPtr, tcPDPtr) const {
   if ( ptype.size() <= minOutgoing() ){
