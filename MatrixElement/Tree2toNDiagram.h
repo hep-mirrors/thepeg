@@ -168,6 +168,13 @@ public:
   int nSpace() const { return theNSpace; }
 
   /**
+   * Extend this diagram to accomodate the given number of space-like lines
+   */
+  void resize(int nSpace) {
+    theNSpace = max(nSpace,theNSpace);
+  }
+
+  /**
    * Return the number of outgoing partons.
    */
   int nOutgoing() const { return theNOutgoing; }
