@@ -38,7 +38,78 @@ void BlobDiagram::addTimelike(tcPDPtr pd, size_type orig) {
   theParents.push_back(orig);
 }
 
+
 tPVector BlobDiagram::
+construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const {
+  tPVector out;
+  vector<Lorentz5Momentum> pout(xc.meMomenta().begin() + 2,
+				xc.meMomenta().end());
+  if ( xc.needsReshuffling() )
+    xc.reshuffle(pout);
+  tPPair in = xc.lastPartons();
+  if ( xc.mirror() ) swap(in.first, in.second);
+
+  tPVector ret;
+  if ( in.first->dataPtr() != allPartons()[0] ||
+       in.second->dataPtr() != allPartons()[nSpace() - 1] )
+    throw BlobDiagramError();
+
+  PVector slike;
+  slike.push_back(in.first);
+  for ( int i = 1; i < nSpace() - 1; ++i )
+    slike.push_back(allPartons()[i]->produceParticle());
+  slike.push_back(in.second);
+  ret = tPVector(slike.begin(), slike.end());
+  for ( size_type i = 1; i < slike.size() - 1; ++i ) {
+    slike[i-1]->addChild(slike[i]);
+    sp->addIntermediate(slike[xc.mirror()? i: slike.size() - 1 - i], false);
+  }
+  int io = pout.size();
+  
+  PVector tlike(allPartons().size() - nSpace());
+  ParticleSet done;
+  for ( int i = allPartons().size() - 1; i >=  nSpace(); --i ) {
+    int it = i - nSpace();
+    //    pair<int,int> ch = children(i); //modified this to vector:
+    vector<int> ch = children(i);
+    bool iso = ch[0] < 0;
+    //    std::cout << "iso = " << iso << endl;
+    if ( iso ) {
+      tlike[it] = allPartons()[i]->produceParticle(pout[--io]);
+      done.insert(tlike[it]);
+    } else {
+      Lorentz5Momentum p = tlike[ch[0] - nSpace()]->momentum() +
+	tlike[ch[1] - nSpace()]->momentum();
+      tlike[it] = allPartons()[i]->produceParticle(p);
+    }
+    if ( parent(i) < nSpace() ) {
+      slike[parent(i)]->addChild(tlike[it]);
+      if ( parent(i) == nSpace() - 2 )
+	slike[parent(i) + 1]->addChild(tlike[it]);
+    }
+    if ( !iso ) {
+      tlike[it]->addChild(tlike[ch[0] - nSpace()]);
+      tlike[it]->addChild(tlike[ch[1] - nSpace()]);
+    }
+    if ( iso ) out.push_back(tlike[it]);
+    else sp->addIntermediate(tlike[it], false);
+  }
+  ret.insert(ret.end(), tlike.begin(), tlike.end());
+  for ( int i = 0, N = out.size(); i < N; ++i )
+    sp->addOutgoing(out[xc.mirror()? i: out.size() - i - 1], false);
+  for ( PVector::size_type i = 0; i < slike.size() - 2; ++i ) {
+    vector<int> ch = children(i);
+    slike[ch[0]]->set5Momentum(slike[i]->momentum() -
+				  tlike[ch[1] - nSpace()]->momentum());
+  }
+
+  cl.connect(ret);
+
+  return out;
+}
+
+// original code from Tree2toNDiagram
+/*tPVector BlobDiagram::
 construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const {
   tPVector out;
   vector<Lorentz5Momentum> pout(xc.meMomenta().begin() + 2,
@@ -103,11 +174,12 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
 
   return out;
 }
+*/
 
 tcPDVector BlobDiagram::outgoing() const {
   tcPDVector pdv;
   for ( size_type i = nSpace(); i < allPartons().size(); ++i )
-    if ( children(i).first < 0 ) pdv.push_back(allPartons()[i]);
+    if ( children(i)[0] < 0 ) pdv.push_back(allPartons()[i]);
   return pdv;
 }
 
@@ -116,7 +188,7 @@ tcPDVector BlobDiagram::external() const {
   pdv.push_back(allPartons()[0]);
   pdv.push_back(allPartons()[nSpace() - 1]);
   for ( size_type i = nSpace(); i < allPartons().size(); ++i )
-    if ( children(i).first < 0 ) pdv.push_back(allPartons()[i]);
+    if ( children(i)[0] < 0 ) pdv.push_back(allPartons()[i]);
   return pdv;
 }
 
@@ -124,7 +196,22 @@ tcPDPair BlobDiagram::incoming() const {
   return tcPDPair(allPartons()[0], allPartons()[nSpace() - 1]);
 }
 
-pair<int,int> BlobDiagram::children(int ii) const {
+
+vector<int> BlobDiagram::children(int ii) const {
+  vector<int> ret;
+  for ( size_type i = 0; i < theParents.size(); ++i ) {
+    if ( parent(i) == ii ) {
+      ret.push_back(i);
+      // if ( ret.first < 0 ) ret.first = i;
+      // else if ( ret.second < 0 ) ret.second = i;
+      //else throw BlobDiagramError();
+    }
+  }
+  return ret;
+}
+
+//Original function from Tree2toNDiagram
+/*pair<int,int> BlobDiagram::children(int ii) const {
   pair<int,int> ret = make_pair(-1, -1);
   for ( size_type i = 0; i < theParents.size(); ++i ) {
     if ( parent(i) == ii ) {
@@ -134,11 +221,25 @@ pair<int,int> BlobDiagram::children(int ii) const {
     }
   }
   return ret;
-}
+  }*/
 
 void BlobDiagram::check() {
   vector< pair<int,int> > children(allPartons().size(), make_pair(-1, -1));
+  theNOutgoing = allPartons().size()-2;
+
+  cPDVector parts(2);
+  parts[0] = incoming().first;
+  parts[1] = incoming().second;
+  tcPDVector out(outgoing());
+  parts.insert(parts.end(), out.begin(), out.end());
+  partons(2, parts, nextOrig + 1);
+}
+
+//original function
+/*void BlobDiagram::check() {
+  vector< pair<int,int> > children(allPartons().size(), make_pair(-1, -1));
   theNOutgoing = 0;
+  
   for ( size_type i = nSpace(); i < allPartons().size(); ++i ) {
     if ( children[parent(i)].first < 0 ) children[parent(i)].first = i;
     else if ( children[parent(i)].second < 0 ) children[parent(i)].second = i;
@@ -156,6 +257,7 @@ void BlobDiagram::check() {
   parts.insert(parts.end(), out.begin(), out.end());
   partons(2, parts, nextOrig + 1);
 }
+*/
 
 bool BlobDiagram::isSame (tcDiagPtr diag) const {
   Ptr<BlobDiagram>::tcptr cmp = 
@@ -184,18 +286,18 @@ bool BlobDiagram::equals(Ptr<BlobDiagram>::tcptr diag,
   if ( allPartons()[start] != diag->allPartons()[startCmp] )
     return false;
 
-  pair<int,int> ch = children(start);
-  pair<int,int> chCmp = diag->children(startCmp);
+  vector<int> ch = children(start);
+  vector<int> chCmp = diag->children(startCmp);
 
   bool match =
-    equals(diag,ch.first,chCmp.first) &&
-    equals(diag,ch.second,chCmp.second);
+    equals(diag,ch[0],chCmp[0]) &&
+    equals(diag,ch[1],chCmp[1]);
 
   // also try swapped legs on same vertex
   if ( !match && start > nSpace() - 1 )
     match = 
-      equals(diag,ch.first,chCmp.second) &&
-      equals(diag,ch.second,chCmp.first);
+      equals(diag,ch[0],chCmp[1]) &&
+      equals(diag,ch[1],chCmp[0]);
 
   return match;
     
@@ -211,22 +313,22 @@ bool BlobDiagram::equals(Ptr<BlobDiagram>::tcptr diag,
   if ( allPartons()[start] != diag->allPartons()[startCmp] )
     return false;
 
-  pair<int,int> ch = children(start);
-  pair<int,int> chCmp = diag->children(startCmp);
+  vector<int> ch = children(start);
+  vector<int> chCmp = diag->children(startCmp);
 
-  if ( ch.first < 0 && chCmp.first < 0 ) {
+  if ( ch[0] < 0 && chCmp[0] < 0 ) {
     remap[externalId(start)] = diag->externalId(startCmp);
   }
 
   bool match =
-    equals(diag,remap,ch.first,chCmp.first) &&
-    equals(diag,remap,ch.second,chCmp.second);
+    equals(diag,remap,ch[0],chCmp[0]) &&
+    equals(diag,remap,ch[1],chCmp[1]);
 
   // also try swapped legs on same vertex
   if ( !match && start > nSpace() - 1 )
     match = 
-      equals(diag,remap,ch.first,chCmp.second) &&
-      equals(diag,remap,ch.second,chCmp.first);
+      equals(diag,remap,ch[0],chCmp[1]) &&
+      equals(diag,remap,ch[1],chCmp[0]);
 
   return match;
 
@@ -241,7 +343,7 @@ int BlobDiagram::externalId(int id) const {
     return 1;
   int k = 1;
   for ( size_type i = nSpace(); i < allPartons().size(); ++i ) {
-    if ( children(i).first < 0 ) ++k;
+    if ( children(i)[0] < 0 ) ++k;
     if ( i == size_type(id) )
       break;
   }
@@ -256,7 +358,7 @@ int BlobDiagram::diagramId(int id) const {
   int k = 1;
   size_type i = nSpace();
   for ( ; i < allPartons().size(); ++i ) {
-    if ( children(i).first < 0 ) ++k;
+    if ( children(i)[0] < 0 ) ++k;
     if ( k == id )
       break;
   }
@@ -288,7 +390,7 @@ int BlobDiagram::mergeEmission(int emitter, int id, map<int,int>& remap) {
   int did = diagramId(id);
   int demitter = diagramId(emitter);
 
-  if ( children(did) != make_pair(-1,-1) )
+  if ( children(did)[0] != 1 && children(did)[1] != 1  )
     return -1;
 
   // now get the parent
@@ -333,7 +435,9 @@ int BlobDiagram::mergeEmission(int emitter, int id, map<int,int>& remap) {
     --theNSpace;
     --theNOutgoing;
   } else if ( p >= nSpace() ) {
-    remove = children(p);
+    remove.first = children(p)[0];
+    remove.second = children(p)[1];
+
     if ( remove.first != demitter )
       swap(remove.first,remove.second);
     if ( remove != make_pair(demitter,did) )
