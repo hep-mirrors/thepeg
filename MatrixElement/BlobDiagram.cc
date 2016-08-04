@@ -42,63 +42,95 @@ tPVector BlobDiagram::
 construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const {
   tPVector out;
   vector<Lorentz5Momentum> pout(xc.meMomenta().begin() + 2,
-				xc.meMomenta().end());
+				xc.meMomenta().end()); //outgoing momenta
+  //not sure what the following 4 lines do: perhaps they order the momenta in some specific order expected later on 
   if ( xc.needsReshuffling() )
-    xc.reshuffle(pout);
+    xc.reshuffle(pout); 
   tPPair in = xc.lastPartons();
-  if ( xc.mirror() ) swap(in.first, in.second);
+  if ( xc.mirror() ) swap(in.first, in.second); // in seems to be the incoming particles (?)
 
+
+  /*if the incoming particles from in do not match the first space-like parton 
+    or the last space-like parton (which should be the incoming particles,
+    then it throws an error
+  */
   tPVector ret;
   if ( in.first->dataPtr() != allPartons()[0] ||
        in.second->dataPtr() != allPartons()[nSpace() - 1] )
     throw BlobDiagramError();
 
+  /* now it starts looking at space-like partons */
   PVector slike;
-  slike.push_back(in.first);
+  slike.push_back(in.first); //puts the first incoming one in
+  /*the following loop starts from the second space-like parton and goes up to the penultimate one:
+    it seems to end up in a PVector containing firstly the first incoming parton, then all the other spacelike partons and then 
+    in the last entry the second incoming parton*/
   for ( int i = 1; i < nSpace() - 1; ++i )
-    slike.push_back(allPartons()[i]->produceParticle());
+    slike.push_back(allPartons()[i]->produceParticle()); //what exactly is produceParticle?
   slike.push_back(in.second);
+
+  /* in what follows, ret seems to be a vector containing all the space-like partons,
+     as constructed in PVector above */
   ret = tPVector(slike.begin(), slike.end());
+  /*for each space-like parton, starting from the first incoming, the space-like parton that follows it
+    is defined as its child*/
   for ( size_type i = 1; i < slike.size() - 1; ++i ) {
     slike[i-1]->addChild(slike[i]);
-    sp->addIntermediate(slike[xc.mirror()? i: slike.size() - 1 - i], false);
+    /* not quite sure what the following line does but my guess is that it
+       adds to the SubProPtr (subprocess pointer?) a space-like parton,
+       as intermediate particle, excluding the first or last one (i.e. the incoming ones) */
+    sp->addIntermediate(slike[xc.mirror()? i: slike.size() - 1 - i], false); 
   }
+
+  //the int io is simply the size of the outgoing momenta
   int io = pout.size();
+  //the PVector tlike has the size of # of all partons minus the # of space-like ones
   PVector tlike(allPartons().size() - nSpace());
+  //Not sure what a ParticleSet is!
   ParticleSet done;
+  
+  /* the following loop (i) starts at the last particle in allPartons, which should be a time-like particle
+    and moves backwards until it reaches the first time-like particle. */
   for ( int i = allPartons().size() - 1; i >=  nSpace(); --i ) {
-    int it = i - nSpace();
-    pair<int,int> ch = children(i);
-    bool iso = ch.first < 0;
-    if ( iso ) {
-      tlike[it] = allPartons()[i]->produceParticle(pout[--io]);
-      done.insert(tlike[it]);
-    } else {
+    int it = i - nSpace(); //it is a counter that should start at the number of time-like partons and count down to zero. 
+    pair<int,int> ch = children(i); //ch contains all the children of the particle with index i in the loop. 
+    bool iso = ch.first < 0; //the boolean is true if the first child returns a negative number, i.e. has no children (see later, children() function)
+    if ( iso ) { //if iso is true, i.e. if the first child is < 0 (no children):
+      tlike[it] = allPartons()[i]->produceParticle(pout[--io]); //"produce the particle", not sure what this means
+      done.insert(tlike[it]); //and insert it into the ParticleSet done
+    } else { //otherwise if iso is false, i.e. first child has value >= 0 (=> has children)
       Lorentz5Momentum p = tlike[ch.first - nSpace()]->momentum() +
-	tlike[ch.second - nSpace()]->momentum();
-      tlike[it] = allPartons()[i]->produceParticle(p);
+	tlike[ch.second - nSpace()]->momentum(); //instead sum the momenta of the children 
+      tlike[it] = allPartons()[i]->produceParticle(p); //and use the summed momentum to "produce" the particle 
     }
-    if ( parent(i) < nSpace() ) {
-      slike[parent(i)]->addChild(tlike[it]);
-      if ( parent(i) == nSpace() - 2 )
+    if ( parent(i) < nSpace() ) { //if the parent of the particle i is a space-like particle:
+      slike[parent(i)]->addChild(tlike[it]); //add the time-like particle i as a child 
+      if ( parent(i) == nSpace() - 2 ) //don't understand what's special about nSpace() - 2
 	slike[parent(i) + 1]->addChild(tlike[it]);
     }
-    if ( !iso ) {
-      tlike[it]->addChild(tlike[ch.first - nSpace()]);
+    if ( !iso ) { //if iso is false, i.e. first child has value >= 0, i.e. has children (why isn't this in the "else" part above?)
+      tlike[it]->addChild(tlike[ch.first - nSpace()]); //set the children of the time-like particle 
       tlike[it]->addChild(tlike[ch.second - nSpace()]);
     }
-    if ( iso ) out.push_back(tlike[it]);
-    else sp->addIntermediate(tlike[it], false);
+    if ( iso ) out.push_back(tlike[it]); //again, iso is true (i.e. if the first child is < 0) then push the time-like particle to the tPVector out
+    else sp->addIntermediate(tlike[it], false); //if not, then add it as an intermediate to the SubProPtr sp
   }
+  //the next line adds the time-like partons as found above to tPVector ret. 
   ret.insert(ret.end(), tlike.begin(), tlike.end());
+  //the next line seems to loop through the tPVector out and add the particles to the SubProPtr sp as outgoing, given some condition I need to think about. 
   for ( int i = 0, N = out.size(); i < N; ++i )
     sp->addOutgoing(out[xc.mirror()? i: out.size() - i - 1], false);
+
+  /*the following loop goes through the the space-like particles from the first to penultimate
+    and sets the momentum according to the momenta of the children 
+  */
   for ( PVector::size_type i = 0; i < slike.size() - 2; ++i ) {
     pair<int,int> ch = children(i);
     slike[ch.first]->set5Momentum(slike[i]->momentum() -
 				  tlike[ch.second - nSpace()]->momentum());
   }
 
+  //Perform the colour connections?
   cl.connect(ret);
 
   return out;
@@ -124,13 +156,17 @@ tcPDPair BlobDiagram::incoming() const {
   return tcPDPair(allPartons()[0], allPartons()[nSpace() - 1]);
 }
 
+
+/*the function returns a pair of integers that should 
+  be the children of particle with position ii*/
 pair<int,int> BlobDiagram::children(int ii) const {
-  pair<int,int> ret = make_pair(-1, -1);
+  pair<int,int> ret = make_pair(-1, -1); //the default values of the integers is -1, -1
+  //loop over all particles in theParents array (defined when particles are added with addSpacelike or addTimelike)
   for ( size_type i = 0; i < theParents.size(); ++i ) {
-    if ( parent(i) == ii ) {
-      if ( ret.first < 0 ) ret.first = i;
-      else if ( ret.second < 0 ) ret.second = i;
-      else throw BlobDiagramError();
+    if ( parent(i) == ii ) { //if the parent of the particle at hand (ii) is the particle i, then 
+      if ( ret.first < 0 ) ret.first = i; //if the first child index of ii is still -1, then set the child as i 
+      else if ( ret.second < 0 ) ret.second = i; //otherwise if the second child index is still -1, set it to i
+      else throw BlobDiagramError(); //otherwise throw an error (how is the possible?)
     }
   }
   return ret;
