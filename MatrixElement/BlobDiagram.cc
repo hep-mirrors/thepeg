@@ -171,7 +171,20 @@ pair<int,int> BlobDiagram::children(int ii) const {
   }
   return ret;
 }
-s
+
+/*the function returns a pair of integers that should 
+  be the children of particle with position ii*/
+vector<int> BlobDiagram::vchildren(int ii) const {
+  vector<int> ret;
+  //loop over all particles in theParents array (defined when particles are added with addSpacelike or addTimelike)
+  for ( size_type i = 0; i < theParents.size(); ++i ) {
+    if ( parent(i) == ii ) { //if the parent of the particle at hand (ii) is the particle i, then 
+      ret.push_back(i); //push back into the vector of children
+    }
+  }
+  return ret;
+}
+
 void BlobDiagram::check() {
   vector< pair<int,int> > children(allPartons().size(), make_pair(-1, -1));
   theNOutgoing = 0;
