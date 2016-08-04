@@ -171,7 +171,7 @@ pair<int,int> BlobDiagram::children(int ii) const {
   }
   return ret;
 }
-
+s
 void BlobDiagram::check() {
   vector< pair<int,int> > children(allPartons().size(), make_pair(-1, -1));
   theNOutgoing = 0;
@@ -192,6 +192,7 @@ void BlobDiagram::check() {
   parts.insert(parts.end(), out.begin(), out.end());
   partons(2, parts, nextOrig + 1);
 }
+
 
 bool BlobDiagram::isSame (tcDiagPtr diag) const {
   Ptr<BlobDiagram>::tcptr cmp = 

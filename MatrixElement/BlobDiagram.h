@@ -160,8 +160,10 @@ public:
   /**
    * Return the indices of the children of the given parton.
    */
-  pair<int,int> children(int) const;
+  //pair<int,int> children(int) const;
+  vector<int> children(int) const;
 
+  
   /**
    * Return the number of space-like partons
    */
