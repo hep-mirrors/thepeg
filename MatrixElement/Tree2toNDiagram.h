@@ -170,7 +170,7 @@ public:
   /**
    * Extend this diagram to accomodate the given number of space-like lines
    */
-  void resize(int nSpace) {
+  void resize(size_type nSpace) {
     theNSpace = max(nSpace,theNSpace);
   }
 
