@@ -91,7 +91,7 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
   
   /* the following loop (i) starts at the last particle in allPartons, which should be a time-like particle
     and moves backwards until it reaches the first time-like particle. */
-  for ( int i = allPartons().size() - 1; i >=  nSpace(); --i ) {
+  /*for ( int i = allPartons().size() - 1; i >=  nSpace(); --i ) {
     int it = i - nSpace(); //it is a counter that should start at the number of time-like partons and count down to zero. 
     pair<int,int> ch = children(i); //ch contains all the children of the particle with index i in the loop. 
     bool iso = ch.first < 0; //the boolean is true if the first child returns a negative number, i.e. has no children (see later, children() function)
@@ -114,7 +114,18 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
     }
     if ( iso ) out.push_back(tlike[it]); //again, iso is true (i.e. if the first child is < 0) then push the time-like particle to the tPVector out
     else sp->addIntermediate(tlike[it], false); //if not, then add it as an intermediate to the SubProPtr sp
+    }*/
+  for ( int i = allPartons().size() - 1; i >=  nSpace(); --i ) {
+    int it = i - nSpace(); //it is a counter that should start at the number of time-like partons and count down to zero. 
+    tlike[it] = allPartons()[i]->produceParticle(pout[--io]);
+    done.insert(tlike[it]);
+    //add the time-like parton as the child of both incoming (space-like) partons. 
+    slike[0]->addChild(tlike[it]);
+    slike[1]->addChild(tlike[it]);
+    out.push_back(tlike[it]); 
   }
+
+  
   //the next line adds the time-like partons as found above to tPVector ret. 
   ret.insert(ret.end(), tlike.begin(), tlike.end());
   //the next line seems to loop through the tPVector out and add the particles to the SubProPtr sp as outgoing, given some condition I need to think about. 
@@ -188,7 +199,7 @@ vector<int> BlobDiagram::vchildren(int ii) const {
 void BlobDiagram::check() {
   vector< pair<int,int> > children(allPartons().size(), make_pair(-1, -1));
   theNOutgoing = 0;
-  for ( size_type i = nSpace(); i < allPartons().size(); ++i ) {
+  /*for ( size_type i = nSpace(); i < allPartons().size(); ++i ) {
     if ( children[parent(i)].first < 0 ) children[parent(i)].first = i;
     else if ( children[parent(i)].second < 0 ) children[parent(i)].second = i;
     else throw BlobDiagramError();
@@ -197,7 +208,7 @@ void BlobDiagram::check() {
     if ( children[i].first < 0 && children[i].second < 0 ) ++theNOutgoing;
     else if ( children[i].first < 0 || children[i].second < 0 )
       throw BlobDiagramError();
-  }
+      }*/
   cPDVector parts(2);
   parts[0] = incoming().first;
   parts[1] = incoming().second;
