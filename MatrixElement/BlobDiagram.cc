@@ -26,17 +26,22 @@ BlobDiagram::~BlobDiagram() {}
 
 BlobDiagram & BlobDiagram::add(tcPDPtr pd) {
   if ( thePartons.size() < theNSpace ) addSpacelike(pd);
-  else addTimelike(pd, nextOrig);
+  else addTimelike(pd);
   return *this;
 }
 
-void BlobDiagram::addTimelike(tcPDPtr pd, size_type orig) {
+void BlobDiagram::addTimelike(tcPDPtr pd) {
+  if ( allPartons().size() < theNSpace) throw BlobDiagramError();
+  thePartons.push_back(pd);
+}
+
+/*void BlobDiagram::addTimelike(tcPDPtr pd, size_type orig) {
   if ( allPartons().size() < theNSpace ||
        orig >= allPartons().size())
     throw BlobDiagramError();
   thePartons.push_back(pd);
   theParents.push_back(orig);
-}
+}*/
 
 tPVector BlobDiagram::
 construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const {

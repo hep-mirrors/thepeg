@@ -74,7 +74,7 @@ public:
    * Default constructor.
    */
   BlobDiagram()
-    : theNSpace(0), theNOutgoing(0), nextOrig(0) {}
+    : theNSpace(2), theNOutgoing(0), nextOrig(0) {}
 
   /**
    * Destructor.
@@ -85,8 +85,8 @@ public:
    * The standard constructor giving the number of \a space-like
    * propagators.
    */
-  explicit BlobDiagram(int space) 
-    : theNSpace(space), theNOutgoing(0), nextOrig(-1) {}
+  //explicit BlobDiagram() 
+  //  : theNSpace(2), theNOutgoing(0), nextOrig(-1) {}
   //@}
 
 public:
