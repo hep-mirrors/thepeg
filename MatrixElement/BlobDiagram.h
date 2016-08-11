@@ -156,16 +156,12 @@ public:
    * Return the index of the parent of the given parton.
    */
   int parent(int i) const { return theParents[i]; }
-
+  
   /**
    * Return the indices of the children of the given parton.
    */
-  pair<int,int> children(int) const;
+  vector<int> children(int) const;
 
-  /**
-   * Return the indices of the children of the given parton.
-   */
-  vector<int> vchildren(int) const;
 
   /**
    * Return the number of space-like partons
@@ -206,56 +202,6 @@ private:
    * Add a parton to this diagram.
    */
   BlobDiagram & add(tcPDPtr);
-
-public:
-
-  /**
-   * Compare this diagram's topology to another one.
-   */
-  virtual bool isSame(tcDiagPtr) const;
-
-  /**
-   * Compare this diagram's topology to another one modulo
-   * permutations of external legs; provide a map of this diagram's
-   * external legs to the other diagram's external legs.
-   */
-  virtual bool isSame(tcDiagPtr, map<int,int>&) const;
-
-  /**
-   * Check for equality.
-   */
-  bool equals(Ptr<BlobDiagram>::tcptr, int start=0, int startCmp=0) const;
-
-  /**
-   * Check for equality modulo permutations of external legs.
-   */
-  bool equals(Ptr<BlobDiagram>::tcptr, 
-	      map<int,int>&,
-	      int start=0, int startCmp=0) const;
-
-  /**
-   * Merge the two external partons referred to by indices as in the
-   * partons() vector returned by DiagramBase. If both are timelike,
-   * the parent will become the new outgoing parton, if one is space-
-   * and the other timelike, the spacelike child will become the new
-   * incoming parton.  Return the position of the merged parton in the
-   * resulting diagram or -1 if the merging is not possible. In
-   * addition, return a mapping of a certain (non-merged) external leg
-   * id to the id in the merged diagram.
-   */
-  int mergeEmission(int emitter, int id, map<int,int>& remap);
-
-  /**
-   * Translate a parton's id in the diagram to a parton's id in a
-   * vector of incoming followed by outgoing partons.
-   */
-  int externalId(int id) const;
-
-  /**
-   * Translate a parton's id in a vector of incoming followed by
-   * outgoing partons to a parton's id in the diagram.
-   */
-  int diagramId(int id) const;
 
 public:
 
