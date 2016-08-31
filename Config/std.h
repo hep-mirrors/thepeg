@@ -60,14 +60,6 @@ struct less<const type_info *> :
 
 }
 
-/** @cond SHOWOSXWORKAROUNDS */
-// Workarounds for OS X
-#if defined __APPLE__ && defined __MACH__
-extern "C" int isnan(double) throw();
-extern "C" int isinf(double) throw();
-#endif
-/** @endcond */
-
 namespace ThePEG {
 
 using std::deque;
@@ -106,6 +98,9 @@ using std::mem_fun;
 using std::sqrt;
 //using std::pow;
 using std::atan2;
+using std::isnan;
+using std::isinf;
+using std::isfinite;
 
 /** Powers - standard or non-standard */
 template <class ExponentT>
