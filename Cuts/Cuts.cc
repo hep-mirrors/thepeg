@@ -67,6 +67,8 @@ void Cuts::describe() const {
     << "YHat  = " << theYHatMin << " .. " << theYHatMax << '\n'
     << "X1    = "   << theX1Min << " .. " << theX1Max << '\n'
     << "X2    = "   << theX2Min << " .. " << theX2Max << "\n\n";
+  if ( theJetFinder )
+    theJetFinder->describe();
 }
 
 void Cuts::initialize(Energy2 smax, double Y) {

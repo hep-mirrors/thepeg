@@ -45,7 +45,9 @@ public:
   /**
    * Default constructor.
    */
-  LesHouchesFileReader() : neve(0), ieve(0), theQNumbers(false) {}
+  LesHouchesFileReader() : neve(0), ieve(0), theQNumbers(false),
+			   theIncludeFxFxTags(false),
+			   theIncludeCentral(false) {}
 
   /**
    * Copy-constructor. Note that a file which is opened in the object

@@ -96,6 +96,11 @@ public:
    */
   void constituentRapidityRange(const pair<double,double>& r) { theConstituentRapidityRange = r; }
 
+  /**
+   * Describe this jet finder
+   */
+  virtual void describe() const = 0;
+
 public:
 
   /** @name Functions used by the persistent I/O system. */

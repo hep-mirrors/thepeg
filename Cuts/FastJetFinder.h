@@ -52,6 +52,11 @@ public:
 		       tcCutsPtr parent, tcPDPtr t1 = tcPDPtr(),
 		       tcPDPtr t2 = tcPDPtr()) const;
 
+  /**
+   * Describe this jet fined.
+   */
+  virtual void describe() const;
+
 public:
   /** @name Standard Interfaced functions. */
   //@{
