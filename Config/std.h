@@ -98,8 +98,6 @@ using std::mem_fun;
 using std::sqrt;
 //using std::pow;
 using std::atan2;
-using std::isnan;
-using std::isinf;
 using std::isfinite;
 
 /** Powers - standard or non-standard */

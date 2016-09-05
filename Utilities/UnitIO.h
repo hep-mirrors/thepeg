@@ -171,8 +171,8 @@ inline OUnitErr<double,double> ouniterr(double t, double dt) {
 /** Output an OUnitErr object to a stream. */
 template <typename OStream, typename T, typename UT>
 OStream & operator<<(OStream & os, const OUnitErr<T,UT> & u) {
-  if ( isnan(u.x) || isinf(u.x) ) return os << u.x;
-  if ( isnan(u.dx) || isinf(u.dx) ) {
+  if ( ! isfinite(u.x) ) return os << u.x;
+  if ( ! isfinite(u.dx) ) {
     ostringstream out;
     out << u.x << '(' << u.dx << ')';
     return os << out.str();
