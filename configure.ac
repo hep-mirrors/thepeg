@@ -102,8 +102,6 @@ dnl  -Wno-unneeded-internal-declaration
     ;;
 esac
 
-THEPEG_CHECK_ABS_BUG
-
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CXXFLAGS)
 
