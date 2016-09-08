@@ -17,31 +17,13 @@
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/Rebinder.h"
 #include "ThePEG/Utilities/UtilityBase.h"
+#include "ThePEG/Utilities/Exception.h"
 #include "ThePEG/Handlers/StandardXComb.h"
 #include "ThePEG/PDT/EnumParticles.h"
 
 using namespace ThePEG;
 
 BlobDiagram::~BlobDiagram() {}
-
-BlobDiagram & BlobDiagram::add(tcPDPtr pd) {
-  if ( thePartons.size() < theNSpace ) addSpacelike(pd);
-  else addTimelike(pd);
-  return *this;
-}
-
-void BlobDiagram::addTimelike(tcPDPtr pd) {
-  if ( allPartons().size() < theNSpace) throw BlobDiagramError();
-  thePartons.push_back(pd);
-}
-
-/*void BlobDiagram::addTimelike(tcPDPtr pd, size_type orig) {
-  if ( allPartons().size() < theNSpace ||
-       orig >= allPartons().size())
-    throw BlobDiagramError();
-  thePartons.push_back(pd);
-  theParents.push_back(orig);
-}*/
 
 tPVector BlobDiagram::
 construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const {
@@ -60,18 +42,14 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
     then it throws an error
   */
   tPVector ret;
-  if ( in.first->dataPtr() != allPartons()[0] ||
-       in.second->dataPtr() != allPartons()[nSpace() - 1] )
-    throw BlobDiagramError();
+  if ( in.first->dataPtr() != partons()[0] ||
+       in.second->dataPtr() != partons()[1] )
+    throw Exception() << "incoming partons in XComb do not match incoming partons in BlobDiagram"
+		      << Exception::setuperror;
 
   /* now it starts looking at space-like partons */
   PVector slike;
   slike.push_back(in.first); //puts the first incoming one in
-  /*the following loop starts from the second space-like parton and goes up to the penultimate one:
-    it seems to end up in a PVector containing firstly the first incoming parton, then all the other spacelike partons and then 
-    in the last entry the second incoming parton*/
-  for ( int i = 1; i < nSpace() - 1; ++i )
-    slike.push_back(allPartons()[i]->produceParticle()); //what exactly is produceParticle?
   slike.push_back(in.second);
 
   /* in what follows, ret seems to be a vector containing all the space-like partons,
@@ -90,13 +68,13 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
   //the int io is simply the size of the outgoing momenta
   int io = pout.size();
   //the PVector tlike has the size of # of all partons minus the # of space-like ones
-  PVector tlike(allPartons().size() - nSpace());
+  PVector tlike(partons().size() - 2);
   //Not sure what a ParticleSet is!
   ParticleSet done;
   
-  for ( int i = allPartons().size() - 1; i >=  nSpace(); --i ) {
-    int it = i - nSpace(); //it is a counter that should start at the number of time-like partons and count down to zero. 
-    tlike[it] = allPartons()[i]->produceParticle(pout[--io]);
+  for ( int i = partons().size() - 1; i >=  2; --i ) {
+    int it = i - 2; //it is a counter that should start at the number of time-like partons and count down to zero. 
+    tlike[it] = partons()[i]->produceParticle(pout[--io]);
     done.insert(tlike[it]);
     //add the time-like parton as the child of both incoming (space-like) partons. 
     slike[0]->addChild(tlike[it]);
@@ -107,7 +85,9 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
   
   //the next line adds the time-like partons as found above to tPVector ret. 
   ret.insert(ret.end(), tlike.begin(), tlike.end());
-  //the next line seems to loop through the tPVector out and add the particles to the SubProPtr sp as outgoing, given some condition I need to think about. 
+  //the next line seems to loop through the tPVector out and add the particles
+  //to the SubProPtr sp as outgoing, given some condition I need to think
+  //about.
   for ( int i = 0, N = out.size(); i < N; ++i )
     sp->addOutgoing(out[xc.mirror()? i: out.size() - i - 1], false);
 
@@ -117,68 +97,8 @@ construct(SubProPtr sp, const StandardXComb & xc, const ColourLines & cl) const 
   return out;
 }
 
-
-tcPDPair BlobDiagram::incoming() const {
-  return tcPDPair(allPartons()[0], allPartons()[nSpace() - 1]);
-}
-
-tcPDVector BlobDiagram::outgoing() const {
-  tcPDVector pdv;
-  for ( size_type i = nSpace(); i < allPartons().size(); ++i )
-    if ( children(i)[0] < 0 ) pdv.push_back(allPartons()[i]);
-  return pdv;
-}
-
-tcPDVector BlobDiagram::external() const {
-  tcPDVector pdv;
-  pdv.push_back(allPartons()[0]);
-  pdv.push_back(allPartons()[nSpace() - 1]);
-  for ( size_type i = nSpace(); i < allPartons().size(); ++i )
-    if ( children(i)[0] < 0 ) pdv.push_back(allPartons()[i]);
-  return pdv;
-  }
-
-vector<int> BlobDiagram::children(int ii) const {
-  vector<int> ret;
-  /*loop through all the parents and check whether particle ii is the parent of parrticle i,
-    if so, push it into the vector ret
-  */
-  for ( size_type i = 0; i < theParents.size(); ++i ) {
-    if ( parent(i) == ii ) {
-      ret.push_back(i);
-    } 
-  }
-  if(ret.size() == 0) {
-    ret.push_back(-1);
-  }
-  return ret;
-}
-
-void BlobDiagram::check() {
-  vector< pair<int,int> > children(allPartons().size(), make_pair(-1, -1));
-  theNOutgoing = 0;
- 
-  cPDVector parts(2);
-  parts[0] = incoming().first;
-  parts[1] = incoming().second;
-  tcPDVector out(outgoing());
-  parts.insert(parts.end(), out.begin(), out.end());
-  partons(2, parts, nextOrig + 1);
-}
- 
 ClassDescription<BlobDiagram> BlobDiagram::initBlobDiagram;
 
-void BlobDiagram::persistentInput(PersistentIStream & is, int) {
-  is >> theNSpace >> theNOutgoing >> thePartons >> theParents >> nextOrig;
-}
+void BlobDiagram::persistentInput(PersistentIStream &, int) {}
 
-void BlobDiagram::persistentOutput(PersistentOStream & os) const {
-  os << theNSpace << theNOutgoing << thePartons << theParents << nextOrig;
-}
-
-BlobDiagramError::BlobDiagramError() {
-  theMessage << "An error occurred while setting up a diagram of class "
-	     << "'BlobDiagram'.";
-  severity(abortnow);
-}
-
+void BlobDiagram::persistentOutput(PersistentOStream &) const {}

@@ -82,7 +82,7 @@ public:
    * Return the incoming, followed by the outgoing partons for this
    * diagram.
    */
-  const cPDVector & partons() const { return thePartons; }
+  const cPDVector& partons() const { return thePartons; }
 
   /**
    * Return the id number of this diagram.
@@ -127,10 +127,24 @@ protected:
   }
 
   /**
+   * Complete the missing information, provided partons() has already been
+   * filled
+   */
+  void diagramInfo(int ninc, int newId) {
+    theNIncoming = ninc;
+    theId = newId;
+  }
+
+  /**
    * Returns true if the partons(int, const cPDVector &, int) function
    * has been called properly from the sub class.
    */
   bool done() const { return nIncoming() >= 0; }
+
+  /**
+   * Add to the partons
+   */
+  void addParton(tcPDPtr pd) { thePartons.push_back(pd); }
 
 public:
 
