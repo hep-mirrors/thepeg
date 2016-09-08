@@ -46,8 +46,8 @@ public:
    */
   BlobDiagram(int id, tcPDPtr first, tcPDPtr second) 
     : DiagramBase() {
-    thePartons.push_back(first);
-    thePartons.push_back(second);
+    addParton(first);
+    addParton(second);
     diagramInfo(2,id);
   }
 
