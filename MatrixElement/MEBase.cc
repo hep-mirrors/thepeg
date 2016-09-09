@@ -149,6 +149,8 @@ MEBase::DiagramIndex MEBase::diagram(const DiagramVector & dv) const {
 const ColourLines & MEBase::
 selectColourGeometry(tcDiagPtr diag) const {
   Selector<const ColourLines *> sel = colourGeometries(diag);
+  if ( sel.size() == 1 )
+    return *sel.begin()->second;
   return *sel.select(rnd());
 }
 
