@@ -21,6 +21,19 @@ BlobMEBase::~BlobMEBase() {}
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/MatrixElement/BlobDiagram.h"
 
+string BlobMEBase::ColourConnection::write(size_t& sourceCount) const {
+  assert(members.size() >= 2);
+  string res;
+  for ( auto it = members.begin(); it != members.end(); ++it )
+    res += std::to_string(*it) + " ";
+  if ( members.size() > 2 || 
+       ( members.size() == 2 && members[0]*members[1] > 0 ) ) {
+    res += ": " + std::to_string(sourceCount);
+    ++sourceCount;
+  }
+  return res;
+}
+
 void BlobMEBase::getDiagrams() const {
   map<tcPDPair,tcPDVector> proc = processes();
   int id = 1;
@@ -41,15 +54,12 @@ BlobMEBase::diagrams(const DiagramVector & diags) const {
 }
 
 Selector<const ColourLines *>
-BlobMEBase::colourGeometries(tcDiagPtr) const {
-  map<size_t,size_t> connections =
-    colourConnections();
+BlobMEBase::colourGeometries(tcDiagPtr diag) const {
+  auto connections = colourConnections();
   ostringstream clines;
+  size_t sourceCount = diag->partons().size();
   for ( auto it = connections.begin(); it != connections.end(); ++it ) {
-    int cid = it->first+1; int acid = -(it->second+1);
-    if ( it->first < 2 ) cid = -cid;
-    if ( it->second < 2 ) acid = -acid;
-    clines << cid << " " << acid;
+    clines << it->write(sourceCount);
     auto nit = it; ++nit;
     if ( nit != connections.end() )
       clines << ",";
