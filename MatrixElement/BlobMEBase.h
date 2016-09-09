@@ -34,6 +34,37 @@ public:
 
 public:
 
+  /**
+   * Helper struct to represent colour connections.
+   */
+  struct ColourConnection {
+
+    /**
+     * The members of the colour connection
+     */
+    vector<int> members;
+
+    /**
+     * Add a leg's colour to the connection
+     */
+    void addColour(int leg) {
+      members.push_back(leg+1);
+    }
+
+    /**
+     * Add a leg's anti-colour to the connection
+     */
+    void addAntiColour(int leg) {
+      members.push_back(-leg-1);
+    }
+
+    /**
+     * Write out the connection to the colour lines string
+     */
+    string write(size_t& sourceCount) const;
+
+  };
+
   /** @name Virtual functions required by the MEBase class. */
   //@{
   /**
@@ -76,12 +107,9 @@ public:
   virtual map<tcPDPair,tcPDVector> processes() const = 0;
 
   /**
-   * Return the colour connections for the process as pairs of id's of
-   * external legs connecting colour to anticolour; id's of incoming partons
-   * (0 and 1) have the meaning of colour and anti-colour eversed (crossed to
-   * the final state).
+   * Return the colour connections for the process.
    */
-  virtual map<size_t,size_t> colourConnections() const = 0;
+  virtual list<ColourConnection> colourConnections() const = 0;
 
 public:
 
