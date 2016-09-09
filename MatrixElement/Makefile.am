@@ -1,9 +1,9 @@
-mySOURCES = Amplitude.cc ColourLines.cc DiagramBase.cc Tree2toNDiagram.cc \
+mySOURCES = Amplitude.cc ColourLines.cc DiagramBase.cc Tree2toNDiagram.cc BlobDiagram.cc \
             MEBase.cc MEGroup.cc ReweightBase.cc ME2to2Base.cc ME2to2QCD.cc
 
 myQCDSOURCES = 
 
-DOCFILES = Amplitude.h ColourLines.h DiagramBase.h Tree2toNDiagram.h MEBase.h \
+DOCFILES = Amplitude.h ColourLines.h DiagramBase.h Tree2toNDiagram.h BlobDiagram.h MEBase.h \
            MEGroup.h ReweightBase.h ME2to2Base.h ME2to2QCD.h
 
 INCLUDEFILES = $(DOCFILES) ColourLines.xh \
