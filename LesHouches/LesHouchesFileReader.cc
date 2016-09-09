@@ -559,7 +559,7 @@ void LesHouchesFileReader::open() {
 	string scinfo = hs.substr(firstLim); //define the information for the scale
 	erase_substr(scinfo,stopDEL);
 	erase_substr(scinfo,startDEL);
-	scinfo = weightinfo + scinfo;
+        scinfo = StringUtils::stripws(scinfo);
 	/* fill in the map 
 	 * indicating the information to be appended to each scale
 	 * i.e. scinfo for each scalname
@@ -796,7 +796,7 @@ bool LesHouchesFileReader::doReadEvent() {
     for (map<string,string>::const_iterator it2=scalemap.begin(); it2!=scalemap.end(); ++it2){
       //find the scale id in the scale information and add this information
       if(it->first==it2->first) { 
-	string info = it2->second + " " + it->first;
+        string info = it2->second;
 	string str_newline = "\n";
 	erase_substr(info, str_newline);
 	//set the optional weights
