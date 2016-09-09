@@ -114,7 +114,7 @@ public:
   /**
    * Return the number of outgoing partons.
    */
-  size_type nOutgoing() const { return thePartons.size() - 2; }
+  size_type nOutgoing() const { return partons().size() - 2; }
 
 public:
 
@@ -133,13 +133,6 @@ public:
    */
   void persistentInput(PersistentIStream & is, int version);
   //@}
-
-private:
-
-  /**
-   * The complete vector of partons in this tree diagram.
-   */
-  cPDVector thePartons;
 
 private:
 
