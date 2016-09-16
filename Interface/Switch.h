@@ -51,8 +51,9 @@ public:
    *
    * @param newValue the integer value corresponding to this option.
    */
+  template<typename EnumT> 
   SwitchOption(SwitchBase & theSwitch, string newName,
-	       string newDescription, long newValue);
+	       string newDescription, EnumT newValue);
 
   /**
    * Default constructor.
