@@ -142,6 +142,18 @@ public:
    * process masses.
    */
   virtual bool isReshuffling() const { return false; }
+  
+  /**
+   * For multiple cascade calls, this flag tells
+   * if cascade was called before.
+   */
+  bool didRunCascade() const {return theDidRunCascade;}
+  
+  /**
+   * Set the flag to inform if prior cascades had been called.
+   */
+  static void setDidRunCascade(bool c){theDidRunCascade=c;}
+
   //@}
 
 public:
@@ -167,6 +179,13 @@ private:
    * The pdfs used to extract the incoming partons.
    */
   pair<PDF,PDF> thePDFs;
+  
+  /**
+   * If there are multiple cascade calls, this flag tells
+   * if cascade was called before.
+   */
+  static bool theDidRunCascade;
+  
 
 private:
 

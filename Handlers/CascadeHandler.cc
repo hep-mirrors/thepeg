@@ -22,6 +22,8 @@ using namespace ThePEG;
 
 CascadeHandler::~CascadeHandler() {}
 
+bool CascadeHandler::theDidRunCascade=false;
+
 void CascadeHandler::
 handle(EventHandler & eh, const tPVector & tagged,
        const Hint & hint)

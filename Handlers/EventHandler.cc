@@ -164,6 +164,7 @@ tCollPtr EventHandler::continueCollision() {
 }
 
 void EventHandler::clearEvent() {
+  ThePEG::CascadeHandler::setDidRunCascade(false);
   for ( GroupVector::const_iterator git = groups().begin();
 	git != groups().end(); ++git ) (**git).clear();
 }
