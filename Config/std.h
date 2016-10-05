@@ -97,12 +97,13 @@ using std::max;
 using std::mem_fun;
 using std::sqrt;
 //using std::pow;
+using std::abs;
 using std::atan2;
 using std::isfinite;
 
 /** Powers - standard or non-standard */
 template <class ExponentT>
-double pow(double x, ExponentT p) {
+inline constexpr double pow(double x, ExponentT p) {
   return std::pow(x,double(p));
 }
 

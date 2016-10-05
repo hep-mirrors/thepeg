@@ -152,38 +152,79 @@ typedef Transverse<Energy> TransverseMomentum;
 
 /// @name Pre-defined basic units.
 //@{
-const Length millimeter = TypeTraits<Length>::baseunit;
-const Energy MeV = TypeTraits<Energy>::baseunit;
-const Charge eplus = TypeTraits<Charge>::baseunit;
+constexpr Length operator "" _mm( long double x ) {
+	return Length{TypeTraits<Length>::baseunit, 
+								static_cast<double>(x)};
+}
+constexpr Length operator "" _mm( unsigned long long x ) {
+	return Length{TypeTraits<Length>::baseunit, 
+								static_cast<double>(x)};
+}
 
-const Energy keV = 1.0e-3 * MeV;
-const Energy GeV = 1.0e3  * MeV;
-const Energy TeV = 1.0e6  * MeV;
-
-const Energy2 MeV2 = MeV * MeV;
-const Energy2 GeV2 = GeV * GeV;
-const InvEnergy InvGeV = 1/GeV;
-
-const Length meter = 1.0e3 * millimeter;
-const Length mm = millimeter;
-const Length centimeter = 10.0*millimeter;
-const Length micrometer = 1.0e-3  * millimeter;
-const Length nanometer  = 1.0e-6  * millimeter;
-const Length picometer  = 1.0e-9  * millimeter;
-const Length femtometer = 1.0e-12 * millimeter;
+constexpr Length meter      = 1.0e+3_mm;
+constexpr Length millimeter = 1_mm;
+constexpr Length mm         = 1_mm;
+constexpr Length centimeter = 10_mm;
+constexpr Length micrometer = 1.0e-3_mm;
+constexpr Length nanometer  = 1.0e-6_mm;
+constexpr Length picometer  = 1.0e-9_mm;
+constexpr Length femtometer = 1.0e-12_mm;
  
-const Area picobarn  = 1.0e-40 * meter * meter;
-const Area nanobarn  = 1.0e3  * picobarn;
-const Area microbarn = 1.0e6  * picobarn;
-const Area millibarn = 1.0e9  * picobarn;
-const Area barn      = 1.0e12 * picobarn; 
-const Area femtobarn = 1.0e-3 * picobarn;
+constexpr Energy operator "" _MeV( long double x ) {
+	return Energy{TypeTraits<Energy>::baseunit, static_cast<double>(x)};
+}
+constexpr Energy operator "" _MeV( unsigned long long x ) {
+	return Energy{TypeTraits<Energy>::baseunit, static_cast<double>(x)};
+}
+
+constexpr Energy operator "" _GeV( long double x ) {
+	return Energy{1000_MeV, static_cast<double>(x)};
+}
+constexpr Energy operator "" _GeV( unsigned long long x ) {
+	return Energy{1000_MeV, static_cast<double>(x)};
+}
+
+constexpr Energy keV = 1.0e-3_MeV;
+constexpr Energy MeV = 1_MeV;
+constexpr Energy GeV = 1_GeV;
+constexpr Energy TeV = 1.0e+6_MeV;
+
+
+
+constexpr Energy2 operator "" _MeV2( long double x ) {
+	return Energy2{TypeTraits<Energy2>::baseunit,	static_cast<double>(x)};
+}
+constexpr Energy2 operator "" _MeV2( unsigned long long x ) {
+	return Energy2{TypeTraits<Energy2>::baseunit,	static_cast<double>(x)};
+}
+
+constexpr Energy2 operator "" _GeV2( long double x ) {
+	return Energy2{1.0e+6_MeV2, static_cast<double>(x)};
+}
+constexpr Energy2 operator "" _GeV2( unsigned long long x ) {
+	return Energy2{1.0e+6_MeV2, static_cast<double>(x)};
+}
+
+constexpr Energy2 MeV2 = 1_MeV2;
+constexpr Energy2 GeV2 = 1_GeV2;
+
+
+constexpr InvEnergy InvGeV = 1/GeV;
+
+constexpr Area picobarn  = 1.0e-40 * meter * meter;
+constexpr Area nanobarn  = 1.0e3  * picobarn;
+constexpr Area microbarn = 1.0e6  * picobarn;
+constexpr Area millibarn = 1.0e9  * picobarn;
+constexpr Area barn      = 1.0e12 * picobarn; 
+constexpr Area femtobarn = 1.0e-3 * picobarn;
+
+constexpr Charge eplus = TypeTraits<Charge>::baseunit;
 //@}
 
 /// Planck's constant times c (PDG 2006 value 197.326968(17) MeV fm)
-const QTY<1,1,0>::Type hbarc = 197.326968e-15 * MeV * meter;
+constexpr QTY<1,1,0>::Type hbarc = 197.326968e-15 * MeV * meter;
 /// Planck's constant (PDG 2006 value 197.326968(17) MeV fm)
-const QTY<1,1,0>::Type hbar_Planck = hbarc / 1.0;
+constexpr QTY<1,1,0>::Type hbar_Planck = hbarc / 1.0; // c is one
 }
 
 /** 
@@ -193,19 +234,21 @@ const QTY<1,1,0>::Type hbar_Planck = hbarc / 1.0;
 namespace UnitRemoval {
   /// @name Helper units to make breaks of unit consistency explicit.
   //@{
-  const Units::Energy E = Units::MeV;
+  constexpr Units::Energy E = Units::MeV;
 
-  const Units::Energy2 E2 = E*E;
-  const Units::Energy3 E3 = E*E2;
-  const Units::Energy4 E4 = E2*E2;
+  constexpr Units::Energy2 E2 = E*E;
+  constexpr Units::Energy3 E3 = E*E2;
+  constexpr Units::Energy4 E4 = E2*E2;
 
-  const Units::InvEnergy InvE = 1.0/E;
-  const Units::InvEnergy2 InvE2 = 1.0/E2;
-  const Units::InvEnergy3 InvE3 = 1.0/E3;
-  const Units::InvEnergy4 InvE4 = 1.0/E4;
+  constexpr Units::InvEnergy InvE = 1.0/E;
+  constexpr Units::InvEnergy2 InvE2 = 1.0/E2;
+  constexpr Units::InvEnergy3 InvE3 = 1.0/E3;
+  constexpr Units::InvEnergy4 InvE4 = 1.0/E4;
 
-  const Units::SqrtEnergy SqrtE = sqrt(E);
-  const Units::InvSqrtEnergy InvSqrtE = 1.0/sqrt(E);
+  constexpr Units::SqrtEnergy SqrtE 
+  						= TypeTraits<Units::SqrtEnergy>::baseunit;
+  constexpr Units::InvSqrtEnergy InvSqrtE 
+  						= TypeTraits<Units::InvSqrtEnergy>::baseunit;
   //@}
 }
 

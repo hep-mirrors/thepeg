@@ -113,18 +113,20 @@ struct Stop {};
  * standard C++ library.
  */
 template <typename T>
-inline typename BinaryOpTraits<T,T>::MulT sqr(const T& x) {
+inline constexpr 
+typename BinaryOpTraits<T,T>::MulT 
+sqr(const T& x) {
   return x*x;
 }
 
-/**
- * The templated abs function should really have been included in the
- * standard C++ library.
- */
-template <typename T>
-inline T abs(const T & t) {
-  return t < T()? -t: t;
-}
+// *
+//  * The templated abs function should really have been included in the
+//  * standard C++ library.
+ 
+// template <typename T>
+// inline constexpr T abs(const T & t) {
+//   return t < T()? -t: t;
+// }
 
 // Debugging in ThePEG may be swithced off completely by this
 // compilation swithc, eliminating possible overhead in error

@@ -27,58 +27,58 @@ namespace Constants {
 using namespace ThePEG::Units;
 
 /** A really large length. */
-const Length MaxLength = 1.0e20 * meter;
+constexpr Length MaxLength = 1.0e23_mm;
 
 /** A really large energy. */
-const Energy MaxEnergy = 1.0e6 * GeV;
+constexpr Energy MaxEnergy = 1.0e6_GeV;
 
 /** A really large squared energy. */
-const Energy2 MaxEnergy2 = MaxEnergy * MaxEnergy;
+constexpr Energy2 MaxEnergy2 = MaxEnergy * MaxEnergy;
 
 /** The largest possible double. */
-const double MaxDouble = DBL_MAX;
+constexpr double MaxDouble = DBL_MAX;
 
 /** A really large double. */
-const double HugeDouble = DBL_MAX * 1.0e-4;
+constexpr double HugeDouble = DBL_MAX * 1.0e-4;
 
 /** The largest possible float. */
-const double MaxFloat = FLT_MAX;
+constexpr double MaxFloat = FLT_MAX;
 
 /** A really large floa.t */
-const double HugeFloat = FLT_MAX * 0.01;
+constexpr double HugeFloat = FLT_MAX * 0.01;
 
 /** A really large rapidity */
-const double MaxRapidity = 100.0;
+constexpr double MaxRapidity = 100.0;
 
 /** Good old \f$\pi\f$. */
-const double pi    = M_PI;
+constexpr double pi    = M_PI;
 
 /** Good old \f$2\pi\f$. */
-const double twopi = 2.0 * pi;
+constexpr double twopi = 2.0 * pi;
 
 /** A really large integer */
-const long MaxInt = 1000000000L;
+constexpr long MaxInt = 1000000000L;
 
 /** The smallest non-zero double. */
-const double epsilon = DBL_EPSILON;
+constexpr double epsilon = DBL_EPSILON;
 
 /** The Euler gamma */
-const double EulerGamma = 0.5772156649015329;
+constexpr double EulerGamma = 0.5772156649015329;
 
 /** \f$\zeta(2)\f$. */
-const double zeta2 = pi*pi/6.;
+constexpr double zeta2 = pi*pi/6.;
 
 /** \f$\zeta(3)\f$. */
-const double zeta3 = 1.2020569031595943;
+constexpr double zeta3 = 1.2020569031595943;
 
 /** \f$\zeta(4)\f$. */
-const double zeta4 = 0.4*zeta2*zeta2;
+constexpr double zeta4 = 0.4*zeta2*zeta2;
 
 /** \f$\zeta(5)\f$. */
-const double zeta5 = 1.0369277551433699;
+constexpr double zeta5 = 1.0369277551433699;
 
 /** \f$\zeta(6)\f$. */
-const double zeta6 = 4.*zeta2*zeta4/7.;
+constexpr double zeta6 = 4.*zeta2*zeta4/7.;
 }
 
 }

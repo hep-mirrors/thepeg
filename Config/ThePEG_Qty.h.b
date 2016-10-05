@@ -13,10 +13,11 @@ namespace ThePEG {
 #include <cmath>
 namespace ThePEG {
 
-const double ZERO = 0.0;
+constexpr double ZERO = 0.0;
 
 /// Fractional powers of a double.
 template<int P, int R>
+constexpr
 double pow(double q) {
   return std::pow(q,double(P)/double(R));
 }
