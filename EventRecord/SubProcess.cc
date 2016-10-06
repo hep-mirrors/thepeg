@@ -148,5 +148,3 @@ void SubProcess::persistentInput(PersistentIStream & is, int) {
 ClassDescription<SubProcess> SubProcess::initSubProcess;
 
 void SubProcess::Init() {}
-
-ThePEG_IMPLEMENT_SET(SubProPtr,SubProcessSet)

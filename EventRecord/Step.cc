@@ -446,5 +446,3 @@ void Step::persistentInput(PersistentIStream & is, int) {
 ClassDescription<Step> Step::initStep;
 
 void Step::Init() {}
-
-ThePEG_IMPLEMENT_SET(StepPtr,StepSet)

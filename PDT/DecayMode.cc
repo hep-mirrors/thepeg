@@ -678,8 +678,3 @@ DecModRebind::DecModRebind(string tag, string obj) {
 	     << "the object '" << obj << "' refered to lacked a translation.";
   severity(abortnow);
 }
-
-ThePEG_IMPLEMENT_MULTISET(tPDPtr,ParticleMSet)
-ThePEG_IMPLEMENT_MULTISET(tPMPtr,MatcherMSet)
-ThePEG_IMPLEMENT_MULTISET(tDMPtr,ModeMSet)
-

@@ -519,6 +519,3 @@ void Particle::persistentInput(PersistentIStream & is, int) {
 ClassDescription<Particle> Particle::initParticle;
 
 void Particle::Init() {}
-
-ThePEG_IMPLEMENT_SET(PPtr,ParticleSet)
-
