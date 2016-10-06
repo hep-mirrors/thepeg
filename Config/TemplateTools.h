@@ -9,6 +9,8 @@
 #ifndef Template_Tools_H
 #define Template_Tools_H
 
+#include <type_traits>
+
 /**
  * @file TemplateTools.h 
  * Useful template machinery. Based on Alexandrescu, "Modern C++ Design".
@@ -79,6 +81,8 @@ struct TypeTraits
   enum { hasDimension = false };
   /// Implementation selector
   typedef StandardT DimType;
+  /// Base unit for arithmetic types
+  static constexpr double baseunit = 1.0;
 };
 
 }
