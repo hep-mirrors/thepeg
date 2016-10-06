@@ -82,7 +82,12 @@ public:
   /**
    * Constructor for null pointer.
    */
-  RCPtr() : ptr(0) {}
+  RCPtr() : ptr(nullptr) {}
+
+  /**
+   * Constructor for nullptr.
+   */
+  RCPtr( decltype(nullptr) ) : ptr(nullptr) {}
 
   /**
    * Copy constructor.
@@ -336,7 +341,12 @@ public:
   /**
    * Constructor for null pointer.
    */
-  ConstRCPtr() : ptr(0) {}
+  ConstRCPtr() : ptr(nullptr) {}
+
+  /**
+   * Constructor for nullptr.
+   */
+  ConstRCPtr( decltype(nullptr) ) : ptr(nullptr) {}
 
   /**
    * Copy constructor.
@@ -530,7 +540,12 @@ public:
   /**
    * Constructor for null pointer.
    */
-  TransientRCPtr() : ptr(0) {}
+  TransientRCPtr() : ptr(nullptr) {}
+
+  /**
+   * Constructor for nullptr.
+   */
+  TransientRCPtr( decltype(nullptr) ) : ptr(nullptr) {}
 
   /**
    * Copy constructor.
@@ -702,7 +717,12 @@ public:
   /**
    * Constructor for null pointer.
    */
-  TransientConstRCPtr() : ptr(0) {}
+  TransientConstRCPtr() : ptr(nullptr) {}
+
+  /**
+   * Constructor for nullptr.
+   */
+  TransientConstRCPtr( decltype(nullptr) ) : ptr(nullptr) {}
 
   /**
    * Copy constructor.
