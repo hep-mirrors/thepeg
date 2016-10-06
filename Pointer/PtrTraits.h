@@ -161,6 +161,71 @@ struct PtrTraits<const T *>: public PtrTraitsType {
 
 };
 
+/// nullptr type
+typedef decltype(nullptr) nullptr_t;
+/**
+ * Specialization of the PtrTraits class for nullptr
+ *
+ * Only barePointer needs to be implemented, to allow 
+ * conversion to other smart ptrs
+ */
+template <>
+struct PtrTraits<nullptr_t>: public PtrTraitsType {
+
+  /** Template argument typedef. */
+  //typedef nullptr_t value_type;
+  /** Template argument typedef. */
+  //typedef nullptr_t & reference;
+  /** Template argument typedef. */
+  //typedef const nullptr_t & const_reference;
+  /** Template argument typedef. */
+  //typedef nullptr_t pointer;
+  /** Template argument typedef. */
+  //typedef nullptr_t const_pointer;
+
+  /**
+   * Return the bare pointer of the given pointer object.
+   */
+  static nullptr_t barePointer(nullptr_t p) { return nullptr; }
+
+  /**
+   * Create an object and return a pointer to it.
+   */
+  //static pointer create() { return nullptr; }
+
+  /**
+   * Create an copy of an object and return a pointer to it.
+   */
+  //static pointer create(const_reference t) { return nullptr; }
+
+  /**
+   * Destroy the object pointed to.
+   */
+  //static void destroy(pointer tp) {}
+
+  /**
+   * Cast dynamically.
+   */
+  //template <class R>
+  //static pointer DynamicCast(R * r) { return nullptr; }
+
+  /**
+   * Cast away constness.
+   */
+  //static pointer ConstCast(const nullptr_t * t) { return nullptr; }
+
+  /**
+   * Cast from a basic pointer.
+   */
+  //static pointer PtrCast(nullptr_t t) { return nullptr; }
+
+  /**
+   * The null pointer is not reference counted.
+   */
+  //static const bool reference_counted = false;
+
+};
+
 /**
  * Replacement for the standard dynamic_cast
  */
