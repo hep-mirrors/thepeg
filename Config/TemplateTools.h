@@ -82,7 +82,14 @@ struct TypeTraits
   /// Implementation selector
   typedef StandardT DimType;
   /// Base unit for arithmetic types
-  static constexpr double baseunit = 1.0;
+  // construction with extra U type is necessary to make
+  // enable_if work before concepts are supported properly
+  template <typename U = T>
+  static constexpr typename
+  std::enable_if< (std::is_arithmetic<U>::value && 
+                   std::is_same<U, T>::value), U>::type 
+  baseunit() 
+  { return static_cast<U>(1); }
 };
 
 }
