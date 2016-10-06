@@ -186,7 +186,7 @@ struct PtrTraits<nullptr_t>: public PtrTraitsType {
   /**
    * Return the bare pointer of the given pointer object.
    */
-  static nullptr_t barePointer(nullptr_t p) { return nullptr; }
+  static nullptr_t barePointer(nullptr_t ) { return nullptr; }
 
   /**
    * Create an object and return a pointer to it.
