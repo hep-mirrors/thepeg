@@ -181,7 +181,8 @@ public:
   constexpr Qty(ZeroUnit) : rawValue_(0.0) {}
 
   /// Default constructor from a double.
-  constexpr Qty(double x = 0.0) : rawValue_(x) {}
+  constexpr Qty(double x = 0.0, double factor=1.0) 
+  	: rawValue_(x * factor) {}
 
   /// Constructor from a compatible quantity
   template <int DL2, int DE2, int DQ2>
@@ -310,8 +311,6 @@ struct TypeTraits<Qty<L,E,Q,DL,DE,DQ> >
   enum { hasDimension = true };
   /// Type switch set to dimensioned type.
   typedef DimensionT DimType;
-  static constexpr Qty<L,E,Q,DL,DE,DQ> 
-    baseunit = Qty<L,E,Q,DL,DE,DQ>::baseunit();
 };
 
 /** Type traits for alternative code generation*/
@@ -322,7 +321,6 @@ struct TypeTraits<Qty<0,0,0,DL,DE,DQ> >
   enum { hasDimension = false };
   /// Type switch set to standard type.
   typedef StandardT DimType;
-  static constexpr double baseunit = 1.0;
 };
 
 //@}

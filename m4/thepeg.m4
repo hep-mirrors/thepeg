@@ -309,20 +309,6 @@ AC_DEFUN([THEPEG_LIBTOOL_VERSION_INFO],
 [  LIBTOOLVERSIONINFO="-version-info $1:$2:$3"
    AC_SUBST(LIBTOOLVERSIONINFO)])
 
-AC_DEFUN([THEPEG_UNIT_CHECKING],
-[
-AC_MSG_CHECKING([whether to include dimension checking])
-AC_ARG_ENABLE(unitchecks,
-        AC_HELP_STRING([--enable-unitchecks],[turns on dimension checking for physical quantities.]),
-        [],
-        [enable_unitchecks=no]
-        )
-AC_MSG_RESULT([$enable_unitchecks])
-if test "x$enable_unitchecks" = "xyes"; then
-   AC_DEFINE([ThePEG_HAS_UNITS_CHECKING],[1],[define if units should be checked])
-fi
-])
-
 AC_DEFUN([THEPEG_CHECK_GSL],
 [
 AC_MSG_CHECKING([for gsl location])
@@ -404,7 +390,7 @@ cat << _THEPEG_EOF_ > config.thepeg
 ***--------------------------------------------------
 *** Prefix:		$prefix
 ***
-*** Dimension checks:	$enable_unitchecks
+*** Dimension checks:	yes
 ***
 *** GSL:		$with_gsl
 ***

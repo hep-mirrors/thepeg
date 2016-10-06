@@ -328,7 +328,7 @@ namespace {
   template <typename T>
   inline
   void ostreamInsert2(ostream & os, T v, DimensionT) {
-    os << ounit(v,T::baseunit());
+    os << ounit(v, T::baseunit());
   }
   
   template <typename T>

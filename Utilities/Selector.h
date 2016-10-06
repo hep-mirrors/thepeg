@@ -239,16 +239,28 @@ public:
   void clear() { theMap.clear(); theSum = WeightType(); }
 
   /**
+   * Output to a stream for dimensionful units.
+   */
+  template <typename OStream>
+  void output(OStream &, DimensionT) const;
+
+  /**
+   * Input from a stream for dimensionful units.
+   */
+  template <typename IStream>
+  void input(IStream &, DimensionT);
+
+  /**
    * Output to a stream.
    */
   template <typename OStream>
-  void output(OStream &) const;
+  void output(OStream &, StandardT) const;
 
   /**
    * Input from a stream.
    */
   template <typename IStream>
-  void input(IStream &);
+  void input(IStream &, StandardT);
 
 private:
 
@@ -270,7 +282,7 @@ private:
 template <typename OStream, typename T, typename WeightType>
 OStream & operator<<(OStream & os, const Selector<T,WeightType> & s)
 {
-  s.output(os);
+  s.output(os, typename TypeTraits<WeightType>::DimType());
   return os;
 }
 
@@ -280,7 +292,7 @@ OStream & operator<<(OStream & os, const Selector<T,WeightType> & s)
 template <typename IStream, typename T, typename WeightType>
 IStream & operator>>(IStream & is, Selector<T,WeightType> & s)
 {
-  s.input(is);
+  s.input(is, typename TypeTraits<WeightType>::DimType());
   return is;
 }
 

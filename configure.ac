@@ -8,7 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 THEPEG_LIBTOOL_VERSION_INFO(20,0,0)
 
 AC_CONFIG_SRCDIR([EventRecord/SubProcess.h])
-AC_CONFIG_HEADERS([Config/config.h Config/ThePEG_Qty.h:Config/ThePEG_Qty.h.a:Config/ThePEG_Qty.h.in:Config/ThePEG_Qty.h.b])
+AC_CONFIG_HEADERS([Config/config.h])
 
 AC_CANONICAL_HOST
 
@@ -48,7 +48,6 @@ LT_INIT([disable-static dlopen pic-only])
 
 VL_LIB_READLINE
 
-THEPEG_UNIT_CHECKING
 THEPEG_CHECK_GSL
 THEPEG_SEARCH_LHAPDF
 THEPEG_CHECK_HEPMC

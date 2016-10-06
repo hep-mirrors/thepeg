@@ -79,13 +79,7 @@ struct TypeTraits
   enum { hasDimension = false };
   /// Implementation selector
   typedef StandardT DimType;
-  /// Base unit
-  static const double baseunit;
 };
-
-/// Built-in types have no dimension.
-template<typename T>
-const double TypeTraits<T>::baseunit = T(1);
 
 }
 

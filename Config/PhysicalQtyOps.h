@@ -24,7 +24,7 @@ inline constexpr Qty<L1*DL2+L2*DL1,E1*DE2+E2*DE1,Q1*DQ2+Q2*DQ1,DL1*DL2,DE1*DE2,D
 operator*(Qty<L1,E1,Q1,DL1,DE1,DQ1> q1, Qty<L2,E2,Q2,DL2,DE2,DQ2> q2) {
   typedef
     Qty<L1*DL2+L2*DL1,E1*DE2+E2*DE1,Q1*DQ2+Q2*DQ1,DL1*DL2,DE1*DE2,DQ1*DQ2> RetT;
-  return RetT(q1.rawValue()*q2.rawValue()*RetT::baseunit());
+  return RetT{RetT::baseunit(), q1.rawValue()*q2.rawValue()};
 }
 
 
@@ -35,7 +35,7 @@ inline constexpr Qty<L1*DL2-L2*DL1,E1*DE2-E2*DE1,Q1*DQ2-Q2*DQ1,DL1*DL2,DE1*DE2,D
 operator/(Qty<L1,E1,Q1,DL1,DE1,DQ1> q1, Qty<L2,E2,Q2,DL2,DE2,DQ2> q2) {
   typedef
     Qty<L1*DL2-L2*DL1,E1*DE2-E2*DE1,Q1*DQ2-Q2*DQ1,DL1*DL2,DE1*DE2,DQ1*DQ2> RetT;
-  return RetT((q1.rawValue()/q2.rawValue())*RetT::baseunit());
+  return RetT{RetT::baseunit(), q1.rawValue()/q2.rawValue()};
 }
 
 // qty = qty + qty
