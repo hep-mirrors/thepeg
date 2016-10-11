@@ -34,6 +34,26 @@ Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
   return sqrt(r2);
 }
 
+Energy SimplePhaseSpace::checkMagnitude(Energy2 s, Energy m1, Energy m2)
+{
+  if ( s < ZERO ) return -1.0*GeV;
+  const Energy2 eps = 10.0*s*Constants::epsilon;
+  if ( m1 < ZERO && sqr(m1) < eps ) m1 = ZERO;
+  if ( m2 < ZERO && sqr(m2) < eps ) m2 = ZERO;
+  if ( m1 >= ZERO && m2 >= ZERO ) {
+    Energy2 aa = s - sqr(m1+m2);
+    if ( aa < ZERO && aa > -eps ) return ZERO;
+    if ( aa < ZERO ) return -1.0*GeV;
+    return 0.5*sqrt(aa*(s-sqr(m1-m2))/s);
+  }
+  Energy2 m12 = m1 < ZERO? -sqr(m1): sqr(m1);
+  Energy2 m22 = m2 < ZERO? -sqr(m2): sqr(m2);
+  Energy2 r2 = 0.25*(sqr(m12) + sqr(m22 - s) -2.0*m12*(m22 + s))/s;
+  if ( r2 < ZERO || r2 + m12 < ZERO || r2 + m22 < ZERO )
+    return -1.0*GeV;
+  return sqrt(r2);
+}
+
 vector<LorentzMomentum> SimplePhaseSpace::
 CMSn(Energy m0, const vector<Energy> & m)
 {

@@ -50,13 +50,16 @@ bool ME2to2Base::generateKinematics(const double * r) {
   double ctmin = -1.0;
   double ctmax = 1.0;
 
-  Energy q = ZERO;
-  try {
-    q = SimplePhaseSpace::
-      getMagnitude(sHat(), meMomenta()[2].mass(), meMomenta()[3].mass());
-  } catch ( ImpossibleKinematics ) {
-    return false;
-  }
+  // Energy q = ZERO;
+  // try {
+  //   q = SimplePhaseSpace::
+  //     getMagnitude(sHat(), meMomenta()[2].mass(), meMomenta()[3].mass());
+  // } catch ( ImpossibleKinematics ) {
+  //   return false;
+  // }
+  Energy q = SimplePhaseSpace::
+    checkMagnitude(sHat(), meMomenta()[2].mass(), meMomenta()[3].mass());
+  if ( q < ZERO ) return false;
 
   Energy e = sqrt(sHat())/2.0;
 		    
