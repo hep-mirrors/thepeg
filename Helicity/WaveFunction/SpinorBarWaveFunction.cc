@@ -107,7 +107,7 @@ void SpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
     }
   }
   // now finally we can construct the spinors
-  _wf = LorentzSpinorBar<double>((dir==incoming) ? v_spinortype : u_spinortype);
+  _wf = LorentzSpinorBar<double>((dir==incoming) ? SpinorType::v : SpinorType::u);
   _wf[0] = upper*hel_wf[0]*UnitRemoval::InvSqrtE;
   _wf[1] = upper*hel_wf[1]*UnitRemoval::InvSqrtE;
   _wf[2] = lower*hel_wf[0]*UnitRemoval::InvSqrtE;
@@ -141,8 +141,8 @@ calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
     }
     else {
       inspin->decay();
-      if( (particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) || 
-	  (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+      if( (particle->id()>0&&inspin->getDecayBasisState(0).Type()!=SpinorType::u) || 
+	  (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=SpinorType::v)) {
 	waves[0] = inspin->getDecayBasisState(0).conjugate().bar();
 	waves[1] = inspin->getDecayBasisState(1).conjugate().bar();
       }
@@ -179,8 +179,8 @@ calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
     }
     else {
       inspin->decay();
-      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) ||
-	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=SpinorType::u) ||
+	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=SpinorType::v)) {
 	for(unsigned int ix=0;ix<2;++ix)
 	  waves[ix] = SpinorBarWaveFunction(particle,
 					    inspin->getDecayBasisState(ix).conjugate().bar(),dir);
@@ -219,8 +219,8 @@ calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
     }
     else {
       inspin->decay();
-      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) ||
-	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=SpinorType::u) ||
+	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=SpinorType::v)) {
 	waves[0] = inspin->getDecayBasisState(0).conjugate().bar();
 	waves[1] = inspin->getDecayBasisState(1).conjugate().bar();
       }
@@ -261,8 +261,8 @@ calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
     }
     else {
       inspin->decay();
-      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=u_spinortype) ||
-	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=v_spinortype)) {
+      if((particle->id()>0&&inspin->getDecayBasisState(0).Type()!=SpinorType::u) ||
+	 (particle->id()<0&&inspin->getDecayBasisState(0).Type()!=SpinorType::v)) {
 	for(unsigned int ix=0;ix<2;++ix)
 	  waves[ix] = SpinorBarWaveFunction(particle,
 					    inspin->getDecayBasisState(ix).conjugate().bar(),dir);

@@ -20,8 +20,8 @@ using namespace ThePEG::Helicity;
 void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
   Complex ii(0.,1.);
   LorentzRSSpinorBar<double> news;
-  if(direction()==incoming) news=LorentzRSSpinorBar<double>(u_spinortype);
-  else                      news=LorentzRSSpinorBar<double>(v_spinortype);
+  if(direction()==incoming) news=LorentzRSSpinorBar<double>(SpinorType::u);
+  else                      news=LorentzRSSpinorBar<double>(SpinorType::v);
   unsigned int ix,iy;
   assert(direction()!=intermediate);
   assert(ihel<=3);

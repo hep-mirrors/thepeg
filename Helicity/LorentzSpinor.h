@@ -17,6 +17,7 @@
 #include "LorentzSpinorBar.h"
 #include "LorentzPolarizationVector.h"
 #include "LorentzTensor.h"
+#include <array>
 
 namespace ThePEG{
 namespace Helicity{
@@ -49,12 +50,12 @@ namespace Helicity{
  * \f]
  *
  *  The type of the spinor is also stored using the SpinorType
- *  enumeration.  There are three types supported u_spinortype,
- *  v_spinortype, unknown_spinortype.  This information is intended
+ *  enumeration.  There are three types supported SpinorType::u,
+ *  SpinorType::v, SpinorType::unknown.  This information is intended
  *  mainly for use in the case of Majorana particles where matrix
  *  elements can be calculated with either u or v type spinors and
  *  knowledge of which was used will be needed in order to give the
- *  correct correlations. The unknown_spinortypee is intended for
+ *  correct correlations. The SpinorType::unknowne is intended for
  *  cases where either the spinor for an off-shell line in a matrix
  *  element calculation or the information is genuinely unknown.
  *
@@ -75,9 +76,7 @@ public:
   /**
    * Default zero constructor, optionally specifying \a t, the type.
    */
-  LorentzSpinor(SpinorType t = unknown_spinortype) : _type(t) {
-    for(unsigned int ix=0;ix<4;++ix) _spin[ix]=Value();
-  }
+  LorentzSpinor(SpinorType t = SpinorType::unknown) : _type(t), _spin() {}
 
   /**
    * Constructor with complex numbers specifying the components,
@@ -85,12 +84,7 @@ public:
    */
   LorentzSpinor(complex<Value> a,complex<Value> b,
 		complex<Value> c,complex<Value> d,
-		SpinorType s = unknown_spinortype) : _type(s) {
-    _spin[0]=a;
-    _spin[1]=b;
-    _spin[2]=c;
-    _spin[3]=d;
-  }
+		SpinorType s = SpinorType::unknown) : _type(s), _spin{{a,b,c,d}} {}
   //@}
 
   /** @name Access the components. */
@@ -486,7 +480,7 @@ private:
   /**
    * Storage of the components.
    */
-  complex<Value> _spin[4];
+  std::array<complex<Value>,4> _spin;
 };
 
 }
