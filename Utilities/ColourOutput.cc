@@ -12,18 +12,36 @@
 //
 
 #include "ColourOutput.h"
+#include <iostream>
+#include <unistd.h>
+
 
 namespace {
 
-bool useColours() {
-	return true;
-}
+bool useColours(const std::ostream & os) {
+
+	// are we cout?
+	if ( os.rdbuf() == std::cout.rdbuf() ) {
+		return isatty(fileno(stdout));
+	}
+	// are we cerr?
+	else if ( os.rdbuf() == std::cerr.rdbuf() ) {
+		return isatty(fileno(stderr));
+	}
+
+	// otherwise play safe
+	return false;
 
 }
 
-std::ostream& operator<<(std::ostream & os, ThePEG::Colour c) {
-	if ( useColours() )
+}
+
+namespace ThePEG {
+
+std::ostream& operator<<(std::ostream & os, ANSI c) {
+	if ( useColours(os) )
     os << "\x1B[" << static_cast<int>(c) << 'm';
   return os;
 }
 
+}

@@ -13,22 +13,34 @@
 
 namespace ThePEG {
 
-enum class Colour {
-  reset    = 0,
+enum class ANSI {
+  reset      =  0,
 
-  red      = 31,
-  green  = 32,
-  blue     = 34,
+  black      = 30,
+  red        = 31,
+  green      = 32,
+  yellow     = 33,
+  blue       = 34,
+  magenta    = 35,
+  cyan       = 36,
+  white      = 37,
 
-  fg_reset = 39,
+  fg_reset   = 39,
 
-  bg_red   = 41,
-  bg_reset = 49,
+  bg_black   = 40,
+  bg_red     = 41,
+  bg_green   = 42,
+  bg_yellow  = 43,
+  bg_blue    = 44,
+  bg_magenta = 45,
+  bg_cyan    = 46,
+  bg_white   = 47,
 
-  yellow   = 93
+  bg_reset   = 49
+
 };
 
-std::ostream& operator<<(std::ostream & os, Colour c);
+std::ostream& operator<<(std::ostream & os, ANSI c);
 
 }
 
