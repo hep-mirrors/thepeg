@@ -240,9 +240,18 @@ EventPtr LesHouchesEventHandler::generateEvent() {
     try {
       theLastXComb = currentReader()->getXComb();
 
+      // fact for weight normalization
+      const double fact = 
+      	theNormWeight ? 
+      	  double(selector().sum()/picobarn) : 1.;
+ 
       currentEvent(new_ptr(Event(lastParticles(), this, generator()->runName(),
-                                 generator()->currentEventNumber(), weight)));
+                                 generator()->currentEventNumber(), weight*fact )));
       currentEvent()->optionalWeights() = currentReader()->optionalEventWeights();
+      // normalize the optional weights
+      for(map<string,double>::iterator it = currentEvent()->optionalWeights().begin();
+	  it!=currentEvent()->optionalWeights().end();++it)
+	it->second *= fact;
 
       performCollision();
 
@@ -330,12 +339,18 @@ EventPtr LesHouchesEventHandler::continueEvent() {
     continueCollision();
   }
   catch (Veto) {
-    reject(currentEvent()->weight());
+    const double fact = 
+      theNormWeight ?  
+        double(selector().sum()/picobarn) : 1.;
+    reject(currentEvent()->weight()/fact);
   }
   catch (Stop) {
   }
   catch (Exception &) {
-    reject(currentEvent()->weight());
+    const double fact = 
+      theNormWeight ?  
+        double(selector().sum()/picobarn) : 1.;
+    reject(currentEvent()->weight()/fact);
     throw;
   }
   return currentEvent(); 
@@ -496,12 +511,14 @@ int LesHouchesEventHandler::ntriesinternal() const {
 
 void LesHouchesEventHandler::persistentOutput(PersistentOStream & os) const {
   os << stats << histStats << theReaders << theSelector
-     << oenum(theWeightOption) << theUnitTolerance << theCurrentReader << warnPNum;
+     << oenum(theWeightOption) << theUnitTolerance << theCurrentReader << warnPNum
+     << theNormWeight;
 }
 
 void LesHouchesEventHandler::persistentInput(PersistentIStream & is, int) {
   is >> stats >> histStats >> theReaders >> theSelector
-     >> ienum(theWeightOption) >> theUnitTolerance >> theCurrentReader >> warnPNum;
+     >> ienum(theWeightOption) >> theUnitTolerance >> theCurrentReader >> warnPNum
+     >> theNormWeight;
 }
 
 ClassDescription<LesHouchesEventHandler>
@@ -579,6 +596,23 @@ void LesHouchesEventHandler::Init() {
      (double(LesHouchesEventHandler::*)()const)(0),
      (double(LesHouchesEventHandler::*)()const)(0),
      (double(LesHouchesEventHandler::*)()const)(0));
+
+
+  static Switch<LesHouchesEventHandler,unsigned int> interfaceWeightNormalization
+    ("WeightNormalization",
+     "How to normalize the output weights",
+     &LesHouchesEventHandler::theNormWeight, 0, false, false);
+  static SwitchOption interfaceWeightNormalizationUnit
+    (interfaceWeightNormalization,
+     "Normalized",
+     "Standard normalization, i.e. +/- for unweighted events",
+     0);
+  static SwitchOption interfaceWeightNormalizationCrossSection
+    (interfaceWeightNormalization,
+     "CrossSection",
+     "Normalize the weights to the max cross section in pb",
+     1);
+
 
   interfaceLesHouchesReaders.rank(10);
   interfaceWeightOption.rank(9);
