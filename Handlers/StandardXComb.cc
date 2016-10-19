@@ -165,9 +165,13 @@ bool StandardXComb::setIncomingPartons(tStdXCombPtr labHead) {
 
   if ( lastPartons().first )
     return true;
-
-  if ( !labHead )
+    // If no labHead was given, we need to search the labhead
+  if ( !labHead ){
     labHead = head();
+    while ( labHead->head() && labHead->head() != labHead ) {
+      labHead =labHead->head();
+    }
+  }
 
   createPartonBinInstances();
   lastParticles(labHead->lastParticles());
@@ -555,7 +559,11 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
     return ZERO;
   }
 
-  xsec *= cutWeight();
+  const bool isCKKW=CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
+              matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW();
+
+  if(!isCKKW)
+    xsec *= cutWeight();
 
   lastAlphaS (matrixElement()->orderInAlphaS () >0 ?
 	      matrixElement()->alphaS()  : -1.);
@@ -568,8 +576,7 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
   }
 
   subProcess(SubProPtr());
-  if ( CKKWHandler() && matrixElement()->maxMultCKKW() > 0 &&
-       matrixElement()->maxMultCKKW() > matrixElement()->minMultCKKW() ) {
+  if ( isCKKW ) {
     newSubProcess();
     CKKWHandler()->setXComb(this);
     xsec *= CKKWHandler()->reweightCKKW(matrixElement()->minMultCKKW(),
