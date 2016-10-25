@@ -590,7 +590,12 @@ double LesHouchesReader::getEvent() {
   ++position;
 
   double max = maxWeights[hepeup.IDPRUP]*maxFactor;
-  return max != 0.0? eventWeight()/max: 0.0; 
+  // normalize all the weights to the max weight
+  for(map<string,double>::iterator it=optionalWeights.begin();
+      it!=optionalWeights.end();++it) {
+    it->second = (max != 0.0) ? it->second/max : 0.0;
+  }
+  return (max != 0.0) ? eventWeight()/max : 0.0; 
 }
 
 void LesHouchesReader::skip(long n) {
