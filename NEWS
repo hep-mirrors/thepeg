@@ -8,6 +8,25 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at http:///projects.hepforge.org/herwig/versions
 
+* ThePEG-2.0.4 release: 2016-10-25
+
+** Default weight explicitly labelled    
+   The nominal event weight is now labelled "Default" and is always the
+   first weight to be inserted into HepMC.
+   (Note that HepMC 2.06.09 may not preserve this ordering.)
+
+** LesHouches event weights handling    
+   There are now two options for the treatment of optional weights 
+   coming in from a Les Houches file, available through 
+   "LesHouchesEventHandler:WeightNormalization". Either they are
+   normalized to the "Default" weight ("Normalized"), or they are given
+   as cross-sections in pb ("CrossSection"). The default behaviour
+   is "Normalized".
+
+** JetFinder in Cuts objects writes information
+   The selected JetFinder is explicitly listed in the debug output
+   
+
 
 * ThePEG-2.0.3 release: 2016-07-21
 
