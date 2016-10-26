@@ -35,7 +35,7 @@ string BlobMEBase::ColourConnection::write(size_t& sourceCount) const {
 }
 
 void BlobMEBase::getDiagrams() const {
-  map<tcPDPair,tcPDVector> proc = processes();
+  multimap<tcPDPair,tcPDVector> proc = processes();
   int id = 1;
   for ( auto it = proc.begin(); it != proc.end(); ++it, ++id ) {
     BlobDiagram diag(id,it->first.first,it->first.second);
