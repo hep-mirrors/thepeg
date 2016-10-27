@@ -112,6 +112,11 @@ inline double sqrt(int x) {
   return std::sqrt(double(x));
 }
 
+/** factorial */
+inline constexpr long double factorial(unsigned int n) {
+  return (n < 2) ? 1.0 : n * factorial(n - 1);
+}
+
 /** Check if a given object is a part of a container. */
 template <typename Container, typename Key>
 inline bool member(const Container & c, const Key & k) {
