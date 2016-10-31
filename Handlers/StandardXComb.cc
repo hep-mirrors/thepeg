@@ -353,6 +353,9 @@ CrossSection StandardXComb::dSigDR(const double * r) {
   lastAlphaS(matrixElement()->alphaS());
   lastAlphaEM(matrixElement()->alphaEM());
 
+  partonBinInstances().first->scale(lastScale());
+  partonBinInstances().second->scale(lastScale());
+
   if ( (!willPassCuts() && 
 	!matrixElement()->headCuts() &&
 	!matrixElement()->ignoreCuts()) ||
