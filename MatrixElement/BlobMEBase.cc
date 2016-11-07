@@ -22,14 +22,22 @@ BlobMEBase::~BlobMEBase() {}
 #include "ThePEG/MatrixElement/BlobDiagram.h"
 
 string BlobMEBase::ColourConnection::write(size_t& sourceCount) const {
-  assert(members.size() >= 2);
   string res;
-  for ( auto it = members.begin(); it != members.end(); ++it )
-    res += std::to_string(*it) + " ";
-  if ( members.size() > 2 || 
-       ( members.size() == 2 && members[0]*members[1] > 0 ) ) {
-    res += ": " + std::to_string(sourceCount);
-    ++sourceCount;
+  if ( members.size() == 2 ) {
+    // standard connection
+    for ( auto it = members.begin(); it != members.end(); ++it )
+      res += std::to_string(*it) + " ";
+  } else if ( members.size() == 3 ) {
+    // source or sink
+    for ( auto it = members.begin(); it != members.end(); ++it ) {
+      res += std::to_string(*it) + " : " + std::to_string(sourceCount);
+      if ( std::next(it) != members.end() )
+	res += ", ";
+    }
+  } else {
+    // not handled
+    throw Exception() << "BlobMEBase::ColourConnection::write: Invalid colour connection information."
+		      << Exception::runerror;
   }
   return res;
 }
@@ -57,7 +65,7 @@ Selector<const ColourLines *>
 BlobMEBase::colourGeometries(tcDiagPtr diag) const {
   auto connections = colourConnections();
   ostringstream clines;
-  size_t sourceCount = diag->partons().size();
+  size_t sourceCount = diag->partons().size() + 1;
   for ( auto it = connections.begin(); it != connections.end(); ++it ) {
     clines << it->write(sourceCount);
     auto nit = it; ++nit;
