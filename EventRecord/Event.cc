@@ -17,7 +17,6 @@
 #include "ThePEG/Config/algorithm.h"
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
-#include "ThePEG/Utilities/DIterator.h"
 #include <iostream>
 
 using namespace ThePEG;
@@ -130,8 +129,7 @@ void Event::removeDecay(tPPtr p) {
 void Event::removeEntry(tPPtr p) {
   ParticleSet::iterator it = allParticles.find(p);
   if ( it == allParticles.end() ) return;
-  for ( DIterator<CollisionVector::iterator> cit = theCollisions.begin();
-	cit != theCollisions.end(); ++cit ) cit->removeEntry(p);
+  for ( auto & cit : theCollisions ) cit->removeEntry(p);
   allParticles.erase(it);
 }
 
@@ -142,8 +140,7 @@ void Event::removeParticle(tPPtr p) {
 }
 
 void Event::cleanSteps() {
-  for ( DIterator<CollisionVector::iterator> cit = theCollisions.begin();
-	cit != theCollisions.end(); ++cit ) cit->cleanSteps();
+  for ( auto & cit : theCollisions ) cit->cleanSteps();
 }
 
 EventPtr Event::clone() const {
