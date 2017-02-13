@@ -191,9 +191,8 @@ vector<tPDPtr> VertexBase::search(unsigned int iloc,tcPDPtr idd) const {
   assert( iloc < _npoint );
   vector<tPDPtr> out;
   for(const auto & pvec : _particles) {
-    bool found = pvec[iloc] == idd;
-    if(found) {
-      out = vector<tPDPtr>(pvec.begin(), pvec.end());
+    if(pvec[iloc] == idd) {
+      out.insert(out.end(),pvec.begin(), pvec.end());
     }
   }
   return out;
