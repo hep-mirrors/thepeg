@@ -19,7 +19,6 @@
 #include "ThePEG/Persistency/PersistentOStream.h"
 #include "ThePEG/Persistency/PersistentIStream.h"
 #include "ThePEG/Utilities/Debug.h"
-#include "ThePEG/Utilities/DIterator.h"
 #include <iostream>
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
@@ -107,8 +106,7 @@ void Collision::addParticle(tPPtr p) {
 void Collision::removeEntry(tPPtr p) {
   ParticleSet::iterator it = allParticles.find(p);
   if ( it == allParticles.end() ) return;
-  for ( DIterator<StepVector::iterator> sit = theSteps.begin();
-	sit != theSteps.end(); ++sit ) sit->removeEntry(p);
+  for ( auto & step : theSteps ) step->removeEntry(p);
   allParticles.erase(it);
 }
 
@@ -140,8 +138,7 @@ void Collision::popStep() {
 tParticleSet Collision::getRemnants() const {
   tParticleSet ret;
   tPVector partons;
-  for ( DIterator<SubProcessVector::const_iterator> i = subProcesses().begin();
-	i != subProcesses().end(); ++i ) {
+  for ( const auto & i : subProcesses() ) {
     partons.push_back(i->incoming().first->original());
     partons.push_back(i->incoming().second->original());
   }
