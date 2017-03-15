@@ -162,6 +162,8 @@ bool Tree2toNDiagram::isSame (tcDiagPtr diag) const {
     dynamic_ptr_cast<Ptr<Tree2toNDiagram>::tcptr>( diag );
   if ( !cmp )
     return false;
+  if ( cmp->nSpace() != nSpace() )
+    return false;
   return equals(cmp) && external() == cmp->external();
 }
 
@@ -169,6 +171,8 @@ bool Tree2toNDiagram::isSame (tcDiagPtr diag, map<int,int>& remap) const {
   Ptr<Tree2toNDiagram>::tcptr cmp = 
     dynamic_ptr_cast<Ptr<Tree2toNDiagram>::tcptr>( diag );
   if ( !cmp )
+    return false;
+  if ( cmp->nSpace() != nSpace() )
     return false;
   remap.clear();
   remap[0] = 0;
@@ -178,20 +182,32 @@ bool Tree2toNDiagram::isSame (tcDiagPtr diag, map<int,int>& remap) const {
 bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag, 
 			     int start, int startCmp) const {
 
+  // one leg ended externally while the other still has children left
+  if ( start < 0 || startCmp < 0 )
+    return false;
+
+  // match, if both are external legs
   if ( start < 0 && startCmp < 0 )
     return true;
 
+  // no match, if the legs are not the same
   if ( allPartons()[start] != diag->allPartons()[startCmp] )
     return false;
 
   pair<int,int> ch = children(start);
   pair<int,int> chCmp = diag->children(startCmp);
 
+  // start and startCmp are matching external legs
+  if ( ch.first < 0 && chCmp.first < 0 ) {
+    return true;
+  }
+
+  // check the first combination of children
   bool match =
     equals(diag,ch.first,chCmp.first) &&
     equals(diag,ch.second,chCmp.second);
 
-  // also try swapped legs on same vertex
+  // also try swapped legs on same vertex for time-like legs
   if ( !match && start > nSpace() - 1 )
     match = 
       equals(diag,ch.first,chCmp.second) &&
@@ -205,24 +221,34 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
 			     map<int,int>& remap,
 			     int start, int startCmp) const {
 
+  // one leg ended externally while the other still has children left
+  if ( start < 0 || startCmp < 0 )
+    return false;
+
+  // match, if both are external legs
   if ( start < 0 && startCmp < 0 )
     return true;
 
+  // no match, if the legs are not the same
   if ( allPartons()[start] != diag->allPartons()[startCmp] )
     return false;
 
   pair<int,int> ch = children(start);
   pair<int,int> chCmp = diag->children(startCmp);
 
+  // start and startCmp are matching external legs, which require remapping of
+  // external labels
   if ( ch.first < 0 && chCmp.first < 0 ) {
     remap[externalId(start)] = diag->externalId(startCmp);
+    return true;
   }
 
+  // check the first combination of children
   bool match =
     equals(diag,remap,ch.first,chCmp.first) &&
     equals(diag,remap,ch.second,chCmp.second);
 
-  // also try swapped legs on same vertex
+  // also try swapped legs on same vertex for time-like legs
   if ( !match && start > nSpace() - 1 )
     match = 
       equals(diag,remap,ch.first,chCmp.second) &&
