@@ -34,6 +34,7 @@ string BlobMEBase::ColourConnection::write(size_t& sourceCount) const {
       if ( std::next(it) != members.end() )
 	res += ", ";
     }
+    sourceCount += 1;
   } else {
     // not handled
     throw Exception() << "BlobMEBase::ColourConnection::write: Invalid colour connection information."
