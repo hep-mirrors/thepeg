@@ -186,10 +186,6 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
   if ( start < 0 || startCmp < 0 )
     return false;
 
-  // match, if both are external legs
-  if ( start < 0 && startCmp < 0 )
-    return true;
-
   // no match, if the legs are not the same
   if ( allPartons()[start] != diag->allPartons()[startCmp] )
     return false;
@@ -224,10 +220,6 @@ bool Tree2toNDiagram::equals(Ptr<Tree2toNDiagram>::tcptr diag,
   // one leg ended externally while the other still has children left
   if ( start < 0 || startCmp < 0 )
     return false;
-
-  // match, if both are external legs
-  if ( start < 0 && startCmp < 0 )
-    return true;
 
   // no match, if the legs are not the same
   if ( allPartons()[start] != diag->allPartons()[startCmp] )
