@@ -61,7 +61,7 @@ public:
     /**
      * Write out the connection to the colour lines string
      */
-    string write(size_t& sourceCount) const;
+    string write(size_t& sourceCount, bool sink) const;
 
   };
 
