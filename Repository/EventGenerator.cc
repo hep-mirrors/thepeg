@@ -70,6 +70,7 @@ extern "C" {
 
 void EventGenerator::checkSignalState() {
   if (THEPEG_SIGNAL_STATE) {
+    log() << "Caught signal " << THEPEG_SIGNAL_STATE << ". Exiting ..." << std::endl;
     finalize();
     exit(0);
   }
