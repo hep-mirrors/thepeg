@@ -74,6 +74,34 @@ ParExGetUnknown::ParExGetUnknown(const InterfaceBase & i,
 
 }
 
+namespace {
+  const std::map<std::string, ThePEG::Energy> 
+  energymapping = {
+  	{"GeV",ThePEG::GeV},
+  	{"MeV",ThePEG::MeV}
+  };
+}
+
+template <>
+void ThePEG::ParameterTBase<ThePEG::Energy>::
+checkUnitConsistency(string suffix) const {
+  // for now, we don't require units to be specified
+  if ( suffix.empty() ) return;
+
+
+  const auto requestedUnit = energymapping.find(suffix);
+  if ( requestedUnit != energymapping.end()
+       && requestedUnit->second == unit() ) 
+    return; // all is fine
+  else
+    Throw<InterfaceException>()
+      << name() 
+      << ": the unit suffix " << suffix << " does not match the unit\n"
+      << "specified in the parameter definition (" << unit()/GeV << " GeV).\n\n"
+      << "To proceed, fix the unit suffix in the input file.\n\n"
+      << Exception::setuperror;      
+}
+
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
 #include "Parameter.tcc"
 #endif

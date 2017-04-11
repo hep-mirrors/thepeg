@@ -13,6 +13,7 @@
 
 
 #include "ThePEG/Config/ThePEG.h"
+#include "ThePEG/Utilities/Throw.h"
 #include "InterfaceBase.h"
 #include "Parameter.xh"
 #include "Parameter.fh"
@@ -393,6 +394,11 @@ private:
    * zero, the Type object is written/read directly.
    */
   Type theUnit;
+
+  /**
+   * Helper to check the unit consistency in set() operations
+   */
+  void checkUnitConsistency(string suffix) const;
 
 };
 

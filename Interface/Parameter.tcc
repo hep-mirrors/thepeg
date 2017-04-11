@@ -54,7 +54,26 @@ ParameterTBase<Type>::setImpl(InterfacedBase & i,
   istringstream is(newValue);
   double t;
   is >> t;
+  // if 'is' has no more chars, all stream ops below are no-ops
+  is.ignore(); // skip the connecting char
+  string suffix;
+  is >> suffix;
+  checkUnitConsistency(suffix);
   tset(i, t*unit());
+}
+
+template <typename T>
+void ParameterTBase<T>::
+checkUnitConsistency(string suffix) const {
+  if ( ! suffix.empty() ) {
+     Throw<InterfaceException>()
+       << name() 
+       << ": unit suffix " << suffix << " will be ignored.\n"
+       << "The unit specified in the parameter definition is used instead.\n\n"
+       << "To proceed, remove the unit suffix in the input file or \n"
+       << "request unit support for " << suffix << " to be added.\n\n"
+       << Exception::setuperror;
+  }
 }
 
 template <typename T>
