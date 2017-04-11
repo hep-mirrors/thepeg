@@ -80,6 +80,18 @@ namespace {
   	{"GeV",ThePEG::GeV},
   	{"MeV",ThePEG::MeV}
   };
+
+  const std::map<std::string, ThePEG::Energy2> 
+  energy2mapping = {
+  	{"GeV2",ThePEG::GeV2},
+  	{"MeV2",ThePEG::MeV2}
+  };
+
+  const std::map<std::string, ThePEG::Length> 
+  lengthmapping = {
+  	{"mm",ThePEG::mm},
+  	{"millimeter",ThePEG::mm}
+  };
 }
 
 template <>
@@ -98,6 +110,46 @@ checkUnitConsistency(string suffix) const {
       << name() 
       << ": the unit suffix " << suffix << " does not match the unit\n"
       << "specified in the parameter definition (" << unit()/GeV << " GeV).\n\n"
+      << "To proceed, fix the unit suffix in the input file.\n\n"
+      << Exception::setuperror;      
+}
+
+template <>
+void ThePEG::ParameterTBase<ThePEG::Energy2>::
+checkUnitConsistency(string suffix) const {
+  // for now, we don't require units to be specified
+  if ( suffix.empty() ) return;
+
+
+  const auto requestedUnit = energy2mapping.find(suffix);
+  if ( requestedUnit != energy2mapping.end()
+       && requestedUnit->second == unit() ) 
+    return; // all is fine
+  else
+    Throw<InterfaceException>()
+      << name() 
+      << ": the unit suffix " << suffix << " does not match the unit\n"
+      << "specified in the parameter definition (" << unit()/GeV2 << " GeV2).\n\n"
+      << "To proceed, fix the unit suffix in the input file.\n\n"
+      << Exception::setuperror;      
+}
+
+template <>
+void ThePEG::ParameterTBase<ThePEG::Length>::
+checkUnitConsistency(string suffix) const {
+  // for now, we don't require units to be specified
+  if ( suffix.empty() ) return;
+
+
+  const auto requestedUnit = lengthmapping.find(suffix);
+  if ( requestedUnit != lengthmapping.end()
+       && requestedUnit->second == unit() ) 
+    return; // all is fine
+  else
+    Throw<InterfaceException>()
+      << name() 
+      << ": the unit suffix " << suffix << " does not match the unit\n"
+      << "specified in the parameter definition (" << unit()/mm << " mm).\n\n"
       << "To proceed, fix the unit suffix in the input file.\n\n"
       << Exception::setuperror;      
 }
