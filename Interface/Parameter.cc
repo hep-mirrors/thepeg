@@ -94,8 +94,10 @@ namespace {
   };
 }
 
+namespace ThePEG {
+
 template <>
-void ThePEG::ParameterTBase<ThePEG::Energy>::
+void ParameterTBase<Energy>::
 checkUnitConsistency(string suffix) const {
   // for now, we don't require units to be specified
   if ( suffix.empty() ) return;
@@ -115,7 +117,7 @@ checkUnitConsistency(string suffix) const {
 }
 
 template <>
-void ThePEG::ParameterTBase<ThePEG::Energy2>::
+void ParameterTBase<Energy2>::
 checkUnitConsistency(string suffix) const {
   // for now, we don't require units to be specified
   if ( suffix.empty() ) return;
@@ -135,7 +137,7 @@ checkUnitConsistency(string suffix) const {
 }
 
 template <>
-void ThePEG::ParameterTBase<ThePEG::Length>::
+void ParameterTBase<Length>::
 checkUnitConsistency(string suffix) const {
   // for now, we don't require units to be specified
   if ( suffix.empty() ) return;
@@ -152,6 +154,8 @@ checkUnitConsistency(string suffix) const {
       << "specified in the parameter definition (" << unit()/mm << " mm).\n\n"
       << "To proceed, fix the unit suffix in the input file.\n\n"
       << Exception::setuperror;      
+}
+
 }
 
 #ifdef ThePEG_TEMPLATES_IN_CC_FILE
