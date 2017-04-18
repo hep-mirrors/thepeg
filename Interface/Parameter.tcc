@@ -61,6 +61,20 @@ ParameterTBase<Type>::setImpl(InterfacedBase & i,
   checkUnitConsistency(suffix);
   tset(i, t*unit());
 }
+  
+    // Macs need a visible template specialization.
+template <>
+void ParameterTBase<Energy>::
+checkUnitConsistency(string suffix) const;
+  
+template <>
+void ParameterTBase<Energy2>::
+checkUnitConsistency(string suffix) const;
+  
+template <>
+void ParameterTBase<Length>::
+checkUnitConsistency(string suffix) const;
+  
 
 template <typename T>
 void ParameterTBase<T>::
@@ -75,6 +89,8 @@ checkUnitConsistency(string suffix) const {
        << Exception::setuperror;
   }
 }
+  
+  
 
 template <typename T>
 void ParameterTBase<T>::
