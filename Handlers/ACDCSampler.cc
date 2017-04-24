@@ -117,7 +117,7 @@ void ACDCSampler::dofinish() {
       << "the run." << Exception::warning);
   
     
-    SamplerBase::dofinish();
+  SamplerBase::dofinish();
 }
 
 void ACDCSampler::doinitrun() {
