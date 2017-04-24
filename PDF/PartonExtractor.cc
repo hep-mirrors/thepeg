@@ -621,6 +621,14 @@ void PartonExtractor::Init() {
     (interfaceFlatSHatY,
      "On", "Generate flat rapidity and \\f$\\log(\\hat{s})\\f$", true);
 
+  static SwitchOption interfaceFlatSHatNo
+    (interfaceFlatSHatY,
+     "No", "Use the l-generation defined by the PDFs", false);
+
+  static SwitchOption interfaceFlatSHatYes
+    (interfaceFlatSHatY,
+     "Yes", "Generate flat rapidity and \\f$\\log(\\hat{s})\\f$", true);
+
   static Reference<PartonExtractor,PDFBase> interfaceFirstPDF
     ("FirstPDF",
      "PDF to override the default PDF for the first beam particle",

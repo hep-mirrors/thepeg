@@ -82,6 +82,16 @@ void ReweightMinPT::Init() {
      "False",
      "Use all particles.",
      false);
+  static SwitchOption interfaceOnlyColouredYes
+    (interfaceOnlyColoured,
+     "Yes",
+     "Use only coloured particles.",
+     true);
+  static SwitchOption interfaceOnlyColouredNo
+    (interfaceOnlyColoured,
+     "No",
+     "Use all particles.",
+     false);
 
 
   interfacePower.rank(10);

@@ -278,6 +278,10 @@ void StandardModelBase::Init() {
     (interfaceRecalculateEW, "On", "On", 1);
   static SwitchOption interfaceRecalculateEWOff
     (interfaceRecalculateEW, "Off", "Off", 0);
+  static SwitchOption interfaceRecalculateEWYes
+    (interfaceRecalculateEW, "Yes", "Yes", 1);
+  static SwitchOption interfaceRecalculateEWNo
+    (interfaceRecalculateEW, "No", "No", 0);
 
   static Reference<StandardModelBase,CKMBase> interfaceCKM
     ("EW/CKM",

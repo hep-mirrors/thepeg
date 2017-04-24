@@ -428,10 +428,10 @@ void LesHouchesFileReader::doinit() {
 	    ostringstream br;
 	    br << setprecision(13) << brat;
 	    generator()->preinitInterface(dm, "BranchingRatio", "set", br.str());
-	    generator()->preinitInterface(dm, "OnOff", "set", "On");
+	    generator()->preinitInterface(dm, "Active", "set", "Yes");
 	    if(dm->CC()) {
 	      generator()->preinitInterface(dm->CC(), "BranchingRatio", "set", br.str());
-	      generator()->preinitInterface(dm->CC(), "OnOff", "set", "On");
+	      generator()->preinitInterface(dm->CC(), "Active", "set", "Yes");
 	    }
 	    ++nmode;
 	  }

@@ -194,6 +194,16 @@ void JetPairRegion::Init() {
      "False",
      "Do not require jets to be in different hemispheres",
      false);
+  static SwitchOption interfaceOppositeHemispheresYes
+    (interfaceOppositeHemispheres,
+     "Yes",
+     "Require jets to be in different hemispheres",
+     true);
+  static SwitchOption interfaceOppositeHemispheresNo
+    (interfaceOppositeHemispheres,
+     "No",
+     "Do not require jets to be in different hemispheres",
+     false);
 
 }
 

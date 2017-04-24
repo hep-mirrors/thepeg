@@ -545,6 +545,16 @@ void StandardEventHandler::Init() {
      "Off",
      "Switch off cuts on collision cuts",
      false);
+  static SwitchOption interfaceCollisionCutsYes
+    (interfaceCollisionCuts,
+     "Yes",
+     "Switch on cuts on collision objects",
+     true);
+  static SwitchOption interfaceCollisionCutsNo
+    (interfaceCollisionCuts,
+     "No",
+     "Switch off cuts on collision cuts",
+     false);
 
   static Reference<StandardEventHandler,SamplerBase> interfaceSampler
     ("Sampler",

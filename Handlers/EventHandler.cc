@@ -411,6 +411,12 @@ void EventHandler::Init() {
   static SwitchOption interfaceWeightedFalse
     (interfaceWeighted, "Off",
      "This EventHandler produces unweighted events.", false);
+  static SwitchOption interfaceWeightedYes
+    (interfaceWeighted, "Yes",
+     "This EventHandler produces weighted events.", true);
+  static SwitchOption interfaceWeightedNo
+    (interfaceWeighted, "No",
+     "This EventHandler produces unweighted events.", false);
 
   static Switch<EventHandler,int> interfaceStatLevel
     ("StatLevel",

@@ -649,6 +649,16 @@ void DecayMode::Init() {
     (interfaceOn, "Off", "The decay channel is switched off.", 0);
   interfaceOn.setHasDefault(false);
 
+  static Switch<DecayMode> interfaceActive
+    ("Active",
+     "Indicates if the decay mode is switched on or off.",
+     0, 0, false, false, &DecayMode::setOn, &DecayMode::getOn);
+  static SwitchOption interfaceActiveYes
+    (interfaceActive, "Yes", "The decay channel is switched on.", 1);
+  static SwitchOption interfaceActiveNo
+    (interfaceActive, "No", "The decay channel is switched off.", 0);
+  interfaceActive.setHasDefault(false);
+
   static Reference<DecayMode,Decayer> interfaceDecayer
     ("Decayer",
      "The ThePEG::Decayer object responsible for performing this decay.",
@@ -658,6 +668,7 @@ void DecayMode::Init() {
   interfaceBrat.rank(10);
   interfaceDecayer.rank(9);
   interfaceOn.rank(8);
+  interfaceActive.rank(8);
 
 }
 

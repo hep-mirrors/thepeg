@@ -240,12 +240,12 @@ void JetRegion::Init() {
     ("Fuzzy",
      "Make this jet region a fuzzy cut",
      &JetRegion::theFuzzy, false, false, false);
-  static SwitchOption interfaceFuzzyOn
+  static SwitchOption interfaceFuzzyYes
     (interfaceFuzzy,
      "Yes",
      "",
      true);
-  static SwitchOption interfaceFuzzyOff
+  static SwitchOption interfaceFuzzyNo
     (interfaceFuzzy,
      "No",
      "",
