@@ -21,7 +21,8 @@ BlobMEBase::~BlobMEBase() {}
 #include "ThePEG/PDT/EnumParticles.h"
 #include "ThePEG/MatrixElement/BlobDiagram.h"
 
-string BlobMEBase::ColourConnection::write(size_t& sourceCount) const {
+string BlobMEBase::ColourConnection::write(size_t& sourceCount,
+					   bool sink) const {
   string res;
   if ( members.size() == 2 ) {
     // standard connection
@@ -30,10 +31,11 @@ string BlobMEBase::ColourConnection::write(size_t& sourceCount) const {
   } else if ( members.size() == 3 ) {
     // source or sink
     for ( auto it = members.begin(); it != members.end(); ++it ) {
-      res += std::to_string(*it) + " : " + std::to_string(sourceCount);
+      res += std::to_string(*it) + " " + (sink ? "-":"") + std::to_string(sourceCount);
       if ( std::next(it) != members.end() )
 	res += ", ";
     }
+    sourceCount += 1;
   } else {
     // not handled
     throw Exception() << "BlobMEBase::ColourConnection::write: Invalid colour connection information."
@@ -67,7 +69,10 @@ BlobMEBase::colourGeometries(tcDiagPtr diag) const {
   ostringstream clines;
   size_t sourceCount = diag->partons().size() + 1;
   for ( auto it = connections.begin(); it != connections.end(); ++it ) {
-    clines << it->write(sourceCount);
+    bool sink = (it->members.size()==3 && 
+		 (-it->members[0] > diag->nIncoming() ||
+		  it->members[0] < diag->nIncoming() ) );
+    clines << it->write(sourceCount,sink);
     auto nit = it; ++nit;
     if ( nit != connections.end() )
       clines << ",";
