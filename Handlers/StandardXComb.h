@@ -4,7 +4,7 @@
 // Copyright (C) 1999-2011 Leif Lonnblad
 // Copyright (C) 2009-2011 Simon Platzer
 //
-// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// ThePEG is licenced under version 3 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 #ifndef ThePEG_StandardXComb_H
