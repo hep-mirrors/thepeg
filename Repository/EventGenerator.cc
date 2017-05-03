@@ -695,7 +695,7 @@ void EventGenerator::generateReferences() {
   else
     ref() << "The following models were used:\n";
 
-    ref() << "\\begin{itemize}\n";
+  ref() << "\\begin{itemize}\n";
 
   // Write out all descriptions.
   for ( StringMap::iterator it = references.begin();

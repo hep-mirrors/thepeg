@@ -90,7 +90,7 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  T & select(RNDGEN & rnd) throw(range_error) {
+  T & select(RNDGEN & rnd) {
     ++N;
     if ( !compensating() ) last = selector.select(rnd);
     return last;

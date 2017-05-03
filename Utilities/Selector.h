@@ -128,7 +128,7 @@ public:
    * a uniform random number in the interval ]0,1[ calculated from the
    * fraction of rnd which was in the range of the selected object.
    */
-  T & select(double rnd, double * remainder = 0) throw(range_error);
+  T & select(double rnd, double * remainder = 0);
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -137,7 +137,7 @@ public:
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
    * range_error will be thrown.
    */
-  T & operator[](double rnd) throw(range_error) { return select(rnd); }
+  T & operator[](double rnd) { return select(rnd); }
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -150,7 +150,7 @@ public:
    * a uniform random number in the interval ]0,1[ calculated from the
    * fraction of rnd which was in the range of the selected object.
    */
-  const T & select(double rnd, double * remainder = 0) const throw(range_error);
+  const T & select(double rnd, double * remainder = 0) const;
 
   /**
    * Selct an object randomly. Given a random number flatly
@@ -159,7 +159,7 @@ public:
    * inserted. If rnd <= 0 or if rnd >= 1 or the Selector is empty, a
    * range_error will be thrown.
    */
-  const T & operator[](double rnd) const throw(range_error) { return select(rnd); } 
+  const T & operator[](double rnd) const { return select(rnd); } 
 
   /**
    * Selct an object randomly. Given a random number generator which
@@ -174,7 +174,7 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  T & select(RNDGEN & rnd) throw(range_error) {
+  T & select(RNDGEN & rnd) {
     double rem = 0.0;
     T & t = select(rnd(), &rem);
     rnd.push_back(rem);
@@ -194,7 +194,7 @@ public:
    * selected object.
    */
   template <typename RNDGEN>
-  const T & select(RNDGEN & rnd) const throw(range_error) {
+  const T & select(RNDGEN & rnd) const {
     double rem = 0.0;
     const T & t = select(rnd(), &rem);
     rnd.push_back(rem);

@@ -46,11 +46,9 @@ namespace ThePEG {
   THEPEG_MATCH_DESC(MatchNeutrino)
 }
 
-using namespace ThePEG;
-
 namespace {
 
-void dummy() {
+  using namespace ThePEG;
   static MatchAny m00;
   static MatchStandardQCDParton m01;
   static MatchLightAntiQuark m02;
@@ -64,6 +62,5 @@ void dummy() {
   static MatchPositive m11;
   static MatchCharged m12;
   static MatchNeutrino m13;
-}
 
 }

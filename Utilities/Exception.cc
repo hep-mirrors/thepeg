@@ -81,7 +81,7 @@ Exception::Exception(const string & newMessage, Severity newSeverity)
   }
 }
 
-Exception::~Exception() throw() {
+Exception::~Exception() noexcept {
   if ( !handled ) {
     writeMessage();
     if ( theSeverity == maybeabort ) abort();

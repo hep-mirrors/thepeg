@@ -94,7 +94,7 @@ public:
   /**
    * The destructor
    */
-  virtual ~Exception() throw();
+  virtual ~Exception() noexcept;
 
 public:
 
@@ -131,7 +131,7 @@ public:
   /**
    * Return the error message.
    */
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     static string str;
     str = message();
     return str.c_str();

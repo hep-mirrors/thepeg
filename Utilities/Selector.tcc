@@ -25,7 +25,7 @@ WeightType Selector<T,WeightType>::erase(const T & t) {
 
 template <typename T, typename WeightType>
 const T & Selector<T,WeightType>::
-select(double rnd, double * remainder) const throw(range_error) {
+select(double rnd, double * remainder) const {
   if ( rnd <= 0 )
     throw range_error("Random number out of range in Selector::select.");
   const_iterator it = theMap.upper_bound(rnd*theSum);
@@ -46,7 +46,7 @@ select(double rnd, double * remainder) const throw(range_error) {
 
 template <typename T, typename WeightType>
 T & Selector<T,WeightType>::
-select(double rnd, double * remainder) throw(range_error) {
+select(double rnd, double * remainder) {
   if ( rnd <= 0 )
     throw range_error("Random number out of range in Selector::select.");
   iterator it = theMap.upper_bound(rnd*theSum);
