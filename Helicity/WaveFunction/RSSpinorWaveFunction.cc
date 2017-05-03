@@ -20,9 +20,9 @@ using namespace ThePEG::Helicity;
 void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
   LorentzRSSpinor<double> news;
   if(direction()==incoming) 
-    news=LorentzRSSpinor<double>(u_spinortype);
+    news=LorentzRSSpinor<double>(SpinorType::u);
   else 
-    news=LorentzRSSpinor<double>(v_spinortype);
+    news=LorentzRSSpinor<double>(SpinorType::v);
   unsigned int ix,iy;
   // check helicity and type
   assert(direction()!=intermediate);

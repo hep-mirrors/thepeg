@@ -34,10 +34,10 @@ namespace Helicity {
 /**
  * Enumeration to specify spinor type.
  */
-enum SpinorType {
-  u_spinortype, /**< u spinor. */
-  v_spinortype, /**< v spinor. */
-  unknown_spinortype /**< Undefined spinor type. */
+enum class SpinorType {
+  u, /**< u spinor. */
+  v, /**< v spinor. */
+  unknown /**< Undefined spinor type. */
 };
 
 /** @cond EXCEPTIONCLASSES */

@@ -61,7 +61,7 @@ public:
     /**
      * Write out the connection to the colour lines string
      */
-    string write(size_t& sourceCount) const;
+    string write(size_t& sourceCount, bool sink) const;
 
   };
 
@@ -104,7 +104,7 @@ public:
    * as a map incoming to outgoing; it is assumed that the number of outgoing
    * partons does not vary.
    */
-  virtual map<tcPDPair,tcPDVector> processes() const = 0;
+  virtual multimap<tcPDPair,tcPDVector> processes() const = 0;
 
   /**
    * Return the colour connections for the process.

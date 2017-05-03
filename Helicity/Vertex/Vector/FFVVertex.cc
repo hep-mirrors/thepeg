@@ -256,7 +256,7 @@ SpinorWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
   // calculation of the spinor
   Complex s1(0.),s2(0.),s3(0.),s4(0.);
   // u-type spinor
-  if(sp.wave().Type()==u_spinortype) {
+  if(sp.wave().Type()==SpinorType::u) {
     // fermion along +z
     if(direction==PostiveZDirection) {
       if(fhel==0) {
@@ -297,7 +297,7 @@ SpinorWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
     }
   }
   // v-type spinor
-  else if(sp.wave().Type()==v_spinortype) {
+  else if(sp.wave().Type()==SpinorType::v) {
     // fermion along +z
     if(direction==PostiveZDirection) {
       if(fhel==0) {
@@ -381,7 +381,7 @@ SpinorBarWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
   double dEf =   Ef*UnitRemoval::InvE;
   double rE = sqrt(.5*dEf);
   // u-type spinor
-  if(sbar.wave().Type()==u_spinortype) {
+  if(sbar.wave().Type()==SpinorType::u) {
     // fermion along +z
     if(direction==PostiveZDirection) {
       if(fhel==0) {    
@@ -425,7 +425,7 @@ SpinorBarWaveFunction FFVVertex::evaluateSmall(Energy2 q2,int iopt, tcPDPtr out,
     }
   }
   // v-type spinor
-  else if(sbar.wave().Type()==v_spinortype) {
+  else if(sbar.wave().Type()==SpinorType::v) {
     // anti fermion along +z
     if(direction==PostiveZDirection) {
       if(fhel==0) {    

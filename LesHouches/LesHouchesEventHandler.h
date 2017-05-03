@@ -70,7 +70,8 @@ public:
    * The default constructor.
    */
   LesHouchesEventHandler()
-    : theWeightOption(unitweight), theUnitTolerance(1.0e-6), warnPNum(true) 
+    : theWeightOption(unitweight), theUnitTolerance(1.0e-6), warnPNum(true),
+      theNormWeight(0)
   {
     selector().tolerance(unitTolerance());
   }
@@ -399,7 +400,10 @@ private:
    */
   bool warnPNum;
 
-
+  /**
+   *  How to normalize the weights
+   */
+  unsigned int theNormWeight;
 
 public:
 

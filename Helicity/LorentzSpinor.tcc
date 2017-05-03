@@ -93,15 +93,15 @@ template <typename Value>
 LorentzSpinor<Value> LorentzSpinor<Value>::conjugate() const {
   SpinorType new_type;
   switch(_type) {
-  case u_spinortype:
-    new_type=v_spinortype;
+  case SpinorType::u:
+    new_type=SpinorType::v;
     break;
-  case v_spinortype:
-    new_type=u_spinortype;
+  case SpinorType::v:
+    new_type=SpinorType::u;
     break;
-  case unknown_spinortype:
+  case SpinorType::unknown:
   default:
-    new_type=unknown_spinortype;
+    new_type=SpinorType::unknown;
     break;
   }
   return LorentzSpinor<Value>( conj(_spin[3]),
