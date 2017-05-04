@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
 // LesHouchesFileReader.cc is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2011 Leif Lonnblad
+// Copyright (C) 1999-2017 Leif Lonnblad
 //
-// ThePEG is licenced under version 2 of the GPL, see COPYING for details.
+// ThePEG is licenced under version 3 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
 //
@@ -428,10 +428,10 @@ void LesHouchesFileReader::doinit() {
 	    ostringstream br;
 	    br << setprecision(13) << brat;
 	    generator()->preinitInterface(dm, "BranchingRatio", "set", br.str());
-	    generator()->preinitInterface(dm, "OnOff", "set", "On");
+	    generator()->preinitInterface(dm, "Active", "set", "Yes");
 	    if(dm->CC()) {
 	      generator()->preinitInterface(dm->CC(), "BranchingRatio", "set", br.str());
-	      generator()->preinitInterface(dm->CC(), "OnOff", "set", "On");
+	      generator()->preinitInterface(dm->CC(), "Active", "set", "Yes");
 	    }
 	    ++nmode;
 	  }
