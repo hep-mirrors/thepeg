@@ -283,16 +283,23 @@ void StandardEventHandler::statistics(ostream & os) const {
      << "                                       "
      << "   events     attempts             (nb)\n";
 
-  os << line << "Total (from   weighted events): including vetoed events" << setw(23)
+  os << line << "Total (from attempted events): including vetoed events" << setw(23)
      << ouniterr(sampler()->integratedXSec(), 
 		 sampler()->integratedXSecErr(), nanobarn)
      << endl;
-  os << line << "Total (from "
-     << (weighted() ? "  weighted" : "unweighted") << " events):" 
+  os << line << "Total (from generated events):" 
      << setw(17) << tot.accepted() << setw(13)
      << tot.attempts() << setw(17)
      << ouniterr(tot.xSec(sampler()->attempts()),tot.xSecErr(sampler()->attempts()) , nanobarn)
-     << endl << line;
+     << "\n";
+  os << "Events carry ";
+  if ( weighted() )
+    os << "varying weights.";
+  else if ( sampler()->almostUnweighted() )
+    os << "varying weights, most of which are unit weights.";    
+  else
+    os << "unit weights.";
+  os << endl << line;
 
   if ( statLevel() == 1 ) return;
 
