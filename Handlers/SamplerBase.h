@@ -149,6 +149,11 @@ public:
    * far (of the events that were not rejeted).
    */
   virtual double sumWeights2() const = 0;
+
+  /** 
+   * Return true if this sampler is generating almost unweighted events.
+   */ 
+  virtual bool almostUnweighted() const { return false; }
   //@}
 
   /** @name Controlling of run levels and grid handling*/
