@@ -2,11 +2,23 @@ ThePEG News	-*- outline -*-
 ===============================
 
 Numbered bugs can be found at
- http://projects.hepforge.org/herwig/trac/ticket/NN
+ https://herwig.hepforge.org/trac/ticket/NN
 where NN is the bug number.
 
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
-or at http:///projects.hepforge.org/herwig/versions
+or at https:///herwig.hepforge.org/
+
+
+
+* ThePEG-2.1.0 release: 2017-05-19
+
+** Transition to C++-11 code, building with C++-98 is no longer possible
+
+** Interfaces with two choices now consistently accept Yes/No as answer
+
+** Several smaller bug fixes and additions, to allow new features in Herwig 7.1
+
+
 
 * ThePEG-2.0.4 release: 2016-10-25
 
