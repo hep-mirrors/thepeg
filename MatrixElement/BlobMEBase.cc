@@ -71,7 +71,7 @@ BlobMEBase::colourGeometries(tcDiagPtr diag) const {
   for ( auto it = connections.begin(); it != connections.end(); ++it ) {
     bool sink = (it->members.size()==3 && 
 		 (-it->members[0] > diag->nIncoming() ||
-		  it->members[0] < diag->nIncoming() ) );
+		  it->members[0] <= diag->nIncoming() ) );
     clines << it->write(sourceCount,sink);
     auto nit = it; ++nit;
     if ( nit != connections.end() )

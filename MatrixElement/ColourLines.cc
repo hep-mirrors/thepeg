@@ -71,12 +71,12 @@ void ColourLines::connect(const tPVector & partons) const {
       if ( line[i].first > np ) {
 	// this is a colour source.
 	int is = line[i].first - np;
-	sources.resize(is);
+	if(is>int(sources.size())) sources.resize(is);
 	sources[is - 1].push_back(cline);
       } else if ( -line[i].first > np ) {
 	// this is a colour sink.
 	int is = -line[i].first - np;
-	sinks.resize(is);
+	if(is>int(sinks.size())) sinks.resize(is);
 	sinks[is - 1].push_back(cline);
       } else if ( line[i].first > 0 ) {
 	// This is a coloured particle.
