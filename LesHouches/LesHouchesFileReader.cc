@@ -503,15 +503,21 @@ void LesHouchesFileReader::open() {
   bool readingInitWeights = false, readingInitWeights_sc = false;
   string weightinfo;
   while ( cfile.readline() ) {
-    
     // found the init block for multiple weights
-    if(cfile.find("<initrwgt")) { /*cout << "reading weights" << endl;*/ readingInitWeights = true; }
+    if(cfile.find("<initrwgt")) readingInitWeights = true;
     
-     // found end of init block for multiple weights: end the while loop
-    if(cfile.find("</initrwgt")) { readingInitWeights = false; readingInitWeights_sc = false; continue;}
+    // found end of init block for multiple weights: end the while loop
+    if(cfile.find("</initrwgt")) {
+      readingInitWeights = false;
+      readingInitWeights_sc = false;
+      continue;
+    }
 
     // found the end of init block
-    if(cfile.find("</init")) { readingInit = false; break; } 
+    if(cfile.find("</init")) {
+      readingInit = false;
+      break;
+    } 
 
     /* read the weight information block 
      * optionalWeightNames will contain information about the weights
@@ -534,6 +540,7 @@ void LesHouchesFileReader::open() {
 	erase_substr(weightinfo, str_weightgroup);
 	erase_substr(weightinfo, str_arrow);
 	erase_substr(weightinfo, str_newline);
+	continue;
       }
       /* if we are reading a new weightgroup, go on 
        * until we find the end of it
@@ -545,14 +552,21 @@ void LesHouchesFileReader::open() {
 	/* get the name that will be used to identify the scale 
 	 */
 	do {
-	  string sub; isc >> sub;
-	  if(ws==1) { string str_arrow =  ">"; erase_substr(sub, str_arrow); scalename = sub; }
+	  string sub;
+	  isc >> sub;
+	  if(ws==1) {
+	    string str_arrow =  ">";
+	    erase_substr(sub, str_arrow);
+	    scalename = sub;
+	    break;
+	  }
 	  ++ws;
-	} while (isc);
+	}
+	while (isc);
 	/* now get the relevant information
 	 * e.g. scales or PDF sets used
 	 */
-	string startDEL = "'>"; //starting delimiter
+	string startDEL = ">"; //starting delimiter
 	string stopDEL = "</weight>"; //end delimiter
 	unsigned firstLim = hs.find(startDEL); //find start of delimiter
 //	unsigned lastLim = hs.find(stopDEL); //find end of delimitr
