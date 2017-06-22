@@ -29,6 +29,7 @@
 #include "ThePEG/Utilities/StringUtils.h"
 
 #include <iterator>
+#include <chrono>
 
 #include <config.h>
 
@@ -1094,9 +1095,21 @@ string Repository::version() {
 }
 
 string Repository::banner() {
+  const auto now    = std::chrono::system_clock::now();
+  const auto now_c  = std::chrono::system_clock::to_time_t(now);
+  string time = ">>>> " ;
+  time += StringUtils::stripws(string(std::ctime(&now_c))) + ' ';
+  time += string(max(0,74 - int(time.size())), ' ');
+  time += "<<<<";
+
   string line = ">>>> Toolkit for HEP Event Generation - "
-    + Repository::version() + " ";
+    + Repository::version() + ' ';
   line += string(max(0,78 - int(line.size())), '<');
-  return string(78, '>') + "\n" + line + "\n" + string(78, '<') + "\n";
+
+  string block = string(78, '>') + '\n' 
+                 + line + '\n' 
+                 + time + '\n'
+                 + string(78, '<') + '\n';
+  return block;
 }
 
