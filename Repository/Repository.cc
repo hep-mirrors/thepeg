@@ -694,7 +694,11 @@ string Repository::exec(string command, ostream & os) {
       istringstream is(StringUtils::cdr(command));
       readSetup(obj, is);
       // A particle may have been registered before but under the wrong id().
-      registerParticle(dynamic_ptr_cast<PDPtr>(obj));
+      PDPtr pd = dynamic_ptr_cast<PDPtr>(obj);
+      if(pd) {
+	registerParticle(pd);
+	checkDuplicatePDGName(pd);
+      }
       return "";
     }
     if ( verb == "decaymode" ) {
@@ -1078,6 +1082,30 @@ Repository::~Repository() {
   --ninstances;
   if ( ninstances <= 0 ) {
     generators().clear();
+  }
+}
+
+void Repository::checkDuplicatePDGName(PDPtr pd) {
+  string name = pd->PDGName();
+  for ( ParticleMap::iterator pit = defaultParticles().begin();
+	pit != defaultParticles().end(); ++pit ) {
+    if( pit->second == pd) continue;
+    if ( pit->second->PDGName() == name ) {
+      std::cerr << "Using duplicate PDGName " << pd->PDGName()
+		<< " for a new particle.\n This can cause problems and is not "
+		<< "recommended.\n If this second particle is a new particle "
+		<< "in a BSM Model we recommend you change the name of the particle.\n";
+    }
+  }
+  for ( ParticleDataSet::iterator pit = particles().begin();
+	pit != particles().end(); ++pit ) {
+    if( *pit == pd) continue;
+    if ( (**pit).PDGName() == name ) {
+      std::cerr << "Using duplicate PDGName " << pd->PDGName()
+		<< " for a new particle.\n This can cause problems and is not "
+		<< "recommended.\n If this second particle is a new particle "
+		<< "in a BSM Model we recommend you change the name of the particle.\n";
+    }
   }
 }
 
