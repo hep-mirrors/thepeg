@@ -89,6 +89,7 @@ VectorWaveFunction GeneralVVSVertex::evaluate(Energy2 ,int ,tcPDPtr ,
   throw Exception() << "GeneralVVSVertex::evaluate() only implemented for the "
 		    << "member which returns the amplitude, "
 		    << "and off-shell scalar not the off-shell vector"
+		    << "class is " << fullName()
 		    << Exception::runerror;
 }
 
