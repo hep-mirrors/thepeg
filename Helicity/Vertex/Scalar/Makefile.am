@@ -6,6 +6,7 @@ SSSVertex.cc  SSSVertex.h  SSSVertex.fh \
 VSSVertex.cc  VSSVertex.h  VSSVertex.fh \
 VVSSVertex.cc VVSSVertex.h VVSSVertex.fh \
 VVSVertex.cc  VVSVertex.h  VVSVertex.fh \
+VVVSVertex.cc  VVVSVertex.h  VVVSVertex.fh \
 GeneralVVSVertex.cc GeneralVVSVertex.h \
 GeneralVVSVertex.fh \
 RFSVertex.cc  RFSVertex.h  RFSVertex.fh

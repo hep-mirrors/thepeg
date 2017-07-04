@@ -76,7 +76,7 @@ public:
    * @param width The width of the off-shell particle if not taken from the ParticleData
    * object
    */
-  virtual VectorWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
+  virtual ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 				      const VectorWaveFunction & vec1,
 				      const VectorWaveFunction & vec2,
 				      const VectorWaveFunction & vec3,
