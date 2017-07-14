@@ -67,7 +67,7 @@ ThePEGDefaults.rpo: .done-all-links setupThePEG ThePEGDefaults.in ThePEGParticle
 	cd ../lib; rm -f ThePEGDefaults.rpo; $(LN_S) -f ../src/ThePEGDefaults.rpo .
 
 check-local: ThePEGDefaults.rpo
-	@./.check-local.sh
+	@$(srcdir)/.check-local.sh
 if USELHAPDF
 	LHAPATH=$(srcdir)/testpdfs ./setupThePEG --exitonerror -r ThePEGDefaults.rpo TestLHAPDF.in
 	LHAPATH=$(srcdir)/testpdfs time ./runThePEG -d 1 -x .libs/TestLHAPDF.so TestLHAPDF.run
