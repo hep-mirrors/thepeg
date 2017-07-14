@@ -367,12 +367,6 @@ protected:
    */
   virtual void doinit();
 
-  /**
-   * Initialize this object. Called in the run phase just before
-   * a run begins.
-   */
-  virtual void doinitrun();
-
 public:
 
 

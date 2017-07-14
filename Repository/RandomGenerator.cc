@@ -74,12 +74,6 @@ void RandomGenerator::doinit() {
   flush();
 }
 
-void RandomGenerator::doinitrun() {
-    Interfaced::doinitrun();
-    if ( theSeed != 0 ) setSeed(theSeed);
-    flush();
-}
-
 void RandomGenerator::setSize(size_type newSize) {
   RndVector newNumbers(newSize);
   RndVector::iterator nextNew = newNumbers.end() -
