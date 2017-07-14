@@ -20,6 +20,9 @@ or at https:///herwig.hepforge.org/
 
 ** Write current timestamp into log files
 
+** Calling 'read' in an input file will no longer change the 
+   repository directory you're in
+
 
 
 * ThePEG-2.1.0 release: 2017-05-19
