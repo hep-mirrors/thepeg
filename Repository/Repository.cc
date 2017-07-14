@@ -734,8 +734,15 @@ string Repository::exec(string command, ostream & os) {
       return "";
     }
     if ( verb == "read" ) {
+      // remember directory we're in
+      string cwd = directoryStack().back();
       string filename = StringUtils::car(command);
-      return read(filename, os);
+      string msg = read(filename, os);
+      // Return to the original directory, so that
+      // calling 'read' in an input file will not change the 
+      // repository directory you're in
+      ChangeDirectory(cwd);
+      return msg;
     }
     if ( verb == "load" ) {
       return load(StringUtils::car(command));

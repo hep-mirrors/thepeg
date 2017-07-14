@@ -10,6 +10,21 @@ or at https:///herwig.hepforge.org/
 
 
 
+* ThePEG-2.1.1 release: 2017-07-14
+
+** Added missing evaluate() option to GeneralVVSVertex
+
+** More robust reading of LHE files
+
+** Warn about duplicate PDG names in user input
+
+** Write current timestamp into log files
+
+** Calling 'read' in an input file will no longer change the 
+   repository directory you're in
+
+
+
 * ThePEG-2.1.0 release: 2017-05-19
 
 ** Transition to C++-11 code, building with C++-98 is no longer possible
