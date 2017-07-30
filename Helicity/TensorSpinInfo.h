@@ -130,11 +130,6 @@ public:
 private:
 
   /**
-   * Describe a concrete class without persistent data.
-   */
-  static NoPIOClassDescription<TensorSpinInfo> initTensorSpinInfo;
-
-  /**
    * Private and non-existent assignment operator.
    */
   TensorSpinInfo & operator=(const TensorSpinInfo &);
@@ -169,34 +164,5 @@ private:
 
 namespace ThePEG {
 
-/** @cond TRAITSPECIALIZATIONS */
-
-/**
- * This template specialization informs ThePEG about the base class of
- * TensorSpinInfo.
- */
-template <>
-struct BaseClassTrait<ThePEG::Helicity::TensorSpinInfo,1>
-  : public ClassTraitsType {
-  /** Typedef of the base class of ScalarSpinInfo. */
-  typedef ThePEG::SpinInfo NthBase;
-};
-
-/**
- * This template specialization informs ThePEG about the name of the
- * TensorSpinInfo class and the shared object where it is defined.
- */
-template <>
-struct ClassTraits<ThePEG::Helicity::TensorSpinInfo>
-  : public ClassTraitsBase<ThePEG::Helicity::TensorSpinInfo> {
-  /**
-   * Return the class name.
-   */
-  static string className() { return "ThePEG::Helicity::TensorSpinInfo"; }
-};
-
-/** @endcond */
-
 }
-
 #endif /* THEPEG_TensorSpinInfo_H */
