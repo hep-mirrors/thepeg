@@ -20,10 +20,10 @@ namespace Helicity{
   
 /** \ingroup Helicity
  *
- *  The VVVSVertex class is the base class for triple vector vertices
- *  using the perturbative form. 
+ *  The VVVSVertex class is the base class for triple vector scalar vertices.
  *  It inherits from the AbstractVVVSVertex class for the storage of the 
- *  particles allowed at the vertex.
+ *  particles allowed at the vertex. Given this vertice has dimenison
+ *  5 the two forms possible for either a scalar or pseudoscalar particle.
  *
  *  Classes which implement a specific vertex should inherit from this and
  *  implement the virtual setCoupling member.
@@ -33,12 +33,37 @@ namespace Helicity{
  *              +(p_2-p_3)^\alpha g^{\beta \gamma}
  *              +(p_3-p_1)^\beta  g^{\alpha\gamma}
  *   \right]\epsilon_{1\alpha}\epsilon_{2\beta}\epsilon_{3\gamma}\f]
- *
+ *  for a scalar particle and
+ *  \f[ig\epsilon^{\delta\alpha\beta\gamma}\epsilon_{1\alpha}\epsilon_{2\beta}\epsilon_{3\gamma}
+ *     (p_1+p_2+p_3)_\delta\f]
  *  @see AbstractVVVSVertex
  */
 class VVVSVertex: public AbstractVVVSVertex {
+
+public :
+  
+  /**
+   * Default constructor
+   */
+  VVVSVertex() : scalar_(true) {}
     
 public:
+ 
+  /** @name Functions used by the persistent I/O system. */
+  //@{
+  /**
+   * Function used to write out object persistently.
+   * @param os the persistent output stream written to.
+   */
+  void persistentOutput(PersistentOStream & os) const;
+
+  /**
+   * Function used to read in object persistently.
+   * @param is the persistent input stream read from.
+   * @param version the version number of the object when written.
+   */
+  void persistentInput(PersistentIStream & is, int version);
+  //@}
 
   /**
    * Standard Init function used to initialize the interfaces.
@@ -131,13 +156,25 @@ public:
     assert(false);
   }
   //@}
-  
+
+protected:
+
+  /**
+   *  Set the type of the vertex
+   */
+  void scalar(bool in) {scalar_=in;}
+
 private:
   
   /**
    * Private and non-existent assignment operator.
    */
   VVVSVertex & operator=(const VVVSVertex &);
+
+  /**
+   *   Whether or ont the vertex has a scalar or pseudoscalr particle
+   */
+  bool scalar_;
   
 };
 
