@@ -226,7 +226,7 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton,
   case g:
     return thePDF->xfxQ2(g,x,Q2);
   case ParticleID::gamma:
-    return 0.;
+    return thePDF->xfxQ2(ParticleID::gamma,x,Q2);
   }
   return 0.0;
 }
@@ -383,7 +383,7 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton,
   case g:
     return thePDF->xfxQ2(g,x,Q2);
   case ParticleID::gamma:
-    return 0.;
+    return thePDF->xfxQ2(ParticleID::gamma,x,Q2);
   }
   return 0.0;
 }
@@ -415,7 +415,7 @@ void ThePEG::LHAPDF::Init() {
 
   static Deleted<LHAPDF> interfacePType
     ("PType",
-     "The LHAPDFv6 interface currently does not support pi or gamma.");
+     "The LHAPDFv6 interface currently does not support pi.");
 
   static Parameter<LHAPDF,string> interfacePDFName
     ("PDFName",
@@ -440,14 +440,6 @@ void ThePEG::LHAPDF::Init() {
     ("PDFLIBNumbers",
      "Not implemented in the LHAPDFv6 interface. "
      "Use :PDFName and :Member instead.");
-
-  static Deleted<LHAPDF> interfaceEnablePartonicGamma
-    ("EnablePartonicGamma",
-     "The LHAPDFv6 interface currently does not support pi or gamma.");
-
-  static Deleted<LHAPDF> interfacePhotonOption
-    ("PhotonOption",
-     "The LHAPDFv6 interface currently does not support pi or gamma.");
 
   static Deleted<LHAPDF> interfaceMaxNSet
     ("MaxNSet",
