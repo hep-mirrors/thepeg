@@ -113,9 +113,8 @@ struct Stop {};
  * standard C++ library.
  */
 template <typename T>
-inline constexpr 
-typename BinaryOpTraits<T,T>::MulT 
-sqr(const T& x) {
+inline constexpr
+auto sqr(const T& x) -> decltype(x*x) {
   return x*x;
 }
 
