@@ -35,7 +35,7 @@ namespace ThePEG {
 namespace Units {
 
 /// adapter for the old style of naming quantities
-template<int L, int E, int Q, int DL=1, int DE=1, int DQ=1>
+template<long int L, long int E, long int Q, long int DL=1, long int DE=1, long int DQ=1>
 using Qty = ThePEG::Qty<std::ratio<L,DL>, std::ratio<E,DE>, std::ratio<Q,DQ>>;
 
 /** Energy. */

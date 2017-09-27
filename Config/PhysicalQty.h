@@ -72,7 +72,7 @@ struct is_qty {
 template <typename ResultT, typename T, typename U = T>
 using enable_if_same_qty = typename std::enable_if<qty_equal<T,U>::value, ResultT>::type;
 
-template<int L, int E, int Q, int DL, int DE, int DQ>
+template<long int L, long int E, long int Q, long int DL, long int DE, long int DQ>
 class Qty<std::ratio<L,DL>, std::ratio<E,DE>, std::ratio<Q,DQ>>
 {
 private:
@@ -96,7 +96,7 @@ public:
   }
 
   /// General power type
-  template <int Num, int Den>
+  template <long int Num, long int Den>
   using Power = Qty<typename std::ratio<Num*L,Den*DL>::type, 
                     typename std::ratio<Num*E,Den*DE>::type, 
                     typename std::ratio<Num*Q,Den*DQ>::type>;
@@ -163,7 +163,7 @@ public:
   /// Our type
   using Type    = Qty<std::ratio<0>,std::ratio<0>,std::ratio<0>>;
   /// General power type
-  template <int Num, int Den>
+  template <long int Num, long int Den>
   using Power   = Type;
   /// The squared type.
   using Squared = Type;

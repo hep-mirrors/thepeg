@@ -184,7 +184,7 @@ abs(T q) {
 }
 
 // qty = pow<P,R>(qty)
-template<int Num, int Den, typename T>
+template<long int Num, long int Den, typename T>
 inline constexpr enable_if_same_qty<typename T::template Power<Num,Den>, T>
 pow(T q) {
   typedef typename T::template Power<Num,Den> RetT;
