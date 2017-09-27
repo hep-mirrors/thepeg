@@ -190,10 +190,17 @@ constexpr Energy operator "" _GeV( unsigned long long x ) {
   return Energy{1000_MeV, static_cast<double>(x)};
 }
 
+constexpr Energy operator "" _TeV( long double x ) {
+  return Energy{1000_GeV, static_cast<double>(x)};
+}
+constexpr Energy operator "" _TeV( unsigned long long x ) {
+  return Energy{1000_GeV, static_cast<double>(x)};
+}
+
 constexpr Energy keV = 1.0e-3_MeV;
 constexpr Energy MeV = 1_MeV;
 constexpr Energy GeV = 1_GeV;
-constexpr Energy TeV = 1.0e+6_MeV;
+constexpr Energy TeV = 1_TeV;
 
 
 
