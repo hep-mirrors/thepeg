@@ -27,7 +27,7 @@ namespace Helicity {
 enum VectorPhase {
   vector_phase, /**< Include the phase factor.*/
   vector_nophase, /**< No phase-factor. */
-  default_vector_phase=vector_phase /**< Default option.*/
+  default_vector_phase=vector_nophase /**< Default option.*/
 };
 
 /** \ingroup Helicity
