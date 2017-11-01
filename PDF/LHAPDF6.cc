@@ -441,6 +441,14 @@ void ThePEG::LHAPDF::Init() {
      "Not implemented in the LHAPDFv6 interface. "
      "Use :PDFName and :Member instead.");
 
+  static Deleted<LHAPDF> interfaceEnablePartonicGamma
+    ("EnablePartonicGamma",
+     "Not required in LHAPDFv6.");
+
+  static Deleted<LHAPDF> interfacePhotonOption
+    ("PhotonOption",
+     "Not required in LHAPDFv6.");
+
   static Deleted<LHAPDF> interfaceMaxNSet
     ("MaxNSet",
      "Not required in LHAPDFv6.");

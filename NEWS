@@ -9,9 +9,16 @@ The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at https:///herwig.hepforge.org/
 
 
-* ThePEG-2.1.2 release: pending
+
+* ThePEG-2.1.2 release: 2017-11-01
 
 ** Allow LHAPDF6 interface to return photon pdf.
+
+** Sign fix in GeneralVVSVertex
+
+** Fix multiple weight reading from LHE files
+
+** Preparations for Rivet 3
 
 
 
