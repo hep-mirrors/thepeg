@@ -218,9 +218,9 @@ public:
   template<typename ValueB> 
   auto projectionOperator(const LorentzVector<ValueB> & p, 
                           const ValueB & m) const 
-  -> LorentzSpinor<decltype(m*s1())>
+  -> LorentzSpinor<decltype(m*Value())>
   {
-    LorentzSpinor<decltype(m*s1())> spin;
+    LorentzSpinor<decltype(m*Value())> spin;
     static const Complex ii(0.,1.);
     complex<ValueB> p0pp3=p.t()+p.z();
     complex<ValueB> p0mp3=p.t()-p.z();
@@ -255,9 +255,9 @@ public:
    */
   template<typename ValueB> 
   auto slash(const LorentzVector<ValueB> & p) const 
-  -> LorentzSpinor<decltype(p.t()*s3())>
+  -> LorentzSpinor<decltype(p.t()*Value())>
   {
-    LorentzSpinor<decltype(p.t()*s3())> spin;
+    LorentzSpinor<decltype(p.t()*Value())> spin;
     static const Complex ii(0.,1.);
     complex<ValueB> p0pp3=p.t()+p.z();
     complex<ValueB> p0mp3=p.t()-p.z();
@@ -275,9 +275,9 @@ public:
    */
   template<typename ValueB> 
   auto slash(const LorentzVector<complex<ValueB> > & p) const 
-  -> LorentzSpinor<decltype(p.t()*s3())>
+  -> LorentzSpinor<decltype(ValueB()*Value())>
   {
-    LorentzSpinor<decltype(p.t()*s3())> spin;
+    LorentzSpinor<decltype(ValueB()*Value())> spin;
     static const Complex ii(0.,1.);
     complex<ValueB> p0pp3=p.t()+p.z();
     complex<ValueB> p0mp3=p.t()-p.z();
