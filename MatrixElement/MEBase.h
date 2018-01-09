@@ -212,6 +212,15 @@ public:
   virtual CrossSection dSigHatDR() const = 0;
 
   /**
+   * If variations are available for the subprocess handled, generate
+   * and return a map of optional weights to be included for the
+   * event.
+   */
+  virtual map<string,double> generateOptionalWeights() {
+    return map<string,double>();
+  }
+
+  /**
    * Return true, if this matrix element will generate momenta for the
    * incoming partons itself.  The matrix element is required to store
    * the incoming parton momenta in meMomenta()[0,1]. No mapping in

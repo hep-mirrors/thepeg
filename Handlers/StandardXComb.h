@@ -248,6 +248,14 @@ public:
   CrossSection dSigDR(const double * r);
 
   /**
+   * If variations are available for the subprocess handled, generate
+   * and return a map of optional weights to be included for the
+   * event; this version defaults to an implementation in MEBase but
+   * can be overloaded by inheriting XComb objects.
+   */
+  virtual map<string,double> generateOptionalWeights();
+
+  /**
    * Return the PDF weight used in the last call to dSigDR
    */
   double lastPDFWeight() const { return theLastPDFWeight; }

@@ -162,6 +162,11 @@ tCollPtr StandardEventHandler::performCollision() {
   currentCollision()->addStep(currentStep());
 
   currentStep()->addSubProcess(lastXC->construct());
+  if ( currentEvent() ) {
+    map<string,double> optionalWeights = lastXC->generateOptionalWeights();
+    for ( const auto& weight : optionalWeights )
+      currentEvent()->optionalWeights().insert(weight);
+  }
 
   lastExtractor()->construct(lastXC->partonBinInstances(), currentStep());
   if ( collisionCuts )

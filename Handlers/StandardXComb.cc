@@ -597,6 +597,11 @@ dSigDR(const pair<double,double> ll, int nr, const double * r) {
 
 }
 
+map<string,double> StandardXComb::generateOptionalWeights() {
+  matrixElement()->setXComb(this);
+  return matrixElement()->generateOptionalWeights();
+}
+
 void StandardXComb::newSubProcess(bool group) {
   if ( subProcess() ) return;
   if ( head() && matrixElement()->wantCMS() ) {
