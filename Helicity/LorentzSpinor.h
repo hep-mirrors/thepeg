@@ -87,6 +87,10 @@ public:
 		SpinorType s = SpinorType::unknown) : _type(s), _spin{{a,b,c,d}} {}
   //@}
 
+  template <typename U>
+  LorentzSpinor(const LorentzSpinor<U> & other)
+    : _type(other._type), _spin(other._spin) {}
+
   /** @name Access the components. */
   //@{
   /**
@@ -162,6 +166,31 @@ public:
   void setS4(complex<Value> in) {_spin[3]=in;}
   //@}
 
+  /// @name Mathematical assignment operators.
+  //@{
+  template <typename ValueB>
+  LorentzSpinor<Value> & operator+=(const LorentzSpinor<ValueB> & a) {
+    for(unsigned int ix=0;ix<4;++ix) _spin[ix] += a._spin[ix];
+    return *this;
+  }
+  
+  template <typename ValueB>
+  LorentzSpinor<Value> & operator-=(const LorentzSpinor<ValueB> & a) {
+    for(unsigned int ix=0;ix<4;++ix) _spin[ix] -= a._spin[ix];
+    return *this;
+  }
+  
+  LorentzSpinor<Value> & operator*=(double a) {
+    for(unsigned int ix=0;ix<4;++ix) _spin[ix] *=a;
+    return *this;
+  }
+
+  LorentzSpinor<Value> & operator/=(double a) {
+    for(unsigned int ix=0;ix<4;++ix) _spin[ix] /=a;
+    return *this;
+  }
+  //@}
+  
   /** @name Transformations. */
   //@{
   /**
@@ -495,6 +524,96 @@ private:
    */
   std::array<complex<Value>,4> _spin;
 };
+
+/// @name Basic mathematical operations
+//@{
+template <typename Value>
+inline LorentzSpinor<double>
+operator/(const LorentzSpinor<Value> & v, Value a) {
+  return LorentzSpinor<double>(v.s1()/a, v.s2()/a, v.s3()/a, v.s4()/a,v.Type());
+}
+
+inline LorentzSpinor<double>
+operator/(const LorentzSpinor<double> & v, Complex a) {
+  return LorentzSpinor<double>(v.s1()/a, v.s2()/a, v.s3()/a, v.s4()/a,v.Type());
+}
+
+template <typename Value>
+inline LorentzSpinor<Value> operator-(const LorentzSpinor<Value> & v) {
+  return LorentzSpinor<Value>(-v.s1(),-v.s2(),-v.s3(),-v.s4(),v.Type());
+}
+
+template <typename ValueA, typename ValueB>
+inline LorentzSpinor<ValueA>
+operator+(LorentzSpinor<ValueA> a, const LorentzSpinor<ValueB> & b) {
+  return a += b;
+}
+
+template <typename ValueA, typename ValueB>
+inline LorentzSpinor<ValueA>
+operator-(LorentzSpinor<ValueA> a, const LorentzSpinor<ValueB> & b) {
+  return a -= b;
+}
+
+template <typename Value>
+inline LorentzSpinor<Value>
+operator*(const LorentzSpinor<Value> & a, double b) {
+  return LorentzSpinor<Value>(a.s1()*b, a.s2()*b, a.s3()*b, a.s4()*b,a.Type());
+}
+
+template <typename Value>
+inline LorentzSpinor<Value>
+operator*(double b, LorentzSpinor<Value> a) {
+  return a *= b;
+}
+  
+template <typename Value>
+inline LorentzSpinor<Value>
+operator*(const LorentzSpinor<Value> & a, Complex b) {
+  return LorentzSpinor<Value>(a.s1()*b, a.s2()*b, a.s3()*b, a.s4()*b,a.Type());
+}
+
+template <typename ValueA, typename ValueB>
+inline auto operator*(complex<ValueB> a, const LorentzSpinor<ValueA> & v) 
+  -> LorentzSpinor<decltype(a.real()*v.s1().real())>
+{
+  return {a*v.s1(), a*v.s2(), a*v.s3(), a*v.s4(),v.Type()};
+}
+
+template <typename ValueA, typename ValueB>
+inline auto operator*(const LorentzSpinor<ValueA> & v, complex<ValueB> b) 
+  -> LorentzSpinor<decltype(b.real()*v.s1().real())>
+{
+  return b*v;
+}
+
+template <typename ValueA, typename ValueB>
+inline auto operator/(const LorentzSpinor<ValueA> & v, complex<ValueB> b) 
+  -> LorentzSpinor<decltype(v.s1().real()/b.real())>
+{
+  return {v.s1()/b, v.s2()/b, v.s3()/b, v.s4()/b,v.Type()};
+}
+  
+template <typename ValueA, typename ValueB>
+inline auto operator*(ValueB a, const LorentzSpinor<ValueA> & v) 
+  -> LorentzSpinor<decltype(a*v.s1().real())>
+{
+  return {a*v.s1(), a*v.s2(), a*v.s3(), a*v.s4(),v.Type()};
+}
+
+template <typename ValueA, typename ValueB>
+inline auto operator*(const LorentzSpinor<ValueA> & v, ValueB b) 
+  -> LorentzSpinor<decltype(b*v.s1().real())>
+{
+  return b*v;
+}
+
+template <typename ValueA, typename ValueB>
+inline auto operator/(const LorentzSpinor<ValueA> & v, ValueB b) 
+  -> LorentzSpinor<decltype(v.s1().real()/b)>
+{
+  return {v.s1()/b, v.s2()/b, v.s3()/b, v.s4()/b,v.Type()};
+}
 
 }
 }
