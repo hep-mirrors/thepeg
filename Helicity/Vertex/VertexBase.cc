@@ -89,7 +89,12 @@ void VertexBase::doinit() {
 		       << _ordergEM << " QCD = " << _ordergS << " for"
 		       << " a perturbative interaction. Either it's an"
 		       << " effective vertex or something is wrong.\n";
-  assert(_npoint<=2+_ordergEM+_ordergS);
+  if(_npoint>2+_ordergEM+_ordergS)
+    generator()->log() << fullName() << " has inconsistent number of "
+		       << "external particles and coupling order\nQED = " 
+		       << _ordergEM << " QCD = " << _ordergS << " for"
+		       << " a perturbative interaction. Either it's a BSM "
+		       << " effective vertex or something is wrong.\n";
 }
 
     
