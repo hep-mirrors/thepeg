@@ -19,7 +19,8 @@ AbstractFFVTVertex.h AbstractFFVTVertex.fh AbstractFFVTVertex.cc \
 AbstractVVVTVertex.h AbstractVVVTVertex.fh AbstractVVVTVertex.cc \
 AbstractVVVVVertex.h AbstractVVVVVertex.fh AbstractVVVVVertex.cc \
 AbstractRFSVertex.h  AbstractRFSVertex.fh  AbstractRFSVertex.cc \
-AbstractRFVVertex.h  AbstractRFVVertex.fh  AbstractRFVVertex.cc 
+AbstractRFVVertex.h  AbstractRFVVertex.fh  AbstractRFVVertex.cc \
+AbstractFFVVVertex.h AbstractFFVVVertex.fh AbstractFFVVVertex.cc
 libThePEGVertex_la_LIBADD = Scalar/libThePEGSVertex.la \
 	                    Vector/libThePEGVVertex.la \
 	                    Tensor/libThePEGTVertex.la
