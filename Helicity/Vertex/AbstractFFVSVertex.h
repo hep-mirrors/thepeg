@@ -1,33 +1,34 @@
 // -*- C++ -*-
-#ifndef HELICITY_AbstractFFVVVertex_H
-#define HELICITY_AbstractFFVVVertex_H
+#ifndef ThePEG_AbstractFFVSVertex_H
+#define ThePEG_AbstractFFVSVertex_H
 //
-// This is the declaration of the AbstractFFVVVertex class.
+// This is the declaration of the AbstractFFVSVertex class.
 //
 
 #include "VertexBase.h"
+#include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
-#include "AbstractFFVVVertex.fh"
+#include "AbstractFFVSVertex.fh"
 
 namespace ThePEG {
 namespace Helicity {
 
 /**
- * The AbstractFFVVVertex class provides a base class for all
- * fermion-fermion-vector vertices in ThePEG.
+ * Here is the documentation of the AbstractFFVSVertex class.
  */
-class AbstractFFVVVertex: public VertexBase {
+class AbstractFFVSVertex: public VertexBase {
 
 public:
 
-
+  /** @name Standard constructors and destructors. */
+  //@{
   /**
-   * Default constructor
+   * The default constructor.
    */
-  AbstractFFVVVertex() : VertexBase(VertexType::FFVV) {}
-
+  AbstractFFVSVertex() : VertexBase(VertexType::FFVS) {}
+  
   /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.
@@ -39,12 +40,12 @@ public:
    * @param sp1   The wavefunction for the ferimon.
    * @param sbar2 The wavefunction for the antifermion.
    * @param vec3  The wavefunction for the vector.
-   * @param vec4  The wavefunction for the vector.
+   * @param sca4  The wavefunction for the scalar.
    */
   virtual Complex evaluate(Energy2 q2,const SpinorWaveFunction & sp1,
 			   const SpinorBarWaveFunction & sbar2,
 			   const VectorWaveFunction & vec3,
-			   const VectorWaveFunction & vec4) = 0;
+			   const ScalarWaveFunction & sca4) = 0;
   //@}
 
 public:
@@ -63,11 +64,11 @@ private:
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  AbstractFFVVVertex & operator=(const AbstractFFVVVertex &);
+  AbstractFFVSVertex & operator=(const AbstractFFVSVertex &);
 
 };
 
 }
 }
 
-#endif /* HELICITY_AbstractFFVVVertex_H */
+#endif /* ThePEG_AbstractFFVSVertex_H */

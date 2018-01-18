@@ -1,33 +1,33 @@
 // -*- C++ -*-
-#ifndef HELICITY_AbstractFFVVVertex_H
-#define HELICITY_AbstractFFVVVertex_H
+#ifndef ThePEG_AbstractFFSSVertex_H
+#define ThePEG_AbstractFFSSVertex_H
 //
-// This is the declaration of the AbstractFFVVVertex class.
+// This is the declaration of the AbstractFFSSVertex class.
 //
 
 #include "VertexBase.h"
+#include "ThePEG/Helicity/WaveFunction/ScalarWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorWaveFunction.h"
 #include "ThePEG/Helicity/WaveFunction/SpinorBarWaveFunction.h"
-#include "ThePEG/Helicity/WaveFunction/VectorWaveFunction.h"
-#include "AbstractFFVVVertex.fh"
+#include "AbstractFFSSVertex.fh"
 
 namespace ThePEG {
 namespace Helicity {
 
 /**
- * The AbstractFFVVVertex class provides a base class for all
- * fermion-fermion-vector vertices in ThePEG.
+ * Here is the documentation of the AbstractFFSSVertex class.
  */
-class AbstractFFVVVertex: public VertexBase {
+class AbstractFFSSVertex: public VertexBase {
 
 public:
 
-
+  /** @name Standard constructors and destructors. */
+  //@{
   /**
-   * Default constructor
+   * The default constructor.
    */
-  AbstractFFVVVertex() : VertexBase(VertexType::FFVV) {}
-
+  AbstractFFSSVertex(): VertexBase(VertexType::FFSS) {}
+  
   /**
    * Members to calculate the helicity amplitude expressions for vertices
    * and off-shell particles.
@@ -38,13 +38,13 @@ public:
    * @param q2 The scale \f$q^2\f$ for the coupling at the vertex.
    * @param sp1   The wavefunction for the ferimon.
    * @param sbar2 The wavefunction for the antifermion.
-   * @param vec3  The wavefunction for the vector.
-   * @param vec4  The wavefunction for the vector.
+   * @param sca3  The wavefunction for the scalar.
+   * @param sca4  The wavefunction for the scalar.
    */
   virtual Complex evaluate(Energy2 q2,const SpinorWaveFunction & sp1,
 			   const SpinorBarWaveFunction & sbar2,
-			   const VectorWaveFunction & vec3,
-			   const VectorWaveFunction & vec4) = 0;
+			   const ScalarWaveFunction & sca3,
+			   const ScalarWaveFunction & sca4) = 0;
   //@}
 
 public:
@@ -63,11 +63,11 @@ private:
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  AbstractFFVVVertex & operator=(const AbstractFFVVVertex &);
+  AbstractFFSSVertex & operator=(const AbstractFFSSVertex &);
 
 };
 
 }
 }
 
-#endif /* HELICITY_AbstractFFVVVertex_H */
+#endif /* ThePEG_AbstractFFSSVertex_H */
