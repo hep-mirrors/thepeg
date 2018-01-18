@@ -35,6 +35,15 @@ namespace VertexType {
   const T UNDEFINED = 0;
 }
 
+/**
+ * Namespace for naming types of couplings to allow models to define new type
+ */
+namespace CouplingType {
+  typedef unsigned T;
+  const T UNDEFINED = 0;
+  const T QED = 1;
+  const T QCD = 2;
+}
 /** \ingroup Helicity
  * 
  *  The VertexBase class is the base class for all helicity amplitude
@@ -168,12 +177,19 @@ public:
   /**
    * Get the order in \f$g_EM\f$
    */
-  unsigned int orderInGem() const { return _ordergEM; }
+  unsigned int orderInGem() const { return couplingOrders_.at(CouplingType::QED); }
 
   /**
    * Get the order in \f$g_s\f$
    */
-  unsigned int orderInGs() const { return _ordergS; }
+  unsigned int orderInGs() const { return couplingOrders_.at(CouplingType::QCD); }
+
+  /**
+   *  Get the order in a specific coupling
+   */
+  unsigned int orderInCoupling(CouplingType::T cType) const {
+    return couplingOrders_.at(cType);
+  }
   //@}
 
 public:
@@ -427,13 +443,20 @@ protected:
    * Set the order in \f$g_EM\f$
    * @param order The order of the vertex in \f$g_EM\f$
    */
-  void orderInGem(unsigned int order) { _ordergEM = order; }
+  void orderInGem(unsigned int order) { couplingOrders_[CouplingType::QED] = order; }
 
   /**
    * Set the order in \f$g_s\f$
    * @param order The order of the vertex in \f$g_s\f$
    */
-  void orderInGs(unsigned int order) { _ordergS = order; }
+  void orderInGs (unsigned int order) { couplingOrders_[CouplingType::QCD] = order; }
+
+  /**
+   *  Set the order in a specifc type of coupling
+   */
+  void orderInCoupling(CouplingType::T cType, unsigned int order) {
+    couplingOrders_[cType] = order;
+  }
   
 private:
   
@@ -490,14 +513,9 @@ private:
   VertexType::T _theName;
 
   /**
-   * Order of vertex in \f$g_EM\f$
+   *  The order of the vertex in specific couplings
    */
-  unsigned int _ordergEM;
-
-  /**
-   * Order of vertex in \f$g_s\f$
-   */
-  unsigned int _ordergS;
+  map<CouplingType::T,unsigned int> couplingOrders_;
 
   /**
    *  option for the coupling

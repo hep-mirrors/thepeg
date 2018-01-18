@@ -28,12 +28,13 @@ using namespace ThePEG::Helicity;
 
 VertexBase::VertexBase(VertexType::T name, bool kine) 
   : _npoint(1), _norm(0), _calckinematics(kine), 
-    _kine(), _theName(name), 
-    _ordergEM(0), _ordergS(0),
+    _kine(), _theName(name),
     _coupopt(0), _gs(sqrt(4.*Constants::pi*0.3)), 
     _ee(sqrt(4.*Constants::pi/137.04)),
     _sw(sqrt(0.232)) 
 {
+  couplingOrders_[CouplingType::QED]=0;
+  couplingOrders_[CouplingType::QCD]=0;
   assert ( name != VertexType::UNDEFINED ); 
   // Count number of lines from length of 'name'
   while ( name /= 10 ) ++_npoint;
@@ -83,16 +84,18 @@ void VertexBase::doinit() {
     }
   }
   // check the couplings
-  if(Debug::level>1&&_npoint!=2+_ordergEM+_ordergS)
+  if(Debug::level>1&&_npoint!=2+couplingOrders_[CouplingType::QED]+couplingOrders_[CouplingType::QCD])
     generator()->log() << fullName() << " has inconsistent number of "
 		       << "external particles and coupling order\nQED = " 
-		       << _ordergEM << " QCD = " << _ordergS << " for"
+		       << couplingOrders_[CouplingType::QED] << " QCD = "
+		       << couplingOrders_[CouplingType::QCD] << " for"
 		       << " a perturbative interaction. Either it's an"
 		       << " effective vertex or something is wrong.\n";
-  if(_npoint>2+_ordergEM+_ordergS)
+  if(_npoint>2+couplingOrders_[CouplingType::QED]+couplingOrders_[CouplingType::QCD])
     generator()->log() << fullName() << " has inconsistent number of "
 		       << "external particles and coupling order\nQED = " 
-		       << _ordergEM << " QCD = " << _ordergS << " for"
+		       << couplingOrders_[CouplingType::QED] << " QCD = "
+		       << couplingOrders_[CouplingType::QCD] << " for"
 		       << " a perturbative interaction. Either it's a BSM "
 		       << " effective vertex or something is wrong.\n";
 }
@@ -102,14 +105,14 @@ void VertexBase::persistentOutput(PersistentOStream & os) const {
   os << _npoint << _inpart << _outpart 
      << _particles << _calckinematics
      << _coupopt << _gs << _ee << _sw
-     << _ordergEM << _ordergS;
+     << couplingOrders_;
 }
 
 void VertexBase::persistentInput(PersistentIStream & is, int) {
   is >> _npoint >> _inpart >> _outpart 
      >> _particles >> _calckinematics
      >> _coupopt >> _gs >> _ee >> _sw
-     >> _ordergEM >> _ordergS;
+     >> couplingOrders_;
 }
 
 // Static variable needed for the type description system in ThePEG.
