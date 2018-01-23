@@ -188,7 +188,10 @@ public:
    *  Get the order in a specific coupling
    */
   unsigned int orderInCoupling(CouplingType::T cType) const {
-    return couplingOrders_.at(cType);
+    if(couplingOrders_.find(cType) !=couplingOrders_.end())
+      return couplingOrders_.at(cType);
+    else
+      return 0;
   }
   //@}
 
