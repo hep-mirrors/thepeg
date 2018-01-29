@@ -177,17 +177,17 @@ public:
   /**
    * Get the order in \f$g_EM\f$
    */
-  unsigned int orderInGem() const { return couplingOrders_.at(CouplingType::QED); }
+  int orderInGem() const { return couplingOrders_.at(CouplingType::QED); }
 
   /**
    * Get the order in \f$g_s\f$
    */
-  unsigned int orderInGs() const { return couplingOrders_.at(CouplingType::QCD); }
+  int orderInGs() const { return couplingOrders_.at(CouplingType::QCD); }
 
   /**
    *  Get the order in a specific coupling
    */
-  unsigned int orderInCoupling(CouplingType::T cType) const {
+  int orderInCoupling(CouplingType::T cType) const {
     if(couplingOrders_.find(cType) !=couplingOrders_.end())
       return couplingOrders_.at(cType);
     else
@@ -446,18 +446,18 @@ protected:
    * Set the order in \f$g_EM\f$
    * @param order The order of the vertex in \f$g_EM\f$
    */
-  void orderInGem(unsigned int order) { couplingOrders_[CouplingType::QED] = order; }
+  void orderInGem(int order) { couplingOrders_[CouplingType::QED] = order; }
 
   /**
    * Set the order in \f$g_s\f$
    * @param order The order of the vertex in \f$g_s\f$
    */
-  void orderInGs (unsigned int order) { couplingOrders_[CouplingType::QCD] = order; }
+  void orderInGs (int order) { couplingOrders_[CouplingType::QCD] = order; }
 
   /**
    *  Set the order in a specifc type of coupling
    */
-  void orderInCoupling(CouplingType::T cType, unsigned int order) {
+  void orderInCoupling(CouplingType::T cType, int order) {
     couplingOrders_[cType] = order;
   }
   
@@ -518,7 +518,7 @@ private:
   /**
    *  The order of the vertex in specific couplings
    */
-  map<CouplingType::T,unsigned int> couplingOrders_;
+  map<CouplingType::T,int> couplingOrders_;
 
   /**
    *  option for the coupling
