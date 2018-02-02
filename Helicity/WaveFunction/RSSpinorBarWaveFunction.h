@@ -108,8 +108,9 @@ public:
    * @param wave The wavefunction.
    */
   RSSpinorBarWaveFunction(const Lorentz5Momentum & p,tcPDPtr part,
-			  LorentzRSSpinorBar<double> & wave) 
-    : WaveFunctionBase(p,part), _wf(wave)
+			  const LorentzRSSpinorBar<double> & wave,
+			  Direction dir=intermediate) 
+    : WaveFunctionBase(p,part,dir), _wf(wave)
   {
     assert(iSpin()==4);
   }
