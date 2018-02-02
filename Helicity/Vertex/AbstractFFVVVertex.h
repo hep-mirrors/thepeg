@@ -16,12 +16,11 @@ namespace Helicity {
 
 /**
  * The AbstractFFVVVertex class provides a base class for all
- * fermion-fermion-vector vertices in ThePEG.
+ * fermion-fermion-vector-vector vertices in ThePEG.
  */
 class AbstractFFVVVertex: public VertexBase {
 
 public:
-
 
   /**
    * Default constructor
