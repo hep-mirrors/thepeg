@@ -41,8 +41,8 @@ public:
    */
   virtual Complex evaluate(Energy2 q2,
 			   const SpinorWaveFunction & sp1,
-			   const SpinorWaveFunction & sp2,
 			   const SpinorBarWaveFunction & sbar1,
+			   const SpinorWaveFunction & sp2,
 			   const SpinorBarWaveFunction & sbar2) = 0;
   //@}
 
