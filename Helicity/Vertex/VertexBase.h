@@ -36,6 +36,29 @@ namespace VertexType {
 }
 
 /**
+ * Namespace for naming types of colour structures to allow models to define new type
+ */
+namespace ColourStructure {
+  typedef unsigned T;
+  const T UNDEFINED  = 0;
+  const T SINGLET    = 1;
+  const T SU3TFUND   = 2;
+  const T SU3F       = 3;
+  const T SU3T6      = 4;
+  const T SU3K6      = 5;
+  const T EPS        = 6;
+  const T DELTA      = 7;
+  const T SU3FF      = 8;
+  const T SU3TTFUNDS = 9;
+  const T SU3TTFUNDD = 10;
+  const T SU3TT6     = 11;
+  const T SU3I12I34  = 12;
+  const T SU3I14I23  = 13;
+  const T SU3T21T43  = 14;
+  const T SU3T23T41  = 15;
+}
+
+/**
  * Namespace for naming types of couplings to allow models to define new type
  */
 namespace CouplingType {
@@ -193,6 +216,11 @@ public:
     else
       return 0;
   }
+
+  /**
+   *  Get the colour structure
+   */
+  ColourStructure::T colourStructure() const {return colourStructure_;}
   //@}
 
 public:
@@ -460,6 +488,13 @@ protected:
   void orderInCoupling(CouplingType::T cType, int order) {
     couplingOrders_[cType] = order;
   }
+
+  /**
+   *  Set the colour structure
+   */
+  void colourStructure(ColourStructure::T structure) {
+    colourStructure_ = structure;
+  }
   
 private:
   
@@ -514,6 +549,11 @@ private:
    * Name of vertex
    */
   VertexType::T _theName;
+
+  /**
+   * Colour structure of the vertex
+   */
+  ColourStructure::T colourStructure_;
 
   /**
    *  The order of the vertex in specific couplings

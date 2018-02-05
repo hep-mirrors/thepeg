@@ -35,7 +35,7 @@ VertexBase::VertexBase(VertexType::T name, bool kine)
 {
   couplingOrders_[CouplingType::QED]=0;
   couplingOrders_[CouplingType::QCD]=0;
-  assert ( name != VertexType::UNDEFINED ); 
+  assert ( name != VertexType::UNDEFINED );
   // Count number of lines from length of 'name'
   while ( name /= 10 ) ++_npoint;
 }
@@ -72,6 +72,7 @@ void VertexBase::addToList(const vector<long> & ids) {
 
 void VertexBase::doinit() {
   Interfaced::doinit();
+  assert(colourStructure_ != ColourStructure::UNDEFINED);
   // set up the incoming and outgoing particles
   if ( !_outpart.empty() || !_inpart.empty() )
     return;
@@ -105,14 +106,14 @@ void VertexBase::persistentOutput(PersistentOStream & os) const {
   os << _npoint << _inpart << _outpart 
      << _particles << _calckinematics
      << _coupopt << _gs << _ee << _sw
-     << couplingOrders_;
+     << couplingOrders_ << colourStructure_;
 }
 
 void VertexBase::persistentInput(PersistentIStream & is, int) {
   is >> _npoint >> _inpart >> _outpart 
      >> _particles >> _calckinematics
      >> _coupopt >> _gs >> _ee >> _sw
-     >> couplingOrders_;
+     >> couplingOrders_ >> colourStructure_;
 }
 
 // Static variable needed for the type description system in ThePEG.
