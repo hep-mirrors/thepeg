@@ -103,6 +103,12 @@ operator-(std::complex<double> q1, std::complex<QtyDouble> q2) {
   return {q1.real()-q2.real(), q1.imag()-q2.imag()};
 }
 
+// complex qty = complex double + complex qty
+inline constexpr std::complex<double>
+operator+(std::complex<double> q1, std::complex<QtyDouble> q2) {
+  return {q1.real()+q2.real(), q1.imag()+q2.imag()};
+}
+
 // complex qty = complex double * complex qty
 template<typename L, typename E, typename Q>
 inline constexpr std::complex<Qty<L,E,Q>>
