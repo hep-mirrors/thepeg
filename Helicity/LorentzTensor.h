@@ -446,6 +446,21 @@ operator*(complex<U> a, const LorentzTensor<T> & t)
 }
 
 /**
+ * Multiplication by a complex number.
+ */
+template<typename T, typename U> 
+inline auto
+operator*(const LorentzTensor<T> & t,complex<U> a) 
+-> LorentzTensor<decltype(a.real()*t.xx().real())>
+{
+  return 
+    {a*t.xx(), a*t.xy(), a*t.xz(), a*t.xt(),
+     a*t.yx(), a*t.yy(), a*t.yz(), a*t.yt(),
+     a*t.zx(), a*t.zy(), a*t.zz(), a*t.zt(),
+     a*t.tx(), a*t.ty(), a*t.tz(), a*t.tt()};
+}
+
+/**
  * Multiply a LorentzVector by a LorentzTensor.
  */
 template<typename T, typename U> 
