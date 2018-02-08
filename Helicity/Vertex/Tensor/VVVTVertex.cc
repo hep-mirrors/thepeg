@@ -129,25 +129,3 @@ Complex VVVTVertex::evaluate(Energy2 q2, const VectorWaveFunction & vec1,
   // return the answer
   return vertex;
 }
-
-TensorWaveFunction VVVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
-					const VectorWaveFunction & ,
-					const VectorWaveFunction & ,
-					const VectorWaveFunction &,
-					complex<Energy>, complex<Energy> ) {
-  throw Exception() << "VVVTVertex::evaluate() only implemented for the "
-		    << "member which returns the amplitude, "
-		    << "not the off-shell wavefunctions"
-		    << Exception::runerror;
-}
-
-VectorWaveFunction VVVTVertex::evaluate(Energy2 ,int , tcPDPtr ,
-					const VectorWaveFunction & ,
-					const VectorWaveFunction & ,
-					const TensorWaveFunction &,
-					complex<Energy>, complex<Energy> ) {
-  throw Exception() << "VVVTVertex::evaluate() only implemented for the "
-		    << "member which returns the amplitude, "
-		    << "not the off-shell wavefunctions"
-		    << Exception::runerror;
-}
