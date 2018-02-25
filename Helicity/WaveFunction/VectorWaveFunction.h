@@ -21,16 +21,6 @@ namespace ThePEG {
 namespace Helicity {
 
 /** \ingroup Helicity
- * Definition of the enumerated values of the phase to include in the 
- * calculation of the polarization vector.
- */
-enum VectorPhase {
-  vector_phase, /**< Include the phase factor.*/
-  vector_nophase, /**< No phase-factor. */
-  default_vector_phase=vector_nophase /**< Default option.*/
-};
-
-/** \ingroup Helicity
  *
  *  \author Peter Richardson
  *

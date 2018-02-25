@@ -40,6 +40,16 @@ enum class SpinorType {
   unknown /**< Undefined spinor type. */
 };
 
+/** \ingroup Helicity
+ * Definition of the enumerated values of the phase to include in the 
+ * calculation of the polarization vector.
+ */
+enum VectorPhase {
+  vector_phase, /**< Include the phase factor.*/
+  vector_nophase, /**< No phase-factor. */
+  default_vector_phase=vector_nophase /**< Default option.*/
+};
+  
 /** @cond EXCEPTIONCLASSES */
 /** Exception class used by Helicity classes to signal a logical error. */
 class HelicityLogicalError: public Exception {};
