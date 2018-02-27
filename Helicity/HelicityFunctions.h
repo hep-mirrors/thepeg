@@ -77,6 +77,97 @@ inline LorentzPolarizationVector polarizationVector(const Lorentz5Momentum & p,
   }
 }
 
+inline LorentzSpinor<double> spinor(const Lorentz5Momentum & p,
+				    unsigned int ihel,
+				    Direction dir) {
+  // check direction and helicity
+  assert(dir!=intermediate);
+  assert(ihel<=1);
+  // extract the momentum components
+  double fact = dir==incoming ? 1 : -1.;
+  Energy ppx=fact*p.x(),ppy=fact*p.y(),ppz=fact*p.z(),pee=fact*p.e(),pmm=p.mass();
+  // define and calculate some kinematic quantities
+  Energy2 ptran2  = ppx*ppx+ppy*ppy;
+  Energy pabs   = sqrt(ptran2+ppz*ppz);
+  Energy ptran  = sqrt(ptran2);
+  // first need to evalulate the 2-component helicity spinors 
+  // this is the same regardless of which definition of the spinors
+  // we are using
+  complex <double> hel_wf[2];
+  // compute the + spinor for + helicty particles and - helicity antiparticles
+  if((dir==incoming && ihel== 1) || (dir==outgoing && ihel==0)) {
+    // no transverse momentum 
+    if(ptran==ZERO) {
+      if(ppz>=ZERO) {
+	hel_wf[0] = 1;
+	hel_wf[1] = 0;
+      }
+      else {
+	hel_wf[0] = 0;
+	hel_wf[1] = 1;
+      }
+    }
+    else {
+      InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
+      SqrtEnergy rtppluspz = (ppz>=ZERO) ? sqrt(pabs+ppz) : ptran/sqrt(pabs-ppz); 
+      hel_wf[0] = denominator*rtppluspz;
+      hel_wf[1] = denominator/rtppluspz*complex<Energy>(ppx,ppy);
+    }
+  }
+  // compute the - spinor for - helicty particles and + helicity antiparticles
+  else {
+    // no transverse momentum
+    if(ptran==ZERO) {
+      if(ppz>=ZERO) {
+	hel_wf[0] = 0;
+	hel_wf[1] = 1;
+      }
+      // transverse momentum 
+      else {
+	hel_wf[0] = -1;
+	hel_wf[1] =  0;
+      }
+    }
+    else {
+      InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
+      SqrtEnergy rtppluspz = (ppz>=ZERO) ? sqrt(pabs+ppz) : ptran/sqrt(pabs-ppz);
+      hel_wf[0] = denominator/rtppluspz*complex<Energy>(-ppx,ppy);
+      hel_wf[1] = denominator*rtppluspz;
+    }
+  }
+
+  SqrtEnergy upper,lower;
+  SqrtEnergy eplusp  = sqrt(max(pee+pabs,ZERO));
+  SqrtEnergy eminusp = ( pmm != ZERO ) ? pmm/eplusp : ZERO;
+  // set up the coefficients for the different cases
+  if(dir==incoming) {
+    if(ihel==1) {
+      upper = eminusp;
+      lower = eplusp;
+    }
+    else {
+      upper = eplusp;
+      lower = eminusp;
+    }
+  }
+  else {
+    if(ihel==1) {
+      upper = -eplusp;
+      lower = eminusp;
+    }
+    else {
+      upper = eminusp;
+      lower =-eplusp;
+    }
+  }
+  return LorentzSpinor<double>(upper*hel_wf[0]*UnitRemoval::InvSqrtE,
+			       upper*hel_wf[1]*UnitRemoval::InvSqrtE,
+			       lower*hel_wf[0]*UnitRemoval::InvSqrtE,
+			       lower*hel_wf[1]*UnitRemoval::InvSqrtE,
+			       (dir==incoming) ? SpinorType::u : SpinorType::v);
+}
+
+
 inline LorentzSpinorBar<double> spinorBar(const Lorentz5Momentum & p,
 					  unsigned int ihel,
 					  Direction dir) {
