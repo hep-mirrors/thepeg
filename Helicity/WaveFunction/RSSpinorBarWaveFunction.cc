@@ -27,18 +27,12 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
     ptemp.setY(ZERO);
     ptemp.setZ(ZERO);
   }
-  LorentzRSSpinorBar<double> news;
-  if(direction()==outgoing) {
-    _wf = LorentzRSSpinorBar<double>(SpinorType::u);
-  }
-  else {
-    _wf = LorentzRSSpinorBar<double>(SpinorType::v);
-  }
   assert(direction()!=intermediate);
   assert(ihel<=3);
   // only two valid helicities in massless case
   assert( mass()>ZERO || (ihel == 0 || ihel == 3 ) );
   // new direct calculation
+  _wf = LorentzRSSpinorBar<double>(direction()==outgoing ? SpinorType::u : SpinorType::v);
   // compute the spinors
   std::array<LorentzSpinorBar<double>,2> spin;
   if(ihel!=0) spin[0] = HelicityFunctions::spinorBar(ptemp,1,direction());
@@ -54,7 +48,6 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
   
   // now we can put the bits together to compute the RS spinor
   double or3(sqrt(1./3.)),tor3(sqrt(2./3.));
-  LorentzRSSpinorBar<double> mg;
   if(ihel==3) {
     for(unsigned int iy=0;iy<4;++iy) {
       _wf(0,iy) = eps[0].x()*spin[0][iy];
@@ -87,6 +80,25 @@ void RSSpinorBarWaveFunction::calculateWaveFunction(unsigned int ihel) {
       _wf(3,iy) = eps[2].t()*spin[1][iy];
     }
   }
+  // this makes the phase choice the same as madgraph, useful for debugging only
+  // Energy pt = ptemp.perp();
+  // double fact = direction()==incoming ? 1. : -1.;
+  // Complex emphi(fact*ptemp.x()/pt,-fact*ptemp.y()/pt);
+  // if(ihel==3) {
+  //   for(unsigned int ix=0;ix<4;++ix)
+  //     for(unsigned int iy=0;iy<4;++iy)
+  // 	_wf(ix,iy) /= emphi;
+  // }
+  // else if(ihel==1) {
+  //   for(unsigned int ix=0;ix<4;++ix)
+  //     for(unsigned int iy=0;iy<4;++iy)
+  // 	_wf(ix,iy) *= emphi;
+  // }
+  // else if(ihel==0) {
+  //   for(unsigned int ix=0;ix<4;++ix)
+  //     for(unsigned int iy=0;iy<4;++iy)
+  // 	_wf(ix,iy) *= sqr(emphi);
+  // }
 }
 
 void RSSpinorBarWaveFunction::
