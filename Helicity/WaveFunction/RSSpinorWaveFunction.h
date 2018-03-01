@@ -165,6 +165,15 @@ public:
   RSSpinorWaveFunction() 
     : WaveFunctionBase(), _wf()
   {}
+
+  /**
+   *  Special for spin correlations
+   */
+  RSSpinorWaveFunction(vector<RSSpinorWaveFunction> & wave,
+		       tPPtr part,Direction dir,bool time,bool=true) {
+    calculateWaveFunctions(wave,part,dir);
+    constructSpinInfo(wave,part,dir,time);
+  }
   //@}
 
   /**
