@@ -300,7 +300,7 @@ bool MadGraphReader::doReadEvent() {
     for ( int i = 0; i < hepeup.NUP; ++i ) cfile >> hepeup.SPINUP[i];
   }
 
-  hepeup.PUP.resize(hepeup.NUP, vector<double>(5));
+  hepeup.PUP.resize(hepeup.NUP);
   for ( int i = 0; i < hepeup.NUP; ++i ) {
     if ( !cfile.readline() ) return false;
     int dummy = 0;
