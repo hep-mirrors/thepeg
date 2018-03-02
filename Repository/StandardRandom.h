@@ -32,7 +32,7 @@ public:
   /**
    * Default constructor.
    */
-  StandardRandom() : u(97) { if ( theSeed != 0 ) setSeed(theSeed); }
+  StandardRandom() { if ( theSeed != 0 ) setSeed(theSeed); }
   //@}
 
 public:
@@ -96,7 +96,7 @@ private:
   /**
    * The internal state vector.
    */
-  vector<double> u;
+  array<double,97> u;
 
   /**
    * Parameter for the internal state.
