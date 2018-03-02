@@ -32,7 +32,7 @@ public:
   /**
    * Default constructor.
    */
-  StandardRandom() { if ( theSeed != 0 ) setSeed(theSeed); }
+  StandardRandom() : u() { if ( theSeed != 0 ) setSeed(theSeed); }
   //@}
 
 public:

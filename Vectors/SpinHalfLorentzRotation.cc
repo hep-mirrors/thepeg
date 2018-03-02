@@ -26,13 +26,15 @@ SpinHalfLorentzRotation::SpinHalfLorentzRotation()
 // constructor giving the components of a Lorentz boost
 SpinHalfLorentzRotation::
 SpinHalfLorentzRotation(double bx, double by, double bz, double gamma) 
+: _mx{}
 {
   setBoost(bx,by,bz,gamma);
 }
 
 // constructor with boost vector
 SpinHalfLorentzRotation::
-SpinHalfLorentzRotation (const Boost & b, double gamma) 
+SpinHalfLorentzRotation (const Boost & b, double gamma)
+: _mx{}
 {
   setBoost(b,gamma);
 }

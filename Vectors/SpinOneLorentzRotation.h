@@ -344,7 +344,7 @@ private:
   template<typename Value> friend class Helicity::LorentzRSSpinorBar;
 
   /// Matrix components, order: \f$(xx, xy, \ldots, tz, tt)\f$.
-  array<double,16> matrix_;
+  array<double,16> matrix_ = {};
 
   /// Constructor from doubles.
   SpinOneLorentzRotation (double xx, double xy, double xz, double xt,

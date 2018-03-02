@@ -91,7 +91,7 @@ public:
    */
   void reset() {
     theAttempts = theAccepted = theVetoed = 0;
-    theSumWeights = theSumWeights2 = array<double,4>{};
+    theSumWeights = theSumWeights2 = {};
     theLastWeight = 0.0;
   }
 
