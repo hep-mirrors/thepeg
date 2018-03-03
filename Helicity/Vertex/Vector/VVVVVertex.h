@@ -147,17 +147,17 @@ private:
   /**  
    * Order of the particles.
    */
-  int _iorder[4];
+  array<int,4> _iorder;
 
   /**
    *  Intermediate particles
    */
-  tcPDPtr _inter[2];
+  array<tcPDPtr,2> _inter;
 
   /**
    * Couplings of the intermediate particles.
    */
-  Complex _coup[2];
+  array<Complex,2> _coup;
 
 };
 }
