@@ -79,6 +79,25 @@ void RSSpinorWaveFunction::calculateWaveFunction(unsigned int ihel) {
       _wf(3,iy) = eps[2].t()*spin[1][iy];
     }
   }
+  // this makes the phase choice the same as madgraph, useful for debugging only
+  // Energy pt = ptemp.perp();
+  // double fact = direction()==incoming ? 1. : -1.;
+  // Complex emphi(fact*ptemp.x()/pt,-fact*ptemp.y()/pt);
+  // if(ihel==3) {
+  //   for(unsigned int ix=0;ix<4;++ix)
+  //     for(unsigned int iy=0;iy<4;++iy)
+  // 	_wf(ix,iy) /= emphi;
+  // }
+  // else if(ihel==1) {
+  //   for(unsigned int ix=0;ix<4;++ix)
+  //     for(unsigned int iy=0;iy<4;++iy)
+  // 	_wf(ix,iy) *= emphi;
+  // }
+  // else if(ihel==0) {
+  //   for(unsigned int ix=0;ix<4;++ix)
+  //     for(unsigned int iy=0;iy<4;++iy)
+  // 	_wf(ix,iy) *= sqr(emphi);
+  // }
 }
 
 void RSSpinorWaveFunction::
