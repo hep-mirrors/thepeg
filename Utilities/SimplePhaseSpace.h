@@ -221,7 +221,7 @@ namespace SimplePhaseSpace {
   template <typename Container>
   void CMSn(Container & particles, Energy m0);
 
-};
+}
 
 }
 
