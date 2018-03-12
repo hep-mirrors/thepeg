@@ -218,6 +218,16 @@ public:
   }
 
   /**
+   *  Get the total order of the vertex
+   */
+  int orderInAllCouplings() const {
+    int output(0);
+    for(auto & p : couplingOrders_)
+      output += p.second;
+    return output;
+  }
+
+  /**
    *  Get the colour structure
    */
   ColourStructure::T colourStructure() const {return colourStructure_;}
