@@ -134,8 +134,10 @@ void SpinInfo::redevelop() const {
      productionVertex()->incoming().size()==1) {
     tcSpinPtr parent = _timelike ? 
       productionVertex()->incoming()[0] : productionVertex()->outgoing()[0];
-    parent->needsUpdate();
-    parent->redevelop();
+    if ( parent->developed() != StopUpdate ) {
+      parent->needsUpdate();
+      parent->redevelop();
+    }
   }
 }
 
@@ -143,6 +145,8 @@ void SpinInfo::develop() const {
   // if the particle has already been developed do nothing
   switch(_developed) {
   case Developed:
+    return;
+  case StopUpdate:
     return;
   case NeedsUpdate:
     redevelop();
@@ -173,7 +177,8 @@ void SpinInfo::redecay() const {
       else
 	parent = productionVertex()->outgoing()[1];
     }
-    parent->redecay();
+    if ( parent->developed() != StopUpdate )
+      parent->redecay();
   }
   if(timelike())
     _rhomatrix = productionVertex()->getRhoMatrix(_prodloc,true);

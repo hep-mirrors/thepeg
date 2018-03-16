@@ -65,7 +65,8 @@ public:
   enum DevelopedStatus {
     Undeveloped=0, /**< Not developed. */
     Developed=1,   /**< Developed. */
-    NeedsUpdate=2  /**< Developed but needs recalculating due to some change. */
+    NeedsUpdate=2,  /**< Developed but needs recalculating due to some change. */
+    StopUpdate=3     /**< Stop recalculating at this spin info. */
   };
 
 public:
@@ -235,6 +236,12 @@ public:
    *  Needs update
    */
   void needsUpdate() const {_developed=NeedsUpdate;}
+
+  /**
+   *  Used for an unstable particle to *temporarily* stop
+   *  redevelop and redecay at that particle
+   */
+  void stopUpdate() const {_developed=StopUpdate;}
 
   /**
    * Return 2s+1 for the particle
