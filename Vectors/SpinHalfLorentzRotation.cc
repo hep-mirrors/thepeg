@@ -333,10 +333,13 @@ SpinHalfLorentzRotation::operator * (const SpinHalfLorentzRotation & lt) const {
 SpinHalfLorentzRotation & 
 SpinHalfLorentzRotation::operator *= (const SpinHalfLorentzRotation & lt) {
   MatrixT temp;
-  for(size_t ix=0;ix<4;++ix)
-    for(size_t iy=0;iy<4;++iy)
+  for(size_t ix=0;ix<4;++ix) {
+    for(size_t iy=0;iy<4;++iy) {
+      temp[ix][iy] = 0.0;
       for(size_t iz=0;iz<4;++iz)
         temp[ix][iy] += _mx[ix][iz] * lt._mx[iz][iy];
+    }
+  }
   _mx = temp;
   return *this;
 }
