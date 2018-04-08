@@ -9,6 +9,11 @@ The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at https:///herwig.hepforge.org/
 
 
+* ThePEG-2.1.3 release: 2018-04-05
+
+** Use std::array<> where suitable
+
+
 
 * ThePEG-2.1.2 release: 2017-11-01
 
