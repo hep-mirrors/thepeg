@@ -85,20 +85,19 @@ void VertexBase::doinit() {
     }
   }
   // check the couplings
-  if(Debug::level>1&&_npoint!=2+couplingOrders_[CouplingType::QED]+couplingOrders_[CouplingType::QCD])
+  if(Debug::level>1&&int(_npoint)!=2+ orderInAllCouplings())
     generator()->log() << fullName() << " has inconsistent number of "
-		       << "external particles and coupling order\nQED = " 
-		       << couplingOrders_[CouplingType::QED] << " QCD = "
-		       << couplingOrders_[CouplingType::QCD] << " for"
-		       << " a perturbative interaction. Either it's an"
+		       << "external particles and coupling order = "
+		       << orderInAllCouplings()
+		       << " for a perturbative interaction. Either it's an"
 		       << " effective vertex or something is wrong.\n";
-  if(_npoint>2+couplingOrders_[CouplingType::QED]+couplingOrders_[CouplingType::QCD])
+  if(int(_npoint)>2+orderInAllCouplings()) {
     generator()->log() << fullName() << " has inconsistent number of "
-		       << "external particles and coupling order\nQED = " 
-		       << couplingOrders_[CouplingType::QED] << " QCD = "
-		       << couplingOrders_[CouplingType::QCD] << " for"
-		       << " a perturbative interaction. Either it's a BSM "
+		       << "external particles and coupling order "
+		       << orderInAllCouplings()
+		       << " for a perturbative interaction. Either it's a BSM "
 		       << " effective vertex or something is wrong.\n";
+  }
 }
 
     
