@@ -12,15 +12,17 @@
 //
 
 #include "FFVVertex.h"
+#include "ThePEG/Utilities/DescribeClass.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
-#include "ThePEG/Persistency/PersistentOStream.h"
-#include "ThePEG/Persistency/PersistentIStream.h"
 
 using namespace ThePEG;
 using namespace Helicity;
 
 // Definition of the static class description member
-AbstractNoPIOClassDescription<FFVVertex> FFVVertex::initFFVVertex;
+// The following static variable is needed for the type
+// description system in ThePEG.
+DescribeAbstractNoPIOClass<FFVVertex,AbstractFFVVertex>
+describeThePEGFFVVertex("ThePEG::FFVVertex", "libThePEG.so");
     
 void FFVVertex::Init() {
       
