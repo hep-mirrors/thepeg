@@ -438,11 +438,6 @@ protected:
 private:
   
   /**
-   * Describe a concrete class with persistent data.
-   */
-  static AbstractClassDescription<ThePEG::Helicity::VertexBase> initVertexBase;
-  
-  /**
    * Private and non-existent assignment operator.
    */
   VertexBase & operator=(const VertexBase &);
