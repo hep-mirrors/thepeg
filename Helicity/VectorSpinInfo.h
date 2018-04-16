@@ -129,11 +129,6 @@ public:
 private:
 
   /**
-   * Describe a concrete class without persistent data.
-   */
-  static NoPIOClassDescription<VectorSpinInfo> initVectorSpinInfo;
-
-  /**
    * Private and non-existent assignment operator.
    */
   VectorSpinInfo & operator=(const VectorSpinInfo &);
@@ -168,34 +163,5 @@ private:
 
 namespace ThePEG {
 
-/** @cond TRAITSPECIALIZATIONS */
-
-/**
- * This template specialization informs ThePEG about the base class of
- * VectorSpinInfo.
- */
-template <>
-struct BaseClassTrait<ThePEG::Helicity::VectorSpinInfo,1>
-  : public ClassTraitsType {
-  /** Typedef of the base class of VectorSpinInfo. */
-  typedef ThePEG::SpinInfo NthBase;
-};
-
-/**
- * This template specialization informs ThePEG about the name of the
- * VectorSpinInfo class and the shared object where it is defined.
- */
-template <>
-struct ClassTraits<ThePEG::Helicity::VectorSpinInfo>
-  : public ClassTraitsBase<ThePEG::Helicity::VectorSpinInfo> {
-  /**
-   * Return the class name.
-   */
-  static string className() { return "ThePEG::Helicity::VectorSpinInfo"; }
-};
-
-/** @endcond */
-
 }
-
 #endif /* THEPEG_VectorSpinInfo_H */

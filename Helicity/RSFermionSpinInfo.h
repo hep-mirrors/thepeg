@@ -131,11 +131,6 @@ public:
 private:
 
   /**
-   * Describe a concrete class without persistent data.
-   */
-  static NoPIOClassDescription<RSFermionSpinInfo> initRSFermionSpinInfo;
-
-  /**
    * Private and non-existent assignment operator.
    */
   RSFermionSpinInfo & operator=(const RSFermionSpinInfo &);
@@ -168,37 +163,8 @@ private:
 }
 
 
-#include "ThePEG/Utilities/ClassTraits.h"
 
 namespace ThePEG {
 
-/** @cond TRAITSPECIALIZATIONS */
-
-/**
- * The following template specialization informs ThePEG about the
- * base class of RSFermionSpinInfo.
- */
-template <>
-struct BaseClassTrait<ThePEG::Helicity::RSFermionSpinInfo,1> {
-  /** Typedef of the base class of RSFermionSpinInfo. */
-  typedef ThePEG::SpinInfo NthBase;
-};
-
-/**
- * The following template specialization informs ThePEG about the
- * name of this class and the shared object where it is defined.
- */
-template <>
-struct ClassTraits<ThePEG::Helicity::RSFermionSpinInfo>
-  : public ClassTraitsBase<ThePEG::Helicity::RSFermionSpinInfo> {
-  /**
-   * Return the class name.
-   */
-  static string className() { return "ThePEG::Helicity::RSFermionSpinInfo"; }
-};
-
-/** @endcond */
-
 }
-
 #endif /* THEPEG_RSFermionSpinInfo_H */
