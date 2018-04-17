@@ -35,7 +35,8 @@ VertexBase::VertexBase(VertexType::T name, bool kine)
 {
   couplingOrders_[CouplingType::QED]=0;
   couplingOrders_[CouplingType::QCD]=0;
-  assert ( name != VertexType::UNDEFINED );
+  // may break overloaded use cases
+  // assert ( name != VertexType::UNDEFINED );
   // Count number of lines from length of 'name'
   while ( name /= 10 ) ++_npoint;
 }
