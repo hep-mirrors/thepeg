@@ -289,7 +289,7 @@ public:
   template <typename ValueB>
   LorentzRSSpinor<Value> & operator+=(const LorentzRSSpinor<ValueB> & a) {
     for(unsigned int ix=0;ix<4;++ix)
-      for(unsigned int iy=0;iy<4;+iy)
+      for(unsigned int iy=0;iy<4;++iy)
 	_spin[ix][iy] += a._spin[ix][iy];
     return *this;
   }
@@ -297,21 +297,21 @@ public:
   template <typename ValueB>
   LorentzRSSpinor<Value> & operator-=(const LorentzRSSpinor<ValueB> & a) {
     for(unsigned int ix=0;ix<4;++ix)
-      for(unsigned int iy=0;iy<4;+iy)
+      for(unsigned int iy=0;iy<4;++iy)
 	_spin[ix][iy] -= a._spin[ix][iy];
     return *this;
   }
   
   LorentzRSSpinor<Value> & operator*=(double a) {
     for(unsigned int ix=0;ix<4;++ix)
-      for(unsigned int iy=0;iy<4;+iy)
+      for(unsigned int iy=0;iy<4;++iy)
 	_spin[ix][iy] *=a;
     return *this;
   }
   
   LorentzRSSpinor<Value> & operator/=(double a) {
     for(unsigned int ix=0;ix<4;++ix)
-      for(unsigned int iy=0;iy<4;+iy)
+      for(unsigned int iy=0;iy<4;++iy)
 	_spin[ix][iy] /=a;
     return *this;
   }
@@ -446,7 +446,7 @@ private:
 template <typename Value>
 inline LorentzRSSpinor<double>
 operator/(const LorentzRSSpinor<Value> & v, Value a) {
-  return LorentzSpinor<double>(v.xs1()/a, v.xs2()/a, v.xs3()/a, v.xs4()/a,
+  return LorentzRSSpinor<double>(v.xs1()/a, v.xs2()/a, v.xs3()/a, v.xs4()/a,
 			       v.ys1()/a, v.ys2()/a, v.ys3()/a, v.ys4()/a,
 			       v.zs1()/a, v.zs2()/a, v.zs3()/a, v.zs4()/a,
 			       v.ts1()/a, v.ts2()/a, v.ts3()/a, v.ts4()/a,
