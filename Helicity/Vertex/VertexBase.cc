@@ -36,7 +36,7 @@ VertexBase::VertexBase(VertexType::T name, bool kine)
   couplingOrders_[CouplingType::QED]=0;
   couplingOrders_[CouplingType::QCD]=0;
   // may break overloaded use cases
-  // assert ( name != VertexType::UNDEFINED );
+  assert ( name != VertexType::UNDEFINED );
   // Count number of lines from length of 'name'
   while ( name /= 10 ) ++_npoint;
 }
@@ -73,7 +73,7 @@ void VertexBase::addToList(const vector<long> & ids) {
 
 void VertexBase::doinit() {
   Interfaced::doinit();
-  assert(colourStructure_ != ColourStructure::UNDEFINED);
+  //assert(colourStructure_ != ColourStructure::UNDEFINED);
   // set up the incoming and outgoing particles
   if ( !_outpart.empty() || !_inpart.empty() )
     return;
