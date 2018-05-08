@@ -183,9 +183,9 @@ public:
   template<typename ValueB> 
   auto projectionOperator(const LorentzVector<ValueB> & p, 
                           const ValueB & m) const 
-  -> LorentzSpinorBar<decltype(m*s1())>
+  -> LorentzSpinorBar<decltype(m*Value())>
   {
-    typedef decltype(m*s1()) ResultT;
+    typedef decltype(m*Value()) ResultT;
     LorentzSpinorBar<ResultT> spin;
     static const Complex ii(0.,1.);
     complex<ValueB> p0pp3=p.t()+p.z();
