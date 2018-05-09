@@ -114,6 +114,14 @@ public:
    */
   virtual void transform(const LorentzMomentum &,const LorentzRotation & );
 
+  /**
+   *  Undecay
+   */
+  virtual void undecay() const {
+    _decaycalc=false;
+    SpinInfo::undecay();
+  }
+
 public:
 
   /**

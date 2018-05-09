@@ -232,7 +232,7 @@ public:
   /**
    * Calculate the rho matrix for the decay if not already done.
    */
-  void undecay() const ;
+  virtual void undecay() const ;
 
   /**
    * Set the developed flag and calculate the D matrix for the decay.
