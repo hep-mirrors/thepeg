@@ -69,3 +69,7 @@ PDF/done-all-links
 include/done-all-links
 lib/done-all-links
 src/done-all-links
+
+# added by aHg on Tue May 15 12:27:00 2018
+syntax: glob
+Config/ThePEG_Qty.h
