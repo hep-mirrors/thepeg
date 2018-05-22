@@ -118,7 +118,10 @@ void SpinInfo::decay(bool recursive) const {
       if(_developed!=NeedsUpdate) _oldDeveloped=_developed;
       _developed=NeedsUpdate;
     }
-    if(_production) _Dmatrix = _production->getDMatrix(_prodloc);
+    if(productionVertex()) {
+      if (recursive) redecay();
+      else _Dmatrix = productionVertex()->getDMatrix(_prodloc);
+    }
   }
   _decaymomentum = _currentmomentum;
   _decayed=true;
