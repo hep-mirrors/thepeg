@@ -54,19 +54,13 @@ VectorWaveFunction GeneralVSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   Energy2 p2    = pout.m2();
   Complex fact = norm()*sca1.wave()*sca2.wave()*propagator(iopt,p2,out,mass,width);
   // compute the vector
-  LorentzPolarizationVector vec;
-  // massless outgoing vector
-  if(mass.real()==ZERO) {
-    vec = -UnitRemoval::InvE * fact * (b_*sca2.momentum()+a_*sca1.momentum());
-  }
+  LorentzPolarizationVector vec =
+    -UnitRemoval::InvE * fact * (b_*sca2.momentum()+a_*sca1.momentum());
   // massive outgoing vector
-  else {
+  if(mass.real()!=ZERO) {
     // first the dot product for the second term
-    Complex dot = (sca1.m2()-sca2.m2())/mass2;
-    // compute the vector
-    vec = -fact * 
-      (LorentzPolarizationVector(UnitRemoval::InvE * (b_*sca2.momentum()+a_*sca1.momentum()))
-       +dot*UnitRemoval::InvE * pout);
+    complex<InvEnergy> dot = vec*pout/mass2;
+    vec -= dot*pout;
   }
   return VectorWaveFunction(pout,out,vec);
 }
