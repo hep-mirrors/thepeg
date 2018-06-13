@@ -94,6 +94,15 @@ public:
   }
 
   /**
+   * Get the basis state for the current for the given helicity, \a
+   * hel (0,1,2 as described above.)
+   */
+  const LorentzPolarizationVector & getCurrentBasisState(unsigned int hel) const {
+    assert(hel<3);
+    return _currentstates[hel];
+  }
+
+  /**
    * Get the basis state for the decay for the given helicity, \a hel 
    * (0,1,2 as described above.)
    */

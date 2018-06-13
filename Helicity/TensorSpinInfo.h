@@ -94,6 +94,15 @@ public:
     assert(hel<5);
     return _productionstates[hel];
   }
+  
+  /**
+   * Get the basis state for the current for the given helicity, \a
+   * hel  (0,1,2,3,4 as described above.)
+   */
+  const LorentzTensor<double> & getCurrentBasisState(unsigned int hel) const {
+    assert(hel<5);
+    return _currentstates[hel];
+  }
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
