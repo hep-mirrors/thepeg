@@ -153,6 +153,13 @@ public:
     _currentmomentum.transform(r);
   }
 
+  /**
+   *  Reset - Undoes any transformations and calls undecay.
+   */
+  virtual void reset() {
+    _currentmomentum = _productionmomentum;
+  }
+  
 public:
 
 

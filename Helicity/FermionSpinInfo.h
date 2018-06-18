@@ -130,7 +130,16 @@ public:
     _decaycalc=false;
     SpinInfo::undecay();
   }
-  
+
+  /**
+   *  Reset
+   */
+  virtual void reset() {
+    undecay();
+    _currentstates = _productionstates;
+    SpinInfo::reset();
+  }
+
 public:
 
   /**
