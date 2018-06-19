@@ -90,7 +90,19 @@ public:
 	_matrix[ix][iy]*=invnorm;
   }
   //@}
-
+  
+  /**
+   *  Reset
+   */
+  void reset(bool average = true) {
+    for(size_t ix=0; ix<_ispin; ++ix)
+      for(size_t iy=0; iy<_ispin; ++iy)
+	_matrix[ix][iy]=0.;
+    if ( average )
+      for(size_t ix=0; ix<_ispin; ++ix)
+	_matrix[ix][ix] = 1./_ispin;
+  }
+    
   /** @name Access the spin. */
   //@{
 
