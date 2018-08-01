@@ -23,15 +23,6 @@ namespace Math {
  */
 struct MathType {};
 
-/** The gamma function */
-double gamma(double);
-
-/** The log of the gamma function */
-double lngamma(double);
-
-/** Return \f${\rm atanh}(x)\f$ */
-double atanh(double);
-
 /** Return \f$1-e^x\f$, with highest possible precision for
  *  \f$x\rightarrow 0\f$. */
 double exp1m(double x);
