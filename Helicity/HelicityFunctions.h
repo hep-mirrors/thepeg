@@ -77,9 +77,10 @@ inline LorentzPolarizationVector polarizationVector(const Lorentz5Momentum & p,
   }
 }
 
-inline LorentzSpinor<double> spinor(const Lorentz5Momentum & p,
-				    unsigned int ihel,
-				    Direction dir) {
+
+inline LorentzSpinor<SqrtEnergy> dimensionedSpinor(const Lorentz5Momentum & p,
+						   unsigned int ihel,
+						   Direction dir) {
   // check direction and helicity
   assert(dir!=intermediate);
   assert(ihel<=1);
@@ -160,17 +161,24 @@ inline LorentzSpinor<double> spinor(const Lorentz5Momentum & p,
       lower =-eplusp;
     }
   }
-  return LorentzSpinor<double>(upper*hel_wf[0]*UnitRemoval::InvSqrtE,
-			       upper*hel_wf[1]*UnitRemoval::InvSqrtE,
-			       lower*hel_wf[0]*UnitRemoval::InvSqrtE,
-			       lower*hel_wf[1]*UnitRemoval::InvSqrtE,
-			       (dir==incoming) ? SpinorType::u : SpinorType::v);
+  return LorentzSpinor<SqrtEnergy>(upper*hel_wf[0],upper*hel_wf[1],
+				   lower*hel_wf[0],lower*hel_wf[1],
+				   (dir==incoming) ? SpinorType::u : SpinorType::v);
 }
 
+inline LorentzSpinor<double> spinor(const Lorentz5Momentum & p,
+				    unsigned int ihel,
+				    Direction dir) {
+  LorentzSpinor<SqrtEnergy> temp = dimensionedSpinor(p,ihel,dir);
+  return LorentzSpinor<double>(temp.s1()*UnitRemoval::InvSqrtE,
+			       temp.s2()*UnitRemoval::InvSqrtE,
+			       temp.s3()*UnitRemoval::InvSqrtE,
+			       temp.s4()*UnitRemoval::InvSqrtE,temp.Type());
+}
 
-inline LorentzSpinorBar<double> spinorBar(const Lorentz5Momentum & p,
-					  unsigned int ihel,
-					  Direction dir) {
+inline LorentzSpinorBar<SqrtEnergy> dimensionedSpinorBar(const Lorentz5Momentum & p,
+							 unsigned int ihel,
+							 Direction dir) {
   // check direction and helicity
   assert(dir!=intermediate);
   assert(ihel<=1);
@@ -249,15 +257,24 @@ inline LorentzSpinorBar<double> spinorBar(const Lorentz5Momentum & p,
     }
   }
   // now finally we can construct the spinors
-  return LorentzSpinorBar<double>(upper*hel_wf[0]*UnitRemoval::InvSqrtE,
-				  upper*hel_wf[1]*UnitRemoval::InvSqrtE,
-				  lower*hel_wf[0]*UnitRemoval::InvSqrtE,
-				  lower*hel_wf[1]*UnitRemoval::InvSqrtE,
-				  (dir==incoming) ? SpinorType::v : SpinorType::u);
+  return LorentzSpinorBar<SqrtEnergy>(upper*hel_wf[0],
+				      upper*hel_wf[1],
+				      lower*hel_wf[0],
+				      lower*hel_wf[1],
+				      (dir==incoming) ? SpinorType::v : SpinorType::u);
 }
 
+inline LorentzSpinorBar<double> spinorBar(const Lorentz5Momentum & p,
+					  unsigned int ihel,
+					  Direction dir) {
+  LorentzSpinorBar<SqrtEnergy> temp = dimensionedSpinorBar(p,ihel,dir);
+  return LorentzSpinorBar<double>(temp.s1()*UnitRemoval::InvSqrtE,
+  				  temp.s2()*UnitRemoval::InvSqrtE,
+  				  temp.s3()*UnitRemoval::InvSqrtE,
+  				  temp.s4()*UnitRemoval::InvSqrtE,temp.Type());
 }
 }
 }
-  
+}
+
 #endif /* ThePEG_HelicityFunctions_H */
