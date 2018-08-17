@@ -102,11 +102,17 @@ calculateWaveFunctions(vector<SpinorWaveFunction> & waves,
   // do the calculation
   else {
     assert(!particle->spinInfo());
-    SpinorWaveFunction wave(particle->momentum(),particle->dataPtr(),dir);
-    for(unsigned int ix=0;ix<2;++ix) {
-      wave.reset(ix);
-      waves[ix] = wave;
-    }
+    calculateWaveFunctions(waves,particle->momentum(),particle->dataPtr(),dir);
+  }
+}
+void SpinorWaveFunction::
+calculateWaveFunctions(vector<SpinorWaveFunction> & waves,
+		       const Lorentz5Momentum & momentum,
+		       tcPDPtr parton,Direction dir) {
+  SpinorWaveFunction wave(momentum,parton,dir);
+  for(unsigned int ix=0;ix<2;++ix) {
+    wave.reset(ix);
+    waves[ix] = wave;
   }
 }
 

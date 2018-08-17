@@ -194,6 +194,15 @@ public:
    * return wavefunction as LorentzRSSpinorBar
    */
   const LorentzRSSpinorBar<double> & wave() const {return _wf;}
+
+  /// Return wavefunction as LorentzRSSpinorBar<SqrtEnergy>
+  LorentzRSSpinorBar<SqrtEnergy> dimensionedWf() const {
+    LorentzRSSpinorBar<SqrtEnergy> temp(_wf.Type());
+    for (unsigned int i=0; i<4; ++i)
+      for (unsigned int j=0; j<4; ++j)
+	temp(i,j) = _wf(i,j)*UnitRemoval::SqrtE;
+    return temp;
+  }
   
   /**
    * Get first spinor component for the x vector
@@ -312,6 +321,13 @@ public:
    */
   static void calculateWaveFunctions(vector<RSSpinorBarWaveFunction> & waves,
 				     tPPtr particle,Direction);
+  
+  /**
+   *  Calculate the wavefunctions
+   */
+  static void calculateWaveFunctions(vector<RSSpinorBarWaveFunction> & waves,
+				     const Lorentz5Momentum & momentum,
+				     tcPDPtr parton,Direction);
 
   /**
    *  Calculate the wavefunctions
@@ -353,15 +369,6 @@ private:
    * storage of the Lorentz RSSpinorBar
    */
   LorentzRSSpinorBar<double> _wf;
-
-  /// Return wavefunction as LorentzRSSpinorBar<SqrtEnergy>
-  LorentzRSSpinorBar<SqrtEnergy> dimensionedWf() const {
-    LorentzRSSpinorBar<SqrtEnergy> temp(_wf.Type());
-    for (unsigned int i=0; i<4; ++i)
-      for (unsigned int j=0; j<4; ++j)
-	temp(i,j) = _wf(i,j)*UnitRemoval::SqrtE;
-    return temp;
-  }
 };
 
 }

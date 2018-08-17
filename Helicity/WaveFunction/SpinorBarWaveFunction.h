@@ -253,6 +253,13 @@ public:
   /**
    *  Calculate the wavefunctions
    */
+  static void calculateWaveFunctions(vector<SpinorBarWaveFunction> & waves,
+				     const Lorentz5Momentum & momentum,
+				     tcPDPtr parton,Direction);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzSpinorBar<SqrtEnergy> > & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction);

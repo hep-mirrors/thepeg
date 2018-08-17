@@ -83,17 +83,25 @@ calculateWaveFunctions(vector<VectorWaveFunction> & waves,
   }
   else {
     assert(!particle->spinInfo());
-    VectorWaveFunction wave(particle->momentum(),particle->dataPtr(),0,
-			    dir,phase);
-    for(unsigned int ix=0;ix<3;++ix) {
-      if(massless&&ix==1) {
-	waves[ix] = VectorWaveFunction(particle->momentum(),
-				       particle->dataPtr(),dir);
-      }
-      else {
-	if(ix!=0) wave.reset(ix);
-	waves[ix] = wave;
-      }
+    calculateWaveFunctions(waves,particle->momentum(),particle->dataPtr(),
+			   dir,massless,phase);
+  }
+}
+
+void VectorWaveFunction::
+calculateWaveFunctions(vector<VectorWaveFunction> & waves,
+		       const Lorentz5Momentum & momentum, tcPDPtr parton, 
+		       Direction dir, bool massless,
+		       VectorPhase phase) {
+  waves.resize(3);
+  VectorWaveFunction wave(momentum,parton,0,dir,phase);
+  for(unsigned int ix=0;ix<3;++ix) {
+    if(massless&&ix==1) {
+      waves[ix] = VectorWaveFunction(momentum,parton,dir);
+    }
+    else {
+      if(ix!=0) wave.reset(ix);
+      waves[ix] = wave;
     }
   }
 }

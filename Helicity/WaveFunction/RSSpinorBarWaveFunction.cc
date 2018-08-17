@@ -155,11 +155,19 @@ calculateWaveFunctions(vector<RSSpinorBarWaveFunction> & waves,
   // do the calculation
   else {
     assert(!particle->spinInfo());
-    RSSpinorBarWaveFunction wave(particle->momentum(),particle->dataPtr(),dir);
-    for(unsigned int ix=0;ix<4;++ix) {
-      wave.reset(ix);
-      waves[ix] = wave;
+    calculateWaveFunctions(waves,particle->momentum(),particle->dataPtr(),dir);
     }
+}
+
+void RSSpinorBarWaveFunction::
+calculateWaveFunctions(vector<RSSpinorBarWaveFunction> & waves,
+		       const Lorentz5Momentum & momentum,
+		       tcPDPtr parton,Direction dir) {
+  waves.resize(4);
+  RSSpinorBarWaveFunction wave(momentum,parton,dir);
+  for(unsigned int ix=0;ix<4;++ix) {
+    wave.reset(ix);
+    waves[ix] = wave;
   }
 }
 

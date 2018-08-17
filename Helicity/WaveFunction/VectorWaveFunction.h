@@ -205,6 +205,14 @@ public:
   /**
    *  Calculate the wavefunctions
    */
+  static void calculateWaveFunctions(vector<VectorWaveFunction> & waves,
+				     const Lorentz5Momentum & momentum,
+				     tcPDPtr parton, Direction,bool massless,
+				     VectorPhase phase=default_vector_phase);
+
+  /**
+   *  Calculate the wavefunctions
+   */
   static void calculateWaveFunctions(vector<LorentzPolarizationVector> & waves,
 				     RhoDMatrix & rho,
 				     tPPtr particle,Direction,bool massless,
