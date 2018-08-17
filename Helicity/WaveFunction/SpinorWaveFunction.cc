@@ -109,6 +109,7 @@ void SpinorWaveFunction::
 calculateWaveFunctions(vector<SpinorWaveFunction> & waves,
 		       const Lorentz5Momentum & momentum,
 		       tcPDPtr parton,Direction dir) {
+  waves.resize(2);
   SpinorWaveFunction wave(momentum,parton,dir);
   for(unsigned int ix=0;ix<2;++ix) {
     wave.reset(ix);
