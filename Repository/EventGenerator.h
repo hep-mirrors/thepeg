@@ -712,6 +712,11 @@ public:
 			  string cmd, string value);
 
   /**
+   *  Remove the object
+   */
+  bool preinitRemove(IPtr obj);
+
+  /**
    * Find a decaymode given a decay \a tag.
    * @return null if no decay mode was found.
    */

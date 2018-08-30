@@ -943,6 +943,20 @@ bool EventGenerator::preinitRegister(IPtr obj, string fullname) {
   return true;
 }
 
+bool EventGenerator::preinitRemove(IPtr obj) {
+  bool deleted=true;
+  if(theObjects.find(obj)!=theObjects.end()) {
+    theObjects.erase(obj);
+  }
+  else
+    deleted = false;
+  if(theObjectMap.find(obj->fullName())!=theObjectMap.end())
+    theObjectMap.erase(obj->fullName());
+  else
+    deleted = false;
+  return deleted;
+}
+
 IPtr EventGenerator::
 preinitCreate(string classname, string fullname, string libraries) {
   if ( !preinitializing ) throw InitException()
