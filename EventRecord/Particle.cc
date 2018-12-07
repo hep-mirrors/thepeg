@@ -327,6 +327,7 @@ ostream & Particle::print(ostream & os, tcStepPtr step) const {
 	break;
       case 'P':
 	fullColour = true;
+	[[fallthrough]];
       case 'p':
 	open = *++pos;
 	sep = *++pos;
@@ -369,6 +370,7 @@ ostream & Particle::print(ostream & os, tcStepPtr step) const {
 	break;
       case 'C':
 	fullColour = true;
+	[[fallthrough]];
       case 'c':
 	open = *++pos;
 	sep = *++pos;
