@@ -459,6 +459,7 @@ ostream & Particle::print(ostream & os, tcStepPtr step) const {
 	  writePrecision(os, ++pos, 10, 3, vertex().e()/mm);
 	  break;
 	}
+	break;
       case 'L':
 	switch ( *++pos ) {
 	case 'x':
