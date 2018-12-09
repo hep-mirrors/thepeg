@@ -227,19 +227,20 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
   veck2[3]=vec2.e() -pout.e()*dotkk2*tmass2inv;
     
   // coefficient of g(nu,mu)-k^muk^nu/m^2
+  Complex omp2 = 1.-Complex(p2*tmass2inv);
   Complex coeff1 = UnitRemoval::InvE2 * 
     (
      +4./3.*mdot*(-2.*dotv1v2+Complex((dotkv1*dotkv2+p2*dotv1v2)*tmass2inv))
      +4./3.*(dotv1k2*(dotk1v2-dotkk1*dotkv2*tmass2inv)
 	     +dotk1v2*(dotv1k2-dotkk2*dotkv1*tmass2inv)
 	     -dotv1v2*(dotk1k2-dotkk1*dotkk2*tmass2inv)
-	     +(1.-p2*tmass2inv)*dotk1v2*dotv1k2)
+	     +omp2*dotk1v2*dotv1k2)
      );
   // coefficient of g(nu,mu)
   Complex coeff2 = UnitRemoval::InvE2 * 
     (
-     2.*mdot*(1.-p2*tmass2inv)*dotv1v2
-     -2.*(1.-p2*tmass2inv)*dotk1v2*dotv1k2
+     2.*mdot*omp2*dotv1v2
+     -2.*omp2*dotk1v2*dotv1k2
      );
   // construct the tensor
   Complex ten[4][4];
