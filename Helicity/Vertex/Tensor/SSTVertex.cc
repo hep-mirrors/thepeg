@@ -86,8 +86,8 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   if(mass.real()!=ZERO) {
     Complex norm1=dot1/mass2;
     Complex norm2=dot2/mass2;
-    a = UnitRemoval::InvE2 * ((mphi2+dot12)*(Complex(2.*p2/mass2)-5.)
-			      +4.*(dot12-dot1*dot2/mass2))/3.;
+    a = Complex(UnitRemoval::InvE2 * ((mphi2+dot12)*(Complex(2.*p2/mass2)-5.)
+				      +4.*(dot12-dot1*dot2/mass2)))/3.;
     b = -(-(mphi2+dot12)*(2.+p2/mass2)+4.*(dot12-dot1*(dot2/mass2)))/3./mass2;
     vec1 = LorentzPolarizationVectorE(sca1.momentum()) - 
       LorentzPolarizationVectorE(norm1 * pout);

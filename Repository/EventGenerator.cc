@@ -1078,6 +1078,7 @@ DMPtr EventGenerator::constructDecayMode(string & tag) {
       } break;
     case '=':
       dolink = true;
+      [[fallthrough]];
     case ',':
     case ']':
       tag = tag.substr(1);
