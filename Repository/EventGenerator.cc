@@ -475,7 +475,7 @@ EventPtr EventGenerator::doShoot() {
       else
 	log() << "An exception occurred before any event object was created!";
       log() << endl;
-      dump();
+      if ( ThePEG_DEBUG_LEVEL ) dump();
       throw;
     }
     if ( ThePEG_DEBUG_LEVEL ) {

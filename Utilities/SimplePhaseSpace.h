@@ -176,6 +176,18 @@ namespace SimplePhaseSpace {
   Energy getMagnitude(Energy2 s, Energy m1, Energy m2);
 
   /**
+   * Calculate the absolute magnitude of the momenta of two particles
+   * with masses m1 and m2 when put in their CMS of total invariant
+   * mass squared s.
+   * @param s the total invariant mass squared.
+   * @param m1 the mass of particle 1.
+   * @param m2 the mass of particle 2.
+   * @return a negative value if the sum of the masses was
+   * larger than the given invariant mass (\f$\sqrt{s}\f$).
+   */
+  static Energy checkMagnitude(Energy2 s, Energy m1, Energy m2);
+
+  /**
    * Return a three-vector given the absolute momentum, cos(theta) and
    * phi.
    * @param p the magnitude of the momentum.
