@@ -185,7 +185,7 @@ namespace SimplePhaseSpace {
    * @return a negative value if the sum of the masses was
    * larger than the given invariant mass (\f$\sqrt{s}\f$).
    */
-  static Energy checkMagnitude(Energy2 s, Energy m1, Energy m2);
+//  static Energy checkMagnitude(Energy2 s, Energy m1, Energy m2);
 
   /**
    * Return a three-vector given the absolute momentum, cos(theta) and

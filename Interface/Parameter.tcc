@@ -38,7 +38,7 @@ ParameterTBase<Type>::setImpl(InterfacedBase & i,
   if ( unit() > Type() ) {
     double t;
     is >> t;
-    tset(i, Type(t*unit()));
+    tset(i, umult(t, unit()));
   } else {
     Type t = Type();
     is >> t;
@@ -59,7 +59,18 @@ ParameterTBase<Type>::setImpl(InterfacedBase & i,
   string suffix;
   is >> suffix;
   checkUnitConsistency(suffix);
-  tset(i, t*unit());
+  tset(i, umult(t, unit()));
+}
+  
+template <typename Type>
+inline void 
+ParameterTBase<Type>::setImpl(InterfacedBase & i, 
+			      string newValue, EnumT) 
+  const {
+  istringstream is(newValue);
+  int t;
+  is >> t;
+  tset(i, Type(t));
 }
   
     // Macs need a visible template specialization.
@@ -286,6 +297,12 @@ namespace {
   template <typename T>
   inline
   void ostreamInsert(ostream & os, T v, StandardT) {
+    os << v;
+  }
+  
+  template <typename T>
+  inline
+  void ostreamInsert(ostream & os, T v, EnumT) {
     os << v;
   }
 }

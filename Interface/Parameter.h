@@ -42,6 +42,29 @@ namespace {
     else
       os << v;
   }
+
+  template <typename T>
+  /**
+   *  Helper functions for putUnit
+   */
+  inline void putUnitImpl(ostream & os, T v, T, EnumT) {
+    os << v;
+  }
+}
+
+
+/// Helper functions for unit multiplication.
+namespace {
+
+template<typename T, typename U>
+U umult(const T & t, const U & u) {
+  return t*u;
+}
+
+template <typename U>
+bool umult(bool b, U) {
+  return b;
+}
 }
 
 /**
@@ -274,6 +297,11 @@ private:
   /// Implementation of set() for dimensioned types.
   void setImpl (InterfacedBase & i, 
 		       string newValue, DimensionT) 
+    const;
+
+  /// Implementation of set() for dimensioned types.
+  void setImpl (InterfacedBase & i, 
+		       string newValue, EnumT) 
     const;
 
 public:

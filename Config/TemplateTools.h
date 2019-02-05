@@ -31,13 +31,16 @@ struct DummyType {};
 /** @endcond */
 
 /// Selection mechanism for type-dependent implementations.
-enum ImplSelector { Dimensioned, Standard };
+enum ImplSelector { Dimensioned, Standard, Enumerated };
 
 /// Typedef for dimensioned types.
 typedef Int2Type<Dimensioned> DimensionT;
 
 /// Typedef for non-dimensioned types.
 typedef Int2Type<Standard> StandardT;
+
+/// Typedef for non-dimensioned types.
+typedef Int2Type<Enumerated> EnumT;
 
 
 /// Type traits for built-in types

@@ -243,6 +243,7 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
     allParticles.push_back(*pit);
 
   ParticleMap localParticles;
+  set<string> pdgnames;
 
   for ( PDVector::iterator pit = allParticles.begin();
 	pit != allParticles.end(); ++pit ) {
@@ -254,6 +255,13 @@ EGPtr Repository::makeRun(tEGPtr eg, string name) {
       clonedObjects.insert(pd);
       localObjects.insert(*pit);
       addReferences(*pit, localObjects);
+      if ( pdgnames.find(pd->PDGName()) != pdgnames.end() )
+        std::cerr << "Using duplicate PDGName " << pd->PDGName()
+                  << " for a new particle.\n This can cause problems and is not "
+                  << "recommended.\n If this second particle is a new particle "
+                  << "in a BSM Model we recommend you change the name of the particle.\n";
+      else
+        pdgnames.insert(pd->PDGName());
     } else {
       trans[*pit] = it->second;
     }
@@ -696,10 +704,7 @@ string Repository::exec(string command, ostream & os) {
       readSetup(obj, is);
       // A particle may have been registered before but under the wrong id().
       PDPtr pd = dynamic_ptr_cast<PDPtr>(obj);
-      if(pd) {
-	registerParticle(pd);
-	checkDuplicatePDGName(pd);
-      }
+      if(pd) registerParticle(pd);
       return "";
     }
     if ( verb == "decaymode" ) {
@@ -1090,30 +1095,6 @@ Repository::~Repository() {
   --ninstances;
   if ( ninstances <= 0 ) {
     generators().clear();
-  }
-}
-
-void Repository::checkDuplicatePDGName(PDPtr pd) {
-  string name = pd->PDGName();
-  for ( ParticleMap::iterator pit = defaultParticles().begin();
-	pit != defaultParticles().end(); ++pit ) {
-    if( pit->second == pd) continue;
-    if ( pit->second->PDGName() == name ) {
-      std::cerr << "Using duplicate PDGName " << pd->PDGName()
-		<< " for a new particle.\n This can cause problems and is not "
-		<< "recommended.\n If this second particle is a new particle "
-		<< "in a BSM Model we recommend you change the name of the particle.\n";
-    }
-  }
-  for ( ParticleDataSet::iterator pit = particles().begin();
-	pit != particles().end(); ++pit ) {
-    if( *pit == pd) continue;
-    if ( (**pit).PDGName() == name ) {
-      std::cerr << "Using duplicate PDGName " << pd->PDGName()
-		<< " for a new particle.\n This can cause problems and is not "
-		<< "recommended.\n If this second particle is a new particle "
-		<< "in a BSM Model we recommend you change the name of the particle.\n";
-    }
   }
 }
 

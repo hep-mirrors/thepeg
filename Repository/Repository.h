@@ -269,11 +269,6 @@ private:
    */
   static void execAndCheckReply(string, ostream &);
 
-  /**
-   *  Check that the PDG name is not a duplicate
-   */
-  static void checkDuplicatePDGName(PDPtr);
-
 protected:
 
   /** @name Functions containing the static instances of objects used
