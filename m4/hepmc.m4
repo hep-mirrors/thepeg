@@ -13,7 +13,16 @@ AC_ARG_WITH(hepmc,
 AC_ARG_WITH(hepmcversion,
         AC_HELP_STRING([--with-hepmcversion=version],[Version of HepMC]),
         [],
-	[with_hepmcversion=2])
+	[with_hepmcversion=no])
+
+if test "x$with_hepmc" == "xno" -a "x$with_hepmcversion" != "xno"; then
+   with_hepmc=yes
+fi
+
+if test "x$with_hepmcversion" == "xno"; then
+   with_hepmcversion=2
+fi
+
 HEPMCLIBS=""
 if test "x$with_hepmcversion" = "x2"; then
 SHORTHEPMCLIBS="-lHepMC"
@@ -24,7 +33,13 @@ SHORTHEPMCLIBS="-lHepMC3"
 SHORTHEPMCLIBNAME="HepMC3"
 fi
 
-
+if test "x$with_hepmc" == "xyes"; then
+    if test "x$prefix" == "xNONE"; then
+      with_hepmc=$ac_default_prefix
+    else
+      with_hepmc=$prefix
+    fi
+fi
 
 if test "x$with_hepmc" = "xno"; then
 	AC_MSG_RESULT([HepMC support disabled.])
