@@ -52,11 +52,13 @@ IBPtr HepMCFile::fullclone() const {
 void HepMCFile::doinitrun() {
   AnalysisHandler::doinitrun();
 
+   if ( _filename.empty() )
+      _filename = generator()->filename() + ".hepmc";
+
+
   switch ( _format ) {
 #ifdef HAVE_HEPMC3
   default: {
-    if ( _filename.empty() )
-      _filename = generator()->filename() + ".hepmc";
     HepMC::WriterAsciiHepMC2 * tmpio 
       = new HepMC::WriterAsciiHepMC2(_filename.c_str());
     tmpio->set_precision(_geneventPrecision);
