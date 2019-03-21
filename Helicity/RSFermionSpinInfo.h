@@ -159,7 +159,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  RSFermionSpinInfo & operator=(const RSFermionSpinInfo &);
+  RSFermionSpinInfo & operator=(const RSFermionSpinInfo &) = delete;
 
 private:
 

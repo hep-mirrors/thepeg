@@ -143,7 +143,7 @@ private:
   /**
    * Assignment is unimplemented and private and should never be used.
    */
-  HepMCConverter & operator=(const HepMCConverter &);
+  HepMCConverter & operator=(const HepMCConverter &) = delete;
 
 private:
 

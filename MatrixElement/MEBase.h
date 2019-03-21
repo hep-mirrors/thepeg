@@ -635,7 +635,7 @@ private:
   /**
    *  Private and non-existent assignment operator.
    */
-  MEBase & operator=(const MEBase &);
+  MEBase & operator=(const MEBase &) = delete;
 
 };
 

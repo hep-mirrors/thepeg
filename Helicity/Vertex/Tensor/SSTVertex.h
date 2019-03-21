@@ -130,7 +130,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  SSTVertex & operator=(const SSTVertex &);
+  SSTVertex & operator=(const SSTVertex &) = delete;
   
 };
 

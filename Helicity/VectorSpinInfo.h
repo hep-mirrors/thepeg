@@ -157,7 +157,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VectorSpinInfo & operator=(const VectorSpinInfo &);
+  VectorSpinInfo & operator=(const VectorSpinInfo &) = delete;
 
 private:
 

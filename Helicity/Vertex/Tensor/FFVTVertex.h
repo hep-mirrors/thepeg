@@ -129,7 +129,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  FFVTVertex & operator=(const FFVTVertex &);
+  FFVTVertex & operator=(const FFVTVertex &) = delete;
   
 private:
 

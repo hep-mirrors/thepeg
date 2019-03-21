@@ -145,7 +145,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VVVTVertex & operator=(const VVVTVertex &);
+  VVVTVertex & operator=(const VVVTVertex &) = delete;
   
 };
 

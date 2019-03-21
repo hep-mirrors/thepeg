@@ -157,7 +157,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  FermionSpinInfo & operator=(const FermionSpinInfo &);
+  FermionSpinInfo & operator=(const FermionSpinInfo &) = delete;
 
 private:
 

@@ -70,7 +70,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  ScalarSpinInfo & operator=(const ScalarSpinInfo &);
+  ScalarSpinInfo & operator=(const ScalarSpinInfo &) = delete;
 
 };
 

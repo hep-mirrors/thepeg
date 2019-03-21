@@ -173,7 +173,7 @@ private:
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  NLOHepMC3File & operator=(const NLOHepMC3File &);
+  NLOHepMC3File & operator=(const NLOHepMC3File &) = delete;
 
 };
 

@@ -511,7 +511,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VertexBase & operator=(const VertexBase &);
+  VertexBase & operator=(const VertexBase &) = delete;
   
 private:
 

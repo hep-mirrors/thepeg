@@ -62,7 +62,7 @@ private:
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  AbstractVVSTVertex & operator=(const AbstractVVSTVertex &);
+  AbstractVVSTVertex & operator=(const AbstractVVSTVertex &) = delete;
 
 };
 

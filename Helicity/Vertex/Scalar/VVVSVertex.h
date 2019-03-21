@@ -169,7 +169,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VVVSVertex & operator=(const VVVSVertex &);
+  VVVSVertex & operator=(const VVVSVertex &) = delete;
 
   /**
    *   Whether or ont the vertex has a scalar or pseudoscalr particle

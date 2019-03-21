@@ -129,7 +129,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VVSSVertex & operator=(const VVSSVertex &);
+  VVSSVertex & operator=(const VVSSVertex &) = delete;
   
 };
 

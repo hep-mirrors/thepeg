@@ -344,7 +344,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  SpinInfo & operator=(const SpinInfo &);
+  SpinInfo & operator=(const SpinInfo &) = delete;
 
 private:
 

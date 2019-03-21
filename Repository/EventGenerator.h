@@ -1156,7 +1156,7 @@ private:
   /**
    *  Private and non-existent assignment operator.
    */
-  EventGenerator & operator=(const EventGenerator &);
+  EventGenerator & operator=(const EventGenerator &) = delete;
 
 };
 
