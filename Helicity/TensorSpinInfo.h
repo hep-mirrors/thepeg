@@ -140,7 +140,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  TensorSpinInfo & operator=(const TensorSpinInfo &);
+  TensorSpinInfo & operator=(const TensorSpinInfo &) = delete;
 
 private:
 

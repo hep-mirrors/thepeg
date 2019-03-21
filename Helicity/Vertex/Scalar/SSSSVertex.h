@@ -106,7 +106,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  SSSSVertex & operator=(const SSSSVertex &);
+  SSSSVertex & operator=(const SSSSVertex &) = delete;
   
 };
 }

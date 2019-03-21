@@ -194,7 +194,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  GeneralFFVVertex & operator=(const GeneralFFVVertex &);
+  GeneralFFVVertex & operator=(const GeneralFFVVertex &) = delete;
   
 private:
 

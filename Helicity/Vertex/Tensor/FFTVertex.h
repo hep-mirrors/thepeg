@@ -147,7 +147,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  FFTVertex & operator=(const FFTVertex &);
+  FFTVertex & operator=(const FFTVertex &) = delete;
   
 };
 

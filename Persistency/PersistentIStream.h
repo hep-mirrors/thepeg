@@ -528,7 +528,7 @@ private:
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  PersistentIStream & operator=(const PersistentIStream &);
+  PersistentIStream & operator=(const PersistentIStream &) = delete;
 
 };
 

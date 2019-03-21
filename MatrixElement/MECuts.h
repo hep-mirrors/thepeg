@@ -279,7 +279,7 @@ private:
   /**
    *  Private and non-existent assignment operator.
    */
-  MECuts & operator=(const MECuts &);
+  MECuts & operator=(const MECuts &) = delete;
 
 };
 

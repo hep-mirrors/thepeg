@@ -45,7 +45,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VSSVertex & operator=(const VSSVertex &);
+  VSSVertex & operator=(const VSSVertex &) = delete;
   
 };
 

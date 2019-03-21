@@ -242,7 +242,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  RFSVertex & operator=(const RFSVertex &);
+  RFSVertex & operator=(const RFSVertex &) = delete;
   
 private:
 

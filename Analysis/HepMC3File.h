@@ -139,7 +139,7 @@ private:
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  HepMC3File & operator=(const HepMC3File &);
+  HepMC3File & operator=(const HepMC3File &) = delete;
 
 private:
 

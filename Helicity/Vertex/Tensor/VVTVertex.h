@@ -139,7 +139,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  VVTVertex & operator=(const VVTVertex &);
+  VVTVertex & operator=(const VVTVertex &) = delete;
   
 };
 

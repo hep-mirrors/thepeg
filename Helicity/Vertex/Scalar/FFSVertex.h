@@ -179,7 +179,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  FFSVertex & operator=(const FFSVertex &);
+  FFSVertex & operator=(const FFSVertex &) = delete;
   
 private:
 

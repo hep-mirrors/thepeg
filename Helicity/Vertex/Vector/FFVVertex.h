@@ -248,7 +248,7 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  FFVVertex & operator=(const FFVVertex &);
+  FFVVertex & operator=(const FFVVertex &) = delete;
   
 private:
 

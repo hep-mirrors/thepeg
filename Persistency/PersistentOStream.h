@@ -529,7 +529,7 @@ private:
   /**
    * Standard ctors and assignment are private and not implemented.
    */
-  PersistentOStream & operator=(const PersistentOStream &);
+  PersistentOStream & operator=(const PersistentOStream &) = delete;
 
 };
 

@@ -174,7 +174,7 @@ private:
    * The assignment operator is private and must never be called.
    * In fact, it should not even be implemented.
    */
-  AbstractRFSVertex & operator=(const AbstractRFSVertex &);
+  AbstractRFSVertex & operator=(const AbstractRFSVertex &) = delete;
 
 };
 

@@ -133,7 +133,7 @@ private:
   /**
    *  Private and non-existent assignment operator.
    */
-  StandardRandom & operator=(const StandardRandom &);
+  StandardRandom & operator=(const StandardRandom &) = delete;
 
 };
 
