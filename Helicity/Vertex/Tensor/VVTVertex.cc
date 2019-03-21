@@ -122,13 +122,13 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   Complex trace = ten.tt()-ten.xx()-ten.yy()-ten.zz();
   // compute the vector
   Complex vec1[4];
-  vec1[0] = UnitRemoval::InvE2*
+  vec1[0] = Complex(UnitRemoval::InvE2*
     (mdot*(+   tentx*   vec.t()-2.*ten.xx()*vec.x()
 	   -   tenxy*   vec.y()-    tenxz*  vec.z()-trace*vec.x())
      +(tenk2v1-trace*dotk2v1)*vec.px()-tenk1k2*vec.x()
      +dotk2v1*(+   tentx*   vec.e() -2.*ten.xx()*vec.px()
-	       -   tenxy*   vec.py()-    tenxz*  vec.pz()));
-  vec1[1] = UnitRemoval::InvE2*(
+	       -   tenxy*   vec.py()-    tenxz*  vec.pz())));
+  vec1[1] = Complex(UnitRemoval::InvE2*(
     mdot *
     (+    tenty*  vec.t()
      -    tenxy*  vec.x()
@@ -140,31 +140,31 @@ VectorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
     +dotk2v1*(+    tenty*  vec.e() 
 	      -    tenxy*  vec.px()
 	      -2.*ten.yy()*vec.py()
-	      -    tenyz*  vec.pz()));
+	      -    tenyz*  vec.pz())));
 
   
-  vec1[2] = UnitRemoval::InvE2*
+  vec1[2] = Complex(UnitRemoval::InvE2*
     (mdot*
      (+   tentz*   vec.t()-    tenxz*  vec.x()
       -   tenyz*   vec.y()-2.*ten.zz()*vec.z()-trace*vec.z())
      +(tenk2v1-trace*dotk2v1)*vec.pz()-tenk1k2*vec.z()
      +dotk2v1*(+   tentz*   vec.e() -    tenxz  *vec.px()
-	       -   tenyz*   vec.py()-2.*ten.zz()*vec.pz()));
-  vec1[3] = UnitRemoval::InvE2*
+	       -   tenyz*   vec.py()-2.*ten.zz()*vec.pz())));
+  vec1[3] = Complex(UnitRemoval::InvE2*
     (mdot*(+2.*ten.tt()*vec.t()-    tentx*  vec.x()
 	   -   tenty*   vec.y()-    tentz*  vec.z()-trace*vec.t())
      +(tenk2v1-trace*dotk2v1)*vec.e() -tenk1k2*vec.t()
      +dotk2v1*(+2.*ten.tt()*vec.e() -    tentx*  vec.px()
-	       -   tenty*   vec.py()-    tentz*  vec.pz()));
+	       -   tenty*   vec.py()-    tentz*  vec.pz())));
   // now add the piece for massive bosons
   if(mass.real()!=ZERO) {
     // DGRELL unit problem?
     Complex dot = tenk2v1 * UnitRemoval::InvE 
       -  dotk1k2 * trace  * UnitRemoval::InvE2;
-    vec1[0] -= dot*pout.x() * UnitRemoval::InvE;
-    vec1[1] -= dot*pout.y() * UnitRemoval::InvE;
-    vec1[2] -= dot*pout.z() * UnitRemoval::InvE;
-    vec1[3] -= dot*pout.e() * UnitRemoval::InvE;
+    vec1[0] -= Complex(dot*pout.x() * UnitRemoval::InvE);
+    vec1[1] -= Complex(dot*pout.y() * UnitRemoval::InvE);
+    vec1[2] -= Complex(dot*pout.z() * UnitRemoval::InvE);
+    vec1[3] -= Complex(dot*pout.e() * UnitRemoval::InvE);
   }
   // return the VectorWaveFunction
   for(int ix=0;ix<4;++ix){vec1[ix]=vec1[ix]*fact;}
@@ -253,7 +253,7 @@ TensorWaveFunction VVTVertex::evaluate(Energy2 q2, int iopt,tcPDPtr out,
       temp -= 2.*dotk1v2*(veck2[ix]*vecv1[iy]+veck2[iy]*vecv1[ix]);
       temp += 2.*dotv1v2*(veck1[ix]*veck2[iy]+veck1[iy]*veck2[ix]);
       
-      ten[ix][iy] = UnitRemoval::InvE2 * temp
+      ten[ix][iy] = Complex(UnitRemoval::InvE2 * temp)
 	-coeff1*tmass2inv*pout_tmp[ix]*pout_tmp[iy];
     }
   }

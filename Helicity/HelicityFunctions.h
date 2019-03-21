@@ -112,7 +112,7 @@ inline LorentzSpinor<SqrtEnergy> dimensionedSpinor(const Lorentz5Momentum & p,
       InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
       SqrtEnergy rtppluspz = (ppz>=ZERO) ? sqrt(pabs+ppz) : ptran/sqrt(pabs-ppz); 
       hel_wf[0] = denominator*rtppluspz;
-      hel_wf[1] = denominator/rtppluspz*complex<Energy>(ppx,ppy);
+      hel_wf[1] = Complex(denominator/rtppluspz*complex<Energy>(ppx,ppy));
     }
   }
   // compute the - spinor for - helicty particles and + helicity antiparticles
@@ -132,7 +132,7 @@ inline LorentzSpinor<SqrtEnergy> dimensionedSpinor(const Lorentz5Momentum & p,
     else {
       InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
       SqrtEnergy rtppluspz = (ppz>=ZERO) ? sqrt(pabs+ppz) : ptran/sqrt(pabs-ppz);
-      hel_wf[0] = denominator/rtppluspz*complex<Energy>(-ppx,ppy);
+      hel_wf[0] = Complex(denominator/rtppluspz*complex<Energy>(-ppx,ppy));
       hel_wf[1] = denominator*rtppluspz;
     }
   }
@@ -208,7 +208,7 @@ inline LorentzSpinorBar<SqrtEnergy> dimensionedSpinorBar(const Lorentz5Momentum 
       InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
       SqrtEnergy rtppluspz = (ppz>=ZERO) ? sqrt(pabs+ppz) : ptran/sqrt(pabs-ppz);
       hel_wf[0] = denominator*rtppluspz;
-      hel_wf[1] = denominator/rtppluspz*complex<Energy>(ppx,-ppy);
+      hel_wf[1] = Complex(denominator/rtppluspz*complex<Energy>(ppx,-ppy));
     }
   }
   // compute the - spinor for - helicty particles and + helicity antiparticles
@@ -228,7 +228,7 @@ inline LorentzSpinorBar<SqrtEnergy> dimensionedSpinorBar(const Lorentz5Momentum 
     else {
       InvSqrtEnergy denominator = 1./sqrt(2.*pabs);
       SqrtEnergy rtppluspz = (ppz>=ZERO) ? sqrt(pabs+ppz) : ptran/sqrt(pabs-ppz);
-      hel_wf[0] = denominator/rtppluspz*complex<Energy>(-ppx,-ppy);
+      hel_wf[0] = Complex(denominator/rtppluspz*complex<Energy>(-ppx,-ppy));
       hel_wf[1] = denominator*rtppluspz;
     }
   }

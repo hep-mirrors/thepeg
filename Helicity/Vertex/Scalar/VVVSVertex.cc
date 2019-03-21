@@ -185,13 +185,13 @@ ScalarWaveFunction VVVSVertex::evaluate(Energy2 q2,int iopt, tcPDPtr out,
     complex<Energy> dotp12 = vec2.wave().dot(LorentzPolarizationVectorE(vec1.momentum())
 					     - alpha1 * vec1.wave());
     // finally calculate and return the wavefunction
-    fact = -norm()*UnitRemoval::InvE*propagator(iopt,p2,out,mass,width)*
-      (dot12*(dotp13-dotp23)+dot23*(dotp21-dotp31)+dot13*(dotp32-dotp12));
+    fact = -Complex(norm()*UnitRemoval::InvE*propagator(iopt,p2,out,mass,width)*
+		    (dot12*(dotp13-dotp23)+dot23*(dotp21-dotp31)+dot13*(dotp32-dotp12)));
   }
   else {
     LorentzPolarizationVector eps = epsilon(vec1.wave(),vec2.wave(),vec3.wave());
     complex<Energy> dot = eps.dot(pout);
-    fact = norm()*UnitRemoval::InvE*propagator(iopt,p2,out,mass,width)*dot;
+    fact = Complex(norm()*UnitRemoval::InvE*propagator(iopt,p2,out,mass,width)*dot);
   }
   return ScalarWaveFunction(pout,out,fact);
 }
