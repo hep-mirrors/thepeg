@@ -485,7 +485,7 @@ public:
 public:
   /// @name Mathematical assignment operators.
   //@{
-  LorentzVector<Complex> & operator+=(const LorentzVector<complex<QtyDouble> > & a) {
+  LorentzVector<Complex> & operator+=(const LorentzVector<complex<Qty<0,0,0> > > & a) {
     theX += a.x();
     theY += a.y();
     theZ += a.z();
@@ -502,7 +502,7 @@ public:
     return *this;
   }
   
-  LorentzVector<Complex> & operator-=(const LorentzVector<complex<QtyDouble> > & a) {
+  LorentzVector<Complex> & operator-=(const LorentzVector<complex<Qty<0,0,0> > > & a) {
     theX -= Complex(a.x());
     theY -= Complex(a.y());
     theZ -= Complex(a.z());
