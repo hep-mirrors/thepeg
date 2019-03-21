@@ -103,12 +103,12 @@ VectorWaveFunction GeneralVVSVertex::evaluate(Energy2 q2,int iopt,tcPDPtr out,
   complex<Energy> e2p1(-vec.wave().dot(pvec1));
   complex<Energy> e2p2(vec.wave().dot(pvec2));
   complex<Energy2> p1p2(invariant(1,2));
-  LorentzPolarizationVector pv =  (UnitRemoval::InvE2*_a00*p1p2*vec.wave() -
-				   UnitRemoval::InvE2*_a11*e2p1*pvec1 -
-				   UnitRemoval::InvE2*_a12*e2p2*pvec1 +
-				   UnitRemoval::InvE2*_a21*e2p1*pvec2 +
-				   UnitRemoval::InvE2*_a22*e2p2*pvec2 +
-				   UnitRemoval::InvE2*_aEp*epsilon(pvec1,vec.wave(),pvec2));
+  LorentzPolarizationVector pv =  (LorentzPolarizationVector(UnitRemoval::InvE2*_a00*p1p2*vec.wave()) -
+				   LorentzPolarizationVector(UnitRemoval::InvE2*_a11*e2p1*pvec1) -
+				   LorentzPolarizationVector(UnitRemoval::InvE2*_a12*e2p2*pvec1) +
+				   LorentzPolarizationVector(UnitRemoval::InvE2*_a21*e2p1*pvec2) +
+				   LorentzPolarizationVector(UnitRemoval::InvE2*_a22*e2p2*pvec2) +
+				   LorentzPolarizationVector(UnitRemoval::InvE2*_aEp*epsilon(pvec1,vec.wave(),pvec2)));
   // evaluate the wavefunction
   LorentzPolarizationVector vect;
   // massless case

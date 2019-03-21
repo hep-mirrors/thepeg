@@ -110,7 +110,7 @@ TensorWaveFunction SSTVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
       complex<Energy2> temp = -2.*( vec1_tmp[ix]*vec2_tmp[iy] +
 				    vec1_tmp[ix]*vec2_tmp[iy])
 	-b*pout_tmp[ix]*pout_tmp[iy];
-      ten[ix][iy]= UnitRemoval::InvE2 * temp;
+      ten[ix][iy]= Complex(UnitRemoval::InvE2 * temp);
     }
   }
   ten[3][3]=ten[3][3]-a;

@@ -79,6 +79,6 @@ ScalarWaveFunction GeneralVSSVertex::evaluate(Energy2 q2, int iopt, tcPDPtr out,
   Energy2 p2   = pout.m2();
   Complex fact = norm()*sca.wave()*propagator(iopt,p2,out,mass,width);
   // compute the wavefunction
-  fact = UnitRemoval::InvE * fact*vec.wave().dot(a_*sca.momentum()-b_*pout);
+  fact = Complex(UnitRemoval::InvE * fact*vec.wave().dot(a_*sca.momentum()-b_*pout));
   return ScalarWaveFunction(pout,out,fact);
 }
