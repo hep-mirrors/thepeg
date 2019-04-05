@@ -184,6 +184,12 @@ public:
   int rnd4(double p0, double p1, double p2, double p3);
 
   /**
+   * Return an integer/ \f$i\f$ with probability p\f$i\f$(\a p0+\a
+   * p1+\a p2+\a p3+\a p4). Uses rnd().
+   */
+  int rnd5(double p0, double p1, double p2, double p3, double p4);  
+
+  /**
    * Return a number between zero and infinity, distributed according
    * to \f$e^-x\f$.
    */

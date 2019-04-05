@@ -130,6 +130,16 @@ int RandomGenerator::rnd4(double p0, double p1, double p2, double p3) {
   else return 3;
 }
 
+int RandomGenerator::rnd5(double p0, double p1, double p2, double p3, double p4) {
+  double sum = p0 + p1 + p2 + p3 + p4;
+  double r = rnd()*sum;
+  if ( r < p0 )  return 0;
+  else if ( r < p0 + p1 ) return 1;
+  else if ( r < p0 + p1 + p2 ) return 2;
+  else if ( r < p0 + p1 + p2 + p3 ) return 3;
+  else return 4;
+}
+
 long RandomGenerator::rndPoisson(double mean) {
   return gsl_ran_poisson(gsl, mean);
 }
