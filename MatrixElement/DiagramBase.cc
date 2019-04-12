@@ -22,7 +22,7 @@ using namespace ThePEG;
 DiagramBase::~DiagramBase() {}
 
 struct ParticleOrdering {
-  bool operator()(tcPDPtr p1, tcPDPtr p2) {
+  bool operator()(tcPDPtr p1, tcPDPtr p2) const {
     return abs(p1->id()) > abs(p2->id()) ||
       ( abs(p1->id()) == abs(p2->id()) && p1->id() > p2->id() ) ||
       ( p1->id() == p2->id() && p1->fullName() > p2->fullName() );

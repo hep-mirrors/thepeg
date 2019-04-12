@@ -808,14 +808,14 @@ logException(const Exception & ex, tcEventPtr event) {
 }
 
 struct MatcherOrdering {
-  bool operator()(tcPMPtr m1, tcPMPtr m2) {
+  bool operator()(tcPMPtr m1, tcPMPtr m2) const {
     return m1->name() < m2->name() ||
       ( m1->name() == m2->name() && m1->fullName() < m2->fullName() );
   }
 };
 
 struct ObjectOrdering {
-  bool operator()(tcIBPtr i1, tcIBPtr i2) {
+  bool operator()(tcIBPtr i1, tcIBPtr i2) const {
     return i1->fullName() < i2->fullName();
   }
 };
