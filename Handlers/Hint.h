@@ -169,7 +169,7 @@ private:
   /**
    * Assignment is private and non-existing.
    */
-  Hint & operator=(const Hint & h);
+  Hint & operator=(const Hint & h) = delete;
 
 };
 
