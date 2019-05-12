@@ -26,10 +26,10 @@ inline LorentzPolarizationVector polarizationVector(const Lorentz5Momentum & p,
 						    VectorPhase vphase=default_vector_phase) {
   // check the direction
   assert(dir!=intermediate);
-  // special helicity combination for guge invariance tests
+  // special helicity combination for gauge invariance tests
   if(ihel==10) return p*UnitRemoval::InvE;
   // check a valid helicity combination
-  assert(ihel==0 || ihel == 2 || (ihel==1 && p.mass()>ZERO));
+  assert(ihel==0 || ihel == 2 || ((ihel==1 || ihel==3) && p.mass()>ZERO ));
   // convert the helicitty from 0,1,2 to -1,0,1
   int jhel=ihel-1;
   // extract the momentum components
@@ -39,6 +39,11 @@ inline LorentzPolarizationVector polarizationVector(const Lorentz5Momentum & p,
   Energy2 pt2 = ppx*ppx+ppy*ppy;
   Energy pabs = sqrt(pt2+ppz*ppz);
   Energy pt = sqrt(pt2);
+  // zero subtracted
+  if(ihel==3) {
+    InvEnergy pre = pmm/pabs/(pee+pabs);
+    return LorentzPolarizationVector(double(pre*ppx),double(pre*ppy),double(pre*ppz),-double(pre*pabs));
+  }
   // overall phase of the vector
   Complex phase(1.);
   if(vphase==vector_phase) {
