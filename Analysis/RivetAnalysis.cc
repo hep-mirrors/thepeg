@@ -34,7 +34,7 @@ void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int st
   // convert to hepmc
   HepMC::GenEvent * hepmc = ThePEG::HepMCConverter<HepMC::GenEvent>::convert(*event);
   // analyse the event
-  CurrentGenerator::Redirect stdout(cout);
+  if(_nevent>1) CurrentGenerator::Redirect stdout(cout);
   if ( _rivet ){
 #if ThePEG_RIVET_VERSION == 1
     _rivet->analyze(*hepmc);
@@ -48,6 +48,15 @@ void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int st
 #else
 #error "Unknown ThePEG_RIVET_VERSION"
 #endif
+  }
+  if(_nevent<=1) {
+    // check that analysis list is still available
+    if ( _rivet->analysisNames().size() != _analyses.size() ) {
+      throw ThePEG::Exception() 
+	<< "Rivet could not find all requested analyses.\n"
+	<< "Use 'rivet --list-analyses' to check availability.\n"
+	<< ThePEG::Exception::runerror;
+    }
   }
   // delete hepmc event
   delete hepmc;
