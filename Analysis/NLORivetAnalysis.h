@@ -48,13 +48,6 @@ public:
    */
   virtual void analyze(ThePEG::tEventPtr event, long ieve, int loop, int state);
 
-   /**
-   * Produca a HepMC event for the given subprocess
-   */
-  HepMC::GenEvent * makeEvent(tEventPtr event, tSubProPtr sub, long no,
-			      Energy eUnit, Length lUnit,
-			      CrossSection xsec, CrossSection xsecErr) const;
-
   //@}
   
 public:

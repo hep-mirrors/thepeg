@@ -37,6 +37,12 @@ namespace HepMC=HepMC3;
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/IO_AsciiParticles.h"
+namespace HepMC {
+#undef GenParticlePtr
+#undef GenVertexPtr
+typedef GenParticle * GenParticlePtr;
+typedef GenVertex * GenVertexPtr;
+}
 #endif
 namespace ThePEG {
 /**
