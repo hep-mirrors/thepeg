@@ -244,7 +244,7 @@ HepMCConverter<HepMCEventT,Traits>::createParticle(tcPPtr p) const {
     }
   }
   GenParticlePtrT gp =
-    Traits::newParticle(p->momentum(), p->id(), status, energyUnit);
+    Traits::newParticle(p->momentum(), p->id(), p->status() ? p->status() : status, energyUnit);
 
   if ( p->spinInfo() && p->spinInfo()->hasPolarization() ) {
     DPair pol = p->spinInfo()->polarization();
