@@ -265,7 +265,7 @@ generate(PartonBinInstance & pb, const double * r,
 		 shat/pb.xi(), first) )
     return false;
   pb.remnantWeight(1.0);
-  pb.parton()->setMomentum
+  pb.parton()->set5Momentum
     (pb.remnantHandler()->generate(pb, r + pb.bin()->pdfDim(), pb.scale(), shat,
 				   pb.particle()->momentum(),haveMEPartons));
   if ( pb.remnantWeight() <= 0.0 ) return false;
