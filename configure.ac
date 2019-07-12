@@ -149,6 +149,7 @@ Pointer/Makefile
 lib/Makefile
 lib/Makefile.common.install
 src/Makefile
+src/thepeg-config
 ACDC/Makefile
 Repository/Makefile
 EventRecord/Makefile

@@ -12,6 +12,7 @@ Makefile\.in$
 ^lib/.done-all-links$
 ^src/.*\.(run|tex|out|log|rpo|spc|top|dump|dot|aux|pdf|ps|png|svg|hepmc)$
 ^src/.done-all-links$
+^src/thepeg-config$
 ^autom4te.cache$
 ^config.thepeg$
 ^config.log$
