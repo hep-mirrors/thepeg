@@ -26,12 +26,16 @@ Energy SimplePhaseSpace::getMagnitude(Energy2 s, Energy m1, Energy m2)
     if ( aa < ZERO ) throw ImpossibleKinematics();
     return 0.5*sqrt(aa*(s-sqr(m1-m2))/s);
   }
-  Energy2 m12 = m1 < ZERO? -sqr(m1): sqr(m1);
-  Energy2 m22 = m2 < ZERO? -sqr(m2): sqr(m2);
-  Energy2 r2 = 0.25*(sqr(m12) + sqr(m22 - s) -2.0*m12*(m22 + s))/s;
-  if ( r2 < ZERO || r2 + m12 < ZERO || r2 + m22 < ZERO )
-    throw ImpossibleKinematics();
-  return sqrt(r2);
+  if ( m1 >= ZERO && m2 < ZERO ) {
+    return sqrt(sqr(m2)+sqr(s-sqr(m1)-sqr(m2))/(4.*s));
+  }
+  if ( m1 < ZERO && m2 >= ZERO ) {
+    return sqrt(sqr(m1)+sqr(s-sqr(m1)-sqr(m2))/(4.*s));
+  }
+  if ( m1 < ZERO && m2 < ZERO ) {
+    return sqrt(sqr(m1)+sqr(s-sqr(m1)+sqr(m2))/(4.*s));
+  }
+  return ZERO;
 }
 
 // Energy SimplePhaseSpace::checkMagnitude(Energy2 s, Energy m1, Energy m2)
