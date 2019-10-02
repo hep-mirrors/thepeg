@@ -351,7 +351,7 @@ public:
   template <typename ValueB>
   auto generalCurrent(LorentzSpinor<ValueB>& f, 
                       Complex left, Complex right) 
-  -> LorentzVector<decltype(left*ts1()*f.s1())>
+  -> LorentzVector<decltype(left*this->ts1()*f.s1())>
   {
       typedef decltype(left*ts1()*f.s1()) ResultT;
       ResultT output[4];
