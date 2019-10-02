@@ -357,7 +357,7 @@ public:
   template <typename ValueB>
   auto generalScalar(LorentzRSSpinorBar<ValueB>& fbar, 
                      Complex left, Complex right) 
-  -> decltype(left*fbar(3,0)*ts1())
+  -> decltype(left*fbar(3,0)*this->ts1())
   {
     decltype(left*fbar(3,0)*ts1()) output; 
     unsigned int iz;
@@ -381,7 +381,7 @@ public:
   template <typename ValueB>
   auto generalCurrent(LorentzSpinorBar<ValueB>& fbar, 
                       Complex left, Complex right) 
-  -> LorentzVector<decltype(left*fbar.s1()*ts1())>
+  -> LorentzVector<decltype(left*fbar.s1()*this->ts1())>
   {
     typedef decltype(left*fbar.s1()*ts1()) ResultT;
     ResultT output[4];

@@ -389,9 +389,9 @@ public:
    *  First index dot product with momentum
    */ 
   auto preDot (const Lorentz5Momentum & vec) const 
-  -> LorentzVector<decltype(vec.x()*xx())>
+  -> LorentzVector<decltype(vec.x()*this->xx())>
   {
-    LorentzVector<decltype(vec.x()*xx())> output;
+    LorentzVector<decltype(vec.x()*this->xx())> output;
     output.setX(vec.t()*_tensor[3][0]-vec.x()*_tensor[0][0]-
                 vec.y()*_tensor[1][0]-vec.z()*_tensor[2][0]);
     output.setY(vec.t()*_tensor[3][1]-vec.x()*_tensor[0][1]-
@@ -407,9 +407,9 @@ public:
    *  Second index dot product with momentum
    */ 
   auto postDot(const Lorentz5Momentum & vec) const 
-  -> LorentzVector<decltype(vec.x()*xx())>
+  -> LorentzVector<decltype(vec.x()*this->xx())>
   {
-    LorentzVector<decltype(vec.x()*xx())> output;
+    LorentzVector<decltype(vec.x()*this->xx())> output;
     output.setX(vec.t()*_tensor[0][3]-vec.x()*_tensor[0][0]-
                 vec.y()*_tensor[0][1]-vec.z()*_tensor[0][2]);
     output.setY(vec.t()*_tensor[1][3]-vec.x()*_tensor[1][0]-
