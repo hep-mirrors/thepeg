@@ -479,7 +479,7 @@ modifyEventGenerator(EventGenerator & eg, string filename,
   if ( !msg.empty() )
     return msg;
  
-  for_each(objs, mem_fun(&InterfacedBase::reset)); 
+  for_each(objs, mem_fn(&InterfacedBase::reset));
   eg.initialize(initOnly);
 
   if ( !generators().empty() )
@@ -501,7 +501,7 @@ void Repository::resetEventGenerator(EventGenerator & eg) {
     allObjects().insert(*it);
   }
   
-  for_each(objs, mem_fun(&InterfacedBase::reset)); 
+  for_each(objs, mem_fn(&InterfacedBase::reset));
   eg.initialize(true);
 
 }

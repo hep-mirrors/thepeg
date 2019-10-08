@@ -53,9 +53,9 @@ void Cuts::doinitrun() {
   Interfaced::doinitrun();
   if ( Debug::level ) {
     describe();
-    for_each(theOneCuts,   mem_fun(&OneCutBase::describe));
-    for_each(theTwoCuts,   mem_fun(&TwoCutBase::describe));
-    for_each(theMultiCuts, mem_fun(&MultiCutBase::describe));
+    for_each(theOneCuts,   mem_fn(&OneCutBase::describe));
+    for_each(theTwoCuts,   mem_fn(&TwoCutBase::describe));
+    for_each(theMultiCuts, mem_fn(&MultiCutBase::describe));
   }
 }
 

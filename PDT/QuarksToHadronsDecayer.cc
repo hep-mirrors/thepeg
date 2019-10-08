@@ -40,8 +40,9 @@ bool QuarksToHadronsDecayer::accept(const DecayMode & dm) const {
   if ( !dm.productMatchers().empty() ) {
     for ( MatcherMSet::const_iterator it = dm.productMatchers().begin();
 	  it != dm.productMatchers().end(); ++it ) {
-      if ( typeid(**it) == typeid(MatchLightQuark) ) ++col;
-      else if ( typeid(**it) == typeid(MatchLightAntiQuark) ) ++acol;
+      const auto & tmp=**it;
+      if ( typeid(tmp) == typeid(MatchLightQuark) ) ++col;
+      else if ( typeid(tmp) == typeid(MatchLightAntiQuark) ) ++acol;
       else return false;
     }
     if ( col != 1 || col != acol ) return false;
