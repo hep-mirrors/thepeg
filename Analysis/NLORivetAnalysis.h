@@ -136,19 +136,9 @@ private:
   long _remnantId;
 
   /**
-   *  The HepMC format
-   */
-  int _format;
-
-  /**
    * Selector for the choice of units
    */
   int _unitchoice;
-
-  /**
-   * Choice of output precision in GenEvent format
-   */
-  unsigned int _geneventPrecision;
 
   /**
    *  The Analyses to use
