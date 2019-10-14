@@ -111,11 +111,12 @@ PersistentOStream::outputPointer(tcBPtr obj) {
 
 const ClassDescriptionBase *
 PersistentOStream::writeClassId(tcBPtr obj) {
-  const ClassDescriptionBase * db = DescriptionList::find(typeid(*obj));
+  const auto & tmp=*obj;
+  const ClassDescriptionBase * db = DescriptionList::find(typeid(tmp));
   if ( !db ) {
     throw MissingClass()
       << "PersistentOStream could not find the ClassDescription object "
-      << "corresponding to the class " << typeid(*obj).name()
+      << "corresponding to the class " << typeid(tmp).name()
       << ". Please check that the class has a properly instantiated "
       << "ClassDescription object." << Exception::runerror;
   }

@@ -62,7 +62,7 @@ void FactoryBase::clear() {
 
 void FactoryBase::dofinish() {
   Interfaced::dofinish();
-  for_each(clients, mem_fun(&InterfacedBase::finish));
+  for_each(clients, mem_fn(&InterfacedBase::finish));
   tree().commit();
   clear();
 }

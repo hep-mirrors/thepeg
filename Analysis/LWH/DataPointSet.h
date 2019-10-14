@@ -362,8 +362,6 @@ private:
    */
   unsigned int dim;
 
-  /** dummy pointer to non-existen annotation. */
-  IAnnotation * anno;
 
 };
 

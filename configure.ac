@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.59])
-AC_INIT([ThePEG],[devel],[http://www.thep.lu.se/ThePEG/],[ThePEG])
+AC_PREREQ([2.69])
+AC_INIT([ThePEG],[2.2.0],[http://www.thep.lu.se/ThePEG/],[ThePEG])
 AC_CONFIG_AUX_DIR([Config])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -149,6 +149,7 @@ Pointer/Makefile
 lib/Makefile
 lib/Makefile.common.install
 src/Makefile
+src/thepeg-config
 ACDC/Makefile
 Repository/Makefile
 EventRecord/Makefile

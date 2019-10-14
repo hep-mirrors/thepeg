@@ -199,7 +199,7 @@ void MultiEventGenerator::doGo(long next, long maxevent, bool tics) {
     out() << head;
 
     reset();
-    for_each(objects(), mem_fun(&InterfacedBase::reset));
+    for_each(objects(), mem_fn(&InterfacedBase::reset));
     
     init();
     initrun();

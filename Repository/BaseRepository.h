@@ -391,7 +391,7 @@ public:
   template<typename Cont>
   static void clearAll(const Cont & c) 
   {  
-    for_each(c, mem_fun(&InterfacedBase::clear));
+    for_each(c, mem_fn(&InterfacedBase::clear));
   }
 
   /**
@@ -401,7 +401,7 @@ public:
   template<typename Cont>
   static void resetAll(const Cont & c) 
   {  
-    for_each(c, mem_fun(&InterfacedBase::reset));
+    for_each(c, mem_fn(&InterfacedBase::reset));
   }
 
   /**

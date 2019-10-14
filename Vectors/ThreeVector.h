@@ -82,7 +82,7 @@ public:
   /// Dot product.
   template <typename U>
   auto dot(const ThreeVector<U> & a) const 
-  -> decltype(x()*a.x())
+  -> decltype(this->x()*a.x())
   {
     return x()*a.x() + y()*a.y() + z()*a.z();
   }
@@ -249,7 +249,7 @@ public:
   /// Vector cross-product
   template <typename U>
   auto cross(const ThreeVector<U> & a) const 
-  -> ThreeVector<decltype(y()*a.z())>
+  -> ThreeVector<decltype(this->y()*a.z())>
   {
     return { y()*a.z()-z()*a.y(),
             -x()*a.z()+z()*a.x(),

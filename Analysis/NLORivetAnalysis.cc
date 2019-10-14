@@ -25,8 +25,8 @@
 using namespace ThePEG;
 
 NLORivetAnalysis::NLORivetAnalysis() 
-  :  _remnantId(82), _format(1),_unitchoice(),
-   _geneventPrecision(16), debug(false), _rivet(), _nevent(0) {}
+  :  _remnantId(82),_unitchoice(),
+   debug(false), _rivet(), _nevent(0) {}
 
 namespace {
 

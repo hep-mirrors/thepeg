@@ -331,7 +331,7 @@ public:
 
   /// Dot product with metric \f$(+,-,-,-)\f$
   template <typename U>
-  auto dot(const LorentzVector<U> & a) const -> decltype(t() * a.t())
+  auto dot(const LorentzVector<U> & a) const -> decltype(this->t() * a.t())
   {
     return t() * a.t() - ( x() * a.x() + y() * a.y() + z() * a.z() );
   }
