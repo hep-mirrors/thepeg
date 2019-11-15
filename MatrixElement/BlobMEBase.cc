@@ -56,7 +56,11 @@ void BlobMEBase::getDiagrams() const {
 }
 
 Selector<MEBase::DiagramIndex>
+#ifndef NDEBUG
 BlobMEBase::diagrams(const DiagramVector & diags) const {
+#else
+BlobMEBase::diagrams(const DiagramVector & ) const {
+#endif
   assert(diags.size()==1);
   Selector<DiagramIndex> sel;
   sel.insert(1.0, 0);
