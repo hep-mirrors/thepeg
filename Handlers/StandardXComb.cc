@@ -649,6 +649,8 @@ void StandardXComb::newSubProcess(bool group) {
     lastProjector()->newSubProcess();
     subProcess(lastProjector()->subProcess());
     lastPartons(lastProjector()->lastPartons());
+    lastPartons().first ->scale(partonBinInstances().first ->scale());
+    lastPartons().second->scale(partonBinInstances().second->scale());
     lastSHat((lastPartons().first->momentum() +
 	      lastPartons().second->momentum()).m2());
     lastX1X2(make_pair(lastPartons().first->momentum().plus()/
