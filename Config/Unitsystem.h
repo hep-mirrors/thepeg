@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // Unitsystem.h is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2017 Leif Lonnblad, David Grellscheid
+// Copyright (C) 1999-2019 Leif Lonnblad, David Grellscheid
 //
 // ThePEG is licenced under version 3 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
