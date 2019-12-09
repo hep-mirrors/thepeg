@@ -19,7 +19,7 @@
 
 using namespace ThePEG;
 
-const double SpinInfo::_eps=1.0e-8;
+const double SpinInfo::_eps=1.0e-6;
 
 SpinInfo::SpinInfo(const SpinInfo & x)
   : EventInfoBase(x), _production(x._production), _decay(x._decay),
