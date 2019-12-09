@@ -1,7 +1,7 @@
 // -*- C++ -*-
 //
 // DynamicLoader.cc is a part of ThePEG - Toolkit for HEP Event Generation
-// Copyright (C) 1999-2017 Leif Lonnblad
+// Copyright (C) 1999-2019 Leif Lonnblad
 //
 // ThePEG is licenced under version 3 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
@@ -88,12 +88,14 @@ bool DynamicLoader::loadcmd(string file) {
 }
 
 void DynamicLoader::appendPath(string path) {
+  if (path.size()==0) return;
   if ( path[path.size()-1] != '/' ) path += '/';
   paths.push_back(path);
   apppaths.push_back(path);
 }
 
 void DynamicLoader::prependPath(string path) {
+  if (path.size()==0) return;
   if ( path[path.size()-1] != '/' ) path += '/';
   paths.insert(paths.begin(), path);
   prepaths.push_back(path);
