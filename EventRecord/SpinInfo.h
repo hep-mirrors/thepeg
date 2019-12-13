@@ -325,7 +325,7 @@ public:
   RhoDMatrix & DMatrix() { return _Dmatrix; }
   //@}
 
-protected:
+public:
 
   /**
    *  Check if momentum is near to the current momentum
