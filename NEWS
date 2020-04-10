@@ -14,6 +14,10 @@ or at https:///herwig.hepforge.org/
 
 ** Several smaller bug fixes and additions, to allow new features in Herwig 7.2
 
+* ThePEG-2.1.7 release: 2020-04-10
+
+** new release solely to keep Herwig and ThePEG version numbers in sync
+
 * ThePEG-2.1.6 release: 2019-12-11
 
 ** update boost.m4 to allow compliation with new boost versions
