@@ -19,10 +19,11 @@
 #include "Rivet/AnalysisHandler.hh"
 #include "Rivet/Tools/RivetPaths.hh"
 #include "Rivet/Tools/Logging.hh"
+#include "ThePEG/Utilities/DescribeClass.h"
 
 using namespace ThePEG;
 
-RivetAnalysis::RivetAnalysis() :  debug(false), _rivet(), _nevent(0) 
+RivetAnalysis::RivetAnalysis() :  _debug(false), _rivet(), _nevent(0)
 {}
 
 void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int state) {
@@ -67,15 +68,17 @@ ThePEG::IBPtr RivetAnalysis::fullclone() const {
 }
 
 void RivetAnalysis::persistentOutput(ThePEG::PersistentOStream & os) const {
-  os << _analyses << _paths << filename << debug;
+  os << _analyses << _preload << _paths << _filename << _debug;
 }
 
 void RivetAnalysis::persistentInput(ThePEG::PersistentIStream & is, int) {
-  is >> _analyses >> _paths >> filename >> debug;
+  is >> _analyses >> _preload >> _paths >> _filename >> _debug;
 }
 
-ThePEG::ClassDescription<RivetAnalysis> RivetAnalysis::initRivetAnalysis;
-// Definition of the static class description member.
+// The following static variable is needed for the type
+// description system in ThePEG.
+DescribeClass<RivetAnalysis,AnalysisHandler>
+describeRivetAnalysis("ThePEG::RivetAnalysis", "RivetAnalysis.so");
 
 void RivetAnalysis::Init() {
 
@@ -89,6 +92,12 @@ void RivetAnalysis::Init() {
      &RivetAnalysis::_analyses, -1, "", "","" "",
      false, false, ThePEG::Interface::nolimits);
 
+  static ParVector<RivetAnalysis,string> interfacePreLoad
+    ("PreLoad",
+     "The yoda files to be preloaded",
+     &RivetAnalysis::_preload, -1, "", "", "",
+     false, false, Interface::nolimits);
+  
   static ThePEG::ParVector<RivetAnalysis,string> interfacePaths
     ("Paths",
      "The directory paths where Rivet should look for analyses.",
@@ -104,13 +113,13 @@ void RivetAnalysis::Init() {
 #else
 #error "Unknown ThePEG_RIVET_VERSION"
 #endif
-     &RivetAnalysis::filename, "", true, false);
+     &RivetAnalysis::_filename, "", true, false);
 
 
   static Switch<RivetAnalysis,bool> interfaceDebug
     ("Debug",
      "Enable debug information from Rivet",
-     &RivetAnalysis::debug, false, true, false);
+     &RivetAnalysis::_debug, false, true, false);
   static SwitchOption interfaceDebugNo
     (interfaceDebug,
      "No",
@@ -139,7 +148,7 @@ void RivetAnalysis::dofinish() {
 #endif
     _rivet->finalize();
 
-    string fname = filename;
+    string fname = _filename;
 #if ThePEG_RIVET_VERSION > 1
     if ( fname.empty() )
       fname = generator()->path() + "/" + generator()->runName() + ".yoda";
@@ -177,7 +186,7 @@ void RivetAnalysis::doinitrun() {
   AnalysisHandler::doinitrun();
   // create Rivet analysis handler
   CurrentGenerator::Redirect stdout(cout);
-  _rivet = new Rivet::AnalysisHandler; //(fname);
+  _rivet = new Rivet::AnalysisHandler;
   for ( int i = 0, N = _paths.size(); i < N; ++i ) Rivet::addAnalysisLibPath(_paths[i]);
   _rivet->addAnalyses(_analyses);
   // check that analysis list is still available
@@ -187,6 +196,16 @@ void RivetAnalysis::doinitrun() {
       << "Use 'rivet --list-analyses' to check availability.\n"
       << ThePEG::Exception::runerror;
   }
-  if ( debug )
+  // preload files
+#if ThePEG_RIVET_VERSION > 2
+  for(string fname : _preload) {
+    _rivet->readData(fname);
+  }
+#else
+  if(!_preload.empty())
+    throw Exception() << "You have requested yoda files are preloaded by Rivet but this only supported for Rivet 3 and above"; 
+#endif
+  // debugging
+  if ( _debug )
     Rivet::Log::setLevel("Rivet",Rivet::Log::DEBUG);
 }
