@@ -34,9 +34,7 @@ void RivetAnalysis::analyze(ThePEG::tEventPtr event, long ieve, int loop, int st
   // analyse the event
   if(_nevent>1) CurrentGenerator::Redirect stdout(cout);
   if ( _rivet ){
-#if ThePEG_RIVET_VERSION == 1
-    _rivet->analyze(*hepmc);
-#elif ThePEG_RIVET_VERSION > 1
+#if ThePEG_RIVET_VERSION > 1
     try {
       _rivet->analyze(*hepmc);
     } catch (const YODA::Exception & e) {
@@ -99,11 +97,7 @@ void RivetAnalysis::Init() {
 
   static Parameter<RivetAnalysis,string> interfaceFilename
     ("Filename",
-#if ThePEG_RIVET_VERSION == 1
-     "The name of the file where the AIDA histograms are put. If empty, "
-     "the run name will be used instead. '.aida' will in any case be "
-     "appended to the file name.",
-#elif ThePEG_RIVET_VERSION > 1
+#if ThePEG_RIVET_VERSION > 1
      "The name of the file where the YODA histograms are put. If empty, "
      "the run name will be used instead. '.yoda' will in any case be "
      "appended to the file name.",
@@ -146,10 +140,7 @@ void RivetAnalysis::dofinish() {
     _rivet->finalize();
 
     string fname = filename;
-#if ThePEG_RIVET_VERSION == 1
-    if ( fname.empty() )
-      fname = generator()->path() + "/" + generator()->runName() + ".aida";
-#elif ThePEG_RIVET_VERSION > 1
+#if ThePEG_RIVET_VERSION > 1
     if ( fname.empty() )
       fname = generator()->path() + "/" + generator()->runName() + ".yoda";
 #else
