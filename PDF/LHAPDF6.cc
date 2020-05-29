@@ -227,6 +227,9 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton,
     return thePDF->xfxQ2(g,x,Q2);
   case ParticleID::gamma:
     return thePDF->xfxQ2(ParticleID::gamma,x,Q2);
+  case ParticleID::eminus: case ParticleID::muminus: case ParticleID::tauminus:
+  case ParticleID::eplus : case ParticleID::muplus : case ParticleID::tauplus :
+    return thePDF->xfxQ2(pid,x,Q2);
   }
   return 0.0;
 }
@@ -384,6 +387,9 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton,
     return thePDF->xfxQ2(g,x,Q2);
   case ParticleID::gamma:
     return thePDF->xfxQ2(ParticleID::gamma,x,Q2);
+  case ParticleID::eminus: case ParticleID::muminus: case ParticleID::tauminus:
+  case ParticleID::eplus : case ParticleID::muplus : case ParticleID::tauplus :
+    return thePDF->xfxQ2(pid,x,Q2);
   }
   return 0.0;
 }
