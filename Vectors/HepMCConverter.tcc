@@ -165,6 +165,15 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
   // Now find the primary signal process vertex defined to be the
   // decay vertex of the first parton coming into the primary hard
   // sub-collision.
+  // TODO: for hepmc3 we need the right ordering
+#ifdef HAVE_HEPMC3
+  pmap[ev.incoming().first]->set_status(4);
+  pmap[ev.incoming().second]->set_status(4);
+  std::vector<GenParticlePtrT> pvec;
+  for(auto const& it: pmap)
+    pvec.push_back(it.second);
+  geneve->add_tree(pvec);
+#else
   tSubProPtr sub = ev.primarySubProcess();
   if ( sub && sub->incoming().first ) {
     const Vertex * prim = decv[sub->incoming().first];
@@ -180,6 +189,7 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
   // and the incoming beam particles
   Traits::setBeamParticles(*geneve,pmap[ev.incoming().first],
 			   pmap[ev.incoming().second]);
+#endif
 
   // and the PDF info
   setPdfInfo(ev);

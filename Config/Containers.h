@@ -23,6 +23,7 @@
  */
 
 #include "ThePEG/Utilities/UnitIO.h"
+#include "ThePEG/Config/Pointers.h"
 
 namespace ThePEG {
 

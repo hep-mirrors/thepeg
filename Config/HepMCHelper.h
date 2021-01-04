@@ -18,6 +18,8 @@
 #include "HepMC3/WriterAscii.h"
 #include "HepMC3/WriterHEPEVT.h"
 #include "HepMC3/WriterAsciiHepMC2.h"
+#include "HepMC3/ReaderAscii.h"
+#include "HepMC3/ReaderAsciiHepMC2.h"
 #ifdef HAVE_HEPMC3_WRITERROOT_H
 #include "HepMC3/WriterRoot.h"
 #endif

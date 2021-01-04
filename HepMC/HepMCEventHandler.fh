@@ -1,0 +1,16 @@
+// -*- C++ -*-
+//
+// This is the forward declaration of the HepMCEventHandler class.
+//
+#ifndef ThePEG_HepMCEventHandler_FH
+#define ThePEG_HepMCEventHandler_FH
+
+#include "ThePEG/Config/Pointers.h"
+
+namespace ThePEG {
+
+class HepMCEventHandler;
+ThePEG_DECLARE_POINTERS(HepMCEventHandler,HepMCEventHandlerPtr);
+}
+
+#endif
