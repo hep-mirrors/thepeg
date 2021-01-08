@@ -156,6 +156,7 @@ EventRecord/Makefile
 StandardModel/Makefile
 Cuts/Makefile
 Analysis/Makefile
+HepMC/Makefile
 Doc/Makefile
 Doc/MakeDocs.in
 Doc/refman.h

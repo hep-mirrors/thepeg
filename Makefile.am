@@ -4,7 +4,7 @@ endif
 MAINDIRS = include Config Utilities Helicity Interface LesHouches Vectors \
           PDT PDF Persistency Handlers MatrixElement Pointer ACDC \
           StandardModel Repository EventRecord Cuts Analysis lib src Doc \
-		  HepMC
+		  		HepMC
 
 DIST_SUBDIRS = $(MAINDIRS) java
 
