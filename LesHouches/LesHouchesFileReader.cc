@@ -546,6 +546,14 @@ void LesHouchesFileReader::open() {
        */
       if(readingInitWeights_sc && !cfile.find("</weightgroup")) {
 	hs = cfile.getline();
+    //cout << "hs=" << hs << endl;
+    //cout << "weightinfo= " << weightinfo << endl;
+    //fix for potential new lines:
+    if(!cfile.find("<weight") and !cfile.find("</weightgroup")) {
+      weightinfo = weightinfo + hs;
+      //cout << "weightinfo fixed= " << weightinfo << endl;
+      continue;
+    }
 	istringstream isc(hs);
 	int ws = 0;
 	/* get the name that will be used to identify the scale 
