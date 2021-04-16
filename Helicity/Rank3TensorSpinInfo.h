@@ -1,26 +1,26 @@
 // -*- C++ -*-
 //
-// TensorSpinInfo.h is a part of ThePEG - Toolkit for HEP Event Generation
+// Rank3TensorSpinInfo.h is a part of ThePEG - Toolkit for HEP Event Generation
 // Copyright (C) 2003-2019 Peter Richardson, Leif Lonnblad
 //
 // ThePEG is licenced under version 3 of the GPL, see COPYING for details.
 // Please respect the MCnet academic guidelines, see GUIDELINES for details.
 //
-#ifndef THEPEG_TensorSpinInfo_H
-#define THEPEG_TensorSpinInfo_H
-// This is the declaration of the TensorSpinInfo class.
+#ifndef THEPEG_Rank3TensorSpinInfo_H
+#define THEPEG_Rank3TensorSpinInfo_H
+// This is the declaration of the Rank3TensorSpinInfo class.
 
 #include "ThePEG/EventRecord/SpinInfo.h"
-#include "ThePEG/Helicity/LorentzTensor.h"
-#include "TensorSpinInfo.fh"
-// #include "TensorSpinInfo.xh"
+#include "ThePEG/Helicity/LorentzRank3Tensor.h"
+#include "Rank3TensorSpinInfo.fh"
+// #include "Rank3TensorSpinInfo.xh"
 #include <array>
 
 namespace ThePEG {
 namespace Helicity {
 
 /**
- *  The TensorSpinInfo class is the implementation of the spin
+ *  The Rank3TensorSpinInfo class is the implementation of the spin
  *  information for tensor particles.  It inherits from the SpinInfo
  *  class and implements the storage of the basis tensors.
  *
@@ -31,16 +31,19 @@ namespace Helicity {
  *  The basis states in the rest frame of the particles can then be
  *  accessed by decayers to produce the correct correlation.
  *
- *  N.B. in our convention 0 is the \f$-2\f$ helicity state,
- *  1 is the \f$-1\f$ helicity state,
- *  2 is the \f$0\f$ helicity state,
- *  3 is the \f$+1\f$ helicity state and
- *  4 is the \f$+2\f$ helicity state.
+ *  N.B. in our convention 
+ *  0 is the \f$-3\f$ helicity state,
+ *  1 is the \f$-2\f$ helicity state,
+ *  2 is the \f$-1\f$ helicity state,
+ *  3 is the \f$0\f$ helicity state,
+ *  4 is the \f$+1\f$ helicity state,
+ *  5 is the \f$+2\f$ helicity state and
+ *  6 is the \f$+3\f$ helicity state.
  *
  * @author Peter Richardson
  *
  */
-class TensorSpinInfo: public SpinInfo {
+class Rank3TensorSpinInfo: public SpinInfo {
 
 public:
 
@@ -49,15 +52,15 @@ public:
   /**
    * Default constructor.
    */
-  TensorSpinInfo() : SpinInfo(PDT::Spin2), _decaycalc(false) {}
+  Rank3TensorSpinInfo() : SpinInfo(PDT::Spin3), _decaycalc(false) {}
   
   /**
    * Standard Constructor.
    * @param p the production momentum.
    * @param time true if the particle is time-like.
    */
-  TensorSpinInfo(const Lorentz5Momentum & p, bool time)
-    : SpinInfo(PDT::Spin2, p, time), _decaycalc(false) {}
+  Rank3TensorSpinInfo(const Lorentz5Momentum & p, bool time)
+    : SpinInfo(PDT::Spin3, p, time), _decaycalc(false) {}
   //@}
 
 public:
@@ -67,10 +70,10 @@ public:
   /**
    * Set the basis state, this is production state.
    * @param hel the helicity (0,1,2,3,4 as described above.)
-   * @param in the LorentzTensor for the given helicity.
+   * @param in the LorentzRank3Tensor for the given helicity.
    */
-  void setBasisState(unsigned int hel, LorentzTensor<double> in) const {
-    assert(hel<5);
+  void setBasisState(unsigned int hel, LorentzRank3Tensor<double> in) const {
+    assert(hel<7);
     _productionstates[hel]=in;
     _currentstates   [hel]=in;
   }
@@ -78,10 +81,10 @@ public:
   /**
    * Set the basis state for the decay.
    * @param hel the helicity (0,1,2,3,4 as described above.)
-   * @param in the LorentzTensor for the given helicity.
+   * @param in the LorentzRank3Tensor for the given helicity.
    */
-  void setDecayState(unsigned int hel, LorentzTensor<double> in) const {
-    assert(hel<5);
+  void setDecayState(unsigned int hel, LorentzRank3Tensor<double> in) const {
+    assert(hel<7);
     _decaycalc = true;
     _decaystates[hel] = in;
   }
@@ -90,8 +93,8 @@ public:
    * Get the basis state for the production for the given helicity, \a
    * hel  (0,1,2,3,4 as described above.)
    */
-  const LorentzTensor<double> & getProductionBasisState(unsigned int hel) const {
-    assert(hel<5);
+  const LorentzRank3Tensor<double> & getProductionBasisState(unsigned int hel) const {
+    assert(hel<7);
     return _productionstates[hel];
   }
   
@@ -99,19 +102,19 @@ public:
    * Get the basis state for the current for the given helicity, \a
    * hel  (0,1,2,3,4 as described above.)
    */
-  const LorentzTensor<double> & getCurrentBasisState(unsigned int hel) const {
-    assert(hel<5);
+  const LorentzRank3Tensor<double> & getCurrentBasisState(unsigned int hel) const {
+    assert(hel<7);
     return _currentstates[hel];
   }
 
   /**
    * Get the basis state for the decay for the given helicity, \a hel
-   * (0,1,2,3,4 as described above.)
+   * (0,1,2,3,4,5,6 as described above.)
    */
-  const LorentzTensor<double> & getDecayBasisState(unsigned int hel) const {
-    assert(hel<5);
+  const LorentzRank3Tensor<double> & getDecayBasisState(unsigned int hel) const {
+    assert(hel<7);
     if(!_decaycalc) {
-      for(unsigned int ix=0;ix<5;++ix)
+      for(unsigned int ix=0;ix<7;++ix)
 	_decaystates[ix]=_currentstates[ix].conjugate();
       _decaycalc=true;
     }
@@ -158,24 +161,24 @@ private:
   /**
    * Private and non-existent assignment operator.
    */
-  TensorSpinInfo & operator=(const TensorSpinInfo &) = delete;
+  Rank3TensorSpinInfo & operator=(const Rank3TensorSpinInfo &) = delete;
 
 private:
 
   /**
    * Basis states in the frame in which the particle was produced.
    */
-  mutable std::array<LorentzTensor<double>,5> _productionstates;
+  mutable std::array<LorentzRank3Tensor<double>,7> _productionstates;
 
   /**
    * Basis states in the frame in which the particle decays.
    */
-  mutable std::array<LorentzTensor<double>,5> _decaystates;
+  mutable std::array<LorentzRank3Tensor<double>,7> _decaystates;
 
   /**
    * Basis states in the current frame of the particle
    */
-  mutable std::array<LorentzTensor<double>,5> _currentstates;
+  mutable std::array<LorentzRank3Tensor<double>,7> _currentstates;
 
   /**
    * True if the decay state has been set.
@@ -187,4 +190,8 @@ private:
 }
 }
 
-#endif /* THEPEG_TensorSpinInfo_H */
+
+namespace ThePEG {
+
+}
+#endif /* THEPEG_Rank3TensorSpinInfo_H */
