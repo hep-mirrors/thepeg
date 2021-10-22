@@ -356,8 +356,9 @@ public:
   /**
    *  First index dot product with polarization vector
    */
-  LorentzVector<complex<Value> > preDot (const LorentzPolarizationVector & vec) const {
-    LorentzVector<complex<Value> > output;
+  template<typename ValueB>
+  auto preDot (const LorentzVector<complex<ValueB> > & vec) const {
+    LorentzVector<decltype(vec.x()*this->xx())> output;
     output.setX(vec.t()*_tensor[3][0]-vec.x()*_tensor[0][0]-
                 vec.y()*_tensor[1][0]-vec.z()*_tensor[2][0]);
     output.setY(vec.t()*_tensor[3][1]-vec.x()*_tensor[0][1]-
@@ -372,8 +373,9 @@ public:
   /**
    *  Second index dot product with polarization vector
    */
-  LorentzVector<complex<Value> > postDot(const LorentzPolarizationVector & vec) const {
-    LorentzVector<complex<Value> > output;
+  template<typename ValueB>
+  auto postDot(const LorentzVector<complex<ValueB> > & vec) const {
+    LorentzVector<decltype(vec.x()*this->xx())> output;
     output.setX(vec.t()*_tensor[0][3]-vec.x()*_tensor[0][0]-
                 vec.y()*_tensor[0][1]-vec.z()*_tensor[0][2]);
     output.setY(vec.t()*_tensor[1][3]-vec.x()*_tensor[1][0]-
