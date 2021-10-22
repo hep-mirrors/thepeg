@@ -13,7 +13,7 @@
 // Author: Peter Richardson
 //
 #include "TensorWaveFunction.h"
-
+#include "ThePEG/Helicity/HelicityFunctions.h"
 using namespace ThePEG;
 using namespace ThePEG::Helicity;
 
@@ -38,7 +38,7 @@ void TensorWaveFunction::calculateWaveFunction(unsigned int ihel, TensorPhase tp
     // calculate the overall phase
     complex<double>phase;
     if(tphase==tensor_phase) {
-      phase = pt==ZERO ? 1. : complex<double>(ppx/pt,-fact*ppy/pt);
+      phase = pt==ZERO ? 1. : complex<double>(ppx/pt,fact*ppy/pt);
     }
     else phase = 1.; 
     phase = phase*sqrt(0.5);
@@ -66,7 +66,7 @@ void TensorWaveFunction::calculateWaveFunction(unsigned int ihel, TensorPhase tp
     // calculate the overall phase
     complex<double> phase;
     if(tphase==tensor_phase) {
-      phase = pt==ZERO ? 1. : complex<double>(ppx/pt,fact*ppy/pt);
+      phase = pt==ZERO ? 1. : complex<double>(ppx/pt,-fact*ppy/pt);
     }
     else phase = 1.;
     phase = phase*sqrt(0.5);
