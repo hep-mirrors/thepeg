@@ -172,7 +172,7 @@ calculateWaveFunctions(vector<LorentzTensor<double> > & waves,
 	waves[ix] = LorentzTensor<double>();
       }
       else {
-	if(ix!=0) wave.reset(ix);
+	if(ix!=0) wave.reset(ix,phase);
 	waves[ix] = wave.wave();
       }
     }
@@ -210,7 +210,7 @@ calculateWaveFunctions(vector<TensorWaveFunction> & waves,
 	waves[ix] = TensorWaveFunction(particle->momentum(),particle->dataPtr(),dir);
       }
       else {
-	if(ix!=0) wave.reset(ix);
+	if(ix!=0) wave.reset(ix,phase);
 	waves[ix] = wave;
       }
     }
@@ -247,7 +247,7 @@ calculateWaveFunctions(vector<LorentzTensor<double> > & waves,
 	waves[ix] = LorentzTensor<double>();
       }
       else {
-	if(ix!=0) wave.reset(ix);
+	if(ix!=0) wave.reset(ix,phase);
 	waves[ix] = wave.wave();
       }
     }
@@ -289,7 +289,7 @@ calculateWaveFunctions(vector<TensorWaveFunction> & waves,
 	waves[ix] = TensorWaveFunction(particle->momentum(),particle->dataPtr(),dir);
       }
       else {
-	if(ix!=0) wave.reset(ix);
+	if(ix!=0) wave.reset(ix,phase);
 	waves[ix] = wave;
       }
     }
