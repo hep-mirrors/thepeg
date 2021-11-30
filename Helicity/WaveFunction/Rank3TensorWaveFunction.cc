@@ -104,7 +104,7 @@ void Rank3TensorWaveFunction::calculateWaveFunction(unsigned int ihel) {
 	for(int iz=0;iz<4;++iz) _wf(ix,iy,iz)=epsp[ix]*epsp[iy]*epsp[iz];
     break;
   case 2:
-    ort = sqrt(0.5);
+    ort = sqrt(1./3.);
     for(int ix=0;ix<4;++ix)
       for(int iy=0;iy<4;++iy)
 	for(int iz=0;iz<4;++iz)
@@ -150,7 +150,7 @@ void Rank3TensorWaveFunction::calculateWaveFunction(unsigned int ihel) {
 				   epsm[ix]*eps0[iy]*eps0[iz]));
     break;
   case -2:
-    ort = sqrt(0.5);
+    ort = sqrt(1./3.);
     for(int ix=0;ix<4;++ix)
       for(int iy=0;iy<4;++iy)
 	for(int iz=0;iz<4;++iz)
