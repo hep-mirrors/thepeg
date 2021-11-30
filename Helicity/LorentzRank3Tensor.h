@@ -12,6 +12,7 @@
 
 #include "ThePEG/Config/PhysicalQtyComplex.h"
 #include "ThePEG/Config/ThePEG.h"
+#include "LorentzTensor.h"
 
 namespace ThePEG {
 namespace Helicity {
@@ -152,6 +153,84 @@ public:
       for(int iy=0;iy<4;++iy)
 	for(int iz=0;iz<4;++iz) output(ix,iy,iz) = _tensor[ix][iy][iz] - in(ix,iy,iz);
   }
+  
+  /**
+   * Dot product with the ith index
+   */
+  template<typename ValueB>
+  auto dot(const LorentzVector<complex<ValueB> > & vec, unsigned int iloc) const 
+    -> LorentzTensor<decltype(vec.x()*Value())> {
+    LorentzTensor<decltype(ValueB()*Value())> output;
+    if(iloc==0) {
+      for(unsigned int iy=0;iy<4;++iy) {
+	for(unsigned int iz=0;iz<4;++iz) {
+	  output(iy,iz) =
+	    vec.t()*_tensor[3][iy][iz] - vec.x()*_tensor[0][iy][iz] -
+	    vec.y()*_tensor[1][iy][iz] - vec.z()*_tensor[2][iy][iz];
+	}
+      }
+    }
+    else if(iloc==1) {
+      for(unsigned int iy=0;iy<4;++iy) {
+	for(unsigned int iz=0;iz<4;++iz) {
+	  output(iy,iz) =
+	    vec.t()*_tensor[iy][3][iz] - vec.x()*_tensor[iy][0][iz] -
+	    vec.y()*_tensor[iy][1][iz] - vec.z()*_tensor[iy][2][iz];
+	}
+      }
+    }
+    else if(iloc==2) {
+      for(unsigned int iy=0;iy<4;++iy) {
+	for(unsigned int iz=0;iz<4;++iz) {
+	  output(iy,iz) =
+	    vec.t()*_tensor[iy][iz][3] - vec.x()*_tensor[iy][iz][0] -
+	    vec.y()*_tensor[iy][iz][1] - vec.z()*_tensor[iy][iz][2];
+	}
+      }
+    }
+    else
+      assert(false);
+    return output;
+  }
+  
+  /**
+   *  dot product with momentum
+   */ 
+  auto dot (const Lorentz5Momentum & vec,unsigned int iloc) const 
+  -> LorentzTensor<decltype(vec.x()*Value())>
+  {
+    LorentzTensor<decltype(vec.x()*Value())> output;
+    if(iloc==0) {
+      for(unsigned int iy=0;iy<4;++iy) {
+	for(unsigned int iz=0;iz<4;++iz) {
+	  output(iy,iz) =
+	    vec.t()*_tensor[3][iy][iz] - vec.x()*_tensor[0][iy][iz] -
+	    vec.y()*_tensor[1][iy][iz] - vec.z()*_tensor[2][iy][iz];
+	}
+      }
+    }
+    else if(iloc==1) {
+      for(unsigned int iy=0;iy<4;++iy) {
+	for(unsigned int iz=0;iz<4;++iz) {
+	  output(iy,iz) =
+	    vec.t()*_tensor[iy][3][iz] - vec.x()*_tensor[iy][0][iz] -
+	    vec.y()*_tensor[iy][1][iz] - vec.z()*_tensor[iy][2][iz];
+	}
+      }
+    }
+    else if(iloc==2) {
+      for(unsigned int iy=0;iy<4;++iy) {
+	for(unsigned int iz=0;iz<4;++iz) {
+	  output(iy,iz) =
+	    vec.t()*_tensor[iy][iz][3] - vec.x()*_tensor[iy][iz][0] -
+	    vec.y()*_tensor[iy][iz][1] - vec.z()*_tensor[iy][iz][2];
+	}
+      }
+    }
+    else
+      assert(false);
+    return output;
+  } 
   //@}
 
 private:
