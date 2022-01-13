@@ -1181,6 +1181,7 @@ void LesHouchesReader::cacheEvent() const {
   pos = mwrite(pos, hepeup.SPINUP[0], hepeup.NUP);
   pos = mwrite(pos, lastweight);
   pos = mwrite(pos, optionalWeights);
+  pos = mwrite(pos, LHEeventnum);
   for(size_t ff = 0; ff < optionalWeightsNames.size(); ff++) {
     pos = mwrite(pos, optionalWeightsNames[ff]);
   }
@@ -1227,7 +1228,7 @@ bool LesHouchesReader::uncacheEvent() {
   pos = mread(pos, optionalnpLO);
   pos = mread(pos, optionalnpNLO);
   pos = mread(pos, preweight);
-
+  pos = mread(pos, LHEeventnum);
   // If we are skipping, we do not have to do anything else.
   if ( skipping ) return true;
 
@@ -1256,7 +1257,7 @@ void LesHouchesReader::persistentOutput(PersistentOStream & os) const {
      << thePartonBinInstances
      << theBeams << theIncoming << theOutgoing << theIntermediates
      << reweights << preweights << preweight << reweightPDF << doInitPDFs
-     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight << optionalWeights << optionalnpLO << optionalnpNLO
+     << theLastXComb << theMaxMultCKKW << theMinMultCKKW << lastweight << optionalWeights << optionalnpLO << optionalnpNLO << LHEeventnum
      << maxFactor << ounit(weightScale, picobarn) << xSecWeights << maxWeights
      << theMomentumTreatment << useWeightWarnings << theReOpenAllowed
      << theIncludeSpin;
@@ -1277,7 +1278,7 @@ void LesHouchesReader::persistentInput(PersistentIStream & is, int) {
      >> thePartonBinInstances
      >> theBeams >> theIncoming >> theOutgoing >> theIntermediates
      >> reweights >> preweights >> preweight >> reweightPDF >> doInitPDFs
-     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight >> optionalWeights >> optionalnpLO >> optionalnpNLO
+     >> theLastXComb >> theMaxMultCKKW >> theMinMultCKKW >> lastweight >> optionalWeights >> optionalnpLO >> optionalnpNLO >> LHEeventnum
      >> maxFactor >> iunit(weightScale, picobarn) >> xSecWeights >> maxWeights
      >> theMomentumTreatment >> useWeightWarnings >> theReOpenAllowed
      >> theIncludeSpin;
