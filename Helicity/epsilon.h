@@ -107,7 +107,7 @@ namespace Helicity {
   template <typename A, typename B>
   auto epsilon(const LorentzVector<A> & a,
                const LorentzVector<B> & b) 
-  -> LorentzTensor<decltype(a.x()*b.y())>
+    -> LorentzTensor<decltype(real(a.x()*b.y()))>
   {
     auto diffxy = a.x() * b.y()  -  a.y() * b.x();
     auto diffxz = a.x() * b.z()  -  a.z() * b.x();
@@ -115,13 +115,14 @@ namespace Helicity {
     auto diffyz = a.y() * b.z()  -  a.z() * b.y();
     auto diffyt = a.y() * b.t()  -  a.t() * b.y();
     auto diffzt = a.z() * b.t()  -  a.t() * b.z();
+    complex<decltype(real(a.x()*b.x()))> zero(ZERO);
 
-    using ResultType = LorentzTensor<decltype(a.x()*b.x())>;    
+    using ResultType = LorentzTensor<decltype(real(a.x()*b.x()))>;    
     ResultType result;
-    result.setTT(  ZERO ); result.setTX( diffyz); result.setTY(-diffxz); result.setTZ( diffxy);
-    result.setXT(-diffyz); result.setXX(  ZERO ); result.setXY( diffzt); result.setXZ(-diffyt);
-    result.setYT( diffxz); result.setYX(-diffzt); result.setYY(  ZERO ); result.setYZ( diffxt);
-    result.setZT(-diffxy); result.setZX( diffyt); result.setZY(-diffxt); result.setZZ(  ZERO );
+    result.setTT(  zero ); result.setTX( diffyz); result.setTY(-diffxz); result.setTZ( diffxy);
+    result.setXT(-diffyz); result.setXX(  zero ); result.setXY( diffzt); result.setXZ(-diffyt);
+    result.setYT( diffxz); result.setYX(-diffzt); result.setYY(  zero ); result.setYZ( diffxt);
+    result.setZT(-diffxy); result.setZX( diffyt); result.setZY(-diffxt); result.setZZ(  zero );
     
     return result;
   }
