@@ -8,6 +8,16 @@ where NN is the bug number.
 The latest version of ThePEG can be found at http://www.thep.lu.se/ThePEG
 or at https:///herwig.hepforge.org/
 
+* ThePEG-2.2.3 release: 2022-04-30
+
+** support for spin 3 particles added
+
+** hepmc3 compatiblity added
+
+** various bug fixes and improvements
+
+** fix for c++11 compatiblity added
+
 * ThePEG-2.2.2 release: 2021-01-22
 
 ** add meta mechanism to event record
