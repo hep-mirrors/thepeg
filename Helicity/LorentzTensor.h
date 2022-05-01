@@ -347,6 +347,41 @@ public:
   complex<Value> trace() const {
     return _tensor[3][3]-_tensor[0][0]-_tensor[1][1]-_tensor[2][2];
   }
+
+  /**
+   *  Inner product with another tensor
+   */
+  template<typename ValueB>
+  auto innerProduct(const LorentzTensor<ValueB> & ten) const {
+    LorentzTensor<decltype(ten.xx().real()*this->xx().real())> output;
+    for(unsigned int ix=0;ix<3;++ix) {
+      for(unsigned int iy=0;iy<3;++iy) {
+	output(ix,iy) = _tensor[ix][3]*ten(3,iy);
+	for(unsigned int iz=0;iz<3;++iz) {
+	  output(ix,iy) -= _tensor[ix][iz]*ten(iz,iy);
+	}
+      }
+    }
+    return output;
+  }
+
+  /**
+   *  Outer product with another tensor
+   */
+  template<typename ValueB>
+  auto outerProduct(const LorentzTensor<ValueB> & ten) const {
+    LorentzTensor<decltype(ten.xx().real()*this->xx().real())> output;
+    for(unsigned int ix=0;ix<3;++ix) {
+      for(unsigned int iy=0;iy<3;++iy) {
+	output(ix,iy) = _tensor[3][ix]*ten(iy,3);
+	for(unsigned int iz=0;iz<3;++iz) {
+	  output(ix,iy) -= _tensor[iz][ix]*ten(iy,iz);
+	}
+      }
+    }
+    return output;
+  }
+
   //@}
 
   /**
@@ -519,7 +554,7 @@ operator*(const LorentzTensor<T> & t,
   for(unsigned int ix=0;ix<4;++ix) {
     temp = t._tensor[ix][3]*u._tensor[ix][3];
     for(unsigned int iy=0;iy<3;++iy) {
-      temp+= t._tensor[ix][iy]*u._tensor[ix][iy];
+      temp -= t._tensor[ix][iy]*u._tensor[ix][iy];
     }
     if(ix<3) output-=temp;
     else     output+=temp;

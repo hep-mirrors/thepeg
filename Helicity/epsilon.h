@@ -101,13 +101,13 @@ namespace Helicity {
    *  \f$\epsilon^{\mu\nu\alpha\beta}v_{1\alpha}v_{2\beta}\f$.
    * @param a The first  vector \f$v_{1\alpha}\f$.
    * @param b The second vector \f$v_{2\beta}\f$.
-   * @return The product 
+   * @return The product
    * \f$\epsilon^{\mu\nu\alpha\beta\gamma}v_{1\alpha}v_{2\beta}\f$.
    */
   template <typename A, typename B>
-  auto epsilon(const LorentzVector<A> & a,
-               const LorentzVector<B> & b) 
-    -> LorentzTensor<decltype(real(a.x()*b.y()))>
+  auto epsilon(const LorentzVector<complex<A> > & a,
+               const LorentzVector<complex<B> > & b)
+    -> LorentzTensor<decltype(a.x().real()*b.y().real())>
   {
     auto diffxy = a.x() * b.y()  -  a.y() * b.x();
     auto diffxz = a.x() * b.z()  -  a.z() * b.x();
@@ -115,15 +115,46 @@ namespace Helicity {
     auto diffyz = a.y() * b.z()  -  a.z() * b.y();
     auto diffyt = a.y() * b.t()  -  a.t() * b.y();
     auto diffzt = a.z() * b.t()  -  a.t() * b.z();
-    complex<decltype(real(a.x()*b.x()))> zero(ZERO);
+    complex<decltype(a.x().real()*b.x().real())> zero(ZERO);
 
-    using ResultType = LorentzTensor<decltype(real(a.x()*b.x()))>;    
+    using ResultType = LorentzTensor<decltype(a.x().real()*b.x().real())>;
     ResultType result;
     result.setTT(  zero ); result.setTX( diffyz); result.setTY(-diffxz); result.setTZ( diffxy);
     result.setXT(-diffyz); result.setXX(  zero ); result.setXY( diffzt); result.setXZ(-diffyt);
     result.setYT( diffxz); result.setYX(-diffzt); result.setYY(  zero ); result.setYZ( diffxt);
     result.setZT(-diffxy); result.setZX( diffyt); result.setZY(-diffxt); result.setZZ(  zero );
-    
+
+    return result;
+  }
+
+  /**
+   *  Return the product
+   *  \f$\epsilon^{\mu\nu\alpha\beta}v_{1\alpha}v_{2\beta}\f$.
+   * @param a The first  vector \f$v_{1\alpha}\f$.
+   * @param b The second vector \f$v_{2\beta}\f$.
+   * @return The product
+   * \f$\epsilon^{\mu\nu\alpha\beta\gamma}v_{1\alpha}v_{2\beta}\f$.
+   */
+  template <typename A, typename B>
+  auto epsilon(const LorentzVector<A> & a,
+               const LorentzVector<B> & b)
+    -> LorentzTensor<decltype(a.x()*b.y())>
+  {
+    auto diffxy = a.x() * b.y()  -  a.y() * b.x();
+    auto diffxz = a.x() * b.z()  -  a.z() * b.x();
+    auto diffxt = a.x() * b.t()  -  a.t() * b.x();
+    auto diffyz = a.y() * b.z()  -  a.z() * b.y();
+    auto diffyt = a.y() * b.t()  -  a.t() * b.y();
+    auto diffzt = a.z() * b.t()  -  a.t() * b.z();
+    complex<decltype(a.x()*b.x())> zero(ZERO);
+
+    using ResultType = LorentzTensor<decltype(a.x()*b.x())>;
+    ResultType result;
+    result.setTT(  zero ); result.setTX( diffyz); result.setTY(-diffxz); result.setTZ( diffxy);
+    result.setXT(-diffyz); result.setXX(  zero ); result.setXY( diffzt); result.setXZ(-diffyt);
+    result.setYT( diffxz); result.setYX(-diffzt); result.setYY(  zero ); result.setYZ( diffxt);
+    result.setZT(-diffxy); result.setZX( diffyt); result.setZY(-diffxt); result.setZZ(  zero );
+
     return result;
   }
 
