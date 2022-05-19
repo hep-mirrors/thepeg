@@ -354,8 +354,8 @@ public:
   template<typename ValueB>
   auto innerProduct(const LorentzTensor<ValueB> & ten) const {
     LorentzTensor<decltype(ten.xx().real()*this->xx().real())> output;
-    for(unsigned int ix=0;ix<3;++ix) {
-      for(unsigned int iy=0;iy<3;++iy) {
+    for(unsigned int ix=0;ix<4;++ix) {
+      for(unsigned int iy=0;iy<4;++iy) {
 	output(ix,iy) = _tensor[ix][3]*ten(3,iy);
 	for(unsigned int iz=0;iz<3;++iz) {
 	  output(ix,iy) -= _tensor[ix][iz]*ten(iz,iy);
@@ -371,8 +371,8 @@ public:
   template<typename ValueB>
   auto outerProduct(const LorentzTensor<ValueB> & ten) const {
     LorentzTensor<decltype(ten.xx().real()*this->xx().real())> output;
-    for(unsigned int ix=0;ix<3;++ix) {
-      for(unsigned int iy=0;iy<3;++iy) {
+    for(unsigned int ix=0;ix<4;++ix) {
+      for(unsigned int iy=0;iy<4;++iy) {
 	output(ix,iy) = _tensor[3][ix]*ten(iy,3);
 	for(unsigned int iz=0;iz<3;++iz) {
 	  output(ix,iy) -= _tensor[iz][ix]*ten(iy,iz);

@@ -159,7 +159,7 @@ public:
    */
   template<typename ValueB>
   auto dot(const LorentzVector<complex<ValueB> > & vec, unsigned int iloc) const 
-    -> LorentzTensor<decltype(vec.x()*Value())> {
+    -> LorentzTensor<decltype(ValueB()*Value())> {
     LorentzTensor<decltype(ValueB()*Value())> output;
     if(iloc==0) {
       for(unsigned int iy=0;iy<4;++iy) {
