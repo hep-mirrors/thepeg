@@ -352,7 +352,8 @@ public:
    *  Inner product with another tensor
    */
   template<typename ValueB>
-  auto innerProduct(const LorentzTensor<ValueB> & ten) const {
+  auto innerProduct(const LorentzTensor<ValueB> & ten) const 
+    -> LorentzTensor<decltype(ten.xx().real()*this->xx().real())> {
     LorentzTensor<decltype(ten.xx().real()*this->xx().real())> output;
     for(unsigned int ix=0;ix<4;++ix) {
       for(unsigned int iy=0;iy<4;++iy) {
@@ -369,7 +370,8 @@ public:
    *  Outer product with another tensor
    */
   template<typename ValueB>
-  auto outerProduct(const LorentzTensor<ValueB> & ten) const {
+  auto outerProduct(const LorentzTensor<ValueB> & ten) const 
+    -> LorentzTensor<decltype(ten.xx().real()*this->xx().real())> {
     LorentzTensor<decltype(ten.xx().real()*this->xx().real())> output;
     for(unsigned int ix=0;ix<4;++ix) {
       for(unsigned int iy=0;iy<4;++iy) {
