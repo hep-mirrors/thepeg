@@ -369,6 +369,13 @@ public:
   }
 
   /**
+   * Return what kind of colour charge this particle carries
+   */
+  PDT::ColouredInteraction colouredInteraction() const {
+    return theColouredInteraction;
+  }
+
+  /**
    * Specify if particle is to be considered stable according to \a
    * stab.
    */
@@ -632,6 +639,15 @@ private:
   PDT::Colour theColour;
 
   /**
+   * The coloured interaction of this particle
+   */
+  PDT::ColouredInteraction theColouredInteraction;
+
+  /**
+   * The nonabelian interaction of this particle
+   */
+
+  /**
    * A pointer to an object capable to generate a mass for a particle
    * of this type.
    */
@@ -714,6 +730,11 @@ private:
    * Helper variable to keep track of the default colour.
    */
   PDT::Colour theDefColour;
+
+  /**
+   * Helper variable to keep track of the default coloured interaction.
+   */
+  PDT::ColouredInteraction theDefColouredInteraction;
 
   /**
    * Utility function for the interface.
@@ -910,6 +931,21 @@ private:
    * Utility function for the interface.
    */
   long defColour() const;
+
+  /**
+   * Utility function for the interface.
+   */
+  void setColouredInteraction(long);
+
+  /**
+   * Utility function for the interface.
+   */
+  long getColouredInteraction() const;
+
+  /**
+   * Utility function for the interface.
+   */
+  long defColouredInteraction() const;
 
   /**
    * Utility function for the interface.
