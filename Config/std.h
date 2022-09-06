@@ -47,9 +47,7 @@ namespace std {
  * sets.
  */
 template <>
-struct less<const type_info *> :
-    public binary_function<const type_info *, const type_info *, bool> 
-{
+struct less<const type_info *> {
   /**
    * This is the function called when comparing two pointers to
    * type_info.
