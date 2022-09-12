@@ -61,8 +61,6 @@ ParticleData(PID newId, const string & newPDGName)
     theDefCharge(PDT::ChargeUnknown), theDefSpin(PDT::SpinUnknown),
     theDefColour(PDT::ColourUnknown), theDefColouredInteraction(PDT::ColouredUnknown) {}
 
-ParticleData::~ParticleData() {}
-
 PDPtr ParticleData::Create(PID newId, const string & newPDGName) {
   return new_ptr(ParticleData(newId, newPDGName));
 }

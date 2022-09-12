@@ -51,18 +51,10 @@ public:
 
 public:
 
-  /** @name Standard constructors and destructors. */
-  //@{
   /**
    * Default constructor.
    */
   ParticleData();
-
-  /**
-   * Destructor.
-   */
-  virtual ~ParticleData();
-  //@}
 
   /** @name The Create methods are special interfaces for ParticleData
       classes. */
