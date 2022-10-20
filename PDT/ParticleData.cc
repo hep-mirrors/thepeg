@@ -88,8 +88,6 @@ void ParticleData::readSetup(istream & is) {
   theCharge = theDefCharge;
   theColour = theDefColour;
   theColouredInteraction = PDT::NotColoured;
-  if ( abs(long(theId)) < 9 || long(theId) == ParticleID::g )
-    theColouredInteraction = PDT::ColouredQCD;
   theSpin = theDefSpin;
   if ( PDGName() == "-" ) thePDGName = name();
   return;
@@ -538,7 +536,7 @@ long ParticleData::getColouredInteraction() const {
 }
 
 long ParticleData::defColouredInteraction() const {
-  return theDefColour;
+  return theDefColouredInteraction;
 }
 
   
