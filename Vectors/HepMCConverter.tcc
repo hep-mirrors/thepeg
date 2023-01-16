@@ -173,7 +173,7 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
   // decay vertex of the first parton coming into the primary hard
   // sub-collision.
   tSubProPtr sub = ev.primarySubProcess();
-  if ( sub && sub->incoming().first ) {
+  if ( sub && sub->incoming().first && sub->incoming().first!=ev.incoming().first) {
     const Vertex * prim = decv[sub->incoming().first];
     Traits::setSignalProcessVertex(*geneve, vmap[prim]);
     vmap.erase(prim);
