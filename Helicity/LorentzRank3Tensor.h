@@ -106,7 +106,7 @@ public:
     for(unsigned int ix=0;ix<4;++ix) {
       for(unsigned int iy=0;iy<4;++iy) {
 	for(unsigned int iz=0;iz<4;++iz) {
-	  output(ix,iy,iz) = conj(output(ix,iy,iz));
+	  output(ix,iy,iz) = conj(_tensor[ix][iy][iz]);
 	}
       }
     }
