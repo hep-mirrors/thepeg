@@ -20,7 +20,7 @@ CLEANFILES = .done-all-links
 noinst_LTLIBRARIES = libThePEGPDF.la
 pkglib_LTLIBRARIES = LeptonLeptonPDF.la UnResolvedRemnant.la \
           GRVBase.la GRV94L.la GRV94M.la WeizsackerWilliamsPDF.la \
-          BudnevPDF.la NuclearPhotonPDF.la
+          BudnevPDF.la NuclearPhotonPDF.la NucleonFormFactor.la
 
 if USELHAPDF
 pkglib_LTLIBRARIES += ThePEGLHAPDF.la
@@ -49,6 +49,13 @@ WeizsackerWilliamsPDF_la_SOURCES = WeizsackerWilliamsPDF.cc WeizsackerWilliamsPD
 # function is changed
 BudnevPDF_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
 BudnevPDF_la_SOURCES = BudnevPDF.cc BudnevPDF.h
+
+# Version info should be updated if any interface or persistent I/O
+# function is changed
+NucleonFormFactor_la_LDFLAGS = $(AM_LDFLAGS) -module $(LIBTOOLVERSIONINFO)
+NucleonFormFactor_la_SOURCES = NucleonFormFactor.cc NucleonFormFactor.h NucleonFormFactor.fh \
+DipoleFormFactor.h DipoleFormFactor.cc \
+HardSphereYukawaFormFactor.h HardSphereYukawaFormFactor.cc
 
 # Version info should be updated if any interface or persistent I/O
 # function is changed

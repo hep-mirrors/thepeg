@@ -7,6 +7,7 @@
 
 #include "ThePEG/PDF/PDFBase.h"
 #include "ThePEG/Utilities/Maths.h"
+#include "NucleonFormFactor.h"
 
 namespace ThePEG {
 
@@ -119,33 +120,6 @@ public:
    * when this class is dynamically loaded.
    */
   static void Init();
-
-protected:
-
-  /**
-   *  Extract the mass and atomic number for the nuclear PDG code
-   */
-  pair<int,int> massAndZ(long pid) const {
-    pair<int,int> output;
-    output.first  = (abs(pid)%10000)/10;
-    output.second = (abs(pid)%10000000)/10000;
-    return output;
-  }
-
-  /**
-   *  Dipole form factor
-   */
-  double dipoleFormFactor(Energy2 q2) const {
-    return Math::powi((1 + q2/q02_),-2);
-  }
-
-  /**
-   *  Convolution of hard sphere and Yukaw for heavy nuclei
-   */
-  double heavyFormFactor(Energy2 q2, Length R) const {
-    double Rq = sqrt(q2)*R/hbarc;
-    return 3./pow(Rq,3)*(sin(Rq)-Rq*cos(Rq))/(1.+sqr(yukawaRange_/hbarc)*q2);
-  }
   
 protected:
 
@@ -185,20 +159,9 @@ private:
   Energy2 q2Max_;
 
   /**
-   *  Range of the Yukawa potential
+   *  The form factor
    */
-  Length yukawaRange_;
-
-  /**
-   *  Prefactor for the nucleur radius \f$R_A=aA^{\frac13}\f$
-   */
-  Length aFact_;
-
-  /**
-   *  Fitted scale \f$Q{_0}{^2}=0.71GeV^2\f$ for the dipole form factor
-   */
-  Energy2 q02_;
-  
+  NucleonFormFactorPtr form_;
 };
 
 }
