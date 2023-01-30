@@ -1,0 +1,18 @@
+// -*- C++ -*-
+//
+// This is the forward declaration of the NucleonFormFactor class.
+//
+#ifndef ThePEG_NucleonFormFactor_FH
+#define ThePEG_NucleonFormFactor_FH
+
+#include "ThePEG/Config/ThePEG.h"
+
+namespace ThePEG {
+
+class NucleonFormFactor;
+
+ThePEG_DECLARE_POINTERS(ThePEG::NucleonFormFactor,NucleonFormFactorPtr);
+
+}
+
+#endif

@@ -6,6 +6,7 @@
 
 #include "NuclearPhotonPDF.h"
 #include "ThePEG/Interface/ClassDocumentation.h"
+#include "ThePEG/Interface/Reference.h"
 #include "ThePEG/Interface/Parameter.h"
 #include "ThePEG/EventRecord/Particle.h"
 #include "ThePEG/Repository/UseRandom.h"
@@ -19,8 +20,7 @@
 
 using namespace ThePEG;
 
-NuclearPhotonPDF::NuclearPhotonPDF()
-  : q2Min_(ZERO), q2Max_(2.*GeV2), yukawaRange_(0.7*femtometer), aFact_(1.2*femtometer), q02_(0.71*GeV2)
+NuclearPhotonPDF::NuclearPhotonPDF() : q2Min_(ZERO), q2Max_(2.*GeV2)
 {}
 
 bool NuclearPhotonPDF::canHandleParticle(tcPDPtr particle) const {
@@ -41,18 +41,8 @@ double NuclearPhotonPDF::xfl(tcPDPtr ion, tcPDPtr gamma, Energy2 qq,
 
   // photon virtuality allowed by kinematics
   Energy2 qqkinmin = sqr(ion->mass()*x)/(1-x);
-
-
-  double form;
-  if(abs(ion->iCharge())<=18) {
-    form = dipoleFormFactor(qq);
-  }
-  else {
-    pair<int,int> AZ = massAndZ(ion->id());
-    Length R = aFact_*pow(AZ.first,1./3.);
-    form = heavyFormFactor(qq,R);
-  }
-  return SM().alphaEM()/Constants::pi*(1.-x)*(1-qqkinmin/qq)*sqr(form);
+  Complex form = form_->formFactor(ion,qq);
+  return SM().alphaEM()/Constants::pi*(1.-x)*(1-qqkinmin/qq)*norm(form);
 }
 
 double NuclearPhotonPDF::xfvl(tcPDPtr , tcPDPtr , Energy2 ,
@@ -65,8 +55,9 @@ double NuclearPhotonPDF::
 flattenScale(tcPDPtr ion, tcPDPtr, const PDFCuts & c,
 	     double l, double z, double & jacobian) const {
   double x = exp(-l);
-  pair<int,int> AZ = massAndZ(ion->id());
-  Energy2 qqmax = min(min(q2Max_,sqr(hbarc/(aFact_*pow(AZ.first,1./3.)))),0.25*sqr(x)*c.sMax());
+  // pair<int,int> AZ = massAndZ(ion->id());
+  // Energy2 qqmax = min(min(q2Max_,sqr(hbarc/(aFact_*pow(AZ.first,1./3.)))),0.25*sqr(x)*c.sMax());
+  Energy2 qqmax = min(q2Max_,0.25*sqr(x)*c.sMax());
   Energy2 qqmin = max(q2Min_, sqr(ion->mass()*x)/(1-x));
   if(qqmin>=qqmax) {
     jacobian = 0.;
@@ -93,18 +84,17 @@ IBPtr NuclearPhotonPDF::fullclone() const {
 }
 
 void NuclearPhotonPDF::persistentOutput(PersistentOStream & os) const {
-  os << ounit(q2Min_,GeV2) << ounit(q2Max_,GeV2) << ounit(aFact_,femtometer) << ounit(yukawaRange_,femtometer);
+  os << ounit(q2Min_,GeV2) << ounit(q2Max_,GeV2) << form_;
 }
 
 void NuclearPhotonPDF::persistentInput(PersistentIStream & is, int) {
-  is >> iunit(q2Min_,GeV2) >> iunit(q2Max_,GeV2) >> iunit(aFact_,femtometer) >> iunit(yukawaRange_,femtometer);
+  is >> iunit(q2Min_,GeV2) >> iunit(q2Max_,GeV2) >> form_;
 }
-
 
 // The following static variable is needed for the type
 // description system in ThePEG.
 DescribeClass<NuclearPhotonPDF,PDFBase>
-describeThePEGNuclearPhotonPDF("ThePEG::NuclearPhotonPDF", "NuclearPhotonPDF.so");
+describeThePEGNuclearPhotonPDF("ThePEG::NuclearPhotonPDF", "NucleonFormFactor.so NuclearPhotonPDF.so");
 
 void NuclearPhotonPDF::Init() {
 
@@ -122,24 +112,11 @@ void NuclearPhotonPDF::Init() {
      "Maximum value of the magnitude of Q^2 for the photon",
      &NuclearPhotonPDF::q2Max_, GeV2, 4.0*GeV2, ZERO, 100.0*GeV2,
      false, false, Interface::limited);
-
-    static Parameter<NuclearPhotonPDF,Length> interfaceYukawaRange
-    ("YukawaRange",
-     "The range of the Yukawa potential",
-     &NuclearPhotonPDF::yukawaRange_, femtometer, 0.7*femtometer, 0.0*femtometer, 10.0*femtometer,
-     false, false, Interface::limited);
-
-  static Parameter<NuclearPhotonPDF,Length> interfaceaParameter
-    ("aParameter",
-     "The parameter for the relationship between the nuclear mass number and radius",
-     &NuclearPhotonPDF::aFact_, femtometer, 1.2*femtometer, 0.0*femtometer, 10.0*femtometer,
-     false, false, Interface::limited);
-
-  static Parameter<NuclearPhotonPDF,Energy2> interfaceDipoleScale
-    ("DipoleScale",
-     "The scale for the dipole form factor",
-     &NuclearPhotonPDF::q02_, GeV2, 0.71*GeV2, 0.0*GeV2, 10.0*GeV2,
-     false, false, Interface::limited);
+  
+  static Reference<NuclearPhotonPDF,NucleonFormFactor> interfaceFormFactor
+    ("FormFactor",
+     "The form factor",
+     &NuclearPhotonPDF::form_, false, false, true, false, false);
 
 }
 
