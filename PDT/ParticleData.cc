@@ -809,6 +809,8 @@ void ParticleData::Init() {
     (interfaceColouredInteraction, "NotColoured", "There are no coloured interactions.", -1);  
   static SwitchOption interfaceColouredInteractionQCD
     (interfaceColouredInteraction, "QCD", "This particle is a QCD particle.", 0);
+  static SwitchOption interfaceColouredInteractionDark
+    (interfaceColouredInteraction, "Dark", "This particle is a coloured Dark particle.", 1);
 
   static Switch<ParticleData,PDT::ColouredInteraction> interfaceDefColouredInteraction
     ("DefaultColouredInteraction",
@@ -820,6 +822,8 @@ void ParticleData::Init() {
     (interfaceDefColouredInteraction, "NotColoured", "There are no coloured interactions.", -1);
   static SwitchOption interfaceDefColouredInteractionQCD
     (interfaceDefColouredInteraction, "QCD", "This particle is a QCD particle.", 0);
+  static SwitchOption interfaceDefColouredInteractionDark
+    (interfaceDefColouredInteraction, "Dark", "This particle is a coloured Dark particle.", 1);
   
   static Parameter<ParticleData, int> interfaceCharge
     ("Charge",

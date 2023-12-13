@@ -1488,6 +1488,9 @@ enum ParticleCodes {
   nustar_ebar0 = -4000012,
     /**< \f$\overline{\nu }^{*0 }_{e}\f$
          (<code>nu*_ebar0</code>) */
+  darkg = 4900000,
+      /**< \f${\cal g}_{d}\f$
+         (<code>dark sector gluon</code>) */
   Gravitonstar = 5000039,
     /**< \f${\cal G}^{*}\f$
          (<code>Graviton*</code>) */
