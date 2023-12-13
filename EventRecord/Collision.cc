@@ -112,7 +112,12 @@ void Collision::removeEntry(tPPtr p) {
 
 void Collision::removeParticle(tPPtr p) {
   if ( p->next() ) removeParticle(p->next());
-  while ( !p->children().empty() ) removeParticle(p->children().back());
+  while ( !p->children().empty() ) {
+    tPPtr child = p->children().back();
+    if (allParticles.find(child) == allParticles.end())
+      p->abandonChild(child);
+    else removeParticle(child);
+  }
   if ( p->hasRep() ) p->rep().theBirthStep = tStepPtr();
   removeEntry(p);
 }
@@ -130,8 +135,9 @@ void Collision::cleanSteps() {
 void Collision::popStep() {
   StepPtr last = finalStep();
   ParticleVector pv(last->all().begin(), last->all().end());
-  for ( ParticleVector::iterator pit = pv.begin();pit != pv.end(); ++pit )
+  for ( ParticleVector::iterator pit = pv.begin();pit != pv.end(); ++pit ) {
     if ( (**pit).birthStep() == last ) removeParticle(*pit);
+  }
   theSteps.pop_back();
 }
 
