@@ -100,11 +100,11 @@ public:
     Colour6 = 6,          /**< Colour-sextet */
     Colour6bar = -6,      /**< Colour-anti-sextet */
     Colour8 = 8,           /**< Colour-octet */
-    DarkColoured = 1,                    /**< DARK Coloured */
-    DarkColourNeutral          = 0,      /**< Dark colour-singlet */
-    DarkColourFundamental      = 1,      /**< Dark Colour fundamental */
-    DarkColourAntiFundamental  = -1,     /**< Dark Colour anti-fundamental */
-    DarkColourAdjoint          = 2       /**< Dark Colour adjoint */    
+    DarkColoured = 991,                    /**< DARK Coloured */
+    DarkColourNeutral          = 990,      /**< Dark colour-singlet */
+    DarkColourFundamental      = 992,      /**< Dark Colour fundamental */
+    DarkColourAntiFundamental  = -992,     /**< Dark Colour anti-fundamental */
+    DarkColourAdjoint          = 993       /**< Dark Colour adjoint */    
   };
 
   /**
