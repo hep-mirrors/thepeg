@@ -496,7 +496,7 @@ protected:
    */
   template <typename T>
   static char * mwrite(char * pos, const T & t, size_t n = 1) {
-    std::memcpy(pos, &t, n*sizeof(T));
+    std::memcpy(pos, (void *)&t, n*sizeof(T));
     return pos + n*sizeof(T);
   }
 
@@ -505,7 +505,7 @@ protected:
    */
   template <typename T>
   static const char * mread(const char * pos, T & t, size_t n = 1) {
-    std::memcpy(&t, pos, n*sizeof(T));
+    std::memcpy((void *)&t, pos, n*sizeof(T));
     return pos + n*sizeof(T);
   }
 

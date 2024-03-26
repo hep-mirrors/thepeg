@@ -99,7 +99,12 @@ public:
     Colour3bar = -3,      /**< Colour-anti-triplet */
     Colour6 = 6,          /**< Colour-sextet */
     Colour6bar = -6,      /**< Colour-anti-sextet */
-    Colour8 = 8           /**< Colour-octet */
+    Colour8 = 8,           /**< Colour-octet */
+    DarkColoured = 991,                    /**< DARK Coloured */
+    DarkColourNeutral          = 990,      /**< Dark colour-singlet */
+    DarkColourFundamental      = 992,      /**< Dark Colour fundamental */
+    DarkColourAntiFundamental  = -992,     /**< Dark Colour anti-fundamental */
+    DarkColourAdjoint          = 993       /**< Dark Colour adjoint */    
   };
 
   /**
@@ -109,7 +114,8 @@ public:
     ColouredUnknown = -2,
     ColouredUndefined = -2,
     NotColoured = -1,
-    ColouredQCD = 0
+    ColouredQCD = 0,
+    ColouredDark = 1
   };
 
   /**
