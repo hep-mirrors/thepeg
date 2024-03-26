@@ -184,7 +184,11 @@ void RivetAnalysis::doinit() {
 
   // check that analysis list is available
   _rivet = new Rivet::AnalysisHandler; //(fname);
+#if ThePEG_RIVET_VERSION > 3
+  _rivet->setCheckBeams(_checkBeams);
+#else
   _rivet->checkBeams(_checkBeams);
+#endif
   for ( int i = 0, N = _paths.size(); i < N; ++i ) Rivet::addAnalysisLibPath(_paths[i]);
   _rivet->addAnalyses(_analyses);
   if ( _rivet->analysisNames().size() != _analyses.size() ) {
@@ -202,7 +206,11 @@ void RivetAnalysis::doinitrun() {
   // create Rivet analysis handler
   CurrentGenerator::Redirect stdout(cout);
   _rivet = new Rivet::AnalysisHandler;
+#if ThePEG_RIVET_VERSION > 3
+  _rivet->setCheckBeams(_checkBeams);
+#else
   _rivet->checkBeams(_checkBeams);
+#endif
   for ( int i = 0, N = _paths.size(); i < N; ++i ) Rivet::addAnalysisLibPath(_paths[i]);
   _rivet->addAnalyses(_analyses);
   // check that analysis list is still available
