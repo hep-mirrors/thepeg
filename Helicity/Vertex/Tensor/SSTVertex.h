@@ -33,7 +33,6 @@ namespace Helicity {
  *  \f[
  * -\frac{i\kappa}2\left[m^2_Sg_{\mu\nu}-k_{1\mu}k_{2\nu}-k_{1\nu}k_{2\mu}
  * +g_{\mu\nu}k_1\cdot k_2\right]\epsilon^{\mu\nu}_3\phi_1\phi_2
- *  
  *  \f]
  *
  *  @see AbstractSSTVertex
