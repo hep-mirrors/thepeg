@@ -6,12 +6,12 @@ HEPMCINCLUDE=""
 HEPMCROOTIO=0
 
 AC_ARG_WITH(hepmc,
-        AC_HELP_STRING([--with-hepmc=DIR],[Location of HepMC2 or HepMC3 installation @<:@default=system libs@:>@]),
+        AS_HELP_STRING([--with-hepmc=DIR],[Location of HepMC2 or HepMC3 installation @<:@default=system libs@:>@]),
         [],
 	[with_hepmc=no])
 
 AC_ARG_WITH(hepmcversion,
-        AC_HELP_STRING([--with-hepmcversion=version],[Version of HepMC]),
+        AS_HELP_STRING([--with-hepmcversion=version],[Version of HepMC]),
         [],
 	[with_hepmcversion=no])
 

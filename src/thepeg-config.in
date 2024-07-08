@@ -5,7 +5,7 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 datarootdir=@datarootdir@
 
-tmp=$(echo $* | egrep -- '--\<help\>|-\<h\>')
+tmp=$(echo $* | grep -E -- '--\<help\>|-\<h\>')
 if test $# -eq 0 || test -n "$tmp"; then
     echo "thepeg-config: configuration tool for the ThePEG event generator framework"
     echo "               http://projects.hepforge.org/thepeg/"
@@ -28,35 +28,35 @@ if test $# -eq 0 || test -n "$tmp"; then
     echo
 fi
 
-tmp=$(echo "$*" | egrep -- '--\<prefix\>')
+tmp=$(echo "$*" | grep -E -- '--\<prefix\>')
 test -n "$tmp" && echo $prefix
 
-tmp=$(echo "$*" | egrep -- '--\<datadir\>')
+tmp=$(echo "$*" | grep -E -- '--\<datadir\>')
 test -n "$tmp" && echo @datadir@/@PACKAGE_TARNAME@
 
-tmp=$(echo "$*" | egrep -- '--\<libdir\>')
+tmp=$(echo "$*" | grep -E -- '--\<libdir\>')
 test -n "$tmp" && echo @libdir@/@PACKAGE_TARNAME@
 
-tmp=$(echo "$*" | egrep -- '--\<includedir\>')
+tmp=$(echo "$*" | grep -E -- '--\<includedir\>')
 test -n "$tmp" && echo @includedir@
 
-tmp=$(echo "$*" | egrep -- '--\<cppflags\>')
+tmp=$(echo "$*" | grep -E -- '--\<cppflags\>')
 test -n "$tmp" && echo -I@includedir@  @BOOST_CPPFLAGS@ @GSLINCLUDE@
 
-tmp=$(echo "$*" | egrep -- '--\<ldflags\>')
+tmp=$(echo "$*" | grep -E -- '--\<ldflags\>')
 test -n "$tmp" && echo @LDFLAGS@
 
-tmp=$(echo "$*" | egrep -- '--\<ldlibs\>')
+tmp=$(echo "$*" | grep -E -- '--\<ldlibs\>')
 test -n "$tmp" && echo @LIBS@
 
-tmp=$(echo "$*" | egrep -- '--\<rivet-include\>')
+tmp=$(echo "$*" | grep -E -- '--\<rivet-include\>')
 test -n "$tmp" && echo @RIVETINCLUDE@
 
-tmp=$(echo "$*" | egrep -- '--\<fastjet-include\>')
+tmp=$(echo "$*" | grep -E -- '--\<fastjet-include\>')
 test -n "$tmp" && echo @FASTJETINCLUDE@
 
-tmp=$(echo "$*" | egrep -- '--\<rivet-libs\>')
+tmp=$(echo "$*" | grep -E -- '--\<rivet-libs\>')
 test -n "$tmp" && echo @RIVETLIBS@
 
-tmp=$(echo "$*" | egrep -- '--\<fastjet-libs\>')
+tmp=$(echo "$*" | grep -E -- '--\<fastjet-libs\>')
 test -n "$tmp" && echo @FASTJETLIBS@

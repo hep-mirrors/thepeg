@@ -9,7 +9,7 @@ LOAD_RIVET=""
 RIVETLIBS="-lRivet"
 
 AC_ARG_WITH(rivet,
-        AC_HELP_STRING([--with-rivet=DIR],[Location of Rivet installation @<:@default=system libs@:>@]),
+        AS_HELP_STRING([--with-rivet=DIR],[Location of Rivet installation @<:@default=system libs@:>@]),
         [],
 	[with_rivet=system])
 

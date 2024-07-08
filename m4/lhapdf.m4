@@ -6,7 +6,7 @@ AC_DEFUN([THEPEG_SEARCH_LHAPDF],
 [
 dnl ckeck if a directory is specified for LHAPDF
 AC_ARG_WITH(lhapdf,
-            [AC_HELP_STRING([--with-lhapdf=dir], 
+            [AS_HELP_STRING([--with-lhapdf=dir], 
                             [Assume the given directory for LHAPDF])])
 
 dnl search for the lhapdf-config script

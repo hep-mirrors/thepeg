@@ -12,7 +12,7 @@ dnl
 
 AC_DEFUN([VL_LIB_READLINE], [
   AC_ARG_ENABLE(readline,
-  AC_HELP_STRING([--disable-readline],[turns off readline support.]),
+  AS_HELP_STRING([--disable-readline],[turns off readline support.]),
         [],
         [enable_readline=yes]
         )
