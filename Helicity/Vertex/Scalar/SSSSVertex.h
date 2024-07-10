@@ -73,7 +73,9 @@ public:
   ScalarWaveFunction evaluate(Energy2 q2,int iopt, tcPDPtr out,
 			      const ScalarWaveFunction & sca1,
 			      const ScalarWaveFunction & sca2,
-			      const ScalarWaveFunction & sca3);
+			      const ScalarWaveFunction & sca3,
+                              complex<Energy> mass=-GeV,
+                              complex<Energy> width=-GeV);
   //@}
 
   /**
