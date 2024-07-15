@@ -52,7 +52,7 @@ ThePEG::IBPtr ThePEG::LHAPDF::fullclone() const {
   return new_ptr(*this);
 }
 
-void ThePEG::LHAPDF::initPDFptr() {
+void ThePEG::LHAPDF::initPDFptr() const {
   ::LHAPDF::setVerbosity(std::max(0, 
                          ThePEG::Debug::level - 1));
   if (    thePDF 
@@ -65,6 +65,10 @@ void ThePEG::LHAPDF::initPDFptr() {
   xMax = thePDF->xMax();
   Q2Min = thePDF->q2Min() * GeV2;
   Q2Max = thePDF->q2Max() * GeV2;
+  // get the PDG code for the particle for which this is the PDF
+  thePID = thePDF->lhapdfID() < 10000 ? -211 : 2212;
+  if(thePDF->info().has_key("Particle"))
+    thePID = std::stoi(thePDF->info().get_entry("Particle"));
 }
 
 void ThePEG::LHAPDF::doinit() {
@@ -133,8 +137,14 @@ string ThePEG::LHAPDF::doTest(string input) {
 }  
 
 bool ThePEG::LHAPDF::canHandleParticle(tcPDPtr particle) const {
+  initPDFptr();
   using namespace ParticleID;
-  return abs(particle->id()) == pplus || abs(particle->id()) == n0;
+  if(abs(thePID)==pplus)
+    return abs(particle->id()) == pplus || abs(particle->id()) == n0;
+  else if(abs(thePID)==piplus)
+    return abs(particle->id()) == piplus;
+  else
+    return false;
 }
 
 cPDVector ThePEG::LHAPDF::partons(tcPDPtr particle) const {
@@ -218,6 +228,8 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton,
     case n0:        return thePDF->xfxQ2(d   ,x,Q2);
     case pbarminus: return thePDF->xfxQ2(ubar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(dbar,x,Q2);
+    case piplus:
+    case piminus:   return thePDF->xfxQ2(u*thePID/particle->id(),x,Q2);
     case pplus:
     default:        return thePDF->xfxQ2(u   ,x,Q2);
     }
@@ -226,6 +238,8 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton,
     case n0:        return thePDF->xfxQ2(dbar,x,Q2);
     case pbarminus: return thePDF->xfxQ2(u   ,x,Q2);
     case nbar0:     return thePDF->xfxQ2(d   ,x,Q2);
+    case piplus:
+    case piminus:   return thePDF->xfxQ2(ubar*thePID/particle->id(),x,Q2);
     case pplus:
     default:        return thePDF->xfxQ2(ubar,x,Q2);
     }
@@ -234,6 +248,8 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton,
     case n0:        return thePDF->xfxQ2(u   ,x,Q2);
     case pbarminus: return thePDF->xfxQ2(dbar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(ubar,x,Q2);
+    case piplus:
+    case piminus:   return thePDF->xfxQ2(d*thePID/particle->id(),x,Q2);
     case pplus:
     default:        return thePDF->xfxQ2(d   ,x,Q2);
     }
@@ -242,6 +258,8 @@ double ThePEG::LHAPDF::xfx(tcPDPtr particle, tcPDPtr parton,
     case n0:        return thePDF->xfxQ2(ubar,x,Q2);
     case pbarminus: return thePDF->xfxQ2(d   ,x,Q2);
     case nbar0:     return thePDF->xfxQ2(u   ,x,Q2);
+    case piplus:
+    case piminus:   return thePDF->xfxQ2(dbar*thePID/particle->id(),x,Q2);
     case pplus:
     default:        return thePDF->xfxQ2(dbar,x,Q2);
     }
@@ -308,6 +326,8 @@ double ThePEG::LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton,
     case pbarminus: return 0.0;
     case nbar0: return 0.0;
     case pplus: return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
+    case piplus: return thePDF->xfxQ2(thePID/particle->id()*u,x,Q2)-thePDF->xfxQ2(thePID/particle->id()*ubar,x,Q2);
+    case piminus:   return 0.;
     default: return 0.0;
     }
   case ubar:
@@ -315,6 +335,8 @@ double ThePEG::LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton,
     case n0: return 0.0;
     case pbarminus: return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
+    case piplus:    return 0.;
+    case piminus:   return thePDF->xfxQ2(thePID/particle->id()*ubar,x,Q2)-thePDF->xfxQ2(thePID/particle->id()*u,x,Q2);
     case pplus:
     default: return 0.0;
     }
@@ -324,6 +346,8 @@ double ThePEG::LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton,
     case pbarminus: return 0.0;
     case nbar0: return 0.0;
     case pplus: return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
+    case piplus:  return 0.;
+    case piminus: return thePDF->xfxQ2(thePID/particle->id()*d,x,Q2)-thePDF->xfxQ2(thePID/particle->id()*dbar,x,Q2);
     default: return 0.0;
     }
   case dbar:
@@ -331,6 +355,8 @@ double ThePEG::LHAPDF::xfvx(tcPDPtr particle, tcPDPtr parton,
     case n0: return 0.0;
     case pbarminus: return thePDF->xfxQ2(d,x,Q2) - thePDF->xfxQ2(dbar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(u,x,Q2) - thePDF->xfxQ2(ubar,x,Q2);
+    case piplus:    return thePDF->xfxQ2(thePID/particle->id()*dbar,x,Q2)-thePDF->xfxQ2(thePID/particle->id()*d,x,Q2);
+    case piminus:   return 0.;
     case pplus:
     default: return 0.0;
     }
@@ -382,6 +408,8 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton,
     case pbarminus: return thePDF->xfxQ2(ubar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(dbar,x,Q2);
     case pplus:     return thePDF->xfxQ2(ubar,x,Q2);
+    case piplus:    return thePDF->xfxQ2(thePID/particle->id()*ubar,x,Q2);
+    case piminus:   return thePDF->xfxQ2(thePID/particle->id()*u   ,x,Q2);
     default:        return thePDF->xfxQ2(u   ,x,Q2);
     }
   case ubar:
@@ -389,6 +417,8 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton,
     case n0:        return thePDF->xfxQ2(dbar,x,Q2);
     case pbarminus: return thePDF->xfxQ2(ubar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(dbar,x,Q2);
+    case piplus:    return thePDF->xfxQ2(thePID/particle->id()*ubar,x,Q2);
+    case piminus:   return thePDF->xfxQ2(thePID/particle->id()*u   ,x,Q2);
     case pplus:
     default:        return thePDF->xfxQ2(ubar,x,Q2);
     }
@@ -398,6 +428,8 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton,
     case pbarminus: return thePDF->xfxQ2(dbar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(ubar,x,Q2);
     case pplus:     return thePDF->xfxQ2(dbar,x,Q2);
+    case piplus:    return thePDF->xfxQ2(thePID/particle->id()*d   ,x,Q2);
+    case piminus:   return thePDF->xfxQ2(thePID/particle->id()*dbar,x,Q2);
     default:        return thePDF->xfxQ2(d   ,x,Q2);
     }
   case dbar:
@@ -405,6 +437,8 @@ double ThePEG::LHAPDF::xfsx(tcPDPtr particle, tcPDPtr parton,
     case n0:        return thePDF->xfxQ2(ubar,x,Q2);
     case pbarminus: return thePDF->xfxQ2(dbar,x,Q2);
     case nbar0:     return thePDF->xfxQ2(ubar,x,Q2);
+    case piplus:    return thePDF->xfxQ2(thePID/particle->id()*d   ,x,Q2);
+    case piminus:   return thePDF->xfxQ2(thePID/particle->id()*dbar,x,Q2);
     case pplus:
     default:        return thePDF->xfxQ2(dbar,x,Q2);
     }

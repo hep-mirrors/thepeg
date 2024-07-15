@@ -15,7 +15,7 @@
 #include "ThePEG/PDF/PDFBase.h"
 
 namespace LHAPDF {
-	class PDF;
+  class PDF;
 }
 
 namespace ThePEG {
@@ -144,7 +144,7 @@ protected:
    * Initialize the LHAPDF library for the chosen PDF set if it has
    * not been done before.
    */
-  void initPDFptr();
+  void initPDFptr() const;
 
   /**
    * Used by the interface to select a set according to a file name.
@@ -213,9 +213,6 @@ public:
 
   /** @endcond */
 
-// If needed, insert declarations of virtual function defined in the
-// InterfacedBase class here (using ThePEG-interfaced-decl in Emacs).
-
 protected:
 
   /** @name Standard Interfaced functions. */
@@ -245,7 +242,7 @@ private:
   /**
    * LHAPDF member object
    */
-  ::LHAPDF::PDF * thePDF;
+  mutable ::LHAPDF::PDF * thePDF;
 
   /**
    * The name of the selected PDF set.
@@ -265,24 +262,29 @@ private:
   int theMaxFlav;
 
   /**
+   *  The PDG code for the particle described by the PDF
+   */
+  mutable long thePID;
+  
+  /**
    * The minimum \f$x\f$-value for the current PDF set.
    */
-  double xMin;
+  mutable double xMin;
 
   /**
    * The maximum \f$x\f$-value for the current PDF set.
    */
-  double xMax;
+  mutable double xMax;
 
   /**
    * The minimum \f$Q^2\f$-value for the current PDF set.
    */
-  Energy2 Q2Min;
+  mutable Energy2 Q2Min;
 
   /**
    * The maximum \f$Q^2\f$-value for the current PDF set.
    */
-  Energy2 Q2Max;
+  mutable Energy2 Q2Max;
 
 private:
 
