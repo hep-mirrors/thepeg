@@ -316,7 +316,7 @@ GSLINCLUDE=""
 GSLLIBS=""
 
 AC_ARG_WITH(gsl,
-        AC_HELP_STRING([--with-gsl=path],[location of gsl installation. Default: system lib]),
+        AS_HELP_STRING([--with-gsl=path],[location of gsl installation. Default: system lib]),
         [],
 	[with_gsl=system])
 

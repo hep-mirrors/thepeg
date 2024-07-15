@@ -1,5 +1,5 @@
 # ===========================================================================
-#       http://www.gnu.org/software/autoconf-archive/ax_check_zlib.html
+#      https://www.gnu.org/software/autoconf-archive/ax_check_zlib.html
 # ===========================================================================
 #
 # SYNOPSIS
@@ -35,7 +35,6 @@
 #
 #   Copyright (c) 2008 Loic Dachary <loic@senga.org>
 #   Copyright (c) 2010 Bastien Chevreux <bach@chevreux.org>
-# Mods for ThePEG Copyright (c) 2013 David Grellscheid <david.grellscheid@durham.ac.uk>
 #
 #   This program is free software; you can redistribute it and/or modify it
 #   under the terms of the GNU General Public License as published by the
@@ -48,7 +47,7 @@
 #   Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License along
-#   with this program. If not, see <http://www.gnu.org/licenses/>.
+#   with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 #   As a special exception, the respective Autoconf Macro's copyright owner
 #   gives unlimited permission to copy, distribute and modify the configure
@@ -63,24 +62,8 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 14
+#serial 16
 
-#   Define m4_ifblank and m4_ifnblank macros from introduced in
-#   autotools 2.64 m4sugar.m4 if using an earlier autotools.
-
-ifdef([m4_ifblank], [], [
-m4_define([m4_ifblank],
-[m4_if(m4_translit([[$1]],  [ ][	][
-]), [], [$2], [$3])])
-])
-
-
-ifdef([m4_ifnblank], [], [
-m4_define([m4_ifnblank],
-[m4_if(m4_translit([[$1]],  [ ][	][
-]), [], [$3], [$2])])
-])
- 
 AU_ALIAS([CHECK_ZLIB], [AX_CHECK_ZLIB])
 AC_DEFUN([AX_CHECK_ZLIB],
 #
@@ -88,7 +71,6 @@ AC_DEFUN([AX_CHECK_ZLIB],
 #
 [AC_MSG_CHECKING(if zlib is wanted)
 zlib_places="/usr/local /usr /opt/local /sw"
-withval_result=
 AC_ARG_WITH([zlib],
 [  --with-zlib=DIR         root directory path of zlib installation @<:@defaults to
                           /usr/local or /usr if not found in /usr/local@:>@
@@ -101,7 +83,6 @@ AC_ARG_WITH([zlib],
   else
     AC_MSG_WARN([Sorry, $withval does not exist, checking usual places])
   fi
-  withval_result="$withval"
 else
   zlib_places=
   AC_MSG_RESULT(no)
@@ -124,26 +105,21 @@ then
   ZLIB_OLD_LDFLAGS=$LDFLAGS
   ZLIB_OLD_CPPFLAGS=$CPPFLAGS
   if test -n "${ZLIB_HOME}"; then
-        if test -n "${withval_result}"; then
-		LDFLAGS="$LDFLAGS -L${ZLIB_HOME}/lib"
-		CPPFLAGS="$CPPFLAGS -I${ZLIB_HOME}/include"
-        fi
+        LDFLAGS="$LDFLAGS -L${ZLIB_HOME}/lib"
+        CPPFLAGS="$CPPFLAGS -I${ZLIB_HOME}/include"
   fi
-  AC_LANG_SAVE
-  AC_LANG_C
+  AC_LANG_PUSH([C])
   AC_CHECK_LIB([z], [inflateEnd], [zlib_cv_libz=yes], [zlib_cv_libz=no])
   AC_CHECK_HEADER([zlib.h], [zlib_cv_zlib_h=yes], [zlib_cv_zlib_h=no])
-  AC_LANG_RESTORE
+  AC_LANG_POP([C])
   if test "$zlib_cv_libz" = "yes" && test "$zlib_cv_zlib_h" = "yes"
   then
     #
     # If both library and header were found, action-if-found
     #
     m4_ifblank([$1],[
-		if test -n "${withval_result}"; then
-		     LDFLAGS="$LDFLAGS -L${ZLIB_HOME}/lib"
-		     CPPFLAGS="$CPPFLAGS -I${ZLIB_HOME}/include"
-		fi
+                CPPFLAGS="$CPPFLAGS -I${ZLIB_HOME}/include"
+                LDFLAGS="$LDFLAGS -L${ZLIB_HOME}/lib"
                 LIBS="-lz $LIBS"
                 AC_DEFINE([HAVE_LIBZ], [1],
                           [Define to 1 if you have `z' library (-lz)])
