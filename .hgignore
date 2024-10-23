@@ -58,6 +58,7 @@ Makefile\.in$
 ^src/setupThePEG.bin$
 ^ThePEG-default.kdev4$
 ^src/SimpleLEP.cmp$
+^m4/ltversion.m4$
 ^Repository/versionstamp.inc$
 ^Repository/repository_test(.log|.trs)?$
 ^Repository/test-suite.log$
