@@ -42,7 +42,7 @@ double NuclearPhotonPDF::xfl(tcPDPtr ion, tcPDPtr gamma, Energy2 qq,
   // photon virtuality allowed by kinematics
   Energy2 qqkinmin = sqr(ion->mass()*x)/(1-x);
   Complex form = form_->formFactor(ion,qq);
-  return SM().alphaEM()/Constants::pi*(1.-x)*(1-qqkinmin/qq)*norm(form);
+  return SM().alphaEM()*sqr(ion->iCharge()/3)/Constants::pi*(1.-x)*(1-qqkinmin/qq)*norm(form);
 }
 
 double NuclearPhotonPDF::xfvl(tcPDPtr , tcPDPtr , Energy2 ,
