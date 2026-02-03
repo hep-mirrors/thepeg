@@ -26,6 +26,7 @@
 #endif
 namespace HepMC3 {
 using PdfInfo=GenPdfInfo;
+using HeavyIon=GenHeavyIon;
 using Polarization=std::pair<double,double>;
 }
 namespace HepMC=HepMC3;
@@ -57,7 +58,8 @@ struct HepMCTraits<HepMC::GenEvent>
 			   HepMC::GenVertex,
 			   HepMC::GenVertex *,
 			   HepMC::Polarization,
-			   HepMC::PdfInfo>
+			   HepMC::PdfInfo,
+			   HepMC::HeavyIon>
 {
 #else
   // This is version 3!
@@ -69,7 +71,8 @@ struct HepMCTraits<HepMC::GenEvent>
 			   HepMC::GenVertex,
 			   HepMC::GenVertexPtr,
 			   HepMC::Polarization,
-			   HepMC::PdfInfo>
+			   HepMC::PdfInfo,
+			   HepMC::HeavyIon>
 {
 
   /** Create an event object with number \a evno and \a weight. */

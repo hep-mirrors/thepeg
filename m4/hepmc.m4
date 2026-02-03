@@ -124,6 +124,7 @@ if test "x$with_hepmcversion" = "x3"; then
      AC_DEFINE([HEPMC_HAS_CROSS_SECTION],  [1],[ Has GenCrossection ])
      AC_DEFINE([HEPMC_HAS_NAMED_WEIGHTS],  [1],[ Has named weights ])
      AC_DEFINE([HEPMC_HAS_PDF_INFO],  [1],[ Has GenPdfInfo ])
+     AC_DEFINE([HEPMC_HAS_HEAVY_ION],  [1],[ Has GenHeavyIon ])
      AC_DEFINE([HEPMC_HAS_UNITS] ,  [1],[ Has units ])
 ],[])
  

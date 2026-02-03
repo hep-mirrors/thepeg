@@ -16,9 +16,11 @@ class GenEvent;
 class GenParticle;
 class GenVertex;
 class GenPdfInfo;
+class GenHeavyIon;
 }
 namespace HepMC3 {
 using PdfInfo=GenPdfInfo;
+using HeavyIon=GenHeavyIon;
 using Polarization=std::pair<double,double>;
 }
 namespace HepMC=HepMC3;
@@ -56,9 +58,10 @@ namespace ThePEG {
  * HepMC implementation is specifying units or not.
  */
 template <typename HepMCEventT,
-  typename HepMCParticleT, typename HepMCParticlePtrT,
-  typename HepMCVertexT, typename HepMCVertexPtrT,
-          typename HepMCPolarizationT, typename HepMCPdfInfoT>
+          typename HepMCParticleT, typename HepMCParticlePtrT,
+          typename HepMCVertexT, typename HepMCVertexPtrT,
+          typename HepMCPolarizationT, typename HepMCPdfInfoT,
+          typename HepMCHeavyIonT>
 
 struct HepMCTraitsBase {
 
@@ -76,6 +79,9 @@ struct HepMCTraitsBase {
 
   /** Typedef of the PdfInfo class. */
   typedef HepMCPdfInfoT PdfInfoT;
+
+  /** Typedef of the HeavyIon class. */
+  typedef HepMCHeavyIonT HeavyIonT;
 
   /** Typedef of a particle pointer */
   typedef HepMCParticlePtrT ParticlePtrT;
@@ -312,6 +318,25 @@ struct HepMCTraitsBase {
   static void setPdfInfo(EventT &, int, int, double, double,
 			 double, double, double) {}
 #endif
+
+
+  /** Set the Heavy Ion info for the event. */
+#ifdef HEPMC_HAS_HEAVY_ION
+  static void setHeavyIon(EventT & e, double b, double angle) {
+#ifdef HAVE_HEPMC3
+
+    HepMC::GenHeavyIonPtr heavyion = std::make_shared<HepMC::GenHeavyIon>();
+    heavyion->event_plane_angle=angle;
+    heavyion->impact_parameter=b;
+    e.set_heavy_ion(heavyion);
+    
+#else
+#endif
+  }
+#else
+  static void setHeavyIon(EventT & , double , double ) {}
+#endif
+  
 
 /** Set the cross section info for the event. */
 #ifdef HAVE_HEPMC3

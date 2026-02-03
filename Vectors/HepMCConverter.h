@@ -168,6 +168,11 @@ private:
    */
   void setPdfInfo(const Event & e);
 
+  /**
+   * Create and set a HeavyIon object for the event
+   */
+  void setHeavyIon(const Event & e);
+
 private:
 
   /**

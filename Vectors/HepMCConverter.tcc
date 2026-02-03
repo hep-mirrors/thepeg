@@ -187,9 +187,11 @@ void HepMCConverter<HepMCEventT,Traits>::init(const Event & ev, bool nocopies) {
   // and the incoming beam particles
   Traits::setBeamParticles(*geneve,pmap[ev.incoming().first],
 			   pmap[ev.incoming().second]);
-
   // and the PDF info
   setPdfInfo(ev);
+  
+  // and the HeavyIon info
+  setHeavyIon(ev);
 
   // and the cross section info
   Traits::setCrossSection(*geneve,
@@ -334,6 +336,16 @@ void HepMCConverter<HepMCEventT,Traits>::setPdfInfo(const Event & e) {
   double xf2 = pdfs.second.xfx(sub->incoming().second->dataPtr(), scale, x2);
 
   Traits::setPdfInfo(*geneve, id1, id2, x1, x2, sqrt(scale/GeV2), xf1, xf2);
+
+}
+
+template <typename HepMCEventT, typename Traits>
+void HepMCConverter<HepMCEventT,Traits>::setHeavyIon(const Event & e) {
+  const LorentzPoint v1 = e.incoming().first->vertex();
+  const LorentzPoint v2 = e.incoming().second->vertex();  
+  double bpar  = (v1 - v2).perp()/femtometer;
+  double angle = atan2((v1 - v2).y(),(v1 - v2).x());
+  Traits::setHeavyIon(*geneve, bpar, angle);
 
 }
 
