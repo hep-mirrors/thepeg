@@ -9,7 +9,7 @@
 #ifndef ThePEG_LorentzVector_H
 #define ThePEG_LorentzVector_H
 
-/** 
+/**
  * @file LorentzVector.h contains the LorentzVector class.  Lorentz
  * vectors can be created with any unit type as template parameter.
  * All basic mathematical operations are supported, as well as a
@@ -32,15 +32,15 @@
 
 namespace ThePEG {
 
-template <typename Value> class LorentzVector; 
+template <typename Value> class LorentzVector;
 
-/** 
+/**
  * A 4-component Lorentz vector. It can be created with any unit type
  * as template parameter.  All basic mathematical operations are
  * supported, as well as a subset of the CLHEP LorentzVector
  * functionality.
  */
-template <typename Value> class LorentzVector 
+template <typename Value> class LorentzVector
 {
 private:
   /// Value squared
@@ -49,7 +49,7 @@ private:
 public:
   /** @name Constructors. */
   //@{
-  LorentzVector() 
+  LorentzVector()
     : theX(), theY(), theZ(), theT() {}
 
   LorentzVector(Value x, Value y, Value z, Value t)
@@ -100,25 +100,25 @@ public:
 
   /// Cast to the 3-component part.
   operator ThreeVector<Value>() const { return vect(); }
-  
+
   /// Set the 3-component part.
   void setVect(const ThreeVector<Value> & p) {
     theX = p.x();
     theY = p.y();
     theZ = p.z();
-  } 
+  }
 
 public:
   /// The complex conjugate vector.
-  LorentzVector<Value> conjugate() const 
+  LorentzVector<Value> conjugate() const
   {
     return LorentzVector<Value>(conj(x()),conj(y()),conj(z()),conj(t()));
   }
 
   /// Squared magnitude \f$x^\mu\,x_\mu=t^2 - \vec{x}^2\f$.
-  Value2 m2() const 
-  { 
-    return (t()-z())*(t()+z()) - sqr(x()) - sqr(y()); 
+  Value2 m2() const
+  {
+    return (t()-z())*(t()+z()) - sqr(x()) - sqr(y());
   }
 
   /// Squared magnitude with another vector
@@ -128,7 +128,7 @@ public:
   }
 
   /// Magnitude (signed) \f$\pm\sqrt{|t^2 - \vec{x}^2|}\f$.
-  Value  m() const 
+  Value  m() const
   {
     Value2 tmp = m2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
@@ -138,8 +138,8 @@ public:
   Value2 mt2()  const { return (t()-z())*(t()+z()); }
 
   /// Transverse mass (signed) \f$\pm\sqrt{|t^2 - z^2|}\f$.
-  Value  mt()  const 
-  { 
+  Value  mt()  const
+  {
     Value2 tmp = mt2();
     return tmp < Value2() ? -Value(sqrt(-tmp)) : Value(sqrt(tmp));
   }
@@ -155,7 +155,7 @@ public:
    * given axis.
    */
   template <typename U>
-  Value2 perp2(const ThreeVector<U> & p) const 
+  Value2 perp2(const ThreeVector<U> & p) const
   {
     return vect().perp2(p);
   }
@@ -165,27 +165,27 @@ public:
    * given axis.
    */
   template <typename U>
-  Value perp(const ThreeVector<U> & p) const 
+  Value perp(const ThreeVector<U> & p) const
   {
     return vect().perp(p);
   }
 
   /// Transverse energy squared.
-  Value2 et2() const 
+  Value2 et2() const
   {
     Value2 pt2 = vect().perp2();
     return pt2 == Value2() ? Value2() : e()*e() * pt2/(pt2+z()*z());
   }
 
   /// Transverse energy (signed).
-  Value et() const 
+  Value et() const
   {
     Value2 etet = et2();
     return e() < Value() ? -sqrt(etet) : sqrt(etet);
   }
 
   /// Transverse energy squared with respect to the given axis.
-  Value2 et2(const ThreeVector<double> & v) const 
+  Value2 et2(const ThreeVector<double> & v) const
   {
     Value2 pt2 = vect().perp2(v);
     Value pv = vect().dot(v.unit());
@@ -193,7 +193,7 @@ public:
   }
 
   /// Transverse energy with respect to the given axis (signed).
-  Value et(const ThreeVector<double> & v) const 
+  Value et(const ThreeVector<double> & v) const
   {
     Value2 etet = et2(v);
     return e() < Value() ? -sqrt(etet) : sqrt(etet);
@@ -208,10 +208,10 @@ public:
   Value  rho()   const { return sqrt(rho2()); }
 
   /// Set new radius.
-  void setRho(Value newRho) 
-  { 
+  void setRho(Value newRho)
+  {
     Value oldRho = rho();
-    if (oldRho == Value()) 
+    if (oldRho == Value())
       return;
     double factor = newRho / oldRho;
     setX(x()*factor);
@@ -220,14 +220,14 @@ public:
   }
 
   /// Polar angle.
-  double theta() const 
+  double theta() const
   {
     assert(!(x() == Value() && y() == Value() && z() == Value()));
     return atan2(perp(),z());
   }
 
   /// Cosine of the polar angle.
-  double cosTheta() const 
+  double cosTheta() const
   {
     Value ptot = rho();
     assert( ptot > Value() );
@@ -250,7 +250,7 @@ public:
   }
 
   /// Spatial angle with another vector.
-  double angle(const LorentzVector<Value> & w) const 
+  double angle(const LorentzVector<Value> & w) const
   {
     return vect().angle(w.vect());
   }
@@ -282,21 +282,27 @@ public:
    */
   Boost boostVector() const {
     if (t() == Value()) {
-      if (rho2() == Value2()) 
+      if (rho2() == Value2())
 	return Boost();
-      else 
+      else
 	ERROR_IF(true,"boostVector computed for LorentzVector with t=0 -- infinite result");
     }
     // result will make analytic sense but is physically meaningless
-    ERROR_IF(m2() <= Value2(),"boostVector computed for a non-timelike LorentzVector");
+    auto scale = sqr(t()) + rho2();
+    if (m2() <= Value2()) {
+      // tolerate tiny negative m2 from numerics
+      if (abs(m2()) > 1e-10 * scale) {
+        ERROR_IF(true,"boostVector computed for a significantly non-timelike LorentzVector");
+      }
+    }
     return vect() * (1./t());
   }
-  
+
   /**
    * Boost from reference frame into this vector's rest
    * frame: \f$-\frac{\vec{x}}{t}\f$.
    */
-  Boost findBoostToCM() const 
+  Boost findBoostToCM() const
   {
     return -boostVector();
   }
@@ -307,7 +313,7 @@ public:
   Value minus() const { return t() - z(); }
 
   /// Are two vectors nearby, using Euclidean measure \f$t^2 + |\vec{x}|^2\f$?
-  bool isNear(const LorentzVector<Value> & w, double epsilon) const 
+  bool isNear(const LorentzVector<Value> & w, double epsilon) const
   {
     Value2 limit = abs(vect().dot(w.vect()));
     limit += 0.25 * sqr( t() + w.t() );
@@ -316,15 +322,15 @@ public:
     delta +=  sqr( t() - w.t() );
     return (delta <= limit);
   }
-  
+
   /// Rotate the vector. Resets \f$x^\mu\rightarrow\mathsf{M}^\mu_\nu x^\nu\f$.
-  LorentzVector<Value> & transform(const SpinOneLorentzRotation & m) 
+  LorentzVector<Value> & transform(const SpinOneLorentzRotation & m)
   {
     return *this = m.operator*(*this);
   }
 
   /// Rotate the vector. Resets \f$x^\mu\rightarrow\mathsf{M}^\mu_\nu x^\nu\f$.
-  LorentzVector<Value> & operator*=(const SpinOneLorentzRotation & m) 
+  LorentzVector<Value> & operator*=(const SpinOneLorentzRotation & m)
   {
     return transform(m);
   }
@@ -340,7 +346,7 @@ public:
 public:
 
   /**
-   * Apply boost.  
+   * Apply boost.
    *
    * @param bx Component x of the boost.
    * @param by Component y of the boost.
@@ -350,8 +356,8 @@ public:
    * will be calculated as \f$\gamma=1/\sqrt{1-\beta^2}\f$.
    *
    */
-  LorentzVector<Value> & 
-  boost(double bx, double by, double bz, double gamma=-1.) 
+  LorentzVector<Value> &
+  boost(double bx, double by, double bz, double gamma=-1.)
   {
     const double b2 = bx*bx + by*by + bz*bz;
     if ( b2 == 0.0 ) return *this;
@@ -360,16 +366,16 @@ public:
     }
     const Value bp = bx*x() + by*y() + bz*z();
     const double gamma2 = (gamma - 1.0)/b2;
-    
+
     setX(x() + gamma2*bp*bx + gamma*bx*t());
     setY(y() + gamma2*bp*by + gamma*by*t());
     setZ(z() + gamma2*bp*bz + gamma*bz*t());
     setT(gamma*(t() + bp));
     return *this;
   }
-  
+
   /**
-   * Apply boost.  
+   * Apply boost.
    *
    * @param b Three-vector giving the boost.
    *
@@ -395,7 +401,7 @@ public:
     theY = ty;
     return *this;
   }
-  
+
   /**
    * Apply rotation around the y-axis.
    *
@@ -409,7 +415,7 @@ public:
     theZ = tz;
     return *this;
   }
-  
+
   /**
    * Apply rotation around the z-axis.
    *
@@ -423,7 +429,7 @@ public:
     theX = tx;
     return *this;
   }
-  
+
   /**
    * Rotate the reference frame to a new z-axis.
    */
@@ -442,26 +448,26 @@ public:
     }
     else if (u3 < 0.) {
       setX(-x());
-      setZ(-z()); 
+      setZ(-z());
     }
     return *this;
   }
-  
-  /** 
+
+  /**
    * Apply a rotation.
    * @param angle Rotation angle in radians.
    * @param axis Rotation axis.
    */
   template <typename U>
   LorentzVector<Value> & rotate(double angle, const ThreeVector<U> & axis) {
-    if (angle == 0.0) 
+    if (angle == 0.0)
       return *this;
     const U ll = axis.mag();
     assert( ll > U() );
 
     const double sa = sin(angle), ca = cos(angle);
     const double dx = axis.x()/ll, dy = axis.y()/ll, dz = axis.z()/ll;
-    const Value  xx  = x(), yy = y(), zz = z(); 
+    const Value  xx  = x(), yy = y(), zz = z();
 
     setX((ca+(1-ca)*dx*dx)     * xx
 	 +((1-ca)*dx*dy-sa*dz) * yy
@@ -491,7 +497,7 @@ public:
     theT += a.t();
     return *this;
   }
-  
+
   template <typename ValueB>
   LorentzVector<Value> & operator+=(const LorentzVector<ValueB> & a) {
     theX += a.x();
@@ -500,7 +506,7 @@ public:
     theT += a.t();
     return *this;
   }
-  
+
   LorentzVector<Complex> & operator-=(const LorentzVector<complex<QtyDouble> > & a) {
     theX -= Complex(a.x());
     theY -= Complex(a.y());
@@ -508,7 +514,7 @@ public:
     theT -= Complex(a.t());
     return *this;
   }
-  
+
   template <typename ValueB>
   LorentzVector<Value> & operator-=(const LorentzVector<ValueB> & a) {
     theX -= a.x();
@@ -588,21 +594,21 @@ operator*(double b, LorentzVector<Value> a) {
 }
 
 template <typename ValueA, typename ValueB>
-inline auto operator*(ValueB a, const LorentzVector<ValueA> & v) 
+inline auto operator*(ValueB a, const LorentzVector<ValueA> & v)
 -> LorentzVector<decltype(a*v.x())>
 {
   return {a*v.x(), a*v.y(), a*v.z(), a*v.t()};
 }
 
 template <typename ValueA, typename ValueB>
-inline auto operator*(const LorentzVector<ValueA> & v, ValueB b) 
+inline auto operator*(const LorentzVector<ValueA> & v, ValueB b)
 -> LorentzVector<decltype(b*v.x())>
 {
   return b*v;
 }
 
 template <typename ValueA, typename ValueB>
-inline auto operator/(const LorentzVector<ValueA> & v, ValueB b) 
+inline auto operator/(const LorentzVector<ValueA> & v, ValueB b)
 -> LorentzVector<decltype(v.x()/b)>
 {
   return {v.x()/b, v.y()/b, v.z()/b, v.t()/b};
@@ -613,7 +619,7 @@ inline auto operator/(const LorentzVector<ValueA> & v, ValueB b)
 //@{
 template <typename ValueA, typename ValueB>
 inline auto
-operator*(const LorentzVector<ValueA> & a, const LorentzVector<ValueB> & b) 
+operator*(const LorentzVector<ValueA> & a, const LorentzVector<ValueB> & b)
 -> decltype(a.dot(b))
 {
   return a.dot(b);
