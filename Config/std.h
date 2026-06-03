@@ -47,7 +47,8 @@ namespace std {
  * sets.
  */
 template <>
-struct less<const type_info *> {
+struct less<const type_info *>
+{
   /**
    * This is the function called when comparing two pointers to
    * type_info.
