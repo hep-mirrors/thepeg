@@ -726,7 +726,7 @@ template <typename Value>
 inline LorentzVector<Value>
 lightConeDir(Value plus, Value minus,
 	     Value x = Value(), Value y = Value()) {
-  LorentzVector<Value> r(x, y, Direction<0>::dir()*0.5*(plus - minus),
+  LorentzVector<Value> r(x, y, static_cast<int>(Direction<0>::dir())*0.5*(plus - minus),
 		  0.5*(plus + minus));
   return r;
 }
@@ -737,7 +737,7 @@ lightConeDir(Value plus, Value minus,
 template <typename Value>
 inline LorentzVector<Value>
 lightConeDir(Value plus, Value minus, Transverse<Value> pt) {
-  LorentzVector<Value> r(pt.x(), pt.y(), Direction<0>::dir()*0.5*(plus - minus),
+  LorentzVector<Value> r(pt.x(), pt.y(), static_cast<int>(Direction<0>::dir())*0.5*(plus - minus),
 		  0.5*(plus + minus));
   return r;
 
