@@ -652,7 +652,7 @@ inline Value dirMinus(const LorentzVector<Value> & p) {
  *  z-axis if the current Direction<0> is reversed. */
 template <typename Value>
 inline Value dirZ(const LorentzVector<Value> & p) {
-  return Direction<0>::dir()*p.z();
+  return double(Direction<0>::dir())*p.z();
 }
 
 /** Return the polar angle wrt. the positive z-axis. Or the negative
@@ -726,7 +726,7 @@ template <typename Value>
 inline LorentzVector<Value>
 lightConeDir(Value plus, Value minus,
 	     Value x = Value(), Value y = Value()) {
-  LorentzVector<Value> r(x, y, Direction<0>::dir()*0.5*(plus - minus),
+  LorentzVector<Value> r(x, y, double(Direction<0>::dir())*0.5*(plus - minus),
 		  0.5*(plus + minus));
   return r;
 }
@@ -737,7 +737,7 @@ lightConeDir(Value plus, Value minus,
 template <typename Value>
 inline LorentzVector<Value>
 lightConeDir(Value plus, Value minus, Transverse<Value> pt) {
-  LorentzVector<Value> r(pt.x(), pt.y(), Direction<0>::dir()*0.5*(plus - minus),
+  LorentzVector<Value> r(pt.x(), pt.y(), double(Direction<0>::dir())*0.5*(plus - minus),
 		  0.5*(plus + minus));
   return r;
 
