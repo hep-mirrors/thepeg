@@ -155,10 +155,7 @@ public:
   /**
    * The list of parent particles.
    */
-  const tParticleVector & parents() const {
-    static const tParticleVector null;
-    return hasRep() ? rep().theParents : null;
-  }
+  const tParticleVector & parents() const;
 
   /**
    * Return a set of neighboring particles coming from the same decay

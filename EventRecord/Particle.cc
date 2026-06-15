@@ -64,6 +64,11 @@ Particle::~Particle() {
   theData = cEventPDPtr();
 }
 
+const tParticleVector & Particle::parents() const {
+  static const tParticleVector null;
+  return hasRep() ? rep().theParents : null;
+}
+
 void Particle::initFull() {
   if ( theRep ) return;
   theRep = new ParticleRep;
